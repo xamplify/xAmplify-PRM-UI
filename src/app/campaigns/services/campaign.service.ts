@@ -17,7 +17,8 @@ import { UtilService } from 'app/core/services/util.service';
 
 declare var swal:any, $:any, Promise: any;
 @Injectable()
-export class CampaignService {    
+export class CampaignService {
+       
    
     campaign: Campaign;
     eventCampaign:any;
@@ -1285,10 +1286,29 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+     /********XNFR-318********/
     findCampaignEmailTemplates(emailTemplatesPagination:Pagination){
         emailTemplatesPagination.userId = this.authenticationService.getUserId();
         let url = this.URL + "campaign/findCampaignEmailTemplates?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, emailTemplatesPagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    /********XNFR-318********/
+    findVideos(videosPagination: Pagination) {
+        videosPagination.userId = this.authenticationService.getUserId();
+        let url = this.URL + "videos/findVideos?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, videosPagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    } 
+
+     /********XNFR-318********/
+    findPages(pagesPagination:Pagination){
+        pagesPagination.userId = this.authenticationService.getUserId();
+        let url = this.URL + "landing-page/findPagesForCampaign?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagesPagination)
             .map(this.extractData)
             .catch(this.handleError);
     }

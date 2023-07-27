@@ -15,7 +15,7 @@
                 <a translate>Create Campaign</a>
             </li>
         </ul>
-        <div id="folder-margin-xamp">
+        <div class="createFolderAlignment">
             <button class="btn btn-primary  btn-bt-aln" id="right" (click)="openCreateFolderPopup()"   translate>Create a Folder</button>
         </div>
     </div>
@@ -28,7 +28,7 @@
                     <div class="col-block width" [attr.class]="campaignDetailsTabClass"   style="width: 50%;" (click)="showCampaignDetailsTab()">
                         <div  class="cenetered-block colorbox-1">
                             <img  alt="No Image Found" class="newicons" src="assets/images/campaignnew-icon/campaignDetails.svg">
-                            <h5  class="hidden-xs text-clr" translate="" ng-reflect-translate="">Campaign Details & Templates</h5>
+                            <h5  class="hidden-xs text-clr" translate="" ng-reflect-translate="">{{campaignDetailsTabText}}</h5>
                         </div>
                     </div>
                     <div  class="col-block" [attr.class]="launchTabClass"  style="width: 50%;" (click)="showLaunchTab()">
@@ -176,7 +176,7 @@
                                         </div>
 
                                         <!--Co Branding Logo-->
-                                        <div class="form-group" *ngIf="campaign?.channelCampaign">
+                                        <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany &&(campaign?.channelCampaign || isPageCampaign)">
                                             <label class="control-label col-sm-4" translate>Co-Branding Logo</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -193,14 +193,14 @@
 
                                         <!--Notify Partners-->
                                         <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany &&(campaign?.channelCampaign || isPageCampaign)">
-                                            <label class="control-label col-sm-4" translate>Notify {{authenticationService?.partnerModule?.customName}} ?</label>
+                                            <label class="control-label col-sm-4">{{notifyPartnersLabelText}}</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                     (statusChange)="setPartnerEmailNotification($event)">
                                                 </switch>
                                                 <span class="info-color-xampc">
                                                     <i class="fa fa-question-circle toggle-info-xampc" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                                                     title="Send email notifications to your {{authenticationService?.partnerModule?.customName}} about your campaign"></i>
+                                                     title="{{notifyPartnersToolTipMessage}}"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -267,7 +267,7 @@
                                         </div>
 
                                         <!--Notify Me When-->
-                                        <div class="form-group" *ngIf="campaign?.emailNotification &&!campaign?.oneClickLaunch">
+                                        <div class="form-group" *ngIf="campaign?.emailNotification &&!campaign?.oneClickLaunch && !isPageCampaign">
                                         <label class="control-label col-sm-4" translate>Notify Me When</label>
                                         <div class="col-sm-8">
                                             <div class="email-options-checkbox-group email-options-notify">
@@ -382,16 +382,134 @@
                 </div>
             </div>
 
-            <!---Email Templates---->
-            <div class="portlet light shadow">
+
+            <!---Videos---->
+            <div class="portlet light shadow" *ngIf="isVideoCampaign" id="videos-section">
                 <div class="portlet-body clearfix">
                     <div class="col-xs-12">
                         <fieldset class="scheduler-border">
-                            <legend class="scheduler-border">Select An Email Template</legend>
+                            <legend class="scheduler-border">Select The Video For Your Campaign</legend>
+                            <app-list-loader *ngIf="videosLoader"></app-list-loader>
+                            <div *ngIf="!videosLoader">
+                                <div *ngIf="!isNavigatedFromManageContent">
+                                    <!--Search Key Icon-->
+                                    <div class="input-icon right pull-right pr-epx">
+                                        <input type="text" [(ngModel)]="videosSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="findVideosOnEnterKeyPress($event.keyCode)">
+                                        <button class="glyphicon glyphicon-remove search-box-item-clear search-button-padding" *ngIf="videosSortOption.searchKey" (click)="videosSortOption.searchKey='';searchVideos()"></button>
+                                        <button type="submit" class="search-box-item-click email-search" (click)="searchVideos()" style="right: 9px !important;">
+                                            <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
+                                    </div>
+                                    <!--Sort DropDown-->
+                                    <div class="input-icon right pull-right pr-epx">
+                                        <select class="form-control" [(ngModel)]="videosSortOption.selectedVideoDropDownOption" (ngModelChange)="sortVideos($event)" id="select-dropdown" [ngModelOptions]="{standalone: true}">
+                                        <option   *ngFor="let option of videosSortOption.videosDropDownOptions" [ngValue]="option">{{option.name}}</option>
+                                        </select>
+                                    </div>
+                                    <!--Videos Category DropDown-->
+                                    <div class="input-icon right pull-right pr-epx">
+                                        <select class="select_filter form-control" (change)="filterVideos($event)">
+                                            <option value="" translate>--Please Selet Category--</option>
+                                            <option *ngFor="let category of videoCategories"  value="{{category.id}}"  [selected]="category?.id==videosPagination?.categoryId">{{category.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--List Of Videos-->
+                                <div class="portlet-body padding-top-45px">
+                                    <div class="row">
+                                        <div class="table-responsive">
+                                            <table class="table tgrid table-hover table-sm" *ngIf="videosPagination?.totalRecords==0" aria-describedby="">
+                                                <tr>
+                                                    <th colspan="5" scope="row">
+                                                        <div class="alert alert-info text-center">
+                                                            <strong>No Data Found.</strong>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </table>
+                                            <table class="table tgrid table-hover table-sm" id="videosTable" role="grid" aria-describedby="" *ngIf="videosPagination?.totalRecords > 0">
+                                                <thead>
+                                                    <tr>
+                                                        <th  scope="row">Videos</th>
+                                                        <th scope="row" class="text-center" translate>Category</th>
+                                                        <th scope="row" class="text-center" translate>Uploaded Date</th>
+                                                        <th scope="row" class="text-center" translate>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr  class="pointer"  *ngFor="let videoFile of videosPagination?.pagedItems;let i =  index"
+                                                            [class.active]="(videoFile.id == selectedVideoId && videoFile.viewBy!=='DRAFT' && videoFile?.processed)"
+                                                            data-toggle="tooltip" data-placement="bottom"
+                                                            [attr.title]="draftMessage"
+                                                            (mouseover)='showToolTip(videoFile.viewBy)'>
+                                                            <!-- --------------Thumbnail--------------------------- -->
+                                                            <!-- --------------Title--------------------------- -->
+                                                            <td>
+                                                                <input
+                                                                class="radio-button-css"
+                                                                *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId && videoFile?.processed"
+                                                                type="radio" name="videoFileId" [value]="videoFile.id"
+                                                                (click)="highlightSelectedVideo(videoFile)"
+                                                                id="campaign_video_id_{{videoFile.id}}"
+                                                                [checked]="videoFile.id == selectedVideoId"> 
+
+                                                                <input
+                                                                class="radio-button-css"
+                                                                *ngIf="(videoFile.viewBy=='DRAFT' || !videoFile?.processed)&& videoFile.id!==videoId"
+                                                                type="radio" name="videoFileId" [value]="videoFile.id"
+                                                                disabled="disabled" data-toggle="tooltip" data-placement="bottom"
+                                                                title="Video is in draft mode, please update the publish options to Library or Viewers.">
+
+                                                                <app-video-thumbnail
+                                                                    [ngClass]="{'not-active':videoFile.viewBy=='DRAFT'}"
+                                                                    [videoFile]="videoFile"
+                                                                    (notifyParent)="showVideoPreview($event)">
+                                                                </app-video-thumbnail></td>
+                                                            <!-- --------------Category--------------------------- -->
+                                                            <td class="text-center">
+                                                                {{videoFile.categoryName}}</td>
+                                                            <!-- --------------Published To--------------------------- -->
+                                                            <td class="text-center">
+                                                                <app-timestamp [isOnlyDate]="true"
+                                                                    [dateAndTime]="videoFile.uploadedDate">
+                                                                </app-timestamp>
+
+                                                            </td>
+                                                            <!-- --------------Status--------------------------- -->
+                                                            <td class="text-center">
+                                                                <img src="assets/images/draft.png"
+                                                                *ngIf="videoFile.viewBy=='DRAFT' || !videoFile?.processed"> <img
+                                                                src="assets/images/success.png"
+                                                                *ngIf="videoFile.viewBy!='DRAFT' && videoFile?.processed">
+                                                            </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table> 
+                                        </div>
+                                    </div>
+                                </div>       
+                            </div>
+                            <!--Pagination-->
+                            <div *ngIf="videosPagination?.pagedItems?.length !== 0 && !videosLoader &&!isNavigatedFromManageContent">
+                                <app-pagination [pagination]="videosPagination" (notifyParent)="paginateVideos($event)" (notifyParentDropDown)="findVideosOnLimitChange($event)" [customDropDown]="true">
+                                </app-pagination>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+
+            <!---Email Templates / Pages---->
+            <div class="portlet light shadow">
+                <div class="portlet-body clearfix">
+                    <div class="col-xs-12">
+                        <!--Email Templates-->
+                        <fieldset class="scheduler-border" *ngIf="!isPageCampaign">
+                            <legend class="scheduler-border">Select an email template</legend>
                             <app-landing-page-loader *ngIf="emailTemplatesOrLandingPagesLoader"></app-landing-page-loader>
                             <div *ngIf="!emailTemplatesOrLandingPagesLoader">
                                 <!--Filter Icon-->
-                                <button type="submit"  class="float-right fontsize-16px" [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv" (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
+                                <button type="submit"  class="float-right fontsize-16px filter-button-color" [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv"
+                                 (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
                                     <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
                                     *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
                                     <i class="fa fa-filter cesf-xamp" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
@@ -412,29 +530,25 @@
                                 </div>
 
                                 <div class="input-icon right pull-right pr-epx">
-                                    <button class="btn btn-primary"  data-toggle="tooltip" data-placement="top" [title]="selectedEmailTemplateRow==0 ? 'Please Select An Email Template':'Send Test Email'" [disabled]="selectedEmailTemplateRow==0" (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
+                                    <button *ngIf="selectedEmailTemplateRow==0" class="btn btn-primary" [disabled]="selectedEmailTemplateRow==0" data-toggle="tooltip" data-placement="top"
+                                     title="{{sendTestEmailToolTip}}">
                                         <i class="fa fa-envelope-o"></i>
-                                        Send Test Email
+                                        {{properties?.sendTestEmail}}
                                     </button>
-                                </div>
-                                <!--Filter Option-->
-                                <div *ngIf="!filterCategoryLoader && isShowFilterDiv">
-                                    <h4  translate>Apply Filter</h4>
-                                    <ejs-multiselect [(ngModel)]='selectedFolderIds' [ngModelOptions]="{standalone: true}"
-                                    [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
-                                    [dataSource]='emailTemplateFolders' [fields]='folderFields'
-                                    [placeholder]='folderFilterPlaceHolder'>
-                                    </ejs-multiselect>
-                                    <div class="float-right">
-                                        <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
-                                        <button class="btn btn-info" (click)="applyFilter()">Apply</button>
-                                    </div>
+                                    <button *ngIf="selectedEmailTemplateRow>0" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+                                         title="{{sendTestEmailToolTip}}"
+                                       (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
+                                        <i class="fa fa-envelope-o"></i>
+                                        {{properties?.sendTestEmail}}
+                                    </button>
                                 </div>
                                 <!--List Of Email Templates-->
                                 <div class="portlet-body padding-top-45px">
+                                    <!--Filter Option-->
+                                    <ng-template [ngTemplateOutlet]="filter"></ng-template>
                                     <div class="row">
                                         <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
-                                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of emailTemplatesPagination?.pagedItems ;let i =index" >                         
+                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of emailTemplatesPagination?.pagedItems ;let i =index" >                         
                                                 <div  class="row">
                                                     <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12"> 
                                                         <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === selectedEmailTemplateRow ? 'template-selected-border' :'' " (click)="selectEmailTemplate(emailTemplate)">
@@ -492,14 +606,109 @@
                                 </div>       
                             </div>
                             <!--Pagination-->
-                            <div *ngIf="emailTemplatesPagination?.pagedItems?.length !== 0" class="" [hidden]="emailTemplatesOrLandingPagesLoader">
+                            <div *ngIf="emailTemplatesPagination?.pagedItems?.length !== 0 && !emailTemplatesOrLandingPagesLoader">
                                 <app-pagination [pagination]="emailTemplatesPagination" (notifyParent)="paginateEmailTempaltes($event)" (notifyParentDropDown)="findEmailTemplates($event)" [customDropDown]="true">
                                 </app-pagination>
                             </div>
-                            <div>
-                                <button type="button" class="btn Btn-Green pull-right mBtnAlign f-w-600 w-10em" [disabled]="!isValidCampaignDetailsTab || selectedEmailTemplateRow==0" (click)="isValidCampaignDetailsTab && selectedEmailTemplateRow>0 && showLaunchTab()">Next</button>
-                            </div>  
+                            <ng-template [ngTemplateOutlet]="nextButton"></ng-template>
                         </fieldset>
+
+                         <!--Pages-->
+                         <fieldset class="scheduler-border" *ngIf="isPageCampaign">
+                            <legend class="scheduler-border">Select a page</legend>
+                            <app-landing-page-loader *ngIf="pagesLoader"></app-landing-page-loader>
+                            <div *ngIf="!pagesLoader">
+                                <!--Filter Icon-->
+                                <button type="submit"  class="float-right fontsize-16px filter-button-color" [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv" (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
+                                    <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
+                                    *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
+                                    <i class="fa fa-filter cesf-xamp" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
+                                    *ngIf="selectedFolderIds?.length==0" aria-hidden="true"></i>
+                                </button>
+                                <!--Search Key Icon-->
+                                <div class="input-icon right pull-right pr-epx">
+                                    <input type="text" [(ngModel)]="pagesSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="findPagesOnEnterKeyPress($event.keyCode)">
+                                    <button class="glyphicon glyphicon-remove search-box-item-clear search-button-padding" *ngIf="pagesSortOption.searchKey" (click)="pagesSortOption.searchKey='';searchPages()"></button>
+                                    <button type="submit" class="search-box-item-click email-search" (click)="searchPages()" style="right: 9px !important;">
+                                        <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
+                                </div>
+                                <!--Sort DropDown-->
+                                <div class="input-icon right pull-right pr-epx">
+                                    <select class="form-control" [(ngModel)]="pagesSortOption.selectedCampaignEmailTemplateDropDownOption" (ngModelChange)="sortPages($event)" id="select-dropdown" [ngModelOptions]="{standalone: true}">
+                                    <option   *ngFor="let option of pagesSortOption.eventCampaignRecipientsDropDownOptions" [ngValue]="option">{{option.name}}</option>
+                                    </select>
+                                </div>
+                                <!--List Of Pages-->
+                                <div class="portlet-body padding-top-45px">
+                                <!--Filter Option-->
+                                <ng-template [ngTemplateOutlet]="filter"></ng-template>
+                                    <div class="row">
+                                        <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
+                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let page of pagesPagination?.pagedItems ;let i =index" >                         
+                                                <div  class="row">
+                                                    <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12"> 
+                                                        <div class="grid-box imgage-paddings"  [ngClass]="page?.id === selectedPageId ? 'template-selected-border' :'' " (click)="selectPage(page)">
+                                                            <span class="select-check-box">
+                                                                <label>
+                                                                    <input  type="radio" class="radio-custimization pointer" [checked]="page?.id === selectedPageId">
+                                                                </label>
+                                                            </span>
+                                                            <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="page?.thumbnailPath" alt="No Preview Found" />
+                                                                <span class="icon-alignments"> 
+                                                                    <a data-toggle="tooltip" data-placement="bottom" title="Preview" (click)="$event.stopPropagation();showPagePreview(page)" data-original-title="Preview">
+                                                                    <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
+                                                                </span>
+                                                                <div  class="bar hover-bar">
+                                                                    <a  data-placement="top"  class="border-none-dark">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                                                                            <div class="content-hover-align fontsize-cls">
+                                                                                <span class="item__name cardDetails-mar" data-toggle="tooltip" data-placement="bottom" [title]="page?.name">
+                                                                                    <strong>{{page?.name |slice:0:20}}</strong>
+                                                                                    <strong *ngIf="page?.name?.length>20">..</strong>
+                                                                                </span>
+                                                                                <br>
+                                                                                <span class="item__name" data-toggle="tooltip" data-placement="bottom" title="Created On" style="float:left; margin: 3px;">
+                                                                                    <span>
+                                                                                    <app-display-date-and-time [dateAndTimeUTCString]="page?.createdDateInString"></app-display-date-and-time>
+                                                                                    </span>
+                                                                                </span>
+                                                                                <p class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{page?.createdBy}}">
+                                                                                    <strong translate>Created By:</strong>
+                                                                                    <span>{{page?.createdBy|slice:0:20}}
+                                                                                        <span *ngIf="page?.createdBy?.length>20">..</span>
+                                                                                    </span>
+                                                                                </p>
+                                                                                <span *ngIf="page?.categoryName?.length>0" class="campaign-email-template-category cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{page?.categoryName}}">
+                                                                                    <strong translate>Folder:</strong>
+                                                                                    <span>{{page?.categoryName|slice:0:20}}</span>
+                                                                                    <span *ngIf="page?.categoryName?.length>20">..</span>
+                                                                                </span> 
+                                                                            </div> 
+                                                                            <span class="label-color-custmization" (click)="$event.stopPropagation();editPage(page)">Edit</span>
+                                                                        </div>       
+                                                                    </div>
+                                                                    </a>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="pagesPagination?.totalRecords==0 && !pagesLoader" class="alert alert-info text-center">
+                                                <strong>No Data Found.</strong>
+                                            </div>
+                                        </form>      
+                                    </div>
+                                </div>       
+                            </div>
+                            <!--Pagination-->
+                            <div *ngIf="pagesPagination?.pagedItems?.length !== 0 && !pagesLoader">
+                                <app-pagination [pagination]="pagesPagination" (notifyParent)="paginatePages($event)" (notifyParentDropDown)="findPages($event)" [customDropDown]="true">
+                                </app-pagination>
+                            </div>
+                           <ng-template [ngTemplateOutlet]="nextButton"></ng-template>
+                        </fieldset>
+                        
                     </div>
                 </div>
             </div>
@@ -509,13 +718,11 @@
         <!---Tab-2--->
         <div id="launch-tab">
             <!---Select Campaign Recipients---->
-            <div class="portlet light shadow">
+            <div class="portlet light shadow" id="user-list-div">
                 <div class="row">
                     <div class="col-xs-12">
-                    <form class="form-horizontal form-bordered form-label-stripped">
                         <fieldset class="scheduler-border">
                             <legend class="scheduler-border">{{contactsOrPartnersSelectionText}}</legend>
-
                             <!--Partners/Contacts-->    
                             <div *ngIf="!campaign?.oneClickLaunch">
                                 <app-list-loader *ngIf="campaignRecipientsLoader"></app-list-loader>
@@ -671,12 +878,11 @@
                                     </div>    
                                 </div>
                                 <!--Pagination-->
-                                <div *ngIf="campaignRecipientsPagination?.pagedItems?.length !== 0" class="" [hidden]="campaignRecipientsLoader">
-                                    <app-pagination [pagination]="campaignRecipientsPagination" (notifyParent)="paginateCampaignRecipients($event)" (notifyParentDropDown)="findCampaignRecipients($event)" [customDropDown]="true">
+                                <div *ngIf="campaignRecipientsPagination?.pagedItems?.length !== 0 && !campaignRecipientsLoader">
+                                    <app-pagination [pagination]="campaignRecipientsPagination" (notifyParent)="paginateCampaignRecipients($event)" (notifyParentDropDown)="findCampaignRecipientsOnLimitChange($event)" [customDropDown]="true">
                                     </app-pagination>
                                 </div>
                             </div>
-
                             <!--Share Leads--> 
                             <div id="one-click-launch-list-selection" *ngIf="campaign?.oneClickLaunch">
                                 <div class="alert alert-danger" *ngIf="invalidShareLeadsSelection">
@@ -685,7 +891,6 @@
                                 <app-select-partners-and-share-leads [campaignId]="campaign.campaignId" [selectedShareLeadsListIds]="selectedContactListIds" [selectedPartnershipId]="selectedPartnershipId" (selectPartnersAndShareLeadsEmitter)="getSelectedPartnerCompanyIdAndShareLeads($event)" [hideHeaderText]="true"></app-select-partners-and-share-leads>
                             </div> 
                         </fieldset>
-                    </form>
                     </div>
                 </div>
             </div>
@@ -733,10 +938,10 @@
                                                                     <switch class="switch-choose" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                         (statusChange)="selectEmailTemplateForEmailAutoResponseWorkflow($event,i,reply)">
                                                                     </switch>
-                                                                    <button type="button" class="btn btn-danger button-blue" (click)="remove(reply.divId,'replies')">
+                                                                    <button type="button" class="btn btn-danger button-blue responsive-screen-sidepaddings" (click)="remove(reply.divId,'replies')">
                                                                         <span class="glyphicon glyphicon-trash"></span>
                                                                     </button>
-                                                                    <button type="button" class="btn btn-primary button-blue" (click)="addReplyRows()">
+                                                                    <button type="button" class="btn btn-primary button-blue responsive-screen-sidepaddings" (click)="addReplyRows()">
                                                                         <span class="glyphicon glyphicon-plus"></span>
                                                                     </button>
                                                                 </div>
@@ -831,7 +1036,7 @@
                                                                                     <div class="portlet-body padding-top-45px">
                                                                                         <div class="row">
                                                                                             <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
-                                                                                                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of reply?.emailTemplatesPagination?.pagedItems ;let i =index" >                         
+                                                                                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of reply?.emailTemplatesPagination?.pagedItems ;let i =index" >                         
                                                                                                     <div  class="row">
                                                                                                         <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12"> 
                                                                                                             <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === reply?.selectedEmailTemplateId ? 'template-selected-border' :'' " (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)">
@@ -889,8 +1094,9 @@
                                                                                     </div>       
                                                                                 </div>
                                                                                 <!--Pagination-->
-                                                                                <div *ngIf="reply?.emailTemplatesPagination?.pagedItems?.length !== 0" class="" [hidden]="reply?.loader">
-                                                                                    <app-pagination [pagination]="reply?.emailTemplatesPagination" (notifyParent)="paginateAutoResponseEmailTempaltes($event,reply)" (notifyParentDropDown)="findEmailTemplatesForAutoResponseWorkFlow(reply)" [customDropDown]="true">
+                                                                                <div *ngIf="reply?.emailTemplatesPagination?.pagedItems?.length !== 0 && !reply?.loader">
+                                                                                    <app-pagination [pagination]="reply?.emailTemplatesPagination" (notifyParent)="paginateAutoResponseEmailTempaltes($event,reply)"
+                                                                                     (notifyParentDropDown)="findEmailTemplatesForAutoResponseWorkFlowOnLimitChange(reply,i)" [customDropDown]="true">
                                                                                     </app-pagination>
                                                                                 </div>
                                                                             </fieldset>
@@ -909,7 +1115,7 @@
                                                     <div class="portlet light dashboard-stat2" id="{{url?.divId}}">
                                                         <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}">
                                                             <div class="col-xs-6">
-                                                                <h4 class="text-left">Add an Auto-response to a website visit - {{i+1}}</h4>
+                                                                <h4 class="text-left responsive-screen-fontzise-dec">Add an Auto-response to a website visit - {{i+1}}</h4>
                                                             </div>
                                                             <div class="col-xs-6">
                                                                 <div class="pull-right">
@@ -918,10 +1124,10 @@
                                                                     <switch class="switch-choose" [status]="url.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                         (statusChange)="selectEmailTemplateForWebsiteLinkWorkflow($event,i,url)">
                                                                     </switch>
-                                                                    <button type="button" class="btn btn-danger button-blue" (click)="remove(url.divId,'url')">
+                                                                    <button type="button" class="btn btn-danger button-blue responsive-screen-sidepaddings" (click)="remove(url.divId,'url')">
                                                                         <span class="glyphicon glyphicon-trash"></span>
                                                                     </button>
-                                                                    <button type="button" class="btn btn-primary button-blue" (click)="addClickRows()">
+                                                                    <button type="button" class="btn btn-primary button-blue responsive-screen-sidepaddings" (click)="addClickRows()">
                                                                         <span class="glyphicon glyphicon-plus"></span>
                                                                     </button>
                                                                 </div>
@@ -999,7 +1205,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <!--Email Template-->
-                                                                    <div id="click-email-template-{{url.divId}" *ngIf="url?.defaultTemplate">
+                                                                    <div id="click-email-template-{{url?.divId}" *ngIf="url?.defaultTemplate">
                                                                         <fieldset class="scheduler-border">
                                                                             <legend class="scheduler-border color-black">Select An Email Template<strong class="required">*</strong></legend>
                                                                             <app-landing-page-loader *ngIf="url?.loader"></app-landing-page-loader>
@@ -1015,7 +1221,7 @@
                                                                                 <div class="portlet-body padding-top-45px">
                                                                                     <div class="row">
                                                                                         <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
-                                                                                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of url?.emailTemplatesPagination?.pagedItems ;let i =index" >                         
+                                                                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of url?.emailTemplatesPagination?.pagedItems ;let i =index" >                         
                                                                                                 <div  class="row">
                                                                                                     <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12"> 
                                                                                                         <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === url?.selectedEmailTemplateId ? 'template-selected-border' :'' " (click)="setWebsiteLinkEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)">
@@ -1056,7 +1262,7 @@
                                                                                                                                     <span *ngIf="emailTemplate?.category?.length>20">..</span>
                                                                                                                                 </span> 
                                                                                                                             </div> 
-                                                                                                                            <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
+                                                                                                                            <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)">Edit</span>
                                                                                                                         </div>       
                                                                                                                     </div>
                                                                                                                     </a>
@@ -1073,8 +1279,9 @@
                                                                                 </div>       
                                                                             </div>
                                                                             <!--Pagination-->
-                                                                            <div *ngIf="url?.emailTemplatesPagination?.pagedItems?.length !== 0" class="" [hidden]="url?.loader">
-                                                                                <app-pagination [pagination]="url?.emailTemplatesPagination" (notifyParent)="paginateWebsiteLinkAutoResponseEmailTempaltes($event,url)" (notifyParentDropDown)="findEmailTemplatesForWebSiteWorkFlow(url)" [customDropDown]="true">
+                                                                            <div *ngIf="url?.emailTemplatesPagination?.pagedItems?.length !== 0 && !url?.loader">
+                                                                                <app-pagination [pagination]="url?.emailTemplatesPagination" (notifyParent)="paginateWebsiteLinkAutoResponseEmailTempaltes($event,url)"
+                                                                                 (notifyParentDropDown)="findEmailTemplatesForWebSiteWorkFlowOnLimitChange(url,i)" [customDropDown]="true">
                                                                                 </app-pagination>
                                                                             </div>
                                                                         </fieldset>
@@ -1106,10 +1313,11 @@
                                     </div>
                                     <div class="btn-group btn-group-justified">
                                         <ng-container *ngFor="let launchOption of launchOptions;let i = index">
-                                            <label [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn green mBtnAlign button-border'">
+                                            <label [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn Btn-Green mBtnAlign button-border'">
                                                 <input type="radio" id="launch-option-{{i}}" class="text-center mLabelAlign mr10 pointer" name="scheduleCampaign"
                                                     [value]="launchOption.value" [checked]="selectedLaunchOption==launchOption.value" (click)="selectLaunchOption();buttonName=launchOption.key" />
-                                                <span class="text-algn">{{launchOption.key}}</span>
+                                                <span class="text-algn" *ngIf="launchOption?.key=='Launch'">Now</span>
+                                                <span class="text-algn" *ngIf="launchOption?.key!='Launch'">{{launchOption.key}}</span>
                                             </label>
                                         </ng-container>
                                     </div>
@@ -1153,11 +1361,12 @@
                                 <!--Other Buttons-->
                                 <div class="text-center">
                                     <button type="button" class="btn Btn-Gray mBtnAlign f-w-600 w-10em" (click)="showCampaignDetailsTab()">Previous</button>
-                                    <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em"  data-toggle="tooltip" data-placement="top" [title]="selectedEmailTemplateRow==0 ? 'Please Select An Email Template':'Send Test Email'" [disabled]="selectedEmailTemplateRow==0" (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
-                                        <i class="fa fa-envelope-o mr5"></i>Send Test Email
+                                    <button *ngIf="!isPageCampaign" type="button" class="btn Btn-Green mBtnAlign w-10em" title="Send Test Email"  data-toggle="tooltip" data-placement="top" 
+                                    (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
+                                        <i class="fa fa-envelope-o mr5"></i>{{properties?.sendTestEmail}}
                                     </button>
-                                    <button type="submit" class="btn green mBtnAlign w-10em" [disabled]="!isContactList" (click)="isContactList && validateAndLaunchCampaign()">{{buttonName}}</button>
-                                    <button *ngIf="!isPageCampaign" type="button" class="btn green mBtnAlign w-10em" (click)="spamCheck()">Spam Check</button>
+                                    <button type="submit" class="btn Btn-Green mBtnAlign w-10em" [disabled]="!isContactList" (click)="isContactList && validateAndLaunchCampaign()">{{buttonName}}</button>
+                                    <button *ngIf="!isPageCampaign" type="button" class="btn Btn-Green mBtnAlign w-10em" (click)="spamCheck()">Spam Check</button>
                                 </div>
                             </div>
                         </fieldset>
@@ -1180,7 +1389,7 @@
                 </a>
                 <app-preview-popup #previewPopUpComponent *ngIf="isShowEditTemplatePopup && campaignType=='page'"></app-preview-popup>
                 <app-merge-tags *ngIf="isShowEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
-                <button  class="new-tab-button" *ngIf="isShowEditTemplatePopup && campaignType=='page'">
+                <button  class="btn-primary olint" *ngIf="isShowEditTemplatePopup && campaignType=='page'">
                     Open Links In New Tab <input type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
                   </button>
                 </div>
@@ -1197,6 +1406,7 @@
 
 </div>
 
+<app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
 <app-merge-tags *ngIf="mergeTagsInput?.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()" (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>
 <!--Preview  Email Template-->
@@ -1238,4 +1448,29 @@
        </div>
     </div>
  </div>
+
+ <app-preview-video *ngIf="selectedVideoFileForPreview" [videoFile]="selectedVideoFileForPreview" (notifyParent)="closeCreateModal($event)">
+</app-preview-video>
+
+<ng-template #nextButton>
+    <div>
+        <button type="button" class="btn Btn-Green pull-right mBtnAlign f-w-600 w-10em" [disabled]="!isValidFirstTab" 
+        (click)="isValidFirstTab && showLaunchTab()">Next</button>
+    </div>  
+</ng-template>
+<ng-template #filter>
+    <div class="portlet light ht125" *ngIf="!filterCategoryLoader && isShowFilterDiv">
+        <h4  translate>Apply Filter</h4>
+        <ejs-multiselect [(ngModel)]='selectedFolderIds' [ngModelOptions]="{standalone: true}"
+        [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+        [dataSource]='emailTemplateFolders' [fields]='folderFields'
+        [placeholder]='folderFilterPlaceHolder'>
+        </ejs-multiselect>
+        <div class="float-right">
+            <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
+            <button class="btn btn-info" (click)="applyFilter()">Apply</button>
+        </div>
+    </div>
+</ng-template>
+
 

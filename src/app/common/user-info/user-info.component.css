@@ -20,6 +20,9 @@
   .margin-flex {
     margin-left: -7px;
   }
+  .mrgleft_0{
+   margin-left:0px!important;
+  }
 }
 .user-name {
   margin: 2px 0;

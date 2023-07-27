@@ -42,16 +42,24 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
   showExpandButton = false;
   expandedUserList: any;
   colspanValue = 2;
+  isTableLoaded: boolean = true;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public xtremandLogger:XtremandLogger,
     public pagerService:PagerService,public partnerService:ParterService,public contactService:ContactService) { }
 
   ngOnInit() {
+	setTimeout(() =>{
+		this.isTableLoaded = true;
+	},2000);
 	if(this.hideHeaderText==undefined){
 		this.hideHeaderText = false;
 	}
 	this.pagination.campaignId = this.campaignId;
+	if(this.hideHeaderText){
+		this.pagination.maxResults = 4;
+	}
     this.findPartnerCompanies(this.pagination);
 	this.disableThePartnerCompanyRadioButton();
+	
   }
 
   findPartnerCompanies(pagination: Pagination) {

@@ -467,7 +467,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
       this.setVideoIdHeightWidth();
       const newThis = this;
-      const player = videojs('videoId').ready(function () {
+      const player = videojs('videoId',{ playbackRates: [0.5, 1, 1.5, 2] }).ready(function () {
           this.hotkeys({
               volumeStep: 0.1, seekStep: 5, enableMute: true,
               enableFullscreen: false, enableNumbers: false,
@@ -716,6 +716,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       $('.vjs-VR-control .vjs-control .vjs-button').css('cssText', 'color:'+this.saveVideoFile.playerColor+'!important');
       $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
       $('.vjs-VR-control .vjs-control .vjs-button enable').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+      $('.video-js .vjs-playback-rate').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+
   }
   changeControllerColor(event: any, enableVideoController:boolean) {
      try{
@@ -1070,6 +1072,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           const callactionValue = this;
           const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
           this.videoJSplayer = videojs(document.getElementById('edit_video_player'), {
+           playbackRates: [0.5, 1, 1.5, 2],
               html5: {
                   hls: {
                       overrideNative: overrideNativeValue

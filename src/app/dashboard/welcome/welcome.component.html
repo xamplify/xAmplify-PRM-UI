@@ -70,8 +70,8 @@
               </h1>
               <p class="left-side">{{welcome_text.contacts}}</p>
               <div class="text-left">
-                <button class="btn btn-xs color2 " [routerLink]="['/home/partners/add']" translate>Add {{authenticationService?.partnerModule?.customName}}</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addPartnerCreateUrl, 'Partners')" translate>Tell me how</button>
+                <button class="btn btn-xs btn-primary" [routerLink]="['/home/partners/add']" translate>Add {{authenticationService?.partnerModule?.customName}}</button>
+                <button type="button" class="btn btn-xs Btn-Green" data-toggle="modal" (click)="showHowToVideo(addPartnerCreateUrl, 'Partners')" translate>Tell me how</button>
               </div>
             </div>
           </div>
@@ -95,8 +95,8 @@
               <h1 style="text-align: left" translate>Content</h1>
               <p style="position: relative;left: -19px;">{{welcome_text.videos}}</p>
               <div style="text-align: left">
-                <button class="btn btn-xs color2" [routerLink]="['/home/select-modules']" translate>Upload Content</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(uploadVideoUrl,'Videos')" translate>Tell me how</button>
+                <button class="btn btn-xs btn-primary" [routerLink]="['/home/select-modules']" translate>Upload Content</button>
+                <button type="button" class="btn btn-xs Btn-Green" data-toggle="modal" (click)="showHowToVideo(uploadVideoUrl,'Videos')" translate>Tell me how</button>
               </div>
             </div>
           </div>
@@ -120,8 +120,8 @@
               <h1 style="text-align: left;" translate>Contacts</h1>
               <p style="position: relative;right: 19px;">{{welcome_text.contacts}}</p>
               <div style="text-align: left;">
-                <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/contacts/add')" translate>Add contacts</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addContactsUrl,'Contacts')" translate>Tell me how</button>
+                <button class="btn btn-xs btn-primary" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/contacts/add')" translate>Add contacts</button>
+                <button type="button" class="btn btn-xs Btn-Green" data-toggle="modal" (click)="showHowToVideo(addContactsUrl,'Contacts')" translate>Tell me how</button>
               </div>
             </div>
           </div>
@@ -142,8 +142,8 @@
               <h1 class="text-left"  translate>Templates</h1>
               <p class="left-side">{{welcome_text.templates}}</p>
               <div class="text-left">
-                <button  class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/emailtemplates/select')" translate>Create templates</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(createEmailTemplateUrl,'Templates')" translate>Tell me how</button>
+                <button  class="btn btn-xs btn-primary" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/emailtemplates/select')" translate>Create templates</button>
+                <button type="button" class="btn btn-xs Btn-Green" data-toggle="modal" (click)="showHowToVideo(createEmailTemplateUrl,'Templates')" translate>Tell me how</button>
               </div>
             </div>
           </div>
@@ -164,8 +164,8 @@
                   <h1 class="text-left"  translate>Campaigns</h1>
                   <p class="left-side">{{welcome_text.campaigns}}</p>
                   <div class="text-left">
-                    <button  class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/campaigns/select')" translate>Create campaigns</button>
-                    <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(createCampaignUrl,'Campaigns')" translate>Tell me how</button>
+                    <button  class="btn btn-xs btn-primary" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/campaigns/select')" translate>Create campaigns</button>
+                    <button type="button" class="btn btn-xs Btn-Green" data-toggle="modal" (click)="showHowToVideo(createCampaignUrl,'Campaigns')" translate>Tell me how</button>
                   </div>
                 </div>
               </div>
@@ -186,8 +186,8 @@
                     <h1 class="text-left" translate>Team members</h1>
                     <p class="left-side">Add team members to make content and campaign management a group effort</p>
                     <div class="text-left">
-                      <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/team/add-team')" translate>Add team member</button>
-                      <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addTeamMemberUrl,'Team members')" translate>Tell me how</button>
+                      <button class="btn btn-xs btn-primary" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/team/add-team')" translate>Add team member</button>
+                      <button type="button" class="btn btn-xs Btn-Green" data-toggle="modal" (click)="showHowToVideo(addTeamMemberUrl,'Team members')" translate>Tell me how</button>
                     </div>
                   </div>
                 </div>
@@ -208,8 +208,8 @@
               <h1 class="text-left"  translate>Social Accounts</h1>
               <p class="left-side">{{welcome_text.socialMedia}}</p>
               <div class="text-left">
-                <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/social/manage/all')" [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Connect</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
+                <button class="btn btn-xs btn-primary" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/social/manage/all')" [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Connect</button>
+                <button type="button" class="btn btn-xs Btn-Green" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
               </div>
             </div>
           </div>
@@ -230,8 +230,8 @@
                   <h1  class="text-left" translate>Analytics</h1>
                   <p class="left-side">{{welcome_text.analytics}}</p>
                   <div  class="text-left">
-                    <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/dashboard')"  [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Analytics</button>
-                    <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
+                    <button class="btn btn-xs btn-primary" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/dashboard')"  [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Analytics</button>
+                    <button type="button" class="btn btn-xs Btn-Green" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
                   </div>
                 </div>
               </div>

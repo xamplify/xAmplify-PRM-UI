@@ -91,10 +91,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	ngOnInit() {
 		 this.findMenuItems();
 		 this.getMergeTagByPath();
-		//this.customSkinLeftMenu();
 	}
 
-	findMenuItems() {``
+	findMenuItems() {
 		this.loading = true;
 		let module = this.authenticationService.module;
 		module.contentLoader = true;
@@ -428,7 +427,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	}
 	
 	startLoader(){
-		this.loading = true;
+		this.authenticationService.leftSideMenuLoader = true;
 	}
 
 	getMergeTagByPath(){

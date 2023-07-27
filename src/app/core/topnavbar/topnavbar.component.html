@@ -1,5 +1,5 @@
 <ng-container *ngIf="!refService.loaderFromAdmin">
-    <ngx-loading [show]="loadTopNavBar" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <ngx-loading [show]="authenticationService?.module?.topNavBarLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="page-header navbar navbar-fixed-top zero-padding">
        <ng2-slim-loading-bar [color]="'#00a6e8'" [height]="'2px'" style="position: fixed; top: 0px;
        margin: 0px; padding: 0px; z-index: 10000; width: 100%;">
@@ -68,7 +68,7 @@
                       <i class="fa fa-line-chart" [ngClass]="authenticationService?.isTop?'customskin-icon':''"  data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
                    </div>
                 </li>
-                <li class="btnShare"  class="topnav-button-css" *ngIf="authenticationService?.module?.hasSocialStatusRole && !isLoggedInAsPartner">
+                <li class="btnShare"  class="topnav-button-css" *ngIf="authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
                    <button class="btn btn custom"  [ngClass]="authenticationService?.isTop?'customskin':''" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
                    <span class="hidden-xs"  translate>Update Status</span>
                    <i class="fa fa-share" [ngClass]="authenticationService?.isTop?'customskin-icon':''"  button data-toggle="tooltip" aria-hidden="true"></i>

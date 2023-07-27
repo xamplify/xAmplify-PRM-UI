@@ -21,4 +21,5 @@ export class ThemePropertiesDto {
     buttonSecondaryColor: string;
     buttonSecondaryBorderColor: string;
     buttonSecondaryTextColor: string;
+    secondaryButtonTextColor = "";
 }

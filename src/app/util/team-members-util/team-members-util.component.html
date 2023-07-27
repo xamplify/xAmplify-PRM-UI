@@ -54,7 +54,7 @@
  <div class="portlet light">
   <div class="portlet-title" style="border-bottom: none !important;">
     <div class="row" style="display:flex;align-items: center;">
-      <div class="col-3 col-sm-3 col-xs-12 col-lg-3 ">
+      <div class="col-xs-3 col-sm-3 col-lg-3 ">
     <div class="caption" translate>Team Members
     </div>
     </div>
@@ -157,7 +157,7 @@
             <!---Assigned Group-->
             <td *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner" id="group-min-td">
               <div class="btn-group" *ngIf="teamMember.teamMemberGroupId!=null &&!teamMember?.primaryAdmin">
-                  <button class="group-name-cclass btn-primary" >
+                  <button class="group-name-cclass btn-primary default-btn-cursor" >
                     <span translate data-toggle="tooltip" data-placement="bottom" title="{{teamMember?.teamMemberGroupName}}">
                       {{teamMember?.teamMemberGroupName | slice:0:15}}</span>
                     <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>

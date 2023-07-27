@@ -446,6 +446,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
 			this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
 				{
+				 playbackRates: [0.5, 1, 1.5, 2],
 					html5: {
 						hls: {
 							overrideNative: overrideNativeValue
@@ -481,6 +482,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 						}
 					});
 				});
+			this.videoUtilService.setDefaultPlayBackRateText();
 			this.defaultVideoSettings();
 			this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
 			if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
@@ -550,14 +552,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnInit() {
 		try {
-			// if (this.referenceService.integrationCallBackStatus) {
-			// 	this.activeTabName = 'integrations';
-			// 	this.activeTabHeader = this.properties.integrations;
-			// 	//this.referenceService.integrationCallBackStatus = false;
-			// } else {
-			// 	this.activeTabName = 'personalInfo';
-			// 	this.activeTabHeader = this.properties.personalInfo;
-			// }
             this.searchWithModuleName =  'Configuration';
 			this.activeTabName = 'personalInfo';
 			this.activeTabHeader = this.properties.personalInfo;
@@ -1114,6 +1108,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		$('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
 		$('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
 		$('.video-js .vjs-volume-panel').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+		$('.video-js .vjs-playback-rate').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+
+
 	}
 	transperancyControllBar(value: any) {
 		this.valueRange = value;

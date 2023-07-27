@@ -269,6 +269,10 @@ export class Properties {
 	campaignRegularEmailsFilter = "CampaignRegularEmails";
 	campaignVideoEmailsFilter = "CampaignVideoEmails";
 	campaignSurveyEmailsFilter = "CampaignSurveyEmails";
+	sendTestEmail = "Send Test Email";
+	
+	/***24/07/2023******/
+	playbackRates = [0.5, 1, 1.5, 2];
 
 
 	customThemeDescription = "Custom Themes enable the creation of unique branded experiences such as Background Color, Text Color, Button Color, Icon Color and so on. You can select from existing Light and Dark Themes. Set your own theme by choosing colors for the Header, Left Menu, Footer and Page Content blocks.";

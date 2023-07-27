@@ -51,7 +51,7 @@
 						<div class="col-sm-3 col-xs-12 mPad1">
 							<div class="image blur-content" id="image-blur-content-div">
 								<div class="portlet light border-radius-0 shadow image-border">
-									<div class="portlet-body clearfix" style="text-align: center;padding:12px 12px!important">
+									<div class="portlet-body clearfix partlet-cardbody">
 										<label class="control-label">Upload Logo</label>
 										<div class="profile-image-wrapper dotted-image-border"
 											(click)="imageClick()">
@@ -109,7 +109,7 @@
 											| slice:0:10}}<span
 												*ngIf="authenticationService.user.lastName?.length>10">..</span>
 										</h4>
-										<h5>{{authenticationService.user.emailId}}</h5>
+										<h5 class="responsive-screen-wordwrap">{{authenticationService.user.emailId}}</h5>
 										</ng-container>
 										<!-- modal pop up-->
 
@@ -121,7 +121,7 @@
 											| slice:0:10}}<span
 												*ngIf="companyProfile.lastName?.length>10">..</span>
 										</h4>
-										<h5>{{companyProfile.userEmailId}}</h5>
+										<h5 class="responsive-screen-wordwrap">{{companyProfile.userEmailId}}</h5>
 										</ng-container>
 										
 
@@ -386,7 +386,7 @@
 										</table>
 									</div>
 									<div class="modal-footer">
-										<button type="button" id="module-access-button" (click)="updateAccess()" disabled="disabled" class="btn green-haze"
+										<button type="button" id="module-access-button" (click)="updateAccess()" disabled="disabled" class="btn Btn-Green"
 											translate>Save</button>
 									</div>
 								</div>
@@ -411,7 +411,7 @@
 									</div>
 								</div>
 								<div class="col-xs-2" id="check-user">
-									<button *ngIf="isFromAdminPanel" class="btn green-haze"
+									<button *ngIf="isFromAdminPanel" class="btn Btn-Green"
 										id="right" (click)="checkUser()"
 										[disabled]="userEmailIdError || companyProfile.userEmailId?.length==0">Validate</button>
 								</div>
@@ -707,11 +707,11 @@
 						<button type="submit"
 							[disabled]="authenticationService.isSuperAdmin()"
 							*ngIf="companyProfile.isAdd" id="saveOrUpdateCompanyButton"
-							(click)="save()" class="btn green-haze" disabled="disabled" translate>Save</button>
+							(click)="save()" class="btn Btn-Green" disabled="disabled" translate>Save</button>
 						<button type="submit"
 							[disabled]="authenticationService.isSuperAdmin()"
 							*ngIf="!companyProfile.isAdd" id="saveOrUpdateCompanyButton"
-							(click)="update()" class="btn green-haze" translate>Update</button>
+							(click)="update()" class="btn Btn-Green" translate>Update</button>
 					</div>
 							</div>
 							<!-- -End Of Panel -->

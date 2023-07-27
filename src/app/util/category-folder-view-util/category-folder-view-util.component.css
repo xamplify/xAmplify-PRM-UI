@@ -41,7 +41,7 @@
 .ffolder span {
     font-size: 12px;
     border-radius: 15px;
-    white-space: nowrap
+    /* white-space: nowrap */
 }
 
 .ffolder.gray {
@@ -281,3 +281,9 @@ span.Track-countbg {
 
 }
 
+/* 24-07-2023 */
+@media (min-width: 767px) and (max-width: 1268px) {
+	.scroll-onoverflow {
+   		 margin-bottom: 15px;
+	}
+}

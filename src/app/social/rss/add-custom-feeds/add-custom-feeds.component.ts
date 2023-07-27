@@ -336,6 +336,7 @@ export class AddCustomFeedsComponent implements OnInit {
       const self = this;
       const overrideNativevalue = true;
       this.videoJSplayer = videojs('videoId', {
+       playbackRates: [0.5, 1, 1.5, 2],
         autoplay: true,
         html5: {
           hls: {
@@ -364,7 +365,7 @@ export class AddCustomFeedsComponent implements OnInit {
     this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
     this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
     $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
-    const player = videojs('videoId', { autoplay: false, });
+    const player = videojs('videoId', { autoplay: false, playbackRates: [0.5, 1, 1.5, 2] });
     const self = this;
     player.panorama({
       autoMobileOrientation: true,

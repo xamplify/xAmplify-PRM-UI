@@ -92,18 +92,18 @@
         <div class="col-xs-12">
            <!-- BEGIN EXAMPLE TABLE PORTLET-->
            <div class="portlet light">
-              <div class="portlet-title" style="border-bottom: none;padding-top: 6px;">
+              <div class="portlet-title pt0" style="border-bottom: none;padding-top: 6px;">
                  <div class="caption" translate style="padding-left: 3px !important;padding-top: 12px !important;">
                     <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                     Campaigns
                  </div>
-                 <div class="inputs w100 display"  style="float: right;display: flex;">
+                 <div class="inputs w100 display"  style="float: right;display: flex!important;">
                   <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 campaign-filter-option" style="margin-right: -6px !important;">
                      <li class="filter padding p4 p3" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
                      <li class="filter p4 p3 " (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" translate>Email</li>
                      <li class="filter p4 p3" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == selectedCampaignTypeIndex" translate>Video</li>
                  </ul> 
-                    <div class="mMargin" style="float: left; margin: 1px 10px;">
+                    <div class="mMargin" style="float: left; margin: 1px 10px!important;">
                       <select class="form-control" [(ngModel)]="sortOption.userLevelCampaignAnalyticsSortOption" (ngModelChange)="sortBy($event)" style="padding-left: 5px;height: 34px;">
                         <option *ngFor="let option of sortOption.userLevelCampaignAnalyticsSortDropDownOptions"
                             [ngValue]="option" translate>

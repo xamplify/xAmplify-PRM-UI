@@ -414,8 +414,9 @@
                                 </app-response-message>
                                 <div class="tab-content">
                                     <!---Personal Info-->
-                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'personalInfo'}">
+                                    <div class="tab-pane row" [ngClass]="{'active': activeTabName == 'personalInfo'}">
                                         <form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()" aria-labelledby="personal-info-form">
+                                           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>First Name</label>
                                                 <span class="star"> *</span>
@@ -423,44 +424,56 @@
                                                 <div *ngIf="formErrors.firstName" class="alert alert-danger">
                                                     {{ formErrors.firstName }}</div>
                                             </div>
-
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Middle Name</label>
                                                 <input type="text" placeholder="Middle Name" class="form-control" formControlName="middleName" maxlength="50">
                                                 <div *ngIf="formErrors.middleName" class="alert alert-danger">
                                                     {{ formErrors.middleName }}</div>
                                             </div>
-
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Last Name</label>
                                                 <input type="text" placeholder="Last Name" class="form-control" formControlName="lastName" maxlength="50">
                                                 <div *ngIf="formErrors.lastName" class="alert alert-danger">
                                                     {{ formErrors.lastName }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Mobile Number</label>
                                                 <input type="text" maxlength="20" class="form-control" [(ngModel)]="userData.mobileNumber" [ngModelOptions]="{standalone: true}">
                                                 <div *ngIf="formErrors.mobileNumber" class="alert alert-danger">
                                                     {{ formErrors.mobileNumber }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Interests</label>
                                                 <input type="text" placeholder="Interests" class="form-control" formControlName="interests" />
                                                 <div *ngIf="formErrors.interests" class="alert alert-danger">
                                                     {{ formErrors.interests }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
                                             <div class="form-group">
                                                 <label class="control-label" translate>Job Title</label>
                                                 <input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Job Title" class="form-control" formControlName="occupation" />
                                                 <div *ngIf="formErrors.occupation" class="alert alert-danger">
                                                     {{ formErrors.occupation }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                                             <div class="form-group">
                                                 <label class="control-label" translate>About</label>
                                                 <textarea class="form-control" rows="3" placeholder="About You" formControlName="description" style="resize: none;"></textarea>
                                                 <div *ngIf="formErrors.description" class="alert alert-danger">
                                                     {{ formErrors.description }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
                                             <div class="form-group">
                                                 <label class="control-label" translate>Select Preferred Language</label>                                                
                                                 <select formControlName="preferredLanguage" class="form-control">
@@ -470,14 +483,19 @@
                                                 <div *ngIf="formErrors.preferredLanguage" class="alert alert-danger">
                                                     {{ formErrors.preferredLanguage }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
                                             <div class="form-group">
                                                 <label class="control-label" translate>Website Url</label>
                                                 <input type="url" placeholder="WebSite Url" class="form-control" formControlName="websiteUrl" />
                                                 <div *ngIf="formErrors.websiteUrl" class="alert alert-danger">
                                                     {{ formErrors.websiteUrl }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                                             <button type="submit" [disabled]="!updateUserProfileForm.valid || authenticationService.isSuperAdmin()" class="btn Btn-Green" translate>
                                                 Save Changes</button>
+                                            </div>
                                         </form>
                                     </div>
                                     <!---Deal Types-->
@@ -1041,8 +1059,9 @@
                                         </ng-container>
                                     </div>
                                     <!--Pasword-->
-                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'password'}">
+                                    <div class="tab-pane row" [ngClass]="{'active': activeTabName == 'password'}">
                                         <form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
+                                            <div class="col-lg-12 col-md-13 col-sm-12 col-xs-12">
                                             <div class="form-group" *ngIf="userData.hasPassword">
                                                 <label class="control-label" translate>Current Password</label>
                                                 <input id="oldPassword" type="password" [class]="className" formControlName="oldPassword" required="required" />
@@ -1053,6 +1072,8 @@
                                                 <div *ngIf="formErrors.oldPassword" class="alert alert-danger" style="margin-top: 5px;">
                                                     {{formErrors.oldPassword}}</div>
                                             </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>New Password</label>
                                                 <input id="password" type="password" class="form-control" formControlName="newPassword" required="required" />
@@ -1062,6 +1083,8 @@
                                                 <div *ngIf="formErrors.newPassword" class="alert alert-danger" style="margin-top: 5px;">
                                                     {{formErrors.newPassword}}</div>
                                             </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Re-type New Password</label>
                                                 <input id="comfirmPassword" type="password" class="form-control" formControlName="confirmNewPassword" required="required" />
@@ -1074,16 +1097,20 @@
                                                     {{formErrors.confirmNewPassword}}</div>
                                                 <div *ngIf="updatePasswordForm.hasError('mismatchedPasswords')" class="alert alert-danger" style="margin-top: 5px;">Password do not match.</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-13 col-sm-12 col-xs-12">
                                             <div class="margin-top-10">
                                                 <button type="submit" id="register-submit-btn" [disabled]="!updatePasswordForm.valid" class="btn Btn-Green" translate>
                                                     Change Password</button>
                                                 <input type="reset" class="btn Btn-Gray" value="Cancel">
                                             </div>
+                                        </div>
                                         </form>
                                     </div>
                                     <!-- PRIVACY SETTINGS TAB -->
-                                    <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'settings'}">
-                                       <div class="container">
+                                    <!-- hidden-xs -->
+                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'settings'}">
+                                       <div class="">
                                             <label class="container-checkbox-xamplify" translate>List View
                                                 <input type="radio"  name="moduleDisplayType"  
                                                  value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.LIST]}}" 
@@ -1411,46 +1438,46 @@
                                                     <div class="col-xs-12" style="padding:0">
                                                         <fieldset class="fild-custome-borders-none">
                                                             <legend class="leg-custome-borders-bot" translate>Video Player Apperance</legend>
-                                                            <div class="col-xs-12 col-sm-6 col-md-6 align-itms-center" style="padding:0">
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 align-itms-center">
                                                                 <div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">
+                                                                    <label class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 control-label">
                                                                         {{'Player Color' | translate}}:</label>
-                                                                    <div class="col-xs-9 colsm-6 col-md-6">
+                                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                                         <input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor" formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
-                                                                        class="field-border-customization" [cpWidth]="'200px'" [cpHeight]="'265px'" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
-                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" class="field-border-customization"
+                                                                        class="field-border-customization picker-width" [cpWidth]="'200px'" [cpHeight]="'265px'" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
+                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" class="field-border-customization picker-width"
                                                                         />
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="col-xs-3 col-sm-6 col-md-6 control-label">
+                                                                    <label class="col-xs-12 col-sm-6 col-md-12 col-lg-6 control-label">
                                                                         {{'Enable Video Controller' | translate}}:</label>
-                                                                    <div class="col-xs-9 col-sm-6 col-md-6">
+                                                                    <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
                                                                         <switch [(status)]="defaultVideoPlayer.enableVideoController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableVideoController($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="col-xs-3 col-sm-6 col-md-6 control-label">
+                                                                    <label class="col-xs-12 col-sm-6 col-md-6 col-lg-6 control-label">
                                                                         {{'Controller Color' | translate}}:</label>
-                                                                    <div class="col-xs-9 colsm-6 col-md-6">
+                                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                                         <input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event, defaultVideoPlayer.enableVideoController)"
-                                                                        class="field-border-customization"   [value]="compControllerColor" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
-                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" class="field-border-customization" 
+                                                                        class="field-border-customization picker-width"   [value]="compControllerColor" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
+                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" class="field-border-customization picker-width" 
                                                                         />
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="col-xs-5 col-sm-6 col-md-6 control-label">{{'Transparency' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-5 col-md-5">
-                                                                        <input type="range" id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 100%;" (input)="transperancyControllBar(Transvalue.value)" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" #Transvalue>
+                                                                    <label class="col-xs-12 col-sm-6 col-md-6 col-lg-6 control-label">{{'Transparency' | translate}}:</label>
+                                                                    <div class="col-xs-12 col-sm-5 col-md-6 col-lg-6">
+                                                                        <input class="ranger-width" type="range" id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 100%;" (input)="transperancyControllBar(Transvalue.value)" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" #Transvalue>
                                                                     </div>
-                                                                    <div class="col-xs-1" style="padding:0">
+                                                                    <div class="col-xs-1" style="padding-left:15px">
                                                                         {{valueRange}}</div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-xs-12 col-sm-6 col-md-6 custome">
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 custome video-sidepadding">
                                                                 <video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull custome-video" controls height="160" poster="" data-setup='{"example_option":true }'>
                                                                     <source [src]="videoUrl"
                                                                         type="application/x-mpegURL">
@@ -1469,28 +1496,28 @@
                                                             <legend class="leg-custome-borders-bot" translate>Controls of the player</legend>
                                                             <div class="col-xs-12">
                                                                 <div class="form-group">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Sharing' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow Sharing' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowSharing($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Fullscreen' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow Fullscreen' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowFullscreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="changeFullscreen($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group" style="margin-top: 38px;">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Likes' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow Likes' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowLikes($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Embed' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow Embed' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableEmbed($event)" [disabled]="hasVideoRole">
                                                                         </switch>
@@ -1500,28 +1527,28 @@
 
                                                             <div class="col-xs-12" style="margin-top: 4px;">
                                                                 <div class="form-group">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Enable Settings' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Enable Settings' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.enableSettings" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableSettings($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Comments' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow Comments' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowComments($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group" style="margin-top: 37px;">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Enable Casting' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Enable Casting' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.enableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableCasting($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'360 video' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'360 video' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.is360video" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enable360Video($event)" [disabled]="hasVideoRole">
                                                                         </switch>
@@ -1559,14 +1586,14 @@
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                                         <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                            <button  class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" [disabled] ="csvExcludeUsersFilePreview"
+                                                            <button  class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" [disabled] ="csvExcludeUsersFilePreview"
                                                                 (click)="addContactModalOpen()" translate>
                                                                 One at a Time <i class="fa fa-plus"
                                                                     style="font-size: 12px; margin-left: 2px;"></i>
                                                             </button>
                                                             
-                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" translate>
-                                                                <span style="font-size: 14px; text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
+                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" translate>
+                                                                <span style="text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
                                                     (click)="input.value = null" (change)="fileChange(input, 'exclude-users')" accept=".csv" #input />
                                                                 <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
                                                             </button>											
@@ -1717,14 +1744,14 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                                         <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                            <button id="add_domain" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" [disabled] ="csvExcludeDomainsFilePreview"
+                                                            <button id="add_domain" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" [disabled] ="csvExcludeDomainsFilePreview"
                                                                 (click)="addDomainModalOpen()" translate>
                                                                 One at a Time <i class="fa fa-plus"
                                                                     style="font-size: 12px; margin-left: 2px;"></i>
                                                             </button>
                                                             
-                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" translate>
-                                                                <span style="font-size: 14px; text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
+                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" translate>
+                                                                <span style="text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
                                                     (click)="input.value = null" (change)="fileChange(input, 'exclude-domains')" accept=".csv" #input />
                                                                 <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
                                                             </button>											
@@ -2004,7 +2031,7 @@
                 <app-dashboard-loader *ngIf="addCategoryLoader.isLoading"></app-dashboard-loader>
                 <ng-container *ngIf="!addCategoryLoader.isLoading">
                     <div class="form-group" id="categoryNameDiv">
-                        <label>Name <font class="required">*</font></label>
+                        <label>Name <span class="required">*</span></label>
                         <input type="text" class="form-control" [(ngModel)]="category.name" id="categoryName" placeholder="Enter Name" maxlength="55" (input)="validateCategoryNames(category.name)" (keydown)="sumbitOnEnter($event)">
                         <span *ngIf="!category.isValid" class="required">{{categoryNameErrorMessage}}</span>
                     </div>

@@ -430,15 +430,20 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
                 let access = response.data;
                 if(access){
                     this.refService.isEditNurtureCampaign = false;
-                    if(this.refService.isProduction()){
-                        this.router.navigate(["/home/campaigns/edit"]);
-                    }else{
-                        if("REGULAR"==campaignType || "SURVEY"==campaignType){
-                            let urlSuffix = "REGULAR"==campaignType ? 'email' :'survey';
-                            this.router.navigate(["/home/campaigns/edit/"+urlSuffix]);
-                        }else{
-                            this.router.navigate(["/home/campaigns/edit"]);
+                    if("REGULAR"==campaignType || "SURVEY"==campaignType || "VIDEO"==campaignType || "LANDINGPAGE"==campaignType){
+                        let urlSuffix = "";
+                        if("REGULAR"==campaignType){
+                            urlSuffix="email";
+                        }else if("SURVEY"==campaignType){
+                            urlSuffix = "survey";
+                        }else if("VIDEO"==campaignType){
+                            urlSuffix = "video";
+                        }else if("LANDINGPAGE"==campaignType){
+                            urlSuffix = "page";
                         }
+                        this.router.navigate(["/home/campaigns/edit/"+urlSuffix]);
+                    }else{
+                        this.router.navigate(["/home/campaigns/edit"]);
                     }
                 }else{
                     this.refService.scrollSmoothToTop();

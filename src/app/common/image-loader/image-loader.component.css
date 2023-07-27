@@ -8,3 +8,7 @@ img.image-preview {
   width: 100%;
   height: auto;
 }
+
+.mxv {
+  max-width: 175px !important;
+}

@@ -133,7 +133,7 @@
                           <!--Email Opened-->
                           <div class="form-group">
                              <label class="control-label col-sm-4 p0">Notify Me When</label>
-                             <div class="col-sm-8">
+                             <div class="col-sm-8 mb10">
                                 <strong id="download-drop">Email Opened</strong>
                                 <switch class="pull-left"  [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                 (statusChange)="setEmailOpened($event)">
@@ -145,7 +145,7 @@
                           <!--Link Opened-->
                           <div class="form-group">
                              <label class="control-label col-sm-4 p0"></label>
-                             <div class="col-sm-8">
+                             <div class="col-sm-8 mb10">
                                 <strong id="download-drop">Link Opened</strong>
                                 <switch class="pull-left"  [status]="campaign.linkOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                 (statusChange)="setLinkOpened($event)">
@@ -156,7 +156,7 @@
                           <!--Video Played-->
                           <div class="form-group" *ngIf="campaignType=='VIDEO'">
                              <label class="control-label col-sm-4 p0"></label>
-                             <div class="col-sm-8">
+                             <div class="col-sm-8 mb10">
                                 <strong id="download-drop">Video Played</strong>
                                 <switch class="pull-left"  [status]="campaign.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                 (statusChange)="setVideoPlayed($event)">
@@ -182,7 +182,7 @@
                     </legend>
                     <div class="row m0"  style="cursor: pointer;">
                        <div class="col-xs-3">
-                          <img src="{{campaign.emailTemplate.subject}}" height="100" alt="">
+                          <img src="{{campaign.emailTemplate.subject}}" class="Selected-email-template-imgcu" alt="">
                        </div>
                        <div class="col-xs-8">
                           <a>
@@ -703,7 +703,7 @@
                  <fieldset class="scheduler-border">
                     <legend class="scheduler-border">Launch Option</legend>
                     <div>
-                       <div class="btn-group btn-group-justified">
+                       <div class="btn-group btn-group-justified width_unset">
                           <ng-container>
                              <label  class="btn btn-primary button-border">
                              <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
@@ -715,7 +715,7 @@
                                 [value]="campaignLaunchOptions[1]" formControlName="scheduleCampaign"
                                 ngDefaultControl style="margin-right:10px " /><span class="text-algn">Schedule</span>
                              </label>
-                             <label class="btn green mBtnAlign button-border">
+                             <label class="btn Btn-Green mBtnAlign button-border">
                              <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
                                 [value]="campaignLaunchOptions[2]" formControlName="scheduleCampaign"
                                 ngDefaultControl style="margin-right:10px" /><span class="text-algn">Save</span>
@@ -757,8 +757,8 @@
                     <div class="portlet-title border-none">
                        <div class="col-xs-12 center-block pt20 text-center">
                         <div class="mb_flex">
-                          <button type="button" class="btn green" [disabled]="!isCampaignDetailsFormValid" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)" style="width:10em">Send Test Email</button>
-                          <button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid" style="width:10em">{{buttonName}}</button>
+                          <button type="button" class="btn Btn-Green" [disabled]="!isCampaignDetailsFormValid" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)" style="width:10em">Send Test Email</button>
+                          <button type="submit" class="btn Btn-Green" [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid" style="width:10em">{{buttonName}}</button>
                        </div>
                      </div>
                     </div>

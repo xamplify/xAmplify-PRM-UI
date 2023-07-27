@@ -29,7 +29,7 @@
     <div class="row">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="col-md-12">
-            <div class="portlet light clearfix mAlertMsg" style="box-shadow: none;">
+            <div class="portlet light clearfix mAlertMsg mb_top0" style="box-shadow: none;">
                 <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
@@ -103,7 +103,7 @@
                                                     {{sortOption.name}}</option>
                                             </select>
                                         </div>
-                                        <div class="portlet-input input-inline input-small" style="width: 164px !important;">
+                                        <div class="portlet-input input-inline input-small" style="width: 163px !important;">
                                             <div class="input-icon right" style="position: relative;right: -5px;">
                                                 <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a template" (keypress)="eventHandler($event.keyCode)">
                                                 <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';searchTemplates()"></button>
@@ -198,7 +198,7 @@
                                         </td>
                                         <td style="width: 14%" class="mActionAlign">
                                             <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet actionAlignWeb actionAlignWeb mPadAction':'actions-block override-actions actionAlignWeb actionAlignWeb mPadAction'">
-                                                <div class="mActionDiv">
+                                                <div class="mActionDiv whitespace_nowrap">
                                                 <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
                                                     <i class="fa fa-plus" aria-hidden="true"></i>
                                                 </a>
@@ -206,7 +206,7 @@
                                                     <i class="fa fa-inbox" aria-hidden="true"></i>
                                                 </a>
                                                 </div>
-                                                <div class="mActionDiv">
+                                                <div class="mActionDiv whitespace_nowrap">
                                                 <a class="mMobileDisable"  (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}" 
                                                 *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || 
                                                     authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing ) && emailTemplate.type!='PARTNER'">
@@ -218,7 +218,7 @@
                                                     <ng-template [ngTemplateOutlet]="sendTestEmailIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                                 <!--XNFR-317-->
                                                 </div>
-                                                <div class="mActionDiv">
+                                                <div class="mActionDiv whitespace_nowrap">
                                                 <a id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)" 
                                                 *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor || 
                                                     authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">

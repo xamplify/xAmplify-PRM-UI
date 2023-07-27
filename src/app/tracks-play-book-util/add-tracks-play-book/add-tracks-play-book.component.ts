@@ -267,6 +267,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     } else if (activeTab == "step-4") {
       this.stepFourTabClass = this.activeTabClass;
     }
+    this.clearTagsResponse();
     this.validateAllSteps();
   }
 
@@ -1603,4 +1604,11 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     document.documentElement.style.setProperty('--form-bg-color', this.form.backgroundColor);
     require("style-loader!../../../assets/admin/layout2/css/themes/form-custom-skin.css");
   } 
+
+  clearTagsResponse() {
+    if (this.folderOrTagsCustomResponse.isVisible) {
+      this.folderOrTagsCustomResponse = new CustomResponse();
+    }
+  }
+
 }

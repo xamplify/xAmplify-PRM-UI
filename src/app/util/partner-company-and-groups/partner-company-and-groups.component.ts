@@ -385,7 +385,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			this.selectedPartnershipIds.push(partnershipId);
 		} else {
 			$('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', false);
-			$('#parnter-companies tr').removeClass("row-selected");
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
 			let currentPageSelectedIds = this.teamMembersPagination.pagedItems.map(function (a) { return a.userId; });
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedTeamMemberIds, currentPageSelectedIds);
@@ -405,6 +404,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			showCancelButton: true,
 			swalConfirmButtonColor: '#54a7e9',
 			swalCancelButtonColor: '#999',
+			allowOutsideClick: false,
 			confirmButtonText: 'Yes, delete it!'
 		}).then(function () {
 			self.clearTabs();

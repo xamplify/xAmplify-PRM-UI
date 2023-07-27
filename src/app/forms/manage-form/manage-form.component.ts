@@ -61,6 +61,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     selectedFormSubmitId = 0;
     detailedResponse: boolean = false;
     mergeTagForGuide:any;
+    partnerView = false;
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -70,6 +71,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.referenceService.renderer = this.renderer;
         this.pagination.vanityUrlFilter =this.vanityUrlService.isVanityURLEnabled();
         this.categoryId = this.route.snapshot.params['categoryId'];
+        this.partnerView = this.router.url.indexOf('/partner')>-1;
         if(this.router.url.indexOf('/manage')>-1){
             this.showFolderView = true;
         }else{

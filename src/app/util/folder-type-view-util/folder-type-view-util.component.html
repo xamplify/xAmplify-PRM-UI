@@ -87,7 +87,7 @@
 					</div>
 					<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 align-itams">
 					<div class="bg-folder">
-					<h4 class="ellipsis align-titletext" title="{{category.name}}">
+					<h4 class="ellipsis align-titletext tab_whitespace" title="{{category.name}}">
 						{{category.name | slice:0:22}} <span
 							*ngIf="category.name?.length>22">...</span>
 					</h4>
@@ -129,7 +129,7 @@
 	</div>
 
 	<!-----------------------Folder List View----------------------------------------->
-	<div class="table-responsive overflow-x-hidden"
+	<div class="table-responsive overflow-x-hidden mscroll_x"
 		*ngIf="folderViewType=='fl'">
 		<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 		<table class='table tgrid table-hover table-sm' id="folder-list-view"

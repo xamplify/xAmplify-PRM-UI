@@ -15,9 +15,9 @@
         <div class="portlet light clearfix tab_folderscroll">
             <div class="portlet-title" style="border-bottom: none">
                 <div class="row">
-                    <div class="colxs-12 col-sm-12 col-md-5">
+                    <div class="col-xs-12 col-sm-12 col-md-5">
                         <div>
-                            <ul class="mix-filter">
+                            <ul class="mix-filter mb_folder_list">
                                 <li class="filter" (click)="filterCampaigns('NONE',0)"
                                 [class.campaign-type-selected]="0 == selectedCampaignTypeIndex">All</li>
                                 <li class="filter" (click)="filterCampaigns('REGULAR',1)"
@@ -53,7 +53,7 @@
                         </div>
                     </div>
 
-                    <div class="page-toolbar col-xs-12 col-sm-12 col-md-7 mltpx">
+                    <div class="page-toolbar col-xs-12 col-sm-12 col-md-7 mltpx mb_gridfolder">
                         <div class="btn-group pull-right">
                             <ng-container class='m10'>
                                 <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
@@ -229,12 +229,16 @@
                                         <br>
                                         <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
                                             <h6 class="view-banner banner-top"
-                                                *ngIf="campaign.launched && campaign.channelCampaign" translate>
-                                                Through Campaign</h6>
+                                                *ngIf="campaign.launched && campaign.channelCampaign">
+                                                <span *ngIf="campaign?.campaignType=='LANDINGPAGE'">Public Page</span>
+                                                <span *ngIf="campaign?.campaignType!='LANDINGPAGE'">Through Campaign</span>
+                                            </h6>
                                             <h6 class="view-banner banner-top"
                                                 *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign"
                                                 translate>
-                                                To Campaign</h6>
+                                                <span *ngIf="campaign?.campaignType=='LANDINGPAGE'">Private Page</span>
+                                                <span *ngIf="campaign?.campaignType!='LANDINGPAGE'">To Campaign</span>
+                                            </h6>
                                         </ng-container>
                                         <h6 class="view-banner"
                                             *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && campaign.publicEventCampaign"
@@ -1039,10 +1043,10 @@
                                 <br><br>
                                 <ng-container *ngIf="!authenticationService?.module?.isMarketingCompany">
                                     <span class="view-banner" *ngIf="campaign.launched && campaign.channelCampaign"
-                                    style="position: relative;top: -3px;">Through Campaign</span>
+                                    style="position: relative;top: -3px;">{{campaign?.campaignType=='LANDINGPAGE' ? 'Public Page':'Through Campaign'}}</span>
                                     <span class="view-banner"
                                         *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign"
-                                        style="position: relative;top: -3px;">To Campaign</span><br>
+                                        style="position: relative;top: -3px;">{{campaign?.campaignType=='LANDINGPAGE' ? 'Private Page':'To Campaign'}}</span><br>
                                 </ng-container>
                                 <!--XNFR-125--->
                                 <ng-container *ngIf="campaign?.oneClickLaunch">

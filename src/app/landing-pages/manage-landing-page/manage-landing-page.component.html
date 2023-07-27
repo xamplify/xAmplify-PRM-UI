@@ -316,7 +316,7 @@
                                                     aria-hidden="true"></i></a>
                                         <a *ngIf="isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Form Count"><i
                                                     class="fa fa-wpforms" aria-hidden="true"></i></a>
-                                        <span class="badge" id="notification-list" translate style="">{{landingPage.formsCount}}</span>
+                                        <span class="badge" id="notification-list">{{landingPage.formsCount}}</span>
                                     </ng-container>
                                     <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
                                         <a *ngIf="landingPage.analyticsCount<=0" data-rel="fancybox-button" id="cursor-not-allowed" data-toggle="tooltip" data-placement="top" title="Analytics">

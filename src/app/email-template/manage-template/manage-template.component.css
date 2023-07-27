@@ -156,7 +156,7 @@ td h6 {
     line-height: 1.8px !important;
   }
   .mPadAction {
-    padding-left: 35px !important;
+    padding-left: 30px !important;
   }
 }
 .icons-width {
@@ -217,4 +217,12 @@ div#htmlContent {
 .whitelabeled-ribbon > span::after {
   border-right: 3px solid #68b4f1;
   border-top: 3px solid #68b4f1;
+}
+@media screen and (max-width: 600px) {
+  .whitespace_nowrap{
+   white-space:nowrap!important;
+  }
+  .mb_top0{
+    margin-top:0px!important;
+  }
 }

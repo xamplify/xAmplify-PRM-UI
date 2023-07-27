@@ -72,3 +72,8 @@
 .search-box-item-click {
   top: 6px !important;
 }
+.filter_btn{
+  border-radius: 3px;
+  margin-top: 13px;
+  padding: 6px 14px;
+}

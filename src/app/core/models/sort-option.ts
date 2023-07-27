@@ -364,6 +364,14 @@ export class SortOption {
 		{ 'name': 'Updated On(DESC)', 'value': 'updatedTime-DESC' }
 	];
 
+	videosDropDownOptions = [
+        { 'name': 'Name(A-Z)', 'value': 'title-ASC' },
+        { 'name': 'Name(Z-A)', 'value': 'title-DESC' },
+        { 'name': 'Uploaded Date(ASC)', 'value': 'uploadedDate-ASC' },
+        { 'name': 'Uploaded Date(DESC)', 'value': 'uploadedDate-DESC' }
+    ];
+
+
 	numberOfItemsPerPage = [
 		{ 'name': '12', 'value': '12' },
 		{ 'name': '24', 'value': '24' },
@@ -412,6 +420,8 @@ export class SortOption {
 	public selectedUserListGroupDropDownOption = this.campaignRecipientsDropDownOptions[0];
 	/*****XNFR-318*****/
 	public selectedCampaignEmailTemplateDropDownOption = this.eventCampaignRecipientsDropDownOptions[this.eventCampaignRecipientsDropDownOptions.length-1];
+
+	public selectedVideoDropDownOption = this.videosDropDownOptions[this.videosDropDownOptions.length-1];
 
 
 }

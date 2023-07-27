@@ -305,7 +305,7 @@
                </div>
                <section [hidden]="!isListView" [ngStyle]="{'margin-top' : !isListView ? '-8px' : '-5px'}"
                *ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
-               <div class="table-responsive pt5"  [ngClass]="{'success': customResponse.responseType == 'SUCCESS'}">
+               <div class="table-responsive mt10"  [ngClass]="{'success': customResponse.responseType == 'SUCCESS'}">
                   <table class='table tgrid' id="partner_contact_list" aria-describedby="">
                      <thead>
                         <tr>
@@ -375,8 +375,8 @@
                               </td>
                               <td>
                                  <h4 class="moreipsis">
-                                    <span data-toggle="tooltip" data-placement="top"  title="{{contactList.name}}">{{contactList.name | slice:0:30}}
-                                    </span><span *ngIf="contactList.name?.length>30">...</span>
+                                    <span data-toggle="tooltip" data-placement="top"  title="{{contactList.name}}">{{contactList.name | slice:0:20}}
+                                    </span><span *ngIf="contactList.name?.length>25">...</span>
                                     </h4>
                                  <h5 class='m0 ellipsis'  translate>
                                     By <span class='f-w-400' data-toggle="tooltip" data-placement="bottom"  title="{{contactList.uploadedBy}}">{{contactList.uploadedBy
@@ -562,7 +562,7 @@
                   </table>
                </div>
             </section>
-            <div class="row mix-grid" [hidden]="isListView" [ngStyle]="{'margin-top' : isListView ? '-5px' : '-8px'}"
+            <div class="row mix-grid" [hidden]="isListView" [ngStyle]="{'margin-top' : isListView ? '-5px' : ''}"
             *ngIf="pagination.pagedItems && !httpRequestLoader.isLoading">
             <div *ngFor="let contactList of pagination.pagedItems" class="col-xs-12 col-sm-4 col-lg-3">
                <div class="grid-box mp-pt-carrdtop media-querryfor-small-dev" id="contactListDiv_{{contactList.id}}">

@@ -492,10 +492,11 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
 
 // getting loading from here
 delayAndNavigate(url:string){
-  this.loadTopNavBar = true;
+  this.authenticationService.module.topNavBarLoader = true;
   let self = this;
-    setTimeout(()=>{                         
+    setTimeout(()=>{     
       self.refService.goToRouter(url);
+      self.authenticationService.module.topNavBarLoader = false;          
 		}, 500);
   }
 //

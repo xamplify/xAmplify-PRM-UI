@@ -14,7 +14,8 @@ import { ThemePropertiesListWrapper } from 'app/dashboard/models/theme-propertie
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { ThemePropertiesDto } from 'app/dashboard/models/theme-properties-dto';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
-import { Validator } from '@angular/forms';
+import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 
 declare var $: any, CKEDITOR: any, swal: any;
 @Component({
@@ -40,7 +41,7 @@ export class CustomSkinComponent implements OnInit {
   isValidButtonBorderColor = true;
   isValidIconColor = true;
   isValidButtonColor = true;
-
+  divLoader = false;
   saveBoolean = false;
   updateBoolean = false;
 
@@ -133,7 +134,7 @@ export class CustomSkinComponent implements OnInit {
   constructor(public regularExpressions: RegularExpressions, public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService,
-    public xtremandLogger: XtremandLogger,
+    public xtremandLogger: XtremandLogger,private formBuilder: FormBuilder,
     public ustilService: UtilService, public router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isLoggedInFromAdminSection = this.ustilService.isLoggedInFromAdminPortal();
@@ -295,21 +296,21 @@ export class CustomSkinComponent implements OnInit {
       this.mainContentForm.textColor = colorCode; this.isValidTextColor = true;
     }
     // for btn customization
-    //  else if(type === "mainButtonBgColor"){
-    //   this.mainContentForm.buttonColor = colorCode; this.isValidTextColor = true;
-    // } else if(type === "mainButtonBorderColor"){
-    //   this.mainContentForm.buttonPrimaryBorderColor = colorCode; this.isValidTextColor = true;
-    // } else if(type ==="mainButtonValueColor"){
-    //   this.mainContentForm.buttonValueColor= colorCode; this.isValidTextColor = true;
-    // } else if(type === "mainButtonIconColor"){
-    //   this.mainContentForm.iconColor= colorCode; this.isValidTextColor = true;
-    // } else if(type === "secondaryButtonBgColor"){
-    //   this.mainContentForm.buttonSecondaryColor= colorCode; this.isValidTextColor = true;
-    // } else if(type === "secondaryButtonBorderColor"){
-    //   this.mainContentForm.buttonSecondaryBorderColor= colorCode; this.isValidTextColor = true;
-    // } else if(type === "secondaryButtonTextColor"){
-    //   this.mainContentForm.buttonSecondaryTextColor= colorCode; this.isValidTextColor = true;
-    // }
+     else if(type === "mainButtonBgColor"){
+      this.mainContentForm.buttonColor = colorCode; this.isValidTextColor = true;
+    } else if(type === "mainButtonBorderColor"){
+      this.mainContentForm.buttonPrimaryBorderColor = colorCode; this.isValidTextColor = true;
+    } else if(type ==="mainButtonValueColor"){
+      this.mainContentForm.buttonValueColor= colorCode; this.isValidTextColor = true;
+    } else if(type === "mainButtonIconColor"){
+      this.mainContentForm.iconColor= colorCode; this.isValidTextColor = true;
+    } else if(type === "secondaryButtonBgColor"){
+      this.mainContentForm.buttonSecondaryColor= colorCode; this.isValidTextColor = true;
+    } else if(type === "secondaryButtonBorderColor"){
+      this.mainContentForm.buttonSecondaryBorderColor= colorCode; this.isValidTextColor = true;
+    } else if(type === "secondaryButtonTextColor"){
+      this.mainContentForm.buttonSecondaryTextColor= colorCode; this.isValidTextColor = true;
+    }
     /*********Main_content********************/
     /*******Left Menu************ */
     else if (type === "leftBgColor") {
@@ -437,21 +438,21 @@ export class CustomSkinComponent implements OnInit {
       this.mainContentForm.textColor = ""; this.isValidTextColor = true;
     } 
     // for btn customization
-    // else if(type === "mainButtonBgColor"){
-    //   this.mainContentForm.buttonColor = ""; this.isValidTextColor = true;
-    // } else if(type === "mainButtonBorderColor"){
-    //   this.mainContentForm.buttonPrimaryBorderColor = ""; this.isValidTextColor = true;
-    // } else if(type === "mainButtonValueColor"){
-    //   this.mainContentForm.buttonValueColor = ""; this.isValidTextColor = true;
-    // } else if(type === "mainButtonIconColor"){
-    //   this.mainContentForm.iconColor = ""; this.isValidTextColor = true;
-    // } else if(type === "secondaryButtonBgColor"){
-    //   this.mainContentForm.buttonSecondaryColor=""; this.isValidTextColor = true;
-    // } else if(type === "secondaryButtonBorderColor"){
-    //   this.mainContentForm.buttonSecondaryBorderColor=""; this.isValidTextColor = true;
-    // } else if(type === "secondaryButtonTextColor"){
-    //   this.mainContentForm.buttonSecondaryTextColor=""; this.isValidTextColor = true;
-    // }
+    else if(type === "mainButtonBgColor"){
+      this.mainContentForm.buttonColor = ""; this.isValidTextColor = true;
+    } else if(type === "mainButtonBorderColor"){
+      this.mainContentForm.buttonPrimaryBorderColor = ""; this.isValidTextColor = true;
+    } else if(type === "mainButtonValueColor"){
+      this.mainContentForm.buttonValueColor = ""; this.isValidTextColor = true;
+    } else if(type === "mainButtonIconColor"){
+      this.mainContentForm.iconColor = ""; this.isValidTextColor = true;
+    } else if(type === "secondaryButtonBgColor"){
+      this.mainContentForm.buttonSecondaryColor=""; this.isValidTextColor = true;
+    } else if(type === "secondaryButtonBorderColor"){
+      this.mainContentForm.buttonSecondaryBorderColor=""; this.isValidTextColor = true;
+    } else if(type === "secondaryButtonTextColor"){
+      this.mainContentForm.buttonSecondaryTextColor=""; this.isValidTextColor = true;
+    }
     /*********Main_content********************/
     /*******Left Menu************ */
     else if (type === "leftBgColor") {
@@ -526,34 +527,34 @@ export class CustomSkinComponent implements OnInit {
         this.mainContentForm.textColor = event; this.isValidTextColor = true;
       }
       // for btn customization
-      //  else if(type === "mainButtonBgColor"){
-      //   this.mainButtonBgColor = event;
-      //   document.documentElement.style.setProperty('--button-primary-bg-color', this.mainContentForm.buttonColor);
-      //   this.mainContentForm.buttonColor = event; this.isValidTextColor = true;
-      // } else if(type === "mainButtonBorderColor"){
-      //   this.mainButtonBorderColor = event;
-      //   document.documentElement.style.setProperty('--button-primary-border-color', this.mainContentForm.buttonPrimaryBorderColor);
-      //   this.mainContentForm.buttonPrimaryBorderColor = event; this.isValidTextColor = true;
-      // } else if(type === "mainButtonValueColor"){
-      //   this.mainButtonValueColor = event;
-      //   document.documentElement.style.setProperty('--button-primary-text-color', this.mainContentForm.buttonValueColor);
-      //   this.mainContentForm.buttonValueColor = event; this.isValidTextColor = true;
-      // } else if(type === "mainButtonIconColor"){
-      //   this.mainButtonIconColor =  event;
-      //   this.mainContentForm.iconColor = event; this.isValidTextColor = true;
-      // } else if(type === "secondaryButtonBgColor"){
-      //   this.secondaryButtonBgColor= event;
-      //   document.documentElement.style.setProperty('--button-secondary-bg-color', this.mainContentForm.buttonSecondaryColor);
-      //   this.mainContentForm.buttonSecondaryColor = event; this.isValidTextColor = true;
-      // } else if(type === "secondaryButtonBorderColor"){
-      //   this.secondaryButtonBorderColor = event;
-      //   document.documentElement.style.setProperty('--button-secondary-border-color', this.mainContentForm.buttonSecondaryBorderColor);
-      //   this.mainContentForm.buttonSecondaryBorderColor = event; this.isValidTextColor = true;
-      // } else if(type === "secondaryButtonTextColor"){
-      //   this.secondaryButtonTextColor = event;
-      //   document.documentElement.style.setProperty('--button-secondary-text-color', this.mainContentForm.buttonSecondaryTextColor);
-      //   this.mainContentForm.buttonSecondaryTextColor = event; this.isValidTextColor = true;
-      // }
+       else if(type === "mainButtonBgColor"){
+        this.mainButtonBgColor = event;
+        document.documentElement.style.setProperty('--button-primary-bg-color', this.mainContentForm.buttonColor);
+        this.mainContentForm.buttonColor = event; this.isValidTextColor = true;
+      } else if(type === "mainButtonBorderColor"){
+        this.mainButtonBorderColor = event;
+        document.documentElement.style.setProperty('--button-primary-border-color', this.mainContentForm.buttonPrimaryBorderColor);
+        this.mainContentForm.buttonPrimaryBorderColor = event; this.isValidTextColor = true;
+      } else if(type === "mainButtonValueColor"){
+        this.mainButtonValueColor = event;
+        document.documentElement.style.setProperty('--button-primary-text-color', this.mainContentForm.buttonValueColor);
+        this.mainContentForm.buttonValueColor = event; this.isValidTextColor = true;
+      } else if(type === "mainButtonIconColor"){
+        this.mainButtonIconColor =  event;
+        this.mainContentForm.iconColor = event; this.isValidTextColor = true;
+      } else if(type === "secondaryButtonBgColor"){
+        this.secondaryButtonBgColor= event;
+        document.documentElement.style.setProperty('--button-secondary-bg-color', this.mainContentForm.buttonSecondaryColor);
+        this.mainContentForm.buttonSecondaryColor = event; this.isValidTextColor = true;
+      } else if(type === "secondaryButtonBorderColor"){
+        this.secondaryButtonBorderColor = event;
+        document.documentElement.style.setProperty('--button-secondary-border-color', this.mainContentForm.buttonSecondaryBorderColor);
+        this.mainContentForm.buttonSecondaryBorderColor = event; this.isValidTextColor = true;
+      } else if(type === "secondaryButtonTextColor"){
+        this.secondaryButtonTextColor = event;
+        document.documentElement.style.setProperty('--button-secondary-text-color', this.mainContentForm.buttonSecondaryTextColor);
+        this.mainContentForm.buttonSecondaryTextColor = event; this.isValidTextColor = true;
+      }
       /*********Main_content********************/
       /*******Left Menu************ */
       else if (type === "leftBgColor") {
@@ -629,13 +630,11 @@ export class CustomSkinComponent implements OnInit {
   // gives default values with id
   getDefaultSkin(id: number) {
    this.ngxloading = true;
+   this.divLoader = true;
     this.dashboardService.getPropertiesById(id)
       .subscribe(
         (data: any) => {
-          this.ngxloading = false;
-
           let skinMAp = data.data;
-
           this.headerForm = skinMAp.TOP_NAVIGATION_BAR;
           this.headerForm.createdBy = this.loggedInUserId;
           this.leftSideForm = skinMAp.LEFT_SIDE_MENU;
@@ -665,14 +664,15 @@ export class CustomSkinComponent implements OnInit {
           this.mainBorderColor = this.mainContentForm.buttonBorderColor;
           this.mainTextColor = this.mainContentForm.textColor;
           // for btn customization
-          // this.mainButtonBgColor = this.mainContentForm.buttonColor;
-          // this.mainButtonBorderColor = this.mainContentForm.buttonPrimaryBorderColor;
-          // this.mainButtonValueColor = this.mainContentForm.buttonValueColor;
-          // this.mainButtonIconColor = this.mainContentForm.iconColor;
-          // this.secondaryButtonBgColor = this.mainContentForm.buttonSecondaryColor;
-          // this.secondaryButtonBorderColor = this.mainContentForm.buttonSecondaryBorderColor;
-          // this.secondaryButtonTextColor = this.mainContentForm.buttonSecondaryTextColor;
+          this.mainButtonBgColor = this.mainContentForm.buttonColor;
+          this.mainButtonBorderColor = this.mainContentForm.buttonPrimaryBorderColor;
+          this.mainButtonValueColor = this.mainContentForm.buttonValueColor;
+          this.mainButtonIconColor = this.mainContentForm.iconColor;
+          this.secondaryButtonBgColor = this.mainContentForm.buttonSecondaryColor;
+          this.secondaryButtonBorderColor = this.mainContentForm.buttonSecondaryBorderColor;
+          this.secondaryButtonTextColor = this.mainContentForm.buttonSecondaryTextColor;
           this.ngxloading = false;
+          this.divLoader = false;
         }, error => {
           this.ngxloading = false;
           this.message = this.properties.serverErrorMessage;

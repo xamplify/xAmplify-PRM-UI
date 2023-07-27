@@ -175,7 +175,7 @@
                                                 <a
                                                     [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
                                                     (click)="settingSocialNetworkOpenModal('Salesforce')"> <i
-                                                    id="SgearIcon" class="fa fa-cog cloud-css cloud-items"
+                                                    id="SgearIcon" class="fa fa-cog cloud-css cloud-items gear_mbv"
                                                     aria-hidden="true"></i>
                                                 </a>
                                             </div>
@@ -208,7 +208,7 @@
                                                 <a
                                                     [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
                                                     (click)="settingSocialNetworkOpenModal('Google')"> <i
-                                                    id="GgearIcon" class="fa fa-cog cloud-css cloud-items"
+                                                    id="GgearIcon" class="fa fa-cog cloud-css cloud-items gear_mbv"
                                                     aria-hidden="true"></i>
                                                 </a>
                                             </div>
@@ -243,7 +243,7 @@
                                                 <a
                                                     [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
                                                     (click)="settingSocialNetworkOpenModal('Zoho')"> <i
-                                                    id="ZgearIcon" class="fa fa-cog cloud-css cloud-items"
+                                                    id="ZgearIcon" class="fa fa-cog cloud-css cloud-items gear_mbv"
                                                     aria-hidden="true"></i>
                                                 </a>
                                             </div>
@@ -445,7 +445,7 @@
                         <ng-template *ngIf="referenceService.isMobileScreenSize()" [ngTemplateOutlet]="actionsButton"></ng-template>
                
             </div>
-            <div class="col-xs-12 p0"
+            <div class="col-xs-12 p0 mb_10"
                 *ngIf="referenceService.isMobileScreenSize()">
                 <input type="text" [(ngModel)]="searchKey"
                     [ngModelOptions]="{standalone: true}" class="form-control"
@@ -1172,7 +1172,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                            <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                                 (click)="hideZohoModal()" translate>Close</button>
                             <button type="button" class="btn btn-primary"
                                 (click)="zohoContacts()" translate>Authorize</button>
@@ -1222,7 +1222,7 @@
                             </form>
                         </div>
                         <div class="modal-footer" style="border-top:0px !important">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                            <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                                 (click)="hideZohoAuthorisedPopup()" translate>Close</button>
                             <button type="button" class="btn btn-primary"
                                 (click)="checkingZohoPopupValues()" translate>Submit</button>
@@ -1281,7 +1281,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                            <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                                 translate>Close</button>
                             <button type="button" id="salesforce_save_button"
                                 class="btn btn-primary" (click)="checkingPopupValues()"
@@ -1328,7 +1328,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                            <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                                 translate>Close</button>
                         </div>
                     </div>
@@ -1394,7 +1394,7 @@
                     </div>
                 </div>
                 <div class="modal-footer" style="border-top:none !important;">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"
+                    <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                         translate>Close</button>
                     <button type="button" id="salesforce_save_button"
                         class="btn btn-primary" (click)="checkingPopupValues()"
@@ -1479,7 +1479,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal"
+                        <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                             (click)="hideMarketoModal()" translate>Close</button>
                         <button type="button" class="btn btn-primary"
                             [disabled]="!isMarketoModelFormValid || !marketoClientId || !marketoSecretId || !marketoInstance"
@@ -1592,7 +1592,7 @@
                     </div>
                 </div>
                 <div class="modal-footer" style="border-top:none !important">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"
+                    <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                         (click)="hideHuspotModal()" translate>Close</button>
                     <button type="button" id="hubspot_save_button"
                         class="btn btn-primary" (click)="getHubSpotData()"

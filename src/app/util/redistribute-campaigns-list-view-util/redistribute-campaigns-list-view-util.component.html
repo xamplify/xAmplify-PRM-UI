@@ -48,7 +48,7 @@
               </div>
               <div class="col-xs-6 col-sm-4 col-md-4 p0">
                 <div class="portlet-input input-inline input-small">
-                  <div class="input-icon right" style="position: relative;right: -11px;">
+                  <div class="input-icon mbsearch" style="position: relative;right: -11px;">
                     <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search..." (keypress)="eventHandler($event.keyCode)">
                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
                     <button type="submit" class="search-box-item-click" (click)="searchCampaigns()"><i class="fa fa-search"></i></button>
@@ -314,7 +314,7 @@
         <app-modal-popup-loader *ngIf="loadingEmailTemplate"></app-modal-popup-loader>
       </div>
       <div class="modal-footer">
-        <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+        <a href="javascript:void(0)" data-dismiss="modal" class="btn Btn-Gray" style="float: right">Close</a>
       </div>
     </div>
   </div>
@@ -344,7 +344,7 @@
         <app-landing-page-loader *ngIf="socialAccountsLoader" [maxBoxLength]=2></app-landing-page-loader>
       </div>
       <div class="modal-footer">
-        <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+        <a href="javascript:void(0)" data-dismiss="modal" class="btn Btn-Gray" style="float: right">Close</a>
       </div>
     </div>
   </div>

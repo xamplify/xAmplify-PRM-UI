@@ -146,7 +146,14 @@ export class VideoUtilService {
         $('.video-js .vjs-volume-panel').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.vjs-VR-control vjs-control vjs-button ').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-playback-rate').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        this.setDefaultPlayBackRateText();
     }
+
+    setDefaultPlayBackRateText(){
+        $('.vjs-playback-rate-value').text('1x');
+      }
+
     modalWindowPopUp(url, width, height) {
         let leftPosition, topPosition;
         leftPosition = (window.screen.width / 2) - ((width / 2) + 10);

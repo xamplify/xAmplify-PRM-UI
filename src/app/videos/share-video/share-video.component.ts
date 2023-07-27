@@ -235,7 +235,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
              "autoplay": false,
              "preload": "auto",
              "customControlsOnMobile": true,
-             "nativeControlsForTouch": true
+             "nativeControlsForTouch": true,
+             playbackRates: [0.5, 1, 1.5, 2]
         }).ready(function () {
             this.hotkeys({
                 volumeStep: 0.1, seekStep: 5, enableMute: true,
@@ -490,6 +491,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 "controls": true,
                 "autoplay": false,
                 "preload": "auto",
+                 playbackRates: [0.5, 1, 1.5, 2],
+                
                 html5: {
                     hls: {
                         overrideNative: overrideNativeValue

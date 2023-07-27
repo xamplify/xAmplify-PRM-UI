@@ -44,7 +44,7 @@
 .ffolder span {
     font-size: 12px;
     border-radius: 15px;
-    white-space: nowrap
+    /* white-space: nowrap */
 }
 
 .ffolder.gray {
