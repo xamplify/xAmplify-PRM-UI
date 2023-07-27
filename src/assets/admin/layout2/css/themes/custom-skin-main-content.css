@@ -1601,3 +1601,14 @@ p.addhrtosvg {
   border: 1px solid var(--border-color) !important;
   background-color: var(--page-content) !important;
 }
+
+ul.nav.nav-tabs.tabsactievcolorinu li.active a {
+  color: var(---text-color) !important;
+}
+ul.nav.nav-tabs.tabsactievcolorinu li a {
+  color: var(---text-color) !important;
+}
+
+.nav.nav-tabs.tabsactievcolorinu > li.active > a, .nav.nav-tabs.tabsactievcolorinu > li.active > a:hover, .nav.nav-tabs.tabsactievcolorinu > li.active > a:focus{
+  color: var(---text-color) !important;
+}
