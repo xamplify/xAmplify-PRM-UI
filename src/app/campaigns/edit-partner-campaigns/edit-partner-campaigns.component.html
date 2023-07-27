@@ -715,7 +715,7 @@
                                 [value]="campaignLaunchOptions[1]" formControlName="scheduleCampaign"
                                 ngDefaultControl style="margin-right:10px " /><span class="text-algn">Schedule</span>
                              </label>
-                             <label class="btn green mBtnAlign button-border">
+                             <label class="btn Btn-Green mBtnAlign button-border">
                              <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
                                 [value]="campaignLaunchOptions[2]" formControlName="scheduleCampaign"
                                 ngDefaultControl style="margin-right:10px" /><span class="text-algn">Save</span>
@@ -757,8 +757,8 @@
                     <div class="portlet-title border-none">
                        <div class="col-xs-12 center-block pt20 text-center">
                         <div class="mb_flex">
-                          <button type="button" class="btn green" [disabled]="!isCampaignDetailsFormValid" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)" style="width:10em">Send Test Email</button>
-                          <button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid" style="width:10em">{{buttonName}}</button>
+                          <button type="button" class="btn Btn-Green" [disabled]="!isCampaignDetailsFormValid" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)" style="width:10em">Send Test Email</button>
+                          <button type="submit" class="btn Btn-Green" [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid" style="width:10em">{{buttonName}}</button>
                        </div>
                      </div>
                     </div>
