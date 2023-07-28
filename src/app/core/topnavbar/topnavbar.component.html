@@ -68,7 +68,7 @@
                       <i class="fa fa-line-chart" [ngClass]="authenticationService?.isTop?'customskin-icon':''"  data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
                    </div>
                 </li>
-                <li class="btnShare"  class="topnav-button-css" *ngIf="authenticationService?.module?.hasSocialStatusRole && !isLoggedInAsPartner">
+                <li class="btnShare"  class="topnav-button-css" *ngIf="authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
                    <button class="btn btn custom"  [ngClass]="authenticationService?.isTop?'customskin':''" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
                    <span class="hidden-xs"  translate>Update Status</span>
                    <i class="fa fa-share" [ngClass]="authenticationService?.isTop?'customskin-icon':''"  button data-toggle="tooltip" aria-hidden="true"></i>

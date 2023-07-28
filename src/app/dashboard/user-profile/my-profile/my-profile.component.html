@@ -2031,7 +2031,7 @@
                 <app-dashboard-loader *ngIf="addCategoryLoader.isLoading"></app-dashboard-loader>
                 <ng-container *ngIf="!addCategoryLoader.isLoading">
                     <div class="form-group" id="categoryNameDiv">
-                        <label>Name <font class="required">*</font></label>
+                        <label>Name <span class="required">*</span></label>
                         <input type="text" class="form-control" [(ngModel)]="category.name" id="categoryName" placeholder="Enter Name" maxlength="55" (input)="validateCategoryNames(category.name)" (keydown)="sumbitOnEnter($event)">
                         <span *ngIf="!category.isValid" class="required">{{categoryNameErrorMessage}}</span>
                     </div>
