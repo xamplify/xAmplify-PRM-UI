@@ -25,6 +25,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     public filteredEmailTemplates: Array<EmailTemplate> = new Array<EmailTemplate>();
     public templateSearchKey: string = "";
     templateFilter: any = { name: '' };
+    filteredCount = { count: 0 };
     selectedTemplateTypeIndex: number = 0;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 
@@ -91,6 +92,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                     this.isMarketingCompany = response.data.isMarketingCompany;
                     this.allEmailTemplates = emailTemplates;
                     this.filteredEmailTemplates = emailTemplates;
+                    this.filteredCount['count'] = this.allEmailTemplates.length;
                     this.refService.loading(this.httpRequestLoader, false);
                 },
                 (error: string) => {
