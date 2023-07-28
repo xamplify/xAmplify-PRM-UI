@@ -507,9 +507,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 			this.getUserByUserName(this.currentUser.userName);
 			this.cropperSettings();
-			
-			// this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
 			this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
 			console.log(this.videoUtilService.videoTempDefaultSettings);
 			this.loggedInUserId = this.authenticationService.getUserId();
@@ -534,7 +531,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			if (this.isEmpty(this.userData.roles) || !this.userData.profileImagePath) {
 				this.router.navigateByUrl(this.referenceService.homeRouter);
 			} else {
-				console.log(this.userData);
 				this.parentModel.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
 				if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
 					this.userProfileImage = this.userData.profileImagePath;
@@ -569,7 +565,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.getModulesDisplayDefaultView();
 			this.validateUpdatePasswordForm();
 			this.validateUpdateUserProfileForm();
-			this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
 			this.isOnlyPartner = this.authenticationService.isOnlyPartner();
 			this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
 			if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length > 1 && this.hasCompany)) {
@@ -711,6 +706,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				.subscribe(
 					data => {
 						this.userData = data;
+						/***XBI-1673****/
+						this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
+						/***XBI-1673****/
 						this.authenticationService.userProfile = data;
 					},
 					error => { console.log(error); this.router.navigate(['/su']) },

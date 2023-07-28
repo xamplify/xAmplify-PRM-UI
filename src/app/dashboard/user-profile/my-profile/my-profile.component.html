@@ -48,7 +48,9 @@
                     </div>
                     <div class="profile-usertitle">
                         <div class="profile-usertitle-name" style="overflow: auto">
-                            <span style="font-size: 17px !important;" [title]="userData.displayName">{{userData.displayName | slice:0:18}}</span><span *ngIf="userData.displayName?.length>18">...</span>
+                            <span style="font-size: 17px !important;"
+                             [title]="userData?.displayName">{{userData?.displayName | slice:0:18}}</span>
+                             <span *ngIf="userData?.displayName?.length>18">...</span>
                             <h5>{{userData.emailId}}</h5>
                         </div>
                         <div class="profile-usertitle-job">
