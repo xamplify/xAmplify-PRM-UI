@@ -25,13 +25,13 @@
                      <ng-container *ngIf="!disabled">
                         <span *ngIf="showRegisterLeadButton && campaignType!='LANDINGPAGE' && campaignType!='SOCIAL'">
                         <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
-                           class="btn btn-success">{{dealButtonText}}</button>
+                           class="btn Btn-Green">{{dealButtonText}}</button>
                         </span>
                      </ng-container>
                      <ng-container *ngIf="disabled">
                         <button title="This campaign has been deleted by your vendor.You can't register a lead"
                            style="position: absolute; left: 350px; margin-top: 7px;cursor: not-allowed;background: darkgray;"
-                           class="btn btn-success">{{dealButtonText}}</button>
+                           class="btn Btn-Green">{{dealButtonText}}</button>
                      </ng-container>
                      <h5 class="f-w-600 mt10 mb0">
                         <span title="{{userLevelCampaignAnalyticsDTO?.fullName}}" *ngIf="userLevelCampaignAnalyticsDTO?.fullName">{{userLevelCampaignAnalyticsDTO?.fullName | slice:0:20}}</span>
