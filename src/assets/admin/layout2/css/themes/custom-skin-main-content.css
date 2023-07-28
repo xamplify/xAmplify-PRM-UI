@@ -1612,3 +1612,15 @@ ul.nav.nav-tabs.tabsactievcolorinu li a {
 .nav.nav-tabs.tabsactievcolorinu > li.active > a, .nav.nav-tabs.tabsactievcolorinu > li.active > a:hover, .nav.nav-tabs.tabsactievcolorinu > li.active > a:focus{
   color: var(---text-color) !important;
 }
+
+/* sweet alert btn */
+button.swal2-confirm.styled {
+  background-color: var(--btn-primary-bg-color) !important;
+  color: var(--btn-primary-text-color) !important;
+  border: 1px solid var(--btn-primary-border-color) !important;
+}
+button.swal2-confirm.styled:hover {
+  background-color: var(--btn-primary-bg-color) !important;
+  color: var(--btn-primary-text-color) !important;
+  border: 1px solid var(--btn-primary-border-color) !important;
+}
