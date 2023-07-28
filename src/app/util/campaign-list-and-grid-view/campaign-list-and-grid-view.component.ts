@@ -1207,10 +1207,8 @@ this.editButtonClicked = false;
 
 callFolderListViewEmitter(){
     if(this.folderListView){
-        alert("Eimmter");
         this.exportObject['categoryId'] = this.categoryId;
         this.exportObject['itemsCount'] = this.pagination.totalRecords;	
-        alert(this.pagination.totalRecords);
         this.updatedItemsCountEmitter.emit(this.exportObject);
     }
  }

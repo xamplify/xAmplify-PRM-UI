@@ -335,6 +335,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
                 this.emailTemplatesPagination.editCampaign = true;
                 this.emailTemplatesPagination.selectedEmailTempalteId = selectedTemplateId;
                 this.emailTemplateHrefLinks = this.referenceService.getAnchorTagsFromEmailTemplate(this.emailTemplate.body, this.emailTemplateHrefLinks);
+                this.sendTestEmailToolTip = this.properties.sendTestEmail;
             }
 
              /*****************Landing Page**************************/
@@ -2369,5 +2370,10 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
             return false;
         }
         
+    }
+
+    /***XBI-1554***/
+    toggleOpenLinksInNewTab(){
+        this.beeContainerInput['openLinksInNewTab'] = !this.beeContainerInput['openLinksInNewTab'];
     }
 }
