@@ -2371,4 +2371,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
         }
         
     }
+
+    /***XBI-1554***/
+    toggleOpenLinksInNewTab(){
+        this.beeContainerInput['openLinksInNewTab'] = !this.beeContainerInput['openLinksInNewTab'];
+    }
 }
