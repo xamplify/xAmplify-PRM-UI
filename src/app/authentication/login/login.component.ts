@@ -108,48 +108,50 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   loginWithUser(userName: string) {
-    const authorization = 'Basic ' + btoa('my-trusted-client:');
-    const body = new URLSearchParams();
-      body.set('username', userName);
-      body.set('password',  this.model.password);
-      body.set('grant_type', 'password');
-    this.authenticationService.login(authorization, body.toString(), userName).subscribe(result => {
-      if (localStorage.getItem('currentUser')) {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        localStorage.removeItem('isLogout');
-        this.redirectTo(currentUser);
-      } else {
-        this.loading = false;
-        this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-      }
-    },
-      (error: any) => {
-        try {
+    if(userName!=undefined){
+      const authorization = 'Basic ' + btoa('my-trusted-client:');
+      const body = new URLSearchParams();
+        body.set('username', userName);
+        body.set('password',  this.model.password);
+        body.set('grant_type', 'password');
+      this.authenticationService.login(authorization, body.toString(), userName).subscribe(result => {
+        if (localStorage.getItem('currentUser')) {
+          const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+          localStorage.removeItem('isLogout');
+          this.redirectTo(currentUser);
+        } else {
           this.loading = false;
-          const body = error['_body'];
-          if (body !== "") {
-            const response = JSON.parse(body);
-            if (response.error_description === "Bad credentials" || response.error_description === "Username/password are wrong") {
-              this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-            } else if (response.error_description === "User is disabled") {
-              //this.resendActiveMail = true;
-              // this.customResponse =  new CustomResponse();
-              this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR_NEW);
-            } else if (response.error_description === this.properties.OTHER_EMAIL_ISSUE) {
-              this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-            } else if (response.error_description === this.properties.ERROR_EMAIL_ADDRESS) {
-              this.setCustomeResponse("ERROR", this.properties.WRONG_EMAIL_ADDRESS);
-            }
-          }
-          else {
-            this.resendActiveMail = false;
-            this.setCustomeResponse("ERROR", error);
-            this.xtremandLogger.error("error:" + error)
-          }
-        } catch (err) {
-          if (error.status === 0) { this.setCustomeResponse("ERROR", 'Error Disconnected! Service unavailable, Please check you internet connection'); }
+          this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
         }
-      });
+      },
+        (error: any) => {
+          try {
+            this.loading = false;
+            const body = error['_body'];
+            if (body !== "") {
+              const response = JSON.parse(body);
+              if (response.error_description === "Bad credentials" || response.error_description === "Username/password are wrong") {
+                this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
+              } else if (response.error_description === "User is disabled") {
+                //this.resendActiveMail = true;
+                // this.customResponse =  new CustomResponse();
+                this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR_NEW);
+              } else if (response.error_description === this.properties.OTHER_EMAIL_ISSUE) {
+                this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
+              } else if (response.error_description === this.properties.ERROR_EMAIL_ADDRESS) {
+                this.setCustomeResponse("ERROR", this.properties.WRONG_EMAIL_ADDRESS);
+              }
+            }
+            else {
+              this.resendActiveMail = false;
+              this.setCustomeResponse("ERROR", error);
+              this.xtremandLogger.error("error:" + error)
+            }
+          } catch (err) {
+            if (error.status === 0) { this.setCustomeResponse("ERROR", 'Error Disconnected! Service unavailable, Please check you internet connection'); }
+          }
+        });
+    }
     return false;
   }
 
@@ -372,9 +374,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   loginSSOUser(userName: string, client_id: string, client_secret: string) {
+   if(userName!=undefined){
     const authorization = 'Basic' + btoa(client_id + ':');
     const body = 'client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials';
-
+    
     this.authenticationService.login(authorization, body, userName)
       .subscribe(result => {
         console.log("result: " + this.authenticationService.user);
@@ -394,6 +397,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         () => console.log('login() Complete'));
+   }
         return false;
   }
 
