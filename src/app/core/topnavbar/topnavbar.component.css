@@ -15,7 +15,7 @@ a.disabled {
   > li.dropdown-user
   .dropdown-toggle
   > img {
-  margin-top: -8px !important;
+  margin-top: -7px !important;
 }
 @media (max-width: 767px) {
   .page-header.navbar
@@ -186,9 +186,7 @@ label {
   margin-top: 17px;
   margin-right: 15px;
 }
-
 /* 19/06/2023 */
-
 a.dropdown-toggle.circlebg-color-bell-v {
   border-radius: 50%;
   position: relative;
@@ -287,7 +285,6 @@ a.dropdown-toggle.circlebg-none-v:hover {
   > i {
   color: #333;
 }
-
 /* .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle.circlebg-none-v > .username {
   color: #008fd5;
 } */
@@ -298,7 +295,6 @@ a.dropdown-toggle.circlebg-none-v:hover {
 /* .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle > .username:hover {
   color: #ffffff;
 } */
-
 /* tablet */
 @media (min-width: 810px) and (max-width: 850px) {
   .page-header.navbar .top-menu {
