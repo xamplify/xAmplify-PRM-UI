@@ -123,11 +123,7 @@ export class SelectCampaignTypeComponent implements OnInit{
                    if(data.access){
                     this.refService.selectedCampaignType = type;
                     if("regular"==type || "survey"==type || "video"==type ||"landingPage"==type){
-                      if(this.refService.isProduction()){
-                        this.router.navigate(["/home/campaigns/create"]);
-                      }else{
-                        this.goToAddCampaign(type);
-                      }
+                      this.goToAddCampaign(type);
                     }else if(type=="eventCampaign"){
                         this.router.navigate(["/home/campaigns/event"]); 
                       }else if(type=="social"){
