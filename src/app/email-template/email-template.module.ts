@@ -17,6 +17,7 @@ import { UploadMarketoEmailTemplateComponent } from './upload-marketo-email-temp
 import { UpdateMarketoTemplateComponent } from './update-marketo-template/update-marketo-template.component';
 import { SharedContactsModule } from 'app/shared/shared-contacts.module';
 import {CkEditorUploadComponentModule} from '../ck-editor-upload-component/ck-editor-upload-component.module';
+import { SelectEmailTemplatesFilterPipe } from './select-email-templates-filter.pipe';
 
 
 
@@ -25,6 +26,6 @@ import {CkEditorUploadComponentModule} from '../ck-editor-upload-component/ck-ed
 @NgModule({
   imports: [ CommonModule,SharedModule,EmailTemplateRoutingModule,CKEditorModule, ErrorPagesModule,CommonComponentModule,SharedContactsModule,CkEditorUploadComponentModule ],
   declarations: [EmailEditorComponent, CreateTemplateComponent,ManageTemplateComponent, SelectTemplateComponent,
-                 UpdateTemplateComponent, UploadEmailTemplateComponent, HelpComponent, UploadMarketoEmailTemplateComponent, UpdateMarketoTemplateComponent],
+                 UpdateTemplateComponent, UploadEmailTemplateComponent, HelpComponent, UploadMarketoEmailTemplateComponent, UpdateMarketoTemplateComponent, SelectEmailTemplatesFilterPipe],
 })
 export class EmailTemplateModule { }
