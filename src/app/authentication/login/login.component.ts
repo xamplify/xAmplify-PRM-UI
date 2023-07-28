@@ -89,6 +89,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.vanityURLService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName, userName).subscribe(result => {
               if (result.message === "success") {
                 this.loginWithUser(userName);
+                this.loading = false;
               } else {
                 this.loading = false;
                 this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
@@ -108,7 +109,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   loginWithUser(userName: string) {
-    if(userName!=undefined){
+    if(userName!=undefined && userName!="undefined"){
       const authorization = 'Basic ' + btoa('my-trusted-client:');
       const body = new URLSearchParams();
         body.set('username', userName);
@@ -362,6 +363,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.vanityURLService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName, this.referenceService.userName).subscribe(result => {
         if (result.message === "success") {
           this.loginSSOUser(this.referenceService.userName, client_id, client_secret);
+          this.loading = false;
         } else {
           this.loading = false;
           this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
@@ -374,13 +376,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   loginSSOUser(userName: string, client_id: string, client_secret: string) {
-   if(userName!=undefined){
+   if(userName!=undefined && userName!="undefined"){
     const authorization = 'Basic' + btoa(client_id + ':');
     const body = 'client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials';
     
     this.authenticationService.login(authorization, body, userName)
       .subscribe(result => {
-        console.log("result: " + this.authenticationService.user);
         if (this.authenticationService.user) {
           const currentUser = JSON.parse(localStorage.getItem('currentUser'));
           if (currentUser.hasCompany) {
