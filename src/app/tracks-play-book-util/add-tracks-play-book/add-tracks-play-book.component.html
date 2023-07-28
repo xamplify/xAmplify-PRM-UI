@@ -472,7 +472,7 @@
           images
         </div>
         <div style="position: relative; top: -5px;" *ngIf="fileSizeError" style="color:red">*File size should be less
-          than 10MB</div>
+          than or equal to 10MB</div>
         <div>
           <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }">
           </ngx-loading>

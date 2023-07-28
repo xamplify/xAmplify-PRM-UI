@@ -5,9 +5,10 @@
 }
 .grid-box img {
   margin: 0 auto;
-  height: 390px !important;
+  height: 230px;
   width: 100% !important;
   border-radius: 5px;
+  object-fit: initial;
 }
 .grid-box {
   padding-bottom: 0px !important;
