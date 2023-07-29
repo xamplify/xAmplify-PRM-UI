@@ -40,8 +40,6 @@ export class LeftsidenavbarCustomComponent implements OnInit {
 
   getMenuItems() {
     this.ngxloading = true;
-    let module = this.authenticationService.module;
-    module.contentLoader = true;
     let vanityUrlPostDto = {};
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       vanityUrlPostDto['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
@@ -52,8 +50,8 @@ export class LeftsidenavbarCustomComponent implements OnInit {
     this.dashBoardService.getLeftSideNavBarItems(vanityUrlPostDto)
       .subscribe(
         data => {
+          this.ngxloading = false;
           if (data.statusCode == 200) {
-            this.ngxloading = false;
             this.menuItems = data.data;
           }
         },
