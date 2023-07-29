@@ -1211,7 +1211,7 @@
                                     
                                      <!-- Your Templates TAB -->
                                      <div class="tab-pane" [ngClass]="{'active': activeTabName == 'templates'}">                                        
-                                        <app-vanity-email-templates (editTemplate)="openBeeEditor($event)"></app-vanity-email-templates>
+                                        <app-vanity-email-templates *ngIf="showTemplates" (editTemplate)="openBeeEditor($event)"></app-vanity-email-templates>
                                     </div>
                                     
                                     <!-- Categories -->
