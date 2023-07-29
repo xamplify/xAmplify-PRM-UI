@@ -1060,7 +1060,6 @@ export class ManageDealsComponent implements OnInit {
       response =>{
         this.referenceService.loading(this.httpRequestLoader, false);
         this.vendorList = response.data;
-        // alert(this.vendorList);
       },
       error=>{
         this.httpRequestLoader.isServerError = true;
@@ -1074,10 +1073,8 @@ export class ManageDealsComponent implements OnInit {
     this.dealsService.getStagenamesForPartnerCompanyId(event)
     .subscribe(
       response =>{
-        // alert(this.companyId);
         this.referenceService.loading(this.httpRequestLoader, false);
         this.stageList = response;
-        // console.log(this.stageList);
       },
       error=>{
         this.httpRequestLoader.isServerError = true;

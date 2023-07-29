@@ -312,7 +312,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 					);
 			}
 		} else {
-			// alert('error');
 		}
 
 	}

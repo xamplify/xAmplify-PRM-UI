@@ -298,6 +298,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	vanityLoginDto:VanityLoginDto = new VanityLoginDto();
 	/*** XNFR-238******/
 	searchWithModuleName:any;
+	showTemplates = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -507,9 +508,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 			this.getUserByUserName(this.currentUser.userName);
 			this.cropperSettings();
-			
-			// this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
 			this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
 			console.log(this.videoUtilService.videoTempDefaultSettings);
 			this.loggedInUserId = this.authenticationService.getUserId();
@@ -534,7 +532,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			if (this.isEmpty(this.userData.roles) || !this.userData.profileImagePath) {
 				this.router.navigateByUrl(this.referenceService.homeRouter);
 			} else {
-				console.log(this.userData);
 				this.parentModel.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
 				if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
 					this.userProfileImage = this.userData.profileImagePath;
@@ -569,7 +566,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.getModulesDisplayDefaultView();
 			this.validateUpdatePasswordForm();
 			this.validateUpdateUserProfileForm();
-			this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
 			this.isOnlyPartner = this.authenticationService.isOnlyPartner();
 			this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
 			if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length > 1 && this.hasCompany)) {
@@ -711,6 +707,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				.subscribe(
 					data => {
 						this.userData = data;
+						/***XBI-1673****/
+						this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
+						/***XBI-1673****/
 						this.authenticationService.userProfile = data;
 					},
 					error => { console.log(error); this.router.navigate(['/su']) },
@@ -1842,7 +1841,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == "customizeleftmenu") {
 			this.activeTabHeader = this.properties.customizeleftmenu;
 		} else if (this.activeTabName == "templates") {
+			this.ngxloading = true;
+			this.showTemplates = false;
 			this.activeTabHeader = 'Your Templates';
+			let self = this;
+			setTimeout(()=>{                         
+				  self.showTemplates = true;
+				  self.ngxloading = false;
+ 			}, 500);
 		} else if (this.activeTabName == "leadPipelines") {
 			this.activeTabHeader = this.properties.leadPipelines;
 			this.pipelinePagination = new Pagination();

@@ -48,7 +48,9 @@
                     </div>
                     <div class="profile-usertitle">
                         <div class="profile-usertitle-name" style="overflow: auto">
-                            <span style="font-size: 17px !important;" [title]="userData.displayName">{{userData.displayName | slice:0:18}}</span><span *ngIf="userData.displayName?.length>18">...</span>
+                            <span style="font-size: 17px !important;"
+                             [title]="userData?.displayName">{{userData?.displayName | slice:0:18}}</span>
+                             <span *ngIf="userData?.displayName?.length>18">...</span>
                             <h5>{{userData.emailId}}</h5>
                         </div>
                         <div class="profile-usertitle-job">
@@ -1209,7 +1211,7 @@
                                     
                                      <!-- Your Templates TAB -->
                                      <div class="tab-pane" [ngClass]="{'active': activeTabName == 'templates'}">                                        
-                                        <app-vanity-email-templates (editTemplate)="openBeeEditor($event)"></app-vanity-email-templates>
+                                        <app-vanity-email-templates *ngIf="showTemplates" (editTemplate)="openBeeEditor($event)"></app-vanity-email-templates>
                                     </div>
                                     
                                     <!-- Categories -->

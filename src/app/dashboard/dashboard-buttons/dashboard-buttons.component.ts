@@ -156,7 +156,7 @@ export class DashboardButtonsComponent implements OnInit {
   }
 
   selectedIconName() {
-    //alert(this.dashboardButton.buttonIcon);
+    
   }
 
   selectedProtocolOption(selectedProtocolOption: string) {

@@ -1500,6 +1500,12 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
                     this.beeContainerInput['module'] = "emailTemplates";
                     this.beeContainerInput['jsonBody'] = response;
                     this.beeContainerInput['id'] = emailTemplate.id;
+                    /****XBI-1685******/
+                    let anyCoBrandingTemplate = emailTemplate['regularCoBrandingTemplate'] || emailTemplate['surveyCoBrandingTemplate'] ||
+                    emailTemplate['videoCoBrandingTemplate'] || emailTemplate['beeEventCoBrandingTemplate'] ;
+                    this.beeContainerInput['anyCoBrandingTemplate'] =anyCoBrandingTemplate;
+                    this.beeContainerInput['isVideoTemplate'] = this.isVideoCampaign;
+                    /****XBI-1685******/
                     this.isShowEditTemplatePopup = true;
                     this.isEditTemplateLoader = false;
                 }, error => {

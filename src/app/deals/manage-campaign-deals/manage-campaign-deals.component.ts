@@ -465,7 +465,6 @@ getStageNamesForCampaign(){
     response =>{
       this.referenceService.loading(this.httpRequestLoader, false);
       this.stageNamesForFilterDropDown = response;
-     // alert(this.stageNamesForFilterDropDown)
     },
     error=>{
       this.httpRequestLoader.isServerError = true;

@@ -128,7 +128,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                         point: {
                             events: {
                                 click: function () {
-                                    // alert('campaign: ' + this.category + ', value: ' + this.y);
                                     self.totalMinutesWatchedByMostUsers();
                                 }
                             }
