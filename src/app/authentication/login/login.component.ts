@@ -89,7 +89,6 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.vanityURLService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName, userName).subscribe(result => {
               if (result.message === "success") {
                 this.loginWithUser(userName);
-                this.loading = false;
               } else {
                 this.loading = false;
                 this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
@@ -152,6 +151,8 @@ export class LoginComponent implements OnInit, OnDestroy {
             if (error.status === 0) { this.setCustomeResponse("ERROR", 'Error Disconnected! Service unavailable, Please check you internet connection'); }
           }
         });
+    }else{
+      this.loading = false;
     }
     return false;
   }
@@ -363,7 +364,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.vanityURLService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName, this.referenceService.userName).subscribe(result => {
         if (result.message === "success") {
           this.loginSSOUser(this.referenceService.userName, client_id, client_secret);
-          this.loading = false;
         } else {
           this.loading = false;
           this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
@@ -398,6 +398,8 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         () => console.log('login() Complete'));
+   }else{
+    this.loading = false;
    }
         return false;
   }
