@@ -68,7 +68,7 @@
                          <thead>
                             <tr>
                                <th class="text-center">
-                                  <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllCampaigns">
+                                  <input class="pointer" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllCampaigns">
                                </th>
                                <th class="text-center">Campaign Name</th>
                                <th class="text-center">Type</th>
@@ -77,9 +77,9 @@
                             </tr>
                          </thead>
                          <tbody>
-                            <tr *ngFor="let campaign of pagination.pagedItems ;let i =index" id="campaignTr_{{campaign.id}}" [class.row-selected]="selectedCampaignIds.indexOf(campaign.id)>-1" (click)="highlightSelectedCampaignRow(campaign,$event)">
+                            <tr class="pointer" *ngFor="let campaign of pagination.pagedItems ;let i =index" id="campaignTr_{{campaign.id}}" [class.row-selected]="selectedCampaignIds.indexOf(campaign.id)>-1" (click)="highlightSelectedCampaignRow(campaign,$event)">
                             <td class="text-center">
-                               <input type="checkbox" class="chk" lang="{{campaign.campaign}}" id="{{campaign.id}}" [checked]="selectedCampaignIds.indexOf(campaign.id)>-1" name="campaignCheckBoxName[]" value="{{campaign.id}}" (click)="highlightRowByCheckBox(campaign,$event)">
+                               <input type="checkbox" class="pointer" lang="{{campaign.campaign}}" id="{{campaign.id}}" [checked]="selectedCampaignIds.indexOf(campaign.id)>-1" name="campaignCheckBoxName[]" value="{{campaign.id}}" (click)="highlightRowByCheckBox(campaign,$event)">
                             </td>
                             <td class="text-center" title="{{campaign.campaign}}">
                                {{campaign.campaign | slice:0:25}} <span *ngIf="campaign.campaign?.length>25">...</span>
