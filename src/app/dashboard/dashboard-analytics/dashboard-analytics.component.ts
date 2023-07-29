@@ -394,7 +394,6 @@ generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) 
                     point: {
                         events: {
                             click: function () {
-                                //  alert('campaign: ' + this.category + ', value: ' + this.y);
                             }
                         }
                     }

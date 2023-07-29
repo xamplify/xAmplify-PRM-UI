@@ -896,7 +896,6 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
       const innerWidth = event.target.innerWidth;
       console.log(innerWidth);
       if (innerWidth >= 767) {
-        //alert('hieght 767');
         
       }
    }
