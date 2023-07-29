@@ -298,6 +298,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	vanityLoginDto:VanityLoginDto = new VanityLoginDto();
 	/*** XNFR-238******/
 	searchWithModuleName:any;
+	showTemplates = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -1840,7 +1841,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == "customizeleftmenu") {
 			this.activeTabHeader = this.properties.customizeleftmenu;
 		} else if (this.activeTabName == "templates") {
+			this.ngxloading = true;
+			this.showTemplates = false;
 			this.activeTabHeader = 'Your Templates';
+			let self = this;
+			setTimeout(()=>{                         
+				  self.showTemplates = true;
+				  self.ngxloading = false;
+ 			}, 500);
 		} else if (this.activeTabName == "leadPipelines") {
 			this.activeTabHeader = this.properties.leadPipelines;
 			this.pipelinePagination = new Pagination();

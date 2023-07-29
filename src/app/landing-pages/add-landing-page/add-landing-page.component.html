@@ -2,7 +2,7 @@
     <div class="my-container">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     </div>
-    <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading"></app-landing-page-loader>
+    <app-modal-popup-loader *ngIf="httpRequestLoader.isLoading"></app-modal-popup-loader>
     <ng-container *ngIf="!httpRequestLoader.isLoading">
         <div class="row">
             <div class="col-xs-12">
@@ -14,7 +14,7 @@
                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                         </li>
                         <li *ngIf="defaultLandingPage">
-                            <a [routerLink]="['/home/pages/select']">Select  Page</a>
+                            <a [routerLink]="['/home/pages/select']">Select Page</a>
                             <i class="fa fa-angle-right" aria-hidden="true"></i>
                         </li>
                         <li *ngIf="!defaultLandingPage">
@@ -35,32 +35,6 @@
                     </div>
                 </div>
                 <div class="tile mScroll" style="border-radius: 5px;">
-                    <!-- <div class="page-bar mWidth" style="border:none !important;">
-                        <ul class="page-breadcrumb" *ngIf="loadLandingPage">
-                            <li>
-                                <i class="fa fa-home" aria-hidden="true"></i>
-                                <a [routerLink]="referenceService.homeRouter">Home</a>
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                            </li>
-                            <li *ngIf="defaultLandingPage">
-                                <a [routerLink]="['/home/pages/select']">Select  Page</a>
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                            </li>
-                            <li *ngIf="!defaultLandingPage">
-                                <a routerLink="{{routerLink}}">Manage Pages</a>
-                                <i class="fa fa-angle-right" aria-hidden="true"></i>
-                            </li>
-                            <li>
-                                <a *ngIf="defaultLandingPage">Create Page</a>
-                                <a *ngIf="!defaultLandingPage">Edit Page</a>
-                            </li>
-                        </ul>
-                        <app-preview-popup #previewPopUpComponent *ngIf="loadLandingPage"></app-preview-popup>
-                        <app-merge-tags *ngIf="loadLandingPage" [input]="mergeTagsInput"></app-merge-tags>
-                        <button  class="new-tab-button" style="border-radius: 5px;" *ngIf="loadLandingPage">
-                            Open Links In New Tab <input type="checkbox" [(ngModel)]="landingPage.openLinksInNewTab">
-                          </button>
-                    </div> -->
                     <div id="bee-plugin-container"></div>
                 </div>
             </div>
