@@ -4625,12 +4625,6 @@ vanityCheckingMarketoContactsAuthentication(){
         this.selectedAddContactsOption = 5;
         this.setPage(1);
     }
-   /* setAssignedTo(event:any){
-        this.leadsPartnerEmail = event.target.value;
-
-        alert(this.leadsPartnerEmail);
-    }*/
-
     setSocialUsers(socialContact) {
         let contacts = this.socialContact.contacts;
         for (var i = 0; i < this.socialContact.contacts.length; i++) {

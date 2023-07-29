@@ -2273,7 +2273,6 @@ export class CreateSmsCampaignComponent implements OnInit,OnDestroy{
 
                             this.templateError = false;
                             this.loading = false;
-                            alert("Custom Objects are not found")
                         }
 
                     }, error =>

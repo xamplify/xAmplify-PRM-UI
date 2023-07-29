@@ -68,7 +68,6 @@ export class ManageCampaignLeadsComponent implements OnInit {
         } else {
           this.leadsPagination.partnerTeamMemberGroupFilter = this.selectedFilterIndex==1;
         }  
-        // alert("ok");      
         this.listCampaignLeads(this.leadsPagination);        
     }
 
@@ -420,7 +419,6 @@ getStageNamesForCampaign(){
     response =>{
       this.referenceService.loading(this.httpRequestLoader, false);
       this.stageNamesForFilterDropDown = response;
-     // alert(this.stageNamesForFilterDropDown)
     },
     error=>{
       this.httpRequestLoader.isServerError = true;

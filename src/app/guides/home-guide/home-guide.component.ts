@@ -235,7 +235,6 @@ export class HomeGuideComponent implements OnInit {
 		module.playbookAccess = data.playbook;
 		module.playbookAccessAsPartner = data.playbookAccessAsPartner;
 		if (data.content) {
-			//this.contentDivs.push(module.isVideo);
 			this.contentDivs.push(module.damAccess || module.damAccessAsPartner);
 			this.contentDivs.push(module.lmsAccess || module.lmsAccessAsPartner);
 			this.contentDivs.push(module.playbookAccess || module.playbookAccessAsPartner);
@@ -265,43 +264,12 @@ export class HomeGuideComponent implements OnInit {
 		this.loading = true;
 	}
 
-	resetResponse() {
-		//this.customResponse = new CustomResponse();
-	}
+	
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
 	search() {
 		this.loading = false;
-		this.resetResponse();
-		// this.pagination.searchKey = this.searchKey;
-		// this.pagination.pageIndex = 1;
-		// this.isSearch = true;
-		// this.getUserGuidesByModuleName("");
-		//this.getSearchResultsOfUserGuides(this.pagination);
 	}
 
 	hideTilesDiv = true
-	// goToGuidesTitlesByModuleName(moduleName: string) {
-	// 	alert(moduleName)
-    //     this.loading = true;
-	// 	this.pagination.moduleName = moduleName;
-	// 	this.dashboardService.getUserGuidesByModuleName(this.pagination).subscribe(
-	// 		(response) => {
-	// 			if (response.statusCode === 200) {
-	// 				this.statusCode = 200;
-	// 				this.hideTilesDiv = false;
-	// 				this.userGudeTitles = response.data;
-	// 				console.log(this.userGudeTitles)
-	// 				this.loading = false;
-	// 				this.location.replaceState('home/help/titles');
-	// 			} else {
-	// 				this.statusCode = 200;
-	// 				this.loading = false;
-	// 			}
-	// 		}, (error: any) => {
-	// 			this.loading = false;
-	// 			//this.refService.loading(this.httpRequestLoader, false);
-	// 			// this.customResponse = new CustomResponse('ERROR', "Opps Something Went Wrong", true);
-	// 		})
-	// }
-
+	
 }
