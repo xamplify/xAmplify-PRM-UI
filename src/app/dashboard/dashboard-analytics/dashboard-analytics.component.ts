@@ -527,7 +527,6 @@ showCampaignDetails(campaign:any){
           (response) =>{
            let cskinMap  = response.data;
            this.skin  = cskinMap.MAIN_CONTENT;
-           console.log(this.skin);
         }
         )
         
