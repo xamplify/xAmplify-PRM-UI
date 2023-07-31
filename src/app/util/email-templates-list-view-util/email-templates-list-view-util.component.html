@@ -137,7 +137,7 @@
                                             <h6 class="moreipsis"  title="{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}">
                                                 <span translate>Received From <strong>{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}</strong></span>
                                             </h6>
-                                            <h5 class="view-banner-green white-labeled-cu1 ">White-Labeled</h5>
+                                            <h5 class="view-banner-green white-labeled-cu1">{{whiteLabeledBannerText}}</h5>
                                         </ng-container>
                                          <!---XNFR-255-->
                                         <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
@@ -242,7 +242,7 @@
                             <!---XNFR-255-->
                             <ng-container *ngIf="emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor">
                                 <div class="ribbon active">
-                                    <span translate>White-Labeled</span>
+                                    <span translate>{{whiteLabeledBannerText}}</span>
                                 </div>
                                 <h6 title="{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}" translate>
                                     Received From <strong>{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName | slice:0:20}}</strong>

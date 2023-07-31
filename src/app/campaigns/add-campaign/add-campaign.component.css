@@ -259,8 +259,9 @@ span.icon-alignments {
   font-size: 20px !important;
 }
 .hover-bar {
-  height: 96px;
+  height: 95px;
 }
+
 .hover-bar a {
   width: 100%;
   border: none;
@@ -284,6 +285,9 @@ span.icon-alignments {
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
   border: 1px solid #54a7e9;
+}
+.white-labled-bar-bottom{
+  bottom: 125px;
 }
 .fontsize-cls span {
   font-size: 12px;
@@ -334,7 +338,7 @@ span.label-color-custmization {
     right: 16px;
   }
   .hover-bar {
-    height: 96px;
+    height: 95px;
     width: 100%;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px !important;
@@ -692,6 +696,8 @@ span.text-algn {
 
 .view-banner {
   margin-right: 5px;
+  padding: 5px 10px !important;
+  font-size: 10px !important;
 }
 
 .banner-page {
@@ -739,3 +745,9 @@ span.text-algn {
   padding-top: 3px;
   padding-right: 4px;
 }
+
+.white-labeled-custom-css{
+  height: 125px !important;
+  bottom: 125px !important;
+}
+

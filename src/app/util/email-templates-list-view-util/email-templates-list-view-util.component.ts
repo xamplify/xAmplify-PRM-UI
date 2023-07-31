@@ -17,14 +17,16 @@ import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { SortOption } from '../../core/models/sort-option';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { UtilService } from '../../core/services/util.service';
+import { Properties } from 'app/common/models/properties';
 
-declare var $, swal: any;
+
+declare var $:any, swal: any;
 
 @Component({
     selector: 'app-email-templates-list-view-util',
     templateUrl: './email-templates-list-view-util.component.html',
     styleUrls: ['./email-templates-list-view-util.component.css', '../../email-template/manage-template/manage-template.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, SortOption]
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, SortOption,Properties]
 })
 export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
     isPreview = false;
@@ -88,10 +90,13 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
     /**XNFR-317*****/
 	selectedEmailTemplateId = 0;
 	sendTestEmailIconClicked = false;
+    whiteLabeledBannerText = "";
     constructor(private emailTemplateService: EmailTemplateService, private router: Router,
         private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
         public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
-        public campaignAccess: CampaignAccess, public renderer: Renderer, public userService: UserService, private route: ActivatedRoute, public utilService: UtilService) {
+        public campaignAccess: CampaignAccess, public renderer: Renderer, public userService: UserService, 
+        private route: ActivatedRoute, public utilService: UtilService,public properties:Properties) {
+        this.whiteLabeledBannerText = this.properties.whiteLabeledBanner;
         this.refService.renderer = this.renderer;
         this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
         this.loggedInUserId = this.authenticationService.getUserId();
