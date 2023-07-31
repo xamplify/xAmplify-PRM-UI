@@ -133,8 +133,11 @@
 .marg-top {
   margin-top: -14px !important;
 }
-
-.search-position{
+.search-position {
   position: relative;
   right: 12px;
+}
+/* sudha sri(31-7-2023) */
+#search-align {
+  position: relative;
 }

@@ -84,7 +84,7 @@
                            <td colspan="4">
                               <div class="table-responsive x-hidden">
                                  <div class="portlet-input input-inline float-right mb10p" id="search-div">
-                                    <div class="input-icon right" id="icon">
+                                    <div class="input-icon right" id="search-align">
                                        <input type="text" autocomplete="off" id="sort-text" class="form-control" [(ngModel)]="teamMembersPagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="adminAndTeamMembersKeySearch($event.keyCode)">
                                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="teamMembersPagination?.searchKey" (click)="teamMembersPagination.searchKey='';searchAdminsAndTeamMembers();"></button>
                                        <button type="submit" class="search-box-item-click" (click)="searchAdminsAndTeamMembers()">
