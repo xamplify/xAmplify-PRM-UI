@@ -693,6 +693,7 @@ span.text-algn {
 .view-banner {
   margin-right: 5px;
   padding: 5px 10px !important;
+  font-size: 10px !important;
 }
 
 .banner-page {

@@ -1082,6 +1082,9 @@
                                                                                                                                         <span >{{emailTemplate?.category|slice:0:20}}</span>
                                                                                                                                         <span *ngIf="emailTemplate?.category?.length>20">..</span>
                                                                                                                                     </span> 
+                                                                                                                                    <!--XBI-1836-->
+                                                                                                                                    <ng-template [ngTemplateOutlet]="whiteLabeledContent" [ngTemplateOutletContext]="{vendorCompanyName:emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName,isWhiteLabeledContent:emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor}"></ng-template>
+                                                                                                                                    <!--XBI-1836-->
                                                                                                                                 </div> 
                                                                                                                                 <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
                                                                                                                             </div>       
@@ -1267,6 +1270,9 @@
                                                                                                                                     <span >{{emailTemplate?.category|slice:0:20}}</span>
                                                                                                                                     <span *ngIf="emailTemplate?.category?.length>20">..</span>
                                                                                                                                 </span> 
+                                                                                                                                 <!--XBI-1836-->
+                                                                                                                                <ng-template [ngTemplateOutlet]="whiteLabeledContent" [ngTemplateOutletContext]="{vendorCompanyName:emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName,isWhiteLabeledContent:emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor}"></ng-template>
+                                                                                                                                <!--XBI-1836-->
                                                                                                                             </div> 
                                                                                                                             <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)">Edit</span>
                                                                                                                         </div>       
