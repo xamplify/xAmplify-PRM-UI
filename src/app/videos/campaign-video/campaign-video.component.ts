@@ -414,7 +414,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
               playbackRates: [0.5, 1, 1.5, 2]
              }).ready(function () {
             this.hotkeys({
-                volumeStep: 0.1, seekStep: 5, enableMute: true,
+                volumeStep: 0.1, seekStep: 5, enableMute: false,
                 enableFullscreen: false, enableNumbers: false,
                 enableVolumeScroll: true,
                  playbackRates: [0.5, 1, 1.5, 2],
@@ -749,7 +749,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         e.preventDefault();
                     });
                     this.hotkeys({
-                        volumeStep: 0.1, seekStep: 5, enableMute: true,
+                        volumeStep: 0.1, seekStep: 5, enableMute: false,
                         enableFullscreen: false, enableNumbers: false,
                         enableVolumeScroll: true,
                          playbackRates: [0.5, 1, 1.5, 2],
