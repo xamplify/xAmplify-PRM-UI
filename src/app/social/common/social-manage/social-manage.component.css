@@ -78,3 +78,7 @@ h5 {
 .fa-2x, .fa-stack-2x {
     font-size: 2em !important;
 }
+/* 31-07-2023 */
+.sidepaddings-zero {
+    padding: 0px;
+}
