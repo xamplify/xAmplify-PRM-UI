@@ -113,7 +113,7 @@
 
                                         <!--White Labeled XNFR-255-->
                                         <div class="form-group" *ngIf="(campaignType=='page' && campaignAccess?.shareWhiteLabeledContent) || (campaign?.channelCampaign && campaignAccess?.shareWhiteLabeledContent && (campaignType=='email' || campaignType=='video'))">
-                                        <label class="control-label col-sm-4" translate>White Labeled</label>
+                                        <label class="control-label col-sm-4" translate>{{whiteLabeledBannerText}}</label>
                                         <div class="col-sm-8">
                                             <switch class="pull-left" [status]="campaign?.whiteLabeled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                 (statusChange)="setWhiteLabeled($event)">
@@ -587,8 +587,18 @@
                                                                                     <strong translate>Folder:</strong>
                                                                                     <span >{{emailTemplate?.category|slice:0:20}}</span>
                                                                                     <span *ngIf="emailTemplate?.category?.length>20">..</span>
-                                                                                </span> 
+                                                                                </span>
+                                                                                <!--XBI-1836-->
+                                                                                <span *ngIf="emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor" class="campaign-email-template-category cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate?.category}}">
+                                                                                    <strong translate>Received From:</strong>
+                                                                                    <span >{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName|slice:0:20}}</span>
+                                                                                    <span *ngIf="emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName?.length>20">..</span>
+                                                                                </span>
+                                                                                <!--XBI-1836-->
                                                                             </div> 
+                                                                            <!--XBI-1836-->
+                                                                            <span *ngIf="emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor" class="view-banner campaign-email-template-category">{{whiteLabeledBannerText}}</span>
+                                                                            <!--XBI-1836-->
                                                                             <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
                                                                         </div>       
                                                                     </div>
@@ -684,7 +694,17 @@
                                                                                     <span>{{page?.categoryName|slice:0:20}}</span>
                                                                                     <span *ngIf="page?.categoryName?.length>20">..</span>
                                                                                 </span> 
+                                                                                <!--XBI-1836-->
+                                                                                <span *ngIf="page?.whiteLabeledLandingPageReceivedFromVendor" class="campaign-email-template-category cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate?.category}}">
+                                                                                    <strong translate>Received From:</strong>
+                                                                                    <span >{{page?.whiteLabeledLandingPageSharedByVendorCompanyName|slice:0:20}}</span>
+                                                                                    <span *ngIf="page?.whiteLabeledLandingPageSharedByVendorCompanyName?.length>20">..</span>
+                                                                                </span>
+                                                                                <!--XBI-1836-->
                                                                             </div> 
+                                                                            <!--XBI-1836-->
+                                                                            <span *ngIf="page?.whiteLabeledLandingPageReceivedFromVendor" class="view-banner campaign-email-template-category">{{whiteLabeledBannerText}}</span>
+                                                                            <!--XBI-1836-->
                                                                             <span class="label-color-custmization" (click)="$event.stopPropagation();editPage(page)">Edit</span>
                                                                         </div>       
                                                                     </div>

@@ -259,7 +259,7 @@ span.icon-alignments {
   font-size: 20px !important;
 }
 .hover-bar {
-  height: 96px;
+  height: 125px;
 }
 .hover-bar a {
   width: 100%;
@@ -278,7 +278,7 @@ span.icon-alignments {
 .bar {
   background: #f1f3fa;
   position: relative;
-  bottom: 95px;
+  bottom: 125px;
   visibility: initial;
   opacity: 0;
   border-bottom-right-radius: 5px;
@@ -334,7 +334,7 @@ span.label-color-custmization {
     right: 16px;
   }
   .hover-bar {
-    height: 96px;
+    height: 125px;
     width: 100%;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px !important;

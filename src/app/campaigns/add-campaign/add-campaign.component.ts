@@ -236,6 +236,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
   emailTemplateIdForSendTestEmail = 0;
   emailTemplateNameForSendTestEmail = "";
   anyLaunchButtonClicked = false;
+  whiteLabeledBannerText = "";
   
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
@@ -243,6 +244,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
     private utilService:UtilService,private emailTemplateService:EmailTemplateService,public properties:Properties,
     private contactService:ContactService,private render: Renderer,private router:Router,private envService:EnvService,
     private landingPageService:LandingPageService) {
+    this.whiteLabeledBannerText = this.properties.whiteLabeledBanner;
     this.campaignType = this.activatedRoute.snapshot.params['campaignType'];
     this.campaignId = this.activatedRoute.snapshot.params['campaignId'];
     this.isEmailCampaign = "email"==this.campaignType;

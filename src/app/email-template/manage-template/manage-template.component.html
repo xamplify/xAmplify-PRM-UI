@@ -174,7 +174,7 @@
                                                 <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"  title="{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}">
                                                     <span translate>Received From <strong>{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}</strong></span>
                                                 </h6>
-                                                <h5 class="view-banner-green white-labeled-cu">White-Labeled</h5>
+                                                <h5 class="view-banner-green white-labeled-cu">{{whiteLabeledBanner}}</h5>
                                             </ng-container>
                                              <!---XNFR-255-->
                                             <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore"
@@ -285,7 +285,7 @@
                                 <!---XNFR-255-->
                                 <ng-container *ngIf="emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor">
                                     <div class="ribbon tab-ribbon active whitelabeled-ribbon">
-                                        <span translate>White-Labeled</span>
+                                        <span translate>{{whiteLabeledBanner}}</span>
                                     </div>
                                     <h6 title="{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}" translate>
                                         Received From <strong>{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName | slice:0:20}}</strong>
