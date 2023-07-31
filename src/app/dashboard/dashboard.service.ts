@@ -125,7 +125,6 @@ export class DashboardService {
 
     sendWelcomeEmail(vendorInvitation: any, alias: string) {
         vendorInvitation['alias'] = alias;
-        console.log(vendorInvitation);
         const url = this.authenticationService.REST_URL + 'superadmin/account/mail/welcome?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, vendorInvitation)
             .map(this.extractData)
@@ -148,7 +147,6 @@ export class DashboardService {
             .catch(this.handleError);
     }
     getCampaignsEmailReports(campaignIdsList: any) {
-        console.log(campaignIdsList);
         const url = this.authenticationService.REST_URL + 'dashboard/barChart-data?userId=' + this.authenticationService.user.id +
             '&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, campaignIdsList)
@@ -163,7 +161,6 @@ export class DashboardService {
             .catch(this.handleError);
     }
     getVideoViewsLevelOneReports(daysInterval: number, dateValue: any) {
-        console.log("data value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/videostats/views/level1?userId=' +
             this.authenticationService.user.id + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue +
             '&access_token=' + this.authenticationService.access_token;
@@ -172,7 +169,6 @@ export class DashboardService {
             .catch(this.handleError);
     }
     getVideoViewsLevelTwoReports(daysInterval: number, dateValue: any, videoId: number, pagination: Pagination) {
-        console.log("data value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/videostats/views/level2?videoId=' + videoId + '&userId=' +
             this.authenticationService.user.id + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue +
             '&access_token=' + this.authenticationService.access_token;
@@ -181,7 +177,6 @@ export class DashboardService {
             .catch(this.handleError);
     }
     getVideoMinutesWatchedLevelOneReports(daysInterval: any, dateValue: number) {
-        console.log("data value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/videostats/minuteswatched/level1?userId=' +
             this.authenticationService.user.id + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue +
             '&access_token=' + this.authenticationService.access_token;
@@ -190,7 +185,6 @@ export class DashboardService {
             .catch(this.handleError);
     }
     getVideoMinutesWatchedLevelTwoReports(daysInterval: any, dateValue: number, videoId: number, pagination: Pagination) {
-        console.log("data value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/videostats/minuteswatched/level2?videoId=' + videoId + '&userId=' +
             this.authenticationService.user.id + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue +
             '&access_token=' + this.authenticationService.access_token;
@@ -478,7 +472,6 @@ export class DashboardService {
     }
 
     getVideoViewsLevelTwoReportsForVanityURL(daysInterval: number, dateValue: any, videoId: number, pagination: Pagination) {
-        console.log("data value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/views/level2?access_token=' + this.authenticationService.access_token + '&videoId=' + videoId + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
         return this.http.post(url, pagination)
             .map(this.extractData)
@@ -491,7 +484,6 @@ export class DashboardService {
         if(xamplifyLogin){
             dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
         }
-        console.log("date value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/minuteswatched/level1?access_token=' + this.authenticationService.access_token + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
         return this.http.post(url, dto)
             .map(this.extractData)
@@ -932,9 +924,8 @@ updateCustomDefaultSettings(custom:any) {
     .catch(this.handleError);
 }
 
-/*************** Neew Changes *****************/
+/*************** New Changes *****************/
 saveMultipleTheme(wrapper:any){
-    console.log(wrapper);
     const url = this.authenticationService.REST_URL + 'custom/skin/savetheme/?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,wrapper)
     .map(this.extractData)

@@ -64,7 +64,6 @@ export class WorldmapComponent implements OnInit {
           cursor: 'pointer',
           events: {
             click: function (e) {
-              console.log(e);
               self.clickWorldMapReports(e.point['hc-key']);
             }
           }
@@ -105,7 +104,6 @@ export class WorldmapComponent implements OnInit {
       this.worldmapMessage = 'Check out where your videos are being watched';
     }
     this.renderWorldMap(this.worldMapData,this.worldmapMessage);
-    console.log(this.worldMapData);
   }
 
 }

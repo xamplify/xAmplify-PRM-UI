@@ -24,7 +24,6 @@ export class TwitterService {
 
     constructor(private http: Http, private router: Router, private authService: AuthenticationService,
         private activatedRoute: ActivatedRoute, private utilService: UtilService) {
-        console.log(this.authService.user);
     }
     
     appendQueryParameters( socialConnection: SocialConnection ) {
@@ -180,7 +179,6 @@ export class TwitterService {
 
     private extractData(res: Response) {
         const body = res.json();
-        console.log(body);
         return body || {};
     }
 
