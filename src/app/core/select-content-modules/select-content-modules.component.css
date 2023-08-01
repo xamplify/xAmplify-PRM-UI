@@ -47,16 +47,16 @@ h5 {
 }
 .header-text-css {
   text-align: center;
-  padding-left: 10px;
-  padding-bottom: 11px;
+  padding: 10px;
+  margin: 0;
   border-bottom: 1px solid #ddd;
 }
 .header-description-css {
   text-align: center;
   color: #888;
   font-size: 14px;
-  padding: 10px;
-  height: 76px;
+  padding: 10px 10px;
+  height: auto;
 }
 .prfpx {
   padding-right: 40px;
@@ -71,10 +71,9 @@ h5 {
   float: none;
   margin: 0 auto;
 }
-@media (min-width: 1200px) and (max-width: 1345px) {
+@media (min-width: 1200px) and (max-width: 1261px) {
   .header-description-css {
-    padding: 0px 10px 10px 10px;
-    height: 92px;
+    font-size: 12px;
   }
 }
 @media only screen and (max-width: 600px) {

@@ -379,8 +379,7 @@ input {
 .table-striped > tbody > tr:nth-of-type(odd),
 table tr:nth-child(odd),
 table tr:nth-child(even),
-.search-box-item-clear,
-input {
+.search-box-item-clear {
   background-color: transparent !important;
 }
 .table .table {
@@ -1674,6 +1673,9 @@ tag {
 }
 .placeholder-bg-color {
   background-color: transparent !important;
+}
+select.form-control.same-bgcolor-for-select {
+  background: #2b3c46 !important;
 }
 
 /* 19-07-2023 Custom Theme Settings bg colors */

@@ -59,5 +59,26 @@ h5 {
   text-align: center;
   padding-left: 10px;
   padding-bottom: 11px;
+  margin-bottom: 0;
   border-bottom: 1px solid #ddd;
+}
+.header-description-css {
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+  padding: 10px 10px;
+  height: auto;
+  margin: 0;
+}
+
+@media (min-width: 1174px) and (max-width: 1308px) {
+  .header-description-css {
+    font-size: 12px;
+  }
+}
+@media (min-width: 1000px) and (max-width: 1173px) {
+  .header-description-css {
+    font-size: 10px;
+    padding: 10px 20px;
+  }
 }

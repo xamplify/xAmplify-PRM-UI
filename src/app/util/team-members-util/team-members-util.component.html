@@ -162,8 +162,8 @@
                       {{teamMember?.teamMemberGroupName | slice:0:15}}</span>
                     <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
                   </button>
-                  <button class="tm-group-preview-css btn-primary">
-                  <i  data-toggle="tooltip" data-placement="bottom" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)" class="fa fa-eye" aria-hidden="true"></i>
+                  <button class="tm-group-preview-css btn-primary" (click)="previewModules(teamMember.teamMemberGroupId)">
+                  <i  data-toggle="tooltip" data-placement="bottom" title="Preview" class="fa fa-eye" aria-hidden="true"></i>
                   </button>
             </div>
             <div class="alert alert-danger" *ngIf="teamMember.teamMemberGroupId==null && !teamMember?.primaryAdmin">
