@@ -17,14 +17,15 @@ import { SortOption } from '../../core/models/sort-option';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { UtilService } from '../../core/services/util.service';
+import { Properties } from 'app/common/models/properties';
 
-declare var $, swal: any;
+declare var $:any, swal: any;
 
 @Component({
 	selector: 'app-manage-template',
 	templateUrl: './manage-template.component.html',
 	styleUrls: ['./manage-template.component.css', '../../../assets/css/video-css/ribbons.css'],
-	providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, SortOption]
+	providers: [Pagination, HttpRequestLoader, ActionsDescription, CampaignAccess, SortOption,Properties]
 })
 export class ManageTemplateComponent implements OnInit, OnDestroy {
 	isPreview = false;
@@ -89,17 +90,19 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 	/**XNFR-317*****/
 	selectedEmailTemplateId = 0;
 	sendTestEmailIconClicked = false;
-
+	whiteLabeledBanner = "";
 
 
 	constructor(private emailTemplateService: EmailTemplateService, private router: Router,
 		private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
 		public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
-		public campaignAccess: CampaignAccess, public renderer: Renderer, public userService: UserService, private route: ActivatedRoute, public utilService: UtilService) {
+		public campaignAccess: CampaignAccess, public renderer: Renderer, public userService: UserService, private route: ActivatedRoute, 
+		public utilService: UtilService,public properties:Properties) {
 		this.refService.renderer = this.renderer;
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
 		this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
+		this.whiteLabeledBanner = this.properties.whiteLabeledBanner;
 		if (refService.isCreated) {
 			this.message = "Template created successfully";
 			this.showMessageOnTop(this.message);

@@ -399,11 +399,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
         fileObj = this.utilService.blobToFile(fileObj);
         this.fileUploadCode(fileObj);
-		console.log("sudha",fileObj);
       }else{
-        //   this.refService.showSweetAlertErrorMessage("Please upload an image");
 		this.errorUploadCropper = false;
-            this.showCropper = false;
+        this.showCropper = false;
       }
       
 	}
@@ -509,7 +507,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.getUserByUserName(this.currentUser.userName);
 			this.cropperSettings();
 			this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
-			console.log(this.videoUtilService.videoTempDefaultSettings);
 			this.loggedInUserId = this.authenticationService.getUserId();
 			/**** show themes to partner ***/
 			this.vanityLoginDto.userId = this.loggedInUserId;
@@ -641,7 +638,26 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !== 0) {
 					this.roleNames = "Partner";
 				}
+				/****XBI-1723*****/
+				let isLoggedAsPartner = this.utilService.isLoggedAsPartner();
+				if(isLoggedAsPartner){
+					let loggedInUserRole = this.authenticationService.loggedInUserRole;
+					let isPrm = loggedInUserRole.indexOf("Prm")>-1;
+					let isVendor = loggedInUserRole.indexOf("Vendor")>-1;
+					let isMarketing = loggedInUserRole.indexOf("Marketing")>-1;
+					let isOrgAdmin = loggedInUserRole.indexOf("OrgAdmin")>-1;
+					let isAnyAdmin = isPrm || isVendor || isMarketing || isOrgAdmin;
+					if(isAnyAdmin){
+						this.roleNames = "Partner";
+					}
+				/****XBI-1723*****/
+				alert(this.roleNames);
 			}
+
+				
+			}
+
+
            }else{
                this.authenticationService.loggedInUserRole = 'User';
 		   }
@@ -719,7 +735,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	updatePassword() {
 		this.ngxloading = true;
-		console.log(this.updatePasswordForm.value);
 		var userPassword = {
 			'oldPassword': this.updatePasswordForm.value.oldPassword,
 			'newPassword': this.updatePasswordForm.value.newPassword,
@@ -1049,7 +1064,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			(result: any) => {
 				this.active = true;
 				const response = result;
-				console.log(response);
 				this.referenceService.defaultPlayerSettings = response;
 				this.tempDefaultVideoPlayerSettings = response;
 				this.defaultVideoPlayer = response;
@@ -1151,10 +1165,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	defaultVideoSettings() {
 		if (this.referenceService.defaultPlayerSettings !== null && this.referenceService.defaultPlayerSettings !== undefined) {
-			console.log('default settings called');
-			console.log(this.referenceService.defaultPlayerSettings);
-			console.log(this.referenceService.defaultPlayerSettings.playerColor);
-
 			if (this.referenceService.defaultPlayerSettings.playerColor === undefined || this.referenceService.defaultPlayerSettings.playerColor === null) {
 				this.referenceService.defaultPlayerSettings.playerColor = '#454';
 				this.referenceService.defaultPlayerSettings.controllerColor = '#234';
@@ -1189,8 +1199,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			);
 	}
 	resetForm() {
-		console.log(this.referenceService.defaultPlayerSettings);
-		console.log(this.videoUtilService.videoTempDefaultSettings);
 		this.compControllerColor = this.videoUtilService.videoTempDefaultSettings.controllerColor;
 		this.compPlayerColor = this.videoUtilService.videoTempDefaultSettings.playerColor;
 		this.valueRange = this.videoUtilService.videoTempDefaultSettings.transparency;
@@ -1267,7 +1275,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				},
 				error => {
 					this.ngxloading = false;
-					console.log(error);
 					this.customResponse = new CustomResponse('ERROR', this.properties.PROCESS_REQUEST_ERROR, true);
 				},
 				() => { }
@@ -1365,10 +1372,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	//Forms section
 
 	initializeForm() {
-
 		this.userService.listForm(this.loggedInUserId).subscribe(result => {
-
-			console.log(result)
 			if (result.length > 0) {
 				this.form = result[0];
 				this.questions = result;
@@ -1413,16 +1417,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	remove(i, id) {
 		if (id)
-			console.log(id)
-		console.log(i)
 		var index = 1;
-
 		this.questions = this.questions.filter(question => question.divId !== 'question-' + i)
 			.map(question => {
 				question.divId = 'question-' + index++;
 				return question;
 			});
-		console.log(this.questions);
 		this.submitBUttonStateChange();
 
 	}
@@ -1448,14 +1448,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				confirmButtonText: 'Yes, delete it!'
 
 			}).then(function(myData: any) {
-				console.log("deleteQuestion showAlert then()" + question);
 				self.userService.deleteQuestion(question).subscribe(result => {
-					console.log(result)
 					self.remove(i, question.id);
 					self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
 				}, error => console.log(error))
 			}, function(dismiss: any) {
-				console.log('you clicked on option');
+				
 			});
 		} catch (error) {
 			console.log(error);
@@ -1501,7 +1499,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		let data = []
 		this.questions.forEach(question => {
 			const q = new DealQuestions();
-			console.log(self.authenticationService.getUserId())
 			q.question = question.question;
 			if (question.id) {
 				let obj = {
@@ -1570,7 +1567,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				confirmButtonText: 'Yes, delete it!'
 
 			}).then(function(myData: any) {
-				console.log("dealType showAlert then()" + dealType);
 				self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
 					if (result.statusCode == 200) {
 						self.removeDealType(i, dealType.id);
@@ -1611,7 +1607,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				dealtype.divId = 'dealtype-' + index++;
 				return dealtype;
 			});
-		console.log(this.dealtypes);
 		this.dealTypeButtonStateChange();
 
 	}
@@ -1662,8 +1657,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 					dtArr.push(obj);
 				}
 			})
-			console.log(dtArr)
-
 			this.dealRegSevice.saveDealTypes(dtArr, this.authenticationService.getUserId()).subscribe(result => {
 				this.ngxloading = false;
 				this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
@@ -2011,7 +2004,6 @@ configSalesforce() {
 			const encodedData = window.btoa(salesforceCurrentUser);
 			const encodedUrl = window.btoa(this.sfRedirectURL);
 			let vanityUserId = JSON.parse(salesforceCurrentUser)['userId'];
-			console.log("vanityUserId: "+vanityUserId);
 			let url = null;
 			if (this.sfRedirectURL) {
 				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + null;
@@ -2675,7 +2667,6 @@ configSalesforce() {
 		this.selectedCustomFieldIds = [];
 		$('[name="sfcf[]"]:checked').each(function() {
 			var id = $(this).val();
-			console.log(id);
 			self.selectedCustomFieldIds.push(id);
 		});
 
@@ -2701,7 +2692,6 @@ configSalesforce() {
 		this.selectedCustomFieldIds = [];
 		$('[name="sfcf[]"]:checked').each(function() {
 			var id = $(this).val();
-			console.log(id);
 			self.selectedCustomFieldIds.push(id);
 		});
 
@@ -2788,7 +2778,6 @@ configSalesforce() {
 
 	checkAll(ev: any) {
 		if (ev.target.checked) {
-			console.log("checked");
 			$('[name="sfcf[]"]').prop('checked', true);
 			let self = this;
 			$('[name="sfcf[]"]:checked').each(function() {
@@ -2798,7 +2787,6 @@ configSalesforce() {
 			});
 			this.selectedCfIds = this.referenceService.removeDuplicates(this.selectedCfIds);
 			this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
-			console.log(self.selectedCfIds);
 		} else {
 			let self = this;
 			//$( '[name="sfcf[]"]' ).prop( 'checked', false );
@@ -2828,7 +2816,6 @@ configSalesforce() {
 
 	selectCf(cfName: string) {
 		let isChecked = $('#' + cfName).is(':checked');
-		console.log(this.selectedCfIds)
 		if (isChecked) {
 			if (this.selectedCfIds.indexOf(cfName) == -1) {
 				this.selectedCfIds.push(cfName);
@@ -2836,8 +2823,6 @@ configSalesforce() {
 			if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
 				this.paginatedSelectedIds.push(cfName);
 			}
-
-			console.log(this.selectedCfIds);
 		} else {
 			this.selectedCfIds.splice($.inArray(cfName, this.selectedCfIds), 1);
 			this.paginatedSelectedIds.splice($.inArray(cfName, this.paginatedSelectedIds), 1);
@@ -3025,8 +3010,6 @@ configSalesforce() {
 		//     self.pipeline.stages.splice(removeIndex, 1);
 		//    });
 		this.pipeline.stages[this.defaultStageIndex].defaultStage = true;
-		console.log(this.pipeline);
-
 		this.dashBoardService.saveOrUpdatePipeline(this.pipeline)
 			.subscribe(
 				data => {
@@ -3744,7 +3727,6 @@ configSalesforce() {
             allowOutsideClick: false,
             confirmButtonText: 'Yes'
         }).then(function() {
-            console.log("save");
             self.saveExcludedDomains(excludedDomains);
         }, function(dismiss: any) {
             console.log('you clicked on option' + dismiss);
@@ -3968,7 +3950,6 @@ configSalesforce() {
 		}).then(
 		  function (allowOutsideClick) {
 			if (allowOutsideClick) {
-			  console.log('CONFIRMED');
 		    window.location.reload();
 			}
 		  });
@@ -3995,12 +3976,6 @@ configSalesforce() {
 			(response) => {
 				this.ngxloading = false
 				 this.defaultThemes = response.data;
-				 console.log(this.defaultThemes)
-				//  for (let i = 0; i < 2; i++) {
-				// 	if(this.defaultThemes[i].id == 1 || this.defaultThemes[i].id ==2){
-				// 	this.lightdark.push(this.defaultThemes[i])
-				// 	}
-				//   }
 			},
 			error => {
 				this.ngxloading = false;
@@ -4021,8 +3996,6 @@ configSalesforce() {
 	activateThemeForCompany(companyThemeId:number){
 	 this.activateTheme.createdBy = this.authenticationService.getUserId();
      this.activateTheme.themeId =companyThemeId; 
-	 console.log(companyThemeId ,'sudha');
-	 console.log( this.activateTheme.createdBy,'companyId');
 	 this.activateThemeApi(this.activateTheme);
 	}
 	activateThemeApi(theme:CompanyThemeActivate) {
