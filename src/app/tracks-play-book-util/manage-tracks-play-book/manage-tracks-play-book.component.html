@@ -9,10 +9,10 @@
             <div *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
                 <div class="portlet-title" style="border-bottom: none">
                     <div class="row">
-                        <div class="col-xs-3">
+                        <div class="col-xs-12 col-sm-4 col-lg-3">
                             <h4 class="pull-left m10 text-primary">{{suffixHeader}}{{titleHeader}}</h4>
                         </div>
-                        <div class="page-toolbar col-xs-9" style="padding-top: 4px;" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
+                        <div class="page-toolbar col-xs-12 col-sm-8 col-lg-9" style="padding-top: 4px;" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                             <div class="btn-group pull-right mb10" style="display: flex;">
                                 <div class="">
                                 <div class="group-dropdown">
@@ -42,7 +42,7 @@
                                     <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
                                 </span>
                                </div>
-                               <div class="inputs mDamTop" style="float: right">
+                               <div class="inputs mDamTop align_mflex" style="float: right">
                                 <a class="close-circle ref-mar" (click)="refreshPage()"	title="Refresh" data-toggle="tooltip" data-placement="bottom">
                                     <i class="fa fa-refresh" aria-hidden="true"></i>
                                 </a>
@@ -215,7 +215,7 @@
                 </section>
     
                 <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                    <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let learningTrack of pagination.pagedItems ;let i =index" id="LearningTrackListDiv_{{learningTrack.id}}">
+                    <div class="col-md-3 col-sm-4 col-xs-12 tab_mt_grid" *ngFor="let learningTrack of pagination.pagedItems ;let i =index" id="LearningTrackListDiv_{{learningTrack.id}}">
                         <div class="grid-box" id="box-dark-defalut-clr">
                             <img class="img-grid-track " [src]="learningTrack.featuredImage" onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack.title}}">
                             <h4 class="mt5 mb5 f-w-600 grid-title"  style="float: none !important;overflow: hidden; padding-right: 3px;" translate>

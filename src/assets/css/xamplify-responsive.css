@@ -121,6 +121,9 @@
   .actionbtn{
    white-space: nowrap;
   }
+  .tab_p0{
+   padding: 0px!important;
+  }
 }
 /* Manage Campaigns ribbon adjustment 04-07-2023 */
 @media only screen and (min-width: 601px) and (max-width: 991px) { 
@@ -319,6 +322,20 @@
   .mb_top10{
    margin-top:10px;
   }
+  .mb_p0{
+    padding: 0px;
+  }
+  .mrg10{
+    margin: 10px 0px;
+  }
+  .display_cont{
+    display: contents!important;
+  }
+  .align_mflex{
+     display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
 }
 @media only screen and (min-width: 300px) and (max-width: 580px) {  
   /* myprofile old dropdown */
@@ -375,6 +392,9 @@
    .tab_flex{
     display: flex;
   }
+  .pt_10{
+    padding-top: 10px!important;
+  }
 }
 /*Select Campaign- campaign */
 @media only screen and (min-width: 991px) and (max-width: 1035px) {  
@@ -384,6 +404,11 @@
   button.btn.responsive-screen-sidepaddings {
     padding: 6px 10px;
   }
+}
+@media screen and (max-width:380px){
+    .mb_pl{
+        padding-left: 0px!important;
+      }
 }
 
 @media only screen and (min-width: 990px) and (max-width: 1062px) {  

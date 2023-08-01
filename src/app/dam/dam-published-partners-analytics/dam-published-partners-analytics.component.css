@@ -8,6 +8,9 @@
   .mAlert {
     text-align: center;
   }
+  .d-flex{
+    display:flex!important;
+   }
 }
 .sort-published-partners {
   float: right;
