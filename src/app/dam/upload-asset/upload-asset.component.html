@@ -316,7 +316,7 @@
                                                 <input id="thumbnailFile" type="file" (change)="chooseThumbnail($event)"
                                                    style="opacity: 0.0; position: absolute;">                                                 
                                                 <span *ngIf="showDefaultLogo && !croppedImage">
-                                                <img src="assets/images/content/picture.png" class="profile-image asset-img-grid-sm" alt="">
+                                                <img src="assets/images/contentPlaceholderImages.png" class="profile-image asset-img-grid-sm" alt="">
                                                 </span>
                                                 <span *ngIf="croppedImage">
                                                 <img class="asset-img-grid-sm" [src]="croppedImage" alt="">

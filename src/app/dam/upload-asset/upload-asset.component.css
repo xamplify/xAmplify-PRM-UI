@@ -55,7 +55,7 @@
 }
 .asset-thumbnail-div-sm {
   display: block;
-  height: 180px;
+  height: 178px;
   background: linear-gradient(45deg, #cdcdcd, transparent);
   padding: 1px;
   margin: 0 auto;
@@ -64,13 +64,16 @@
   cursor: pointer;
   text-align: center;
   color: #fff;
-  border-radius: 5px;
+  border-radius: 8px;
+  width: auto;
 }
 .asset-img-grid-sm {
-  top: 31px;
-  height: 110px !important;
+  top: -1px;
+  height: 172px !important;
   max-width: 100%;
   position: relative;
+  max-width: 100%;
+  border-radius: 8px;
 }
 .scroller-lg {
   height: 172px;
@@ -186,5 +189,3 @@
     padding-bottom: 5px;
   }
 }
-
-
