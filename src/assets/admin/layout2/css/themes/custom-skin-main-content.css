@@ -310,8 +310,7 @@ input {
 .table-striped > tbody > tr:nth-of-type(odd),
 table tr:nth-child(odd),
 table tr:nth-child(even),
-.search-box-item-clear,
-input {
+.search-box-item-clear {
   background-color: transparent !important;
 }
 .table .table {
