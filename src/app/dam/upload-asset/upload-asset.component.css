@@ -44,7 +44,7 @@
 }
 @media screen and (max-width: 600px) {
   .mDesc {
-    width: 150%;
+    width: 100%;
   }
 }
 .inline {
@@ -91,7 +91,7 @@
     width: fit-content;
   }
   .mWidth {
-    width: 250%;
+    width: 100%;
   }
 }
 @media only screen and (max-width: 600px) {
@@ -140,6 +140,9 @@
     border-color: #000000;
     background: #dff0d8;
   }
+  .mDesc.overflowtable-control {
+    width: 62%;
+  }
 }
 .loader-image-tag {
   width: 64px;
@@ -173,3 +176,15 @@
   font-size: 20px !important;
   margin: 9px 0px 0 15px !important;
 }
+/* 31-07-2023 */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .col-sm-offset-2 {
+    margin-left: 0%;
+  }
+  .decfsize {
+    font-size: 10px;
+    padding-bottom: 5px;
+  }
+}
+
+

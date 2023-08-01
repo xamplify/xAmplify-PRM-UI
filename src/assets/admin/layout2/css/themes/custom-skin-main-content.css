@@ -1516,6 +1516,9 @@ tag {
 .placeholder-bg-color {
   background-color: transparent !important;
 }
+select.form-control.same-bgcolor-for-select {
+  background-color: var(--div-bg-color) !important;
+}
 
 /* 19-07-2023 Custom Theme Settings bg colors */
 .bg-color-for-card {
