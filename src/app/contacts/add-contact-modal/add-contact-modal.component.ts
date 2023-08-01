@@ -296,10 +296,10 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 
     enableOrDisableTeamMemberGroupDropDown(){
         if(this.addContactuser.selectedTeamMembersCount>0 || this.isTeamMemberPartnerList){
-            $('#sel-partner-tm').addClass("disable-dropdown");
+            $('#sel-partner-tm').addClass("disabled-div");
         }else{
             this.addContactuser.teamMemberGroupId = 0;
-            $('#sel-partner-tm').removeClass("disable-dropdown");
+            $('#sel-partner-tm').removeClass("disabled-div");
         }
     }
 
