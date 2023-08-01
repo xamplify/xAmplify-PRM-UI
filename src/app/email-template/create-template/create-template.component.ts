@@ -483,7 +483,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             return $('<input type="submit" class="btn btn-primary" value="' + text + '" id="update">').on('click', cb);
         }
         else {
-            return $('<input type="submit" class="btn btn-primary" value="' + text + '">').on('click', cb);
+            return $('<input type="submit" class="btn Btn-Gray" value="' + text + '">').on('click', cb);
         }
     }
 

@@ -210,7 +210,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
          </div>
 
           <div class="form-group col-xs-6 col-sm-5">
-            <select class="form-control placeholder-bg-color" style="border: none !important;"
+            <select class="form-control same-bgcolor-for-select" style="border: none !important;"
               [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="Country">
               <option *ngFor="let country of countryNames.countries" [value]="country">{{country}}</option>
             </select>
