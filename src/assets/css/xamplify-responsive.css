@@ -126,9 +126,12 @@
   }
 }
 /* Manage Campaigns ribbon adjustment 04-07-2023 */
-@media only screen and (min-width: 601px) and (max-width: 991px) { 
+@media only screen and (min-width: 601px) and (max-width: 992px) { 
   .grid-box{
     background: #f1f1f1 !important;
+  }
+  .ffolder.big.gray.folder-cheight {
+    height:177px !important;
   }
   .tab-ribbon {
     left: 10px;
