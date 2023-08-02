@@ -51,7 +51,7 @@
 
 .table tr.row-selected td {
     background-color: #00a6e847;
-    color: white;
+    color: #333;
 }
 
 .partner-company-selected {

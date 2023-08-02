@@ -467,6 +467,12 @@
           <span>Upload image</span> <input style="height: 36px;" title=" " id="custom-input" type="file"
             (change)="filenewChangeEvent($event)">
         </div>
+        <ng-template #uploadButton> 
+          <div style="position: relative;top: -5px;" class="btn Btn-Green fileinput-button-css"><span>Upload
+                   image</span>
+               <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file" (change)="filenewChangeEvent($event)">
+           </div>
+       </ng-template>
         <!-- <button style="position: relative; top: -5px; width: 118px;" class="btn green" (click)="chooseFileFromList()">Your images</button> -->
         <div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only
           images

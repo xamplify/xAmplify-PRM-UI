@@ -45,3 +45,7 @@
 .btn{
 	padding:5px 14px !important;
 }
+/* 02-8-2023 */
+button.btn-select-templates {
+    margin: 8px 10px;
+}

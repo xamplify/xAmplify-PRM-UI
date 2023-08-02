@@ -13,7 +13,8 @@
   padding: 15px;
 }
 .page-breadcrumb {
-  padding: 8px 0 10px;
+  padding: 8px 10px;
+  margin: 7px 0px;
 }
 @media screen and (max-width: 600px) {
   .mscroll {
