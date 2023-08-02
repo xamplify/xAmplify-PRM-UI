@@ -1,3 +1,11 @@
+@media screen and (max-width:578px){
+    .d_flex{
+        display: flex!important;
+    }
+    .pt_0{
+        padding-top:0px!important;
+    }
+}
 /* sudha sri */
 @media (max-width:425px){
     .pt{

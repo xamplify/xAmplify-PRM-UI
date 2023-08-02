@@ -115,7 +115,7 @@
                         <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                         Manage MDF Details
                      </div>
-                     <div class="inputs"  style="float: right; padding: 4px">
+                     <div class="inputs d_flex"  style="float: right; padding: 4px">
                         <div style="float: left; margin: 0 10px;">
                           <select class="form-control" [(ngModel)]="sortOption.mdfPartnersSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                             <option *ngFor="let option of sortOption.mdfPartnersSortDropDownOptions"
@@ -123,7 +123,7 @@
                                 {{option.name}}</option>
                         </select>
                         </div>
-                        <div class="portlet-input input-inline pt-pl">
+                        <div class="portlet-input input-inline pt-pl pt_0">
                            <div class="input-icon right" style="margin-bottom: 8px;">
                               <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)" style="height: 34px !important;">
                               <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>

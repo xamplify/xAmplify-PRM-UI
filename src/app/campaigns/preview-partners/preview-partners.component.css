@@ -11,3 +11,8 @@
   position: relative;
   top:5px;
 }
+@media screen and (max-width:578px){
+  .mb-display{
+    display: flex!important;
+  }
+}

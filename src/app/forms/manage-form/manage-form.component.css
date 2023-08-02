@@ -185,6 +185,9 @@ cursor: default;
   .mMobileAlignAction2{
     white-space: initial!important;
   }
+  .mb-dflex{
+    display: flex!important;
+  }
 }
 
 .pg8{

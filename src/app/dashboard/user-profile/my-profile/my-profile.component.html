@@ -326,7 +326,7 @@
                                                    
                                                         <!-- responsive-alignment -->
                                                         <td class="mAlignView responsive-alignment">
-                                                            <div class="actions-block override-actions ActionAlign">
+                                                            <div class="actions-block override-actions ActionAlign mb_whitespace">
                                                                 <div class="mActionAlign ActionButtonPad iconmobile-align">
                                                                     <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="View"
                                                                         (click)="viewTheme();showDto(dto);"><i
@@ -377,7 +377,7 @@
                                                 </app-timestamp>
                                             </td>
                                             <td class="mAlignView">
-                                                <div class="actions-block override-actions ActionAlign">
+                                                <div class="actions-block override-actions ActionAlign mb_whitespace">
                                                     <div class="mActionAlign ActionButtonPad iconmobile-align">
                                                         <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="Edit"
                                                             (click)="goToCustomThemes();showDto(dto);updateTheme();"><i
@@ -1025,7 +1025,7 @@
                                                                         </td>
                                                                         <td class="mAlign">{{pipeline.stages.length}}</td>
                                                                        <td class="mAlign">
-                                                                            <div class="actions-block override-actions">                                                                                
+                                                                            <div class="actions-block override-actions mb_whitespace">                                                                                
                                                                                 <ng-container>
                                                                                     <a *ngIf="pipeline.canSync" data-toggle="tooltip" data-placement="top" title="Synchronize with {{pipeline.integrationType}}" (click)="syncPipeline(pipeline)">
                                                                                         <i class="fa fa-refresh"></i>
@@ -1292,7 +1292,7 @@
                                                                 <span>{{category.count}}</span>
                                                             </td>
                                                             <td>
-                                                                <div class="actions-block override-actions cwotpx">
+                                                                <div class="actions-block override-actions cwotpx mb_whitespace">
                                                                     <ng-container *ngIf="category.defaultCategory">
                                                                         <a data-placement="top" class="disabled-event" title="Default Folder Can't Be Edited">
                                                                             <i class="fa fa-pencil-square-o disabled-event" aria-hidden="true"></i>
@@ -1698,7 +1698,7 @@
                     </h6>
                                                         </td>
                                                             <td  >
-                                                        <div class="actions-block override-actions"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                                                        <div class="actions-block override-actions mb_whitespace"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                             <a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedUserAlert(user.userId)" >
                                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -1857,7 +1857,7 @@
                     </h6>
                                                         </td>
                                                             <td >
-                                                        <div class="actions-block override-actions"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                                                        <div class="actions-block override-actions mb_whitespace"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                             <a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedDomainAlert(obj.domainName)" >
                                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
