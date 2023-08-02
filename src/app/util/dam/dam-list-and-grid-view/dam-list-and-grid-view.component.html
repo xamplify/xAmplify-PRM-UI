@@ -45,7 +45,7 @@
 									</td>
 									<td  *ngIf="!asset.videoId || isPartnerView" >
 										<div class="thumbnail-wrapper" style="width: 180px; height: 100px; border:1px solid #ccc;">
-											<img class="custom-image-css" src="{{asset?.thumbnailPath}}"
+											<img class="custom-image-css" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
 												alt="Image Not Found" style="width: 180px; height: 100px;border-radius:5px;">
 										</div>
 										<div class="title-div" style="width: 50%;">
@@ -165,6 +165,13 @@
 													</a>
 													</div>
 												</ng-container>
+												<!--Added On 02/08/2023-->
+												<ng-container *ngIf="asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress">
+													<a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="refreshList()"> 
+														<i class="fa fa-refresh" aria-hidden="true"></i>
+													</a> 
+												</ng-container>
+												<!--Added On 02/08/2023-->
 											</div>
 										</td>
 									</tr>
@@ -197,7 +204,7 @@
 															<td style="width: 12%;">
 																<div class="thumbnail-wrapper">
 																	<img class="custom-image-css"
-																		src="{{asset?.thumbnailPath}}" alt="Image Not Found">
+																		src="{{asset?.thumbnailPath}}" alt="Image Not Found" onerror="this.src='assets/images/no-preview.jpg';"> 
 																</div>
 															</td>
 															<td>
@@ -227,15 +234,14 @@
 																<!---XNFR-255-->
 																<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress" class="view-banner published"
 																	translate>Published</h6>
-																<h6 *ngIf="asset?.publishingOrWhiteLabelingInProgress " class="view-banner published">
+																<h6 *ngIf="asset?.publishingOrWhiteLabelingInProgress " class="view-banner">
 																	<span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
 																	Processing
 																</h6>
 																<!---XNFR-255-->
 															</td>
 															<td class="text-center">{{asset?.assetType}}</td>
-															<td class="text-center"><app-timestamp
-																	[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
+															<td class="text-center"><app-timestamp	[dateAndTime]="asset?.displayTime"></app-timestamp></td>
 															<td id="actions-row">
 																<div class="actions-block override-actions ActionAlign" *ngIf="!asset?.publishingOrWhiteLabelingInProgress">
 																	<a class="mMobileDisable"  data-toggle="tooltip" data-placement="top"  title="Design" (click)="addOrEdit(asset.id)"> <i
@@ -259,6 +265,13 @@
 																		class="fa fa-trash-o" aria-hidden="true"></i>
 																	</a>
 																</div>
+																<!--Added On 02/08/2023----->
+																<div class="actions-block override-actions ActionAlign" *ngIf="asset?.publishingOrWhiteLabelingInProgress">
+																	<a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listAssetsHistory(historyPagination)"> 
+																		<i class="fa fa-refresh" aria-hidden="true"></i>
+																	</a> 
+																</div>
+																<!--Added On 02/08/2023----->
 															</td>
 														</tr>
 														</ng-container>
@@ -288,7 +301,7 @@
 						<div class="row" *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading && !listLoader.isServerError">
 							<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tb_view_10" *ngFor="let asset of pagination.pagedItems ;let i =index"	id="assetList_{{asset.id}}">
 								<div class="grid-box min-h default-cursor mHeight">
-									<img class="img-class mxv" src="{{asset?.thumbnailPath}}"
+									<img class="img-class mxv" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
 										alt="Image Not Found">
 									<h4 class="overflow-hidden mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{asset?.assetName}}">
 										{{asset?.assetName | slice:0:25}} <span
@@ -338,7 +351,7 @@
 										(assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
 										(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
 										(assetGridViewActionsDeleteActionEmitter) = "assetGridViewActionsDeleteActionEmitter($event)"
-										>
+										(assetGridViewRefreshListEmitter)="refreshList()">
 										</app-asset-grid-view-actions>
 									</div>
 								</div>
@@ -372,7 +385,7 @@
 							*ngFor="let asset of historyPagination.pagedItems ;let i =index"
 							id="assetList_{{asset.id}}">
 							<div class="grid-box box-shadow">
-								<img class="img-class mxv" src="{{asset?.thumbnailPath}}"
+								<img class="img-class mxv" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
 									alt="{{asset?.assetName}}">
 								<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
 									{{asset?.assetName | slice:0:25}} <span
