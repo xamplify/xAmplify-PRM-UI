@@ -70,7 +70,7 @@
                 </thead>
                 <tbody>
                   <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
-                    <tr [class.row-selected]="selectedPartnershipIds.indexOf(partner.partnershipId)>-1">
+                    <tr [class.row-selected]="selectedPartnershipIds?.indexOf(partner.partnershipId)>-1">
                       <td class="cw">
                         <div class="actions-block left-float">
                           <a (click)="viewTeamMembers(partner)" title="View/Hide Team Members">
@@ -138,11 +138,11 @@
                                 <tbody>
                                   <tr class="pointer" *ngFor="let adminAndTeamMember of teamMembersPagination.pagedItems;let i = index;"
                                     id="publishToPartners-{{adminAndTeamMember.userId}}"
-                                    [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1"
+                                    [class.row-selected]="selectedTeamMemberIds?.indexOf(adminAndTeamMember.userId)>-1"
                                     (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
                                     <td class="text-center">
                                       <input class="pointer" type="checkbox" id="{{adminAndTeamMember.userId}}"
-                                        [checked]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1"
+                                        [checked]="selectedTeamMemberIds?.indexOf(adminAndTeamMember.userId)>-1"
                                         name="adminOrTeamMemberCheckBox[]" value="{{adminAndTeamMember.userId}}"
                                         (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
                                     </td>
@@ -234,10 +234,10 @@
               </thead>
               <tbody>
                 <ng-container *ngFor="let partnerGroup of partnerGroupsPagination.pagedItems;let i = index;">
-                  <tr class="pointer" id="partnerGroups-tr-{{partnerGroup.id}}" [class.row-selected]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
+                  <tr class="pointer" id="partnerGroups-tr-{{partnerGroup.id}}" [class.row-selected]="selectedPartnerGroupIds?.indexOf(partnerGroup.id)>-1"
                     (click)="highlightSelectedPartnerGroupOnRowClick(partnerGroup.id,$event)">
                     <td class="text-center">
-                      <input class="pointer" type="checkbox" id="{{partnerGroup.id}}" [checked]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
+                      <input class="pointer" type="checkbox" id="{{partnerGroup.id}}" [checked]="selectedPartnerGroupIds?.indexOf(partnerGroup.id)>-1"
                         name="partnerGroupsCheckBox[]" value="{{partnerGroup.id}}"
                         (click)="$event.stopPropagation();highlightPartnerGroupRowOnCheckBoxClick(partnerGroup.id,$event);">
                     </td>
