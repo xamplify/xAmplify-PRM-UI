@@ -2,7 +2,7 @@
   <div class="clearfix" >
      <div class='thumbnail-wrapper' (click)="$event.stopPropagation();showPlayVideo(videoFile)" (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)" style="width: 180px; height: 100px;border-radius:5px;">
      <img alt="" *ngIf="!videoFile?.processed" src="../../../assets/images/Spinner.gif" class="loader-css" style="width: 180px; height: 100px;border-radius:5px;">
-     <img alt="" *ngIf="videoFile?.processed" id="imagePath{{videoFile.id}}" src="{{videoFile.imagePath}}" (error)="videoUtilService.errorVideoHandler($event)" style="width: 180px; height: 100px;border-radius:5px;">
+     <img alt="" *ngIf="videoFile?.processed" id="imagePath{{videoFile.id}}" src="{{videoFile.imagePath}}"  onerror="this.src='assets/images/no-preview.jpg';" style="width: 180px; height: 100px;border-radius:5px;">
      <span class="duration f-w-600">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
   </div>
   <div class="title-div">
