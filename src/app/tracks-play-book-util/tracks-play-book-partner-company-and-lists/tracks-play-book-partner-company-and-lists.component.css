@@ -51,7 +51,7 @@
 
 .table tr.row-selected td {
     background-color: #00a6e847;
-    color: white;
+    color: #333;
 }
 
 .partner-company-selected {
@@ -272,4 +272,10 @@
         position: relative;
         right: -32px;
     }
+}
+/* 02-08-2023 */
+.alert-cu-for-consistency {
+    padding: 5px 20px;
+    margin-top: 5px;
+    text-align: center;
 }

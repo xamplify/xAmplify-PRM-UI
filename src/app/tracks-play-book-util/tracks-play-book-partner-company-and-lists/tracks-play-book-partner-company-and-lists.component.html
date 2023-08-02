@@ -42,7 +42,8 @@
             </div>
           </div>
           </div>
-        </div>        <ng-container>
+        </div>       
+         <ng-container>
           <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
             <div class="row">
               <div>
@@ -220,16 +221,6 @@
           <div class="row">
             <div>
               <div class="col-xs-12">
-                <div class="alert alert-success left-float" *ngIf="selectedPartnerGroupIds?.length>0">
-                  <strong>
-                    <ng-container *ngIf="selectedPartnerGroupIds?.length==1">
-                      {{selectedPartnerGroupIds?.length}} list is selected
-                    </ng-container>
-                    <ng-container *ngIf="selectedPartnerGroupIds?.length>1">
-                      {{selectedPartnerGroupIds?.length}} lists are selected
-                    </ng-container>
-                  </strong>
-                </div>
                 <div class="page-toolbar">
                   <div class="left-float" style="float: right !important;padding-left: 10px;">
                     <button class="btn btn-danger" *ngIf="(selectedPartnerGroupIds.length>0) "
@@ -253,6 +244,20 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="alert alert-success alert-cu-for-consistency" *ngIf="selectedPartnerGroupIds?.length>0">
+                  <strong>
+                    <ng-container *ngIf="selectedPartnerGroupIds?.length==1">
+                      {{selectedPartnerGroupIds?.length}} list is selected
+                    </ng-container>
+                    <ng-container *ngIf="selectedPartnerGroupIds?.length>1">
+                      {{selectedPartnerGroupIds?.length}} lists are selected
+                    </ng-container>
+                  </strong>
+                </div>
+
+
               </div>
             </div>
           </div>
