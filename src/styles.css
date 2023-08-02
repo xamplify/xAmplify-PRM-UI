@@ -1417,10 +1417,10 @@ strong {
   background-color: #f1f1f1;
 }
 
-.table tr.row-selected td {
+/* .table tr.row-selected td {
   background-color: #eee;
   color: white;
-}
+} */
 
 .beige {
   background-color: beige;
@@ -1441,10 +1441,10 @@ strong {
   }
 }
 
-.table tr.row-selected td {
+/* .table tr.row-selected td {
   background-color: #eee;
   color: white;
-}
+} */
 
 .info-text-color {
   color: #38a8df !important;
@@ -1890,8 +1890,12 @@ strong {
   background-color: #ffffff !important;
 }
 .table tr.contact-list-selected td {
-  background-color: #00a6e8;
-  color: white;
+  background-color: #00a6e847;
+  color: #333;
+}
+.table tr.row-selected td {
+  background-color: #00a6e847;
+  color: #333333;
 }
 /* 28-3-2023 */
 .button-border {

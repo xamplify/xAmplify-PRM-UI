@@ -62,3 +62,8 @@
 .portlet{
 	margin-bottom: 20px !important;
 }
+
+/* design Manage Forms Analytics table borders */
+table.table.table-allsideboders {
+    border: 1px solid #ddd;
+}

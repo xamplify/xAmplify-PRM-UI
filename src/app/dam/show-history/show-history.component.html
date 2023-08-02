@@ -2,7 +2,7 @@
 	<div class="page-bar">
 	   <ul class="page-breadcrumb">
 		  <li><i class="fa fa-home" aria-hidden="true"></i> 
-			 <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
+			 <a [routerLink]="referenceService?.homeRouter" translate>Home</a> 
 			 <i class="fa fa-angle-right" aria-hidden="true"></i>
 		  </li>
 		  <li>
@@ -55,7 +55,6 @@
 				</div>
 			 </div>
 			 <!---Grid Loader------>
-			
 			 <app-grid-loader *ngIf="historyLoader.isLoading"></app-grid-loader>
 			 <section *ngIf="!historyLoader.isLoading">
 				<div *ngIf="showRefreshNotification" class="alert alert-info">
@@ -65,7 +64,7 @@
 				   <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let asset of pagination.pagedItems ;let i =index"	id="assetList_{{asset.id}}">
 					  <div class="grid-box min-h default-cursor box-shadow">
 						 <img class="img-class mxv" src="{{asset?.thumbnailPath}}"
-							alt="{{asset?.assetName}}">
+							alt="{{asset?.assetName}}" onerror="this.src='assets/images/no-preview.jpg';">
 						 <h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
 							{{asset?.assetName | slice:0:25}} <span
 							   *ngIf="asset?.assetName?.length>25">...</span><br>
@@ -104,7 +103,7 @@
 							(assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
 							(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
 							(assetGridViewActionsDeleteActionEmitter) = "assetGridViewActionsDeleteActionEmitter($event)"
-							>
+							(assetGridViewRefreshListEmitter)="refreshList()">
 							</app-asset-grid-view-actions>
 						 </div>
 					  </div>

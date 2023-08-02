@@ -54,4 +54,12 @@
  </ng-container>
 </div>
 
+<!--Added On 02/08/2023-->
+<div *ngIf="asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress">
+	<a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="refreshListEmitter()"> 
+		<i class="fa fa-refresh" aria-hidden="true"></i>
+	</a> 
+</div>
+<!--Added On 02/08/2023-->
+
 
