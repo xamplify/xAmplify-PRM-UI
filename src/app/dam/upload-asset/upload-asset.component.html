@@ -59,7 +59,8 @@
                </app-response-message>
                <app-modal-popup-loader [hidden]="!formLoader"></app-modal-popup-loader>
                <ng-container *ngIf="!previewItems">
-                  <div [hidden]="formLoader" class="row" style="margin-top: 20px;">
+                  <!-- style="margin-top: 20px;" -->
+                  <div [hidden]="formLoader" class="row">
                      <div class="form-horizontal form-bordered form-label-stripped">
                         <div class="portlet box">
                            <div class="">
@@ -118,7 +119,8 @@
                                        </div>
                                        <!-- end here -->
                                        <!---Asset-->
-                                       <div class="mb-padding" *ngIf="isAdd">
+                                       <!-- class="mb-padding" -->
+                                       <div *ngIf="isAdd">
                                           <span [style.color]="invalidAssetName ? 'red':''"><strong>Upload Asset<span
                                              class="required">*</span></strong></span>
                                           <div class="row">

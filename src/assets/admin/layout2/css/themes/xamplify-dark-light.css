@@ -223,7 +223,7 @@ ul.alt-row-style1 li a {
 }
 .td-new,
 th {
-  border: 1px solid #1c313a !important;
+  border: 1px solid #2f4857 !important;
   /* border: 1px solid #2f4857 !important; old one */
 }
 /* td > button {
@@ -1761,4 +1761,11 @@ p.addhrtosvg {
 .cardfotter-toggleon {
   border: 1px solid #2f4857 !important;
   background: #22313a !important;
+}
+/* design Manage Forms  Analytics table borders */
+table.table.table-allsideboders {
+  border: 1px solid #2f4857 !important ;
+}
+rect.highcharts-background {
+  fill: none !important;
 }
