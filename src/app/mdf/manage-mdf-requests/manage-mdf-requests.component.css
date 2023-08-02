@@ -26,7 +26,20 @@
         padding-top: 6px !important;
     }
 }
-
+@media screen and (max-width:578px){
+    .d_flex{
+        display: flex!important;
+    }
+    .pt_0{
+        padding-top:0px!important;
+    }
+    .hgt_auto{
+        height: auto!important;
+    }
+    .mb_12{
+        margin-bottom: 12px!important;
+    }
+}
 /* 27-06-2023 */
 .fa-fa-consistency {
     padding: 6px !important;
