@@ -78,20 +78,21 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 				this.referenceService.startLoader(this.httpRequestLoader);
 				if (this.isPublishedToPartnerGroups) {
 					this.isEdit = this.selectedPartnerGroupIds!=undefined && this.selectedPartnerGroupIds.length>0;
-					this.disableOrEnablePartnerCompaniesTab();
 					$('#partnerGroups-li').addClass('active');
 					$('#partnerGroups').addClass('tab-pane fade in active');
 					this.showFilter = false;
 					this.selectedTab = 2;
 					this.findPartnerGroups(this.partnerGroupsPagination);
+					this.disableOrEnablePartnerCompaniesTab();
 				}else {
 					this.isEdit = this.selectedTeamMemberIds != undefined &&this.selectedTeamMemberIds.length > 0;
-					this.disableOrEnablePartnerListsTab();
 					$('#partners-li').addClass('active');
 					$('#partners').addClass('tab-pane fade in active');
 					this.showFilter = true;
 					this.selectedTab = 1;
 					this.findPartnerCompanies(this.pagination);
+					this.disableOrEnablePartnerListsTab();
+
 				}
 			}else{
 				$('#partners-li').addClass('active');

@@ -313,7 +313,13 @@
 										</div>
 									</div>
 									<div>
-										<app-partner-company-and-groups [moduleName]="'dam'" [inputId]="saveVideoFile.damId"  (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+										<app-partner-company-and-groups [moduleName]="'dam'" 
+										[inputId]="saveVideoFile.damId" 
+										[isPublishedToPartnerGroups]="saveVideoFile?.publishedToPartnerGroups"
+                                        [selectedTeamMemberIds]="saveVideoFile?.partnerIds"
+                                        [selectedPartnershipIds]="saveVideoFile?.partnershipIds"
+                                        [selectedPartnerGroupIds]="saveVideoFile?.partnerGroupIds"
+										 (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
 									</div>
 									<!---XNFR-255-->
 								</div>
