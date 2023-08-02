@@ -937,8 +937,8 @@
  <!-- Step three email templates   -->
  <div class="col-xs-12 mb10" [hidden]="!emailTemplatesTab" style="padding: 10px 0 0 0;">
 	<app-grid-loader *ngIf="gridLoader"></app-grid-loader>
-	<div class="boxes portlet light" style="border:none" [hidden]="gridLoader">
-	   <div class="portlet-title" style="display:block;background: none !important;border-bottom:none">
+	<div class="boxes portlet light" style="border:none !important" [hidden]="gridLoader">
+	   <div class="portlet-title" style="display:block;background: none !important;border-bottom:none !important">
 		  <div>
 			 <div class="input-icon right pull-right mr15"
 				style="padding-top: 5px; right: 74px;">
