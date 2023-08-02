@@ -189,12 +189,12 @@ export class Properties {
 
 	/****************** Vanity Relates *********************/
 	VANITY_URL_ERROR1 = "You are not associated to vendor company";
-	VANITY_URL_DB_BUTTON_SUCCESS_TEXT = "Button added succesfully";
-	VANITY_URL_DB_BUTTON_UPDATE_TEXT = "Button updated succesfully";
-	VANITY_URL_DB_BUTTON_DELETE_TEXT = "Button deleted succesfully";
+	VANITY_URL_DB_BUTTON_SUCCESS_TEXT = "Button added successfully";
+	VANITY_URL_DB_BUTTON_UPDATE_TEXT = "Button updated successfully";
+	VANITY_URL_DB_BUTTON_DELETE_TEXT = "Button deleted successfully";
 	VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT = "Button title already exists";
-	VANITY_URL_ET_SUCCESS_TEXT = "Email Template updated succesfully";
-	VANITY_URL_ET_DELETE_TEXT = "Email Template deleted succesfully";
+	VANITY_URL_ET_SUCCESS_TEXT = "Email Template updated successfully";
+	VANITY_URL_ET_DELETE_TEXT = "Email Template deleted successfully";
 	VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT = "Error while Updating Email Template";
 
 	reAuthenticateMessage = 'Please unlink  and reconnect your account.';
