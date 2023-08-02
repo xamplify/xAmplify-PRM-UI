@@ -24,7 +24,9 @@ export class DamUploadPostDto {
     shareAsWhiteLabeledAsset = false;
     partnerGroupIds = [];
     partnerIds = [];
+    partneshipIds = [];
     partnerGroupSelected = false;
     disableWhiteLabelOption = false;
     whiteLabeledToolTipMessage = "";
+    publishedToPartnerGroups = false;
 }

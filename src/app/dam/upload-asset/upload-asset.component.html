@@ -380,7 +380,12 @@
                                           </td>
                                           <td class="desc">
                                           <div class="mDesc overflowtable-control">
-                                             <app-partner-company-and-groups [moduleName]="'dam'" [inputId]="id" (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+                                             <app-partner-company-and-groups [moduleName]="'dam'" [inputId]="id"
+                                              [isPublishedToPartnerGroups]="damUploadPostDto?.publishedToPartnerGroups"
+                                              [selectedTeamMemberIds]="damUploadPostDto?.partnerIds"
+                                              [selectedPartnershipIds]="damUploadPostDto?.partnershipIds"
+                                              [selectedPartnerGroupIds]="damUploadPostDto?.partnerGroupIds"
+                                               (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
                                           </div>
                                           </td>
                                        </tr>
