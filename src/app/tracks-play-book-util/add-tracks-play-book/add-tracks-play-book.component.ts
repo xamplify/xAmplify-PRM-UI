@@ -857,6 +857,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   fileChangeEvent() {
     this.cropRounded = false;
     this.fileSizeError = false;
+    this.imageChangedEvent = null;
     $('#cropImage').modal('show');
   }
 
@@ -1593,7 +1594,19 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
                 this.circleData = {};
                 this.imageChangedEvent = null;
                  this.croppedImage = '';
-              }   
+              }  
+              fileBgImageChangeEvent(event){
+                const image:any = new Image();
+                const file:File = event.target.files[0];
+                const isSupportfile = file.type;
+                if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
+                    this.errorUploadCropper = false;
+                    this.imageChangedEvent = event;
+                } else {
+                  this.errorUploadCropper = true;
+                  this.showCropper = false;
+                }
+              }       
               
   setCustomCssValues() {
     document.documentElement.style.setProperty('--form-page-bg-color', this.pageBackgroundColor);

@@ -412,7 +412,6 @@
    data-backdrop="static">
    <div class="modal-dialog imgCrop-modal" role="document">
       <div class="modal-content rounded-0">
-         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px'}"></ngx-loading>
          <div class="modal-header">
             <a class="close-circle" data-dismiss="modal" (click)="closeImageUploadModal()">
                <i class="fa fa-times" aria-hidden="true"></i>
@@ -420,6 +419,16 @@
             <h4 class="modal-title">{{thumbnailImageText}}</h4>
          </div>
          <div class="modal-body" style="overflow-y: unset !important;">
+            <div style="position: relative;top: -5px;" class="btn Btn-Green fileinput-button-css" *ngIf="!imageChangedEvent; else uploadButton"><span>Upload
+               image</span>
+           <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file" (change)="fileBgImageChangeEvent($event)">
+       </div>
+       <ng-template #uploadButton> 
+      <div style="position: relative;top: -5px;" class="btn Btn-Green fileinput-button-css"><span>Upload
+               image</span>
+           <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file" (change)="fileBgImageChangeEvent($event)">
+       </div>
+   </ng-template>
             <div>
                <ul style="padding: 0 15px;">
                   <li>For optimal results, your logo should fit within the
@@ -432,7 +441,8 @@
             </div>
             <br>
             <div>
-               <div [hidden]="!imageSelected">
+               <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px'}"></ngx-loading>
+               <div [hidden]="!imageChangedEvent">
                   <!-- <image-cropper [imageChangedEvent]="imageSelected"
                   [maintainAspectRatio]="false" [onlyScaleDown]="true"
                   [roundCropper]="false" format="jpg" outputType="base64"
@@ -440,7 +450,7 @@
                   (imageLoaded)="loadThumbnailImage()"
                   (imageQuality)=0 	[style.display]="showCropper ? null : 'none'"></image-cropper> -->
                   <app-img-croppr-v2
-                  [imageChangedEvent]="imageSelected"
+                  [imageChangedEvent]="imageChangedEvent"
                   [maintainAspectRatio]="true"
                   [containWithinAspectRatio]="containWithinAspectRatio"
                   [aspectRatio]="16/ 9"
@@ -458,7 +468,7 @@
                   (loadImageFailed)="loadImageFailed()">
                   </app-img-croppr-v2>
                </div>
-               <div *ngIf="!imageSelected">
+               <div *ngIf="!imageChangedEvent">
                   <legend style="background: #cacaca; height: 227px; margin-bottom: 5px;">
                   </legend>
                </div>
