@@ -146,7 +146,7 @@
                                             <h6 *ngIf="learningTrack.published && !isPartnerView" class="view-banner published" translate>Published</h6>
                                         </td>
                                         <td>
-                                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')" class="row">
+                                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')">
                                                 <div class="progress">
                                                     <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{learningTrack.progress}}%" [ngStyle]="{'width': learningTrack.progress + '%'}" style="border-radius:1px;" role="progressbar">
                                                     </div>
