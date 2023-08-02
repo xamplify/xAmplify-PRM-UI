@@ -64,5 +64,5 @@ export class SaveVideoFile {
     partnerIds = []
     partnerGroupSelected = false;
     partnershipIds = [];
-    isPublishedToPartnerGroups = false;
+    publishedToPartnerGroups = false;
  }
