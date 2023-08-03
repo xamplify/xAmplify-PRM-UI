@@ -440,4 +440,9 @@
     margin-top: 26px;
   } 
 } 
+@media only screen and (min-width: 900px) and (max-width: 1322px) {  
+  .add-contnet-poup-paddibg {
+    margin-top: 26px;
+  } 
+} 
 

@@ -406,7 +406,7 @@
                 </li>
               </ul>
             </div>
-            <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8" style="margin-top: 20px;">
+            <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8 " style="margin-top: 20px;">
               <app-pagination [pagination]="assetPagination" (notifyParent)="setAssetPage($event)"
                 (notifyParentDropDown)="listAssets($event)" [hidden]="assetLoader.isLoading">
               </app-pagination>
@@ -1139,7 +1139,7 @@
                   </tbody>
                 </table>
               </div>
-              <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8">
+              <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8 add-contnet-poup-paddibg">
                 <app-pagination [pagination]="assetPagination" (notifyParent)="setAssetPage($event)"
                   (notifyParentDropDown)="listAssets($event)" [hidden]="assetLoader.isLoading">
                 </app-pagination>

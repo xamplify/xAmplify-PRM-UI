@@ -2347,3 +2347,7 @@ button.table-scbscribe-btn:hover {
   pointer-events: none;
   cursor: not-allowed;
 }
+/* success msg extra br hide */
+#responseMessage br {
+  display: none !important;
+}

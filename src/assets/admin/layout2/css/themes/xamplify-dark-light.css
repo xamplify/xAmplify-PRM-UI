@@ -223,8 +223,8 @@ ul.alt-row-style1 li a {
 }
 .td-new,
 th {
-  border: 1px solid #2f4857 !important;
-  /* border: 1px solid #2f4857 !important; old one */
+  /* border: 1px solid #2f4857 !important; */
+  border: transparent !important;
 }
 /* td > button {
   background-color: #00a99d !important;
@@ -1768,4 +1768,11 @@ table.table.table-allsideboders {
 }
 rect.highcharts-background {
   fill: none !important;
+}
+input.transparent {
+  background: transparent;
+}
+
+input.transparent:active, input.transparent:focus {
+  border: none !important;
 }
