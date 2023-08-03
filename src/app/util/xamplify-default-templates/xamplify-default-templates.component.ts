@@ -37,6 +37,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   editTemplate(){
    let self = this;
     let emailTemplate = this.xamplifyDefaultTemplate;
+    console.log(emailTemplate);
     if(emailTemplate.jsonBody!=undefined){
       var request = function (method, url, data, type, callback) {
         var req = new XMLHttpRequest();
@@ -83,6 +84,34 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         swal( "", "Whoops! We are unable to save this template because you deleted '{{PARTNER_NAME}}' tag.", "error" );
         return false;
       }
+      if("TRACK_PUBLISH"==emailTemplate['typeInString'] && jsonContent.indexOf("track_title") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted 'Track Title' tag.", "error" );
+        return false;
+      }
+      if("PLAYBOOK_PUBLISH"==emailTemplate['typeInString'] && jsonContent.indexOf("playbook_title") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted 'playbook_title' tag.", "error" );
+        return false;
+      }
+      if("ASSET_PUBLISH"==emailTemplate['typeInString'] && jsonContent.indexOf("Asset_name") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted 'Asset_name' tag.", "error" );
+        return false;
+      }
+      if("SHARE_LEAD"==emailTemplate['typeInString'] && jsonContent.indexOf("shareLeadListName") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted 'shareLeadListName' tag.", "error" );
+        return false;
+      }
+      if(("TRACK_PUBLISH"==emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH"==emailTemplate['typeInString']) && jsonContent.indexOf("published_date") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted 'published_date' tag.", "error" );
+        return false;
+      }
+      if(("ASSET_PUBLISH"==emailTemplate['typeInString'] || "SHARE_LEAD"==emailTemplate['typeInString']) && jsonContent.indexOf("shared_date") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted 'shared_date' tag.", "error" );
+        return false;
+      }
+      if(("TRACK_PUBLISH"==emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH"==emailTemplate['typeInString'] || "ASSET_PUBLISH"==emailTemplate['typeInString'] || "SHARE_LEAD"==emailTemplate['typeInString']) && jsonContent.indexOf('Vendor_company_name') < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted 'Vendor_company_name' tag.", "error" );
+        return false;
+      }
       if(jsonContent.indexOf("<Vanity_Company_Logo_Href>") < 0){
         swal( "", "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag.", "error" );
         return false;
@@ -118,13 +147,44 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
       }
         self.updateTemplate(emailTemplate);
       };
+      
+      let emailTemplateType = emailTemplate.typeInString
 
-      var mergeTags = [{ name: 'First Name', value: '{{firstName}}' },
+      if("FORGOT_PASSWORD"==emailTemplateType || "ACCOUNT_ACTIVATION"==emailTemplateType || "JOIN_VENDOR_COMPANY"==emailTemplateType || "JOIN_MY_TEAM"==emailTemplateType){
+        var mergeTags = [{ name: 'First Name', value: '{{firstName}}' },
         { name: 'Last Name', value: '{{lastName}}' },
         { name: 'Full Name', value: '{{fullName}}' },
         { name: 'Email Id', value: '{{emailId}}' },
         ];
-
+      }
+     if("TRACK_PUBLISH"==emailTemplateType){
+        mergeTags = [{ name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
+        { name: 'Learning Track Title', value: 'track_title' },
+        { name: 'Published On', value: 'published_date' },
+        { name: 'Vendor Company Name', value: 'Vendor_company_name' },
+        ];
+      }
+      if("PLAYBOOK_PUBLISH"==emailTemplateType){
+        mergeTags = [{ name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
+        { name: 'Playbook Title', value: 'playbook_title' },
+        { name: 'Published On', value: 'published_date' },
+        { name: 'Vendor Company Name', value: 'Vendor_company_name' },
+        ];
+      }
+      if("ASSET_PUBLISH"==emailTemplateType){
+        mergeTags = [{ name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
+        { name: 'Asset Name', value: 'Asset_name' },
+        { name: 'Shared On', value: 'shared_date' },
+        { name: 'Vendor Company Name', value: 'Vendor_company_name' },
+        ];
+      }
+      if("SHARE_LEAD"==emailTemplateType){
+        mergeTags =[{ name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
+        { name: 'Share-Lead List Name', value: 'shareLeadListName' },
+        { name: 'Shared On', value: 'shared_date' },
+        { name: 'Vendor Company Name', value: 'Vendor_company_name' },
+        ];
+      }
       var beeUserId = "bee-"+emailTemplate.companyId;
       var roleHash = self.authenticationService.vendorRoleHash;
       var beeConfig = {
