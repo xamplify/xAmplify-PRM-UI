@@ -204,7 +204,7 @@
 															<td style="width: 12%;">
 																<div class="thumbnail-wrapper">
 																	<img class="custom-image-css"
-																		src="{{asset?.thumbnailPath}}" alt="Image Not Found" onerror="this.src='assets/images/no-preview.jpg';"> 
+																		src="{{asset?.thumbnailPath}}" alt="Image Not Found" onerror="this.src='assets/images/no-preview.jpg';" style="width: 180px; height: 100px;border-radius:5px;"> 
 																</div>
 															</td>
 															<td>
@@ -240,7 +240,9 @@
 																</h6>
 																<!---XNFR-255-->
 															</td>
-															<td class="text-center">{{asset?.assetType}}</td>
+															<td class="text-center">
+																<span class="assettype-bgcolor">{{asset?.assetType}} </span>
+																</td>
 															<td class="text-center"><app-timestamp	[dateAndTime]="asset?.displayTime"></app-timestamp></td>
 															<td id="actions-row">
 																<div class="actions-block override-actions ActionAlign" *ngIf="!asset?.publishingOrWhiteLabelingInProgress">
