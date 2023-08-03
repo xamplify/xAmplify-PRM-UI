@@ -7,8 +7,8 @@
 				<a  (click)="goToManage()" style="font-size: 13px;">( {{manageAssetsText}} )</a>
 			</h4>
 			<span class="close-circle" title="Refresh"  (click)="refresh()" translate>
-				 <i class="fa fa-refresh" aria-hidden="true"></i>
-			</span>
+				<a><i class="fa fa-refresh" aria-hidden="true"></i></a>
+		   </span>
 			<button *ngIf="!isPartnerView" class="btn btn-primary add-design-upload" (click)="goToAddDam()">
 				<i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i>
 				<span class="hidden-xs" translate>Design / Upload</span>
@@ -70,6 +70,7 @@
 								<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset" (assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
 								(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
 								(assetGridViewActionsDeleteActionEmitter) = "assetGridViewActionsDeleteActionEmitter($event)"
+								(assetGridViewRefreshListEmitter)="refresh()"
 								>
 								</app-asset-grid-view-actions>
 							</div>
