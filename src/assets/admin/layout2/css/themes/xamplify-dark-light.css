@@ -1769,10 +1769,20 @@ table.table.table-allsideboders {
 rect.highcharts-background {
   fill: none !important;
 }
-input.transparent {
+
+/* form fields white-bg */
+/* input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid {
   background: transparent;
 }
-
-input.transparent:active, input.transparent:focus {
+input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:active, input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:focus {
   border: none !important;
+  outline: none !important;
+} */
+.search-box-item-clear, input {
+  background: transparent;
+  fill: none;
+}
+.search-box-item-clear, input:active, input:focus {
+  border: none !important;
+  outline: none !important;
 }

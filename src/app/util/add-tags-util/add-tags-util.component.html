@@ -14,11 +14,11 @@
                     <div class="form-group" id="tagNamesDiv">
                         <label>Name <span class="required">*</span></label>
                         <div *ngIf="isAddTag">
-                            <tag-input class="transparent" [(ngModel)]="tagNames" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'" [secondaryPlaceholder]="'Add a tag & press Enter'" [validators]="validatorsTag" 
+                            <tag-input [(ngModel)]="tagNames" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'" [secondaryPlaceholder]="'Add a tag & press Enter'" [validators]="validatorsTag" 
                             (keyup)="validateTagName($event)" (onRemove)="validateTagName($event)" required></tag-input>
                         </div>
                         <div *ngIf="!isAddTag">
-                            <input class="form-control transparent" type="text" [(ngModel)]="tag.tagName" (keyup)="validateTagName($event)">
+                            <input class="form-control" type="text" [(ngModel)]="tag.tagName" (keyup)="validateTagName($event)">
                         </div>
                     </div>
                 </ng-container>
