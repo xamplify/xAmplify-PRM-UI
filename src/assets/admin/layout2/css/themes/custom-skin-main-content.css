@@ -1645,3 +1645,26 @@ button.swal2-confirm.styled:hover {
 table.table.table-allsideboders {
   border: 1px solid var(--border-color) !important;
 }
+
+/* form fields white-bg */
+/* input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid {
+  background: transparent;
+}
+input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:active, input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:focus {
+  border: none !important;
+  outline: none !important;
+}
+
+input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched, input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched:active , input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched:focus {
+  background: transparent;
+  fill: none;
+} */
+.search-box-item-clear, input {
+  background: transparent;
+  fill: none;
+}
+.search-box-item-clear, input:active, input:focus {
+  border: none !important;
+  outline: none !important;
+}
+
