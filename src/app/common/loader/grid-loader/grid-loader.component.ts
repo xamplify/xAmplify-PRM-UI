@@ -16,7 +16,7 @@ export class GridLoaderComponent implements OnInit {
 		if (this.count == 4) {
 			this.rowsCount = [0, 1, 2, 3];
 		} else {
-			this.rowsCount = [0, 1, 2, 3, 4, 5, 6, 7];
+			this.rowsCount = [0, 1, 2, 3];
 		}
 	}
 

@@ -651,7 +651,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 						this.roleNames = "Partner";
 					}
 				/****XBI-1723*****/
-				alert(this.roleNames);
 			}
 
 				

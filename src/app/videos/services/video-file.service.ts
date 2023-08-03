@@ -39,10 +39,8 @@ export class VideoFileService {
     URL: string = this.authenticationService.REST_URL + 'videos/';
     campaignReport : boolean = false;
     constructor(public envService: EnvService, private http: Http, private authenticationService: AuthenticationService,public httpClient: HttpClient) {
-        console.log('VideoFileService constructor');
     }
     processVideoFile(responsePath: any): Observable<any> {
-        console.log('response path in service ' + responsePath);
         const url = this.URL + 'process-video?path=' + responsePath + '&userId=' +
             this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, '')
@@ -62,7 +60,6 @@ export class VideoFileService {
         const headers = new Headers();
         headers.append('Content-Type', 'multipart/form-data');
         headers.append('Accept', 'application/json');
-        console.log(formData);
         const options = new RequestOptions({ headers: headers });
         const url = this.URL + 'upload-own-thumbnail?access_token=' + this.authenticationService.access_token +
             '&userId=' + this.authenticationService.user.id;
@@ -82,7 +79,6 @@ export class VideoFileService {
             .catch(this.handleError);
     }
     loadVideoFiles(pagination: Pagination): Observable<SaveVideoFile[]> {
-        console.log(pagination);
         let url: any
         let userId = this.authenticationService.user.id;
 
@@ -98,17 +94,14 @@ export class VideoFileService {
                 url = this.URL + 'channel-videos/' + this.categoryNumber + '?userId=' + userId + '&access_token=' + this.authenticationService.access_token;
             }*/
         }
-        console.log(url);
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
     loadVideoForViewsReport(pagination: Pagination): Observable<SaveVideoFile[]> {
-        console.log(pagination);
         const constURL = this.authenticationService.REST_URL + 'admin/';
         const url = constURL + 'video_report/' + this.viewsCategoryNumber +
             '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
-        console.log(url);
         return this.http.post(url, pagination, '')
             .map(this.extractData)
             .catch(this.handleError);
@@ -128,14 +121,12 @@ export class VideoFileService {
             .catch(this.handleError);
     }
     getVideoByShortenerUrlAlias(shortnerUrlAlias: string): Observable<SaveVideoFile> {
-        console.log(shortnerUrlAlias);
         const url = this.URL + 'video-by-shortenerurlalias?shortenUrlAlias=' + shortnerUrlAlias;
         return this.http.get(url, '')
           .map(this.extractData)
           .catch(this.handleError);
     }
     getVideoByShortenerUrlAliasXamplify(shortnerUrlAlias: string): Observable<SaveVideoFile> {
-      console.log(shortnerUrlAlias);
       const url = this.envService.SERVER_URL+'xtremand-rest/videos/' + 'video-by-shortenerurlalias?shortenUrlAlias=' + shortnerUrlAlias;
       return this.http.get(url, '')
         .map(this.extractData)
@@ -161,15 +152,12 @@ export class VideoFileService {
 
     }
     deleteVideoFile(alias: string): Observable<SaveVideoFile> {
-        console.log('deleted video alias is ' + alias);
         const url = this.URL + 'video-status-change/' + alias +"/"+ this.authenticationService.user.id +'?status=DELETE&access_token=' + this.authenticationService.access_token;
-        console.log('delete url is ' + url);
         return this.http.get(url, '')
             .map(this.extractData)
             .catch(this.handleErrorDelete);
     }
     saveCalltoActionUser(emailLogReport, id) {
-        console.log(emailLogReport);
         try {
             const url = this.URL + id+'/user/save-call-action-user';
             return this.httpClient.post(url, emailLogReport).catch(this.handleError);
@@ -192,18 +180,13 @@ export class VideoFileService {
     logEmbedVideoActions(xtremandLog: XtremandLog) {
         xtremandLog.campaignId = 0;
        // xtremandLog.userId = 0;
-        console.log(this.timeValue);
         try {
             if (xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTime; }
             if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
-            console.log(this.campaignTimeValue);
             if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 1 && this.pause360Action === true)
                 || (xtremandLog.actionId === 2 && this.pause360Action === true)) {
-                console.log('skipped api calling for video log');
                 this.replyVideo = false;
             } else {
-                //    if(xtremandLog.actionId === 8 ) { this.isSliderClicked = true;}
-                console.log(xtremandLog);
                 const url = this.authenticationService.REST_URL + 'user/log_embedvideo_action';
                 return this.http.post(url, xtremandLog)
                     .map(this.extractData)
@@ -219,13 +202,10 @@ export class VideoFileService {
             let skipPause: any;
             if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
             if (xtremandLog.actionId === 8) { skipPause = true; }
-            console.log(this.campaignTimeValue);
             if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 1 && this.pauseAction === true)
                 || (xtremandLog.actionId === 2 && this.pauseAction === true)) {
-                console.log('service called replyed and ended the video');
                 this.replyVideo = false;
             } else {
-                console.log(xtremandLog);
                 const url = this.authenticationService.REST_URL + 'user/logVideoAction';
                 return this.http.post(url, xtremandLog)
                     .map(this.extractData)
@@ -248,10 +228,8 @@ export class VideoFileService {
             .catch(this.handleErrorLogAction);
     }
     loadCampaignVideos(pagination: Pagination, categoryId: number) {
-        console.log(pagination);
         const url = this.URL + 'loadVideos/'+ categoryId +
             '?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token;
-        console.log(url);
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -278,13 +256,10 @@ export class VideoFileService {
             let skipPause: any;
             if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
             if (xtremandLog.actionId === 8) { skipPause = true; }
-            console.log(this.campaignTimeValue);
             if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 1 && this.pauseAction === true)
                 || (xtremandLog.actionId === 2 && this.pauseAction === true)) {
-                console.log('service called replyed and ended the video');
                 this.replyVideo = false;
             } else {
-                console.log(xtremandLog);
                 const url = this.authenticationService.REST_URL + 'user/logVideoActionSms';
                 return this.http.post(url, xtremandLog)
                     .map(this.extractData)
@@ -332,7 +307,6 @@ export class VideoFileService {
     
     extractData(res: Response) {
         const body = res.json();
-        console.log(body);
         return body || {};
     }
     handleErrorLogAction(error: any) {
