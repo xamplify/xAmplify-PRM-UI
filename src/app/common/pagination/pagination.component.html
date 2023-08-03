@@ -20,7 +20,7 @@
      </select>
   </div>
 </div>
-<  ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination padding">
+<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination padding">
   <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
      <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">
      <span><i data-toggle="tooltip" data-placement="bottom" title="First" class="fa fa-angle-double-left" aria-hidden="true"></i></span>
@@ -44,6 +44,6 @@
      <span><i data-toggle="tooltip" data-placement="bottom" title="Last" class="fa fa-angle-double-right" aria-hidden="true"></i></span>
      </a>
   </li>
-</>
+</ul>
 <br>
 <span class="total-records-bg-color"><strong>Total Records : {{pagination?.totalRecords}}</strong></span>
