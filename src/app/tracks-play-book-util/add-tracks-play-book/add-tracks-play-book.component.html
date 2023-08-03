@@ -12,25 +12,26 @@
     <div id="step-1" [attr.class]="stepOneTabClass" (click)="changeActiveTab('step-1')">
       <div class="cenetered-block">
           <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Details1.svg">
-        <h5 class="hidden-xs" translate>Details</h5>
+        <h5 translate>Details</h5>
       </div>
     </div>
     <div id="step-2" [attr.class]="stepTwoTabClass" (click)="changeActiveTab('step-2')">
       <div class="cenetered-block">
         <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Description2.svg">
-        <h5 class="hidden-xs" translate>Description</h5>
+        <!-- class="hidden-xs" -->
+        <h5 translate>Description</h5> 
       </div>
     </div>
     <div id="step-3" [attr.class]="stepThreeTabClass" (click)="changeActiveTab('step-3')">
       <div class="cenetered-block">
         <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Assets3.svg">
-        <h5 class="hidden-xs" translate>Assets</h5>
+        <h5 translate>Assets</h5>
       </div>
     </div>
     <div id="step-4" [attr.class]="stepFourTabClass" (click)="changeActiveTab('step-4')">
       <div class="cenetered-block">
         <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/share4.svg">
-        <h5 class="hidden-xs" translate>Share</h5>
+        <h5 translate>Share</h5>
       </div>
     </div>
   </div>
@@ -157,7 +158,7 @@
                                 <div class="col-sm-5" style="padding-left: 0px !important;" 
                                 data-toggle="tooltip" data-placement="bottom"  title="{{tag?.tagName}}">
                                 <div  class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 5px !important;">
-                                    {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length>15">..</span></div>
+                                    {{tag.tagName | slice:0:10}} <span *ngIf="tag.tagName?.length>15">..</span></div>
                               </div>
                               </td>
                               <td style="padding: 5px;vertical-align: middle;"
@@ -173,7 +174,7 @@
                                   *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
                                   data-toggle="tooltip" data-placement="bottom" title="{{tagsListSecondColumn[i]?.tagName}}">
                                   <div   class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 5px !important;">
-                                    {{tagsListSecondColumn[i].tagName | slice:0:15}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span></div>
+                                    {{tagsListSecondColumn[i].tagName | slice:0:10}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span></div>
 
                                 </div>
                               </td>

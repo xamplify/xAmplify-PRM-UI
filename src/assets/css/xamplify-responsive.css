@@ -339,6 +339,9 @@
     flex-direction: row;
     flex-wrap: nowrap;
   }
+  .cenetered-block h5{
+    font-size: 10px !important;
+  }
 }
 @media only screen and (min-width: 300px) and (max-width: 580px) {  
   /* myprofile old dropdown */
@@ -418,5 +421,23 @@
   .responsive-screen-zeropadding {
     padding: 0px;
   }
+} 
+/* Track Builder Add Tracks Assets section*/
+@media only screen and (min-width: 1155px) and (max-width: 1264px) {  
+  .custom-height {
+      height: 157px !important;
+  }
+} 
+
+@media only screen and (min-width: 620px) and (max-width: 1156px) {  
+  .custom-height {
+      height: 175px !important;
+  }
+} 
+
+@media only screen and (min-width: 992px) and (max-width: 1078px) {  
+  .scroll-top-abj {
+    margin-top: 26px;
+  } 
 } 
 

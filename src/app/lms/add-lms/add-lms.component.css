@@ -7,3 +7,8 @@
     color: #fff;
     border: 1px solid #3575b5;
   }
+
+.btn-abjustmentin-breadcrumbs {
+  margin: 2px 4px;
+  float: right;
+}
