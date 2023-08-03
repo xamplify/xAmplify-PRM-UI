@@ -215,7 +215,7 @@
                 </section>
     
                 <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                    <div class="col-md-3 col-sm-4 col-xs-12 tab_mt_grid" *ngFor="let learningTrack of pagination.pagedItems ;let i =index" id="LearningTrackListDiv_{{learningTrack.id}}">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_grid" *ngFor="let learningTrack of pagination.pagedItems ;let i =index" id="LearningTrackListDiv_{{learningTrack.id}}">
                         <div class="grid-box" id="box-dark-defalut-clr">
                             <img class="img-grid-track " [src]="learningTrack.featuredImage" onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack.title}}">
                             <h4 class="mt5 mb5 f-w-600 grid-title"  style="float: none !important;overflow: hidden; padding-right: 3px;" translate>
