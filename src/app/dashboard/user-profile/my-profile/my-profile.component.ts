@@ -1800,7 +1800,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	themeName = "Light Theme";
    showSeletThemeSettings = false;
 	activateTab(activeTabName: any) {
-		alert("Active Tab Name"+activeTabName);
 		this.activeTabName = activeTabName;
 		if (this.activeTabName == "personalInfo") {
 			this.activeTabHeader = this.properties.personalInfo;
