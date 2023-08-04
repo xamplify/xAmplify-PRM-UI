@@ -1806,7 +1806,7 @@ input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:active, input.
   background: transparent;
   fill: none;
 }
-.search-box-item-clear, input:active, input:focus {
+/* .search-box-item-clear, input:active, input:focus {
   border: none !important;
   outline: none !important;
-}
+} */

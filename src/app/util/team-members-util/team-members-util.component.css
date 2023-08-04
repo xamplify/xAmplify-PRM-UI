@@ -408,3 +408,6 @@ hr {
 .default-btn-cursor {
   cursor: default !important;
 }
+.alert-success .close.of-this-component {
+  margin-top: 5px;
+}

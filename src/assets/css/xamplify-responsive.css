@@ -435,5 +435,17 @@
     margin-top: 26px;
   } 
 } 
+/* Theme View */
+@media only screen and (min-width: 1000px) and (max-width:1133px) {  
+  .desktopview{
+    width: 70% !important;
+  } 
+}
+
+
+
+
+
+
 
 

@@ -1682,10 +1682,10 @@ input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched, input.ng2-tag-inpu
   background: transparent;
   fill: none;
 }
-.search-box-item-clear, input:active, input:focus {
+/* .search-box-item-clear, input:active, input:focus {
   border: none !important;
   outline: none !important;
-}
+} */
 .help-iconbgadd {
   border: 1px solid var(--top-button-border-color) !important;
 }
