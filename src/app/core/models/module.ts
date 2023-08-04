@@ -120,5 +120,8 @@ export class Module {
     topNavBarLoader = false;
     logoutButtonClicked =false;
 
+    /****XNFR-326****/
+    emailNotificationSettings = false;
+
 
 }

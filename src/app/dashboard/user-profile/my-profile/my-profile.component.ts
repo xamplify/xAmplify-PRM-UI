@@ -299,6 +299,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/*** XNFR-238******/
 	searchWithModuleName:any;
 	showTemplates = false;
+	/****XNFR-326*****/
+	showEmailNotificationSettingsOption = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -1798,6 +1800,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	themeName = "Light Theme";
    showSeletThemeSettings = false;
 	activateTab(activeTabName: any) {
+		alert("Active Tab Name"+activeTabName);
 		this.activeTabName = activeTabName;
 		if (this.activeTabName == "personalInfo") {
 			this.activeTabHeader = this.properties.personalInfo;
@@ -1903,6 +1906,17 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				  self.ngxloading = false;
  			}, 500);
 			this.activeTabHeader = this.properties.supportText;
+		}
+		/****XNFR-326*****/
+		else if(this.activeTabName==this.properties.emailNotificationSettings){
+			this.ngxloading = true;
+			this.showEmailNotificationSettingsOption = false;
+			let self = this;
+			setTimeout(()=>{                         
+				self.showEmailNotificationSettingsOption = true;
+				self.ngxloading = false;
+		   }, 500);
+		  this.activeTabHeader = this.properties.emailNotificationSettings;
 		}
 		this.referenceService.goToTop();
 		this.showThemes();
