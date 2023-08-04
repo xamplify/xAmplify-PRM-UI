@@ -67,7 +67,7 @@
                                             <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo" alt="" />
                                         </div>
                                         <div class="vertical-center">
-                                            <div class="panel panel-info mWid" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor">
+                                            <div class="panel panel-info mWid" id="form-panel-info" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor">
                                                 <div *ngIf="form.showTitleHeader" class="panel-heading" id="form-panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
                                                     <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                                                 </div>

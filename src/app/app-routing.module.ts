@@ -144,7 +144,7 @@ export const routes: Routes = [
 	{ path: 'axAa/:alias', component: AccessAccountComponent },
 	{ path: 'download/:type', component: DownloadTemplateComponent },
 	{ path: 'samlsecurity/:alias', component: SamlsecurityauthComponent },
-	{ path: 'au/:alias', component: SamlsecurityauthComponent },
+	{ path: 'au/:alias/:moduleToRedirect', component: SamlsecurityauthComponent },
 	{ path: 'vanity-domain-error', component: DomainErrorComponent },
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },
