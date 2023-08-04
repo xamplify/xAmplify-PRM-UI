@@ -318,6 +318,9 @@ td h6 {
         margin-left: -23px;
         margin-top: -5px;
     }
+    .dflex-action{
+      display: flex!important;
+    }
   }
 
   .grid-box-height{
