@@ -99,7 +99,7 @@
                    <a class="dropdown-toggle circlebg-none-v" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                    <img alt="" class="img-circle" src="{{model.profilePicutrePath}}" (error)="errorHandler($event)" />
                    <span class="username username-hide-on-mobile">
-                   {{model.displayName | slice:0:17}}<span *ngIf="model.displayName?.length>17">..</span></span> <i class="fa fa-angle-down"></i>
+                   {{model.displayName | slice:0:7}}<span *ngIf="model.displayName?.length>7">..</span></span> <i class="fa fa-angle-down"></i>
                    </a>
                    <ul class="dropdown-menu dropdown-menu-default">
                       <app-modal-popup-loader *ngIf="authenticationService?.module?.contentLoader || myVendorsLoader" [height]="180"></app-modal-popup-loader>

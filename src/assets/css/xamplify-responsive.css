@@ -355,14 +355,15 @@
     background-color: transparent;
   } 
   a.dropdown-toggle.circlebg-none-v {
+    background: transparent !important;
     border: none !important;
   }
   .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > i {
     display: none !important;
   }
   .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
-    height: 36px;
-    width: 36px;
+    height: 34px;
+    width: 34px;
   }
    /* myprofile old dropdown end*/
 }
@@ -428,27 +429,11 @@
     padding: 0px;
   }
 } 
-/* Track Builder Add Tracks Assets section*/
-@media only screen and (min-width: 1155px) and (max-width: 1264px) {  
-  .custom-height {
-      height: 157px !important;
-  }
-} 
-
-@media only screen and (min-width: 620px) and (max-width: 1156px) {  
-  .custom-height {
-      height: 175px !important;
-  }
-} 
 
 @media only screen and (min-width: 992px) and (max-width: 1078px) {  
   .scroll-top-abj {
     margin-top: 26px;
   } 
 } 
-@media only screen and (min-width: 900px) and (max-width: 1322px) {  
-  .add-contnet-poup-paddibg {
-    margin-top: 26px;
-  } 
-} 
+
 

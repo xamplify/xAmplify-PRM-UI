@@ -1331,6 +1331,25 @@ a.dropdown-toggle.circlebg-none-v:hover {
   opacity: 0.8;
   color: var(--top-button-value-color) !important;
 }
+@media only screen and (min-width: 300px) and (max-width: 580px) {  
+  a.dropdown-toggle.circlebg-none-v {
+    background: transparent !important;
+    border: none !important;
+  }
+  a.dropdown-toggle.circlebg-none-v:hover {
+    background: transparent !important;
+  }
+  .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle:hover {
+    background-color: transparent !important;
+  } 
+  .page-header.navbar.top-menu.navbar-nav> li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
+    background-color: transparent !important;
+  }
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
+  background-color: var(--top-buton-color) !important;
+  border: 1px solid var(--top-button-border-color) !important;
+}
 .nav .open > a,
 .nav .open > a:focus,
 .nav .open > a:hover {
@@ -1667,4 +1686,9 @@ input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched, input.ng2-tag-inpu
   border: none !important;
   outline: none !important;
 }
-
+.help-iconbgadd {
+  border: 1px solid var(--top-button-border-color) !important;
+}
+.helpcircle-cu {
+  color: var(--btn-secondary-text-color) !important;
+}
