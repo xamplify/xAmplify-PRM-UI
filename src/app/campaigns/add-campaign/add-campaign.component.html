@@ -622,6 +622,7 @@
                             <app-landing-page-loader *ngIf="pagesLoader"></app-landing-page-loader>
                             <div *ngIf="!pagesLoader">
                                 <!--Filter Icon-->
+                                <div class="mb-flex">
                                 <button type="submit"  class="float-right fontsize-16px filter-button-color" [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv" (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
                                     <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
                                     *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
@@ -640,6 +641,7 @@
                                     <select class="form-control" [(ngModel)]="pagesSortOption.selectedCampaignEmailTemplateDropDownOption" (ngModelChange)="sortPages($event)" id="select-dropdown" [ngModelOptions]="{standalone: true}">
                                     <option   *ngFor="let option of pagesSortOption.eventCampaignRecipientsDropDownOptions" [ngValue]="option">{{option.name}}</option>
                                     </select>
+                                </div>
                                 </div>
                                 <!--List Of Pages-->
                                 <div class="portlet-body padding-top-45px">

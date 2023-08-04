@@ -75,3 +75,11 @@ legend {
   position: relative !important;
   float: right;
 }
+@media screen and (max-width:578px){
+  .btn-width{
+    padding: 7px 6px!important;
+  }
+    .mr2{
+     margin-right: 2px;
+    }
+  }
