@@ -1068,6 +1068,20 @@ sendCampaignTestEmail(data:any){
   return this.callPostMethod(url,data);
 }
 
+/******XNFR-326******/
+findAssetPublishEmailNotificationOption() {
+  let companyProfileName = this.getSubDomain();
+  let url = this.REST_URL+"admin/assetPublishedEmailNotification/";
+  if(companyProfileName!=""){
+    url+= "companyProfileName/"+companyProfileName;
+  }else{
+    url+= "loggedInUserId/"+this.getUserId();
+  }
+  let apiUrl= url+"?access_token=" + this.access_token;
+  return this.callGetMethod(apiUrl);
+  
+}
+
 
 /****XNFR-317****/
 

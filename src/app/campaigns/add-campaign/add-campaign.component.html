@@ -758,7 +758,7 @@
                                                 </ng-container>
                                                 <ng-container *ngIf="!emailReceiversCountError && !campaign?.oneClickLaunch">
                                                     <span *ngIf="campaign?.emailNotification" class="success float-right">Email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
-                                                    <span *ngIf="!campaign?.emailNotification" class="required float-right">No email will be sent.</span>
+                                                    <span *ngIf="!campaign?.emailNotification" class="required float-right">No emails will be sent.</span>
                                                 </ng-container>
                                             </div>
                                             <table class="table table-filter" *ngIf="campaignRecipientsPagination?.totalRecords==0" aria-describedby="">
