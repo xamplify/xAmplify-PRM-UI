@@ -64,6 +64,9 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 	showFilter = true;
 	selectedTab = 1;
 
+	/****XNFR-326****/
+	@Input() isTrackOrPlaybookPublishedEmailNotification = false;
+
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService) {
 		this.loggedInUserId = this.authenticationService.getUserId();

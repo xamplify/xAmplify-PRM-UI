@@ -13,7 +13,6 @@ export class HubSpotService {
     hubspotAuthenticationURL = this.authenticationService.REST_URL + 'hubspot/';
 
     constructor(private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService) {
-        console.log(logger);
     }
 
     configHubSpot() {

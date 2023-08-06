@@ -134,6 +134,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     /****XNFR-255*****/
     hasShareWhiteLabeledContentAccess = false;
+    /****XNFR-326***/
+    isAssetPublishedEmailNotification = false;
+    assetPublishEmailNotificationLoader = true;
 
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -187,8 +190,23 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.listCategories();
         /*******XNFR-255***/
         this.findShareWhiteLabelContentAccess();
-        
+        /****XNFR-326*****/
+        this.findAssetPublishEmailNotificationOption();
 	}
+
+     /****XNFR-326*****/
+    findAssetPublishEmailNotificationOption() {
+        this.assetPublishEmailNotificationLoader = true;
+        this.authenticationService.findAssetPublishEmailNotificationOption()
+        .subscribe(
+            response=>{
+                this.isAssetPublishedEmailNotification = response.data;
+                this.assetPublishEmailNotificationLoader = false;
+            },error=>{
+                this.assetPublishEmailNotificationLoader = false;
+            });
+    }
+
     /*******XNFR-255***/
     findShareWhiteLabelContentAccess() {
         this.loading = true;

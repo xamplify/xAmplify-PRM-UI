@@ -158,7 +158,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   filteredCategoryNames: any;
 
   ckeditorEvent: any;
-  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();;
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   isAdd: boolean = true;
   @Input() type: string;
 
@@ -181,6 +181,10 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   selectedFileType = "";
   fileTypesForFilter:Array<any> = new Array<any>();
   uploadButton = false;
+  /****XNFR-326*****/
+  isTrackOrPlaybookPublishedEmailNotification = false;
+  trackOrPlaybookPublishEmailNotificationLoader = true;
+ /****XNFR-326*****/
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
@@ -222,6 +226,20 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       this.stepThreeTabClass = this.disableTabClass;
       this.stepFourTabClass = this.disableTabClass;
     }
+    /****XNFR-326******/
+    this.findTrackOrPlaybookPublishEmailNotificationOption();
+  }
+   /****XNFR-326******/
+  findTrackOrPlaybookPublishEmailNotificationOption() {
+    this.trackOrPlaybookPublishEmailNotificationLoader = true;
+    this.authenticationService.findTrackOrPlaybookPublishEmailNotificationOption(this.type)
+    .subscribe(
+        response=>{
+            this.isTrackOrPlaybookPublishedEmailNotification = response.data;
+            this.trackOrPlaybookPublishEmailNotificationLoader = false;
+        },error=>{
+            this.trackOrPlaybookPublishEmailNotificationLoader = false;
+        });
   }
 
   onReady(event: any) {
