@@ -90,7 +90,7 @@
         <option *ngFor="let pageNo of paginationComponent.numberPerPage" [ngValue]="pageNo">{{pageNo.name}}</option>
       </select>
     </div>
-    <div *ngIf="!sfcfPager.pages || sfcfPager.pages.length == 0" style="margin-bottom: 10px;">
+    <div class="text-center" *ngIf="!sfcfPager.pages || sfcfPager.pages.length == 0" style="margin-bottom: 10px;">
       <span>There are no custom fields in your {{ integrationType | titlecase }} account.</span>
     </div>
     <div class="modal-footer border-none">      
