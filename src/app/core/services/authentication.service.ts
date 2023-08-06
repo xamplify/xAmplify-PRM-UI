@@ -1146,5 +1146,11 @@ stopLoaders(){
 }
 
 
+/***XNFR-326***/
+getPartnerModuleCustomName(){
+  return localStorage.getItem("partnerModuleCustomName");
+}
+
+
   
 }
