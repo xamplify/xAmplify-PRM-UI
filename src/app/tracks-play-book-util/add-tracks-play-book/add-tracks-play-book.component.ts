@@ -227,13 +227,12 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       this.stepFourTabClass = this.disableTabClass;
     }
     /****XNFR-326******/
-    
-    this.findTrackOrPlaybookPublishEmailNotificationOption(this.type);
+    this.findTrackOrPlaybookPublishEmailNotificationOption();
   }
    /****XNFR-326******/
-  findTrackOrPlaybookPublishEmailNotificationOption(type:string) {
+  findTrackOrPlaybookPublishEmailNotificationOption() {
     this.trackOrPlaybookPublishEmailNotificationLoader = true;
-    this.authenticationService.findTrackOrPlaybookPublishEmailNotificationOption(type)
+    this.authenticationService.findTrackOrPlaybookPublishEmailNotificationOption(this.type)
     .subscribe(
         response=>{
             this.isTrackOrPlaybookPublishedEmailNotification = response.data;

@@ -58,6 +58,8 @@
                         {{selectedPartnershipIds?.length}} companies are selected
                       </ng-container>
                     </strong>
+                    <!---XNFR-326-->
+                    <ng-template [ngTemplateOutlet]="emailNotificationTemplate"></ng-template>
                   </div>
                 </div>
               </div>
@@ -227,7 +229,8 @@
                       {{selectedPartnerGroupIds?.length}} lists are selected
                     </ng-container>
                   </strong>
-                  <span *ngIf="!isTrackOrPlaybookPublishedEmailNotification" class="required float-right">No emails will be sent.</span>
+                  <!---XNFR-326-->
+                  <ng-template [ngTemplateOutlet]="emailNotificationTemplate"></ng-template>
                 </div>
               </div>
             </div>
@@ -315,3 +318,8 @@
   <app-preview-user-list [userListName]="selectedPartnerGroupName" [userListId]="selectedPartnerGroupId"
     (notifyParentComponent)="resetValues()"></app-preview-user-list>
 </ng-container>
+
+<!--XNFR-326---->
+<ng-template #emailNotificationTemplate>
+  <span *ngIf="!isTrackOrPlaybookPublishedEmailNotification" class="required float-right">No emails will be sent.</span>
+</ng-template>
