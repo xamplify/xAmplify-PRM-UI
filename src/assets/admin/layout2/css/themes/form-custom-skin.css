@@ -4,7 +4,7 @@
 }
 
 .label-box, .form-custom .form-control, .input-group > .input-group-addon, .input-group > .edit-field-prefix,
-.panel.panel-info, .score, #formPriceField {
+.panel.panel-info#form-panel-info, .score, #formPriceField {
   border: 1px solid var(--form-border-color) !important;
 }
 
@@ -13,7 +13,7 @@
   background-color: var(--form-page-bg-color) !important;
 }
 
-.panel.panel-info {
+.panel.panel-info#form-panel-info {
   background-color: var(--form-bg-color) !important;
 }
 
@@ -32,7 +32,7 @@
   border: 1px solid var(--form-border-color) !important;
 }
 
-.panel.panel-info, .score {
+.panel.panel-info#form-panel-info, .score {
   border-radius: 5px !important;
 }
 

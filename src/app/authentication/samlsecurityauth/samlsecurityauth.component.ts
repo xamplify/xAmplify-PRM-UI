@@ -18,6 +18,7 @@ declare var $: any;
 export class SamlsecurityauthComponent implements OnInit {
   alias: string;
   userName: string;
+  moduleToRedirect: any;
   constructor(public authenticationService: AuthenticationService, public processor: Processor,
     public activatedRoute: ActivatedRoute, public router: Router, public xtremandLogger: XtremandLogger,
     public userService: UserService, private vanityURLService: VanityURLService) { }
@@ -26,6 +27,7 @@ export class SamlsecurityauthComponent implements OnInit {
     try {
       this.processor.set(this.processor)
       this.alias = this.activatedRoute.snapshot.params['alias'];
+      this.moduleToRedirect = this.activatedRoute.snapshot.params['moduleToRedirect'];
       console.log(this.alias);
       this.checkAuthenticationSamlSecurity();
     }
@@ -113,9 +115,22 @@ export class SamlsecurityauthComponent implements OnInit {
       localStorage.setItem('currentUser', JSON.stringify(userToken));
       localStorage.setItem('defaultDisplayType', res.modulesDisplayType);
 
-      if (this.authenticationService.user.hasCompany) {
-        this.router.navigateByUrl('/home/dashboard');
-      } else {
+      // if (this.authenticationService.user.hasCompany) {
+      //   this.router.navigateByUrl('/home/dashboard');
+      // } 
+      if (this.moduleToRedirect === 'campaigns') {
+        this.router.navigateByUrl('/home/campaigns/partner/all');
+      } 
+      else if (this.moduleToRedirect === 'playbooks') {
+        this.router.navigateByUrl('/home/playbook/shared');
+      } 
+      else if (this.moduleToRedirect === 'tracks') {
+        this.router.navigateByUrl('/home/tracks/shared');
+      } 
+     else if (this.moduleToRedirect === 'assets') {
+        this.router.navigateByUrl('/home/dam/shared');
+      } 
+      else {
         this.router.navigate(['/home/dashboard/add-company-profile']);
       }
     }, (error) => {
