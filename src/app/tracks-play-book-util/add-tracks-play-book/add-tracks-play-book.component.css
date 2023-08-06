@@ -1220,9 +1220,14 @@ ul.t-b-spacings {
 }
 
 .custom-height {
-  height: 135px;
+  height: 155px;
 }
 /* 12-6-2023 sudha sri */
 .inline-box {
   display: inline-flex;
 }
+@media only screen and (min-width: 766px) and (max-width: 1783px) {  
+  .add-contnet-poup-paddibg {
+    margin-top: 26px;
+  } 
+} 

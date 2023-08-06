@@ -39,8 +39,8 @@
   <!-- End Of CSV Errors---->
 
 <div *ngIf="customResponse.isVisible">
-  <div [ngClass]="customResponse?.responseType=='SUCCESS'? 'alert alert-success':'alert alert-danger'">
-    <button (click)="customResponse.isVisible=false" type="button" class="close" aria-label="Close">
+  <div style="padding: 7px 10px;" [ngClass]="customResponse?.responseType=='SUCCESS'? 'alert alert-success':'alert alert-danger'">
+    <button (click)="customResponse.isVisible=false" type="button" class="close of-this-component" aria-label="Close">
       <span aria-hidden="true">x</span>
     </button>
     <strong [innerHTML]="customResponse.responseMessage"></strong>

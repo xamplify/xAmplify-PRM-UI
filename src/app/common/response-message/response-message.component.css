@@ -1,5 +1,5 @@
 .alert-dismissible .close {
-  top: 0 !important;
+  top: 0px !important;
   right: 0px !important;
 }
 .alert-success,
@@ -56,4 +56,14 @@
 .msg-algn{
   text-align: center;
   padding-top: 6px;
+}
+.alert-danger .close {
+  position: relative;
+  top: 10px !important;
+}
+.alert-success .close  {
+  top: 10px !important;
+}
+.alert-warning .close {
+  top: 10px !important;
 }
