@@ -45,9 +45,9 @@ export class EmailNotificationSettingsComponent implements OnInit {
     this.loading  = true;
     this.dashboardService.updateEmailNotificationSettings(this.emailNotificationSettingsDto).subscribe(
       response=>{
-        this.loading = false;
         this.customResponse = new CustomResponse('SUCCESS',response.message,true);
-        this.findEmailNotificationSettings();
+        this.referenceService.scrollSmoothToTop();
+        this.loading = false;
       },error=>{
         this.loading = false;
         this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);

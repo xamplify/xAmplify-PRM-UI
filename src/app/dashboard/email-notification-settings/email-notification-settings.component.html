@@ -22,13 +22,13 @@
     </div>
   </div>
   <!---Assets-->
-  <div class="portlet light">
+  <div class="portlet light" *ngIf="authenticationService?.module?.damAccess">
     <div class="portlet-title tabbable-line">
       <div class="caption caption-md col-xs-12">
         <span class="caption-subject font-blue-madison bold">Asset Notifications</span>
       </div>
     </div>
-  <h4 class="bold-font-weight">Turn Asset Email notifications on or off
+  <h4 class="bold-font-weight">Turn Published Asset Email notifications on or off
   </h4>
   <label class="bold-font">You have the ability to control email notifications to your {{authenticationService?.partnerModule?.customName}} about published assets.</label>
   <div>
@@ -42,17 +42,17 @@
   </div>
 
   <!---Tracks-->
-  <div class="portlet light">
+  <div class="portlet light" *ngIf="authenticationService?.module?.lmsAccess">
     <div class="portlet-title tabbable-line">
       <div class="caption caption-md col-xs-12">
-        <span class="caption-subject font-blue-madison bold">Asset Notifications</span>
+        <span class="caption-subject font-blue-madison bold">Track Notifications</span>
       </div>
     </div>
-  <h4 class="bold-font-weight">Turn Asset Email notifications on or off
+  <h4 class="bold-font-weight">Turn Published Track Email notifications on or off
   </h4>
-  <label class="bold-font">You have the ability to control email notifications to your {{authenticationService?.partnerModule?.customName}} about published assets.</label>
+  <label class="bold-font">You have the ability to control email notifications to your {{authenticationService?.partnerModule?.customName}} about published tracks.</label>
   <div>
-    <h5 class="bold-font-weight h5-custom-font">Send email notifications to your {{authenticationService?.partnerModule?.customName}} when an asset is published:
+    <h5 class="bold-font-weight h5-custom-font">Send email notifications to your {{authenticationService?.partnerModule?.customName}} when a track is published:
       <br><br>
       <switch  [status]="emailNotificationSettingsDto.trackPublishedEmailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
       [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="emailNotificationSettingsDto.trackPublishedEmailNotification=($event)">
@@ -62,17 +62,17 @@
   </div>
 
   <!---PlayBooks-->
-  <div class="portlet light">
+  <div class="portlet light" *ngIf="authenticationService?.module?.playbookAccess">
     <div class="portlet-title tabbable-line">
       <div class="caption caption-md col-xs-12">
-        <span class="caption-subject font-blue-madison bold">Asset Notifications</span>
+        <span class="caption-subject font-blue-madison bold">Play Book Notifications</span>
       </div>
     </div>
-  <h4 class="bold-font-weight">Turn Asset Email notifications on or off
+  <h4 class="bold-font-weight">Turn Published Play Book Email notifications on or off
   </h4>
-  <label class="bold-font">You have the ability to control email notifications to your {{authenticationService?.partnerModule?.customName}} about published assets.</label>
+  <label class="bold-font">You have the ability to control email notifications to your {{authenticationService?.partnerModule?.customName}} about published play books.</label>
   <div>
-    <h5 class="bold-font-weight h5-custom-font">Send email notifications to your {{authenticationService?.partnerModule?.customName}} when an asset is published:
+    <h5 class="bold-font-weight h5-custom-font">Send email notifications to your {{authenticationService?.partnerModule?.customName}} when a play book is published:
       <br><br>
       <switch  [status]="emailNotificationSettingsDto.playbookPublishedEmailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
       [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="emailNotificationSettingsDto.playbookPublishedEmailNotification=($event)">
