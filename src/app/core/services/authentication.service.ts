@@ -29,6 +29,7 @@ import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { CopyGroupUsersDto } from 'app/common/models/copy-group-users-dto';
 import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
+import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
 
 @Injectable()
 export class AuthenticationService {
@@ -1079,8 +1080,24 @@ findAssetPublishEmailNotificationOption() {
   }
   let apiUrl= url+"?access_token=" + this.access_token;
   return this.callGetMethod(apiUrl);
-  
 }
+
+findTrackOrPlaybookPublishEmailNotificationOption(type:any) {
+  let isTrack = type == TracksPlayBookType[TracksPlayBookType.TRACK];
+  let suffixUrl = isTrack ? "trackPublishedEmailNotification":"playbookPublishedEmailNotification";
+  let companyProfileName = this.getSubDomain();
+  let url = this.REST_URL+"admin/"+suffixUrl+"/";
+  if(companyProfileName!=""){
+    url+= "companyProfileName/"+companyProfileName;
+  }else{
+    url+= "loggedInUserId/"+this.getUserId();
+  }
+  let apiUrl= url+"?access_token=" + this.access_token;
+  return this.callGetMethod(apiUrl);
+}
+
+
+/******XNFR-326******/
 
 
 /****XNFR-317****/

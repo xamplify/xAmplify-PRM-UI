@@ -47,35 +47,7 @@
           <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
             <div class="row">
               <div>
-                <!-- <div class="col-xs-12">
-                  <div class="row">
-                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <app-team-member-filter-option *ngIf="showFilter && !authenticationService?.module?.isMarketingCompany" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
-                  </div>
-                  <div class="page-toolbar col-xs-6 col-sm-6 col-lg-6 col-md-6">
-                    <div class="pull-right">
-                      <button class="btn btn-danger margin-space" *ngIf="(selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0) "
-                        (click)="clearAll('partners')">Clear All</button>
-                    </div>
-                    <div class="btn-group pull-right">
-                      <div class="inputs float-right" style="display: inline-flex;">
-                        <div class="portlet-input input-inline" id="search-div">
-                          <div class="input-icon right" id="icon">
-                            <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
-                              [ngModelOptions]="{standalone: true}" placeholder="Search..."
-                              (keypress)="partnersSearchOnKeyEvent($event.keyCode)">
-                            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
-                              (click)="sortOption.searchKey='';searchPartners();"></button>
-                            <button type="submit" class="search-box-item-click" (click)="searchPartners()">
-                              <i class="fa fa-search" aria-hidden="true"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  </div>
-                </div> -->
+               
                 <div class="col-xs-12" style="padding-top: 5px;">
                   <div class="alert alert-success text-center" style="padding: 5px;" *ngIf="selectedPartnershipIds?.length>0">
                     <strong>
@@ -255,9 +227,8 @@
                       {{selectedPartnerGroupIds?.length}} lists are selected
                     </ng-container>
                   </strong>
+                  <span *ngIf="!isTrackOrPlaybookPublishedEmailNotification" class="required float-right">No emails will be sent.</span>
                 </div>
-
-
               </div>
             </div>
           </div>
