@@ -1,10 +1,15 @@
 .bold-font {
-    font-size: 14px;
-  }
-  .bold-font-weight {
-    font-weight: bold;
-  }
-  .h5-custom-font {
-    font-size: 17px;
-  }
-  
+  font-size: 14px;
+}
+.bold-font-weight {
+  font-weight: bold;
+}
+.h5-custom-font {
+  font-size: 17px;
+}
+.bt-zero-px {
+  margin-bottom: 0px !important;
+}
+.mh-zero-px {
+  min-height: 0px  !important;
+}

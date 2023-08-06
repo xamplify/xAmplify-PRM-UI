@@ -2,10 +2,9 @@
 <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
 </app-response-message>
 <div *ngIf="!loading">
-
   <!---Partner Invitation-->
   <div class="portlet light">
-      <div class="portlet-title tabbable-line">
+      <div class="portlet-title tabbable-line bt-zero-px mh-zero-px">
         <div class="caption caption-md col-xs-12">
           <span class="caption-subject font-blue-madison bold">Partner Invitation</span>
         </div>
@@ -16,7 +15,7 @@
     <div>
       <h5 class="bold-font-weight h5-custom-font">Send signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}:
         <br><br>
-        <switch  [status]="notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+        <switch  [status]="emailNotificationSettingsDto.notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
         [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeOption($event)">
       </switch>
     </h5>
@@ -31,11 +30,51 @@
     </div>
   <h4 class="bold-font-weight">Turn Asset Email notifications on or off
   </h4>
-  <label class="bold-font">You have the ability to control email notifications to newly shared assets.</label>
+  <label class="bold-font">You have the ability to control email notifications to your {{authenticationService?.partnerModule?.customName}} about published assets.</label>
   <div>
-    <h5 class="bold-font-weight h5-custom-font">Send signup email notifications to your {{authenticationService?.partnerModule?.customName}} when an asset is published:
+    <h5 class="bold-font-weight h5-custom-font">Send email notifications to your {{authenticationService?.partnerModule?.customName}} when an asset is published:
       <br><br>
-      <switch  [status]="notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+      <switch  [status]="emailNotificationSettingsDto?.assetPublishedEmailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+      [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="emailNotificationSettingsDto?.assetPublishedEmailNotification!=emailNotificationSettingsDto?.assetPublishedEmailNotification">
+    </switch>
+  </h5>
+  </div>
+  </div>
+
+  <!---Tracks-->
+  <div class="portlet light">
+    <div class="portlet-title tabbable-line">
+      <div class="caption caption-md col-xs-12">
+        <span class="caption-subject font-blue-madison bold">Asset Notifications</span>
+      </div>
+    </div>
+  <h4 class="bold-font-weight">Turn Asset Email notifications on or off
+  </h4>
+  <label class="bold-font">You have the ability to control email notifications to your {{authenticationService?.partnerModule?.customName}} about published assets.</label>
+  <div>
+    <h5 class="bold-font-weight h5-custom-font">Send email notifications to your {{authenticationService?.partnerModule?.customName}} when an asset is published:
+      <br><br>
+      <switch  [status]="emailNotificationSettingsDto.trackPublishedEmailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+      [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeOption($event)">
+    </switch>
+  </h5>
+  </div>
+  </div>
+
+  <!---PlayBooks-->
+  <div class="portlet light">
+    <div class="portlet-title tabbable-line">
+      <div class="caption caption-md col-xs-12">
+        <span class="caption-subject font-blue-madison bold">Asset Notifications</span>
+      </div>
+    </div>
+  <h4 class="bold-font-weight">Turn Asset Email notifications on or off
+  </h4>
+  <label class="bold-font">You have the ability to control email notifications to your {{authenticationService?.partnerModule?.customName}} about published assets.</label>
+  <div>
+    <h5 class="bold-font-weight h5-custom-font">Send email notifications to your {{authenticationService?.partnerModule?.customName}} when an asset is published:
+      <br><br>
+      <switch  [status]="emailNotificationSettingsDto.playbookPublishedEmailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
       [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeOption($event)">
     </switch>
   </h5>
@@ -44,7 +83,9 @@
 
   <!--Update Button-->
   <div id="right">
-    <button type="button" [disabled]="notifyPartners==notifyPartnersOptionFromDb"  class="btn btn-primary" translate (click)="save()">Update</button>
+    <button type="button"   class="btn btn-primary" translate (click)="updateSettings()">Update</button>
   </div>
 
 </div>
+
+
