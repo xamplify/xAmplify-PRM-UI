@@ -86,6 +86,7 @@ import { ActiveQueriesComponent } from './active-queries/active-queries.componen
 import { PipedriveAuthenticationComponent } from './pipedrive-authentication/pipedrive-authentication/pipedrive-authentication.component';
 import { EnableSupportAccessToVendorComponent } from './enable-support-access-to-vendor/enable-support-access-to-vendor.component';
 import { LeftsidenavbarCustomComponent } from './leftsidenavbar-custom/leftsidenavbar-custom.component';
+import { EmailNotificationSettingsComponent } from './email-notification-settings/email-notification-settings.component';
 
 
 
@@ -148,7 +149,8 @@ import { LeftsidenavbarCustomComponent } from './leftsidenavbar-custom/leftsiden
         ActiveQueriesComponent,
         PipedriveAuthenticationComponent,
         EnableSupportAccessToVendorComponent,
-        LeftsidenavbarCustomComponent
+        LeftsidenavbarCustomComponent,
+        EmailNotificationSettingsComponent
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

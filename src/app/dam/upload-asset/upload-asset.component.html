@@ -380,12 +380,15 @@
                                           </td>
                                           <td class="desc">
                                           <div class="mDesc overflowtable-control">
-                                             <app-partner-company-and-groups [moduleName]="'dam'" [inputId]="id"
+                                             <app-list-loader  *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
+                                             <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader" [moduleName]="'dam'" [inputId]="id"
                                               [isPublishedToPartnerGroups]="damUploadPostDto?.publishedToPartnerGroups"
                                               [selectedTeamMemberIds]="damUploadPostDto?.partnerIds"
                                               [selectedPartnershipIds]="damUploadPostDto?.partnershipIds"
                                               [selectedPartnerGroupIds]="damUploadPostDto?.partnerGroupIds"
-                                               (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+                                              [isAssetPublishedEmailNotification]="isAssetPublishedEmailNotification"
+                                               (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)"
+                                              ></app-partner-company-and-groups>
                                           </div>
                                           </td>
                                        </tr>

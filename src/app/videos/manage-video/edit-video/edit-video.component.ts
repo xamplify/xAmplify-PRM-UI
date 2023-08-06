@@ -153,8 +153,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   categoryNames: any;
   showFolderDropDown = false;
   folderId:number = 0;
-    hasShareWhiteLabeledContentAccess: any;
-    loading: boolean;
+  hasShareWhiteLabeledContentAccess: any;
+  loading: boolean;
+  /***XNFR-326****/
+  assetPublishEmailNotificationLoader = true;
+  isAssetPublishedEmailNotification = false;
+  /***XNFR-326****/
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch, public userService: UserService,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
       public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
@@ -185,10 +189,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.saveVideoFile.viewBy === 'DRAFT') {
           this.isThisDraftVideo = true;
           this.saveVideoFile.viewBy = 'PRIVATE';
-          //this.saveButtonTitle = 'Save';
           this.categories.forEach(element => { if(element.name  === 'None'){ this.saveVideoFile.categoryId = element.id; }});
       } else { this.saveButtonTitle = 'Update'; }
-      
       this.saveButtonTitle = 'Update'; 
       this.formErrors = this.videoUtilService.formErrors;
       this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
@@ -1028,10 +1030,25 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.listCategories();
       /*******XNFR-255***/
       this.findShareWhiteLabelContentAccess();
+      /***XNFR-326******/
+      this.findAssetPublishEmailNotificationOption();
       } catch (error) {
           this.clientError = true;
       }
   }
+
+   /****XNFR-326*****/
+   findAssetPublishEmailNotificationOption() {
+    this.assetPublishEmailNotificationLoader = true;
+    this.authenticationService.findAssetPublishEmailNotificationOption()
+    .subscribe(
+        response=>{
+            this.isAssetPublishedEmailNotification = response.data;
+            this.assetPublishEmailNotificationLoader = false;
+        },error=>{
+            this.assetPublishEmailNotificationLoader = false;
+        });
+   }
 
   /*******XNFR-255***/
   findShareWhiteLabelContentAccess() {

@@ -15,15 +15,16 @@ import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 import { LoginAsPartnerDto } from './models/login-as-partner-dto';
 
-import { ThemePropertiesListWrapper } from './models/theme-properties-list-wrapper';
 import { CompanyThemeActivate } from './models/company-theme-activate';
 import { ThemeDto } from './models/theme-dto';
 
 import { UtilService } from 'app/core/services/util.service';
+import { EmailNotificationSettingsDto } from './user-profile/models/email-notification-settings-dto';
 
 
 @Injectable()
 export class DashboardService {
+  
     
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
@@ -32,6 +33,10 @@ export class DashboardService {
     moduleUrl = this.authenticationService.REST_URL + "module/";
     upgradeRoleUrl = this.authenticationService.REST_URL + "upgradeRole/";
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
+    /****XNFR-326****/
+    companyUrl = this.authenticationService.REST_URL + "company/";
+    emailNotificationSettingsUrl = this.companyUrl+"/emailNotificationSettings";
+     /****XNFR-326****/
     saveVideoFile: SaveVideoFile;
     pagination: Pagination;
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
@@ -1130,4 +1135,36 @@ getDefaultThemes(){
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+    /***XNFR-326****/
+
+    findEmailNotificationSettings(){
+        const url = this.emailNotificationSettingsUrl + '/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token;
+        return this.callGetMethod(url);
+    }
+
+    updateEmailNotificationSettings(emailNotificationSettingsDto: EmailNotificationSettingsDto) {
+        const url = this.emailNotificationSettingsUrl + '/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token;
+        return this.callPutMethod(url,emailNotificationSettingsDto);
+    }
+
+    private callGetMethod(url: string) {
+        return this.http.get(url)
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
+      
+    private callPostMethod(url: string,requestDto:any) {
+    return this.http.post(url,requestDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    private callPutMethod(url: string,requestDto:any) {
+    return this.http.put(url,requestDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+       /***XNFR-326****/
 }
