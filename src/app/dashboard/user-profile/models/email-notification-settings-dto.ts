@@ -1,6 +1,6 @@
 export class EmailNotificationSettingsDto {
-    notifyPartners:boolean;
-	assetPublishedEmailNotification:boolean;
-	trackPublishedEmailNotification:boolean;
-	playbookPublishedEmailNotification:boolean;
+    notifyPartners:boolean = false;
+	assetPublishedEmailNotification:boolean = false;
+	trackPublishedEmailNotification:boolean = false;
+	playbookPublishedEmailNotification:boolean = false;
 }

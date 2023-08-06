@@ -40,6 +40,7 @@ export class EmailNotificationSettingsComponent implements OnInit {
 
   
   updateSettings(){
+    console.log(this.emailNotificationSettingsDto);
     this.customResponse = new CustomResponse();
     this.loading  = true;
     this.dashboardService.updateEmailNotificationSettings(this.emailNotificationSettingsDto).subscribe(

@@ -15,8 +15,8 @@
     <div>
       <h5 class="bold-font-weight h5-custom-font">Send signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}:
         <br><br>
-        <switch  [status]="emailNotificationSettingsDto.notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-        [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeOption($event)">
+        <switch  [status]="emailNotificationSettingsDto?.notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+        [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="emailNotificationSettingsDto.notifyPartners=($event)">
       </switch>
     </h5>
     </div>
@@ -35,7 +35,7 @@
     <h5 class="bold-font-weight h5-custom-font">Send email notifications to your {{authenticationService?.partnerModule?.customName}} when an asset is published:
       <br><br>
       <switch  [status]="emailNotificationSettingsDto?.assetPublishedEmailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-      [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="emailNotificationSettingsDto?.assetPublishedEmailNotification!=emailNotificationSettingsDto?.assetPublishedEmailNotification">
+      [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="emailNotificationSettingsDto.assetPublishedEmailNotification=($event)">
     </switch>
   </h5>
   </div>
@@ -55,7 +55,7 @@
     <h5 class="bold-font-weight h5-custom-font">Send email notifications to your {{authenticationService?.partnerModule?.customName}} when an asset is published:
       <br><br>
       <switch  [status]="emailNotificationSettingsDto.trackPublishedEmailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-      [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeOption($event)">
+      [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="emailNotificationSettingsDto.trackPublishedEmailNotification=($event)">
     </switch>
   </h5>
   </div>
@@ -75,7 +75,7 @@
     <h5 class="bold-font-weight h5-custom-font">Send email notifications to your {{authenticationService?.partnerModule?.customName}} when an asset is published:
       <br><br>
       <switch  [status]="emailNotificationSettingsDto.playbookPublishedEmailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-      [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeOption($event)">
+      [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="emailNotificationSettingsDto.playbookPublishedEmailNotification=($event)">
     </switch>
   </h5>
   </div>
