@@ -226,3 +226,12 @@ div#htmlContent {
     margin-top:0px!important;
   }
 }
+.serchbarwidth{
+  width: 165px !important;
+}
+@media only screen and (min-width: 992px) and (max-width:1029px) {  
+  .serchbarwidth{
+    width: 145px !important;
+  }
+}
+
