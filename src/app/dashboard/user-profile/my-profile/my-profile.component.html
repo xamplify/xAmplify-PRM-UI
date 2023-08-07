@@ -187,10 +187,6 @@
                             <li *ngIf="authenticationService.module.isAnyAdminOrSupervisor"  [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'unsubscribeReasons'}" (click)="activateTab('unsubscribeReasons');clearCustomResponse()">{{properties.unsubscribeReasons | translate}}</a>
                             </li>
-                            <!--Partner Invitation Configuration-->
-                            <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module.notifyPartners" [ngClass]="{'active-tab': activeTabName == 'notifyPartners'}" >
-                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'notifyPartners'}" (click)="activateTab('notifyPartners');clearCustomResponse()">{{authenticationService?.partnerModule?.customName | translate}} Invitation Configuration</a>
-                            </li>
                              <!--Exclusion-->
                             <ng-container *ngIf="excludeUsersOrDomains">
                                 <li [ngClass]="{'active-tab': activeTabName == 'exclude'}"  >
