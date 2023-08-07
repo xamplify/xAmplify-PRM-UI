@@ -202,13 +202,20 @@ export class ParterService {
             .catch( this.handleError );
     }
 
-    /*********XNFR-316************/
+    /*********Start : XNFR-316************/
     getActivePartners(pagination:Pagination){
         const url = this.URL + 'partner/active-partners?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }
     
+    getPartnerJourneyAnalytics(partnerCompanyId: any, loggedInUserId: number) {
+        const url = this.URL + 'partner/journey/analytics/'+partnerCompanyId+'/'+loggedInUserId+'?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.get( url )
+            .catch( this.handleError );
+    }
+
+    /*********End : XNFR-316************/
     
     handleError( error: any ) {
         return Observable.throw( error );

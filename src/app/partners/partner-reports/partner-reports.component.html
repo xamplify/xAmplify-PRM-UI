@@ -4,7 +4,7 @@
   }
 </style>
 
-<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
+<div *ngIf="!showDetailedAnalytics" class="page-content" [class.ml0]="authenticationService.isSuperAdmin()" >
   <!-- --------------------Breadcrumb-------- -->
   <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -24,30 +24,7 @@
     </ul>
     <app-team-member-filter-option [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
   </div>
-
-  <!--card start -->
-  <div class="page-bar p20">
-    <div class="row">
-      <div class="col-sm-12 col-md-12 col-lg-12">
-        <div class="col-sm-4 col-md-4 col-lg-4">
-          <div _ngcontent-c11="" class="thumbnail-wrapper" style="margin-top: 15px;">
-            <img _ngcontent-c11="" alt="No image found" src="assets/images/company-profile-logo.png">
-          </div>
-        </div>
-        <div class="col-sm-4 col-md-4 col-lg-4 pull-left">
-          <p><b>Partner Comapny Name:</b> veera</p>
-          <p><b>Email Id:</b> veera@gmail.com</p>
-          <p><b>Full Name:</b> veera venkatrao</p>
-        </div>
-        <div class="col-sm-4 col-md-4 col-lg-4 pull-left">
-          <p><b>Contact:</b> 9700926011</p>
-          <p><b>Recent Login:</b> 29-06-2023 11:42AM</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--card End -->
-
+  
   <!-- --------------------Counts-------- -->
   <div class="row">
     <div class="col-xs-12 col-md-12 col-sm-12">
@@ -185,7 +162,7 @@
         <!-- <app-view-partners></app-view-partners> -->
         <!---XNFR-220----->
         <ng-container *ngIf="reloadWithFilter">
-            <app-active-partners-table [applyFilter]="applyFilter"></app-active-partners-table>
+            <app-active-partners-table [applyFilter]="applyFilter" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-active-partners-table>
         </ng-container>
 
         <div class="col-xs-12 col-sm-6" style="padding-right: 5px;">
@@ -294,7 +271,7 @@
   </div>
 
   <!-- --------------------Approve Partners Analytics-------- -->
-  <div id="approve-partners-div">
+  <div id="approve-partners-div" style="display: none;">
     <div class="row">
       <div class="col-xs-12 p5">
         <div class="portlet light">
@@ -689,6 +666,13 @@
 
   <app-scroll-top></app-scroll-top>
 </div>
+
+<!--*******************Detailed Analytics****************-->
+<div *ngIf="showDetailedAnalytics">
+  <app-partner-detailed-analytics [partnerCompanyId]="detailedAnalyticsPartnerCompany"
+    (notifyCloseDetailedAnalytics)="closeDetailedAnalytics()"></app-partner-detailed-analytics>
+</div>
+
 
 <div class="modal fade" id="campaignInteractionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   data-keyboard="false" data-backdrop="static">

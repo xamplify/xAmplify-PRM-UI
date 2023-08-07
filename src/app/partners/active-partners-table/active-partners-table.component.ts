@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Pagination } from '../../core/models/pagination';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -8,6 +8,8 @@ import { PagerService } from '../../core/services/pager.service';
 import { ParterService } from 'app/partners/services/parter.service';
 import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { SortOption } from 'app/core/models/sort-option';
+import { CustomResponse } from 'app/common/models/custom-response';
+import { UtilService } from 'app/core/services/util.service';
 
 @Component({
   selector: 'app-active-partners-table',
@@ -20,21 +22,22 @@ export class ActivePartnersTableComponent implements OnInit {
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
 	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  customResponse: CustomResponse = new CustomResponse();
+  @Output() notifyShowDetailedAnalytics = new EventEmitter();
 
   constructor(public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
-    public pagerService: PagerService,
+    public pagerService: PagerService, public utilService: UtilService,
     public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
       this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   ngOnInit() {
-    alert("Hiiii");
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
-		this.getActivePartners();
+		this.getActivePartners(this.pagination);
   }
 
-  getActivePartners() {
+  getActivePartners(pagination: Pagination) {
 		this.referenseService.loading(this.httpRequestLoader, true);
 		this.pagination.userId = this.loggedInUserId;
     this.parterService.getActivePartners(this.pagination).subscribe(
@@ -49,36 +52,40 @@ export class ActivePartnersTableComponent implements OnInit {
 		);
   }
 
-  activePartnerSearch(keyCode: any) { if (keyCode === 13) { this.searchActivePartnerAnalytics(); } }
-
-	searchActivePartnerAnalytics() {
-		this.pagination.pageIndex = 1;
-		this.pagination.searchKey = this.searchKey;
-		this.getActivePartners();
+	search() {
+		// this.pagination.pageIndex = 1;
+		// this.pagination.searchKey = this.searchKey;
+		// this.getActivePartners(this.pagination);
+    this.getAllFilteredResults(this.pagination);
 	}
+
+  searchKeyPress(keyCode: any) {
+    if (keyCode === 13) { 
+      this.search(); 
+    } 
+  } 
+
+  getAllFilteredResults(pagination: Pagination) {
+    pagination.pageIndex = 1;
+    pagination.searchKey = this.sortOption.searchKey;
+    pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOption, pagination);
+    this.getActivePartners(this.pagination);
+  }
+
+  dropDownList(event) {
+    this.pagination = event;
+    this.getActivePartners(this.pagination);
+  }
 
   setPage(event:any) {
 		this.pagination.pageIndex = event.page;
-		this.getActivePartners();
+		this.getActivePartners(this.pagination);
 	}  
 
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
     this.getAllFilteredResults(this.pagination);
-  }
-
-  getAllFilteredResults(pagination: Pagination) {
-    pagination.pageIndex = 1;
-    pagination.searchKey = this.sortOption.searchKey;
-    if (this.sortOption.itemsSize.value == 0) {
-        pagination.maxResults = pagination.totalRecords;
-    } else {
-        pagination.maxResults = this.sortOption.itemsSize.value;
-    }
-    let sortedValue = this.sortOption.defaultSortOption.value;
-        this.setSortColumns(pagination, sortedValue);
-        this.getActivePartners();
-  }
+  }  
 
   setSortColumns(pagination: Pagination, sortedValue: any) {
     if (sortedValue != "") {
@@ -86,21 +93,10 @@ export class ActivePartnersTableComponent implements OnInit {
         pagination.sortcolumn = options[0];
         pagination.sortingOrder = options[1];
     }
-  }
-
-  searchKeyPress(keyCode: any) {
-    if (keyCode === 13) { 
-      this.search(); 
-    } 
-  }
-
-  search() {
-    this.getAllFilteredResults(this.pagination); 
   }  
 
-  dropDownList(event) {
-    this.pagination = event;
-    this.getAllFilteredResults(this.pagination);
+  viewAnalytics(partnerCompany: any) {
+    this.notifyShowDetailedAnalytics.emit(partnerCompany.partnerCompanyId); 
   }
 
 }
