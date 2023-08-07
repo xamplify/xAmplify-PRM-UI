@@ -17,13 +17,12 @@ import { SortOption } from 'app/core/models/sort-option';
 })
 export class PartnerJourneyTeamMembersTableComponent implements OnInit {
   @Input() partnerCompanyId: any;
-  teamMemberId: any;
+  @Input() teamMemberId: any;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
-  teamMembers: any;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -47,8 +46,10 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
     this.parterService.getPartnerJourneyTeamInfo(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
-        if (response.statusCode == 200) {
-          this.teamMembers = response.data;	
+        if (response.statusCode == 200) {          
+          this.sortOption.totalRecords = response.data.totalRecords;
+				  this.pagination.totalRecords = response.data.totalRecords;
+				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
         }        	
 			},
 			(_error: any) => {

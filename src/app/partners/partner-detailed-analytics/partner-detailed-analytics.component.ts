@@ -20,6 +20,7 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   partnerJourneyAnalytics: any;
+  teamMemberId: any;
 
   constructor(public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,

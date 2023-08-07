@@ -54,51 +54,10 @@
       </div>
     </div>
     
-  </div>
-  
-  <div class="page-bar p20">
-    <div class="row">
-      <div class="col-sm-12 col-md-12 col-lg-12"> 
-        <h4>Team Member Details</h4>
-        <div class="scroll">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Response</th>
-                <th scope="col">Response Time</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Swathi</td>
-                <td>Bindu</td>
-              </tr>
-              <!-- <tr *ngFor="let textResponse of questionSummary.textResponses;let i  = index">
-                <td scope="row">{{i+1}}</td>
-                <td *ngIf="textResponse.questionType != 'upload'">{{textResponse.value}}</td>
-                <td *ngIf="textResponse.questionType === 'upload'">
-                  <a href="{{textResponse.filePath}}" class="link12" id="link{{i}}">{{textResponse.value}}</a>
-                </td>
-                <td>
-                  <app-timestamp [isOnlyDate]="false" [dateAndTime]="textResponse.createdDateUTC">
-                  </app-timestamp>
-                </td>
-                <td>
-                  <a (click)="viewDetailedResponse(textResponse.formSubmitId)">View Response</a>
-                </td>
-              </tr> -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
+  </div>  
 
   <!--******************Team Member Details*******************-->
   <app-partner-journey-team-members-table
-    [partnerCompanyId]="partnerCompanyId"></app-partner-journey-team-members-table>
-
+    [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"></app-partner-journey-team-members-table>
+    
   </div>
