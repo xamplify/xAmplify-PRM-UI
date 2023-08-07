@@ -50,6 +50,7 @@ h5 {
   padding: 10px;
   margin: 0;
   border-bottom: 1px solid #ddd;
+  cursor: auto;
 }
 .header-description-css {
   text-align: center;
@@ -57,6 +58,7 @@ h5 {
   font-size: 14px;
   padding: 10px 10px;
   height: auto;
+  cursor: auto;
 }
 .prfpx {
   padding-right: 40px;
@@ -74,6 +76,11 @@ h5 {
 @media (min-width: 1200px) and (max-width: 1261px) {
   .header-description-css {
     font-size: 12px;
+  }
+}
+@media (min-width: 1000px) and (max-width: 1200px) {
+  .header-description-css {
+    font-size: 10px;
   }
 }
 @media only screen and (max-width: 600px) {

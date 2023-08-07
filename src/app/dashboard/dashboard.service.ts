@@ -1123,8 +1123,9 @@ getDefaultThemes(){
         .catch(this.handleError);
     }
 
-    getGuideLinkByTitle(title:string){
-        return this.http.get(this.authenticationService.REST_URL + 'user/guide/'+title+'/?access_token=' + this.authenticationService.access_token)
+    getGuideLinkByTitle(pagination:Pagination){
+        const url = this.authenticationService.REST_URL + 'user/guide/title/?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,pagination)
         .map(this.extractData)
         .catch(this.handleError);
     }
@@ -1132,6 +1133,17 @@ getDefaultThemes(){
     getGuideGuideBySlug(pagination:Pagination){
         const url = this.authenticationService.REST_URL + 'user/guide/slug/?access_token=' + this.authenticationService.access_token;
         return this.http.post( url ,pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    getUserGuidesForDashBoard(vanityLoginDto:VanityLoginDto){
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+           vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
+        const url = this.authenticationService.REST_URL + 'user/guide/getGuidesForDashboard/?access_token=' + this.authenticationService.access_token;
+        return this.http.post( url ,vanityLoginDto)
         .map(this.extractData)
         .catch(this.handleError);
     }
