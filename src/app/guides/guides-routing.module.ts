@@ -12,6 +12,7 @@ const routes: Routes = [
     { path: 'search', component: GuideLeftMenuComponent},
     { path: 'search/:moduleName', component:GuideLeftMenuComponent},
     // { path: 'guide/titles', component: GuideTitlesComponent},
+    { path: 'guides/:moduleId', component: SearchGuidesComponent},
 ];
 
 @NgModule({

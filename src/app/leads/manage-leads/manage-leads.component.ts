@@ -85,6 +85,7 @@ export class ManageLeadsComponent implements OnInit {
   titleHeading:string = "";
   /********** user guide *************/
   mergeTagForGuide:any;
+  vendorRole:boolean;
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
@@ -126,6 +127,11 @@ export class ManageLeadsComponent implements OnInit {
         if (roles.indexOf(this.roleName.prmRole) > -1) {
           this.prm = true;
         }
+        /** User Guide* */
+        if(roles.indexOf(this.roleName.vendorRole) > -1){
+          this.vendorRole = true;
+        }
+        /** User Guide */
         if (roles.indexOf(this.roleName.orgAdminRole) > -1) {
           this.isOrgAdmin = true;
         }
@@ -153,6 +159,11 @@ export class ManageLeadsComponent implements OnInit {
         if (this.authenticationService.superiorRole.includes("Partner")) {
           this.isCompanyPartner = true;
         }
+          /** User Guide* */
+          if(this.authenticationService.superiorRole.includes("Vendor")){
+            this.vendorRole = true;
+          }
+          /** User Guide */
       }
     }
     this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(response => {
@@ -203,7 +214,7 @@ export class ManageLeadsComponent implements OnInit {
       this.isPartnerVersion = false;
       this.getActiveCRMDetails();
       this.showLeads();
-      this.mergeTagForUserGuide();
+      //this.mergeTagForUserGuide();
       if (this.prm) {
         this.listView = true;
       }
@@ -219,7 +230,10 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   mergeTagForUserGuide(){
-    if(this.isVendorVersion){
+    if(this.authenticationService.module.loggedInThroughVendorVanityUrl){
+      this.mergeTagForGuide = "manage_leads_partner";
+    } else if((this.vendorRole && !this.isCompanyPartner) || (this.vendorRole && this.isCompanyPartner) || 
+     (this.prm && !this.isCompanyPartner) || (this.prm && this.isCompanyPartner)){
       this.mergeTagForGuide = "manage_leads";
     } else {
       this.mergeTagForGuide = "manage_leads_partner";

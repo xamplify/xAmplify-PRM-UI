@@ -26,7 +26,7 @@ import { SearchGuidesComponent } from './search-guides/search-guides.component';
     RouterModule,
   ],
   providers:[],
-  declarations: [HomeGuideComponent],
+  declarations: [],
   exports:[],
 
 })
