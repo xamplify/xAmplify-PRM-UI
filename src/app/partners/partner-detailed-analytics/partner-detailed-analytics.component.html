@@ -1,0 +1,60 @@
+<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
+  <!-- --------------------Breadcrumb-------- -->
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li *ngIf="!authenticationService.isSuperAdmin()">
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a [routerLink]="referenseService.homeRouter">Home</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li *ngIf="authenticationService.isSuperAdmin()">
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a [routerLink]="['/home/dashboard/admin-report']">Admin
+          Report</a><i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li>
+        <a (click)="closeDetailedAnalytics()">{{authenticationService?.partnerModule?.customName}} Analytics</a>
+      </li>
+    </ul>
+    <button type="button" class="close-circle" [disabled]="httpRequestLoader.isLoading" (click)="closeDetailedAnalytics()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </button>
+    
+  </div>
+
+  <!--******************Company Info*******************-->
+  <div class="page-bar p20">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">        
+        <div class="col-sm-3 col-md-3 col-lg-3">
+          <div class="thumbnail-wrapper" style="margin-top: 5px;">
+            <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';"
+                  [src]="authenticationService.MEDIA_URL+partnerJourneyAnalytics?.companyInfo?.companyLogo">
+          </div>           
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-3">              
+          <p><b>Company Name:</b> {{partnerJourneyAnalytics?.companyInfo?.companyName}}</p> 
+          <p><b>Added On:</b>
+            <app-timestamp [isOnlyDate]="false" [dateAndTime]="partnerJourneyAnalytics?.companyInfo?.partnerAddedDateStr">
+            </app-timestamp>
+          </p>               
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-3 pull-left">                    
+          <p><b>Name:</b> {{partnerJourneyAnalytics?.companyInfo?.partnerName}}</p>
+          <p><b>Job Title:</b> {{partnerJourneyAnalytics?.companyInfo?.partnerJobTitle}}</p>
+          <p><b>Email Id:</b> {{partnerJourneyAnalytics?.companyInfo?.partnerEmail}}</p>
+          <p><b>Contact:</b> {{partnerJourneyAnalytics?.companyInfo?.partnerMobileNumber}}</p>
+          
+        </div>
+        <div class="col-sm-3 col-md-3 col-lg-3 pull-left">
+          <p><b>Total Campaigns:</b> {{partnerJourneyAnalytics?.campaignCounts?.totalCampaignCount}}</p>   
+          <p><b>To Campaigns:</b> {{partnerJourneyAnalytics?.campaignCounts?.toCampaignCount}}</p>
+          <p><b>Through Campaigns:</b> {{partnerJourneyAnalytics?.campaignCounts?.throughCampaignCount}}</p>          
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+
+  </div>
