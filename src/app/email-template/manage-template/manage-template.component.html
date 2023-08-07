@@ -103,7 +103,7 @@
                                                     {{sortOption.name}}</option>
                                             </select>
                                         </div>
-                                        <div class="portlet-input input-inline input-small" style="width: 163px !important;">
+                                        <div class="portlet-input input-inline input-small serchbarwidth">
                                             <div class="input-icon right" style="position: relative;right: -5px;">
                                                 <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a template" (keypress)="eventHandler($event.keyCode)">
                                                 <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';searchTemplates()"></button>
@@ -235,7 +235,7 @@
                 </section>
                 <!---Grid View---->
                 <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
-                    <div class="col-md-3 col-sm-4 col-xs-12 mt_13 tb_view_10 mrg_btm_23" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 mt_13 tb_view_10 mrg_btm_23" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
                         <div class="grid-box cardHeight">
                             <span class="ribbon1">
                                 <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'" translate>Email Co-Branding
