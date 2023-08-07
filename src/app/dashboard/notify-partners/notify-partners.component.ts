@@ -4,7 +4,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import {DashboardService} from 'app/dashboard/dashboard.service';
 import {ReferenceService} from 'app/core/services/reference.service';
 import {AuthenticationService} from 'app/core/services/authentication.service';
-import { CallActionSwitch } from 'app/videos/models/call-action-switch';
+import {CallActionSwitch } from 'app/videos/models/call-action-switch';
 
 @Component({
   selector: 'app-notify-partners',

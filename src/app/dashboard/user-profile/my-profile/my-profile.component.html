@@ -187,10 +187,6 @@
                             <li *ngIf="authenticationService.module.isAnyAdminOrSupervisor"  [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'unsubscribeReasons'}" (click)="activateTab('unsubscribeReasons');clearCustomResponse()">{{properties.unsubscribeReasons | translate}}</a>
                             </li>
-                            <!--Partner Invitation Configuration-->
-                            <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module.notifyPartners" [ngClass]="{'active-tab': activeTabName == 'notifyPartners'}" >
-                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'notifyPartners'}" (click)="activateTab('notifyPartners');clearCustomResponse()">{{authenticationService?.partnerModule?.customName | translate}} Invitation Configuration</a>
-                            </li>
                              <!--Exclusion-->
                             <ng-container *ngIf="excludeUsersOrDomains">
                                 <li [ngClass]="{'active-tab': activeTabName == 'exclude'}"  >
@@ -206,7 +202,11 @@
                             authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )" style="border-bottom:none !important">
                             <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}" (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups | translate}}</a>
                             </li>
-                            
+                            <!---XNFR-326---->
+                            <!--Email Notification Settings-->
+                            <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module?.emailNotificationSettings" [ngClass]="{'active-tab': activeTabName == properties?.emailNotificationSettings}" >
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.emailNotificationSettings}" (click)="activateTab(properties?.emailNotificationSettings);clearCustomResponse()">{{properties?.emailNotificationSettings}}</a>
+                            </li>
                              </ng-container>
                         </ul>
                     </div>
@@ -277,10 +277,9 @@
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
                                     <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName=='notifyPartners'">{{authenticationService?.partnerModule?.customName | translate}} Invitation</span>
                                     <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader | translate}}</span>
-                                   
                                     <div class="btn-toolbar" style="float: right;"
                                     *ngIf="activeTabName == 'customTheme'|| activeTabName == 'lightTheme'
-                             || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
+                                        || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
                                     <div class="btn-group" style="padding-top: 7px;">
                                         <button class="btn btn-primary padding align"
                                             style="border-radius: 3px;" *ngIf="activeTabName == 'lightTheme' && themeDto?.id != activeThemeDetails?.themeId"
@@ -1143,7 +1142,6 @@
                                     </div>
                                     <!-- END PRIVACY SETTINGS TAB -->
                                     <!-- Customize Left Menu -->
-
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'customizeleftmenu'}">
                                       </div>
                                     <!-- GDPR SETTINGS TAB -->
@@ -1169,8 +1167,8 @@
                                                                         <a rel="noopener noreferrer" class="link" href="{{properties.privacyPolicyUrl}}" target="_blank" translate>Privacy & consent</a> &nbsp;|
                                                                         <a rel="noopener noreferrer" class="link" href="{{properties.cookiesPolicyUrl}}" target="_blank" translate>Cookies & tracking</a> &nbsp;
                                                                     </h5>
-                                                                    <h5 id="text-color-my-profile" translate>
-                                                                        <input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
+                                                                    <h5 id="text-color-my-profile">
+                                                                        <input type="checkbox" class="pointer" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
                                                                     </h5>
                                                                 </div>
                                                                 <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
@@ -1420,18 +1418,23 @@
                                         </div>
                                     </div>
                                 </div>
-                                <app-custom-skin class="tab-pane" [themeDTO]="themeDto" [themeId]="themeDto.id"
-                                [isSaveTheme]="isSaveTheme" [activeThemeId]="activeThemeDetails.themeId"
-                                [ngClass]="{'active': activeTabName == 'customTheme'}"
-                                *ngIf="activeTabName == 'customTheme'"
-                                (closeEvent)="showThemeAlert($event)"></app-custom-skin>
+                                    <!---Custom Skin Settings-->
+                                    <app-custom-skin class="tab-pane" [themeDTO]="themeDto" [themeId]="themeDto.id"
+                                    [isSaveTheme]="isSaveTheme" [activeThemeId]="activeThemeDetails.themeId"
+                                    [ngClass]="{'active': activeTabName == 'customTheme'}"
+                                    *ngIf="activeTabName == 'customTheme'"
+                                    (closeEvent)="showThemeAlert($event)">
+                                    </app-custom-skin>
                                     <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
                                     <app-spf class="tab-pane" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
                                     <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
                                     <app-manage-team-member-group *ngIf="showTeamMemberGroups" class="tab-pane" [ngClass]="{'active': activeTabName == 'team-group'}"></app-manage-team-member-group>
                                     <!--Notify Partners--> 
                                     <app-notify-partners *ngIf="showNotifyPartnersOption && authenticationService?.module.notifyPartners" class="tab-pane" [ngClass]="{'active': activeTabName == 'notifyPartners'}"></app-notify-partners>
-                                  
+                                   <!--XNFR-326 Email Notification Settings--> 
+                                   <app-email-notification-settings *ngIf="showEmailNotificationSettingsOption && authenticationService?.module?.emailNotificationSettings" class="tab-pane" 
+                                        [ngClass]="{'active': activeTabName == properties?.emailNotificationSettings}">
+                                    </app-email-notification-settings>
                                     <!--video default player settings-->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
                                         <div>

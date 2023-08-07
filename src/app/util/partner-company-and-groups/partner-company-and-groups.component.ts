@@ -64,6 +64,8 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	selectedFilterIndex: number = 1;
 	showFilter = true;
 	selectedTab = 1;
+	/***XNFR-326****/
+	@Input() isAssetPublishedEmailNotification = false;
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties,
 		 public utilService: UtilService, public userService: UserService,public callActionSwitch:CallActionSwitch) {

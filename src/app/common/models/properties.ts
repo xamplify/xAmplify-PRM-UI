@@ -279,6 +279,9 @@ export class Properties {
 
 	whiteLabeledBanner = "White-Labeled";
 
+	/***XNFR-326*****/
+	emailNotificationSettings = "Email Notification Settings";
+
 
 
 
