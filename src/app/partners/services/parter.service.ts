@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http'
 import { Pagination } from '../../core/models/pagination';
 import { User } from '../../core/models/user';
+import { PartnerJourneyRequest } from '../models/partner-journey-request';
 @Injectable()
 export class ParterService {
     URL = this.authenticationService.REST_URL;
@@ -217,6 +218,24 @@ export class ParterService {
 
     getPartnerJourneyTeamInfo(pagination:Pagination){
         const url = this.URL + 'partner/journey/team/info?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getPartnerJourneyCounts(partnerJourneyRequest: PartnerJourneyRequest) {
+        const url = this.URL + 'partner/journey/counts?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, partnerJourneyRequest )
+            .catch( this.handleError );
+    }
+
+    getPartnerJourneyTrackDetailsByInteraction(pagination:Pagination){
+        const url = this.URL + 'partner/journey/track/interaction?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getTypeWiseTrackContentDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/track/content/typewise?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }

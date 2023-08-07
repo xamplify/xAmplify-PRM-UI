@@ -10,12 +10,12 @@ import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from 'app/core/models/sort-option';
 
 @Component({
-  selector: 'app-partner-journey-team-members-table',
-  templateUrl: './partner-journey-team-members-table.component.html',
-  styleUrls: ['./partner-journey-team-members-table.component.css'],
+  selector: 'app-typewise-track-content-details',
+  templateUrl: './typewise-track-content-details.component.html',
+  styleUrls: ['./typewise-track-content-details.component.css'],
   providers: [SortOption]
 })
-export class PartnerJourneyTeamMembersTableComponent implements OnInit {
+export class TypewiseTrackContentDetailsComponent implements OnInit {
   @Input() partnerCompanyId: any;
   @Input() teamMemberId: any;
 
@@ -28,21 +28,22 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
     public xtremandLogger: XtremandLogger, public sortOption: SortOption) {
-      this.loggedInUserId = this.authenticationService.getUserId(); 
+      this.loggedInUserId = this.authenticationService.getUserId();
   }
 
-  ngOnInit() {    
-    this.getTeamInfo(this.pagination);
+  ngOnInit() {
+    this.getTypeWiseTrackContentDetails(this.pagination);
   }
 
-  getTeamInfo(pagination : Pagination) {
+  getTypeWiseTrackContentDetails(pagination : Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
+    this.pagination.maxResults = 6;
     if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
       this.pagination.teamMemberId = this.teamMemberId;
     }    
-    this.parterService.getPartnerJourneyTeamInfo(this.pagination).subscribe(
+    this.parterService.getTypeWiseTrackContentDetails(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          
@@ -72,17 +73,17 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
     pagination.pageIndex = 1;
     pagination.searchKey = this.sortOption.searchKey;
     pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOption, pagination);
-    this.getTeamInfo(this.pagination);
+    this.getTypeWiseTrackContentDetails(this.pagination);
   }
 
   dropDownList(event) {
     this.pagination = event;
-    this.getTeamInfo(this.pagination);
+    this.getTypeWiseTrackContentDetails(this.pagination);
   }
 
   setPage(event:any) {
 		this.pagination.pageIndex = event.page;
-		this.getTeamInfo(this.pagination);
+		this.getTypeWiseTrackContentDetails(this.pagination);
 	}  
 
   getSortedResults(text: any) {
@@ -90,12 +91,5 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
     this.getAllFilteredResults(this.pagination);
   }  
 
-  setSortColumns(pagination: Pagination, sortedValue: any) {
-    if (sortedValue != "") {
-        let options: string[] = sortedValue.split("-");
-        pagination.sortcolumn = options[0];
-        pagination.sortingOrder = options[1];
-    }
-  }
 
 }

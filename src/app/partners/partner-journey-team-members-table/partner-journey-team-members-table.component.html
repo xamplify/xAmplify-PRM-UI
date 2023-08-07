@@ -27,7 +27,7 @@
         </thead>
         <tbody>          
           <tr *ngFor="let teamMember of pagination.pagedItems;let i  = index">
-            <td scope="row">{{i+1}}</td>
+            <td scope="row">{{((pagination.pageIndex-1)*pagination.maxResults)+i+1}}</td>
             <td>{{teamMember.emailId}}</td>
             <td>{{teamMember.fullName}}</td>
             <td>{{teamMember.mobileNumber}}</td>

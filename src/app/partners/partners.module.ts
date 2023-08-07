@@ -17,12 +17,15 @@ import { IndividualPartnerAnalyticsComponent } from './individual-partner-analyt
 import { ActivePartnersTableComponent } from './active-partners-table/active-partners-table.component';
 import { PartnerDetailedAnalyticsComponent } from './partner-detailed-analytics/partner-detailed-analytics.component';
 import { PartnerJourneyTeamMembersTableComponent } from './partner-journey-team-members-table/partner-journey-team-members-table.component';
+import { PartnerJourneyCountTilesComponent } from './partner-journey-count-tiles/partner-journey-count-tiles.component';
+import { InteractedNotInteractedTrackDetailsComponent } from './interacted-not-interacted-track-details/interacted-not-interacted-track-details.component';
+import { TypewiseTrackContentDetailsComponent } from './typewise-track-content-details/typewise-track-content-details.component';
 
 @NgModule({
   imports: [
     CKEditorModule, CommonModule, PartnerRoutingModule, SharedModule, SharedContactsModule, CommonComponentModule, SharedLibraryModule
   ],
   providers: [],
-  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyCountTilesComponent, InteractedNotInteractedTrackDetailsComponent, TypewiseTrackContentDetailsComponent]
 })
 export class PartnersModule { }

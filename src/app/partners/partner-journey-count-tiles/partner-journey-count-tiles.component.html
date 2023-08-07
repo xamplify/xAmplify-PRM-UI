@@ -1,0 +1,164 @@
+<div class="panel panel-info">
+  <div class="panel-body">
+    <section>
+      <div class="col-xs-12 col-sm-12 p-5x emails-info"
+         [hidden]="httpRequestLoader.isLoading || httpRequestLoader.isServerError">
+         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
+            <button class="portlet light color1-invert crcb lt-blue-c">
+               <div class="portlet-body text-center">
+                  <i class="fa fa-user"></i>
+                  <h1>
+                     <b>{{ partnerJourneyAnalytics?.redistributedCampaignCount }}</b>
+                  </h1>
+                  <h5>Redistributed Campaigns</h5>
+               </div>
+            </button>
+         </div>
+         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
+            <button class="portlet light color1-invert crcb lt-green-c">
+               <div class="portlet-body text-center">
+                  <i class="fa fa-envelope-o"></i>
+                  <h1>
+                     <b>{{ partnerJourneyAnalytics?.teamMemberCount }}</b>
+                  </h1>
+                  <h5>Team Members</h5>
+               </div>
+            </button>
+         </div>
+         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
+            <button class="portlet light color1-invert crcb tk-blue-c">
+               <div class="portlet-body text-center">
+                  <i class="fa fa-envelope"></i>
+                  <h1>
+                     <b>{{ partnerJourneyAnalytics?.shareLeadCount }}</b>
+                  </h1>
+                  <h5>Deliverability</h5>
+               </div>
+            </button>
+         </div>
+         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
+            <button class="portlet light color1-invert crcb vlt-blue-c">
+               <div class="portlet-body text-center">
+                  <i class="fa fa-user-circle-o"></i>
+                  <h1>
+                     <b>{{ partnerJourneyAnalytics?.leadCount }}</b>
+                  </h1>
+                  <h5>Leads</h5>
+               </div>
+            </button>
+         </div>
+         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
+            <button class="portlet light color1-invert crcb pure-blue-c">
+               <div class="portlet-body text-center">
+                  <i class="fa fa-envelope-open-o"></i>
+                  <h1>
+                     <b>{{ partnerJourneyAnalytics?.dealCount }}</b>
+                  </h1>
+                  <h5>Deals</h5>
+               </div>
+            </button>
+         </div>
+        <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
+          <button class="portlet light color1-invert crcb black-blue-c">
+            <div class="portlet-body text-center">
+              <i class="fa fa-globe"></i>
+              <h1>
+                <b>{{ partnerJourneyAnalytics?.contactCount }}</b>
+              </h1>
+              <h5>Contacts</h5>
+            </div>
+          </button>
+        </div>
+         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
+            <button class="portlet light color1-invert crcb y-b-c">
+               <div class="portlet-body text-center">
+                  <i class="fa fa-envelope-open"></i>
+                  <h1>
+                     <b>{{ partnerJourneyAnalytics?.mdfAmount }}</b>
+                  </h1>
+                  <h5>MDF Amount</h5>
+               </div>
+            </button>
+         </div>
+         <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 p-5x">
+            <button class="portlet light color1-invert crcb b-b-c">
+               <div class="portlet-body text-center">
+                  <i class="fa fa-eye"></i>
+                  <h1>
+                     <b>{{ partnerJourneyAnalytics?.assetCount }}</b>
+                  </h1>
+                  <h5>Assets</h5>
+               </div>
+            </button>
+         </div>
+         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
+            <button class="portlet light color1-invert crcb r-b-c">
+               <div class="portlet-body text-center">
+                  <i class="fa fa-ban"></i>
+                  <h1>
+                     <b>{{ partnerJourneyAnalytics?.trackCount }}</b>
+                  </h1>
+                  <h5>Tracks</h5>
+               </div>
+            </button>
+         </div>
+         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
+            <button class="portlet light color1-invert crcb h-r-c">
+               <div class="portlet-body text-center">
+                  <i class="fa fa-trash-o"></i>
+                  <h1>
+                     <b>{{ partnerJourneyAnalytics?.playbookCount }}</b>
+                  </h1>
+                  <h5>Playbooks</h5>
+               </div>
+            </button>
+         </div>
+         <!-- <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
+            *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
+            <button class="portlet light color1-invert crcb r-r-c"
+               (click)="emailActionDetails(campaign.campaignId, 'unsubscribe', emailActionDetailsPagination)"
+               [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
+               [disabled]="campaignReport.unsubscribed < 1 || !isPartnerEnabledAnalyticsAccess">
+               <div class="portlet-body text-center">
+                  <i class="fa fa-user-times"></i>
+                  <h1>
+                     <b>{{ campaignReport.unsubscribed }}</b>
+                  </h1>
+                  <h5>Unsubscribe</h5>
+               </div>
+            </button>
+         </div>
+         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
+            *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts">
+            <button class="portlet light color1-invert crcb vlt-b-c" (click)="showCampaignLeads()"
+               [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
+               [disabled]="campaignReport.leadCount < 1 || !isPartnerEnabledAnalyticsAccess">
+               <div class="portlet-body text-center">
+                  <i class="fa fa-user-circle"></i>
+                  <h1>
+                     <b>{{ campaignReport.leadCount }}</b>
+                  </h1>
+                  <h5>Leads</h5>
+               </div>
+            </button>
+         </div>
+         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
+            *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts">
+            <button class="portlet light color1-invert crcb lt-g-b-c" (click)="showCampaignDeals()"
+               [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
+               [disabled]="campaignReport.dealCount < 1 || !isPartnerEnabledAnalyticsAccess">
+               <div class="portlet-body text-center">
+                  <i class="fa fa-tags"></i>
+                  <h1>
+                     <b>{{ campaignReport.dealCount }}</b>
+                  </h1>
+                  <h5>Deals</h5>
+               </div>
+            </button>
+         </div> -->
+      </div>
+      <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+    </section>
+  </div>
+</div>
+
