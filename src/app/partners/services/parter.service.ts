@@ -215,6 +215,12 @@ export class ParterService {
             .catch( this.handleError );
     }
 
+    getPartnerJourneyTeamInfo(pagination:Pagination){
+        const url = this.URL + 'partner/journey/team/info?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
     /*********End : XNFR-316************/
     
     handleError( error: any ) {

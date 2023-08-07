@@ -3,15 +3,16 @@
     <div class="portlet-title" style="font-size: 16px; padding-bottom: 8px;">
       <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
         <div class="caption">
-          <span class="caption-subject font-red-sunglo uppercase">Active {{authenticationService?.partnerModule?.customName}} Details</span>
+          <span class="caption-subject font-red-sunglo uppercase">Active
+            {{authenticationService?.partnerModule?.customName}} Details</span>
         </div>
       </div>
-        <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
-          <div class="inputs" style="float: right">
-            <div class="col-xs-6 col-sm-6 col-lg-6 p0">
+      <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
+        <div class="inputs" style="float: right">
+          <div class="col-xs-6 col-sm-6 col-lg-6 p0">
             <div style="float: left;">
-              <select class="form-control" [(ngModel)]="sortOption.selectedSortedOption" (ngModelChange)="getSortedResults($event)"
-                style="position: relative;right: -3px;">
+              <select class="form-control" [(ngModel)]="sortOption.selectedSortedOption"
+                (ngModelChange)="getSortedResults($event)" style="position: relative;right: -3px;">
                 <option *ngFor="let option of sortOption.sortByDropDown" [ngValue]="option">{{option.name}}</option>
               </select>
             </div>
@@ -19,118 +20,121 @@
           <div class="col-xs-6 col-sm-6 col-lg-6 p0">
             <div class="portlet-input input-inline mSearch" style="margin-right: 12px; width:170px">
               <div class="input-icon right" style="position: relative;width: 178px;">
-                <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                  placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
-                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';search()"></button>
+                <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
+                  [ngModelOptions]="{standalone: true}" placeholder="Search"
+                  (keypress)="searchKeyPress($event.keyCode)">
+                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                  (click)="sortOption.searchKey='';search()"></button>
                 <button type="submit" class="search-box-item-click" (click)="search()">
                   <i class="fa fa-search" aria-hidden="true"></i></button>
               </div>
-            </div>              
+            </div>
           </div>
-          </div>
-          </div>
+        </div>
+      </div>
     </div>
     <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
     <div class="portlet-body table-responsive" style="overflow: hidden;" [hidden]="httpRequestLoader.isLoading">
       <div class="table-responsive">
         <table class="table tgrid" aria-describedby="active-partners-table">
-            <thead>
+          <thead>
+            <tr>
+              <th scope="row" class="center-aligned">Company Logo</th>
+              <th scope="row" class="center-aligned">Company Name</th>
+              <th scope="row" class="center-aligned">Partner Details</th>
+              <th scope="row" class="center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of pagination.pagedItems;let i=index">
               <tr>
-                <th scope="row" class="center-aligned">Company Logo</th>
-                <th scope="row" class="center-aligned">Company Name</th> 
-                <th scope="row" class="center-aligned">Partner Details</th>                  
-                <th scope="row" class="center">Actions</th>
+                <td>
+                  <span _ngcontent-c11="" class="thumbnail-wrapper" style="margin-top: 15px;">
+                    <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';"
+                      [src]="authenticationService.MEDIA_URL+item.companyLogo">
+                  </span>
+                </td>
+                <td>
+                  <h4 class="ellipsis" style="font-size: 14px;" title="{{item?.companyName}}">
+                    {{item?.companyName | slice:0:25}}
+                    <span *ngIf="item?.companyName?.length>25">...</span>
+                  </h4>
+                  <h5 class='m0' style="float:left">{{item?.partnerName | slice:0:15}}
+                    <span class='f-w-300'>{{item?.partnerName | slice:0:25}}<span
+                        *ngIf="item?.partnerName?.length>25">...</span></span>
+                  </h5>
+                  <h5 class='ellipsis' title="{{item?.companyName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
+                    {{item?.companyName | slice:0:25}}
+                    <span *ngIf="item?.companyName?.length>25">...</span>
+                  </h5>
+                  <h6 class='m0' style="font-weight: 400; display: table;">
+                    <span title="">{{item?.partnerName | slice:0:25}}</span>
+                    <span *ngIf="item?.partnerName?.length>25">...</span>
+                  </h6>
+                </td>
+                <td>
+                  <h4 class="ellipsis" style="font-size: 14px;" title="{{item?.companyName}}">
+                    {{item?.companyName | slice:0:25}}
+                    <span *ngIf="item?.companyName?.length>25">...</span>
+                  </h4>
+                  <h5 class='m0' style="float:left">{{item?.partnerName | slice:0:15}}
+                    <span class='f-w-300'>{{item?.partnerName | slice:0:25}}<span
+                        *ngIf="item?.partnerName?.length>25">...</span></span>
+                  </h5>
+                  <h5 class='ellipsis' title="{{item?.companyName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
+                    {{item?.companyName | slice:0:25}}
+                    <span *ngIf="item?.companyName?.length>25">...</span>
+                  </h5>
+                  <h6 class='m0' style="font-weight: 400; display: table;">
+                    <span title="">{{item?.partnerName | slice:0:25}}</span>
+                    <span *ngIf="item?.partnerName?.length>25">...</span>
+                  </h6>
+                </td>
+                <td>
+                  <div class="actions-block override-actions">
+                    <a data-rel="fancybox-button" (click)="viewAnalytics(item)" data-toggle="tooltip"
+                      data-placement="bottom" title="View Detailed Analytics" id="pj">
+                      <i class="fa fa-line-chart" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              <ng-container *ngFor="let item of pagination.pagedItems;let i=index">
-                <tr>
-                  <td>
-                    <span _ngcontent-c11="" class="thumbnail-wrapper" style="margin-top: 15px;">
-                      <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';"
-                            [src]="authenticationService.MEDIA_URL+item.companyLogo">
-                    </span>                      
-                  </td>                  
-                  <td>
-                    <h4 class="ellipsis" style="font-size: 14px;" title="{{item?.companyName}}">
-                      {{item?.companyName | slice:0:25}}
-                      <span *ngIf="item?.companyName?.length>25">...</span>
-                    </h4>
-                    <h5 class='m0' style="float:left">{{item?.partnerName | slice:0:15}}
-                      <span class='f-w-300'>{{item?.partnerName | slice:0:25}}<span
-                          *ngIf="item?.partnerName?.length>25">...</span></span>
-                    </h5>
-                    <h5 class='ellipsis' title="{{item?.companyName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
-                      {{item?.companyName | slice:0:25}}
-                      <span *ngIf="item?.companyName?.length>25">...</span>
-                    </h5>
-                    <h6 class='m0' style="font-weight: 400; display: table;">
-                      <span title="">{{item?.partnerName | slice:0:25}}</span>
-                      <span *ngIf="item?.partnerName?.length>25">...</span>
-                    </h6>                      
-                  </td> 
-                  <td>
-                    <h4 class="ellipsis" style="font-size: 14px;" title="{{item?.companyName}}">
-                      {{item?.companyName | slice:0:25}}
-                      <span *ngIf="item?.companyName?.length>25">...</span>
-                    </h4>
-                    <h5 class='m0' style="float:left">{{item?.partnerName | slice:0:15}}
-                      <span class='f-w-300'>{{item?.partnerName | slice:0:25}}<span
-                          *ngIf="item?.partnerName?.length>25">...</span></span>
-                    </h5>
-                    <h5 class='ellipsis' title="{{item?.companyName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
-                      {{item?.companyName | slice:0:25}}
-                      <span *ngIf="item?.companyName?.length>25">...</span>
-                    </h5>
-                    <h6 class='m0' style="font-weight: 400; display: table;">
-                      <span title="">{{item?.partnerName | slice:0:25}}</span>
-                      <span *ngIf="item?.partnerName?.length>25">...</span>
-                    </h6>                      
-                  </td>                  
-                  <td>
-                    <div class="actions-block override-actions">
-                      <a data-rel="fancybox-button" (click)="viewAnalytics(item)"  data-toggle="tooltip" data-placement="bottom"
-                       title="View Detailed Analytics" id="pj">
-                        <i class="fa fa-line-chart" aria-hidden="true"></i>
-                      </a>                                  
-                    </div>
-                  </td>
-                </tr>
-              </ng-container>
-            </tbody>
-          </table>
+            </ng-container>
+          </tbody>
+        </table>
       </div>
-       <!---Message-->
-       <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+      <!---Message-->
+      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
         <strong>No Partners Found.</strong>
-     </div>
+      </div>
     </div>
     <!--Pagination-->
     <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
-      <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="getActivePartners($event)">
+      <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+        (notifyParentDropDown)="getActivePartners($event)">
       </app-pagination>
-   </div>
+    </div>
   </div>
 </div>
 
 <div class="col-md-12" style="display: none;">
   <!--tabbable tabbable-custom tabbable-noborder-->
   <div class="page-bar p10" id="header">
-    <div class="tab-content">          
+    <div class="tab-content">
       <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-      <div class="col-xs-12 p0" [hidden]="httpRequestLoader.isLoading"> 
+      <div class="col-xs-12 p0" [hidden]="httpRequestLoader.isLoading">
         <div class="col-xs-6 col-sm-6 col-lg-6 col-sm-6 p0">
           <div class="caption">
-            <span class="caption-subject font-red-sunglo uppercase">Active {{authenticationService?.partnerModule?.customName}} Details</span>
+            <span class="caption-subject font-red-sunglo uppercase">Active
+              {{authenticationService?.partnerModule?.customName}} Details</span>
           </div>
-        </div>          
-        <div class="page-toolbar col-xs-6 col-sm-6 col-md-6 p0">          
-          <div class="btn-group pull-right">                
+        </div>
+        <div class="page-toolbar col-xs-6 col-sm-6 col-md-6 p0">
+          <div class="btn-group pull-right">
             <div class="inputs" style="float: right;display: inline-flex;">
               <div style="float: left;">
                 <select class="form-control" [(ngModel)]="sortOption.selectedSortedOption"
-                  (ngModelChange)="getSortedResults($event)"
-                  style="position: relative;right: -3px;">
+                  (ngModelChange)="getSortedResults($event)" style="position: relative;right: -3px;">
                   <option *ngFor="let option of sortOption.sortByDropDown" [ngValue]="option">{{option.name}}
                   </option>
                 </select>
@@ -142,16 +146,15 @@
                     (keypress)="searchKeyPress($event.keyCode)">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
                     (click)="sortOption.searchKey='';search()"></button>
-                  <button type="submit" class="search-box-item-click"
-                    (click)="search()">
+                  <button type="submit" class="search-box-item-click" (click)="search()">
                     <i class="fa fa-search" aria-hidden="true"></i></button>
-                </div>                    
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      
+
       <section class='col-xs-12 p0'
         *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
         <div class="table-responsive">
@@ -168,7 +171,7 @@
                 <td>
                   <span _ngcontent-c11="" class="thumbnail-wrapper" style="margin-top: 15px;">
                     <img _ngcontent-c11="" alt="No image found" src="assets/images/company-profile-logo.png">
-                  </span>                      
+                  </span>
                 </td>
                 <td>
                   <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{partnerCompany?.companyName}}">
@@ -179,7 +182,7 @@
                     <span class='f-w-300'>{{partnerCompany?.partnerName | slice:0:25}}<span
                         *ngIf="partnerCompany?.partnerName?.length>25">...</span></span>
                   </h5>
-                </td>                   
+                </td>
                 <td class="mAlign">
                   <div class="actions-block float-none">
                     <a data-toggle="tooltip" data-placement="left" title="Send reminder email">
@@ -199,8 +202,9 @@
 
 
       <div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
-       class="bg-card-header">
-        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="getActivePartners()">
+        class="bg-card-header">
+        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+          (notifyParentDropDown)="getActivePartners()">
         </app-pagination>
       </div>
     </div>
@@ -219,8 +223,7 @@
         <div class="portlet-input input-inline">
           <div class="input-icon right mTop" style="position: relative; margin: -12px 0 0 0;">
             <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="searchKey"
-              [ngModelOptions]="{standalone: true}" placeholder="Search"
-              (keypress)="searchKeyPress($event.keyCode)">
+              [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
               (click)="searchKey='';search()"></button>
             <button type="submit" class="search-box-item-click" (click)="search()">
@@ -244,10 +247,9 @@
             <td>
               <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true">
               </app-user-info>
-            </td>           
+            </td>
             <td class="text-center">
-              <a data-rel="fancybox-button" 
-                data-toggle="tooltip" data-placement="top" title="View Detailed Analytics"
+              <a data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="View Detailed Analytics"
                 class='circled-number'>
                 <i class="fa fa-line-chart" aria-hidden="true"></i>
               </a>
@@ -257,8 +259,7 @@
       </table>
     </div>
     <app-pagination class="pg8" [pagination]="pagination" [type]="'userInteraction'"
-      (notifyParentDropDown)="dropDownList($event)"
-      (notifyParent)="setPage($event)"></app-pagination>
+      (notifyParentDropDown)="dropDownList($event)" (notifyParent)="setPage($event)"></app-pagination>
   </div>
 </div>
 
@@ -267,7 +268,7 @@
     <div class="tab-content">
       <div class="" style="padding-bottom: 45px;" *ngIf="!httpRequestLoader.isLoading">
         <div class="col-xs-12 col-sm-6 col-lg-5 p0">
-          <h4 class="text-primary pull-left" style="margin: 8px 6px 0px 0px;">Leads</h4>            
+          <h4 class="text-primary pull-left" style="margin: 8px 6px 0px 0px;">Leads</h4>
         </div>
         <div class="page-toolbar col-xs-12 col-sm-6 col-lg-5 p0 pull-right">
           <div class="btn-group pull-right" style="width: max-content;">
@@ -277,78 +278,75 @@
                   <input type="text" class="form-control pr-pl ml" [(ngModel)]="sortOption.searchKey"
                     [ngModelOptions]="{standalone: true}" placeholder="Search"
                     (keypress)="searchKeyPress($event.keyCode)">
-                  <button class="glyphicon glyphicon-remove search-box-item-clear"
-                    *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';search()"></button>
+                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                    (click)="sortOption.searchKey='';search()"></button>
                   <button type="submit" class="search-box-item-click top" (click)="search()">
                     <i class="fa fa-search" aria-hidden="true"></i>
                   </button>
                 </div>
-              </div>                
+              </div>
             </div>
           </div>
         </div>
       </div>
       <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
-                [hidden]="sortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
-                <div class="table-responsive" [hidden]="httpRequestLoader.isLoading">
-                  <table class='table tgrid table-hover table-sm' aria-describedby="activePartnersTable">
-                    <thead>
-                      <tr>
-                        <th class="center-aligned" translate>Company Logo</th>
-                        <th class="center" translate>Company Details</th>
-                        <th style="width: 18%; text-align:center" translate>Actions</th>
-                      </tr>
-                    </thead>
+        [hidden]="sortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
+        <div class="table-responsive" [hidden]="httpRequestLoader.isLoading">
+          <table class='table tgrid table-hover table-sm' aria-describedby="activePartnersTable">
+            <thead>
+              <tr>
+                <th class="center-aligned" translate>Company Logo</th>
+                <th class="center" translate>Company Details</th>
+                <th style="width: 18%; text-align:center" translate>Actions</th>
+              </tr>
+            </thead>
 
-                    <tbody>
-                      <ng-container *ngFor='let item of pagination.pagedItems; let i=index'>
-                        <tr>
-                          <td style="width: 40%;">                              
-                            <span _ngcontent-c11="" class="thumbnail-wrapper" style="margin-top: 15px;">
-                              <img _ngcontent-c11="" alt="No image found" src="assets/images/company-profile-logo.png">
-                            </span>
-                          </td>
-                          <td style="width: 20%;">
-                            <h5>{{item.companyName | slice:0:30}}
-                              <span *ngIf="item.companyName?.length>30">...</span>
-                            </h5>
-                            <h5 class='ellipsis' title="{{item.partnerName}}"
-                              style="margin: 7px 0 2px 0;font-weight: 400;">
-                              {{item.partnerName | slice:0:20}}
-                              <span *ngIf="item.partnerName?.length>20">...</span>
-                            </h5>
-                            <!-- <h6 class='m0' style="font-weight: 400;">
+            <tbody>
+              <ng-container *ngFor='let item of pagination.pagedItems; let i=index'>
+                <tr>
+                  <td style="width: 40%;">
+                    <span _ngcontent-c11="" class="thumbnail-wrapper" style="margin-top: 15px;">
+                      <img _ngcontent-c11="" alt="No image found" src="assets/images/company-profile-logo.png">
+                    </span>
+                  </td>
+                  <td style="width: 20%;">
+                    <h5>{{item.companyName | slice:0:30}}
+                      <span *ngIf="item.companyName?.length>30">...</span>
+                    </h5>
+                    <h5 class='ellipsis' title="{{item.partnerName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
+                      {{item.partnerName | slice:0:20}}
+                      <span *ngIf="item.partnerName?.length>20">...</span>
+                    </h5>
+                    <!-- <h6 class='m0' style="font-weight: 400;">
                               <a title="{{partnerCompany.partnerEmail}}">{{partnerCompany.partnerEmail | slice:0:30}}</a>
                               <span *ngIf="partnerCompany.partnerEmail>30">...</span>
                             </h6>                               -->
-                          </td>
-                          
-                          <td>
-                            <div class="actions-block override-actions">
-                                <a data-rel="fancybox-button" (click)="viewAnalytics(item)"  data-toggle="tooltip" data-placement="bottom"
-                                 title="View Detailed Analytics" id="pj">
-                                  <i class="fa fa-line-chart" aria-hidden="true"></i>
-                                </a>                                  
-                            </div>
-                          </td>
-                        </tr>
-                      </ng-container>
-                    </tbody>
-                  </table>
-                </div>
+                  </td>
 
-                <!-- --------------------Pagination0-------------------- -->
-                <div *ngIf="!httpRequestLoader.isLoading" class="pg2">
-                  <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-                    (notifyParentDropDown)="dropDownList($event)"></app-pagination>
-                </div>
-                <!-- End of 24 -->
-                <div *ngIf="!httpRequestLoader.isLoading && pagination.totalRecords==0" class="alert alert-info">
-                  <strong translate>No Partners Found.</strong>
-                </div>
-              </section>
+                  <td>
+                    <div class="actions-block override-actions">
+                      <a data-rel="fancybox-button" (click)="viewAnalytics(item)" data-toggle="tooltip"
+                        data-placement="bottom" title="View Detailed Analytics" id="pj">
+                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- --------------------Pagination0-------------------- -->
+        <div *ngIf="!httpRequestLoader.isLoading" class="pg2">
+          <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+            (notifyParentDropDown)="dropDownList($event)"></app-pagination>
+        </div>
+        <!-- End of 24 -->
+        <div *ngIf="!httpRequestLoader.isLoading && pagination.totalRecords==0" class="alert alert-info">
+          <strong translate>No Partners Found.</strong>
+        </div>
+      </section>
     </div>
   </div>
 </div>
-
-
