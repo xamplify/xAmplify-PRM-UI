@@ -1,4 +1,4 @@
-#disabled-icon {
+/* #disabled-icon {
 	border: none;
 	margin: 0px 15px 0 0;
 	cursor: default;
@@ -43,18 +43,18 @@
 
 .right-float {
 	float: left;
-}
+} */
 
 #font {
-	font-size: 13px;
+  font-size: 13px;
 }
 
 #empty-data {
-	position: absolute;
-	top: 195px;
-	left: 220px;
+  position: absolute;
+  top: 195px;
+  left: 220px;
 }
 
-#min-height{
-	min-height: 308px;
+#min-height {
+  min-height: 308px;
 }

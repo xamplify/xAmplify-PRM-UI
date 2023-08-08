@@ -237,22 +237,16 @@
                             <div class="form-inline col-sm-12">
                               <div class="form-group col-sm-4">
                                 <label class="control-label">From Date &nbsp;
-                                  <!-- <span class="required">*</span> -->
                                 </label>
                                 <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
                               <div class="form-group col-sm-4 form-group-mr">
                                 <label class="control-label">To Date &nbsp;
-                                  <!-- <span class="required">*</span> -->
                                 </label>
                                 <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
-                              <!-- <div class="form-group col-sm-4">
-                                <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
-                                  translate>Filter</button>
-                              </div> -->
                               
                               <div class="row">
                                 <div class="form-group col-sm-6 ml0-mr0" style="margin-top: 13px;padding-left: 54px;;display: flex;">
@@ -265,9 +259,6 @@
                                   </select>
                                 </div>
                               </div>
-                            <!-- <div class="form-group col-sm-12" style="text-align: -webkit-right;">
-                              <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
-                            </div> -->
                           </div>
                         </div>
                         </form>
@@ -275,17 +266,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div>
-              <select class="form-control" [(ngModel)]="lead.pipelineStageId" (ngModelChange)="setLeadStatus(lead)"
-                                style="width: 135px">
-                                <option *ngFor="let stage of lead.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
-                              </select>
-                              </div> -->
-                <!-- <div class="row" id="box" *ngIf="httpRequestLoader.isServerError" translate>
-                  Please contact admin for 'Leads'
-                </div> -->
-                <!-- <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                </app-list-loader> -->
                 <!-- -------------------- List View for Leads-------------------- -->
                 <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'
                   [hidden]="!listView || leadsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
@@ -518,16 +498,6 @@
                                           class="caption-subject font-red-sunglo uppercase">{{authenticationService?.partnerModule?.customName}}</span>
                                       </div>
                                       <div class="inputs" align="right" style="float: right; display: flex;">
-                                        <!-- <div style="float: left;">
-                                                <select class="form-control" [(ngModel)]="sortOption.leadPartnerSortOption" (ngModelChange)="sortPartners($event)" style="position: relative;right: -3px;"
-                                                *ngIf="isCampaignByLeads">
-                                                  <option *ngFor="let option of sortOption.leadPartnersSortDropDown" [ngValue]="option">{{option.name}}</option>
-                                                </select>
-                                                <select class="form-control" [(ngModel)]="sortOption.dealsPartnerSortOption" (ngModelChange)="sortPartners($event)" style="position: relative;right: -3px;"
-                                                *ngIf="!isCampaignByLeads">
-                                                  <option *ngFor="let option of sortOption.dealPartnersSortDropDown" [ngValue]="option">{{option.name}}</option>
-                                                </select>
-                                              </div> -->
                                         <div class="portlet-input input-inline input-medium"
                                           style="margin-right: 10px;">
                                           <div class="input-icon right" style="position: relative;right: -11px;">
@@ -653,9 +623,6 @@
           </div>
         </div><!-- End Of Tab Content -->
       </div>
-
-      <!-- <app-modal-popup-loader *ngIf="showLeadForm"> </app-modal-popup-loader> -->
-
     </div>
 
 

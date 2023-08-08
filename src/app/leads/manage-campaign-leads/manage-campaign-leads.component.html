@@ -56,14 +56,12 @@
             <div class="form-inline col-sm-12">
               <div class="form-group col-sm-4">
                 <label class="control-label">From Date &nbsp;
-                  <!-- <span class="required">*</span> -->
                 </label>
                 <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                 </app-date-picker>
               </div>
               <div class="form-group col-sm-4 form-group-mr">
                 <label class="control-label">To Date &nbsp;
-                  <!-- <span class="required">*</span> -->
                 </label>
                 <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
                 </app-date-picker>
@@ -78,10 +76,7 @@
                                 </option>
                               </select>
                             </div>
-                            </div>
-                            <!-- <div class="form-group col-sm-12" style="text-align: -webkit-right;">
-                              <button  class="btn green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
-                            </div> -->
+                            </div>                          
             </div>
           </div>
         </form>
@@ -186,20 +181,7 @@
                     </a>
                   </ng-container>
                   
-              </div>
-              
-              <!-- <a *ngIf="lead.campaignId" data-rel="fancybox-button" (click)="dealRouter(item,$event)" title="Lead Based Reports" style="margin-top: 10px">
-                <span class="circled-number"  style="height: 40px;width:40px">
-                  <i class="fa fa-line-chart" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                </span>
-              </a> 
-              <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
-                <span class="circled-number" style="height: 40px;width:40px">
-                  <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i><span class="badge badge-default"
-                    style="margin-bottom: 32px; margin-left: -13px;background-color: #ed1c24 !important;">0</span>
-                </span>
-              </a> -->
-              
+              </div>                              
             </td>
           </tr>
 

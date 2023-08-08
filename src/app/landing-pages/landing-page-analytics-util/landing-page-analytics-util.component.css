@@ -1,4 +1,4 @@
-#disabled-icon{
+/* #disabled-icon{
 border: none;
 margin: 0px 15px 0 0;
 cursor: default;
@@ -30,7 +30,7 @@ cursor: default;
 
 #search-text{
 	height:34px;
-}
-.fa.fa-refresh.margin{
-	line-height: 15px;
+} */
+.fa.fa-refresh.margin {
+  line-height: 15px;
 }
