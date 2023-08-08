@@ -126,3 +126,8 @@
 .shared-feeds-border{
     border-color: #fff;
 }
+@media screen and (max-width:991px){
+    .tab_nowrap{
+        white-space: nowrap;
+    } 
+}

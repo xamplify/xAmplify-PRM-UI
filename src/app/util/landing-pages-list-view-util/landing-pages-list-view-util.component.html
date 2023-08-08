@@ -42,7 +42,7 @@
                                 </ng-container>
                                 <div class="inputs" id="right" style="display: inline-flex;">
                                     <div *ngIf="!isPartnerLandingPage">
-                                        <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                                        <select class="form-control DropdownBoxWidth" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                                                 <option *ngFor="let option of sortOption.manageFormsSortOptions"
                                                     [ngValue]="option">
                                                     {{option.name}}</option>
@@ -58,7 +58,7 @@
                                     </div>
 
                                     <div class="portlet-input input-inline input-small" style="width: 198px !important;">
-                                        <div class="input-icon right" style="position: relative;right: -5px;">
+                                        <div class="input-icon right SerachBoxWidth" style="position: relative;right: -5px;">
                                             <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a page" (keypress)="eventHandler($event.keyCode)">
                                             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchLandingPages();"></button>
                                             <button type="submit" class="search-box-item-click" (click)="searchLandingPages()">
@@ -201,7 +201,7 @@
                 <!---Grid View----->
                 <div class="row">
                     <ng-container *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
-                        <div class="col-md-3 col-sm-4 col-xs-12 tab_mt_20" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
+                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_20" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                             <div class="grid-box grid-box-height" id="landingPageListDiv_{{landingPage.id}}">
                                 <ng-container *ngIf="!isPartnerLandingPage">
                                     <span class="ribbon1" *ngIf="landingPage.coBranded"><span>Co-Branded</span></span>

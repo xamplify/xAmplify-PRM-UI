@@ -1493,7 +1493,7 @@ div.switch5 > input.switch:focus ~ label:before {
   /* background-color: #008fd5;
     border: 1px solid #3575b5; */
   color: #fff;
-  padding: 6px 16px;
+  padding: 8px 17px;
   cursor: pointer;
   float: left;
   font-size: 14px;
@@ -1711,4 +1711,16 @@ div.switch5 > input.switch:focus ~ label:before {
     min-width: 30% !important;
     max-height: fit-content;
     min-height: 32px;
+}
+@media (min-width: 992px) and (max-width: 1300px)  { 
+  .BtnWidthForPopup {
+    width: 100px;
+  }
+  .vertical-center {
+    margin: 10px 50px 0px 50px;
+  }
+
+
+
+
 }

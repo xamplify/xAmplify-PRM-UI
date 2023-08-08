@@ -82,3 +82,8 @@ img {
 .heading-top-border{
     border-bottom: solid 1px white;
 }
+@media screen and (max-width:578px){
+    .pr_15{
+     padding-right: 15px!important;
+    }
+}
