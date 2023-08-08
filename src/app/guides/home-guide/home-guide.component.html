@@ -31,7 +31,7 @@
 </div>
 <div class="page-bar p_20 page-bar-padding-cu-thispageonly" *ngIf="!hidePageBarClass ">
 <div class="row">
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.accountDashboard">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.accountDashboard">
   <div class="user_card icon-bg1" (click)="getTitlesByModule(1)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/2.png" alt="" class="m-auto">
@@ -40,7 +40,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.partners">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.partners">
   <div class="user_card icon-bg2" (click)="getTitlesByModule(11)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/3.png" alt="" class="m-auto">
@@ -49,7 +49,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.content">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.content">
   <div class="user_card icon-bg3" (click)="getTitlesByModule(4)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/4.png" alt="" class="m-auto">
@@ -58,7 +58,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.contacts && !authenticationService.module.deletedPartner">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.contacts && !authenticationService.module.deletedPartner">
   <div class="user_card icon-bg4" (click)="getTitlesByModule(3)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/5.png" alt="" class="m-auto">
@@ -67,7 +67,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.shareLeads">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.shareLeads">
   <div class="user_card icon-bg5" (click)="getTitlesByModule(13)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/6.png" alt="" class="m-auto">
@@ -76,7 +76,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.sharedLeads">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.sharedLeads">
   <div class="user_card icon-bg6" (click)="getTitlesByModule(14)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/7.png" alt="" class="m-auto">
@@ -85,7 +85,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.pagesAccessAsPartner">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.pagesAccessAsPartner">
   <div class="user_card icon-bg7" (click)="getTitlesByModule(10)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/1.png" alt="" class="m-auto">
@@ -94,7 +94,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.design">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.design">
   <div class="user_card icon-bg8" (click)="getTitlesByModule(6)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/8.png" alt="" class="m-auto">
@@ -103,7 +103,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu"
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu"
 *ngIf="(menuItem?.campaign || menuItem?.campaignAccessAsPartner) && !authenticationService.module.deletedPartner">
   <div class="user_card icon-bg9" (click)="getTitlesByModule(2)">
     <div class="acc_img">
@@ -113,7 +113,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.opportunities || menuItem?.opportunitiesAccessAsPartner">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.opportunities || menuItem?.opportunitiesAccessAsPartner">
   <div class="user_card icon-bg10" (click)="getTitlesByModule(9)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/10.png" alt="" class="m-auto">
@@ -122,7 +122,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="false">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="false">
   <div class="user_card icon-bg11">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/11.png" alt="" class="m-auto">
@@ -131,7 +131,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="false">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="false">
   <div class="user_card icon-bg12">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/12.png" alt="" class="m-auto">
@@ -140,7 +140,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.team">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.team">
   <div class="user_card icon-bg13" (click)="getTitlesByModule(16)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/13.png" alt="" class="m-auto">
@@ -149,7 +149,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu"
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu"
 *ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner">
 
   <div class="user_card icon-bg14" (click)="getTitlesByModule(19)">

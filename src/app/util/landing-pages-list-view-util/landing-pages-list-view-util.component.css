@@ -18,3 +18,16 @@
   border-radius: 3px;
   line-height: 1;
 }
+
+@media (min-width: 992px) and (max-width: 1245px)  { 
+    .DropdownBoxWidth {
+        width: 120px;
+    }
+    .input-icon.right.SerachBoxWidth {
+        width: 190px;
+        float: right;
+    }
+
+
+
+}
