@@ -12,31 +12,24 @@
         </li>
         <li *ngIf="!isSearch">
           <i class="fa fa-angle-right" aria-hidden="true"></i>
-          <a>{{userGuide.title}}</a>
+          <a *ngIf="statusCode !== 404">{{userGuide.title}}</a>
+          <a *ngIf="statusCode === 404 && pagination?.guideTitle.length>0">{{pagination.guideTitle}}</a>
+          <a *ngIf="statusCode === 404 && pagination?.guideTitle.length === 0">{{slug}}</a>
         </li>
         <li *ngIf="isSearch">
           <i class="fa fa-angle-right" aria-hidden="true"></i>
-          <a *ngIf="!isDashBoard">Search Results</a>
-          <a *ngIf="isDashBoard">Account Dashboard</a>
+          <a>Search Results</a>
         </li>
-        <li *ngIf="(statusCode === 404 || statusCode === 500) && !isSearch">
-          <!-- <i class="fa fa-angle-right" aria-hidden="true"></i> -->
-          <a *ngIf="statusCode === 404">{{slug}}</a>
-          <a *ngIf="statusCode !== 404">Error Page</a>
+        <li *ngIf="statusCode === 500">
+           <a>{{slug}}</a>
         </li>
       </ul>
     </div>
-    <div class="page-bar page-bar-padding-cu" *ngIf="statusCode !== 404 || isSearch">
+    <div class="page-bar page-bar-padding-cu">
       <div class="row">
-        <!-- {{guideMergeTag}} -->
         <div class="col-lg-3 col-md-3 col-sm-12">
           <div class="wrapper">
             <div>
-              <!-- <ng-template #showTitles>
-              <ul class="collapse list-unstyled" id="{{showListId}}">
-                <li *ngFor="let name of userGudeTitles"><a >{{name.title}}</a></li>
-              </ul>
-            </ng-template> -->
             </div>
             <!-- Sidebar Holder -->
             <nav id="sidebar">
@@ -44,15 +37,11 @@
                 <li *ngIf="menuItem?.accountDashboard"
                   [ngClass]="expansionModuleName === 'Account Dashboard'? 'active':''">
                   <a *ngIf="!menuItem?.isOnlyPartnerCompany"
-                    (click)="getUserGuidesByModuleName('Account Dashboard');getGuideLinkByType()">
+                    (click)="getGuideLinkByType()">
                     <i class="fa fa-home" aria-hidden="true"></i>
                     <span class="title" translate>Account Dashboard</span>
                     <span class=""></span>
                   </a>
-                  <!-- <ul *ngIf="showListId === 'Account Dashboard'" class="collapse list-unstyled" id="Account">
-                  <li *ngFor="let name of userGudeTitles"><a
-                      (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
-                </ul> -->
                 </li>
                 <!--Partners-->
                 <li *ngIf="menuItem?.partners" [ngClass]="showListId === 'Partner'? 'active':''">
@@ -79,7 +68,7 @@
                   </a>
                   <ul *ngIf="showListId === 'Content'" class="collapse list-unstyled" id="Content"
                     [ngClass]="expansionModuleName === 'Content'? 'in':''">
-                    <li *ngFor="let name of userGudeTitles"><a
+                    <li *ngFor="let name of userGudeTitles" ><a
                         (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                   </ul>
                 </li>
@@ -95,7 +84,7 @@
                   </a>
                   <ul *ngIf="showListId === 'Contacts'" class="collapse list-unstyled"
                     [ngClass]="expansionModuleName === 'Contacts'?'in':''" id="Contacts">
-                    <li *ngFor="let name of userGudeTitles"><a
+                    <li *ngFor="let name of userGudeTitles" ><a
                         (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                   </ul>
                 </li>
@@ -110,7 +99,7 @@
                   </a>
                   <ul *ngIf="showListId === 'Share Leads'" class="collapse list-unstyled" id="shareLeads"
                     [ngClass]="expansionModuleName === 'Share Leads'? 'in':''">
-                    <li *ngFor="let name of userGudeTitles"><a
+                    <li *ngFor="let name of userGudeTitles" ><a
                         (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                   </ul>
                 </li>
@@ -121,11 +110,10 @@
                     [ngClass]="expansionModuleName === 'Shared Leads'? 'show':''">
                     <i class="fa fa-id-badge" aria-hidden="true"></i>
                     <span class="title" translate>Shared Leads</span>
-                    <!-- <span class="selected"></span> -->
                   </a>
                   <ul *ngIf="showListId === 'Shared Leads'" class="collapse list-unstyled" id="sharedLeads"
                     [ngClass]="expansionModuleName === 'Shared Leads'? 'in':''">
-                    <li *ngFor="let name of userGudeTitles"><a
+                    <li *ngFor="let name of userGudeTitles" ><a
                         (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                   </ul>
                 </li>
@@ -136,11 +124,10 @@
                     (click)="getUserGuidesByModuleName('Pages')" [ngClass]="expansionModuleName === 'Pages'? 'show':''">
                     <i class="fa fa-wpforms" aria-hidden="true"></i>
                     <span class="title" translate>Pages</span>
-                    <!-- <span class="selected"></span> -->
                   </a>
                   <ul *ngIf="showListId === 'Pages'" class="collapse list-unstyled" id="pagesAccessAsPartner"
                     [ngClass]="expansionModuleName === 'Pages'? 'in':''">
-                    <li *ngFor="let name of userGudeTitles"><a
+                    <li *ngFor="let name of userGudeTitles" ><a
                         (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                   </ul>
                 </li>
@@ -152,11 +139,10 @@
                     [ngClass]="expansionModuleName === 'Design'? 'show':''">
                     <i class="fa fa-paint-brush" aria-hidden="true"></i>
                     <span class="title" translate>Design</span>
-                    <!-- <span class="selected"></span> -->
                   </a>
                   <ul *ngIf="showListId === 'Design'" class="collapse list-unstyled" id="design"
                     [ngClass]="expansionModuleName === 'Design'? 'in':''">
-                    <li *ngFor="let name of userGudeTitles"><a
+                    <li *ngFor="let name of userGudeTitles" ><a
                         (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                   </ul>
                 </li>
@@ -170,12 +156,10 @@
                     [ngClass]="expansionModuleName === 'Campaign'? 'show':''">
                     <i class="fa fa-bullhorn" aria-hidden="true"></i>
                     <span class="title" translate>Campaign</span>
-                    <!-- <span class="arrow "></span>
-                  <span class="selected"></span> -->
                   </a>
                   <ul *ngIf="showListId === 'Campaign'" class="collapse list-unstyled" id="Campaign"
                     [ngClass]="expansionModuleName === 'Campaign'? 'in':''">
-                    <li *ngFor="let name of userGudeTitles"><a
+                    <li *ngFor="let name of userGudeTitles" ><a
                         (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                   </ul>
                 </li>
@@ -191,7 +175,7 @@
                   </a>
                   <ul *ngIf="showListId === 'Opportunities'" class="collapse list-unstyled" id="Opportunities"
                     [ngClass]="expansionModuleName === 'Opportunities'? 'in':''">
-                    <li *ngFor="let name of userGudeTitles"><a
+                    <li *ngFor="let name of userGudeTitles" ><a
                         (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                   </ul>
                 </li>
@@ -205,7 +189,7 @@
                   </a>
                   <ul *ngIf="showListId === 'Team'" class="collapse list-unstyled" id="team"
                     [ngClass]="expansionModuleName === 'Team'? 'in':''">
-                    <li *ngFor="let name of userGudeTitles"><a
+                    <li *ngFor="let name of userGudeTitles" ><a
                         (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                   </ul>
                 </li>
@@ -216,23 +200,13 @@
                   <!----------- All Logins--------->
                   <a href="#Configuration" data-toggle="collapse" aria-expanded="false"
                     (click)="getUserGuidesByModuleName('Configuration')"
-                    *ngIf="!authenticationService?.module?.isOnlyPartnerCompany"
                     [ngClass]="expansionModuleName === 'Configuration'? 'show':''">
                     <i class="fa fa-cog" aria-hidden="true"></i>
                     <span class="title" translate>Configuration</span>
-                    <!-- <span class="selected"></span> -->
-                  </a>
-                  <!------------ For only Partner login-->
-                  <a href="#Configuration" data-toggle="collapse" aria-expanded="false" (click)="goToProcessing()"
-                    *ngIf="authenticationService?.module?.isOnlyPartnerCompany"
-                    [ngClass]="expansionModuleName === 'Configuration'? 'show':''">
-                    <i class="fa fa-cog" aria-hidden="true"></i>
-                    <span class="title" translate>Configuration</span>
-                    <!-- <span class="selected"></span> -->
                   </a>
                   <ul *ngIf="showListId === 'Configuration'" class="collapse list-unstyled" id="Configuration"
                     [ngClass]="expansionModuleName === 'Configuration'? 'in':''">
-                    <li *ngFor="let name of userGudeTitles"><a
+                    <li *ngFor="let name of userGudeTitles" ><a
                         (click)="getGuideLinkByTitle(name.title)">{{name.title}}</a></li>
                   </ul>
                 </li>
@@ -240,46 +214,44 @@
             </nav>
           </div>
         </div>
-        <div class="col-lg-9 col-md-9 col-sm-12" *ngIf="statusCode === 200 && !isError">
-          <!-- <button type="button" (click)="hideAndShow()" class="btn btn-primary hide-mobile-menu" >
-          <i class="glyphicon glyphicon-align-left"> Menu</i> 
-         </button> -->
-          <!-- {{mergeTag}} -->
+        <div class="col-lg-9 col-md-9 col-sm-12" *ngIf="statusCode === 200 || statusCode === 404">
+          <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
           <div class="side-border-differentiation" [ngClass]="isSearch?'':'guide-title'">
-            <div *ngIf="!isSearch">
+            <div *ngIf="!isSearch" >
               <div style="border-bottom: 1px solid #ddd;">
-                <h4>
+                <h4 *ngIf="statusCode === 200">
                   {{userGuide.title}}
+                </h4>
+                <h4 *ngIf="statusCode === 404 && pagination?.guideTitle?.length > 0">
+                  {{pagination.guideTitle}}
+                </h4>
+                <h4 *ngIf="statusCode === 500">
+                    {{slug}}
                 </h4>
               </div>
               <div [innerHTML]="guideLinkIframe" *ngIf="statusCode === 200">
-                <!-- <iframe id="myFrame"  width="100%" height="1110" src="{{[guideLink"}}" frameborder="0" allowfullscreen></iframe> -->
               </div>
 
             </div>
           </div>
-          <div *ngIf="isSearch" class="card-left-padd">
-            <app-search-guides (changeEvent)="getGuideLinkByTitle($event)" [loading]="loading" [searchKey]="searchKey"
-              [pagination]="pagination"></app-search-guides>
-          </div>
-        </div>
-        <div *ngIf="isShowSearchResults" class="col-lg-9 col-md-9 col-sm-12">
-          <app-search-guides (changeEvent)="getGuideLinkByTitle($event)" [loading]="loading" [searchKey]="searchKey"
-            [pagination]="pagination"></app-search-guides>
-        </div>
-        <div class="col-md-9 col-lg-9" *ngIf="statusCode === 500 && !isError" style="padding: 10px;">
-          <div class="">
-            <div class="text-center">
-              <h1>403</h1>
-              <h4>ACCESS DENIED</h4>
-              <h3>Your Request for this page has been denied because of Access Control</h3>
-              <!-- <button class="btn btn-info" [routerLink]="referenceService.homeRouter">Go back to Home</button> -->
+          <!-- Search Results-->
+          <div  class="card-left-padd">
+            <div  class="card-left-padd search-result-box-border-left" *ngIf="statusCode === 200 && isSearch">
+              <div  class="search-result-border">
+                <div class="page-bar bg-result-color" *ngFor="let guide of userGuides">
+                  <h3><a (click)="getGuideLinkByTitle(guide.title)">{{guide.title}}</a></h3>
+                  <div>
+                    {{guide.description}}
+                  </div>
+                </div>
+                <div *ngIf="!httpRequestLoader.isLoading && pagination.totalRecords === 0" class="alert alert-info">
+                  <strong translate>No results found</strong>
+                </div>
+                <app-pagination *ngIf="pagination.totalRecords !== 0 && !httpRequestLoader.isLoading" [pagination]="pagination" (notifyParent)="setPage($event)"
+                  (notifyParentDropDown)="getSearchResultsOfUserGuides($event)"></app-pagination>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="col-md-9 col-lg-9 " *ngIf="isError" style="padding: 10px;">
-          <div class="card-left-padd search-result-box-border-left">
-            <div class="search-result-border page-bar bg-result-color">
+            <div class="search-result-border page-bar bg-result-color" *ngIf="statusCode === 404">
               <h3>Thank you! We are currently processing your request for the user guides and appreciate your patience.
                 Our team is working diligently to provide a prompt response. Apologies for any inconvenience caused. For
                 further assistance or questions, please contact our support team at <a target="_blank"
@@ -288,7 +260,17 @@
             </div>
           </div>
         </div>
+        <div class="col-md-9 col-lg-9 col-xs-12" *ngIf="statusCode === 500" style="padding: 10px;">
+          <div class="">
+            <div class="text-center">
+              <h1>403</h1>
+              <h4>ACCESS DENIED</h4>
+              <h3>Your Request for this page has been denied because of Access Control</h3>
+            </div>
+          </div>
+        </div>
       </div>
+
     </div>
     <div class="page-bar" *ngIf="isProgress">
       <div class="">

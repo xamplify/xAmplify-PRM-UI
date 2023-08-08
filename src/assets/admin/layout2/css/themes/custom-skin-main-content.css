@@ -310,8 +310,7 @@ input {
 .table-striped > tbody > tr:nth-of-type(odd),
 table tr:nth-child(odd),
 table tr:nth-child(even),
-.search-box-item-clear,
-input {
+.search-box-item-clear {
   background-color: transparent !important;
 }
 .table .table {
@@ -1332,6 +1331,25 @@ a.dropdown-toggle.circlebg-none-v:hover {
   opacity: 0.8;
   color: var(--top-button-value-color) !important;
 }
+@media only screen and (min-width: 300px) and (max-width: 580px) {  
+  a.dropdown-toggle.circlebg-none-v {
+    background: transparent !important;
+    border: none !important;
+  }
+  a.dropdown-toggle.circlebg-none-v:hover {
+    background: transparent !important;
+  }
+  .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle:hover {
+    background-color: transparent !important;
+  } 
+  .page-header.navbar.top-menu.navbar-nav> li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
+    background-color: transparent !important;
+  }
+}
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
+  background-color: var(--top-buton-color) !important;
+  border: 1px solid var(--top-button-border-color) !important;
+}
 .nav .open > a,
 .nav .open > a:focus,
 .nav .open > a:hover {
@@ -1516,6 +1534,9 @@ tag {
 .placeholder-bg-color {
   background-color: transparent !important;
 }
+select.form-control.same-bgcolor-for-select {
+  background-color: var(--div-bg-color) !important;
+}
 
 /* 19-07-2023 Custom Theme Settings bg colors */
 .bg-color-for-card {
@@ -1637,4 +1658,37 @@ button.swal2-confirm.styled:hover {
 :-ms-input-placeholder { /* Internet Explorer */
   color: var(---text-color) !important;
   opacity: 0.5;
+}
+
+/* design Manage Forms  Analytics table borders */
+table.table.table-allsideboders {
+  border: 1px solid var(--border-color) !important;
+}
+
+/* form fields white-bg */
+/* input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid {
+  background: transparent;
+}
+input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:active, input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:focus {
+  border: none !important;
+  outline: none !important;
+}
+
+input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched, input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched:active , input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched:focus {
+  background: transparent;
+  fill: none;
+} */
+.search-box-item-clear, input {
+  background: transparent;
+  fill: none;
+}
+/* .search-box-item-clear, input:active, input:focus {
+  border: none !important;
+  outline: none !important;
+} */
+.help-iconbgadd {
+  border: 1px solid var(--top-button-border-color) !important;
+}
+.helpcircle-cu {
+  color: var(--btn-secondary-text-color) !important;
 }

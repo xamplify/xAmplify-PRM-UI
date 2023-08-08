@@ -121,11 +121,17 @@
   .actionbtn{
    white-space: nowrap;
   }
+  .tab_p0{
+   padding: 0px!important;
+  }
 }
 /* Manage Campaigns ribbon adjustment 04-07-2023 */
-@media only screen and (min-width: 601px) and (max-width: 991px) { 
+@media only screen and (min-width: 601px) and (max-width: 992px) { 
   .grid-box{
     background: #f1f1f1 !important;
+  }
+  .ffolder.big.gray.folder-cheight {
+    height:177px !important;
   }
   .tab-ribbon {
     left: 10px;
@@ -319,6 +325,29 @@
   .mb_top10{
    margin-top:10px;
   }
+  .mb_p0{
+    padding: 0px;
+  }
+  .mrg10{
+    margin: 10px 0px;
+  }
+  .display_cont{
+    display: contents!important;
+  }
+  .align_mflex{
+     display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  .cenetered-block h5{
+    font-size: 10px !important;
+  }
+  .mb-flex{
+    display: flex;
+  }
+  .mr_4{
+    margin-right: 4px;
+  }
 }
 @media only screen and (min-width: 300px) and (max-width: 580px) {  
   /* myprofile old dropdown */
@@ -326,14 +355,15 @@
     background-color: transparent;
   } 
   a.dropdown-toggle.circlebg-none-v {
+    background: transparent !important;
     border: none !important;
   }
   .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > i {
     display: none !important;
   }
   .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
-    height: 36px;
-    width: 36px;
+    height: 34px;
+    width: 34px;
   }
    /* myprofile old dropdown end*/
 }
@@ -375,6 +405,9 @@
    .tab_flex{
     display: flex;
   }
+  .pt_10{
+    padding-top: 10px!important;
+  }
 }
 /*Select Campaign- campaign */
 @media only screen and (min-width: 991px) and (max-width: 1035px) {  
@@ -385,10 +418,34 @@
     padding: 6px 10px;
   }
 }
+@media screen and (max-width:380px){
+    .mb_pl{
+        padding-left: 0px!important;
+      }
+}
 
 @media only screen and (min-width: 990px) and (max-width: 1062px) {  
   .responsive-screen-zeropadding {
     padding: 0px;
   }
 } 
+
+@media only screen and (min-width: 992px) and (max-width: 1078px) {  
+  .scroll-top-abj {
+    margin-top: 26px;
+  } 
+} 
+/* Theme View */
+@media only screen and (min-width: 1000px) and (max-width:1133px) {  
+  .desktopview{
+    width: 70% !important;
+  } 
+}
+
+
+
+
+
+
+
 

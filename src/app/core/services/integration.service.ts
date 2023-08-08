@@ -13,7 +13,6 @@ export class IntegrationService {
        
 
     constructor(private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService) {
-        console.log(logger);
     }
 
     checkConfigurationByType(type: string) {

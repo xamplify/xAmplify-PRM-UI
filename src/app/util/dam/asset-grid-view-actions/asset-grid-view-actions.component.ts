@@ -19,6 +19,7 @@ export class AssetGridViewActionsComponent implements OnInit {
   @Output() assetGridViewActionsEmitter = new EventEmitter();
   @Output()assetGridViewActionsPdfEmitter = new EventEmitter();
   @Output() assetGridViewActionsDeleteActionEmitter = new EventEmitter();
+  @Output() assetGridViewRefreshListEmitter = new EventEmitter();
   hasCampaignRole = false;
   hasAllAccess = false;
   loggedInUserId: number = 0;
@@ -114,6 +115,10 @@ export class AssetGridViewActionsComponent implements OnInit {
   /***XNFR-255****/
   openWhiteLabeledPopup(asset:any){
     this.setEventEmittersByType(asset,"shareAsWhiteLabeledContent");
+  }
+
+  refreshListEmitter(){
+    this.assetGridViewRefreshListEmitter.emit();
   }
 
  

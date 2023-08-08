@@ -162,7 +162,7 @@
                         <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo" alt="" />
                     </div>
                     <div class="vertical-center">
-                        <div class="panel panel-info mWid" *ngIf="!formError">
+                        <div class="panel panel-info mWid"  id="form-panel-info" *ngIf="!formError">
                             <div *ngIf="form.showTitleHeader" class="panel-heading" id="form-panel-heading">
                                 <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                             </div>

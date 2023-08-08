@@ -323,7 +323,7 @@ span.label-color-custmization {
 }
 .imgage-paddings {
   background: #fff;
-  height: 350px;
+  height: 349px;
 }
 
 /* tablet */
@@ -750,4 +750,9 @@ span.text-algn {
   height: 125px !important;
   bottom: 125px !important;
 }
-
+@media screen and (max-width:1024px) {
+  .pt_10{
+    padding-top: 10px!important;
+  }
+  
+}

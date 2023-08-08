@@ -187,10 +187,6 @@
                             <li *ngIf="authenticationService.module.isAnyAdminOrSupervisor"  [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'unsubscribeReasons'}" (click)="activateTab('unsubscribeReasons');clearCustomResponse()">{{properties.unsubscribeReasons | translate}}</a>
                             </li>
-                            <!--Partner Invitation Configuration-->
-                            <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module.notifyPartners" [ngClass]="{'active-tab': activeTabName == 'notifyPartners'}" >
-                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'notifyPartners'}" (click)="activateTab('notifyPartners');clearCustomResponse()">{{authenticationService?.partnerModule?.customName | translate}} Invitation Configuration</a>
-                            </li>
                              <!--Exclusion-->
                             <ng-container *ngIf="excludeUsersOrDomains">
                                 <li [ngClass]="{'active-tab': activeTabName == 'exclude'}"  >
@@ -206,7 +202,11 @@
                             authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )" style="border-bottom:none !important">
                             <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}" (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups | translate}}</a>
                             </li>
-                            
+                            <!---XNFR-326---->
+                            <!--Email Notification Settings-->
+                            <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module?.emailNotificationSettings" [ngClass]="{'active-tab': activeTabName == properties?.emailNotificationSettings}" >
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.emailNotificationSettings}" (click)="activateTab(properties?.emailNotificationSettings);clearCustomResponse()">{{properties?.emailNotificationSettings}}</a>
+                            </li>
                              </ng-container>
                         </ul>
                     </div>
@@ -277,10 +277,9 @@
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
                                     <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName=='notifyPartners'">{{authenticationService?.partnerModule?.customName | translate}} Invitation</span>
                                     <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader | translate}}</span>
-                                   
                                     <div class="btn-toolbar" style="float: right;"
                                     *ngIf="activeTabName == 'customTheme'|| activeTabName == 'lightTheme'
-                             || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
+                                        || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
                                     <div class="btn-group" style="padding-top: 7px;">
                                         <button class="btn btn-primary padding align"
                                             style="border-radius: 3px;" *ngIf="activeTabName == 'lightTheme' && themeDto?.id != activeThemeDetails?.themeId"
@@ -326,7 +325,7 @@
                                                    
                                                         <!-- responsive-alignment -->
                                                         <td class="mAlignView responsive-alignment">
-                                                            <div class="actions-block override-actions ActionAlign">
+                                                            <div class="actions-block override-actions ActionAlign mb_whitespace">
                                                                 <div class="mActionAlign ActionButtonPad iconmobile-align">
                                                                     <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="View"
                                                                         (click)="viewTheme();showDto(dto);"><i
@@ -377,7 +376,7 @@
                                                 </app-timestamp>
                                             </td>
                                             <td class="mAlignView">
-                                                <div class="actions-block override-actions ActionAlign">
+                                                <div class="actions-block override-actions ActionAlign mb_whitespace">
                                                     <div class="mActionAlign ActionButtonPad iconmobile-align">
                                                         <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="Edit"
                                                             (click)="goToCustomThemes();showDto(dto);updateTheme();"><i
@@ -544,8 +543,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-xs-2">
-                                                                <div class="pull-right" id="question-icons">
-                                                                    <button type="button" class="btn-danger button-blue btn_add" (click)="showAlert(i+1,question)" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                <div class="pull-right mb-flex" id="question-icons">
+                                                                    <button type="button" class="btn-danger button-blue btn_add mr_4" (click)="showAlert(i+1,question)" data-toggle="tooltip" data-placement="top" title="Delete">
                                                                         <span  class="glyphicon glyphicon-trash"></span>
                                                                     </button>
                                                                     <button type="button" class="btn-primary button-blue btn_add" (click)="addQuestion()" *ngIf="questions.length== i+1"  data-toggle="tooltip" data-placement="top" title="Add">
@@ -1025,7 +1024,7 @@
                                                                         </td>
                                                                         <td class="mAlign">{{pipeline.stages.length}}</td>
                                                                        <td class="mAlign">
-                                                                            <div class="actions-block override-actions">                                                                                
+                                                                            <div class="actions-block override-actions mb_whitespace tb_view_actions">                                                                                
                                                                                 <ng-container>
                                                                                     <a *ngIf="pipeline.canSync" data-toggle="tooltip" data-placement="top" title="Synchronize with {{pipeline.integrationType}}" (click)="syncPipeline(pipeline)">
                                                                                         <i class="fa fa-refresh"></i>
@@ -1143,7 +1142,6 @@
                                     </div>
                                     <!-- END PRIVACY SETTINGS TAB -->
                                     <!-- Customize Left Menu -->
-
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'customizeleftmenu'}">
                                       </div>
                                     <!-- GDPR SETTINGS TAB -->
@@ -1169,8 +1167,8 @@
                                                                         <a rel="noopener noreferrer" class="link" href="{{properties.privacyPolicyUrl}}" target="_blank" translate>Privacy & consent</a> &nbsp;|
                                                                         <a rel="noopener noreferrer" class="link" href="{{properties.cookiesPolicyUrl}}" target="_blank" translate>Cookies & tracking</a> &nbsp;
                                                                     </h5>
-                                                                    <h5 id="text-color-my-profile" translate>
-                                                                        <input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
+                                                                    <h5 id="text-color-my-profile">
+                                                                        <input type="checkbox" class="pointer" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
                                                                     </h5>
                                                                 </div>
                                                                 <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
@@ -1222,7 +1220,7 @@
                                         <div class="portlet-title" style="border-bottom: none;">
                                             <div class="row">
                                                 <div class="col-xs-12 col-sm-12 col-lg-12">
-                                                    <div class="col-xs-12 col-sm-5 col-lg-5 p0">
+                                                    <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
                                                          <button class="btn-primary"  (click)="addCategory()" translate>Create a Folder</button>
                                                     </div>
                                                     <div class="col-xs-12 col-sm-7 col-lg-7 p0">
@@ -1292,7 +1290,7 @@
                                                                 <span>{{category.count}}</span>
                                                             </td>
                                                             <td>
-                                                                <div class="actions-block override-actions cwotpx">
+                                                                <div class="actions-block override-actions cwotpx mb_whitespace">
                                                                     <ng-container *ngIf="category.defaultCategory">
                                                                         <a data-placement="top" class="disabled-event" title="Default Folder Can't Be Edited">
                                                                             <i class="fa fa-pencil-square-o disabled-event" aria-hidden="true"></i>
@@ -1420,18 +1418,23 @@
                                         </div>
                                     </div>
                                 </div>
-                                <app-custom-skin class="tab-pane" [themeDTO]="themeDto" [themeId]="themeDto.id"
-                                [isSaveTheme]="isSaveTheme" [activeThemeId]="activeThemeDetails.themeId"
-                                [ngClass]="{'active': activeTabName == 'customTheme'}"
-                                *ngIf="activeTabName == 'customTheme'"
-                                (closeEvent)="showThemeAlert($event)"></app-custom-skin>
+                                    <!---Custom Skin Settings-->
+                                    <app-custom-skin class="tab-pane" [themeDTO]="themeDto" [themeId]="themeDto.id"
+                                    [isSaveTheme]="isSaveTheme" [activeThemeId]="activeThemeDetails.themeId"
+                                    [ngClass]="{'active': activeTabName == 'customTheme'}"
+                                    *ngIf="activeTabName == 'customTheme'"
+                                    (closeEvent)="showThemeAlert($event)">
+                                    </app-custom-skin>
                                     <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
                                     <app-spf class="tab-pane" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
                                     <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
                                     <app-manage-team-member-group *ngIf="showTeamMemberGroups" class="tab-pane" [ngClass]="{'active': activeTabName == 'team-group'}"></app-manage-team-member-group>
                                     <!--Notify Partners--> 
                                     <app-notify-partners *ngIf="showNotifyPartnersOption && authenticationService?.module.notifyPartners" class="tab-pane" [ngClass]="{'active': activeTabName == 'notifyPartners'}"></app-notify-partners>
-                                  
+                                   <!--XNFR-326 Email Notification Settings--> 
+                                   <app-email-notification-settings *ngIf="showEmailNotificationSettingsOption && authenticationService?.module?.emailNotificationSettings" class="tab-pane" 
+                                        [ngClass]="{'active': activeTabName == properties?.emailNotificationSettings}">
+                                    </app-email-notification-settings>
                                     <!--video default player settings-->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
                                         <div>
@@ -1698,7 +1701,7 @@
                     </h6>
                                                         </td>
                                                             <td  >
-                                                        <div class="actions-block override-actions"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                                                        <div class="actions-block override-actions mb_whitespace"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                             <a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedUserAlert(user.userId)" >
                                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -1857,7 +1860,7 @@
                     </h6>
                                                         </td>
                                                             <td >
-                                                        <div class="actions-block override-actions"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                                                        <div class="actions-block override-actions mb_whitespace"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                             <a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedDomainAlert(obj.domainName)" >
                                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>

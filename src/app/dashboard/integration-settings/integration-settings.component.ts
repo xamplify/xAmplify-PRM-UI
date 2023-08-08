@@ -362,7 +362,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		if (text == "Activate") {
 			return $('<input type="submit" class="btn btn-primary" value="' + text + '" id="activate">').on('click', cb);
 		} else {
-			return $('<input type="submit" class="btn btn-primary" value="' + text + '">').on('click', cb);
+			return $('<input type="submit" class="btn Btn-Gray" value="' + text + '">').on('click', cb);
 		}
 	}
 

@@ -67,7 +67,7 @@
                                             <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo" alt="" />
                                         </div>
                                         <div class="vertical-center">
-                                            <div class="panel panel-info mWid" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor">
+                                            <div class="panel panel-info mWid" id="form-panel-info" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor">
                                                 <div *ngIf="form.showTitleHeader" class="panel-heading" id="form-panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
                                                     <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                                                 </div>
@@ -433,7 +433,7 @@
                         <div id="bottom-right">
                             <button [disabled]="!form.isValid || (!isAdd && form.associatedWithTrack)" type="submit" class="btn Btn-Green" (click)="addOrUpdate()">{{buttonName}}</button>
                             <button *ngIf="!isAdd && !isMdfForm" [disabled]="!form.isValid" type="submit" class="btn Btn-Green" (click)="saveAs()">Save As</button>
-                            <button type="button" class="btn Btn-Gray btn-hvr-text" (click)="navigateBack()" aria-hidden="true">Cancel</button>
+                            <button type="button" class="btn Btn-Gray" (click)="navigateBack()" aria-hidden="true">Cancel</button>
                         </div>
                     </div>
                 </div>

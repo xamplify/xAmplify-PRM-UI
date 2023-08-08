@@ -58,14 +58,14 @@
                             </ng-container>
                             <div class="inputs" align="right" style="float: right">
                                 <ng-container>
-                                    <div style="float: left;">
+                                    <div style="float: left;" class="dropdown-box-width">
                                         <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
                                             <option *ngFor="let sortOption of sortByDropDown"
                                                 [ngValue]="sortOption">
                                                 {{sortOption.name}}</option>
                                         </select>
                                     </div>
-                                    <div class="portlet-input input-inline input-small" style="width: 198px !important;">
+                                    <div class="portlet-input input-inline input-small" id="listview-serchbox">
                                         <div class="input-icon right" style="position: relative;right: -5px;">
                                             <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a template" (keypress)="eventHandler($event.keyCode)">
                                             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';searchTemplates()"></button>
@@ -189,7 +189,7 @@
             </section>
             <!--Grid View---->
             <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
-                <div class="col-md-3 col-sm-4 col-xs-12 tab_mt_20" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_20" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
                     <div class="grid-box cardHeight">
                         <span class="ribbon1">
                             <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'">Email

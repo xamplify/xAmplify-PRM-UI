@@ -42,39 +42,12 @@
             </div>
           </div>
           </div>
-        </div>        <ng-container>
+        </div>       
+         <ng-container>
           <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
             <div class="row">
               <div>
-                <!-- <div class="col-xs-12">
-                  <div class="row">
-                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <app-team-member-filter-option *ngIf="showFilter && !authenticationService?.module?.isMarketingCompany" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
-                  </div>
-                  <div class="page-toolbar col-xs-6 col-sm-6 col-lg-6 col-md-6">
-                    <div class="pull-right">
-                      <button class="btn btn-danger margin-space" *ngIf="(selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0) "
-                        (click)="clearAll('partners')">Clear All</button>
-                    </div>
-                    <div class="btn-group pull-right">
-                      <div class="inputs float-right" style="display: inline-flex;">
-                        <div class="portlet-input input-inline" id="search-div">
-                          <div class="input-icon right" id="icon">
-                            <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
-                              [ngModelOptions]="{standalone: true}" placeholder="Search..."
-                              (keypress)="partnersSearchOnKeyEvent($event.keyCode)">
-                            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
-                              (click)="sortOption.searchKey='';searchPartners();"></button>
-                            <button type="submit" class="search-box-item-click" (click)="searchPartners()">
-                              <i class="fa fa-search" aria-hidden="true"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  </div>
-                </div> -->
+               
                 <div class="col-xs-12" style="padding-top: 5px;">
                   <div class="alert alert-success text-center" style="padding: 5px;" *ngIf="selectedPartnershipIds?.length>0">
                     <strong>
@@ -85,6 +58,8 @@
                         {{selectedPartnershipIds?.length}} companies are selected
                       </ng-container>
                     </strong>
+                    <!---XNFR-326-->
+                    <ng-template [ngTemplateOutlet]="emailNotificationTemplate"></ng-template>
                   </div>
                 </div>
               </div>
@@ -165,7 +140,7 @@
                                 <thead>
                                   <tr>
                                     <th scope="row" class="text-center">
-                                      <input type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
+                                      <input type="checkbox" class="pointer" [(ngModel)]="isHeaderCheckBoxChecked"
                                         (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId)">
                                     </th>
                                     <th scope="row">Entity Info</th>
@@ -177,7 +152,7 @@
                                     [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1"
                                     (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
                                     <td class="text-center">
-                                      <input type="checkbox" id="{{adminAndTeamMember.userId}}"
+                                      <input type="checkbox" class="pointer" id="{{adminAndTeamMember.userId}}"
                                         [checked]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1"
                                         name="adminOrTeamMemberCheckBox[]" value="{{adminAndTeamMember.userId}}"
                                         (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
@@ -220,16 +195,6 @@
           <div class="row">
             <div>
               <div class="col-xs-12">
-                <div class="alert alert-success left-float" *ngIf="selectedPartnerGroupIds?.length>0">
-                  <strong>
-                    <ng-container *ngIf="selectedPartnerGroupIds?.length==1">
-                      {{selectedPartnerGroupIds?.length}} list is selected
-                    </ng-container>
-                    <ng-container *ngIf="selectedPartnerGroupIds?.length>1">
-                      {{selectedPartnerGroupIds?.length}} lists are selected
-                    </ng-container>
-                  </strong>
-                </div>
                 <div class="page-toolbar">
                   <div class="left-float" style="float: right !important;padding-left: 10px;">
                     <button class="btn btn-danger" *ngIf="(selectedPartnerGroupIds.length>0) "
@@ -254,6 +219,20 @@
                   </div>
                 </div>
               </div>
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="alert alert-success alert-cu-for-consistency" *ngIf="selectedPartnerGroupIds?.length>0">
+                  <strong>
+                    <ng-container *ngIf="selectedPartnerGroupIds?.length==1">
+                      {{selectedPartnerGroupIds?.length}} list is selected
+                    </ng-container>
+                    <ng-container *ngIf="selectedPartnerGroupIds?.length>1">
+                      {{selectedPartnerGroupIds?.length}} lists are selected
+                    </ng-container>
+                  </strong>
+                  <!---XNFR-326-->
+                  <ng-template [ngTemplateOutlet]="emailNotificationTemplate"></ng-template>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -267,7 +246,7 @@
               <thead>
                 <tr>
                   <th scope="col" class="text-center">
-                    <input type="checkbox" [(ngModel)]="isParnterGroupHeaderCheckBoxChecked"
+                    <input type="checkbox" class="pointer" [(ngModel)]="isParnterGroupHeaderCheckBoxChecked"
                       id="parnterGroupsHeaderCheckBox"
                       (change)="selectOrUnselectAllPartnerGroupsOfTheCurrentPage($event)"></th>
                   <th *ngIf="showExpandButton"></th>
@@ -282,7 +261,7 @@
                   <tr id="partnerGroups-tr-{{partnerGroup.id}}" [class.row-selected]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
                     (click)="highlightSelectedPartnerGroupOnRowClick(partnerGroup.id,$event)">
                     <td class="text-center">
-                      <input type="checkbox" id="{{partnerGroup.id}}" [checked]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
+                      <input type="checkbox" class="pointer" id="{{partnerGroup.id}}" [checked]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
                         name="partnerGroupsCheckBox[]" value="{{partnerGroup.id}}"
                         (click)="$event.stopPropagation();highlightPartnerGroupRowOnCheckBoxClick(partnerGroup.id,$event);">
                     </td>
@@ -339,3 +318,8 @@
   <app-preview-user-list [userListName]="selectedPartnerGroupName" [userListId]="selectedPartnerGroupId"
     (notifyParentComponent)="resetValues()"></app-preview-user-list>
 </ng-container>
+
+<!--XNFR-326---->
+<ng-template #emailNotificationTemplate>
+  <span *ngIf="!isTrackOrPlaybookPublishedEmailNotification" class="required float-right">No emails will be sent.</span>
+</ng-template>

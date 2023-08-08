@@ -22,6 +22,7 @@ import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 /****XNFR-255****/
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
+import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
 
 
 
@@ -128,10 +129,14 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     cropRounded = false;
     imageChangedEvent: any = '';
     fileObj: any;
+    @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
 
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     /****XNFR-255*****/
     hasShareWhiteLabeledContentAccess = false;
+    /****XNFR-326***/
+    isAssetPublishedEmailNotification = false;
+    assetPublishEmailNotificationLoader = true;
 
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -185,8 +190,23 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.listCategories();
         /*******XNFR-255***/
         this.findShareWhiteLabelContentAccess();
-        
+        /****XNFR-326*****/
+        this.findAssetPublishEmailNotificationOption();
 	}
+
+     /****XNFR-326*****/
+    findAssetPublishEmailNotificationOption() {
+        this.assetPublishEmailNotificationLoader = true;
+        this.authenticationService.findAssetPublishEmailNotificationOption()
+        .subscribe(
+            response=>{
+                this.isAssetPublishedEmailNotification = response.data;
+                this.assetPublishEmailNotificationLoader = false;
+            },error=>{
+                this.assetPublishEmailNotificationLoader = false;
+            });
+    }
+
     /*******XNFR-255***/
     findShareWhiteLabelContentAccess() {
         this.loading = true;
@@ -344,7 +364,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			if (sizeInKb >= maxFileSizeInKb) {
 				this.showThumbnailErrorMessage('Max file size is 10 MB');
 			} else if ("jpg" == extension || "JPG" == extension || "PNG" == extension || "png" == extension || "JPEG" == extension || "jpeg" == extension) {
-				this.imageSelected = event;
+				this.imageChangedEvent = event;
 				this.uploadedThumbnailName = file['name'];
 				this.showDefaultLogo = false;
 				this.openThumbnailPopup();
@@ -1242,6 +1262,19 @@ zoomOut() {
                             this.imageChangedEvent = null;
                             this.croppedImage = '';
                             this.fileObj = null;
+                            this.clearThumbnailImage();
                             $('#cropImage').modal('hide');
-                          }                       
+                          } 
+                          fileBgImageChangeEvent(event){
+                            const image:any = new Image();
+                            const file:File = event.target.files[0];
+                            const isSupportfile = file.type;
+                            if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
+                                this.errorUploadCropper = false;
+                                this.imageChangedEvent = event;
+                            } else {
+                              this.errorUploadCropper = true;
+                              this.showCropper = false;
+                            }
+                          }                    
 }

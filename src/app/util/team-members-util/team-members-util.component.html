@@ -39,8 +39,8 @@
   <!-- End Of CSV Errors---->
 
 <div *ngIf="customResponse.isVisible">
-  <div [ngClass]="customResponse?.responseType=='SUCCESS'? 'alert alert-success':'alert alert-danger'">
-    <button (click)="customResponse.isVisible=false" type="button" class="close" aria-label="Close">
+  <div style="padding: 7px 10px;" [ngClass]="customResponse?.responseType=='SUCCESS'? 'alert alert-success':'alert alert-danger'">
+    <button (click)="customResponse.isVisible=false" type="button" class="close of-this-component" aria-label="Close">
       <span aria-hidden="true">x</span>
     </button>
     <strong [innerHTML]="customResponse.responseMessage"></strong>
@@ -58,7 +58,7 @@
     <div class="caption" translate>Team Members
     </div>
     </div>
-    <div class="col-lg-5 col-sm-5 col-xs-5" style="padding-right: 10px;">
+    <div class="col-lg-5 col-sm-5 col-xs-5 mb_p0" style="padding-right: 10px;">
       <div class="row">
         <div class="clearfix" *ngIf="isTeamMemberModule">
           <section class="clearfix" style="margin-top:-4px;">
@@ -162,8 +162,8 @@
                       {{teamMember?.teamMemberGroupName | slice:0:15}}</span>
                     <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
                   </button>
-                  <button class="tm-group-preview-css btn-primary">
-                  <i  data-toggle="tooltip" data-placement="bottom" title="Preview" (click)="previewModules(teamMember.teamMemberGroupId)" class="fa fa-eye" aria-hidden="true"></i>
+                  <button class="tm-group-preview-css btn-primary" (click)="previewModules(teamMember.teamMemberGroupId)">
+                  <i  data-toggle="tooltip" data-placement="bottom" title="Preview" class="fa fa-eye" aria-hidden="true"></i>
                   </button>
             </div>
             <div class="alert alert-danger" *ngIf="teamMember.teamMemberGroupId==null && !teamMember?.primaryAdmin">

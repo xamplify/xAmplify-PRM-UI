@@ -1,5 +1,5 @@
 .text-input__loading {
-  height: 214px;
+  height: 300px;
   border: 1px solid lightgrey;
   border-radius: 4px;
   width: 100%;
@@ -21,8 +21,8 @@
   }
 }
 .rect-box {
-  width: 130px;
-  height: 75px;
+  width: 140px;
+  height: 80px;
   margin: 30px auto;
 }
 .thin {
@@ -36,7 +36,7 @@
 }
 .grid-box {
   position: relative;
-  height: 200px;
+  height: 222px;
   border: 1px solid #f1f1f1;
   background-color: #fff;
 }

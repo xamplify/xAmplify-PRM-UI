@@ -290,7 +290,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     this.logger.errorPage(error);
                 });
                  /******* user guide  ********/
-            if (this.authenticationService.isOnlyPartner()) {
+            if (this.authenticationService.isOnlyPartner() || this.authenticationService.module.loggedInThroughVendorVanityUrl) {
                 this.mergeTagForGuide = 'manage_campaigns_partner';
             } else {
                 this.mergeTagForGuide = 'manage_campaigns_vendor';

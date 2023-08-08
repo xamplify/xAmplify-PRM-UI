@@ -12,7 +12,7 @@
                         <img *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo" alt="" style="position: relative; width: 114px;margin-top: 20px; left: 0; filter: grayscale(0);" />
                     </div>
                     <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 panel panel-info">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 panel panel-info" id="form-panel-info" >
 
                         <div *ngIf="formSubmitted && (learningTrackId === undefined || 0 >= learningTrackId || !isTrackQuizSubmitted)">
                             <div class="panel-body">

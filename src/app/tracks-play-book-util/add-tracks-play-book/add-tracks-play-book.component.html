@@ -12,25 +12,26 @@
     <div id="step-1" [attr.class]="stepOneTabClass" (click)="changeActiveTab('step-1')">
       <div class="cenetered-block">
           <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Details1.svg">
-        <h5 class="hidden-xs" translate>Details</h5>
+        <h5 translate>Details</h5>
       </div>
     </div>
     <div id="step-2" [attr.class]="stepTwoTabClass" (click)="changeActiveTab('step-2')">
       <div class="cenetered-block">
         <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Description2.svg">
-        <h5 class="hidden-xs" translate>Description</h5>
+        <!-- class="hidden-xs" -->
+        <h5 translate>Description</h5> 
       </div>
     </div>
     <div id="step-3" [attr.class]="stepThreeTabClass" (click)="changeActiveTab('step-3')">
       <div class="cenetered-block">
         <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Assets3.svg">
-        <h5 class="hidden-xs" translate>Assets</h5>
+        <h5 translate>Assets</h5>
       </div>
     </div>
     <div id="step-4" [attr.class]="stepFourTabClass" (click)="changeActiveTab('step-4')">
       <div class="cenetered-block">
         <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/share4.svg">
-        <h5 class="hidden-xs" translate>Share</h5>
+        <h5 translate>Share</h5>
       </div>
     </div>
   </div>
@@ -157,7 +158,7 @@
                                 <div class="col-sm-5" style="padding-left: 0px !important;" 
                                 data-toggle="tooltip" data-placement="bottom"  title="{{tag?.tagName}}">
                                 <div  class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 5px !important;">
-                                    {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length>15">..</span></div>
+                                    {{tag.tagName | slice:0:10}} <span *ngIf="tag.tagName?.length>15">..</span></div>
                               </div>
                               </td>
                               <td style="padding: 5px;vertical-align: middle;"
@@ -173,7 +174,7 @@
                                   *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
                                   data-toggle="tooltip" data-placement="bottom" title="{{tagsListSecondColumn[i]?.tagName}}">
                                   <div   class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 5px !important;">
-                                    {{tagsListSecondColumn[i].tagName | slice:0:15}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span></div>
+                                    {{tagsListSecondColumn[i].tagName | slice:0:10}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span></div>
 
                                 </div>
                               </td>
@@ -202,7 +203,7 @@
                   <div class="feature-img-bg" style="cursor: pointer;text-align:center;color:#fff;"
                     (click)="imageClick()">
                     <div *ngIf="!croppedImage">
-                      <img *ngIf="!imageChangedEvent && !featuredImagePath" src="assets/images/background-form.png"
+                      <img *ngIf="!imageChangedEvent && !featuredImagePath" src="assets/images/contentPlaceholderImages.png"
                         class="profile-image img-grid" alt="">
                     </div>
                     <div *ngIf="croppedImage; else showImage">
@@ -405,7 +406,7 @@
                 </li>
               </ul>
             </div>
-            <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8" style="margin-top: 20px;">
+            <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8 " style="margin-top: 20px;">
               <app-pagination [pagination]="assetPagination" (notifyParent)="setAssetPage($event)"
                 (notifyParentDropDown)="listAssets($event)" [hidden]="assetLoader.isLoading">
               </app-pagination>
@@ -430,9 +431,12 @@
       <div *ngIf="!isGroupOrCompanyValid" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" style="margin: 5px;">
         <span class="required">{{groupOrCompanyErrorMessage}}</span>
       </div>
-      <app-tracks-play-book-partner-company-and-lists [inputId]="tracksPlayBook.id" [companyId]="loggedInUserCompanyId"
+      <app-tracks-play-book-partner-company-and-lists *ngIf="!trackOrPlaybookPublishEmailNotificationLoader" 
+        [inputId]="tracksPlayBook.id" [companyId]="loggedInUserCompanyId"
         [moduleName]="'lms'" [selectedPartnerGroupIds]="tracksPlayBook.groupIds"
-        [selectedTeamMemberIds]="tracksPlayBook.userIds" [selectedPartnershipIds]="tracksPlayBook.partnershipIds"
+        [selectedTeamMemberIds]="tracksPlayBook.userIds" 
+        [selectedPartnershipIds]="tracksPlayBook.partnershipIds"
+        [isTrackOrPlaybookPublishedEmailNotification]="isTrackOrPlaybookPublishedEmailNotification"
         (notifyParentComponent)="changePartnerCompanyAndList($event)">
       </app-tracks-play-book-partner-company-and-lists>
       <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-3')"
@@ -467,6 +471,12 @@
           <span>Upload image</span> <input style="height: 36px;" title=" " id="custom-input" type="file"
             (change)="filenewChangeEvent($event)">
         </div>
+        <ng-template #uploadButton> 
+          <div style="position: relative;top: -5px;" class="btn Btn-Green fileinput-button-css"><span>Upload
+                   image</span>
+               <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file" (change)="filenewChangeEvent($event)">
+           </div>
+       </ng-template>
         <!-- <button style="position: relative; top: -5px; width: 118px;" class="btn green" (click)="chooseFileFromList()">Your images</button> -->
         <div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only
           images
@@ -502,7 +512,7 @@
                     </app-img-croppr-v2>
           </div>
           <div *ngIf="!imageChangedEvent">
-            <fieldset style="background: #cacaca; height: 227px; margin-bottom: 5px;">
+            <fieldset style="background: #cacaca; height: 345px; margin-bottom: 5px;">
             </fieldset>
           </div>
         </div>
@@ -907,7 +917,7 @@
               alt="" />
           </div>
           <div class="vertical-center">
-           <div class="panel panel-info mFormWidth " *ngIf="!formError">
+           <div class="panel panel-info mFormWidth " id="form-panel-info" *ngIf="!formError">
               <div *ngIf="form.showTitleHeader" class="panel-heading" id="form-panel-heading">
                 <div class="panel-title form-name-wrap" data-toggle="tooltip" data-placement="bottom"  title="{{form.name}}">{{form.name}}</div>
               </div>
@@ -1132,7 +1142,7 @@
                   </tbody>
                 </table>
               </div>
-              <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8">
+              <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8 add-contnet-poup-paddibg">
                 <app-pagination [pagination]="assetPagination" (notifyParent)="setAssetPage($event)"
                   (notifyParentDropDown)="listAssets($event)" [hidden]="assetLoader.isLoading">
                 </app-pagination>

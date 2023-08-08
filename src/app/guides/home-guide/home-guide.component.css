@@ -65,7 +65,7 @@ td.text-center {
   background-clip: border-box;
   border-radius: 8px;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   height: auto;
   padding-top: 20px;
   padding-right: 10px;
@@ -117,6 +117,13 @@ td.text-center {
   @media (min-width: 300px) and (max-width: 768px)  {
     .pad-row{padding: 20px 20px;}
   }
+  @media (min-width: 300px) and (max-width: 992px)  {
+    .card-paddings-cu{padding: 0px 7px;}
+    .user_card {margin-bottom: 10px;}
+    h4.user_txt {font-size: 13px !important;}
+  }
+
+  
   
 /* 12-07-2023 */
 .acc_img {
@@ -129,7 +136,7 @@ td.text-center {
 }
 .card-paddings-cu{
   margin: 0px;
-  padding: 0px 5px;
+  padding: 0px 12px;
 }
 
 

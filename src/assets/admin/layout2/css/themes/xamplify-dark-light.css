@@ -223,8 +223,8 @@ ul.alt-row-style1 li a {
 }
 .td-new,
 th {
-  border: 1px solid #1c313a !important;
-  /* border: 1px solid #2f4857 !important; old one */
+  /* border: 1px solid #2f4857 !important; */
+  border: transparent !important;
 }
 /* td > button {
   background-color: #00a99d !important;
@@ -379,8 +379,7 @@ input {
 .table-striped > tbody > tr:nth-of-type(odd),
 table tr:nth-child(odd),
 table tr:nth-child(even),
-.search-box-item-clear,
-input {
+.search-box-item-clear {
   background-color: transparent !important;
 }
 .table .table {
@@ -509,6 +508,12 @@ tr {
 .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle {
   background-color:#22313a !important;
 } */
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
+  border: 1px solid #2f4857 !important;
+}
+.profile-image-wrapper-color {
+  border: 1px solid #2f4857 !important;
+}
 
 /**** dropdownmenu ***/
 .dropdown-menu {
@@ -1537,6 +1542,24 @@ a.dropdown-toggle.circlebg-none-v:hover {
   > i {
   color: #fff !important;
 }
+@media only screen and (min-width: 300px) and (max-width: 580px) {  
+  a.dropdown-toggle.circlebg-none-v {
+    background: transparent !important;
+    border: none !important;
+  }
+  a.dropdown-toggle.circlebg-none-v:hover {
+    background: transparent !important;
+  }
+  .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
+    border: 1px solid #5a738e !important;
+  }
+  .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle:hover {
+    background-color: transparent !important;
+  } 
+  .page-header.navbar.top-menu.navbar-nav> li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
+    background-color: transparent !important;
+  }
+}
 
 /* .alert-success {
   background-color: #dff0d8 !important;
@@ -1675,6 +1698,9 @@ tag {
 .placeholder-bg-color {
   background-color: transparent !important;
 }
+select.form-control.same-bgcolor-for-select {
+  background: #2b3c46 !important;
+}
 
 /* 19-07-2023 Custom Theme Settings bg colors */
 .bg-color-for-card {
@@ -1760,3 +1786,27 @@ p.addhrtosvg {
   border: 1px solid #2f4857 !important;
   background: #22313a !important;
 }
+/* design Manage Forms  Analytics table borders */
+table.table.table-allsideboders {
+  border: 1px solid #2f4857 !important ;
+}
+rect.highcharts-background {
+  fill: none !important;
+}
+
+/* form fields white-bg */
+/* input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid {
+  background: transparent;
+}
+input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:active, input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:focus {
+  border: none !important;
+  outline: none !important;
+} */
+.search-box-item-clear, input {
+  background: transparent;
+  fill: none;
+}
+/* .search-box-item-clear, input:active, input:focus {
+  border: none !important;
+  outline: none !important;
+} */

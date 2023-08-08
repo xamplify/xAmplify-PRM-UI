@@ -37,7 +37,7 @@
    </div>
    <div class="row">
       <div class="col-md-12 col-lg-12">
-         <div class="portlet light height" style="height: 153px;">
+         <div class="portlet light height hgt_auto" style="height: 153px;">
             <div class="row mt" style="margin-top: 13px;">
               <app-box-loader [countLoader]="countLoader" [mdfModule]="true" *ngIf="tilesLoader"></app-box-loader>
                <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 24px;">
@@ -92,7 +92,7 @@
                            </span>
                         </a>
                      </div>
-                     <div  id="pl" class="{{tileClass}}">
+                     <div  id="pl" class="{{tileClass}} mb_12">
                         <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
@@ -149,7 +149,7 @@
                         <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                         Manage Vendors
                      </div>
-                     <div class="inputs"  style="float: right; padding: 4px">
+                     <div class="inputs d_flex"  style="float: right; padding: 4px">
                         <div style="float: left; margin: 0 10px;">
                           <select class="form-control" [(ngModel)]="sortOption.mdfVendorsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                             <option *ngFor="let option of sortOption.mdfVendorsSortDropDownOptions"
@@ -157,7 +157,7 @@
                                 {{option.name}}</option>
                         </select>
                         </div>
-                        <div class="portlet-input input-inline ml-pt">
+                        <div class="portlet-input input-inline ml-pt pt_0">
                            <div class="input-icon right">
                               <input type="text" id="sort-text" class="form-control" style="height: 34px;" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a vendor" (keypress)="eventHandler($event.keyCode)">
                               <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchVendors();"></button>

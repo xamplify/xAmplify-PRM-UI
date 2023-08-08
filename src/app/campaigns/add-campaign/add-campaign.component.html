@@ -56,7 +56,7 @@
                                     <div class="form-body">
                                         <!---Campaign Name-->
                                         <div class="form-group" [attr.class]="campaignNameDivClass">
-                                            <label class="control-label col-sm-4 mName" translate>Campaign name
+                                            <label class="control-label col-sm-4 mName tab_p0" translate>Campaign name
                                                 <br><small class="mNameSave" translate>(Save as)</small>
                                                 <span class="required">*</span>
                                             </label>
@@ -68,7 +68,7 @@
 
                                         <!--Folder-->    
                                         <div class="form-group">
-                                            <label class="control-label col-sm-4" translate>Folder
+                                            <label class="control-label col-sm-4 tab_p0" translate>Folder
                                                 <span class="required"><strong>*</strong></span>
                                             </label>
                                             <div class="col-sm-8">
@@ -84,7 +84,7 @@
                                         <!--Through Partner / To Partner / To Recipients-->
                                         <div class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany">
                                             <!--Through Partner Label-->
-                                            <label class="control-label col-sm-4 cursor-pointer" data-toggle="tooltip" 
+                                            <label class="control-label col-sm-4 cursor-pointer tab_p0" data-toggle="tooltip" 
                                             data-placement="top" title="{{throughPartnerToolTipMessage}}">
                                                 <span [className]="campaign?.channelCampaign ? 'custom-font-weight':''">{{throughPartnerText}}</span>
                                             </label>
@@ -96,7 +96,7 @@
                                                         </switch>
                                                     </div>
                                                     <!--To Partner Label-->
-                                                    <div class="col-sm-11 col-xs-12 to-partner-padding">
+                                                    <div class="col-sm-11 col-xs-12 to-partner-padding display_cont">
                                                         <label class="cursor-pointer"  data-toggle="tooltip" data-placement="top" title="{{toPartnerToolTipMessage}}">
                                                             <span [className]="!campaign?.channelCampaign ? 'custom-font-weight':''">{{toPartnerText}}</span>
                                                         </label>
@@ -212,7 +212,7 @@
                                     <div class="form-body">
                                         <!---From Name-->
                                         <div class="form-group" [attr.class]="fromNameDivClass">
-                                            <label class="control-label col-sm-4" translate>From Name
+                                            <label class="control-label col-sm-4 tab_p0" translate>From Name
                                                 <span class="required"> <strong>*</strong></span>
                                             </label>
                                             <div class="col-sm-8">
@@ -222,7 +222,7 @@
 
                                         <!--Subject Line-->
                                         <div class="form-group" [attr.class]="subjectLineDivClass">
-                                            <label class="control-label col-sm-4" translate>Subject Line
+                                            <label class="control-label col-sm-4 tab_p0" translate>Subject Line
                                                 <span class="required"> <strong>*</strong> </span>
                                             </label>
                                             <div class="col-sm-8 col-xs-12">
@@ -241,7 +241,7 @@
 
                                         <!--From Email-->
                                         <div class="form-group" [attr.class]="fromEmaiDivClass">
-                                            <label class="control-label col-sm-4" translate>From Email
+                                            <label class="control-label col-sm-4 tab_p0" translate>From Email
                                                 <span class="required">
                                                     <strong>*</strong>
                                                 </span>
@@ -258,7 +258,7 @@
 
                                         <!--Pre Header-->
                                         <div class="form-group" [attr.class]="preHeaderDivClass">
-                                            <label class="control-label col-sm-4" translate>Pre Header
+                                            <label class="control-label col-sm-4 tab_p0" translate>Pre Header
                                                 <span class="required"><strong>*</strong></span>
                                             </label>
                                             <div class="col-sm-8">
@@ -268,8 +268,8 @@
 
                                         <!--Notify Me When-->
                                         <div class="form-group" *ngIf="campaign?.emailNotification &&!campaign?.oneClickLaunch && !isPageCampaign">
-                                        <label class="control-label col-sm-4" translate>Notify Me When</label>
-                                        <div class="col-sm-8">
+                                        <label class="control-label col-sm-4 tab_p0" translate>Notify Me When</label>
+                                        <div class="col-sm-8 mb_pl">
                                             <div class="email-options-checkbox-group email-options-notify">
                                                 <div class="email-options-checkbox clearfix">
                                                     <div>
@@ -309,7 +309,7 @@
 
                                         <!--Configure Pipelines-->
                                         <div class="form-group" *ngIf="showConfigurePipelines && ((campaign?.channelCampaign && campaignAccess?.enableLeads && !isPageCampaign) || (campaignAccess?.enableLeads && !isPageCampaign && showMarketingAutomationOption))">
-                                            <label class="control-label col-sm-4" translate>Configure Pipelines</label>
+                                            <label class="control-label col-sm-4 tab_p0" translate>Configure Pipelines</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign.configurePipelines" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                         (statusChange)="configurePipelines()">
@@ -363,7 +363,7 @@
                                                     </span>
                                                 </div>
                                                 <div>
-                                                    <span class="input-group-btn info-color-xampc" data-toggle="tooltip" data-placement="top"
+                                                    <span class="input-group-btn info-color-xampc" data-toggle="tooltip" data-placement="top" style="border:none !important"
                                                         title="A setting that specifies how long you want your campaign to run. When the campaign's end date arrives, your partners will be unable to redistribute it further. Each campaign's default setting is to have no end date, allowing partners to redistribute indefinitely.">
                                                         <i class="fa fa-question-circle toggle-info-xampc" aria-hidden="true"></i>
                                                     </span>
@@ -391,7 +391,7 @@
                             <legend class="scheduler-border">Select The Video For Your Campaign</legend>
                             <app-list-loader *ngIf="videosLoader"></app-list-loader>
                             <div *ngIf="!videosLoader">
-                                <div *ngIf="!isNavigatedFromManageContent">
+                                <div class="tab_flex" *ngIf="!isNavigatedFromManageContent">
                                     <!--Search Key Icon-->
                                     <div class="input-icon right pull-right pr-epx">
                                         <input type="text" [(ngModel)]="videosSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="findVideosOnEnterKeyPress($event.keyCode)">
@@ -414,7 +414,7 @@
                                     </div>
                                 </div>
                                 <!--List Of Videos-->
-                                <div class="portlet-body padding-top-45px">
+                                <div class="portlet-body pt_10 padding-top-45px">
                                     <div class="row">
                                         <div class="table-responsive">
                                             <table class="table tgrid table-hover table-sm" *ngIf="videosPagination?.totalRecords==0" aria-describedby="">
@@ -523,7 +523,7 @@
                                         <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
                                 </div>
                                 <!--Sort DropDown-->
-                                <div class="input-icon right pull-right pr-epx">
+                                <div class="input-icon right pull-right pr-epx mrg10">
                                     <select class="form-control" [(ngModel)]="emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption" (ngModelChange)="sortEmailTemplates($event)" id="select-dropdown" [ngModelOptions]="{standalone: true}">
                                     <option   *ngFor="let option of emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions" [ngValue]="option">{{option.name}}</option>
                                     </select>
@@ -622,6 +622,7 @@
                             <app-landing-page-loader *ngIf="pagesLoader"></app-landing-page-loader>
                             <div *ngIf="!pagesLoader">
                                 <!--Filter Icon-->
+                                <div class="mb-flex">
                                 <button type="submit"  class="float-right fontsize-16px filter-button-color" [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv" (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
                                     <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
                                     *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
@@ -640,6 +641,7 @@
                                     <select class="form-control" [(ngModel)]="pagesSortOption.selectedCampaignEmailTemplateDropDownOption" (ngModelChange)="sortPages($event)" id="select-dropdown" [ngModelOptions]="{standalone: true}">
                                     <option   *ngFor="let option of pagesSortOption.eventCampaignRecipientsDropDownOptions" [ngValue]="option">{{option.name}}</option>
                                     </select>
+                                </div>
                                 </div>
                                 <!--List Of Pages-->
                                 <div class="portlet-body padding-top-45px">
@@ -758,7 +760,7 @@
                                                 </ng-container>
                                                 <ng-container *ngIf="!emailReceiversCountError && !campaign?.oneClickLaunch">
                                                     <span *ngIf="campaign?.emailNotification" class="success float-right">Email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
-                                                    <span *ngIf="!campaign?.emailNotification" class="required float-right">No email will be sent.</span>
+                                                    <span *ngIf="!campaign?.emailNotification" class="required float-right">No emails will be sent.</span>
                                                 </ng-container>
                                             </div>
                                             <table class="table table-filter" *ngIf="campaignRecipientsPagination?.totalRecords==0" aria-describedby="">
