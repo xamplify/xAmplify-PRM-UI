@@ -15,7 +15,6 @@
                         <div class="input-icon right">
                            <input type="text" id="sort-text" class="form-control" style="height: 34px;" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                            <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="searchKey" (click)="searchKey='';search();"></button>
-                           <!-- removed style balck color (SS)-->
                            <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
                         </div>
                      </div>

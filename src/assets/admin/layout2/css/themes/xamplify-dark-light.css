@@ -1810,3 +1810,9 @@ input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:active, input.
   border: none !important;
   outline: none !important;
 } */
+
+/* 08-08-2023 */
+#CardBgforSection {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
