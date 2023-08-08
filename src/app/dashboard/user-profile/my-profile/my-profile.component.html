@@ -199,12 +199,12 @@
                             </li>
                             <!--Team Member Groups-->
                             <li   [ngClass]="{'active-tab': activeTabName == 'team-group'}"  *ngIf="authenticationService.user.hasCompany && (authenticationService.module.isOrgAdmin || authenticationService.module.isVendor || 
-                            authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )" style="border-bottom:none !important">
+                            authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )">
                             <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}" (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups | translate}}</a>
                             </li>
                             <!---XNFR-326---->
                             <!--Email Notification Settings-->
-                            <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module?.emailNotificationSettings" [ngClass]="{'active-tab': activeTabName == properties?.emailNotificationSettings}" >
+                            <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module?.emailNotificationSettings" [ngClass]="{'active-tab': activeTabName == properties?.emailNotificationSettings}" style="border-bottom: none !important;">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.emailNotificationSettings}" (click)="activateTab(properties?.emailNotificationSettings);clearCustomResponse()">{{properties?.emailNotificationSettings}}</a>
                             </li>
                              </ng-container>
