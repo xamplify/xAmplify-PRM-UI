@@ -20,12 +20,17 @@ import { PartnerJourneyTeamMembersTableComponent } from './partner-journey-team-
 import { PartnerJourneyCountTilesComponent } from './partner-journey-count-tiles/partner-journey-count-tiles.component';
 import { InteractedNotInteractedTrackDetailsComponent } from './interacted-not-interacted-track-details/interacted-not-interacted-track-details.component';
 import { TypewiseTrackContentDetailsComponent } from './typewise-track-content-details/typewise-track-content-details.component';
+import { UserwiseTrackCountsComponent } from './userwise-track-counts/userwise-track-counts.component';
+import { UserwiseTrackDetailsComponent } from './userwise-track-details/userwise-track-details.component';
+import { TrackAssetDetailsComponent } from './track-asset-details/track-asset-details.component';
+import { ShareLeadDetailsComponent } from './share-lead-details/share-lead-details.component';
+import { RedistributedCampaignDetailsComponent } from './redistributed-campaign-details/redistributed-campaign-details.component';
 
 @NgModule({
   imports: [
     CKEditorModule, CommonModule, PartnerRoutingModule, SharedModule, SharedContactsModule, CommonComponentModule, SharedLibraryModule
   ],
   providers: [],
-  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyCountTilesComponent, InteractedNotInteractedTrackDetailsComponent, TypewiseTrackContentDetailsComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyCountTilesComponent, InteractedNotInteractedTrackDetailsComponent, TypewiseTrackContentDetailsComponent, UserwiseTrackCountsComponent, UserwiseTrackDetailsComponent, TrackAssetDetailsComponent, ShareLeadDetailsComponent, RedistributedCampaignDetailsComponent]
 })
 export class PartnersModule { }

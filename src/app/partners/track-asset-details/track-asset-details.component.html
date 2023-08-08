@@ -1,0 +1,57 @@
+<div class="col-sm-6 col-md-6 col-lg-6 ml15m">
+  <div class="panel panel-info">
+    <div class="panel-heading panel-heading-custom">
+      <h3 class="panel-title mt7">{{type | titlecase }} Asset Details</h3>
+      <span class="pull-right mt25m">
+        <div class="input-icon right" style="position: relative;width: 178px;">
+          <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
+            [ngModelOptions]="{standalone: true}" placeholder="Search"
+            (keypress)="searchKeyPress($event.keyCode)">
+          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+            (click)="sortOption.searchKey='';search()"></button>
+          <button type="submit" class="search-box-item-click" (click)="search()">
+            <i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+      </span>
+    </div>
+    <div class="panel-body">    
+      <div class="scroll">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Track Title</th>
+              <th scope="col">Asset Name</th>
+              <th scope="col">Asset Type</th>
+              <th scope="col">Asset Created Time</th>
+              <th scope="col">Opened</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>          
+            <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+              <td scope="row">{{((pagination.pageIndex-1)*pagination.maxResults)+i+1}}</td>
+              <td>{{item?.title}}</td>
+              <td>{{item?.assetName}}</td>
+              <td>{{item?.assetType}}</td>
+              <td>
+                <app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.assetCreatedTime">
+                </app-timestamp>
+              </td>
+              <td>{{item?.openedCount}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+        <strong>No Data Found.</strong>
+      </div>
+      <!--Pagination-->
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+        <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
+          (notifyParentDropDown)="getTrackAssetDetails($event)">
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

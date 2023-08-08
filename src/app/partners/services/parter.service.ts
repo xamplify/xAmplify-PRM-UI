@@ -240,6 +240,41 @@ export class ParterService {
             .catch( this.handleError );
     }
 
+    getUserWiseTrackCounts(pagination:Pagination){
+        const url = this.URL + 'partner/journey/track/userwise/count?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getUserWiseTrackDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/track/userwise/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getTrackAssetDetails(pagination:Pagination){
+        let url = this.URL + 'partner/journey/track/asset/details?access_token=' + this.authenticationService.access_token;
+        if (pagination.lmsType === 'PLAYBOOK') {
+            url = this.URL + 'partner/journey/playbook/asset/details?access_token=' + this.authenticationService.access_token;
+        }        
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getShareLeadDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/share/lead/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getRedistributedCampaignDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/redistributed/campaign/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    
+
     /*********End : XNFR-316************/
     
     handleError( error: any ) {

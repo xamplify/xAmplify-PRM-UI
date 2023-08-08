@@ -75,6 +75,7 @@ export class ChartVariablePieComponent implements OnInit {
 
     showChart() {
         let id = 'vpie-chart'+ this.chartId;
+        alert(id);
         let self = this;
         Highcharts.chart(id, {
             chart: {
