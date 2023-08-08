@@ -26,11 +26,6 @@
   background-color: #6dcff6;
 }
 
-/* .downloadFilterBox {
-  border: 1px solid #8a8282c4;
-  padding: 10px;
-  margin: 10px;
-} */
 /* sudha sri */
 @media (max-width: 375px) {
   .padding {
@@ -51,9 +46,6 @@
     margin-left: 95px;
     margin-top: -36px;
   }
-  /* .mt10 {
-    margin-top: -10px !important;
-  } */
 }
 .mr0 {
   margin-right: 0px;
@@ -75,14 +67,6 @@
   .padding {
     padding: 7px 5px !important;
   }
-  /* .ml-w {
-    margin-left: -11px !important;
-    width: 107%;
-  } */
-  /* .ml-mr {
-    margin-left: 5px !important;
-    margin-right: -3px !important;
-  } */
 }
 @media (max-width: 375px) {
   .ml {
@@ -97,9 +81,6 @@
     right: -10px !important;
     padding-top: 9px !important;
   }
-  /* .width {
-    width: 103%;
-  } */
   .top {
     top: 10px !important;
   }
@@ -112,10 +93,7 @@
     padding-left: 20px !important;
   }
 }
-/* .margin-left-right {
-  margin-left: 24px;
-  margin-right: 5px;
-} */
+
 .button {
   padding: 6px 14px;
 }
@@ -151,11 +129,7 @@
   width: 196px;
   height: 32px;
 }
-/* @media only screen and (max-width: 479px) {
-  .pr {
-    padding-right: 34px !important;
-  }
-} */
+
 .pg2 {
   position: relative;
   top: -2px;

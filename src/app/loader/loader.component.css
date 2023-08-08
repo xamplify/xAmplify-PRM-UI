@@ -1,19 +1,6 @@
-/* .mix-filter{margin: 5px;} */
-/* .mix-filter li {font-size: 12px;text-transform: uppercase;} */
 .box {
   padding: 10px;
 }
-/* .text-center{text-align: center;} */
-/* .portlet > .portlet-title > .caption {float: none;display: inherit;}
-.portlet.light .portlet-body {padding: 1em;} */
-/* .portlet.light.block:hover{
--webkit-box-shadow: 0 5px 20px rgba(0,0,0,.15);
-box-shadow: 0 5px 20px rgba(0,0,0,.15);
--webkit-transform: translateY(-.5rem);
--ms-transform: translateY(-.5rem);
-transform: translateY(-.5rem);
-cursor: pointer; cursor: hand;
-} */
 
 @keyframes placeHolderShimmer {
   0% {
@@ -144,36 +131,6 @@ cursor: pointer; cursor: hand;
   left: 300px;
   top: 88px;
 }
-/* .animated-background-full-horizontal {
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
-    animation-iteration-count: infinite;
-    animation-name: placeHolderShimmer;
-    animation-timing-function: linear;
-    background: #f6f7f8;
-    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
-    background-size: 800px 104px;
-    height: 50px;
-    position: relative;
-} */
-/* .timeline-item-full-horizontal {
-    background: #fff;
-    border: 1px solid;
-    border-color: #e5e6e9 #dfe0e4 #d0d1d5;
-    border-radius: 3px;
-    padding: 12px;
-
-    margin: 0 auto;
-    width: auto;
-    min-height: auto;
-} */
-
-/* .text-input__loading {
-  height: 214px;
-  border: 1px solid lightgrey;
-  border-radius: 4px;
-  width: 100%;
-} */
 .text-input__loading--line {
   height: 10px;
   margin: 7px;
@@ -260,11 +217,9 @@ td:nth-child(2) {
 td:nth-child(last) {
   text-align: right;
 }
-/* .w25{width: 25%} */
 .w50 {
   width: 50%;
 }
 .w75 {
   width: 75%;
 }
-/* .w100{width: 100%} */

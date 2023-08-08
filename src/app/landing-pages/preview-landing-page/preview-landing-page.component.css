@@ -1,9 +1,7 @@
 .center-aligned {
   text-align: center;
 }
-/* #right-padding{
-	right: 0;
-} */
+
 #float-right {
   float: right;
 }
@@ -13,9 +11,7 @@
 #min-height {
   min-height: 400px;
 }
-/* #hidden-min-height{
-min-height: 300px;
-} */
+
 @keyframes placeHolderShimmer {
   0% {
     background-position: -468px 0;
