@@ -1434,6 +1434,7 @@ h5.designpage-dark-cu {
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
+  opacity: 0.8;
 }
 .Btn-Green {
   background-color: var(--btn-secondary-bg-color) !important;
@@ -1443,6 +1444,7 @@ h5.designpage-dark-cu {
 .Btn-Green:hover {
   background-color: var(--btn-secondary-bg-color) !important;
   border: 1px solid var(--btn-secondary-border-color) !important;
+  opacity: 0.8;
 }
 .Btn-Green.btn:hover {
   color: var(--btn-secondary-text-color) !important;
@@ -1474,6 +1476,18 @@ h5.designpage-dark-cu {
   background-color: var(--page-content) !important;
   border: 1px solid var(--border-color) !important;
 }
+a.UserguideBtnCustomization {
+  background-color: var(--btn-secondary-bg-color) !important;
+  border: 1px solid var(--btn-secondary-border-color) !important;
+  color: var(--btn-secondary-text-color) !important;
+}
+a.UserguideBtnCustomization:hover {
+  background-color: var(--btn-secondary-bg-color) !important;
+  border: 1px solid var(--btn-secondary-border-color) !important;
+  opacity: 0.8;
+}
+
+
 .custom-btn-ref {
   /* background-color: var(--button-primary-bg-color) !important;
   color: var(--button-primary-text-color) !important; */
@@ -1498,7 +1512,16 @@ div#removeborder {
 }
 .help-iconbgadd i:hover {
   color: var(---text-color) !important;
-} /* end */
+} 
+.help-iconbgadd {
+  border: 1px solid var(--top-button-border-color) !important;
+}
+.helpcircle-cu {
+  color: var(---text-color) !important;
+}
+
+
+/* end */
 
 /* Create Campaign Select Campaign bar bg */
 .custometheme-bar {
@@ -1686,9 +1709,3 @@ input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched, input.ng2-tag-inpu
   border: none !important;
   outline: none !important;
 } */
-.help-iconbgadd {
-  border: 1px solid var(--top-button-border-color) !important;
-}
-.helpcircle-cu {
-  color: var(--btn-secondary-text-color) !important;
-}
