@@ -110,7 +110,6 @@
                     [ngClass]="expansionModuleName === 'Shared Leads'? 'show':''">
                     <i class="fa fa-id-badge" aria-hidden="true"></i>
                     <span class="title" translate>Shared Leads</span>
-                    <!-- <span class="selected"></span> -->
                   </a>
                   <ul *ngIf="showListId === 'Shared Leads'" class="collapse list-unstyled" id="sharedLeads"
                     [ngClass]="expansionModuleName === 'Shared Leads'? 'in':''">
@@ -125,7 +124,6 @@
                     (click)="getUserGuidesByModuleName('Pages')" [ngClass]="expansionModuleName === 'Pages'? 'show':''">
                     <i class="fa fa-wpforms" aria-hidden="true"></i>
                     <span class="title" translate>Pages</span>
-                    <!-- <span class="selected"></span> -->
                   </a>
                   <ul *ngIf="showListId === 'Pages'" class="collapse list-unstyled" id="pagesAccessAsPartner"
                     [ngClass]="expansionModuleName === 'Pages'? 'in':''">
@@ -141,7 +139,6 @@
                     [ngClass]="expansionModuleName === 'Design'? 'show':''">
                     <i class="fa fa-paint-brush" aria-hidden="true"></i>
                     <span class="title" translate>Design</span>
-                    <!-- <span class="selected"></span> -->
                   </a>
                   <ul *ngIf="showListId === 'Design'" class="collapse list-unstyled" id="design"
                     [ngClass]="expansionModuleName === 'Design'? 'in':''">
@@ -159,8 +156,6 @@
                     [ngClass]="expansionModuleName === 'Campaign'? 'show':''">
                     <i class="fa fa-bullhorn" aria-hidden="true"></i>
                     <span class="title" translate>Campaign</span>
-                    <!-- <span class="arrow "></span>
-                  <span class="selected"></span> -->
                   </a>
                   <ul *ngIf="showListId === 'Campaign'" class="collapse list-unstyled" id="Campaign"
                     [ngClass]="expansionModuleName === 'Campaign'? 'in':''">
@@ -209,14 +204,6 @@
                     <i class="fa fa-cog" aria-hidden="true"></i>
                     <span class="title" translate>Configuration</span>
                   </a>
-                  <!------------ For only Partner login-->
-                  <!-- <a href="#Configuration" data-toggle="collapse" aria-expanded="false" (click)="goToProcessing()"
-                    *ngIf="authenticationService?.module?.isOnlyPartnerCompany"
-                    [ngClass]="expansionModuleName === 'Configuration'? 'show':''">
-                    <i class="fa fa-cog" aria-hidden="true"></i>
-                    <span class="title" translate>Configuration</span>
-                    <!-- <span class="selected"></span> --
-                  </a> -->
                   <ul *ngIf="showListId === 'Configuration'" class="collapse list-unstyled" id="Configuration"
                     [ngClass]="expansionModuleName === 'Configuration'? 'in':''">
                     <li *ngFor="let name of userGudeTitles" ><a

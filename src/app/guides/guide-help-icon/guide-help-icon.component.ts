@@ -21,7 +21,6 @@ export class GuideHelpIconComponent implements OnInit {
     this.search();
   }
   resetResponse() {
-		//this.customResponse = new CustomResponse();
 	}
 	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
 	search() {

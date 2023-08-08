@@ -48,7 +48,6 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 	guideLink: any;
 	guideLinkIframe: any;
 	userGuides: UserGuide[];
-	//mergeTag: any;
 	slug: any;
 	userGuideLink: any;
 	userGudeTitles: UserGuide[] = [];
@@ -97,7 +96,6 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 					this.loading = false;
 					this.ngxLoading = false;
 					this.isSlug = true;
-					//this.isProgress = false;
 					if (this.slug === 'vanity_prm_account_dashboard' || this.slug === 'vanity_marketing_account_dashboard') {
 						this.statusCode = 404;
 					} else {
@@ -290,8 +288,6 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 							this.authenticationService.logout();
 						}, 7000);
 					}
-					// this.authenticationService.module.showAddLeadOrDealButtonInMyProfileSection = data.showAddLeadOrDealButtonInMyProfileSection;
-					// this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
@@ -412,7 +408,6 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 		this.dashboardService.getUserGuidesByModuleName(this.pagination).subscribe(
 			(response) => {
 				if (response.statusCode === 200) {
-					//this.statusCode = 200;
 					this.userGudeTitles = response.data;
 					console.log(this.userGudeTitles)
 					this.loading = false;
@@ -433,7 +428,6 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 		this.ngxLoading = true;
 		this.isShowSearchResults = false;
 		this.pagination.guideTitle = title;
-		//this.showUrlWithSlug(title);
 		this.dashboardService.getGuideLinkByTitle(this.pagination).subscribe(
 			(response) => {
 				this.ngxLoading = false;
@@ -451,7 +445,6 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 					this.location.replaceState('home/help/' + this.slug);
 				} else if (response.statusCode === 404){
                   this.statusCode = 404;
-				  //this.isProgress = true;
 				} else {
 					this.statusCode = 500;
 				}
