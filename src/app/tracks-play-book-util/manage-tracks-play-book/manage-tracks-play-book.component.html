@@ -102,7 +102,7 @@
                                 <tbody>
                                     <tr *ngFor="let learningTrack of pagination.pagedItems ;let i =index">
                                         <td class="hidden-xs text-cente" style="width: 10%;">
-                                            <img class="img-track-list" [src]="learningTrack.featuredImage" onerror="this.src='assets/images/content/image.png';" alt="Image Not Found">
+                                            <img class="img-track-list" [src]="learningTrack.featuredImage" onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack?.title}}">
                                         </td>
                                         <td>
                                             <h4 class="mt5 mb5 f-w-600" translate>

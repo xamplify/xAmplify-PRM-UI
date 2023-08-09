@@ -24,7 +24,7 @@
 				</div>
 				<div *ngFor="let learningTrack of contents ;let i =index;"  class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 					<div class="grid-box box-shadow">
-                        <img class="img-grid-track " [src]="learningTrack?.featuredImage" onerror="this.src='assets/images/lms.jpg';" alt="{{learningTrack?.title}}">
+                        <img class="img-grid-track " [src]="learningTrack?.featuredImage" onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack?.title}}">
                         <h4 class="ellipsis mt5 mb5 f-w-600" title="{{learningTrack?.title}}" style="float: none !important;" translate>
                             {{learningTrack?.title | slice:0:25}} <span *ngIf="learningTrack?.title?.length>25">...</span><br><br>
                         </h4>
@@ -54,9 +54,14 @@
                             </h6>
                         </div>
                         <div class="ribbon tab-ribbon">
-                            <span style="background-color: #5cb85c;" *ngIf="learningTrack?.published && !isPartnerView" translate>Published</span>
+                            <!---XNFR-327--->
+                            <span style="background-color: #5cb85c;" *ngIf="learningTrack?.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress" translate>Published</span>
+                            <span *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress && !isPartnerView">
+                                <img src="assets/images/loading.gif" class="margin-0-ht5px" alt="Processing">Processing
+                            </span>
+                            <!---XNFR-327--->
                         </div>
-                        <div class="bar auto-height">
+                        <div class="bar auto-height"  *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress">
                             <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
