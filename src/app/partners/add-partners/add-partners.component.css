@@ -180,6 +180,12 @@ textarea.textareaNumber {
   padding-bottom: 0px;
   padding-left: 10px;
 }
+i.IconTopMargin {
+  margin-top: 10px !important;
+}
+i.fa.fa-file-excel-o.cct.IconTopMargin {
+  margin-top: 10px !important;
+}
 
 
 @media only screen and (min-width: 1200px) and (max-width: 1260px) {
