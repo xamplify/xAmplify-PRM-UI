@@ -151,38 +151,54 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
       let emailTemplateType = emailTemplate.typeInString
 
       if("FORGOT_PASSWORD"==emailTemplateType || "ACCOUNT_ACTIVATION"==emailTemplateType || "JOIN_VENDOR_COMPANY"==emailTemplateType || "JOIN_MY_TEAM"==emailTemplateType){
-        var mergeTags = [{ name: 'First Name', value: '{{firstName}}' },
-        { name: 'Last Name', value: '{{lastName}}' },
-        { name: 'Full Name', value: '{{fullName}}' },
-        { name: 'Email Id', value: '{{emailId}}' },
+        var mergeTags = [{ name: 'Sendor First Name', value: '{{firstName}}' },
+        { name: 'Sendor Last Name', value: '{{lastName}}' },
+        { name: 'Sendor Full Name', value: '{{fullName}}' },
+        { name: 'Sendor Email Id', value: '{{emailId}}' },
         ];
       }
      if("TRACK_PUBLISH"==emailTemplateType){
-        mergeTags = [{ name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
+        mergeTags = [{ name: 'Sendor First Name', value: '{{firstName}}' },
+        { name: 'Sendor Last Name', value: '{{lastName}}' },
+        { name: 'Sendor Full Name', value: '{{fullName}}' },
+        { name: 'Sendor Email Id', value: '{{emailId}}' },
+        { name: 'Sendor Company Name', value: 'Vendor_company_name' },
+        { name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
         { name: 'Learning Track Title', value: 'track_title' },
         { name: 'Published On', value: 'published_date' },
-        { name: 'Vendor Company Name', value: 'Vendor_company_name' },
         ];
       }
       if("PLAYBOOK_PUBLISH"==emailTemplateType){
-        mergeTags = [{ name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
+        mergeTags = [{ name: 'Sendor First Name', value: '{{firstName}}' },
+        { name: 'Sendor Last Name', value: '{{lastName}}' },
+        { name: 'Sendor Full Name', value: '{{fullName}}' },
+        { name: 'Sendor Email Id', value: '{{emailId}}' },
+        { name: 'Sendor Company Name', value: 'Vendor_company_name' },
+        { name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
         { name: 'Playbook Title', value: 'playbook_title' },
         { name: 'Published On', value: 'published_date' },
-        { name: 'Vendor Company Name', value: 'Vendor_company_name' },
         ];
       }
       if("ASSET_PUBLISH"==emailTemplateType){
-        mergeTags = [{ name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
+        mergeTags = [{ name: 'Sendor First Name', value: '{{firstName}}' },
+        { name: 'Sendor Last Name', value: '{{lastName}}' },
+        { name: 'Sendor Full Name', value: '{{fullName}}' },
+        { name: 'Sendor Email Id', value: '{{emailId}}' },
+        { name: 'Sendor Company Name', value: 'Vendor_company_name' },
+        { name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
         { name: 'Asset Name', value: 'Asset_name' },
         { name: 'Shared On', value: 'shared_date' },
-        { name: 'Vendor Company Name', value: 'Vendor_company_name' },
         ];
       }
       if("SHARE_LEAD"==emailTemplateType){
-        mergeTags =[{ name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
+        mergeTags =[{ name: 'Sendor First Name', value: '{{firstName}}' },
+        { name: 'Sendor Last Name', value: '{{lastName}}' },
+        { name: 'Sendor Full Name', value: '{{fullName}}' },
+        { name: 'Sendor Email Id', value: '{{emailId}}' },
+        { name: 'Sendor Company Name', value: 'Vendor_company_name' },
+        { name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
         { name: 'Share-Lead List Name', value: 'shareLeadListName' },
         { name: 'Shared On', value: 'shared_date' },
-        { name: 'Vendor Company Name', value: 'Vendor_company_name' },
         ];
       }
       var beeUserId = "bee-"+emailTemplate.companyId;
