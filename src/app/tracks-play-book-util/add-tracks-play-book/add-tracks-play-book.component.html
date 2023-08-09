@@ -360,7 +360,9 @@
                         </div>
                         <div class="wrap-asset-name" style="-webkit-box-orient: vertical;">
                           <span data-toggle="tooltip" data-placement="bottom"  [title]="file.assetName">
-                            <strong>{{file.assetName}}</strong>
+                            <strong>{{file.assetName | slice:0:40}}<span
+                              *ngIf="file.assetName?.length>40">...</span>
+                            </strong>
                           </span>
                         </div>
                         <div class="item__size">
