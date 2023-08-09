@@ -162,17 +162,32 @@ textarea.textareaNumber {
 .SidePaddings {
   padding: 10px 10px;
 }
-@media only screen and (min-width: 1200px) and (max-width: 1260px) {
-  .SidePaddings span{
-    font-size: 10px !important;
-  }
+#clipBoardValidationMessage h5 {
+  line-height: 1.4;
+}
+.SideParddings1 {
+  padding-top: 0px;
+  padding-right: 10px;
+  padding-bottom: 0px;
+  padding-left: 15px;
+}
+.SideParddings2 {
+  padding: 0px;
+}
+.SideParddings3 {
+  padding-top: 0px;
+  padding-right: 15px;
+  padding-bottom: 0px;
+  padding-left: 10px;
+}
 
+
+@media only screen and (min-width: 1200px) and (max-width: 1260px) {
+  .SidePaddings span{font-size: 10px !important;}
 }
 @media only screen and (min-width: 1079px) and (max-width: 1150px) {
   .scroll-top-abj {padding-top: 15px;}
 }
-
-
 /* gericon */
 @media only screen and (min-width: 800px) and (max-width: 969px) {
   #SgearIcon{left: 106px !important;}

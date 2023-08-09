@@ -15,7 +15,7 @@
 }
 .add-options span {
   display: block;
-  font-size: 14px;
+  font-size: 12px;
   text-align: center;
 }
 .add-options .portlet-body {
@@ -103,4 +103,10 @@
 .border {
   padding-left: 50px;
   margin-left: 55px;
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1340px) {
+  .add-options span {
+    font-size: 10px;
+  }
 }

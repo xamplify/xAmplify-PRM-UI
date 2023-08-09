@@ -83,7 +83,7 @@
                                     add your {{authenticationService?.partnerModule?.customName}}?</div>
                                 <div class="portlet-body">
                                     <div class="row">
-                                        <div class="col-xs-12 col-sm-4 col-md-4">
+                                        <div class="col-xs-12 col-sm-4 col-md-4 SideParddings1">
                                             <button class="btn-primary btn-block SidePaddings" id="addContacts"
                                                 (click)="addPartnerModalOpen()"
                                                 [disabled]="selectedAddPartnerOption != 1 && selectedAddPartnerOption != 5 || disableOtherFuctionality">
@@ -92,7 +92,7 @@
                                             </button>
                                         </div>
                                         <ng-container *ngIf="!referenceService.isMobileScreenSize()">
-                                        <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
+                                        <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs SideParddings2">
                                             <button class="Btn-Green btn-block SidePaddings" id="copyFromClipBoard"
                                                 (click)="copyFromClipboard()"
                                                 [disabled]="selectedAddPartnerOption != 5">
@@ -100,7 +100,7 @@
                                                     translate>Copy list from clipboard</span>
                                             </button>
                                         </div>
-                                        <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
+                                        <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs SideParddings3">
                                             <button class="btn-primary fileinput-button btn-block SidePaddings"
                                                 id="uploadCSV"
                                                 
@@ -687,7 +687,7 @@
                             <div class="col-xs-6" style="margin-bottom: 10px">
                                 <button class="btn Btn-Green" type="button"  
                                                            
-                                    (click)="clipboardShowPreview()" translate>VERIFY DATA</button>
+                                    (click)="clipboardShowPreview()" translate>Verify Data</button>
                             </div>
                             <div class="col-xs-12">
                                 <textarea id="copyFromclipTextArea" class="textareaNumber"
