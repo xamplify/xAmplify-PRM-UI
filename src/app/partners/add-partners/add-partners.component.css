@@ -15,8 +15,11 @@
     right: 0 !important;
   }
   .cloud-css {
-    left: 98px !important;
+    left: 65px !important;
   }
+  #SgearIcon{left: 65px !important;}
+  #GgearIcon{left: 65px !important;}
+  #ZgearIcon{left: 65px !important;}
   .salesforce {
     margin-top: -25px;
     text-align: center;
@@ -154,3 +157,52 @@ textarea.textareaNumber {
   margin-top: 0;
   color: inherit !important;
 }
+
+/* 09-08-2023 */
+.SidePaddings {
+  padding: 10px 10px;
+}
+@media only screen and (min-width: 1200px) and (max-width: 1260px) {
+  .SidePaddings span{
+    font-size: 10px !important;
+  }
+
+}
+@media only screen and (min-width: 1079px) and (max-width: 1150px) {
+  .scroll-top-abj {padding-top: 15px;}
+}
+
+
+/* gericon */
+@media only screen and (min-width: 800px) and (max-width: 969px) {
+  #SgearIcon{left: 106px !important;}
+  #GgearIcon{left: 106px !important;}
+  #ZgearIcon{left: 106px !important;}
+} 
+
+ @media only screen and (min-width: 969px) and (max-width: 992px) {
+  #SgearIcon{left: 125px !important;}
+  #GgearIcon{left: 125px !important;}
+  #ZgearIcon{left: 125px !important;}
+} 
+@media only screen and (min-width: 992px) and (max-width: 1032px) {
+  #SgearIcon{left: 75px !important;}
+  #GgearIcon{left: 75px !important;}
+  #ZgearIcon{left: 75px !important;}
+}
+@media only screen and (min-width: 1032px) and (max-width: 1072px) {.cloud-items{left: 78px !important;}}
+@media only screen and (min-width: 1072px) and (max-width: 1125px) {.cloud-items{left: 81px !important;}}
+@media only screen and (min-width: 1125px) and (max-width: 1170px) {.cloud-items{left: 85px !important;}}
+@media only screen and (min-width: 1170px) and (max-width: 1199px) {.cloud-items{left: 88px !important;}}
+@media only screen and (min-width: 1500px) and (max-width: 1550px) {.cloud-items{left: 74px !important;}}
+@media only screen and (min-width: 1550px) and (max-width: 1600px) {.cloud-items{left: 76px !important;}}
+@media only screen and (min-width: 1600px) and (max-width: 1650px) {.cloud-items{left: 78px !important;}}
+@media only screen and (min-width: 1650px) and (max-width: 1700px) {.cloud-items{left: 80px !important;}}
+@media only screen and (min-width: 1700px) and (max-width: 1750px) {.cloud-items{left: 82px !important;}}
+@media only screen and (min-width: 1750px) and (max-width: 1880px) {.cloud-items{left: 84px !important;}}
+@media only screen and (min-width: 1780px) and (max-width: 1830px) {.cloud-items{left: 86px !important;}}
+@media only screen and (min-width: 1830px) and (max-width: 1882px) {.cloud-items{left: 87px !important;}}
+@media only screen and (min-width: 1883px) and (max-width: 1920px) {.cloud-items{left: 90px !important;}}
+
+
+

@@ -84,7 +84,7 @@
                                 <div class="portlet-body">
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-4 col-md-4">
-                                            <button class="btn-primary btn-block" id="addContacts"
+                                            <button class="btn-primary btn-block SidePaddings" id="addContacts"
                                                 (click)="addPartnerModalOpen()"
                                                 [disabled]="selectedAddPartnerOption != 1 && selectedAddPartnerOption != 5 || disableOtherFuctionality">
                                                 <i class="fa fa-user-plus" aria-hidden="true"></i> <span
@@ -93,7 +93,7 @@
                                         </div>
                                         <ng-container *ngIf="!referenceService.isMobileScreenSize()">
                                         <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
-                                            <button class="Btn-Green btn-block" id="copyFromClipBoard"
+                                            <button class="Btn-Green btn-block SidePaddings" id="copyFromClipBoard"
                                                 (click)="copyFromClipboard()"
                                                 [disabled]="selectedAddPartnerOption != 5">
                                                 <i class="fa fa-users" aria-hidden="true"></i> <span
@@ -101,7 +101,7 @@
                                             </button>
                                         </div>
                                         <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
-                                            <button class="btn-primary fileinput-button btn-block"
+                                            <button class="btn-primary fileinput-button btn-block SidePaddings"
                                                 id="uploadCSV"
                                                 
                                                 [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
@@ -145,7 +145,7 @@
                                 <div class="portlet-body">
                                     <div class="row">
     
-                                        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8"
                                             style="margin-top: 10px;">
                                             <a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal" class="setting_icon_color"
                                                 style="background-color: white"
@@ -180,7 +180,7 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8"
                                             style="margin-top: 10px;">
                                             <a *ngIf="googleImageBlur" id="googleContact_button"
                                                 style="background-color: white" (click)="googleContacts()"
@@ -213,7 +213,7 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8"
                                             style="margin-top: 10px;">
                                             <a *ngIf="zohoImageBlur" id="zohoContact_button"
                                                 style="background-color: white"
@@ -248,7 +248,7 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8"
                                             style="margin-top: 10px;">
                                             <a *ngIf="marketoImageBlur" id="marketoContact_button"
                                                 style="background-color: white"
@@ -287,7 +287,7 @@
                                         </div>
     
                                         <!-- Hubspot -->
-                                        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8"
                                             style="margin-top: 10px;">
                                             <a *ngIf="hubspotImageBlur" id="hubspotContact_button"
                                                 style="background-color: white"
@@ -325,7 +325,7 @@
                                             </div> -->
                                         </div>
                                         <!-- Microsoft -->
-                                        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8"
                                             style="margin-top: 10px;">
                                             <a *ngIf="microsoftDynamicsImageBlur"
                                                 id="microsoftDynamicsContact_button"
@@ -357,7 +357,7 @@
                                         </div>
                                         <!-- XNFR-230 -->
                                         <div id="showCRM" class="collapse">
-                                            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                            <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8"
                                                 style="margin-top: 10px;">
                                             <a *ngIf="pipedriveImageBlur"
                                                 id="pipedriveContact_button" style="background-color: white"
