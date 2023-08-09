@@ -1,4 +1,4 @@
-import { Component, OnInit , Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -8,16 +8,16 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from 'app/core/models/sort-option';
+
 @Component({
-  selector: 'app-track-asset-details',
-  templateUrl: './track-asset-details.component.html',
-  styleUrls: ['./track-asset-details.component.css'],
+  selector: 'app-partner-journey-deal-details',
+  templateUrl: './partner-journey-deal-details.component.html',
+  styleUrls: ['./partner-journey-deal-details.component.css'],
   providers: [SortOption]
 })
-export class TrackAssetDetailsComponent implements OnInit {
+export class PartnerJourneyDealDetailsComponent implements OnInit {
   @Input() partnerCompanyId: any;
   @Input() teamMemberId: any;
-  @Input() type: any;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -32,19 +32,18 @@ export class TrackAssetDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTrackAssetDetails(this.pagination);
+    this.getDealDetails(this.pagination);
   }
 
-  getTrackAssetDetails(pagination : Pagination) {
+  getDealDetails(pagination : Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.maxResults = 6;
-    this.pagination.lmsType = this.type;
     if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
       this.pagination.teamMemberId = this.teamMemberId;
     }    
-    this.parterService.getTrackAssetDetails(this.pagination).subscribe(
+    this.parterService.getDealDetails(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          
@@ -74,22 +73,22 @@ export class TrackAssetDetailsComponent implements OnInit {
     pagination.pageIndex = 1;
     pagination.searchKey = this.sortOption.searchKey;
     pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOption, pagination);
-    this.getTrackAssetDetails(this.pagination);
+    this.getDealDetails(this.pagination);
   }
 
   dropDownList(event) {
     this.pagination = event;
-    this.getTrackAssetDetails(this.pagination);
+    this.getDealDetails(this.pagination);
   }
 
   setPage(event:any) {
 		this.pagination.pageIndex = event.page;
-		this.getTrackAssetDetails(this.pagination);
+		this.getDealDetails(this.pagination);
 	}  
 
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
     this.getAllFilteredResults(this.pagination);
-  }  
+  }
 
 }

@@ -61,42 +61,74 @@
   <!--******************Team Member Details*******************-->
   <app-partner-journey-team-members-table [partnerCompanyId]="partnerCompanyId"
     [teamMemberId]="teamMemberId"></app-partner-journey-team-members-table>
+ 
 
   <!--******************Counts - Tiles*******************-->
   <app-partner-journey-count-tiles [partnerCompanyId]="partnerCompanyId"
     [teamMemberId]="teamMemberId"></app-partner-journey-count-tiles>
 
-  <!--******************Interacted & Not Interacted Track Details*******************-->
-  <app-interacted-not-interacted-track-details [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId"></app-interacted-not-interacted-track-details>
 
-  <!--******************Type wise Track Content Details*******************-->
-  <app-typewise-track-content-details [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId"></app-typewise-track-content-details>
+  <!--******************Lead To Deal Conversion Chart*******************-->
+  <app-redistributed-campaigns-and-leads-bar-chart [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+    [chartId]="'partnerJourneyLeadsAndDealsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
+
 
   <!--******************User wise Track Counts*******************-->
   <app-userwise-track-counts [partnerCompanyId]="partnerCompanyId"
     [teamMemberId]="teamMemberId"></app-userwise-track-counts>
 
+  <!--******************Interacted & Not Interacted Donut Chart******************-->
+  <div class="col-lg-5 ml15m">
+    <app-donut-pie-chart [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+      [chartId]="'interactedAndNotInteractedTracksDonut'"></app-donut-pie-chart>
+  </div>
+
+  <!--******************Interacted & Not Interacted Track Details*******************-->
+  <app-interacted-not-interacted-track-details [partnerCompanyId]="partnerCompanyId"
+    [teamMemberId]="teamMemberId"></app-interacted-not-interacted-track-details>
+
+
+  <!--******************Type wise Track  Donut Chart******************-->
+  <div class="col-lg-5 ml15m">
+    <app-donut-pie-chart [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+      [chartId]="'typewiseTrackContentDonut'"></app-donut-pie-chart>
+  </div>
+
+  <!--******************Type wise Track Content Details*******************-->
+  <app-typewise-track-content-details [partnerCompanyId]="partnerCompanyId"
+    [teamMemberId]="teamMemberId"></app-typewise-track-content-details>
+  
   <!--******************Track Content Detailed Report*******************-->
   <app-userwise-track-details [partnerCompanyId]="partnerCompanyId"
     [teamMemberId]="teamMemberId"></app-userwise-track-details>
 
   <!--******************Track Asset Details*******************-->
-  <app-track-asset-details [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId" [type]="'TRACK'"></app-track-asset-details>
+  <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+    [type]="'TRACK'"></app-track-asset-details>
 
   <!--******************Playbook Asset Details*******************-->
-  <app-track-asset-details [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId" [type]="'PLAYBOOK'"></app-track-asset-details>
+  <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+    [type]="'PLAYBOOK'"></app-track-asset-details>
 
   <!--******************Share Lead Details*******************-->
-  <app-share-lead-details [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId"></app-share-lead-details>
+  <app-share-lead-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"></app-share-lead-details>
 
   <!--******************Redistributed Camapign Details*******************-->
   <app-redistributed-campaign-details [partnerCompanyId]="partnerCompanyId"
-  [teamMemberId]="teamMemberId"></app-redistributed-campaign-details>
-    
+    [teamMemberId]="teamMemberId"></app-redistributed-campaign-details>
+
+  <!--******************Lead Details*******************-->
+  <app-partner-journey-lead-details [partnerCompanyId]="partnerCompanyId"
+    [teamMemberId]="teamMemberId"></app-partner-journey-lead-details>
+
+  <!--******************Deal Details*******************-->
+  <app-partner-journey-deal-details [partnerCompanyId]="partnerCompanyId"
+    [teamMemberId]="teamMemberId"></app-partner-journey-deal-details>
+
+  <!--******************Contact Details*******************-->
+  <!-- This is commented for GDPR Compliance
+    <app-partner-journey-contact-details [partnerCompanyId]="partnerCompanyId"
+  [teamMemberId]="teamMemberId"></app-partner-journey-contact-details> -->
+
 
 </div>

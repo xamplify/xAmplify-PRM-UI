@@ -1,22 +1,22 @@
-<div class="col-xs-12 col-sm-12"  style="padding: 0">
+<div class="col-xs-12 col-sm-12" style="padding: 0">
   <div class="col-xs-12">
-          <div class="portlet-body">
-              <app-modal-popup-loader [showCircle]="true"  [height]=220 [hidden]="!loader"></app-modal-popup-loader>
-              <ng-container *ngIf="!loader && statusCode==500">
-                  <div class="alert alert-danger">
-                    <strong>{{properties?.serverErrorMessage}}</strong>
-                  </div>
-                </ng-container>
-                <div class="text-center" *ngIf="statusCode==404 && !loader">
-                  <div class="alert alert-info text-center">
-                       <strong>No Data Found</strong>
-                   </div>
-              </div>
-              <figure [hidden]="loader" class="highcharts-figure">
-                  <div id="donut-chart-container">
-                  </div>
-              </figure>
-          </div>
+    <div class="portlet-body">
+      <app-modal-popup-loader [showCircle]="true" [height]=220 [hidden]="!loader"></app-modal-popup-loader>
+      <ng-container *ngIf="!loader && statusCode==500">
+        <div class="alert alert-danger">
+          <strong>{{properties?.serverErrorMessage}}</strong>
+        </div>
+      </ng-container>
+      <div class="text-center" *ngIf="statusCode==404 && !loader">
+        <div class="alert alert-info text-center">
+          <strong>No Data Found</strong>
+        </div>
+      </div>
+      <figure [hidden]="loader" class="highcharts-figure">        
+        <div id="{{chartId}}">          
+        </div>
+      </figure>
+    </div>
 
-     </div>
-</div> 
+  </div>
+</div>

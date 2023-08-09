@@ -3,6 +3,7 @@ import {ParterService} from 'app/partners/services/parter.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { Properties } from 'app/common/models/properties';
 import {AuthenticationService} from 'app/core/services/authentication.service';
+import { PartnerJourneyRequest } from '../models/partner-journey-request';
 declare var Highcharts,$: any;
 
 @Component({
@@ -16,6 +17,11 @@ chartLoader = false;
 statusCode=200;
 @Input() chartId:any;
 @Input() applyTeamMemberFilter:boolean;
+
+//XNFR-316
+@Input() partnerCompanyId:any;
+@Input() teamMemberId:any;
+
 hasLeadsAndDealsAccess = false;
 headerText = "";
 filterValue = 'r';
@@ -41,7 +47,9 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
                 this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads':'Redistributed Campaigns';
             }else if(this.chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'){
                 this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Previous Quarter Leads':'Redistributed Campaigns For Previous Quarter';
-            }else if(this.chartId=='top10LeadsAndDealsBarChart'){
+            }
+            //XNFR-316
+            else if(this.chartId=='top10LeadsAndDealsBarChart' || this.chartId== 'partnerJourneyLeadsAndDealsBarChart'){
                 if(this.hasLeadsAndDealsAccess){
                     this.hideLeadsAndDealsChart = false;
                 }else{
@@ -52,7 +60,8 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
         },error=>{
             this.setErrorResponse(error);
         },()=>{
-            if(this.chartId=='top10LeadsAndDealsBarChart'){
+            //XNFR-316
+            if(this.chartId=='top10LeadsAndDealsBarChart' || this.chartId== 'partnerJourneyLeadsAndDealsBarChart'){
                 if(this.hasLeadsAndDealsAccess){
                     this.getDataForBarChart();
                 }
@@ -65,24 +74,43 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
   }
 
   getDataForBarChart(){
-    this.partnerService.getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(this.chartId,this.filterValue,this.applyTeamMemberFilter).subscribe(
-        response=>{
-            let data = response.data;
-            this.statusCode =  response.statusCode;
-            if(this.statusCode==200){
-                let xAxis = data.xaxis;
-                let yAxis1 = data.yaxis1;
-                let yAxis2 = data.yaxis2;
-                this.renderChart(xAxis,yAxis1,yAxis2);
-            }else{
-                this.chartLoader = false;
-                $('#'+this.chartId).html('');
+      if (this.chartId == 'partnerJourneyLeadsAndDealsBarChart') {
+          let partnerJourneyRequest = new PartnerJourneyRequest();
+          partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
+          partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
+          partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
+          this.partnerService.getPartnerJourneyLeadDealCounts(partnerJourneyRequest).subscribe(
+            response=>{
+                this.processResponse(response);                
+            },error=>{
+                this.setErrorResponse(error);
             }
-        },error=>{
-            this.setErrorResponse(error);
-        }
-      );
+          );
+
+      } else {
+        this.partnerService.getRedistributedCampaignsAndLeadsCountOrLeadsAndDeals(this.chartId,this.filterValue,this.applyTeamMemberFilter).subscribe(
+            response=>{
+                this.processResponse(response);
+            },error=>{
+                this.setErrorResponse(error);
+            }
+          );
+    }    
   }
+
+    processResponse(response: any) {
+        let data = response.data;
+        this.statusCode = response.statusCode;
+        if (this.statusCode == 200) {
+            let xAxis = data.xaxis;
+            let yAxis1 = data.yaxis1;
+            let yAxis2 = data.yaxis2;
+            this.renderChart(xAxis, yAxis1, yAxis2);
+        } else {
+            this.chartLoader = false;
+            $('#' + this.chartId).html('');
+        }
+    }
 
   setErrorResponse(error:any){
     this.chartLoader = false;
@@ -105,7 +133,14 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
         secondaryAxisColor = Highcharts.getOptions().colors[9];
         primaryYAxisText = "Leads";
         secondaryYAxisText = "Redistributed Campaigns";
-    }else if(chartId="top10LeadsAndDealsBarChart"){
+    }
+    //XNFR-316
+    else if(chartId=="top10LeadsAndDealsBarChart" || chartId=="partnerJourneyLeadsAndDealsBarChart" ){
+        primayAxisColor = Highcharts.getOptions().colors[0];
+        secondaryAxisColor = Highcharts.getOptions().colors[2];
+        primaryYAxisText = "Leads";
+        secondaryYAxisText = "Deals";
+    }else {
         primayAxisColor = Highcharts.getOptions().colors[0];
         secondaryAxisColor = Highcharts.getOptions().colors[2];
         primaryYAxisText = "Leads";
@@ -228,6 +263,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
   filterTop10LeadsAndDealsBarChartDropDown(){
     this.filterChart('top10LeadsAndDealsBarChartDropDown');
   }
+ 
 
   filterChart(dropDownId:string){
     this.chartLoader = true;

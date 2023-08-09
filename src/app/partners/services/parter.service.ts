@@ -273,7 +273,41 @@ export class ParterService {
             .catch( this.handleError );
     }
 
-    
+    getLeadDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/lead/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getDealDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/deal/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getContactDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/contact/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getPartnerJourneyLeadDealCounts(partnerJourneyRequest: PartnerJourneyRequest) {
+        const url = this.URL + 'partner/journey/lead-to-deal/counts?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, partnerJourneyRequest )
+            .catch( this.handleError );
+    }
+
+    getPartnerJourneyInteractedAndNotInteractedCounts(partnerJourneyRequest: PartnerJourneyRequest) {
+        const url = this.URL + 'partner/journey/track/interaction/counts?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, partnerJourneyRequest )
+            .catch( this.handleError );
+    }
+
+    getPartnerJourneyTypewiseTrackCounts(partnerJourneyRequest: PartnerJourneyRequest) {
+        const url = this.URL + 'partner/journey/track/typewise/counts?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, partnerJourneyRequest )
+            .catch( this.handleError );
+    }
 
     /*********End : XNFR-316************/
     

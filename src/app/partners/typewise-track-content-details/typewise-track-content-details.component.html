@@ -1,62 +1,53 @@
-<div class="row">
-  <div class="col-sm-12 col-md-12 col-lg-12">
-    
-    <div class="col-sm-5 col-md-5 col-lg-5 ml15m">
-      <app-chart-variable-pie [chartId]="'-typewise'"></app-chart-variable-pie>
+<div class="col-sm-7 col-md-7 col-lg-7 ml15m">
+  <div class="panel panel-info">
+    <div class="panel-heading panel-heading-custom">
+      <h3 class="panel-title mt7">Track Asset Details</h3>
+      <span class="pull-right mt25m">
+        <div class="input-icon right" style="position: relative;width: 178px;">
+          <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
+            [ngModelOptions]="{standalone: true}" placeholder="Search"
+            (keypress)="searchKeyPress($event.keyCode)">
+          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+            (click)="sortOption.searchKey='';search()"></button>
+          <button type="submit" class="search-box-item-click" (click)="search()">
+            <i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+      </span>
     </div>
-    
-    <div class="col-sm-7 col-md-7 col-lg-7 ml15m">
-      <div class="panel panel-info">
-        <div class="panel-heading panel-heading-custom">
-          <h3 class="panel-title mt7">Track Asset Details</h3>
-          <span class="pull-right mt25m">
-            <div class="input-icon right" style="position: relative;width: 178px;">
-              <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
-                [ngModelOptions]="{standalone: true}" placeholder="Search"
-                (keypress)="searchKeyPress($event.keyCode)">
-              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
-                (click)="sortOption.searchKey='';search()"></button>
-              <button type="submit" class="search-box-item-click" (click)="search()">
-                <i class="fa fa-search" aria-hidden="true"></i></button>
-            </div>
-          </span>
-        </div>
-        <div class="panel-body">    
-          <div class="scroll">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Title</th>
-                  <th scope="col">Created by Email ID</th>
-                  <th scope="col">Content Title</th>
-                  <th scope="col">Content Type</th>
-                  <th scope="col">Status</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>          
-                <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-                  <td scope="row">{{((pagination.pageIndex-1)*pagination.maxResults)+i+1}}</td>
-                  <td>{{item?.title}}</td>
-                  <td>{{item?.createdByEmail}}</td>
-                  <td>{{item.assetName}}</td>
-                  <td>{{item.assetType}}</td>
-                  <td>{{item.status}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-            <strong>No Data Found.</strong>
-          </div>
-          <!--Pagination-->
-          <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
-            <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
-              (notifyParentDropDown)="getTypeWiseTrackContentDetails($event)">
-            </app-pagination>
-          </div>
-        </div>
+    <div class="panel-body">    
+      <div class="scroll">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Title</th>
+              <th scope="col">Created by Email ID</th>
+              <th scope="col">Content Title</th>
+              <th scope="col">Content Type</th>
+              <th scope="col">Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>          
+            <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+              <td scope="row">{{((pagination.pageIndex-1)*pagination.maxResults)+i+1}}</td>
+              <td>{{item?.title}}</td>
+              <td>{{item?.createdByEmail}}</td>
+              <td>{{item.assetName}}</td>
+              <td>{{item.assetType}}</td>
+              <td>{{item.status}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+        <strong>No Data Found.</strong>
+      </div>
+      <!--Pagination-->
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+        <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
+          (notifyParentDropDown)="getTypeWiseTrackContentDetails($event)">
+        </app-pagination>
       </div>
     </div>
   </div>

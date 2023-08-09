@@ -77,7 +77,6 @@ import { PieChartStatisticsBarGraphComponent } from './dashboard-analytics-compo
 import { MarketingRoleRequestsComponent } from './marketing-role-requests/marketing-role-requests.component';
 import { HorizontalBatChartComponent } from './dashboard-analytics-components/horizontal-bat-chart/horizontal-bat-chart.component';
 import { HighlevelAnalyticsDetailReportsComponent } from './dashboard-analytics-components/highlevel-analytics-detail-reports/highlevel-analytics-detail-reports.component';
-import { DonutPieChartComponent } from './dashboard-analytics-components/donut-pie-chart/donut-pie-chart.component';
 import { AgencyDashboardComponent } from './agency-dashboard/agency-dashboard.component';
 import { CustomSkinComponent } from './user-profile/custom-skin/custom-skin.component';
 import { IntegrationSettingsComponent } from './integration-settings/integration-settings.component';
@@ -139,7 +138,6 @@ import { EnableSupportAccessToVendorComponent } from './enable-support-access-to
         MarketingRoleRequestsComponent,
         HorizontalBatChartComponent,
         HighlevelAnalyticsDetailReportsComponent,
-        DonutPieChartComponent,
         AgencyDashboardComponent,
         CustomSkinComponent,
         IntegrationSettingsComponent,
