@@ -7,6 +7,9 @@
         <div class="portlet light clearfix">
             <!--List/Grid View-->
             <div *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
+                <div *ngIf="showRefreshNotification && !httpRequestLoader?.isLoading" class="alert alert-info">
+					<strong>Please <a (click)="listLearningTracks(pagination)">click here</a> to find latest updates</strong>
+				</div>
                 <div class="portlet-title" style="border-bottom: none">
                     <div class="row">
                         <div class="col-xs-12 col-sm-4 col-lg-3">
@@ -187,6 +190,13 @@
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </a>
                                             </div>
+                                            <!--XNFR-327-->
+                                            <ng-container *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress">
+                                                <a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listLearningTracks(pagination)"> 
+                                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                                </a> 
+                                            </ng-container>
+											<!--XNFR-327-->
                                         </td>
                                     </tr>
                                 </tbody>
