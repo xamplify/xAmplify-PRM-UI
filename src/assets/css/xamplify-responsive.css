@@ -442,7 +442,16 @@
   } 
 }
 
-
+/*  Detailed view cards font */
+@media only screen and (min-width: 800px) and (max-width:1200px) {  
+  .NumberFontDecrease {
+    font-size: 22px !important;
+  }
+  .TextFontDecrease {
+    font-size: 12px !important;
+  } 
+  
+}
 
 
 
