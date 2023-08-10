@@ -381,11 +381,6 @@
                                   *ngIf="file.tagNames[0]?.length>5">..</span>
                               </ng-container>
                             </div>
-                            <!-- <ng-container *ngIf="file.tagNames.length > 1">
-                              <div class="tag tablegray-tag" data-toggle="tooltip" data-placement="bottom"  title="{{file.tagNames[1]}}">
-                                {{file.tagNames[1] | slice:0:5}} <span *ngIf="file.tagNames[1]?.length>5">..</span>
-                              </div>
-                            </ng-container> -->
                             <ng-container *ngIf="file.tagNames?.length > 1" >
                             <span class="tag-dots" data-toggle="tooltip" data-placement="bottm"
                               title="{{file.toolTipTagNames}}" style="font-size: 12px;
@@ -489,11 +484,6 @@
           <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }">
           </ngx-loading>
           <div [hidden]="!imageChangedEvent">
-            <!-- <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false" [onlyScaleDown]="true"
-              [roundCropper]="false" format="jpg" outputType="base64" (imageCropped)="imageCroppedMethod($event)"
-              (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" [resizeToWidth]="1000" (preserveSize)="true"
-              (imageQuality)=0 (loadImageFailed)="loadImageFailed()" [style.display]="showCropper ? null : 'none'">
-            </image-cropper> -->
             <app-img-croppr-v2
                     [imageChangedEvent]="imageChangedEvent"
                     [maintainAspectRatio]="true"

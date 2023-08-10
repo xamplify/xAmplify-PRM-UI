@@ -171,11 +171,11 @@
                </fieldset>
                <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor" [hidden]="previewCampaignType === 'SOCIAL'">
                <legend class="scheduler-border">Selected:</legend>
-               <div class="col-xs-12 col-xs-12 row p0">
+               <div class="col-xs-12 row p0">
                   <div [hidden]="!campaign.campaignVideoFile" class="col-xs-12 col-sm-6 p0">
                      <app-video-play *ngIf="campaign?.campaignVideoFile" [isPreview]="true" [videoFile]="campaign.campaignVideoFile" [videoWidth]="'280px'" [videoHeight]="'165px'"></app-video-play>
                   </div>
-                  <div *ngIf="(previewCampaignType==='REGULAR' || previewCampaignType==='EVENT' ||  previewCampaignType==='LANDINGPAGE')" class="col-xs-12 col-sm-6">
+                  <div *ngIf="(previewCampaignType==='REGULAR' || previewCampaignType==='EVENT' ||  previewCampaignType==='LANDINGPAGE')" class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                      <div class="portlet light clearfix" style="padding:0px">
                         <div class="p0">
                            <div class="pricing hover-effect" style="border:none !important">
@@ -192,7 +192,7 @@
                      </div>
                   </div>
                   <ng-container *ngIf="previewCampaignType!=='LANDINGPAGE'">
-                     <div *ngIf="!campaign.emailTemplate?.id" class="col-xs-6 p0" style="margin-top: 60px; text-align: center;">
+                     <div *ngIf="!campaign.emailTemplate?.id" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 p0" style="margin-top: 60px; text-align: center;">
                         <p style="color: #ff3a3a;">No Template found</p>
                      </div>
                      <div *ngIf="campaign.emailTemplate?.id" class="col-xs-12 col-sm-6 p0">
@@ -251,9 +251,9 @@
                      <div *ngIf="!campaign.landingPage?.id" class="col-xs-6 p0" style="margin-top: 60px; text-align: center;">
                         <p style="color: #ff3a3a;">No Page found</p>
                      </div>
-                     <div *ngIf="campaign.landingPage?.id" class="col-xs-6 p0">
+                     <div *ngIf="campaign.landingPage?.id" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 p0">
                         <ul class="content__list">
-                           <li class="list__item" style="width:auto !important;float:none;margin-right: -29px;margin-top: -13px;" [class.list__item--selected]="true">
+                           <li class="list__item mb_mr0" style="width:auto !important;float:none;margin-right: -29px;margin-top: -13px;" [class.list__item--selected]="true">
                               <div class="flex-row">
                                  <div class="item__select-box-wrapper">
                                     <span class="select-box"> <label> <input type="checkbox" checked="checked"></label></span>
@@ -302,7 +302,7 @@
                   <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
                      <legend class="scheduler-border">Selected {{contactType}}:</legend>
                      <app-list-loader style="background: white" [rowsCount]="3" *ngIf="isContactListLoader"></app-list-loader>
-                     <div class="table-responsive">
+                     <div class="table-responsive mb_border_none">
                         <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader">
                            <div class="input-icon" style="position:relative;right: -11px;margin-bottom: 7px;">
                               <input type="text" class="form-control" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandlerForSearchUsers($event.keyCode)" style="padding-left: 10px !important;">

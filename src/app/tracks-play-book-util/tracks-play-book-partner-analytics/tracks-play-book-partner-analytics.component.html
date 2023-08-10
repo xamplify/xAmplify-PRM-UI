@@ -106,44 +106,8 @@
                           <i class="fa fa-line-chart" aria-hidden="true"></i>
                         </a>
                       </div>
-                      <!-- <div class="actions-block override-actions custom-width-icon">
-                                                    <a data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(partner,i)">
-                                                        <i class="fa" [ngClass]="{'fa-plus': !partner.expanded, 'fa-minus': partner.expanded}"></i>
-                                                    </a>
-                                                </div> -->
                     </td>
                   </tr>
-                  <!-- <tr [ngClass]="{'hidden': !partner.expanded}" id="analytics-tr">
-                                            <td colspan="4">
-                                                <div class="table-responsive">
-                                                    <table class="table tgrid table-hover table-sm" id="analytics">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="text-center">Content</th>
-                                                                <th class="text-center">View Count</th>
-                                                                <th class="text-center">Download Count</th>
-                                                                <th class="text-center">Status</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <app-auto-response-loader *ngIf="analyticsLoader.isLoading">
-                                                            </app-auto-response-loader>
-                                                            <ng-container *ngIf="!analyticsLoader.isLoading">
-                                                                <tr *ngFor="let item of analyticsPagination.pagedItems;let i=index">
-                                                                    <td class="text-center"></td>
-                                                                    <td class="text-center"></td>
-                                                                    <td class="text-center"></td>
-                                                                    <td class="text-center"></td>
-                                                                </tr>
-                                                            </ng-container>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div *ngIf="analyticsPagination.pagedItems.length !== 0">
-                                                    <app-pagination [pagination]="analyticsPagination" (notifyParent)="setDetailedAnalyticsPage($event)" (notifyParentDropDown)="listDetailedAnalytics($event)" [hidden]="analyticsLoader.isLoading"></app-pagination>
-                                                </div>
-                                            </td>
-                                        </tr> -->
                 </ng-container>
               </tbody>
             </table>

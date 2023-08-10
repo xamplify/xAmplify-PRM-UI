@@ -79,7 +79,6 @@ h6 {
   border: 1px solid var(--border-color) !important;
 }
 
-
 .tile,
 .heading-top,
 .progress {
@@ -1337,7 +1336,7 @@ a.dropdown-toggle.circlebg-none-v:hover {
   opacity: 0.8;
   color: var(--top-button-value-color) !important;
 }
-@media only screen and (min-width: 300px) and (max-width: 580px) {  
+@media only screen and (min-width: 300px) and (max-width: 580px) {
   a.dropdown-toggle.circlebg-none-v {
     background: transparent !important;
     border: none !important;
@@ -1345,14 +1344,24 @@ a.dropdown-toggle.circlebg-none-v:hover {
   a.dropdown-toggle.circlebg-none-v:hover {
     background: transparent !important;
   }
-  .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle:hover {
+  .page-header.navbar
+    .top-menu
+    .navbar-nav
+    > li.dropdown
+    > .dropdown-toggle:hover {
     background-color: transparent !important;
-  } 
-  .page-header.navbar.top-menu.navbar-nav> li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
+  }
+  .page-header.navbar.top-menu.navbar-nav
+    > li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
     background-color: transparent !important;
   }
 }
-.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown-user
+  .dropdown-toggle
+  > img {
   background-color: var(--top-buton-color) !important;
   border: 1px solid var(--top-button-border-color) !important;
 }
@@ -1493,7 +1502,6 @@ a.UserguideBtnCustomization:hover {
   opacity: 0.8;
 }
 
-
 .custom-btn-ref {
   /* background-color: var(--button-primary-bg-color) !important;
   color: var(--button-primary-text-color) !important; */
@@ -1518,14 +1526,13 @@ div#removeborder {
 }
 .help-iconbgadd i:hover {
   color: var(---text-color) !important;
-} 
+}
 .help-iconbgadd {
   border: 1px solid var(--top-button-border-color) !important;
 }
 .helpcircle-cu {
   color: var(---text-color) !important;
 }
-
 
 /* end */
 
@@ -1659,7 +1666,9 @@ ul.nav.nav-tabs.tabsactievcolorinu li a {
   color: var(---text-color) !important;
 }
 
-.nav.nav-tabs.tabsactievcolorinu > li.active > a, .nav.nav-tabs.tabsactievcolorinu > li.active > a:hover, .nav.nav-tabs.tabsactievcolorinu > li.active > a:focus{
+.nav.nav-tabs.tabsactievcolorinu > li.active > a,
+.nav.nav-tabs.tabsactievcolorinu > li.active > a:hover,
+.nav.nav-tabs.tabsactievcolorinu > li.active > a:focus {
   color: var(---text-color) !important;
 }
 
@@ -1680,11 +1689,13 @@ button.swal2-confirm.styled:hover {
   color: var(---text-color) !important;
   opacity: 0.5;
 }
-::-webkit-input-placeholder { /* Edge */
+::-webkit-input-placeholder {
+  /* Edge */
   color: var(---text-color) !important;
   opacity: 0.5;
 }
-:-ms-input-placeholder { /* Internet Explorer */
+:-ms-input-placeholder {
+  /* Internet Explorer */
   color: var(---text-color) !important;
   opacity: 0.5;
 }
@@ -1707,7 +1718,8 @@ input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched, input.ng2-tag-inpu
   background: transparent;
   fill: none;
 } */
-.search-box-item-clear, input {
+.search-box-item-clear,
+input {
   background: transparent;
   fill: none;
 }
@@ -1715,3 +1727,7 @@ input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched, input.ng2-tag-inpu
   border: none !important;
   outline: none !important;
 } */
+/* 10-8-2023 sudha sri */
+input#copy-link {
+  background-color: var(--page-content) !important;
+}
