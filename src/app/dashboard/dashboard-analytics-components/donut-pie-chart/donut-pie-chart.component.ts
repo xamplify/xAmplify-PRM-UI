@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
 import { Router } from "@angular/router";
 import { Properties } from "app/common/models/properties";
 import { AuthenticationService } from "app/core/services/authentication.service";
@@ -29,6 +29,9 @@ export class DonutPieChartComponent implements OnInit {
   @Input() partnerCompanyId: any;
   @Input() teamMemberId: any;
   @Input() chartId: any;
+  @Input() trackType: any = "";
+  @Output() notifySelectSlice = new EventEmitter();
+  @Output() notifyUnSelectSlice = new EventEmitter();
   headerText: string;
 
   constructor(
@@ -49,6 +52,11 @@ export class DonutPieChartComponent implements OnInit {
     }
   }
   ngOnInit() {
+    //this.vanityLoginDto.applyFilter = this.applyFilter;
+    //this.findDonutChart();
+  }
+
+  ngOnChanges() {      
     this.vanityLoginDto.applyFilter = this.applyFilter;
     this.findDonutChart();
   }
@@ -59,7 +67,7 @@ export class DonutPieChartComponent implements OnInit {
       this.headerText = 'Interacted & Not Interacted Tracks';
       this.loadDonutChartForInteractedAndNotInteractedTracks();
     } else if (this.chartId == "typewiseTrackContentDonut") {
-      this.headerText = 'Type Wise Tracks';
+      this.headerText = 'Status Wise Track Assets';
       this.loadDonutChartForTypewiseTrackContents();
     } else {
       this.headerText = "";
@@ -73,6 +81,7 @@ export class DonutPieChartComponent implements OnInit {
     partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
     partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
     partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
+    partnerJourneyRequest.trackTypeFilter = this.trackType;
     this.partnerService.getPartnerJourneyTypewiseTrackCounts(partnerJourneyRequest).subscribe(
       response => {
         this.processResponse(response);
@@ -127,6 +136,7 @@ export class DonutPieChartComponent implements OnInit {
   loadDonutChart(donutData: any) {
     let chartId = this.chartId;
     let headerText = this.headerText;
+    let self = this;
     Highcharts.chart(chartId, {
       chart: {
         type: "pie",
@@ -136,7 +146,7 @@ export class DonutPieChartComponent implements OnInit {
         },
       },
       title: {
-        text: headerText,
+        text: "",
       },
       tooltip: {
         backgroundColor: 'black',
@@ -161,15 +171,37 @@ export class DonutPieChartComponent implements OnInit {
             }
           }
         },
+        series: {
+          allowPointSelect: true,
+          marker: {
+            states: {
+              select: {
+                radius: 1,
+                fillColor: '#666'
+              }
+            }
+          },
+          point:{
+            events:{
+                select: function (event) {
+                  self.notifySelectSlice.emit(this.name);                   
+                },
+
+                unselect: function (event) {
+                  self.notifyUnSelectSlice.emit(this.name);                   
+                }
+            }
+          } 
+        }
       },
       credits: {
         enabled: false,
       },
-      colors: ["#5C9BD1", "#2bc2b5", "#90ed7d", "#E87E04"],
+      colors: ["#5C9BD1", "#E87E04", "#2bc2b5", "#90ed7d"],
       series: [
         {
           name: "Count",
-          data: this.donutData,
+          data: this.donutData,          
         },
       ],
     });

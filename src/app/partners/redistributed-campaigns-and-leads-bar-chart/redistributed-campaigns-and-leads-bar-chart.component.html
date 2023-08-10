@@ -1,51 +1,55 @@
-<div class="col-xs-12 col-sm-6"  style="padding: 0" *ngIf="!hideLeadsAndDealsChart">
+<div class="col-xs-12 col-sm-6 col-lg-6" style="padding: 0" *ngIf="!hideLeadsAndDealsChart">
   <div class="col-xs-12" [ngClass]="chartId=='redistributeCampaignsAndLeadsCountBarChart' ? 'pr5': 'pr5'">
-      <div class="portlet light overflow-x-auto" style="min-height: 530px;"[ngStyle]="{'margin-bottom':chartId=='redistributeCampaignsAndLeadsCountBarChart'?'15px':'20px'}" >
-        <div class="portlet-title minheight-zero-px" [hidden]="chartLoader">
-          <div class="caption">
-              <span class="caption-subject font-red-sunglo uppercase" translate>{{headerText}}</span>
-            </div>
-            <div [hidden]="!hasLeadsAndDealsAccess">
-                <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChart'">
-                  <select class="form-control" id="redistributeCampaignsAndLeadsCountBarChartDropDown" (change)="filterRedistributeCampaignsAndLeadsCountBarChart()">
-                    <option  value="r">Top 10 Redistributed Campaigns</option>
-                    <option value="l">Top 10 Leads</option>
-                  </select>
-                </div>
-                <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'">
-                  <select class="form-control" id="redistributeCampaignsAndLeadsCountBarChartQuarterlyDropDown" (change)="filterRedistributeCampaignsAndLeadsCountBarChartQuarterly()">
-                    <option  value="r">Top 10 Redistributed Campaigns</option>
-                    <option value="l">Top 10 Leads</option>
-                  </select>
-                </div>
-                <div *ngIf="chartId=='top10LeadsAndDealsBarChart'">
-                  <select class="form-control" id="top10LeadsAndDealsBarChartDropDown" (change)="filterTop10LeadsAndDealsBarChartDropDown()">
-                    <option value="l">Top 10 Leads</option>
-                    <option  value="d">Top 10 Deals</option>
-                  </select>
-                </div>
-                <div *ngIf="chartId=='partnerJourneyLeadsAndDealsBarChart'">
-                  
-                </div>
-            </div>
+    <div class="portlet light overflow-x-auto" style="min-height: 530px;"
+      [ngStyle]="{'margin-bottom':chartId=='redistributeCampaignsAndLeadsCountBarChart'?'15px':'20px'}">
+      <div class="portlet-title minheight-zero-px" [hidden]="chartLoader">
+        <div class="caption">
+          <span class="caption-subject font-red-sunglo uppercase" translate>{{headerText}}</span>
+        </div>
+        <div [hidden]="!hasLeadsAndDealsAccess">
+          <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChart'">
+            <select class="form-control" id="redistributeCampaignsAndLeadsCountBarChartDropDown"
+              (change)="filterRedistributeCampaignsAndLeadsCountBarChart()">
+              <option value="r">Top 10 Redistributed Campaigns</option>
+              <option value="l">Top 10 Leads</option>
+            </select>
+          </div>
+          <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'">
+            <select class="form-control" id="redistributeCampaignsAndLeadsCountBarChartQuarterlyDropDown"
+              (change)="filterRedistributeCampaignsAndLeadsCountBarChartQuarterly()">
+              <option value="r">Top 10 Redistributed Campaigns</option>
+              <option value="l">Top 10 Leads</option>
+            </select>
+          </div>
+          <div *ngIf="chartId=='top10LeadsAndDealsBarChart'">
+            <select class="form-control" id="top10LeadsAndDealsBarChartDropDown"
+              (change)="filterTop10LeadsAndDealsBarChartDropDown()">
+              <option value="l">Top 10 Leads</option>
+              <option value="d">Top 10 Deals</option>
+            </select>
+          </div>
+          <div *ngIf="chartId=='partnerJourneyLeadsAndDealsBarChart'">
+
+          </div>
+        </div>
       </div>
       <div class="portlet-body">
-        <app-modal-popup-loader [height]="460"  [hidden]="!chartLoader"></app-modal-popup-loader>
+        <app-modal-popup-loader [height]="460" [hidden]="!chartLoader"></app-modal-popup-loader>
         <figure [hidden]="chartLoader" class="highcharts-figure mBarChartWidth">
-        <div id="{{chartId}}">
-          <div class="alert alert-info center-align " *ngIf="statusCode==404">
-            <strong>No Data Found</strong>
-        </div>
-        <div class="alert alert-danger center-align" *ngIf="statusCode==500">
-          <strong>{{properties?.serverErrorMessage}}</strong>
-        </div>
-        </div>
+          <div id="{{chartId}}">
+            <div class="alert alert-info center-align " *ngIf="statusCode==404">
+              <strong>No Data Found</strong>
+            </div>
+            <div class="alert alert-danger center-align" *ngIf="statusCode==500">
+              <strong>{{properties?.serverErrorMessage}}</strong>
+            </div>
+          </div>
         </figure>
         <div class="alert alert-info center-align " *ngIf="statusCode==404">
           <strong>No Data Found</strong>
+        </div>
+
       </div>
-      
-      </div>
-      </div>
+    </div>
   </div>
 </div>

@@ -18,6 +18,8 @@ import { SortOption } from 'app/core/models/sort-option';
 export class TypewiseTrackContentDetailsComponent implements OnInit {
   @Input() partnerCompanyId: any;
   @Input() teamMemberId: any;
+  @Input() trackType: any = "";
+  @Input() assetType: any = "";
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -32,6 +34,11 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    
+  }
+
+  ngOnChanges() {   
+    this.pagination.pageIndex = 1;   
     this.getTypeWiseTrackContentDetails(this.pagination);
   }
 
@@ -39,6 +46,8 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
+    this.pagination.trackTypeFilter = this.trackType;
+    this.pagination.assetTypeFilter = this.assetType;
     this.pagination.maxResults = 6;
     if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
       this.pagination.teamMemberId = this.teamMemberId;

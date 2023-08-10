@@ -21,6 +21,8 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
   loggedInUserId: number = 0;
   partnerJourneyAnalytics: any;
   teamMemberId: any;
+  selectedTrackType: any = "";
+  selectedAssetType: any = "";
 
   constructor(public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -51,6 +53,31 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
 
   closeDetailedAnalytics(){
     this.notifyCloseDetailedAnalytics.emit();
+  }
+
+  interactionTracksDonutSliceSelected(type: any) {
+    this.selectedTrackType = type;
+    alert("Selected "+type);
+  }
+
+  interactionTracksDonutSliceUnSelected(type: any) {
+    if (this.selectedTrackType == type) {
+      this.selectedTrackType = "";
+      this.selectedAssetType = "";
+      alert("Unselected "+type);
+    } 
+  }
+
+  typeWiseTrackAssetsDonutSliceSelected(type: any) {
+    this.selectedAssetType = type;
+    alert("Selected Asset"+type);
+  }
+  
+  typeWiseTrackAssetsDonutSliceUnSelected(type: any) {
+    if (this.selectedAssetType == type) {
+      this.selectedAssetType = "";
+      alert("Unselected "+type);
+    } 
   }
 
 }

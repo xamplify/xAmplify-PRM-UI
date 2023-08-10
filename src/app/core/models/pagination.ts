@@ -98,4 +98,8 @@ export class Pagination {
 	previewSelectedSharedLeads = false;
 	headerCheckBoxChecked = false;
 	loginAsUserId = 0;
+
+	//XNFR-316
+	trackTypeFilter: any = "";
+	assetTypeFilter: any = "";
 }

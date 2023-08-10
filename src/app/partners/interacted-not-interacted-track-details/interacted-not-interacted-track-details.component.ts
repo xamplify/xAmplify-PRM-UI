@@ -18,11 +18,13 @@ import { SortOption } from 'app/core/models/sort-option';
 export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
   @Input() partnerCompanyId: any;
   @Input() teamMemberId: any;
+  @Input() trackType: any = "";
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
+  heading:any = "Interacted & Not Interacted Track Details";
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -31,14 +33,31 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
       this.loggedInUserId = this.authenticationService.getUserId();
   }
 
-  ngOnInit() {
+  ngOnInit() {    
+  }
+
+  ngOnChanges() {    
+    this.pagination.pageIndex = 1;
+    this.setHeading();    
     this.getInteractedNotInteractedTrackDetails(this.pagination);
+  }
+  setHeading() {
+    if (this.trackType != "") {
+      if (this.trackType === 'Interacted') {
+        this.heading = "Interacted Track Details";
+      } else if (this.trackType === 'Not Interacted') {
+        this.heading = "Not Interacted Track Details";
+      }
+    } else {
+      this.heading = "Interacted & Not Interacted Track Details"
+    } 
   }
 
   getInteractedNotInteractedTrackDetails(pagination : Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
+    this.pagination.trackTypeFilter = this.trackType;
     this.pagination.maxResults = 6;
     if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
       this.pagination.teamMemberId = this.teamMemberId;
