@@ -128,7 +128,6 @@
                                             [style.border-top]="(choice.correct && choice.isSelected == false) ? '1px solid #bfdcc8' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
                                             [style.border-right]="(choice.correct && choice.isSelected == false) ? '1px solid #bfdcc8' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
                                             [style.border-left]="(choice.correct && choice.isSelected == false) ? '1px solid #bfdcc8' :  choice.correct && choice.isSelected? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''">
-                                            <!-- removed class="form-check-label" -->
                                             <label class="form-check-label color disable-click" style="color :'#110202' !important;border:0px !important;"
                                               [ngClass]="{'label-value-correct': choice.correct, 'label-value-incorrect': !choice.correct && choice.isSelected}">
                                               <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"

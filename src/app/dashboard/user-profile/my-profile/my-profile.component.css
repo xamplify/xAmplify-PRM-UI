@@ -2887,3 +2887,11 @@ th.border-top {
     margin-bottom: 5px;
   }
 }
+@media screen and (max-width:1024px){
+  .mb_mt7{
+    margin-top:7px;
+  }
+  .mb_pl10{
+    padding-left: 10px;
+  }
+}

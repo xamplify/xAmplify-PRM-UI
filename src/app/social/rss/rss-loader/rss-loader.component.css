@@ -4,18 +4,27 @@
   animation: pulse 1s infinite ease-in-out;
 }
 .rect-box {
-	width: auto;
-	height: 75px;
+  width: auto;
+  height: 75px;
 }
-.thick{height: 10px;}
-.thin{height: 6px;}
-.w25{width: 25%}
-.w50{width: 50%}
-.w60{width: 60%}
-.w70{width: 70%}
-.w80{width: 80%}
-.w90{width: 90%}
-.w100{width: 100%}
+.thick {
+  height: 10px;
+}
+.thin {
+  height: 6px;
+}
+.w60 {
+  width: 60%;
+}
+.w70 {
+  width: 70%;
+}
+.w80 {
+  width: 80%;
+}
+.w90 {
+  width: 90%;
+}
 
 @keyframes pulse {
   0% {

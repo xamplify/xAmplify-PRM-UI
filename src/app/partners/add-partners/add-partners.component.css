@@ -163,7 +163,7 @@ textarea.textareaNumber {
   padding: 10px 10px;
 }
 #clipBoardValidationMessage h5 {
-  line-height: 1.4;
+  line-height: 1.5 !important;
 }
 .SideParddings1 {
   padding-top: 0px;

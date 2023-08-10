@@ -22,6 +22,7 @@
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
             <ng-container *ngIf="!sendSuccess">
+               <div [ngClass]="{'hide-scrollbar': isTableLoaded}">
             <div class="page-toolbar">
                <div class="btn-group pull-right search-position">
                   <div class="inputs float-right" style="display: inline-flex;">
@@ -140,6 +141,7 @@
                   </div>
                </ng-container>
             </ng-container>
+         </div>
             </ng-container>
             <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
             <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="findPartnerCompanies($event)">

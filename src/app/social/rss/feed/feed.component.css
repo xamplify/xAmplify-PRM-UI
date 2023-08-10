@@ -1,47 +1,47 @@
 .rss-title {
-    color: rgb(51, 51, 51);
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: -0.64px;
-    line-height: 20px;
+  color: rgb(51, 51, 51);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.64px;
+  line-height: 20px;
 }
 
-.rss-title:hover{
-    color: #488fd6 !important;
+.rss-title:hover {
+  color: #488fd6 !important;
 }
 
 .rss-summary {
-    color: rgb(158, 158, 158);
-    font-size: 13px;
-    height: 54px;
-    line-height: 18px;
-    margin-bottom: 0px;
-    margin-top: 4px;
-    max-height: 54px;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    text-rendering: optimizelegibility;
-    word-break: break-word;
+  color: rgb(158, 158, 158);
+  font-size: 13px;
+  height: 54px;
+  line-height: 18px;
+  margin-bottom: 0px;
+  margin-top: 4px;
+  max-height: 54px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  text-rendering: optimizelegibility;
+  word-break: break-word;
 }
 
 .rss-visual {
-    height: 65px;
-    width: 113px;
-    float: left;
-    background-size: cover;
-    border-radius: 5px;
-    margin-right: 20px;
-    background-color: #f1f1f1;
+  height: 65px;
+  width: 113px;
+  float: left;
+  background-size: cover;
+  border-radius: 5px;
+  margin-right: 20px;
+  background-color: #f1f1f1;
 }
 
 .rss-entry {
-    margin: 10px 0px !important;
+  margin: 10px 0px !important;
 }
 
-.page-bar {
-    border-radius: 5px !important;
+.rss-summary > img {
+  display: none;
 }
 
-.rss-summary > img { display: none;}
-
-.alignment { margin-left: 30px;}
+.alignment {
+  margin-left: 30px;
+}
