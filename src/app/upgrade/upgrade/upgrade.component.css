@@ -7,12 +7,6 @@ Pricing table
   border: 3px solid #eee;
 }
 
-.pricing-active {
-  border: 3px solid #36d7ac;
-  margin-top: -10px;
-  box-shadow: 7px 7px rgba(54, 215, 172, 0.2);
-}
-
 .pricing:hover {
   border: 3px solid #36d7ac;
 }
@@ -101,13 +95,9 @@ Pricing table
 }
 
 /*Priceing Active*/
-.price-active,
+
 .pricing:hover {
   z-index: 9;
-}
-
-.price-active h4 {
-  color: #36d7ac;
 }
 
 .no-space-pricing .pricing:hover {
