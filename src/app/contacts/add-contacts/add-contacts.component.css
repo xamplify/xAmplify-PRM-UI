@@ -110,3 +110,32 @@
     font-size: 10px;
   }
 }
+
+/* 10-08-2023 */
+.SidePaddings {
+  padding: 10px 10px;
+}
+.SideParddings1 {
+  padding-top: 0px;
+  padding-right: 10px;
+  padding-bottom: 0px;
+  padding-left: 15px;
+}
+.SideParddings2 {
+  padding: 0px;
+}
+.SideParddings3 {
+  padding-top: 0px;
+  padding-right: 15px;
+  padding-bottom: 0px;
+  padding-left: 10px;
+}
+i.IconTopMargin {
+  margin-top: 10px !important;
+}
+i.fa.fa-file-excel-o.IconTopMargin {
+  margin-top: 10px !important;
+}
+@media only screen and (min-width: 1200px) and (max-width: 1260px) {
+  .SidePaddings span{font-size: 10px !important;}
+}
