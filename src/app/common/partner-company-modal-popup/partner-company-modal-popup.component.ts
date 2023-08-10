@@ -46,12 +46,16 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
     teamMembersLoader: HttpRequestLoader = new HttpRequestLoader();
     selectedFilterIndex: number = 0;
     showFilter = true;
+    isTableLoaded: boolean = true;
   constructor(public partnerService: ParterService,public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
 	        public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService, public contactService: ContactService) { 
 	  this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   ngOnInit() {
+    setTimeout(() =>{
+		this.isTableLoaded = true;
+	},2000);
       if (this.companyId != undefined && this.companyId > 0 && this.inputId != undefined && this.inputId > 0 ) {
               this.pagination.vendorCompanyId = this.companyId;
               this.pagination.partnerTeamMemberGroupFilter = true;
