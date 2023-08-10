@@ -40,7 +40,9 @@ export class UserGuideHelpButtonComponent implements OnInit, OnChanges {
         this.loading = false;
         if (response.statusCode === 200) {
           this.userGuide = response.data;
-          this.urllink = this.authenticationService.DOMAIN_URL + 'home/help/' + this.userGuide.slug;
+          if(this.userGuide!=undefined && this.userGuide.slug!=undefined){
+            this.urllink = this.authenticationService.DOMAIN_URL + 'home/help/' + this.userGuide.slug;
+          }
         } else{
           this.urllink = this.authenticationService.DOMAIN_URL + 'home/help/' + this.mergeTag;
         }
