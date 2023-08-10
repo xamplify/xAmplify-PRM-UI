@@ -72,6 +72,9 @@ export class XamplifyVideoPlayerComponent implements OnInit {
         this.ready(function () {
             $('#overLayImage').append($('#overlay-logo').show());
             $('#overlay-modal').hide(); 
+            /***XNFR-329****/
+            player.httpSourceSelector();
+            /***XNFR-329****/
             player.play();
         });
         this.on('seeking', function () {
@@ -269,11 +272,15 @@ export class XamplifyVideoPlayerComponent implements OnInit {
                 $('#overLayImage').append($('#overlay-logo').show());
                 $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + self.videoFile.playerColor + '!important');
                 $('#overlay-modal').hide();
+                /***XNFR-329****/
+                player.httpSourceSelector();
+                /***XNFR-329****/
                 player.play();
                 $('#skipOverlay').click(function () {
                     isCallActionthere = false;
                     self.fullScreenMode = false;
                     $('#overlay-modal').hide();
+                    
                     player.play();
                 });
                 $('#playorsubmit').click(function () {
@@ -302,8 +309,8 @@ export class XamplifyVideoPlayerComponent implements OnInit {
                 $('.vjs-big-play-button').css('display', 'none');
                 $('#overlay-modal').hide(); // player.pause();
                 $('#repeatPlay').click(function () {
-                    $('#overlay-modal').hide();
-                    player.play();
+                $('#overlay-modal').hide();
+                player.play();
                 });
                 $('#skipOverlay').click(function () {
                     isCallActionthere = false;

@@ -96,8 +96,7 @@
                                         <ng-container *ngIf="!isPartnerView">
                                             <th class="text-center"></th>
                                         </ng-container>
-                                        <th class="text-center" id="min-width" translate>Actions</th>
-                                        <!-- <th class="text-center" id="right-corner" translate>Actions</th> -->
+                                        <th class="text-center" id="min-width" translate>Actions</th>                                    
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -169,9 +168,6 @@
                                                 <a *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
                                                     <i class="fa fa-share" aria-hidden="true"></i>
                                                 </a>
-                                                <!-- <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewLms()">
-                                                  <i class="fa fa-eye" aria-hidden="true"></i>
-                                              </a> -->
                                                 <a data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
                                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </a>
@@ -181,27 +177,6 @@
                                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                                                 </a>
                                                 </div>
-                                                <!-- <ng-container *ngIf="">
-                                                  <a class="cursor">
-                                                      <i class="fa fa-line-chart"></i>
-                                                      <span class="badge" id="notification">{{learningTrack.count}}</span>
-                                                  </a>
-                                              </ng-container>
-                                              <ng-container *ngIf=""> -->
-                                                <!-------------Disable onclick if count==0   ----->
-                                                <!-- <ng-container *ngIf="form.count==0">
-                                                      <a class="cursor">
-                                                          <i class="fa fa-line-chart"></i>
-                                                          <span class="badge" id="notification">{{form.count}}</span>
-                                                      </a>
-                                                  </ng-container>
-                                                  <ng-container *ngIf="learningTrack.count>0">
-                                                      <a data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Analytics">
-                                                          <i class="fa fa-line-chart"></i>
-                                                          <span class="badge" id="notification">{{learningTrack.count}}</span>
-                                                      </a>
-                                                  </ng-container>
-                                              </ng-container> -->
                                                 <a *ngIf="learningTrack.canDelete && !isPartnerView" id="template-delete" data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(learningTrack.id)">
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                                 </a>
@@ -278,29 +253,7 @@
                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                                 </a>
                                 </div>
-                                <!-- <ng-container *ngIf="">
-                                  <a class="cursor">
-                                      <i class="fa fa-line-chart"></i>
-                                  </a>
-                                  <span class="badge" id="notification-list">{{learningTrack.count}}</span> -->
-                                <!-- <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled">
-                                      <img src="../assets/images/disabled-icon.png">
-                                  </a> -->
-                                <!-- </ng-container>
-                              <ng-container *ngIf="">
-                                  <ng-container *ngIf="learningTrack.count==0">
-                                      <a class="cursor">
-                                          <i class="fa fa-line-chart"></i>
-                                      </a>
-                                      <span class="badge" id="notification-list">{{learningTrack.count}}</span>
-                                  </ng-container>
-                                  <ng-container *ngIf="learningTrack.count>0">
-                                      <a data-rel="fancybox-button" title="Analytics" data-toggle="tooltip" data-placement="top">
-                                          <i class="fa fa-line-chart"></i>
-                                      </a>
-                                      <span class="badge" id="notification-list">{{learningTrack.count}}</span>
-                                  </ng-container>
-                              </ng-container> -->
+                               
                               <div class="btnAlignPad mbtnAlignPad">
                                 <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Delete" class="delete" (click)="confirmDelete(learningTrack.id)">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>

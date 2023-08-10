@@ -141,3 +141,6 @@
 #search-align {
   position: relative;
 }
+.hide-scrollbar {
+  overflow: hidden;
+}

@@ -103,30 +103,30 @@
 						 </div>
 						 <div class="portlet-body">
 							<div class="row">
-							   <div class="col-xs-12 col-sm-4 col-md-4">
-								  <button class="btn-primary btn-block" id="addContacts"
+							   <div class="col-xs-12 col-sm-4 col-md-4 SideParddings1">
+								  <button class="btn-primary btn-block SidePaddings" id="addContacts"
 								  (click)="addContactModalOpen()"
 								  [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
-								  <i class="fa fa-user-plus"></i>													
+								  <i class="fa fa-user-plus IconTopMargin"></i>													
 								  <span translate>One at a Time</span>
 								  </button>
 							   </div>
-							   <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
-								  <button class="Btn-Green btn-block" id="copyFromClipBoard"
+							   <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs SideParddings2">
+								  <button class="Btn-Green btn-block SidePaddings" id="copyFromClipBoard"
 								  (click)="copyFromClipboard()"
 								  [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
-								  <i class="fa fa-users"></i> <span translate>Copy list
+								  <i class="fa fa-users IconTopMargin"></i> <span translate>Copy list
 								  from clipboard</span>
 								  </button>
 							   </div>
-							   <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
-								  <button class="btn-primary fileinput-button btn-block"
+							   <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs SideParddings3">
+								  <button class="btn-primary fileinput-button btn-block SidePaddings"
 									 id="uploadCSV"
 									 [class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
 								  <i
-									 style="display: block; margin-top: 0px !important; text-align: center; font-size: 24px; margin: 0 auto 10px"
-									 class="fa fa-file-excel-o"></i> <span
-									 style="display: block; font-size: 12px; text-align: center"
+									 style="display: block; text-align: center; font-size: 24px;"
+									 class="fa fa-file-excel-o IconTopMargin"></i> <span
+									 style="display: block; text-align: center"
 									 translate>Upload a CSV</span> <input type="file" title=" "
 								  (click)="input.value = null;resetResponse();"
 								  (change)="fileChange(input)" accept=".csv" #input

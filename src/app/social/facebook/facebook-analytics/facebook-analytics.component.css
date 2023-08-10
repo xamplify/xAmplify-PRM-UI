@@ -1,14 +1,66 @@
-.portlet{border-radius:0}
-.warning-fa{font-size:2.5em;margin-top:15px;margin-left:-15px}
-.caption-subject h4{color:#888;font-weight:600}
-.visual{color:#007bb6;font-size:72px;background:#f1f1f1;border-radius:100%;width:100px;height:100px;display:block;margin:auto;margin-bottom:10px}
-.visual i{color:#007bb6;font-size:50px;position:relative;top:-10px}
-.details h6{margin-top:3px}
-.ratio-m-top{margin-top:80px}
-.ratio-m-top > h4 {text-align: center; font-weight: bold; color: #999;}
-.fb-post-box .portlet-title img{width:48px;height:48px;float:left;margin-right:15px}
-.fb-post-box .portlet-title h5.fb-profile-name{font-weight:600;margin-top:0;color:#666;font-size:14px}
-.fb-post-box .portlet-title h5.likes-count{font-weight:500;margin-top:0;color:#666;font-size:12px}
-.portlet.light{padding:10px!important}
-.portlet-title h4{margin-top:5px;font-weight:500;color:#999;margin-bottom:10px}
-.portlet > .portlet-title{min-height:auto}
+.portlet {
+  border-radius: 0;
+}
+.warning-fa {
+  font-size: 2.5em;
+  margin-top: 15px;
+  margin-left: -15px;
+}
+.visual {
+  color: #007bb6;
+  font-size: 72px;
+  background: #f1f1f1;
+  border-radius: 100%;
+  width: 100px;
+  height: 100px;
+  display: block;
+  margin: auto;
+  margin-bottom: 10px;
+}
+.visual i {
+  color: #007bb6;
+  font-size: 50px;
+  position: relative;
+  top: -10px;
+}
+.details h6 {
+  margin-top: 3px;
+}
+.ratio-m-top {
+  margin-top: 80px;
+}
+.ratio-m-top > h4 {
+  text-align: center;
+  font-weight: bold;
+  color: #999;
+}
+.fb-post-box .portlet-title img {
+  width: 48px;
+  height: 48px;
+  float: left;
+  margin-right: 15px;
+}
+.fb-post-box .portlet-title h5.fb-profile-name {
+  font-weight: 600;
+  margin-top: 0;
+  color: #666;
+  font-size: 14px;
+}
+.fb-post-box .portlet-title h5.likes-count {
+  font-weight: 500;
+  margin-top: 0;
+  color: #666;
+  font-size: 12px;
+}
+.portlet.light {
+  padding: 10px !important;
+}
+.portlet-title h4 {
+  margin-top: 5px;
+  font-weight: 500;
+  color: #999;
+  margin-bottom: 10px;
+}
+.portlet > .portlet-title {
+  min-height: auto;
+}

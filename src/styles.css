@@ -2351,3 +2351,4 @@ button.table-scbscribe-btn:hover {
 #responseMessage br {
   display: none !important;
 }
+.video-js.vjs-http-source-selector{display:block}

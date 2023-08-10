@@ -273,16 +273,6 @@
               <span class="caption-subject font-red-sunglo uppercase">Approve
                 {{authenticationService?.partnerModule?.customName}}</span>
             </div>
-            <!-- <div class="inputs" align="right" style="float: right">
-              <div class="portlet-input input-inline input-medium">
-                <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
-                  <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}"
-                    placeholder="Search for a Partner" (keypress)="inActivePartnersSearch($event.keyCode)">
-                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="inActivePartnersSearchKey" (click)="inActivePartnersSearchKey=''"></button>
-                  <button type="submit" class="search-box-item-click" (click)="searchInActivePartnerAnalytics()"><i class="fa fa-search"></i></button>
-                </div>
-              </div>
-            </div> -->
           </div>
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse"
@@ -318,11 +308,7 @@
                               (click)="requestText='Decline';approveAndDeclineRequest(item.partnerId, item.firstName,authenticationService.partnerModule.customName)">Decline</a>
                           </li>
                         </ul>
-                      </div>
-                      <!--  <button type="submit" [disabled]="item.invitationStatus == 'approved'" class="btn green"
-					(click)="showApprovePartnerSweetAlert(item.partnerId)">Approve</button>
-					<button [disabled]="item.invitationStatus == 'approved' || item.invitationStatus == 'declined'" type="submit" class="btn green"
-					(click)="showDeclinePartnerSweetAlert(item.partnerId)">Decline</button> -->
+                      </div>                   
                     </td>
                   </tr>
                 </tbody>
@@ -668,17 +654,6 @@
           <i class="fa fa-times"></i>
         </a>
         <h4 class="m0">partner campaign interactions</h4>
-        <!-- <div class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
-					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
-						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
-						<i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
-					</span>
-					<ul class="dropdown-menu pull-right">
-						<li>
-							<a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a>
-						</li>
-					</ul>
-				</div> -->
       </div>
       <div class="modal-body clearfix">
         <div *ngIf="campaignInteractionPagination.pagedItems?.length == 0" class="col-md-6"

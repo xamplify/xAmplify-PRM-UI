@@ -71,11 +71,17 @@ export class VideoUtilService {
 
     }
     normalVideoJsFiles() {
-        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript" class="h-video"  />');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-flash.js" type="text/javascript" class="h-video"  />');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-testing-contrib-hls.js" type="text/javascript"  class="h-video"/>');
-        $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
+       // $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
+        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-js7.4.1.css" class="h-video" rel="stylesheet">')
+       // $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript" class="h-video"  />');
+       // $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-flash.js" type="text/javascript" class="h-video"  />');
+        //$('head').append('<script src="assets/js/indexjscss/video-hls-player/video-testing-contrib-hls.js" type="text/javascript"  class="h-video"/>');
+        //$('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
+        /****XNFR-329****/
+       $('head').append('<script src="assets/js/indexjscss/video-hls-player/video7.4.1.js" type="text/javascript" class="h-video"  />');
+       $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-http-source-selector.js" type="text/javascript" class="h-video"  />');
+       $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-contrib-quality-levels.js" type="text/javascript" class="h-video"  />');
+       /****XNFR-329****/
         this.videojshotkeys();
     }
     video360withm3u8(){
@@ -147,6 +153,9 @@ export class VideoUtilService {
         $('.vjs-VR-control vjs-control vjs-button ').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-playback-rate').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-menu-button .vjs-menu-button-popup .vjs-icon-cog .vjs-button').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-http-source-selector .vjs-menu-button .vjs-menu-button-popup .vjs-control .vjs-button').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-http-source-selector .vjs-menu-button .vjs-menu-button-popup .vjs-control .vjs-button').css('cssText', 'background-color:' + videoFile.playerColor + '!important');
         this.setDefaultPlayBackRateText();
     }
 
