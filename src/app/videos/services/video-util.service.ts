@@ -74,13 +74,14 @@ export class VideoUtilService {
        // $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
         $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-js7.4.1.css" class="h-video" rel="stylesheet">')
        // $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript" class="h-video"  />');
-       // $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-flash.js" type="text/javascript" class="h-video"  />');
-        //$('head').append('<script src="assets/js/indexjscss/video-hls-player/video-testing-contrib-hls.js" type="text/javascript"  class="h-video"/>');
-        //$('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
+       
         /****XNFR-329****/
        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video7.4.1.js" type="text/javascript" class="h-video"  />');
        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-http-source-selector.js" type="text/javascript" class="h-video"  />');
        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-contrib-quality-levels.js" type="text/javascript" class="h-video"  />');
+       $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
+       $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-flash.js" type="text/javascript" class="h-video"  />');
+       $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-testing-contrib-hls.js" type="text/javascript"  class="h-video"/>');
        /****XNFR-329****/
         this.videojshotkeys();
     }
