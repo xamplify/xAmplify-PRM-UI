@@ -47,7 +47,7 @@
                                     <i class="fa fa-refresh" aria-hidden="true"></i>
                                 </a>
                                 <div class="pb3 float-left">
-                                    <select	class="form-control mDamSort" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortTracks($event)" style="position: relative; right: -3px;">
+                                    <select	class="form-control mDamSort SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortTracks($event)" style="position: relative; right: -3px;">
                                         <option	*ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
                                     </select> 
                                 </div>
@@ -87,16 +87,16 @@
                                             <span *ngIf="type == undefined || (type != undefined && type == 'TRACK')" class="gridHeader" translate>Track</span>
                                             <span *ngIf="type != undefined && type == 'PLAYBOOK'" class="gridHeader" translate>Play Book</span>
                                         </th>
-                                        <th class="hidden-xs text-center" style="width: 15%;" translate scope="col">Tags</th>
-                                        <th class="hidden-xs text-center" style="width: 15%;" translate scope="col">Created On</th>
+                                        <th class="hidden-xs text-center" style="width: 15%;" translate scope="col" id="border-bottom">Tags</th>
+                                        <th class="hidden-xs text-center" style="width: 15%;" translate scope="col" id="border-bottom">Created On</th>
                                         <ng-container *ngIf="isPartnerView">
-                                            <th *ngIf="type == undefined || type == 'TRACK'" class="text-center" style="width: 15%;" translate>Progress</th>
-                                            <th *ngIf="type != undefined && type == 'PLAYBOOK'" class="text-center"></th>
+                                            <th *ngIf="type == undefined || type == 'TRACK'" class="text-center" style="width: 15%;" translate id="border-bottom">Progress</th>
+                                            <th *ngIf="type != undefined && type == 'PLAYBOOK'" class="text-center" id="border-bottom"></th>
                                         </ng-container>
                                         <ng-container *ngIf="!isPartnerView">
-                                            <th class="text-center"></th>
+                                            <th class="text-center"  id="border-bottom"></th>
                                         </ng-container>
-                                        <th class="text-center" id="min-width" translate>Actions</th>                                    
+                                        <th class="text-center" id="min-width" translate id="border-bottom">Actions</th>                                    
                                     </tr>
                                 </thead>
                                 <tbody>

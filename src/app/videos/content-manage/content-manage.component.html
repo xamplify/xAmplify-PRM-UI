@@ -43,7 +43,7 @@
 												<span class="btn btn-xs hidden-xs l-g-view"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
                     					</div>
 										<div class="col-sm-3 col-md-3 col-xs-12 p0 mSort">
-										<select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+										<select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
 										<ng-container *ngFor="let sort of sortOptions; let i = index"> <option [ngValue]="sort">{{sort.name}}</option>
 										</ng-container>
 										</select>

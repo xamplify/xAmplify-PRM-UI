@@ -267,7 +267,7 @@
                         <div class="inputs sort-class pb5" style="display: flex;">
                            <div
                               [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-                              <select class="form-control" [(ngModel)]="sortOption"
+                              <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
                               (ngModelChange)="sortByOption($event, 'contactList')">
                               <ng-container *ngFor="let sort of sortOptions; let i = index">
                                  <option *ngIf="i == 0" [ngValue]="sort">{{sort.name}}</option>
@@ -309,32 +309,32 @@
                   <table class='table tgrid' id="partner_contact_list" aria-describedby="">
                      <thead>
                         <tr>
-                           <th scope="col" class="hidden-xs" *ngIf="showExpandButton"></th>
-                           <th scope="col" class="hidden-xs" colspan="2" style="width: 35%">
+                           <th scope="col" class="hidden-xs" *ngIf="showExpandButton" id="border-bottom"></th>
+                           <th scope="col" class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
                               <span class="ui-column-resizer"
                                  (mousedown)="referenceService.onMouseDown($event,'partner_contact_list',2)"> </span>
                               <span class="gridHeader" translate>List Name</span>
                            </th>
-                           <th scope="col" class="visible-xs" colspan="1" style="width: 35%" translate>
+                           <th scope="col" class="visible-xs" colspan="1" style="width: 35%" translate id="border-bottom">
                               List Info
                            </th>
-                           <th scope="col" class="hidden-xs" [hidden]="!assignLeads" translate><span
+                           <th scope="col" class="hidden-xs" [hidden]="!assignLeads" translate id="border-bottom"><span
                               [hidden]="!assignLeads">status</span></th>
-                           <th scope="col" class="hidden-xs" [hidden]="isPartner || assignLeads" translate><span
+                           <th scope="col" class="hidden-xs" [hidden]="isPartner || assignLeads" translate id="border-bottom"><span
                               [hidden]="isPartner || assignLeads">Type</span></th>
-                           <th scope="col" class="hidden-xs" [hidden]="assignLeads" translate><span [hidden]="assignLeads">Created
+                           <th scope="col" class="hidden-xs" [hidden]="assignLeads" translate id="border-bottom"><span [hidden]="assignLeads">Created
                               On</span>
                            </th>
-                           <th scope="col" class="hidden-xs" translate [hidden]="!assignLeads"><span
+                           <th scope="col" class="hidden-xs" translate [hidden]="!assignLeads" id="border-bottom"><span
                               [hidden]="!assignLeads">Date</span></th>
-                           <th scope="col" class="text-center hidden-xs" translate *ngIf="checkingContactTypeName=='Partner'">
+                           <th scope="col" class="text-center hidden-xs" translate *ngIf="checkingContactTypeName=='Partner'" id="border-bottom">
                               Total
                            </th>
-                           <th scope="col" class="text-center hidden-xs" translate *ngIf="checkingContactTypeName!='Partner'">
+                           <th scope="col" class="text-center hidden-xs" translate *ngIf="checkingContactTypeName!='Partner'" id="border-bottom">
                               Total <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span> 
                            </th>
                            <th scope="col" class="text-center" style="width:27%" *ngIf="!authenticationService.isSuperAdmin()"
-                              translate>Actions</th>
+                              translate id="border-bottom">Actions</th>
                         </tr>
                      </thead>
                      <tbody>
@@ -783,7 +783,7 @@
                         </div>
                         <div
                            [ngClass]="{'mobileSorting':referenceService.isMobileScreenSize(), 'sortingContacts':!referenceService.isMobileScreenSize()}">
-                           <select class="form-control" [(ngModel)]="sortOption"
+                           <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
                            (ngModelChange)="sortByOption($event, 'contacts')">
                            <ng-container *ngFor="let sort of sortOptions; let i = index">
                               <option *ngIf="i == 0" [ngValue]="sort">{{sort.name}}</option>
@@ -994,9 +994,8 @@
                                     <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">
                                        {{contact.unsubscribedReason}}
                                     </td>
-                                    <td *ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads && !authenticationService?.module?.deletedPartner">
-                                       <span class="markas" (click)="validateUndeliverableContacts(contact.id)">Mark as
-                                       valid</span>
+                                    <td class="Mark-as-ValidBtn" *ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads && !authenticationService?.module?.deletedPartner">
+                                       <span class="markas" (click)="validateUndeliverableContacts(contact.id)">Mark as valid</span>
                                     </td>
                                     <td *ngIf="isPartner">
                                        <button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'

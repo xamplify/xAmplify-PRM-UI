@@ -48,7 +48,7 @@
                          <span class="btn btn-xs hidden-xs l-g-view m0"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
                        </ng-container>
 
-                       <select class="form-control ml5" style="cursor: pointer" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)">
+                       <select class="form-control ml5 SeclectBoxPaddingsAbj" style="cursor: pointer" [(ngModel)]="videoSort" (ngModelChange)="selectedSortByValue($event)">
                          <option *ngFor="let sort of sortVideos" [ngValue]="sort"> {{sort.name}} </option>
                        </select>
                      </div>
