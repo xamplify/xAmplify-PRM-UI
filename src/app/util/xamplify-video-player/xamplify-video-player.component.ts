@@ -42,11 +42,7 @@ export class XamplifyVideoPlayerComponent implements OnInit {
     $('#xamplify-video-player-id').css('width', 'auto');
     this.videoUrl = this.videoFile.videoPath;
     this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-    if(this.envService.CLIENT_URL.indexOf("localhost")>-1){
-      this.videoUrl = "https://aravindu.com/vod/videos/54888/26062023/MSDhoni1831687796167215_mobinar.m3u8?access_token=" + this.authenticationService.access_token;
-    }else{
-     this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-    }
+    this.videoUrl = this.authenticationService.getDefaultM3U8FileForLocal(this.videoUrl);
     $('#xamplify-video-player video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
     const self = this;
     const overrideNativevalue = this.referenceService.getBrowserInfoForNativeSet();

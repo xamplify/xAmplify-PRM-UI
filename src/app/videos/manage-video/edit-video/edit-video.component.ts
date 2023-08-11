@@ -462,10 +462,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       $('.h-video').remove();
       this.videoUtilService.player360VideoJsFiles();
       this.videoUtilService.video360withm3u8();
-      const str = '<video id=videoId poster=' + this.defaultImagePath + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
+      const str = '<video id=videoId muted  poster=' + this.defaultImagePath + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
       $('#newPlayerVideo').append(str);
-      this.videoPlayListSourceChange();
-      this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+      this.videoUrl = this.authenticationService.getDefaultM3U8FileForLocal(this.videoUrl);
       $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
       this.setVideoIdHeightWidth();
       const newThis = this;
@@ -879,15 +878,15 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   videoPlayListSourceM3U8() {
       this.videoPlayListSourceChange();
-      this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+      this.videoUrl = this.authenticationService.getDefaultM3U8FileForLocal(this.videoUrl);
       const self = this;
-      this.videoJSplayer.playlist([{ sources: [{ src: self.videoUrl, type: 'application/x-mpegURL' }] }]);
+      this.videoJSplayer.src({ src: self.videoUrl, type: 'application/x-mpegURL' });
   }
   videoPlayListSourceMP4() {
       this.videoPlayListSourceChange();
       this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
       const self = this;
-      this.videoJSplayer.playlist([{ sources: [{ src: self.videoUrl, type: 'video/mp4' }] }]);
+      this.videoJSplayer.src({ src: self.videoUrl, type: 'video/mp4' });
   }
   // default methods when component initilized
   settingDefaultImagePath(image1: boolean, image2: boolean, image3: boolean) {
@@ -1237,7 +1236,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                   });
               });
           if (this.videoFileService.actionValue === 'Save') {
-              // this.videoPlayListSourceMP4();
               this.videoPlayListSourceM3U8();
           } else {
               this.videoPlayListSourceM3U8();
