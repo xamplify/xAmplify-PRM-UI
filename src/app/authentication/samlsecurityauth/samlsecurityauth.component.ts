@@ -129,7 +129,10 @@ export class SamlsecurityauthComponent implements OnInit {
       } 
      else if (this.moduleToRedirect === 'assets') {
         this.router.navigateByUrl('/home/dam/shared');
-      } 
+      }
+      else if (this.moduleToRedirect === 'pages') {
+        this.router.navigateByUrl('/home/pages/partner');
+      }  
       else {
         this.router.navigate(['/home/dashboard/add-company-profile']);
       }
