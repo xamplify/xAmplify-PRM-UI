@@ -1836,3 +1836,7 @@ input {
 input#copy-link {
   background-color: #2b3c46 !important;
 }
+/* 11-8-2023 sudha sri */
+.no-data-alert.alert-info h4 {
+  color: inherit !important;
+}
