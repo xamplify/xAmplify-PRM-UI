@@ -162,10 +162,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Sendor Last Name', value: '{{lastName}}' },
         { name: 'Sendor Full Name', value: '{{fullName}}' },
         { name: 'Sendor Email Id', value: '{{emailId}}' },
-        { name: 'Sendor Company Name', value: 'Vendor_company_name' },
-        { name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
-        { name: 'Learning Track Title', value: 'track_title' },
-        { name: 'Published On', value: 'published_date' },
+        { name: 'Sendor Company Name', value: '{{sendorCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Learning Track Title', value: '{{trackTitle}}' },
+        { name: 'Published On', value: '{{publishedDate}}' },
         ];
       }
       if("PLAYBOOK_PUBLISH"==emailTemplateType){
@@ -173,10 +173,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Sendor Last Name', value: '{{lastName}}' },
         { name: 'Sendor Full Name', value: '{{fullName}}' },
         { name: 'Sendor Email Id', value: '{{emailId}}' },
-        { name: 'Sendor Company Name', value: 'Vendor_company_name' },
-        { name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
-        { name: 'Playbook Title', value: 'playbook_title' },
-        { name: 'Published On', value: 'published_date' },
+        { name: 'Sendor Company Name', value: '{{sendorCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Playbook Title', value: '{{playbookTitle}}' },
+        { name: 'Published On', value: '{{publishedDate}}' },
         ];
       }
       if("ASSET_PUBLISH"==emailTemplateType){
@@ -184,10 +184,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Sendor Last Name', value: '{{lastName}}' },
         { name: 'Sendor Full Name', value: '{{fullName}}' },
         { name: 'Sendor Email Id', value: '{{emailId}}' },
-        { name: 'Sendor Company Name', value: 'Vendor_company_name' },
-        { name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
-        { name: 'Asset Name', value: 'Asset_name' },
-        { name: 'Shared On', value: 'shared_date' },
+        { name: 'Sendor Company Name', value: '{{sendorCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Asset Name', value: '{{assetName}}' },
+        { name: 'Shared On', value: '{{sharedDate}}' },
         ];
       }
       if("SHARE_LEAD"==emailTemplateType){
@@ -195,10 +195,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Sendor Last Name', value: '{{lastName}}' },
         { name: 'Sendor Full Name', value: '{{fullName}}' },
         { name: 'Sendor Email Id', value: '{{emailId}}' },
-        { name: 'Sendor Company Name', value: 'Vendor_company_name' },
-        { name: 'Customer Full Name', value: '_CUSTOMER_FULL_NAME' },
-        { name: 'Share-Lead List Name', value: 'shareLeadListName' },
-        { name: 'Shared On', value: 'shared_date' },
+        { name: 'Sendor Company Name', value: '{{sendorCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Share-Lead List Name', value: '{{share-LeadListName}}' },
+        { name: 'Shared On', value: '{{sharedDate}}' },
         ];
       }
       var beeUserId = "bee-"+emailTemplate.companyId;
