@@ -185,7 +185,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   editShowform = false ;
   customResponseForFormUpdate: CustomResponse = new CustomResponse();
   existingOpenLinkInNewTabValue: boolean = false;
-
+  isTableLoaded: boolean = true;
 
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,

@@ -1620,7 +1620,6 @@ div.switch5 > input.switch:focus ~ label:before {
   bottom: 22px;
 }
 
-
 .preview-edit-color {
   color: #5a5a5a;
 }
@@ -1684,43 +1683,42 @@ div.switch5 > input.switch:focus ~ label:before {
   padding-left: 12px !important;
 }
 
-.custom-design-Popup{
+.custom-design-Popup {
   width: 40% !important ;
   float: right !important;
 }
 /* 11/07/23 */
 
-.item__algn{
+.item__algn {
   margin-top: 12px;
 }
-.ft-size{
-  font-size: 20px
+.ft-size {
+  font-size: 20px;
 }
-.icon-algn{
+.icon-algn {
   position: relative;
   top: -1px;
 }
-.cust-modal{
+.cust-modal {
   position: relative;
   top: 60px;
-  left: 66px
+  left: 66px;
 }
 
 .button-fixed {
-    max-width: fit-content;
-    min-width: 30% !important;
-    max-height: fit-content;
-    min-height: 32px;
+  max-width: fit-content;
+  min-width: 30% !important;
+  max-height: fit-content;
+  min-height: 32px;
 }
-@media (min-width: 992px) and (max-width: 1300px)  { 
+@media (min-width: 992px) and (max-width: 1300px) {
   .BtnWidthForPopup {
     width: 100px;
   }
   .vertical-center {
     margin: 10px 50px 0px 50px;
   }
-
-
-
-
+}
+.hide-scrollbar {
+  overflow: hidden;
 }
