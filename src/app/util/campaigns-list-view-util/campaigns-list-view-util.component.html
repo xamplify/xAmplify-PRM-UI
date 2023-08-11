@@ -98,13 +98,7 @@
                                     <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view"
                                         data-toggle="tooltip" title="Filter" (click)="toggleFilterOption()">
                                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
-                                    </span>
-                                    <!-- <a 
-                                        *ngIf="pagination.totalRecords>0" (click)="downloadCampaignHighLevelAnalytics()"
-                                        class="close-circle" data-toggle="tooltip" data-placement="top"
-                                        title="Download">
-                                        <i class="fa fa-download margin" aria-hidden="true"></i>
-                                    </a> -->
+                                    </span>                                   
                                     <a (click)="listCampaign(pagination)" class="close-circle campaign-refresh-style-fl"
                                         data-toggle="tooltip" data-placement="top" title="Refresh">
                                         <i class="fa fa-refresh" aria-hidden="true"></i>
@@ -141,8 +135,6 @@
                                             <label class="control-label">From Date
                                                 <span class="required">*</span>
                                             </label>
-                                            <!-- <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
-                                            </app-date-picker> -->
                                             <input type="text" class="form-control flatpickr dateFilterPickr" [(ngModel)]="fromDateFilter" name="fromDateFilter"
                                                 placeholder="YYYY-MM-DD" id="fromDateFilter">
                                         </div>
@@ -150,8 +142,6 @@
                                             <label class="control-label">To Date
                                                 <span class="required">*</span>
                                             </label>
-                                            <!-- <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
-                                            </app-date-picker> -->
                                             <input type="text" class="form-control flatpickr dateFilterPickr" [(ngModel)]="toDateFilter" name="toDateFilter"
                                                 placeholder="YYYY-MM-DD" id="toDateFilter">
                                         </div>
@@ -677,10 +667,6 @@
                                                         class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu gearicon-font-cu"
                                                         data-toggle="dropdown"
                                                         (click)="checkLastElement(i)"></span>
-                                                        <!-- <span
-                                                        [class.disablednew]="!campaign.hasAccess"
-                                                        class="caret dropdown-toggle caretDropdownMenu"
-                                                        data-toggle="dropdown"></span> -->
 
                                                     <ul class="dropdown-menu pull-right"
                                                         [ngClass]="{'mobile-css': isLastElement}">
@@ -707,11 +693,6 @@
                                                                 </a>
 
                                                                 <!---Add Workflows List View-->
-                                                                <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
-                                                                        data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
-                                                                        <i class="fa fa-reply-all" style="width: 30px;"></i>
-                                                                        Add Workflows
-                                                                    </a> -->
                                                                 <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted"
                                                                     data-rel="fancybox-button"
                                                                     (click)="openEventUrlModal(campaign)"
@@ -938,11 +919,6 @@
                                                                 <i class="fa fa-calendar-times-o" style="width: 30px;" aria-hidden="true"></i> Update End Date
                                                               </a>
                                                             <!---Add Workflows List View-->
-                                                            <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
-                                                                    data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
-                                                                    <i class="fa fa-reply-all" style="width: 30px;"></i>
-                                                                    Add Workflows
-                                                                </a> -->
                                                             <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted"
                                                                 data-rel="fancybox-button"
                                                                 (click)="openEventUrlModal(campaign)"
@@ -1205,10 +1181,6 @@
                                         title="Copy Public Event Url">
                                         <i class="fa fa-files-o"></i>
                                     </a>
-                                    <!-- <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
-                                             data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
-                                            <i class="fa fa-reply-all"></i>
-                                            </a> -->
                                     <a [class.disablednew]="!campaign.hasAccess"
                                         *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)"
                                         data-rel="fancybox-button" (click)="inviteMore(campaign)" title="Invite More">

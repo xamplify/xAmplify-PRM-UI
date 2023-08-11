@@ -62,7 +62,6 @@
 				<div id="overlay-modal" class="video-js overlay is360video" [class.overlaySet]="!overLaySet" style="height: 315px; width:100%;color:white !important; background: #333;">
 					<form #f="ngForm" novalidate>
 						<div class="col-xs-12 col-sm-12 col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode}">
-							<!--[ngClass]="{'col-md-12':fullScreenMode === true}"-->
 							<h2 class="upper-text-heading upperText">{{saveVideoFile.upperText}}</h2>
 							<div class="flex" style="padding:0.5%" *ngIf="callAction.isFistNameChecked">
 								<input type="text" name="firstName" style="margin-right: 0;" [(ngModel)]="callAction.firstName" (ngModelChange)="checkingCallToActionValues()"
@@ -410,14 +409,6 @@
 												<div [hidden]="!enableVideoLogo" id="fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="form-group" [class.disabledCss]="!enableVideoLogo">
 												<label class="col-xs-5 control-label" translate>Video Logo:<font *ngIf="!brandLogoUrl" style="color: red"><b>*</b></font></label>
 												<div class="col-xs-7">
-                            <!-- <input type="file" *ngIf="!brandLogoUrl" (change)="fileChangeEvent($event)" />
-                            <image-cropper *ngIf="!brandLogoUrl" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
-                            [aspectRatio]="4 / 3"  [resizeToWidth]="128"  format="png"
-                            (imageCroppedFile)="imageCroppedBase64($event)"
-                            (imageLoaded)="imageLoaded()"
-                            (loadImageFailed)="loadImageFailed()"></image-cropper>
-                           <img  [src]="croppedImage" />
-                           <button *ngIf="!brandLogoUrl" class="btn btn-primary" (click)="saveThumbnail()">submit</button> -->
 													 <span class="btn btn-css btn-file" *ngIf="!brandLogoUrl" translate>Select Logo
 													  <input type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png" class="btn btn-primary"
 													   style="background: #00a6e8;width: 100%;" title=" " (change)="isFileCheck($event)">
