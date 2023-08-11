@@ -43,7 +43,7 @@
              <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;padding-right: 6px;">
                 <!---XNFR-222-->
                 <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css">
-                   <div class="alert alert-info">
+                   <div class="alert alert-info" style="position: relative;bottom: 5px;">
                       <strong>
                       <span title="{{vendorAdminCompanyUserEmailId}}">You</span> are logged in as
                       <strong title="{{loggedInAsUserEmailId}}">{{loggedInAsUserEmailId | slice:0:25 }}
