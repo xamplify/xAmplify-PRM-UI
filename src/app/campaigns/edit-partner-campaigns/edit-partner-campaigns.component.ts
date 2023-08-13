@@ -192,7 +192,13 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     mergeTagsInput:any = {};
     dataShare: boolean;
     /*******XNFR-125******/
-    oneClickLaunchCampaignRedistributedMessage:CustomResponse = new CustomResponse();                           
+    oneClickLaunchCampaignRedistributedMessage:CustomResponse = new CustomResponse();  
+    /*****XNFR-330****/
+    isEditAutoResponseTemplate = false;
+    selectedAutoResponseEmailTemplate:EmailTemplate;    
+    selectedAutoResponseId = 0;  
+    selectedAutoResponseCustomEmailTemplateId = 0;
+    /*****XNFR-330****/                   
 
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
@@ -1510,6 +1516,24 @@ appendValueToSubjectLine(event:any){
             let message = "This campaign is already redistributed";
             this.oneClickLaunchCampaignRedistributedMessage = new CustomResponse('INFO', message, true);
         }
+    }
+
+    /****XNFR-330****/
+    editAutoResponseTemplate(emailTemplate:any,autoResponseId:number){
+        this.partnerTemplateLoader = true;
+        this.selectedAutoResponseEmailTemplate = emailTemplate;
+        this.selectedAutoResponseId = autoResponseId;
+        this.isEditAutoResponseTemplate = true;
+        this.selectedAutoResponseCustomEmailTemplateId = emailTemplate.customEmailTemplateId;
+        this.partnerTemplateLoader = false;
+
+    }
+    /****XNFR-330****/
+    resetAutoResponseEmailTemplate(){
+        this.selectedAutoResponseEmailTemplate = new EmailTemplate();
+        this.selectedAutoResponseId = 0;
+        this.selectedAutoResponseCustomEmailTemplateId = 0;
+        this.isEditAutoResponseTemplate = false;
     }
 
 

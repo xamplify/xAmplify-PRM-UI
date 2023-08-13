@@ -35,7 +35,7 @@
         </app-response-message>
      </div>
      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-     <div [hidden]="isEditPartnerTemplate">
+     <div [hidden]="isEditPartnerTemplate || isEditAutoResponseTemplate">
         <div class="portlet light shadow">
            <div class="portlet-title">
               <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Redistribute a Campaign</h4>
@@ -526,11 +526,19 @@
                                                                        </span>
                                                                        <br>
                                                                        <div class="item__actions">
-                                                                          <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+                                                                          <span> 
+                                                                           <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                                                              data-toggle="tooltip" data-placement="top"
                                                                              title="Preview"  (click)="$event.stopPropagation();previewEmailTemplate(reply.emailTemplate)">
-                                                                          <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                              <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
                                                                           </a>
+                                                                          <!--XNFR-330---->
+                                                                          <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+                                                                             data-toggle="tooltip" data-placement="top"
+                                                                             title="Edit"  (click)="$event.stopPropagation();editAutoResponseTemplate(reply.emailTemplate,reply.id)">
+                                                                              <i class="fa fa-pencil-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                          </a>
+                                                                           <!--XNFR-330---->
                                                                           </span>
                                                                        </div>
                                                                     </div>
@@ -779,6 +787,22 @@
            </div>
            <div class="portlet-body clearfix" *ngIf="isEditPartnerTemplate">
               <app-create-bee-template [partnerEmailTemplate]="campaign.emailTemplate"></app-create-bee-template>
+           </div>
+        </div>
+     </div>
+     <!---XNFR-330-->
+     <div [hidden]="!isEditAutoResponseTemplate">
+        <ngx-loading [show]="partnerTemplateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <div class="portlet light shadow">
+           <div class="portlet-title">
+              <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Edit Template</h4>
+              <a class="close-circle pull-right" data-dismiss="modal" (click)="resetAutoResponseEmailTemplate()">
+              <i class="fa fa-times" aria-hidden="true"></i>
+              </a>
+           </div>
+           <div class="portlet-body clearfix" *ngIf="isEditAutoResponseTemplate">
+              <app-create-bee-template [partnerEmailTemplate]="selectedAutoResponseEmailTemplate" [isAutoResponseEmailTemplate]="true" 
+              [autoResponseId]="autoResponseId" [selectedAutoResponseCustomEmailTemplateId]="selectedAutoResponseCustomEmailTemplateId"></app-create-bee-template>
            </div>
         </div>
      </div>

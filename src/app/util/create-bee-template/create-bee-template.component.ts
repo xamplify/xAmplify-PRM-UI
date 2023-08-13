@@ -20,11 +20,17 @@ export class CreateBeeTemplateComponent implements OnInit {
   partnerTemplateLoader: boolean;
   loggedInUserId: number = 0;
   @Input() partnerEmailTemplate: EmailTemplate;
+  /****XNFR-330*****/
+  @Input() isAutoResponseEmailTemplate = false;
+  @Input() autoResponseId = 0;
+  @Input() selectedAutoResponseCustomEmailTemplateId = 0;
+  /****XNFR-330*****/
   customResponse: CustomResponse = new CustomResponse();
   loading = false;
   senderMergeTag: SenderMergeTag = new SenderMergeTag();
   mergeTagsInput: any = {};
   ngOnInit() {
+    this.referenceService.scrollSmoothToTop();
     this.editPartnerTemplate();
 
   }
@@ -33,10 +39,14 @@ export class CreateBeeTemplateComponent implements OnInit {
   }
 
   editPartnerTemplate() {
-          let self = this;
-  
+    let self = this;
+    if(this.isAutoResponseEmailTemplate==undefined){
+      this.isAutoResponseEmailTemplate = false;
+    }
     let emailTemplate = this.partnerEmailTemplate;
-    if (emailTemplate.vendorCompanyId != undefined && emailTemplate.vendorCompanyId > 0) {
+    let isPartnerTemplate = !this.isAutoResponseEmailTemplate && emailTemplate.vendorCompanyId != undefined && emailTemplate.vendorCompanyId > 0;
+    if (isPartnerTemplate || this.isAutoResponseEmailTemplate) {
+      alert(emailTemplate.jsonBody);
       if (emailTemplate.jsonBody != undefined) {
         var request = function (method, url, data, type, callback) {
           var req = new XMLHttpRequest();
@@ -131,6 +141,7 @@ export class CreateBeeTemplateComponent implements OnInit {
                     bee.start(jsonBody);
                   } else {
                     this.referenceService.showSweetAlert("", "Unable to load the template", "error");
+                    this.loading = false;
                   }
                 });
             });
