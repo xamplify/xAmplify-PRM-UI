@@ -45,4 +45,9 @@ export class EmailTemplate {
 	surveyTemplate: boolean;
 	surveyCoBrandingTemplate: boolean;
 	domainName = "";
+	/*******XNFR-330*****/
+	autoResponseEmailTemplate = false;
+	autoResponseId = 0;
+	selectedAutoResponseCustomEmailTemplateId = 0;
+	/*******XNFR-330*****/
 }

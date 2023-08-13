@@ -1519,13 +1519,15 @@ appendValueToSubjectLine(event:any){
     }
 
     /****XNFR-330****/
-    editAutoResponseTemplate(emailTemplate:any,autoResponseId:number){
+    editAutoResponseTemplate(reply:any){
+        console.log(reply);
         this.partnerTemplateLoader = true;
-        this.selectedAutoResponseEmailTemplate = emailTemplate;
-        this.selectedAutoResponseId = autoResponseId;
-        this.isEditAutoResponseTemplate = true;
-        this.selectedAutoResponseCustomEmailTemplateId = emailTemplate.customEmailTemplateId;
+        this.selectedAutoResponseEmailTemplate = reply.emailTemplate;
+        this.selectedAutoResponseId = reply.id;
+        this.selectedAutoResponseCustomEmailTemplateId = reply.customEmailTemplateId;
         this.partnerTemplateLoader = false;
+        this.isEditAutoResponseTemplate = true;
+
 
     }
     /****XNFR-330****/

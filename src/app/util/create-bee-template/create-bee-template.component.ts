@@ -31,6 +31,15 @@ export class CreateBeeTemplateComponent implements OnInit {
   mergeTagsInput: any = {};
   ngOnInit() {
     this.referenceService.scrollSmoothToTop();
+    if(this.isAutoResponseEmailTemplate==undefined){
+      this.isAutoResponseEmailTemplate = false;
+    }
+    if(this.selectedAutoResponseCustomEmailTemplateId==undefined){
+      this.selectedAutoResponseCustomEmailTemplateId = 0;
+    }
+    if(this.autoResponseId==undefined){
+      this.autoResponseId = 0;
+    }
     this.editPartnerTemplate();
 
   }
@@ -40,9 +49,7 @@ export class CreateBeeTemplateComponent implements OnInit {
 
   editPartnerTemplate() {
     let self = this;
-    if(this.isAutoResponseEmailTemplate==undefined){
-      this.isAutoResponseEmailTemplate = false;
-    }
+   
     let emailTemplate = this.partnerEmailTemplate;
     let isPartnerTemplate = !this.isAutoResponseEmailTemplate && emailTemplate.vendorCompanyId != undefined && emailTemplate.vendorCompanyId > 0;
     if (isPartnerTemplate || this.isAutoResponseEmailTemplate) {
@@ -162,6 +169,11 @@ export class CreateBeeTemplateComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.replaceToDefaultLogos(emailTemplate);
     this.loading = true;
+    /*****XNFR-330******/
+    emailTemplate.autoResponseEmailTemplate = this.isAutoResponseEmailTemplate;
+    emailTemplate.selectedAutoResponseCustomEmailTemplateId = this.selectedAutoResponseCustomEmailTemplateId;
+    emailTemplate.autoResponseId = this.autoResponseId;
+    /*****XNFR-330******/
     this.emailTemplateService.updatePartnerTemplate(emailTemplate).
       subscribe(
         data => {
