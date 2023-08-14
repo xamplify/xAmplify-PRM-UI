@@ -802,7 +802,8 @@
            </div>
            <div class="portlet-body clearfix" *ngIf="isEditAutoResponseTemplate">
               <app-create-bee-template [partnerEmailTemplate]="selectedAutoResponseEmailTemplate" [isAutoResponseEmailTemplate]="true" 
-              [autoResponseId]="selectedAutoResponseId" [selectedAutoResponseCustomEmailTemplateId]="selectedAutoResponseCustomEmailTemplateId"></app-create-bee-template>
+              [autoResponseId]="selectedAutoResponseId" [selectedAutoResponseCustomEmailTemplateId]="selectedAutoResponseCustomEmailTemplateId"
+              (eventEmitter)="getUpdatedTemplateBodyAndJsonBody($event)"></app-create-bee-template>
            </div>
         </div>
      </div>

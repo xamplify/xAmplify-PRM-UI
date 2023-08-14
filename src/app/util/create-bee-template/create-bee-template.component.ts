@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { EmailTemplate } from '../../email-template/models/email-template';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -24,6 +24,7 @@ export class CreateBeeTemplateComponent implements OnInit {
   @Input() isAutoResponseEmailTemplate = false;
   @Input() autoResponseId = 0;
   @Input() selectedAutoResponseCustomEmailTemplateId = 0;
+  @Output() eventEmitter = new EventEmitter();
   /****XNFR-330*****/
   customResponse: CustomResponse = new CustomResponse();
   loading = false;
@@ -181,6 +182,13 @@ export class CreateBeeTemplateComponent implements OnInit {
           if (data.access) {
             if (data.statusCode === 200) {
               this.customResponse = new CustomResponse('SUCCESS', 'Template updated successfully', true);
+              /********XNFR-330*******/
+              let emitterData = {};
+              emitterData['htmlBody'] = emailTemplate.body;
+              emitterData['jsonBody'] = emailTemplate.jsonBody;
+              emitterData['autoResponseId'] = this.autoResponseId;
+              this.eventEmitter.emit(emitterData);
+              /********XNFR-330*******/
             } else if (data.statusCode === 500) {
               this.customResponse = new CustomResponse('ERROR', data.message, true);
             }            

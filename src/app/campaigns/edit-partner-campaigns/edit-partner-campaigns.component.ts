@@ -1520,7 +1520,6 @@ appendValueToSubjectLine(event:any){
 
     /****XNFR-330****/
     editAutoResponseTemplate(reply:any){
-        console.log(reply);
         this.partnerTemplateLoader = true;
         this.selectedAutoResponseEmailTemplate = reply.emailTemplate;
         this.selectedAutoResponseId = reply.id;
@@ -1536,6 +1535,21 @@ appendValueToSubjectLine(event:any){
         this.selectedAutoResponseId = 0;
         this.selectedAutoResponseCustomEmailTemplateId = 0;
         this.isEditAutoResponseTemplate = false;
+    }
+
+    getUpdatedTemplateBodyAndJsonBody(input:any){
+        let id = input.autoResponseId;
+        if (this.campaign.campaignReplies != undefined ) {
+            this.replies = this.campaign.campaignReplies;
+            for ( var i = 0; i < this.replies.length; i++ ) {
+                let reply = this.replies[i];
+                if(reply.id==id){
+                    reply.jsonBody = input.jsonBody;
+                    reply.body = input.htmlBody;
+                }
+            }
+        }
+
     }
 
 
