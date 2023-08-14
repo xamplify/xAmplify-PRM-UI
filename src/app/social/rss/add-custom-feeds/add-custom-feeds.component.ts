@@ -286,7 +286,7 @@ export class AddCustomFeedsComponent implements OnInit {
   videoPlayListSource(videoUrl: string) {
     this.videoUrl = videoUrl;
     const self = this;
-    this.videoJSplayer.playlist([{ sources: [{ src: self.videoUrl, type: 'application/x-mpegURL' }] }]);
+    this.videoJSplayer.src({ src: self.videoUrl, type: 'application/x-mpegURL' });
   }
 
   /*****************LOAD VIDEOS WITH PAGINATION START *****************/
