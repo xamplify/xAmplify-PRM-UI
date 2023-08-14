@@ -1523,7 +1523,6 @@ appendValueToSubjectLine(event:any){
         this.partnerTemplateLoader = true;
         autoResponse.emailTemplate.autoResponseType = autoResponseType;
         this.selectedAutoResponseEmailTemplate = autoResponse.emailTemplate;
-        alert(this.selectedAutoResponseEmailTemplate.autoResponseType);
         this.selectedAutoResponseId = autoResponse.id;
         this.selectedAutoResponseCustomEmailTemplateId = autoResponse.customEmailTemplateId;
         this.partnerTemplateLoader = false;
@@ -1540,7 +1539,6 @@ appendValueToSubjectLine(event:any){
     getUpdatedTemplateBodyAndJsonBody(input:any){
         let id = input.autoResponseId;
         let type = input.autoResponseType;
-        alert("Type"+type);
         if("reply"==type){
             if(this.replies!=undefined && this.replies.length>0){
                 for ( var i = 0; i < this.replies.length; i++ ) {
