@@ -186,6 +186,7 @@ export class CreateBeeTemplateComponent implements OnInit {
               emitterData['htmlBody'] = emailTemplate.body;
               emitterData['jsonBody'] = emailTemplate.jsonBody;
               emitterData['autoResponseId'] = this.autoResponseId;
+              emitterData['autoResponseType']=emailTemplate.autoResponseType;
               this.eventEmitter.emit(emitterData);
               /********XNFR-330*******/
             } else if (data.statusCode === 500) {

@@ -49,5 +49,6 @@ export class EmailTemplate {
 	autoResponseEmailTemplate = false;
 	autoResponseId = 0;
 	selectedAutoResponseCustomEmailTemplateId = 0;
+	autoResponseType = "";
 	/*******XNFR-330*****/
 }

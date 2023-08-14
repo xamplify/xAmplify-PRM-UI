@@ -1519,15 +1519,15 @@ appendValueToSubjectLine(event:any){
     }
 
     /****XNFR-330****/
-    editAutoResponseTemplate(reply:any){
+    editAutoResponseTemplate(autoResponse:any,autoResponseType:string){
         this.partnerTemplateLoader = true;
-        this.selectedAutoResponseEmailTemplate = reply.emailTemplate;
-        this.selectedAutoResponseId = reply.id;
-        this.selectedAutoResponseCustomEmailTemplateId = reply.customEmailTemplateId;
+        autoResponse.emailTemplate.autoResponseType = autoResponseType;
+        this.selectedAutoResponseEmailTemplate = autoResponse.emailTemplate;
+        alert(this.selectedAutoResponseEmailTemplate.autoResponseType);
+        this.selectedAutoResponseId = autoResponse.id;
+        this.selectedAutoResponseCustomEmailTemplateId = autoResponse.customEmailTemplateId;
         this.partnerTemplateLoader = false;
         this.isEditAutoResponseTemplate = true;
-
-
     }
     /****XNFR-330****/
     resetAutoResponseEmailTemplate(){
@@ -1539,16 +1539,31 @@ appendValueToSubjectLine(event:any){
 
     getUpdatedTemplateBodyAndJsonBody(input:any){
         let id = input.autoResponseId;
-        if(this.replies!=undefined && this.replies.length>0){
-            for ( var i = 0; i < this.replies.length; i++ ) {
-                let reply = this.replies[i];
-                 if(reply.id==id){
-                     reply.jsonBody = input.jsonBody;
-                     reply.htmlBody = input.htmlBody;
-                 } 
-             }
-     
+        let type = input.autoResponseType;
+        if("reply"==type){
+            if(this.replies!=undefined && this.replies.length>0){
+                for ( var i = 0; i < this.replies.length; i++ ) {
+                    let reply = this.replies[i];
+                     if(reply.id==id){
+                         reply.jsonBody = input.jsonBody;
+                         reply.htmlBody = input.htmlBody;
+                         reply.body = input.htmlBody;
+                     } 
+                 }
+            }
+        }else if("url"==type){
+            if(this.urls!=undefined && this.urls.length>0){
+                for ( var i = 0; i < this.urls.length; i++ ) {
+                    let url = this.urls[i];
+                     if(url.id==id){
+                        url.jsonBody = input.jsonBody;
+                        url.htmlBody = input.htmlBody;
+                        url.body = input.htmlBody;
+                     } 
+                 }
+            }
         }
+       
       
     }
 
