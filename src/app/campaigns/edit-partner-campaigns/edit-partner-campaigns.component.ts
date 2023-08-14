@@ -30,6 +30,9 @@ import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { HostListener } from '@angular/core';
+import { ComponentCanDeactivate } from 'app/component-can-deactivate';
+import { Observable } from 'rxjs/Observable';
 
 declare var  $,swal,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -40,7 +43,7 @@ var moment = require('moment-timezone');
   styleUrls: ['./edit-partner-campaigns.component.css','../../../assets/css/content.css'],
   providers:[CallActionSwitch,HttpRequestLoader,Pagination,Properties,LandingPageService]
 })
-export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
+export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactivate,OnDestroy {
     ngxloading: boolean;
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     selectedEmailTemplateId = 0;
@@ -198,6 +201,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     selectedAutoResponseEmailTemplate:EmailTemplate;    
     selectedAutoResponseId = 0;  
     selectedAutoResponseCustomEmailTemplateId = 0;
+    anyLaunchButtonClicked = false;
+
     /*****XNFR-330****/                   
 
     constructor(private renderer: Renderer,private router: Router,
@@ -1316,6 +1321,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
 
   launchCampaign() {
+    /***XNFR-330****/
+     this.anyLaunchButtonClicked = false;
+     /***XNFR-330****/
       this.validateCampaignName(this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName));
       if(this.isValidCampaignName){
           this.referenceService.startLoader(this.httpRequestLoader);
@@ -1344,6 +1352,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                         this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
                         this.referenceService.launchedCampaignType = this.campaignType;
                         this.campaign = null;
+                        /***XNFR-330****/
+                        this.anyLaunchButtonClicked = true;
+                        /***XNFR-330****/
                         this.router.navigate(["/home/campaigns/manage"]);
                     } else {
                         this.invalidScheduleTime = true;
@@ -1535,7 +1546,8 @@ appendValueToSubjectLine(event:any){
         this.selectedAutoResponseCustomEmailTemplateId = 0;
         this.isEditAutoResponseTemplate = false;
     }
-
+      
+    /****XNFR-330****/
     getUpdatedTemplateBodyAndJsonBody(input:any){
         let id = input.autoResponseId;
         let type = input.autoResponseType;
@@ -1562,8 +1574,18 @@ appendValueToSubjectLine(event:any){
                  }
             }
         }
-       
-      
+    }
+    /***XNFR-330****/
+    @HostListener('window:beforeunload')
+    canDeactivate(): Observable<boolean> | boolean {
+        this.ngxloading = false;
+        this.authenticationService.stopLoaders();
+        if(this.anyLaunchButtonClicked || this.authenticationService.module.logoutButtonClicked){
+            return true;
+        }else{
+            return false;
+        }
+        
     }
 
 
