@@ -33,23 +33,8 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
 
   ngOnInit() {
     alert(this.partnerCompanyId);
-    this.getPartnerCompanyInfo();
   }
-  getPartnerCompanyInfo() {
-    this.referenseService.loading(this.httpRequestLoader, true);
-    this.parterService.getPartnerJourneyAnalytics(this.partnerCompanyId, this.loggedInUserId).subscribe(
-			(response: any) => {	
-        this.referenseService.loading(this.httpRequestLoader, false);
-        if (response.statusCode == 200) {
-          this.partnerJourneyAnalytics = response.data;	
-        }        	
-			},
-			(_error: any) => {
-        this.httpRequestLoader.isServerError = true;
-        this.xtremandLogger.error(_error);
-			}
-		);
-  }
+  
 
   closeDetailedAnalytics(){
     this.notifyCloseDetailedAnalytics.emit();

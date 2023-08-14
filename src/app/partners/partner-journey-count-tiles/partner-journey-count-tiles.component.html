@@ -1,164 +1,171 @@
-<div class="panel panel-info">
-  <div class="panel-body">
-    <section>
-      <div class="col-xs-12 col-sm-12 p-5x emails-info"
-         [hidden]="httpRequestLoader.isLoading || httpRequestLoader.isServerError">
-         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
-            <button class="portlet light color1-invert crcb lt-blue-c">
-               <div class="portlet-body text-center">
-                  <i class="fa fa-user"></i>
-                  <h1>
-                     <b>{{ partnerJourneyAnalytics?.redistributedCampaignCount }}</b>
-                  </h1>
-                  <h5>Redistributed Campaigns</h5>
-               </div>
-            </button>
+<div class="page-bar p_20">
+   <div class="row" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+      <!-- card one  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showRedistributedCampaignCount">
+         <div class="pa-Card pa-CardOne">
+            <i class="fa fa-user pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextOne">{{partnerJourneyAnalytics?.redistributedCampaignCount}}</p>
+            <p class="pa-text pa-TextOne">Redistributed Campaigns</p>
          </div>
-         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
-            <button class="portlet light color1-invert crcb lt-green-c">
-               <div class="portlet-body text-center">
-                  <i class="fa fa-envelope-o"></i>
-                  <h1>
-                     <b>{{ partnerJourneyAnalytics?.teamMemberCount }}</b>
-                  </h1>
-                  <h5>Team Members</h5>
-               </div>
-            </button>
-         </div>
-         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
-            <button class="portlet light color1-invert crcb tk-blue-c">
-               <div class="portlet-body text-center">
-                  <i class="fa fa-envelope"></i>
-                  <h1>
-                     <b>{{ partnerJourneyAnalytics?.shareLeadCount }}</b>
-                  </h1>
-                  <h5>Deliverability</h5>
-               </div>
-            </button>
-         </div>
-         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
-            <button class="portlet light color1-invert crcb vlt-blue-c">
-               <div class="portlet-body text-center">
-                  <i class="fa fa-user-circle-o"></i>
-                  <h1>
-                     <b>{{ partnerJourneyAnalytics?.leadCount }}</b>
-                  </h1>
-                  <h5>Leads</h5>
-               </div>
-            </button>
-         </div>
-         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
-            <button class="portlet light color1-invert crcb pure-blue-c">
-               <div class="portlet-body text-center">
-                  <i class="fa fa-envelope-open-o"></i>
-                  <h1>
-                     <b>{{ partnerJourneyAnalytics?.dealCount }}</b>
-                  </h1>
-                  <h5>Deals</h5>
-               </div>
-            </button>
-         </div>
-        <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
-          <button class="portlet light color1-invert crcb black-blue-c">
-            <div class="portlet-body text-center">
-              <i class="fa fa-globe"></i>
-              <h1>
-                <b>{{ partnerJourneyAnalytics?.contactCount }}</b>
-              </h1>
-              <h5>Contacts</h5>
-            </div>
-          </button>
-        </div>
-         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
-            <button class="portlet light color1-invert crcb y-b-c">
-               <div class="portlet-body text-center">
-                  <i class="fa fa-envelope-open"></i>
-                  <h1>
-                     <b>{{ partnerJourneyAnalytics?.mdfAmount }}</b>
-                  </h1>
-                  <h5>MDF Amount</h5>
-               </div>
-            </button>
-         </div>
-         <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 p-5x">
-            <button class="portlet light color1-invert crcb b-b-c">
-               <div class="portlet-body text-center">
-                  <i class="fa fa-eye"></i>
-                  <h1>
-                     <b>{{ partnerJourneyAnalytics?.assetCount }}</b>
-                  </h1>
-                  <h5>Assets</h5>
-               </div>
-            </button>
-         </div>
-         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
-            <button class="portlet light color1-invert crcb r-b-c">
-               <div class="portlet-body text-center">
-                  <i class="fa fa-ban"></i>
-                  <h1>
-                     <b>{{ partnerJourneyAnalytics?.trackCount }}</b>
-                  </h1>
-                  <h5>Tracks</h5>
-               </div>
-            </button>
-         </div>
-         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2">
-            <button class="portlet light color1-invert crcb h-r-c">
-               <div class="portlet-body text-center">
-                  <i class="fa fa-trash-o"></i>
-                  <h1>
-                     <b>{{ partnerJourneyAnalytics?.playbookCount }}</b>
-                  </h1>
-                  <h5>Playbooks</h5>
-               </div>
-            </button>
-         </div>
-         <!-- <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
-            *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
-            <button class="portlet light color1-invert crcb r-r-c"
-               (click)="emailActionDetails(campaign.campaignId, 'unsubscribe', emailActionDetailsPagination)"
-               [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
-               [disabled]="campaignReport.unsubscribed < 1 || !isPartnerEnabledAnalyticsAccess">
-               <div class="portlet-body text-center">
-                  <i class="fa fa-user-times"></i>
-                  <h1>
-                     <b>{{ campaignReport.unsubscribed }}</b>
-                  </h1>
-                  <h5>Unsubscribe</h5>
-               </div>
-            </button>
-         </div>
-         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
-            *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts">
-            <button class="portlet light color1-invert crcb vlt-b-c" (click)="showCampaignLeads()"
-               [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
-               [disabled]="campaignReport.leadCount < 1 || !isPartnerEnabledAnalyticsAccess">
-               <div class="portlet-body text-center">
-                  <i class="fa fa-user-circle"></i>
-                  <h1>
-                     <b>{{ campaignReport.leadCount }}</b>
-                  </h1>
-                  <h5>Leads</h5>
-               </div>
-            </button>
-         </div>
-         <div class="p-5x col-xs-6 col-sm-2 col-md-2 col-lg-2"
-            *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts">
-            <button class="portlet light color1-invert crcb lt-g-b-c" (click)="showCampaignDeals()"
-               [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
-               [disabled]="campaignReport.dealCount < 1 || !isPartnerEnabledAnalyticsAccess">
-               <div class="portlet-body text-center">
-                  <i class="fa fa-tags"></i>
-                  <h1>
-                     <b>{{ campaignReport.dealCount }}</b>
-                  </h1>
-                  <h5>Deals</h5>
-               </div>
-            </button>
-         </div> -->
       </div>
-      <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-    </section>
-  </div>
+      <!-- card two  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showTeamMemberCount">
+         <div class="pa-Card pa-CardTwo">
+            <i class="fa fa-envelope-o pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextTwo">{{partnerJourneyAnalytics?.teamMemberCount}}</p>
+            <p class="pa-text pa-TextTwo">Team Members</p>
+         </div>
+      </div>
+      <!-- card three  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showContactCount">
+         <div class="pa-Card pa-CardThree">
+            <i class="fa fa-envelope pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextThree">{{partnerJourneyAnalytics?.contactCount}}</p>
+            <p class="pa-text pa-TextThree">Contacts</p>
+         </div>
+      </div>
+      <!-- card four  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showShareLeadCount">
+         <div class="pa-Card pa-CardFour">
+            <i class="fa fa-user-circle-o pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextFour">{{partnerJourneyAnalytics?.shareLeadCount}}</p>
+            <p class="pa-text pa-TextFour">Share Leads</p>
+         </div>
+      </div>
+      <!-- card five  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showLeadCount">
+         <div class="pa-Card pa-CardFive">
+            <i class="fa fa-envelope-open-o pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextFive">{{partnerJourneyAnalytics?.leadCount}}</p>
+            <p class="pa-text pa-TextFive">Leads</p>
+         </div>
+      </div>
+      <!-- card six  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showDealCount">
+         <div class="pa-Card pa-CardSix">
+            <i class="fa fa-globe pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextSix">{{partnerJourneyAnalytics?.dealCount}}</p>
+            <p class="pa-text pa-TextSix">Deals</p>
+         </div>
+      </div>
+      <!-- card seven  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showMDFAmount">
+         <div class="pa-Card pa-CardSeven">
+            <i class="fa fa-envelope-open pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextSeven">{{partnerJourneyAnalytics?.mdfAmount}}</p>
+            <p class="pa-text pa-TextSeven">MDF Amount</p>
+         </div>
+      </div>
+      <!-- card eight  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showAssetCount">
+         <div class="pa-Card pa-CardEight">
+            <i class="fa fa-eye pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextEight">{{partnerJourneyAnalytics?.assetCount}}</p>
+            <p class="pa-text pa-TextEight">Assets</p>
+         </div>
+      </div>
+      <!-- card nine  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showTrackCount">
+         <div class="pa-Card pa-CardNine">
+            <i class="fa fa-ban pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextNine">{{partnerJourneyAnalytics?.trackCount}}</p>
+            <p class="pa-text pa-TextNine">Tracks</p>
+         </div>
+      </div>
+      <!-- card ten  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showPlaybookCount">
+         <div class="pa-Card pa-CardTen">
+            <i class="fa fa-trash-o pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextTen">{{partnerJourneyAnalytics?.playbookCount}}</p>
+            <p class="pa-text pa-TextTen">Playbooks</p>
+         </div>
+      </div>
+   </div>
+   <app-box-loader [countLoader]=5 *ngIf="httpRequestLoader.isLoading"></app-box-loader>
 </div>
 
+<div class="page-bar p_20">
+   <div class="row" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+      <!-- card one  -->
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 pa-CardSidePaddings">
+         <div class="pa-CardBG">
+            <p class="paTextCu">Redistributed Campaigns</p>
+            <p class="paNumberCu">{{partnerJourneyAnalytics?.redistributedCampaignCount}}</p>
+         </div>
+      </div>
+      <!-- card two  -->
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 pa-CardSidePaddings">
+         <div class="pa-CardBG">
+            <p class="paTextCu">Team Members</p>
+            <p class="paNumberCu">{{partnerJourneyAnalytics?.teamMemberCount}}</p>
+         </div>
+      </div>
+      <!-- card three  -->
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 pa-CardSidePaddings">
+         <div class="pa-CardBG">
+            <p class="paTextCu">Contacts</p>
+            <p class="paNumberCu">{{partnerJourneyAnalytics?.contactCount}}</p>
+         </div>
+      </div>
+      <!-- card four  -->
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 pa-CardSidePaddings">
+         <div class="pa-CardBG">
+            <p class="paTextCu">Share Leads</p>
+            <p class="paNumberCu">{{partnerJourneyAnalytics?.shareLeadCount}}</p>
+         </div>
+      </div>
+      <!-- card five  -->
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 pa-CardSidePaddings">
+         <div class="pa-CardBG">
+            <p class="paTextCu">Leads</p>
+            <p class="paNumberCu">{{partnerJourneyAnalytics?.leadCount}}</p>
+         </div>
+      </div>
+      <!-- card six  -->
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 pa-CardSidePaddings">
+         <div class="pa-CardBG">
+            <p class="paTextCu">Deals</p>
+            <p class="paNumberCu">{{partnerJourneyAnalytics?.dealCount}}</p>
+         </div>
+      </div>
+      <!-- card seven  -->
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 pa-CardSidePaddings">
+         <div class="pa-CardBG">
+            <p class="paTextCu">MDF Amount ($)</p>
+            <p class="paNumberCu">{{partnerJourneyAnalytics?.mdfAmount}}</p>
+         </div>
+      </div>
+      <!-- card eight  -->
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 pa-CardSidePaddings">
+         <div class="pa-CardBG">
+            <p class="paTextCu">Assets</p>
+            <p class="paNumberCu">{{partnerJourneyAnalytics?.assetCount}}</p>
+         </div>
+      </div>
+      <!-- card nine  -->
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 pa-CardSidePaddings">
+         <div class="pa-CardBG">
+            <p class="paTextCu">Tracks</p>
+            <p class="paNumberCu">{{partnerJourneyAnalytics?.trackCount}}</p>
+         </div>
+      </div>
+      <!-- card ten  -->
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 pa-CardSidePaddings">
+         <div class="pa-CardBG">
+            <p class="paTextCu">Playbooks</p>
+            <p class="paNumberCu">{{partnerJourneyAnalytics?.playbookCount}}</p>
+         </div>
+      </div>
+   </div>
+   <app-box-loader [countLoader]=4 *ngIf="httpRequestLoader.isLoading"></app-box-loader>
+</div>

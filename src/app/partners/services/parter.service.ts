@@ -209,9 +209,15 @@ export class ParterService {
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }
+
+    getPartnerJourneyCompanyInfo(partnerCompanyId: any, loggedInUserId: number) {
+        const url = this.URL + 'partner/journey/company/info/'+partnerCompanyId+'/'+loggedInUserId+'?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.get( url )
+            .catch( this.handleError );
+    }
     
-    getPartnerJourneyAnalytics(partnerCompanyId: any, loggedInUserId: number) {
-        const url = this.URL + 'partner/journey/analytics/'+partnerCompanyId+'/'+loggedInUserId+'?access_token=' + this.authenticationService.access_token;
+    getPartnerJourneyCampaignCounts(partnerCompanyId: any, loggedInUserId: number) {
+        const url = this.URL + 'partner/journey/campaign/counts/'+partnerCompanyId+'/'+loggedInUserId+'?access_token=' + this.authenticationService.access_token;
         return this.httpClient.get( url )
             .catch( this.handleError );
     }
