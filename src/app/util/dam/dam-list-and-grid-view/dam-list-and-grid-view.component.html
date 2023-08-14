@@ -26,13 +26,13 @@
 								aria-describedby="manageAssetTables">
 								<thead>
 									<tr>
-										<th style="width:45%" translate>Asset Details</th>
-										<th class="text-center"scope="row" translate>Type</th>
+										<th style="width:45%" translate id="border-bottom">Asset Details</th>
+										<th class="text-center"scope="row" translate id="border-bottom">Type</th>
 										<th class="text-center" scope="row" translate
-											*ngIf="isPartnerView">Published On</th>
+											*ngIf="isPartnerView" id="border-bottom">Published On</th>
 										<th class="text-center" scope="row" translate
-											*ngIf="!isPartnerView">Created On</th>
-										<th  class="text-center" translate>Actions</th>
+											*ngIf="!isPartnerView" id="border-bottom">Created On</th>
+										<th  class="text-center" translate id="border-bottom">Actions</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -539,12 +539,12 @@
 					</a>
 					<div class="pb3 float-left">
 						<ng-container *ngIf="isPartnerView">
-							<select class="form-control mDamSort" id="alignline-m-width" [(ngModel)]="sortOption.publishedDamSortOption"	(ngModelChange)="sortAssets($event)"style="position: relative; right: -3px;">
+							<select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width" [(ngModel)]="sortOption.publishedDamSortOption"	(ngModelChange)="sortAssets($event)"style="position: relative; right: -3px;">
 								<option	*ngFor="let option of sortOption.publishedDamSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
 							</select> 
 						</ng-container>
 						<ng-container *ngIf="!isPartnerView">
-							<select	class="form-control mDamSort" id="alignline-m-width" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
+							<select	class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
 								<option	*ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
 							</select> 
 						</ng-container>
@@ -552,7 +552,7 @@
 					<!--Filter Type---->
 					<div class="pb3 float-left ml5" id="alignline-m-mleftright">
 						<ng-container *ngIf="fileTypes?.length>0">
-							<select class="form-control mDamSort" id="alignline-m-width" [(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)"style="position: relative; right: -3px;">
+							<select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width" [(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)"style="position: relative; right: -3px;">
 								<option value="">Select Asset Type</option>
 								<option	*ngFor="let fileType of fileTypes" [ngValue]="fileType">{{fileType}}</option>
 							</select> 

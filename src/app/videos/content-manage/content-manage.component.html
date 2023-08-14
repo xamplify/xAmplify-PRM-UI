@@ -43,7 +43,7 @@
 												<span class="btn btn-xs hidden-xs l-g-view"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
                     					</div>
 										<div class="col-sm-3 col-md-3 col-xs-12 p0 mSort">
-										<select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+										<select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
 										<ng-container *ngFor="let sort of sortOptions; let i = index"> <option [ngValue]="sort">{{sort.name}}</option>
 										</ng-container>
 										</select>
@@ -64,9 +64,7 @@
 							<div class="margin-top-10 row" *ngIf="!httpRequestLoader.isLoading">
 								<section [hidden]="!isListView">
 									<div class="table-responsive list-content-table">
-                    <!-- *ngIf="pagedItems && !httpRequestLoader.isLoading" -->
 										<table class="table tgrid">
-											<!-- *ngIf="pagedItems.length !== 0" -->
 											<thead>
 												<tr>
 													<th class="text-center"></th>
@@ -79,11 +77,10 @@
 														[hidden]="authenticationService.isOnlyPartner()" translate>Actions</span></th>
 												</tr>
 											</thead>
-											<tbody>
-												<!-- 	<tr *ngFor="let file of pagedItems | orderBy: key : reverse | filter:filter | paginate: { itemsPerPage: 12, currentPage: p };let i =index"> -->
+											<tbody>												
 												<tr *ngFor="let file of pagedItems; let i =index">
 													<td><input	style="cursor: pointer;" (click)="getSelectedListViewFiles(file,file.id, $event)" type="checkbox"
-														[checked]="selectedFileIds.indexOf(file.id)>-1"	value="{{file.fileName}}" id="list_{{file.id}}"> <!-- <input type="checkbox"> -->
+														[checked]="selectedFileIds.indexOf(file.id)>-1"	value="{{file.fileName}}" id="list_{{file.id}}">
 													</td>
 													<td>
 														<div class="clearfix">
@@ -161,7 +158,7 @@
 															<span> <a class="fm external-link" target="_BLANK"
 																data-toggle="tooltip" data-placement="top"
 																[title]="actionsDescription.preview_item"	(click)="$event.stopPropagation();"
-																href="{{file.filePath}}" target="_blank"> <!-- (click)="preview(file)"  -->
+																href="{{file.filePath}}" target="_blank">
 																	<i class="fa fa-external-link" aria-hidden="true" style="font-size: 20px; color: #5a5a5a"></i>
 															</a> <a class="fm delete" data-toggle="tooltip"
 																data-placement="top"
@@ -201,8 +198,7 @@
                   <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
                   <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
                   <option *ngIf="paginatedList?.length>24" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
-<!--                   <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[3]"> {{numberPerPage[3].name}}</option>
- -->                </select>
+                </select>
                 </section>
 						</div>
 					</div>

@@ -65,11 +65,11 @@
   }
 }
 @media screen and (max-width: 768px) {
-  .cloud-items {
+  .cloud-items{
     position: relative;
     font-size: 19px;
     top: -82px !important;
-    left: 93px;
+    left: 100px !important;
   }
 }
 .cloud-items {
@@ -78,11 +78,11 @@
   top: -81px;
   left: 68px;
 }
-@media only screen and (max-width: 1024px) and (min-width: 601px) {
+/* @media only screen and (max-width: 1024px) and (min-width: 601px) {
   .cloud-css {
     left: 100px !important;
-  }
-}
+  } 
+}*/
 .csv-list-name {
   font-size: 15px;
   color: #565555;
@@ -139,3 +139,36 @@ i.fa.fa-file-excel-o.IconTopMargin {
 @media only screen and (min-width: 1200px) and (max-width: 1260px) {
   .SidePaddings span{font-size: 10px !important;}
 }
+@media only screen and (min-width: 1079px) and (max-width: 1150px) {
+  .scroll-top-abj {padding-top: 15px;}
+}
+/* gericon */
+@media only screen and (min-width: 800px) and (max-width: 969px) {
+  #SgearIcon{left: 106px !important;}
+  #GgearIcon{left: 106px !important;}
+  #ZgearIcon{left: 106px !important;}
+} 
+
+ @media only screen and (min-width: 969px) and (max-width: 992px) {
+  #SgearIcon{left: 125px !important;}
+  #GgearIcon{left: 125px !important;}
+  #ZgearIcon{left: 125px !important;}
+} 
+@media only screen and (min-width: 992px) and (max-width: 1032px) {
+  #SgearIcon{left: 110px !important;}
+  #GgearIcon{left: 110px !important;}
+  #ZgearIcon{left: 110px !important;}
+}
+@media only screen and (min-width: 1032px) and (max-width: 1072px) {.cloud-items{left: 110px !important;}}
+@media only screen and (min-width: 1072px) and (max-width: 1125px) {.cloud-items{left: 115px !important;}}
+@media only screen and (min-width: 1125px) and (max-width: 1170px) {.cloud-items{left: 124px !important;}}
+@media only screen and (min-width: 1170px) and (max-width: 1199px) {.cloud-items{left: 128px !important;}}
+@media only screen and (min-width: 1500px) and (max-width: 1550px) {.cloud-items{left: 74px !important;}}
+@media only screen and (min-width: 1550px) and (max-width: 1600px) {.cloud-items{left: 76px !important;}}
+@media only screen and (min-width: 1600px) and (max-width: 1650px) {.cloud-items{left: 78px !important;}}
+@media only screen and (min-width: 1650px) and (max-width: 1700px) {.cloud-items{left: 80px !important;}}
+@media only screen and (min-width: 1700px) and (max-width: 1750px) {.cloud-items{left: 82px !important;}}
+@media only screen and (min-width: 1750px) and (max-width: 1880px) {.cloud-items{left: 84px !important;}}
+@media only screen and (min-width: 1780px) and (max-width: 1830px) {.cloud-items{left: 86px !important;}}
+@media only screen and (min-width: 1830px) and (max-width: 1882px) {.cloud-items{left: 87px !important;}}
+@media only screen and (min-width: 1883px) and (max-width: 1920px) {.cloud-items{left: 90px !important;}}

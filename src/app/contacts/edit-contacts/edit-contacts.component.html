@@ -269,7 +269,7 @@
 					  <div class="inputs" align="right" style="float: right">
 						 <div class="inputs" align="right" style="float: right;display: inline-flex;">
 							<div style="float: left; margin-right: 10px;">
-							   <select class="form-control" [(ngModel)]="sortOption"
+							   <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
 							   (ngModelChange)="sortByOption($event)">
 							   <ng-container *ngFor="let sort of sortOptions; let i = index">
 								  <option [ngValue]="sort">{{sort.name}}</option>
@@ -859,7 +859,7 @@
 		  <div class="col-xs-8 col-md-8 col-sm-8 p0">
 			 <div class="inputs" align="right" style="float: right; display: inline-flex;">
 				<div style="float: left; margin-right: 10px;">
-				   <select class="form-control" [(ngModel)]="sortOption"
+				   <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
 				   (ngModelChange)="sortByOption($event)">
 				   <ng-container
 					  *ngFor="let sort of sortOptions; let i = index">
@@ -1002,7 +1002,7 @@
 						 </button>
 					  </td>
 					  <td  *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribe'">
-						 <button class="btn green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (hasAllAccess || refService.roles.contactsRole || refService.roles.partnersRole || authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner())"
+						 <button class="btn Btn-Green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (hasAllAccess || refService.roles.contactsRole || refService.roles.partnersRole || authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner())"
 						 [disabled] = "assignLeads" (click)="activateUnsubscribedUser(allcontacts.id)" translate>
 						 Subscribe
 						 </button>
@@ -1131,9 +1131,9 @@
 			 </div>
 		  </div>
 		  <div class="modal-footer">
-			 <button type="button" class="btn green" [disabled]="criterias.length === 0"
+			 <button type="button" class="btn Btn-Green" [disabled]="criterias.length === 0"
 			 (click)="contactFilter()" translate>Submit</button>
-			 <button type="button" class="btn green"
+			 <button type="button" class="btn Btn-Gray"
 				(click)="cancelSegmentation()" data-dismiss="modal" translate>Cancel</button>
 		  </div>
 	   </div>

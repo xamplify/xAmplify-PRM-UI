@@ -559,7 +559,7 @@
                         <div class="col-sm-8 col-xs-12">
                             <div class="social-campaign-search-css">
                                 <!--Sort-->
-                                <select *ngIf="!showNavigationBreadCrumbToPartner" class="form-control cc mTopSort mr10" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
+                                <select *ngIf="!showNavigationBreadCrumbToPartner" class="form-control cc mTopSort mr10 SeclectBoxPaddingsAbj" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
                                 (ngModelChange)="sortRecipientsList($event)">                                                    
                                 <option  *ngFor="let option of recipientsSortOption.campaignRecipientsDropDownOptions"
                                     [ngValue]="option">{{option.name}}</option>

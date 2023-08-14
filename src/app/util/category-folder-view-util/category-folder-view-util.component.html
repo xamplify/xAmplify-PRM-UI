@@ -11,8 +11,7 @@
                         <button
                         [ngClass]="folderViewType=='List' ? 'fa fa-th-list' :folderViewType=='Grid' ?'fa fa-th-large':
                         folderViewType=='Folder-List' ? 'fa fa-th': folderViewType=='Folder-Grid' ?'fa fa-folder':'fa fa-th-list'"
-                        style="padding: 10px !important" class=" btn-xs hidden-xs l-g-view"></button>
-                        <!-- <button class="btn btn-xs l-g-view hidden-xs {{viewClass}}" style="padding:10px !important;"></button> -->
+                        style="padding: 10px !important" class=" btn-xs hidden-xs l-g-view"></button>                       
                     <div class="group-dd-content" style="min-width: max-content;">
                     <ng-container class='m10'>
                         <span *ngIf="isFromCampaignModule && !isFromRedistributedCampaignSection" class=" btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Calendar View">
@@ -27,8 +26,7 @@
                         <span class="btn btn-xs hidden-xs l-g-view margin-right-calendar" [class.disabled]="folderViewType=='Folder-Grid'" (click)="folderViewType='Folder-Grid';"  data-toggle="tooltip" data-placement="bottom" title="Folder Grid View">
                             <i class="fa fa-folder p10"  aria-hidden="true"></i>
                         </span>
-                        <span class="btn btn-xs hidden-xs l-g-view margin-right-calendar folder-list-span-custom-width " [class.disabled]="folderViewType=='Folder-List'"  (click)="folderViewType='Folder-List';" data-toggle="tooltip" data-placement="bottom" title="Folder List View">
-                            <!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/> -->
+                        <span class="btn btn-xs hidden-xs l-g-view margin-right-calendar folder-list-span-custom-width " [class.disabled]="folderViewType=='Folder-List'"  (click)="folderViewType='Folder-List';" data-toggle="tooltip" data-placement="bottom" title="Folder List View">                         
                             <i class="fa fa-th p10" aria-hidden="true"></i>
                         </span>
                     </ng-container>
@@ -164,8 +162,7 @@
                         </td>
                         <td class="text-center">
                             <div  class="override-actions">
-                                <span id="count-{{selectedModuleType}}-{{category.id}}"><b>{{category.count}}</b></span>
-                                <!-- <span *ngIf="archived" id="count-{{selectedModuleType}}-{{category.id}}"><b>{{category.archivedCount}}</b></span> -->
+                                <span id="count-{{selectedModuleType}}-{{category.id}}"><b>{{category.count}}</b></span>                             
                             </div> 
                         </td>
                     </tr>

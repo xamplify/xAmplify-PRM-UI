@@ -91,14 +91,14 @@
                                </span>
                                 <div class="inputs" id="right" style="display: inline-flex;max-width: 369px;">
                                     <div *ngIf="!isPartnerLandingPage">
-                                        <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                                        <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                                                 <option *ngFor="let option of sortOption.manageFormsSortOptions"
                                                     [ngValue]="option" translate>
                                                     {{option.name}}</option>
                                             </select>
                                     </div>
                                     <div *ngIf="isPartnerLandingPage">
-                                        <select class="form-control" [(ngModel)]="sortOption.partnerLandingPageSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                                        <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.partnerLandingPageSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                                                 <option
                                                     *ngFor="let option of sortOption.partnerLandingPageSortOptions"
                                                     [ngValue]="option" translate>

@@ -299,7 +299,7 @@
               <div class="btn-group pull-right">
                 <div class="inputs float-right" style="display: inline-flex;padding-top: 12px;">
                   <div id="left" style="padding-left: 5px;">
-                    <select class="form-control" [(ngModel)]="assetSortOption.damSortOption"
+                    <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="assetSortOption.damSortOption"
                       (ngModelChange)="assetSortBy($event)">
                       <option *ngFor="let option of assetSortOption.damSortDropDownOptions" [ngValue]="option">
                         {{option.name}}</option>
@@ -307,7 +307,7 @@
                   </div>
 
                   <div id="left" *ngIf="fileTypesForFilter?.length>0">
-                    <select class="form-control mDamSort"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)" 
+                    <select class="form-control mDamSort SeclectBoxPaddingsAbj"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)" 
                         style="position: relative; right: -3px;">
                       <option value="">Select Asset Type</option>
                       <option	*ngFor="let fileType of fileTypesForFilter" [ngValue]="fileType">{{fileType}}</option>
@@ -1061,7 +1061,7 @@
                   </div>
                   <!--Filter Types---->
                   <div id="left" class="mSortAlign ml10" *ngIf="fileTypesForFilter?.length>0">
-                    <select class="form-control mDamSort"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)"style="position: relative; right: -3px;">
+                    <select class="form-control mDamSort SeclectBoxPaddingsAbj"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)"style="position: relative; right: -3px;">
                       <option value="">Select Asset Type</option>
                       <option	*ngFor="let fileType of fileTypesForFilter" [ngValue]="fileType">{{fileType}}</option>
                     </select> 

@@ -411,3 +411,16 @@ hr {
 .alert-success .close.of-this-component {
   margin-top: 5px;
 }
+
+/* 14-08-2023 */
+h4.TopBottomMZ {
+  margin: 0;
+}
+img.LockIconCu {
+  width: 15px;
+  display: block;
+  margin-bottom: 4px;
+}
+.alert.NaNAData {
+  margin-bottom: 0px;
+}

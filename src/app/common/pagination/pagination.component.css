@@ -1,5 +1,7 @@
 .pagination{
 	margin: 0px !important;
+	z-index: 0;
+    position: relative;
 }
 @media (max-width:425px){
 	.padding{

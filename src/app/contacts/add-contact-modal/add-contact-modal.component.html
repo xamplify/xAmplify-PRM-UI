@@ -10,6 +10,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       <h4 class="modal-title size-font" *ngIf="isUpdateUser" translate>Edit {{checkingContactTypeName}}</h4>
     </div>
     <div class="modal-body">
+      <div class="hide-scrollbar">
       <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <form class="form-horizontal" autocomplete="off">
        <div class="form-group" *ngIf="isPartner && !isAssignLeads">
@@ -246,6 +247,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 
      
 
+  </div>
   </div>
 </div>
 </div>
