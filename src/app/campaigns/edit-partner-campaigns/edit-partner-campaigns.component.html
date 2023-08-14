@@ -680,11 +680,19 @@
                                                                     </span>
                                                                     <br>
                                                                     <div class="item__actions">
-                                                                       <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+                                                                       <span>
+                                                                         <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                                                           data-toggle="tooltip" data-placement="top"
                                                                           title="Preview"  (click)="$event.stopPropagation();previewEmailTemplate(url.emailTemplate)">
-                                                                       <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
-                                                                       </a>
+                                                                           <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                        </a>
+                                                                       <!--XNFR-330---->
+                                                                       <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Edit"  (click)="$event.stopPropagation();editAutoResponseTemplate(url,'url')">
+                                                                           <i class="fa fa-pencil-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                        </a>
+                                                                        <!--XNFR-330---->
                                                                        </span>
                                                                     </div>
                                                                  </div>

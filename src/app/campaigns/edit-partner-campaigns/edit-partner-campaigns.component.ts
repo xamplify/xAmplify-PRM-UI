@@ -1540,6 +1540,7 @@ appendValueToSubjectLine(event:any){
     getUpdatedTemplateBodyAndJsonBody(input:any){
         let id = input.autoResponseId;
         let type = input.autoResponseType;
+        alert("Type"+type);
         if("reply"==type){
             if(this.replies!=undefined && this.replies.length>0){
                 for ( var i = 0; i < this.replies.length; i++ ) {

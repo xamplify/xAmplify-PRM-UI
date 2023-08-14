@@ -166,9 +166,9 @@ export class CreateBeeTemplateComponent implements OnInit {
 
 
   updatePartnerTemplate(emailTemplate: EmailTemplate) {
+    this.loading = true;
     this.customResponse = new CustomResponse();
     this.replaceToDefaultLogos(emailTemplate);
-    this.loading = true;
     /*****XNFR-330******/
     emailTemplate.autoResponseEmailTemplate = this.isAutoResponseEmailTemplate;
     emailTemplate.selectedAutoResponseCustomEmailTemplateId = this.selectedAutoResponseCustomEmailTemplateId;
@@ -198,10 +198,8 @@ export class CreateBeeTemplateComponent implements OnInit {
         },
         error => {
           this.loading = false;
-          this.referenceService.showSweetAlertErrorMessage(error);
-        },
-        () => console.log("Email Template Updated")
-      );
+          this.referenceService.showSweetAlertServerErrorMessage();
+        });
   }
 
   replaceToDefaultLogos(emailTemplate: EmailTemplate) {
