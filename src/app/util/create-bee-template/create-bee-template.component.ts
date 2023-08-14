@@ -54,7 +54,6 @@ export class CreateBeeTemplateComponent implements OnInit {
     let emailTemplate = this.partnerEmailTemplate;
     let isPartnerTemplate = !this.isAutoResponseEmailTemplate && emailTemplate.vendorCompanyId != undefined && emailTemplate.vendorCompanyId > 0;
     if (isPartnerTemplate || this.isAutoResponseEmailTemplate) {
-      alert(emailTemplate.jsonBody);
       if (emailTemplate.jsonBody != undefined) {
         var request = function (method, url, data, type, callback) {
           var req = new XMLHttpRequest();

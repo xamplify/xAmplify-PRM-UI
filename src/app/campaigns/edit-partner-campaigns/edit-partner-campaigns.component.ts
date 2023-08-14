@@ -1539,17 +1539,17 @@ appendValueToSubjectLine(event:any){
 
     getUpdatedTemplateBodyAndJsonBody(input:any){
         let id = input.autoResponseId;
-        if (this.campaign.campaignReplies != undefined ) {
-            this.replies = this.campaign.campaignReplies;
+        if(this.replies!=undefined && this.replies.length>0){
             for ( var i = 0; i < this.replies.length; i++ ) {
                 let reply = this.replies[i];
-                if(reply.id==id){
-                    reply.jsonBody = input.jsonBody;
-                    reply.body = input.htmlBody;
-                }
-            }
+                 if(reply.id==id){
+                     reply.jsonBody = input.jsonBody;
+                     reply.htmlBody = input.htmlBody;
+                 } 
+             }
+     
         }
-
+      
     }
 
 
