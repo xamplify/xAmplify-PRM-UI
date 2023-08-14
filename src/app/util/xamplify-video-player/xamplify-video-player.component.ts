@@ -36,7 +36,7 @@ export class XamplifyVideoPlayerComponent implements OnInit {
  
 
   playNormalVideo() {
-    const str = '<video id=xamplify-video-player-id  poster=' + this.posterImg + ' preload="none"  class="video-js vjs-default-skin" controls ></video>';
+    const str = '<video id=xamplify-video-player-id muted="muted" poster=' + this.posterImg + ' preload="none"  class="video-js vjs-default-skin" controls ></video>';
     $('#xamplify-video-player').append(str);
     $('#xamplify-video-player-id').css('height', this.videoWidth);
     $('#xamplify-video-player-id').css('width', 'auto');
