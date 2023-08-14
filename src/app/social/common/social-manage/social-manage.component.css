@@ -1,84 +1,91 @@
-.ellipsis{overflow: hidden !important;}
+.ellipsis {
+  overflow: hidden !important;
+}
 .box {
-	padding: 5px;
+  padding: 5px;
 }
 
-.portlet > .portlet-title{min-height: auto;}
-.portlet-title h4{margin: 0.5em 0;
-    font-weight: 600;
-    color: #999;}
+.portlet > .portlet-title {
+  min-height: auto;
+}
+.portlet-title h4 {
+  margin: 0.5em 0;
+  font-weight: 600;
+  color: #999;
+}
 
 .text-center {
-	text-align: center;
+  text-align: center;
 }
 
-.portlet>.portlet-title>.caption {
-	float: none;
-	display: inherit;
+.portlet > .portlet-title > .caption {
+  float: none;
+  display: inherit;
 }
 
 .portlet.light .portlet-body {
-	padding: 0 1em;
+  padding: 0 1em;
 }
 
 .portlet.light.block:hover {
-	-webkit-box-shadow: 0 5px 20px rgba(0, 0, 0, .15);
-	box-shadow: 0 5px 20px rgba(0, 0, 0, .15);
-	cursor: pointer;
-	cursor: hand;
+  -webkit-box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  cursor: hand;
 }
-.delete-account{
-	position: absolute;
-	float: right;
-	right: 25px;
-	top: 25px;
-	cursor: pointer
+.delete-account {
+  position: absolute;
+  float: right;
+  right: 25px;
+  top: 25px;
+  cursor: pointer;
 }
-.fa-trash-o {visibility: hidden;}
-.box:hover .fa-trash-o{visibility: visible;}
+.fa-trash-o {
+  visibility: hidden;
+}
+.box:hover .fa-trash-o {
+  visibility: visible;
+}
 
 h4 {
-	margin: 0.5em;
-	font-weight: 500;
+  margin: 0.5em;
+  font-weight: 500;
 }
 
 h5 {
-	display: inline;
-	font-weight: 600;
+  display: inline;
+  font-weight: 600;
 }
 
 .btn {
-	min-width: 9.2em;
+  min-width: 9.2em;
 }
 
 .profile-picture {
-	height: 100px;
-	width: 100px;
-	border: 1px solid #e9e7e7;
-	margin: 20px auto;
+  height: 100px;
+  width: 100px;
+  border: 1px solid #e9e7e7;
+  margin: 20px auto;
 }
 
 .checked {
-	border: 1px solid #00a8e7;
+  border: 1px solid #00a8e7;
 }
 
 .unchecked {
-	opacity: 0.5;
+  opacity: 0.5;
 }
 
 .alert-success {
-	background-color: #77bf81;
-	color: #ffffff;
-	padding: 10px 20px;
+  background-color: #77bf81;
+  color: #ffffff;
+  padding: 10px 20px;
 }
 
-.swal2-cancel {
-	background-color: #cfd8dc;
-}
-.fa-2x, .fa-stack-2x {
-    font-size: 2em !important;
+.fa-2x {
+  font-size: 2em !important;
 }
 /* 31-07-2023 */
 .sidepaddings-zero {
-    padding: 0px;
+  padding: 0px;
 }

@@ -1,39 +1,35 @@
-.center-aligned{
-	text-align: center;
+.center-aligned {
+  text-align: center;
 }
-#right-padding{
-	right: 0;
+
+#float-right {
+  float: right;
 }
-#float-right{
-	float: right;
+#over-flow-y {
+  overflow-y: hidden;
 }
-#over-flow-y{
-	overflow-y: hidden;
+#min-height {
+  min-height: 400px;
 }
-#min-height{
-	min-height: 400px;
-}
-#hidden-min-height{
-min-height: 300px;
-}
-@keyframes placeHolderShimmer{
-    0%{
-        background-position: -468px 0
-    }
-    100%{
-        background-position: 468px 0
-    }
+
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
 }
 
 .animated-background {
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
-    animation-iteration-count: infinite;
-    animation-name: placeHolderShimmer;
-    animation-timing-function: linear;
-    background: #f6f7f8;
-    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
-    background-size: 800px 104px;
-    height: 370px;
-    position: relative;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background: #f6f7f8;
+  background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+  background-size: 800px 104px;
+  height: 370px;
+  position: relative;
 }

@@ -7,9 +7,9 @@
             <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;position: relative;
             top: 4px;" aria-hidden="true"></span></a>
         <div class="page-bar" style="padding: 3px;margin-bottom: 1px;margin-right: -15px;margin-left: -15px; ">
-            <div class="col-md-6 col-lg-6 track-title" title="{{tracksPlayBook.title}}">
+            <div class="col-md-6 col-lg-6 track-title">
                 <div class="title-class breadcrumb-font-color" style="color: #888;font-size: 13px;text-shadow: none;"> Title:</div>
-                <a class="title padding_bottom breadcrumb-font-color" style="color: #888;font-size: 13px;text-shadow: none; padding-top: 10px;">{{tracksPlayBook.title}}</a>
+                <a class="title padding_bottom breadcrumb-font-color" style="color: #888;font-size: 13px;text-shadow: none; padding-top: 10px;" data-toggle="tooltip" data-placement="bottom" title="{{tracksPlayBook.title}}">{{tracksPlayBook.title}}</a>
             </div>                    
         </div>
     </div>
@@ -20,13 +20,12 @@
     <ng-container *ngIf="tracksPlayBook != undefined && !httpRequestLoader.isLoading">
             <div class="row">
                 <section *ngIf="showTracksPlayBook">
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="padding-right: 0px;">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="padding-right: 0px;">
                         <div class="page-bar leftBar" style="padding: 0px;">
                             <div class="col-md-12 col-lg-12 border-line" style="border:0px !important"
                                 >
                                 <div class="row">
-                                    <div class="col-md-6 col-lg-6 track-title text-color content-bg"
-                                  >
+                                    <div class="col-md-6 col-lg-6 track-title text-color content-bg">
                                         <div class="title-class">Title:</div>
                                         <a class="title padding_bottom text-color content-bg"
                                         data-toggle="tooltip" data-placement="right"
@@ -39,21 +38,19 @@
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding_bottom">
-                                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 padding-none">
-                                    <img class="img-asset-class" [src]="tracksPlayBook.featuredImage" alt=""
-                                        onerror="this.src='assets/images/content/image.png';" style="height: 123px !important;
-                                                                                                       width: 200px !important;">
+                                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 padding-none">
+                                    <img class="img-asset-class img_fit-content" [src]="tracksPlayBook.featuredImage" alt=""
+                                        onerror="this.src='assets/images/content/image.png';" style="height: 123px;
+                                                                                                       width: 200px;">
                                 </div>
-                                <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                                <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
                                     <div class="center" style="padding-top: 10px;" 
                                     data-toggle="tooltip" data-placement="bottom"
                                     title="{{tracksPlayBook.createdByName}}"
                                         translate>
                                         Created By <strong>{{tracksPlayBook.createdByName}}</strong>
                                     </div>
-                                    <div class="center" style="padding-top: 10px;"
-                                    data-toggle="tooltip" data-placement="bottom"
-                                     title="{{tracksPlayBook.createdTime}}" translate>
+                                    <div class="center" style="padding-top: 10px;">
                                         Created On
                                         <strong>
                                             <app-timestamp [showInLine]="'true'" [dateAndTime]="tracksPlayBook.createdTime">
@@ -93,7 +90,7 @@
                         </div>
                     </div>
                     </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <div>
                             <div *ngIf="showAsset">
                                 <div>
@@ -107,19 +104,17 @@
                                                             <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 breadcrumb-font-color" style="color: #888;padding-right:5px;">
                                                                 <a (click)="closeView();closeVideoPlayer()" class="pull-right close-circle" style="margin:5px 0px 4px 0px;">
                                                                     <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-                                                                <h4 class="name-wrap" style="font-size: 15px;font-weight: bold;"
-                                                                 data-toggle="tooltip" data-placement="bottom"
-                                                                 title="{{tracksPlayBook.title}}">
+                                                                <h4 class="name-wrap" style="font-size: 15px;font-weight: bold;">
                                                                     <div class="title-class"> Title:</div>
-                                                                    <a class="title padding_bottom breadcrumb-font-color" style="font-size: 15px; padding-top: 10px;color: #888;">{{tracksPlayBook.title}}</a>
+                                                                    <a class="title padding_bottom breadcrumb-font-color" style="font-size: 15px; padding-top: 10px;color: #888;" data-toggle="tooltip" data-placement="top"
+                                                                    title="{{tracksPlayBook.title}}">{{tracksPlayBook.title}}</a>
                                                                 </h4>
                                                             </div>
                                                             <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 asset-name-class">
-                                                                <h4 class="name-wrap title-height" style="font-size: 15px;font-weight: bold;" 
-                                                                data-toggle="tooltip" data-placement="bottom"
-                                                                title="{{assetDetails?.assetName}}">
+                                                                <h4 class="name-wrap title-height" style="font-size: 15px;font-weight: bold;">
                                                                     <div class="Asset-title-class">Asset Title:</div>
-                                                                    <strong>{{assetDetails?.assetName}}</strong>
+                                                                    <strong  data-toggle="tooltip" data-placement="bottom"
+                                                                    title="{{assetDetails?.assetName}}">{{assetDetails?.assetName}}</strong>
                                                                 </h4>
                                                             </div>
                                                         </div>
@@ -128,11 +123,11 @@
                                                                 <img class="img-class" src="{{assetDetails?.thumbnailPath}}"
                                                                     alt="No Image Found">
                                                             </div>
-                                                            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                                                            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 mb_pr0">
                                                                 <div class="center title-height" style="padding: 10px;margin: 0 !important;font-size: 14px;" 
-                                                                data-toggle="tooltip" data-placement="bottom" title="{{assetDetails.assetType}}"
+                                                                
                                                                     translate>
-                                                                    <strong>Type: </strong>{{assetDetails.assetType}}<br>
+                                                                    <strong data-toggle="tooltip" data-placement="top" title="{{assetDetails.assetType}}">Type: {{assetDetails.assetType}}</strong><br>
                                                                 </div>
                                                                 <a class="btn btn-primary" (click)="assetPreview(assetDetails)">View</a>
                                                                 <a *ngIf="assetDetails?.assetType!='mp4'" class="btn btn-primary" [ngClass]="{'isDisabled' : !assetDetails?.thumbnailPath}"
@@ -156,8 +151,8 @@
                         </div>
                     </div>
                 </section> 
-                <section class="col-xs-6 col-sm-6 col-md-6 col-lg-6" *ngIf="showAsset || showTracksPlayBook">
-                    <div class="col-md-12 col-lg-12 color-inline border-line">
+                <section class="col-xs-12 col-sm-6 col-md-6 col-lg-6" *ngIf="showAsset || showTracksPlayBook">
+                    <div class=" col-md-12 col-lg-12 color-inline border-line">
                         <div style="display: inline;position: absolute;margin-top:7px !important;margin-left:3px;">
                             <a class="title padding_bottom text-color content-bg row-space" style="font-size: 15px; padding-top: 10px;padding-bottom: 9px;border-bottom:none !important">Content</a>
                         </div>
@@ -167,7 +162,7 @@
                         </app-list-loader>
                         <!---List View----->
                         <section *ngIf="modulesDisplayType.isListView && !trackViewLoader">
-                            <div class="table-responsive" style="float: left;">
+                            <div class="table-responsive tab_float_unset" style="float: left;">
                                 <table class='table tgrid table-hover table-sm' id="manage-assets-table"
                                     *ngIf="tracksPlayBook.contents?.length>0" aria-describedby="manageAssetTables">
                                     <thead>
@@ -196,7 +191,7 @@
                                                                 class="overlay-icon">
                                                                 <button
                                                                     [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
-                                                                    class="list-play-icon-wrap" data-toggle="tooltip" data-placement="bottom"  title="View"
+                                                                    class="list-play-icon-wrap" data-toggle="tooltip" data-placement="top"  title="View"
                                                                     (click)="$event.stopPropagation();viewContent(content, i)">
                                                                     <i class="fa fa-play list-play-icon"></i>
                                                                 </button>
@@ -205,7 +200,7 @@
                                                                 class="overlay-icon">
                                                                 <button
                                                                     [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
-                                                                    class="list-play-icon-wrap" data-toggle="tooltip" data-placement="bottom" title="View"
+                                                                    class="list-play-icon-wrap" data-toggle="tooltip" data-placement="top" title="View"
                                                                     (click)="$event.stopPropagation();viewContent(content, i)">
                                                                     <i class="fa fa-file list-file-icon"></i>
                                                                 </button>

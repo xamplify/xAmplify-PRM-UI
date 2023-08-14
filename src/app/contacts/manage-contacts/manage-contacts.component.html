@@ -74,10 +74,10 @@
                            *ngIf="contactsByType.selectedCategory == 'all'" aria-hidden="true"></i>
                         </div>
                         <div class="details">
-                           <div class="number">
+                           <div class="number NumberFontDecrease">
                               {{contactsByType.allContactsCount}}
                            </div>
-                           <div class="desc fz-16"  translate>
+                           <div class="desc fz-16 TextFontDecrease"  translate>
                               All
                            </div>
                         </div>
@@ -99,10 +99,10 @@
                         *ngIf="contactsByType.selectedCategory == 'active'" aria-hidden="true"></i>
                      </div>
                      <div class="details">
-                        <div class="number numberCss" style="font-weight: 300 !important; color: #FFFFFF;">
+                        <div class="number numberCss NumberFontDecrease" style="font-weight: 300 !important; color: #FFFFFF;">
                            {{contactsByType.activeContactsCount}}
                         </div>
-                        <div class="desc fz-16"  translate>
+                        <div class="desc fz-16 TextFontDecrease"  translate>
                            Registered
                            <!-- {{checkingContactTypeName}}s -->
                         </div>
@@ -125,10 +125,10 @@
                      *ngIf="contactsByType.selectedCategory == 'non-active'" aria-hidden="true"></i>
                   </div>
                   <div class="details">
-                     <div class="number">
+                     <div class="number NumberFontDecrease">
                         {{contactsByType.inactiveContactsCount}}
                      </div>
-                     <div class="desc fz-16"  translate>
+                     <div class="desc fz-16 TextFontDecrease"  translate>
                         Unregistered
                         <!-- {{checkingContactTypeName}}s -->
                      </div>
@@ -150,10 +150,10 @@
                   *ngIf="contactsByType.selectedCategory == 'valid'" aria-hidden="true"></i>
                </div>
                <div class="details">
-                  <div class="number">
+                  <div class="number NumberFontDecrease">
                      {{contactsByType.validContactsCount}}
                   </div>
-                  <div class="desc fz-16"  translate>
+                  <div class="desc fz-16 TextFontDecrease"  translate>
                      Valid
                   </div>
                </div>
@@ -174,10 +174,10 @@
                   *ngIf="contactsByType.selectedCategory == 'invalid'" aria-hidden="true"></i>
                </div>
                <div class="details">
-                  <div class="number">
+                  <div class="number NumberFontDecrease">
                      {{contactsByType.invalidContactsCount}}
                   </div>
-                  <div class="desc fz-16"  translate>
+                  <div class="desc fz-16 TextFontDecrease"  translate>
                      Undeliverable
                      <!-- {{checkingContactTypeName}}s -->
                      <i class="fa fa-check-circle"
@@ -204,10 +204,10 @@
                   *ngIf="contactsByType.selectedCategory == 'unsubscribe'" aria-hidden="true"></i>
                </div>
                <div class="details">
-                  <div class="number">
+                  <div class="number NumberFontDecrease">
                      {{contactsByType.unsubscribedContactsCount}}
                   </div>
-                  <div class="desc fz-16"  translate>
+                  <div class="desc fz-16 TextFontDecrease"  translate>
                      Unsubscribed
                      <!-- {{checkingContactTypeName}}s -->
                   </div>
@@ -895,7 +895,7 @@
                                  <th  scope="row" *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs"
                                     translate>EMAIL CATEGORY</th>
                                  <th  scope="row" style="width: 25%" *ngIf="isPartner" translate>Entity info</th>
-                                 <th  scope="row" class="text-center hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
+                                 <th  scope="row" class="text-center hidden-xs" *ngIf="!isPartner" translate style="width:200px;">Job Title</th>
                                  <th  scope="row" class="text-center hidden-xs" *ngIf="!isPartner" translate>ADDRESS</th>
                                  <th  scope="row" class="text-center" *ngIf="isPartner"></th>
                                  <th scope="row" *ngIf="contactsByType.selectedCategory == 'unsubscribe'" class="hidden-xs" translate >

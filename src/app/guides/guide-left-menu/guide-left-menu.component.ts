@@ -15,10 +15,9 @@ import { UserService } from 'app/core/services/user.service';
 import { SocialPagerService } from 'app/contacts/services/social-pager.service';
 import { MenuItem } from 'app/core/models/menu-item';
 import { Module } from 'app/core/models/module';
-import { ModuleCustomName } from 'app/dashboard/models/module-custom-name';
-import { EEXIST } from 'constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { UserGuideDashboardDto } from '../models/user-guide-dashboard-dto';
 
 var $: any;
 @Component({
@@ -49,15 +48,14 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 	guideLink: any;
 	guideLinkIframe: any;
 	userGuides: UserGuide[];
-	//mergeTag: any;
 	slug: any;
 	userGuideLink: any;
 	userGudeTitles: UserGuide[] = [];
 	showListId = "";
+	userGuideDashboardDto:UserGuideDashboardDto = new UserGuideDashboardDto();
 	constructor(private route: ActivatedRoute, public authenticationService: AuthenticationService, public dashboardService: DashboardService,
 		public userService: UserService, public utilService: UtilService, public router: Router, public location: Location,
 		public sanitizer: DomSanitizer, public refService: ReferenceService, public pagerService: PagerService, public socialPagerService: SocialPagerService) {
-		/**** XNFR-134 ****/
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.pagination.userId = this.loggedInUserId;
 		let companyProfileName = this.authenticationService.companyProfileName;
@@ -66,16 +64,17 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 			this.pagination.vanityUrlFilter = true;
 		} else {
 			this.pagination.vanityUrlFilter = false;
+			this.pagination.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
 		}
 	}
 	statusCode: any;
 	isProgress:boolean = false;
+	isSlug:boolean = false;
 	getUserGuideBySlug(pagination: Pagination) {
 		this.loading = true;
+		this.ngxLoading = false;
 		this.isSearch = false;
 		this.pagination.slug = this.slug;
-		this.isError = false;
-		this.isProgress = false;
 		this.dashboardService.getGuideGuideBySlug(pagination).subscribe(
 			(response) => {
 				if (response.statusCode === 200) {
@@ -90,18 +89,21 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 				} else if (response.statusCode === 404) {
 					this.isSearch = false;
 					this.loading = false;
-					this.progressGuides();
+					this.ngxLoading = false;
 					this.statusCode = 404;
 				} else if(response.statusCode === 403){
 					this.isSearch = false;
 					this.loading = false;
-					this.isProgress = false;
-					this.statusCode = 500;
+					this.ngxLoading = false;
+					this.isSlug = true;
+					if (this.slug === 'vanity_prm_account_dashboard' || this.slug === 'vanity_marketing_account_dashboard') {
+						this.statusCode = 404;
+					} else {
+						this.statusCode = 500;
+					}
 				}
-				this.loading = false;
 			}, (error: any) => {
 				this.loading = false;
-				// this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
 			})
 	}
 	expansionModuleName: any;
@@ -150,46 +152,28 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 	isShowSearchResults:boolean = false;
 	getSearchKey(event: any) {
 		this.searchKey = event;
-		this.loading = false;
-		// this.resetResponse();
-		//this.pagination.searchWithModuleName = false;
-		//this.pagination.searchKey = this.searchKey;
-	    //this.pagination.pageIndex = 1;
-		// this.statusCode = 200;
-		this.isError = false;
+		this.loading = true;
 		this.isSearch = true;
-		this.isProgress = false;
-		this.isDashBoard = false;
+		this.pagination.searchKey = this.searchKey
+		this.getSearchResultsOfUserGuides(this.pagination);
 		if(this.statusCode === 404) {
          this.isShowSearchResults = true;
+		} else {
+			this.isShowSearchResults = false;
 		}
-	    //this.getUserGuidesByModuleName("");
-		this.loading = false;
-	}
-	isError:boolean = false;
-	goToProcessing() {
-		this.loading = false;
-		this.isError = true;
-		this.loading= false;
-	}
-	progressGuides() {
-		this.loading = false;
-		this.isProgress = true;
 		this.loading = false;
 	}
 
 	ngOnInit() {
 		let currentUrl = this.router.url;
 		if (currentUrl.includes('/home/help/search')) {
-			// this.pagination.searchWithModuleName = true;
 			this.searchKey = this.route.snapshot.params['moduleName'];
 			if(this.searchKey === undefined){
 				this.searchKey = "";
 			}
-			//this.getSearchKey(this.searchKey)
-			//this.isSearch = true;
-			//this.pagination.searchKey = this.searchKey;
-			this.getUserGuidesByModuleName("");
+			this.isSearch = true;
+			this.pagination.searchKey = this.searchKey;
+			this.getSearchResultsOfUserGuides(this.pagination);
 		} else {
 			this.slug = this.route.snapshot.params['slug'];
 			this.pagination.slug = this.slug;
@@ -200,12 +184,10 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 		this.findMenuItems();
 	}
 	ngOnChanges() {
-		if (this.searchKey === "" && this.searchKey === undefined) {
-			this.getUserGuidesByModuleName(this.searchKey);
-		}
 	}
 	findMenuItems() {
 		this.loading = true;
+		this.ngxLoading = false;
 		let module = this.authenticationService.module;
 		module.contentLoader = true;
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
@@ -306,8 +288,6 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 							this.authenticationService.logout();
 						}, 7000);
 					}
-					// this.authenticationService.module.showAddLeadOrDealButtonInMyProfileSection = data.showAddLeadOrDealButtonInMyProfileSection;
-					// this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
@@ -420,25 +400,20 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 		this.refService.loading(this.httpRequestLoader, true);
 		this.httpRequestLoader.isHorizontalCss = true;
 		this.loading = true;
+		this.ngxLoading = false;
 		this.showListId = "";
-		this.isSearch = false;
 		this.userGudeTitles = [];
 		this.showListId = moduleName;
 		this.pagination.moduleName = moduleName;
-		this.isError = false;
-		this.isProgress = false;
 		this.dashboardService.getUserGuidesByModuleName(this.pagination).subscribe(
 			(response) => {
 				if (response.statusCode === 200) {
-					this.statusCode = 200;
 					this.userGudeTitles = response.data;
 					console.log(this.userGudeTitles)
 					this.loading = false;
 				} else {
-					this.statusCode = 200;
 					this.loading = false;
 				}
-				this.loading =  false;
 			}, (error: any) => {
 				this.loading = false;
 				this.refService.loading(this.httpRequestLoader, false);
@@ -448,19 +423,19 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 	gotoHome() {
 		this.router.navigate(['home/help/guides']);
 	}
-
+   activeClass="";
 	getGuideLinkByTitle(title: string) {
-		//this.showListId = "";
+		this.ngxLoading = true;
 		this.isShowSearchResults = false;
-		this.dashboardService.getGuideLinkByTitle(title).subscribe(
+		this.pagination.guideTitle = title;
+		this.dashboardService.getGuideLinkByTitle(this.pagination).subscribe(
 			(response) => {
-				this.loading = false;
+				this.ngxLoading = false;
 				this.isSearch = false;
 				this.searchKey = "";
-				this.isError = false;
-				this.isProgress = false;
 				if (response.statusCode === 200) {
 					this.statusCode = 200;
+					this.isSlug = false;
 					let map = response.map;
 					this.userGuide.title = title;
 					this.userGuideLink = map.link;
@@ -468,30 +443,151 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 					this.expansionOfDIvByModuleId(map.moduleId);
 					this.guideLinkIframe = this.sanitizer.bypassSecurityTrustHtml('<iframe  width="100%" height="1110" src=' + this.userGuideLink + ' frameborder="0" allowfullscreen></iframe>');
 					this.location.replaceState('home/help/' + this.slug);
+				} else if (response.statusCode === 404){
+                  this.statusCode = 404;
 				} else {
 					this.statusCode = 500;
 				}
 				this.refService.scrollSmoothToTop();
-				this.loading = false;
+				this.ngxLoading = false;
 			}, (error: any) => {
-				this.loading = false;
+				this.ngxLoading = false;
 				this.refService.loading(this.httpRequestLoader, false);
 				this.refService.scrollSmoothToTop();
 			})
 	}
 	dashBoardTitle= "";
-	isDashBoard = false;
 	getGuideLinkByType() {
-		if (this.authenticationService.module.isVendor) {
-			this.getGuideLinkByTitle('Account Dashboard')
-		} else if(this.authenticationService.module.isOnlyPartnerCompany) {
-			this.getGuideLinkByTitle('Partner Account Dashboard')
-		} else {
-			this.goToProcessing();
-            this.dashBoardTitle = "Account Dashboard";
-			this.isDashBoard = true;
-			this.isSearch = true;
-		}
+		this.ngxLoading = true;
+		this.loading = false;
+		this.dashboardService.getUserGuidesForDashBoard(this.vanityLoginDto)
+		.subscribe(
+		  data => {
+			this.userGuideDashboardDto = data.data;
+			if(this.userGuideDashboardDto.partnerLoggedInThroughVanityUrl){
+				this.getGuideLinkByTitle('Partner Account Dashboard');
+			} else if (this.userGuideDashboardDto.vendorLoggedInThroughOwnVanityUrl) {
+				if (this.userGuideDashboardDto.orgAdminCompany || this.userGuideDashboardDto.vendorCompany) {
+				this.getGuideLinkByTitle('Vendor Vanity Account Dashboard')
+				}else if(this.userGuideDashboardDto.prmCompany) {
+				 this.statusCode = 404;
+                 this.pagination.guideTitle = "Prm Account Dasboard"
+				} else {
+					this.statusCode = 404;
+					this.pagination.guideTitle = "Marketing Account Dasboard"
+				}
+			} else {
+				if(this.userGuideDashboardDto.vendorCompany){
+					this.getGuideLinkByTitle('Account Dashboard')
+				} else if(this.userGuideDashboardDto.marketingCompany){
+					this.getGuideLinkByTitle('Marketing Account Dashboard');
+				} else if(this.userGuideDashboardDto.orgAdminCompany) {
+					this.getGuideLinkByTitle('Orgadmin Account Dashboard')
+				} else if(this.userGuideDashboardDto.prmCompany) {
+					this.getGuideLinkByTitle('PRM Account Dashboard');
+				} else {
+					this.getGuideLinkByTitle('Partner Account Dashboard');
+				}
+			}
+		},
+		  error => {
+			console.log(error);
+		  }
+		);  
+		this.isSearch = false;
+		this.ngxLoading = false;
+		this.loading = false;
 	}
+
+	/***** Search Results  ***/
+	getSearchResultByModuleName(){
+		if (this.searchKey.toLowerCase() === 'Campaign'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase() === 'Account Dashboard'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase() === 'Contacts'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'Content'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'DAM'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'Design'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'Forms'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'MDF'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'Opportunities'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'Pages'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'Partner'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'Play Book'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'Share Leads'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'Shared Leads'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'Social Feeds'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'Team'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'Templates'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'Track Builder'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else if (this.searchKey.toLowerCase()  === 'Configuration'.toLowerCase()) {
+		  this.pagination.searchWithModuleName = true;
+			} else {
+		  this.pagination.searchWithModuleName = false;
+	
+		}
+	  }
+	ngxLoading = false;
+	getSearchResultsOfUserGuides(pagination: Pagination) {
+		this.loading = true;
+		this.ngxLoading = true;
+		this.refService.loading(this.httpRequestLoader, true);
+		this.httpRequestLoader.isHorizontalCss = true;
+		this.getSearchResultByModuleName();
+		this.dashboardService.getSearchResultsOfUserGuides(pagination).subscribe(
+		  (response) => {
+			if (response.statusCode === 200) {
+			  let userGuide = response.data;
+			  this.userGuides = userGuide.list;
+			  console.log(userGuide.totalRecords);
+			  console.log(userGuide.list)
+			  pagination.totalRecords = userGuide.totalRecords;
+			  pagination = this.pagerService.getPagedItems(pagination, userGuide.list);
+			  this.pager = this.socialPagerService.getPager(this.userGuides.length, this.pagination.pageIndex, this.pagination.maxResults);
+			  this.pagination.pagedItems = this.userGuides.slice(this.pager.startIndex, this.pager.endIndex + 1);
+			  this.location.replaceState('home/help/search');
+			  this.statusCode = 200;
+			  this.loading = false;
+			  this.ngxLoading = false;
+			  this.refService.loading(this.httpRequestLoader, false);
+
+			} else if(response.statusCode = 404){
+				this.statusCode = 404;
+				this.loading = false;
+				this.ngxLoading = false;
+
+			} else {
+			this.statusCode = 500;
+			 this.loading = false;
+			 this.ngxLoading = false;
+			}
+			this.refService.loading(this.httpRequestLoader, false);
+
+		  }, (error: any) => {
+			this.loading = false;
+			this.ngxLoading = false;
+		  })
+	  }
+		setPage(event: any) {
+			this.pagination.pageIndex = event.page;
+			this.getSearchResultsOfUserGuides(this.pagination);
+		}
 
 }  

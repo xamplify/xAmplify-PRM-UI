@@ -44,7 +44,7 @@ export const campaignRoutes: Routes = [
   { path: "partner/f/:categoryId", component: PartnerCampaignsComponent },
   { path: "partner/f/:categoryId/:type", component: PartnerCampaignsComponent },
   { path: "vendor/:type", component: PartnerCampaignsComponent },
-  { path: "re-distribute-campaign", component: EditPartnerCampaignsComponent },
+  { path: "re-distribute-campaign", component: EditPartnerCampaignsComponent,canDeactivate: [PendingChangesGuard] },
   { path: "preview/:id", component: PreviewCampaignComponent },
   { path: "event", component: EventCampaignComponent },
   { path: "event-preview/:id", component: EventCampaignComponent },

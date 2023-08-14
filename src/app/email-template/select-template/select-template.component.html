@@ -79,7 +79,7 @@
                         <div class="alert alert-info ml10 mr10 text-center" *ngIf="filteredCount?.count==0">
                             No Templates Available
                         </div>
-                        <div class="col-md-3 col-sm-4 col-xs-12 mrg_10" *ngFor="let beeRegularTemplate of filteredEmailTemplates | selectEmailTemplatesFilter: templateFilter:filteredCount;let i=index">
+                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 mrg_10" *ngFor="let beeRegularTemplate of filteredEmailTemplates | selectEmailTemplatesFilter: templateFilter:filteredCount;let i=index">
                             <div class="grid-box mb_hgh_grid">
                                 <div *ngIf="beeRegularTemplate.marketoTemplate" style="width: 100%;padding-left: 15px;">
                                     <label class="checkbox-inline" style="float:left;"><input type="checkbox" value="" style="width: 20px;height: 20px;"
@@ -136,7 +136,7 @@
                 <div id="htmlContent"></div>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
+                <a href="javascript:void(0)" data-dismiss="modal" class="btn Btn-Gray" style="float: right" translate>Close</a>
             </div>
         </div>
     </div>
@@ -189,7 +189,7 @@
             </div>
             <div class="modal-footer">
                 <div style="text-align: right;">
-                    <button class="btn btn-default" (click)="clearValues()" translate>Clear</button>
+                    <button class="btn Btn-Gray" (click)="clearValues()" translate>Clear</button>
                     <button class="btn btn-primary" [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitRetrieTemplates()" translate>Submit</button>
                 </div>
             </div>

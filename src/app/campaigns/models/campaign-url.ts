@@ -22,5 +22,10 @@ export class Url{
     actionId:number = 0;
     statusInString = 'ACTIVE';
     loader = false;
+     /***XNFR-330****/
+     htmlBody="";
+     jsonBody="";
+     customEmailTemplateId = 0;
+     /***XNFR-330****/
 
 }

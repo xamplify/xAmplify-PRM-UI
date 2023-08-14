@@ -270,6 +270,17 @@ export class HomeGuideComponent implements OnInit {
 		this.loading = false;
 	}
 
-	hideTilesDiv = true
+	hidePageBarClass = false
+	titlesByModuleId:any;
+	getTitlesByModule(moduleId:number){
+	 this.hidePageBarClass = true;
+     this.titlesByModuleId = moduleId;
+	 this.location.replaceState(this.authenticationService.DOMAIN_URL+'home/guide/'+moduleId);
+	 //this.router.navigate(["home/guides/"+moduleId]);
+	}
+	goToHome(){
+	this.hidePageBarClass = false;
+	//this.router.navigate(['home/help/guides']);
+	}
 	
 }

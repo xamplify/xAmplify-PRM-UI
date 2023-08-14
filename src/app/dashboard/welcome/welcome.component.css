@@ -127,3 +127,25 @@
 .msg-color{
   color: #555555
 }
+
+a.UserguideBtnCustomization {
+  border-radius: 4px;
+  font-weight: 600;
+  padding: 12px 41px;
+  background-color: #26a69a;
+  border-color: #26a69a;
+  position: relative;
+  color: #fff;
+}
+
+a.UserguideBtnCustomization:hover {
+  background-color: #1f897f;
+  border-color: #1f897f;
+  color: #fff;
+}
+.Btn-transparent{
+  background: transparent;
+}
+.Btn-transparent:hover{
+  background: transparent;
+}

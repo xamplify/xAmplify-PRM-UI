@@ -122,6 +122,9 @@ a.disabled {
   .mWidthSort {
     width: 75.333333% !important;
   }
+  .mb_btn{
+    padding: 6px 10px!important;
+  }
 }
 @media (max-width: 425px) {
   .pr15 {

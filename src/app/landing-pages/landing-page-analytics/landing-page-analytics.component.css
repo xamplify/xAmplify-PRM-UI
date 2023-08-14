@@ -1,60 +1,13 @@
-#disabled-icon {
-	border: none;
-	margin: 0px 15px 0 0;
-	cursor: default;
-}
-
-.blur {
-	-webkit-filter: blur(1px);
-	-moz-filter: blur(1px);
-	-o-filter: blur(1px);
-	-ms-filter: blur(1px);
-	filter: blur(1px);
-}
-
-#left-float {
-	float: left;
-}
-
-#notification {
-	background-color: #ed1c24;
-	color: white;
-	margin-bottom: 25px;
-	margin-left: -25px;
-	margin-top: -5px;
-}
-
-#search-margin {
-	margin-right: 15px;
-}
-
-#icon-right {
-	position: relative;
-	right: -11px;
-}
-
-#search-text {
-	height: 34px;
-}
-
-.fa.fa-refresh.margin {
-	line-height: 15px;
-}
-
-.right-float {
-	float: left;
-}
-
 #font {
-	font-size: 13px;
+  font-size: 13px;
 }
 
 #empty-data {
-	position: absolute;
-	top: 195px;
-	left: 220px;
+  position: absolute;
+  top: 195px;
+  left: 220px;
 }
 
-#min-height{
-	min-height: 308px;
+#min-height {
+  min-height: 308px;
 }

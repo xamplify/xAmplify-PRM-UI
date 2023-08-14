@@ -99,7 +99,9 @@
                                         <ng-container *ngIf="!isPartnerView">
                                             <th class="text-center"></th>
                                         </ng-container>
+
                                         <th class="text-center" id="min-width" translate>Actions</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -273,6 +275,7 @@
                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                                 </a>
                                 </div>
+
                               <div class="btnAlignPad mbtnAlignPad">
                                 <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Delete" class="delete" (click)="confirmDelete(learningTrack.id)">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>

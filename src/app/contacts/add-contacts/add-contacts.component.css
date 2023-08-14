@@ -15,7 +15,7 @@
 }
 .add-options span {
   display: block;
-  font-size: 14px;
+  font-size: 12px;
   text-align: center;
 }
 .add-options .portlet-body {
@@ -76,7 +76,7 @@
   position: relative;
   font-size: 19px;
   top: -81px;
-  left: 71px;
+  left: 68px;
 }
 @media only screen and (max-width: 1024px) and (min-width: 601px) {
   .cloud-css {
@@ -103,4 +103,39 @@
 .border {
   padding-left: 50px;
   margin-left: 55px;
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1340px) {
+  .add-options span {
+    font-size: 10px;
+  }
+}
+
+/* 10-08-2023 */
+.SidePaddings {
+  padding: 10px 10px;
+}
+.SideParddings1 {
+  padding-top: 0px;
+  padding-right: 10px;
+  padding-bottom: 0px;
+  padding-left: 15px;
+}
+.SideParddings2 {
+  padding: 0px;
+}
+.SideParddings3 {
+  padding-top: 0px;
+  padding-right: 15px;
+  padding-bottom: 0px;
+  padding-left: 10px;
+}
+i.IconTopMargin {
+  margin-top: 10px !important;
+}
+i.fa.fa-file-excel-o.IconTopMargin {
+  margin-top: 10px !important;
+}
+@media only screen and (min-width: 1200px) and (max-width: 1260px) {
+  .SidePaddings span{font-size: 10px !important;}
 }

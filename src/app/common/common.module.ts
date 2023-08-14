@@ -133,6 +133,7 @@ import { XamplifyVideoPlayerComponent } from 'app/util/xamplify-video-player/xam
 import { SendTestEmailComponent } from 'app/util/send-test-email/send-test-email.component';
 import { AddMultipleEmailsInputComponent } from 'app/util/add-multiple-emails-input/add-multiple-emails-input.component';
 import { CampaignListAndGridViewComponent } from 'app/util/campaign-list-and-grid-view/campaign-list-and-grid-view.component';
+import { HomeGuideComponent } from 'app/guides/home-guide/home-guide.component';
 
 
 
@@ -159,7 +160,7 @@ import { CampaignListAndGridViewComponent } from 'app/util/campaign-list-and-gri
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,
 		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
-		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent],
+		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,HomeGuideComponent],
 
 
 

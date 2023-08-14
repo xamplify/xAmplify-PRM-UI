@@ -508,7 +508,12 @@ tr {
 .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle {
   background-color:#22313a !important;
 } */
-.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown-user
+  .dropdown-toggle
+  > img {
   border: 1px solid #2f4857 !important;
 }
 .profile-image-wrapper-color {
@@ -1542,7 +1547,7 @@ a.dropdown-toggle.circlebg-none-v:hover {
   > i {
   color: #fff !important;
 }
-@media only screen and (min-width: 300px) and (max-width: 580px) {  
+@media only screen and (min-width: 300px) and (max-width: 580px) {
   a.dropdown-toggle.circlebg-none-v {
     background: transparent !important;
     border: none !important;
@@ -1550,13 +1555,23 @@ a.dropdown-toggle.circlebg-none-v:hover {
   a.dropdown-toggle.circlebg-none-v:hover {
     background: transparent !important;
   }
-  .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
+  .page-header.navbar
+    .top-menu
+    .navbar-nav
+    > li.dropdown-user
+    .dropdown-toggle
+    > img {
     border: 1px solid #5a738e !important;
   }
-  .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle:hover {
+  .page-header.navbar
+    .top-menu
+    .navbar-nav
+    > li.dropdown
+    > .dropdown-toggle:hover {
     background-color: transparent !important;
-  } 
-  .page-header.navbar.top-menu.navbar-nav> li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
+  }
+  .page-header.navbar.top-menu.navbar-nav
+    > li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
     background-color: transparent !important;
   }
 }
@@ -1802,7 +1817,8 @@ input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:active, input.
   border: none !important;
   outline: none !important;
 } */
-.search-box-item-clear, input {
+.search-box-item-clear,
+input {
   background: transparent;
   fill: none;
 }
@@ -1810,3 +1826,13 @@ input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:active, input.
   border: none !important;
   outline: none !important;
 } */
+
+/* 08-08-2023 */
+#CardBgforSection {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
+/* 10-8-2023 sudha sri */
+input#copy-link {
+  background-color: #2b3c46 !important;
+}

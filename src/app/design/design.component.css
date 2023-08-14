@@ -49,16 +49,18 @@ h5 {
 }
 .header-text-css {
   text-align: center;
-  padding-left: 10px;
-  padding-bottom: 11px;
   border-bottom: 1px solid #ddd;
+  padding: 10px;
+  margin: 0px;
+  cursor: auto;
 }
 .header-description-css {
   text-align: center;
   color: #888;
   font-size: 14px;
-  padding: 10px;
-  height: 76px;
+  padding: 10px 10px;
+  height: auto;
+  cursor: auto;
 }
 .portlet .light {
   padding: 0px !important;
@@ -73,4 +75,16 @@ p {
 }
 .portlet > .portlet-title {
   border-bottom: none !important;
+}
+
+@media (min-width: 1133px) and (max-width: 1261px) {
+  .header-description-css {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 1000px) and (max-width: 1132px) {
+  .header-description-css {
+    font-size: 10px;
+  }
 }

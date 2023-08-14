@@ -1,6 +1,7 @@
 .pagebody {
   overflow-x: hidden;
   overflow-y: scroll;
+  background: #f1f5f9;
 }
 td.pad> div {
   font-family: 'Gantari', Arial, Helvetica, sans-serif !important;

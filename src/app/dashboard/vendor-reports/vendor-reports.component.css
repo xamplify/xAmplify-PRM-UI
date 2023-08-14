@@ -164,3 +164,6 @@
 .card-bgcolor, .content-bg {
   border-radius: 0px 0px 6px 6px;
 }
+.fontControl h5 {
+  font-size: 12px;
+}
