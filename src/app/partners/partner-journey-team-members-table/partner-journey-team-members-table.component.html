@@ -12,6 +12,14 @@
           <i class="fa fa-search" aria-hidden="true"></i></button>
       </div>
     </span>
+    <span class="pull-right mt25m">
+      <select class="form-control" [(ngModel)]="teamMemberId" [ngModelOptions]="{standalone: true}" placeholder="teamMemberId"
+        id="teamMemberId" (ngModelChange)="onChangeTeamMember()">
+        <option [value]="0">Select a Member</option>
+        <option *ngFor="let teamMember of teamEmails" [value]="teamMember.userId">{{teamMember.emailId}}
+        </option>
+      </select>
+    </span>
   </div>
   <div class="panel-body">
     <div class="scroll">

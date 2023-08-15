@@ -15,7 +15,6 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 })
 export class PartnerJourneyCompanyInfoComponent implements OnInit {
   @Input() partnerCompanyId: any;
-  @Input() teamMemberId: any;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;

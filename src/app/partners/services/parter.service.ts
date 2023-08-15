@@ -228,6 +228,12 @@ export class ParterService {
             .catch( this.handleError );
     }
 
+    getPartnerJourneyTeamEmails(partnerJourneyRequest: PartnerJourneyRequest) {
+        const url = this.URL + 'partner/journey/team/emails?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, partnerJourneyRequest )
+            .catch( this.handleError );
+    }
+
     getPartnerJourneyCounts(partnerJourneyRequest: PartnerJourneyRequest) {
         const url = this.URL + 'partner/journey/counts?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post( url, partnerJourneyRequest )

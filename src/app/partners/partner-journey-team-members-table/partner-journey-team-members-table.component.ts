@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -8,6 +8,7 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from 'app/core/models/sort-option';
+import { PartnerJourneyRequest } from '../models/partner-journey-request';
 
 @Component({
   selector: 'app-partner-journey-team-members-table',
@@ -16,14 +17,16 @@ import { SortOption } from 'app/core/models/sort-option';
   providers: [SortOption]
 })
 export class PartnerJourneyTeamMembersTableComponent implements OnInit {
-  @Input() partnerCompanyId: any;
-  @Input() teamMemberId: any;
+  @Input() partnerCompanyId: any;  
+  @Output() notifyTeamMemberSelection = new EventEmitter();
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
-
+  teamEmails: any = [];
+  teamMemberId: any = 0;
+ 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
     public pagerService: PagerService, public utilService: UtilService,
@@ -33,6 +36,7 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
 
   ngOnInit() {    
     this.getTeamInfo(this.pagination);
+    this.getTeamEmails();
   }
 
   getTeamInfo(pagination : Pagination) {
@@ -41,7 +45,9 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
       this.pagination.teamMemberId = this.teamMemberId;
-    }    
+    } else {
+      this.pagination.teamMemberId = undefined;
+    }
     this.parterService.getPartnerJourneyTeamInfo(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
@@ -96,6 +102,30 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
         pagination.sortcolumn = options[0];
         pagination.sortingOrder = options[1];
     }
+  }
+
+  onChangeTeamMember() {
+    this.notifyTeamMemberSelection.emit(this.teamMemberId);
+    this.getTeamInfo(this.pagination);
+  }
+
+  getTeamEmails() {
+    this.referenseService.loading(this.httpRequestLoader, true);
+    let partnerJourneyRequest = new PartnerJourneyRequest();
+    partnerJourneyRequest.loggedInUserId = this.loggedInUserId;
+    partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
+    this.parterService.getPartnerJourneyTeamEmails(partnerJourneyRequest).subscribe(
+			(response: any) => {	
+        this.referenseService.loading(this.httpRequestLoader, false);
+        if (response.statusCode == 200) {
+          this.teamEmails = response.data;	
+        }        	
+			},
+			(_error: any) => {
+        this.httpRequestLoader.isServerError = true;
+        this.xtremandLogger.error(_error);
+			}
+		);
   }
 
 }

@@ -14,8 +14,7 @@ import { PartnerJourneyRequest } from '../models/partner-journey-request';
 })
 export class CampaignCountTilesComponent implements OnInit {
   @Input() partnerCompanyId: any;
-  @Input() teamMemberId: any;
-
+  
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   campaignCounts: any;
@@ -28,7 +27,7 @@ export class CampaignCountTilesComponent implements OnInit {
 
   ngOnInit() {
     this.getCampaignCounts();
-  }
+  }  
 
   getCampaignCounts() {
     this.referenseService.loading(this.httpRequestLoader, true);

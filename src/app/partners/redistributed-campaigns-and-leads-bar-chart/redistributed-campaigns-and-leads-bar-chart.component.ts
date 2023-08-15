@@ -27,8 +27,11 @@ headerText = "";
 filterValue = 'r';
 hideLeadsAndDealsChart = false;
 constructor(public authenticationService:AuthenticationService,public partnerService:ParterService,public xtremandLogger:XtremandLogger,public properties:Properties) { }
-  ngOnInit() {
-      this.refreshChart();
+  ngOnInit() {      
+  }
+
+  ngOnChanges() { 
+    this.refreshChart();
   }
   refreshChart(){
     this.chartLoader = true;

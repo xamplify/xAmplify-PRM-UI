@@ -31,7 +31,11 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
-  ngOnInit() {
+  ngOnInit() {    
+  }
+
+  ngOnChanges() {    
+    this.pagination.pageIndex = 1;
     this.getLeadDetails(this.pagination);
   }
 

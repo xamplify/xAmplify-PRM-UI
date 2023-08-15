@@ -31,7 +31,11 @@ export class ShareLeadDetailsComponent implements OnInit {
       this.loggedInUserId = this.authenticationService.getUserId();
   }
 
-  ngOnInit() {
+  ngOnInit() {    
+  }
+
+  ngOnChanges() {    
+    this.pagination.pageIndex = 1;
     this.getShareLeadDetails(this.pagination);
   }
 

@@ -65,4 +65,8 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
     } 
   }
 
+  applyTeamMemberSelection(teamMemberId: any) {
+    this.teamMemberId = teamMemberId;
+  }
+
 }

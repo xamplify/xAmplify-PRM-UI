@@ -26,7 +26,10 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
       this.loggedInUserId = this.authenticationService.getUserId(); 
   }
 
-  ngOnInit() {
+  ngOnInit() {    
+  }
+
+  ngOnChanges() {
     this.getCounts();
   }
 
