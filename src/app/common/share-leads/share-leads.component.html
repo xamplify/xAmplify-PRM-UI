@@ -11,7 +11,7 @@
             <div class="col-xs-12" style="margin-bottom: 10px;">
                <div class="inputs" align="right" style="float: right; padding: 4px" *ngIf="!referenceService.isMobileScreenSize()">
                   <div style="float: left; margin: 0 10px;">
-                     <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+                     <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
                      <ng-container *ngFor="let sort of sortOptions; let i = index">
                         <option [ngValue]="sort">{{sort.name}}</option>
                      </ng-container>

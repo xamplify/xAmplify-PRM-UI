@@ -57,7 +57,7 @@
                     </div>
                     <div class="panel-title pull-right" *ngIf="barChartStatusCode==200 && barChartErrorMessage?.length==0">
                         <span id="font" class="right">
-					<select class="form-control" style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="getBarChartAnalytics($event.value)">
+					<select class="form-control SeclectBoxPaddingsAbj" style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="getBarChartAnalytics($event.value)">
 						<option *ngFor="let sort of videoUtilService.sortMonthDates" [ngValue]="sort"> {{sort.name}} </option>
 					</select>
 				</span>

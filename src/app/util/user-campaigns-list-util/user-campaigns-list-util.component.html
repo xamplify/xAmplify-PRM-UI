@@ -114,7 +114,6 @@
                        <div class="input-icon right p-top">
                           <input style="height: 35px !important;" type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                           <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
-                          <!--Removed color:black !important-->
                           <button type="submit" class="search-box-item-click align" style="height: 33px;" (click)="searchCampaigns()"><i class="fa fa-search" style="" aria-hidden="true"></i></button>
                        </div>
                     </div>
@@ -123,11 +122,6 @@
               </div>
               
               <div class="portlet-body table-responsive" style="overflow: hidden;padding-top: 0px !important;">
-               <!-- <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 campaign-filter-option">
-                  <li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
-                  <li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" translate>Email</li>
-                  <li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == selectedCampaignTypeIndex" translate>Video</li>
-              </ul>  -->
               <app-list-loader *ngIf="listLoader.isLoading"></app-list-loader>
                  <div class="clearfix"  *ngIf="!listLoader.isLoading">
                     <div class="col-xs-12" style="padding: 0px 0;">

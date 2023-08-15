@@ -363,24 +363,22 @@ h6 {
     white-space: nowrap;
  }
 }
-
-
-/* 03/07/23 */
-
-
 /* 07-07-2023 - PARTner Manage PARTner grid view glad logins */
 @media (min-width: 1322px) and (max-width: 1358px)  { 
   .media-querryfor-small-dev {
     height: 225px;
 }
 }
-
 @media (min-width: 1049px) and (max-width: 1076px)  { 
   .media-querryfor-small-dev {
     height: 225px;
 }
 }
-
 .delete{
   background: #cb5a5e;
+}
+
+/* 11-08-2023 */
+@media (min-width: 1024px) and (max-width: 1125px)  { 
+  td.Mark-as-ValidBtn {width: 150px;}
 }

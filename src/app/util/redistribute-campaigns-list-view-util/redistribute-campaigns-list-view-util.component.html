@@ -77,7 +77,6 @@
               <tbody>
                 <tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
                   <td style="width: 10%;" class="hidden-xs">
-                    <!-- removed style="height:50px;" -->
                     <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " src="assets/images/video-email.svg" style="" alt="{{campaign.campaignType}} Campaign">
                     <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " src="assets/images/video-email.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
                     <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" src="assets/images/regular-email.svg" style="" alt="{{campaign.campaignType}} Campaign">
@@ -193,8 +192,7 @@
                     <h4 class="ellipsis mb-float-none" title="{{campaign.campaignName}}">
                       {{campaign.campaignName | slice:0:25}}
                       <span *ngIf="campaign.campaignName?.length>25">...</span>
-                    </h4>
-                    <!-- <span class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;">Cancelled</span> -->
+                    </h4>                
                     <h6 [title]="campaign.createdBy">By
                       <b>{{campaign.createdBy | slice:0:15}}<span
                         *ngIf="campaign.createdBy?.length>15">...</span></b>
@@ -349,7 +347,6 @@
     </div>
   </div>
 </div>
-<!-- <div *ngIf="totalRecords <= 0"  class="alert alert-info"><strong>No Campaigns Found</strong></div> -->
 <app-scroll-top></app-scroll-top>
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
 <app-add-more-receivers #addMoreReceivers></app-add-more-receivers>

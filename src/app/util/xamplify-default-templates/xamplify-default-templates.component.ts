@@ -76,40 +76,45 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
           swal( "", "Whoops! We are unable to save this template because subject line is empty", "error" );
           return false;
         }
-      if (jsonContent.indexOf("_CUSTOMER_FULL_NAME") < 0 && "JOIN_VENDOR_COMPANY"!=emailTemplate['typeInString']) {
-          swal( "", "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error" );
-          return false;
+
+      if(("JOIN_MY_TEAM"==emailTemplate['typeInString'] || "FORGOT_PASSWORD"==emailTemplate['typeInString'] || "ACCOUNT_ACTIVATION"==emailTemplate['typeInString']) && jsonContent.indexOf("_CUSTOMER_FULL_NAME") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error" );
+        return false;
+      }
+      if(("TRACK_PUBLISH"==emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH"==emailTemplate['typeInString'] || "ASSET_PUBLISH"==emailTemplate['typeInString'] || "SHARE_LEAD"==emailTemplate['typeInString']) && jsonContent.indexOf('{{customerFullName}}') < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted '{{customerFullName}}' tag.", "error" );
+        return false;
       }
       if("JOIN_VENDOR_COMPANY"==emailTemplate['typeInString'] && jsonContent.indexOf("{{PARTNER_NAME}}") < 0){
         swal( "", "Whoops! We are unable to save this template because you deleted '{{PARTNER_NAME}}' tag.", "error" );
         return false;
       }
-      if("TRACK_PUBLISH"==emailTemplate['typeInString'] && jsonContent.indexOf("track_title") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted 'Track Title' tag.", "error" );
+      if("TRACK_PUBLISH"==emailTemplate['typeInString'] && jsonContent.indexOf("{{trackTitle}}") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted '{{trackTitle}}' tag.", "error" );
         return false;
       }
-      if("PLAYBOOK_PUBLISH"==emailTemplate['typeInString'] && jsonContent.indexOf("playbook_title") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted 'playbook_title' tag.", "error" );
+      if("PLAYBOOK_PUBLISH"==emailTemplate['typeInString'] && jsonContent.indexOf("{{playbookTitle}}") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted '{{playbookTitle}}' tag.", "error" );
         return false;
       }
-      if("ASSET_PUBLISH"==emailTemplate['typeInString'] && jsonContent.indexOf("Asset_name") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted 'Asset_name' tag.", "error" );
+      if("ASSET_PUBLISH"==emailTemplate['typeInString'] && jsonContent.indexOf("{{assetName}}") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted '{{assetName}}' tag.", "error" );
         return false;
       }
-      if("SHARE_LEAD"==emailTemplate['typeInString'] && jsonContent.indexOf("shareLeadListName") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted 'shareLeadListName' tag.", "error" );
+      if("SHARE_LEAD"==emailTemplate['typeInString'] && jsonContent.indexOf("{{shareLeadListName}}") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted '{{shareLeadListName}}' tag.", "error" );
         return false;
       }
-      if(("TRACK_PUBLISH"==emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH"==emailTemplate['typeInString']) && jsonContent.indexOf("published_date") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted 'published_date' tag.", "error" );
+      if(("TRACK_PUBLISH"==emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH"==emailTemplate['typeInString']) && jsonContent.indexOf("{{publishedDate}}") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted '{{publishedDate}}' tag.", "error" );
         return false;
       }
-      if(("ASSET_PUBLISH"==emailTemplate['typeInString'] || "SHARE_LEAD"==emailTemplate['typeInString']) && jsonContent.indexOf("shared_date") < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted 'shared_date' tag.", "error" );
+      if(("ASSET_PUBLISH"==emailTemplate['typeInString'] || "SHARE_LEAD"==emailTemplate['typeInString']) && jsonContent.indexOf("{{sharedDate}}") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted '{{sharedDate}}' tag.", "error" );
         return false;
       }
-      if(("TRACK_PUBLISH"==emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH"==emailTemplate['typeInString'] || "ASSET_PUBLISH"==emailTemplate['typeInString'] || "SHARE_LEAD"==emailTemplate['typeInString']) && jsonContent.indexOf('Vendor_company_name') < 0){
-        swal( "", "Whoops! We are unable to save this template because you deleted 'Vendor_company_name' tag.", "error" );
+      if(("TRACK_PUBLISH"==emailTemplate['typeInString'] || "PLAYBOOK_PUBLISH"==emailTemplate['typeInString'] || "ASSET_PUBLISH"==emailTemplate['typeInString'] || "SHARE_LEAD"==emailTemplate['typeInString']) && jsonContent.indexOf('{{senderCompanyName}}') < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted '{{senderCompanyName}}' tag.", "error" );
         return false;
       }
       if(jsonContent.indexOf("<Vanity_Company_Logo_Href>") < 0){
@@ -151,53 +156,53 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
       let emailTemplateType = emailTemplate.typeInString
 
       if("FORGOT_PASSWORD"==emailTemplateType || "ACCOUNT_ACTIVATION"==emailTemplateType || "JOIN_VENDOR_COMPANY"==emailTemplateType || "JOIN_MY_TEAM"==emailTemplateType){
-        var mergeTags = [{ name: 'Sendor First Name', value: '{{firstName}}' },
-        { name: 'Sendor Last Name', value: '{{lastName}}' },
-        { name: 'Sendor Full Name', value: '{{fullName}}' },
-        { name: 'Sendor Email Id', value: '{{emailId}}' },
+        var mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
         ];
       }
      if("TRACK_PUBLISH"==emailTemplateType){
-        mergeTags = [{ name: 'Sendor First Name', value: '{{firstName}}' },
-        { name: 'Sendor Last Name', value: '{{lastName}}' },
-        { name: 'Sendor Full Name', value: '{{fullName}}' },
-        { name: 'Sendor Email Id', value: '{{emailId}}' },
-        { name: 'Sendor Company Name', value: '{{sendorCompanyName}}' },
+        mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
         { name: 'Customer Full Name', value: '{{customerFullName}}' },
         { name: 'Learning Track Title', value: '{{trackTitle}}' },
         { name: 'Published On', value: '{{publishedDate}}' },
         ];
       }
       if("PLAYBOOK_PUBLISH"==emailTemplateType){
-        mergeTags = [{ name: 'Sendor First Name', value: '{{firstName}}' },
-        { name: 'Sendor Last Name', value: '{{lastName}}' },
-        { name: 'Sendor Full Name', value: '{{fullName}}' },
-        { name: 'Sendor Email Id', value: '{{emailId}}' },
-        { name: 'Sendor Company Name', value: '{{sendorCompanyName}}' },
+        mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
         { name: 'Customer Full Name', value: '{{customerFullName}}' },
         { name: 'Playbook Title', value: '{{playbookTitle}}' },
         { name: 'Published On', value: '{{publishedDate}}' },
         ];
       }
       if("ASSET_PUBLISH"==emailTemplateType){
-        mergeTags = [{ name: 'Sendor First Name', value: '{{firstName}}' },
-        { name: 'Sendor Last Name', value: '{{lastName}}' },
-        { name: 'Sendor Full Name', value: '{{fullName}}' },
-        { name: 'Sendor Email Id', value: '{{emailId}}' },
-        { name: 'Sendor Company Name', value: '{{sendorCompanyName}}' },
+        mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
         { name: 'Customer Full Name', value: '{{customerFullName}}' },
         { name: 'Asset Name', value: '{{assetName}}' },
         { name: 'Shared On', value: '{{sharedDate}}' },
         ];
       }
       if("SHARE_LEAD"==emailTemplateType){
-        mergeTags =[{ name: 'Sendor First Name', value: '{{firstName}}' },
-        { name: 'Sendor Last Name', value: '{{lastName}}' },
-        { name: 'Sendor Full Name', value: '{{fullName}}' },
-        { name: 'Sendor Email Id', value: '{{emailId}}' },
-        { name: 'Sendor Company Name', value: '{{sendorCompanyName}}' },
+        mergeTags =[{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
         { name: 'Customer Full Name', value: '{{customerFullName}}' },
-        { name: 'Share-Lead List Name', value: '{{share-LeadListName}}' },
+        { name: 'Share-Lead List Name', value: '{{shareLeadListName}}' },
         { name: 'Shared On', value: '{{sharedDate}}' },
         ];
       }

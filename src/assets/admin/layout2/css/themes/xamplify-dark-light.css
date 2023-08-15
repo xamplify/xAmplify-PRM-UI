@@ -332,7 +332,7 @@ fieldset,
 .ng2-tag-input,
 .nav-tabs,
 .nav-pills {
-  border-bottom: 2px solid #2f4857 !important;
+  border-bottom: 1px solid #2f4857 !important;
 }
 .table > tbody > tr > td,
 .table > tbody > tr > th,
@@ -1591,12 +1591,6 @@ a.dropdown-toggle.circlebg-none-v:hover {
 .option-color {
   color: #fff !important;
 }
-
-input.ng-valid.ng-dirty.ng-touched {
-  border: none !important;
-  outline: none !important;
-}
-
 /* 28-6-2023 table btns,lables and tags*/
 .lightgray-btn:hover {
   background: #ddd !important;
@@ -1836,3 +1830,12 @@ input {
 input#copy-link {
   background-color: #2b3c46 !important;
 }
+/* 11-8-2023 sudha sri */
+.no-data-alert.alert-info h4 {
+  color: inherit !important;
+}
+/* search box boder */
+/* input.ng-valid.ng-dirty.ng-touched {
+  border: none !important;
+  outline: none !important;
+}  */
