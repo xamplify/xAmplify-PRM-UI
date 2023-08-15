@@ -36,7 +36,7 @@ export class XamplifyVideoPlayerComponent implements OnInit {
  
 
   playNormalVideo() {
-    const str = '<video id=xamplify-video-player-id muted="muted" poster=' + this.posterImg + ' preload="none"  class="video-js vjs-default-skin" controls ></video>';
+    const str = '<video id=xamplify-video-player-id muted poster=' + this.posterImg + ' preload="none"  class="video-js vjs-default-skin" controls ></video>';
     $('#xamplify-video-player').append(str);
     $('#xamplify-video-player-id').css('height', this.videoWidth);
     $('#xamplify-video-player-id').css('width', 'auto');
@@ -68,10 +68,11 @@ export class XamplifyVideoPlayerComponent implements OnInit {
         this.ready(function () {
             $('#overLayImage').append($('#overlay-logo').show());
             $('#overlay-modal').hide(); 
-            /***XNFR-329****/
+            /***XNFR-329***Do not move this httpSourceSelector().*/
             player.httpSourceSelector();
             /***XNFR-329****/
             player.play();
+            document.getElementById('xamplify-video-player-id').muted = false; 
         });
         this.on('seeking', function () {
             
@@ -268,9 +269,6 @@ export class XamplifyVideoPlayerComponent implements OnInit {
                 $('#overLayImage').append($('#overlay-logo').show());
                 $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + self.videoFile.playerColor + '!important');
                 $('#overlay-modal').hide();
-                /***XNFR-329****/
-                player.httpSourceSelector();
-                /***XNFR-329****/
                 player.play();
                 $('#skipOverlay').click(function () {
                     isCallActionthere = false;
