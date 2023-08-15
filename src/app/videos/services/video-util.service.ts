@@ -154,9 +154,6 @@ export class VideoUtilService {
         $('.vjs-VR-control vjs-control vjs-button ').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-playback-rate').css('cssText', 'color:' + videoFile.playerColor + '!important');
-        $('.video-js .vjs-menu-button .vjs-menu-button-popup .vjs-icon-cog .vjs-button').css('cssText', 'color:' + videoFile.playerColor + '!important');
-        $('.video-js .vjs-http-source-selector .vjs-menu-button .vjs-menu-button-popup .vjs-control .vjs-button').css('cssText', 'color:' + videoFile.playerColor + '!important');
-        $('.video-js .vjs-http-source-selector .vjs-menu-button .vjs-menu-button-popup .vjs-control .vjs-button').css('cssText', 'background-color:' + videoFile.playerColor + '!important');
         this.setDefaultPlayBackRateText();
     }
 
