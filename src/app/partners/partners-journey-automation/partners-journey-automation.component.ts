@@ -31,7 +31,7 @@ export class PartnersJourneyAutomationComponent implements OnInit {
   ngOnInit() {
     this.listNotifications(this.pagination);
   }
-  goToWorkflow(){this.router.navigate(["/home/contacts/partner-workflow"]);}
+  goToWorkflow(){this.router.navigate(["/home/partners/partner-workflow"]);}
   setPage(event: any) {
     this.pagination.pageIndex = event.page;
     this.listNotifications(this.pagination);

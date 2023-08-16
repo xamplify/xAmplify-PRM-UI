@@ -27,10 +27,8 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { SortOption } from 'app/core/models/sort-option';
 import { SendCampaignsComponent } from '../../common/send-campaigns/send-campaigns.component';
 import { Subject } from 'rxjs';
-import { ParterService } from 'app/partners/services/parter.service';
-import {DashboardModuleAnalyticsViewDto} from "app/dashboard/models/dashboard-module-analytics-view-dto";
 
-declare var Metronic, $, Layout, Demo, Portfolio,Highcharts, CKEDITOR, swal: any;
+declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 
 @Component({
 	selector: 'app-manage-contacts',
@@ -123,16 +121,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	public totalRecords: number;
 	loading = false;
 
-	loadAllCharts = false;
-	reloadWithFilter = true;
-	selectedTabIndex: number = 0;
-
 	searchContactType = "";
 	contactListIdForSyncLocal: any;
 	socialNetworkForSyncLocal: any;	
 	disableSave : boolean =false;
 	loggedInUserCompanyId: any;
-	ngxLoading = false;
 
 	public currentContactType: string = "valid";
 
@@ -206,18 +199,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	gdprSetting: GdprSetting = new GdprSetting();
 	termsAndConditionStatus = true;
 	public fields: any;
-	barChartLoader = false;
 
 	public placeHolder: string = 'Select Legal Basis';
 	isValidLegalOptions = true;
 	selectedLegalBasisOptions = [];
-	campaignUserInteractionHttpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-	worldMapLoader = false;
-	applyFilter = true;
-	worldMapdataReport: any;
-	activeParnterHttpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-	activePartnersPagination: Pagination = new Pagination();
-	paginationType: string;
 
 	public checkSyncCode: any;
 	public iszohoAccessTokenExpired: boolean = false;
@@ -250,7 +235,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
-		public route: ActivatedRoute,public parterService: ParterService,) {
+		public route: ActivatedRoute) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 
 		  this.loggedInUserId = this.authenticationService.getUserId();
@@ -2711,151 +2696,4 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	          this.referenceService.setTeamMemberFilterForPagination(this.contactsByType.pagination,index);
 	          this.listContactsByType(this.contactsByType.selectedCategory);
 	      }
-
-		  loadCountryData() {
-			this.worldMapLoader = true;
-			this.parterService.loadCountryData(this.loggedInUserId, this.applyFilter).subscribe(
-				(data: any) => {
-					this.worldMapdataReport = data.countrywisepartners;
-					this.worldMapLoader = false;
-				},
-				(error: any) => {
-					this.xtremandLogger.error(error);
-					this.worldMapLoader = false;
-				});
-		}
-
-		getActivePartnerReports() {
-			this.referenceService.loading(this.activeParnterHttpRequestLoader, true);
-			this.activePartnersPagination.userId = this.loggedInUserId;
-			if (this.authenticationService.isSuperAdmin()) {
-				this.activePartnersPagination.userId = this.authenticationService.checkLoggedInUserId(this.activePartnersPagination.userId);
-			}
-			this.paginationType = 'ActivePartnerPagination';
-			this.activePartnersPagination.maxResults = 3;
-			this.parterService.getActivePartnersAnalytics(this.activePartnersPagination).subscribe(
-				(response: any) => {
-					for (var i in response.activePartnesList) {
-						response.activePartnesList[i].contactCompany = response.activePartnesList[i].partnerCompanyName;
-					}
-					this.activePartnersPagination.totalRecords = response.totalRecords;
-					this.activePartnersPagination = this.pagerService.getPagedItems(this.activePartnersPagination, response.activePartnesList);
-					this.referenceService.loading(this.activeParnterHttpRequestLoader, false);
-				},
-				(error: any) => {  });
-		}
-		campaignTypeChart(data: any){
-			Highcharts.chart('campaign-type-chart',{
-				chart: { type: 'bar',backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff" },
-				xAxis: {
-					categories: ['VIDEO CAMPAIGN', 'SOCIAL CAMPAIGN', 'EMAIL CAMPAIGN', 'EVENT CAMPAIGN','SURVEY CAMPAIGN'],
-					lineWidth: 0,
-					minorTickLength: 0,
-					tickLength: 0,
-					labels:{
-						style:{
-							color: this.authenticationService.isDarkForCharts ? "#fff" : "#666666"
-						}
-					}
-				},
-				title: { text: '' },
-				yAxis: {
-					min: 0,
-					visible: false,
-					gridLineWidth: 0,
-				},
-				colors: ['#ffb600', '#be72d3', '#ff3879', '#357ebd','#00ffc8'],
-				tooltip: {
-					formatter: function () {
-						return 'Campaign Type: <b>' + this.point.category + '</b><br>Campaigns Count: <b>' + this.point.y;
-					},
-					backgroundColor: 'black', 
-					style: {
-					  color: '#fff' 
-					}
-				},
-				plotOptions: { bar: { minPointLength: 3, dataLabels: { enabled: true }, colorByPoint: true } },
-				exporting: { enabled: false },
-				credits: { enabled: false },
-				series: [{ showInLegend: false, data: data,
-					dataLabels:{
-						style:{
-							color: this.authenticationService.isDarkForCharts ? "#fff" : "#000000",
-						}
-				} }]
-			});
-			this.barChartLoader = false;
-		}
-		
-		
-		partnerReportData() {
-			this.barChartLoader = true;
-			this.parterService.partnerReports(this.loggedInUserId, this.applyFilter).subscribe(
-				(data: any) => {
-					const campaignData = [];
-					campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
-					campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
-					campaignData.push(data.partnersLaunchedCampaignsByCampaignType.REGULAR);
-					campaignData.push(data.partnersLaunchedCampaignsByCampaignType.EVENT);
-					campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SURVEY);
-					this.campaignTypeChart(campaignData);
-				},
-				(error: any) => {
-					this.xtremandLogger.error(error);
-					this.barChartLoader = false;
-				});
-		}
-		  goToActivePartnersDiv() {
-			this.reloadWithFilter = false;
-			this.loadAllCharts = true;
-			this.sortOption = new SortOption();
-			this.selectedTabIndex = 0;
-			this.campaignUserInteractionHttpRequestLoader = new HttpRequestLoader();
-			this.pagination = new Pagination();
-			$('#through-partner-div').hide();
-			$('#inactive-partners-div').hide();
-			$('#active-partner-div').show();
-			$("#redistribute-partners-div").hide();
-			$('#approve-partners-div').hide();
-			this.getActivePartnerReports();
-			this.loadCountryData();
-			setTimeout(() => {
-				 this.partnerReportData();
-				 this.reloadWithFilter = true;
-				 this.loadAllCharts = false;
-			}, 500);
-			
-	
-		}
-		goToManage(dto:DashboardModuleAnalyticsViewDto){
-			if(dto.hasAccess){
-			  this.ngxLoading = true;
-			  let moduleId = dto.moduleId;
-			  if(moduleId==1){
-				this.router.navigate(["/home/campaigns/manage"]);
-			  }else if(moduleId==2){
-				this.router.navigate(["/home/partners/analytics"]);
-			  }else if(moduleId==3){
-				this.router.navigate(["/home/content/videos"]);
-			  }else if(moduleId==4){
-				this.router.navigate(["/home/dashboard/vendors"]);
-			  }else if(moduleId==5){
-				this.router.navigate(["/home/contacts/manage"]);
-			  }else if(moduleId==6){
-				this.router.navigate(["/home/social/manage/all"]);
-			  }else if(moduleId==7){
-				this.router.navigate(["/home/emailtemplates"]);
-			  }else if(moduleId==8){
-				this.router.navigate(["/home/team/add-team"]);
-			  }else if(moduleId==9){
-				this.router.navigate(["/home/partners/manage"]);
-			  }else if(moduleId==10){
-				this.router.navigate(["/home/forms/manage"]);
-			  }
-			}
-			}
-			goToAnalytics(){
-				this.router.navigate(["/home/partners/individual-partner"]);
-			}
-			goToWorkflow(){this.router.navigate(["/home/contacts/partner-workflow"]);}
 }

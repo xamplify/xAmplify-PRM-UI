@@ -19,7 +19,7 @@ const routes: Routes = [
     { path: 'leads-zoho-callback', component: SocialContactsCallbackComponent },
     { path: 'leads-salesforce-callback', component: SocialContactsCallbackComponent },
     { path: 'manage/:id', component: ManageContactsComponent },
-    {path: 'partner-workflow', component: WorkflowFormComponent}
+    // {path: 'partner-workflow', component: WorkflowFormComponent}
 
 ];
 

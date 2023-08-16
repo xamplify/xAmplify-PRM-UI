@@ -14,6 +14,6 @@ import { CKEditorComponent, CKEditorModule } from 'ng2-ckeditor';
   ],
   providers: []
   ,
-  declarations: [WorkflowFormComponent]
+  declarations: []
 })
 export class ContactsModule { }

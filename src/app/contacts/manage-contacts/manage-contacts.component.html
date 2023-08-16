@@ -12,10 +12,9 @@
          </li>
          <li>
             <a (click)="navigateToManageContacts()" translate>
-            <!-- Manage 
-            <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span> -->
+            Manage 
+            <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
             <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
-            <span>Partner Journey Automation</span>
             </a> 
             <i class="fa fa-angle-right" *ngIf="! showListOfContactList" aria-hidden="true"></i>
          </li>
@@ -51,16 +50,6 @@
             </span>
          </li>
       </ul>
-      <div align="right" style="margin-top: 3px;" class="hidden-xs"		 >
-		  <a>
-		  <button type="button" class="btn Btn-Green" download
-			 style="margin-right: 3px;" (click)="goToWorkflow()"
-			 [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}"
-			 translate>
-		  Create Workflow<i class="fa fa-sitemap" aria-hidden="true" style="margin-left: 5px"></i>
-		  </button>
-		  </a>
-	   </div>
    </div>
    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
    <div id="manageContacts">
@@ -70,128 +59,167 @@
          <!-- BEGIN PAGE CONTENT-->
          <div>
             <div class="row">
-              
+               <div class="col-xs-12 col-md-12 col-sm-12">
                   <!-- Start Tiles here-->
-                  <div class="page-bar" style="padding-bottom: 10px;padding-top: 10px;margin-left: 12px;margin-right: 12px;">
-                     <app-box-loader [countLoader]=5 *ngIf="activePartnersLoader"></app-box-loader>
-                     
-                     <!---Active Partners Count-->
-                     <div  class="col-sm-4 col-xs-6 col-lg-4 col-md-4" (click)="goToAnalytics()" style="padding-left: 14px;padding-right: 0px;">
-                       <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
-                         <div class="visual">
-                           <i  style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
-                             [ngStyle]="{'color': 0===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 0"
-                             aria-hidden="true"></i>
-                         </div>
-                         <div class="details" style="right: 13px !important;">
-                           <div class="number">10</div>
-                           <div class="desc" title="Active Partner" style="font-size: 13px">Partner Journey Analytics                           
-                             <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
+                  <div class="page-bar" style="padding-bottom:10px;padding-right: 12px;">
+                     <div class="col-xs-6 col-sm-2 col-lg-2  margin-top-10 pr0"  style="padding-left: 12px;" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+                        <button class="btn-block dashboard-stat blue"
+                        [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
+                        (click)="loadContactsByType('all')"
+                        [disabled]="contactsByType.allContactsCount == 0">
+                        <div class="visual">
+                           <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                           [ngStyle]="{'color': contactsByType.selectedCategory == 'all' ? '#white' : '#ccc' }"
+                           *ngIf="contactsByType.selectedCategory == 'all'" aria-hidden="true"></i>
+                        </div>
+                        <div class="details">
+                           <div class="number">
+                              {{contactsByType.allContactsCount}}
                            </div>
-                         </div>
-                         <span id="permhref" class="morePadding">
-                           <a class="more"> Detailed view
-                             <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-                         </span>
-                       </a>
+                           <div class="desc fz-16"  translate>
+                              All
+                           </div>
+                        </div>
+                        <span class="morePadding"> <a class="more"
+                           style="text-align: left; background: #3480b5; color: white" translate> Detailed view <i
+                           class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
+                        </a>
+                        </span>
+                        </button>
                      </div>
-         
-                     <!--Redistributed Campaigns Count-->
-                     <app-box-loader [countLoader]=5 *ngIf="redistributedCampaignsCountLoader"></app-box-loader>
-                     <div *ngIf="!redistributedCampaignsCountLoader" class="col-sm-4 col-xs-6 col-lg-4 col-md-4" style="padding-right: 0px;">
-                       <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
-                         (click)="goToReDistributedPartnersDiv()">
-                         <div class="visual">
-                           <i *ngIf="selectedTabIndex == 2" class="fa fa-check-circle"
-                             style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
-                             [ngStyle]="{'color': 2===selectedTabIndex ? '#white' : '#ccc' }" aria-hidden="true">
-                           </i>
-                         </div>
-                         <div class="details" style="right: 13px !important;">
-                           <div class="number"><span *ngIf="redistributedCampaignsCount">{{redistributedCampaignsCount}}</span><span
-                               *ngIf="!redistributedCampaignsCount">100</span></div>
-                           <div class="desc mlabelWidth" style="font-size: 13px">Triggers</div>
-                         </div>
-                         <span id="permhref" class="morePadding">
-                           <a class="more" (click)="goToReDistributedPartnersDiv()"> Detailed view <i
-                               class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-                         </span>
-                       </a>
+                     <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0" *ngIf="isPartner"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+                     <button class="btn-block dashboard-stat green"
+                     [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'active'"
+                     (click)="loadContactsByType('active')"
+                     [disabled]="contactsByType.activeContactsCount == 0">
+                     <div class="visual">
+                        <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                        [ngStyle]="{'color': contactsByType.selectedCategory == 'active' ? '#white' : '#ccc' }"
+                        *ngIf="contactsByType.selectedCategory == 'active'" aria-hidden="true"></i>
                      </div>
-         
-                     <!--Through Partner Campaigns Count-->
-                     <app-box-loader [countLoader]=5 *ngIf="throughPartnerCampaignsCountLoader"></app-box-loader>
-                     <div *ngIf="!throughPartnerCampaignsCountLoader" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-                       <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex"
-                         (click)="goToThroughPartnersDiv()">
-                         <div class="visual">
-                           <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
-                             [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 3"
-                             aria-hidden="true"></i>
-                         </div>
-                         <div class="details" style="right: 13px !important;">
-                           <div class="number">63</div>
-                           <div class="desc" style="font-size:13px" title="{{throughPartnerCampaignsTabName}}">
-                             Email Notifications
-                             <span *ngIf="throughPartnerCampaignsTabName?.length>20">...</span>
-                           </div>
-                         </div>
-                         <span id="permhref" class="morePadding">
-                           <a class="more" (click)="goToThroughPartnersDiv()"> Detailed view
-                             <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-                         </span>
-                       </a>
+                     <div class="details">
+                        <div class="number numberCss" style="font-weight: 300 !important; color: #FFFFFF;">
+                           {{contactsByType.activeContactsCount}}
+                        </div>
+                        <div class="desc fz-16"  translate>
+                           Registered
+                           <!-- {{checkingContactTypeName}}s -->
+                        </div>
                      </div>
-         
-                     <!--InActive Partner Campaigns Count-->
-                     <!-- <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
-                     <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths" (click)="goToInActivePartnersDiv()">
-                       <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
-                         <div class="visual">
-                           <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
-                             [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 1"
-                             aria-hidden="true"></i>
-                         </div>
-                         <div class="details">
-                           <div class="number">25</div>
-                           <div class="desc" title="{{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">
-                             Modal Notifications
-                             <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
-                           </div>
-                         </div>
-                         <span id="permhref" class="morePadding">
-                           <a class="more" (click)="goToInActivePartnersDiv()"> Detailed view
-                             <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-                         </span>
-                       </a>
-                     </div> -->
-         
-                     <!--Active Partner Campaigns Count-->
-                     <!-- <app-box-loader [countLoader]=5 *ngIf="approvePartnersCountLoader"></app-box-loader>
-                     <div *ngIf="!approvePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths" (click)="goToApprovePartnersDiv()">
-                       <a class="dashboard-stat dashboard-stat-lighter red-soft" [class.greay]="5!=selectedTabIndex">
-                         <div class="visual">
-                           <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
-                             [ngStyle]="{'color': 5===selectedTabIndex ? '#white' : '#ccc' }" *ngIf="selectedTabIndex == 5"
-                             aria-hidden="true"></i>
-                         </div>
-                         <div class="details">
-                           <div class="number">12</div>
-                           <div class="desc" title="Approve {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">
-                            Standard Notifications
-                             <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
-                           </div>
-                         </div>
-                         <span id="permhref" class="morePadding">
-                           <a class="more" (click)="goToApprovePartnersDiv()"> Detailed view
-                             <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-                         </span>
-                       </a>
-                     </div> -->
-         
-                   </div>
+                     <span class="morePadding"> <a class="more"
+                        style="text-align: left;background: #268c83; color:white" translate> Detailed view <i
+                        class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
+                     </a>
+                     </span>
+                     </button>
+                  </div>
+                  <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0" *ngIf="isPartner"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+                  <button class="btn-block dashboard-stat purple"
+                  [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'non-active'"
+                  (click)="loadContactsByType('non-active')"
+                  [disabled]="contactsByType.inactiveContactsCount == 0">
+                  <div class="visual">
+                     <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                     [ngStyle]="{'color': contactsByType.selectedCategory == 'non-active' ? '#white' : '#ccc' }"
+                     *ngIf="contactsByType.selectedCategory == 'non-active'" aria-hidden="true"></i>
+                  </div>
+                  <div class="details">
+                     <div class="number">
+                        {{contactsByType.inactiveContactsCount}}
+                     </div>
+                     <div class="desc fz-16"  translate>
+                        Unregistered
+                        <!-- {{checkingContactTypeName}}s -->
+                     </div>
+                  </div>
+                  <span class="morePadding"> <a class="more" style="text-align: left;" translate> Detailed view <i
+                     class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
+                  </a>
+                  </span>
+                  </button>
+               </div>
+               <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0"  *ngIf="!isPartner" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+               <button class="btn-block dashboard-stat purple"
+               [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'valid'"
+               (click)="contactsByType.pagination.pageIndex = 1;listContactsByType('valid')"
+               [disabled]="contactsByType.validContactsCount == 0">
+               <div class="visual">
+                  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                  [ngStyle]="{'color': contactsByType.selectedCategory == 'valid' ? '#white' : '#ccc' }"
+                  *ngIf="contactsByType.selectedCategory == 'valid'" aria-hidden="true"></i>
+               </div>
+               <div class="details">
+                  <div class="number">
+                     {{contactsByType.validContactsCount}}
+                  </div>
+                  <div class="desc fz-16"  translate>
+                     Valid
+                  </div>
+               </div>
+               <span class="morePadding"> <a class="more" style="text-align: left;" translate> Detailed view <i
+                  class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
+               </a>
+               </span>
+               </button>
+            </div>
+            <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0 pl" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+               <button class="btn-block dashboard-stat yellow-gold"
+               [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'invalid'"
+               (click)="loadContactsByType('invalid')"
+               [disabled]="contactsByType.invalidContactsCount == 0">
+               <div class="visual">
+                  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"
+                  [ngStyle]="{'color': contactsByType.selectedCategory == 'invalid' ? '#white' : '#ccc' }"
+                  *ngIf="contactsByType.selectedCategory == 'invalid'" aria-hidden="true"></i>
+               </div>
+               <div class="details">
+                  <div class="number">
+                     {{contactsByType.invalidContactsCount}}
+                  </div>
+                  <div class="desc fz-16"  translate>
+                     Undeliverable
+                     <!-- {{checkingContactTypeName}}s -->
+                     <i class="fa fa-check-circle"
+                     style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
+                     [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }"
+                     *ngIf="selectedTabIndex == 1" aria-hidden="true"></i>
+                  </div>
+               </div>
+               <span class="morePadding"> <a class="more" style="text-align: left;" translate> Detailed view <i
+                  class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
+               </a>
+               </span>
+               </button>
+            </div>
+            <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+               <button class="btn-block dashboard-stat red"
+               [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
+               (click)="loadContactsByType('unsubscribe')" 
+               [disabled]="contactsByType.unsubscribedContactsCount == 0">
+               <div class="visual">
+                  <i class="fa fa-check-circle"
+                  style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
+                  [ngStyle]="{'color': contactsByType.selectedCategory == 'unsubscribe' ? '#white' : '#ccc' }"
+                  *ngIf="contactsByType.selectedCategory == 'unsubscribe'" aria-hidden="true"></i>
+               </div>
+               <div class="details">
+                  <div class="number">
+                     {{contactsByType.unsubscribedContactsCount}}
+                  </div>
+                  <div class="desc fz-16"  translate>
+                     Unsubscribed
+                     <!-- {{checkingContactTypeName}}s -->
+                  </div>
+               </div>
+               <span class="morePadding"> <a class="more" style="text-align: left;" translate> Detailed view <i
+                  class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
+               </a>
+               </span>
+               </button>
+            </div>
+         </div>
          <!-- End tile here-->
-         <div [ngClass]="{'page-bar p10': showListOfContactList}" style="margin-left: 12px;margin-right: 12px;">
+         <div [ngClass]="{'page-bar p10': showListOfContactList}">
             <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '': ''}">
                <div class="tab-pane active" >
                   <div class="clearfix"></div>
@@ -202,17 +230,16 @@
                         class="badge badge-primary"> ReLogin</a></h4>
                   </span>
                   <div [className]="checkingContactTypeName=='Contact' ? 'row':'m0' " *ngIf="showListOfContactList">
-                  <div [className]="checkingContactTypeName=='Contact' ? 'colxs-12 col-sm-12 col-md-6':''">
+                  <div [className]="checkingContactTypeName=='Contact' ? 'colxs-12 col-sm-6 col-md-6':''">
                      <ul *ngIf="checkingContactTypeName=='Contact'" class="mix-filter">
                         <li class="filter" (click)="filterContacts('MY-CONTACTS',0)" [class.contact-filter-selected]="0 == selectedFilterIndex" translate>My Contacts</li>
                         <li class="filter" (click)="filterContacts('FORM-LEADS',1)" [class.contact-filter-selected]="1 == selectedFilterIndex" translate>Form Contacts</li>
                         <li class="filter" (click)="filterContacts('ALL',2)" [class.contact-filter-selected]="2 == selectedFilterIndex" translate>All</li>
                      </ul>
                      <ul class="page-breadcrumb" *ngIf="checkingContactTypeName!='Contact'">
-                        <!-- <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName=='Partner'">
+                        <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName=='Partner'">
                            Your {{authenticationService?.partnerModule?.customName}} Lists
-                        </li> -->
-                        <li id="header-custom-li-font">Workflow Triggers</li>
+                        </li>
                         <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName!='Partner'">
                            Your {{checkingContactTypeName}} Lists
                         </li>
@@ -284,7 +311,7 @@
                            <th scope="col" class="hidden-xs" colspan="2" style="width: 35%">
                               <span class="ui-column-resizer"
                                  (mousedown)="referenceService.onMouseDown($event,'partner_contact_list',2)"> </span>
-                              <span class="gridHeader" translate>Triggers</span>
+                              <span class="gridHeader" translate>List Name</span>
                            </th>
                            <th scope="col" class="visible-xs" colspan="1" style="width: 35%" translate>
                               List Info
@@ -299,7 +326,7 @@
                            <th scope="col" class="hidden-xs" translate [hidden]="!assignLeads"><span
                               [hidden]="!assignLeads">Date</span></th>
                            <th scope="col" class="text-center hidden-xs" translate *ngIf="checkingContactTypeName=='Partner'">
-                              Trigger Hits
+                              Total
                            </th>
                            <th scope="col" class="text-center hidden-xs" translate *ngIf="checkingContactTypeName!='Partner'">
                               Total <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span> 
@@ -314,7 +341,7 @@
                            <tr [class.isProcessing]="contactList.uploadInProgress || contactList.validationInProgress || !contactList.emailValidationInd">
                               <td class="cw" *ngIf="showExpandButton">
                                  <div class="actions-block left-float">
-                                    <a (click)="viewMatchedContacts(contactList)" title="Matched Results">
+                                    <a (click)="viewMatchedContacts(contactList)" data-toggle="tooltip" data-placement="bottom" title="Matched Results">
                                     <i class="fa"
                                        [ngClass]="{'fa-angle-right': !contactList.expand, 'fa-angle-down': contactList.expand}"
                                        aria-hidden="true"></i>
@@ -322,7 +349,7 @@
                                  </div>
                               </td>
                               <td style="width: 10%;" class="hidden-xs">
-                                 <!-- <img *ngIf="contactList.socialNetwork=='ZOHO' && contactList.synchronisedList" src="{{properties?.zohoImage}}"
+                                 <img *ngIf="contactList.socialNetwork=='ZOHO' && contactList.synchronisedList" src="{{properties?.zohoImage}}"
                                     alt="zoho" style="height: 70px;">
                                  <img *ngIf="contactList.socialNetwork=='GOOGLE' && contactList.synchronisedList" src="{{properties?.googleImage}}"
                                     alt="google" style="height: 70px;">
@@ -337,26 +364,26 @@
                                  <img *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList" src="{{properties?.pipedriveImage}}"
                                     alt="manual" style="height: 54px;">
                                  <img *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList" src="{{properties?.marketoImage}}"
-                                    alt="manual" style="height: 70px;"> -->
+                                    alt="manual" style="height: 70px;">
                                  <!-- XNFR-211 -->
-                                 <!-- <img
+                                 <img
                                     *ngIf="contactList.uploadInProgress || contactList.validationInProgress || ((!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd)))"
                                     src="assets/images/Spinner.gif"
-                                    style="width: 55px; margin-top: -88px; margin-left: 17px;" alt=""> -->
-                                    <img src="assets/images/trigger.png" style="height: 64px;" alt="manual">
+                                    style="width: 55px; margin-top: -88px; margin-left: 17px;" alt="">
                               </td>
                               <td>
-                                 <h4 class="moreipsis" title="{{contactList.name}}">
-                                    <span> {{contactList.name}}</span>
-                                 </h4>
-                                 <h5 class='m0 ellipsis' title="{{contactList.uploadedBy}}" translate>
-                                    By <span class='f-w-400'>{{contactList.uploadedBy
-                                    | slice:0:50}} <span *ngIf="contactList.uploadedBy?.length>50">...</span>
+                                 <h4 class="moreipsis">
+                                    <span data-toggle="tooltip" data-placement="top"  title="{{contactList.name}}">{{contactList.name | slice:0:30}}
+                                    </span><span *ngIf="contactList.name?.length>30">...</span>
+                                    </h4>
+                                 <h5 class='m0 ellipsis'  translate>
+                                    By <span class='f-w-400' data-toggle="tooltip" data-placement="bottom"  title="{{contactList.uploadedBy}}">{{contactList.uploadedBy
+                                    | slice:0:15}} <span *ngIf="contactList.uploadedBy?.length>50">...</span>
                                     </span>
                                  </h5>
-                                 <h5 class="mb0 ellipsis" title="{{contactList.companyName}}">
-                                    <strong>{{contactList.companyName | slice:0:50}}</strong> <span
-                                       *ngIf="contactList.companyName?.length>50">...</span>
+                                 <h5 class="mb0 ellipsis"  >
+                                    <strong >{{contactList.companyName | slice:0:15}}</strong> <span
+                                       *ngIf="contactList.companyName?.length>15">...</span>
                                     <h5 class="mb0 ellipsis hidden-sm hidden-md hidden-lg">
                                        <span class="mb0"
                                           *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)"
@@ -381,20 +408,19 @@
                                  </h5>
                               </td>
                               <td class="hidden-xs" *ngIf="assignLeads" style="text-align: center;">
-                                 <h5 class="view-banner" style="width: 90%;"
+                                 <h5 class="view-banner Assigned-lable"
                                     *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner">
                                     <span data-toggle="tooltip" data-placement="top" title="assigned status"
                                        translate>Assigned</span>
                                  </h5>
-                                 <h5 class="view-banner" style="width: 90%;"
-                                    style="background-color: orange; width: 90%;"
+                                 <h5 class="view-banner orange-lable-cu" 
                                     *ngIf="contactList?.assignedLeadsList && !contactList.assignedToPartner">
                                     <span data-toggle="tooltip" data-placement="top" title="assigned status" translate>Not
                                     Assigned</span>
                                  </h5>
-                                 <h6 title="{{contactList.partnerCompanyName}}" *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner" style="text-align:center" translate>
+                                 <h6   *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner" style="text-align:center" translate>
                                     Shared To: <strong>{{contactList.partnerCompanyName | slice:0:7}}</strong>
-                                    <span *ngIf="contactList.partnerCompanyName?.length>7">...</span>
+                                    <span data-toggle="tooltip" data-placement="top" title="{{contactList.partnerCompanyName}}" *ngIf="contactList.partnerCompanyName?.length>7">...</span>
                                  </h6>
                                  <h5>
                                     <a  *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner"
@@ -405,7 +431,7 @@
                                  </h5>
                               </td>
                               <td class="hidden-xs" *ngIf="!assignLeads && !isPartner">
-                                 <h5 class="view-banner" *ngIf="!contactList?.partnerUserList" [hidden]="assignLeads">
+                                 <h5 class="view-banner green-btn-cu" *ngIf="!contactList?.partnerUserList" [hidden]="assignLeads">
                                  <span *ngIf="contactList.publicList" data-toggle="tooltip" data-placement="top"
                                     title="{{actionsDescription.contact_list_public}}" translate>Public</span>
                                  <span *ngIf="!contactList.publicList" data-toggle="tooltip" data-placement="top"
@@ -450,12 +476,12 @@
                                     || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                                     && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner)"
                                     data-toggle="tooltip" data-placement="top"
-                                    (click)="goToWorkflow()"
+                                    (click)="storeListDetails(contactList);openShareListPopup(contactList)"
                                     title="{{actionsDescription.leads_list_share}}"> <i class="fa fa-share" aria-hidden="true"></i>
                                     </a> <a [class.disabled]="contactList.noOfContacts == 0 "
                                     *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (authenticationService.module.isPartner && loggedInUserId==contactList.uploadedUserId) || authenticationService.isPartner() ||
                                     (hasPartnersRole && loggedInUserId==contactList.uploadedUserId) || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
-                                    (click)="goToWorkflow()"
+                                    (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList);setListType(contactList.publicList)"
                                     data-toggle="tooltip" data-placement="top"
                                     title="{{actionsDescription.contact_list_edit}}">
                                     <i  class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -506,7 +532,7 @@
                                     && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
                                     data-toggle="tooltip" data-placement="top"
                                     (click)="openPopUpForNewlyAddedPartnersOrContacts(contactList)"
-                                    title="Notification"> <i class="icon-bell"
+                                    title="{{actionsDescription.send_campaigns}}"> <i class="fa fa-bullhorn"
                                        aria-hidden="true"></i>
                                     </a>
                                  </div>
@@ -560,16 +586,16 @@
                         <span class="arrow"></span>
                      </h3>
                   </div>
-                  <h4 class="ellipsis" title="{{contactList.name}}" style="float:none !important">
+                  <h4 class="ellipsis" data-toggle="tooltip" data-placement="bottom" title="{{contactList.name}}" style="float:none !important">
                      {{contactList.name | slice:0:25}} <span *ngIf="contactList.name?.length>25">...</span>
                   </h4>
-                  <span class="view-banner" *ngIf="assignLeads && contactList?.assignedLeadsList && contactList.assignedToPartner" style="position: relative;top: -3px;" translate>Assigned</span>
-                  <span class="view-banner" *ngIf="assignLeads && contactList?.assignedLeadsList && !contactList.assignedToPartner" style="position: relative;top: -3px;background-color: orange;" translate>Not Assigned</span>
-                  <h6 class="mt10 mb0 ellipsis" title="{{contactList.uploadedBy}}">
+                  <span class="view-banner Assigned-lable" *ngIf="assignLeads && contactList?.assignedLeadsList && contactList.assignedToPartner"  translate>Assigned</span>
+                  <span class="view-banner orange-lable-cu" *ngIf="assignLeads && contactList?.assignedLeadsList && !contactList.assignedToPartner" translate>Not Assigned</span>
+                  <h6 class="mt10 mb0 ellipsis" data-toggle="tooltip" data-placement="bottom" title="{{contactList.uploadedBy}}">
                      By {{contactList.uploadedBy | slice:0:30}} <span
                         *ngIf="contactList.uploadedBy?.length>30">...</span>
                   </h6>
-                  <h6 class="mt0 ellipsis" title="{{contactList.companyName}}">
+                  <h6 class="mt0 ellipsis" data-toggle="tooltip" data-placement="bottom" title="{{contactList.companyName}}">
                      <b>{{contactList.companyName | slice:0:30}}</b> <span
                         *ngIf="contactList.companyName?.length>30">...</span>
                   </h6>
@@ -703,7 +729,7 @@
          </section>
       </div>
    </div>
-
+</div>
 </div>
 </div>
 </div>
@@ -783,14 +809,14 @@
             <div class="col-xs-12">
                <div *ngIf="contactsByType.isLoading" class="alert alert-info flex" style="margin-top: 20px;">
                   <div class="loader"></div>
-                  <strong translate>Please wait while we process your request</strong>
+                  <strong class="loadertextcolor" translate>Please wait while we process your request</strong>
                </div>
                <div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" class="no-data-alert alert-info">
                   <h4 translate>No results found</h4>
                </div>
                <app-list-loader *ngIf="contactsByType?.isLoading"></app-list-loader>
                <div class="portlet" *ngIf="contactsByType.contacts?.length > 0">
-                  <div class="portlet-title" style="border:none; margin-top: 10px;">
+                  <div class="portlet-title pb_8" style="border:none; margin-top: 10px;">
                      <div class="caption">
                         <i class="fa fa-edit" style="font-size: 18px" aria-hidden="true"></i>
                         <span class="capitalize" *ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active'
@@ -850,15 +876,15 @@
                            <thead>
                               <tr>
                                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                                    <td  align="center" *ngIf="contactsByType.selectedCategory == 'all'">
+                                    <th class="text-center" align="center" *ngIf="contactsByType.selectedCategory == 'all'">
                                        <input type="checkbox"
                                        name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"
                                        id="checkAllExistingContacts" />
-                                    </td>
-                                    <td align="center" *ngIf="contactsByType.selectedCategory == 'invalid'">
+                                    </th>
+                                    <th  class="text-center" align="center" *ngIf="contactsByType.selectedCategory == 'invalid'">
                                        <input type="checkbox" name="all" [(ngModel)]="isInvalidHeaderCheckBoxChecked"
                                        (change)="checkAllInvalidContacts($event)" id="checkAllExistingInvalidContacts" />
-                                    </td>
+                                    </th>
                                  </ng-container>
                                  <th scope="row" style="width: 25%" *ngIf="!isPartner" translate>NAME</th>
                                  <th  scope="row" *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs"
@@ -968,14 +994,14 @@
                                        valid</span>
                                     </td>
                                     <td *ngIf="isPartner">
-                                       <button class="border-btn-small" id='more_less_button_{{i}}'
+                                       <button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'
                                           (click)="contact.isShowDetails = ! contact.isShowDetails">
                                        <span *ngIf="!contact.isShowDetails" translate>More</span> <span
                                           *ngIf="contact.isShowDetails" translate>Less</span>
                                        </button>
                                     </td>
                                     <td  *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribe'">
-                                       <button class="btn Btn-Green" [disabled] = "assignLeads"
+                                       <button class="btn table-scbscribe-btn" [disabled] = "assignLeads"
                                        *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (hasAllAccess || referenceService.roles.contactsRole || referenceService.roles.partnersRole || authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner()) && !authenticationService?.module?.deletedPartner"
                                        (click)="activateUnsubscribedUser(contact.id)" translate>
                                        Subscribe
@@ -1301,13 +1327,13 @@
                                     <app-user-info [userInfo]="item"></app-user-info>
                                  </td>
                                  <td>
-                                    <h6 title="{{item.name}}">{{item.name | slice:0:30}}
+                                    <h6 data-toggle="tooltip" data-placement="bottom" title="{{item.name}}">{{item.name | slice:0:30}}
                                        <span *ngIf="item.name?.length>30">...</span>
                                     </h6>
                                     <h4 *ngIf="item.name==null">-</h4>
                                  </td>
                                  <td>
-                                    <h6 title="{{item.company}}">{{item.company | slice:0:30}}
+                                    <h6 data-toggle="tooltip" data-placement="bottom" title="{{item.company}}">{{item.company | slice:0:30}}
                                        <span *ngIf="item.company?.length>30">...</span>
                                     </h6>
                                     <h4 *ngIf="item.company==null">-</h4>
