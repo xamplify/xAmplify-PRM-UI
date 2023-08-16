@@ -614,3 +614,33 @@ a > span.glyphicon.glyphicon-remove {
 th.leftAlignTableth {
   text-align: left !important;
 }
+@media only screen and (min-width: 1252px) and (max-width: 1356px) { 
+  .camp-desc {
+    font-size: 10px;
+  }
+}
+@media only screen and (min-width: 1149px) and (max-width: 1251px) { 
+  .camp-desc {
+    font-size: 8px;
+  }
+}
+@media only screen and (min-width: 1000px) and (max-width: 1148px) { 
+  .camp-desc {
+    font-size: 7px;
+  }
+}
+@media only screen and (min-width: 992px) and (max-width: 1100px) { 
+  .emails-info button {
+    min-height: 92px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    flex-direction: column;
+    align-content: center;
+    justify-content: space-around;
+    height: 110px;
+  }
+}
+
+
