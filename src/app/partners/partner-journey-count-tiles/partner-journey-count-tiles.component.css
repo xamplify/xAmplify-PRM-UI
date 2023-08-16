@@ -1,39 +1,47 @@
 .emails-info i {
-    font-size: 20px;
-    display: block;
-    text-align: center;
-  }
-  .emails-info h1 {
-    margin-bottom: 15px;
-  }
-  .emails-info h5 {
-    margin: 0;
-  }
-  .emails-info h1 span {
-    font-size: 14px;
-  }
-  .emails-info i {
-    font-size: 30px;
-  }
-  .emails-info h1 {
-    margin-top: 15px;
-    margin-bottom: 0;
-  }
-  .emails-info h1,
-  .emails-info span {
-    font-size: 18px;
-  }
-  .emails-info button {
-    min-height: 92px;
-  }
+  font-size: 20px;
+  display: block;
+  text-align: center;
+}
 
-  .color1,
+.emails-info h1 {
+  margin-bottom: 15px;
+}
+
+.emails-info h5 {
+  margin: 0;
+}
+
+.emails-info h1 span {
+  font-size: 14px;
+}
+
+.emails-info i {
+  font-size: 30px;
+}
+
+.emails-info h1 {
+  margin-top: 15px;
+  margin-bottom: 0;
+}
+
+.emails-info h1,
+.emails-info span {
+  font-size: 18px;
+}
+
+.emails-info button {
+  min-height: 92px;
+}
+
+.color1,
 .color1-invert:hover {
   background-color: #00a6e8;
   color: #fff;
   border: 1px solid #00a6e8;
   border-radius: 3px !important;
 }
+
 .color1:hover,
 .color1-invert {
   color: #00a6e8;
@@ -41,6 +49,7 @@
   border: 1px solid #00a6e8;
   border-radius: 3px !important;
 }
+
 .color1:hover,
 .color2:hover,
 .color3:hover,
@@ -49,167 +58,425 @@
 }
 
 .lt-blue-c:hover {
-    background-color: #008fd5 !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
-  .lt-green-c:hover {
-    background-color: #58cc00 !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
-  .tk-blue-c:hover {
-    background-color: #3564b9 !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
-  .vlt-blue-c:hover {
-    background-color: #2bc2b5 !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
-  .pure-blue-c:hover {
-    background-color: #2f2470 !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
-  .black-blue-c:hover {
-    background-color: #7f2ca3 !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
-  .g-b-c:hover {
-    background-color: #009970 !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
-  .y-b-c:hover {
-    background-color: #827500 !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
-  .y-b-c:hover {
-    background-color: #827500 !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
-  .b-b-c:hover {
-    background-color: #2b005c !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
-  .r-b-c:hover {
-    background-color: #c72828 !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
-  .h-r-c:hover {
-    background-color: #660000 !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
-  .r-r-c:hover {
-    background-color: red !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
-  .vlt-b-c:hover {
-    background-color: #8877a9 !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
-  .lt-g-b-c:hover {
-    background-color: #57c195 !important;
-    color: #fff !important;
-    border-color: #fff;
-  }
+  background-color: #008fd5 !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
-  .crcb {
-    width: 100%;
-    margin-bottom: 5px;
-  }
+.lt-green-c:hover {
+  background-color: #58cc00 !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
+.tk-blue-c:hover {
+  background-color: #3564b9 !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
-/**************************************************************************/
+.vlt-blue-c:hover {
+  background-color: #2bc2b5 !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
-.p_20{padding:20px 30px 20px 30px;}
-.pa-CardSidePaddings{margin: 0px;padding: 5px 5px;}
-.pa-Card {cursor: default;border-radius: 3px !important;text-align: center;padding: 10px 10px; box-sizing: border-box;border: 1px solid #00a6e8;}
-.pa-fafaIconCustomization {font-size: 40px !important;padding: 12px !important;margin: 0px !important; margin-bottom: 5px !important;}
-p.pa-text {font-weight: 600;font-size: 14px;padding: 0px;line-height: 1;margin: 5px 0px;}
+.pure-blue-c:hover {
+  background-color: #2f2470 !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
-p.pa-TextOne {color: #00a6e8;}
-.pa-CardOne {color: #00a6e8;}
-.pa-CardOne:hover {  background: #00a6e8; color: #fff; border: 1px solid #00a6e8;}
-.pa-CardOne:hover p {background: #00a6e8;color: #fff;}
+.black-blue-c:hover {
+  background-color: #7f2ca3 !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
-p.pa-TextTwo {color: #10ad39;}
-.pa-CardTwo {color: #10ad39;}
-.pa-CardTwo:hover {  background: #10ad39; color: #fff; border: 1px solid #10ad39;}
-.pa-CardTwo:hover p {background: #10ad39;color: #fff;}
+.g-b-c:hover {
+  background-color: #009970 !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
-p.pa-TextThree {color: #3564b9;}
-.pa-CardThree {color: #3564b9;}
-.pa-CardThree:hover {  background: #3564b9; color: #fff; border: 1px solid #3564b9;}
-.pa-CardThree:hover p {background: #3564b9;color: #fff;}
+.y-b-c:hover {
+  background-color: #827500 !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
-p.pa-TextFour {color: #2bc2b5;}
-.pa-CardFour {color: #2bc2b5;}
-.pa-CardFour:hover {  background: #2bc2b5; color: #fff; border: 1px solid #2bc2b5;}
-.pa-CardFour:hover p {background: #2bc2b5;color: #fff;}
+.y-b-c:hover {
+  background-color: #827500 !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
-p.pa-TextFive {color: #57517d;}
-.pa-CardFive {color: #57517d;}
-.pa-CardFive:hover {  background: #57517d; color: #fff; border: 1px solid #57517d;}
-.pa-CardFive:hover p {background: #57517d;color: #fff;}
+.b-b-c:hover {
+  background-color: #2b005c !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
-p.pa-TextSix {color: #7f2ca3;}
-.pa-CardSix {color: #7f2ca3;}
-.pa-CardSix:hover {  background: #7f2ca3; color: #fff; border: 1px solid #7f2ca3;}
-.pa-CardSix:hover p {background: #7f2ca3;color: #fff;}
+.r-b-c:hover {
+  background-color: #c72828 !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
-p.pa-TextSeven {color: #827500;}
-.pa-CardSeven {color: #827500;}
-.pa-CardSeven:hover {  background: #827500; color: #fff; border: 1px solid #827500;}
-.pa-CardSeven:hover p {background: #827500;color: #fff;}
+.h-r-c:hover {
+  background-color: #660000 !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
-p.pa-TextEight {color: #2b005c;}
-.pa-CardEight {color: #2b005c;}
-.pa-CardEight:hover {  background: #2b005c; color: #fff; border: 1px solid #2b005c;}
-.pa-CardEight:hover p {background: #2b005c;color: #fff;}
+.r-r-c:hover {
+  background-color: red !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
-p.pa-TextNine {color: #c72828;}
-.pa-CardNine {color: #c72828;}
-.pa-CardNine:hover {  background: #c72828; color: #fff;  border: 1px solid #c72828;}
-.pa-CardNine:hover p {background: #c72828;color: #fff;}
+.vlt-b-c:hover {
+  background-color: #8877a9 !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
-p.pa-TextTen {color: #660000;}
-.pa-CardTen {color: #660000;}
-.pa-CardTen:hover {  background: #660000; color: #fff;  border: 1px solid #660000;}
-.pa-CardTen:hover p {background: #660000;color: #fff;}
+.lt-g-b-c:hover {
+  background-color: #57c195 !important;
+  color: #fff !important;
+  border-color: #fff;
+}
 
-p.pa-TextEleven {color: #ff0000;}
-.pa-CardEleven {color: #ff0000;}
-.pa-CardEleven:hover {  background: #ff0000; color: #fff;  border: 1px solid #ff0000;}
-.pa-CardEleven:hover p {background: #ff0000;color: #fff;}
-
-p.pa-TextTwelv {color: #8877a9;}
-.pa-CardTwelve {color: #8877a9;}
-.pa-CardTwelve:hover {  background: #8877a9; color: #fff;  border: 1px solid #8877a9;}
-.pa-CardTwelve:hover p {background: #8877a9;color: #fff;}
+.crcb {
+  width: 100%;
+  margin-bottom: 5px;
+}
 
 
 /**************************************************************************/
 
-.pa-CardBG {background: #F1F3FA; width: 100%;border-radius: 5px; padding: 15px 15px;}
-i.filterColorCu {background: #20a7c9;border-radius: 20px;color: #fff; padding: 6px;margin: 6px 8px;}
-i.EllipsisCu { color: #7c7c7c;font-size: 15px !important; margin: 10px 0px;}
-p.paTextCu {font-size: 17px;font-weight: 700; margin-top: 0px; margin-bottom: 5px;}
-i.filterColorCu1 {background: #fcc700;border-radius: 20px;color: #333; padding: 6px;margin: 6px 8px;}
-p.paNumberCu {margin: 2px 0px !important;}
+.p_20 {
+  padding: 20px 30px 20px 30px;
+}
 
-@media (min-width: 767px) and (max-width: 992px)  {
-  p.paTextCu {font-size: 13px !important;}
-  p.paNumberCu {font-size: 12px !important;}
-  p.paNumberCu1 {font-size: 12px !important;}
+.pa-CardSidePaddings {
+  margin: 0px;
+  padding: 5px 5px;
+}
+
+.pa-Card {
+  cursor: default;
+  border-radius: 3px !important;
+  text-align: center;
+  padding: 10px 10px;
+  box-sizing: border-box;
+  border: 1px solid #00a6e8;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-around;
+  height: 120px;
+}
+
+.pa-fafaIconCustomization {
+  font-size: 40px !important;
+  padding: 12px !important;
+  margin: 0px !important;
+  margin-bottom: 5px !important;
+}
+
+p.pa-text {
+  font-weight: 600;
+  font-size: 14px;
+  padding: 0px;
+  line-height: 1;
+  margin: 5px 0px;
+}
+
+p.pa-TextOne {
+  color: #00a6e8;
+}
+
+.pa-CardOne {
+  color: #00a6e8;
+}
+
+.pa-CardOne:hover {
+  background: #00a6e8;
+  color: #fff;
+  border: 1px solid #00a6e8;
+}
+
+.pa-CardOne:hover p {
+  background: #00a6e8;
+  color: #fff;
+}
+
+p.pa-TextTwo {
+  color: #10ad39;
+}
+
+.pa-CardTwo {
+  color: #10ad39;
+}
+
+.pa-CardTwo:hover {
+  background: #10ad39;
+  color: #fff;
+  border: 1px solid #10ad39;
+}
+
+.pa-CardTwo:hover p {
+  background: #10ad39;
+  color: #fff;
+}
+
+p.pa-TextThree {
+  color: #3564b9;
+}
+
+.pa-CardThree {
+  color: #3564b9;
+}
+
+.pa-CardThree:hover {
+  background: #3564b9;
+  color: #fff;
+  border: 1px solid #3564b9;
+}
+
+.pa-CardThree:hover p {
+  background: #3564b9;
+  color: #fff;
+}
+
+p.pa-TextFour {
+  color: #2bc2b5;
+}
+
+.pa-CardFour {
+  color: #2bc2b5;
+}
+
+.pa-CardFour:hover {
+  background: #2bc2b5;
+  color: #fff;
+  border: 1px solid #2bc2b5;
+}
+
+.pa-CardFour:hover p {
+  background: #2bc2b5;
+  color: #fff;
+}
+
+p.pa-TextFive {
+  color: #57517d;
+}
+
+.pa-CardFive {
+  color: #57517d;
+}
+
+.pa-CardFive:hover {
+  background: #57517d;
+  color: #fff;
+  border: 1px solid #57517d;
+}
+
+.pa-CardFive:hover p {
+  background: #57517d;
+  color: #fff;
+}
+
+p.pa-TextSix {
+  color: #7f2ca3;
+}
+
+.pa-CardSix {
+  color: #7f2ca3;
+}
+
+.pa-CardSix:hover {
+  background: #7f2ca3;
+  color: #fff;
+  border: 1px solid #7f2ca3;
+}
+
+.pa-CardSix:hover p {
+  background: #7f2ca3;
+  color: #fff;
+}
+
+p.pa-TextSeven {
+  color: #827500;
+}
+
+.pa-CardSeven {
+  color: #827500;
+}
+
+.pa-CardSeven:hover {
+  background: #827500;
+  color: #fff;
+  border: 1px solid #827500;
+}
+
+.pa-CardSeven:hover p {
+  background: #827500;
+  color: #fff;
+}
+
+p.pa-TextEight {
+  color: #2b005c;
+}
+
+.pa-CardEight {
+  color: #2b005c;
+}
+
+.pa-CardEight:hover {
+  background: #2b005c;
+  color: #fff;
+  border: 1px solid #2b005c;
+}
+
+.pa-CardEight:hover p {
+  background: #2b005c;
+  color: #fff;
+}
+
+p.pa-TextNine {
+  color: #c72828;
+}
+
+.pa-CardNine {
+  color: #c72828;
+}
+
+.pa-CardNine:hover {
+  background: #c72828;
+  color: #fff;
+  border: 1px solid #c72828;
+}
+
+.pa-CardNine:hover p {
+  background: #c72828;
+  color: #fff;
+}
+
+p.pa-TextTen {
+  color: #660000;
+}
+
+.pa-CardTen {
+  color: #660000;
+}
+
+.pa-CardTen:hover {
+  background: #660000;
+  color: #fff;
+  border: 1px solid #660000;
+}
+
+.pa-CardTen:hover p {
+  background: #660000;
+  color: #fff;
+}
+
+p.pa-TextEleven {
+  color: #ff0000;
+}
+
+.pa-CardEleven {
+  color: #ff0000;
+}
+
+.pa-CardEleven:hover {
+  background: #ff0000;
+  color: #fff;
+  border: 1px solid #ff0000;
+}
+
+.pa-CardEleven:hover p {
+  background: #ff0000;
+  color: #fff;
+}
+
+p.pa-TextTwelv {
+  color: #8877a9;
+}
+
+.pa-CardTwelve {
+  color: #8877a9;
+}
+
+.pa-CardTwelve:hover {
+  background: #8877a9;
+  color: #fff;
+  border: 1px solid #8877a9;
+}
+
+.pa-CardTwelve:hover p {
+  background: #8877a9;
+  color: #fff;
+}
+
+
+/**************************************************************************/
+
+.pa-CardBG {
+  background: #F1F3FA;
+  width: 100%;
+  border-radius: 5px;
+  padding: 15px 15px;
+}
+
+i.filterColorCu {
+  background: #20a7c9;
+  border-radius: 20px;
+  color: #fff;
+  padding: 6px;
+  margin: 6px 8px;
+}
+
+i.EllipsisCu {
+  color: #7c7c7c;
+  font-size: 15px !important;
+  margin: 10px 0px;
+}
+
+p.paTextCu {
+  font-size: 17px;
+  font-weight: 700;
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+
+i.filterColorCu1 {
+  background: #fcc700;
+  border-radius: 20px;
+  color: #333;
+  padding: 6px;
+  margin: 6px 8px;
+}
+
+p.paNumberCu {
+  margin: 2px 0px !important;
+}
+
+@media (min-width: 767px) and (max-width: 992px) {
+  p.paTextCu {
+    font-size: 13px !important;
+  }
+
+  p.paNumberCu {
+    font-size: 12px !important;
+  }
+
+  p.paNumberCu1 {
+    font-size: 12px !important;
+  }
 }
