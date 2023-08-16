@@ -408,5 +408,4 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		this.loading = true;
 	}
 	
-	
 }
