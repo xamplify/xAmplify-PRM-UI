@@ -610,3 +610,7 @@ a > span.glyphicon.glyphicon-remove {
   position: relative;
   top:3px;
 }
+/* 16-08-2023 */
+th.leftAlignTableth {
+  text-align: left !important;
+}
