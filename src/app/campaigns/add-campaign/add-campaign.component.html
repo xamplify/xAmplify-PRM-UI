@@ -966,7 +966,7 @@
                                                                             <option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
                                                                             <option [value]="16" [selected]="reply.actionId ==16" >Send immediately after email is opened</option>
                                                                             <option [value]="33" [selected]="reply.actionId ==33">Send follow-up email</option>
-                                                                            <option [value]="22" [selected]="reply.actionId ==22"*ngIf="campaign.channelCampaign && ((campaignType=='regular')||(campaignType=='survey'))">
+                                                                            <option [value]="22" [selected]="reply.actionId ==22"*ngIf="campaign.channelCampaign && (isEmailCampaign||isSurveyCampaign)">
                                                                                 Email is not redistributed by {{authenticationService?.partnerModule?.customName}}
                                                                             </option>
                                                                             <ng-container *ngIf="campaignType=='video'">
