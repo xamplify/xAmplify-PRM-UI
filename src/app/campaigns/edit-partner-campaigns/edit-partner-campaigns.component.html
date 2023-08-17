@@ -501,8 +501,8 @@
                                                                  </div>
                                                                  <div class="item__content" style="text-align: left;">
                                                                     <div class="flex-row">
-                                                                       <span class="item__name" [title]="reply.emailTemplate.name"><strong>{{reply?.emailTemplate?.name |slice:0:20}}</strong>
-                                                                       <strong *ngIf="reply?.emailTemplate?.name?.length>20">...</strong>
+                                                                       <span class="item__name" [title]="reply.emailTemplate.name"><strong>{{reply?.emailTemplate?.name |slice:0:12}}</strong>
+                                                                       <strong *ngIf="reply?.emailTemplate?.name?.length>12">...</strong>
                                                                        </span>
                                                                        <br>
                                                                        <br>
@@ -656,8 +656,8 @@
                                                               <div class="item__content" style="text-align: left;">
                                                                  <div class="flex-row">
                                                                     <span class="item__name" [title]="url.emailTemplate.name">
-                                                                    <strong>{{url.emailTemplate.name |slice:0:20}}</strong>
-                                                                    <strong *ngIf="url.emailTemplate?.name?.length>20">...</strong>
+                                                                    <strong>{{url.emailTemplate.name |slice:0:12}}</strong>
+                                                                    <strong *ngIf="url.emailTemplate?.name?.length>12">...</strong>
                                                                     </span>
                                                                     <br>
                                                                     <br>
@@ -670,8 +670,8 @@
                                                                     </span>
                                                                     </span>
                                                                     <br>
-                                                                    <span style="float:left" title="{{url.emailTemplate.createdBy}}">
-                                                                    <span>{{url.emailTemplate.createdBy|slice:0:15}}<span *ngIf="url.emailTemplate.createdBy?.length>15">...</span></span>
+                                                                    <span style="float:left" data-toggle="tooltip" data-placement="bottom" title="{{url.emailTemplate.createdBy}}">
+                                                                    <span>{{url.emailTemplate.createdBy|slice:0:12}}<span *ngIf="url.emailTemplate.createdBy?.length>12">...</span></span>
                                                                     </span>
                                                                     <br>
                                                                     <span *ngIf="url?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{url?.emailTemplate?.category}}">
