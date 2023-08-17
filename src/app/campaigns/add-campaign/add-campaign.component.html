@@ -226,7 +226,7 @@
                                                 <span class="required"> <strong>*</strong> </span>
                                             </label>
                                             <div class="col-sm-8 col-xs-12">
-                                                <div class="input-group merge-tag-input-border" style="border: none !important;">
+                                                <div class="input-group merge-tag-input-border">
                                                     <input type="text" id="subjectLineId" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" maxlength="1000" (input)="validateForm();" autocomplete="off" />
                                                     <span class="input-group-btn" style="border: none !important;">
                                                         <button class="btn btn-default button-color" type="button" 
@@ -1016,7 +1016,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <!--Message & Email Templates-->
-                                                                    <div class="col-xs-12">
+                                                                    <div class="col-xs-12" style="margin-top: 20px;">
                                                                         <div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
                                                                             <div style="margin-left: 1px;">
                                                                                 <label class="default" for="days" id="reply-message-{{reply.divId}}" translate>Message
@@ -1206,7 +1206,7 @@
                                                                 </div>
 
                                                                 <!-- Message--->
-                                                                <div class="col-xs-12">
+                                                                <div class="col-xs-12" style="margin-top: 20px;">
                                                                     <div id="ck-editor-{{i}}" *ngIf="!url?.defaultTemplate">
                                                                         <label class="default" for="days" id="click-message-{{url.divId}}" translate>Message 
                                                                             <strong class="required">*</strong>

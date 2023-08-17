@@ -36,7 +36,7 @@ export class XamplifyVideoPlayerComponent implements OnInit {
  
 
   playNormalVideo() {
-    const str = '<video id=xamplify-video-player-id muted="muted" poster=' + this.posterImg + ' preload="none"  class="video-js vjs-default-skin" controls ></video>';
+    const str = '<video id=xamplify-video-player-id muted poster=' + this.posterImg + ' preload="none"  class="video-js vjs-default-skin" controls ></video>';
     $('#xamplify-video-player').append(str);
     $('#xamplify-video-player-id').css('height', this.videoWidth);
     $('#xamplify-video-player-id').css('width', 'auto');
@@ -68,7 +68,7 @@ export class XamplifyVideoPlayerComponent implements OnInit {
         this.ready(function () {
             $('#overLayImage').append($('#overlay-logo').show());
             $('#overlay-modal').hide(); 
-            /***XNFR-329****/
+            /***XNFR-329***Do not move this httpSourceSelector().*/
             player.httpSourceSelector();
             /***XNFR-329****/
             player.play();
@@ -202,11 +202,7 @@ export class XamplifyVideoPlayerComponent implements OnInit {
     $('#xamplify-video-player').append(str);
     this.videoUrl = this.videoFile.videoPath;
     this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-    if(this.envService.CLIENT_URL.indexOf("localhost")>-1){
-        this.videoUrl = "https://aravindu.com/vod/videos/54888/27062023/360VideoSCIENCELAB1EscapeTsunamiWave6kDisasterSurvival1687809605028_mobinar.m3u8?access_token=" + this.authenticationService.access_token;
-      }else{
-       this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-      }
+    this.videoUrl = this.authenticationService.getDefault360M3U8FileForLocal(this.videoUrl);
     $('#xamplify-video-player video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
     $('#xamplify-video-player-id').css('height', this.videoWidth);
     $('#xamplify-video-player-id').css('width', 'auto');
@@ -268,9 +264,6 @@ export class XamplifyVideoPlayerComponent implements OnInit {
                 $('#overLayImage').append($('#overlay-logo').show());
                 $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + self.videoFile.playerColor + '!important');
                 $('#overlay-modal').hide();
-                /***XNFR-329****/
-                player.httpSourceSelector();
-                /***XNFR-329****/
                 player.play();
                 $('#skipOverlay').click(function () {
                     isCallActionthere = false;
