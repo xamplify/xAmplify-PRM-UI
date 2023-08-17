@@ -471,6 +471,12 @@ fieldset {
     width: 100% !important;
     right: 0 !important;
   }
+  .mrgt45{
+    margin-top:0px!important;
+  }
+  .mbgrid{
+    display: grid;
+  }
 }
 #download-drop {
   box-shadow: none;
@@ -755,4 +761,7 @@ span.text-algn {
     padding-top: 10px!important;
   }
   
+}
+.mrgt45{
+  margin-top:45px;
 }

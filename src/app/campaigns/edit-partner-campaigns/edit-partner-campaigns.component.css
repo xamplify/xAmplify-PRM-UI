@@ -156,3 +156,8 @@ img.Selected-email-template-imgcu {
   object-fit: fill;
   border-radius: 2px;
 }
+@media screen and (max-width:1024px){
+  .tab_sub{
+    margin-left:0px!important;
+  }
+}
