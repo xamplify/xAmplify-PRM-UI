@@ -369,3 +369,88 @@ legend {
   text-align: left;
   border-bottom: none;
 }
+/* 17-8-2023 sudha sri */
+.trash-btn-alignments {
+  padding-left: 65px;
+  margin-top: -35px;
+}
+.centerthetoggle {
+  margin-top: 5px;
+  margin-left: 15px;
+}
+.toggleAndOr {
+  --width: 80px;
+  --height: calc(var(--width) / 3);
+  position: relative;
+  display: inline-block;
+  width: var(--width);
+  height: var(--height);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  border-radius: var(--height);
+  cursor: pointer;
+}
+.toggleAndOr input {
+  display: none;
+}
+.toggleAndOr .sliderAndOr {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--height);
+  background-color: #26a69a;
+  transition: all 0.4s ease-in-out;
+}
+.toggleAndOr .sliderAndOr::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--height));
+  height: calc(var(--height));
+  border-radius: calc(var(--height) / 2);
+  background-color: #fff;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s ease-in-out;
+}
+.toggleAndOr input:checked + .sliderAndOr {
+  background-color: #2196f3;
+}
+.toggleAndOr input:checked + .sliderAndOr::before {
+  transform: translateX(calc(var(--width) - var(--height)));
+}
+.toggleAndOr .labelsAndOr {
+  position: absolute;
+  top: 6px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  font-size: 12px;
+  font-family: sans-serif;
+  transition: all 0.4s ease-in-out;
+}
+.toggleAndOr .labelsAndOr::after {
+  content: attr(data-off);
+  position: absolute;
+  right: 10px;
+  color: #ffffff;
+  opacity: 1;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s ease-in-out;
+}
+.toggleAndOr .labelsAndOr::before {
+  content: attr(data-on);
+  position: absolute;
+  left: 10px;
+  color: #ffffff;
+  opacity: 0;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
+  transition: all 0.4s ease-in-out;
+}
+.toggleAndOr input:checked ~ .labelsAndOr::after {
+  opacity: 0;
+}
+.toggleAndOr input:checked ~ .labelsAndOr::before {
+  opacity: 1;
+}
