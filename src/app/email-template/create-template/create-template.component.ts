@@ -137,7 +137,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                 }
                 if (!isDefaultTemplate) {
                     var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                        .append(' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
+                        .append(' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color: red !important;"></span></div><br>');
                     var dropDown = '<div class="form-group">';
                     dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
                     dropDown += '<select class="form-control" id="category-dropdown">';
