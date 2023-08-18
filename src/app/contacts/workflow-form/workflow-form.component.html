@@ -1,588 +1,575 @@
 <ngx-loading [config]="{ backdropBorderRadius: '14px' }" style="padding-bottom:20px"></ngx-loading>
 <div class="page-content">
-   <div class="page-bar">
-      <ul class="page-breadcrumb">
-         <li><i class="fa fa-home" aria-hidden="true"></i> <a
-            translate>Home</a>
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li>
-            <a translate>          
-            <span>Partner Journey Automation</span>
-            </a> 
-         </li>
-      </ul>
-   </div>
-   <!--2 cards start -->
-   <div class="page-bar p10">
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li><i class="fa fa-home" aria-hidden="true"></i> <a translate>Home</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li>
+        <a translate>
+          <span>Partner Journey Automation</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <!--2 cards start -->
+  <div class="page-bar p10">
     <div class="row">
-   <div class="col-sm-12 col-md-12 col-lg-12">
-   <div class="portlet light row steps-view">
-    <div class="col-block  width" [ngClass]="activeClass1?'col-block-active':'col-block-disable'" id="" (click)="goToPrevious()" ng-reflect-ng-style="[object Object]" style="width: 50%;">
-        <div  class="cenetered-block colorbox-1">
-            <img  alt="" class="newicons" src="assets/images/campaignnew-icon/19.svg">
-            <h5  class="hidden-xs text-clr" translate="" ng-reflect-translate="">Trigger</h5>
-        </div>
-    </div>
-    <div ng-reflect-ng-style="[object Object]" class="col-block" (click)="showAndHideDivs()" [ngClass]="activeClass2?'col-block-active':'col-block-disable'" style="width: 50%;" [ngClass]="">
-        <div  class="cenetered-block colorbox-2">
-            <img  alt="" class="newicons" src="assets/images/campaignnew-icon/8.svg">
-            <h5 class="hidden-xs text-clr">
-                Notification
-            </h5>
-        </div>
-    </div>
-</div>
-</div>
-</div>
-</div>
-<!--2 cards End -->
-   <div>
-      <div>
-         <div>
-            <div class="row" style="margin-right: -4px;margin-left: 0px;">
-                 <!--Trigger start -->
-   <div class="page-bar p20 activeStepInfo"  id="step-1">
-    <div class="caption" style="padding-top: 11px !important;" >
-      <img src="assets/admin/pages/media/works/icon.png" class="icon-alignmnt" alt="">
-       <span class="textaligncenter">Trigger</span> 
-   </div>
-   <hr>  
-   <!-- Partner forms row start -->
-   <div class="row">
-    <p class="align-paratext">Define the trigger when this happens</p>
-    <div class="col-sm-4">
-        <div class="form-group">
-          <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >               
-             <option value="1" selected>Partner has</option>
-             <option value="2">Partner has not</option>
-           </select>
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="form-group">
-          <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >              
-             <option value="1" selected>Registered</option>
-             <option value="2">Activated</option>
-             <option value="3">Added Contact</option>
-             <option value="4">View Assets</option>
-             <option value="5">Downloaded assets</option>
-             <option value="7">Viewed tracks</option>
-             <option value="8"> Completed tracks </option>
-             <option value="9"> Viewed playbook </option>
-             <option value="10"> Completed playbook </option>
-             <option value="11"> Opened shared leads </option>
-             <option value="12"> Viewed pages </option>
-             <option value="13"> Redistribute campaign </option>
-             <option value="14"> Added Team member </option>
-             <option value="15"> Created Leads </option>
-             <option value="16"> Converted Leads </option>
-             <option value="17"> Created Deals </option>
-             <option value="18"> Closed Deals </option>
-             <option value="19"> Requested MDF </option>
-           </select>
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="form-group">
-          <select class="form-control ng-pristine ng-valid ng-touched">
-             <option selected>In the past day </option>
-             <option value="1">In the past 7 day</option>
-             <option value="2">In the past 14 day</option>
-             <option value="3">In the past 30 day</option>
-             <option value="3">In the past 60 day</option>
-             <option value="3">In the past 90 day</option>
-             <option value="3">In the past year</option>
-             <option value="3">Custom</option>
-           </select>
-        </div>
-    </div>
-</div>
-<!-- Partner forms row end -->
-
-  <!-- Add Trigger Fields -->
-  <div class="row">
-    <div style="padding-left:15px;" c>Add Trigger Filter <button type="button" class="circle-icon" (click)="showDivWithPlusClick()" *ngIf="dealtypes.length== 0" data-toggle="tooltip" data-placement="top">
-      <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
-    </button>   </div>
-    </div>
-
-    <div>
- <div id="addform" class="row card card-hover-shadow mt-4 separate-card card-top-bottam-ppading" *ngFor="let dealType of dealtypes;let i=index">
-    <div class="card-header bg-transparent border-bottom-0">
-      <button data-dismiss="alert" data-toggle="collapse" data-target="#addform" type="button" class="close close-circle-cu" aria-label="Close" (click)="deleteDealType(i+1,dealType)">
-        <i aria-hidden="true" class="fa fa-times"></i>
-      </button>
-    </div>
-     <div class="card-body mt-n5">
-    <div class="col-sm-12 p-m-zero">
-          <p class="align-second-paratext">Trigger Filters (optinal)</p>
-     <div class="col-sm-4">
-        <div class="form-group">
-          <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >               
-            <option selected>Partner</option>
-            <option value="1">Partner and his team members</option>
-           </select>
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="form-group">
-          <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >              
-             <option value="1">Inactive from 7 days</option>
-             <option value="1">Inactive from 14 days</option>
-           </select>
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="form-group">
-          <select class="form-control ng-pristine ng-valid ng-touched">
-            <option selected>Once</option>
-            <option value="1">Twice</option>
-           </select>
-        </div>
-    </div>
- </div>
-    </div>
-  </div>
-</div>
-<div class="row" id="clickPlusIcon">
-  <div class="col-sm-12 col-md-12 col-lg-12 pull-left">
-    <button  type="button" class="circle-icon" (click)="showToggleAndDivWithPlusClick()" data-toggle="tooltip" data-placement="top">
-       <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
-     </button>  
-     <div class="row toggle-align" id="hideToggle">
-        <label class="toggleAndOr">
-         <input type="checkbox" class="hidecheckbox">
-           <span class="sliderAndOr"></span>
-            <span class="labelsAndOr" data-on="OR" data-off="AND"></span>
-          </label>
-      </div> 
-      <div *ngIf="isClickPlus">
-      <div id="addform" class="row card card-hover-shadow mt-4 separate-card card-top-bottam-ppading" *ngFor="let dealType of dealtypes;let i=index">
-        <div class="card-header bg-transparent border-bottom-0">
-          <button data-dismiss="alert" data-toggle="collapse" data-target="#addform" type="button" class="close close-circle-cu" aria-label="Close" (click)="deleteDealType(i+1,dealType)">
-            <i aria-hidden="true" class="fa fa-times"></i>
-          </button>
-        </div>
-         <div class="card-body mt-n5">
-        <div class="col-sm-12 p-m-zero">
-              <p class="align-second-paratext">Trigger Filters (optinal)</p>
-         <div class="col-sm-4">
-            <div class="form-group">
-              <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >               
-                <option selected>Partner</option>
-                <option value="1">Partner and his team members</option>
-               </select>
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="portlet light row steps-view">
+          <div class="col-block  width" [ngClass]="activeClass1?'col-block-active':'col-block-disable'" id=""
+            (click)="goToPrevious()" ng-reflect-ng-style="[object Object]" style="width: 50%;">
+            <div class="cenetered-block colorbox-1">
+              <img alt="" class="newicons" src="assets/images/campaignnew-icon/19.svg">
+              <h5 class="hidden-xs text-clr" translate="" ng-reflect-translate="">Trigger</h5>
             </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="form-group">
-              <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >              
-                 <option value="1">Inactive from 7 days</option>
-                 <option value="1">Inactive from 14 days</option>
-               </select>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="form-group">
-              <select class="form-control ng-pristine ng-valid ng-touched">
-                <option selected>Once</option>
-                <option value="1">Twice</option>
-               </select>
-            </div>
-        </div>
-     </div>
-        </div>
-      </div> 
-    </div>
-  </div>
-  </div>
-
-
-<button type="submit"  class="btn  btn Btn-Green float-right" (click)="showAndHideDivs()" translate>Next</button>
- </div>
-  <!--Trigger End -->
-
- <!--Action start -->
- <div class="page-bar p20 {{activeStepInfo}}" id="step-2" *ngIf="activeClass2">
-    <div class="caption" style="padding-top: 11px !important;" >
-      <img src="assets/admin/pages/media/works/mail.png" class="icon-alignmnt for-Action-only" alt="">
-      <span class="textaligncenterforaction">Action</span>
-   </div>
-   <hr> <br> 
-   <!-- Action forms row start -->
-   <div class="row">
-    <div class="col-sm-12">
-    </div>
-    <!-- table -->
-    <div class="col-xs-12">
-      <div class="mt10">
-        <div class="note-vid pull-left" style="padding-top: 8px;">
-          <div class="">Send To
           </div>
-      </div>
-        <div class="inputs search-align" style="float: right;margin-top: -12px">
-          <div _ngcontent-c63="" style="float: left;;margin-right: 10px;margin-top: -5px">
-            <select _ngcontent-c63="" class="form-control cc mTopSort ng-pristine ng-valid ng-touched">                                                    
-               <option _ngcontent-c63="" value="0: Object">Create On(DESC)</option><option _ngcontent-c63="" value="1: Object">Name(Z-A)</option><option _ngcontent-c63="" value="2: Object">Created On(ASC)</option><option _ngcontent-c63="" value="3: Object">Created On(DESC)</option><option _ngcontent-c63="" value="4: Object">Count(ASC)</option><option _ngcontent-c63="" value="5: Object">Count(DESC)</option>
-           </select> 
-       </div>
-       <div class="portlet-input input-inline mAlign pr" style="position: relative;top: -6px;">
-          <div class="input-icon right" id="icon-right" style="padding-right: 1px;margin-right: -5px;">
-            <input type="text" id="search-text" class="form-control" [(ngModel)]="pagination.searchKey"
-            [ngModelOptions]="{standalone: true}" placeholder="Search..."
-            (keypress)="eventHandler($event.keyCode)" autocomplete="off">
-            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
-            (click)="pagination.searchKey='';searchPartnerCompanies()"></button>
-            <button type="submit" class="search-box-item-click" (click)="searchPartnerCompanies()">
-            <i class="fa fa-search" aria-hidden="true"></i></button>
-         </div>
-        </div>
-      </div>
-    <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
-      <div class="table-responsive pt">
-        <table class="table tgrid table-hover table-sm">
-          <thead>
-            <tr>
-                <th scope="row" class="text-center">
-                    <input type="checkbox" name="all"/>
-                </th>
-                <th class="hidden-xs"scope="col"></th>
-                <th class="hidden-xs"colspan="2" style="width: 35%">
-                    <span class="ui-column-resizer"></span>
-                    <span class="gridHeader" translate>List Name</span>
-                </th>
-                <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
-                    List Info
-                </th>
-                <th scope="row" style="text-align: center;" translate>Type
-                </th>
-                <th scope="row" style="text-align: center;" translate>Created On</th>
-                <th scope="row" style="text-align: center;" translate>Count</th>
-                <th scope="row" style="text-align: center;" translate>Preview </th>
-            </tr>
-        </thead>
-        <tbody class="pointer"> 
-          <tr role="row">
-          <td class="text-center">
-            <div class="form-group">
-                <input type="checkbox" class="chk"
-               (click)="highlightRow(contacts,$event)">
+          <div ng-reflect-ng-style="[object Object]" class="col-block" (click)="showAndHideDivs()"
+            [ngClass]="activeClass2?'col-block-active':'col-block-disable'" style="width: 50%;" [ngClass]="">
+            <div class="cenetered-block colorbox-2">
+              <img alt="" class="newicons" src="assets/images/campaignnew-icon/8.svg">
+              <h5 class="hidden-xs text-clr">
+                Notification
+              </h5>
             </div>
-        </td>
-      <td style="width: 10%;text-align: left;" class="hidden-xs">
-        <img  src="{{properties?.manualImage}}" alt="Manual" class="img-class-list list-icons-sm">
-      </td>
-      <td>
-        Partner Journey<br>
-        Created By Xamplify
-      </td>
-      <td></td>
-      <td class="text-center">
-        Contacts                                                                                                                            
-    </td>
-      <td  class="text-center sorting_1">
-        May 26, 2023,4:19 PM
-      </td>
-      <td class="text-center">3</td>
-      <td  class="text-center">
-        <a >
-          <i class="fa fa-eye" aria-hidden="true"style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
-      </a>
-      </td>
-      </tr>
-      <!-- 2nd row -->
-      <tr>
-      <td class="text-center">
-        <div class="form-group">
-            <input type="checkbox" class="chk"
-           (click)="highlightRow(contacts,$event)">
-        </div>
-    </td>
-    <td style="width: 10%;text-align: left;" class="hidden-xs">
-      <img  src="{{properties?.manualImage}}" alt="Manual" class="img-class-list list-icons-sm">
-    </td>
-    <td>
-      Indian Tourism<br>
-      Created By India
-    </td>
-    <td></td>
-    <td class="text-center">
-      Partner                                                                                                                            
-  </td>
-    <td  class="text-center sorting_1">
-      july 26, 2023,9:19 PM
-    </td>
-    <td class="text-center">3</td>
-    <td  class="text-center">
-      <a >
-        <i class="fa fa-eye" aria-hidden="true"style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
-    </a>
-    </td>
-    </tr>
-          </tbody>
-        </table>
+          </div>
         </div>
       </div>
     </div>
-    </div>
-    <div class="col-sm-12">
-       <div class="form-group">
-         <label for="sel1" class="form-label">Subject</label>
-         <input type="text" class="form-control"   placeholder="Subject">
-       </div>
-   </div>
-   <div class="col-sm-12">
-    <div class="form-group">
-            <!--Email templates start -->
+  </div>
+  <!--2 cards End -->
+  <div>
+    <div>
+      <div>
+        <div class="row" style="margin-right: -4px;margin-left: 0px;">
+          <!--Trigger start -->
+          <div class="page-bar p20 activeStepInfo" id="step-1">
+            <div class="caption" style="padding-top: 11px !important;">
+              <img src="assets/admin/pages/media/works/icon.png" class="icon-alignmnt" alt="">
+              <span class="textaligncenter">Trigger</span>
+            </div>
+            <hr>
+            <!-- Partner forms row start -->
             <div class="row">
-               <div class="col-xs-12 col-md-12 col-sm-12">
-                  <div class=""> 
-                     <!-- removed page-bar class -->
-                     <fieldset>
-                        <legend>Message</legend>
-                        <div>
-                            <div class="portlet light dashboard-stat2" >
-                                <div class="portlet-title custom-change-css" >
-                                    <div class="col-xs-6">
-                                        <h4 class="text-left">Add your Message to Trigger</h4>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <div class="pull-right">
-                                            <label class="switch-choose" translate>Choose Template
-                                                </label>
-                                            <switch class="switch-choose"  (click)="onTemplate =! onTemplate">
-                                            </switch>
-                                            <!-- <button type="button" class="btn btn-danger button-blue">
-                                                <span class="glyphicon glyphicon-trash"></span>
-                                            </button>
-                                            <button type="button" class="btn btn-primary button-blue">
-                                                <span class="glyphicon glyphicon-plus"></span>
-                                            </button> -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <form class="role add-reply">
-                                        <div class="col-xs-12 p0" >
-                                            <div class="col-xs-12">
-                                                <div>
-                                                   
-                                                    <div>
-                                                      <ckeditor 
-                                                    > </ckeditor>
-                                                    </div>
-                                                </div>
-                                            
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        </fieldset>
-                  </div>
-               </div>
+              <p class="align-paratext">Define the trigger when this happens</p>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <select class="form-control ng-pristine ng-valid ng-touched" style="width: 100%">
+                    <option value="1" selected>Partner has</option>
+                    <option value="2">Partner has not</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <select class="form-control ng-pristine ng-valid ng-touched" style="width: 100%">
+                    <option value="1" selected>Registered</option>
+                    <option value="2">Activated</option>
+                    <option value="3">Added Contact</option>
+                    <option value="4">View Assets</option>
+                    <option value="5">Downloaded assets</option>
+                    <option value="7">Viewed tracks</option>
+                    <option value="8"> Completed tracks </option>
+                    <option value="9"> Viewed playbook </option>
+                    <option value="10"> Completed playbook </option>
+                    <option value="11"> Opened shared leads </option>
+                    <option value="12"> Viewed pages </option>
+                    <option value="13"> Redistribute campaign </option>
+                    <option value="14"> Added Team member </option>
+                    <option value="15"> Created Leads </option>
+                    <option value="16"> Converted Leads </option>
+                    <option value="17"> Created Deals </option>
+                    <option value="18"> Closed Deals </option>
+                    <option value="19"> Requested MDF </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <select class="form-control ng-pristine ng-valid ng-touched">
+                    <option selected>In the past day </option>
+                    <option value="1">In the past 7 day</option>
+                    <option value="2">In the past 14 day</option>
+                    <option value="3">In the past 30 day</option>
+                    <option value="3">In the past 60 day</option>
+                    <option value="3">In the past 90 day</option>
+                    <option value="3">In the past year</option>
+                    <option value="3">Custom</option>
+                  </select>
+                </div>
+              </div>
             </div>
+            <!-- Partner forms row end -->
 
-   <div class="page-bar p20" *ngIf="onTemplate">
-      <div class="row">
- <div class="col-sm-12 col-md-12 col-lg-12">
- 
-   <!-- Email templates 1 start-->
-    <div class="col-sm-6 col-md-3 col-lg-3">
-      <div class="grid-box imgage-paddings" ng-reflect-klass="grid-box imgage-paddings" ng-reflect-ng-class="">                                                                                 
-         <span class="select-check-box">
-             <label>
-                 <input class="radio-custimization" type="radio">
-             </label>
-         </span>
-         <img alt="" class="img-grid-track" src="https://s3.amazonaws.com/xamplify/qa/previews/bee-827/email_templates/130407.png">
-             <span class="icon-alignments"> 
-                 <a data-original-title="Preview" data-placement="top" data-toggle="tooltip" title="">
-                 <i aria-hidden="true" class="fa fa-external-link-square preview-edit-color tooltip-cls"></i> </a> 
-             </span>
-         <div class="bar hover-bar">
-         <a class="border-none-dark" data-placement="top">
-             <div class="row">
-                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
-                     <div class="content-hover-align fontsize-cls">
-                         <span  class="item__name cardDetails-mar" title="">
-                             <strong >Jun7-analytif</strong><strong>..</strong>
-                         </span>
-                         <br>
-                         <span  class="item__name cardDetails-mar" title="created on">
-                           <span>Jun 28, 2023</span>
-                       </span>
-                        <p class="cardDetails-mar" title=" ">
-                                 <strong translate="" ng-reflect-translate="">Created by:</strong>
-                                 <span >orgadmin_pa
-                                 <span>..</span>
-                                 </span>
-                             </p> <span class="campaign-email-template-category cardDetails-mar" title="indian-Default-Folder">
-                          <strong translate="" ng-reflect-translate="">Folder:</strong>
-                          <span>india</span><span>..</span>
-                         </span> 
-                     </div> 
-                     <span class="label-color-custmization">Edit</span>
-                 </div>       
-             </div>
-             </a>
-         </div>
-     </div>
+            <!-- Add Trigger Fields -->
+
+            <ng-template #plusBtn>
+              <button type="button" (click)="addDiv()" class="circle-icon" data-toggle="tooltip" data-placement="top">
+                <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
+              </button>
+            </ng-template>
+
+            <div class="row">
+              <div style="display:flex" *ngIf="divs.length === 0">
+                <p class="align-paratext">Add Trigger Filter</p>
+                <ng-template [ngTemplateOutlet]="plusBtn"></ng-template>
+              </div> 
+              <div *ngFor="let div of divs;let i=index">         
+              <div class="row card card-hover-shadow mt-4 separate-card card-top-bottam-ppading" id="{{div}}">
+                <div class="card-header bg-transparent border-bottom-0">
+                  <button data-dismiss="alert" (click)="deleteDiv(i)" data-toggle="collapse" data-target="#addform" type="button"
+                    class="close close-circle-cu" aria-label="Close">
+                    <i aria-hidden="true" class="fa fa-times"></i>
+                  </button>
+                </div>
+                <div class="card-body mt-n5">
+                  <div class="col-sm-12 p-m-zero">
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <select class="form-control ng-pristine ng-valid ng-touched" style="width: 100%">
+                          <option selected>Partner</option>
+                          <option value="1">Partner and his team members</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <select class="form-control ng-pristine ng-valid ng-touched" style="width: 100%">
+                          <option value="1">Inactive from 7 days</option>
+                          <option value="1">Inactive from 14 days</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <select class="form-control ng-pristine ng-valid ng-touched">
+                          <option selected>Once</option>
+                          <option value="1">Twice</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+              </div> 
+              <div id="hideToggle{{div}}" *ngIf="div != divs.length">
+                <div class="row toggle-align">
+                  <label class="toggleAndOr">
+                   <input type="checkbox" class="hidecheckbox">
+                     <span class="sliderAndOr"></span>
+                      <span class="labelsAndOr" data-on="OR" data-off="AND"></span>
+                    </label>
+                </div>
+              </div>  
+          
+            </div> 
+            <div  *ngIf="divs.length != 0">
+              <ng-template [ngTemplateOutlet]="plusBtn"></ng-template>
+            </div>
+          
+            </div>
+                   
+            <button type="submit" class="btn  btn Btn-Green float-right" (click)="showAndHideDivs()"
+              translate>Next</button>
+          </div>
+          <!--Trigger End -->
+
+          <!--Action start -->
+          <div class="page-bar p20 {{activeStepInfo}}" id="step-2" *ngIf="activeClass2">
+            <div class="caption" style="padding-top: 11px !important;">
+              <img src="assets/admin/pages/media/works/mail.png" class="icon-alignmnt for-Action-only" alt="">
+              <span class="textaligncenterforaction">Action</span>
+            </div>
+            <hr> <br>
+            <!-- Action forms row start -->
+            <div class="row">
+              <div class="col-sm-12">
+              </div>
+              <!-- table -->
+              <div class="col-xs-12">
+                <div class="mt10">
+                  <div class="note-vid pull-left" style="padding-top: 8px;">
+                    <div class="">Send To
+                    </div>
+                  </div>
+                  <div class="inputs search-align" style="float: right;margin-top: -12px">
+                    <div _ngcontent-c63="" style="float: left;;margin-right: 10px;margin-top: -5px">
+                      <select _ngcontent-c63="" class="form-control cc mTopSort ng-pristine ng-valid ng-touched">
+                        <option _ngcontent-c63="" value="0: Object">Create On(DESC)</option>
+                        <option _ngcontent-c63="" value="1: Object">Name(Z-A)</option>
+                        <option _ngcontent-c63="" value="2: Object">Created On(ASC)</option>
+                        <option _ngcontent-c63="" value="3: Object">Created On(DESC)</option>
+                        <option _ngcontent-c63="" value="4: Object">Count(ASC)</option>
+                        <option _ngcontent-c63="" value="5: Object">Count(DESC)</option>
+                      </select>
+                    </div>
+                    <div class="portlet-input input-inline mAlign pr" style="position: relative;top: -6px;">
+                      <div class="input-icon right" id="icon-right" style="padding-right: 1px;margin-right: -5px;">
+                        <input type="text" id="search-text" class="form-control" [(ngModel)]="pagination.searchKey"
+                          [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                          (keypress)="eventHandler($event.keyCode)" autocomplete="off">
+                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey"
+                          (click)="pagination.searchKey='';searchPartnerCompanies()"></button>
+                        <button type="submit" class="search-box-item-click" (click)="searchPartnerCompanies()">
+                          <i class="fa fa-search" aria-hidden="true"></i></button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
+                    <div class="table-responsive pt">
+                      <table class="table tgrid table-hover table-sm">
+                        <thead>
+                          <tr>
+                            <th scope="row" class="text-center">
+                              <input type="checkbox" name="all" />
+                            </th>
+                            <th class="hidden-xs" scope="col"></th>
+                            <th class="hidden-xs" colspan="2" style="width: 35%">
+                              <span class="ui-column-resizer"></span>
+                              <span class="gridHeader" translate>List Name</span>
+                            </th>
+                            <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
+                              List Info
+                            </th>
+                            <th scope="row" style="text-align: center;" translate>Type
+                            </th>
+                            <th scope="row" style="text-align: center;" translate>Created On</th>
+                            <th scope="row" style="text-align: center;" translate>Count</th>
+                            <th scope="row" style="text-align: center;" translate>Preview </th>
+                          </tr>
+                        </thead>
+                        <tbody class="pointer">
+                          <tr role="row">
+                            <td class="text-center">
+                              <div class="form-group">
+                                <input type="checkbox" class="chk" (click)="highlightRow(contacts,$event)">
+                              </div>
+                            </td>
+                            <td style="width: 10%;text-align: left;" class="hidden-xs">
+                              <img src="{{properties?.manualImage}}" alt="Manual" class="img-class-list list-icons-sm">
+                            </td>
+                            <td>
+                              Partner Journey<br>
+                              Created By Xamplify
+                            </td>
+                            <td></td>
+                            <td class="text-center">
+                              Contacts
+                            </td>
+                            <td class="text-center sorting_1">
+                              May 26, 2023,4:19 PM
+                            </td>
+                            <td class="text-center">3</td>
+                            <td class="text-center">
+                              <a>
+                                <i class="fa fa-eye" aria-hidden="true"
+                                  style="color: #008fd5;padding-top: 3px; font-size: 20px;" title=""
+                                  data-original-title="Preview"></i>
+                              </a>
+                            </td>
+                          </tr>
+                          <!-- 2nd row -->
+                          <tr>
+                            <td class="text-center">
+                              <div class="form-group">
+                                <input type="checkbox" class="chk" (click)="highlightRow(contacts,$event)">
+                              </div>
+                            </td>
+                            <td style="width: 10%;text-align: left;" class="hidden-xs">
+                              <img src="{{properties?.manualImage}}" alt="Manual" class="img-class-list list-icons-sm">
+                            </td>
+                            <td>
+                              Indian Tourism<br>
+                              Created By India
+                            </td>
+                            <td></td>
+                            <td class="text-center">
+                              Partner
+                            </td>
+                            <td class="text-center sorting_1">
+                              july 26, 2023,9:19 PM
+                            </td>
+                            <td class="text-center">3</td>
+                            <td class="text-center">
+                              <a>
+                                <i class="fa fa-eye" aria-hidden="true"
+                                  style="color: #008fd5;padding-top: 3px; font-size: 20px;" title=""
+                                  data-original-title="Preview"></i>
+                              </a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="sel1" class="form-label">Subject</label>
+                  <input type="text" class="form-control" placeholder="Subject">
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <!--Email templates start -->
+                  <div class="row">
+                    <div class="col-xs-12 col-md-12 col-sm-12">
+                      <div class="">
+                        <!-- removed page-bar class -->
+                        <fieldset>
+                          <legend>Message</legend>
+                          <div>
+                            <div class="portlet light dashboard-stat2">
+                              <div class="portlet-title custom-change-css">
+                                <div class="col-xs-6">
+                                  <h4 class="text-left">Add your Message to Trigger</h4>
+                                </div>
+                                <div class="col-xs-6">
+                                  <div class="pull-right">
+                                    <label class="switch-choose" translate>Choose Template
+                                    </label>
+                                    <switch class="switch-choose" (click)="onTemplate =! onTemplate">
+                                    </switch>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <form class="role add-reply">
+                                  <div class="col-xs-12 p0">
+                                    <div class="col-xs-12">
+                                      <div>
+
+                                        <div>
+                                          <ckeditor> </ckeditor>
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="page-bar p20" *ngIf="onTemplate">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12 col-lg-12">
+
+                        <!-- Email templates 1 start-->
+                        <div class="col-sm-6 col-md-3 col-lg-3">
+                          <div class="grid-box imgage-paddings" ng-reflect-klass="grid-box imgage-paddings"
+                            ng-reflect-ng-class="">
+                            <span class="select-check-box">
+                              <label>
+                                <input class="radio-custimization" type="radio">
+                              </label>
+                            </span>
+                            <img alt="" class="img-grid-track"
+                              src="https://s3.amazonaws.com/xamplify/qa/previews/bee-827/email_templates/130407.png">
+                            <span class="icon-alignments">
+                              <a data-original-title="Preview" data-placement="top" data-toggle="tooltip" title="">
+                                <i aria-hidden="true"
+                                  class="fa fa-external-link-square preview-edit-color tooltip-cls"></i> </a>
+                            </span>
+                            <div class="bar hover-bar">
+                              <a class="border-none-dark" data-placement="top">
+                                <div class="row">
+                                  <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                                    <div class="content-hover-align fontsize-cls">
+                                      <span class="item__name cardDetails-mar" title="">
+                                        <strong>Jun7-analytif</strong><strong>..</strong>
+                                      </span>
+                                      <br>
+                                      <span class="item__name cardDetails-mar" title="created on">
+                                        <span>Jun 28, 2023</span>
+                                      </span>
+                                      <p class="cardDetails-mar" title=" ">
+                                        <strong translate="" ng-reflect-translate="">Created by:</strong>
+                                        <span>orgadmin_pa
+                                          <span>..</span>
+                                        </span>
+                                      </p> <span class="campaign-email-template-category cardDetails-mar"
+                                        title="indian-Default-Folder">
+                                        <strong translate="" ng-reflect-translate="">Folder:</strong>
+                                        <span>india</span><span>..</span>
+                                      </span>
+                                    </div>
+                                    <span class="label-color-custmization">Edit</span>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Email templates 1 end-->
+
+                        <!-- Email templates 2 start-->
+                        <div class="col-sm-6 col-md-3 col-lg-3">
+                          <div class="grid-box imgage-paddings" ng-reflect-klass="grid-box imgage-paddings"
+                            ng-reflect-ng-class="">
+                            <span class="select-check-box">
+                              <label>
+                                <input class="radio-custimization" type="radio">
+                              </label>
+                            </span>
+                            <img alt="" class="img-grid-track"
+                              src="https://s3.amazonaws.com/xamplify/qa/previews/bee-827/email_templates/189625.png">
+                            <span class="icon-alignments">
+                              <a data-original-title="Preview" data-placement="top" data-toggle="tooltip" title="">
+                                <i aria-hidden="true"
+                                  class="fa fa-external-link-square preview-edit-color tooltip-cls"></i> </a>
+                            </span>
+                            <div class="bar hover-bar">
+                              <a class="border-none-dark" data-placement="top">
+                                <div class="row">
+                                  <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                                    <div class="content-hover-align fontsize-cls">
+                                      <span class="item__name cardDetails-mar" title="">
+                                        <strong>Jun7-analytif</strong><strong>..</strong>
+                                      </span>
+                                      <br>
+                                      <span class="item__name cardDetails-mar" title="created on">
+                                        <span>Jun 28, 2023</span>
+                                      </span>
+                                      <p class="cardDetails-mar" title=" ">
+                                        <strong translate="" ng-reflect-translate="">Created by:</strong>
+                                        <span>orgadmin_pa
+                                          <span>..</span>
+                                        </span>
+                                      </p> <span class="campaign-email-template-category cardDetails-mar"
+                                        title="indian-Default-Folder">
+                                        <strong translate="" ng-reflect-translate="">Folder:</strong>
+                                        <span>india</span><span>..</span>
+                                      </span>
+                                    </div>
+                                    <span class="label-color-custmization">Edit</span>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Email templates 2 end-->
+
+                        <!-- Email templates 3 start-->
+                        <div class="col-sm-6 col-md-3 col-lg-3">
+                          <div class="grid-box imgage-paddings" ng-reflect-klass="grid-box imgage-paddings"
+                            ng-reflect-ng-class="">
+                            <span class="select-check-box">
+                              <label>
+                                <input class="radio-custimization" type="radio">
+                              </label>
+                            </span>
+                            <img alt="" class="img-grid-track"
+                              src="https://s3.amazonaws.com/xamplify/qa/previews/bee-827/email_templates/117491.png">
+                            <span class="icon-alignments">
+                              <a data-original-title="Preview" data-placement="top" data-toggle="tooltip" title="">
+                                <i aria-hidden="true"
+                                  class="fa fa-external-link-square preview-edit-color tooltip-cls"></i> </a>
+                            </span>
+                            <div class="bar hover-bar">
+                              <a class="border-none-dark" data-placement="top">
+                                <div class="row">
+                                  <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                                    <div class="content-hover-align fontsize-cls">
+                                      <span class="item__name cardDetails-mar" title="">
+                                        <strong>Jun7-analytif</strong><strong>..</strong>
+                                      </span>
+                                      <br>
+                                      <span class="item__name cardDetails-mar" title="created on">
+                                        <span>Jun 28, 2023</span>
+                                      </span>
+                                      <p class="cardDetails-mar" title=" ">
+                                        <strong translate="" ng-reflect-translate="">Created by:</strong>
+                                        <span>orgadmin_pa
+                                          <span>..</span>
+                                        </span>
+                                      </p> <span class="campaign-email-template-category cardDetails-mar"
+                                        title="indian-Default-Folder">
+                                        <strong translate="" ng-reflect-translate="">Folder:</strong>
+                                        <span>india</span><span>..</span>
+                                      </span>
+                                    </div>
+                                    <span class="label-color-custmization">Edit</span>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Email templates 3 end-->
+
+                        <!-- Email templates 4 start-->
+                        <div class="col-sm-6 col-md-3 col-lg-3">
+                          <div class="grid-box imgage-paddings" ng-reflect-klass="grid-box imgage-paddings"
+                            ng-reflect-ng-class="">
+                            <span class="select-check-box">
+                              <label>
+                                <input class="radio-custimization" type="radio">
+                              </label>
+                            </span>
+                            <img alt="" class="img-grid-track"
+                              src="https://s3.amazonaws.com/xamplify/qa/previews/bee-827/email_templates/122386.png">
+                            <span class="icon-alignments">
+                              <a data-original-title="Preview" data-placement="top" data-toggle="tooltip" title="">
+                                <i aria-hidden="true"
+                                  class="fa fa-external-link-square preview-edit-color tooltip-cls"></i> </a>
+                            </span>
+                            <div class="bar hover-bar">
+                              <a class="border-none-dark" data-placement="top">
+                                <div class="row">
+                                  <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                                    <div class="content-hover-align fontsize-cls">
+                                      <span class="item__name cardDetails-mar" title="">
+                                        <strong>Jun7-analytif</strong><strong>..</strong>
+                                      </span>
+                                      <br>
+                                      <span class="item__name cardDetails-mar" title="created on">
+                                        <span>Jun 28, 2023</span>
+                                      </span>
+                                      <p class="cardDetails-mar" title=" ">
+                                        <strong translate="" ng-reflect-translate="">Created by:</strong>
+                                        <span>orgadmin_pa
+                                          <span>..</span>
+                                        </span>
+                                      </p> <span class="campaign-email-template-category cardDetails-mar"
+                                        title="indian-Default-Folder">
+                                        <strong translate="" ng-reflect-translate="">Folder:</strong>
+                                        <span>india</span><span>..</span>
+                                      </span>
+                                    </div>
+                                    <span class="label-color-custmization">Edit</span>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Email templates 4 end-->
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                  <!--Email templates End -->
+                </div>
+              </div>
+            </div>
+            <!-- Action forms row end -->
+
+            <button type="button" class="btn Btn-Gray margin-left-negative-fifteen-px" (click)="goToPrevious()"
+              translate>Previous</button>
+            <button type="submit" class="btn  btn Btn-Green float-right mrm-15" (click)="submitForm()"
+              translate>Submit</button>
+          </div>
+
+        </div>
+      </div>
     </div>
-   <!-- Email templates 1 end-->
-
-    <!-- Email templates 2 start-->
-    <div class="col-sm-6 col-md-3 col-lg-3">
-      <div class="grid-box imgage-paddings" ng-reflect-klass="grid-box imgage-paddings" ng-reflect-ng-class="">                                                                                 
-         <span class="select-check-box">
-             <label>
-                 <input class="radio-custimization" type="radio">
-             </label>
-         </span>
-         <img alt="" class="img-grid-track" src="https://s3.amazonaws.com/xamplify/qa/previews/bee-827/email_templates/189625.png">
-             <span class="icon-alignments"> 
-                 <a data-original-title="Preview" data-placement="top" data-toggle="tooltip" title="">
-                 <i aria-hidden="true" class="fa fa-external-link-square preview-edit-color tooltip-cls"></i> </a> 
-             </span>
-         <div class="bar hover-bar">
-         <a class="border-none-dark" data-placement="top">
-             <div class="row">
-                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
-                     <div class="content-hover-align fontsize-cls">
-                         <span  class="item__name cardDetails-mar" title="">
-                             <strong >Jun7-analytif</strong><strong>..</strong>
-                         </span>
-                         <br>
-                         <span  class="item__name cardDetails-mar" title="created on">
-                           <span>Jun 28, 2023</span>
-                       </span>
-                        <p class="cardDetails-mar" title=" ">
-                                 <strong translate="" ng-reflect-translate="">Created by:</strong>
-                                 <span >orgadmin_pa
-                                 <span>..</span>
-                                 </span>
-                             </p> <span class="campaign-email-template-category cardDetails-mar" title="indian-Default-Folder">
-                          <strong translate="" ng-reflect-translate="">Folder:</strong>
-                          <span>india</span><span>..</span>
-                         </span> 
-                     </div> 
-                     <span class="label-color-custmization">Edit</span>
-                 </div>       
-             </div>
-             </a>
-         </div>
-     </div>
-    </div>
-   <!-- Email templates 2 end-->
-
-   <!-- Email templates 3 start-->
-   <div class="col-sm-6 col-md-3 col-lg-3">
-      <div class="grid-box imgage-paddings" ng-reflect-klass="grid-box imgage-paddings" ng-reflect-ng-class="">                                                                                 
-         <span class="select-check-box">
-             <label>
-                 <input class="radio-custimization" type="radio">
-             </label>
-         </span>
-         <img alt="" class="img-grid-track" src="https://s3.amazonaws.com/xamplify/qa/previews/bee-827/email_templates/117491.png">
-             <span class="icon-alignments"> 
-                 <a data-original-title="Preview" data-placement="top" data-toggle="tooltip" title="">
-                 <i aria-hidden="true" class="fa fa-external-link-square preview-edit-color tooltip-cls"></i> </a> 
-             </span>
-         <div class="bar hover-bar">
-         <a class="border-none-dark" data-placement="top">
-             <div class="row">
-                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
-                     <div class="content-hover-align fontsize-cls">
-                         <span  class="item__name cardDetails-mar" title="">
-                             <strong >Jun7-analytif</strong><strong>..</strong>
-                         </span>
-                         <br>
-                         <span  class="item__name cardDetails-mar" title="created on">
-                           <span>Jun 28, 2023</span>
-                       </span>
-                        <p class="cardDetails-mar" title=" ">
-                                 <strong translate="" ng-reflect-translate="">Created by:</strong>
-                                 <span >orgadmin_pa
-                                 <span>..</span>
-                                 </span>
-                             </p> <span class="campaign-email-template-category cardDetails-mar" title="indian-Default-Folder">
-                          <strong translate="" ng-reflect-translate="">Folder:</strong>
-                          <span>india</span><span>..</span>
-                         </span> 
-                     </div> 
-                     <span class="label-color-custmization">Edit</span>
-                 </div>       
-             </div>
-             </a>
-         </div>
-     </div>
-    </div>
-   <!-- Email templates 3 end-->
-
-   <!-- Email templates 4 start-->
-   <div class="col-sm-6 col-md-3 col-lg-3">
-      <div class="grid-box imgage-paddings" ng-reflect-klass="grid-box imgage-paddings" ng-reflect-ng-class="">                                                                                 
-         <span class="select-check-box">
-             <label>
-                 <input class="radio-custimization" type="radio">
-             </label>
-         </span>
-         <img alt="" class="img-grid-track" src="https://s3.amazonaws.com/xamplify/qa/previews/bee-827/email_templates/122386.png">
-             <span class="icon-alignments"> 
-                 <a data-original-title="Preview" data-placement="top" data-toggle="tooltip" title="">
-                 <i aria-hidden="true" class="fa fa-external-link-square preview-edit-color tooltip-cls"></i> </a> 
-             </span>
-         <div class="bar hover-bar">
-         <a class="border-none-dark" data-placement="top">
-             <div class="row">
-                 <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
-                     <div class="content-hover-align fontsize-cls">
-                         <span  class="item__name cardDetails-mar" title="">
-                             <strong >Jun7-analytif</strong><strong>..</strong>
-                         </span>
-                         <br>
-                         <span  class="item__name cardDetails-mar" title="created on">
-                           <span>Jun 28, 2023</span>
-                       </span>
-                        <p class="cardDetails-mar" title=" ">
-                                 <strong translate="" ng-reflect-translate="">Created by:</strong>
-                                 <span >orgadmin_pa
-                                 <span>..</span>
-                                 </span>
-                             </p> <span class="campaign-email-template-category cardDetails-mar" title="indian-Default-Folder">
-                          <strong translate="" ng-reflect-translate="">Folder:</strong>
-                          <span>india</span><span>..</span>
-                         </span> 
-                     </div> 
-                     <span class="label-color-custmization">Edit</span>
-                 </div>       
-             </div>
-             </a>
-         </div>
-     </div>
-    </div>
-   <!-- Email templates 4 end-->
-
-
-
- </div>
- </div>
+  </div>
 </div>
-<!--Email templates End -->
-    </div>
-</div>
-</div>
-<!-- Action forms row end -->
-
-<button  type="button"  class="btn Btn-Gray margin-left-negative-fifteen-px" (click)="goToPrevious()" translate>Previous</button>
-<button type="submit"  class="btn  btn Btn-Green float-right mrm-15" (click)="submitForm()"translate>Submit</button>
-</div>
- 
-</div>
-</div>
-</div>
-</div>
-</div>
-

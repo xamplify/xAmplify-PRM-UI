@@ -42,18 +42,15 @@ export class WorkflowFormComponent implements OnInit{
   activeClass: boolean;
   activeClass1:boolean= true;
   activeClass2:boolean;
-  onTemplate:boolean;
-  question: DealQuestions;
-  questions: DealQuestions[] = [];
-  formSubmiteState = true;
+  divs: number[] = [];
 
   constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
     public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, public callActionSwitch: CallActionSwitch,
-		public route: ActivatedRoute,public parterService: ParterService,public logger: XtremandLogger,public dealRegSevice: DealRegistrationService,){}
+		public route: ActivatedRoute,public parterService: ParterService,public logger: XtremandLogger,public dealRegSevice: DealRegistrationService,){
+    }
 
   ngOnInit() {
-    $('#clickPlusIcon').hide();
     $('#hideToggle').hide();
 }
 
@@ -107,141 +104,12 @@ export class WorkflowFormComponent implements OnInit{
   }
   $(id).addClass("activeStepInfo");
 }
-
   submitForm(){ this.router.navigate(["/home/partners/manage"]);}
   
-  // addQuestion() {
-	// 	this.question = new DealQuestions();
-	// 	var length;
-	// 	if (this.questions != null && this.questions != undefined)
-	// 		length = this.questions.length;
-	// 	else
-	// 		length = 0;
-	// 	length = length + 1;
-	// 	var id = 'question-' + length;
-	// 	this.question.divId = id;
-	// 	this.question.error = true;
-
-
-	// 	this.questions.push(this.question);
-	// 	this.submitBUttonStateChange();
-	// }
-  // submitBUttonStateChange() {
-	// 	let countForm = 0;
-	// 	this.questions.forEach(question => {
-
-	// 		if (question.error)
-	// 			countForm++;
-	// 	})
-	// 	if (countForm > 0 || this.questions.length == 0)
-	// 		this.formSubmiteState = false;
-	// 	else
-	// 		this.formSubmiteState = true;
-
-	// }
-  // div1:boolean=true;
-  //   div2:boolean=true;
-  //   div3:boolean=true;
-  // div1Function(){
-  //   this.div2=true;
-  //   this.div1=false;
-  //   this.div3=false
-  // }
-  dealtype: DealType;
-  dealtypes: DealType[] = [];
-  dealSubmiteState = true;
-  customResponseForm: CustomResponse = new CustomResponse();
-  ngxloading: boolean;
-  loggedInUserId = 0;
-  addDealtype() {
-		this.dealtype = new DealType();
-		var length;
-		if (this.dealtypes != null && this.dealtypes != undefined){
-			length = this.dealtypes.length;
-    }else
-			length = 0;
-		length = length + 1;
-		var id = 'dealType-' + length;
-		this.dealtype.divId = id;
-		this.dealtype.error = true;
-    this.dealtypes.push(this.dealtype);
-    this.isClickPlus = this.showDivWithPlus;
-
-    // if(!this.showDivWithPlus){this.dealtypes.push(this.dealtype);}
-		// this.dealTypeButtonStateChange();
-   
-	}
-  dealTypeButtonStateChange() {
-		let countForm = 0;
-		this.dealtypes.forEach(dealType => {
-
-			if (dealType.error)
-				countForm++;
-		})
-		if (countForm > 0 || this.dealtypes.length == 0)
-			this.dealSubmiteState = false;
-		else
-			this.dealSubmiteState = true;
-
-	}
-  deleteDealType(i, dealType) {
-		try {
-			this.logger.info("Deal Type in sweetAlert() " + dealType.id);
-			let self = this;
-			self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
-        if (result.statusCode == 200) {
-          self.removeDealType(i, dealType.id);
-          self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
-        } else if (result.statusCode == 403) {
-          self.customResponseForm = new CustomResponse('ERROR', result.message, true);
-        } else {
-          self.customResponseForm = new CustomResponse('ERROR', self.properties.serverErrorMessage, true);
-        }
-        self.ngxloading = false;
-
-      }, (error) => {
-        self.ngxloading = false;
-
-      }, () => {
-        self.dealRegSevice.listDealTypes(self.loggedInUserId).subscribe(dealTypes => {
-
-          self.dealtypes = dealTypes.data;
-
-        });
-      })
-		} catch (error) {
-			console.log(error);
-		}
-	}
-  removeDealType(i, id) {
-
-		if (id)
-			console.log(id)
-		console.log(i)
-		var index = 1;
-
-		this.dealtypes = this.dealtypes.filter(dealtype => dealtype.divId !== 'dealtype-' + i)
-			.map(dealtype => {
-				dealtype.divId = 'dealtype-' + index++;
-				return dealtype;
-			});
-		console.log(this.dealtypes);
-		this.dealTypeButtonStateChange();
-
-	}
-  showDivWithPlus:boolean
-  isClickPlus:boolean;
-  showFooterChange() {
-    this.showDivWithPlus = !this.showDivWithPlus;
-    // alert(this.showDivWithPlus)
-    // and == true, or == false;
+  addDiv() {
+    this.divs.push(this.divs.length + 1);
   }
-  showDivWithPlusClick(){
-    this.addDealtype();
-    $('#clickPlusIcon').show();
-  }
-  showToggleAndDivWithPlusClick(){
-    $('#hideToggle').show();
-     this.addDealtype();
+  deleteDiv(index: number) {
+    this.divs.splice(index, 1);
   }
 }
