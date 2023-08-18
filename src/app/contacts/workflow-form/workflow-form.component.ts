@@ -52,7 +52,10 @@ export class WorkflowFormComponent implements OnInit{
 		public actionsDescription: ActionsDescription, public callActionSwitch: CallActionSwitch,
 		public route: ActivatedRoute,public parterService: ParterService,public logger: XtremandLogger,public dealRegSevice: DealRegistrationService,){}
 
-  ngOnInit() {}
+  ngOnInit() {
+    $('#clickPlusIcon').hide();
+    $('#hideToggle').hide();
+}
 
   ngOnDestroy() { }
 
@@ -154,7 +157,6 @@ export class WorkflowFormComponent implements OnInit{
 		this.dealtype = new DealType();
 		var length;
 		if (this.dealtypes != null && this.dealtypes != undefined){
-      length = 0;
 			length = this.dealtypes.length;
     }else
 			length = 0;
@@ -162,9 +164,12 @@ export class WorkflowFormComponent implements OnInit{
 		var id = 'dealType-' + length;
 		this.dealtype.divId = id;
 		this.dealtype.error = true;
-    if(!this.showDivWithPlus){this.dealtypes.push(this.dealtype);}
-		this.dealTypeButtonStateChange();
+    this.dealtypes.push(this.dealtype);
     this.isClickPlus = this.showDivWithPlus;
+
+    // if(!this.showDivWithPlus){this.dealtypes.push(this.dealtype);}
+		// this.dealTypeButtonStateChange();
+   
 	}
   dealTypeButtonStateChange() {
 		let countForm = 0;
@@ -230,5 +235,13 @@ export class WorkflowFormComponent implements OnInit{
     this.showDivWithPlus = !this.showDivWithPlus;
     // alert(this.showDivWithPlus)
     // and == true, or == false;
+  }
+  showDivWithPlusClick(){
+    this.addDealtype();
+    $('#clickPlusIcon').show();
+  }
+  showToggleAndDivWithPlusClick(){
+    $('#hideToggle').show();
+     this.addDealtype();
   }
 }

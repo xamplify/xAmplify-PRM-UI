@@ -454,3 +454,7 @@ legend {
 .toggleAndOr input:checked ~ .labelsAndOr::before {
   opacity: 1;
 }
+.toggle-align {
+  padding-left: 75px;
+  margin-top: -35px;
+}

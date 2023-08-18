@@ -101,17 +101,13 @@
 <!-- Partner forms row end -->
 
   <!-- Add Trigger Fields -->
-<div>
-<!-- <div class="row">
-<div *ngIf="dealtypes.length== 0" style="padding-left:15px;">Add Trigger Filter</div>
-<div class="col-sm-12 col-md-12 col-lg-12 pull-left">
-  <button  type="button" class="circle-icon" (click)="addDealtype()" *ngIf="dealtypes.length== 0" data-toggle="tooltip" data-placement="top">
-     <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
-   </button>   
-</div>
-</div> -->
+  <div class="row">
+    <div style="padding-left:15px;" c>Add Trigger Filter <button type="button" class="circle-icon" (click)="showDivWithPlusClick()" *ngIf="dealtypes.length== 0" data-toggle="tooltip" data-placement="top">
+      <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
+    </button>   </div>
+    </div>
 
-<!-- 2nd dropdown row start -->
+    <div>
  <div id="addform" class="row card card-hover-shadow mt-4 separate-card card-top-bottam-ppading" *ngFor="let dealType of dealtypes;let i=index">
     <div class="card-header bg-transparent border-bottom-0">
       <button data-dismiss="alert" data-toggle="collapse" data-target="#addform" type="button" class="close close-circle-cu" aria-label="Close" (click)="deleteDealType(i+1,dealType)">
@@ -146,213 +142,62 @@
         </div>
     </div>
  </div>
-   <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-12 p-m-zero">
-      <div class="col-sm-3 col-md-6 col-lg-2 pull-left centerthetoggle">
+    </div>
+  </div>
+</div>
+<div class="row" id="clickPlusIcon">
+  <div class="col-sm-12 col-md-12 col-lg-12 pull-left">
+    <button  type="button" class="circle-icon" (click)="showToggleAndDivWithPlusClick()" data-toggle="tooltip" data-placement="top">
+       <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
+     </button>  
+     <div class="row toggle-align" id="hideToggle">
         <label class="toggleAndOr">
          <input type="checkbox" class="hidecheckbox">
            <span class="sliderAndOr"></span>
-            <span class="labelsAndOr" data-on="AND" data-off="OR" (click)="showFooterChange()"></span>
+            <span class="labelsAndOr" data-on="OR" data-off="AND"></span>
           </label>
-       </div>
-   <div class="col-sm-9 col-md-10 col-lg-10 pull-left" *ngIf="!isClickPlus">
-     <button  type="button" class="circle-icon" (click)="addDealtype()" *ngIf="dealtypes.length== i+1"  data-toggle="tooltip" data-placement="top" title="Add Trigger">
-        <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
-      </button>   
-   </div>
- </div>
-  </div>
+      </div> 
+      <div *ngIf="isClickPlus">
+      <div id="addform" class="row card card-hover-shadow mt-4 separate-card card-top-bottam-ppading" *ngFor="let dealType of dealtypes;let i=index">
+        <div class="card-header bg-transparent border-bottom-0">
+          <button data-dismiss="alert" data-toggle="collapse" data-target="#addform" type="button" class="close close-circle-cu" aria-label="Close" (click)="deleteDealType(i+1,dealType)">
+            <i aria-hidden="true" class="fa fa-times"></i>
+          </button>
+        </div>
+         <div class="card-body mt-n5">
+        <div class="col-sm-12 p-m-zero">
+              <p class="align-second-paratext">Trigger Filters (optinal)</p>
+         <div class="col-sm-4">
+            <div class="form-group">
+              <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >               
+                <option selected>Partner</option>
+                <option value="1">Partner and his team members</option>
+               </select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+              <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >              
+                 <option value="1">Inactive from 7 days</option>
+                 <option value="1">Inactive from 14 days</option>
+               </select>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+              <select class="form-control ng-pristine ng-valid ng-touched">
+                <option selected>Once</option>
+                <option value="1">Twice</option>
+               </select>
+            </div>
+        </div>
+     </div>
+        </div>
+      </div> 
     </div>
-    <!-- OR dropdown row start-->
-
-
-  <div class="card-body mt-n5" *ngIf="!isClickPlus">
-   <div class="col-sm-12 p-m-zero">
-   <div class="col-sm-4">
-      <div class="form-group">
-        <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >               
-           <option selected value="0">Select</option>
-           <option value="1">User</option>
-           <option value="2">Vertical</option>
-           <option value="3">Region</option>
-           <option value="4">Type</option>
-           <option value="5">Category</option>
-           <option value="6">City/Town</option>
-           <option value="7">State</option>
-           <option value="8">Zipcode</option>
-           <option value="9">Country</option>
-         </select>
-      </div>
   </div>
-  <div class="col-sm-4">
-      <div class="form-group">
-        <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >              
-           <option value="1">Equals</option>
-           <option value="1">Not Equals</option>
-         </select>
-      </div>
-  </div>
-  <div class="col-sm-4">
-      <div class="form-group">
-        <select class="form-control ng-pristine ng-valid ng-touched">
-           <option selected>Administrator</option>
-           <option value="1">Pakistan</option>
-           <option value="2">Bangladesh</option>
-         </select>
-      </div>
-  </div>
-</div>
- <div class="row">
-<div class="col-sm-12 col-md-12 col-lg-12 p-m-zero">
-
- <div class="col-sm-12 col-md-12 col-lg-12 pull-left">
-   <button  data-toggle="collapse" type="button" class="circle-icon" (click)="addDealtype()">
-      <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
-    </button>
- </div>
-</div>
-</div>
   </div>
 
- 
-
-<!--end of OR-->
-  </div>
-<!-- 2nd dropdown row end -->
-
-
-<!-- AND dropdown row start -->
-<div *ngFor="let dealType of dealtypes;let i=index">
-<div class="row card card-hover-shadow mt-4 separate-card" style="margin-top: 10px;margin-left: 20px;margin-right: 20px;border: 1px solid #ddd;" *ngIf="isClickPlus">
-  <div class="card-header bg-transparent border-bottom-0">
-    <button data-dismiss="alert" data-toggle="collapse" data-target="#addform" type="button" class="close close-circle-cu" aria-label="Close" (click)="deleteDealType(i+1,dealType)">
-      <i aria-hidden="true" class="fa fa-times"></i>
-    </button>
-  </div>
-
-  <div class="card-body mt-n5">
-
-
-    <div class="col-sm-12 p-m-zero">
-      <!-- <p class="align-second-paratext">Trigger Filters (optinal)</p> -->
-   <div class="col-sm-4">
-      <div class="form-group">
-        <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >               
-           <option selected value="0">Select</option>
-           <option value="1">Job Title</option>
-           <option value="2">Vertical</option>
-           <option value="3">Region</option>
-           <option value="4">Type</option>
-           <option value="5">Category</option>
-           <option value="6">City/Town</option>
-           <option value="7">State</option>
-           <option value="8">Zipcode</option>
-           <option value="9">Country</option>
-         </select>
-      </div>
-  </div>
-  <div class="col-sm-4">
-      <div class="form-group">
-        <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >              
-           <option value="1">Equals</option>
-           <option value="1">Not Equals</option>
-         </select>
-      </div>
-  </div>
-  <div class="col-sm-4">
-      <div class="form-group">
-        <select class="form-control ng-pristine ng-valid ng-touched">
-           <option selected>India</option>
-           <option value="1">Pakistan</option>
-           <option value="2">Bangladesh</option>
-         </select>
-      </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-sm-12 col-md-12 col-lg-12 p-m-zero">
-   <div class="col-sm-3 col-md-6 col-lg-2 pull-left centerthetoggle">
-    <label class="toggleAndOr">
-     <input type="checkbox" class="hidecheckbox">
-       <span class="sliderAndOr"></span>
-        <span class="labelsAndOr" data-on="AND" data-off="OR"></span>
-      </label>
-   </div>
-   <!-- <div class="col-sm-9 col-md-10 col-lg-10 pull-left">
-     <button  data-toggle="collapse" type="button" class="circle-icon" (click)="addDealtype()" *ngIf="dealtypes.length== 0">
-        <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
-      </button>
-   </div> -->
-  </div>
-  </div>
-  <br>
-   <div class="col-sm-12 p-m-zero">
-      <!-- <p class="align-second-paratext">Trigger Filters (optinal)</p> -->
-   <div class="col-sm-4">
-      <div class="form-group">
-        <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >               
-           <option selected value="0">Select</option>
-           <option value="1">User</option>
-           <option value="2">Vertical</option>
-           <option value="3">Region</option>
-           <option value="4">Type</option>
-           <option value="5">Category</option>
-           <option value="6">City/Town</option>
-           <option value="7">State</option>
-           <option value="8">Zipcode</option>
-           <option value="9">Country</option>
-         </select>
-      </div>
-  </div>
-  <div class="col-sm-4">
-      <div class="form-group">
-        <select class="form-control ng-pristine ng-valid ng-touched"  style="width: 100%" >              
-           <option value="1">Equals</option>
-           <option value="1">Not Equals</option>
-         </select>
-      </div>
-  </div>
-  <div class="col-sm-4">
-      <div class="form-group">
-        <select class="form-control ng-pristine ng-valid ng-touched">
-           <option selected>Administrator</option>
-           <option value="1">Pakistan</option>
-           <option value="2">Bangladesh</option>
-         </select>
-      </div>
-  </div>
-  <div class="col-sm-12 col-md-12 col-lg-12 pull-left">
-    <button  data-toggle="collapse" type="button" class="circle-icon" (click)="addDealtype()" *ngIf="dealtypes.length== i+1">
-       <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
-     </button>
-  </div>
-</div>
- <div class="row">
-<!-- <div class="col-sm-12 col-md-12 col-lg-12 p-m-zero">
-
- <div class="col-sm-12 col-md-12 col-lg-12 pull-left">
-   <button  data-toggle="collapse" type="button" class="circle-icon" (click)="addDealtype()" *ngIf="dealtypes.length== 0">
-      <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
-    </button>
- </div>
-</div> -->
-</div>
-  </div>
-</div>
-</div>
-
-
-
-<div class="row">
-  <div style="padding-left:15px;">Add Trigger Filter</div>
-  <div class="col-sm-12 col-md-12 col-lg-12 pull-left">
-    <button  type="button" class="circle-icon" (click)="addDealtype()" data-toggle="tooltip" data-placement="top">
-       <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
-     </button>   
-  </div>
-  </div>
-</div>
 
 <button type="submit"  class="btn  btn Btn-Green float-right" (click)="showAndHideDivs()" translate>Next</button>
  </div>
