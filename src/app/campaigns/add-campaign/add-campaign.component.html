@@ -623,7 +623,7 @@
                             <div *ngIf="!pagesLoader">
                                 <!--Filter Icon-->
                                 <div class="mb-flex">
-                                <button type="submit"  class="float-right fontsize-16px filter-button-color" [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv" (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
+                                <button type="submit"  class="float-right fontsize-16px filter-button-color mr_4" [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv" (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
                                     <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
                                     *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
                                     <i class="fa fa-filter cesf-xamp" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
@@ -736,7 +736,8 @@
                                 <app-list-loader *ngIf="campaignRecipientsLoader"></app-list-loader>
                                 <div  *ngIf="!campaignRecipientsLoader">
                                     <!--Search Key Icon-->
-                                    <div class="input-icon right pull-right pr-epx">
+                                    <div class="mb-flex">
+                                     <div class="input-icon right pull-right pr-epx">
                                         <input type="text" [(ngModel)]="recipientsSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="findCampaignRecipientsOnEnterKeyPress($event.keyCode)">
                                         <button class="glyphicon glyphicon-remove search-box-item-clear search-button-padding" *ngIf="recipientsSortOption.searchKey" (click)="recipientsSortOption.searchKey='';searchCampaignRecipients()"></button>
                                         <button type="submit" class="search-box-item-click email-search search-icon-rp" (click)="searchCampaignRecipients()">
@@ -750,10 +751,11 @@
                                             [ngValue]="option">{{option.name}}</option>
                                     </select> 
                                     </div>
+                                </div>
                                     <!--List Of Contacts/Partners-->
-                                    <div class="portlet-body padding-top-45px">
-                                        <div class="row">
-                                            <div class="alert alert-success text-center" *ngIf="selectedContactListIds?.length>0">
+                                    <div class="portlet-body">
+                                        <div class="row mrgt45">
+                                            <div class="alert alert-success text-center mbgrid" *ngIf="selectedContactListIds?.length>0">
                                                 <strong>Selected Rows : {{selectedContactListIds?.length}}</strong>
                                                 <ng-container *ngIf="emailReceiversCountError">
                                                     <span class="required float-right" translate>Something went wrong.Please contact admin</span>
@@ -966,7 +968,7 @@
                                                                             <option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
                                                                             <option [value]="16" [selected]="reply.actionId ==16" >Send immediately after email is opened</option>
                                                                             <option [value]="33" [selected]="reply.actionId ==33">Send follow-up email</option>
-                                                                            <option [value]="22" [selected]="reply.actionId ==22"*ngIf="campaign.channelCampaign && ((campaignType=='regular')||(campaignType=='survey'))">
+                                                                            <option [value]="22" [selected]="reply.actionId ==22"*ngIf="campaign.channelCampaign && (isEmailCampaign||isSurveyCampaign)">
                                                                                 Email is not redistributed by {{authenticationService?.partnerModule?.customName}}
                                                                             </option>
                                                                             <ng-container *ngIf="campaignType=='video'">
