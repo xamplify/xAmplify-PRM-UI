@@ -70,7 +70,7 @@ export class EnvService {
   microsoftDevClientId = "";
   microsoftDevClientSecret = "";
 
-  loadLatestVideoJsPlayerFiles = false;
+  loadLatestVideoJsFiles = false;
 
   constructor() {
   }

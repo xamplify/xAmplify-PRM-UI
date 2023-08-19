@@ -5,7 +5,6 @@ import { EnvService } from 'app/env.service';
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { VideoFileService } from 'app/videos/services/video-file.service';
 import { VideoUtilService } from 'app/videos/services/video-util.service';
-
 declare const $:any, videojs: any;
 @Component({
   selector: 'app-xamplify-video-player',
@@ -69,7 +68,9 @@ export class XamplifyVideoPlayerComponent implements OnInit {
             $('#overLayImage').append($('#overlay-logo').show());
             $('#overlay-modal').hide(); 
             /***XNFR-329***Do not move this httpSourceSelector().*/
-            player.httpSourceSelector();
+            if(self.envService.loadLatestVideoJsFiles){
+                player.httpSourceSelector();
+            }
             /***XNFR-329****/
             player.play();
         });
