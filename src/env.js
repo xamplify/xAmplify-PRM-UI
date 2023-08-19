@@ -80,6 +80,6 @@
 	window.__env.microsoftDevClientSecret = "Tns7Q~OdMWU3GaIsSmdFS-_-PSNdFcSuiV~Tj";
 
 	/******Video Player******/
-	window._env.loadLatestVideoJsFiles = false;
+	window.__env.loadLatestVideoJsFiles = true;
 
 }(this));
