@@ -87,6 +87,7 @@ import { PipedriveAuthenticationComponent } from './pipedrive-authentication/pip
 import { EnableSupportAccessToVendorComponent } from './enable-support-access-to-vendor/enable-support-access-to-vendor.component';
 import { LeftsidenavbarCustomComponent } from './leftsidenavbar-custom/leftsidenavbar-custom.component';
 import { EmailNotificationSettingsComponent } from './email-notification-settings/email-notification-settings.component';
+import { ActiveThreadsInfoComponent } from './active-threads-info/active-threads-info.component';
 
 
 
@@ -150,7 +151,8 @@ import { EmailNotificationSettingsComponent } from './email-notification-setting
         PipedriveAuthenticationComponent,
         EnableSupportAccessToVendorComponent,
         LeftsidenavbarCustomComponent,
-        EmailNotificationSettingsComponent
+        EmailNotificationSettingsComponent,
+        ActiveThreadsInfoComponent
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
