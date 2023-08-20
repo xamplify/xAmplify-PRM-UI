@@ -145,6 +145,7 @@
     <app-processing-campaigns [scheduledCampaigns]="false"  *ngIf="!detailsTielsView"></app-processing-campaigns>
     <app-processing-campaigns [scheduledCampaigns]="true" *ngIf="!detailsTielsView"></app-processing-campaigns>
     <app-active-queries *ngIf="!detailsTielsView"></app-active-queries>
+    <app-active-threads-info *ngIf="!detailsTielsView"></app-active-threads-info>
     <section *ngIf="detailsTielsView">
       <div class="portlet light">
         <div class="portlet-title">

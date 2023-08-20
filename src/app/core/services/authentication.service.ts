@@ -1153,7 +1153,7 @@ getPartnerModuleCustomName(){
 
 getDefaultM3U8FileForLocal(videoUrl:string){
   if(this.envService.CLIENT_URL.indexOf("localhost")>-1){
-    videoUrl = "https://aravindu.com/vod/videos/54888/26062023/MSDhoni1831687796167215_mobinar.m3u8?access_token=" + this.access_token;
+    videoUrl = "https://aravindu.com/vod/videos/54888/11082023/Dhoni1691751422924_mobinar.m3u8?access_token=" + this.access_token;
   }else{
     videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.access_token;
   }
