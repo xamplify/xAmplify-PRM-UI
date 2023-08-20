@@ -548,7 +548,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnInit() {
 		try {
-            this.searchWithModuleName =  'Configuration';
+            this.searchWithModuleName =  19;
 			this.activeTabName = 'personalInfo';
 			this.activeTabHeader = this.properties.personalInfo;
 			this.customConstructorCall();

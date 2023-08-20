@@ -24,7 +24,7 @@ export class UserGuideHelpButtonComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges) {
     if (this.searchForGuides != null) {
-      this.urllink = this.authenticationService.DOMAIN_URL + 'home/help/search/' + this.searchForGuides;
+      this.urllink = this.authenticationService.DOMAIN_URL + 'home/help/guides/' + this.searchForGuides;
     } else {
       this.getGuideUrl()
     }

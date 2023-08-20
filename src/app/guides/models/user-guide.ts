@@ -25,5 +25,5 @@ export class UserGuide {
     updatedDate: Date;
     
     customName: string;
-
+    subModuleName: string;
 }

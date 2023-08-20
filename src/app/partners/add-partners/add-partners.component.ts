@@ -2645,7 +2645,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		try {
 			this.socialContactImage();
-			this.searchWithModuleName = "Partner";
+			this.searchWithModuleName = 11 ;
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();
