@@ -115,30 +115,7 @@ export class WorkflowFormComponent implements OnInit{
   deleteDiv(index: number) {
     this.divs.splice(index, 1);
   }
-  clickToggle(div:any){
-    // alert(div+1);
-    const sourceElement = this.targetEl.nativeElement.querySelector('#' + (div));
-    const targetElement = this.targetEl.nativeElement.querySelector('#targetDiv');
 
-  
-
-    if (sourceElement && targetElement) {
-      // Assuming you have div elements with specific IDs to move
-      const divToMove = sourceElement.querySelector('#divToMove');
-
-      if (divToMove) {
-        // Append/move the div to the destination container
-        targetElement.appendChild(divToMove);
-      }
-
-      // You can also create new div elements and add them to the destination container
-      const newDiv = document.createElement('div');
-      newDiv.innerText = 'New Div Element';
-      targetElement.appendChild(newDiv);
-    }
-  
-    
-  }
 
 
 }
