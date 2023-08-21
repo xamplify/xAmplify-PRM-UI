@@ -65,6 +65,7 @@ export class HomeGuideComponent implements OnInit {
 		this.loading = true;
 		let module = this.authenticationService.module;
 		module.contentLoader = true;
+		this.location.replaceState('home/help/guides');
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.vanityLoginDto.vanityUrlFilter = true;
