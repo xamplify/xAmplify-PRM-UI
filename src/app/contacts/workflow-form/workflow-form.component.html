@@ -114,7 +114,8 @@
                 <p class="align-paratext">Add Trigger Filter</p>
                 <ng-template [ngTemplateOutlet]="plusBtn"></ng-template>
               </div> 
-              <div *ngFor="let div of divs;let i=index">         
+
+              <div *ngFor="let div of divs;let i=index">       
               <div class="row card card-hover-shadow mt-4 separate-card card-top-bottam-ppading" id="{{div}}">
                 <div class="card-header bg-transparent border-bottom-0">
                   <button data-dismiss="alert" (click)="deleteDiv(i)" data-toggle="collapse" data-target="#addform" type="button"
@@ -127,31 +128,40 @@
                     <div class="col-sm-4">
                       <div class="form-group">
                         <select class="form-control ng-pristine ng-valid ng-touched" style="width: 100%">
-                          <option selected>Partner</option>
-                          <option value="1">Partner and his team members</option>
+                          <option selected value="0">Select</option>
+                          <option value="1">Job Title</option>
+                          <option value="2">Vertical</option>
+                          <option value="3">Region</option>
+                          <option value="4">Type</option>
+                          <option value="5">Category</option>
+                          <option value="6">City/Town</option>
+                          <option value="7">State</option>
+                          <option value="8">Zipcode</option>
+                          <option value="9">Country</option>
                         </select>
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <div class="form-group">
                         <select class="form-control ng-pristine ng-valid ng-touched" style="width: 100%">
-                          <option value="1">Inactive from 7 days</option>
-                          <option value="1">Inactive from 14 days</option>
+                          <option value="1">Equals</option>
+                          <option value="2">Not Equals</option>
                         </select>
                       </div>
                     </div>
                     <div class="col-sm-4">
                       <div class="form-group">
                         <select class="form-control ng-pristine ng-valid ng-touched">
-                          <option selected>Once</option>
-                          <option value="1">Twice</option>
+                          <option selected>Administrator</option>
+                          <option value="1">Pakistan</option>
+                          <option value="2">Bangladesh</option>
                         </select>
                       </div>
                     </div>
                   </div>
                 </div> 
               </div> 
-              <div id="hideToggle{{div}}" *ngIf="div != divs.length">
+              <div id="hideToggle{{div}}" *ngIf="div != divs.length" (click)="clickToggle(div)">
                 <div class="row toggle-align">
                   <label class="toggleAndOr">
                    <input type="checkbox" class="hidecheckbox">
@@ -160,14 +170,13 @@
                     </label>
                 </div>
               </div>  
-          
             </div> 
+
             <div  *ngIf="divs.length != 0">
               <ng-template [ngTemplateOutlet]="plusBtn"></ng-template>
+            </div>    
             </div>
-          
-            </div>
-                   
+            
             <button type="submit" class="btn  btn Btn-Green float-right" (click)="showAndHideDivs()"
               translate>Next</button>
           </div>
