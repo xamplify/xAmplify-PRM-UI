@@ -23,6 +23,8 @@
               <table class='table tgrid' aria-describedby="" id="active-threads-table">
                  <thead>
                     <tr>
+                       <th class="text-center" scope="row" translate>Thread Id</th>
+                       <th class="text-center" scope="row" translate>Priority</th>
                        <th class="text-center" scope="row" translate>Thread Name</th>
                        <th class="text-center" scope="row" translate>Thread Group Name</th>
                        <th class="text-center" scope="row" translate>Active Threads Count</th>
@@ -31,6 +33,8 @@
                  <tbody>
                     <ng-container *ngFor="let activeThread of activeThreads;let i = index">
                        <tr>
+                          <td class="text-center">{{activeThread?.threadId}}</td>
+                          <td class="text-center">{{activeThread?.priority}}</td>
                           <td class="text-center">{{activeThread?.threadName}}</td>
                           <td class="text-center">{{activeThread?.threadGroupName}}</td>
                           <td class="text-center">{{activeThread?.activeCount}}</td>

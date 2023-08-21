@@ -9,6 +9,8 @@ const routes: Routes = [
     { path: ':slug', component: GuideLeftMenuComponent },
     { path: 'search', component: GuideLeftMenuComponent},
     { path: 'search/:moduleName', component:GuideLeftMenuComponent},
+    { path: 'guides/:moduleName', component: HomeGuideComponent },
+
 ];
 
 @NgModule({

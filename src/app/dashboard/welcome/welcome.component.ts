@@ -283,11 +283,11 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     }
     /** User Guide **/
     urlLink:any;
-    goToUserGuidePage(moduleName:any,isTrue:boolean){
+    goToUserGuidePage(moduleId:any,isTrue:boolean){
       if(isTrue){
-      this.urlLink = this.authenticationService.DOMAIN_URL + 'home/help/search/' + moduleName;
+      this.urlLink = this.authenticationService.DOMAIN_URL +'home/help/guides/' + moduleId;
       } else {
-        this.urlLink = this.authenticationService.DOMAIN_URL + 'home/help/' + moduleName;
+        this.urlLink = this.authenticationService.DOMAIN_URL + 'home/help/' + moduleId;
       }
     }
     /** User Guide **/

@@ -23,7 +23,7 @@ export class DesignComponent implements OnInit {
      }
 
     ngOnInit() {
-      this.searchWithModuleName = 'Design';
+      this.searchWithModuleName = 6;
         this.landingPageDescription = "Create custom pages with xAmplify that convert more visitors than any other website.";
         this.getModuleAccess();
     }

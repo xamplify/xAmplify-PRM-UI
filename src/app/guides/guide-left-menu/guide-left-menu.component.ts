@@ -177,8 +177,8 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 		} else {
 			this.slug = this.route.snapshot.params['slug'];
 			this.pagination.slug = this.slug;
-			this.isSearch = false;
 			this.getUserGuideBySlug(this.pagination);
+			this.isSearch = false;
 			this.loading = false;
 		}
 		this.findMenuItems();
@@ -562,7 +562,7 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 			  pagination = this.pagerService.getPagedItems(pagination, userGuide.list);
 			  this.pager = this.socialPagerService.getPager(this.userGuides.length, this.pagination.pageIndex, this.pagination.maxResults);
 			  this.pagination.pagedItems = this.userGuides.slice(this.pager.startIndex, this.pager.endIndex + 1);
-			  this.location.replaceState('home/help/search');
+			  this.location.replaceState('home/help/search/'+this.searchKey);
 			  this.statusCode = 200;
 			  this.loading = false;
 			  this.ngxLoading = false;
@@ -589,5 +589,4 @@ export class GuideLeftMenuComponent implements OnInit, OnChanges {
 			this.pagination.pageIndex = event.page;
 			this.getSearchResultsOfUserGuides(this.pagination);
 		}
-
 }  
