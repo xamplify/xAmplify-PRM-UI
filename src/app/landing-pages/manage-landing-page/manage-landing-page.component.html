@@ -29,7 +29,7 @@
 
                 <div class="portlet-title" style="border-bottom:none !important;padding-top: 10px;">
                     <div class="row">
-                        <div class="colxs-12 col-sm-12 col-md-6" style="padding-left: 11px;">
+                        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-6" style="padding-left: 11px;">
                             <div>
                                 <ul class="mix-filter" style="margin-top: -1px;" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView && !authenticationService?.module?.isMarketingCompany">
                                     <li class="filter" (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All</li>
@@ -53,7 +53,7 @@
                             </div>
                         </div>
 
-                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView" style="padding-right: 22px;padding-left: 5px;">
+                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-7 col-lg-6" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView" style="padding-right: 22px;padding-left: 5px;">
                             <div class="btn-group pull-right" style="display: flex;">
                                 <div class="">
                                 <div class="group-dropdown">
@@ -299,7 +299,7 @@
                                     </h6>
                                 </div>
 
-                                <div class="bar">
+                                <div class="bar" id="notificationBarCu">
                                     <a class="mMobileDisable" *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)" data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">
                                         <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                     </a>

@@ -9,7 +9,6 @@
   <i class="fa fa-home" aria-hidden="true"></i>
 </li>
 <li>
-  <i class="fa fa-angle-right" aria-hidden="true" ></i>
   <a (click)="goToHome()">Home</a>
 </li>
 <li>
@@ -139,7 +138,7 @@
 </div>
 
 <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu"
-*ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner">
+*ngIf="((authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner) && !loading">
 
   <div class="user_card icon-bg14" (click)="getTitlesByModule(19)">
 
