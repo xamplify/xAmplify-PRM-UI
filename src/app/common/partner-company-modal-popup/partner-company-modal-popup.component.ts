@@ -53,9 +53,6 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
   }
 
   ngOnInit() {
-    setTimeout(() =>{
-		this.isTableLoaded = true;
-	},2000);
       if (this.companyId != undefined && this.companyId > 0 && this.inputId != undefined && this.inputId > 0 ) {
               this.pagination.vendorCompanyId = this.companyId;
               this.pagination.partnerTeamMemberGroupFilter = true;

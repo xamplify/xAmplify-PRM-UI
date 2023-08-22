@@ -1834,6 +1834,10 @@ input#copy-link {
 .no-data-alert.alert-info h4 {
   color: inherit !important;
 }
+/* 16-8-2023 sudha sri */
+.border-none {
+  border: none !important;
+}
 /* search box boder */
 /* input.ng-valid.ng-dirty.ng-touched {
   border: none !important;
