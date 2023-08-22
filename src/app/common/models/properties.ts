@@ -101,7 +101,7 @@ export class Properties {
 	BAD_CREDENTIAL_ERROR = "Username or password is incorrect.";
 	USER_ACCOUNT_DOESNOT_EXIST = "The email address that you've entered doesn't match any account. Sign for an account.";
 	/*****XNFR-334 *****/
-	RESEND_ACTIVATION_MAIL = 'Please check your inbox for account activation email.';
+	RESEND_ACTIVATION_MAIL = 'Please check your inbox for the account activation email.';
 	USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated."+this.RESEND_ACTIVATION_MAIL;
 	/*****XNFR-334 *****/
 	EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty.";
