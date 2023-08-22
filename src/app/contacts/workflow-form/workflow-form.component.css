@@ -458,3 +458,28 @@ legend {
 .toggleAndOr input:checked ~ .labelsAndOr::before {
   opacity: 1;
 }
+.dynamic-div {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 5px;
+}
+.dynamic-div-container {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+}
+.dynamic-div {
+  background-color: #f0f0f0;
+  padding: 5px;
+  margin: 5px 0;
+}
+.source-div {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.target-div {
+  background-color: lightblue;
+  padding: 10px;
+}

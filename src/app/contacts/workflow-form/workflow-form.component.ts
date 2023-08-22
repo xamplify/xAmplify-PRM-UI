@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { Properties } from '../../common/models/properties';
 import { ActionsDescription } from '../../common/models/actions-description';
@@ -43,11 +43,14 @@ export class WorkflowFormComponent implements OnInit{
   activeClass1:boolean= true;
   activeClass2:boolean;
   divs: number[] = [];
+  newDivs: number[] = [];
+  clickOr = true;
 
   constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
     public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, public callActionSwitch: CallActionSwitch,
-		public route: ActivatedRoute,public parterService: ParterService,public logger: XtremandLogger,public dealRegSevice: DealRegistrationService,){
+		public route: ActivatedRoute,public parterService: ParterService,public logger: XtremandLogger,public dealRegSevice: DealRegistrationService,
+    private renderer: Renderer2, private targetEl: ElementRef){
     }
 
   ngOnInit() {
@@ -112,4 +115,7 @@ export class WorkflowFormComponent implements OnInit{
   deleteDiv(index: number) {
     this.divs.splice(index, 1);
   }
+
+
+
 }

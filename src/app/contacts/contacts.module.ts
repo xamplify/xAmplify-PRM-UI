@@ -8,6 +8,7 @@ import { WorkflowFormComponent } from './workflow-form/workflow-form.component';
 import { CKEditorComponent, CKEditorModule } from 'ng2-ckeditor';
 
 
+
 @NgModule({
   imports: [
     CommonModule, DashboardModule, SharedModule, ContactRoutingModule, SharedContactsModule,CKEditorModule
