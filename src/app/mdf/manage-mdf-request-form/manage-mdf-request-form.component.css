@@ -12,7 +12,7 @@
 }
 
 #th-width {
-  width: 25%;
+  width: 20%;
 }
 
 #expanded-table {
@@ -49,4 +49,14 @@
   text-align: center;
   vertical-align: middle;
   font-size: 14px !important;
+}
+
+/* 22-08-2023 */
+th.alignItamsleft {
+  text-align: left;
+}
+@media only screen and (min-width: 800px) and (max-width: 1200px) {
+  .NumberFontDecrease {
+      font-size: 22px !important;
+  }
 }

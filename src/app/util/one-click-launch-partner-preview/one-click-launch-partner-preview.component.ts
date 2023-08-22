@@ -43,10 +43,14 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
   campaignPartnerId = 0;
   @Input() redistributedCount = 0;
   colspanValue = 2;
+  isTableLoaded: boolean = true;
   constructor(public authenticationService:AuthenticationService,public campaignService:CampaignService,public referenceService:ReferenceService,public properties:Properties,
     public contactService:ContactService,public pagerService:PagerService,public xtremandLogger:XtremandLogger) { }
 
   ngOnInit() {
+    setTimeout(() =>{
+      this.isTableLoaded = true;
+    },2000);
     this.showShareLeadsList =  this.viewType == undefined;
     this.getOneClickLaunchCampaignPartnerCompany(this.campaignId);
   }

@@ -447,16 +447,16 @@
 											  data-toggle="tooltip" data-placement="bottom"  title="Download"></span>
 										   <ul class="dropdown-menu pull-right custome-dropdown-changs">
 											  <li><a (click)="downloadFile(campaign,'html')"
-												 data-toggle="tooltip" data-placement="top"
-												 data-rel="fancybox-button" target="_blank" translate>
+												 data-toggle="tooltip" data-placement="bottom"
+												 title="Download Html" data-rel="fancybox-button" target="_blank" translate>
 												 <i class="fa fa-file" style="width: 30px;"></i> Download
 												 Html
 												 </a>
 											  </li>
 											  <li *ngIf="campaign.campaignType != 'EVENT'"><a
 												 (click)="downloadFile(campaign,'pdf')"
-												 data-toggle="tooltip" data-placement="top"
-												 data-rel="fancybox-button" target="_blank" translate>
+												 data-toggle="tooltip" data-placement="bottom"
+												 title="Download Pdf" data-rel="fancybox-button" target="_blank" translate>
 												 <i class="fa fa-file-pdf-o" style="width: 30px;"></i>
 												 Download Pdf
 												 </a>
