@@ -38,6 +38,7 @@
     "angular2-bootstrap-switch": "^0.2.3",
     "angular2-csv": "^0.2.5",
     "angular2-highcharts": "^0.4.3",
+    "angular2-query-builder": "^0.3.2",
     "angular2-uuid": "^1.1.1",
     "angular4-multiselect-dropdown": "^2.0.0",
     "bootstrap": "^3.4.1",
