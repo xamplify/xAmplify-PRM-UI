@@ -191,6 +191,10 @@ td h6 {
   margin-left: -23px;
   margin-top: -6px;
 }
+#notificationBarCu #notification-list {
+  margin-top: 4px;
+}
+
 
 /* Naresh changes */
 
