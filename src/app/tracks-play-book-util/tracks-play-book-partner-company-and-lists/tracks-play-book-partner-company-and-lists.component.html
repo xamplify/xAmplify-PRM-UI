@@ -19,7 +19,7 @@
           <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0">
             <app-team-member-filter-option *ngIf="showFilter && !authenticationService?.module?.isMarketingCompany" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
           </div>
-          <div class="page-toolbar col-xs-6 col-sm-6 col-lg-6 col-md-6">
+          <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6 col-md-6 mb-flex">
             <div class="pull-right">
               <button class="btn btn-danger margin-space" *ngIf="(selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0) "
                 (click)="clearAll('partners')">Clear All</button>
@@ -27,7 +27,7 @@
             <div class="btn-group pull-right">
               <div class="inputs float-right" style="display: inline-flex;">
                 <div class="portlet-input input-inline" id="search-div">
-                  <div class="input-icon right" id="icon">
+                  <div class="input-icon right mr5" id="icon">
                     <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
                       [ngModelOptions]="{standalone: true}" placeholder="Search..."
                       (keypress)="partnersSearchOnKeyEvent($event.keyCode)">

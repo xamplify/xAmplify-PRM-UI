@@ -576,4 +576,8 @@ button:hover {
   .mb_pr0{
     padding-right:0px!important;
   }
+  .mb-padding{
+    padding-right: 15px!important;
+    padding-left: 15px;
+  }
 }
