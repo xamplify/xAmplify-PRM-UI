@@ -1,131 +1,124 @@
 a.forget-password:hover {
-  color: #4db1e2;
+	color: #4db1e2;
 }
-.login .content .login-form,
-.login .content .forget-form {
-  padding: 3px 0;
+
+.login .content .login-form, .login .content .forget-form {
+	padding: 3px 0;
 }
+
 .login-options h4 {
-  font-weight: normal;
+	font-weight: normal;
 }
+
 .alert-dismissible .close {
-  top: 0 !important;
-  right: 0px !important;
+	top: 0 !important;
+	right: 0px !important;
 }
-.alert-danger {
-  background-color: #ec6262;
-}
+
 .alert {
-  padding: 10px;
+	padding: 10px;
 }
+
 a.forget-password:hover {
-  color: #4db1e2;
+	color: #4db1e2;
 }
 
-.login .content .login-form,
-.login .content .forget-form {
-  padding: 3px 0;
+.login .content .login-form, .login .content .forget-form {
+	padding: 3px 0;
 }
 
 .login-options h4 {
-  font-weight: normal;
+	font-weight: normal;
 }
 
 .alert-dismissible .close {
-  top: 0 !important;
-  right: 0px !important;
-}
-
-.alert-danger {
-  background-color: #ec6262;
+	top: 0 !important;
+	right: 0px !important;
 }
 
 .alert {
-  padding: 10px;
-}
-
-.alert-danger > h5 {
-  font-size: 14px;
+	padding: 10px;
 }
 
 .text {
-  padding-top: 12px;
+	padding-top: 12px;
 }
 
 .underlinetext:hover {
-  text-decoration: underline !important;
+	text-decoration: underline !important;
 }
 
 .login-content-left {
-  margin-left: 50px;
+	margin-left: 50px;
 }
 
 .login-content-right {
-  margin-right: 50px;
+	margin-right: 50px;
 }
 
 /***08/06/2022****/
 .agree-link {
-  color: white;
-  cursor: pointer;
+	color: white;
+	cursor: pointer;
 }
 
 .agree-link:hover {
-  color: #5b9bd1;
+	color: #5b9bd1;
 }
 
 .solid-wb {
-  border-top: 1px solid #eee;
+	border-top: 1px solid #eee;
 }
 
 /*** 07-02-2023***/
 .img-child {
-  height: 28px !important;
-  width: 28px !important;
-  display: flex;
+	height: 28px !important;
+	width: 28px !important;
+	display: flex;
 }
 
 /** tharak **/
 .field-icon {
-  color: #333 !important;
+	color: #333 !important;
 }
-.alert-danger > h5 {
-  font-size: 14px;
-}
+
 .text {
-  padding-top: 12px;
+	padding-top: 12px;
 }
+
 .underlinetext:hover {
-  text-decoration: underline !important;
+	text-decoration: underline !important;
 }
 
 .login-content-left {
-  margin-left: 50px;
+	margin-left: 50px;
 }
 
 .login-content-right {
-  margin-right: 50px;
+	margin-right: 50px;
 }
 
 /***08/06/2022****/
 .agree-link {
-  color: white;
-  cursor: pointer;
+	color: white;
+	cursor: pointer;
 }
+
 .agree-link:hover {
-  color: #5b9bd1;
+	color: #5b9bd1;
 }
+
 .solid-wb {
-  border-top: 1px solid #eee;
+	border-top: 1px solid #eee;
 }
 
 /*** 07-02-2023***/
 .img-child {
-  height: 28px !important;
-  width: 28px !important;
-  display: flex;
+	height: 28px !important;
+	width: 28px !important;
+	display: flex;
 }
 /** tharak **/
 .field-icon {
-  color: #333 !important;
+	color: #333 !important;
 }

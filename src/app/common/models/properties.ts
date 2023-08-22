@@ -90,7 +90,7 @@ export class Properties {
 	FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Check your inbox for a temporary password.";
 	FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail.";
 
-	SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for our account activation email.";
+	SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for activation email.";
 	ACCOUNT_ACTIVATED_SUCESS = 'Thanks for activating your account. Please log in to complete your company profile.';
 	SIGN_UP_ERROR = "An error occurred while processing your request. Please try after some time.";
 	ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done.";
@@ -100,10 +100,11 @@ export class Properties {
 
 	BAD_CREDENTIAL_ERROR = "Username or password is incorrect.";
 	USER_ACCOUNT_DOESNOT_EXIST = "The email address that you've entered doesn't match any account. Sign for an account.";
-	USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated. Please check your inbox for our activation email.";
-	USER_ACCOUNT_ACTIVATION_ERROR_NEW = "Your account has not been activated. Please contact admin.";
+	/*****XNFR-334 *****/
+	RESEND_ACTIVATION_MAIL = 'Please check your inbox for account activation email.';
+	USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated."+this.RESEND_ACTIVATION_MAIL;
+	/*****XNFR-334 *****/
 	EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty.";
-	RESEND_ACTIVATION_MAIL = 'Please check your inbox	for	our	account activation email.'
 	SOMTHING_WENT_WRONG = 'Something went wrong. Please try again.';
 	/* User */
 	PROCESS_REQUEST_SUCCESS = "Your request has been successfully processed.";

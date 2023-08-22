@@ -108,6 +108,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   loginWithUser(userName: string) {
+    this.resendActiveMail = false;
     if(userName!=undefined && userName!="undefined"){
       const authorization = 'Basic ' + btoa('my-trusted-client:');
       const body = new URLSearchParams();
@@ -133,9 +134,8 @@ export class LoginComponent implements OnInit, OnDestroy {
               if (response.error_description === "Bad credentials" || response.error_description === "Username/password are wrong") {
                 this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
               } else if (response.error_description === "User is disabled") {
-                //this.resendActiveMail = true;
-                // this.customResponse =  new CustomResponse();
-                this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR_NEW);
+                this.resendActiveMail = true;
+                this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR);
               } else if (response.error_description === this.properties.OTHER_EMAIL_ISSUE) {
                 this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
               } else if (response.error_description === this.properties.ERROR_EMAIL_ADDRESS) {
@@ -176,18 +176,21 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.xtremandLogger.error(responseMessage);
   }
   resendActivation() {
-    try {
-      this.userService.resendActivationMail(this.model.username).subscribe(result => {
-        if (result === 'resend Activation email success') {
-          this.resendActiveMail = false;
-          this.setCustomeResponse('SUCCESS', this.properties.RESEND_ACTIVATION_MAIL);
-        }
-      },
-        (error: any) => {
-          this.xtremandLogger.error(error);
-        }
-      )
-    } catch (error) { console.log('error' + error); }
+    this.customResponse = new CustomResponse();
+    this.loading = true;
+    this.userService.resendActivationMail(this.model.username).subscribe(result => {
+      this.loading = false;
+      this.resendActiveMail = false;
+      if (result.statusCode==200) {
+        this.setCustomeResponse('SUCCESS', this.properties.RESEND_ACTIVATION_MAIL);
+      }else{
+        this.setCustomeResponse('ERROR', result.message);
+      }
+    },
+      (error: any) => {
+        this.xtremandLogger.error(error);
+      }
+    );
   }
 
   cleaningLeftSidebar() {

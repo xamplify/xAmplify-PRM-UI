@@ -11,15 +11,17 @@
 	<div class="row">
 	   <!-- BEGIN LOGIN FORM -->
 	   <div class="row" *ngIf="model" style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 8px;">
-		  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+		<!-- XNFR-334---> 
+		<app-response-message [customResponse]="customResponse" *ngIf="!resendActiveMail && customResponse.isVisible"></app-response-message>
+		  <!-- XNFR-334--->
 		  <div *ngIf="resendActiveMail" class="alert alert-dismissible m0 alert-danger" role="alert">
 			 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 			 <span aria-hidden="true">&times;</span>
 			 </button>
-			 <h4 style="padding-top: 6px;"><span class="text">{{properties.USER_ACCOUNT_ACTIVATION_ERROR}}<br>
-				<span style="position: relative;top: 4px;">Click to <a class="underlinetext"
-				   (click)="resendActivation()" style="color:blue">Resend Activation mail.</a></span></span>
-			 </h4>
+			 <strong style="padding-top: 6px;"><span class="text">{{properties.USER_ACCOUNT_ACTIVATION_ERROR}}<br>
+				<span style="position: relative;top: 4px;">
+					 <a class="underlinetext success"  (click)="resendActivation()">Please click here to get account activation email.</a></span></span>
+			</strong>
 		  </div>
 		  <form class="login-form" (ngSubmit)="login()">
 			 <h3 class="form-title text-white">{{signInText}}</h3>
