@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   customResponse: CustomResponse = new CustomResponse();
   loading = false;
   resendActiveMail = false;
+  resendAccountSignUpMail = false;
   mainLoader: boolean;
   socialProviders = [{ "name": "Salesforce", "iconName": "salesforce", "value": "salesforce" },
   { "name": "Facebook", "iconName": "facebook", "value": "facebook" },
@@ -109,6 +110,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   loginWithUser(userName: string) {
     this.resendActiveMail = false;
+    this.resendAccountSignUpMail = false;
     if(userName!=undefined && userName!="undefined"){
       const authorization = 'Basic ' + btoa('my-trusted-client:');
       const body = new URLSearchParams();
@@ -131,15 +133,19 @@ export class LoginComponent implements OnInit, OnDestroy {
             const body = error['_body'];
             if (body !== "") {
               const response = JSON.parse(body);
-              if (response.error_description === "Bad credentials" || response.error_description === "Username/password are wrong") {
+              let errorDescription = response.error_description;
+              if (errorDescription === "Bad credentials" || errorDescription === "Username/password are wrong") {
                 this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-              } else if (response.error_description === "User is disabled") {
+              } else if (errorDescription === "User is disabled") {
                 this.resendActiveMail = true;
                 this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR);
-              } else if (response.error_description === this.properties.OTHER_EMAIL_ISSUE) {
+              } else if (errorDescription === this.properties.OTHER_EMAIL_ISSUE) {
                 this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-              } else if (response.error_description === this.properties.ERROR_EMAIL_ADDRESS) {
+              } else if (errorDescription === this.properties.ERROR_EMAIL_ADDRESS) {
                 this.setCustomeResponse("ERROR", this.properties.WRONG_EMAIL_ADDRESS);
+              }else if(errorDescription===this.properties.ACCOUNT_NOT_CREATED){
+                this.resendAccountSignUpMail = true;
+                this.setCustomeResponse("ERROR", errorDescription);
               }
             }
             else {
@@ -405,6 +411,17 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loading = false;
    }
         return false;
+  }
+
+  resendSignUpEmail(){
+    alert("Sending Sign Up Email");
+  }
+
+  clearErrorMessage(){
+   this.customResponse = new CustomResponse();
+    this.resendAccountSignUpMail = false;
+    this.resendActiveMail = false;
+   
   }
 
 }

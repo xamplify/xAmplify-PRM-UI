@@ -86,6 +86,7 @@ export class Properties {
 
 	/* Authentication Module*/
 
+	ACCOUNT_NOT_CREATED = "You don't have an account, Please sign up to create your account.";
 	ACCOUNT_ACTIVATED_WITH_PASSWORD = 'Thanks for adding password. Please login to access the platform.'
 	FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Check your inbox for a temporary password.";
 	FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail.";
