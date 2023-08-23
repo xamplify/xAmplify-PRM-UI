@@ -413,15 +413,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         return false;
   }
 
-  resendSignUpEmail(){
-    alert("Sending Sign Up Email");
-  }
-
   clearErrorMessage(){
    this.customResponse = new CustomResponse();
     this.resendAccountSignUpMail = false;
     this.resendActiveMail = false;
-   
   }
 
 }

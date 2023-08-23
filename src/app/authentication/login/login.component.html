@@ -12,29 +12,17 @@
 	   <!-- BEGIN LOGIN FORM -->
 	   <div class="row" *ngIf="model" style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 8px;">
 		<!-- XNFR-334---> 
-		<app-response-message [customResponse]="customResponse" *ngIf="!resendActiveMail && customResponse.isVisible && !resendAccountSignUpMail"></app-response-message>
+		<app-response-message [customResponse]="customResponse" *ngIf="!resendActiveMail && customResponse.isVisible"></app-response-message>
 		  <!-- XNFR-334--->
-		  <div *ngIf="resendActiveMail || resendAccountSignUpMail" class="alert alert-dismissible m0 alert-danger" role="alert">
-			 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		  <div *ngIf="resendActiveMail" class="alert alert-dismissible m0 alert-danger" role="alert">
+			 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			 <span aria-hidden="true">&times;</span>
+			 </button>
 			 <strong style="padding-top: 6px;">
-				<span class="text">
-					<ng-container *ngIf="resendActiveMail">
-						{{properties.USER_ACCOUNT_ACTIVATION_ERROR}}
-					</ng-container>
-					<ng-container *ngIf="resendAccountSignUpMail">
-						{{properties.ACCOUNT_NOT_CREATED}}
-					</ng-container>
-				<br>
+				<span class="text">{{properties.USER_ACCOUNT_ACTIVATION_ERROR}}<br>
 				<span style="position: relative;top: 4px;">Please
-					 <a class="underlinetext success"  (click)="resendActiveMail ? resendActivation():resendSignUpEmail()"> click here </a>to get the 
-					 <ng-container *ngIf="resendActiveMail">
-						account activation
-					</ng-container>
-					<ng-container *ngIf="resendAccountSignUpMail">
-						sign up
-					</ng-container>
-					  email.</span>
-				</span>
+					 <a class="underlinetext success"  (click)="resendActivation()"> click here </a>to get the account activation email.</span>
+					</span>
 			</strong>
 		  </div>
 		  <form class="login-form" (ngSubmit)="login()">
