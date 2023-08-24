@@ -151,6 +151,12 @@
                            </div>
                         </div>
                      </div>
+                     <div class="col-xs-12" *ngIf="campaign?.description?.length>0">
+                        <div class="ml25">
+                           <h5>Description</h5>
+                        </div>
+                        <textarea class="ml25" rows="5" disabled>{{campaign?.description}}</textarea>
+                     </div>
                   </ng-container>
                </fieldset>
                <fieldset class="scheduler-border" *ngIf="previewCampaignType === 'SOCIAL'">
