@@ -74,6 +74,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
   isValidFirstTab = false;
   formGroupClass = "form-group";
   campaignNameDivClass:string = this.formGroupClass;
+  campaignDescriptionDivClass:string = this.formGroupClass;
   fromNameDivClass:string =  this.formGroupClass;
   subjectLineDivClass:string = this.formGroupClass;
   fromEmaiDivClass:string = this.formGroupClass;
@@ -2157,7 +2158,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
             'partnershipId':this.selectedPartnershipId,
             'configurePipelines': this.campaign.configurePipelines,
             /***XNFR-255****/
-            'whiteLabeled':this.campaign.whiteLabeled
+            'whiteLabeled':this.campaign.whiteLabeled,
+            'description':this.campaign.description
         };
         return data;
     }
@@ -2383,5 +2385,10 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
     /***XBI-1554***/
     toggleOpenLinksInNewTab(){
         this.beeContainerInput['openLinksInNewTab'] = !this.beeContainerInput['openLinksInNewTab'];
+    }
+
+    changeDescriptionClassName(description:any){
+        let trimmedDescription = $.trim(description);
+        this.campaignDescriptionDivClass = trimmedDescription.length>0 ? this.successClass : this.formGroupClass;
     }
 }

@@ -141,7 +141,6 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
             .subscribe(
                 (response) => {
                     this.userGuideDashboardDto = response.data;
-                    console.log(this.userGuideDashboardDto);
                     if (this.userGuideDashboardDto.partnerLoggedInThroughVanityUrl) {
                         this.mergeTagForGuide = 'partner_account_dashboard';
                     } else if (this.userGuideDashboardDto.vendorLoggedInThroughOwnVanityUrl) {
