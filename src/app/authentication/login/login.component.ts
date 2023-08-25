@@ -137,7 +137,6 @@ export class LoginComponent implements OnInit, OnDestroy {
               if (errorDescription === "Bad credentials" || errorDescription === "Username/password are wrong") {
                 this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
               } else if (errorDescription === "User is disabled") {
-                this.resendActiveMail = true;
                 this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR);
               } else if (errorDescription === this.properties.OTHER_EMAIL_ISSUE) {
                 this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
@@ -145,6 +144,11 @@ export class LoginComponent implements OnInit, OnDestroy {
                 this.setCustomeResponse("ERROR", this.properties.WRONG_EMAIL_ADDRESS);
               }else if(errorDescription===this.properties.ACCOUNT_NOT_CREATED){
                 this.resendAccountSignUpMail = true;
+                this.setCustomeResponse("ERROR", errorDescription);
+              }else if(errorDescription==this.properties.USER_ACCOUNT_ACTIVATION_ERROR){
+                this.resendActiveMail = true;
+                this.setCustomeResponse("ERROR", errorDescription);
+              }else if(errorDescription==this.properties.ACCOUNT_SUSPENDED){
                 this.setCustomeResponse("ERROR", errorDescription);
               }
             }
