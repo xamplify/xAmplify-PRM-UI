@@ -64,6 +64,13 @@
                              <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200"
                              />
                           </div>
+                          <div class="form-group" [attr.class]="campaignDescriptionDivClass">
+                           <label>Descripton</label>
+                           <div>
+                              <textarea class="form-control" maxlength="1000" rows="5" [(ngModel)]="campaign.description" name="description" (input)="changeDescriptionClassName(campaign.description)" placeholder="Description"></textarea>
+                           </div>
+                        </div>
+
                           <div class="form-group" [attr.class]="subjectLineDivClass">
                              <label for="exampleInputPassword1">Subject line</label>
                              <span style="color: red"><strong> * </strong></span>

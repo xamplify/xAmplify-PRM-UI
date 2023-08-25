@@ -104,6 +104,7 @@ export class Properties {
 	/*****XNFR-334 *****/
 	RESEND_ACTIVATION_MAIL = 'Please check your inbox for the account activation email.';
 	USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated."+this.RESEND_ACTIVATION_MAIL;
+	ACCOUNT_SUSPENDED = "This account has been suspended.Please contact admin.";
 	/*****XNFR-334 *****/
 	EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty.";
 	SOMTHING_WENT_WRONG = 'Something went wrong. Please try again.';
