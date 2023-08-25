@@ -201,6 +201,47 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Shared On', value: 'shared_date' },
         ];
       }
+      if("ONE_CLICK_LAUNCH"==emailTemplateType){
+        mergeTags =[{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Campaign Name', value: '{{campaignName}}' },
+        { name: 'Campaign Type', value: '{{campaignType}}' },
+        ];
+      }
+      if("PAGE_CAMPAIGN"==emailTemplateType){
+        mergeTags =[{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Page Name', value: '{{pageName}}' },
+        { name: 'Shared On', value: '{{sharedDate}}' },
+        ];
+      }
+      if("MARKETING_PAGE_CAMPAIGN"==emailTemplateType){
+        mergeTags =[{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        ];
+      }
+      if("SOCIAL_CAMPAIGN"==emailTemplateType){
+        mergeTags =[{ name: 'Sender First Name', value: '{{firstName}}' },
+        { name: 'Sender Last Name', value: '{{lastName}}' },
+        { name: 'Sender Full Name', value: '{{fullName}}' },
+        { name: 'Sender Email Id', value: '{{emailId}}' },
+        { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+        { name: 'Customer Full Name', value: '{{customerFullName}}' },
+        { name: 'Social Status Content', value: '{{socialStatusContent}}' },
+        ];
+      }
       var beeUserId = "bee-"+emailTemplate.companyId;
       var roleHash = self.authenticationService.vendorRoleHash;
       var beeConfig = {
