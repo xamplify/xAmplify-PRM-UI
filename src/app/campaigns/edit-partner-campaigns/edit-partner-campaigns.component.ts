@@ -129,6 +129,7 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
     campaignNameDivClass:string = this.formGroupClass;
     fromNameDivClass:string =  this.formGroupClass;
     subjectLineDivClass:string = this.formGroupClass;
+    campaignDescriptionDivClass = this.formGroupClass;
     fromEmaiDivClass:string = this.formGroupClass;
     preHeaderDivClass:string = this.formGroupClass;
     messageDivClass:string = this.formGroupClass;
@@ -203,7 +204,9 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
     selectedAutoResponseCustomEmailTemplateId = 0;
     anyLaunchButtonClicked = false;
 
-    /*****XNFR-330****/                   
+    /*****XNFR-330****/             
+    errorClass = "form-group has-error has-feedback";
+    successClass = "form-group has-success has-feedback";      
 
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
@@ -484,8 +487,8 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
 
      }
      validateField(fieldId:string){
-         var errorClass = "form-group has-error has-feedback";
-         var successClass = "form-group has-success has-feedback";
+         var errorClass = this.errorClass;
+         var successClass = this.successClass;
          let fieldValue = $.trim($('#'+fieldId).val())
          if(fieldId=="campaignName"){
              if(fieldValue.length>0&&this.isValidCampaignName){
@@ -743,7 +746,8 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             'parentCampaignId':this.campaign.parentCampaignId,
             'landingPageId':this.selectedLandingPageId,
             'vanityUrlDomainName':vanityUrlDomainName,
-            'vanityUrlCampaign':vanityUrlCampaign
+            'vanityUrlCampaign':vanityUrlCampaign,
+            'description':this.campaign.description
         };
         return data;
     }
@@ -1583,11 +1587,14 @@ appendValueToSubjectLine(event:any){
         if(this.anyLaunchButtonClicked || this.authenticationService.module.logoutButtonClicked){
             return true;
         }else{
-            return false;
+            return this.campaignService.reDistributeCampaign==undefined;
         }
         
     }
 
-
+    changeDescriptionClassName(description:any){
+        let trimmedDescription = $.trim(description);
+        this.campaignDescriptionDivClass = trimmedDescription.length>0 ? this.successClass : this.formGroupClass;
+    }
 
 }
