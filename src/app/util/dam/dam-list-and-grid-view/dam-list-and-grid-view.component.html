@@ -49,8 +49,7 @@
 												alt="Image Not Found" style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
 										</div>
 										<div class="title-div" style="width: 50%;">
-												<h4 class="mt5 mb5 f-w-600"
-												  >
+												<h4 class="mt5 mb5 f-w-600">
 													<span   data-toggle="tooltip" data-placement="bottom"
 													title="{{asset?.assetName}}"><strong>{{asset?.assetName | slice: 0: 25}}</strong></span>
 													<span *ngIf="asset?.assetName?.length>25">...</span>
@@ -303,8 +302,8 @@
 						<div class="row" *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading && !listLoader.isServerError">
 							<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tb_view_10" *ngFor="let asset of pagination.pagedItems ;let i =index"	id="assetList_{{asset.id}}">
 								<div class="grid-box min-h default-cursor mHeight">
-									<img class="img-class mxv" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
-										alt="Image Not Found">
+									<img *ngIf="!asset?.videoId" class="img-class mxv" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"alt="Image Not Found">
+									<img *ngIf="asset?.videoId>0" class="img-class mxv" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/default-image.jpg';" alt="Image Not Found">
 									<h4 class="overflow-hidden mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{asset?.assetName}}">
 										{{asset?.assetName | slice:0:25}} <span
 											*ngIf="asset?.assetName?.length>25">...</span><br>

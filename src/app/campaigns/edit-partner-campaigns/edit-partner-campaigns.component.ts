@@ -1535,13 +1535,18 @@ appendValueToSubjectLine(event:any){
 
     /****XNFR-330****/
     editAutoResponseTemplate(autoResponse:any,autoResponseType:string){
-        this.partnerTemplateLoader = true;
-        autoResponse.emailTemplate.autoResponseType = autoResponseType;
-        this.selectedAutoResponseEmailTemplate = autoResponse.emailTemplate;
-        this.selectedAutoResponseId = autoResponse.id;
-        this.selectedAutoResponseCustomEmailTemplateId = autoResponse.customEmailTemplateId;
-        this.partnerTemplateLoader = false;
-        this.isEditAutoResponseTemplate = true;
+        if("UPLOADED"!=autoResponse.emailTemplate.type){
+            this.partnerTemplateLoader = true;
+            autoResponse.emailTemplate.autoResponseType = autoResponseType;
+            this.selectedAutoResponseEmailTemplate = autoResponse.emailTemplate;
+            this.selectedAutoResponseId = autoResponse.id;
+            this.selectedAutoResponseCustomEmailTemplateId = autoResponse.customEmailTemplateId;
+            this.partnerTemplateLoader = false;
+            this.isEditAutoResponseTemplate = true;
+        }else{
+            this.referenceService.showSweetAlertErrorMessage("This template cannot be edited.");
+        }
+        
     }
     /****XNFR-330****/
     resetAutoResponseEmailTemplate(){

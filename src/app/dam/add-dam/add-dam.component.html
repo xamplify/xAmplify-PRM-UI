@@ -53,7 +53,7 @@
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
             <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
-            <form role="form" class="form-horizontal form-bordered form-label-stripped" *ngIf="!modalPopupLoader">
+            <div class="form-horizontal form-bordered form-label-stripped" *ngIf="!modalPopupLoader">
                <div class="portlet box">
                   <div class="">
                      <div class="col-md-12 col-lg-12 ">
@@ -200,10 +200,9 @@
                      </table>
                     </div>
                    <!---XNFR-255-->
-
                   </div>
                </div>
-            </form>
+            </div>
          </div>
          <div class="modal-footer cmr" style="border:none;border-top:none !important" *ngIf="!modalPopupLoader">
             <button class="btn Btn-Gray" type="reset" (click)="hidePopup();" translate>Cancel</button>
