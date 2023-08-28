@@ -5,7 +5,6 @@ import { EnvService } from 'app/env.service';
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
 import { VideoFileService } from 'app/videos/services/video-file.service';
 import { VideoUtilService } from 'app/videos/services/video-util.service';
-
 declare const $:any, videojs: any;
 @Component({
   selector: 'app-xamplify-video-player',
@@ -42,11 +41,7 @@ export class XamplifyVideoPlayerComponent implements OnInit {
     $('#xamplify-video-player-id').css('width', 'auto');
     this.videoUrl = this.videoFile.videoPath;
     this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-    if(this.envService.CLIENT_URL.indexOf("localhost")>-1){
-      this.videoUrl = "https://aravindu.com/vod/videos/54888/26062023/MSDhoni1831687796167215_mobinar.m3u8?access_token=" + this.authenticationService.access_token;
-    }else{
-     this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-    }
+    this.videoUrl = this.authenticationService.getDefaultM3U8FileForLocal(this.videoUrl);
     $('#xamplify-video-player video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
     const self = this;
     const overrideNativevalue = this.referenceService.getBrowserInfoForNativeSet();
@@ -72,6 +67,11 @@ export class XamplifyVideoPlayerComponent implements OnInit {
         this.ready(function () {
             $('#overLayImage').append($('#overlay-logo').show());
             $('#overlay-modal').hide(); 
+            /***XNFR-329***Do not move this httpSourceSelector().*/
+            if(self.envService.loadLatestVideoJsFiles){
+                player.httpSourceSelector();
+            }
+            /***XNFR-329****/
             player.play();
         });
         this.on('seeking', function () {
@@ -203,11 +203,7 @@ export class XamplifyVideoPlayerComponent implements OnInit {
     $('#xamplify-video-player').append(str);
     this.videoUrl = this.videoFile.videoPath;
     this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-    if(this.envService.CLIENT_URL.indexOf("localhost")>-1){
-        this.videoUrl = "https://aravindu.com/vod/videos/54888/27062023/360VideoSCIENCELAB1EscapeTsunamiWave6kDisasterSurvival1687809605028_mobinar.m3u8?access_token=" + this.authenticationService.access_token;
-      }else{
-       this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-      }
+    this.videoUrl = this.authenticationService.getDefault360M3U8FileForLocal(this.videoUrl);
     $('#xamplify-video-player video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
     $('#xamplify-video-player-id').css('height', this.videoWidth);
     $('#xamplify-video-player-id').css('width', 'auto');
@@ -274,6 +270,7 @@ export class XamplifyVideoPlayerComponent implements OnInit {
                     isCallActionthere = false;
                     self.fullScreenMode = false;
                     $('#overlay-modal').hide();
+                    
                     player.play();
                 });
                 $('#playorsubmit').click(function () {
@@ -302,8 +299,8 @@ export class XamplifyVideoPlayerComponent implements OnInit {
                 $('.vjs-big-play-button').css('display', 'none');
                 $('#overlay-modal').hide(); // player.pause();
                 $('#repeatPlay').click(function () {
-                    $('#overlay-modal').hide();
-                    player.play();
+                $('#overlay-modal').hide();
+                player.play();
                 });
                 $('#skipOverlay').click(function () {
                     isCallActionthere = false;

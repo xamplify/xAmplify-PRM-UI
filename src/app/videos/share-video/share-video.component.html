@@ -93,10 +93,7 @@
 			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('share')">
 				<p align="justify">Category : {{categoryName}}</p>
 			</div>
-			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('share')">
-			  <!-- <share-buttons (closed)="sharedSuccess()" [exclude]="['reddit']" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons> -->
-		      <!-- <share-buttons (popUpClosed)="sharedSuccess()" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons> -->
-		     <!-- <share-buttons (popUpClosed)="sharedSuccess()" [url]="'https://aravindu.com/embed/'+shortnerUrlAlias"></share-buttons> -->
+			<div class="col-xs-12" style="padding:0" *ngIf="shareUrl.includes('share')">			 
 			 <share-buttons (popUpClosed)="sharedSuccess()" [url]="shareShortUrl" [google]= "false" ></share-buttons>
 
 			</div>

@@ -48,7 +48,7 @@
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div  class="number"><span  data-toggle="tooltip" data-placement="top" title="{{mdfRequestTiles?.totalPartners}}">{{mdfRequestTiles?.totalPartners}}</span></div>
+                              <div  class="number NumberFontDecrease"><span  data-toggle="tooltip" data-placement="top" title="{{mdfRequestTiles?.totalPartners}}">{{mdfRequestTiles?.totalPartners}}</span></div>
                               <div class="desc">Number of {{authenticationService?.partnerModule?.customName}}</div>
                            </div>
                            <span class="morePadding">
@@ -80,7 +80,7 @@
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number"><span data-toggle="tooltip" data-placement="top" title="{{mdfRequestTiles?.totalRequests}}">
+                              <div class="number NumberFontDecrease"><span data-toggle="tooltip" data-placement="top" title="{{mdfRequestTiles?.totalRequests}}">
                                  {{mdfRequestTiles?.totalRequestsInString}}
                               </span>
                                 </div>
@@ -98,7 +98,7 @@
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">
+                              <div class="number NumberFontDecrease">
                                  <span data-toggle="tooltip" data-placement="top" title="{{mdfRequestTiles?.averageRequestSize}}">
                                     {{mdfRequestTiles?.averageRequestSizeInString}}
                                  </span>
@@ -117,7 +117,7 @@
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">
+                              <div class="number NumberFontDecrease">
                                  <span data-toggle="tooltip" data-placement="top" title="$ {{mdfRequestTiles?.totalValue}}">
                                     {{mdfRequestTiles?.totalValueInString}}
                                  </span>
@@ -161,7 +161,6 @@
                            <div class="input-icon right">
                               <input type="text" id="sort-text" class="form-control" style="height: 34px;" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a vendor" (keypress)="eventHandler($event.keyCode)">
                               <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchVendors();"></button>
-                              <!-- removed style balck color (SS)-->
                               <button type="submit" class="search-box-item-click" (click)="searchVendors()"><i class="fa fa-search" aria-hidden="true"></i></button>
                            </div>
                         </div>
@@ -179,7 +178,7 @@
                               <table class='table tgrid' aria-describedby="manage-mdf-requests-table">
                                  <thead>
                                     <tr>
-                                       <th scope="row" style="width: 23%;" translate>Vendor Info</th>
+                                       <th scope="row" style="width: 30%;" translate>Vendor Info</th>
                                        <th scope="row" class="hidden-xs center-align"   translate>Number Of Requests</th>
                                        <th scope="row" class="hidden-xs center-align"  translate>Actions</th>
                                     </tr>
@@ -191,7 +190,7 @@
                                           <div class="col-md-12 col-lg-12">
                                              <div class="row">
                                                 <div class="col-md-2 col-lg-2 text-right">
-                                                  <img class="img-circle" src="{{vendor?.companyLogoPath}}" alt="">
+                                                  <img class="img-circle float-left" src="{{vendor?.companyLogoPath}}" alt="">
                                                 </div>
                                                 <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                                                    <label data-toggle="tooltip" data-placement="bottom" title="{{vendor?.companyName}}" style="font-size: 15px;font-weight: 600;">

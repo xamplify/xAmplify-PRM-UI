@@ -332,7 +332,7 @@ fieldset,
 .ng2-tag-input,
 .nav-tabs,
 .nav-pills {
-  border-bottom: 2px solid #2f4857 !important;
+  border-bottom: 1px solid #2f4857 !important;
 }
 .table > tbody > tr > td,
 .table > tbody > tr > th,
@@ -508,7 +508,12 @@ tr {
 .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle {
   background-color:#22313a !important;
 } */
-.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown-user
+  .dropdown-toggle
+  > img {
   border: 1px solid #2f4857 !important;
 }
 .profile-image-wrapper-color {
@@ -1542,7 +1547,7 @@ a.dropdown-toggle.circlebg-none-v:hover {
   > i {
   color: #fff !important;
 }
-@media only screen and (min-width: 300px) and (max-width: 580px) {  
+@media only screen and (min-width: 300px) and (max-width: 580px) {
   a.dropdown-toggle.circlebg-none-v {
     background: transparent !important;
     border: none !important;
@@ -1550,13 +1555,23 @@ a.dropdown-toggle.circlebg-none-v:hover {
   a.dropdown-toggle.circlebg-none-v:hover {
     background: transparent !important;
   }
-  .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
+  .page-header.navbar
+    .top-menu
+    .navbar-nav
+    > li.dropdown-user
+    .dropdown-toggle
+    > img {
     border: 1px solid #5a738e !important;
   }
-  .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle:hover {
+  .page-header.navbar
+    .top-menu
+    .navbar-nav
+    > li.dropdown
+    > .dropdown-toggle:hover {
     background-color: transparent !important;
-  } 
-  .page-header.navbar.top-menu.navbar-nav> li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
+  }
+  .page-header.navbar.top-menu.navbar-nav
+    > li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
     background-color: transparent !important;
   }
 }
@@ -1576,12 +1591,6 @@ a.dropdown-toggle.circlebg-none-v:hover {
 .option-color {
   color: #fff !important;
 }
-
-input.ng-valid.ng-dirty.ng-touched {
-  border: none !important;
-  outline: none !important;
-}
-
 /* 28-6-2023 table btns,lables and tags*/
 .lightgray-btn:hover {
   background: #ddd !important;
@@ -1802,7 +1811,8 @@ input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:active, input.
   border: none !important;
   outline: none !important;
 } */
-.search-box-item-clear, input {
+.search-box-item-clear,
+input {
   background: transparent;
   fill: none;
 }
@@ -1810,3 +1820,26 @@ input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:active, input.
   border: none !important;
   outline: none !important;
 } */
+
+/* 08-08-2023 */
+#CardBgforSection {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
+/* 10-8-2023 sudha sri */
+input#copy-link {
+  background-color: #2b3c46 !important;
+}
+/* 11-8-2023 sudha sri */
+.no-data-alert.alert-info h4 {
+  color: inherit !important;
+}
+/* 16-8-2023 sudha sri */
+.border-none {
+  border: none !important;
+}
+/* search box boder */
+/* input.ng-valid.ng-dirty.ng-touched {
+  border: none !important;
+  outline: none !important;
+}  */

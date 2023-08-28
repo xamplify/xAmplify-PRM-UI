@@ -619,7 +619,7 @@ a {
 
 .request-comment-details {
   margin: auto;
-  width: 87%;
+  width: 95%;
   padding: 0px;
   background-color: white;
 }
@@ -963,7 +963,7 @@ footer a.tz:after {
 
 .request-comment-text-area {
   margin-bottom: 25px;
-  width: 85%;
+  width: 100%;
 }
 
 .maxheight {

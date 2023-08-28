@@ -299,7 +299,7 @@
               <div class="btn-group pull-right">
                 <div class="inputs float-right" style="display: inline-flex;padding-top: 12px;">
                   <div id="left" style="padding-left: 5px;">
-                    <select class="form-control" [(ngModel)]="assetSortOption.damSortOption"
+                    <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="assetSortOption.damSortOption"
                       (ngModelChange)="assetSortBy($event)">
                       <option *ngFor="let option of assetSortOption.damSortDropDownOptions" [ngValue]="option">
                         {{option.name}}</option>
@@ -307,7 +307,7 @@
                   </div>
 
                   <div id="left" *ngIf="fileTypesForFilter?.length>0">
-                    <select class="form-control mDamSort"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)" 
+                    <select class="form-control mDamSort SeclectBoxPaddingsAbj"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)" 
                         style="position: relative; right: -3px;">
                       <option value="">Select Asset Type</option>
                       <option	*ngFor="let fileType of fileTypesForFilter" [ngValue]="fileType">{{fileType}}</option>
@@ -360,7 +360,9 @@
                         </div>
                         <div class="wrap-asset-name" style="-webkit-box-orient: vertical;">
                           <span data-toggle="tooltip" data-placement="bottom"  [title]="file.assetName">
-                            <strong>{{file.assetName}}</strong>
+                            <strong>{{file.assetName | slice:0:40}}<span
+                              *ngIf="file.assetName?.length>40">...</span>
+                            </strong>
                           </span>
                         </div>
                         <div class="item__size">
@@ -379,11 +381,6 @@
                                   *ngIf="file.tagNames[0]?.length>5">..</span>
                               </ng-container>
                             </div>
-                            <!-- <ng-container *ngIf="file.tagNames.length > 1">
-                              <div class="tag tablegray-tag" data-toggle="tooltip" data-placement="bottom"  title="{{file.tagNames[1]}}">
-                                {{file.tagNames[1] | slice:0:5}} <span *ngIf="file.tagNames[1]?.length>5">..</span>
-                              </div>
-                            </ng-container> -->
                             <ng-container *ngIf="file.tagNames?.length > 1" >
                             <span class="tag-dots" data-toggle="tooltip" data-placement="bottm"
                               title="{{file.toolTipTagNames}}" style="font-size: 12px;
@@ -487,11 +484,6 @@
           <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }">
           </ngx-loading>
           <div [hidden]="!imageChangedEvent">
-            <!-- <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false" [onlyScaleDown]="true"
-              [roundCropper]="false" format="jpg" outputType="base64" (imageCropped)="imageCroppedMethod($event)"
-              (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" [resizeToWidth]="1000" (preserveSize)="true"
-              (imageQuality)=0 (loadImageFailed)="loadImageFailed()" [style.display]="showCropper ? null : 'none'">
-            </image-cropper> -->
             <app-img-croppr-v2
                     [imageChangedEvent]="imageChangedEvent"
                     [maintainAspectRatio]="true"
@@ -623,7 +615,7 @@
                         </app-timestamp>
                       </td>
                       <td id="actions-row" style="text-align: center;">
-                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                        <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview"
                             (click)="$event.stopPropagation();previewForm(form.id)">
                             <i class="fa fa-eye" aria-hidden="true"></i>
@@ -725,7 +717,7 @@
                         </app-timestamp>
                       </td>
                       <td id="actions-row " class="mActionsAlign" style="text-align: center;">
-                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                        <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewForm(asset.quiz.id)">
                             <i class="fa fa-eye" aria-hidden="true"></i>
                           </a>
@@ -758,7 +750,7 @@
                         </app-timestamp>
                       </td>
                       <td id="actions-row " class="mActionsAlign" style="text-align: center;">
-                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                        <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="assetPreview(asset.dam, true)">
                             <i class="fa fa-eye" aria-hidden="true"></i>
                           </a>
@@ -856,7 +848,7 @@
                         </app-timestamp>
                       </td>
                       <td id="actions-row" style="text-align: center;">
-                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                        <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview"
                             (click)="$event.stopPropagation();previewForm(form.id)">
                             <i class="fa fa-eye" aria-hidden="true"></i>
@@ -1069,7 +1061,7 @@
                   </div>
                   <!--Filter Types---->
                   <div id="left" class="mSortAlign ml10" *ngIf="fileTypesForFilter?.length>0">
-                    <select class="form-control mDamSort"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)"style="position: relative; right: -3px;">
+                    <select class="form-control mDamSort SeclectBoxPaddingsAbj"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)"style="position: relative; right: -3px;">
                       <option value="">Select Asset Type</option>
                       <option	*ngFor="let fileType of fileTypesForFilter" [ngValue]="fileType">{{fileType}}</option>
                     </select> 
@@ -1131,7 +1123,7 @@
                         </app-timestamp>
                       </td>
                       <td id="actions-row" style="text-align: center;">
-                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                        <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview"
                             (click)="$event.stopPropagation();assetPreview(asset, true)">
                             <i class="fa fa-eye" aria-hidden="true"></i>

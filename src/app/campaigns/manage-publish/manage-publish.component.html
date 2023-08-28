@@ -132,12 +132,12 @@
                                 <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
                                 <div class="col-xs-4 col-sm-4 col-md-4 p0">
                                    <div class="mSortWid">
-                                      <select class="form-control" *ngIf="!archived" [(ngModel)]="selectedSortedOption"
+                                      <select class="form-control SeclectBoxPaddingsAbj" *ngIf="!archived" [(ngModel)]="selectedSortedOption"
                                       (ngModelChange)="getSortedResult($event)" style="position: relative;">
                                       <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}
                                       </option>
                                       </select>
-                                      <select class="form-control" *ngIf="archived" [(ngModel)]="selectedSortedOption"
+                                      <select class="form-control SeclectBoxPaddingsAbj" *ngIf="archived" [(ngModel)]="selectedSortedOption"
                                       (ngModelChange)="getSortedResult($event)" style="position: relative;">
                                       <option *ngFor="let sortOption of sortByDropDownArchived" [ngValue]="sortOption">
                                       {{sortOption.name}}

@@ -188,6 +188,7 @@ export class EmailTemplateService {
     }
 
     updatePartnerTemplate(emailTemplate: EmailTemplate) {
+        /*******XNFR-330*******/
         return this.http.post(this.URL + `email-template/updatePartnerTemplate/?access_token=${this.authenticationService.access_token}`, emailTemplate)
         .map(this.extractData)
         .catch(this.handleError);

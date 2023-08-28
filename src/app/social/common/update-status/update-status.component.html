@@ -559,7 +559,7 @@
                         <div class="col-sm-8 col-xs-12">
                             <div class="social-campaign-search-css">
                                 <!--Sort-->
-                                <select *ngIf="!showNavigationBreadCrumbToPartner" class="form-control cc mTopSort mr10" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
+                                <select *ngIf="!showNavigationBreadCrumbToPartner" class="form-control cc mTopSort mr10 SeclectBoxPaddingsAbj" [(ngModel)]="recipientsSortOption.selectedCampaignRecipientsDropDownOption"
                                 (ngModelChange)="sortRecipientsList($event)">                                                    
                                 <option  *ngFor="let option of recipientsSortOption.campaignRecipientsDropDownOptions"
                                     [ngValue]="option">{{option.name}}</option>
@@ -792,8 +792,7 @@
                                 <table class="table table-hover" id="list-videos-table">
                                     <tbody>
                                         <tr style="cursor: pointer;" *ngFor="let video of videosPagination.pagedItems; let i = index" [ngClass]="{'highlight': selectedVideo === video}">
-                                            <td (click)="selectVideo(video)">
-                                                <!--<input type="radio" name="videoPath" [checked]="i === 0" class='align-middle'>-->
+                                            <td (click)="selectVideo(video)">                                             
                                                 <div class="select-video">
                                                     <i class="fa fa-circle-o" *ngIf="selectedVideo !== video"></i>
                                                     <i class="fa fa-check-circle-o" *ngIf="selectedVideo === video"></i>
@@ -805,10 +804,7 @@
                                                 <div class="video-title">
                                                     <h5>{{video.title | slice:0:150}}<span *ngIf="video.title?.length>150">...</span></h5>
                                                 </div>
-                                            </td>
-                                            <!--<td>
-                                                <a (click)="previewVideo(video); isPreviewVideo != isPreviewVideo"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                            </td>-->
+                                            </td>                                         
                                         </tr>
                                     </tbody>
                                 </table>
@@ -896,10 +892,6 @@
         <div class="modal-body" style="background: #f1f3fa">
             <app-feed-update (selectedFeed)='addToPost($event)' (navigateUrl)='navigateRssHome($event)'></app-feed-update>
         </div>
-      <!-- <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div> -->
     </div>
   </div>
 </div>

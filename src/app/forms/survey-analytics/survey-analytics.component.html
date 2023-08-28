@@ -26,21 +26,21 @@
             <p>{{surveyAnalytics.description}}</p>
           </div>
         </div>
-        <div class="portlet-body" *ngIf="surveyAnalytics.questionSummaries?.length > 0">
+        <div class="portlet-body mb_display_inline" *ngIf="surveyAnalytics.questionSummaries?.length > 0">
           <ul class="nav nav-tabs mb-3" id="ex1" role="tablist">
             <li class="nav-item" role="presentation">
-              <a id="ex1-tab-1" [ngClass]="showTab === 'question-summarries' ? 'nav-link active' : 'nav-link' "
+              <a id="ex1-tab-1" class="mb_V_tab" [ngClass]="showTab === 'question-summarries' ? 'nav-link active' : 'nav-link' "
                 data-mdb-toggle="tab" role="tab" (click)="showQuestionSummaries()" aria-controls="ex1-tabs-1"
                 aria-selected="true">Question Summaries</a>
             </li>
             <li class="nav-item" role="presentation">
-              <a [ngClass]="showTab === 'individual-responses' ? 'nav-link active' : 'nav-link' " id="ex1-tab-2"
+              <a class="mb_V_tab" [ngClass]="showTab === 'individual-responses' ? 'nav-link active' : 'nav-link' " id="ex1-tab-2"
                 data-mdb-toggle="tab" role="tab" (click)="showIndividualResponses()" aria-controls="ex1-tabs-2"
                 aria-selected="false">Individual Responses</a>
             </li>
           </ul>
 
-          <span class="pull-right tr-count">
+          <span class="pull-right tr-count mb_mrg_unset">
             <a href="#" class="btn btn-default disabled panel-heading-info-box"> Total Respondents:
               {{surveyAnalytics.responseCount}}</a>
           </span>
@@ -50,11 +50,11 @@
 
     <ng-container *ngIf="!detailedResponse">
       <ng-container *ngIf="showTab === 'question-summarries'">
-        <div class="col-md-12" style="padding-top: 20px;" *ngFor="let questionSummary of surveyAnalytics?.questionSummaries;let i  = index">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 20px;" *ngFor="let questionSummary of surveyAnalytics?.questionSummaries;let i  = index">
           <div class="panel panel-info">
-            <div class="panel-heading panel-heading-custom">
+            <div class="panel-heading panel-heading-custom mb-height_unset">
               <h3 class="panel-title mt7"><b>Q{{i+1}}. </b>{{questionSummary.question}}</h3>
-              <span class="pull-right mt25m">
+              <span class="pull-right mt25m mb_v_mrg">
                 <a href="#" class="btn btn-default disabled panel-heading-info-box"> Answered:
                   {{questionSummary.answeredCount}}</a>
                 <a href="#" class="btn btn-danger disabled panel-heading-info-box-red"> Skipped:
@@ -84,7 +84,7 @@
                   </tr>
                 </tbody>
               </table>
-              <div class="scroll" *ngIf="questionSummary.textResponses?.length > 0">
+              <div class="table-responsive" *ngIf="questionSummary.textResponses?.length > 0">
                 <table class="table table-allsideboders">
                   <thead>
                     <tr>

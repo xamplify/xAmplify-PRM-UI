@@ -42,7 +42,7 @@
                         <app-landing-page-loader [maxBoxLength]=4  *ngIf="httpRequestLoader.isLoading"></app-landing-page-loader>
                         <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
                         <ng-container *ngIf="!httpRequestLoader.isLoading">
-                            <div class="col-md-3 col-sm-4 col-xs-12 tab_mt_20" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
+                            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_20" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                                 <div class="grid-box">
                                     <span class="ribbon1" *ngIf="landingPage.coBranded"><span translate>Co-Branded</span></span>
                                     <span class="ribbon1" *ngIf="!landingPage.coBranded"><span translate>Regular</span></span>

@@ -110,7 +110,7 @@ export class SelectCampaignTypeComponent implements OnInit{
         try{
           this.campaignService.campaign = undefined;
  		      this.getCompanyIdByUserId(); 
-          this.searchWithModuleName = "Campaign";
+          this.searchWithModuleName = 2;
         }catch(error){
             this.logger.error("error in select-campaign-type ngOnInit()", error);
         }

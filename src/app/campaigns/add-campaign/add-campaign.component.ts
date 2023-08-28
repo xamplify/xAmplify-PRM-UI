@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild,Renderer } from '@angular/core';
+import { Component, OnInit,ViewChild,Renderer, OnDestroy } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -46,7 +46,7 @@ var moment = require('moment-timezone');
   providers:[CallActionSwitch,SortOption,Properties,LandingPageService],
   animations:[CustomAnimation]
 })
-export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
+export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDestroy {
 
   loggedInUserId = 0;
   campaignId = 0;
@@ -74,6 +74,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
   isValidFirstTab = false;
   formGroupClass = "form-group";
   campaignNameDivClass:string = this.formGroupClass;
+  campaignDescriptionDivClass:string = this.formGroupClass;
   fromNameDivClass:string =  this.formGroupClass;
   subjectLineDivClass:string = this.formGroupClass;
   fromEmaiDivClass:string = this.formGroupClass;
@@ -280,6 +281,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
     }
     
    }
+    
 
     ngOnInit() {
         if(!this.isReloaded){
@@ -436,6 +438,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
                     reply.emailTemplatesPagination.selectedEmailTempalteId = reply.selectedEmailTemplateId;
                     reply.emailTemplatesPagination.sortcolumn = "selectedEmailTemplate";
                 }
+                 /***XBI-1905***/
+                reply.emailTemplatesPagination.maxResults = 4;
                 this.findEmailTemplatesForAutoResponseWorkFlow(reply);
             }
         }
@@ -467,6 +471,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
                     url.emailTemplatesPagination.selectedEmailTempalteId = url.selectedEmailTemplateId;
                     url.emailTemplatesPagination.sortcolumn = "selectedEmailTemplate";
                 }
+                /***XBI-1905***/
+                url.emailTemplatesPagination.maxResults = 4;
                 this.findEmailTemplatesForWebSiteWorkFlow(url);
             }
         }
@@ -1491,9 +1497,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
 
     editTemplate(emailTemplate:any){
         this.isShowEditTemplateMessageDiv = false;
-        if (emailTemplate['type'] != 'UPLOADED' && emailTemplate.userDefined) {
+        if (emailTemplate['emailTemplateType'] != 'UPLOADED' && emailTemplate.userDefined) {
             this.isEditTemplateLoader = true;
-           this.referenceService.goToTop();
+            this.referenceService.goToTop();
            $('#campaign-details-and-launch-tabs').hide(600);
            $('#edit-campaign-template').show(600);
            this.beeContainerInput['emailTemplateName'] = emailTemplate.name;
@@ -1506,7 +1512,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
                     let anyCoBrandingTemplate = emailTemplate['regularCoBrandingTemplate'] || emailTemplate['surveyCoBrandingTemplate'] ||
                     emailTemplate['videoCoBrandingTemplate'] || emailTemplate['beeEventCoBrandingTemplate'] ;
                     this.beeContainerInput['anyCoBrandingTemplate'] =anyCoBrandingTemplate;
-                    this.beeContainerInput['isVideoTemplate'] = this.isVideoCampaign;
+                    this.beeContainerInput['isVideoTemplate'] = emailTemplate['videoTemplate'] || emailTemplate['videoCoBrandingTemplate'] || emailTemplate['beeVideoTemplate'];
                     /****XBI-1685******/
                     this.isShowEditTemplatePopup = true;
                     this.isEditTemplateLoader = false;
@@ -2157,7 +2163,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
             'partnershipId':this.selectedPartnershipId,
             'configurePipelines': this.campaign.configurePipelines,
             /***XNFR-255****/
-            'whiteLabeled':this.campaign.whiteLabeled
+            'whiteLabeled':this.campaign.whiteLabeled,
+            'description':this.campaign.description
         };
         return data;
     }
@@ -2380,8 +2387,21 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
         
     }
 
+    /***XBI-1918 */
+    ngOnDestroy(): void {
+        this.referenceService.campaignVideoFile = undefined;
+        this.referenceService.selectedCampaignType = '';
+        this.referenceService.isCampaignFromVideoRouter = false;
+        this.campaignService.campaign = undefined;
+    }
+
     /***XBI-1554***/
     toggleOpenLinksInNewTab(){
         this.beeContainerInput['openLinksInNewTab'] = !this.beeContainerInput['openLinksInNewTab'];
+    }
+
+    changeDescriptionClassName(description:any){
+        let trimmedDescription = $.trim(description);
+        this.campaignDescriptionDivClass = trimmedDescription.length>0 ? this.successClass : this.formGroupClass;
     }
 }

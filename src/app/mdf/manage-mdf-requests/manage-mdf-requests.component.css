@@ -1,54 +1,49 @@
 /* sudha sri */
-@media (max-width:425px){
-    .height{
-        height: 223px !important;
-    }
-    .mt{
-        margin-top: -3px !important;
-    }
-    #pl{
-        padding-left: 3px !important;
-    }
-    #pb-pr{
-        padding-bottom: 2px !important;
-        padding-right: 3px !important;
-    }
-    #pr{
-        padding-right: 3px !important;
-    }
-    .pt-pl{
-        padding-top: 3px !important;
-        padding-left: 4px !important;
-        padding-right: 13px!important;
-    }
-    .ml-pt{
-        margin-left: 10px !important;
-        padding-top: 6px !important;
-    }
+@media (max-width: 425px) {
+  .height {
+    height: 223px !important;
+  }
+  .mt {
+    margin-top: -3px !important;
+  }
+  #pl {
+    padding-left: 3px !important;
+  }
+  #pb-pr {
+    padding-bottom: 2px !important;
+    padding-right: 3px !important;
+  }
+  #pr {
+    padding-right: 3px !important;
+  }
+  .ml-pt {
+    margin-left: 10px !important;
+    padding-top: 6px !important;
+  }
 }
-@media screen and (max-width:578px){
-    .d_flex{
-        display: flex!important;
-    }
-    .pt_0{
-        padding-top:0px!important;
-    }
-    .hgt_auto{
-        height: auto!important;
-    }
-    .mb_12{
-        margin-bottom: 12px!important;
-    }
+@media screen and (max-width: 578px) {
+  .d_flex {
+    display: flex !important;
+  }
+  .pt_0 {
+    padding-top: 0px !important;
+  }
+  .hgt_auto {
+    height: auto !important;
+  }
+  .mb_12 {
+    margin-bottom: 12px !important;
+  }
 }
 /* 27-06-2023 */
 .fa-fa-consistency {
-    padding: 6px !important;
-    border: 1px solid #5bb2f5;
-    color: #5bb2f5;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    text-align: center;
-    vertical-align: middle;
-    font-size: 14px !important;
+  padding: 6px !important;
+  border: 1px solid #5bb2f5;
+  color: #5bb2f5;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 14px !important;
 }

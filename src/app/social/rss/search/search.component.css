@@ -1,8 +1,4 @@
-.dropdown-menu {
-  min-width: 250px;
-}
-
-.has-search>span.glyphicon {
+.has-search > span.glyphicon {
   color: #ccc;
   top: 15px !important;
   font-size: 19px;
@@ -22,20 +18,20 @@
 }
 
 .bs-example-popover {
-    position: absolute;
-    right: 300px;
-    top: 30px;
-    margin: 10px;
+  position: absolute;
+  right: 300px;
+  top: 30px;
+  margin: 10px;
 }
 .bs-example-popover .popover {
-    display: block;
-    min-width: 300px;
+  display: block;
+  min-width: 300px;
 }
-.popover.bottom>.arrow {
-    top: -11px;
-    left: 90%;
-    margin-left: -11px;
-    border-top-width: 0;
-    border-bottom-color: #999;
-    border-bottom-color: rgba(0,0,0,.25);
+.popover.bottom > .arrow {
+  top: -11px;
+  left: 90%;
+  margin-left: -11px;
+  border-top-width: 0;
+  border-bottom-color: #999;
+  border-bottom-color: rgba(0, 0, 0, 0.25);
 }

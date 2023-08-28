@@ -45,7 +45,7 @@
                         <app-landing-page-loader [maxBoxLength]=4  *ngIf="httpRequestLoader.isLoading"></app-landing-page-loader>
                         <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
                         <ng-container *ngIf="!httpRequestLoader.isLoading">
-                            <div class="col-md-3 col-sm-4 col-xs-12 tab_grid" *ngFor="let form of pagination.pagedItems ;let i =index">
+                            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_grid" *ngFor="let form of pagination.pagedItems ;let i =index">
                                 <div class="grid-box" (click)="previewForm(form.id)">
                                     <span class="ribbon tab-ribbon" *ngIf="form.formSubType === 'QUIZ'"><span translate>Quiz</span></span>
                                     <span class="ribbon tab-ribbon" *ngIf="form.formSubType === 'REGULAR'"><span translate>Regular</span></span>

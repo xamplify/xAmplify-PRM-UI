@@ -1,92 +1,62 @@
 .required {
-	color: red;
-	display: inline-flex !important;
-}
-
-#responsive {
-	max-width: 1378px;
+  color: red;
+  display: inline-flex !important;
 }
 
 .portlet-body {
-	overflow-x: auto;
+  overflow-x: auto;
 }
 
 .close-circle {
-	margin-left: 5px;
+  margin-left: 5px;
 }
 
 #th-width {
-	width: 25%;
+  width: 20%;
 }
 
 #expanded-table {
-	background-color: #dddddd24;
-}
-
-#search-margin {
-	margin-right: 10px;
-}
-
-#icon-right {
-	position: relative;
-	right: -11px;
-}
-
-#search-text {
-	height: 34px;
+  background-color: #dddddd24;
 }
 
 #child-table {
-	background: #c1c1c11c
+  background: #c1c1c11c;
 }
 
 .fa.fa-refresh.margin {
-	line-height: 15px;
-}
-
-.margin {
-	line-height: 15px;
-}
-
-#custom-width {
-	width: 25px;
+  line-height: 15px;
 }
 
 #center-align {
-	text-align: center;
+  text-align: center;
 }
 
-#response-message {
-	position: relative;
-	top: -10px
+.request-details-td {
+  width: 40%;
 }
 
-.cross {
-	padding-top: 3px;
-	padding-left: 5px;
-}
-
-#icon-properties {
-	z-index: 1;
-	font-size: 13px;
-}
-
-.request-details-td{
-	width: 40%;
-}
-
-.request-form-actions-div{
-	width: 160px;
+.request-form-actions-div {
+  width: 160px;
 }
 /* 26-06-2023 */
 .fa-fa-consistency {
-    padding: 6px !important;
-    border: 1px solid #5bb2f5;
-    color: #5bb2f5;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    text-align: center;
-    vertical-align: middle;
-    font-size: 14px !important;
+  padding: 6px !important;
+  border: 1px solid #5bb2f5;
+  color: #5bb2f5;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 14px !important;
+}
+
+/* 22-08-2023 */
+th.alignItamsleft {
+  text-align: left;
+}
+@media only screen and (min-width: 800px) and (max-width: 1200px) {
+  .NumberFontDecrease {
+      font-size: 22px !important;
+  }
 }

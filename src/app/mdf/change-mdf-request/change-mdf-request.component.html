@@ -30,18 +30,18 @@
    <app-modal-popup-loader *ngIf="pageLoader"></app-modal-popup-loader>
    <div class="row" *ngIf="!pageLoader">
       <div class="col-md-12 col-lg-12">
-         <div class="portlet light tabheight" style="height:640px;padding-right: 0px!important;   padding-top: 0px!important;">
+         <div class="portlet light tabheight" style="height:640px;padding-right: 0px!important;padding-top: 0px!important;padding-left: 0px !important;">
             <div class="col-md-12 col-lg-12">
                <div class="row">
-                  <div class="col-md-9 col-lg-9 pr0">
-                     <div class="row">
-                        <div class=" col-xs-8 col-sm-10 col-md-10 col-lg-10">
+                  <div class="col-md-9 col-lg-9 pr0" style="padding: 0;">
+                     <div class="row zeroMarginRow">
+                        <div class="col-xs-8 col-sm-10 col-md-10 col-lg-10">
                            <h2 style="font-weight: 500; color: #867c7c;">
                               {{mdfRequest?.title | slice:0:40}}
                               <span *ngIf="mdfRequest?.title?.length>40">..</span>
                            </h2>
                         </div>
-                        <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2 pl0" style="padding-top:15px;">
+                        <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2 pl0" style="padding-top:15px;display: flex;justify-content: flex-end;">
                            <div class="row">
                               <div class="col-md-6 col-lg-6">
                                  <div class="dropdown">
@@ -59,11 +59,11 @@
                            </div>
                         </div>
                      </div>
-                     <div class="row">
+                     <div class="row zeroMarginRow">
                         <div class="col-md-12 col-lg-12" style="margin-top:10px;">
                            <span class="label label-warning">{{mdfRequest?.mdfWorkFlowStepTypeInString}}</span>
                         </div>
-                        <div class="col-md-12 col-lg-12" style="padding: 40px 40px 0px 17px;">
+                        <div class="col-md-12 col-lg-12" style="padding-top: 20px;">
                            <div class="portlet light h-260" style="padding: 0px 0px!important;">
                               <div class="portlet-title port-heading">
                                  <div class="caption caption-color">
@@ -121,7 +121,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="col-md-12 col-lg-12" style="padding: 15px 40px 0px 17px;">
+                        <div class="col-md-12 col-lg-12" style="padding-top: 20px;">
                            <div class="portlet light h-205">
                               <div class="portlet-title">
                                  <div class="caption" translate>
@@ -129,7 +129,7 @@
                                  </div>
                               </div>
                               <div class="row" style="margin-top: 20px;">
-                                 <div class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
+                                 <div class="col-md-12 col-lg-12" style="padding-left:24px;padding-right: 30px;">
                                     <div class="row">
                                        <div title="$ {{mdfAmountTiles?.totalBalance}}" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
                                           <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">

@@ -66,10 +66,6 @@
   border-top: 3px solid red !important;
 }
 
-.delete {
-  background: #cb5a5e;
-}
-
 .custom-width-icon {
   min-width: 210px;
 }
@@ -127,9 +123,6 @@
   display: flex;
   justify-content: center;
 }
-/* .btnAlignPad{
-    padding-left: 35px;
-} */
 
 @media screen and (max-width: 600px) {
   .mTop {
@@ -147,23 +140,7 @@
     padding-left: 100px !important;
   }
 }
-@media screen and (max-width: 320px) {
-  .mt {
-    margin-top: -33px;
-  }
-}
-.custom-image-css {
-  position: relative;
-}
-.thumbnail-wrapper {
-  float: left;
-  width: 175px;
-  height: 60px;
-  background-color: #fff;
-  text-align: center;
-  position: relative;
-  border-radius: 5px;
-}
+
 /* 27-06-2023 */
 .option-color {
   color: #333;
@@ -197,4 +174,8 @@ p.warning-red-textcolor {
     top: 150px;
     left: 0px;
   }
+}
+.margin-0-ht5px{
+  margin: 0;
+  height:5px;
 }

@@ -9,11 +9,12 @@
     /* border: solid 1px #008fd5; */
 }
 .img-class{
-	  height: 80px;
-    max-width: 150px;
-    width: 150px;
-    margin: 10px 0px 0px 80px;
-    overflow: hidden;
+  height: 80px;
+  max-width: 150px;
+  width: 150px;
+  margin: 10px auto;
+  overflow: hidden;
+  display: block;
 }
 #actions-row{
 	width: 30%

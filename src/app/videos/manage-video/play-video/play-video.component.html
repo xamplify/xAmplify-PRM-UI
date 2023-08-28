@@ -325,22 +325,11 @@
                         title="Uploaded By">By {{videoFile.uploadedUserName |
                           slice:0:15}}<span
                           *ngIf="videoFile.uploadedUserName?.length>15">...</span>
-                      </span>
-              <!--          <span class="video-uploaded-by"
-                        *ngIf="videoFileService.videoType==='partnerVideos'"
-                        title="Uploaded By">By <span
-                          *ngIf="videoFile.companyName">{{videoFile.companyName
-                            | slice:0:15}}<span
-                            *ngIf="videoFile.companyName?.length>15">...</span>
-                        </span> <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName
-                            | slice:0:15}}<span
-                            *ngIf="videoFile.uploadedUserName?.length>15">...</span>
-                        </span>
-                      </span> -->
+                      </span>    
                     </span> <span *ngIf="authenticationService.isOnlyPartner()"> <span
                         style="float: left;">By {{videoFile.companyName |
                           slice:0:15}}<span *ngIf="videoFile.companyName?.length>15">...</span>
-                      </span> <!-- <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName}}</span> -->
+                      </span>
                     </span>
                     </span>
                   </div>

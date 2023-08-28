@@ -84,6 +84,11 @@ h6 {
 .progress {
   background-color: var(--page-content) !important;
 }
+/* 08-08-2023 */
+#CardBgforSection {
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
 .special-progress-bar span {
   color: var(---text-color) !important;
 }
@@ -1331,7 +1336,7 @@ a.dropdown-toggle.circlebg-none-v:hover {
   opacity: 0.8;
   color: var(--top-button-value-color) !important;
 }
-@media only screen and (min-width: 300px) and (max-width: 580px) {  
+@media only screen and (min-width: 300px) and (max-width: 580px) {
   a.dropdown-toggle.circlebg-none-v {
     background: transparent !important;
     border: none !important;
@@ -1339,14 +1344,24 @@ a.dropdown-toggle.circlebg-none-v:hover {
   a.dropdown-toggle.circlebg-none-v:hover {
     background: transparent !important;
   }
-  .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle:hover {
+  .page-header.navbar
+    .top-menu
+    .navbar-nav
+    > li.dropdown
+    > .dropdown-toggle:hover {
     background-color: transparent !important;
-  } 
-  .page-header.navbar.top-menu.navbar-nav> li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
+  }
+  .page-header.navbar.top-menu.navbar-nav
+    > li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
     background-color: transparent !important;
   }
 }
-.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle > img {
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown-user
+  .dropdown-toggle
+  > img {
   background-color: var(--top-buton-color) !important;
   border: 1px solid var(--top-button-border-color) !important;
 }
@@ -1434,6 +1449,7 @@ h5.designpage-dark-cu {
   background-color: var(--btn-primary-bg-color) !important;
   color: var(--btn-primary-text-color) !important;
   border: 1px solid var(--btn-primary-border-color) !important;
+  opacity: 0.8;
 }
 .Btn-Green {
   background-color: var(--btn-secondary-bg-color) !important;
@@ -1443,6 +1459,7 @@ h5.designpage-dark-cu {
 .Btn-Green:hover {
   background-color: var(--btn-secondary-bg-color) !important;
   border: 1px solid var(--btn-secondary-border-color) !important;
+  opacity: 0.8;
 }
 .Btn-Green.btn:hover {
   color: var(--btn-secondary-text-color) !important;
@@ -1474,6 +1491,17 @@ h5.designpage-dark-cu {
   background-color: var(--page-content) !important;
   border: 1px solid var(--border-color) !important;
 }
+a.UserguideBtnCustomization {
+  background-color: var(--btn-secondary-bg-color) !important;
+  border: 1px solid var(--btn-secondary-border-color) !important;
+  color: var(--btn-secondary-text-color) !important;
+}
+a.UserguideBtnCustomization:hover {
+  background-color: var(--btn-secondary-bg-color) !important;
+  border: 1px solid var(--btn-secondary-border-color) !important;
+  opacity: 0.8;
+}
+
 .custom-btn-ref {
   /* background-color: var(--button-primary-bg-color) !important;
   color: var(--button-primary-text-color) !important; */
@@ -1498,7 +1526,15 @@ div#removeborder {
 }
 .help-iconbgadd i:hover {
   color: var(---text-color) !important;
-} /* end */
+}
+.help-iconbgadd {
+  border: 1px solid var(--top-button-border-color) !important;
+}
+.helpcircle-cu {
+  color: var(---text-color) !important;
+}
+
+/* end */
 
 /* Create Campaign Select Campaign bar bg */
 .custometheme-bar {
@@ -1630,7 +1666,9 @@ ul.nav.nav-tabs.tabsactievcolorinu li a {
   color: var(---text-color) !important;
 }
 
-.nav.nav-tabs.tabsactievcolorinu > li.active > a, .nav.nav-tabs.tabsactievcolorinu > li.active > a:hover, .nav.nav-tabs.tabsactievcolorinu > li.active > a:focus{
+.nav.nav-tabs.tabsactievcolorinu > li.active > a,
+.nav.nav-tabs.tabsactievcolorinu > li.active > a:hover,
+.nav.nav-tabs.tabsactievcolorinu > li.active > a:focus {
   color: var(---text-color) !important;
 }
 
@@ -1651,11 +1689,13 @@ button.swal2-confirm.styled:hover {
   color: var(---text-color) !important;
   opacity: 0.5;
 }
-::-webkit-input-placeholder { /* Edge */
+::-webkit-input-placeholder {
+  /* Edge */
   color: var(---text-color) !important;
   opacity: 0.5;
 }
-:-ms-input-placeholder { /* Internet Explorer */
+:-ms-input-placeholder {
+  /* Internet Explorer */
   color: var(---text-color) !important;
   opacity: 0.5;
 }
@@ -1678,7 +1718,8 @@ input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched, input.ng2-tag-inpu
   background: transparent;
   fill: none;
 } */
-.search-box-item-clear, input {
+.search-box-item-clear,
+input {
   background: transparent;
   fill: none;
 }
@@ -1686,9 +1727,14 @@ input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched, input.ng2-tag-inpu
   border: none !important;
   outline: none !important;
 } */
-.help-iconbgadd {
-  border: 1px solid var(--top-button-border-color) !important;
+/* 10-8-2023 sudha sri */
+input#copy-link {
+  background-color: var(--page-content) !important;
 }
-.helpcircle-cu {
-  color: var(--btn-secondary-text-color) !important;
+/* 22-8-2023 sudha sri */
+ul.nav.nav-tabs.hideBorder {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+.disable-btn-text-color {
+  border: 1px solid var(--btn-secondary-border-color) !important;
 }

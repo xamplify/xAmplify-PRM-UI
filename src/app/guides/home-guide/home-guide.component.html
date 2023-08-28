@@ -1,5 +1,6 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <section class="section-height">
-  <app-guide-help-icon></app-guide-help-icon>
+  <app-guide-help-icon [searchKey]="searchKey" (searchEvent)="getSearchKey($event)"></app-guide-help-icon>
 </section>
 <div class="m10 guide-width container pad-row">
 <div class="page-bar" *ngIf="hidePageBarClass ">
@@ -8,14 +9,17 @@
   <i class="fa fa-home" aria-hidden="true"></i>
 </li>
 <li>
-  <i class="fa fa-angle-right" aria-hidden="true" ></i>
   <a (click)="goToHome()">Home</a>
+</li>
+<li>
+  <i class="fa fa-angle-right" aria-hidden="true" ></i>
+  <a >{{pagination?.moduleName}}</a>
 </li>
 </ul>
 </div>
 <div class="page-bar p_20 page-bar-padding-cu-thispageonly" *ngIf="!hidePageBarClass ">
 <div class="row">
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.accountDashboard">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.accountDashboard">
   <div class="user_card icon-bg1" (click)="getTitlesByModule(1)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/2.png" alt="" class="m-auto">
@@ -24,7 +28,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.partners">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.partners">
   <div class="user_card icon-bg2" (click)="getTitlesByModule(11)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/3.png" alt="" class="m-auto">
@@ -33,7 +37,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.content">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.content">
   <div class="user_card icon-bg3" (click)="getTitlesByModule(4)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/4.png" alt="" class="m-auto">
@@ -42,7 +46,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.contacts && !authenticationService.module.deletedPartner">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.contacts && !authenticationService.module.deletedPartner">
   <div class="user_card icon-bg4" (click)="getTitlesByModule(3)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/5.png" alt="" class="m-auto">
@@ -51,7 +55,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.shareLeads">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.shareLeads">
   <div class="user_card icon-bg5" (click)="getTitlesByModule(13)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/6.png" alt="" class="m-auto">
@@ -60,7 +64,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.sharedLeads">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.sharedLeads">
   <div class="user_card icon-bg6" (click)="getTitlesByModule(14)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/7.png" alt="" class="m-auto">
@@ -69,7 +73,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.pagesAccessAsPartner">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.pagesAccessAsPartner">
   <div class="user_card icon-bg7" (click)="getTitlesByModule(10)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/1.png" alt="" class="m-auto">
@@ -78,7 +82,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.design">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.design">
   <div class="user_card icon-bg8" (click)="getTitlesByModule(6)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/8.png" alt="" class="m-auto">
@@ -87,7 +91,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu"
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu"
 *ngIf="(menuItem?.campaign || menuItem?.campaignAccessAsPartner) && !authenticationService.module.deletedPartner">
   <div class="user_card icon-bg9" (click)="getTitlesByModule(2)">
     <div class="acc_img">
@@ -97,7 +101,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.opportunities || menuItem?.opportunitiesAccessAsPartner">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.opportunities || menuItem?.opportunitiesAccessAsPartner">
   <div class="user_card icon-bg10" (click)="getTitlesByModule(9)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/10.png" alt="" class="m-auto">
@@ -106,7 +110,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="false">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="false">
   <div class="user_card icon-bg11">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/11.png" alt="" class="m-auto">
@@ -115,7 +119,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="false">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="false">
   <div class="user_card icon-bg12">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/12.png" alt="" class="m-auto">
@@ -124,7 +128,7 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu" *ngIf="menuItem?.team">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu" *ngIf="menuItem?.team">
   <div class="user_card icon-bg13" (click)="getTitlesByModule(16)">
     <div class="acc_img">
     <img src="assets/images/user-guides/dashboard/13.png" alt="" class="m-auto">
@@ -133,8 +137,8 @@
   </div>
 </div>
 
-<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 card-paddings-cu"
-*ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner">
+<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu"
+*ngIf="((authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner) && !loading">
 
   <div class="user_card icon-bg14" (click)="getTitlesByModule(19)">
 
@@ -146,4 +150,32 @@
 </div>
 </div>
 </div>
+<!-- Show Titles -->
+<div class="page-bar pageBarPaddings" *ngIf="hidePageBarClass">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 subCardBg" style="margin-bottom:15px;" *ngFor="let name of userGudeTitles">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 allignItemsLeft">
+          <h4 class="fontWeigtug"><a (click)="getGuideLinkByTitle(name.title)">{{name?.title}}</a></h4>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 allignItemsRight" *ngIf="name?.subModuleName?.length > 1">
+          <button type="button" class="btn btn-secondary ColorCu"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;{{name?.subModuleName}}</button>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 allignItemsLeft">
+          <p>{{name?.description}}
+            <button type="button" class="btn btn-primary primaryBtnCu" (click)="getGuideLinkByTitle(name.title)">
+             <i class="fa fa-eye eyeCu" aria-hidden="true"></i>&nbsp;View</button></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div *ngIf="pagination.totalRecords === 0" class="alert alert-info">
+    <strong translate>No results found</strong>
+  </div>
+  <app-pagination *ngIf="pagination.totalRecords !== 0" [pagination]="pagination" (notifyParent)="setPage($event)"
+    (notifyParentDropDown)="getGuideTitlesByModuleName($event)"></app-pagination>
+</div>
+  
 </div>

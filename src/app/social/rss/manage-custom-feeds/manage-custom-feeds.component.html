@@ -17,10 +17,10 @@
 					*ngIf="customResponse.isVisible"></app-response-message>
 			</div>
 		</div>
-		<div class="col-md-12 col-lg-12">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
          <div class="row">
             <app-left-nav></app-left-nav>
-            <div class="col-sm-9" >
+            <div class="col-xs-12 col-sm-8 col-lg-9">
 					<div class="row" style = "margin-bottom: -4px;">
 						<div class="page-bar page-bar-shadow pb-m">
 							<div class="portlet light shared-feeds-border">
@@ -47,7 +47,7 @@
 											</h4>
 										</div>
 									</div>
-									<div class="col-sm-12 col-xs-12" style="padding-bottom: 25px;">
+									<div class="col-sm-12 col-xs-12 mt10" style="padding-bottom: 25px;">
 										<!---Search Bar---->
 										<div class="has-feedback has-search" style="margin-top: 10px">
 											<span class="glyphicon glyphicon-search"></span> <span
@@ -111,40 +111,20 @@
 							</div>
 						</div>
 					</div>
-					
-					<!-- <div class="page-bar page-bar-shadow pb-m">
-						<div class="portlet light" style="border-color: #fff !important;">
-							<div style="position: relative; top: -5px">
-								<app-response-message [customResponse]="customResponse"
-									*ngIf="customResponse.isVisible"></app-response-message>
-							</div>
-							-Search Bar--
-							<div class="has-feedback has-search" style="margin-top: 10px">
-								<span class="glyphicon glyphicon-search"></span> <span
-									class="glyphicon glyphicon-remove"
-									(click)="pagination.searchKey='';searchFeeds();"></span> <input
-									type="text" [(ngModel)]="pagination.searchKey"
-									[ngModelOptions]="{standalone: true}" class="form-control"
-									placeholder="{{searchPlaceHolder}}"
-									(keyup.enter)="searchFeeds()"
-									style="padding: 22px; padding-left: 49px">
-							</div>
-						</div>
-					</div> -->
 					<!-- -List Starts here----------- -->
                <app-list-loader *ngIf="loading"></app-list-loader>
                
                 <div *ngFor="let feed of pagination.pagedItems ;let i =index" >
-                	<div class="row" style = "margin-bottom: -4px;">
+                	<div class="row mb10" style = "margin-bottom: -4px;">
 						<div class="page-bar page-bar-shadow pb-m">
 							<div class="portlet light shared-feeds-border">
 								<div class="portlet-body pt0">
-									<div class="col-sm-12 col-xs-12">
+									<div class="col-sm-12 col-xs-12 col-lg-12 mt10">
 										<div class="row">
-											<div class="col-md-8 col-lg-8" style = "padding: 0px;">
+											<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style = "padding: 0px;">
 											<div style="margin-top: 10px; margin-bottom: 10px; ">
 												<span title="{{feed?.statusMessage}}"> <span><strong>{{feed?.statusMessage}}</strong>
-														<!-- <span *ngIf="feed?.statusMessage?.length>100">..</span>--> </span> 
+								 </span> 
 												</span>
 											</div>
 											<ng-container *ngIf="feed?.socialStatusContents.length>0">
@@ -159,19 +139,11 @@
 											</div>
 											</ng-container> </ng-container>
 										</div>
-										<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">
-												<div class="text-right" style="margin-top: 10px">
-													<!-- <span *ngIf="feed.publishToPartners && selectedType!='p'"
-														class="published-banner uppercase">Published</span> -->
+										<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mb_p0" style="margin-bottom: 20px;">
+												<div class="text-right" style="margin-top: 10px">							
 													<span *ngIf="selectedType=='p'"
 														class="published-banner uppercase">{{feed?.companyName}}</span>
 												</div>
-												<!-- <div class="text-right" style="margin-top: 10px">
-													<span *ngIf="feed.publishToPartners && selectedType!='p'"
-														>Published on: {{feed.publishTime}}</span>
-													<span *ngIf="!feed.publishToPartners && selectedType!='p'"
-														>Last Updated on: {{feed.lastUpdatedDate}}</span> 
-												</div> -->
 													<div class="text-right"
 														style="margin-right: 10px; margin-top: 10px">
 														<span *ngIf="selectedType!='p'"> <a *ngIf="feed.canUpdate"
@@ -182,7 +154,7 @@
 																<span *ngIf="!feed.canUpdate"><i class="fa fa-folder circled-grey" aria-hidden="true"></i></span>
 															<span>{{feed.collectionTitle}}</span></span>
 													</div>
-													<div class="actions-block override-actions"
+													<div class="actions-block override-actions tab_nowrap"
 														style="margin-top: 20px">
 														<a *ngIf="selectedType!='p' && feed.canUpdate" data-toggle="tooltip"
 															data-placement="top" title="Edit"
@@ -326,7 +298,6 @@
 								</div>
 							</div>
 							<div class="modal-footer" style="border: none">
-								<!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
 								<button class="btn Btn-Gray"
 									(click)="feedAnalyticsModalClose()" translate>Close</button>
 							</div>
@@ -373,20 +344,6 @@
 																		(error)="videoUtilService.errorVideoHandler($event)">
 																</div>
 																</ng-container> </ng-container>
-																<!-- <ng-container
-																	*ngIf="partnerAnalyticsPageItem.socialStatusContents.length>0">
-																<ng-container
-																	*ngFor="let item of partnerAnalyticsPageItem.socialStatusContents">
-																<div class="img-wrap img-thumbnail rounded-0"
-																	style="margin-bottom: 15px;">
-																	<img async *ngIf="item.fileType !== 'video'"
-																		src="{{authenticationService.MEDIA_URL}}{{item.filePath}}"
-																		style="height: 50px"> <img async
-																		*ngIf="item.fileType === 'video'"
-																		src="{{item.filePath}}"
-																		(error)="videoUtilService.errorVideoHandler($event)">
-																</div>
-																</ng-container> </ng-container> -->
 															</div>
 															<div class="col-md-4 col-lg-4"
 																style="margin-bottom: 20px;">

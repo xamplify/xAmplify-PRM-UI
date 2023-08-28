@@ -52,13 +52,13 @@
   <ng-container *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember">
  <!--List Of Team members---->
  <div class="portlet light">
-  <div class="portlet-title" style="border-bottom: none !important;">
+  <div class="portlet-title">
     <div class="row" style="display:flex;align-items: center;">
-      <div class="col-xs-3 col-sm-3 col-lg-3 ">
+    <div class="col-xs-3 col-sm-3 col-lg-3">
     <div class="caption" translate>Team Members
     </div>
     </div>
-    <div class="col-lg-5 col-sm-5 col-xs-5 mb_p0" style="padding-right: 10px;">
+    <div class="col-lg-5 col-sm-5 col-xs-5 mb_p0 moveButtonsCu" style="padding-right: 10px;">
       <div class="row">
         <div class="clearfix" *ngIf="isTeamMemberModule">
           <section class="clearfix" style="margin-top:-4px;">
@@ -80,8 +80,8 @@
       </div>
       <!-- close inner row-->
     </div>
-    <div class="col-lg-5 col-xs-12 col-sm-4 pull-right" style="display: flex;justify-content: flex-end ;">
-    <div class="tools zero-padding-margin">
+    <div class="col-lg-4 col-xs-12 col-sm-4 pull-right" style="display: flex;justify-content: flex-end ;">
+    <div class="tools zero-padding-margin" style="margin-top: -2px;">
         <div class="inputs zero-padding-display-inline">
             <div class="portlet-input input-inline input-small tmutttpx">
                 <div class="input-icon right" style="margin-right: 10px;">
@@ -120,8 +120,9 @@
         <thead>
           <tr>
             <th scope="row">
-            <h4 class="user-permission-min-width" translate>
-                <img src="assets/images/user-permission.png" alt="No Image Found">
+            <h4 class="user-permission-min-width TopBottomMZ" translate>
+                <!-- <img src="assets/images/user-permission.png" alt="No Image Found" class="LockIconCu"> -->
+                <i class="fa fa-lock lockIconCu" aria-hidden="true"></i><br>
                 Team Member
             </h4>
             </th>
@@ -169,7 +170,7 @@
             <div class="alert alert-danger" *ngIf="teamMember.teamMemberGroupId==null && !teamMember?.primaryAdmin">
               <span><strong>No Group Selected</strong></span>
             </div>
-            <div class="alert alert-info" *ngIf="teamMember?.primaryAdmin">
+            <div class="alert alert-info NaNAData" *ngIf="teamMember?.primaryAdmin">
               <span><strong>N/A</strong></span>
             </div>
 
@@ -238,7 +239,7 @@
               </div>
             </td> 
             <td  class="actions-row" *ngIf="teamMember?.primaryAdmin">
-              <div class="alert alert-info">
+              <div class="alert alert-info NaNAData">
                 <span><strong>N/A</strong></span>
               </div>
             </td>

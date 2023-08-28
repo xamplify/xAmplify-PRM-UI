@@ -66,6 +66,15 @@
                                             </div>
                                         </div>
 
+                                        <!---Description-->
+                                        <div class="form-group" [attr.class]="campaignDescriptionDivClass">
+                                            <label class="control-label col-sm-4 mName tab_p0">Description
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" maxlength="1000" rows="5" [(ngModel)]="campaign.description" name="description" (input)="changeDescriptionClassName(campaign.description)" placeholder="Description"></textarea>
+                                            </div>
+                                        </div>
+
                                         <!--Folder-->    
                                         <div class="form-group">
                                             <label class="control-label col-sm-4 tab_p0" translate>Folder
@@ -228,7 +237,7 @@
                                             <div class="col-sm-8 col-xs-12">
                                                 <div class="input-group merge-tag-input-border">
                                                     <input type="text" id="subjectLineId" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" maxlength="1000" (input)="validateForm();" autocomplete="off" />
-                                                    <span class="input-group-btn">
+                                                    <span class="input-group-btn" style="border: none !important;">
                                                         <button class="btn btn-default button-color" type="button" 
                                                         data-toggle="tooltip" data-placement="right"
                                                         title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
@@ -623,7 +632,7 @@
                             <div *ngIf="!pagesLoader">
                                 <!--Filter Icon-->
                                 <div class="mb-flex">
-                                <button type="submit"  class="float-right fontsize-16px filter-button-color" [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv" (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
+                                <button type="submit"  class="float-right fontsize-16px filter-button-color mr_4" [ngClass]="isShowFilterDiv ? 'inactive':''" [disabled]="isShowFilterDiv" (click)="isShowFilterDiv = !isShowFilterDiv;findEmailTemplatesOrPagesFolder()">
                                     <i class="fa fa-filter cesf-xamp requried" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
                                     *ngIf="selectedFolderIds?.length>0" aria-hidden="true"></i>
                                     <i class="fa fa-filter cesf-xamp" data-toggle="tooltip" data-placement="bottom" title="Apply Filter"
@@ -736,7 +745,8 @@
                                 <app-list-loader *ngIf="campaignRecipientsLoader"></app-list-loader>
                                 <div  *ngIf="!campaignRecipientsLoader">
                                     <!--Search Key Icon-->
-                                    <div class="input-icon right pull-right pr-epx">
+                                    <div class="mb-flex">
+                                     <div class="input-icon right pull-right pr-epx">
                                         <input type="text" [(ngModel)]="recipientsSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="findCampaignRecipientsOnEnterKeyPress($event.keyCode)">
                                         <button class="glyphicon glyphicon-remove search-box-item-clear search-button-padding" *ngIf="recipientsSortOption.searchKey" (click)="recipientsSortOption.searchKey='';searchCampaignRecipients()"></button>
                                         <button type="submit" class="search-box-item-click email-search search-icon-rp" (click)="searchCampaignRecipients()">
@@ -750,10 +760,11 @@
                                             [ngValue]="option">{{option.name}}</option>
                                     </select> 
                                     </div>
+                                </div>
                                     <!--List Of Contacts/Partners-->
-                                    <div class="portlet-body padding-top-45px">
-                                        <div class="row">
-                                            <div class="alert alert-success text-center" *ngIf="selectedContactListIds?.length>0">
+                                    <div class="portlet-body">
+                                        <div class="row mrgt45">
+                                            <div class="alert alert-success text-center mbgrid" *ngIf="selectedContactListIds?.length>0">
                                                 <strong>Selected Rows : {{selectedContactListIds?.length}}</strong>
                                                 <ng-container *ngIf="emailReceiversCountError">
                                                     <span class="required float-right" translate>Something went wrong.Please contact admin</span>
@@ -966,7 +977,7 @@
                                                                             <option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
                                                                             <option [value]="16" [selected]="reply.actionId ==16" >Send immediately after email is opened</option>
                                                                             <option [value]="33" [selected]="reply.actionId ==33">Send follow-up email</option>
-                                                                            <option [value]="22" [selected]="reply.actionId ==22"*ngIf="campaign.channelCampaign && ((campaignType=='regular')||(campaignType=='survey'))">
+                                                                            <option [value]="22" [selected]="reply.actionId ==22"*ngIf="campaign.channelCampaign && (isEmailCampaign||isSurveyCampaign)">
                                                                                 Email is not redistributed by {{authenticationService?.partnerModule?.customName}}
                                                                             </option>
                                                                             <ng-container *ngIf="campaignType=='video'">
@@ -992,11 +1003,11 @@
                                                                         </div>
 
                                                                         <div class="col-xs-12 col-sm-3 time-col padding-left-0" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-                                                                            <div class="col-xs-4 col-sm-2 default">
+                                                                            <div class="col-xs-4 col-sm-3 default">
                                                                                 <span for="time" id="send-time-{{reply.divId}}" class="time-picker-css" translate>At
                                                                                     <strong class="required">*</strong></span>
                                                                             </div>
-                                                                            <div class="col-xs-8 col-sm-10 height-66px">
+                                                                            <div class="col-xs-8 col-sm-9 height-66px">
                                                                                 <timepicker [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
                                                                             </div>
                                                                         </div>
@@ -1016,7 +1027,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <!--Message & Email Templates-->
-                                                                    <div class="col-xs-12">
+                                                                    <div class="col-xs-12" style="margin-top: 20px;">
                                                                         <div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
                                                                             <div style="margin-left: 1px;">
                                                                                 <label class="default" for="days" id="reply-message-{{reply.divId}}" translate>Message
@@ -1166,12 +1177,12 @@
                                                                         </div>
                                                                          <!-- At -->
                                                                         <div class="col-xs-8 time-col">
-                                                                            <div class="col-xs-2 default">
+                                                                            <div class="col-xs-3 default">
                                                                                 <label for="time" id="send-time-{{url.divId}}" class="time-picker-css" translate>At
                                                                                     <strong class="required">*</strong>
                                                                                 </label>
                                                                             </div>
-                                                                            <div class="col-xs-10" style="height:66px">
+                                                                            <div class="col-xs-9" style="height:66px">
                                                                                 <timepicker [(ngModel)]="url.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
                                                                             </div>
                                                                         </div>
@@ -1206,7 +1217,7 @@
                                                                 </div>
 
                                                                 <!-- Message--->
-                                                                <div class="col-xs-12">
+                                                                <div class="col-xs-12" style="margin-top: 20px;">
                                                                     <div id="ck-editor-{{i}}" *ngIf="!url?.defaultTemplate">
                                                                         <label class="default" for="days" id="click-message-{{url.divId}}" translate>Message 
                                                                             <strong class="required">*</strong>

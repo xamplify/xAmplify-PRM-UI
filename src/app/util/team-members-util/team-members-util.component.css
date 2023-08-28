@@ -411,3 +411,45 @@ hr {
 .alert-success .close.of-this-component {
   margin-top: 5px;
 }
+
+/* 14-08-2023 */
+h4.TopBottomMZ {
+  margin: 0;
+}
+img.LockIconCu {
+  width: 15px;
+  display: block;
+  margin-bottom: 4px;
+}
+.alert.NaNAData {
+  margin-bottom: 0px;
+}
+.lockIconCu {
+  margin-left: 2px;
+}
+/* 18-08-2023 */
+@media only screen and (min-width: 1000px) and (max-width: 1023px) { .moveButtonsCu {left: 20px;}}
+@media only screen and (min-width: 1024px) and (max-width: 1049px) { .moveButtonsCu {left: 30px;}}
+@media only screen and (min-width: 1050px) and (max-width: 1169px) { .moveButtonsCu {left: 45px;}}
+@media only screen and (min-width: 1170px) and (max-width: 1179px) { .moveButtonsCu {left: 80px;}}
+@media only screen and (min-width: 1180px) and (max-width: 1200px) { .moveButtonsCu {left: 90px;}}
+@media only screen and (min-width: 1201px) and (max-width: 1232px) { .moveButtonsCu {left: 0px;}}
+@media only screen and (min-width: 1233px) and (max-width: 1249px) { .moveButtonsCu {left: 10px;}}
+@media only screen and (min-width: 1250px) and (max-width: 1279px) { .moveButtonsCu {left: 20px;}}
+@media only screen and (min-width: 1280px) and (max-width: 1299px) { .moveButtonsCu {left: 30px;}}
+@media only screen and (min-width: 1300px) and (max-width: 1332px) { .moveButtonsCu {left: 40px;}}
+@media only screen and (min-width: 1333px) and (max-width: 1349px) { .moveButtonsCu {left: 50px;}}
+@media only screen and (min-width: 1350px) and (max-width: 1379px) { .moveButtonsCu {left: 60px;}}
+@media only screen and (min-width: 1380px) and (max-width: 1399px) { .moveButtonsCu {left: 60px;}}
+@media only screen and (min-width: 1400px) and (max-width: 1449px) { .moveButtonsCu {left: 70px;}}
+@media only screen and (min-width: 1450px) and (max-width: 1479px) { .moveButtonsCu {left: 80px;}}
+@media only screen and (min-width: 1480px) and (max-width: 1509px) { .moveButtonsCu {left: 90px;}}
+@media only screen and (min-width: 1507px) and (max-width: 1554px) { .moveButtonsCu {left: 112px;}}
+@media only screen and (min-width: 1555px) and (max-width: 1599px) { .moveButtonsCu {left: 130px;}}
+@media only screen and (min-width: 1600px) and (max-width: 1635px) { .moveButtonsCu {left: 140px;}}
+@media only screen and (min-width: 1635px) and (max-width: 1700px) { .moveButtonsCu {left: 150px;}}
+@media only screen and (min-width: 1700px) and (max-width: 1734px) { .moveButtonsCu {left: 170px;}}
+@media only screen and (min-width: 1735px) and (max-width: 1799px) { .moveButtonsCu {left: 190px;}}
+@media only screen and (min-width: 1800px) and (max-width: 1834px) { .moveButtonsCu {left: 210px;}}
+@media only screen and (min-width: 1835px) and (max-width: 1892px) { .moveButtonsCu {left: 220px;}}
+@media only screen and (min-width: 1893px) and (max-width: 1920px) { .moveButtonsCu {left: 240px;}}
