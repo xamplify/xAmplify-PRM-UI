@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'app/core/models/menu-item';
 import { Module } from 'app/core/models/module';
 import { Pagination } from 'app/core/models/pagination';
@@ -10,10 +10,11 @@ import { UtilService } from 'app/core/services/util.service';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { UserGuide } from '../models/user-guide';
-import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { Location } from '@angular/common';
+import { PagerService } from 'app/core/services/pager.service';
+import { SocialPagerService } from 'app/contacts/services/social-pager.service';
 
- var $: any;
+var $: any;
 @Component({
 	selector: 'app-home-guide',
 	templateUrl: './home-guide.component.html',
@@ -32,10 +33,13 @@ export class HomeGuideComponent implements OnInit {
 	public searchKey: string;
 	pagination: Pagination = new Pagination();
 	userGudeTitles: UserGuide[] = [];
-	loggedInUserId:number;
-	public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-	constructor(public authenticationService: AuthenticationService, public utilService: UtilService, public dashboardService: DashboardService, 
-		public refService: ReferenceService, public router: Router, public location:Location) {
+	loggedInUserId: number;
+	hidePageBarClass = false
+	titlesByModuleId: any;
+	pager: any = {};
+	statusCode: any;
+	constructor(public authenticationService: AuthenticationService, public utilService: UtilService, public dashboardService: DashboardService,
+		public refService: ReferenceService, public router: Router, public location: Location, private route: ActivatedRoute,public pagerService: PagerService, public socialPagerService: SocialPagerService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.pagination.userId = this.loggedInUserId;
 		let companyProfileName = this.authenticationService.companyProfileName;
@@ -46,17 +50,22 @@ export class HomeGuideComponent implements OnInit {
 			this.pagination.vanityUrlFilter = false;
 		}
 	}
-	statusCode: any;
-    getSearchKey(event:any){
-		this.searchKey= event;
-	}
+	
 	ngOnInit() {
+		let slug = this.route.snapshot.params['moduleName'];
+        if(slug === undefined || slug === ""){
+			this.hidePageBarClass = false;
+		} else {
+			this.getTitlesByModule(slug);
+			//this.hidePageBarClass = true;
+		}
 		this.findMenuItems();
 	}
 	findMenuItems() {
 		this.loading = true;
 		let module = this.authenticationService.module;
 		module.contentLoader = true;
+		this.location.replaceState('home/help/guides');
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.vanityLoginDto.vanityUrlFilter = true;
@@ -118,7 +127,6 @@ export class HomeGuideComponent implements OnInit {
 					module.isPrm = roles.indexOf(this.roleName.prmRole) > -1;
 					module.isMarketing = roles.indexOf(this.roleName.marketingRole) > -1;
 					module.isVendorTier = roles.indexOf(this.roleName.vendorTierRole) > -1;
-					//this.addZendeskScript(data);
 					/*****XNFR-84 **********/
 					if (data.moduleNames != undefined && data.moduleNames.length > 0 && data.moduleNames != null) {
 						this.authenticationService.moduleNames = data.moduleNames;
@@ -155,8 +163,6 @@ export class HomeGuideComponent implements OnInit {
 							this.authenticationService.logout();
 						}, 7000);
 					}
-					// this.authenticationService.module.showAddLeadOrDealButtonInMyProfileSection = data.showAddLeadOrDealButtonInMyProfileSection;
-					// this.authenticationService.module.navigateToPartnerSection = data.navigateToPartnerViewSection;
 				},
 				error => {
 					let statusCode = JSON.parse(error['status']);
@@ -259,28 +265,79 @@ export class HomeGuideComponent implements OnInit {
 		module.hasLandingPageAccess = data.pages;
 
 	}
-
 	startLoader() {
 		this.loading = true;
 	}
 
 	
-	eventHandler(keyCode: any) { if (keyCode === 13) { this.search(); } }
-	search() {
-		this.loading = false;
+	getTitlesByModule(moduleId: number) {
+		this.loading = true;
+		this.dashboardService.getModuleNameByModuleId(moduleId).subscribe(
+			(response) => {
+				if (response.statusCode === 200) {
+					this.statusCode = 200;
+					let moduleName = response.data;
+					this.getUserGuidesByModuleName(moduleName);
+					this.location.replaceState('home/help/guides/' + moduleName);
+					this.loading = false;
+				}else {
+					this.loading = false;
+					this.statusCode = 400;
+				}
+			}, (error: any) => {
+				this.loading = false;
+			})
+	}
+	goToHome() {
+		this.hidePageBarClass = false;
+		this.location.replaceState('home/help/guides');
 	}
 
-	hidePageBarClass = false
-	titlesByModuleId:any;
-	getTitlesByModule(moduleId:number){
-	 this.hidePageBarClass = true;
-     this.titlesByModuleId = moduleId;
-	 this.location.replaceState(this.authenticationService.DOMAIN_URL+'home/guide/'+moduleId);
-	 //this.router.navigate(["home/guides/"+moduleId]);
+	getUserGuidesByModuleName(moduleName: any) {
+		this.hidePageBarClass = true;
+		this.loading = true;
+		this.userGudeTitles = [];
+		this.pagination.moduleName = moduleName;
+		this.getGuideTitlesByModuleName(this.pagination);
 	}
-	goToHome(){
-	this.hidePageBarClass = false;
-	//this.router.navigate(['home/help/guides']);
+   getGuideTitlesByModuleName(pagination:Pagination){
+	this.dashboardService.getUserGuidesByModuleName(pagination).subscribe(
+		(data) => {
+			if (data.statusCode === 200) {
+				this.userGudeTitles = data.data;
+				pagination.totalRecords = this.userGudeTitles.length;
+				pagination = this.pagerService.getPagedItems(pagination, data.data);
+				this.loading = false;
+			} else {
+				this.statusCode = 400;
+				this.loading = false;
+			}
+		}, (error: any) => {
+			this.loading = false;
+		})
+   }
+	getGuideLinkByTitle(title:any) {
+		this.pagination.guideTitle = title;
+		this.dashboardService.getGuideLinkByTitle(this.pagination).subscribe(
+			(response) => {
+				if (response.statusCode === 200) {
+				let map = response.map;
+				this.router.navigate(['home/help/' + map.slug])
+				} else {
+					this.statusCode = 400;
+				}
+			}, (error: any) => {
+				this.refService.scrollSmoothToTop();
+			})
 	}
-	
+	getSearchKey(event: any) {
+		this.searchKey = event;
+		if (this.searchKey != "" && this.searchKey != undefined) {
+			this.router.navigate(['home/help/search/' + this.searchKey])
+		}
+	}
+	setPage(event: any) {
+		this.pagination.pageIndex = event.page;
+		this.getGuideTitlesByModuleName(this.pagination);
+	}
 }

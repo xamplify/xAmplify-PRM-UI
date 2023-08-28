@@ -208,7 +208,10 @@ export class UserService {
     }
 
     resendActivationMail(emailId: string) {
-        return this.http.get(this.URL + '/register/resend/activationemail?email=' + emailId)
+        let input = {};
+        input['emailId'] = emailId;
+        input['vendorCompanyProfileName'] = this.authenticationService.getSubDomain();
+        return this.http.post(this.URL + '/register/resend/activationemail', input)
             .map(this.extractData)
             .catch(this.handleError);
     }

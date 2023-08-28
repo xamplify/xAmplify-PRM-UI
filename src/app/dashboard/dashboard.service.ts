@@ -1147,6 +1147,11 @@ getDefaultThemes(){
         .map(this.extractData)
         .catch(this.handleError);
     }
+    getModuleNameByModuleId(moduleId:number){
+        const url = this.authenticationService.REST_URL + 'user/guide/moduleId/'+ moduleId +'/?access_token=' + this.authenticationService.access_token;
+        return this.callGetMethod(url);
+    }
+    /** User Guides */
 
     /***XNFR-326****/
 
@@ -1178,5 +1183,12 @@ getDefaultThemes(){
         .catch(this.handleError);
     }
 
-       /***XNFR-326****/
+    /***XNFR-326****/
+
+    findActiveThreads(){
+    const url = this.superAdminUrl + 'findActiveThreads?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+    }
 }

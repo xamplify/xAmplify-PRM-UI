@@ -19,7 +19,7 @@ export class SelectContentModulesComponent implements OnInit {
     public xtremandLogger:XtremandLogger) { }
 
   ngOnInit() {
-    this.searchWithModuleName = 'content'
+    this.searchWithModuleName = 4;
   }
   navigate(suffixUrl:string){
     this.loading = true;

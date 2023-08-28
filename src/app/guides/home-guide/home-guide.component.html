@@ -1,5 +1,6 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <section class="section-height">
-  <app-guide-help-icon></app-guide-help-icon>
+  <app-guide-help-icon [searchKey]="searchKey" (searchEvent)="getSearchKey($event)"></app-guide-help-icon>
 </section>
 <div class="m10 guide-width container pad-row">
 <div class="page-bar" *ngIf="hidePageBarClass ">
@@ -8,8 +9,11 @@
   <i class="fa fa-home" aria-hidden="true"></i>
 </li>
 <li>
-  <i class="fa fa-angle-right" aria-hidden="true" ></i>
   <a (click)="goToHome()">Home</a>
+</li>
+<li>
+  <i class="fa fa-angle-right" aria-hidden="true" ></i>
+  <a >{{pagination?.moduleName}}</a>
 </li>
 </ul>
 </div>
@@ -134,7 +138,7 @@
 </div>
 
 <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 card-paddings-cu"
-*ngIf="(authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner">
+*ngIf="((authenticationService.user.hasCompany && !authenticationService.isOnlyUser()) || authenticationService?.module?.deletedPartner) && !loading">
 
   <div class="user_card icon-bg14" (click)="getTitlesByModule(19)">
 
@@ -146,4 +150,32 @@
 </div>
 </div>
 </div>
+<!-- Show Titles -->
+<div class="page-bar pageBarPaddings" *ngIf="hidePageBarClass">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 subCardBg" style="margin-bottom:15px;" *ngFor="let name of userGudeTitles">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 allignItemsLeft">
+          <h4 class="fontWeigtug"><a (click)="getGuideLinkByTitle(name.title)">{{name?.title}}</a></h4>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 allignItemsRight" *ngIf="name?.subModuleName?.length > 1">
+          <button type="button" class="btn btn-secondary ColorCu"><i class="fa fa-list-ul" aria-hidden="true"></i>&nbsp;{{name?.subModuleName}}</button>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 allignItemsLeft">
+          <p>{{name?.description}}
+            <button type="button" class="btn btn-primary primaryBtnCu" (click)="getGuideLinkByTitle(name.title)">
+             <i class="fa fa-eye eyeCu" aria-hidden="true"></i>&nbsp;View</button></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div *ngIf="pagination.totalRecords === 0" class="alert alert-info">
+    <strong translate>No results found</strong>
+  </div>
+  <app-pagination *ngIf="pagination.totalRecords !== 0" [pagination]="pagination" (notifyParent)="setPage($event)"
+    (notifyParentDropDown)="getGuideTitlesByModuleName($event)"></app-pagination>
+</div>
+  
 </div>

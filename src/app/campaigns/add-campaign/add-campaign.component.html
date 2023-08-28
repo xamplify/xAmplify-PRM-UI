@@ -66,6 +66,15 @@
                                             </div>
                                         </div>
 
+                                        <!---Description-->
+                                        <div class="form-group" [attr.class]="campaignDescriptionDivClass">
+                                            <label class="control-label col-sm-4 mName tab_p0">Description
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" maxlength="1000" rows="5" [(ngModel)]="campaign.description" name="description" (input)="changeDescriptionClassName(campaign.description)" placeholder="Description"></textarea>
+                                            </div>
+                                        </div>
+
                                         <!--Folder-->    
                                         <div class="form-group">
                                             <label class="control-label col-sm-4 tab_p0" translate>Folder

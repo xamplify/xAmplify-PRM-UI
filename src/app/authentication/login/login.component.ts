@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   customResponse: CustomResponse = new CustomResponse();
   loading = false;
   resendActiveMail = false;
+  resendAccountSignUpMail = false;
   mainLoader: boolean;
   socialProviders = [{ "name": "Salesforce", "iconName": "salesforce", "value": "salesforce" },
   { "name": "Facebook", "iconName": "facebook", "value": "facebook" },
@@ -108,6 +109,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   loginWithUser(userName: string) {
+    this.resendActiveMail = false;
+    this.resendAccountSignUpMail = false;
     if(userName!=undefined && userName!="undefined"){
       const authorization = 'Basic ' + btoa('my-trusted-client:');
       const body = new URLSearchParams();
@@ -130,16 +133,23 @@ export class LoginComponent implements OnInit, OnDestroy {
             const body = error['_body'];
             if (body !== "") {
               const response = JSON.parse(body);
-              if (response.error_description === "Bad credentials" || response.error_description === "Username/password are wrong") {
+              let errorDescription = response.error_description;
+              if (errorDescription === "Bad credentials" || errorDescription === "Username/password are wrong") {
                 this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-              } else if (response.error_description === "User is disabled") {
-                //this.resendActiveMail = true;
-                // this.customResponse =  new CustomResponse();
-                this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR_NEW);
-              } else if (response.error_description === this.properties.OTHER_EMAIL_ISSUE) {
+              } else if (errorDescription === "User is disabled") {
+                this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR);
+              } else if (errorDescription === this.properties.OTHER_EMAIL_ISSUE) {
                 this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-              } else if (response.error_description === this.properties.ERROR_EMAIL_ADDRESS) {
+              } else if (errorDescription === this.properties.ERROR_EMAIL_ADDRESS) {
                 this.setCustomeResponse("ERROR", this.properties.WRONG_EMAIL_ADDRESS);
+              }else if(errorDescription===this.properties.ACCOUNT_NOT_CREATED){
+                this.resendAccountSignUpMail = true;
+                this.setCustomeResponse("ERROR", errorDescription);
+              }else if(errorDescription==this.properties.USER_ACCOUNT_ACTIVATION_ERROR){
+                this.resendActiveMail = true;
+                this.setCustomeResponse("ERROR", errorDescription);
+              }else if(errorDescription==this.properties.ACCOUNT_SUSPENDED){
+                this.setCustomeResponse("ERROR", errorDescription);
               }
             }
             else {
@@ -176,18 +186,21 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.xtremandLogger.error(responseMessage);
   }
   resendActivation() {
-    try {
-      this.userService.resendActivationMail(this.model.username).subscribe(result => {
-        if (result === 'resend Activation email success') {
-          this.resendActiveMail = false;
-          this.setCustomeResponse('SUCCESS', this.properties.RESEND_ACTIVATION_MAIL);
-        }
-      },
-        (error: any) => {
-          this.xtremandLogger.error(error);
-        }
-      )
-    } catch (error) { console.log('error' + error); }
+    this.customResponse = new CustomResponse();
+    this.loading = true;
+    this.userService.resendActivationMail(this.model.username).subscribe(result => {
+      this.loading = false;
+      this.resendActiveMail = false;
+      if (result.statusCode==200) {
+        this.setCustomeResponse('SUCCESS', this.properties.RESEND_ACTIVATION_MAIL);
+      }else{
+        this.setCustomeResponse('ERROR', result.message);
+      }
+    },
+      (error: any) => {
+        this.xtremandLogger.error(error);
+      }
+    );
   }
 
   cleaningLeftSidebar() {
@@ -402,6 +415,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loading = false;
    }
         return false;
+  }
+
+  clearErrorMessage(){
+   this.customResponse = new CustomResponse();
+    this.resendAccountSignUpMail = false;
+    this.resendActiveMail = false;
   }
 
 }

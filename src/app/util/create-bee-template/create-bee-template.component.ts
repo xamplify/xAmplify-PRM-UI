@@ -30,6 +30,7 @@ export class CreateBeeTemplateComponent implements OnInit {
   loading = false;
   senderMergeTag: SenderMergeTag = new SenderMergeTag();
   mergeTagsInput: any = {};
+  videoGif = "xtremand-video.gif";
   ngOnInit() {
     this.referenceService.scrollSmoothToTop();
     if(this.isAutoResponseEmailTemplate==undefined){
@@ -85,6 +86,13 @@ export class CreateBeeTemplateComponent implements OnInit {
 
         var save = function (jsonContent: string, htmlContent: string) {
           self.partnerTemplateLoader = true;
+          if (emailTemplate.beeVideoTemplate || emailTemplate.videoCoBrandingTemplate) {
+            if (jsonContent.indexOf(self.videoGif) < 0) {
+                swal("", "Whoops! We're unable to save this template because you deleted the default gif. You'll need to select a new email template and start over.", "error");
+                self.partnerTemplateLoader = false;
+                return false;
+            }
+        }
           emailTemplate.jsonBody = jsonContent;
           emailTemplate.body = htmlContent;
           emailTemplate.userId = self.loggedInUserId;

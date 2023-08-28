@@ -107,4 +107,5 @@ export class Campaign {
     campaignProcessing = false;
     campaignEmailNotificationStatusInString = "";
     whiteLabeled = false;
+    description = "";
 }

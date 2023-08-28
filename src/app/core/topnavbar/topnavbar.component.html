@@ -142,7 +142,8 @@
                             <a (click)="goToRouter('/home/dashboard/vendors')" translate> 
                             <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
                          </li>
-                         <ng-container *ngIf="authenticationService?.module?.showAddLeadOrDealButtonInMyProfileSection">
+                         <!--XBI-1917-->
+                         <ng-container *ngIf="authenticationService?.module?.showAddLeadOrDealButtonInMyProfileSection && authenticationService?.user?.hasCompany">
                             <!--Add Leads-->
                             <li>
                                <a (click)="navigateAndOpenAddLeadsModalPopUp()"> 
