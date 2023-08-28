@@ -51,7 +51,6 @@ export class CreateBeeTemplateComponent implements OnInit {
 
   editPartnerTemplate() {
     let self = this;
-   
     let emailTemplate = this.partnerEmailTemplate;
     let isPartnerTemplate = !this.isAutoResponseEmailTemplate && emailTemplate.vendorCompanyId != undefined && emailTemplate.vendorCompanyId > 0;
     if (isPartnerTemplate || this.isAutoResponseEmailTemplate) {
