@@ -1231,3 +1231,9 @@ ul.t-b-spacings {
     margin-top: 26px;
   } 
 } 
+@media only screen and (min-width: 766px) and (max-width: 1024px) {  
+  .list__item .item__actions {
+    top: 16px;
+    margin-right: 0px;
+  }
+}
