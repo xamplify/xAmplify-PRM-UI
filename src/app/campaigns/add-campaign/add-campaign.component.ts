@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild,Renderer } from '@angular/core';
+import { Component, OnInit,ViewChild,Renderer, OnDestroy } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AuthenticationService } from 'app/core/services/authentication.service';
@@ -46,7 +46,7 @@ var moment = require('moment-timezone');
   providers:[CallActionSwitch,SortOption,Properties,LandingPageService],
   animations:[CustomAnimation]
 })
-export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
+export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDestroy {
 
   loggedInUserId = 0;
   campaignId = 0;
@@ -281,6 +281,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
     }
     
    }
+    
 
     ngOnInit() {
         if(!this.isReloaded){
@@ -437,6 +438,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
                     reply.emailTemplatesPagination.selectedEmailTempalteId = reply.selectedEmailTemplateId;
                     reply.emailTemplatesPagination.sortcolumn = "selectedEmailTemplate";
                 }
+                 /***XBI-1905***/
+                reply.emailTemplatesPagination.maxResults = 4;
                 this.findEmailTemplatesForAutoResponseWorkFlow(reply);
             }
         }
@@ -468,6 +471,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
                     url.emailTemplatesPagination.selectedEmailTempalteId = url.selectedEmailTemplateId;
                     url.emailTemplatesPagination.sortcolumn = "selectedEmailTemplate";
                 }
+                /***XBI-1905***/
+                url.emailTemplatesPagination.maxResults = 4;
                 this.findEmailTemplatesForWebSiteWorkFlow(url);
             }
         }
@@ -2380,6 +2385,14 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate {
             return false;
         }
         
+    }
+
+    /***XBI-1918 */
+    ngOnDestroy(): void {
+        this.referenceService.campaignVideoFile = undefined;
+        this.referenceService.selectedCampaignType = '';
+        this.referenceService.isCampaignFromVideoRouter = false;
+        this.campaignService.campaign = undefined;
     }
 
     /***XBI-1554***/
