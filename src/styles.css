@@ -2198,4 +2198,28 @@ button {
   margin-bottom: 0px !important;
   margin-left: 5px;
 }
- 
+ /* 29-08-2023 */
+ #queryBuilderCu .q-switch-label  {
+  padding: 6px 8px !important;
+  line-height: 1 !important;;
+  border-radius: 4px !important;
+}
+#queryBuilderCu label.q-switch-label {
+  border-radius: 4px !important;
+  margin-right: 5px !important;
+}
+#queryBuilderCu .q-button {
+  padding: 7px 8px !important;
+}
+#queryBuilderCu .q-switch-label, .q-button {
+  line-height: 1 !important;
+  margin-bottom: 5px !important;
+}
+#queryBuilderCu .q-add-icon::before {
+  font-family: FontAwesome !important;
+  content: "\f067" !important;
+}
+#queryBuilderCu .q-remove-icon::before {
+  font-family: FontAwesome !important;
+  content: "\f068" !important;
+}

@@ -181,7 +181,9 @@
               
             </div>
 
-            <query-builder [(ngModel)]='query' [config]='config' [classNames]='classNames'></query-builder>
+
+            <query-builder id="queryBuilderCu" [(ngModel)]='query' [config]='config'></query-builder>
+            <!-- [classNames]='classNames' -->
             
             <button type="submit" class="btn  btn Btn-Green float-right" (click)="showAndHideDivs()"
               translate>Next</button>
