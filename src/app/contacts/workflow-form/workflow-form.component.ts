@@ -19,6 +19,9 @@ import { DealRegistrationService } from '../../deal-registration/services/deal-r
 import { CustomResponse } from '../../common/models/custom-response';
 import { Pipeline } from '../../dashboard/models/pipeline';
 import { PipelineStage } from '../../dashboard/models/pipeline-stage';
+import { QueryBuilderConfig } from 'angular2-query-builder';
+import { QueryBuilderClassNames } from 'angular2-query-builder';
+
 
 declare var Metronic, $, Layout, Demo, Portfolio,Highcharts, CKEDITOR, swal: any;
 
@@ -46,6 +49,57 @@ export class WorkflowFormComponent implements OnInit{
   newDivs: number[] = [];
   clickOr = true;
 
+  query = {
+    condition: 'and',
+    rules: [
+      {field: 'age', operator: '<=', value: 'Bob'},
+      {field: 'gender', operator: '>=', value: 'm'},
+      {field: 'age', operator: '>=', value: 'Happy'}
+    ]
+  };
+  
+  config: QueryBuilderConfig = {
+    fields: {
+      age: {name: 'Age', type: 'number'},
+      name: {name: 'Age', type: 'text'},
+      gender: {
+        name: 'Gender',
+        type: 'category',
+        options: [
+          {name: 'Male', value: 'm'},
+          {name: 'Female', value: 'f'}
+        ]
+      }
+    }
+  }
+
+  classNames: QueryBuilderClassNames = {
+    removeIcon: 'fa fa-minus',
+    addIcon: 'fa fa-plus',
+    //arrowIcon: 'fa fa-chevron-right px-2',
+    button: 'btn',
+    buttonGroup: 'btn-group',
+    rightAlign: 'order-12 ml-auto',
+    switchRow: 'd-flex px-2',
+    switchGroup: 'd-flex align-items-center',
+    switchRadio: 'custom-control-input',
+    switchLabel: 'custom-control-label',
+    switchControl: 'custom-control custom-radio custom-control-inline',
+    row: 'row p-2 m-1',
+    rule: 'border',
+    ruleSet: 'border',
+    invalidRuleSet: 'alert alert-danger',
+    emptyWarning: 'text-danger mx-auto',
+    operatorControl: 'form-control',
+    operatorControlSize: 'col-auto pr-0',
+    fieldControl: 'form-control',
+    fieldControlSize: 'col-auto pr-0',
+    entityControl: 'form-control',
+    entityControlSize: 'col-auto pr-0',
+    inputControl: 'form-control',
+    inputControlSize: 'col-auto'
+  }
+
   constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
     public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, public callActionSwitch: CallActionSwitch,
@@ -55,6 +109,7 @@ export class WorkflowFormComponent implements OnInit{
 
   ngOnInit() {
     $('#hideToggle').hide();
+    
 }
 
   ngOnDestroy() { }
