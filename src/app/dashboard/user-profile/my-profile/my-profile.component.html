@@ -2139,9 +2139,13 @@
                                                 data-toggle="tooltip" data-placement="top" title="Delete" 
                                                     (click)="deleteStage(x)" style="float: right;" [disabled]="!pipelineStage.canDelete"><span
                                                         class="glyphicon glyphicon-trash"></span></button>
+                                                        <span *ngIf="!pipeline.private">
+                                                            <input type="checkbox" [(ngModel)]="pipelineStage.private"
+                                                            name="private" style="margin: 5px;"> Private
+                                                        </span> 
                                             </div>
                                             <div>
-                                                <span *ngIf="pipeline.type === 'deal' || activeTabName == 'dealPipelines'">
+                                                <span *ngIf="(!pipelineStage.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines')">
                                                     <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
                                                     name="nonInteractive" style="margin: 5px;"> Non Interactive
                                                 </span>                                                 
