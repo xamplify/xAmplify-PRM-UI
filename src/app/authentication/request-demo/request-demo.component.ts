@@ -5,11 +5,14 @@ import { ReferenceService } from '../../core/services/reference.service';
 import {RequestDemo} from './request-demo';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UserService } from '../../core/services/user.service';
+import { Properties } from 'app/common/models/properties';
+
 declare var $:any;
 @Component({
   selector: 'app-request-demo',
   templateUrl: './request-demo.component.html',
-  styleUrls: ['./request-demo.component.css']
+  styleUrls: ['./request-demo.component.css'],
+  providers:[Properties]
 })
 export class RequestDemoComponent implements OnInit {
 
@@ -24,7 +27,7 @@ export class RequestDemoComponent implements OnInit {
     submitted = false;
     isContacted = false;
     customResponse: CustomResponse = new CustomResponse();
-  constructor(public refService:ReferenceService,private userService: UserService) {
+  constructor(public refService:ReferenceService,private userService: UserService,public properties:Properties) {
       this.countries = this.refService.getCountries();
       this.setCountry();
   }
