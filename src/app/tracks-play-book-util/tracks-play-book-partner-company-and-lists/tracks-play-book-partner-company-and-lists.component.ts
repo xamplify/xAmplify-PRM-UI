@@ -84,11 +84,25 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 				this.pagination.learningTrackId = this.inputId;
 				this.partnerGroupsPagination.learningTrackId = this.inputId;
 				this.teamMembersPagination.learningTrackId = this.inputId;
+				let isPartnerCompanySelected = this.selectedPartnershipIds.length>0;
+				if(isPartnerCompanySelected){
+					$('#partners-li').addClass('active');
+					$('#partners').addClass('tab-pane fade in active');
+					this.pagination.partnerTeamMemberGroupFilter = true;
+			        this.findPartnerCompanies(this.pagination);
+				}else{
+					$('#partnerGroups-li').addClass('active');
+					$('#partnerGroups').addClass('tab-pane fade in active');
+					this.findPartnerGroups(this.partnerGroupsPagination);
+				}
 			} else {
 				this.isAdd = true;
+				$('#partners-li').addClass('active');
+				$('#partners').addClass('tab-pane fade in active');
+				this.pagination.partnerTeamMemberGroupFilter = true;
+			    this.findPartnerCompanies(this.pagination);
 			}
-			this.pagination.partnerTeamMemberGroupFilter = true;
-			this.findPartnerCompanies(this.pagination);
+			
 		} else {
 			this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
 		}
