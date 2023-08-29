@@ -44,7 +44,10 @@
      <div class="container">
         <!--feature 2-->
         <div class="row">
-           <div class="col-md-7 col-md-push-5 text-center"> <img src="/assets/images/feature-1.png" alt="feature"> </div>
+           <div class="col-md-7 col-md-push-5 text-center">
+             <img src="/assets/images/feature-1.png" alt="feature"> 
+             <ng-template [ngTemplateOutlet]="featureUrls"></ng-template>
+            </div>
            <div class="col-md-5 col-md-pull-7" >
               <article style="margin-top: 0 !important;">
                  <form *ngIf="!isContacted">
@@ -233,16 +236,12 @@
               <!--social end-->
            </div>
            <div class="col-md-6">
-              <p class="footer-links">
-                 <a href="https://www.xamplify.com/terms-conditions/" lang="en">Terms of Use </a> 
-                 <a href="https://www.xamplify.com/privacy-policy/" lang="en">|   Privacy Policy</a>
-                 <a href="https://www.xamplify.com/subprocessors/" lang="en">|   Sub Processors</a>
-              </p>
+            <ng-template [ngTemplateOutlet]="featureUrls"></ng-template>
            </div>
            <div class="col-md-3"> <small lang="en">support@xamplify.com</small></div>
         </div>
         <div calss=row>
-           <div class="col-md-12"> <small lang="en"> Copyrights &copy; 2019 xAmplify. All rights reserved by xAmplify Inc. </small></div>
+           <div class="col-md-12"> <small lang="en"> Copyrights &copy; {{properties?.FULL_YEAR}} xAmplify. All rights reserved by xAmplify Inc. </small></div>
         </div>
         <!--chat-btn-->
         <a href="" class="chat-btn" data-toggle="modal" data-target="#modal-contact-form"></a>
@@ -286,3 +285,12 @@
      </div>
   </div>
 </div>
+
+<ng-template #featureUrls>
+   <p class="footer-links">
+      <a href="{{properties.termsOfServiceUrl}}" target="_blank" lang="en">Terms of Use </a> 
+      <a href="{{properties.privacyPolicyUrl}}" target="_blank" lang="en">|   Privacy Policy</a>
+      <a href="{{properties.subProcessorsUrl}}"  target="_blank" lang="en">|   Sub Processors</a>
+   </p>
+   
+</ng-template>

@@ -3,7 +3,8 @@ export class Properties {
 
 	/*App Info*/
 	COMPANY_LOGO = 'assets/images/xamplify-logo.png';
-	COPY_RIGHT_PREFIX = '&copy; '+new Date().getFullYear();
+	FULL_YEAR = new Date().getFullYear();
+	COPY_RIGHT_PREFIX = '&copy; '+this.FULL_YEAR;
 	BOTTOM_MESSAGE = this.COPY_RIGHT_PREFIX+' xAmplify. All rights reserved.'
 	APP_WEBSITE = 'xAmplify';
 	APP_WELCOME_MESSAGE = 'Welcome to xAmplify';
@@ -225,6 +226,7 @@ export class Properties {
 	privacyPolicyUrl = "https://xamplify.com/privacy-policy-2/";
 	cookiesPolicyUrl = "https://xamplify.com/cookies-policy/";
 	termsOfServiceUrl ="https://xamplify.com/terms-of-uses/";
+	subProcessorsUrl = "https://www.xamplify.com/subprocessors/";
 
 	/***One-Click Launch Error Messages */
 	emptyShareListErrorMessage =  "Edit campaign is no longer available because the vendor deleted the shared list (or) no list associated with this campaign";
