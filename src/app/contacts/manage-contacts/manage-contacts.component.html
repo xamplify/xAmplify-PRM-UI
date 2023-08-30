@@ -1183,23 +1183,23 @@
                   <div class="row col-sm-11" *ngFor="let addRow of criterias; let i = index" style="padding-bottom: 10px;">
                      <div class="form-group">
                         <div class="form-inline col-sm-12">
-                           <div class="form-group col-sm-4">
+                           <div class="form-group col-sm-6 col-lg-4 tab_v_flex tab_p0">
                               <b>{{i}}</b>
                               <select class="form-control" [(ngModel)]="criterias[i].property">
                               <option *ngFor="let filterOption of filterOptions; let i = index">{{filterOption.name}}</option>
                               </select>
                            </div>
-                           <div class="form-group col-sm-3">
+                           <div class="form-group col-sm-6 col-lg-3">
                               <select class="form-control" [(ngModel)]="criterias[i].operation">
                               <option *ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.name}}
                               </option>
                               </select>
                            </div>
-                           <div class="form-group col-sm-3">
+                           <div class="form-group col-sm-6 col-lg-3 tb_view_10">
                               <input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1"
                               (keypress)="eventEnterKeyHandler($event.keyCode)">
                            </div>
-                           <div class="form-group col-sm-2" data-toggle="tooltip" data-placement="left"
+                           <div class="form-group col-sm-2 col-lg-2 filter-delete tb_view_10 filter_del" data-toggle="tooltip" data-placement="left"
                               title="Remove a condition"
                               [ngClass]="{'filter-css': !referenceService.isMobileScreenSize(), 'mobile-view-filter':referenceService.isMobileScreenSize()}">
                               <span (click)="cancelRow(i)"> <i class="fa fa-trash-o" aria-hidden="true"
@@ -1209,7 +1209,7 @@
                         </div>
                      </div>
                   </div>
-                  <div class="row col-sm-1" style="margin-left: 32px;">
+                  <div class="row col-sm-1 tab_ml0" style="margin-left: 32px;">
                      <div data-toggle="tooltip" data-placement="left" title="Add a condition">
                         <span [class.disabled]="criterias.length > 5" (click)="addNewRow()" class="btn btn-default pull-right">
                         <i class="fa fa-plus-square" aria-hidden="true" style="color: #0196da"></i>

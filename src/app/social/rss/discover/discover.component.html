@@ -6,10 +6,10 @@
         </ul>
     </div>
     <div class="row">
-        <div class="col-md-12 col-lg-12">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="row">
                 <app-left-nav></app-left-nav>
-                <div class="col-sm-9">
+                <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">
                     <div class="page-bar page-bar-shadow pb-m">
                         <div class="col-md-12" style="padding-left: 21px;padding-top: 10px;padding-right:19px">
                             <h4 class="description" style="font-size:16px">Discover the best sources for any topic</h4>
@@ -21,7 +21,7 @@
                                    (keyup.enter)="search(item)" style="padding: 22px;padding-left: 49px">
                             </div>
                             <h4 class="description" style="font-size:16px!important">Featured</h4>
-                            <div class="col-sm-3" *ngFor="let featuredCategory of featuredCategories">
+                            <div class="col-sm-3 tab_panelimg" *ngFor="let featuredCategory of featuredCategories">
                                 <div class="panel">
                                     <div class="panel-body p0">
                                         <div class="card" [routerLink]="['/home/rss/search']" [queryParams]="{'q': featuredCategory.name, 't': 'category'}" [style.backgroundImage]="'url('+featuredCategory.image+')'">
