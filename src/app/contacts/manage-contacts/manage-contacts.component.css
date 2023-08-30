@@ -382,3 +382,14 @@ h6 {
 @media (min-width: 1024px) and (max-width: 1125px)  { 
   td.Mark-as-ValidBtn {width: 150px;}
 }
+@media only screen and (min-width: 768px) and (max-width: 991px) { 
+  .tab_v_flex{
+    display: flex!important;
+  }
+  .tab_ml0{
+    margin-left: 0px!important;
+  }
+  .filter_del{
+    left: 45px!important;
+  }
+ } 
