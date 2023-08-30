@@ -125,6 +125,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	roleNames = "";
 	customResponse: CustomResponse = new CustomResponse();
 	hasClientErrors = false;
+	isDeal: boolean;
 
 	dealForms: DealForms[] = [];
 	form = new DealForms();
@@ -2861,9 +2862,14 @@ configSalesforce() {
 		this.pipelinePreview = true;
 		this.getPipeline(pipelineToView);
 	}
-
+ 
 	editPipeline(pipeline: Pipeline) {
 		this.pipelineModalTitle = "Edit Pipeline";
+		if(pipeline.type === "lead"){
+         this.isDeal = false;
+		} else{
+			this.isDeal = true;
+		}
 		$('#addPipelineModalPopup').modal('show');
 		this.referenceService.startLoader(this.addPipelineLoader);
 		this.getPipeline(pipeline);
