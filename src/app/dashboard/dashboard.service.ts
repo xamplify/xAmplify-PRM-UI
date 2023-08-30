@@ -300,7 +300,7 @@ export class DashboardService {
         let url = "";
         if (report.userStatus == "APPROVED") {
             url = this.authenticationService.REST_URL + "superadmin/account/deactivate?access_token=" + this.authenticationService.access_token;
-        } else if (report.userStatus == "UNAPPROVED" || report.userStatus == "SUSPEND") {
+        } else if (report.userStatus == "UNAPPROVED" || report.userStatus == "DECLINE") {
             url = this.authenticationService.REST_URL + "superadmin/account/activate?access_token=" + this.authenticationService.access_token;
         }
         return this.http.post(url, report)
