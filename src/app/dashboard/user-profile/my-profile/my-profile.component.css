@@ -2895,3 +2895,28 @@ th.border-top {
     padding-left: 10px;
   }
 }
+
+/* 29-08-2023 */
+.modal-dialog.pipelinePopupWidth {
+  width: 63% !important;
+}
+input.inputFieldWidth {
+  width: 90% !important;
+}
+span.slider.round.slidercu {
+  margin: 0px 1px;
+}
+label.switch.pipeline {
+  width: 44px;
+  height: 17px;
+  margin-top: 5px;
+}
+.slider.slidercu:before {
+  height: 14px;
+  width: 14px;
+  left: 1px;
+  bottom: 2px;
+}
+span.fa.fa-info-circle.pipelinedata {
+  font-size: 11px !important;
+}

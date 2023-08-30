@@ -2083,7 +2083,7 @@
 
 <!------------------------------Add/Edit Pipeline----------->
 <div class="modal fade right" id="addPipelineModalPopup" tabindex="-1" role="dialog" aria-labelledby="addPipelineModalPopup" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog pipelinePopupWidth" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" (click)="closePipelineModal()">
@@ -2114,17 +2114,16 @@
                             <ng-container *ngFor="let pipelineStage of pipeline.stages; let x = index">
                                 <li class="list-group-item" id="stage{{x}}" *ngIf="pipelineStage != undefined">
                                     <div class="row">
-                                        <span class="col-xs-1 co-sm-1 col-md-1 col-lg-1">
-                                            <span class="fa fa-ellipsis-v"></span>
-                                        </span>
-                                        
-                                        <span class="col-lg-5 mb_pl10">
+                                        <!-- <span class="col-xs-1 co-sm-1 col-md-1 col-lg-1">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                        </span> -->
+                                        <span class="col-lg-4 col-md-4 col-sm-12 col-xs-12 mb_pl10">
+                                            <i class="fa fa-ellipsis-v"></i>
                                             <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipelineStage.stageName"
-                                            placeholder="Enter Stage Name" style="width: 240px;
-                                                                    margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)"
-                                            (keydown)="pipelineSumbitOnEnter($event)" class="bg-color field-border-customization">
+                                            placeholder="Enter Stage Name" (input)="validateStage(pipelineStage.stageName)"
+                                            (keydown)="pipelineSumbitOnEnter($event)" class="bg-color field-border-customization inputFieldWidth">
                                         </span>
-                                        <span class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                        <span class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
                                             <div class="mb_mt7">
                                                 <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex"
                                                     id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;" (change)="defaultStageChange(pipelineStage)">
@@ -2139,17 +2138,25 @@
                                                 data-toggle="tooltip" data-placement="top" title="Delete" 
                                                     (click)="deleteStage(x)" style="float: right;" [disabled]="!pipelineStage.canDelete"><span
                                                         class="glyphicon glyphicon-trash"></span></button>
-                                                        <span *ngIf="!pipeline.private">
+                                                        &nbsp;
+                                                        <span>Private <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span></span>
+                                                        <label class="switch pipeline">
+                                                            <input type="checkbox" [(ngModel)]="pipelineStage.private" name="private">
+                                                            <span class="slider round slidercu"></span>
+                                                          </label> 
+                                                        <!-- <span *ngIf="!pipeline.private">
                                                             <input type="checkbox" [(ngModel)]="pipelineStage.private"
-                                                            name="private" style="margin: 5px;"> Private
-                                                        </span> 
+                                                            name="private" style="margin: 5px;"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
+                                                            data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span>
+                                                        </span>  -->
+                                                       
+                                                        <span *ngIf="(!pipelineStage.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines')">
+                                                            <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
+                                                                name="nonInteractive" style="margin: 5px;"> Non Interactive
+                                                        </span>                                                 
+                                                         
                                             </div>
-                                            <div>
-                                                <span *ngIf="(!pipelineStage.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines')">
-                                                    <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
-                                                    name="nonInteractive" style="margin: 5px;"> Non Interactive
-                                                </span>                                                 
-                                            </div> 
+                                   
                                         </span>
                                     </div>
                                     
