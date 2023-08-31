@@ -1,6 +1,7 @@
-<div class="page-content" [style.background-color]="refService.pageContnetBgColor">
-    <app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>    
-    <ng-container *ngIf="!httpRequestLoader.isLoading">
+
+<div class="page-content" [style.background-color]="refService?.pageContnetBgColor">
+    <app-modal-popup-loader [height]="935"  *ngIf="httpRequestLoader?.isLoading"></app-modal-popup-loader>    
+    <div [hidden]="httpRequestLoader?.isLoading">
         <div style="position: relative; top: -10px">
             <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
         </div>
@@ -11,7 +12,7 @@
                         <ul class="page-breadcrumb" *ngIf="loadTemplate">
                             <li>
                                 <i class="fa fa-home" aria-hidden="true"></i>
-                                <a [routerLink]="refService.homeRouter" translate>Home</a>
+                                <a [routerLink]="refService?.homeRouter" translate>Home</a>
                                 <i class="fa fa-angle-right"  aria-hidden="true"></i>
                             </li>
                             <li *ngIf="emailTemplateService.isNewTemplate">
@@ -24,7 +25,7 @@
                             </li>
                             <li>
                                 <a translate><span *ngIf="emailTemplateService.isNewTemplate; else Other" translate>Create</span>
-                          <ng-template #Other translate>Update</ng-template> Template</a>
+                                <ng-template #Other translate>Update</ng-template> Template</a>
                             </li>
                         </ul>  
                         <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate && showForms" [filter]="'survey'" [buttonText]="'Show Surveys'"></app-preview-popup>
@@ -34,6 +35,6 @@
                 </div>
             </div>
         </div>
-    </ng-container>
+    </div>
     <app-scroll-top></app-scroll-top>
 </div>

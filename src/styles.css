@@ -523,6 +523,7 @@ tr.highlight {
   display: flex;
 }
 
+
 .white {
   color: #fff;
 }
@@ -2356,4 +2357,8 @@ button.table-scbscribe-btn:hover {
 /* Sort By box paddings */
 select.form-control.SeclectBoxPaddingsAbj {
   padding: 6px 4px;
+}
+
+.inline-flex {
+  display: inline-flex;
 }

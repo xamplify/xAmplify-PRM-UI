@@ -1,6 +1,6 @@
 #bee-plugin-container {
-  height: 935px;
-  width: 100%;
+  overflow: auto;
+  margin-top: 55px;
 }
 .tile {
   min-height: 1000px;
@@ -20,4 +20,17 @@
   .mscroll {
     overflow-x: auto;
   }
+}
+
+.w-1080px{
+width: 1080px !important;
+}
+.swal2-modal{
+  width: 500px !important;
+}
+.show-swal2{
+  width: 500px !important;
+}
+.visible{
+  width: 500px !important;
 }

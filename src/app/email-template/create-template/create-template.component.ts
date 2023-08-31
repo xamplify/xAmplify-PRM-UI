@@ -50,7 +50,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     showForms: boolean = false;
 
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
-        private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, private route: ActivatedRoute) {
+        private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
+        private route: ActivatedRoute) {
+        this.refService.startLoader(this.httpRequestLoader);
         this.categoryId = this.route.snapshot.params['categoryId'];
         if (this.categoryId > 0) {
             this.manageRouterLink += "/" + this.categoryId;
@@ -232,6 +234,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
             let mergeTags = [];
             let event = this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
             mergeTags = this.refService.addMergeTags(mergeTags,false,event);
+            
             if (self.refService.companyId != undefined && self.refService.companyId > 0) {
                 var beeUserId = "bee-" + self.refService.companyId;
                 var roleHash = self.authenticationService.vendorRoleHash;
@@ -280,7 +283,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                                 function (template: any) {
                                     if (emailTemplateService.emailTemplate != undefined) {
                                         var body = emailTemplateService.emailTemplate.jsonBody;
-                                        $.each(self.companyProfileImages, function (index, value) {
+                                        $.each(self.companyProfileImages, function (_index:number, value:any) {
                                             body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
                                         });
                                         body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
@@ -288,10 +291,12 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                                         var jsonBody = JSON.parse(body);
                                         bee.load(jsonBody);
                                         bee.start(jsonBody);
+                                        self.refService.updateBeeIframeContainerHeight();
                                     } else {
                                         bee.start(template);
                                     }                                    
                                     self.loadTemplate = true;
+                                    self.refService.stopLoader(self.httpRequestLoader);
                                 });
                         });
                     });

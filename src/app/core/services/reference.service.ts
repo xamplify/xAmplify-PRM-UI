@@ -3217,6 +3217,10 @@ export class ReferenceService {
   removeBlur(divId:string){
     $('#'+divId).removeClass('xamplify-blur');
   }
+
+  updateBeeIframeContainerHeight(){
+    document.getElementById('bee-plugin-container__bee-plugin-frame').style.height='935px';
+  }
   
 
   
