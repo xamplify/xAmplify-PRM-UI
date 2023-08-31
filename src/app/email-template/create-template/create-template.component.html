@@ -1,43 +1,44 @@
-
-<div class="page-content" [style.background-color]="refService?.pageContnetBgColor">
-    <app-modal-popup-loader [height]="935"  *ngIf="httpRequestLoader?.isLoading"></app-modal-popup-loader>    
+<div class="page-content" [style.background-color]="refService.pageContnetBgColor">
+    <app-modal-popup-loader [height]="935"  *ngIf="httpRequestLoader.isLoading"></app-modal-popup-loader>
     <div [hidden]="httpRequestLoader?.isLoading">
         <div style="position: relative; top: -10px">
             <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <div class="tile mscroll" id="CardBgforSection" style="border-radius: 5px;min-height: 1009px !important;">
-                    <div class="page-bar" style="border:none !important">
-                        <ul class="page-breadcrumb" *ngIf="loadTemplate">
-                            <li>
-                                <i class="fa fa-home" aria-hidden="true"></i>
-                                <a [routerLink]="refService?.homeRouter" translate>Home</a>
-                                <i class="fa fa-angle-right"  aria-hidden="true"></i>
-                            </li>
-                            <li *ngIf="emailTemplateService.isNewTemplate">
-                                <a [routerLink]="['/home/emailtemplates/select']" translate>Select Templates</a>
-                                <i class="fa fa-angle-right"  aria-hidden="true"></i>
-                            </li>
-                            <li *ngIf="!emailTemplateService.isNewTemplate">
-                                <a routerLink="{{manageRouterLink}}" translate>Manage Templates</a>
-                                <i class="fa fa-angle-right"  aria-hidden="true"></i>
-                            </li>
-                            <li>
-                                <a translate><span *ngIf="emailTemplateService.isNewTemplate; else Other" translate>Create</span>
-                                <ng-template #Other translate>Update</ng-template> Template</a>
-                            </li>
-                        </ul>  
-                        <a class="close-circle" [ngClass]="showForms ?'mt10':''" (click)="navigateBack()">
+                <div class="page-bar mWidth" style="border:none !important;">
+                    <ul class="page-breadcrumb" *ngIf="loadTemplate">
+                        <li>
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                            <a [routerLink]="refService?.homeRouter" translate>Home</a>
+                            <i class="fa fa-angle-right"  aria-hidden="true"></i>
+                        </li>
+                        <li *ngIf="emailTemplateService.isNewTemplate">
+                            <a [routerLink]="['/home/emailtemplates/select']" translate>Select Templates</a>
+                            <i class="fa fa-angle-right"  aria-hidden="true"></i>
+                        </li>
+                        <li *ngIf="!emailTemplateService.isNewTemplate">
+                            <a routerLink="{{manageRouterLink}}" translate>Manage Templates</a>
+                            <i class="fa fa-angle-right"  aria-hidden="true"></i>
+                        </li>
+                        <li>
+                            <a translate><span *ngIf="emailTemplateService.isNewTemplate; else Other" translate>Create</span>
+                            <ng-template #Other translate>Update</ng-template> Template</a>
+                        </li>
+                    </ul>  
+                    <div class="mt5">
+                        <a class="close-circle mr5" [ngClass]="showForms ?'mt10':''" (click)="navigateBack()">
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
                         <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate && showForms" [filter]="'survey'" [buttonText]="'Show Surveys'"></app-preview-popup>
                         <app-merge-tags *ngIf="loadTemplate" [input]="mergeTagsInput"></app-merge-tags>
-                        <div id="bee-plugin-container"></div>
                     </div>
+                   
+                </div>
+                <div class="tile mScroll" id="CardBgforSection" style="border-radius: 5px;">
+                    <div id="bee-plugin-container"></div>
                 </div>
             </div>
         </div>
     </div>
     <app-scroll-top></app-scroll-top>
-</div>

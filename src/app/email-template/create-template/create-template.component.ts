@@ -51,7 +51,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     manageRouterLink = "/home/emailtemplates/manage";
     mergeTagsInput: any = {};
     showForms: boolean = false;
-
+    saveOrUpdateButtonClicked = false;
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
@@ -145,7 +145,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 }
                 if (!isDefaultTemplate) {
                     var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                        .append(' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color: red !important;"></span></div><br>');
+                        .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color: red !important;"></span></div><br>');
                     var dropDown = '<div class="form-group">';
                     dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
                     dropDown += '<select class="form-control" id="category-dropdown">';
@@ -182,7 +182,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                     swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false });
                 } else {
                     var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                        .append(' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
+                        .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                     var dropDown = '<div class="form-group">';
                     dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
                     dropDown += '<select class="form-control" id="category-dropdown">';
@@ -209,29 +209,30 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 }
                 $('#templateNameId').on('input', function (event) {
                     let value = $.trim(event.target.value);
+                    $('#templateNameSpanError').empty();
                     if (value.length > 0) {
                         if (!(emailTemplateService.emailTemplate.defaultTemplate)) {
                             if (names.indexOf(value.toLocaleLowerCase()) > -1 && emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase()) {
-                                $('#save,#update,#save-as').attr('disabled', 'disabled');
+                                $('#save,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
                                 $('#templateNameSpanError').text('Duplicate Name');
                             } else if (value.toLocaleLowerCase() == emailTemplateService.emailTemplate.name.toLocaleLowerCase()) {
                                 $('#save,#save-as').attr('disabled', 'disabled');
                             }
                             else {
                                 $('#templateNameSpanError').empty();
-                                $('#save,#update,#save-as').removeAttr('disabled');
+                                $('#save,#update,#save-as,#update-and-close').removeAttr('disabled');
                             }
                         } else {
                             if (names.indexOf(value.toLocaleLowerCase()) > -1) {
-                                $('#save,#update,#save-as').attr('disabled', 'disabled');
+                                $('#save,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
                                 $('#templateNameSpanError').text('Duplicate Name');
                             } else {
                                 $('#templateNameSpanError').empty();
-                                $('#save,#update,#save-as').removeAttr('disabled');
+                                $('#save,#update,#save-as,#update-and-close').removeAttr('disabled');
                             }
                         }
                     } else {
-                        $('#save,#update,#save-as').attr('disabled', 'disabled');
+                        $('#save,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
                     }
                 });
             };//End Of Save Method
@@ -353,6 +354,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         emailTemplateService.save(emailTemplate).subscribe(
             data => {
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
+                swal.close();
                 if (data.access) {
                     if (data.statusCode == 702) {                                               
                         if (!isOnDestroy) {
@@ -362,7 +364,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                             this.emailTemplateService.goToManage();
                         }
                     } else if (data.statusCode == 500) {
-                        swal.close();
                         this.customResponse = new CustomResponse('ERROR', data.message, true);
                     }                    
                 } else {
@@ -371,6 +372,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             },
             error => {
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
+                swal.close();
                 this.refService.stopLoader(this.httpRequestLoader);
                 this.logger.errorPage(error);
             }
@@ -378,6 +380,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     }
 
     updateEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, isUpdateAndClose: boolean) {
+        this.saveOrUpdateButtonClicked = true;
         this.customResponse = new CustomResponse();
         this.refService.goToTop();
         $("#bee-save-buton-loader").addClass("button-loader"); 
@@ -397,6 +400,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         emailTemplateService.update(emailTemplate).subscribe(
             data => {
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
+                swal.close();
                 if (data.access) {
                     if (data.statusCode == 702 || data.statusCode == 703) {
                         if(isUpdateAndClose){
@@ -404,10 +408,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                             this.navigateToManageSection();
                         }else{
                             this.customResponse = new CustomResponse('SUCCESS', "Template updated successfully", true);
-                            swal.close();
                         }
                     } else if (data.statusCode == 500) {
-                        swal.close();
                         this.customResponse = new CustomResponse('ERROR', data.message, true);
                     }    
                 } else {
@@ -416,6 +418,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             },
             error => {
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
+                swal.close();
                 this.logger.errorPage(error)
             }
         );
@@ -447,6 +450,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
 
     saveTemplate() {
         this.emailTemplate.draft = false;
+        this.saveOrUpdateButtonClicked = true;
         this.saveEmailTemplate(this.emailTemplate, this.emailTemplateService, this.loggedInUserId, false);
     }
 
@@ -481,6 +485,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     canDeactivate(): Observable<boolean> | boolean {
         this.authenticationService.stopLoaders();
         let isInvalidEditPage = !this.isAdd && this.emailTemplateService.emailTemplate==undefined;
-        return isInvalidEditPage || this.authenticationService.module.logoutButtonClicked;
+        return this.saveOrUpdateButtonClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked ;
     }
 }
