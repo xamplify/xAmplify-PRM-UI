@@ -14,7 +14,7 @@ import { Pagination } from '../../core/models/pagination';
 import { FormService } from '../../forms/services/form.service';
 import { SortOption } from '../../core/models/sort-option';
 import { CustomResponse } from '../../common/models/custom-response';
-declare var BeePlugin, swal, $: any;
+declare var BeePlugin:any, swal:any, $: any;
 
 @Component({
     selector: 'app-create-template',
@@ -160,7 +160,12 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                         self.clickedButtonName = "UPDATE";
                         self.emailTemplate.draft = false;
                         self.updateEmailTemplate(self.emailTemplate, emailTemplateService, false);
-                    })).append(self.createButton('Cancel', function () {
+                    })).append(self.createButton('Update & Redirect', function () {
+                        self.clickedButtonName = "UPDATE_AND_CLOSE";
+                        self.emailTemplate.draft = false;
+                        self.updateEmailTemplate(self.emailTemplate, emailTemplateService, true);
+                    }))
+                    .append(self.createButton('Cancel', function () {
                         self.clickedButtonName = "CANCEL";
                         swal.close();
                     }));
@@ -245,7 +250,6 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                         //save('newsletter-template.json', jsonFile);
                     },
                     onAutoSave: function (jsonFile) { // + thumbnail?
-                        console.log(new Date().toISOString() + ' autosaving...');
                         window.localStorage.setItem('newsletter.autosave', jsonFile);
                         self.emailTemplate.jsonBody = jsonFile;
                         self.isMinTimeOver = true;
@@ -363,7 +367,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
         );
     }
 
-    updateEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, isOnDestroy: boolean) {
+    updateEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, isUpdateAndClose: boolean) {
+        this.customResponse = new CustomResponse();
         this.refService.goToTop();
         $("#bee-save-buton-loader").addClass("button-loader"); 
         let enteredEmailTemplateName = $.trim($('#templateNameId').val());
@@ -384,11 +389,12 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
                 if (data.access) {
                     if (data.statusCode == 702 || data.statusCode == 703) {
-                        if (!isOnDestroy) {
+                        if(isUpdateAndClose){
                             this.refService.isUpdated = true;
                             this.navigateToManageSection();
-                        } else {
-                            this.emailTemplateService.goToManage();
+                        }else{
+                            this.customResponse = new CustomResponse('SUCCESS', "Template updated successfully", true);
+                            swal.close();
                         }
                     } else if (data.statusCode == 500) {
                         swal.close();
@@ -476,14 +482,16 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
 
     createButton(text, cb) {
         if (text == "Save") {
-            return $('<input type="submit" class="btn btn-primary" value="' + text + '" id="save" disabled="disabled">').on('click', cb);
+            return $('<input type="submit" class="btn btn-sm btn-primary" value="' + text + '" id="save" disabled="disabled">').on('click', cb);
         } else if (text == "Save As") {
-            return $('<input type="submit" class="btn btn-primary" value="' + text + '" id="save-as" disabled="disabled">').on('click', cb);
+            return $('<input type="submit" class="btn btn-sm btn-primary" value="' + text + '" id="save-as" disabled="disabled">').on('click', cb);
         } else if (text == "Update") {
-            return $('<input type="submit" class="btn btn-primary" value="' + text + '" id="update">').on('click', cb);
+            return $('<input type="submit" class="btn btn-sm btn-primary" value="' + text + '" id="update">').on('click', cb);
+        }else if (text == "Update & Redirect") {
+            return $('<input type="submit" class="btn btn-sm btn-primary" value="' + text + '" id="update-and-close">').on('click', cb);
         }
         else {
-            return $('<input type="submit" class="btn Btn-Gray" value="' + text + '">').on('click', cb);
+            return $('<input type="submit" class="btn btn-sm Btn-Gray" style="margin-right:-19px !important" value="' + text + '">').on('click', cb);
         }
     }
 
