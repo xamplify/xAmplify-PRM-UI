@@ -2136,7 +2136,7 @@
                                                     <option value="lost">Lost</option>
                                                     <option value="none">None</option>
                                                 </select>
-                                                <button type="button" *ngIf="!pipelineStage.defaultStage && !pipelinePreview && !pipeline.crmPipeline" class="btn-danger button-blue"
+                                                <button type="button" *ngIf="!pipelineStage.defaultStage && !pipelinePreview && !pipeline.crmPipeline" class="btn-danger button-blue deleteBntAligment"
                                                 data-toggle="tooltip" data-placement="top" title="Delete" 
                                                     (click)="deleteStage(x)" style="float: right;" [disabled]="!pipelineStage.canDelete"><span
                                                         class="glyphicon glyphicon-trash"></span></button>

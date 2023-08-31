@@ -2898,7 +2898,7 @@ th.border-top {
 
 /* 29-08-2023 */
 .modal-dialog.pipelinePopupWidth {
-  width: 55% !important;
+  width: 58% !important;
 }
 input.inputFieldWidth {
   width: 90% !important;
@@ -3048,4 +3048,8 @@ span.pdLeftforspace {
 .alignEqualtoFields {
   position: relative;
   bottom: 5px;
+}
+button.deleteBntAligment {
+  position: relative;
+  top: 7px;
 }
