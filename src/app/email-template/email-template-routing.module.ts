@@ -12,6 +12,7 @@ import { UploadMarketoEmailTemplateComponent } from './upload-marketo-email-temp
 import { UpdateMarketoTemplateComponent } from './update-marketo-template/update-marketo-template.component';
 import { SocialContactsCallbackComponent } from 'app/contacts/social-contacts-callback/social-contacts-callback.component';
 import {CkEditorUploadComponent} from '../ck-editor-upload-component/ck-editor-upload-component.component';
+import { PendingChangesGuard } from 'app/component-can-deactivate';
 
 
 export const emailRoutes: Routes = [
@@ -19,10 +20,10 @@ export const emailRoutes: Routes = [
 { path: 'manage', component: ManageTemplateComponent },
 { path: 'manage/:categoryId', component: ManageTemplateComponent },
 { path: 'select', component: SelectTemplateComponent },
-{ path: 'create', component: CreateTemplateComponent },
-{ path: 'saveAs', component: CreateTemplateComponent },
-{ path: 'edit', component: CreateTemplateComponent },
-{ path: 'edit/:categoryId', component: CreateTemplateComponent },
+{ path: 'create', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
+{ path: 'saveAs', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
+{ path: 'edit', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
+{ path: 'edit/:categoryId', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
 { path: 'upload/:type', component: CkEditorUploadComponent },
 { path: 'update', component: UpdateTemplateComponent },
 { path: 'update/:categoryId', component: UpdateTemplateComponent },

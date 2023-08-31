@@ -18,6 +18,7 @@ import { UpdateMarketoTemplateComponent } from './update-marketo-template/update
 import { SharedContactsModule } from 'app/shared/shared-contacts.module';
 import {CkEditorUploadComponentModule} from '../ck-editor-upload-component/ck-editor-upload-component.module';
 import { SelectEmailTemplatesFilterPipe } from './select-email-templates-filter.pipe';
+import { PendingChangesGuard } from "app/component-can-deactivate";
 
 
 
@@ -27,5 +28,6 @@ import { SelectEmailTemplatesFilterPipe } from './select-email-templates-filter.
   imports: [ CommonModule,SharedModule,EmailTemplateRoutingModule,CKEditorModule, ErrorPagesModule,CommonComponentModule,SharedContactsModule,CkEditorUploadComponentModule ],
   declarations: [EmailEditorComponent, CreateTemplateComponent,ManageTemplateComponent, SelectTemplateComponent,
                  UpdateTemplateComponent, UploadEmailTemplateComponent, HelpComponent, UploadMarketoEmailTemplateComponent, UpdateMarketoTemplateComponent, SelectEmailTemplatesFilterPipe],
+  providers:[PendingChangesGuard]
 })
 export class EmailTemplateModule { }

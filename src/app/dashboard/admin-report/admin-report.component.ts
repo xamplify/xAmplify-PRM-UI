@@ -233,11 +233,10 @@ export class AdminReportComponent implements OnInit {
   
   
   activateOrDeactivate(report:any){
-      console.log(report);
       let userStatus = report.userStatus;
       let text = "";
       let title = "";
-      if(userStatus=="UNAPPROVED" || userStatus=="SUSPEND" || userStatus=="DECLINE" || userStatus=="BLOCK"){
+      if(userStatus=="UNAPPROVED" || userStatus=="DECLINE" ){
           title = 'Are you sure to activate this account?';
           text  = "This account status is "+userStatus;
       }else if(userStatus=="APPROVED"){
