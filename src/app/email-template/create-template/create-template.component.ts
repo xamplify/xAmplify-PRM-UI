@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,HostListener } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EmailTemplateService } from '../services/email-template.service';
@@ -14,6 +14,9 @@ import { Pagination } from '../../core/models/pagination';
 import { FormService } from '../../forms/services/form.service';
 import { SortOption } from '../../core/models/sort-option';
 import { CustomResponse } from '../../common/models/custom-response';
+import { ComponentCanDeactivate } from 'app/component-can-deactivate';
+import { Observable } from 'rxjs/Observable';
+
 declare var BeePlugin:any, swal:any, $: any;
 
 @Component({
@@ -22,7 +25,7 @@ declare var BeePlugin:any, swal:any, $: any;
     styleUrls: ['./create-template.component.css'],
     providers: [EmailTemplate, HttpRequestLoader, FormService, Pagination, SortOption]
 })
-export class CreateTemplateComponent implements OnInit, OnDestroy {
+export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     formsLoader: HttpRequestLoader = new HttpRequestLoader();
     senderMergeTag: SenderMergeTag = new SenderMergeTag();
@@ -54,6 +57,8 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute) {
         this.refService.scrollSmoothToTop();
         this.refService.startLoader(this.httpRequestLoader);
+        let url = this.refService.getCurrentRouteUrl();
+        this.isAdd = url.indexOf("create")>-1;
         this.categoryId = this.route.snapshot.params['categoryId'];
         if (this.categoryId > 0) {
             this.manageRouterLink += "/" + this.categoryId;
@@ -446,17 +451,19 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     }
 
     createButton(text, cb) {
+        let buttonClass = this.isAdd ? "btn btn-primary":"btn btn-sm btn-primary";
+        let cancelButtonClass = this.isAdd ? "btn Btn-Gray":"btn btn-sm Btn-Gray";
+        let cancelButtonSettings = this.isAdd ? 'class="'+cancelButtonClass+'"' : 'class="'+cancelButtonClass+'" style="margin-right: -35px !important;"';
         if (text == "Save") {
-            return $('<input type="submit" class="btn btn-sm btn-primary" value="' + text + '" id="save" disabled="disabled">').on('click', cb);
+            return $('<input type="submit" class="'+buttonClass+'"  value="' + text + '" id="save" disabled="disabled">').on('click', cb);
         } else if (text == "Save As") {
-            return $('<input type="submit" class="btn btn-sm btn-primary" value="' + text + '" id="save-as" disabled="disabled">').on('click', cb);
+            return $('<input type="submit" class="'+buttonClass+'" style="margin-left: -33px !important" value="' + text + '" id="save-as" disabled="disabled">').on('click', cb);
         } else if (text == "Update") {
-            return $('<input type="submit" class="btn btn-sm btn-primary" value="' + text + '" id="update">').on('click', cb);
+            return $('<input type="submit" class="'+buttonClass+'" value="' + text + '" id="update">').on('click', cb);
         }else if (text == "Update & Redirect") {
-            return $('<input type="submit" class="btn btn-sm btn-primary" value="' + text + '" id="update-and-close">').on('click', cb);
-        }
-        else {
-            return $('<input type="submit" class="btn btn-sm Btn-Gray" style="margin-right:-19px !important" value="' + text + '">').on('click', cb);
+            return $('<input type="submit" class="'+buttonClass+'" value="' + text + '" id="update-and-close">').on('click', cb);
+        }else {
+            return $('<input type="submit" '+cancelButtonSettings+' value="' + text + '">').on('click', cb);
         }
     }
 
@@ -468,5 +475,12 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
         }else{
             this.navigateToManageSection();
         }
+    }
+
+    @HostListener('window:beforeunload')
+    canDeactivate(): Observable<boolean> | boolean {
+        this.authenticationService.stopLoaders();
+        let isInvalidEditPage = !this.isAdd && this.emailTemplateService.emailTemplate==undefined;
+        return isInvalidEditPage || this.authenticationService.module.logoutButtonClicked;
     }
 }
