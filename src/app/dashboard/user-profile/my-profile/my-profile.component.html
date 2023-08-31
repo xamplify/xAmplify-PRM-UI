@@ -2126,7 +2126,7 @@
                                             (keydown)="pipelineSumbitOnEnter($event)" class="bg-color field-border-customization inputFieldWidth">
                                         </span>
                                         <span class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
-                                            <div class="mb_mt7 alignEqualtoText">
+                                            <div class="mb_mt7 alignEqualtoFields">
                                                 <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex"
                                                     id="defaultStage{{x}}" name="defaultStage" class="alignEqualtoText" (change)="defaultStageChange(pipelineStage)">
                                                 <span>Default</span>&nbsp;&nbsp;
@@ -2142,10 +2142,15 @@
                                                         class="glyphicon glyphicon-trash"></span></button>
                                                         
                                                         <span class="pdLeftforspace">Private <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span></span>
-                                                        <label class="switch pipeline">
+                                                        <!-- <label class="switch pipeline">
                                                             <input type="checkbox" [(ngModel)]="pipelineStage.private" name="private">
                                                             <span class="slider round slidercu"></span>
-                                                          </label> 
+                                                          </label>  -->
+                                                          <label class="toggleOnOff">
+                                                            <input type="checkbox" [(ngModel)]="pipelineStage.private" name="private">
+                                                            <span class="sliderOnOff"></span>
+                                                            <span class="labels" data-on="ON" data-off="OFF"></span>
+                                                          </label>
                                                         <!-- <span *ngIf="!pipeline.private">
                                                             <input type="checkbox" [(ngModel)]="pipelineStage.private"
                                                             name="private" style="margin: 5px;"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
