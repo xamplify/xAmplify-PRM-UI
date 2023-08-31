@@ -52,6 +52,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
+        this.refService.scrollSmoothToTop();
         this.refService.startLoader(this.httpRequestLoader);
         this.categoryId = this.route.snapshot.params['categoryId'];
         if (this.categoryId > 0) {
@@ -258,11 +259,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                         self.isMinTimeOver = true;
                     },
                     onSend: function (htmlFile) {
-                        //write your send test function here
-                        console.log(htmlFile);
                     },
-                    onError: function (errorMessage) {
-                        swal("", "Unable to load bee template:" + errorMessage, "error");
+                    onError: function (errorMessage:string) {
+                        self.refService.showSweetAlertErrorMessage("Unable to load bee template:" + errorMessage);
                     }
                 };
 
@@ -302,6 +301,7 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
                     });
             } else {
                 swal("Please Contact Admin!", "No CompanyId Found", "error");
+                self.refService.stopLoader(self.httpRequestLoader);
             }
         } else {
             this.location.back();//Navigating to previous router url
@@ -435,49 +435,9 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
     ngOnInit() {  }
     ngOnDestroy() {
         this.emailTemplateService.isNewTemplate = false;
-        swal.close();
-        let isButtonClicked = this.clickedButtonName != "SAVE" && this.clickedButtonName != "SAVE_AS" && this.clickedButtonName != "UPDATE";
-        if (this.router.url != "/login" && isButtonClicked && this.emailTemplateService.emailTemplate != undefined && this.loggedInUserId > 0 && this.emailTemplate.jsonBody != undefined && this.isMinTimeOver) {
-            let isDefaultTemplate = this.emailTemplateService.emailTemplate.defaultTemplate;
-            let isUserDefined = this.emailTemplateService.emailTemplate.userDefined;
-            let isDraft = this.emailTemplateService.emailTemplate.draft;
-            if (!isDefaultTemplate && isUserDefined) {
-                if (isDraft) {
-                    this.isAdd = false;
-                    this.emailTemplate.draft = true;
-                    this.showSweetAlert();
-                }
-            }
-            else {
-                this.isAdd = true;
-                this.showSweetAlert();
-            }
-        }
     }
 
-    showSweetAlert() {
-        let self = this;
-        swal({
-            title: 'Are you sure?',
-            text: "You have unchanged data",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#54a7e9',
-            cancelButtonColor: '#999',
-            confirmButtonText: 'Yes, Save it!',
-            cancelButtonText: "No",
-            allowOutsideClick: false
-        }).then(function () {
-            if (self.isAdd) {
-                self.emailTemplate.draft = true;
-                self.saveEmailTemplate(self.emailTemplate, self.emailTemplateService, self.loggedInUserId, true);
-            } else {
-                self.updateEmailTemplate(self.emailTemplate, self.emailTemplateService, true);
-            }
-        }, function (dismiss) {
-
-        })
-    }
+   
 
 
     saveTemplate() {
@@ -500,4 +460,13 @@ export class CreateTemplateComponent implements OnInit, OnDestroy {
         }
     }
 
+    navigateBack(){
+        let url = this.refService.getCurrentRouteUrl();
+        let isCreateUrl = url.indexOf("create")>-1;
+        if(isCreateUrl){
+            this.router.navigate(["/home/emailtemplates/select"]);
+        }else{
+            this.navigateToManageSection();
+        }
+    }
 }
