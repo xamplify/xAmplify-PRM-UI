@@ -212,11 +212,11 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 		}
 	}
 	edit(id: number) {
+		this.refService.loading(this.httpRequestLoader, true);
 		this.emailTemplateService.getById(id)
 			.subscribe(
 				(data: EmailTemplate) => {
 					this.emailTemplateService.emailTemplate = data;
-					//this.router.navigate( ["/home/emailtemplates/update"] );
 					if (data.source.toString() === "MARKETO" || data.source.toString() === "HUBSPOT") {
 						this.navigateToEditPage();
 					} else {
@@ -234,6 +234,7 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 
 				},
 				(error: string) => {
+					this.refService.loading(this.httpRequestLoader, false);
 					this.logger.error(this.refService.errorPrepender + " edit():" + error);
 					this.refService.showServerError(this.httpRequestLoader);
 				}
