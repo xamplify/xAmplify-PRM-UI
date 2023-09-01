@@ -52,13 +52,15 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     mergeTagsInput: any = {};
     showForms: boolean = false;
     saveOrUpdateButtonClicked = false;
-    tempName = "";
-    tempCategoryId = 0;
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
-        this.refService.scrollSmoothToTop();
         this.refService.startLoader(this.httpRequestLoader);
+        this.loadBeeContainer(emailTemplateService, authenticationService,true);
+    }//End Of Constructor
+
+    private loadBeeContainer(emailTemplateService: EmailTemplateService, authenticationService: AuthenticationService,isLoadedFromConstructor:boolean) {
+        this.refService.scrollSmoothToTop();
         let url = this.refService.getCurrentRouteUrl();
         this.isAdd = url.indexOf("create")>-1;
         this.categoryId = this.route.snapshot.params['categoryId'];
@@ -71,7 +73,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             let self = this;
             self.loggedInUserId = this.authenticationService.getUserId();
             this.showForms = this.emailTemplateService.emailTemplate.surveyTemplate || this.emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
-
             emailTemplateService.getAvailableNames(self.loggedInUserId).subscribe(
                 (data: any) => {
                     names = data;
@@ -101,7 +102,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                     if (req.readyState === 4 && req.status === 200) {
                         var response = JSON.parse(req.responseText);
                         callback(response);
-                    }else if (req.readyState === 4 && req.status !== 200) {
+                    } else if (req.readyState === 4 && req.status !== 200) {
                         self.refService.showSweetAlertErrorMessage("Unable to load Bee container.Please try reloading the page/check your internet connection.");
                     }
                 };
@@ -129,121 +130,13 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 this.router.navigate(["/home/emailtemplates/select"]);
             }
 
-            var save = function (jsonContent: string, htmlContent: string) {
-                self.emailTemplate = new EmailTemplate();
-                self.emailTemplate.body = htmlContent;
-                self.emailTemplate.jsonBody = jsonContent;
-                if (emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate) {
-                    if (jsonContent.indexOf(self.videoGif) < 0) {
-                        swal("", "Whoops! We're unable to save this template because you deleted the default gif. You'll need to select a new email template and start over.", "error");
-                        return false;
-                    }
-                }
-                if (emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate || emailTemplateService.emailTemplate.surveyCoBrandingTemplate) {
-                    if (jsonContent.indexOf(self.coBraningImage) < 0) {
-                        swal("", "Whoops! We're unable to save this template because you deleted the co-branding logo. You'll need to select a new email template and start over.", "error");
-                        return false;
-                    }
-                }
-                if (!isDefaultTemplate) {
-                    var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                        .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color: red !important;"></span></div><br>');
-                    var dropDown = '<div class="form-group">';
-                    dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
-                    dropDown += '<select class="form-control" id="category-dropdown">';
-                    $.each(self.categoryNames, function (_index: number, category: any) {
-                        let categoryId = category.id;
-                        if (self.emailTemplateService.emailTemplate.categoryId == categoryId) {
-                            dropDown += '<option value=' + category.id + ' selected>' + category.name + '</option>';
-                        } else {
-                            dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
-                        }
-                    });
-                    dropDown += '</select>';
-                    dropDown += '</div><br>';
-                    buttons.append(dropDown);
-
-                    buttons.append(self.createButton('Save As', function () {
-                        self.clickedButtonName = "SAVE_AS";
-                        self.saveTemplate();
-                    })).append(self.createButton('Update', function () {
-                        self.clickedButtonName = "UPDATE";
-                        self.emailTemplate.draft = false;
-                        self.updateEmailTemplate(self.emailTemplate, emailTemplateService, false);
-                    })).append(self.createButton('Update & Redirect', function () {
-                        self.clickedButtonName = "UPDATE_AND_CLOSE";
-                        self.emailTemplate.draft = false;
-                        self.updateEmailTemplate(self.emailTemplate, emailTemplateService, true);
-                    }))
-                    .append(self.createButton('Cancel', function () {
-                        self.clickedButtonName = "CANCEL";
-                        swal.close();
-                    }));
-
-
-                    swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false });
-                } else {
-                    var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                        .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
-                    var dropDown = '<div class="form-group">';
-                    dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
-                    dropDown += '<select class="form-control" id="category-dropdown">';
-                    $.each(self.categoryNames, function (_index: number, category: any) {
-                        dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
-                    });
-                    dropDown += '</select>';
-                    dropDown += '</div><br>';
-                    buttons.append(dropDown);
-
-                    buttons.append(self.createButton('Save', function () {
-                        self.clickedButtonName = "SAVE";
-                        self.saveTemplate();
-                    })).append(self.createButton('Cancel', function () {
-                        self.clickedButtonName = "CANCEL";
-                        swal.close();
-                    }));
-                    swal({
-                        title: title,
-                        html: buttons,
-                        showConfirmButton: false,
-                        showCancelButton: false
-                    });
-                }
-                $('#templateNameId').on('input', function (event) {
-                    let value = $.trim(event.target.value);
-                    $('#templateNameSpanError').empty();
-                    if (value.length > 0) {
-                        if (!(emailTemplateService.emailTemplate.defaultTemplate)) {
-                            if (names.indexOf(value.toLocaleLowerCase()) > -1 && emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase()) {
-                                $('#save,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
-                                $('#templateNameSpanError').text('Duplicate Name');
-                            } else if (value.toLocaleLowerCase() == emailTemplateService.emailTemplate.name.toLocaleLowerCase()) {
-                                $('#save,#save-as').attr('disabled', 'disabled');
-                            }
-                            else {
-                                $('#templateNameSpanError').empty();
-                                $('#save,#update,#save-as,#update-and-close').removeAttr('disabled');
-                            }
-                        } else {
-                            if (names.indexOf(value.toLocaleLowerCase()) > -1) {
-                                $('#save,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
-                                $('#templateNameSpanError').text('Duplicate Name');
-                            } else {
-                                $('#templateNameSpanError').empty();
-                                $('#save,#update,#save-as,#update-and-close').removeAttr('disabled');
-                            }
-                        }
-                    } else {
-                        $('#save,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
-                    }
-                });
-            };//End Of Save Method
+            var save = this.saveJsonAndHtmlContent(self, emailTemplateService, isDefaultTemplate, templateName, title, names); //End Of Save Method
 
 
             let mergeTags = [];
             let event = this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
-            mergeTags = this.refService.addMergeTags(mergeTags,false,event);
-            
+            mergeTags = this.refService.addMergeTags(mergeTags, false, event);
+
             if (self.refService.companyId != undefined && self.refService.companyId > 0) {
                 var beeUserId = "bee-" + self.refService.companyId;
                 var roleHash = self.authenticationService.vendorRoleHash;
@@ -258,17 +151,17 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                     onSave: function (jsonFile, htmlFile) {
                         save(jsonFile, htmlFile);
                     },
-                    onSaveAsTemplate: function (jsonFile) { // + thumbnail?
+                    onSaveAsTemplate: function (jsonFile) {
                         //save('newsletter-template.json', jsonFile);
                     },
-                    onAutoSave: function (jsonFile) { // + thumbnail?
+                    onAutoSave: function (jsonFile) {
                         window.localStorage.setItem('newsletter.autosave', jsonFile);
                         self.emailTemplate.jsonBody = jsonFile;
                         self.isMinTimeOver = true;
                     },
                     onSend: function (htmlFile) {
                     },
-                    onError: function (errorMessage:string) {
+                    onError: function (errorMessage: string) {
                         self.refService.showSweetAlertErrorMessage("Unable to load bee template:" + errorMessage);
                     }
                 };
@@ -290,7 +183,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                                 function (template: any) {
                                     if (emailTemplateService.emailTemplate != undefined) {
                                         var body = emailTemplateService.emailTemplate.jsonBody;
-                                        $.each(self.companyProfileImages, function (_index:number, value:any) {
+                                        $.each(self.companyProfileImages, function (_index: number, value: any) {
                                             body = body.replace(value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
                                         });
                                         body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
@@ -301,7 +194,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                                         self.refService.updateBeeIframeContainerHeight();
                                     } else {
                                         bee.start(template);
-                                    }                                    
+                                    }
                                     self.loadTemplate = true;
                                     self.refService.stopLoader(self.httpRequestLoader);
                                 });
@@ -312,9 +205,121 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 self.refService.stopLoader(self.httpRequestLoader);
             }
         } else {
-            this.location.back();//Navigating to previous router url
+            this.location.back();
         }
-    }//End Of Constructor
+    }
+
+    private saveJsonAndHtmlContent(self: this, emailTemplateService: EmailTemplateService, isDefaultTemplate: boolean, templateName: string, title: string, names: any) {
+        return function (jsonContent: string, htmlContent: string) {
+            self.emailTemplate = new EmailTemplate();
+            self.emailTemplate.body = htmlContent;
+            self.emailTemplate.jsonBody = jsonContent;
+            if (emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate) {
+                if (jsonContent.indexOf(self.videoGif) < 0) {
+                    swal("", "Whoops! We're unable to save this template because you deleted the default gif. You'll need to select a new email template and start over.", "error");
+                    return false;
+                }
+            }
+            if (emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate || emailTemplateService.emailTemplate.surveyCoBrandingTemplate) {
+                if (jsonContent.indexOf(self.coBraningImage) < 0) {
+                    swal("", "Whoops! We're unable to save this template because you deleted the co-branding logo. You'll need to select a new email template and start over.", "error");
+                    return false;
+                }
+            }
+            if (!isDefaultTemplate) {
+                var buttons = $('<div><div id="bee-save-buton-loader"></div>')
+                    .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color: red !important;"></span></div><br>');
+                var dropDown = '<div class="form-group">';
+                dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
+                dropDown += '<select class="form-control" id="category-dropdown">';
+                $.each(self.categoryNames, function (_index: number, category: any) {
+                    let categoryId = category.id;
+                    if (self.emailTemplateService.emailTemplate.categoryId == categoryId) {
+                        dropDown += '<option value=' + category.id + ' selected>' + category.name + '</option>';
+                    } else {
+                        dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
+                    }
+                });
+                dropDown += '</select>';
+                dropDown += '</div><br>';
+                buttons.append(dropDown);
+
+                buttons.append(self.createButton('Save As', function () {
+                    self.clickedButtonName = "SAVE_AS";
+                    self.saveTemplate();
+                })).append(self.createButton('Update', function () {
+                    self.clickedButtonName = "UPDATE";
+                    self.emailTemplate.draft = false;
+                    self.updateEmailTemplate(self.emailTemplate, emailTemplateService, false);
+                })).append(self.createButton('Update & Redirect', function () {
+                    self.clickedButtonName = "UPDATE_AND_CLOSE";
+                    self.emailTemplate.draft = false;
+                    self.updateEmailTemplate(self.emailTemplate, emailTemplateService, true);
+                }))
+                    .append(self.createButton('Cancel', function () {
+                        self.clickedButtonName = "CANCEL";
+                        swal.close();
+                    }));
+
+
+                swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false });
+            } else {
+                var buttons = $('<div><div id="bee-save-buton-loader"></div>')
+                    .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
+                var dropDown = '<div class="form-group">';
+                dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
+                dropDown += '<select class="form-control" id="category-dropdown">';
+                $.each(self.categoryNames, function (_index: number, category: any) {
+                    dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
+                });
+                dropDown += '</select>';
+                dropDown += '</div><br>';
+                buttons.append(dropDown);
+
+                buttons.append(self.createButton('Save', function () {
+                    self.clickedButtonName = "SAVE";
+                    self.saveTemplate();
+                })).append(self.createButton('Cancel', function () {
+                    self.clickedButtonName = "CANCEL";
+                    swal.close();
+                }));
+                swal({
+                    title: title,
+                    html: buttons,
+                    showConfirmButton: false,
+                    showCancelButton: false
+                });
+            }
+            $('#templateNameId').on('input', function (event) {
+                let value = $.trim(event.target.value);
+                $('#templateNameSpanError').empty();
+                if (value.length > 0) {
+                    if (!(emailTemplateService.emailTemplate.defaultTemplate)) {
+                        if (names.indexOf(value.toLocaleLowerCase()) > -1 && emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase()) {
+                            $('#save,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
+                            $('#templateNameSpanError').text('Duplicate Name');
+                        } else if (value.toLocaleLowerCase() == emailTemplateService.emailTemplate.name.toLocaleLowerCase()) {
+                            $('#save,#save-as').attr('disabled', 'disabled');
+                        }
+                        else {
+                            $('#templateNameSpanError').empty();
+                            $('#save,#update,#save-as,#update-and-close').removeAttr('disabled');
+                        }
+                    } else {
+                        if (names.indexOf(value.toLocaleLowerCase()) > -1) {
+                            $('#save,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
+                            $('#templateNameSpanError').text('Duplicate Name');
+                        } else {
+                            $('#templateNameSpanError').empty();
+                            $('#save,#update,#save-as,#update-and-close').removeAttr('disabled');
+                        }
+                    }
+                } else {
+                    $('#save,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
+                }
+            });
+        };
+    }
 
     saveEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, loggedInUserId: number, isOnDestroy: boolean) {
         this.refService.goToTop();
@@ -382,7 +387,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     }
 
     updateEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, isUpdateAndClose: boolean) {
-        this.saveOrUpdateButtonClicked = true;
+        this.saveOrUpdateButtonClicked = isUpdateAndClose;
         this.customResponse = new CustomResponse();
         this.refService.goToTop();
         $("#bee-save-buton-loader").addClass("button-loader"); 
@@ -409,9 +414,13 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                             this.refService.isUpdated = true;
                             this.navigateToManageSection();
                         }else{
-                            this.tempName = emailTemplate.name;
-                            this.tempCategoryId = emailTemplate.categoryId;
                             this.customResponse = new CustomResponse('SUCCESS', "Template updated successfully", true);
+                            this.refService.startLoader(this.httpRequestLoader);
+                            this.emailTemplateService.emailTemplate.name = emailTemplate.name;
+                            this.emailTemplateService.emailTemplate.categoryId = emailTemplate.categoryId;
+                            this.emailTemplateService.emailTemplate.jsonBody = emailTemplate.jsonBody;
+                            this.emailTemplateService.emailTemplate.body = emailTemplate.body;
+                            this.loadBeeContainer(this.emailTemplateService,this.authenticationService,false);
                         }
                     } else if (data.statusCode == 500) {
                         this.customResponse = new CustomResponse('ERROR', data.message, true);
