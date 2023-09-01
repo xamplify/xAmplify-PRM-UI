@@ -52,6 +52,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     mergeTagsInput: any = {};
     showForms: boolean = false;
     saveOrUpdateButtonClicked = false;
+    tempName = "";
+    tempCategoryId = 0;
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
@@ -407,6 +409,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                             this.refService.isUpdated = true;
                             this.navigateToManageSection();
                         }else{
+                            this.tempName = emailTemplate.name;
+                            this.tempCategoryId = emailTemplate.categoryId;
                             this.customResponse = new CustomResponse('SUCCESS', "Template updated successfully", true);
                         }
                     } else if (data.statusCode == 500) {
