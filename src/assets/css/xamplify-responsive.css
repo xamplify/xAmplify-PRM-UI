@@ -1,9 +1,4 @@
-.vjs-big-play-button{
- position: absolute;
- top: 50%!important;
- left:50%!important;
- transform: translate(-50px, -50px)!important;
-}
+
 /* 03-07-2023 - Account Dashboard */
 @media (min-width: 1025px) and (max-width: 1300px)  { 
 /* Dashboard icons size */
@@ -129,6 +124,9 @@
   }
   .tab_p0{
    padding: 0px!important;
+  }
+  .tab_pl0{
+    padding-left: 0px!important;
   }
 }
 /* Manage Campaigns ribbon adjustment 04-07-2023 */
@@ -413,6 +411,9 @@
   }
   .pt_10{
     padding-top: 10px!important;
+  }
+  .mb_20{
+   margin-bottom: 20px;
   }
 }
 /*Select Campaign- campaign */
