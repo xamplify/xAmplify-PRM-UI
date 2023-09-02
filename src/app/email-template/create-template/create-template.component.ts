@@ -136,6 +136,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             }
 
            var save = function (jsonContent: string, htmlContent: string) {
+            self.customResponse = new CustomResponse();
+            self.emailTemplateService.isTemplateSaved = false;
             self.emailTemplate = new EmailTemplate();
             self.emailTemplate.body = htmlContent;
             self.emailTemplate.jsonBody = jsonContent;
