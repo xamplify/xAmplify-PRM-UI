@@ -336,7 +336,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     }
 
     saveEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, loggedInUserId: number, isSaveAndCloseButtonclicked: boolean) {
-        this.saveOrUpdateButtonClicked =!isSaveAndCloseButtonclicked;
+        this.saveOrUpdateButtonClicked =isSaveAndCloseButtonclicked;
         this.refService.goToTop();
         $("#bee-save-buton-loader").addClass("button-loader"); 
         emailTemplate.user = new User();
