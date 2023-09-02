@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild,HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy,HostListener } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EmailTemplateService } from '../services/email-template.service';
@@ -15,7 +16,6 @@ import { FormService } from '../../forms/services/form.service';
 import { SortOption } from '../../core/models/sort-option';
 import { CustomResponse } from '../../common/models/custom-response';
 import { ComponentCanDeactivate } from 'app/component-can-deactivate';
-import { Observable } from 'rxjs/Observable';
 
 declare var BeePlugin:any, swal:any, $: any;
 
@@ -52,22 +52,27 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     mergeTagsInput: any = {};
     showForms: boolean = false;
     saveOrUpdateButtonClicked = false;
+    isReloaded: boolean = false;
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
         this.refService.startLoader(this.httpRequestLoader);
         this.loadBeeContainer(emailTemplateService, authenticationService,true);
-    }//End Of Constructor
+    }
 
     private loadBeeContainer(emailTemplateService: EmailTemplateService, authenticationService: AuthenticationService,isLoadedFromConstructor:boolean) {
         this.refService.scrollSmoothToTop();
         let url = this.refService.getCurrentRouteUrl();
         this.isAdd = url.indexOf("create")>-1;
         this.categoryId = this.route.snapshot.params['categoryId'];
+        
         if (this.categoryId > 0) {
             this.manageRouterLink += "/" + this.categoryId;
         }
         if (emailTemplateService.emailTemplate != undefined) {
+            if(this.emailTemplateService.isTemplateSaved){
+                this.customResponse = new CustomResponse('SUCCESS','Template saved successfully',true);
+            }
             this.mergeTagsInput['isEvent'] = emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
             var names: any = [];
             let self = this;
@@ -260,7 +265,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 self.refService.stopLoader(self.httpRequestLoader);
             }
         } else {
-            this.location.back();
+            this.isReloaded = true;
+            this.navigateBack();
         }
     }
 
@@ -375,7 +381,21 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                             this.refService.isCreated = true;
                             this.navigateToManageSection();
                         }else{
-                            this.customResponse = new CustomResponse('SUCCESS', 'Template saved successfully', true);
+                            this.refService.startLoader(this.httpRequestLoader);
+                            let createdEmailTemplateId = data.data;
+                            this.emailTemplateService.getById(createdEmailTemplateId).subscribe(
+                                (data: EmailTemplate)=>{
+                                    this.emailTemplateService.isNewTemplate = false;
+                                    this.emailTemplateService.emailTemplate = data;
+                                    this.emailTemplateService.isTemplateSaved = true;
+                                    if (this.categoryId > 0) {
+                                        this.router.navigate(["/home/emailtemplates/edit/" + this.categoryId]);
+                                    } else {
+                                        this.router.navigate(["/home/emailtemplates/edit"]);
+                                    }
+                                },error=>{
+                                    this.logger.errorPage(error);
+                            });
                         }                                     
                        
                     } else if (data.statusCode == 500) {
@@ -504,6 +524,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     canDeactivate(): Observable<boolean> | boolean {
         this.authenticationService.stopLoaders();
         let isInvalidEditPage = !this.isAdd && this.emailTemplateService.emailTemplate==undefined;
-        return this.saveOrUpdateButtonClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked ;
+        return this.saveOrUpdateButtonClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked || this.isReloaded;
     }
 }
