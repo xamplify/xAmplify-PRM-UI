@@ -230,98 +230,114 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 var buttons = $('<div><div id="bee-save-buton-loader"></div>')
                     .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color: red !important;"></span></div><br>');
                 var dropDown = '<div class="form-group">';
-                dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
-                dropDown += '<select class="form-control" id="category-dropdown">';
-                $.each(self.categoryNames, function (_index: number, category: any) {
-                    let categoryId = category.id;
-                    if (self.emailTemplateService.emailTemplate.categoryId == categoryId) {
-                        dropDown += '<option value=' + category.id + ' selected>' + category.name + '</option>';
-                    } else {
-                        dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
-                    }
-                });
-                dropDown += '</select>';
-                dropDown += '</div><br>';
-                buttons.append(dropDown);
 
-                buttons.append(self.createButton('Save As', function () {
-                    self.clickedButtonName = "SAVE_AS";
-                    self.saveTemplate();
-                })).append(self.createButton('Update', function () {
-                    self.clickedButtonName = "UPDATE";
-                    self.emailTemplate.draft = false;
-                    self.updateEmailTemplate(self.emailTemplate, emailTemplateService, false);
-                })).append(self.createButton('Update & Redirect', function () {
-                    self.clickedButtonName = "UPDATE_AND_CLOSE";
-                    self.emailTemplate.draft = false;
-                    self.updateEmailTemplate(self.emailTemplate, emailTemplateService, true);
-                }))
-                    .append(self.createButton('Cancel', function () {
-                        self.clickedButtonName = "CANCEL";
-                        swal.close();
-                    }));
-
-
-                swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false });
+                dropDown = self.openUpdateTemplateModalPopUp(dropDown, self, buttons, emailTemplateService, title);
             } else {
                 var buttons = $('<div><div id="bee-save-buton-loader"></div>')
                     .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                 var dropDown = '<div class="form-group">';
-                dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
-                dropDown += '<select class="form-control" id="category-dropdown">';
-                $.each(self.categoryNames, function (_index: number, category: any) {
-                    dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
-                });
-                dropDown += '</select>';
-                dropDown += '</div><br>';
-                buttons.append(dropDown);
-
-                buttons.append(self.createButton('Save', function () {
-                    self.clickedButtonName = "SAVE";
-                    self.saveTemplate();
-                })).append(self.createButton('Cancel', function () {
-                    self.clickedButtonName = "CANCEL";
-                    swal.close();
-                }));
-                swal({
-                    title: title,
-                    html: buttons,
-                    showConfirmButton: false,
-                    showCancelButton: false
-                });
+                dropDown = self.openSaveTemplateModalPopUp(dropDown, self, buttons, title);
             }
-            $('#templateNameId').on('input', function (event) {
-                let value = $.trim(event.target.value);
-                $('#templateNameSpanError').empty();
-                if (value.length > 0) {
-                    if (!(emailTemplateService.emailTemplate.defaultTemplate)) {
-                        if (names.indexOf(value.toLocaleLowerCase()) > -1 && emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase()) {
-                            $('#save,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
-                            $('#templateNameSpanError').text('Duplicate Name');
-                        } else if (value.toLocaleLowerCase() == emailTemplateService.emailTemplate.name.toLocaleLowerCase()) {
-                            $('#save,#save-as').attr('disabled', 'disabled');
-                        }
-                        else {
-                            $('#templateNameSpanError').empty();
-                            $('#save,#update,#save-as,#update-and-close').removeAttr('disabled');
-                        }
-                    } else {
-                        if (names.indexOf(value.toLocaleLowerCase()) > -1) {
-                            $('#save,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
-                            $('#templateNameSpanError').text('Duplicate Name');
-                        } else {
-                            $('#templateNameSpanError').empty();
-                            $('#save,#update,#save-as,#update-and-close').removeAttr('disabled');
-                        }
-                    }
-                } else {
-                    $('#save,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
-                }
-            });
+            self.validateTemplateNameOnInput(emailTemplateService, names);
         };
     }
 
-    saveEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, loggedInUserId: number, isOnDestroy: boolean) {
+    private validateTemplateNameOnInput(emailTemplateService: EmailTemplateService, names: any) {
+        $('#templateNameId').on('input', function (event: any) {
+            let value = $.trim(event.target.value);
+            $('#templateNameSpanError').empty();
+            if (value.length > 0) {
+                if (!(emailTemplateService.emailTemplate.defaultTemplate)) {
+                    if (names.indexOf(value.toLocaleLowerCase()) > -1 && emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase()) {
+                        $('#save,#save-and-redirect,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
+                        $('#templateNameSpanError').text('Duplicate Name');
+                    } else if (value.toLocaleLowerCase() == emailTemplateService.emailTemplate.name.toLocaleLowerCase()) {
+                        $('#save,#save-as').attr('disabled', 'disabled');
+                    }
+                    else {
+                        $('#templateNameSpanError').empty();
+                        $('#save,#save-and-redirect,#update,#save-as,#update-and-close').removeAttr('disabled');
+                    }
+                } else {
+                    if (names.indexOf(value.toLocaleLowerCase()) > -1) {
+                        $('#save,#save-and-redirect,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
+                        $('#templateNameSpanError').text('Duplicate Name');
+                    } else {
+                        $('#templateNameSpanError').empty();
+                        $('#save,#save-and-redirect,#update,#save-as,#update-and-close').removeAttr('disabled');
+                    }
+                }
+            } else {
+                $('#save,#save-and-redirect,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
+            }
+        });
+    }
+
+    private openUpdateTemplateModalPopUp(dropDown: string, self: this, buttons: any, emailTemplateService: EmailTemplateService, title: string) {
+        dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
+        dropDown += '<select class="form-control" id="category-dropdown">';
+        $.each(self.categoryNames, function (_index: number, category: any) {
+            let categoryId = category.id;
+            if (self.emailTemplateService.emailTemplate.categoryId == categoryId) {
+                dropDown += '<option value=' + category.id + ' selected>' + category.name + '</option>';
+            } else {
+                dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
+            }
+        });
+        dropDown += '</select>';
+        dropDown += '</div><br>';
+        buttons.append(dropDown);
+
+        buttons.append(self.createButton('Save As', function () {
+            self.clickedButtonName = "SAVE_AS";
+            self.saveTemplate(false);
+        })).append(self.createButton('Update', function () {
+            self.clickedButtonName = "UPDATE";
+            self.emailTemplate.draft = false;
+            self.updateEmailTemplate(self.emailTemplate, emailTemplateService, false);
+        })).append(self.createButton('Update & Redirect', function () {
+            self.clickedButtonName = "UPDATE_AND_REDIRECT";
+            self.emailTemplate.draft = false;
+            self.updateEmailTemplate(self.emailTemplate, emailTemplateService, true);
+        }))
+            .append(self.createButton('Cancel', function () {
+                self.clickedButtonName = "CANCEL";
+                swal.close();
+            }));
+        swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false });
+        return dropDown;
+    }
+
+    private openSaveTemplateModalPopUp(dropDown: string, self: this, buttons: any, title: string) {
+        dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
+        dropDown += '<select class="form-control" id="category-dropdown">';
+        $.each(self.categoryNames, function (_index: number, category: any) {
+            dropDown += '<option value=' + category.id + '>' + category.name + '</option>';
+        });
+        dropDown += '</select>';
+        dropDown += '</div><br>';
+        buttons.append(dropDown);
+
+        buttons.append(self.createButton('Save', function () {
+            self.clickedButtonName = "SAVE";
+            self.saveTemplate(false);
+        }));
+
+        buttons.append(self.createButton('Save & Redirect', function () {
+            self.clickedButtonName = "SAVE & REDIRECT";
+            self.saveTemplate(true);
+        }));
+
+        buttons.append(self.createButton('Cancel', function () {
+            self.clickedButtonName = "CANCEL";
+            swal.close();
+        }));
+        swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false });
+        return dropDown;
+    }
+
+    saveEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, loggedInUserId: number, isSaveAndCloseButtonclicked: boolean) {
+        this.saveOrUpdateButtonClicked =!isSaveAndCloseButtonclicked;
         this.refService.goToTop();
         $("#bee-save-buton-loader").addClass("button-loader"); 
         emailTemplate.user = new User();
@@ -363,13 +379,14 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
                 swal.close();
                 if (data.access) {
-                    if (data.statusCode == 702) {                                               
-                        if (!isOnDestroy) {
+                    if (data.statusCode == 702) {       
+                        if(isSaveAndCloseButtonclicked){
+                            this.customResponse = new CustomResponse('SUCCESS', 'Template saved successfully', true);
+                        }else{
                             this.refService.isCreated = true;
                             this.navigateToManageSection();
-                        } else {
-                            this.emailTemplateService.goToManage();
-                        }
+                        }                                     
+                       
                     } else if (data.statusCode == 500) {
                         this.customResponse = new CustomResponse('ERROR', data.message, true);
                     }                    
@@ -458,13 +475,9 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         this.emailTemplateService.isNewTemplate = false;
     }
 
-   
-
-
-    saveTemplate() {
+    saveTemplate(isSaveAndRedirectButtonClicked:boolean) {
         this.emailTemplate.draft = false;
-        this.saveOrUpdateButtonClicked = true;
-        this.saveEmailTemplate(this.emailTemplate, this.emailTemplateService, this.loggedInUserId, false);
+        this.saveEmailTemplate(this.emailTemplate, this.emailTemplateService, this.loggedInUserId, isSaveAndRedirectButtonClicked);
     }
 
     createButton(text, cb) {
@@ -473,7 +486,9 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         let cancelButtonSettings = this.isAdd ? 'class="'+cancelButtonClass+'"' : 'class="'+cancelButtonClass+'" style="margin-right: -35px !important;"';
         if (text == "Save") {
             return $('<input type="submit" class="'+buttonClass+'"  value="' + text + '" id="save" disabled="disabled">').on('click', cb);
-        } else if (text == "Save As") {
+        }else if(text == "Save & Redirect"){
+            return $('<input type="submit" class="'+buttonClass+'"  value="' + text + '" id="save-and-redirect" disabled="disabled">').on('click', cb);
+        }else if (text == "Save As") {
             return $('<input type="submit" class="'+buttonClass+'" style="margin-left: -33px !important" value="' + text + '" id="save-as" disabled="disabled">').on('click', cb);
         } else if (text == "Update") {
             return $('<input type="submit" class="'+buttonClass+'" value="' + text + '" id="update">').on('click', cb);
