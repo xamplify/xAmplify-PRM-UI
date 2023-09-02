@@ -19,6 +19,7 @@ import { SharedContactsModule } from 'app/shared/shared-contacts.module';
 import {CkEditorUploadComponentModule} from '../ck-editor-upload-component/ck-editor-upload-component.module';
 import { SelectEmailTemplatesFilterPipe } from './select-email-templates-filter.pipe';
 import { PendingChangesGuard } from "app/component-can-deactivate";
+import { ManageEmailTemplatesComponent } from './manage-email-templates/manage-email-templates.component';
 
 
 
@@ -27,7 +28,7 @@ import { PendingChangesGuard } from "app/component-can-deactivate";
 @NgModule({
   imports: [ CommonModule,SharedModule,EmailTemplateRoutingModule,CKEditorModule, ErrorPagesModule,CommonComponentModule,SharedContactsModule,CkEditorUploadComponentModule ],
   declarations: [EmailEditorComponent, CreateTemplateComponent,ManageTemplateComponent, SelectTemplateComponent,
-                 UpdateTemplateComponent, UploadEmailTemplateComponent, HelpComponent, UploadMarketoEmailTemplateComponent, UpdateMarketoTemplateComponent, SelectEmailTemplatesFilterPipe],
+                 UpdateTemplateComponent, UploadEmailTemplateComponent, HelpComponent, UploadMarketoEmailTemplateComponent, UpdateMarketoTemplateComponent, SelectEmailTemplatesFilterPipe, ManageEmailTemplatesComponent],
   providers:[PendingChangesGuard]
 })
 export class EmailTemplateModule { }
