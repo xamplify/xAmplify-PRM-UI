@@ -130,8 +130,63 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 this.router.navigate(["/home/emailtemplates/select"]);
             }
 
-            var save = this.saveJsonAndHtmlContent(self, emailTemplateService, isDefaultTemplate, templateName, title, names); //End Of Save Method
+           var save = function (jsonContent: string, htmlContent: string) {
+            self.emailTemplate = new EmailTemplate();
+            self.emailTemplate.body = htmlContent;
+            self.emailTemplate.jsonBody = jsonContent;
+            if (emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate) {
+                if (jsonContent.indexOf(self.videoGif) < 0) {
+                    swal("", "Whoops! We're unable to save this template because you deleted the default gif. You'll need to select a new email template and start over.", "error");
+                    return false;
+                }
+            }
+            if (emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate || emailTemplateService.emailTemplate.surveyCoBrandingTemplate) {
+                if (jsonContent.indexOf(self.coBraningImage) < 0) {
+                    swal("", "Whoops! We're unable to save this template because you deleted the co-branding logo. You'll need to select a new email template and start over.", "error");
+                    return false;
+                }
+            }
+            if (!isDefaultTemplate) {
+                var buttons = $('<div><div id="bee-save-buton-loader"></div>')
+                    .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color: red !important;"></span></div><br>');
+                var dropDown = '<div class="form-group">';
 
+                dropDown = self.openUpdateTemplateModalPopUp(dropDown, self, buttons, emailTemplateService, title);
+            } else {
+                var buttons = $('<div><div id="bee-save-buton-loader"></div>')
+                    .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
+                var dropDown = '<div class="form-group">';
+                dropDown = self.openSaveTemplateModalPopUp(dropDown, self, buttons, title);
+            }
+            $('#templateNameId').on('input', function (event: any) {
+                let value = $.trim(event.target.value);
+                $('#templateNameSpanError').empty();
+                if (value.length > 0) {
+                    if (!emailTemplateService.emailTemplate.defaultTemplate) {
+                        if (names.indexOf(value.toLocaleLowerCase()) > -1 && emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase()) {
+                            $('#save,#save-and-redirect,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
+                            $('#templateNameSpanError').text('Duplicate Name');
+                        } else if (value.toLocaleLowerCase() == emailTemplateService.emailTemplate.name.toLocaleLowerCase()) {
+                            $('#save,#save-as').attr('disabled', 'disabled');
+                        }
+                        else {
+                            $('#templateNameSpanError').empty();
+                            $('#save,#save-and-redirect,#update,#save-as,#update-and-close').removeAttr('disabled');
+                        }
+                    } else {
+                        if (names.indexOf(value.toLocaleLowerCase()) > -1) {
+                            $('#save,#save-and-redirect,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
+                            $('#templateNameSpanError').text('Duplicate Name');
+                        } else {
+                            $('#templateNameSpanError').empty();
+                            $('#save,#save-and-redirect,#update,#save-as,#update-and-close').removeAttr('disabled');
+                        }
+                    }
+                } else {
+                    $('#save,#save-and-redirect,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
+                }
+            });
+            };//End Of Save Method
 
             let mergeTags = [];
             let event = this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
@@ -209,70 +264,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         }
     }
 
-    private saveJsonAndHtmlContent(self: this, emailTemplateService: EmailTemplateService, isDefaultTemplate: boolean, templateName: string, title: string, names: any) {
-        return function (jsonContent: string, htmlContent: string) {
-            self.emailTemplate = new EmailTemplate();
-            self.emailTemplate.body = htmlContent;
-            self.emailTemplate.jsonBody = jsonContent;
-            if (emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate) {
-                if (jsonContent.indexOf(self.videoGif) < 0) {
-                    swal("", "Whoops! We're unable to save this template because you deleted the default gif. You'll need to select a new email template and start over.", "error");
-                    return false;
-                }
-            }
-            if (emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate || emailTemplateService.emailTemplate.surveyCoBrandingTemplate) {
-                if (jsonContent.indexOf(self.coBraningImage) < 0) {
-                    swal("", "Whoops! We're unable to save this template because you deleted the co-branding logo. You'll need to select a new email template and start over.", "error");
-                    return false;
-                }
-            }
-            if (!isDefaultTemplate) {
-                var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                    .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color: red !important;"></span></div><br>');
-                var dropDown = '<div class="form-group">';
-
-                dropDown = self.openUpdateTemplateModalPopUp(dropDown, self, buttons, emailTemplateService, title);
-            } else {
-                var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                    .append(' <div class="form-group"><input class="form-control" autocomplete="off" type="text" value="' + templateName + '" id="templateNameId"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
-                var dropDown = '<div class="form-group">';
-                dropDown = self.openSaveTemplateModalPopUp(dropDown, self, buttons, title);
-            }
-            self.validateTemplateNameOnInput(emailTemplateService, names);
-        };
-    }
-
-    private validateTemplateNameOnInput(emailTemplateService: EmailTemplateService, names: any) {
-        $('#templateNameId').on('input', function (event: any) {
-            let value = $.trim(event.target.value);
-            $('#templateNameSpanError').empty();
-            if (value.length > 0) {
-                if (!(emailTemplateService.emailTemplate.defaultTemplate)) {
-                    if (names.indexOf(value.toLocaleLowerCase()) > -1 && emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase()) {
-                        $('#save,#save-and-redirect,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
-                        $('#templateNameSpanError').text('Duplicate Name');
-                    } else if (value.toLocaleLowerCase() == emailTemplateService.emailTemplate.name.toLocaleLowerCase()) {
-                        $('#save,#save-as').attr('disabled', 'disabled');
-                    }
-                    else {
-                        $('#templateNameSpanError').empty();
-                        $('#save,#save-and-redirect,#update,#save-as,#update-and-close').removeAttr('disabled');
-                    }
-                } else {
-                    if (names.indexOf(value.toLocaleLowerCase()) > -1) {
-                        $('#save,#save-and-redirect,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
-                        $('#templateNameSpanError').text('Duplicate Name');
-                    } else {
-                        $('#templateNameSpanError').empty();
-                        $('#save,#save-and-redirect,#update,#save-as,#update-and-close').removeAttr('disabled');
-                    }
-                }
-            } else {
-                $('#save,#save-and-redirect,#update,#save-as,#update-and-close').attr('disabled', 'disabled');
-            }
-        });
-    }
-
     private openUpdateTemplateModalPopUp(dropDown: string, self: this, buttons: any, emailTemplateService: EmailTemplateService, title: string) {
         dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
         dropDown += '<select class="form-control" id="category-dropdown">';
@@ -304,7 +295,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 self.clickedButtonName = "CANCEL";
                 swal.close();
             }));
-        swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false });
+        swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false,allowEscapeKey: false });
         return dropDown;
     }
 
@@ -332,7 +323,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             self.clickedButtonName = "CANCEL";
             swal.close();
         }));
-        swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false });
+        swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false,allowEscapeKey: false });
         return dropDown;
     }
 
@@ -381,10 +372,10 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 if (data.access) {
                     if (data.statusCode == 702) {       
                         if(isSaveAndCloseButtonclicked){
-                            this.customResponse = new CustomResponse('SUCCESS', 'Template saved successfully', true);
-                        }else{
                             this.refService.isCreated = true;
                             this.navigateToManageSection();
+                        }else{
+                            this.customResponse = new CustomResponse('SUCCESS', 'Template saved successfully', true);
                         }                                     
                        
                     } else if (data.statusCode == 500) {
