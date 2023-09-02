@@ -103,6 +103,7 @@ export class ManageTemplateComponent implements OnInit, OnDestroy {
 		this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
 		this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
 		this.whiteLabeledBanner = this.properties.whiteLabeledBanner;
+		this.emailTemplateService.isTemplateSaved = false;
 		if (refService.isCreated) {
 			this.message = "Template created successfully";
 			this.showMessageOnTop(this.message);

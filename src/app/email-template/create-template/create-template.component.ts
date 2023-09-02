@@ -70,8 +70,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             this.manageRouterLink += "/" + this.categoryId;
         }
         if (emailTemplateService.emailTemplate != undefined) {
-            if(this.emailTemplateService.isTemplateSaved){
-                this.customResponse = new CustomResponse('SUCCESS','Template saved successfully',true);
+            if(this.emailTemplateService.isTemplateSaved && !this.isAdd){
+                this.customResponse = new CustomResponse('SUCCESS','Template created successfully',true);
             }
             this.mergeTagsInput['isEvent'] = emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
             var names: any = [];
