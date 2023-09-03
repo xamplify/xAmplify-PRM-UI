@@ -16,6 +16,7 @@ import { FormService } from '../../forms/services/form.service';
 import { SortOption } from '../../core/models/sort-option';
 import { CustomResponse } from '../../common/models/custom-response';
 import { ComponentCanDeactivate } from 'app/component-can-deactivate';
+import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 
 declare var BeePlugin:any, swal:any, $: any;
 
@@ -53,6 +54,10 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     showForms: boolean = false;
     saveOrUpdateButtonClicked = false;
     isReloaded: boolean = false;
+    viewType = "";
+    folderViewType = "";
+    modulesDisplayType = new ModulesDisplayType();
+
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
@@ -65,7 +70,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         let url = this.refService.getCurrentRouteUrl();
         this.isAdd = url.indexOf("create")>-1;
         this.categoryId = this.route.snapshot.params['categoryId'];
-        
+        this.viewType = this.route.snapshot.params['viewType'];
+        this.folderViewType = this.route.snapshot.params['folderViewType'];
         if (this.categoryId > 0) {
             this.manageRouterLink += "/" + this.categoryId;
         }
@@ -289,7 +295,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
 
         buttons.append(self.createButton('Save As', function () {
             self.clickedButtonName = "SAVE_AS";
-            self.saveTemplate(false);
+            self.saveTemplate(true);
         })).append(self.createButton('Update', function () {
             self.clickedButtonName = "UPDATE";
             self.emailTemplate.draft = false;
@@ -323,7 +329,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         }));
 
         buttons.append(self.createButton('Save & Redirect', function () {
-            self.clickedButtonName = "SAVE & REDIRECT";
+            self.clickedButtonName = "SAVE_AND_REDIRECT";
             self.saveTemplate(true);
         }));
 
@@ -336,7 +342,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     }
 
     saveEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, loggedInUserId: number, isSaveAndCloseButtonclicked: boolean) {
-        this.saveOrUpdateButtonClicked =isSaveAndCloseButtonclicked;
         this.refService.goToTop();
         $("#bee-save-buton-loader").addClass("button-loader"); 
         emailTemplate.user = new User();
@@ -378,7 +383,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
                 swal.close();
                 if (data.access) {
-                    if (data.statusCode == 702) {       
+                    if (data.statusCode == 702) {    
+                        this.saveOrUpdateButtonClicked = true;   
                         if(isSaveAndCloseButtonclicked){
                             this.refService.isCreated = true;
                             this.navigateToManageSection();
@@ -390,11 +396,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                                     this.emailTemplateService.isNewTemplate = false;
                                     this.emailTemplateService.emailTemplate = data;
                                     this.emailTemplateService.isTemplateSaved = true;
-                                    if (this.categoryId > 0) {
-                                        this.router.navigate(["/home/emailtemplates/edit/" + this.categoryId]);
-                                    } else {
-                                        this.router.navigate(["/home/emailtemplates/edit"]);
-                                    }
+                                    this.refService.navigateToManageEmailTemplatesByViewType(this.folderViewType,this.viewType,this.categoryId);
                                 },error=>{
                                     this.logger.errorPage(error);
                             });
@@ -468,12 +470,11 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     }
 
     navigateToManageSection() {
-        let categoryId = this.route.snapshot.params['categoryId'];
-        if (categoryId > 0) {
-            this.router.navigate(["/home/emailtemplates/manage/" + categoryId]);
-        } else {
-            this.router.navigate(["/home/emailtemplates/manage"]);
+        this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);
+        if(this.viewType==undefined){
+            this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
         }
+        this.refService.navigateToManageEmailTemplatesByViewType(this.folderViewType,this.viewType,this.categoryId);
     }
 
     updateCompanyLogo(emailTemplate: EmailTemplate) {
@@ -525,7 +526,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     @HostListener('window:beforeunload')
     canDeactivate(): Observable<boolean> | boolean {
         this.authenticationService.stopLoaders();
-        let isInvalidEditPage = !this.isAdd && this.emailTemplateService.emailTemplate==undefined;
+        let isInvalidEditPage = this.emailTemplateService.emailTemplate==undefined;
         return this.saveOrUpdateButtonClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked || this.isReloaded;
     }
 }

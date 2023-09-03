@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { EmailEditorComponent } from './email-editor/email-editor.component';
 import { CreateTemplateComponent } from './create-template/create-template.component';
 import { SelectTemplateComponent } from './select-template/select-template.component';
 import { UpdateTemplateComponent } from './update-template/update-template.component';
-import { UploadEmailTemplateComponent } from './upload-email-template/upload-email-template.component';
 import { HelpComponent } from './help/help.component';
 import { UploadMarketoEmailTemplateComponent } from './upload-marketo-email-template/upload-marketo-email-template.component';
 import { UpdateMarketoTemplateComponent } from './update-marketo-template/update-marketo-template.component';
@@ -24,7 +22,8 @@ export const emailRoutes: Routes = [
 { path: 'create', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
 { path: 'saveAs', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
 { path: 'edit', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
-{ path: 'edit/:categoryId', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
+{ path: 'edit/:viewType', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
+{ path: 'edit/:viewType/:categoryId/:folderViewType', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
 { path: 'upload/:type', component: CkEditorUploadComponent },
 { path: 'update', component: UpdateTemplateComponent },
 { path: 'update/:categoryId', component: UpdateTemplateComponent },

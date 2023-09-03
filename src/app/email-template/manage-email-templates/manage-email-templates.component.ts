@@ -29,8 +29,8 @@ export class ManageEmailTemplatesComponent implements OnInit {
 	}
 
 
-  goToManageCampaigns(){
-		this.referenceService.navigateToManageCampaignsByViewType(this.folderViewType,this.viewType,this.categoryId);
+  goToManageEmailTemplates(){
+		this.referenceService.navigateToManageEmailTemplatesByViewType(this.folderViewType,this.viewType,this.categoryId);
   }
 
   ngOnInit() {

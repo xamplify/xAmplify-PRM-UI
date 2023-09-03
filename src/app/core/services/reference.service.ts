@@ -3241,7 +3241,23 @@ export class ReferenceService {
   goToManageEmailTemplatesByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
     this.router.navigate(["/home/emailtemplates/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
   }
-   /********Campaigns****/
+   
+   goToEditEmailTemplate(viewType: string) {
+    this.router.navigate(["/home/emailtemplates/edit/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  navigateToEditEmailTemplateByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToEditEmailTemplateByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToEditEmailTemplate(viewType);
+    }
+  }
+  goToEditEmailTemplateByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/emailtemplates/edit/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+  
+  /********Email Templates****/
   
 
   
