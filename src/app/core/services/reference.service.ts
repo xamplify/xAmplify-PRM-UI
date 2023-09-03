@@ -3054,6 +3054,8 @@ export class ReferenceService {
       categoryType = "PLAY_BOOK";
     }else if(this.roles.campaignId==moduleId){
       categoryType = "CAMPAIGN";
+    }else if(this.roles.emailTemplateId==moduleId){
+      categoryType="EMAIL_TEMPLATE";
     }
     return categoryType;
   }
@@ -3186,6 +3188,7 @@ export class ReferenceService {
     }, 1000);
   }
 
+  /********Campaigns****/
   goToManageCampaigns(viewType: string) {
     this.router.navigate(["/home/campaigns/manage/"+this.getListViewAsDefault(viewType)]);
   }
@@ -3200,6 +3203,7 @@ export class ReferenceService {
   goToManageCampaignsByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
     this.router.navigate(["/home/campaigns/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
   }
+   /********Campaigns****/
 
   public isProduction(){
     return this.envService.SERVER_URL=="https://xamp.io/" && this.envService.CLIENT_URL=="https://xamplify.io/";
@@ -3221,6 +3225,55 @@ export class ReferenceService {
   updateBeeIframeContainerHeight(){
     document.getElementById('bee-plugin-container__bee-plugin-frame').style.height='935px';
   }
+
+   /********Email Templates****/
+   goToManageEmailTemplates(viewType: string) {
+    this.router.navigate(["/home/emailtemplates/manage/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  navigateToManageEmailTemplatesByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToManageEmailTemplatesByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToManageEmailTemplates(viewType);
+    }
+  }
+  goToManageEmailTemplatesByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/emailtemplates/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+   
+  goToEditEmailTemplate(viewType: string) {
+    this.router.navigate(["/home/emailtemplates/edit/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  navigateToEditEmailTemplateByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToEditEmailTemplateByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToEditEmailTemplate(viewType);
+    }
+  }
+  goToEditEmailTemplateByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/emailtemplates/edit/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  goToUpdateEmailTemplate(viewType: string) {
+    this.router.navigate(["/home/emailtemplates/update/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  navigateToUpdateEmailTemplateByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToUpdateEmailTemplateByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToUpdateEmailTemplate(viewType);
+    }
+  }
+  goToUpdateEmailTemplateByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/emailtemplates/update/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+  
+  
+  /********Email Templates****/
   
 
   

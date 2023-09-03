@@ -5,7 +5,6 @@ import { ErrorPagesModule } from '../error-pages/error-pages.module';
 import { CommonComponentModule} from '../common/common.module';
 import { EmailEditorComponent } from './email-editor/email-editor.component';
 import { CreateTemplateComponent } from './create-template/create-template.component';
-import { ManageTemplateComponent } from './manage-template/manage-template.component';
 import { SelectTemplateComponent } from './select-template/select-template.component';
 import { UpdateTemplateComponent } from './update-template/update-template.component';
 import { UploadEmailTemplateComponent } from './upload-email-template/upload-email-template.component';
@@ -27,7 +26,7 @@ import { ManageEmailTemplatesComponent } from './manage-email-templates/manage-e
 
 @NgModule({
   imports: [ CommonModule,SharedModule,EmailTemplateRoutingModule,CKEditorModule, ErrorPagesModule,CommonComponentModule,SharedContactsModule,CkEditorUploadComponentModule ],
-  declarations: [EmailEditorComponent, CreateTemplateComponent,ManageTemplateComponent, SelectTemplateComponent,
+  declarations: [EmailEditorComponent, CreateTemplateComponent, SelectTemplateComponent,
                  UpdateTemplateComponent, UploadEmailTemplateComponent, HelpComponent, UploadMarketoEmailTemplateComponent, UpdateMarketoTemplateComponent, SelectEmailTemplatesFilterPipe, ManageEmailTemplatesComponent],
   providers:[PendingChangesGuard]
 })

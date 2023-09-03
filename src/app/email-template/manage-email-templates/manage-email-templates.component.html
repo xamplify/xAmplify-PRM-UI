@@ -1,3 +1,23 @@
-<p>
-  manage-email-templates works!
-</p>
+<div class="page-content">
+  <div class="page-bar">
+     <ul class="page-breadcrumb">
+        <li><i class="fa fa-home" aria-hidden="true"></i> 
+           <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
+           <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+        <li class="breadcrumb-font-color" style="color: #808080">
+          <a [routerLink]="['/home/design/add']" translate>Create Design</a>
+           <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li class="breadcrumb-font-color" style="color: #808080">
+        <a [routerLink]="['/home/emailtemplates/select']" translate>Design Templates</a>
+         <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+        <li>
+           <a (click)="goToManageEmailTemplates()" translate>Manage Templates</a>
+        </li>
+     </ul>
+     <app-user-guide-help-button  [mergeTag]="'manage_templates'"></app-user-guide-help-button>
+  </div>
+  <app-email-templates-list-and-grid-view></app-email-templates-list-and-grid-view>
+</div>

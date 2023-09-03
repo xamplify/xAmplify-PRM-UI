@@ -169,9 +169,6 @@
                     <tr [ngClass]="{'hidden': !category.expanded}" id="list-folder-items">
                         <td colspan="5">
                             <ng-container *ngIf="category.expanded">
-                                <ng-container *ngIf="selectedModuleType==1">
-                                    <app-email-templates-list-view-util [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-email-templates-list-view-util>
-                                </ng-container>
                                 <ng-container *ngIf="selectedModuleType==2">
                                     <app-forms-list-view-util [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-forms-list-view-util>
                                 </ng-container>
@@ -184,7 +181,6 @@
                                 <ng-container *ngIf="selectedModuleType==5">
                                     <app-redistribute-campaigns-list-view-util [folderListViewInput]="folderListViewInput"></app-redistribute-campaigns-list-view-util>
                                 </ng-container>
-                                
                             </ng-container>
                         </td>
                      </tr>                   
