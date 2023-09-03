@@ -292,16 +292,16 @@ edit(id: number) {
     .subscribe(
       (data: EmailTemplate) => {
         this.emailTemplateService.emailTemplate = data;
+        let viewType = this.route.snapshot.params['viewType'];
+        let categoryId = this.route.snapshot.params['categoryId'];
+        let folderViewType = this.route.snapshot.params['folderViewType'];
         if (data.source.toString() === "MARKETO" || data.source.toString() === "HUBSPOT") {
-          this.navigateToEditPage();
+          this.navigateToEditPage(folderViewType,viewType,categoryId);
         } else {
           if (data.regularTemplate || data.videoTemplate) {
-            this.navigateToEditPage();
+            this.navigateToEditPage(folderViewType,viewType,categoryId);
           } else {
             this.emailTemplateService.isNewTemplate = false;
-            let viewType = this.route.snapshot.params['viewType'];
-			      let categoryId = this.route.snapshot.params['categoryId'];
-			      let folderViewType = this.route.snapshot.params['folderViewType'];
             this.referenceService.navigateToEditEmailTemplateByViewType(folderViewType,viewType,categoryId);
           }
         }
@@ -314,12 +314,8 @@ edit(id: number) {
 
 }
 
-navigateToEditPage() {
-  if (this.categoryId > 0) {
-    this.router.navigate(["/home/emailtemplates/update/" + this.categoryId]);
-  } else {
-    this.router.navigate(["/home/emailtemplates/update"]);
-  }
+navigateToEditPage(folderViewType:string,viewType:string,categoryId:number) {
+  this.referenceService.navigateToUpdateEmailTemplateByViewType(folderViewType,viewType,categoryId);
 }
 /******Delete*********/
 confirmDeleteEmailTemplate(id: number, name: string) {

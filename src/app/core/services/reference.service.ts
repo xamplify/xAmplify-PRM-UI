@@ -3242,7 +3242,7 @@ export class ReferenceService {
     this.router.navigate(["/home/emailtemplates/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
   }
    
-   goToEditEmailTemplate(viewType: string) {
+  goToEditEmailTemplate(viewType: string) {
     this.router.navigate(["/home/emailtemplates/edit/"+this.getListViewAsDefault(viewType)]);
   }
 
@@ -3256,6 +3256,22 @@ export class ReferenceService {
   goToEditEmailTemplateByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
     this.router.navigate(["/home/emailtemplates/edit/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
   }
+
+  goToUpdateEmailTemplate(viewType: string) {
+    this.router.navigate(["/home/emailtemplates/update/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  navigateToUpdateEmailTemplateByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToUpdateEmailTemplateByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToUpdateEmailTemplate(viewType);
+    }
+  }
+  goToUpdateEmailTemplateByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/emailtemplates/update/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+  
   
   /********Email Templates****/
   
