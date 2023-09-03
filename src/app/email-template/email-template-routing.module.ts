@@ -13,12 +13,16 @@ import { UpdateMarketoTemplateComponent } from './update-marketo-template/update
 import { SocialContactsCallbackComponent } from 'app/contacts/social-contacts-callback/social-contacts-callback.component';
 import {CkEditorUploadComponent} from '../ck-editor-upload-component/ck-editor-upload-component.component';
 import { PendingChangesGuard } from 'app/component-can-deactivate';
+import { ManageEmailTemplatesComponent } from './manage-email-templates/manage-email-templates.component';
 
 
 export const emailRoutes: Routes = [
 { path: '', redirectTo: 'manage', pathMatch: 'full' },
-{ path: 'manage', component: ManageTemplateComponent },
-{ path: 'manage/:categoryId', component: ManageTemplateComponent },
+{ path: 'manage-dep', component: ManageTemplateComponent },
+{ path: 'manage-dep/:categoryId', component: ManageTemplateComponent },
+{ path: "manage", component: ManageEmailTemplatesComponent },
+{ path: "manage/:viewType", component: ManageEmailTemplatesComponent },
+{ path: "manage/:viewType/:categoryId/:folderViewType", component: ManageEmailTemplatesComponent },
 { path: 'select', component: SelectTemplateComponent },
 { path: 'create', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
 { path: 'saveAs', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
