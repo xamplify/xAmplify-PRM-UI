@@ -161,6 +161,8 @@ export class FolderTypeViewUtilComponent implements OnInit {
       category.expanded = !category.expanded;  
       $('.child-row-list-view').css("background-color", "#fff");          
     if (category.expanded) {
+        this.referenceService.isCreated = false;
+        this.referenceService.isUpdated = false;
         $('#folder-row-' + selectedIndex).css("background-color", "#f1f5f9");
     } else {
         $('#folder-row-' + selectedIndex).css("background-color", "#fff");
