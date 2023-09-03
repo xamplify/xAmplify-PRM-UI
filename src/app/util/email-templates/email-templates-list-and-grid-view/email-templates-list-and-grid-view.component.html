@@ -15,7 +15,7 @@
         <app-landing-page-loader
            [maxBoxLength]=4 *ngIf="httpRequestLoader?.isLoading && modulesDisplayType?.isGridView"></app-landing-page-loader>
         <!---List View----->
-					<section   *ngIf="modulesDisplayType?.isListView && !httpRequestLoader?.isLoading">
+		  <section   *ngIf="modulesDisplayType?.isListView && !httpRequestLoader?.isLoading">
             <div class="table-responsive">
               <table class='table tgrid table-hover table-sm' id="manage-email-template-list" *ngIf="pagination?.pagedItems?.length>0" aria-describedby="manageTemplates">
                 <thead>
@@ -215,12 +215,17 @@
           <!---Pagination-->
 			<div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
                 <strong>No Templates Found.</strong>
-          </div> 
-          <div *ngIf="pagination?.pagedItems.length !== 0"	[hidden]="httpRequestLoader.isLoading">
-            <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findEmailTemplates($event)"></app-pagination>
-          </div>
+            </div> 
+            <div *ngIf="pagination?.pagedItems.length !== 0"	[hidden]="httpRequestLoader.isLoading">
+                <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findEmailTemplates($event)"></app-pagination>
+            </div>
         <!---Pagination-->
       </div>
+      <!--End Of List / Grid View-->
+      <!--Folder List View / Folder Grid View -->
+        <div *ngIf="modulesDisplayType?.isFolderGridView || modulesDisplayType?.isFolderListView">
+            <app-folder-type-view-util [moduleId]="roles.emailTemplateId" [modulesDisplayType]="modulesDisplayType"></app-folder-type-view-util>
+        </div>
     </div>
   </div>
 </div>

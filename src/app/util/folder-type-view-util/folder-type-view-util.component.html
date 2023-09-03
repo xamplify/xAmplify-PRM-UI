@@ -205,6 +205,14 @@
 							(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-campaign-list-and-grid-view>
 						</ng-container>
 
+						<!----Email Templates---->
+						<ng-container *ngIf="moduleId==roles.emailTemplateId">
+							<app-email-templates-list-and-grid-view
+						   [folderListViewCategoryId]="category.id"
+						   [folderListViewExpanded]="category.expanded"
+						   (updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-email-templates-list-and-grid-view>
+					   </ng-container>
+
 
 					</ng-container>
 				</td>

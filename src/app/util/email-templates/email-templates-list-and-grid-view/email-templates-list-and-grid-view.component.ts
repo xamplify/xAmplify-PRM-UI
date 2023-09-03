@@ -19,6 +19,7 @@ import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { ActionsDescription } from 'app/common/models/actions-description';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DashboardService } from 'app/dashboard/dashboard.service';
+import { Roles } from 'app/core/models/roles';
 declare var $:any, swal: any;
 
 @Component({
@@ -70,6 +71,8 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
 	sendTestEmailIconClicked = false;
 	whiteLabeledBanner = "";
   ngxloading: boolean;
+  roles:Roles = new Roles();
+
   constructor(
     private emailTemplateService: EmailTemplateService,
     private router: Router,
@@ -166,9 +169,15 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
   }
 
   findEmailTemplates(pagination: Pagination) {
-    this.referenceService.goToTop();
+    if(!this.folderListView){
+			this.referenceService.goToTop();
+		}
     this.referenceService.loading(this.httpRequestLoader, true);
     pagination.showDraftContent = true;
+    if(this.categoryId!=undefined && this.categoryId>0){
+      pagination.categoryId = this.categoryId;
+      this.pagination.categoryType = 'e';
+    }
     if (this.vanityLoginDto.vanityUrlFilter) {
       this.pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
       this.pagination.vendorCompanyProfileName =
@@ -358,6 +367,7 @@ deleteEmailTemplate(id: number, name: string) {
             this.isCampaignEmailTemplate = false;
             this.pagination.pageIndex = 1;
             this.findEmailTemplates(this.pagination);
+            this.callFolderListViewEmitter();
           } else {
             this.isEmailTemplateDeleted = false;
             this.isCampaignEmailTemplate = true;
@@ -485,6 +495,14 @@ sendTestEmailModalPopupEventReceiver(){
   this.sendTestEmailIconClicked = false;
 }
 
+
+callFolderListViewEmitter(){
+  if(this.folderListView){
+      this.exportObject['categoryId'] = this.categoryId;
+      this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+      this.updatedItemsCountEmitter.emit(this.exportObject);
+  }
+}
 
 
 }

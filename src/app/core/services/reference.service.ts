@@ -3054,6 +3054,8 @@ export class ReferenceService {
       categoryType = "PLAY_BOOK";
     }else if(this.roles.campaignId==moduleId){
       categoryType = "CAMPAIGN";
+    }else if(this.roles.emailTemplateId==moduleId){
+      categoryType="EMAIL_TEMPLATE";
     }
     return categoryType;
   }
