@@ -1,3 +1,5 @@
+<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+
 <div [className]="folderListView ? 'message-class-folder-list':'message-class'">
 	<app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
 </div>
@@ -30,7 +32,6 @@
                       </th>
                       <th class="hidden-xs text-center" translate scope="row">Type</th>
                       <th class="hidden-xs text-center" translate scope="row">Created On</th>
-                      <th class="hidden-xs text-center" translate scope="row">Updated On</th>
                       <th class="text-center" style="min-width: 200px;" translate scope="row">Actions</th>
                   </tr>
                 </thead>
@@ -85,10 +86,7 @@
                           </div>
                       </td>
                       <td class="hidden-xs text-center">
-                        <app-display-date-and-time [dateAndTimeUTCString]="emailTemplate.createdDate"></app-display-date-and-time>
-                      </td>
-                      <td class="hidden-xs text-center">
-                        <app-display-date-and-time [dateAndTimeUTCString]="emailTemplate.updatedDate"></app-display-date-and-time>
+                        <app-display-date-and-time [dateAndTimeUTCString]="emailTemplate?.createdDate"></app-display-date-and-time>
                       </td>
                       <td style="width: 14%" class="mActionAlign">
                           <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet actionAlignWeb actionAlignWeb mPadAction':'actions-block override-actions actionAlignWeb actionAlignWeb mPadAction'">
@@ -215,8 +213,8 @@
           </div>
           </section>
           <!---Pagination-->
-					<div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
-            <strong>No Data Found.</strong>
+			<div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
+                <strong>No Templates Found.</strong>
           </div> 
           <div *ngIf="pagination?.pagedItems.length !== 0"	[hidden]="httpRequestLoader.isLoading">
             <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findEmailTemplates($event)"></app-pagination>
@@ -289,8 +287,8 @@
                 <i class="fa fa-refresh" aria-hidden="true"></i>
               </a>
               <div class="pb3 float-left">
-                  <select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width" [(ngModel)]="sortOption.formsSortOption"	(ngModelChange)="sortEmailTemplates($event)"style="position: relative; right: -3px;">
-                    <option	*ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">{{option.name}}</option>
+                  <select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width" [(ngModel)]="sortOption.eventSelectedCampaignRecipientsDropDownOption"	(ngModelChange)="sortEmailTemplates($event)"style="position: relative; right: -3px;">
+                    <option	*ngFor="let option of sortOption.eventCampaignRecipientsDropDownOptions" [ngValue]="option">{{option.name}}</option>
                   </select> 
               </div>
               <div class="portlet-input input-inline input-small tab_srch_w" id="alignline-m-margin"	style="margin-right: 10px;">
@@ -309,3 +307,56 @@
 		</div>
 	</div>
 </ng-template>
+
+<!--Email Template Preview-->
+<div class="modal fade right" id="show_email_template_preivew" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" data-dismiss="modal" (click)="emailTemplate = null" aria-hidden="true">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title" id="email-template-title" style="text-align: center;"></h4>
+            </div>
+            <div class="modal-body">
+                <div id="htmlContent"></div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" data-dismiss="modal" (click)="emailTemplate = null" class="btn Btn-Gray" style="float: right" translate>Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade right" id="email_spam_check" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg modal-template" style="right:0">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" data-dismiss="modal" (click)="emailTemplate = null" aria-hidden="true">
+                    <i class="fa fa-times" aria-hidden="true"></i></button>
+                <h4 class="modal-title" translate>Email Spam Check</h4>
+            </div>
+            <div class="modal-body">
+                <app-email-spam-check *ngIf="emailTemplate" [emailTemplate]="emailTemplate"></app-email-spam-check>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" data-dismiss="modal" (click)="emailTemplate = null" class="btn Btn-Gray" style="float: right" translate>Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-container *ngIf="saveAsDefaultTemplate">
+<app-add-default-template-details [defaultTemplateInput]="defaultTemplateInput"  (notifyChild)="showSuccessMessage()"></app-add-default-template-details>
+</ng-container>
+
+<!--XNFR-317-->
+<ng-template #sendTestEmailIcon let-emailTemplate="emailTemplate">
+<a *ngIf="!emailTemplate?.draft" (click)="openSendTestEmailModalPopup(emailTemplate)" data-toggle="tooltip" data-placement="top"
+ title="{{actionsDescription?.sendTestEmail}}">
+  <i class="fa fa-envelope-o" aria-hidden="true"></i>
+</a>
+</ng-template>
+<app-send-test-email *ngIf="sendTestEmailIconClicked" [id]="selectedEmailTemplateId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
+<!--XNFR-317-->
+<app-scroll-top></app-scroll-top>

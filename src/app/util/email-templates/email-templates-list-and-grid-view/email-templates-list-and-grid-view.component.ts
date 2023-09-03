@@ -34,7 +34,7 @@ declare var $:any, swal: any;
     Properties,
   ],
 })
-export class EmailTemplatesListAndGridViewComponent implements OnInit {
+export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy {
   loading = false;
   loggedInUserId: number = 0;
   customResponse: CustomResponse = new CustomResponse();
@@ -43,7 +43,6 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit {
   modulesDisplayType = new ModulesDisplayType();
   loggedInAsSuperAdmin: boolean;
   isPartnerToo: boolean;
-  whiteLabeledBanner: string;
   message: string;
   hasAllAccess: boolean;
   hasEmailTemplateRole: boolean;
@@ -59,6 +58,18 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit {
 	@Output() updatedItemsCountEmitter = new EventEmitter();
 	@Input() folderListViewExpanded = false;
   categoryId=0;
+  emailTemplate: EmailTemplate;
+	emailPreview: string;
+  isEmailTemplateDeleted = false;
+	isCampaignEmailTemplate = false;
+	selectedEmailTemplateName = "";
+  saveAsDefaultTemplate =false;
+  defaultTemplateInput = {};
+  /**XNFR-317*****/
+	selectedEmailTemplateId = 0;
+	sendTestEmailIconClicked = false;
+	whiteLabeledBanner = "";
+  ngxloading: boolean;
   constructor(
     private emailTemplateService: EmailTemplateService,
     private router: Router,
@@ -265,6 +276,216 @@ filterTemplates(type: string, isVideoTemplate: boolean, index: number) {
 	}
 	this.findEmailTemplates(this.pagination);
 }
+
+edit(id: number) {
+  this.referenceService.loading(this.httpRequestLoader, true);
+  this.emailTemplateService.getById(id)
+    .subscribe(
+      (data: EmailTemplate) => {
+        this.emailTemplateService.emailTemplate = data;
+        if (data.source.toString() === "MARKETO" || data.source.toString() === "HUBSPOT") {
+          this.navigateToEditPage();
+        } else {
+          if (data.regularTemplate || data.videoTemplate) {
+            this.navigateToEditPage();
+          } else {
+            this.emailTemplateService.isNewTemplate = false;
+            if (this.categoryId > 0) {
+              this.router.navigate(["/home/emailtemplates/edit/" + this.categoryId]);
+            } else {
+              this.router.navigate(["/home/emailtemplates/edit"]);
+            }
+          }
+        }
+
+      },
+      (error: string) => {
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.logger.error(this.referenceService.errorPrepender + " edit():" + error);
+        this.referenceService.showServerError(this.httpRequestLoader);
+      }
+    );
+
+}
+
+navigateToEditPage() {
+  if (this.categoryId > 0) {
+    this.router.navigate(["/home/emailtemplates/update/" + this.categoryId]);
+  } else {
+    this.router.navigate(["/home/emailtemplates/update"]);
+  }
+}
+/******Delete*********/
+confirmDeleteEmailTemplate(id: number, name: string) {
+  try {
+    let self = this;
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to undo this action!",
+      type: 'warning',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Yes, delete it!'
+
+    }).then(function() {
+      self.deleteEmailTemplate(id, name);
+    }, function(dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+    });
+  } catch (error) {
+    this.logger.error(this.referenceService.errorPrepender + " confirmDeleteEmailTemplate():" + error);
+    this.referenceService.showServerError(this.httpRequestLoader);
+  }
+
+}
+
+deleteEmailTemplate(id: number, name: string) {
+  this.referenceService.loading(this.httpRequestLoader, true);
+  this.referenceService.goToTop();
+  this.isEmailTemplateDeleted = false;
+  this.isCampaignEmailTemplate = false;
+  this.emailTemplateService.delete(id)
+    .subscribe(
+      (data: any) => {
+        if (data.access) {
+          let message = data.message;
+          if (message == "Success") {
+            this.referenceService.showInfo("Email Template Deleted Successfully", "");
+            this.selectedEmailTemplateName = name + ' deleted successfully';
+            this.customResponse = new CustomResponse('SUCCESS', this.selectedEmailTemplateName, true);
+            this.isEmailTemplateDeleted = true;
+            this.isCampaignEmailTemplate = false;
+            this.pagination.pageIndex = 1;
+            this.findEmailTemplates(this.pagination);
+          } else {
+            this.isEmailTemplateDeleted = false;
+            this.isCampaignEmailTemplate = true;
+            let result = message.split(",");
+            let campaignNames = "";
+            $.each(result, function(index, value) {
+              campaignNames += (index + 1) + "." + value + "<br><br>";
+            });
+            let updatedMessage = "This template is being used in Campaign(s) / Auto Response(s) / Redistributed Campaign(s)<br><br>" + campaignNames;
+            this.customResponse = new CustomResponse('ERROR', updatedMessage, true);
+            this.referenceService.loading(this.httpRequestLoader, false);
+          }
+        } else {
+          this.authenticationService.forceToLogout();
+        }
+
+      },
+      (error: string) => {
+        this.logger.errorPage(error);
+        this.referenceService.showServerError(this.httpRequestLoader);
+      }
+    );
+}
+
+ngOnDestroy() {
+  this.referenceService.isCreated = false;
+  this.referenceService.isUpdated = false;
+  this.message = "";
+  $('#show_email_template_preivew').modal('hide');
+  $('#email_spam_check').modal('hide');
+  swal.close();
+}
+
+getTemplateById(emailTemplate: EmailTemplate) {
+  this.ngxloading = true;
+  this.emailTemplateService.getById(emailTemplate.id)
+    .subscribe(
+      (data: any) => {
+        emailTemplate.body = data.body;
+        this.showPreview(emailTemplate);
+      },
+      error => {
+        this.logger.errorPage(error);
+      });
+}
+
+showPreview(emailTemplate: EmailTemplate) {
+  this.ngxloading = true;
+  this.emailTemplateService.getAllCompanyProfileImages(this.loggedInUserId)
+    .subscribe(
+      (data: any) => {
+        let body = emailTemplate.body;
+        let self = this;
+        $.each(data, function(index, value) {
+          body = body.replace(value, self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
+        });
+        body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
+        let emailTemplateName = emailTemplate.name;
+        if (emailTemplateName.length > 50) {
+          emailTemplateName = emailTemplateName.substring(0, 50) + "...";
+        }
+        $("#htmlContent").empty();
+        $("#email-template-title").empty();
+        $("#email-template-title").append(emailTemplateName);
+        $('#email-template-title').prop('title', emailTemplate.name);
+
+        if (this.referenceService.hasMyMergeTagsExits(body)) {
+          let data = {};
+          data['emailId'] = this.authenticationService.user.emailId;
+          this.referenceService.getMyMergeTagsInfoByEmailId(data).subscribe(
+            response => {
+              if (response.statusCode == 200) {
+                body = this.referenceService.replaceMyMergeTags(response.data, body);
+                this.showModal(body);
+              }
+            },
+            error => {
+              this.logger.error(error);
+              this.showModal(body);
+            }
+          );
+
+        } else {
+          this.showModal(body);
+        }
+
+      },
+      error => { this.ngxloading = false; this.logger.error("error in getAllCompanyProfileImages(" + this.loggedInUserId + ")", error); },
+      () => this.logger.info("Finished getAllCompanyProfileImages()"));
+
+}
+
+showModal(body: string) {
+  $("#htmlContent").append(body);
+  $('.modal .modal-body').css('overflow-y', 'auto');
+  $("#show_email_template_preivew").modal('show');
+  this.ngxloading = false;
+}
+
+spamCheck(emailTemplate: any) {
+  this.emailTemplate = null;
+  this.emailTemplate = emailTemplate;
+  $("#email_spam_check").modal('show');
+}
+
+openDefaultTemplatePopup(emailTemplate: any) {
+  this.saveAsDefaultTemplate = true;
+  this.defaultTemplateInput['id'] = emailTemplate.id;
+  this.defaultTemplateInput['name'] = emailTemplate.name;
+}
+
+showSuccessMessage() {
+  this.saveAsDefaultTemplate = false;
+  this.defaultTemplateInput = {};
+}
+
+/****XNFR-317****/
+openSendTestEmailModalPopup(emailTemplate:any){
+  this.selectedEmailTemplateId = emailTemplate.id;
+  this.sendTestEmailIconClicked = true;
+}
+
+sendTestEmailModalPopupEventReceiver(){
+  this.selectedEmailTemplateId = 0;
+  this.sendTestEmailIconClicked = false;
+}
+
+
 
 }
 
