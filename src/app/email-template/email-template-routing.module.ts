@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { EmailEditorComponent } from './email-editor/email-editor.component';
 import { CreateTemplateComponent } from './create-template/create-template.component';
-import { ManageTemplateComponent } from './manage-template/manage-template.component';
 import { SelectTemplateComponent } from './select-template/select-template.component';
 import { UpdateTemplateComponent } from './update-template/update-template.component';
 import { UploadEmailTemplateComponent } from './upload-email-template/upload-email-template.component';
@@ -18,8 +17,6 @@ import { ManageEmailTemplatesComponent } from './manage-email-templates/manage-e
 
 export const emailRoutes: Routes = [
 { path: '', redirectTo: 'manage', pathMatch: 'full' },
-{ path: 'manage-dep', component: ManageTemplateComponent },
-{ path: 'manage-dep/:categoryId', component: ManageTemplateComponent },
 { path: "manage", component: ManageEmailTemplatesComponent },
 { path: "manage/:viewType", component: ManageEmailTemplatesComponent },
 { path: "manage/:viewType/:categoryId/:folderViewType", component: ManageEmailTemplatesComponent },
