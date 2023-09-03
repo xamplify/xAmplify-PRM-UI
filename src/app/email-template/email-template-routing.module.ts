@@ -24,7 +24,7 @@ export const emailRoutes: Routes = [
 { path: 'edit', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
 { path: 'edit/:viewType', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
 { path: 'edit/:viewType/:categoryId/:folderViewType', component: CreateTemplateComponent,canDeactivate: [PendingChangesGuard] },
-{ path: 'upload/:type', component: CkEditorUploadComponent },
+{ path: 'upload/:type', component: CkEditorUploadComponent ,canDeactivate: [PendingChangesGuard]},
 { path: 'update', component: UpdateTemplateComponent,canDeactivate: [PendingChangesGuard] },
 { path: 'update/:viewType', component: UpdateTemplateComponent,canDeactivate: [PendingChangesGuard] },
 { path: 'update/:viewType/:categoryId/:folderViewType', component: UpdateTemplateComponent,canDeactivate: [PendingChangesGuard] },
@@ -32,8 +32,8 @@ export const emailRoutes: Routes = [
 { path: 'regularEmails/emaileditor', component: EmailEditorComponent },
 { path: 'help', component: HelpComponent },
 { path: 'hubspot-callback',component:SocialContactsCallbackComponent},
-{ path: 'hubspot/upload', component: UploadMarketoEmailTemplateComponent },
-{ path: 'hubspot/update', component: UpdateMarketoTemplateComponent }
+{ path: 'hubspot/upload', component: UploadMarketoEmailTemplateComponent,canDeactivate: [PendingChangesGuard] },
+{ path: 'hubspot/update', component: UpdateMarketoTemplateComponent,canDeactivate: [PendingChangesGuard] }
 ];
 
 @NgModule({

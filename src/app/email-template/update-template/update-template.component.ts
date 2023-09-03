@@ -11,12 +11,10 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { User } from '../../core/models/user';
-import { EmailTemplateSource } from '../../email-template/models/email-template-source';
 import { ComponentCanDeactivate } from 'app/component-can-deactivate';
-import { ModulesDispalyType } from 'app/dashboard/models/modules-dispaly-type.enum';
 import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 
-declare var Metronic ,Layout ,Demo ,TableManaged,$,CKEDITOR,swal:any;
+declare var $:any,CKEDITOR:any,swal:any;
 
 @Component({
     selector: 'app-update-template',

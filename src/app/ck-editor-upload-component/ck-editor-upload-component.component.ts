@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ActivatedRoute,Router,NavigationStart, NavigationEnd  } from '@angular/router';
+import { HostListener } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { ActivatedRoute,Router} from '@angular/router';
 import { CallActionSwitch } from '../videos/models/call-action-switch';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { EmailTemplateService } from '../email-template/services/email-template.service';
@@ -14,8 +16,9 @@ import { EmailTemplateType } from '../email-template/models/email-template-type'
 import { CustomResponse } from '../common/models/custom-response';
 import { EmailTemplateSource } from '../email-template/models/email-template-source';
 import { HubSpotService } from 'app/core/services/hubspot.service';
+import { ComponentCanDeactivate } from 'app/component-can-deactivate';
 
-declare var Metronic, Layout, Demo, TableManaged, $, CKEDITOR, swal: any;
+declare var $:any, CKEDITOR:any, swal: any;
 
 @Component({
   selector: 'app-ck-editor-upload-component',
@@ -23,7 +26,7 @@ declare var Metronic, Layout, Demo, TableManaged, $, CKEDITOR, swal: any;
   styleUrls: ['./ck-editor-upload-component.component.css'],
   providers: [EmailTemplate, HttpRequestLoader, CallActionSwitch]
 })
-export class CkEditorUploadComponent implements OnInit,OnDestroy {
+export class CkEditorUploadComponent implements OnInit,ComponentCanDeactivate,OnDestroy {
 
 
     customResponse: CustomResponse = new CustomResponse();
@@ -57,6 +60,8 @@ export class CkEditorUploadComponent implements OnInit,OnDestroy {
     @ViewChild( "myckeditor" ) ckeditor: any;
     type:string = "";
     categoryNames: any;
+    isSaveButtonClicked = false;
+
   constructor( public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
           private emailTemplate: EmailTemplate, private logger: XtremandLogger, public authenticationService: AuthenticationService, public refService: ReferenceService,
           public callActionSwitch: CallActionSwitch,private route: ActivatedRoute,private hubSpotService: HubSpotService) {
@@ -257,6 +262,7 @@ export class CkEditorUploadComponent implements OnInit,OnDestroy {
   /*********************Save The Content*****************************/
   save() {
       this.clickedButtonName = this.saveButtonName;
+      this.isSaveButtonClicked = true;
       this.saveHtmlTemplate( false,null);
   }
 
@@ -301,6 +307,7 @@ export class CkEditorUploadComponent implements OnInit,OnDestroy {
   }
   
   saveCustomEmailTemplate(isOnDestroy:boolean){
+    this.isSaveButtonClicked = true;
       if(this.type=="custom"){
           this.emailTemplate.source= EmailTemplateSource.manual;
       }else if(this.type=="hubspot"){
@@ -314,7 +321,7 @@ export class CkEditorUploadComponent implements OnInit,OnDestroy {
                 if ( !isOnDestroy ) {
                     if ( data.statusCode == 702 ) {
                         this.refService.isCreated = true;
-                        this.router.navigate( ["/home/emailtemplates/manage"] );
+                        this.refService.goToManageEmailTemplates(undefined);
                     } else {
                         this.customResponse = new CustomResponse( "ERROR", data.message, true );
                     }
@@ -335,6 +342,7 @@ export class CkEditorUploadComponent implements OnInit,OnDestroy {
   }
   
   saveMarketoTemplate(isOnDestroy:boolean){
+    this.isSaveButtonClicked = true;
       this.emailTemplate.marketoEmailTemplate = {
               marketo_id: this.emailTemplateService.emailTemplate.id
             }
@@ -347,7 +355,7 @@ export class CkEditorUploadComponent implements OnInit,OnDestroy {
                         if (!isOnDestroy) {
                           if (data.statusCode == 8012) {
                             this.refService.isCreated = true;
-                            this.router.navigate(["/home/emailtemplates/manage"]);
+                            this.refService.goToManageEmailTemplates(undefined);
                           } else {
                             this.customResponse = new CustomResponse("ERROR", data.message, true);
                           }
@@ -415,5 +423,12 @@ ngOnDestroy() {
         error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
         () => this.logger.info( "Finished getCategoryNamesByUserId()" ) );
 }
+
+@HostListener('window:beforeunload')
+      canDeactivate(): Observable<boolean> | boolean {
+          this.authenticationService.stopLoaders();
+          let isInvalidEmailTemplateData = this.emailTemplateService.emailTemplate==undefined;
+          return this.isSaveButtonClicked || isInvalidEmailTemplateData || this.authenticationService.module.logoutButtonClicked;
+      }
 
 }
