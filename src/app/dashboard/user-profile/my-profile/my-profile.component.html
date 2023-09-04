@@ -2130,7 +2130,7 @@
                                                 <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex"
                                                     id="defaultStage{{x}}" name="defaultStage" class="alignEqualtoText" (change)="defaultStageChange(pipelineStage)">
                                                 <span>Default</span>&nbsp;&nbsp;
-                                                <select  class="formSelectCustomization" [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE')">
+                                                <select  class="formSelectCustomization" [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE')" (change)="handleMarkAsChange(x)">
                                                     <option value="markAs">Mark as</option>
                                                     <option value="won">Won</option>
                                                     <option value="lost">Lost</option>
@@ -2139,27 +2139,18 @@
                                                 <button type="button" *ngIf="!pipelineStage.defaultStage && !pipelinePreview && !pipeline.crmPipeline" class="btn-danger button-blue deleteBntAligment"
                                                 data-toggle="tooltip" data-placement="top" title="Delete" 
                                                     (click)="deleteStage(x)" style="float: right;" [disabled]="!pipelineStage.canDelete"><span
-                                                        class="glyphicon glyphicon-trash"></span></button>
-                                                        
-                                                        <span class="pdLeftforspace">Private <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span></span>
-                                                        <!-- <label class="switch pipeline">
-                                                            <input type="checkbox" [(ngModel)]="pipelineStage.private" name="private">
-                                                            <span class="slider round slidercu"></span>
-                                                          </label>  -->
+                                                        class="glyphicon glyphicon-trash"></span></button>   
+
+                                                        <span class="pdLeftforspace" *ngIf="(!pipeline.private)">Private <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="This pipeline stage will not be accesible by your partners if you check this option."></span>
                                                           <label class="toggleOnOff">
-                                                            <input type="checkbox" [(ngModel)]="pipelineStage.private" name="private">
+                                                            <input type="checkbox" [(ngModel)]="pipelineStage.private" name="private" [disabled]="shouldDisableCheckbox(x)">
                                                             <span class="sliderOnOff"></span>
                                                             <span class="labels" data-on="ON" data-off="OFF"></span>
                                                           </label>
-                                                        <!-- <span *ngIf="!pipeline.private">
-                                                            <input type="checkbox" [(ngModel)]="pipelineStage.private"
-                                                            name="private" style="margin: 5px;"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
-                                                            data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span>
-                                                        </span>  -->
-                                                       
+                                                        </span>                 
                                                         <div *ngIf="(!pipelineStage.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines')">
                                                             <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
-                                                                name="nonInteractive" class="alignEqualtoText"> Non Interactive <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span>
+                                                                name="nonInteractive" class="alignEqualtoText"> Non Interactive <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="Your partners will only be able to select the stage once and will not be able to update further for the non-interactive stage."></span>
                                                         </div>                                                 
                                             </div>
                                         </span>
