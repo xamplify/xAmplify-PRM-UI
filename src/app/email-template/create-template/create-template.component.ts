@@ -52,12 +52,13 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     manageRouterLink = "/home/emailtemplates/manage";
     mergeTagsInput: any = {};
     showForms: boolean = false;
-    saveOrUpdateButtonClicked = false;
+    updateAndRedirectClicked = false;
+    saveAsOrSaveAndRedirectClicked = false;
     isReloaded: boolean = false;
     viewType = "";
     folderViewType = "";
     modulesDisplayType = new ModulesDisplayType();
-
+    skipConfirmAlert = false;
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
@@ -67,6 +68,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
 
     private loadBeeContainer(emailTemplateService: EmailTemplateService, authenticationService: AuthenticationService,isLoadedFromConstructor:boolean) {
         this.refService.scrollSmoothToTop();
+        this.skipConfirmAlert = false;
         let url = this.refService.getCurrentRouteUrl();
         this.isAdd = url.indexOf("create")>-1;
         this.categoryId = this.route.snapshot.params['categoryId'];
@@ -85,14 +87,18 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 (data: any) => {
                     names = data;
                 },
-                error => { this.logger.error("error in getAvailableNames(" + self.loggedInUserId + ")", error); },
+                error => { 
+                    this.skipConfirmAlert = true;
+                    this.logger.error("error in getAvailableNames(" + self.loggedInUserId + ")", error); },
                 () => this.logger.info("Finished getAvailableNames()"));
 
             emailTemplateService.getAllCompanyProfileImages(self.loggedInUserId).subscribe(
                 (data: any) => {
                     self.companyProfileImages = data;
                 },
-                error => { this.logger.error("error in getAllCompanyProfileImages(" + self.loggedInUserId + ")", error); },
+                error => {
+                    this.skipConfirmAlert = true;
+                     this.logger.error("error in getAllCompanyProfileImages(" + self.loggedInUserId + ")", error); },
                 () => this.logger.info("Finished getAllCompanyProfileImages()"));
 
 
@@ -100,7 +106,9 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 (data: any) => {
                     self.categoryNames = data.data;
                 },
-                error => { this.logger.error("error in getCategoryNamesByUserId(" + self.loggedInUserId + ")", error); },
+                error => { 
+                    this.skipConfirmAlert = true;
+                    this.logger.error("error in getCategoryNamesByUserId(" + self.loggedInUserId + ")", error); },
                 () => this.logger.info("Finished getCategoryNamesByUserId()"));
 
 
@@ -338,7 +346,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         return dropDown;
     }
 
-    saveEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, loggedInUserId: number, isSaveAndCloseButtonclicked: boolean) {
+    saveEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, loggedInUserId: number, saveAsOrSaveAndRedirectClicked: boolean) {
+        this.saveAsOrSaveAndRedirectClicked = saveAsOrSaveAndRedirectClicked;
         this.refService.goToTop();
         $("#bee-save-buton-loader").addClass("button-loader"); 
         emailTemplate.user = new User();
@@ -380,9 +389,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
                 swal.close();
                 if (data.access) {
-                    if (data.statusCode == 702) {    
-                        this.saveOrUpdateButtonClicked = true;   
-                        if(isSaveAndCloseButtonclicked){
+                    if (data.statusCode == 702) {   
+                        if(saveAsOrSaveAndRedirectClicked){
                             this.refService.isCreated = true;
                             this.navigateToManageSection();
                         }else{
@@ -393,8 +401,10 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                                     this.emailTemplateService.isNewTemplate = false;
                                     this.emailTemplateService.emailTemplate = data;
                                     this.emailTemplateService.isTemplateSaved = true;
-                                    this.refService.navigateToManageEmailTemplatesByViewType(this.folderViewType,this.viewType,this.categoryId);
+                                    this.skipConfirmAlert = true;
+                                    this.router.navigate(["/home/emailtemplates/edit"]);
                                 },error=>{
+                                    this.skipConfirmAlert = true;
                                     this.logger.errorPage(error);
                             });
                         }                                     
@@ -415,8 +425,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         );
     }
 
-    updateEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, isUpdateAndClose: boolean) {
-        this.saveOrUpdateButtonClicked = isUpdateAndClose;
+    updateEmailTemplate(emailTemplate: EmailTemplate, emailTemplateService: EmailTemplateService, isUpdateAndRedirect: boolean) {
+        this.updateAndRedirectClicked = isUpdateAndRedirect;
         this.customResponse = new CustomResponse();
         this.refService.goToTop();
         $("#bee-save-buton-loader").addClass("button-loader"); 
@@ -439,7 +449,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 swal.close();
                 if (data.access) {
                     if (data.statusCode == 702 || data.statusCode == 703) {
-                        if(isUpdateAndClose){
+                        if(isUpdateAndRedirect){
                             this.refService.isUpdated = true;
                             this.navigateToManageSection();
                         }else{
@@ -459,6 +469,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 }
             },
             error => {
+                this.skipConfirmAlert = true;
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
                 swal.close();
                 this.logger.errorPage(error)
@@ -524,6 +535,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     canDeactivate(): Observable<boolean> | boolean {
         this.authenticationService.stopLoaders();
         let isInvalidEditPage = this.emailTemplateService.emailTemplate==undefined;
-        return this.saveOrUpdateButtonClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked || this.isReloaded;
+        return this.skipConfirmAlert ||  this.saveAsOrSaveAndRedirectClicked || this.updateAndRedirectClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked || this.isReloaded;
     }
 }
