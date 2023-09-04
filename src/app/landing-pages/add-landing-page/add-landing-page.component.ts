@@ -42,17 +42,27 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     routerLink = "/home/pages/manage";
     loggedInAsSuperAdmin = false;
     mergeTagsInput: any = {};
+    skipConfirmAlert = false;
+    updateAndRedirectClicked = false;
+    openLinksInNewTabCheckBoxId = "openLinksInNewTab-page-links";
     constructor(private landingPageService: LandingPageService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public referenceService: ReferenceService, private location: Location,
         public pagerService: PagerService, public sortOption: SortOption, public utilService: UtilService, private route: ActivatedRoute) {
+        this.ngxloading = true;
+        this.findPageDataAndLoadBeeContainer(landingPageService, authenticationService);
+    }
+
+
+    private findPageDataAndLoadBeeContainer(landingPageService: LandingPageService, authenticationService: AuthenticationService) {
+        this.referenceService.goToTop();
         this.id = this.landingPageService.id;
-        this.loggedInAsSuperAdmin = this.referenceService.getCurrentRouteUrl().indexOf("saveAsDefault")>-1;
+        this.loggedInAsSuperAdmin = this.referenceService.getCurrentRouteUrl().indexOf("saveAsDefault") > -1;
         this.mergeTagsInput['page'] = true;
         let categoryId = this.route.snapshot.params['categoryId'];
         if (categoryId > 0) {
             this.routerLink += "/" + categoryId;
         }
-        if (this.id!=undefined && this.id > 0) {
+        if (this.id != undefined && this.id > 0) {
             var names: any = [];
             let self = this;
             var pageType = "";
@@ -87,13 +97,14 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                         this.landingPage.type = landingPage.type;
                         this.landingPage.categoryId = landingPage.categoryId;
                         this.landingPage.openLinksInNewTab = landingPage.openLinksInNewTab;
+                        $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", this.landingPage.openLinksInNewTab);
                         var request = function (method, url, data, type, callback) {
                             var req = new XMLHttpRequest();
                             req.onreadystatechange = function () {
                                 if (req.readyState === 4 && req.status === 200) {
                                     var response = JSON.parse(req.responseText);
                                     callback(response);
-                                }else if (req.readyState === 4 && req.status !== 200) {
+                                } else if (req.readyState === 4 && req.status !== 200) {
                                     self.ngxloading = false;
                                     self.referenceService.showSweetAlertErrorMessage("Unable to load Bee container.Please try reloading the page/check your internet connection.");
                                 }
@@ -131,7 +142,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 var buttons = $('<div><div id="bee-save-buton-loader"></div>')
                                     .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200" autocomplete="off"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                                 let dropDown = '';
-                                if(!self.authenticationService.module.isMarketingCompany){
+                                if (!self.authenticationService.module.isMarketingCompany) {
                                     /**********Public/Private************** */
                                     dropDown += '<div class="form-group">';
                                     dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
@@ -168,29 +179,40 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                     self.saveLandingPage(false);
                                 })).append(self.createButton('Update', function () {
                                     let selectedPageType = $('#pageType option:selected').val();
-                                    if (self.landingPage.type == selectedPageType || selectedPageType==undefined) {
+                                    if (self.landingPage.type == selectedPageType || selectedPageType == undefined) {
                                         $('#pageTypeSpanError').empty();
                                         self.ngxloading = true;
                                         self.clickedButtonName = "UPDATE";
-                                        $("#bee-save-buton-loader").addClass("button-loader"); 
+                                        $("#bee-save-buton-loader").addClass("button-loader");
                                         self.updateLandingPage(false);
                                     } else {
                                         $('#pageTypeSpanError').text('Page Type cannot be changed');
                                     }
 
-                                })).append(self.createButton('Cancel', function () {
+                                })).append(self.createButton('Update & Redirect', function () {
+                                    let selectedPageType = $('#pageType option:selected').val();
+                                    if (self.landingPage.type == selectedPageType || selectedPageType == undefined) {
+                                        $('#pageTypeSpanError').empty();
+                                        self.ngxloading = true;
+                                        self.clickedButtonName = "UPDATE_AND_REDIRECT";
+                                        $("#bee-save-buton-loader").addClass("button-loader");
+                                        self.updateLandingPage(true);
+                                    } else {
+                                        $('#pageTypeSpanError').text('Page Type cannot be changed');
+                                    }
+                                })).
+                                append(self.createButton('Cancel', function () {
                                     self.clickedButtonName = "CANCEL";
                                     swal.close();
-                                    console.log('Cancel');
                                 }));
-                                swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false });
+                                swal({ title: title, html: buttons, showConfirmButton: false, showCancelButton: false, allowOutsideClick: false,allowEscapeKey: false });
                             } else {
                                 var buttons = $('<div><div id="bee-save-buton-loader"></div>')
                                     .append(' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200"  autocomplete="off">' +
                                         '<span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>');
                                 if (!self.loggedInAsSuperAdmin) {
                                     let dropDown = '';
-                                    if(!self.authenticationService.module.isMarketingCompany){
+                                    if (!self.authenticationService.module.isMarketingCompany) {
                                         dropDown += '<div class="form-group">';
                                         dropDown += '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
                                         dropDown += '<select class="form-control" id="pageType">';
@@ -224,7 +246,8 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                     html: buttons,
                                     showConfirmButton: false,
                                     showCancelButton: false,
-                                    allowOutsideClick: false
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false 
                                 });
                             }
 
@@ -238,33 +261,32 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 if (value.length > 0) {
                                     if (!defaultLandingPage) {
                                         if (names.indexOf(value.toLocaleLowerCase()) > -1 && landingPage.name.toLocaleLowerCase() != value.toLocaleLowerCase()) {
-                                            $('#save,#update,#save-as').attr('disabled', 'disabled');
+                                            $('#save,#update,#save-as,#update-and-redirect,#save-and-redirect').attr('disabled', 'disabled');
                                             $('#templateNameSpanError').text('Duplicate Name');
                                         } else if (value.toLocaleLowerCase() == landingPage.name.toLocaleLowerCase()) {
                                             $('#templateNameSpanError').empty();
-                                            $('#save,#save-as').attr('disabled', 'disabled');
+                                            $('#save,#save-as,#save-and-redirect,#update,#update-and-redirect',).attr('disabled', 'disabled');
                                             $('#update').removeAttr('disabled');
                                         }
                                         else {
                                             $('#templateNameSpanError').empty();
-                                            $('#save,#update,#save-as').removeAttr('disabled');
+                                            $('#save,#update,#save-as,#save-and-redirect,#update-and-redirect').removeAttr('disabled');
                                         }
                                     } else {
                                         if (names.indexOf(value.toLocaleLowerCase()) > -1) {
-                                            $('#save,#update,#save-as').attr('disabled', 'disabled');
+                                            $('#save,#update,#save-as,#update-and-redirect,#save-and-redirect').attr('disabled', 'disabled');
                                             $('#templateNameSpanError').text('Duplicate Name');
                                         } else {
                                             $('#templateNameSpanError').empty();
-                                            $('#save,#update,#save-as').removeAttr('disabled');
+                                            $('#save,#update,#save-as,#update-and-redirect,#save-and-redirect').removeAttr('disabled');
                                         }
                                     }
                                 } else {
-                                    $('#save,#update,#save-as').attr('disabled', 'disabled');
+                                    $('#save,#update,#save-as,#update-and-redirect,#save-and-redirect').attr('disabled', 'disabled');
                                 }
                             });
 
-
-                        }
+                        };
                         let mergeTags = this.referenceService.addPageMergeTags();
                         if (this.referenceService.companyId != undefined && this.referenceService.companyId > 0) {
                             var beeUserId = self.loggedInAsSuperAdmin ? "bee-1" : "bee-" + this.referenceService.companyId;
@@ -279,18 +301,17 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 onSave: function (jsonFile, htmlFile) {
                                     save(jsonFile, htmlFile);
                                 },
-                                onSaveAsTemplate: function (jsonFile) { // + thumbnail?
+                                onSaveAsTemplate: function (jsonFile) {
                                 },
-                                onAutoSave: function (jsonFile) { // + thumbnail?
+                                onAutoSave: function (jsonFile) {
                                     self.landingPage.jsonBody = jsonFile;
                                     self.isMinTimeOver = true;
                                 },
                                 onSend: function (htmlFile) {
-
                                 },
                                 onError: function (errorMessage) {
-                                    swal("", "Unable to load bee template:" + errorMessage, "error");
-                                    self.location.back();//Navigating to previous router url
+                                    self.referenceService.showSweetAlertErrorMessage("Unable to load bee template:" + errorMessage);
+                                    self.ngxloading = false;
                                 }
                             };
 
@@ -316,6 +337,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                                 var jsonBody = JSON.parse(body);
                                                 bee.load(jsonBody);
                                                 bee.start(jsonBody);
+                                                self.referenceService.updateBeeIframeContainerHeight();
                                                 self.loadLandingPage = true;
                                                 self.ngxloading = false;
                                             });
@@ -327,13 +349,15 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                         this.ngxloading = false;
                     }
                 },
-                (error: any) => { this.logger.errorPage(error); });
+                (error: any) => {
+                    this.skipConfirmAlert = true;
+                    swal.close();
+                    this.logger.errorPage(error);
+                });
         } else {
-            this.location.back();//Navigating to previous router url
+            this.location.back();
         }
-
     }
-
 
     saveLandingPage(isOnDestroy: boolean) {
         $("#bee-save-buton-loader").addClass("button-loader"); 
@@ -381,6 +405,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                 this.landingPageService.goToManage();
             }
         } else {
+            this.skipConfirmAlert = true;
             this.authenticationService.forceToLogout();
         }
     }
@@ -395,7 +420,9 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     }
 
 
-    updateLandingPage(isDestroy: boolean) {
+    updateLandingPage(updateAndRedirectClicked: boolean) {
+        this.updateAndRedirectClicked = updateAndRedirectClicked;
+        this.customResponse = new CustomResponse();
         this.landingPage.name = this.name;
         this.landingPage.id = this.id;
         this.landingPage.userId = this.loggedInUserId;
@@ -404,27 +431,31 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
         this.updateCompanyLogo(this.landingPage);
         this.landingPageService.update(this.landingPage).subscribe(
             data => {
+                swal.close();
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
                 if (data.access) {
-                    this.ngxloading = false;
-                    if (!isDestroy) {
+                    if (updateAndRedirectClicked) {
                         this.referenceService.isUpdated = true;
                         this.navigateToManageSection();
                     } else {
-                        this.landingPageService.goToManage();
+                        this.customResponse = new CustomResponse('SUCCESS', "Page updated successfully", true);
+                        this.ngxloading = true;
+                        this.findPageDataAndLoadBeeContainer(this.landingPageService,this.authenticationService);
                     }
                 } else {
+                    this.skipConfirmAlert = true; 
                     this.authenticationService.forceToLogout();
                 }
             },
             error => {
-                $("#bee-save-buton-loader").removeClass("button-loader"); 
                 swal.close();
+                $("#bee-save-buton-loader").removeClass("button-loader"); 
                 this.ngxloading = false;
                 if (error.status == 400) {
                     let message = JSON.parse(error['_body']).message;
                     swal(message, "", "error");
                 } else {
+                    this.skipConfirmAlert = true;
                     this.logger.errorPage(error);
                 }
             });
@@ -440,51 +471,37 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     }
 
 
-
-    createButton(text, cb) {
+    createButton(text:string, cb:any) {
+        let buttonClass = this.isAdd ? "btn btn-primary":"btn btn-sm btn-primary";
+        let cancelButtonClass = this.isAdd ? "btn Btn-Gray":"btn btn-sm Btn-Gray";
+        let cancelButtonSettings = this.isAdd ? 'class="'+cancelButtonClass+'"' : 'class="'+cancelButtonClass+'" style="margin-right: -35px !important;"';
         if (text == "Save") {
-            return $('<input type="submit" class="btn btn-primary" value="' + text + '" id="save" disabled="disabled">').on('click', cb);
-        } else if (text == "Save As") {
-            return $('<input type="submit" class="btn btn-primary" value="' + text + '" id="save-as" disabled="disabled">').on('click', cb);
+            return $('<input type="submit" class="'+buttonClass+'"  value="' + text + '" id="save" disabled="disabled">').on('click', cb);
+        }else if(text == "Save & Redirect"){
+            return $('<input type="submit" class="'+buttonClass+'"  value="' + text + '" id="save-and-redirect" disabled="disabled">').on('click', cb);
+        }else if (text == "Save As") {
+            return $('<input type="submit" class="'+buttonClass+'" style="margin-left: -33px !important" value="' + text + '" id="save-as" disabled="disabled">').on('click', cb);
         } else if (text == "Update") {
-            return $('<input type="submit" class="btn btn-primary" value="' + text + '" id="update">').on('click', cb);
-        }
-        else {
-            return $('<input type="submit" class="btn btn-primary" value="' + text + '">').on('click', cb);
+            return $('<input type="submit" class="'+buttonClass+'" value="' + text + '" id="update">').on('click', cb);
+        }else if (text == "Update & Redirect") {
+            return $('<input type="submit" class="'+buttonClass+'" value="' + text + '" id="update-and-close">').on('click', cb);
+        }else {
+            return $('<input type="submit" '+cancelButtonSettings+' value="' + text + '">').on('click', cb);
         }
     }
 
     ngOnInit() { }
     ngOnDestroy() {
-    swal.close();
-    }
-    showSweetAlert() {
-        let self = this;
-        swal({
-            title: 'Are you sure?',
-            text: "You have unchanged data",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#54a7e9',
-            cancelButtonColor: '#999',
-            confirmButtonText: 'Yes, Save it!',
-            cancelButtonText: "No",
-            allowOutsideClick: false
-        }).then(function () {
-            self.saveLandingPage(true);
-        }, function (dismiss) {
-
-        })
+        swal.close();
     }
 
     checkOrUncheckOpenLinksInNewTabOption(){
-        let id = "openLinksInNewTab-page-links";
-        let isChecked = $('#'+id).is(':checked');
+        let isChecked = $('#'+this.openLinksInNewTabCheckBoxId).is(':checked');
         if(isChecked){
-            $('#' + id).prop("checked", false);
+            $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", false);
             this.landingPage.openLinksInNewTab = false;
         }else{
-            $('#' + id).prop("checked", true);
+            $('#' + this.openLinksInNewTabCheckBoxId).prop("checked", true);
             this.landingPage.openLinksInNewTab = true;
         }
 

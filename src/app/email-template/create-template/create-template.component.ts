@@ -385,8 +385,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         this.updateCompanyLogo(emailTemplate);
         emailTemplateService.save(emailTemplate).subscribe(
             data => {
-                $("#bee-save-buton-loader").removeClass("button-loader"); 
                 swal.close();
+                $("#bee-save-buton-loader").removeClass("button-loader"); 
                 if (data.access) {
                     if (data.statusCode == 702) {   
                         if(saveAsOrSaveAndRedirectClicked){
@@ -444,8 +444,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         emailTemplate.surveyCoBrandingTemplate = emailTemplateService.emailTemplate.surveyCoBrandingTemplate;
         emailTemplateService.update(emailTemplate).subscribe(
             data => {
-                $("#bee-save-buton-loader").removeClass("button-loader"); 
                 swal.close();
+                $("#bee-save-buton-loader").removeClass("button-loader"); 
                 if (data.access) {
                     if (data.statusCode == 702 || data.statusCode == 703) {
                         if(isUpdateAndRedirect){
@@ -494,6 +494,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     ngOnInit() {  }
     ngOnDestroy() {
         this.emailTemplateService.isNewTemplate = false;
+        swal.close();
     }
 
     saveTemplate(isSaveAndRedirectButtonClicked:boolean) {

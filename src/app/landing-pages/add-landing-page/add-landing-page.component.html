@@ -2,9 +2,12 @@
     <div class="my-container">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     </div>
+    <div style="position: relative; top: -10px">
+        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+    </div>
     <div class="row">
         <div class="col-xs-12">
-            <div *ngIf="!ngxloading" class="page-bar mWidth" style="border:none !important;">
+            <div [hidden]="ngxloading" class="page-bar mWidth" style="border:none !important;">
                 <ul class="page-breadcrumb" *ngIf="loadLandingPage">
                     <li>
                         <i class="fa fa-home" aria-hidden="true"></i>
@@ -27,9 +30,10 @@
                 <app-preview-popup #previewPopUpComponent *ngIf="loadLandingPage"></app-preview-popup>
                 <app-merge-tags *ngIf="loadLandingPage" [input]="mergeTagsInput"></app-merge-tags>
                <div>
-                <button  class="new-tab-button btn-primary m_mb8" style="border-radius: 5px;padding: 1px 13px !important;" *ngIf="loadLandingPage" 
+                <button  class="new-tab-button btn-primary m_mb8" style="border-radius: 5px;padding: 1px 13px !important;" [hidden]="!loadLandingPage" 
                     (click)="checkOrUncheckOpenLinksInNewTabOption()">
-                    Open Links In New Tab <input class="pointer" id="openLinksInNewTab-page-links" type="checkbox" (click)="checkOrUncheckOpenLinksInNewTabOption()">
+                    Open Links In New Tab
+                     <input class="pointer" id="openLinksInNewTab-page-links" type="checkbox" (click)="checkOrUncheckOpenLinksInNewTabOption()">
                   </button>
                 </div>
             </div>
