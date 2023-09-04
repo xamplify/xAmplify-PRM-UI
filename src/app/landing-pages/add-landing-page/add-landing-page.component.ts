@@ -3,9 +3,7 @@ import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { environment } from 'environments/environment';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { FormService } from '../../forms/services/form.service';
@@ -21,11 +19,9 @@ declare var BeePlugin, swal, $: any;
     selector: 'app-add-landing-page',
     templateUrl: './add-landing-page.component.html',
     styleUrls: ['./add-landing-page.component.css'],
-    providers: [LandingPage, HttpRequestLoader, FormService, Pagination, SortOption]
+    providers: [LandingPage, FormService, Pagination, SortOption]
 })
 export class AddLandingPageComponent implements OnInit, OnDestroy {
-    httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    formsLoader: HttpRequestLoader = new HttpRequestLoader();
     landingPage: LandingPage = new LandingPage();
     ngxloading = false;
     loggedInUserId = 0;
@@ -65,7 +61,6 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
             } else {
                 self.loggedInUserId = this.authenticationService.getUserId();
             }
-            this.referenceService.loading(this.httpRequestLoader, true);
             if (!this.loggedInAsSuperAdmin) {
                 landingPageService.getAvailableNames(self.loggedInUserId).subscribe(
                     (data: any) => { names = data; },
@@ -322,14 +317,15 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                                 bee.load(jsonBody);
                                                 bee.start(jsonBody);
                                                 self.loadLandingPage = true;
+                                                self.ngxloading = false;
                                             });
                                     });
                                 });
                         }
                     } else {
                         swal("Please Contact Admin!", "No CompanyId Found", "error");
+                        this.ngxloading = false;
                     }
-                    this.referenceService.loading(this.httpRequestLoader, false);
                 },
                 (error: any) => { this.logger.errorPage(error); });
         } else {
@@ -371,7 +367,6 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                     let message = errorResponse['message'];
                     $('#templateNameSpanError').text(message);
                 } else {
-                    this.referenceService.stopLoader(this.httpRequestLoader);
                     this.logger.errorPage(error);
                 }
             });
@@ -379,7 +374,6 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
 
     goToManageAfterSave(data, isOnDestroy) {
         if (data.access) {
-            this.referenceService.stopLoader(this.httpRequestLoader);
             if (!isOnDestroy) {
                 this.referenceService.isCreated = true;
                 this.navigateToManageSection();
@@ -413,7 +407,6 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
                 if (data.access) {
                     this.ngxloading = false;
-                    this.referenceService.stopLoader(this.httpRequestLoader);
                     if (!isDestroy) {
                         this.referenceService.isUpdated = true;
                         this.navigateToManageSection();
@@ -428,7 +421,6 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
                 swal.close();
                 this.ngxloading = false;
-                this.referenceService.stopLoader(this.httpRequestLoader);
                 if (error.status == 400) {
                     let message = JSON.parse(error['_body']).message;
                     swal(message, "", "error");
