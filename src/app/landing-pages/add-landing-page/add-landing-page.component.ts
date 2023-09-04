@@ -485,4 +485,17 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
         })
     }
 
+    checkOrUncheckOpenLinksInNewTabOption(){
+        let id = "openLinksInNewTab-page-links";
+        let isChecked = $('#'+id).is(':checked');
+        if(isChecked){
+            $('#' + id).prop("checked", false);
+            this.landingPage.openLinksInNewTab = false;
+        }else{
+            $('#' + id).prop("checked", true);
+            this.landingPage.openLinksInNewTab = true;
+        }
+
+    }
+
 }
