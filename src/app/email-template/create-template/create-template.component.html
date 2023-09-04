@@ -18,7 +18,7 @@
                             <i class="fa fa-angle-right"  aria-hidden="true"></i>
                         </li>
                         <li *ngIf="!emailTemplateService.isNewTemplate">
-                            <a routerLink="{{manageRouterLink}}" translate>Manage Templates</a>
+                            <a (click)="navigateToManageSection()" translate>Manage Templates</a>
                             <i class="fa fa-angle-right"  aria-hidden="true"></i>
                         </li>
                         <li>

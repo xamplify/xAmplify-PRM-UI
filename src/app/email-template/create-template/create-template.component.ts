@@ -72,9 +72,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         this.categoryId = this.route.snapshot.params['categoryId'];
         this.viewType = this.route.snapshot.params['viewType'];
         this.folderViewType = this.route.snapshot.params['folderViewType'];
-        if (this.categoryId > 0) {
-            this.manageRouterLink += "/" + this.categoryId;
-        }
         if (emailTemplateService.emailTemplate != undefined) {
             if(this.emailTemplateService.isTemplateSaved && !this.isAdd){
                 this.customResponse = new CustomResponse('SUCCESS','Template created successfully',true);
