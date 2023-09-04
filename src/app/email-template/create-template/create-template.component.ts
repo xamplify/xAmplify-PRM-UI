@@ -24,11 +24,9 @@ declare var BeePlugin:any, swal:any, $: any;
     selector: 'app-create-template',
     templateUrl: './create-template.component.html',
     styleUrls: ['./create-template.component.css'],
-    providers: [EmailTemplate, HttpRequestLoader, FormService, Pagination, SortOption]
+    providers: [EmailTemplate, FormService, Pagination, SortOption]
 })
 export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,OnDestroy {
-    httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    formsLoader: HttpRequestLoader = new HttpRequestLoader();
     senderMergeTag: SenderMergeTag = new SenderMergeTag();
     loggedInUserId = 0;
     companyProfileImages: string[] = [];
@@ -59,10 +57,11 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     folderViewType = "";
     modulesDisplayType = new ModulesDisplayType();
     skipConfirmAlert = false;
+    ngxLoading = false;
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
-        this.refService.startLoader(this.httpRequestLoader);
+        this.ngxLoading = true;
         this.loadBeeContainer(emailTemplateService, authenticationService,true);
     }
 
@@ -269,13 +268,13 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                                         bee.start(template);
                                     }
                                     self.loadTemplate = true;
-                                    self.refService.stopLoader(self.httpRequestLoader);
+                                    self.ngxLoading = false;
                                 });
                         });
                     });
             } else {
                 swal("Please Contact Admin!", "No CompanyId Found", "error");
-                self.refService.stopLoader(self.httpRequestLoader);
+                self.ngxLoading = false;
             }
         } else {
             this.isReloaded = true;
@@ -394,7 +393,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                             this.refService.isCreated = true;
                             this.navigateToManageSection();
                         }else{
-                            this.refService.startLoader(this.httpRequestLoader);
+                           // this.refService.startLoader(this.httpRequestLoader);
                             let createdEmailTemplateId = data.data;
                             this.emailTemplateService.getById(createdEmailTemplateId).subscribe(
                                 (data: EmailTemplate)=>{
@@ -419,7 +418,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
             error => {
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
                 swal.close();
-                this.refService.stopLoader(this.httpRequestLoader);
+                this.ngxLoading = false;
                 this.logger.errorPage(error);
             }
         );
@@ -454,7 +453,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                             this.navigateToManageSection();
                         }else{
                             this.customResponse = new CustomResponse('SUCCESS', "Template updated successfully", true);
-                            this.refService.startLoader(this.httpRequestLoader);
+                            this.ngxLoading = true;
                             this.emailTemplateService.emailTemplate.name = emailTemplate.name;
                             this.emailTemplateService.emailTemplate.categoryId = emailTemplate.categoryId;
                             this.emailTemplateService.emailTemplate.jsonBody = emailTemplate.jsonBody;
@@ -534,6 +533,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     @HostListener('window:beforeunload')
     canDeactivate(): Observable<boolean> | boolean {
         this.authenticationService.stopLoaders();
+        this.ngxLoading = false;
         let isInvalidEditPage = this.emailTemplateService.emailTemplate==undefined;
         return this.skipConfirmAlert ||  this.saveAsOrSaveAndRedirectClicked || this.updateAndRedirectClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked || this.isReloaded;
     }
