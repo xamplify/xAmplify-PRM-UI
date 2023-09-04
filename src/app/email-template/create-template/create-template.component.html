@@ -1,12 +1,13 @@
 <div class="page-content" [style.background-color]="refService.pageContnetBgColor">
-    <app-modal-popup-loader [height]="935"  *ngIf="httpRequestLoader.isLoading"></app-modal-popup-loader>
-    <div [hidden]="httpRequestLoader?.isLoading">
+    <div class="my-container">
+        <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    </div>
         <div style="position: relative; top: -10px">
             <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <div class="page-bar mWidth" style="border:none !important;">
+                <div *ngIf="!ngxLoading" class="page-bar mWidth" style="border:none !important;">
                     <ul class="page-breadcrumb" *ngIf="loadTemplate">
                         <li>
                             <i class="fa fa-home" aria-hidden="true"></i>
@@ -40,5 +41,4 @@
                 </div>
             </div>
         </div>
-    </div>
     <app-scroll-top></app-scroll-top>
