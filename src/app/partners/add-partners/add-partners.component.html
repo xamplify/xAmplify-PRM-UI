@@ -398,7 +398,7 @@
                             <li><a id="saveAs_button" [class.disabled]="isSaveAsList"
                                 *ngIf="selectedAddPartnerOption == 5 && !clipBoard"
                                 (click)="saveAsChange(true); editContactComponent.addPartnerSave = true"
-                                translate>Save As </a></li>
+                                translate>Create New List </a></li>
                             <li><a id="exportToExcel"
                                 *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard"
                                 (click)="downloadPartnerList()" translate>Export To Excel </a></li>
