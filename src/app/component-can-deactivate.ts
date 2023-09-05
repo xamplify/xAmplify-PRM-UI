@@ -36,7 +36,7 @@ export class PendingChangesGuard implements CanDeactivate<ComponentCanDeactivate
     }
 
     callConfirmAlert(){
-     return confirm("You haven't saved your changes. Are you sure you want to leave this page?");
+     return confirm("Are you sure you want to leave this page?");
     }
 
     openConfirmDialog() {
