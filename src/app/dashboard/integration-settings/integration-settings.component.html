@@ -55,6 +55,8 @@
 
             <th>Field Name</th>
             <th>Data Type</th>
+            <th>Required</th>
+            <th>Place Holder</th>
           </tr>
         </thead>
         <tbody>
@@ -66,6 +68,14 @@
                 [disabled]="sfCustomField.required" /></td>
             <td><span>{{sfCustomField.label}}</span></td>
             <td><span>{{sfCustomField.type}}</span></td>
+            <td> <span *ngIf="sfCustomField.selected">Required <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="This Custom field will not be accesible by your partners if you check this option."></span>
+              <label class="toggleOnOff">
+                <input  type="checkbox"  name="required">
+                <span class="sliderOnOff"></span>
+                <span class="labels" data-on="ON" data-off="OFF"></span>
+              </label>
+            </span>   </td>
+            <td>  <input *ngIf="sfCustomField.selected" type="text" id="customTextbox" name="customTextbox" placeholder="Type something here..."></td>
             </tr>
           </ng-container>
         </tbody>
