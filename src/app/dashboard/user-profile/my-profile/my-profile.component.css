@@ -2895,3 +2895,161 @@ th.border-top {
     padding-left: 10px;
   }
 }
+
+/* 29-08-2023 */
+.modal-dialog.pipelinePopupWidth {
+  width: 58% !important;
+}
+input.inputFieldWidth {
+  width: 90% !important;
+}
+span.slider.round.slidercu {
+  margin: 0px 1px;
+}
+label.switch.pipeline {
+  width: 44px;
+  height: 17px;
+  margin-top: 5px;
+}
+.slider.slidercu:before {
+  height: 14px;
+  width: 14px;
+  left: 1px;
+  bottom: 2px;
+}
+span.fa.fa-info-circle.pipelinedata {
+  font-size: 11px !important;
+}
+.formSelectCustomization {
+  padding: 3px 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+input.alignEqualtoText {
+  position: relative;
+  top: 2px;
+}
+span.pdLeftforspace {
+  padding-left: 30px;
+}
+
+@media only screen and (min-width: 1750px) and (max-width: 1920px) { 
+  .modal-dialog.pipelinePopupWidth {
+    width: 44% !important;
+  }
+}
+@media only screen and (min-width: 1640px) and (max-width: 1749px) { 
+  .modal-dialog.pipelinePopupWidth {
+    width: 46% !important;
+  }
+}
+@media only screen and (min-width: 1537px) and (max-width: 1639px) { 
+  .modal-dialog.pipelinePopupWidth {
+    width: 50% !important;
+  }
+}
+@media only screen and (min-width: 1400px) and (max-width: 1537px) { 
+  .modal-dialog.pipelinePopupWidth {
+    width: 54% !important;
+  }
+}
+@media only screen and (min-width: 1198px) and (max-width: 1275px) { 
+  .modal-dialog.pipelinePopupWidth {
+    width: 62% !important
+  }
+}
+@media only screen and (min-width: 1089px) and (max-width: 1197px) { 
+  .modal-dialog.pipelinePopupWidth {
+    width: 68% !important
+  }
+}
+@media only screen and (min-width: 1000px) and (max-width: 1088px) { 
+  .modal-dialog.pipelinePopupWidth {
+    width: 74% !important
+  }
+}
+.toggleOnOff {
+  --width: 60px;
+  --height: calc(var(--width) / 3);
+  position: relative;
+  top: 11px;
+  display: inline-block;
+  width: var(--width);
+  height: var(--height);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  border-radius: var(--height);
+  cursor: pointer;
+}
+.toggleOnOff input {display: none;}
+.toggleOnOff .sliderOnOff {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--height);
+  background-color: #cccccc69;
+  transition: all 0.4s ease-in-out;
+}
+.toggleOnOff .sliderOnOff::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--height));
+  height: calc(var(--height));
+  border-radius: calc(var(--height) / 2);
+  background-color: #fff;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s ease-in-out;
+}
+.toggleOnOff input:checked+.sliderOnOff {
+  background-color: #2196F3;
+}
+.toggleOnOff input:checked+.sliderOnOff::before {
+  transform: translateX(calc(var(--width) - var(--height)));
+}
+.toggleOnOff .labels {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 10px;
+  font-family: sans-serif;
+  transition: all 0.4s ease-in-out;
+}
+.toggleOnOff .labels::after {
+  content: attr(data-off);
+  position: absolute;
+  right: 5px;
+  color: #4d4d4d;
+  opacity: 1;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s ease-in-out;
+}
+.toggleOnOff .labels::before {
+  content: attr(data-on);
+  position: absolute;
+  left: 5px;
+  color: #ffffff;
+  opacity: 0;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.4);
+  transition: all 0.4s ease-in-out;
+}
+.toggleOnOff input:checked~.labels::after {
+  opacity: 0;
+}
+.toggleOnOff input:checked~.labels::before {
+  opacity: 1;
+}
+.alignEqualtoFields {
+  position: relative;
+  bottom: 5px;
+}
+button.deleteBntAligment {
+  position: relative;
+  top: 7px;
+}
