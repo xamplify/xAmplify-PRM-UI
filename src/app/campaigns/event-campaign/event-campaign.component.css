@@ -360,14 +360,18 @@ a.disabled {
   bottom: 2px;
 }
 
-.partner-txt-aln-center{
+.partner-txt-aln-center {
   text-align: center;
-    margin: 0 auto;
-    display: block;
+  margin: 0 auto;
+  display: block;
 }
 /* 24-07-2023 */
 span.preview-publishing-aligntectcenter {
   text-align: center;
   margin: 0 auto;
   display: block;
+}
+/* sudha sri (6-9-2023) */
+.tooltip-margin {
+  margin: -38px !important;
 }

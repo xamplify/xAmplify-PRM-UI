@@ -95,7 +95,7 @@
                                             <!--Through Partner Label-->
                                             <label class="control-label col-sm-4 cursor-pointer tab_p0" data-toggle="tooltip" 
                                             data-placement="top" title="{{throughPartnerToolTipMessage}}">
-                                                <span [className]="campaign?.channelCampaign ? 'custom-font-weight':''">{{throughPartnerText}}</span>
+                                                <span [className]="campaign?.channelCampaign ? 'custom-font-weight highletClass':'color-css'">{{throughPartnerText}}</span>
                                             </label>
                                             <div class="col-sm-8 col-xs-6">
                                                 <div class="email-options-checkbox-group email-options-notify">
@@ -107,7 +107,7 @@
                                                     <!--To Partner Label-->
                                                     <div class="col-sm-11 col-xs-12 to-partner-padding display_cont">
                                                         <label class="cursor-pointer"  data-toggle="tooltip" data-placement="top" title="{{toPartnerToolTipMessage}}">
-                                                            <span [className]="!campaign?.channelCampaign ? 'custom-font-weight':''">{{toPartnerText}}</span>
+                                                            <span [className]="!campaign?.channelCampaign ? 'custom-font-weight highletClass':'color-css'">{{toPartnerText}}</span>
                                                         </label>
                                                         <!--Help Access-->
                                                         <span class="info-color-xampc">
