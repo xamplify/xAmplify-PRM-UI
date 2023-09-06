@@ -422,7 +422,6 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
 
     goToManageAfterSave(data:any, isSaveAndRedirectButtonClicked:boolean) {
         if (data.access) {
-            alert("Save & Redirect "+isSaveAndRedirectButtonClicked)
             if (isSaveAndRedirectButtonClicked) {
                 this.referenceService.isCreated = true;
                 this.navigateToManageSection();
