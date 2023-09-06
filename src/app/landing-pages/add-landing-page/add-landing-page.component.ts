@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,HostListener } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -45,6 +46,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     skipConfirmAlert = false;
     updateAndRedirectClicked = false;
     openLinksInNewTabCheckBoxId = "openLinksInNewTab-page-links";
+    isSaveAndRedirectButtonClicked = false;
     constructor(private landingPageService: LandingPageService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public referenceService: ReferenceService, private location: Location,
         public pagerService: PagerService, public sortOption: SortOption, public utilService: UtilService, private route: ActivatedRoute) {
@@ -176,7 +178,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
 
                                 buttons.append(self.createButton('Save As', function () {
                                     self.clickedButtonName = "SAVE_AS";
-                                    self.saveLandingPage(false);
+                                    self.saveLandingPage(true);
                                 })).append(self.createButton('Update', function () {
                                     let selectedPageType = $('#pageType option:selected').val();
                                     if (self.landingPage.type == selectedPageType || selectedPageType == undefined) {
@@ -234,9 +236,18 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                     buttons.append(dropDown);
                                 }
 
-                                buttons.append(self.createButton('Save', function () {
-                                    self.clickedButtonName = "SAVE";
-                                    self.saveLandingPage(false);
+                                let url = self.referenceService.getCurrentRouteUrl();
+                                    let saveAsDefaultUrl = url.indexOf("saveAsDefault")>-1;
+                                    if(!saveAsDefaultUrl){
+                                        buttons.append(self.createButton('Save', function () {
+                                            self.clickedButtonName = "SAVE";
+                                            self.saveLandingPage(false);
+                                        }));
+                                    }
+
+                                buttons.append(self.createButton('Save & Redirect', function () {
+                                    self.clickedButtonName = "SAVE_AND_REDIRECT";
+                                    self.saveLandingPage(true);
                                 })).append(self.createButton('Cancel', function () {
                                     self.clickedButtonName = "CANCEL";
                                     swal.close();
@@ -355,11 +366,21 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                     this.logger.errorPage(error);
                 });
         } else {
-            this.location.back();
+            this.skipConfirmAlert =true;
+            let url = this.referenceService.getCurrentRouteUrl();
+            let isSaveAsUrl = url.indexOf("saveAsDefault")>-1;
+            if(isSaveAsUrl){
+                this.router.navigate(["/home/pages/select"]);
+            }else{
+                this.router.navigate(["/home/pages/manage"]);
+            }
+            
         }
     }
 
-    saveLandingPage(isOnDestroy: boolean) {
+    saveLandingPage(isSaveAndRedirectButtonClicked: boolean) {
+        this.isSaveAndRedirectButtonClicked = isSaveAndRedirectButtonClicked;
+        this.customResponse = new CustomResponse();
         $("#bee-save-buton-loader").addClass("button-loader"); 
         $('#templateNameSpanError').text('');
         this.landingPage.name = this.name;
@@ -372,15 +393,17 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
         }
         this.landingPageService.save(this.landingPage, this.loggedInAsSuperAdmin,this.id).subscribe(
             data => {
+                swal.close();
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
                 if (this.loggedInAsSuperAdmin) {
-                    this.referenceService.showSweetAlertProceesor(this.landingPage.name + " Created Successfully");
+                    this.skipConfirmAlert = true;
+                   this.referenceService.showSweetAlertProceesor(this.landingPage.name + " Created Successfully");
                    let self = this;
                     setTimeout(function(){
                         self.referenceService.goToRouter("/home/pages/select");
                     }, 1500);
                 } else {
-                    this.goToManageAfterSave(data, isOnDestroy);
+                    this.goToManageAfterSave(data, isSaveAndRedirectButtonClicked);
                 }
             },
             error => {
@@ -391,18 +414,24 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                     let message = errorResponse['message'];
                     $('#templateNameSpanError').text(message);
                 } else {
+                    this.skipConfirmAlert = true;
                     this.logger.errorPage(error);
                 }
             });
     }
 
-    goToManageAfterSave(data, isOnDestroy) {
+    goToManageAfterSave(data:any, isSaveAndRedirectButtonClicked:boolean) {
         if (data.access) {
-            if (!isOnDestroy) {
+            alert("Save & Redirect "+isSaveAndRedirectButtonClicked)
+            if (isSaveAndRedirectButtonClicked) {
                 this.referenceService.isCreated = true;
                 this.navigateToManageSection();
             } else {
-                this.landingPageService.goToManage();
+                this.ngxloading = true;
+                this.customResponse = new CustomResponse('SUCCESS',"Page created successfully",true);
+                let createdPageId = data.data;
+                this.landingPageService.id = createdPageId;
+                this.findPageDataAndLoadBeeContainer(this.landingPageService,this.authenticationService);
             }
         } else {
             this.skipConfirmAlert = true;
@@ -493,6 +522,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     ngOnInit() { }
     ngOnDestroy() {
         swal.close();
+        this.landingPageService.id = 0;
     }
 
     checkOrUncheckOpenLinksInNewTabOption(){
@@ -505,6 +535,14 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
             this.landingPage.openLinksInNewTab = true;
         }
 
+    }
+
+    @HostListener('window:beforeunload')
+    canDeactivate(): Observable<boolean> | boolean {
+        this.authenticationService.stopLoaders();
+        this.ngxloading = false;
+        let isInvalidEditPage = this.landingPageService.id==undefined || this.landingPageService.id==0;
+        return this.skipConfirmAlert ||  this.isSaveAndRedirectButtonClicked || this.updateAndRedirectClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked;
     }
 
 }
