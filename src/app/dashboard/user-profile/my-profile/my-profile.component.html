@@ -2142,7 +2142,7 @@
 
                                                         <span class="pdLeftforspace" *ngIf="(!pipeline.private)">Private <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="This pipeline stage will not be accesible by your partners if you check this option."></span>
                                                           <label class="toggleOnOff">
-                                                            <input type="checkbox" [(ngModel)]="pipelineStage.private" name="private" [disabled]="shouldDisableCheckbox(x)">
+                                                            <input type="checkbox" [(ngModel)]="pipelineStage.private" name="private" [disabled]="shouldDisableCheckbox(x) || pipelinePreview">
                                                             <span class="sliderOnOff"></span>
                                                             <span class="labels" data-on="ON" data-off="OFF"></span>
                                                           </label>
