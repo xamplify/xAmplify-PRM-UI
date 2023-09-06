@@ -9,7 +9,6 @@ import { EmailTemplate } from '../models/email-template';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { FormService } from '../../forms/services/form.service';
@@ -393,7 +392,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                             this.refService.isCreated = true;
                             this.navigateToManageSection();
                         }else{
-                           // this.refService.startLoader(this.httpRequestLoader);
                             let createdEmailTemplateId = data.data;
                             this.emailTemplateService.getById(createdEmailTemplateId).subscribe(
                                 (data: EmailTemplate)=>{
