@@ -1,16 +1,45 @@
 <!-- XNFR-335 -->
 <div class="tabscard">
   <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active" id="tabWidthCu"><a href="#Domain" aria-controls="home" role="tab" data-toggle="tab">Domain</a></li>
-      <li role="presentation" id="tabWidthCu"><a href="#Manual_SPF" aria-controls="profile" role="tab" data-toggle="tab">Manual SPF</a></li>
+    <li role="presentation" class="active" id="tabWidthCu">
+      <a href="#Manual_SPF" aria-controls="Manual SPF" role="tab" data-toggle="tab">Manual SPF</a>
+    </li>
+    <li role="presentation" id="tabWidthCu">
+      <a href="#Domain" aria-controls="Domain" role="tab" data-toggle="tab">Domain</a>
+    </li>
   </ul>
   <!-- Tab panes start-->
   <div class="tab-content">
-    <!-- Tab one start-->
 
-    <div role="tabpanel" class="tab-pane active paddingSides" id="Domain">
+    <!-- Tab One start-->
+    <div role="tabpanel" class="tab-pane active" id="Manual_SPF">
+      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      <div class="{{bootstrapAlertClass}}">
+        <strong>{{successOrErrorMessage}}</strong>
+      </div>
+      <div class="portlet-border">
+        <div class="portlet box">
+          <app-spf-description></app-spf-description>
+        </div>
+      </div>
+      <ng-container *ngIf="!spfConfigured">
+        <div class="modal-footer">
+          <div class="form-group left">
+            <input type="checkbox" [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" name="spf" value="spf" checked translate>
+            <span class="{{spfErrorOrSuccessClass}}">You confirm that SPF configuration is done.</span>
+            <br>
+          </div>
+          <button type="button" class="btn btn-primary" (click)="saveSpf()" translate>Submit</button>
+        </div>
+      </ng-container>   
+    </div>
+    <!-- Tab One End-->
+
+
+    <!-- Tab Two start-->
+    <div role="tabpanel" class="tab-pane" id="Domain">
       <!-- Add a Domain -->
-      <div id="addADomain">
+      <div class="paddingSides" id="addADomain">
         <img alt="PC" class="domainImage" src="assets/images/godaddy-configuration/Domain_PC.png">
         <div class="align-middle">
           <h3 translate="">Let's get started.</h3>
@@ -21,10 +50,8 @@
       <!-- Add a Domain End -->
 
 
-
-
    <!-- progressbar Select Domain Start -->
-   <div class="paddingTop" id="step-2" >
+   <div class="paddingSides" id="step-2" >
     <div class="progressbarCU">
       <ul class="progressbar">
         <li class="active leftAllign">Select Domain</li>
@@ -37,11 +64,11 @@
         <div class="form-group col-md-2"></div>
         <div class="form-group col-md-8">
           <label for="Name">Enter The Domain</label>
-          <input type="text" class="form-control" id="Name" [(ngModel)]="domainName" [ngModelOptions]="{standalone: true}" required>
+          <input type="text" class="form-control" id="Name" [(ngModel)]="domainName" [ngModelOptions]="{standalone: true}" required> <br>
           <p class="domainDescriptio">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
         </div>
         <div class="form-group col-md-2"></div>
-        <div class="col-md-12">
+        <div class="col-md-12 marginBottom">
           <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToVerification()">Next</button>
         </div>
       </div>
@@ -50,9 +77,8 @@
     <!-- progressbar Select Domain End -->
 
 
-
   <!-- Verification Domain Start -->
-   <div class="paddingTop" id="step-3">
+   <div class="paddingSides" id="step-3">
     <div class="progressbarCU">
       <ul class="progressbarVerification">
         <li class="activeVerification">Select Domain</li>
@@ -77,20 +103,16 @@
           </td>
        </tr>
    </table>
-   <div class="col-sm-12">
+   <div class="col-sm-12 marginBottom">
     <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToStepFour()">Next</button>
     <button type="submit" class="btn Btn-Green btn-md float-left mobileFloatRight" (click)="addADomain()">Back</button>
   </div>
    </div>
     <!-- Verification Domain End -->
 
-
-
-      
-
-                    
+    
     <!-- Domains Details Start -->
-    <div class="paddingTop" id="step-4">
+    <div class="paddingSides" id="step-4">
       <h4 class="text-start">Domains Details</h4>
       <table class="table table-bordered">
          <tr class="displayContents">
@@ -103,7 +125,7 @@
          <tr class="displayContents">
           <td class="verticalMiddle">
             <span class="conectColor" (click)="goToStepFive()"><i class="fa fa-circle" aria-hidden="true"></i>
-              connect</span>
+              Connect</span>
           </td>
         </tr>
          <tr class="displayContents">
@@ -119,7 +141,7 @@
 
 
     <!-- API Key Start -->
-    <div class="paddingTop" id="step-5">
+    <div class="paddingSides" id="step-5">
       <form>
         <div class="form-group row">
           <label for="APIKey" class="col-sm-3 col-form-label">API Key:</label>
@@ -152,10 +174,8 @@
      </div>
    <!-- API Key End -->
 
-
-
 <!-- Type Start -->
-<div class="paddingTop" id="step-6">
+<div class="paddingSides" id="step-6">
   <form>
     <div class="form-row row">
       <div class="form-group col-md-4">
@@ -183,27 +203,27 @@
 
 
    <!-- Connected Domains Details Start -->
-   <div class="paddingTop" id="step-7">
+   <div class="paddingSides" id="step-7">
     <div class="alert alert-info">
       <strong>DNS Record added Successfully</strong>
     </div>
     <h4 class="text-start">Domains Details</h4>
     <table class="table table-bordered">
        <tr class="displayContents">
-         <td>Website</td>
+         <td class="verticalMiddle">Website</td>
        </tr>
        <tr class="displayContents">
-         <td>{{domainName}}
+         <td class="verticalMiddle">{{domainName}}
          </td>
        </tr>
        <tr class="displayContents">
-        <td>
-          <span><i class="fa fa-circle IconColorCu" aria-hidden="true"></i>
+        <td class="verticalMiddle">
+          <span class="connectedLive"> <i class="fa fa-circle" aria-hidden="true"></i>
             Connected</span>
         </td>
       </tr>
        <tr class="displayContents">
-         <td>
+         <td class="verticalMiddle">
           <a> 
             <img alt="Godaddy Logo" class="godadyLogo" src="assets/images/godaddy-configuration/godaddy-logo.png">
           </a>
@@ -212,49 +232,9 @@
    </table>
  </div>
  <!-- Connected Domains Details End -->
-
-
-
-
-
-
-
  </div>
+<!-- Tab two End-->
 
-
-
-
-
-
-
-
-
-
-    <!-- Tab one End-->
-
-    <!-- Tab Two start-->
-      <div role="tabpanel" class="tab-pane" id="Manual_SPF">
-        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-        <div class="{{bootstrapAlertClass}}">
-          <strong>{{successOrErrorMessage}}</strong>
-        </div>
-        <div class="portlet-border">
-          <div class="portlet box">
-            <app-spf-description></app-spf-description>
-          </div>
-        </div>
-        <ng-container *ngIf="!spfConfigured">
-          <div class="modal-footer">
-            <div class="form-group left">
-              <input type="checkbox" [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" name="spf" value="spf" checked translate>
-              <span class="{{spfErrorOrSuccessClass}}">You confirm that SPF configuration is done.</span>
-              <br>
-            </div>
-            <button type="button" class="btn btn-primary" (click)="saveSpf()" translate>Submit</button>
-          </div>
-        </ng-container>   
-      </div>
-      <!-- Tab Two End-->
   </div>
 </div>
 <!-- XNFR-335 End-->
