@@ -353,24 +353,24 @@
                               <div class="actions-block override-actions tb_view_actions">
                                   <a data-rel="fancybox-button" (click)="viewLead(lead)"  data-toggle="tooltip" data-placement="bottom"
                                    title="View Lead" id="lead">
-                                    <i class="fa fa-eye mr5" aria-hidden="true"></i>
+                                    <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
                                   </a>
                                   <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                     <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="editLead(lead)"
                                     data-toggle="tooltip" data-placement="bottom"
                                     title="Edit Lead" id="lead">
-                                      <i class="fa fa-edit mr5" aria-hidden="true"></i>
+                                      <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
                                     </a>
                                     <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="confirmDeleteLead(lead)"
                                     data-toggle="tooltip" data-placement="bottom"
                                       title="Delete Lead" id="lead">
-                                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                      <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                                     </a>
                                   </ng-container>
                                     <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)"
                                     data-toggle="tooltip" data-placement="bottom"
                                       title="Comments" style="margin-top: 10px">
-                                      <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
+                                      <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px"> </i>
                                       <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"
                                         style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
                                     </a>
@@ -462,21 +462,21 @@
                             <td>
                               <a data-toggle="tooltip" data-placement="top" title="Number of Leads"
                                 style="cursor: default">
-                                <span class="circled-number"><strong>{{campaign.leadsCount}}</strong></span>
+                                <i class="circled-number IconCustomization fontStyleNormal"><strong>{{campaign.leadsCount}}</strong></i>
                               </a>
 
                               <a *ngIf="campaign.channelCampaign" (click)="showPartners(campaign)" data-toggle="tooltip"
                                 data-placement="top" title="View leads for this campaign">
-                                <span class="circled-number">
-                                  <i class="fa" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"
+                              
+                                  <i class="circled-number fa IconCustomization" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"
                                     aria-hidden="true"></i>
-                                </span>
+                                
                               </a>
 
                               <a *ngIf="!campaign.channelCampaign" (click)="showPartners(campaign)"
                                 data-toggle="tooltip" data-placement="top" title="View leads for this campaign">
                                 <span class="circled-number">
-                                  <i class="fa fa-users" aria-hidden="true"></i>
+                                  <i class="fa fa-users IconCustomization" aria-hidden="true"></i>
                                 </span>
                               </a>
 
@@ -539,7 +539,7 @@
                                                 <td>
                                                   <a (click)="showCampaignLeadsByPartner(item)" data-toggle="tooltip"
                                                     data-placement="top" title="Number Of Leads">
-                                                    <span class="circled-number"><b>{{item.leadsCount}}</b></span>
+                                                    <i class="circled-number IconCustomization fontStyleNormal"><b>{{item.leadsCount}}</b></i>
                                                   </a>
                                                 </td>
                                               </tr>

@@ -64,7 +64,10 @@
     background-color: transparent
 }
 
-.ffolder.gray i {
+/* .ffolder.gray i {
+    color: #54a7e9
+} */
+.ffolder.gray{
     color: #54a7e9
 }
 

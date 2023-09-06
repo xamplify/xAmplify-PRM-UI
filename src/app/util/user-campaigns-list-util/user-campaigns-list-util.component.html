@@ -168,15 +168,15 @@
                                   </td>
                                   <td class="center-align">
                                     <div (click)="$event.stopPropagation()">
-                                       <span class="circled-number" *ngIf="campaignAnalytics?.autoResponsesCount==0"
-                                         style="margin-right: 50px;cursor: not-allowed">{{campaignAnalytics?.autoResponsesCount}}</span>
-                                       <span class="circled-number" *ngIf="campaignAnalytics?.autoResponsesCount>0">
-                                         {{campaignAnalytics?.autoResponsesCount}}</span>
-                                       <a class="circled-number" *ngIf="campaignAnalytics?.autoResponsesCount>0"
+                                       <i class="circled-number IconCustomization fontStyleNormal" *ngIf="campaignAnalytics?.autoResponsesCount==0"
+                                         style="margin-right: 50px;cursor: not-allowed">{{campaignAnalytics?.autoResponsesCount}}</i>
+                                       <i class="circled-number IconCustomization fontStyleNormal" *ngIf="campaignAnalytics?.autoResponsesCount>0">
+                                         {{campaignAnalytics?.autoResponsesCount}}</i>
+                                       <a *ngIf="campaignAnalytics?.autoResponsesCount>0"
                                          (click)="$event.stopPropagation();showAutoResponseAnalytics(campaignAnalytics,i)"
                                          data-toggle="tooltip" data-placement="bottom" 
                                          title="View Auto Response Analytics">
-                                         <i class="fa"
+                                         <i class="fa IconCustomization circled-number"
                                            [ngClass]="{'fa-plus': !campaignAnalytics?.expanded, 'fa-minus': campaignAnalytics?.expanded}" aria-hidden="true"></i>
                                        </a>
                                        
@@ -184,9 +184,7 @@
                                   </td>
                                   <td class="center-align">
                                     <div  (click)="viewTimeLine(campaignAnalytics)" >
-                                       <a class="circled-number"  data-toggle="tooltip" data-placement="bottom"  title="View History">
-                                          <i class="fa fa-history action-btn" aria-hidden="true"></i>
-                                          </a>
+                                          <i class="circled-number fa fa-history action-btn IconCustomization pointer" aria-hidden="true"  data-toggle="tooltip" data-placement="bottom"  title="View History"></i>
                                        </div>
                                   </td>
                                </tr>

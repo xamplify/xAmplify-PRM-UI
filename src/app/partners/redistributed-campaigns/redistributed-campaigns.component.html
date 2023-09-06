@@ -71,7 +71,7 @@
                   </td>
                   <td class="center">
                     <div>
-                    <button class="btn btn-default btn-xs re-distributed-high-level">
+                    <button class="btn btn-default btn-xs re-distributed-high-level TableDataBtn">
                       <div class="portlet-body text-center">
                         <h4>
                           <strong class="sky-blue">{{item?.totalRecipients}}</strong>
@@ -82,7 +82,7 @@
                    </td>
                     <td class="center">
                      <div>
-                      <button class="btn btn-default btn-xs re-distributed-high-level">
+                      <button class="btn btn-default btn-xs re-distributed-high-level TableDataBtn">
                         <div class="portlet-body text-center">
                           <h4>
                             <strong class="sky-blue">{{item?.activeRecipients}}</strong>
@@ -93,7 +93,7 @@
                    </td>
                    <td class="center">
                     <div>
-                    <button class="btn btn-default btn-xs re-distributed-high-level">
+                    <button class="btn btn-default btn-xs re-distributed-high-level TableDataBtn">
                       <div class="portlet-body text-center">
                         <h4>
                           <strong class="sky-blue">{{item?.clickedUrls}}</strong>
@@ -104,7 +104,7 @@
                   </td>
                    <td class="center">
                       <div>
-                      <button class="btn btn-default btn-xs re-distributed-high-level">
+                      <button class="btn btn-default btn-xs re-distributed-high-level TableDataBtn">
                         <div class="portlet-body text-center">
                           <h4>
                             <strong class="sky-blue">{{item?.views}}</strong>
@@ -115,9 +115,9 @@
                    </td>
                    <td style="text-align: right;">
                     <div class="actions-block">
-                      <span class="circled-number">{{item?.redistributedCount}}</span>
+                      <i class="circled-number IconCustomization fontStyleNormal">{{item?.redistributedCount}}</i>
                       <a  (click)="showRedistributedCampaings(item)" data-toggle="tooltip" data-placement="top" title="View Redistributed Campaigns"   *ngIf="item?.redistributedCount> 0">
-                        <i class="fa" aria-hidden="true" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}" ></i>
+                        <i class="fa IconCustomization" aria-hidden="true" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}" ></i>
                       </a>
                     </div>
                   </td>
@@ -157,39 +157,39 @@
                               <td class="center">
                                 <div class="actions-block float-none ">
                                   <a data-toggle="tooltip" data-placement="top">
-                                        <span class="circled-number"><strong>{{redistributedCampaign?.totalRecipients}}</strong></span>
+                                        <i class="circled-number IconCustomization fontStyleNormal"><strong>{{redistributedCampaign?.totalRecipients}}</strong></i>
                                       </a>
                                   </div>
                                </td>
                                <td class="center">
                                 <div class="actions-block float-none">
                                  <a data-toggle="tooltip" data-placement="top">
-                                     <span class="circled-number"><strong>{{redistributedCampaign?.activeRecipients}}</strong></span>
+                                     <i class="circled-number IconCustomization fontStyleNormal"><strong>{{redistributedCampaign?.activeRecipients}}</strong></i>
                                      </a>
                                    </div>
                               </td>
                               <td class="center">
                                <div class="actions-block float-none">
                                  <a data-toggle="tooltip" data-placement="top">
-                                       <span class="circled-number"><strong>{{redistributedCampaign?.clickedUrls}}</strong></span>
+                                       <i class="circled-number IconCustomization fontStyleNormal"><strong>{{redistributedCampaign?.clickedUrls}}</strong></i>
                                      </a>
                                  </div>
                              </td>
                               <td class="center">
                                  <div class="actions-block float-none">
                                  <a data-toggle="tooltip" data-placement="top">
-                                       <span class="circled-number"><strong>{{redistributedCampaign?.views}}</strong></span>
+                                       <i class="circled-number IconCustomization fontStyleNormal"><strong>{{redistributedCampaign?.views}}</strong></i>
                                      </a>
                                  </div>
                               </td>
                                  <td class="text-center">
                                    <a *ngIf="!redistributedCampaign.dataShare" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
-                                     data-placement="top" title="Campaign Based Reports" class='circled-number'>
-                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                     data-placement="top" title="Campaign Based Reports">
+                                     <i class="circled-number fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                                    </a>
                                    <a *ngIf="redistributedCampaign.dataShare" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
-                                     data-placement="top" title="Campaign Based Reports" class='circled-number' style="margin-left: -47px;">
-                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                     data-placement="top" title="Campaign Based Reports" style="margin-left: -47px;">
+                                     <i class="circled-number fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                                    </a>
                                  </td>
                           </tr>

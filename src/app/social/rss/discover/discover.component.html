@@ -22,9 +22,9 @@
                             </div>
                             <h4 class="description" style="font-size:16px!important">Featured</h4>
                             <div class="col-sm-3 tab_panelimg" *ngFor="let featuredCategory of featuredCategories">
-                                <div class="panel">
+                                <div class="panel border-none">
                                     <div class="panel-body p0">
-                                        <div class="card" [routerLink]="['/home/rss/search']" [queryParams]="{'q': featuredCategory.name, 't': 'category'}" [style.backgroundImage]="'url('+featuredCategory.image+')'">
+                                        <div class="card cardheight" [routerLink]="['/home/rss/search']" [queryParams]="{'q': featuredCategory.name, 't': 'category'}" [style.backgroundImage]="'url('+featuredCategory.image+')'">
                                             <span class="text-white">{{featuredCategory.name}}</span>
                                         </div>
                                     </div>
@@ -37,7 +37,7 @@
                                             <h4 style="font-size: 16px!important; padding-bottom: 10px; font-weight: 500;">{{item.name}}</h4>
                                         </div>
                                         <div class="col-xs-12" *ngFor="let category of item.value">
-                                            <div class="list-card" [routerLink]="['/home/rss/search', category]" [queryParams]="{ 't': 'category'}">{{category}}</div>
+                                            <div class="list-card listColorCu" [routerLink]="['/home/rss/search', category]" [queryParams]="{ 't': 'category'}">{{category}}</div>
                                         </div>
                                     </div>
                                 </div>

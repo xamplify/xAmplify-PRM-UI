@@ -333,7 +333,7 @@
                                     <td *ngIf="previewCampaignType!='SOCIAL'" (click)="viewCampaigns(campaignUser,campaign)"
                                     >
                                     <div class="actions-block override-actions">
-                                       <a data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics"><i class="fa fa-line-chart" aria-hidden="true"></i></a>
+                                       <a data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics"><i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i></a>
                                     </div>
                                     </td>
                                     <td class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0)">
@@ -637,42 +637,42 @@
       <ng-container *ngIf="campaign.launched">
          <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier ) && campaign.channelCampaign && campaign.redistributedCount>0" (click)="navigateRedistributedCampaigns(campaign)"
          data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
-         <span class="circled-number">{{campaign.redistributedCount}}</span>
+         <i class="circled-number IconCustomization fontStyleNormal">{{campaign.redistributedCount}}</i>
          </a>
          <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0" data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
-         <span class="circled-number disabled">{{campaign.redistributedCount}}</span>
+         <i class="circled-number disabled IconCustomization fontStyleNormal">{{campaign.redistributedCount}}</i>
          </a>
          <a *ngIf="(previewCampaignType!=='EVENT' && previewCampaignType!=='SOCIAL') && ((campaign.campaignScheduleType === 'NOW') ||hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier)" data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)"
          data-toggle="tooltip" data-placement="top" title="Analytics">
-         <i class="fa fa-line-chart"></i>
+         <i class="fa fa-line-chart IconCustomization"></i>
          </a>
          <a *ngIf="(previewCampaignType!=='EVENT') && ((campaign.campaignScheduleType === 'NOW')  && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier)) && !campaign.nurtureCampaign &&  previewCampaignType!='SOCIAL'" data-rel="fancybox-button"
          (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
-         <i class="fa fa-files-o"></i>
+         <i class="fa fa-files-o IconCustomization"></i>
          </a>
          <a *ngIf="(hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && !campaign.oneClickLaunch" (click)="navigatePreviewPartners(campaign)" data-rel="fancybox-button" data-toggle="tooltip"
          data-placement="auto" title="Preview & Delete {{authenticationService?.partnerModule?.customName}}">
-         <i class="fa fa-handshake-o" id="partner-icon"></i>
+         <i class="fa fa-handshake-o IconCustomization" id="partner-icon"></i>
          </a>
       </ng-container>
       <ng-container *ngIf="(previewCampaignType==='EVENT') && campaign.launched">
          <a *ngIf="campaign.launched || hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier" data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)"
          data-toggle="tooltip" data-placement="top" title="Analytics">
-         <i class="fa fa-line-chart"></i>
+         <i class="fa fa-line-chart IconCustomization"></i>
          </a>
          <a *ngIf="(campaign.launched && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier)) && !campaign.nurtureCampaign && previewCampaignType!='SOCIAL'" data-rel="fancybox-button"
          (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
-         <i class="fa fa-files-o"></i>
+         <i class="fa fa-files-o IconCustomization"></i>
          </a>
       </ng-container>
       <a *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId  || isOnlyPartner  || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier)" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="auto"
       title="Edit">
-      <i class="fa fa-pencil-square-o"></i>
+      <i class="fa fa-pencil-square-o IconCustomization"></i>
       </a>
       <a *ngIf=" ( (campaign.campaignType!=='EVENT')  && (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier) )"
       (click)="confirmDeleteCampaign(campaign)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="auto"
       title="Delete">
-      <i class="fa fa-trash-o"> </i></a>
+      <i class="fa fa-trash-o trashIconCustomization"> </i></a>
    </div>
 </div>
 </div>

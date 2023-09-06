@@ -364,6 +364,7 @@ tr {
   background-color: var(--div-bg-color) !important;
   border-color: var(--border-color) !important;
 }
+.border-bottom-1px,
 .modal .modal-header,
 .page-header.navbar
   .top-menu
@@ -1271,11 +1272,14 @@ span.ui-column-resize {
 .countColor {
   color: var(---text-color) !important;
 }
-.dropdown-menu li > a > [class*=" fa-"],
+.dropdown-menu li > a {
+  color: var(---text-color) !important;
+}
+/* .dropdown-menu li > a > [class*=" fa-"],
 .bar .fa,
 i.fa.fa-eye.color-chnage {
   color: var(---text-color) !important;
-}
+} */
 .partner-company-selected,
 .table tr.row-selected td {
   background-color: var(--page-content) !important;
@@ -1737,4 +1741,68 @@ ul.nav.nav-tabs.hideBorder {
 }
 .disable-btn-text-color {
   border: 1px solid var(--btn-secondary-border-color) !important;
+}
+
+
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li:hover > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li.open > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li.active > a, .page-sidebar .page-sidebar-menu .sub-menu > li:hover > a, .page-sidebar .page-sidebar-menu .sub-menu > li.open > a, .page-sidebar .page-sidebar-menu .sub-menu > li.active > a {
+  background-color: var(--left-bg-color) !important;
+  opacity: 0.9;
+}
+.dropdown-menu.custome-dropdown-changs .active > a, .dropdown-menu.custome-dropdown-changs .active > a:hover, .dropdown-menu.custome-dropdown-changs li > a:hover {
+  background: transparent !important;
+}
+
+
+
+
+
+/* Table icon Customization  START*/
+/* List View icon Customization start*/
+i.IconCustomization { border: 1px solid var(--border-color) !important;color: var(--border-color) !important;}
+i.IconCustomization:hover {border: 1px solid var(--border-color) !important;background: var(--border-color) !important;color: var(--div-bg-color) !important;}
+
+.IconCustomizationcondition a i {border: 1px solid var(--border-color) !important;color: var(--border-color) !important;}
+.IconCustomizationcondition a i:hover {border: 1px solid var(--border-color) !important;background: var(--border-color) !important;color: var(--div-bg-color) !important;}
+
+#download-template {border: 1px solid var(--border-color) !important;color: var(--border-color) !important;}
+#download-template:hover {border: 1px solid var(--border-color) !important;background: var(--border-color) !important;color: var(--div-bg-color) !important;}
+
+button.btn.TableDataBtn {border-color: var(--border-color) !important;}
+button.btn.TableDataBtn .sky-blue {color: var(--border-color)!important;}
+
+.custome-dropdown-changs li a {border: 1px solid var(--border-color) !important;}
+.custome-dropdown-changs li a i {color: var(--border-color) !important;}
+
+.setting-icon-cu {border: 1px solid var(--border-color) !important; color: var(--border-color) !important;}
+.setting-icon-cu .gearDropdownMenu {color: var(--border-color) !important;}
+
+i.singleIconCustomization {color: var(--border-color) !important;}
+
+i.fa.fa-trash-o.trashIconCustomization{border: 1px solid #cb5a5e !important;color: #cb5a5e !important;}
+i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !important;background: #cb5a5e !important;color: #fff !important;}
+/* List View icon Customization End*/
+
+/* Grid View icon Customization start*/
+.gridIconCustomization a {border: 1px solid #fff !important;color: #fff !important;}
+.gridIconCustomization a.Iconhover:hover{border: 1px solid #fff !important;background:#fff !important; color: #5bb2f5 !important;}
+
+#download-template-grid {border: 1px solid #fff !important;color: #fff !important;}
+#download-template-grid:hover {border: 1px solid #fff !important;background: #fff !important;color: #5ab2f5 !important;}
+
+.gridIconCustomization a.delete {border: 1px solid #cb5a5e !important;background: transparent;color: #cb5a5e !important;}
+.gridIconCustomization a.delete:hover {border: 1px solid #cb5a5e !important;background: #cb5a5e !important; color: #fff !important;}
+/* Grid View icon Customization End*/
+/* Table icon Customization END*/
+
+.portlet.light.borderNone {
+  border: none !important;
+}
+.listColorCu {color: var(---text-color) !important;}
+.listColorCu:hover {opacity: 0.7;}
+.list-card.listColorCu {border-top: 1px solid var(--border-color) !important;}
+.lbg.show a h6 {
+  color: var(---text-color) !important;
+}
+.lbg{
+  background-color: var(--page-content) !important;
 }

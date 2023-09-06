@@ -61,9 +61,12 @@
     background-color: transparent
 }
 
-.ffolder.gray i {
+.ffolder.gray {
     color: #54a7e9
 }
+/* .ffolder.gray i {
+    color: #54a7e9
+} */
 
 .grid-box-folder {
     background: #f1f3fa;

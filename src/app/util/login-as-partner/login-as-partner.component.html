@@ -6,7 +6,7 @@
    (click)="contact?.signedUp && contact?.companyId>0 &&
     contact?.loginAsPartnerOptionEnabledForVendor && !isLoggedInAsTeamMember && loginAsPartner()">
 
-  <i  class="fa fa-sign-in" [ngClass]="{'disabled gray': !contact?.signedUp || contact?.companyId==0 
+  <i  class="fa fa-sign-in IconCustomization" [ngClass]="{'disabled gray': !contact?.signedUp || contact?.companyId==0 
   || !contact?.loginAsPartnerOptionEnabledForVendor || isLoggedInAsTeamMember || isLoggedInAsPartnerFromXamplify,
    'active': contact?.signedUp && contact?.companyId>0 && contact?.loginAsPartnerOptionEnabledForVendor && !isLoggedInAsTeamMember && !isLoggedInAsPartnerFromXamplify }"
     aria-hidden="true"></i>

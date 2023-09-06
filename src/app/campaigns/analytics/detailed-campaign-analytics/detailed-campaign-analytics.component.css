@@ -588,8 +588,8 @@ a > span.glyphicon.glyphicon-remove {
   
 .setting-icon-cu {
   cursor: pointer;
-  border: 1px solid #5bb2f5;
-  color: #5bb2f5;
+  /* border: 1px solid #5bb2f5;
+  color: #5bb2f5; */
   width: 28px;
   height: 28px;
   border-radius: 50%;

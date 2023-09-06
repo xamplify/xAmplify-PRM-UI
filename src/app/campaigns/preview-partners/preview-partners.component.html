@@ -68,7 +68,7 @@
                                        <span class="circled-number" title="Download Count">{{partner?.downloadCount}}</span>
                                        <!----Download History-->
                                        <a title="View Download History" (click)="expandHistory(partner,i)"> 
-                                       <i class="fa"
+                                       <i class="fa IconCustomization"
                                           [ngClass]="{'fa-plus': !partner?.expand, 'fa-minus': partner?.expand}" aria-hidden="true"></i>
                                        </a>
                                     </ng-container>
@@ -76,7 +76,7 @@
                                        <span class="circled-number" title="Email Opened Count">{{partner?.emailOpenedCount}}</span>
                                        <!----Download History-->
                                        <a title="View Email Opened History" (click)="expandHistory(partner,i)"> 
-                                       <i class="fa"
+                                       <i class="fa IconCustomization"
                                           [ngClass]="{'fa-plus': !partner?.expand, 'fa-minus': partner?.expand}" aria-hidden="true"></i>
                                        </a>
                                     </ng-container>
@@ -84,7 +84,7 @@
                                     <a *ngIf="viewType=='plc'" (click)="confirmDeletePartnerById(partner,i)"
                                     data-toggle="tooltip" data-placement="bottom"
                                     title="{{actionsDescription.campaign_delete_partner}}"> <i
-                                       class="fa fa-trash-o" aria-hidden="true"></i>
+                                       class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                                     </a>
                                  </div>
                               </td>

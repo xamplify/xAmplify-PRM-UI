@@ -25,23 +25,30 @@
 }
 
 .rss-visual {
-  height: 65px;
-  width: 113px;
+  height: 80px;
+  width: 100%;
   float: left;
   background-size: cover;
   border-radius: 5px;
-  margin-right: 20px;
+  /* margin-right: 20px; */
   background-color: #f1f1f1;
 }
 
 .rss-entry {
   margin: 10px 0px !important;
 }
-
 .rss-summary > img {
   display: none;
 }
 
-.alignment {
+/* .alignment {
   margin-left: 30px;
+} */
+
+@media only screen and (min-width: 300px) and (max-width: 767px) { 
+  .rss-content.alignment {
+    padding-top: 20px;
+    padding-bottom: 10px;
+  }
 }
+

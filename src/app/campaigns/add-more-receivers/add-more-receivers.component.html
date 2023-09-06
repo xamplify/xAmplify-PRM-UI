@@ -82,7 +82,8 @@
                                                     </a>
                                                  </div>
                                               </td>
-                                              <td class="text-center moreipsis" data-toggle="tooltip" data-placement="bottom" title="{{contacts.name}}">
+                                              <!-- data-toggle="tooltip" data-placement="bottom" title="{{contacts.name}}" -->
+                                              <td class="text-center moreipsis">
                                                  <span>{{contacts.name}}</span>
                                               </td>
                                               <td *ngIf="showContactType">
@@ -107,8 +108,9 @@
                                               </td>
                                               <td class="text-center">
                                                  <a (click)="$event.stopPropagation();loadUsers(contactsPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
-                                                 <i class="fa fa-eye" aria-hidden="true" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
+                                                 <i class="fa fa-eye IconCustomization campaignViewIcon" aria-hidden="true" title="" data-original-title="Preview"></i>
                                                  </a>
+                                                 <!-- style="color: #008fd5;padding-top: 3px; font-size: 20px;"  -->
                                               </td>
                                               </tr>
                                               <tr *ngIf="contacts?.expand">
