@@ -4132,4 +4132,30 @@ configSalesforce() {
 	}
 
  /************* XNFR-238 *********************/	
+
+ /************* XNFR-338 *********************/
+ 
+ shouldDisableCheckbox(index: number): boolean {
+	const selectedCount = this.pipeline.stages.filter(item => item.private).length;
+	const remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
+	return remainingUnselectedCount === 0 && !this.pipeline.stages[index].private;
+  }	
+  handleMarkAsChange(changedIndex: number): void {
+	const changedStage = this.pipeline.stages[changedIndex];
+
+	if (changedStage.markAs === 'won' || changedStage.markAs === 'lost') {
+	  this.resetOtherMarkedStages(changedIndex, changedStage.markAs);
+	}
+  }
+
+  resetOtherMarkedStages(changedIndex: number, newMarking: string): void {
+	for (let i = 0; i < this.pipeline.stages.length; i++) {
+	  if (i !== changedIndex && this.pipeline.stages[i].markAs === newMarking) {
+		this.pipeline.stages[i].markAs = 'markAs';
+	  }
+	}
+  }
+  /************* XNFR-338 *********************/
+
+
 }
