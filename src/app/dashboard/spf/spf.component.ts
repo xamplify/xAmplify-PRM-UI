@@ -4,6 +4,8 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import {DashboardService} from 'app/dashboard/dashboard.service';
 import {ReferenceService} from 'app/core/services/reference.service';
 import {AuthenticationService} from 'app/core/services/authentication.service';
+
+ declare var $;
 @Component({
   selector: 'app-spf',
   templateUrl: './spf.component.html',
@@ -19,6 +21,7 @@ export class SpfComponent implements OnInit {
  bootstrapAlertClass = "";
  successOrErrorMessage = "";
  spfErrorOrSuccessClass = "";
+ domainName:any = "";
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,public dashboardService:DashboardService) { }
 
   ngOnInit() {
@@ -29,6 +32,14 @@ export class SpfComponent implements OnInit {
         this.companyId= user.campaignAccessDto.companyId;
       }
       this.isSpfConfigured();
+      $('#addADomain').show();
+      $('#step-2').hide();
+      $('#step-3').hide();
+      $('#step-4').hide();
+      $('#step-5').hide();
+      $('#step-6').hide();
+      $('#step-7').hide();
+      this.domainName = "example.com";
   }
 
   isSpfConfigured(){
@@ -82,6 +93,35 @@ export class SpfComponent implements OnInit {
         this.successOrErrorMessage = this.properties.serverErrorMessage;
       }
     );
+  }
+
+  /******* XNFR-335 **********/
+  addADomain(){
+    $('#addADomain').hide();
+    $('#step-2').show();
+    $('#step-3').hide();
+  }
+  goToVerification(){
+    $('#step-2').hide();
+    $('#step-3').show();
+  }
+  goToStepFour(){
+    $('#step-3').hide();
+    $('#step-4').show();
+    $('#step-5').hide();
+  }
+  goToStepFive(){
+    $('#step-4').hide();
+    $('#step-5').show();
+  }
+
+  authenticateGodaddy(){
+    $('#step-5').hide();
+    $('#step-6').show();
+  }
+  goToConnectDomain(){
+    $('#step-6').hide();
+    $('#step-7').show();
   }
   
 

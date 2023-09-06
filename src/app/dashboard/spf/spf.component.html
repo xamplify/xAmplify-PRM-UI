@@ -1,19 +1,260 @@
-<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="{{bootstrapAlertClass}}">
-  <strong>{{successOrErrorMessage}}</strong>
-</div>
-<div class="portlet-border">
-  <div class="portlet box">
-    <app-spf-description></app-spf-description>
-  </div>
-</div>
-<ng-container *ngIf="!spfConfigured">
-  <div class="modal-footer">
-    <div class="form-group left">
-      <input type="checkbox" [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" name="spf" value="spf" checked translate>
-      <span class="{{spfErrorOrSuccessClass}}">You confirm that SPF configuration is done.</span>
-      <br>
+<!-- XNFR-335 -->
+<div class="tabscard">
+  <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active" id="tabWidthCu"><a href="#Domain" aria-controls="home" role="tab" data-toggle="tab">Domain</a></li>
+      <li role="presentation" id="tabWidthCu"><a href="#Manual_SPF" aria-controls="profile" role="tab" data-toggle="tab">Manual SPF</a></li>
+  </ul>
+  <!-- Tab panes start-->
+  <div class="tab-content">
+    <!-- Tab one start-->
+
+    <div role="tabpanel" class="tab-pane active paddingSides" id="Domain">
+      <!-- Add a Domain -->
+      <div id="addADomain">
+        <img alt="PC" class="domainImage" src="assets/images/godaddy-configuration/Domain_PC.png">
+        <div class="align-middle">
+          <h3 translate="">Let's get started.</h3>
+          <p translate="">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+          <button class="btn btn-primary text-center" translate="" (click)="addADomain()">Add a Domain</button>
+        </div>
+      </div>
+      <!-- Add a Domain End -->
+
+
+
+
+   <!-- progressbar Select Domain Start -->
+   <div class="paddingTop" id="step-2" >
+    <div class="progressbarCU">
+      <ul class="progressbar">
+        <li class="active leftAllign">Select Domain</li>
+        <li class="rightAllign">Verification</li>
+      </ul>
     </div>
-    <button type="button" class="btn btn-primary" (click)="saveSpf()" translate>Submit</button>
+
+    <form>
+      <div class="form-row">
+        <div class="form-group col-md-2"></div>
+        <div class="form-group col-md-8">
+          <label for="Name">Enter The Domain</label>
+          <input type="text" class="form-control" id="Name" [(ngModel)]="domainName" [ngModelOptions]="{standalone: true}" required>
+          <p class="domainDescriptio">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+        </div>
+        <div class="form-group col-md-2"></div>
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToVerification()">Next</button>
+        </div>
+      </div>
+    </form>
+   </div>
+    <!-- progressbar Select Domain End -->
+
+
+
+  <!-- Verification Domain Start -->
+   <div class="paddingTop" id="step-3">
+    <div class="progressbarCU">
+      <ul class="progressbarVerification">
+        <li class="activeVerification">Select Domain</li>
+        <li>Verification</li>
+      </ul>
+    </div>
+
+    <div class="align-middle">
+      <h3 translate="">Confirm content type and URL selection</h3>
+      <p translate="">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+    </div>
+    <table class="table table-bordered">
+       <tr class="displayContents">
+         <td>Website</td>
+       </tr>
+       <tr class="displayContents">
+         <td>:</td>
+       </tr>
+       <tr class="displayContents">
+         <td>
+          <span>{{domainName}}</span>
+          </td>
+       </tr>
+   </table>
+   <div class="col-sm-12">
+    <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToStepFour()">Next</button>
+    <button type="submit" class="btn Btn-Green btn-md float-left mobileFloatRight" (click)="addADomain()">Back</button>
   </div>
-</ng-container>
+   </div>
+    <!-- Verification Domain End -->
+
+
+
+      
+
+                    
+    <!-- Domains Details Start -->
+    <div class="paddingTop" id="step-4">
+      <h4 class="text-start">Domains Details</h4>
+      <table class="table table-bordered">
+         <tr class="displayContents">
+           <td class="verticalMiddle">Website</td>
+         </tr>
+         <tr class="displayContents">
+           <td class="verticalMiddle">{{domainName}}
+           </td>
+         </tr>
+         <tr class="displayContents">
+          <td class="verticalMiddle">
+            <span class="conectColor" (click)="goToStepFive()"><i class="fa fa-circle" aria-hidden="true"></i>
+              connect</span>
+          </td>
+        </tr>
+         <tr class="displayContents">
+           <td class="verticalMiddle">
+            <a (click)="goToStepFive()"> 
+              <img alt="Godaddy Logo" class="godadyLogo" src="assets/images/godaddy-configuration/godaddy-logo.png">
+            </a>
+            </td>
+         </tr>
+     </table>
+   </div>
+   <!-- Domains Details End -->
+
+
+    <!-- API Key Start -->
+    <div class="paddingTop" id="step-5">
+      <form>
+        <div class="form-group row">
+          <label for="APIKey" class="col-sm-3 col-form-label">API Key:</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="APIKey" placeholder="Enter API Key here">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="SecretCode" class="col-sm-3 col-form-label">Secret Code:</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="SecretCode" placeholder="Enter Secret Code here">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="DomainName" class="col-sm-3 col-form-label">Domain Name:</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" id="DomainName"  [(ngModel)]="domainName" [ngModelOptions]="{standalone: true}" disabled>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <button type="submit" class="btn Btn-Green float-left mobileBottomPa"><a href="https://developer.godaddy.com/keys" target="_blank" style="color: #fff;">Generate API key from Godaddy</a></button>
+          </div>
+          <div class="col-sm-6">
+            <button type="submit" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="authenticateGodaddy()">Authenticate</button>
+            <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" (click)="goToStepFour()">Cancel</button>
+          </div>
+        </div>
+      </form>
+     </div>
+   <!-- API Key End -->
+
+
+
+<!-- Type Start -->
+<div class="paddingTop" id="step-6">
+  <form>
+    <div class="form-row row">
+      <div class="form-group col-md-4">
+        <label for="Typetoselect">Type</label>
+        <select class="form-control" id="Typetoselect" disabled>
+          <option selected>TXT</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="Name">Name</label>
+        <input type="text" class="form-control disabled" id="Name" placeholder="@" disabled>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="Value">Value</label>
+        <input type="text" class="form-control" id="Value" placeholder="Enter Value here">
+      </div>
+      <div class="col-md-12">
+        <button type="submit" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="goToConnectDomain()">Save</button>
+        <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight">Cancel</button>
+      </div>
+    </div>
+  </form>
+ </div>
+<!-- Type End -->
+
+
+   <!-- Connected Domains Details Start -->
+   <div class="paddingTop" id="step-7">
+    <div class="alert alert-info">
+      <strong>DNS Record added Successfully</strong>
+    </div>
+    <h4 class="text-start">Domains Details</h4>
+    <table class="table table-bordered">
+       <tr class="displayContents">
+         <td>Website</td>
+       </tr>
+       <tr class="displayContents">
+         <td>{{domainName}}
+         </td>
+       </tr>
+       <tr class="displayContents">
+        <td>
+          <span><i class="fa fa-circle IconColorCu" aria-hidden="true"></i>
+            Connected</span>
+        </td>
+      </tr>
+       <tr class="displayContents">
+         <td>
+          <a> 
+            <img alt="Godaddy Logo" class="godadyLogo" src="assets/images/godaddy-configuration/godaddy-logo.png">
+          </a>
+          </td>
+       </tr>
+   </table>
+ </div>
+ <!-- Connected Domains Details End -->
+
+
+
+
+
+
+
+ </div>
+
+
+
+
+
+
+
+
+
+
+    <!-- Tab one End-->
+
+    <!-- Tab Two start-->
+      <div role="tabpanel" class="tab-pane" id="Manual_SPF">
+        <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <div class="{{bootstrapAlertClass}}">
+          <strong>{{successOrErrorMessage}}</strong>
+        </div>
+        <div class="portlet-border">
+          <div class="portlet box">
+            <app-spf-description></app-spf-description>
+          </div>
+        </div>
+        <ng-container *ngIf="!spfConfigured">
+          <div class="modal-footer">
+            <div class="form-group left">
+              <input type="checkbox" [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" name="spf" value="spf" checked translate>
+              <span class="{{spfErrorOrSuccessClass}}">You confirm that SPF configuration is done.</span>
+              <br>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="saveSpf()" translate>Submit</button>
+          </div>
+        </ng-container>   
+      </div>
+      <!-- Tab Two End-->
+  </div>
+</div>
+<!-- XNFR-335 End-->
