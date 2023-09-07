@@ -2147,7 +2147,7 @@
                                                             <span class="labels" data-on="ON" data-off="OFF"></span>
                                                           </label>
                                                         </span>                 
-                                                        <div *ngIf="(!pipelineStage.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines')">
+                                                        <div *ngIf="(!pipelineStage.private && !pipeline.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines')">
                                                             <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
                                                                 name="nonInteractive" class="alignEqualtoText"> Non Interactive <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="Your partners will only be able to select the stage once and will not be able to update further for the non-interactive stage."></span>
                                                         </div>                                                 
