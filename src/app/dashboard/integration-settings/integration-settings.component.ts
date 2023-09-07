@@ -33,7 +33,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	paginatedSelectedIds = [];
 	sfcfPager: any = {};
 	pageSize: number = 12;
-	sfcfPagedItems: any[];
+	sfcfPagedItems = new Array<CustomFieldsDto>();
 	isHeaderCheckBoxChecked: boolean = false;
 	pageNumber: any;
 	selectedCustomFieldIds = [];
@@ -172,7 +172,6 @@ export class IntegrationSettingsComponent implements OnInit {
 				}
 			}
 		} catch (error) {
-			// this.xtremandLogger.error( error, "setSfCfPage()." )
 		}
 
 	}
@@ -195,16 +194,15 @@ export class IntegrationSettingsComponent implements OnInit {
 
 		/*****XNFR-339*****/
 		this.selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
-		$.each(this.selectedCfIds,function(index:number,customFieldName:any){
-			let selectedCustomFieldsDto = new CustomFieldsDto();
-			let isRequired = $('#required-'+customFieldName).is(':checked');
-			let placeHolder = $('#customTextbox-'+customFieldName).val();
-			selectedCustomFieldsDto.name = customFieldName;
-			selectedCustomFieldsDto.required = isRequired;
-			selectedCustomFieldsDto.placeHolder = placeHolder;
-			self.selectedCustomFieldsDtos.push(selectedCustomFieldsDto);
+		$.each(this.sfCustomFieldsResponse,function(_index:number,customFiledDto:any){
+			if(customFiledDto.selected){
+				let selectedCustomFieldsDto = new CustomFieldsDto();
+				selectedCustomFieldsDto.name = customFiledDto.name;
+				selectedCustomFieldsDto.required = customFiledDto.required;
+				selectedCustomFieldsDto.placeHolder = customFiledDto.placeHolder;
+				self.selectedCustomFieldsDtos.push(selectedCustomFieldsDto);
+			}
 		});
-		
 		 if (this.integrationType.toLowerCase() === 'salesforce') {
 		 	this.integrationService.syncSalesforceCustomForm(this.loggedInUserId, this.selectedCfIds)
 		 		.subscribe(
@@ -221,7 +219,7 @@ export class IntegrationSettingsComponent implements OnInit {
 					() => { }
 		 		);
 		 } else {
-		 	this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCfIds, this.integrationType.toLowerCase())
+		 	this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, this.integrationType.toLowerCase())
 				.subscribe(
 		 			data => {
 	 				this.ngxloading = false;
@@ -493,18 +491,5 @@ export class IntegrationSettingsComponent implements OnInit {
 		ev.stopPropagation();
 	}
 
-	/*****XNFR-339***/
-	setPlaceHolderValue(sfCustomField:any){
-		let name = sfCustomField.name;
-		let placeHolderValue = $('#customTextbox-'+name).val();
-		sfCustomField.placeHolder = placeHolderValue;
-	}
-
-	/*****XNFR-339***/
-	setRequiredValue(sfCustomField:any){
-		let name = sfCustomField.name;
-		let isRequired = $('#required-'+name).is(':checked');
-		sfCustomField.required = isRequired;
-	}
-
+	
 }

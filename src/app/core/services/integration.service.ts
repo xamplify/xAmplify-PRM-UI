@@ -136,7 +136,7 @@ export class IntegrationService {
       }  
 
     syncCustomForm(userId: number, request: any, type: any) {
-        return this._http.post(this.authenticationService.REST_URL + `external/form/sync/${userId}/${type}?access_token=${this.authenticationService.access_token}`, request)
+        return this._http.post(this.authenticationService.REST_URL + `external/form/sync/${userId}/${type}/v2?access_token=${this.authenticationService.access_token}`, request)
             .map(this.extractData)
             .catch(this.handleError);
     }

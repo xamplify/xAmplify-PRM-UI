@@ -34,7 +34,7 @@
   </div>
   <div id="menu1" class="tab-pane fade pt-top">
     <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
-    <ng-container *ngIf="!customFieldsDtosLoader">
+    <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
       <div class="row m0">
         <div class="col-md-8">
           <div style="margin-bottom:20px">
@@ -71,18 +71,16 @@
                 <td><span>{{sfCustomField.type}}</span></td>
                 <td>
                   <span *ngIf="sfCustomField.selected">Required
-                    <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="This Custom field will not be accesible by your partners if you check this option."></span>
+                    <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="This Custom field will not be accesible by your {{authenticationService?.module?.partnerModuleCustomName}} if you check this option."></span>
                       <label class="toggleOnOff" [ngClass]="!sfCustomField?.canUnselect ? 'disabled-opacity':''">
-                        <input  type="checkbox" [checked]="sfCustomField.required" (click)="sfCustomField?.canUnselect && setRequiredValue(sfCustomField)"  name="required"
-                        id="required-{{sfCustomField.name}}">
+                        <input  type="checkbox" [(ngModel)]="sfCustomField.required" [ngModelOptions]="{standalone: true}">
                         <span class="sliderOnOff"></span>
                         <span class="labels" data-on="ON" data-off="OFF"></span>
                       </label>
                     </span>   
                 </td>
-              <td><input *ngIf="sfCustomField.selected" type="text" 
-                id="customTextbox-{{sfCustomField.name}}" name="customTextbox" placeholder="Type something here..."
-                value="{{sfCustomField.placeHolder}}" (input)="setPlaceHolderValue(sfCustomField)" ></td>
+              <td><input *ngIf="sfCustomField.selected" type="text" class="form-control"  name="customTextbox" placeholder="PlaceHolder"
+                 [(ngModel)]="sfCustomField.placeHolder"></td>
               </tr>
             </ng-container>
           </tbody>
