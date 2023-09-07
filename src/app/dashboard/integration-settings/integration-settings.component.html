@@ -79,8 +79,10 @@
                       </label>
                     </span>   
                 </td>
-              <td><input *ngIf="sfCustomField.selected" type="text" class="form-control"  name="customTextbox" placeholder="PlaceHolder"
-                 [(ngModel)]="sfCustomField.placeHolder"></td>
+              <td>
+                <input *ngIf="sfCustomField.selected" type="text" class="form-control"  placeholder="PlaceHolder"
+                 [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
+                </td>
               </tr>
             </ng-container>
           </tbody>
