@@ -272,28 +272,28 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 if (value.length > 0) {
                                     if (!defaultLandingPage) {
                                         if (names.indexOf(value.toLocaleLowerCase()) > -1 && landingPage.name.toLocaleLowerCase() != value.toLocaleLowerCase()) {
-                                            $('#save,#update,#save-as,#update-and-redirect,#save-and-redirect').attr('disabled', 'disabled');
+                                            $('#save,#update,#save-as,#update-and-close,#save-and-redirect').attr('disabled', 'disabled');
                                             $('#templateNameSpanError').text('Duplicate Name');
                                         } else if (value.toLocaleLowerCase() == landingPage.name.toLocaleLowerCase()) {
                                             $('#templateNameSpanError').empty();
-                                            $('#save,#save-as,#save-and-redirect,#update,#update-and-redirect',).attr('disabled', 'disabled');
+                                            $('#save,#save-as,#save-and-redirect,#update,#update-and-close').attr('disabled', 'disabled');
                                             $('#update').removeAttr('disabled');
                                         }
                                         else {
                                             $('#templateNameSpanError').empty();
-                                            $('#save,#update,#save-as,#save-and-redirect,#update-and-redirect').removeAttr('disabled');
+                                            $('#save,#update,#save-as,#save-and-redirect,#update-and-close').removeAttr('disabled');
                                         }
                                     } else {
                                         if (names.indexOf(value.toLocaleLowerCase()) > -1) {
-                                            $('#save,#update,#save-as,#update-and-redirect,#save-and-redirect').attr('disabled', 'disabled');
+                                            $('#save,#update,#save-as,#update-and-close,#save-and-redirect').attr('disabled', 'disabled');
                                             $('#templateNameSpanError').text('Duplicate Name');
                                         } else {
                                             $('#templateNameSpanError').empty();
-                                            $('#save,#update,#save-as,#update-and-redirect,#save-and-redirect').removeAttr('disabled');
+                                            $('#save,#update,#save-as,#update-and-close,#save-and-redirect').removeAttr('disabled');
                                         }
                                     }
                                 } else {
-                                    $('#save,#update,#save-as,#update-and-redirect,#save-and-redirect').attr('disabled', 'disabled');
+                                    $('#save,#update,#save-as,#update-and-close,#save-and-redirect').attr('disabled', 'disabled');
                                 }
                             });
 
