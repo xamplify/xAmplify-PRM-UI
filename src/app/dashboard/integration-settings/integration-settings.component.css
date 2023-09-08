@@ -160,3 +160,14 @@
 .toggleOnOff input:checked~.labels::before {
   opacity: 1;
 }
+.custom-fields-items-count{
+  width: max-content;
+  margin-top: 7px;
+  float: right;
+  padding-right: 10px;
+}
+
+.disabled-opacity{
+  opacity: 0.5;
+  cursor: not-allowed;
+}
