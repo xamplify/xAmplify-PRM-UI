@@ -321,6 +321,13 @@ export class ParterService {
             .catch( this.handleError );
     }
 
+    getQueryBuilderItems() {
+        let userId = this.authenticationService.getUserId();
+        const url = this.URL + 'workflow/'+userId+'?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.get(url)
+            .catch( this.handleError );
+    }
+
     /*********End : XNFR-316************/
     
     handleError( error: any ) {

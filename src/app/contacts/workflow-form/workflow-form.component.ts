@@ -23,7 +23,7 @@ import { QueryBuilderConfig } from 'angular2-query-builder';
 import { QueryBuilderClassNames } from 'angular2-query-builder';
 
 
-declare var Metronic, $, Layout, Demo, Portfolio,Highcharts, CKEDITOR, swal: any;
+declare var  $:any, CKEDITOR:any, swal: any;
 
 @Component({
   selector: 'app-workflow-form',
@@ -48,30 +48,12 @@ export class WorkflowFormComponent implements OnInit{
   divs: number[] = [];
   newDivs: number[] = [];
   clickOr = true;
+  loadQueryBuilder = true;
 
-  query = {
-    condition: 'and',
-    rules: [
-      {field: 'age', operator: '<=', value: 'Bob'},
-      {field: 'gender', operator: '>=', value: 'm'},
-      {field: 'age', operator: '>=', value: 'Happy'}
-    ]
-  };
-  
-  config: QueryBuilderConfig = {
-    fields: {
-      age: {name: 'Age', type: 'number'},
-      name: {name: 'Age', type: 'text'},
-      gender: {
-        name: 'Gender',
-        type: 'category',
-        options: [
-          {name: 'Male', value: 'm'},
-          {name: 'Female', value: 'f'}
-        ]
-      }
-    }
+  config:QueryBuilderConfig  = {
+    fields:{}
   }
+  query  = {};
 
   classNames: QueryBuilderClassNames = {
     removeIcon: 'fa fa-minus',
@@ -100,6 +82,8 @@ export class WorkflowFormComponent implements OnInit{
     inputControlSize: 'col-auto'
   }
 
+
+  
   constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
     public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, public callActionSwitch: CallActionSwitch,
@@ -108,8 +92,30 @@ export class WorkflowFormComponent implements OnInit{
     }
 
   ngOnInit() {
+    this.parterService.getQueryBuilderItems().subscribe(
+      response=>{
+        let data  = response.data;
+        this.config = data;
+        let query = {
+          condition: 'and',
+          rules: [
+            
+          ]
+        };
+        this.query = query;
+        this.loadQueryBuilder = false;
+      },error=>{
+
+      }
+    );    
+
+
     $('#hideToggle').hide();
     
+}
+
+getData(){
+  console.log(this.query)
 }
 
   ngOnDestroy() { }

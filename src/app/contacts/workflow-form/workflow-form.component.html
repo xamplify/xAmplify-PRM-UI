@@ -182,8 +182,8 @@
             </div>
 
 
-            <query-builder id="queryBuilderCu" [(ngModel)]='query' [config]='config'></query-builder>
-            <!-- [classNames]='classNames' -->
+            <query-builder *ngIf="!loadQueryBuilder"  id="queryBuilderCu" [(ngModel)]='query' [config]='config'></query-builder>
+            <button type="button" class="btn btn-info" (click)="getData()" >Data</button>
             
             <button type="submit" class="btn  btn Btn-Green float-right" (click)="showAndHideDivs()"
               translate>Next</button>
