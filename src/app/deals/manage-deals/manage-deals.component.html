@@ -311,7 +311,7 @@
                                   [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage)"
                                   class="form-control" [(ngModel)]="deal.pipelineStageId"
                                   (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)" style="width: 115px">
-                                  <option *ngIf="isPartnerVersion" [ngValue]="deal.currentStageId">{{deal.currentStageName}}</option>
+                                  <option *ngIf="isPartnerVersion && deal.currentStagePrivate" [ngValue]="deal.currentStageId">{{deal.currentStageName}}</option>
                                   <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
                                 </select>
                                 <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
