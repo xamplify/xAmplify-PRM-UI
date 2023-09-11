@@ -20,6 +20,7 @@ import { ThemeDto } from './models/theme-dto';
 
 import { UtilService } from 'app/core/services/util.service';
 import { EmailNotificationSettingsDto } from './user-profile/models/email-notification-settings-dto';
+import { GodaddyDetailsDto } from './user-profile/models/godaddy-details-dto';
 
 
 @Injectable()
@@ -1191,4 +1192,34 @@ getDefaultThemes(){
     .map(this.extractData)
     .catch(this.handleError);
     }
+
+    /*** XNFR-335 ****/
+    addDnsRecordOfGodaddy(godaddyDetailsDto:GodaddyDetailsDto){
+        const url = this.authenticationService.REST_URL + 'godaddy/dns/add/?access_token=' + this.authenticationService.access_token;
+        return this.http.post( url ,godaddyDetailsDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    checkDomainName(godaddyDetailsDto:GodaddyDetailsDto){
+        const url = this.authenticationService.REST_URL + 'godaddy/domainName/valid/?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,godaddyDetailsDto)
+         .map(this.extractData)
+         .catch(this.handleError);
+    }
+    updateGodaddyConfiguration(companyId:number){
+        return this.http.get(this.authenticationService.REST_URL + `godaddy/updateGodaddyConfiguration/${companyId}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    isGodaddyConfigured(companyId:number){
+        return this.http.get(this.authenticationService.REST_URL + `godaddy/isGodaddyConfigured/${companyId}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    foundDuplicateDnsRecord(value:string){
+        return this.http.get(this.authenticationService.REST_URL + `godaddy/fetchDnsRecordByValue/${value}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    /*** XNFR-335 ****/
 }

@@ -38,12 +38,13 @@
 
     <!-- Tab Two start-->
     <div role="tabpanel" class="tab-pane" id="Domain">
+      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <!-- Add a Domain -->
       <div class="paddingSides" id="addADomain">
         <img alt="PC" class="domainImage" src="assets/images/godaddy-configuration/Domain_PC.png">
         <div class="align-middle">
           <h3 translate="">Let's get started.</h3>
-          <p translate="">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+          <p translate="">Update SPF records in GoDaddy to ensure better delivery of emails and to protect against email spoofing attacks.</p>
           <button class="btn btn-primary text-center" translate="" (click)="addADomain()">Add a Domain</button>
         </div>
       </div>
@@ -64,12 +65,13 @@
         <div class="form-group col-md-2"></div>
         <div class="form-group col-md-8">
           <label for="Name">Enter The Domain</label>
-          <input type="text" class="form-control" id="Name" [(ngModel)]="domainName" [ngModelOptions]="{standalone: true}" required> <br>
-          <p class="domainDescriptio">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+          <span class="star"> *</span>
+          <input type="text" class="form-control" id="Name" [(ngModel)]="godaddyRecordDto.domainName" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeDomainName($event)" placeholder="example.com" required> <br>
+          <p class="domainDescriptio">Enter the domain name (example.com) that you are configuring with xAmplify.</p>
         </div>
         <div class="form-group col-md-2"></div>
         <div class="col-md-12 marginBottom">
-          <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToVerification()">Next</button>
+          <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToVerification()" [disabled]="!isDomainName">Next</button>
         </div>
       </div>
     </form>
@@ -88,11 +90,11 @@
 
     <div class="align-middle">
       <h3 translate="">Confirm content type and URL selection</h3>
-      <p translate="">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+      <!-- <p translate="">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p> -->
     </div>
     <table class="table dcBorderNone table-bordered">
        <tr class="displayContents">
-         <td>Website</td>
+         <td>Domain</td>
        </tr>
        <tr class="displayContents">
          <td>:</td>
@@ -116,7 +118,7 @@
       <h4 class="text-start">Domains Details</h4>
       <table class="table dcBorderNone table-bordered">
          <tr class="displayContents">
-           <td class="verticalMiddle">Website</td>
+           <td class="verticalMiddle">Domain</td>
          </tr>
          <tr class="displayContents">
            <td class="verticalMiddle">{{domainName}}
@@ -142,17 +144,21 @@
 
     <!-- API Key Start -->
     <div class="paddingSides" id="step-5">
+      <div *ngIf="statusCode === 400" class="alert alert-info">
+        <strong>{{message}}</strong>
+        <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" style="margin-top: -7px;"  (click)="goToAddDomainDiv()">Change To Domain Name</button>
+      </div>
       <form>
         <div class="form-group row">
-          <label for="APIKey" class="col-sm-3 col-form-label">API Key:</label>
+          <label for="APIKey" class="col-sm-3 col-form-label">API Key<span class="star"> *</span>:</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="APIKey" placeholder="Enter API Key here">
+            <input type="text" class="form-control" id="APIKey" [(ngModel)]="apiKey" [ngModelOptions]="{standalone: true}" placeholder="Enter API Key here">
           </div>
         </div>
         <div class="form-group row">
-          <label for="SecretCode" class="col-sm-3 col-form-label">Secret Code:</label>
+          <label for="SecretCode" class="col-sm-3 col-form-label">Secret Code <span class="star"> *</span>:</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="SecretCode" placeholder="Enter Secret Code here">
+            <input type="text" class="form-control" id="SecretCode" [(ngModel)]="apiSecret" [ngModelOptions]="{standalone: true}" placeholder="Enter Secret Code here">
           </div>
         </div>
         <div class="form-group row">
@@ -162,12 +168,17 @@
           </div>
         </div>
         <div class="form-group row">
-          <div class="col-sm-6">
-            <button type="submit" class="btn Btn-Green float-left mobileBottomPa"><a href="https://developer.godaddy.com/keys" target="_blank" style="color: #fff;">Generate API key from Godaddy</a></button>
+          <div class="col-sm-6" style="display: flex;">
+            <div style="padding-top: 7px;">Step 1 : Click On</div>
+            <button type="submit" class="btn Btn-Green float-left mobileBottomPa"><a href="https://developer.godaddy.com/keys" target="_blank" style="color: #fff;"> Generate API key from Godaddy</a></button>
           </div>
           <div class="col-sm-6">
-            <button type="submit" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="authenticateGodaddy()">Authenticate</button>
-            <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" (click)="goToStepFour()">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="authenticationOfGodaddy()" [disabled]="!isAuthorized()">Authenticate</button>
+            <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" (click)="goToStepFour()">Back</button>
+          </div>
+          <div class="col-sm-12">
+              Step 2: Click on Create a New API Key, enter the name and select the production environment. <br>
+              Step 3: Copy the API key and Secret Code, insert in above respective fields.
           </div>
         </div>
       </form>
@@ -186,15 +197,18 @@
       </div>
       <div class="form-group col-md-4">
         <label for="Name">Name</label>
-        <input type="text" class="form-control disabled" id="Name" placeholder="@" disabled>
+        <input type="text" class="form-control disabled" [(ngModel)]="godaddyRecordDto.name"  [ngModelOptions]="{standalone: true}" id="Name" placeholder="@" disabled>
       </div>
       <div class="form-group col-md-4">
         <label for="Value">Value</label>
-        <input type="text" class="form-control" id="Value" placeholder="Enter Value here">
+        <input type="text" class="form-control" id="Value"  [(ngModel)]="godaddyValue" (ngModelChange)="changeValue($event)" [ngModelOptions]="{standalone: true}" placeholder="Enter Value here">
+        <p *ngIf="updateButton" class="star"  role="alert" style="font-size: 13px;">Dns Record already exists. Click on update to continue.</p>
       </div>
       <div class="col-md-12">
-        <button type="submit" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="goToConnectDomain()">Save</button>
-        <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight">Cancel</button>
+        <button type="submit" *ngIf="!updateButton" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="addDNsRecord();foundDuplicateDnsRecord()">Save</button>
+        <button type="submit" *ngIf="updateButton" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="goToConnectdStep()">Update</button>
+
+        <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" (click)="goToStepFive()">Back</button>
       </div>
     </div>
   </form>
@@ -204,13 +218,16 @@
 
    <!-- Connected Domains Details Start -->
    <div class="paddingSides" id="step-7">
-    <div class="alert alert-info">
+    <div class="alert alert-info" *ngIf="statusCode === 200">
       <strong>DNS Record added Successfully</strong>
+    </div>
+    <div class="alert alert-info" *ngIf="updateButton">
+      <strong>DNS Record Updated Successfully</strong>
     </div>
     <h4 class="text-start">Domains Details</h4>
     <table class="table dcBorderNone table-bordered">
        <tr class="displayContents">
-         <td class="verticalMiddle">Website</td>
+         <td class="verticalMiddle">Domain</td>
        </tr>
        <tr class="displayContents">
          <td class="verticalMiddle">{{domainName}}

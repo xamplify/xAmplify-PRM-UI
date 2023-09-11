@@ -4,6 +4,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import {DashboardService} from 'app/dashboard/dashboard.service';
 import {ReferenceService} from 'app/core/services/reference.service';
 import {AuthenticationService} from 'app/core/services/authentication.service';
+import { GodaddyDetailsDto } from '../user-profile/models/godaddy-details-dto';
 
  declare var $;
 @Component({
@@ -21,7 +22,17 @@ export class SpfComponent implements OnInit {
  bootstrapAlertClass = "";
  successOrErrorMessage = "";
  spfErrorOrSuccessClass = "";
+ /** XNFR-335 ***/
  domainName:any = "";
+ message:any;
+ statusCode:any;
+ apiKey: string = ''; // Initialize apiKey and apiSecret
+ apiSecret: string = '';
+ godaddyRecordDto:GodaddyDetailsDto = new GodaddyDetailsDto();
+ isDomainName:boolean = false;
+ isGodaddyConnected:boolean = false;
+ godaddyValue:any = "v=spf1 include:u10208008.wl009.sendgrid.net ~all";
+ /** XNFR-335*******/
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,public dashboardService:DashboardService) { }
 
   ngOnInit() {
@@ -32,13 +43,7 @@ export class SpfComponent implements OnInit {
         this.companyId= user.campaignAccessDto.companyId;
       }
       this.isSpfConfigured();
-      $('#addADomain').show();
-      $('#step-2').hide();
-      $('#step-3').hide();
-      $('#step-4').hide();
-      $('#step-5').hide();
-      $('#step-6').hide();
-      $('#step-7').hide();
+      this.isGodaddyConfigured();
       this.domainName = "example.com";
   }
 
@@ -96,33 +101,168 @@ export class SpfComponent implements OnInit {
   }
 
   /******* XNFR-335 **********/
-  addADomain(){
+  addADomain() {
+    this.loading = true;
     $('#addADomain').hide();
     $('#step-2').show();
     $('#step-3').hide();
+    this.loading = false;
   }
-  goToVerification(){
+  goToVerification() {
+    this.loading = true;
     $('#step-2').hide();
     $('#step-3').show();
+    this.loading = false;
   }
-  goToStepFour(){
+  goToStepFour() {
+    this.loading = true;
     $('#step-3').hide();
     $('#step-4').show();
     $('#step-5').hide();
+    this.loading = false;
   }
-  goToStepFive(){
+  goToStepFive() {
+    this.loading = true;
     $('#step-4').hide();
     $('#step-5').show();
+    $('#step-6').hide();
+    this.loading = false;
   }
-
-  authenticateGodaddy(){
+  goToAddDomainDiv() {
+    this.loading = true;
     $('#step-5').hide();
-    $('#step-6').show();
+    $('#step-2').show();
+    this.statusCode = 200;
+    this.loading = false;
   }
-  goToConnectDomain(){
+  goToConnectdStep() {
     $('#step-6').hide();
     $('#step-7').show();
   }
-  
+
+  changeDomainName(evn: any) {
+    this.godaddyRecordDto.domainName = evn;
+    this.domainName = this.godaddyRecordDto.domainName;
+    if (this.domainName != "") {
+      this.isDomainName = true;
+    } else {
+      this.isDomainName = false;
+    }
+  }
+  changeValue(event: any) {
+    this.godaddyRecordDto.data = event;
+    this.statusCode = 200;
+    alert(this.godaddyRecordDto.data);
+  }
+
+  isAuthorized(): boolean {
+    // Check if both apiKey and apiSecret are provided
+    return this.apiKey.length > 0 && this.apiSecret.length > 0;
+  }
+  authenticationOfGodaddy() {
+    this.loading = true;
+    this.godaddyRecordDto.apiKey = this.apiKey;
+    this.godaddyRecordDto.apiSecret = this.apiSecret;
+    this.godaddyRecordDto.data = this.godaddyValue;
+    this.checkDomainName(this.godaddyRecordDto)
+  }
+  checkDomainName(godaddyDetailsDto: GodaddyDetailsDto) {
+    this.loading = true;
+    this.dashboardService.checkDomainName(godaddyDetailsDto).subscribe(
+      response => {
+        if (response.statusCode == 200) {
+          this.loading = false;
+          this.statusCode = 200;
+          $('#step-5').hide();
+          $('#step-6').show();
+        } else {
+          this.statusCode = 400;
+          this.message = "Domain Name Invalid";
+          this.loading = false;
+        }
+      }, error => {
+        this.loading = false;
+      }
+    );
+  }
+
+  addDNsRecord() {
+    this.godaddyRecordDto.type = "TXT";
+    this.godaddyRecordDto.name = "@";
+    this.loading = true;
+    this.dashboardService.addDnsRecordOfGodaddy(this.godaddyRecordDto).subscribe(
+      response => {
+        if (response.statusCode == 200) {
+          this.loading = false;
+          this.statusCode = 200;
+          $('#step-6').hide();
+          $('#step-7').show();
+          this.updateGodaddyConfiguration(this.companyId);
+        } else if (response.statusCode == 422) {
+          this.statusCode = 422;
+          this.message = "DNS Record was Dulicated.";
+          this.loading = false;
+        } else {
+          this.statusCode = 400;
+          this.message = "Domain Name Invalid";
+          this.loading = false;
+        }
+      }, error => {
+        this.loading = false;
+      }
+    );
+  }
+  isGodaddyConfigured() {
+    this.loading = true;
+    this.dashboardService.isGodaddyConfigured(this.companyId).subscribe(
+      response => {
+        this.loading = false;
+        if (response.data) {
+          this.isGodaddyConnected = true;
+        }
+        if (!this.isGodaddyConnected) {
+          $('#addADomain').show();
+          $('#step-2').hide();
+          $('#step-3').hide();
+          $('#step-4').hide();
+          $('#step-5').hide();
+          $('#step-6').hide();
+          $('#step-7').hide();
+        } else {
+          $('#addADomain').hide();
+          $('#step-2').hide();
+          $('#step-3').hide();
+          $('#step-4').hide();
+          $('#step-5').hide();
+          $('#step-6').hide();
+          $('#step-7').hide();
+          $('#step-7').show();
+        }
+      }, error => {
+        this.loading = false;
+      }
+    );
+  }
+  updateGodaddyConfiguration(companyId: number) {
+    this.dashboardService.updateGodaddyConfiguration(companyId).subscribe(
+      response => {
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+      }
+    );
+  }
+  updateButton: boolean = false;
+  foundDuplicateDnsRecord() {
+    this.dashboardService.foundDuplicateDnsRecord(this.godaddyRecordDto.data).subscribe(
+      response => {
+        this.loading = false;
+        this.updateGodaddyConfiguration(this.companyId);
+        this.updateButton = true;
+      }, error => {
+        this.loading = false;
+      }
+    );
+  }
 
 }
