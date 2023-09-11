@@ -64,14 +64,17 @@
       <div class="form-row">
         <div class="form-group col-md-2"></div>
         <div class="form-group col-md-8">
-          <label for="Name">Enter The Domain</label>
+          <label for="name">Enter The Domain</label>
           <span class="star"> *</span>
-          <input type="text" class="form-control" id="Name" [(ngModel)]="godaddyRecordDto.domainName" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeDomainName($event)" placeholder="example.com" required> <br>
+          <input type="text" class="form-control" id="name" #name="ngModel" [(ngModel)]="godaddyRecordDto.domainName" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeDomainName($event)"  placeholder="example.com" required> <br>
+          <div *ngIf="hasSpace">
+            <p class="danger" translate>Domain cannot contain spaces</p>
+          </div>
           <p class="domainDescriptio">Enter the domain name (example.com) that you are configuring with xAmplify.</p>
         </div>
         <div class="form-group col-md-2"></div>
         <div class="col-md-12 marginBottom">
-          <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToVerification()" [disabled]="!isDomainName">Next</button>
+          <button type="submit" class="btn btn-primary btn-md float-right" id="sample_editable_1_new" (click)="goToVerification()" [disabled]="!(isDomainName && !hasSpace)">Next</button>
         </div>
       </div>
     </form>
@@ -138,6 +141,9 @@
             </td>
          </tr>
      </table>
+     <div >
+      <button type="submit" class="btn Btn-Gray btn-md  mobileFloatRight" (click)="goToStep3()">Back</button>
+    </div>
    </div>
    <!-- Domains Details End -->
 
@@ -221,7 +227,7 @@
     <div class="alert alert-info" *ngIf="statusCode === 200">
       <strong>DNS Record added Successfully</strong>
     </div>
-    <div class="alert alert-info" *ngIf="updateButton">
+    <div class="alert alert-info" *ngIf="updateButton && statusCode !== 200">
       <strong>DNS Record Updated Successfully</strong>
     </div>
     <h4 class="text-start">Domains Details</h4>
