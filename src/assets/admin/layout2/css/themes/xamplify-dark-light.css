@@ -1843,3 +1843,49 @@ input#copy-link {
   border: none !important;
   outline: none !important;
 }  */
+
+ /* XNFR-335 start */
+.nav-tabs.dcTheme{
+  background: #22313a54;
+}
+.nav-tabs.dcTheme>li.active>a,
+.nav-tabs.dcTheme>li>a:hover {
+    border: none !important;
+    color: #fff !important;
+    background: #22313a !important ;
+}
+.nav-tabs.dcTheme>li>a {
+  border: none !important;
+  color: #fff !important;
+}
+.dcBorderNone.table-bordered > tbody > tr > td {
+  border: none !important;
+}
+.dcbar.progressbar li:before {
+    border: 1px solid #337ab700 !important;
+    background-color: #337ab747 !important;
+}
+.dcbar.progressbar li.active  {
+  color: #fff !important;
+}
+.dcbar.progressbar li.active:before {
+  background: #22313a !important;
+}
+.dcbar.progressbar li.active+ li:after {
+  background: #22313a !important ;
+}
+.dcbar.progressbarVerification li:before {
+  border: #22313a !important ;
+  background: #22313a !important ;
+}
+.dcbar.progressbarVerification li.activeVerification {
+  color: #fff !important;
+}
+.dcbar.progressbarVerification li:before {
+  border: #22313a !important ;
+  background: #22313a !important ;
+}
+.progressbarVerification li.activeVerification + li:after {
+  background: #22313a !important ;
+}
+ /* XNFR-335 End */

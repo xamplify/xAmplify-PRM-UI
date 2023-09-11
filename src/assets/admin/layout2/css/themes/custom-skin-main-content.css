@@ -1738,3 +1738,50 @@ ul.nav.nav-tabs.hideBorder {
 .disable-btn-text-color {
   border: 1px solid var(--btn-secondary-border-color) !important;
 }
+
+ /* XNFR-335 start */
+ .nav-tabs.dcTheme{
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 5px;
+}
+.nav-tabs.dcTheme>li.active>a,
+.nav-tabs.dcTheme>li>a:hover {
+    border: none !important;
+    color: var(---text-color) !important;
+    background-color: var(--page-content) !important;
+    
+}
+.nav-tabs.dcTheme>li>a {
+  border: none !important;
+  color: var(---text-color) !important;
+}
+.dcBorderNone.table-bordered > tbody > tr > td {
+  border: none !important;
+}
+.dcbar.progressbar li:before {
+    border: 1px solid var(--page-content) !important;
+    background-color: var(--page-content) !important;
+}
+.dcbar.progressbar li.active  {
+  color: var(---text-color) !important;
+}
+.dcbar.progressbar li.active+ li:after {
+  background-color: var(--page-content) !important;
+}
+.dcbar.progressbarVerification li:before {
+  border: 1px solid var(--page-content) !important;
+  background-color: var(--page-content) !important;
+}
+.dcbar.progressbarVerification li.activeVerification {
+  color: var(---text-color) !important;
+}
+.dcbar.progressbarVerification li:before {
+  border: 1px solid var(--page-content) !important;
+  background-color: var(--page-content) !important;
+}
+.progressbarVerification li.activeVerification + li:after {
+  background-color: var(--page-content) !important;
+}
+.dcBorderNone.table-bordered {  border: 1px solid var(--page-content) !important;}
+ /* XNFR-335 End */
