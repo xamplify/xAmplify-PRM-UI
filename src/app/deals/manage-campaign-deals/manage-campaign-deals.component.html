@@ -168,20 +168,20 @@
               <div class="actions-block override-actions">
                   <a data-rel="fancybox-button" (click)="viewDeal(deal)" data-toggle="tooltip" data-placement="bottom" 
                   title="View Deal" id="deal">
-                    <i class="fa fa-eye mr5" aria-hidden="true"></i>
+                    <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
                   </a>
                   <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                     <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="editDeal(deal)"
                     data-toggle="tooltip" data-placement="bottom" title="Edit Deal" id="deal">
-                      <i class="fa fa-edit mr5" aria-hidden="true"></i>
+                      <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
                     </a>
                     <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="confirmDeleteDeal(deal)"
                     data-toggle="tooltip" data-placement="bottom"  title="Delete Deal" id="deal">
-                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                     </a>
                 </ng-container>
                 <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" data-toggle="tooltip" data-placement="bottom" title="Comments" style="margin-top: 10px">                            
-                  <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"></i>
+                  <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px"></i>
                   <span class="badge badge-default" style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">0</span>
                 </a>
               </div>

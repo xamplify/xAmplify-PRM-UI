@@ -51,10 +51,16 @@
   border-top: 3px solid #5cb85c !important;
 }
 .cancelled-event {
-  border: 1px solid #bdbdbd !important;
+  border: 2px solid #bdbdbd !important;
   background: #bdbdbd !important;
   color: white !important;
   cursor: not-allowed !important;
+  border-radius: 50%;
+  padding-top: 0px !important;
+  padding-right: 4px;
+  padding-bottom: 4px !important;
+  padding-left: 4px;
+  margin-top: 1px;
 }
 .mobile-left {
   float: none;
