@@ -290,3 +290,8 @@ textarea {
   z-index: 1;
   right: -2px;
 }
+:host /deep/.video-js .vjs-big-play-button { 
+  top:50%!important;
+  left: 50%!important;
+  transform: translate(-50px, -50px)!important;
+ }
