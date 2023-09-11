@@ -56,8 +56,8 @@
                   [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"  class="pointer" /></th>
               <th>Field Name</th>
               <th>Data Type</th>
-              <th>Required</th>
-              <th>Place Holder</th>
+              <th *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE'">Required</th>
+              <th *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE'">Place Holder</th>
             </tr>
           </thead>
           <tbody>
@@ -70,7 +70,7 @@
                 <td><span>{{sfCustomField.label}}</span></td>
                 <td><span>{{sfCustomField.type}}</span></td>
                 <td>
-                  <span *ngIf="sfCustomField.selected">Required
+                  <span *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE')">Required
                     <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="This Custom field will not be accesible by your {{authenticationService?.module?.partnerModuleCustomName}} if you check this option."></span>
                       <label class="toggleOnOff" [ngClass]="!sfCustomField?.canUnselect ? 'disabled-opacity':''">
                         <input  type="checkbox" [(ngModel)]="sfCustomField.required" [ngModelOptions]="{standalone: true}">
@@ -80,7 +80,7 @@
                     </span>   
                 </td>
               <td>
-                <input *ngIf="sfCustomField.selected" type="text" class="form-control"  placeholder="PlaceHolder"
+                <input *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE')" type="text" class="form-control"  placeholder="PlaceHolder"
                  [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
                 </td>
               </tr>

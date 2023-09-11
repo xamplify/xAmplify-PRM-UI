@@ -9,6 +9,7 @@
     <div class="form-group">
       <label class="control-label">{{columnInfo.labelName}}
         <span class="required" *ngIf="columnInfo.required">*</span>
+        <span *ngIf="!(columnInfo.labelType=='textarea' || columnInfo.labelType=='text')">({{columnInfo.placeHolder}}) </span>
       </label>
 
       <!-- ---------------------------TextBox & Email & Number----------------------------- -->
