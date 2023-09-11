@@ -49,11 +49,12 @@ export class WorkflowFormComponent implements OnInit{
   newDivs: number[] = [];
   clickOr = true;
   loadQueryBuilder = true;
-
   config:QueryBuilderConfig  = {
     fields:{}
   }
   query  = {};
+  showQueryBuilder = false;
+  queryBuilderCustomResponse:CustomResponse = new CustomResponse();
 
   classNames: QueryBuilderClassNames = {
     removeIcon: 'fa fa-minus',
@@ -94,15 +95,22 @@ export class WorkflowFormComponent implements OnInit{
   ngOnInit() {
     this.parterService.getQueryBuilderItems().subscribe(
       response=>{
+        this.queryBuilderCustomResponse = new CustomResponse();
         let data  = response.data;
-        this.config = data;
-        let query = {
-          condition: 'and',
-          rules: [
-            
-          ]
-        };
-        this.query = query;
+        let fieldsLength = Object.keys(data.fields).length;
+        this.showQueryBuilder = fieldsLength>0;
+        if(this.showQueryBuilder){
+          this.config = data;
+          let query = {
+            condition: 'and',
+            rules: [
+              
+            ]
+          };
+          this.query = query;
+        }else{
+        this.queryBuilderCustomResponse = new CustomResponse('INFO','No Data Found For Query Builder',true);
+        }
         this.loadQueryBuilder = false;
       },error=>{
 

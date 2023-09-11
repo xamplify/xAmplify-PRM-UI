@@ -100,91 +100,14 @@
               </div>
             </div>
             <!-- Partner forms row end -->
-
-            <!-- Add Trigger Fields -->
-
-            <ng-template #plusBtn>
-              <button type="button" (click)="addDiv()" class="circle-icon" data-toggle="tooltip" data-placement="top">
-                <i class="fa fa-plus-circle circle-icon-custimize" aria-hidden="true"></i>
-              </button>
-            </ng-template>
-
-            <div class="row">
-              <div style="display:flex" *ngIf="divs.length === 0">
-                <p class="align-paratext">Add Trigger Filter</p>
-                <ng-template [ngTemplateOutlet]="plusBtn"></ng-template>
-              </div> 
-
-              <div *ngFor="let div of divs;let i=index">       
-              <div class="row card card-hover-shadow mt-4 separate-card card-top-bottam-ppading" id="{{div}}">
-                <div class="card-header bg-transparent border-bottom-0">
-                  <button data-dismiss="alert" (click)="deleteDiv(i)" data-toggle="collapse" data-target="#addform" type="button"
-                    class="close close-circle-cu" aria-label="Close">
-                    <i aria-hidden="true" class="fa fa-times"></i>
-                  </button>
-                </div>
-                <div class="card-body mt-n5">
-                  <div class="col-sm-12 p-m-zero">
-                    <div class="col-sm-4">
-                      <div class="form-group">
-                        <select class="form-control ng-pristine ng-valid ng-touched" style="width: 100%">
-                          <option selected value="0">Select</option>
-                          <option value="1">Job Title</option>
-                          <option value="2">Vertical</option>
-                          <option value="3">Region</option>
-                          <option value="4">Type</option>
-                          <option value="5">Category</option>
-                          <option value="6">City/Town</option>
-                          <option value="7">State</option>
-                          <option value="8">Zipcode</option>
-                          <option value="9">Country</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <div class="form-group">
-                        <select class="form-control ng-pristine ng-valid ng-touched" style="width: 100%">
-                          <option value="1">Equals</option>
-                          <option value="2">Not Equals</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-sm-4">
-                      <div class="form-group">
-                        <select class="form-control ng-pristine ng-valid ng-touched">
-                          <option selected>Administrator</option>
-                          <option value="1">Pakistan</option>
-                          <option value="2">Bangladesh</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div> 
-              </div> 
-              <div id="hideToggle{{div}}" *ngIf="div != divs.length">
-                <div class="row toggle-align">
-                  <label class="toggleAndOr">
-                   <input type="checkbox" class="hidecheckbox">
-                     <span class="sliderAndOr"></span>
-                      <span class="labelsAndOr" data-on="OR" data-off="AND"></span>
-                    </label>
-                </div>
-              </div>  
-            </div> 
-
-            <div  *ngIf="divs.length != 0">
-              <ng-template [ngTemplateOutlet]="plusBtn"></ng-template>
-            </div>    
-            </div>
-
-            <div class="row">
-              
-            </div>
-
-
-            <query-builder *ngIf="!loadQueryBuilder"  id="queryBuilderCu" [(ngModel)]='query' [config]='config'></query-builder>
-            <button type="button" class="btn btn-info" (click)="getData()" >Data</button>
-            
+            <!--Query Builder-->
+            <ng-container *ngIf="!loadQueryBuilder && !showQueryBuilder">
+              <app-response-message [customResponse]="queryBuilderCustomResponse" [showCloseIcon]="false" *ngIf="queryBuilderCustomResponse?.isVisible"></app-response-message>
+            </ng-container>
+            <ng-container *ngIf="!loadQueryBuilder && showQueryBuilder">
+              <query-builder   id="queryBuilderCu" [(ngModel)]='query' [config]='config'></query-builder>
+            </ng-container>
+            <!--Query Builder-->
             <button type="submit" class="btn  btn Btn-Green float-right" (click)="showAndHideDivs()"
               translate>Next</button>
           </div>
