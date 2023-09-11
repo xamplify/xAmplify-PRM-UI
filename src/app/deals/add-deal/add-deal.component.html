@@ -69,8 +69,9 @@
               <label class="control-label">Stage<font style="color: #f55d7a"> <b>*</b></font></label>
               <select class="form-control" [(ngModel)]="deal.pipelineStageId"
                 [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="pipelineStageId"
-                [disabled]="preview" (input)="validateField('pipelineStageId',false)">
+                [disabled]="preview" (input)="validateField('pipelineStageId',false)">              
                 <option [value]="0">Select Stage</option>
+                <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">{{deal.currentStageName}}</option>
                 <option *ngFor="let stage of stages" [value]="stage.id">{{stage.stageName}}</option>
               </select>
             </div>           
