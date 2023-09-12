@@ -174,17 +174,17 @@
                             <!--------------Admin----------------------->
                             <div class="my-profile-header-text">Admin</div>
                             <!--Dashboard Buttons-->
-                            <li [ngClass]="{'active': activeTabName == 'dbButtonSettings'}" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
+                            <li [ngClass]="{'active': activeTabName == 'dbButtonSettings'}" *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor">
                                 <a (click)="activateTab('dbButtonSettings');clearCustomResponse()">{{properties.dashboardButtons}}</a>
                             </li>
                             <!--Your Templates--> 
-                            <li *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" [ngClass]="{'active': activeTabName == 'templates'}">
+                            <li *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor" [ngClass]="{'active': activeTabName == 'templates'}">
                                 <a (click)="activateTab('templates');clearCustomResponse()" translate>
                                      Your Templates </a>
                             </li>
                             	
                             <!--Unsubscribe Reasons-->
-                            <li *ngIf="authenticationService.module.isAnyAdminOrSupervisor"  [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}">
+                            <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"  [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'unsubscribeReasons'}" (click)="activateTab('unsubscribeReasons');clearCustomResponse()">{{properties.unsubscribeReasons | translate}}</a>
                             </li>
                              <!--Exclusion-->
@@ -198,8 +198,7 @@
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'categories'}" (click)="activateTab('categories');clearCustomResponse()">{{properties.folders | translate}}</a>
                             </li>
                             <!--Team Member Groups-->
-                            <li   [ngClass]="{'active-tab': activeTabName == 'team-group'}"  *ngIf="authenticationService.user.hasCompany && (authenticationService.module.isOrgAdmin || authenticationService.module.isVendor || 
-                            authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )">
+                            <li   [ngClass]="{'active-tab': activeTabName == 'team-group'}"  *ngIf="authenticationService?.user?.hasCompany &&  authenticationService?.module?.isAnyAdminOrSupervisor">
                             <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}" (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups | translate}}</a>
                             </li>
                             <!---XNFR-326---->
@@ -2083,7 +2082,8 @@
 
 <!------------------------------Add/Edit Pipeline----------->
 <div class="modal fade right" id="addPipelineModalPopup" tabindex="-1" role="dialog" aria-labelledby="addPipelineModalPopup" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog pipelinePopupWidth" role="document">
+        <!-- [ngClass]="isDeal?'pipelinePopupWidth':''" -->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" (click)="closePipelineModal()">
@@ -2103,49 +2103,55 @@
                        
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" [disabled]="pipelinePreview || !pipeline.enablePrivateCheckBox" [(ngModel)]="pipeline.private" name="private"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
+                        <input type="checkbox" [disabled]="pipelinePreview || !pipeline.enablePrivateCheckBox" [(ngModel)]="pipeline.private" name="private" class="alignEqualtoText" > Private <span class="fa fa-info-circle" data-toggle="tooltip"
                         data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span>
                         <div *ngIf="pipeline.showSinglePublicPipelineMessage" class="red">You can't mark this pipeline as private as this is the only public {{pipeline.integrationType}} pipeline available in your account</div>
                     </div>
                     <div class="form-group" id="pipelineStageDiv">
                         <label>Stages</label>
+                        <label style="text-align: center;width: 80%;">Options</label>
                         <span *ngIf="!pipeline.isValidStage" class="required">{{pipelineStageErrorMessage}}</span>
                         <ul id="sortable" [dragula]='"pipelineStagesDragula"' class="list-group" [dragulaModel]='pipeline.stages'>
                             <ng-container *ngFor="let pipelineStage of pipeline.stages; let x = index">
                                 <li class="list-group-item" id="stage{{x}}" *ngIf="pipelineStage != undefined">
                                     <div class="row">
-                                        <span class="col-xs-1 co-sm-1 col-md-1 col-lg-1">
-                                            <span class="fa fa-ellipsis-v"></span>
-                                        </span>
-                                        
-                                        <span class="col-lg-5 mb_pl10">
+                                        <!-- <span class="col-xs-1 co-sm-1 col-md-1 col-lg-1">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                        </span> -->
+                                        <span class="col-lg-5 col-md-5 col-sm-12 col-xs-12 mb_pl10">
+                                            <i class="fa fa-ellipsis-v"></i>
                                             <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipelineStage.stageName"
-                                            placeholder="Enter Stage Name" style="width: 240px;
-                                                                    margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)"
-                                            (keydown)="pipelineSumbitOnEnter($event)" class="bg-color field-border-customization">
+                                            placeholder="Enter Stage Name" (input)="validateStage(pipelineStage.stageName)"
+                                            (keydown)="pipelineSumbitOnEnter($event)" class="bg-color field-border-customization inputFieldWidth">
                                         </span>
-                                        <span class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                                            <div class="mb_mt7">
+                                        <span class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                                            <div class="mb_mt7 alignEqualtoFields">
                                                 <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex"
-                                                    id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;" (change)="defaultStageChange(pipelineStage)">
-                                                <span style="margin-right: 8px;">Default</span>
-                                                <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE')">
+                                                    id="defaultStage{{x}}" name="defaultStage" class="alignEqualtoText" (change)="defaultStageChange(pipelineStage)">
+                                                <span>Default</span>&nbsp;&nbsp;
+                                                <select  class="formSelectCustomization" [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE')" (change)="handleMarkAsChange(x)">
                                                     <option value="markAs">Mark as</option>
                                                     <option value="won">Won</option>
                                                     <option value="lost">Lost</option>
                                                     <option value="none">None</option>
                                                 </select>
-                                                <button type="button" *ngIf="!pipelineStage.defaultStage && !pipelinePreview && !pipeline.crmPipeline" class="btn-danger button-blue"
+                                                <button type="button" *ngIf="!pipelineStage.defaultStage && !pipelinePreview && !pipeline.crmPipeline" class="btn-danger button-blue deleteBntAligment"
                                                 data-toggle="tooltip" data-placement="top" title="Delete" 
                                                     (click)="deleteStage(x)" style="float: right;" [disabled]="!pipelineStage.canDelete"><span
-                                                        class="glyphicon glyphicon-trash"></span></button>
+                                                        class="glyphicon glyphicon-trash"></span></button>   
+
+                                                        <span class="pdLeftforspace" *ngIf="(!pipeline.private)">Private <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="This pipeline stage will not be accesible by your partners if you check this option."></span>
+                                                          <label class="toggleOnOff">
+                                                            <input type="checkbox" [(ngModel)]="pipelineStage.private" name="private" [disabled]="shouldDisableCheckbox(x) || pipelinePreview">
+                                                            <span class="sliderOnOff"></span>
+                                                            <span class="labels" data-on="ON" data-off="OFF"></span>
+                                                          </label>
+                                                        </span>                 
+                                                        <div *ngIf="(!pipelineStage.private && !pipeline.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines')">
+                                                            <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
+                                                                name="nonInteractive" class="alignEqualtoText"> Non Interactive <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="Your partners will only be able to select the stage once and will not be able to update further for the non-interactive stage."></span>
+                                                        </div>                                                 
                                             </div>
-                                            <div>
-                                                <span *ngIf="pipeline.type === 'deal' || activeTabName == 'dealPipelines'">
-                                                    <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
-                                                    name="nonInteractive" style="margin: 5px;"> Non Interactive
-                                                </span>                                                 
-                                            </div> 
                                         </span>
                                     </div>
                                     

@@ -1,0 +1,237 @@
+.nav-tabs {
+  display: inline-flex;
+  width: 100%;
+  overflow-x: auto;
+  border:none;
+  -ms-overflow-style: none; /*// IE 10+*/
+  overflow: -moz-scrollbars-none;/*// Firefox*/
+  background: #dddddd69;
+  }
+  .nav-tabs>li.active>a,
+  .nav-tabs>li.active>a:focus,
+  .nav-tabs>li.active>a:hover {
+      border-width: 0;
+  }
+  .nav-tabs>li>a {
+      border: none;
+      color: #666;
+      text-align: center;
+  }
+  .nav-tabs>li.active>a,
+  .nav-tabs>li>a:hover {
+      border: none;
+      color: #333;
+      background: #ddd;
+  }
+  .nav-tabs>li.active>a::after,
+  .nav-tabs>li:hover>a::after {
+      transform: scale(1);
+  }
+  .tab-pane {
+      padding:5px 0;
+  }
+  .nav-tabs::-webkit-scrollbar {
+      display: none; /*Safari and Chrome*/
+  }
+  li#tabWidthCu {
+      width: 50%;
+  } 
+  img.domainImage {
+      width: 200px;
+      margin: 0 auto;
+      display: block;
+  }
+  .align-middle {
+      vertical-align: middle;
+      text-align: center;
+  }
+  .paddingSides {
+      padding: 30px 20px !important;
+  }
+  
+  .connectWidthdomain {display: block;}
+  img.godadyLogo {
+      float: right;
+      width: 155px;
+  }
+  span.connectWidthdomain i {
+      padding-left: 15px;
+  }
+  .displayContents{display: contents;}
+  .paddingTop{padding-top: 20px !important;}
+  .MlSpace {margin-left: 10px !important;}
+  
+  i.fa.fa-circle.IconColorCu {
+      color: #29a108 !important;
+  }
+  
+   
+    .progressbar {
+      content: "";
+    }   
+    .progressbar li {
+      list-style: none;
+      display: inline-block;
+      width: 49%;
+      position: relative;
+      text-align: center;
+      cursor: pointer;
+    }
+    .progressbar li:before {
+       content: "";
+      /* content: counter(step); */
+      /* counter-increment: step; */
+      width: 30px;
+      height: 30px;
+      line-height : 30px;
+      border: 1px solid #ddd;
+      border-radius: 100%;
+      display: block;
+      text-align: center;
+      margin: 0 auto 10px auto;
+      background-color: #ddd;
+      position: relative;
+      z-index: 3;
+    }
+    .progressbar li:after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 7%;
+      background-color: #ddd;
+      top: 12px;
+      left: -50%;
+      z-index : 1;
+      animation: lineH 4s 0s infinite linear;
+    }
+    .progressbar li:first-child:after {
+      content: none;
+    }
+    .progressbar li.active {
+      color: #337ab7;
+    }
+    .progressbar li.active:before {
+      border-color: #337ab7;
+      background: #337ab7;
+    } 
+    .progressbar li.active + li:after {
+      background-color: #337ab7;
+    }
+    ul.progressbar {
+      padding-inline-start: 0px;
+  }
+  
+  
+  .progressbarVerification {
+      content: "";
+    }   
+    .progressbarVerification li {
+      list-style: none;
+      display: inline-block;
+      width: 49%;
+      position: relative;
+      text-align: center;
+      cursor: pointer;
+    }
+    .progressbarVerification li:before {
+       content: "";
+      /* content: counter(step); */
+      /* counter-increment: step; */
+      width: 30px;
+      height: 30px;
+      line-height : 30px;
+      border: 1px solid #337ab7;
+      border-radius: 100%;
+      display: block;
+      text-align: center;
+      margin: 0 auto 10px auto;
+      background-color: #337ab7;
+      position: relative;
+      z-index: 3;
+    }
+    .progressbarVerification li:after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 7%;
+      background-color: #ddd;
+      top: 12px;
+      left: -50%;
+      z-index : 1;
+    }
+    .progressbarVerification li:first-child:after {
+      content: none;
+    }
+    .progressbarVerification li.activeVerification {
+      color: #337ab7;
+    }
+    .progressbarVerification li.activeVerification:before {
+      border-color: #337ab7;
+      background: #337ab7;
+      content: ' \f00c';
+      font-family: 'FontAwesome';
+      color: #fff;
+    } 
+    .progressbarVerification li.activeVerification + li:after {
+      background-color: #337ab7;
+    }
+  
+    .conectColor{
+      background-color: orange;
+      border: 1px solid orange;
+      border-radius: 5px;
+      padding:5px 10px;
+      color:white;
+      cursor: pointer;
+    }
+   .verticalMiddle{
+    vertical-align: middle;
+   }
+  .marginBottom{ margin-bottom: 25px;}
+  span.connectedLive {
+    background-color: green;
+    border: 1px solid green;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: white;
+}
+.star {
+  color: red !important;
+  font-weight: 600;
+}
+
+  @keyframes lineH{
+    0%{
+      width: 0%;
+    }
+    100%{
+      width: 100%;
+      opacity: 0.5;
+    }
+  }
+
+
+
+  /* reponsive */
+  @media only screen and (min-width: 300px) and (max-width: 767px) { 
+      .paddingSides {padding: 15px 15px !important;}
+      .displayContents{display: grid;}
+      img.godadyLogo {float: left;}
+      .mobileFloatRight  {float: left !important;}
+      .MlSpace {margin-left: 0px !important;}
+      .mobileBottomPa {margin-bottom: 10px;}
+  }
+
+@media only screen and (min-width: 1037px) and (max-width: 1177px) { 
+  button.responsiveBtnCU {
+    padding: 6px 10px;
+    font-size: 9px;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1037px) { 
+  button.responsiveBtnCU {
+    padding: 6px 7px;
+    font-size: 7px;
+  }
+}

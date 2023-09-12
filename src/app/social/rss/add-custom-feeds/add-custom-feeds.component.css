@@ -510,3 +510,8 @@ outline:none;
     border-bottom-color: #999;
     border-bottom-color: rgba(0,0,0,.25);
 }
+@media screen and (max-width:578px){
+.mb_v_Pl0{
+	padding-left: 0px!important;
+}
+}

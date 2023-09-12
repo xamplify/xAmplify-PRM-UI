@@ -16,3 +16,16 @@ input[type=number] {
 .deal-box{
   margin-bottom: 50px;border: 1px solid #ddd;margin: 10px;padding: 10px
 }
+input[type='radio']:checked:after {
+  width: 13px;
+  height: 13px;
+  border-radius: 15px;
+  top: 0px;
+  left: 0px;
+  position: relative;
+  background-color: #2196f3;
+  content: '';
+  display: inline-block;
+  visibility: visible;
+  border: 2px solid #ddd;
+}

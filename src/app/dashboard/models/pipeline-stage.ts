@@ -7,4 +7,5 @@ export class PipelineStage {
     markAs: string = "";
     displayIndex: number;
     canDelete: true;
+    private: boolean;
 }

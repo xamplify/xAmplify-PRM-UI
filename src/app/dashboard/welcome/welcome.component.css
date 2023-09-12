@@ -122,6 +122,7 @@
 }
 .dash-img-svg {
   height: 240px;
+  width:100%;
 }
 
 .msg-color{
@@ -148,4 +149,32 @@ a.UserguideBtnCustomization:hover {
 }
 .Btn-transparent:hover{
   background: transparent;
+}
+@media only screen and (min-width: 600px) and (max-width: 1180px){ 
+  .block_align{
+    padding: 2em 0em 2em 0em!important;
+  }
+  .tab_Flex{
+    display: flex;
+  }
+  .tab_imgblock{
+    margin: 1em 2em!important;
+  }
+  .tab_right0{
+    right:0px!important;
+  }
+}
+@media only screen and (max-width:578px){
+  .UserguideBtnCustomization{
+    padding: 4px 5px!important;
+  }
+  .mb_left0{
+    left: 0px!important;
+  }
+  .mb_v_right0{
+    right: 0px!important;
+  }
+  .text-block{
+    margin-bottom: 3em!important;
+  }
 }

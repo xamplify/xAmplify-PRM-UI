@@ -68,6 +68,10 @@ export class AddDamComponent implements OnInit, OnDestroy {
   @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
   /****XNFR-255*****/
   hasShareWhiteLabeledContentAccess = false;
+   /****XNFR-326***/
+   isAssetPublishedEmailNotification = false;
+   assetPublishEmailNotificationLoader = true;
+
   constructor(
     private xtremandLogger: XtremandLogger,
     public router: Router,
@@ -116,7 +120,22 @@ export class AddDamComponent implements OnInit, OnDestroy {
             this.ngxloading = false;
           });
       }
+      this.findAssetPublishEmailNotificationOption();
     }
+    
+     /****XNFR-326*****/
+     findAssetPublishEmailNotificationOption() {
+      this.assetPublishEmailNotificationLoader = true;
+      this.authenticationService.findAssetPublishEmailNotificationOption()
+      .subscribe(
+          response=>{
+              this.isAssetPublishedEmailNotification = response.data;
+              this.assetPublishEmailNotificationLoader = false;
+          },error=>{
+              this.assetPublishEmailNotificationLoader = false;
+          });
+  }
+
 
     /*******XNFR-255***/
     findShareWhiteLabelContentAccess() {
