@@ -26,6 +26,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	loading: boolean = false;
 	userProfileImage = "assets/images/icon-user-default.png";
 	selectedCfIds = [];
+	canNotUnSelectIds = [];
 	ngxloading: boolean;
 	sfCustomFieldsResponse: any;
 	sfcfMasterCBClicked: boolean = false;
@@ -129,6 +130,9 @@ export class IntegrationSettingsComponent implements OnInit {
 								self.requiredCfIds.push(customField.name);
 								if (!customField.selected) {
 									self.selectedCfIds.push(customField.name);
+								}
+								if (!customField.canUnselect){
+									self.canNotUnSelectIds.push(customField.name)
 								}
 							}
 						});
@@ -468,7 +472,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			let self = this;
 			$('[name="sfcf[]"]').each(function () {
 				var id = $(this).val();
-				if (self.requiredCfIds.indexOf(id) == -1) {
+				if (self.canNotUnSelectIds.indexOf(id) == -1) {
 					$(this).prop('checked', false);
 					self.paginatedSelectedIds.splice($.inArray(id, self.paginatedSelectedIds), 1);
 				}
