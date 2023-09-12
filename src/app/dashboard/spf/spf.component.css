@@ -221,3 +221,17 @@
       .MlSpace {margin-left: 0px !important;}
       .mobileBottomPa {margin-bottom: 10px;}
   }
+
+@media only screen and (min-width: 1037px) and (max-width: 1177px) { 
+  button.responsiveBtnCU {
+    padding: 6px 10px;
+    font-size: 9px;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1037px) { 
+  button.responsiveBtnCU {
+    padding: 6px 7px;
+    font-size: 7px;
+  }
+}
