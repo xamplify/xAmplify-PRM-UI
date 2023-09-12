@@ -465,7 +465,15 @@
   }
 }
 
-
+@media only screen and (min-width: 992px) and (max-width:1200px) {  
+  .register_deal {
+    margin-top: 7px !important;
+    padding: 2px !important;
+    border: 1px solid #529de1 !important;
+    font-size: 10px !important;
+}
+  
+}
 
 
 
