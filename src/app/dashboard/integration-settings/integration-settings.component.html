@@ -71,7 +71,7 @@
                 <td><span>{{sfCustomField.type}}</span></td>
                 <td>
                   <span *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE')">Required
-                    <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="Info for this custom field is required by your partner if you toggle on this option."></span>
+                    <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="Your partner must fill in this custom field if you toggle on this option."></span>
                       <label class="toggleOnOff" [ngClass]="!sfCustomField?.canUnselect ? 'disabled-opacity':''">
                         <input  type="checkbox" [disabled]="!sfCustomField.canUnselect" [(ngModel)]="sfCustomField.required" [ngModelOptions]="{standalone: true}">
                         <span class="sliderOnOff"></span>
