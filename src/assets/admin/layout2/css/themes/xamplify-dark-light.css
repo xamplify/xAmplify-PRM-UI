@@ -1889,3 +1889,6 @@ input#copy-link {
   background: #22313a !important ;
 }
  /* XNFR-335 End */
+
+ .toggleOnOff .labels::after{color:#fff !important;}
+ .toggleOnOff .labels::before {color:#fff !important;}
