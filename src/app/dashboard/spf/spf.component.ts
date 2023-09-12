@@ -33,6 +33,7 @@ export class SpfComponent implements OnInit {
  isGodaddyConnected:boolean = false;
  godaddyValue:any = "v=spf1 include:u10208008.wl009.sendgrid.net ~all";
  hasSpace:boolean = false;
+ updateButton: boolean = false;
  /** XNFR-335*******/
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,public dashboardService:DashboardService) { }
 
@@ -202,6 +203,7 @@ export class SpfComponent implements OnInit {
           $('#step-6').hide();
           $('#step-7').show();
           this.updateGodaddyConfiguration(this.companyId);
+          this.updateButton = false;
         } else if (response.statusCode == 422) {
           this.statusCode = 422;
           this.message = "DNS Record was Dulicated.";
@@ -256,13 +258,13 @@ export class SpfComponent implements OnInit {
       }
     );
   }
-  updateButton: boolean = false;
   foundDuplicateDnsRecord() {
     this.dashboardService.foundDuplicateDnsRecord(this.godaddyRecordDto.data).subscribe(
       response => {
         this.loading = false;
-        this.updateGodaddyConfiguration(this.companyId);
         this.updateButton = true;
+        this.updateGodaddyConfiguration(this.companyId);
+        this.statusCode = 409;
       }, error => {
         this.loading = false;
       }
