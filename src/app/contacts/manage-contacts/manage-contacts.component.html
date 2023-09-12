@@ -1013,12 +1013,12 @@
                                        <div class="actions-block no-float" *ngIf="isPartner && (contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' || contactsByType.selectedCategory == 'all')">
                                           <ng-container *ngIf="contact?.validEmail">
                                              <a  (click)="sendMail(contact.id)">
-                                             <i class="fa fa-envelope"  aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Send Email Notification"></i>
+                                             <i class="fa fa-envelope IconCustomization"  aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Send Email Notification"></i>
                                              </a>
                                           </ng-container>
                                           <ng-container *ngIf="!contact?.validEmail">
                                              <a>
-                                             <i class="fa fa-envelope gray"  aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Email can't be sent for invalid email Id"></i>
+                                             <i class="fa fa-envelope gray IconCustomization"  aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Email can't be sent for invalid email Id"></i>
                                              </a>
                                           </ng-container>
                                        </div>

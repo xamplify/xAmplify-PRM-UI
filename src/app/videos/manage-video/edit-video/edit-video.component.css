@@ -52,7 +52,7 @@
   border: 1px solid #c3c0c0;
   margin-bottom: 10px;
   width: 50%;
-  text-align: right;
+  text-align: center;
   border-radius: 2px;
   margin-top: 10px;
 }
@@ -295,3 +295,5 @@ textarea {
   left: 50%!important;
   transform: translate(-50px, -50px)!important;
  }
+
+ .videoInfoTopBtns {margin-left: auto; float: right; top:2px}

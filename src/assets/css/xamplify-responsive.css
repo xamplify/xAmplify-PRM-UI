@@ -472,8 +472,22 @@
     border: 1px solid #529de1 !important;
     font-size: 10px !important;
 }
-  
 }
+
+@media only screen and (min-width: 992px) and (max-width:1150px) {  
+  .shareVideoButton { padding: 5px 10px !important;}
+  .embedVideoButton { padding: 5px 10px !important;}
+}
+
+@media only screen and (min-width: 992px) and (max-width:1200px) {  
+  .videoViews {width: 80% !important;}
+}
+@media only screen and (min-width:300px) and (max-width:990px) {  
+  .videoInfoTopBtns {margin-top: 10px;}
+  .shareVideoButton { padding: 5px 15px !important;}
+  .embedVideoButton { padding: 5px 15px !important;}
+}
+
 
 
 

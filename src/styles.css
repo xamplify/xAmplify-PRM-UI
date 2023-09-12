@@ -877,7 +877,7 @@ legend {
   width: 28px;
   height: 28px;
   border: 1px solid #fff;
-  padding: 3px 0px;
+  padding: 2px 0px;
   border-radius: 100%;
   margin: 10px 2px;
   display: inline-block;
@@ -2401,3 +2401,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e;backgroun
 /* Grid View icon Customization End*/
 /* Table icon Customization END*/
 
+.card-align {
+    margin-top: -4px;
+    padding: 0px 5px !important;
+}
