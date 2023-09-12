@@ -207,7 +207,7 @@
       </div>
       <div class="form-group col-md-4">
         <label for="Value">Value</label>
-        <input type="text" class="form-control disabled" id="Value"  [(ngModel)]="godaddyValue" (ngModelChange)="changeValue($event)" [ngModelOptions]="{standalone: true}" placeholder="Enter Value here">
+        <input type="text" class="form-control disabled" id="Value"  [(ngModel)]="godaddyValue" (ngModelChange)="changeValue($event)" [ngModelOptions]="{standalone: true}" placeholder="Enter Value here" disabled>
         <p *ngIf="updateButton" class="star"  role="alert" style="font-size: 13px;">Dns Record already exists. Click on update to continue.</p>
       </div>
       <div class="col-md-12">
