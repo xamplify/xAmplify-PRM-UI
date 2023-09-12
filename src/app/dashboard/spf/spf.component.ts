@@ -32,6 +32,7 @@ export class SpfComponent implements OnInit {
  isDomainName:boolean = false;
  isGodaddyConnected:boolean = false;
  godaddyValue:any = "v=spf1 include:u10208008.wl009.sendgrid.net ~all";
+ hasSpace:boolean = false;
  /** XNFR-335*******/
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,public dashboardService:DashboardService) { }
 
@@ -139,10 +140,14 @@ export class SpfComponent implements OnInit {
     $('#step-6').hide();
     $('#step-7').show();
   }
-
+  goToStep3(){
+    $('#step-3').show();
+    $('#step-4').hide();
+  }
   changeDomainName(evn: any) {
     this.godaddyRecordDto.domainName = evn;
     this.domainName = this.godaddyRecordDto.domainName;
+    this.hasSpace = this.godaddyRecordDto.domainName.includes(' ');
     if (this.domainName != "") {
       this.isDomainName = true;
     } else {
@@ -151,8 +156,7 @@ export class SpfComponent implements OnInit {
   }
   changeValue(event: any) {
     this.godaddyRecordDto.data = event;
-    this.statusCode = 200;
-    alert(this.godaddyRecordDto.data);
+    //this.statusCode = 200;
   }
 
   isAuthorized(): boolean {
