@@ -668,7 +668,7 @@ input:checked + .slider-new:before {
 }
 @media only screen and (min-width: 601px) {
   .padding-mobile {
-    padding: non;
+    padding: none;
   }
 }
 
@@ -770,6 +770,16 @@ input:checked + .slider-new:before {
   }
   .mScroll {
     overflow-x: auto;
+  }
+  .padding-bottomonly{
+    height: auto!important;
+  }
+  .desktopview{
+    width: 100%!important;
+    margin-bottom: 18px!important;
+  }
+  .mobileview{
+   margin-left: 0px!important; 
   }
 }
 

@@ -83,11 +83,11 @@
                       <div class="inline-box link" action="action_page.php" style="width: 100%;">
                         <input class="form-control" id="copy-link" type="text" readonly="readonly"
                           [ngModel]="completeLink" #link>
-                        <button type="button" class="right-border" (click)="editSlug()"
+                        <button type="button" class="right-border widthauto" (click)="editSlug()"
                         data-toggle="tooltip" data-placement="top" title="Edit"
                           style="border-radius:0px !important;"><i
                             class="fa fa-edit"></i></button>
-                        <button type="button" (click)="copyInputMessage(link)"
+                        <button type="button" class="widthauto" (click)="copyInputMessage(link)"
                         data-toggle="tooltip" data-placement="top" title="Copy"
                           style="border-radius:0px !important;"><i                      
                             class="fa fa-copy"></i></button>

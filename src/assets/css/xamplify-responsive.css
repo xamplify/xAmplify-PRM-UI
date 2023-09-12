@@ -188,7 +188,7 @@
     background-color:unset!important;
   }
   .mt_10{
-    margin-top: 10px;
+    margin-top: 10px!important;
   }
   .mb_pt{
     padding: 8px 0px;
@@ -318,7 +318,7 @@
     margin-top:0px!important;
    }
    .m_mb8{
-    margin-bottom: 8px;
+    margin-bottom: 8px!important;
    }
    .mb_whitespace{
     white-space: nowrap;
