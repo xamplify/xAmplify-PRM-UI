@@ -6,7 +6,7 @@ import {ReferenceService} from 'app/core/services/reference.service';
 import {AuthenticationService} from 'app/core/services/authentication.service';
 import { GodaddyDetailsDto } from '../user-profile/models/godaddy-details-dto';
 
- declare var $;
+ declare var $,swal;
 @Component({
   selector: 'app-spf',
   templateUrl: './spf.component.html',
@@ -282,7 +282,25 @@ export class SpfComponent implements OnInit {
     );
   }
   unlinkConfiguration(isConnected:boolean){
-    this.updateGodaddyConfiguration(this.companyId, isConnected);
+    let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Yes, Unlink it!'
+
+		}).then(function () {
+      self.updateGodaddyConfiguration(self.companyId, isConnected);
+     self.showStep1();
+		},function (dismiss: any) {
+			console.log("you clicked showAlert cancel" + dismiss);
+		});
+   
+  }
+  showStep1(){
     $('#addADomain').show();
     $('#step-2').hide();
     $('#step-3').hide();

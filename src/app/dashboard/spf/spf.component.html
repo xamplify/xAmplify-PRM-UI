@@ -44,7 +44,7 @@
         <img alt="PC" class="domainImage" src="assets/images/godaddy-configuration/Domain_PC.png">
         <div class="align-middle">
           <h3 translate="">Let's get started.</h3>
-          <p translate="">Update SPF records in GoDaddy to ensure better delivery of emails and to protect against email spoofing attacks.</p>
+          <p translate="">Add or Update SPF records in GoDaddy domain registrar to ensure better delivery of emails and to protect against email spoofing attacks.</p>
           <button class="btn btn-primary text-center" translate="" (click)="addADomain()">Add a Domain</button>
         </div>
       </div>
@@ -143,6 +143,7 @@
      </table>
      <div >
       <button type="submit" class="btn Btn-Gray btn-md  mobileFloatRight" (click)="goToStep3()">Back</button>
+      <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToStepFive()">Connect</button>
     </div>
    </div>
    <!-- Domains Details End -->
@@ -152,7 +153,7 @@
     <div class="paddingSides" id="step-5">
       <div *ngIf="statusCode === 400" class="alert alert-info">
         <strong>{{message}}</strong>
-        <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" style="margin-top: -7px;"  (click)="goToAddDomainDiv()">Change To Domain Name</button>
+        <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" style="margin-top: -7px;"  (click)="goToAddDomainDiv()">Change the Domain Name</button>
       </div>
       <form>
         <div class="form-group row">
