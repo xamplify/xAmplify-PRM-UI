@@ -375,7 +375,7 @@ span.preview-publishing-aligntectcenter {
 .tooltip-margin {
   margin: -38px !important;
 }
-@media only screen and (min-width: 768px) and (max-width: 1024px) { 
+@media only screen and (min-width: 768px) and (max-width: 992px) { 
   span.select-check-box{
     left:17px!important;
   }

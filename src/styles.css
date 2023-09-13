@@ -2405,3 +2405,6 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e;backgroun
     margin-top: -4px;
     padding: 0px 5px !important;
 }
+label.floatLeftText {
+  text-align: left !important;
+}

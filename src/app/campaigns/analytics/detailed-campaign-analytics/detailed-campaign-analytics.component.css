@@ -644,3 +644,15 @@ th.leftAlignTableth {
 }
 
 
+@media only screen and (min-width: 1049px) and (max-width: 1200px) { 
+  .move-position-left {
+    position: relative;
+    left: 25px;
+  }
+}
+@media only screen and (min-width: 992px) and (max-width: 1049px) { 
+  .move-position-left {
+    position: relative;
+    left: 13px;
+  }
+}

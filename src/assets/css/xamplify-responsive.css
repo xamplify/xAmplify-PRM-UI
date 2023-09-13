@@ -488,7 +488,34 @@
   .embedVideoButton { padding: 5px 15px !important;}
 }
 
+/* XNFR-319 */
+@media only screen and (min-width:992px) and (max-width:1130px) { 
+  a.wordLengthControl { line-break: anywhere;}
+}
+@media only screen and (min-width:1769px) and (max-width:1920px) { 
+  .item__actions.moveLinkIcon {width: calc(11% - 0px) !important;}
+}
+@media only screen and (min-width:1500px) and (max-width:1769px) { 
+  .item__actions.moveLinkIcon {
+    width: calc(13% - 0px) !important;
+  }
+}
+@media only screen and (min-width:1147px) and (max-width:1251px) { 
+  .item__actions.moveLinkIcon {
+    width: calc(19% - 0px) !important;
+  }
+}
+@media only screen and (min-width:1025px) and (max-width:1147px) { 
+  .item__actions.moveLinkIcon {
+    width: calc(21% - 0px) !important;
+  }
+}
+@media only screen and (min-width:992px) and (max-width:1024px) { 
+  .item__actions.moveLinkIcon {
+    width: calc(16% - 0px) !important;
+  }
 
+}
 
 
 

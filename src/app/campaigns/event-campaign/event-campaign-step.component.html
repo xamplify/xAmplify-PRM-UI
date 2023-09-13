@@ -182,16 +182,20 @@
 				   (statusChange)="switchStatusChange()">
 				   </switch>
 				</div>
-				<span for="toPartner" class="col-sm-3 col-xs-3 labal-css color-css mToLabel" [ngClass]="{'highletClass': !eventCampaign.channelCampaign }">
+				<span for="toPartner" class="col-sm-6 col-xs-6 labal-css color-css mToLabel" [ngClass]="{'highletClass': !eventCampaign.channelCampaign }">
 				   <span *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || (!authenticationService.isAddedByVendor && !isVendor);else other" translate>To Recipients</span>
 				   <ng-template #other><span translate>To {{authenticationService?.partnerModule?.customName}}</span> </ng-template>
+				   <span style="cursor: pointer; color: #54a7e9;"
+					  data-html="true" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}} <br> {{THROUGH_PARTNER_MESSAGE}}">
+				   <i class="fa fa-question-circle" aria-hidden="true"></i>
+				   </span>
 				</span>
-				<div class="col-sm-3 mLabel" style="padding: 0; margin-top: 5px;">
+				<!-- <div class="col-sm-3 mLabel" style="padding: 0; margin-top: 5px;">
 				   <span class="tooltip-margin" style="cursor: pointer; color: #54a7e9;"
 					  data-html="true" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}} <br> {{THROUGH_PARTNER_MESSAGE}}">
 				   <i class="fa fa-question-circle" aria-hidden="true"></i>
 				   </span>
-				</div>
+				</div> -->
 			 </div>
 			 <div class="form-group"
 				*ngIf="eventCampaign.channelCampaign && !authenticationService.isOnlyPartner()">
@@ -215,7 +219,7 @@
 			 </div>
 			 <div class="form-group" 
 				*ngIf="showConfigurePipelines && ((!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads))">
-				<label class="control-label col-sm-3" translate>Configure Pipelines</label>
+				<label class="control-label col-sm-3 floatLeftText" translate>Configure Pipelines</label>
 				<div class="col-sm-3">
 				   <div class="email-options-checkbox-group email-options-notify">
 					  <div class="email-options-checkbox clearfix">
@@ -965,9 +969,9 @@
 				   <ul  class="content__list" >
 					  <li>
 						 <div class="flex-row mHeight" >
-							<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row" >
+							<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row" >
 							   <div  class="row">
-								  <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" >
+								  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
 									 <div class="grid-box imgage-paddings"  
 									 [ngClass]="eventCampaign.emailTemplate.id === eventCampaign.selectedEditEmailTemplate.id ? 'template-selected-border' :''"   
 									 (click)="emailTemplateSelection(eventCampaign.selectedEditEmailTemplate)"  >                 
@@ -1034,7 +1038,7 @@
 	   <ul  class="content__list" *ngFor="let emailTemplate of campaignEmailTemplates; let i =index">
 	   <li *ngIf="emailTemplateId != emailTemplate?.id" [class.disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage">
 	   <div class="flex-row mHeight" >
-	   <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row" >                         
+	   <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row" >                         
 	   <div  class="row">
 	   <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
 	   <div class="grid-box imgage-paddings"  
@@ -1348,7 +1352,7 @@
  <ul class="content__list">
  <li>
  <div class="flex-row mHeight" >
- <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row" >                         
+ <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row" >                         
  <div  class="row">	
  <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
  <div class="grid-box imgage-paddings"  
@@ -1429,7 +1433,7 @@
  class="content__list" *ngFor="let emailTemplate of  reply.emailTemplatesPagination.pagedItems ;let e =index">
  <li   *ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id">
  <div class="flex-row mHeight" >
- <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 flex-row" >                         
+ <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row" >                         
  <div  class="row">
  <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
  <div class="grid-box imgage-paddings"  
