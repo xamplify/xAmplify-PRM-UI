@@ -3054,7 +3054,7 @@ configSalesforce() {
 			this.defaultStageIndex = this.defaultStageIndex - 1;
 		}
 		if (this.pipeline.stages.length === 1) {
-			this.pipeline.stages[divIndex].private = false; 
+			this.pipeline.stages[0].private = false; 
 		  }
 	}
 
