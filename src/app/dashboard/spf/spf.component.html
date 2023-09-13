@@ -108,9 +108,9 @@
           </td>
        </tr>
    </table>
-   <div class="col-sm-12 marginBottom">
+   <div class="col-sm-12 marginBottom" style="padding: 0px;">
     <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToStepFour()">Next</button>
-    <button type="submit" class="btn Btn-Green btn-md float-left mobileFloatRight" (click)="addADomain()">Back</button>
+    <button type="submit" class="btn Btn-Gray btn-md  mobileFloatRight" (click)="addADomain()">Back</button>
   </div>
    </div>
     <!-- Verification Domain End -->
@@ -129,7 +129,7 @@
          </tr>
          <tr class="displayContents">
           <td class="verticalMiddle">
-            <span class="conectColor" (click)="goToStepFive()"><i class="fa fa-circle" aria-hidden="true"></i>
+            <span class="conectColor" (click)="goToStepFive()"><i class="fa fa-circle faDecfontSize" aria-hidden="true"></i>
               Connect</span>
           </td>
         </tr>
@@ -211,7 +211,7 @@
         <p *ngIf="updateButton" class="star"  role="alert" style="font-size: 13px;">Dns Record already exists. Click on update to continue.</p>
       </div>
       <div class="col-md-12">
-        <button type="submit" *ngIf="!updateButton" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="addDNsRecord();foundDuplicateDnsRecord()">Save</button>
+        <button type="submit" *ngIf="!updateButton" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="addDNsRecord(true);foundDuplicateDnsRecord(true)">Save</button>
         <button type="submit" *ngIf="updateButton" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="goToConnectdStep()">Update</button>
 
         <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" (click)="goToStepFive()">Back</button>
@@ -241,8 +241,9 @@
        </tr>
        <tr class="displayContents">
         <td class="verticalMiddle">
-          <span class="connectedLive"> <i class="fa fa-circle" aria-hidden="true"></i>
-            Connected</span>
+          <span class="connectedLive"> <i class="fa fa-circle faDecfontSize" aria-hidden="true"></i>
+            Connected</span> &nbsp; &nbsp;
+
         </td>
       </tr>
        <tr class="displayContents">
@@ -251,7 +252,16 @@
             <img alt="Godaddy Logo" class="godadyLogo" src="assets/images/godaddy-configuration/godaddy-logo.png">
           </a>
           </td>
+          <td class="verticalMiddle">
+            <span class="dropdown alignGareLeft">
+              <i class="fa fa-gear faGareIconCu" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+              <div class="dropdown-menu dropdownMenuCu" aria-labelledby="dropdownMenuButton">
+                <span><button type="button" class="UnlinkLabel unlink-button" (click)="unlinkConfiguration(false)">Unlink</button></span>
+              </div>
+            </span>
+            </td>
        </tr>
+   
    </table>
  </div>
  <!-- Connected Domains Details End -->

@@ -46,7 +46,7 @@ export class SpfComponent implements OnInit {
       }
       this.isSpfConfigured();
       this.isGodaddyConfigured();
-      this.domainName = "example.com";
+      this.getDomainName();
   }
 
   isSpfConfigured(){
@@ -171,6 +171,17 @@ export class SpfComponent implements OnInit {
     this.godaddyRecordDto.data = this.godaddyValue;
     this.checkDomainName(this.godaddyRecordDto)
   }
+  getDomainName(){
+    this.dashboardService.getDomainName(this.companyId) .subscribe(
+      response => {
+        this.domainName = response.data;
+        if(this.domainName === ""){
+          this.domainName = "Please Unlink Domain"
+        }
+      }
+    );
+
+  }
   checkDomainName(godaddyDetailsDto: GodaddyDetailsDto) {
     this.loading = true;
     this.dashboardService.checkDomainName(godaddyDetailsDto).subscribe(
@@ -191,7 +202,7 @@ export class SpfComponent implements OnInit {
     );
   }
 
-  addDNsRecord() {
+  addDNsRecord(isConnected:boolean) {
     this.godaddyRecordDto.type = "TXT";
     this.godaddyRecordDto.name = "@";
     this.loading = true;
@@ -202,7 +213,7 @@ export class SpfComponent implements OnInit {
           this.statusCode = 200;
           $('#step-6').hide();
           $('#step-7').show();
-          this.updateGodaddyConfiguration(this.companyId);
+          this.updateGodaddyConfiguration(this.companyId,isConnected);
           this.updateButton = false;
         } else if (response.statusCode == 422) {
           this.statusCode = 422;
@@ -249,8 +260,8 @@ export class SpfComponent implements OnInit {
       }
     );
   }
-  updateGodaddyConfiguration(companyId: number) {
-    this.dashboardService.updateGodaddyConfiguration(companyId).subscribe(
+  updateGodaddyConfiguration(companyId: number,isConnected:boolean) {
+    this.dashboardService.updateGodaddyConfiguration(companyId,isConnected).subscribe(
       response => {
         this.loading = false;
       }, error => {
@@ -258,17 +269,31 @@ export class SpfComponent implements OnInit {
       }
     );
   }
-  foundDuplicateDnsRecord() {
+  foundDuplicateDnsRecord(isConnected:boolean) {
     this.dashboardService.foundDuplicateDnsRecord(this.godaddyRecordDto.data).subscribe(
       response => {
         this.loading = false;
         this.updateButton = true;
-        this.updateGodaddyConfiguration(this.companyId);
+        this.updateGodaddyConfiguration(this.companyId, isConnected);
         this.statusCode = 409;
       }, error => {
         this.loading = false;
       }
     );
+  }
+  unlinkConfiguration(isConnected:boolean){
+    this.updateGodaddyConfiguration(this.companyId, isConnected);
+    $('#addADomain').show();
+    $('#step-2').hide();
+    $('#step-3').hide();
+    $('#step-4').hide();
+    $('#step-5').hide();
+    $('#step-6').hide();
+    $('#step-7').hide();
+    this.godaddyRecordDto = new GodaddyDetailsDto();
+    this.apiKey ="";
+    this.apiSecret= "";
+    this.updateButton = false;
   }
 
 }

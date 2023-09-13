@@ -1206,8 +1206,8 @@ getDefaultThemes(){
          .map(this.extractData)
          .catch(this.handleError);
     }
-    updateGodaddyConfiguration(companyId:number){
-        return this.http.get(this.authenticationService.REST_URL + `godaddy/updateGodaddyConfiguration/${companyId}?access_token=${this.authenticationService.access_token}`)
+    updateGodaddyConfiguration(companyId:number,isConnected:boolean){
+        return this.http.get(this.authenticationService.REST_URL + "godaddy/updateGodaddyConfiguration/" + companyId + "/"+isConnected+"/?access_token=" + this.authenticationService.access_token)
         .map(this.extractData)
         .catch(this.handleError);
     }
@@ -1218,6 +1218,11 @@ getDefaultThemes(){
     }
     foundDuplicateDnsRecord(value:string){
         return this.http.get(this.authenticationService.REST_URL + `godaddy/fetchDnsRecordByValue/${value}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    getDomainName(companyId:number){
+        return this.http.get(this.authenticationService.REST_URL + "godaddy/getDomainName/" + companyId + "/?access_token=" + this.authenticationService.access_token)
         .map(this.extractData)
         .catch(this.handleError);
     }
