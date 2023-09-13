@@ -26,4 +26,5 @@ export class Lead {
     associatedUserId: number;
     associatedDealId: number;
     unReadChatCount: any;
+    currentStagePrivate = false;
 }
