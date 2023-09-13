@@ -321,9 +321,9 @@ export class ParterService {
             .catch( this.handleError );
     }
 
-    getQueryBuilderItems() {
+    findDefaultTriggerOptions() {
         let userId = this.authenticationService.getUserId();
-        const url = this.URL + 'workflow/'+userId+'?access_token=' + this.authenticationService.access_token;
+        const url = this.URL + 'workflow/findDefaultTriggerOptions/'+userId+'?access_token=' + this.authenticationService.access_token;
         return this.httpClient.get(url)
             .catch( this.handleError );
     }

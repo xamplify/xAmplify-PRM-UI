@@ -21,6 +21,7 @@ import { Pipeline } from '../../dashboard/models/pipeline';
 import { PipelineStage } from '../../dashboard/models/pipeline-stage';
 import { QueryBuilderConfig } from 'angular2-query-builder';
 import { QueryBuilderClassNames } from 'angular2-query-builder';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 
 
 declare var  $:any, CKEDITOR:any, swal: any;
@@ -55,7 +56,10 @@ export class WorkflowFormComponent implements OnInit{
   query  = {};
   showQueryBuilder = false;
   queryBuilderCustomResponse:CustomResponse = new CustomResponse();
-
+  triggerLoader = true;
+  subjects:Array<any> = new Array<any>();
+  actions:Array<any> = new Array<any>();
+  timePhrases:Array<any> = new Array<any>();
   classNames: QueryBuilderClassNames = {
     removeIcon: 'fa fa-minus',
     addIcon: 'fa fa-plus',
@@ -93,33 +97,38 @@ export class WorkflowFormComponent implements OnInit{
     }
 
   ngOnInit() {
-    this.parterService.getQueryBuilderItems().subscribe(
-      response=>{
-        this.queryBuilderCustomResponse = new CustomResponse();
-        let data  = response.data;
-        let fieldsLength = Object.keys(data.fields).length;
-        this.showQueryBuilder = fieldsLength>0;
-        if(this.showQueryBuilder){
-          this.config = data;
-          let query = {
-            condition: 'and',
-            rules: [
-              
-            ]
-          };
-          this.query = query;
-        }else{
-        this.queryBuilderCustomResponse = new CustomResponse('INFO','No Data Found For Query Builder',true);
-        }
-        this.loadQueryBuilder = false;
-      },error=>{
+        this.getQueryBuilder();
+ }
 
+getQueryBuilder(){
+  this.parterService.findDefaultTriggerOptions().subscribe(
+    response=>{
+      this.queryBuilderCustomResponse = new CustomResponse();
+      let data = response.data;
+      this.subjects = data.subjects;
+      this.actions = data.actions;
+      this.timePhrases = data.timePhrases;
+      let queryBuilderJsonInput  = data.queryBuilderJson;
+      let fieldsLength = Object.keys(queryBuilderJsonInput.fields).length;
+      this.showQueryBuilder = fieldsLength>0;
+      if(this.showQueryBuilder){
+        this.config = queryBuilderJsonInput;
+        let query = {
+          condition: 'and',
+          rules: [
+            
+          ]
+        };
+        this.query = query;
+      }else{
+      this.queryBuilderCustomResponse = new CustomResponse('INFO','No Filters Found',true);
       }
-    );    
-
-
-    $('#hideToggle').hide();
-    
+      this.loadQueryBuilder = false;
+      this.triggerLoader = false;
+    },error=>{
+      this.xtremandLogger.errorPage(error);
+    }
+  );
 }
 
 getData(){

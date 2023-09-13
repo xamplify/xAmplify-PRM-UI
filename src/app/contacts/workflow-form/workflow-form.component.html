@@ -41,7 +41,8 @@
   <div>
     <div>
       <div>
-        <div class="row" style="margin-right: -4px;margin-left: 0px;">
+        <app-modal-popup-loader *ngIf="triggerLoader"></app-modal-popup-loader>
+        <div *ngIf="!triggerLoader" class="row" style="margin-right: -4px;margin-left: 0px;">
           <!--Trigger start -->
           <div class="page-bar p20 activeStepInfo" id="step-1">
             <div class="caption" style="padding-top: 11px !important;">
