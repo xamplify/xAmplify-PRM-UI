@@ -130,9 +130,9 @@
            <td class="verticalMiddle">{{domainName}}
            </td>
          </tr>
-         <tr class="displayContents">
+         <!-- <tr class="displayContents">
           <td class="verticalMiddle hidden-xs">:</td>
-        </tr>
+        </tr> -->
          <tr class="displayContents">
           <td class="verticalMiddle">
             <span class="conectColor" (click)="goToStepFive()">
@@ -164,13 +164,13 @@
       </div>
       <form>
         <div class="form-group row">
-          <label for="APIKey" class="col-sm-3 col-form-label">API Key<span class="star"> *</span>:</label>
+          <label for="APIKey" class="col-sm-3 col-form-label">API Key<span class="star"></span>:<span style="color: red;">*</span></label>
           <div class="col-sm-9">
             <input type="text" class="form-control" id="APIKey" [(ngModel)]="apiKey" [ngModelOptions]="{standalone: true}" placeholder="Enter API Key here">
           </div>
         </div>
         <div class="form-group row">
-          <label for="SecretCode" class="col-sm-3 col-form-label">Secret Code <span class="star"> *</span>:</label>
+          <label for="SecretCode" class="col-sm-3 col-form-label">Secret Code <span class="star"></span>:<span style="color: red;">*</span></label> 
           <div class="col-sm-9">
             <input type="text" class="form-control" id="SecretCode" [(ngModel)]="apiSecret" [ngModelOptions]="{standalone: true}" placeholder="Enter Secret Code here">
           </div>
@@ -204,17 +204,17 @@
   <form>
     <div class="form-row row">
       <div class="form-group col-md-4">
-        <label for="Typetoselect">Type</label>
+        <label for="Typetoselect">Type<span style="color: red;">*</span></label>
         <select class="form-control" id="Typetoselect" disabled>
           <option selected>TXT</option>
         </select>
       </div>
       <div class="form-group col-md-4">
-        <label for="Name">Name</label>
+        <label for="Name">Name<span style="color: red;">*</span></label>
         <input type="text" class="form-control disabled" [(ngModel)]="godaddyRecordDto.name"  [ngModelOptions]="{standalone: true}" id="Name" placeholder="@" disabled>
       </div>
       <div class="form-group col-md-4">
-        <label for="Value">Value</label>
+        <label for="Value">Value<span style="color: red;">*</span></label> 
         <input type="text" class="form-control disabled" id="Value"  [(ngModel)]="godaddyValue" (ngModelChange)="changeValue($event)" [ngModelOptions]="{standalone: true}" placeholder="Enter Value here" disabled>
         <p *ngIf="updateButton" class="star"  role="alert" style="font-size: 13px;">Dns Record already exists. Click on update to continue.</p>
       </div>
@@ -250,9 +250,9 @@
          <td class="verticalMiddle">{{domainName}}
          </td>
        </tr>
-       <tr class="displayContents">
+       <!-- <tr class="displayContents">
         <td class="verticalMiddle hidden-xs">:</td>
-      </tr>
+      </tr> -->
        <tr class="displayContents">
         <td class="verticalMiddle">
           <span class="connectedLive">
