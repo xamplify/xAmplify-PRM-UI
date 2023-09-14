@@ -2,11 +2,12 @@
     <div class="my-container">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     </div>
-    <app-modal-popup-loader *ngIf="httpRequestLoader.isLoading"></app-modal-popup-loader>
-    <ng-container *ngIf="!httpRequestLoader.isLoading">
+    <div style="position: relative; top: -10px">
+        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+    </div>
         <div class="row">
             <div class="col-xs-12">
-                <div class="page-bar mWidth" style="border:none !important;">
+                <div [hidden]="ngxloading" class="page-bar mWidth" style="border:none !important;">
                     <ul class="page-breadcrumb mb_width" *ngIf="loadLandingPage">
                         <li>
                             <i class="fa fa-home" aria-hidden="true"></i>
@@ -29,18 +30,16 @@
                     <app-preview-popup #previewPopUpComponent *ngIf="loadLandingPage"></app-preview-popup>
                     <app-merge-tags *ngIf="loadLandingPage" [input]="mergeTagsInput"></app-merge-tags>
                    <div>
-                    <button  class="new-tab-button btn-primary m_mb8" style="border-radius: 5px;padding: 1px 13px !important;" *ngIf="loadLandingPage" (click)="landingPage.openLinksInNewTab=!landingPage.openLinksInNewTab">
-                        Open Links In New Tab <input type="checkbox" [(ngModel)]="landingPage.openLinksInNewTab">
-                      </button>
+                    <button  class="new-tab-button btn-primary m_mb8" style="border-radius: 5px;padding: 1px 13px !important;" [hidden]="!loadLandingPage" 
+                    (click)="checkOrUncheckOpenLinksInNewTabOption()">
+                    Open Links In New Tab
+                     <input class="pointer" id="openLinksInNewTab-page-links" type="checkbox" (click)="checkOrUncheckOpenLinksInNewTabOption()">
+                  </button>
                     </div>
                 </div>
                 <div class="tile mScroll" id="CardBgforSection" style="border-radius: 5px;">
                     <div id="bee-plugin-container"></div>
                 </div>
             </div>
-            <div class="tile mScroll" id="CardBgforSection" style="border-radius: 5px;">
-                <div id="bee-plugin-container"></div>
-            </div>
         </div>
-    </div>
     <app-scroll-top></app-scroll-top>
