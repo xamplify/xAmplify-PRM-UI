@@ -1916,33 +1916,33 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
 .dcBorderNone.table-bordered > tbody > tr > td {
   border: none !important;
 }
-.dcbar.progressbar li:before {
+/* .dcbar.progressbar li:before {
     border: 1px solid #337ab700 !important;
     background-color: #337ab747 !important;
-}
+} */
 .dcbar.progressbar li.active  {
   color: #fff !important;
 }
-.dcbar.progressbar li.active:before {
+/* .dcbar.progressbar li.active:before {
   background: #22313a !important;
-}
-.dcbar.progressbar li.active+ li:after {
+} */
+/* .dcbar.progressbar li.active+ li:after {
   background: #22313a !important ;
-}
-.dcbar.progressbarVerification li:before {
+} */
+/* .dcbar.progressbarVerification li:before {
   border: #22313a !important ;
   background: #22313a !important ;
-}
+} */
 .dcbar.progressbarVerification li.activeVerification {
   color: #fff !important;
 }
-.dcbar.progressbarVerification li:before {
+/* .dcbar.progressbarVerification li:before {
   border: #22313a !important ;
   background: #22313a !important ;
-}
-.progressbarVerification li.activeVerification + li:after {
+} */
+/* .progressbarVerification li.activeVerification + li:after {
   background: #22313a !important ;
-}
+} */
  /* XNFR-335 End */
 
  .toggleOnOff .labels::after{color:#fff !important;}

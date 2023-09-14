@@ -100,7 +100,7 @@
          <td>Domain</td>
        </tr>
        <tr class="displayContents">
-         <td>:</td>
+         <td class="verticalMiddle hidden-xs">:</td>
        </tr>
        <tr class="displayContents">
          <td>
@@ -124,12 +124,19 @@
            <td class="verticalMiddle">Domain</td>
          </tr>
          <tr class="displayContents">
+          <td class="verticalMiddle hidden-xs">:</td>
+        </tr>
+         <tr class="displayContents">
            <td class="verticalMiddle">{{domainName}}
            </td>
          </tr>
          <tr class="displayContents">
+          <td class="verticalMiddle hidden-xs">:</td>
+        </tr>
+         <tr class="displayContents">
           <td class="verticalMiddle">
-            <span class="conectColor" (click)="goToStepFive()"><i class="fa fa-circle faDecfontSize" aria-hidden="true"></i>
+            <span class="conectColor" (click)="goToStepFive()">
+              <!-- <i class="fa fa-circle faDecfontSize" aria-hidden="true"></i> -->
               Connect</span>
           </td>
         </tr>
@@ -175,11 +182,11 @@
           </div>
         </div>
         <div class="form-group row">
-          <div class="col-lg-8 col-md-7 col-sm-6 col-xs-6" style="display: flex;padding-bottom: 7px;">
+          <div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 order-sm-2" style="display: flex;padding-bottom: 7px;">
             <div style="padding-top: 7px;">Step 1 : Click On</div>&nbsp;&nbsp;
             <button type="submit" class="btn Btn-Green float-left mobileBottomPa responsiveBtnCU"><a href="https://developer.godaddy.com/keys" target="_blank" style="color: #fff;"> Generate API key from Godaddy</a></button>
           </div>
-          <div class="col-lg-4 col-md-5 col-sm-6 col-xs-6">
+          <div class="col-lg-4 col-md-5 col-sm-6 col-xs-12 order-sm-1">
             <button type="submit" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace responsiveBtnCU" (click)="authenticationOfGodaddy()" [disabled]="!isAuthorized()">Authenticate</button>
             <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight responsiveBtnCU" (click)="goToStepFour()">Back</button>
           </div>
@@ -237,14 +244,20 @@
          <td class="verticalMiddle">Domain</td>
        </tr>
        <tr class="displayContents">
+        <td class="verticalMiddle hidden-xs">:</td>
+      </tr>
+       <tr class="displayContents">
          <td class="verticalMiddle">{{domainName}}
          </td>
        </tr>
        <tr class="displayContents">
+        <td class="verticalMiddle hidden-xs">:</td>
+      </tr>
+       <tr class="displayContents">
         <td class="verticalMiddle">
-          <span class="connectedLive"> <i class="fa fa-circle faDecfontSize" aria-hidden="true"></i>
-            Connected</span> &nbsp; &nbsp;
-
+          <span class="connectedLive">
+             <!-- <i class="fa fa-circle faDecfontSize" aria-hidden="true"></i> -->
+            Connected</span> 
         </td>
       </tr>
        <tr class="displayContents">
@@ -255,7 +268,7 @@
           </td>
           <td class="verticalMiddle">
             <span class="dropdown alignGareLeft">
-              <i class="fa fa-gear faGareIconCu" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+              <i class="fa fa-gear faGareIconCu" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;"></i>
               <div class="dropdown-menu dropdownMenuCu" aria-labelledby="dropdownMenuButton">
                 <span><button type="button" class="UnlinkLabel unlink-button" (click)="unlinkConfiguration(false)">Unlink</button></span>
               </div>

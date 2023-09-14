@@ -2414,3 +2414,6 @@ label.floatLeftText {
 .inline-flex {
   display: inline-flex;
 }
+button.unlink-button {
+  color: #333;
+}
