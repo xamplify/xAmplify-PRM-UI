@@ -248,7 +248,7 @@
                             </div>
                             <!---XNFR-327--->
                             <div *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress" [ngClass]="{actionAlignment_sp_even : !isPartnerView}"  class="bar gridIconCustomization" style="padding: 0px 10px;">
-                                <div class="btnAlignPad mbtnAlignPad">
+                                <div class="btnAlignPad edit_icons mbtnAlignPad ">
                                 <a class="mMobileDisable mDisableColor Iconhover" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                 </a>
@@ -258,24 +258,24 @@
                                         <i class="fa fa-reply" aria-hidden="true"></i>
                                     </a>
                                 </div>
-                                <div class="btnAlignPad mbtnAlignPad"> 
+                                <div class="btnAlignPad edit_icons mbtnAlignPad"> 
                                 <a class="Iconhover" *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
                                     <i class="fa fa-share" aria-hidden="true"></i>
                                 </a>
                                 </div>
-                                <div class="btnAlignPad mbtnAlignPad">
+                                <div class="btnAlignPad edit_icons mbtnAlignPad">
                                     <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                     </a>
                                 </div>
 
-                                <div class="btnAlignPad mbtnAlignPad">
+                                <div class="btnAlignPad edit_icons mbtnAlignPad">
                                 <a class="Iconhover" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(learningTrack)">
                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                                 </a>
                                 </div>
 
-                              <div class="btnAlignPad mbtnAlignPad">
+                              <div class="btnAlignPad edit_icons mbtnAlignPad">
                                 <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Delete" class="delete" (click)="confirmDelete(learningTrack.id)">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </a>

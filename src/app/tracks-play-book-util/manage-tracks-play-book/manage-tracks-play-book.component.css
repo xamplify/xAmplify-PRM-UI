@@ -139,6 +139,10 @@
   .mbtnAlignPad {
     padding-left: 100px !important;
   }
+  .edit_icons{
+     padding-left: 3px !important;
+    }
+
 }
 
 /* 27-06-2023 */

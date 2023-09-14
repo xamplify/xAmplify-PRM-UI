@@ -94,7 +94,7 @@
               campaignType === 'SOCIAL' ||
               campaignType === 'SURVEY'
               ">
-                     <a class="dashboard-stat dashboard-stat-lighter yellow-gold forbidden" style="display: flex"
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter yellow-gold forbidden" style="display: flex"
                         [class.disabled]="
                  !isPartnerEnabledAnalyticsAccess ? true : null
                  ">
@@ -150,7 +150,7 @@
            'col-sm-3': campaignType === 'VIDEO',
            forbidden: !isDataShare ? true : null
            }" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId > 0">
-                     <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="display: flex"
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter purple-soft" style="display: flex"
                         (click)="previewVideo(campaign.campaignVideoFile)"
                         [class.disabled]="!isPartnerEnabledAnalyticsAccess">
                         <div class="visual">
@@ -173,7 +173,7 @@
                   <!-- ****************video not found info**************** -->
                   <div class="pl10 pr10 col-xs-12 blur" [ngClass]="{ 'col-sm-4': campaignType === 'VIDEO' }"
                      *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId == 0">
-                     <a class="dashboard-stat dashboard-stat-lighter purple-soft blur" style="display: flex">
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter purple-soft blur" style="display: flex">
                         <div class="visual">
                            <i class="fa fa-video-camera" aria-hidden="true"></i>
                         </div>
@@ -191,7 +191,7 @@
                   <!-- ****************Event campaign info**************** -->
                   <div class="pl10 pr10 col-xs-12" *ngIf="campaignType === 'EVENT'"
                      [ngClass]="{ 'col-sm-4': campaignType === 'EVENT' }">
-                     <a class="dashboard-stat dashboard-stat-lighter red-soft forbidden" style="display: flex">
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter red-soft forbidden" style="display: flex">
                         <div class="visual">
                            <i class="fa fa-bullhorn" aria-hidden="true"></i>
                         </div>
@@ -224,7 +224,7 @@
   campaignType === 'SURVEY') &&
   campaign.selectedEmailTemplateId > 0
   ">
-                     <a class="dashboard-stat dashboard-stat-lighter blue-soft" style="display: flex"
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" style="display: flex"
                         (click)="showEmailTemplatePreview(campaign.emailTemplate)" [class.disabled]="
   !isPartnerEnabledAnalyticsAccess ? true : null
   ">
@@ -263,7 +263,7 @@
   }" *ngIf="
   campaignType === 'LANDINGPAGE' && campaign.landingPageId > 0
   ">
-                     <a class="dashboard-stat dashboard-stat-lighter blue-soft" style="display: flex" [class.disabled]="
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" style="display: flex" [class.disabled]="
      !isPartnerEnabledAnalyticsAccess ? true : null
      ">
                         <div class="visual">
@@ -315,7 +315,7 @@
                   <div [hidden]="
   campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE'
   " class="pl10 pr10 col-xs-12 col-sm-4 blur" *ngIf="campaign.selectedEmailTemplateId == 0">
-                     <a class="dashboard-stat dashboard-stat-lighter blue-soft" style="cursor: default; display: flex">
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" style="cursor: default; display: flex">
                         <div class="visual">
                            <i class="fa fa-envelope-open" aria-hidden="true"></i>
                         </div>
@@ -341,7 +341,7 @@
      'col-sm-6': campaignType === 'SOCIAL',
      forbidden: !isPartnerEnabledAnalyticsAccess ? true : null
      }">
-                     <a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()"
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter green-soft" (click)="showContactListModal()"
                         [class.disabled]="
   !isPartnerEnabledAnalyticsAccess ? true : null
   " style="display: flex">
@@ -921,7 +921,7 @@
                                     </h2>
                                     <h6 class="percentage-text">Viewed</h6>
                                  </section>
-                                 <h5 style="
+                                 <h5 class="percentageBelowHeading" style="
                                     text-align: center;
                                     color: #00a6e8;
                                     margin-top: 3.5em;
