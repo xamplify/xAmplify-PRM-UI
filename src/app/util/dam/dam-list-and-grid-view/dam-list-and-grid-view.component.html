@@ -118,56 +118,56 @@
 												<ng-container *ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress">
 													<div class="mActionAlign ActionButtonPad">	
 														<a *ngIf="asset?.history &&!isPartnerView  && asset?.edit"  data-toggle="tooltip" data-placement="top" title="History"	(click)="expandHistory(asset,i)"> 
-															<i class="fa"	[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
+															<i class="fa IconCustomization"	[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
 														</a> 
 														<a class="mMobileDisable" *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"  data-toggle="tooltip" data-placement="top"	title="Design" (click)="addOrEdit(asset.id)">
-															<i class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
+															<i class="fa fa-paint-brush mDisableColor IconCustomization" aria-hidden="true"></i>
 														</a> 
 														<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView"   data-toggle="tooltip" data-placement="top" title="Edit"	(click)="addOrEdit(asset.id)">
-															<i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
+															<i class="fa fa-edit mDisableColor IconCustomization"	aria-hidden="true"></i>
 														</a> 
 														<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit"  data-toggle="tooltip" data-placement="top" title="Edit"	(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId )">
-															<i class="fa fa-edit mDisableColor"	aria-hidden="true"></i>
+															<i class="fa fa-edit mDisableColor IconCustomization"	aria-hidden="true"></i>
 														</a>
 													
 													<ng-container *ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
 														<a *ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos" (click)="campaignRouter(asset.alias, asset.viewBy)" data-toggle="tooltip" data-placement="top" title="Create campaign">
-															<i class="fa fa-bullhorn" aria-hidden="true"></i>
+															<i class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i>
 														</a>
 
 														<a class="disable" *ngIf="asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft">
-															<i class="fa fa-bullhorn" aria-hidden="true" ></i>
+															<i class="fa fa-bullhorn IconCustomization" aria-hidden="true" ></i>
 														</a>
 														<a class="disable" *ngIf="!asset.processed && authenticationService?.module?.showCampaignOptionInManageVideo" data-toggle="tooltip" data-placement="top" title="Unavailable for processing">
-															<i class="fa fa-bullhorn" aria-hidden="true" ></i>
+															<i class="fa fa-bullhorn IconCustomization" aria-hidden="true" ></i>
 														</a>
 													</ng-container>
 													<a *ngIf="!isPartnerView && asset?.showPreviewIcon"  data-toggle="tooltip" data-placement="top"	title="Preview" (click)="preview(asset)">
-														<i	class="fa fa-eye" aria-hidden="true"></i>
+														<i	class="fa fa-eye IconCustomization" aria-hidden="true"></i>
 													</a> 
 													
 													<a *ngIf="!isPartnerView"  data-toggle="tooltip" data-placement="top" title="Download"	(click)="openPopup(asset)">
-														<i class="fa fa-download"	aria-hidden="true"></i>
+														<i class="fa fa-download IconCustomization"	aria-hidden="true"></i>
 													</a> 
 													<a  data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(asset)">
-														<i class="fa fa-line-chart" aria-hidden="true"></i>
+														<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
 													</a> 
 													<a *ngIf="isPartnerView"  data-toggle="tooltip" data-placement="top" title="View Details"
 														(click)="viewDetails(asset)">
-														<i class="fa fa-eye" aria-hidden="true"></i>
+														<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
 													</a>
 													<a *ngIf="!isPartnerView && asset?.delete" 
 													data-toggle="tooltip" data-placement="top"
 													title="Delete"
 														(click)="confirmDelete(asset)"> 
-														<i class="fa fa-trash-o" aria-hidden="true"></i>
+														<i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
 													</a>
 													</div>
 												</ng-container>
 												<!--Added On 02/08/2023-->
 												<ng-container *ngIf="asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress">
 													<a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="refreshList()"> 
-														<i class="fa fa-refresh" aria-hidden="true"></i>
+														<i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
 													</a> 
 												</ng-container>
 												<!--Added On 02/08/2023-->
@@ -246,30 +246,30 @@
 															<td id="actions-row">
 																<div class="actions-block override-actions ActionAlign" *ngIf="!asset?.publishingOrWhiteLabelingInProgress">
 																	<a class="mMobileDisable"  data-toggle="tooltip" data-placement="top"  title="Design" (click)="addOrEdit(asset.id)"> <i
-																		class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
+																		class="fa fa-paint-brush mDisableColor IconCustomization" aria-hidden="true"></i>
 																	</a> 
 																	<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView"  data-toggle="tooltip" data-placement="top"  title="Edit" (click)="addOrEdit(asset.id)"> 
-																		<i class="fa fa-edit mDisableColor" aria-hidden="true"></i>
+																		<i class="fa fa-edit mDisableColor IconCustomization" aria-hidden="true"></i>
 																	</a> 
 																	<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit"  data-toggle="tooltip" data-placement="top"  title="Edit" (click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate )">
-																		<i class="fa fa-edit mDisableColor" aria-hidden="true"></i>
+																		<i class="fa fa-edit mDisableColor IconCustomization" aria-hidden="true"></i>
 																	</a> <a title="Preview" (click)="preview(asset)"> <i
-																		class="fa fa-eye" aria-hidden="true"></i>
+																		class="fa fa-eye IconCustomization" aria-hidden="true"></i>
 																	</a> 
 																	<a  data-toggle="tooltip" data-placement="top"  title="Download" (click)="openPopup(asset)"> <i
-																		class="fa fa-download" aria-hidden="true"></i>
+																		class="fa fa-download IconCustomization" aria-hidden="true"></i>
 																	</a> 
 																	<a  data-toggle="tooltip" data-placement="top"  title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(asset)">
-																		<i class="fa fa-line-chart" aria-hidden="true"></i>
+																		<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
 																	</a> 
 																	<a  data-toggle="tooltip" data-placement="top"  title="Delete" (click)="confirmDelete(asset)"> <i
-																		class="fa fa-trash-o" aria-hidden="true"></i>
+																		class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
 																	</a>
 																</div>
 																<!--Added On 02/08/2023----->
 																<div class="actions-block override-actions ActionAlign" *ngIf="asset?.publishingOrWhiteLabelingInProgress">
 																	<a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listAssetsHistory(historyPagination)"> 
-																		<i class="fa fa-refresh" aria-hidden="true"></i>
+																		<i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
 																	</a> 
 																</div>
 																<!--Added On 02/08/2023----->
@@ -347,7 +347,7 @@
 										<span *ngIf="asset?.publishingOrWhiteLabelingInProgress">Processing</span>
 									</div>
 									<!--XNFR-255-->
-									<div class="bar auto-height">
+									<div class="bar auto-height gridIconCustomization">
 										<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset" [folderListView]="folderListView"
 										(assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
 										(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"

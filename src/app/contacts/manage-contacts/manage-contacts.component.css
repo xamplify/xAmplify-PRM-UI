@@ -333,8 +333,8 @@ h6 {
 
 /* 26-06-2023 */  
   .table-eye-circle {
-    border: 1px solid #5bb2f5;
-    color: #5bb2f5;
+    /* border: 1px solid #5bb2f5;
+    color: #5bb2f5; */
     width: 28px;
     height: 28px;
     border-radius: 50%;

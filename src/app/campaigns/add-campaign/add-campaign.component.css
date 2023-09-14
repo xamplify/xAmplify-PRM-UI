@@ -286,7 +286,7 @@ span.icon-alignments {
   border-bottom-left-radius: 5px;
   border: 1px solid #54a7e9;
 }
-.white-labled-bar-bottom{
+.white-labled-bar-bottom {
   bottom: 125px;
 }
 .fontsize-cls span {
@@ -471,10 +471,10 @@ fieldset {
     width: 100% !important;
     right: 0 !important;
   }
-  .mrgt45{
-    margin-top:0px!important;
+  .mrgt45 {
+    margin-top: 0px !important;
   }
-  .mbgrid{
+  .mbgrid {
     display: grid;
   }
 }
@@ -752,16 +752,22 @@ span.text-algn {
   padding-right: 4px;
 }
 
-.white-labeled-custom-css{
+.white-labeled-custom-css {
   height: 125px !important;
   bottom: 125px !important;
 }
-@media screen and (max-width:1024px) {
-  .pt_10{
-    padding-top: 10px!important;
+@media screen and (max-width: 1024px) {
+  .pt_10 {
+    padding-top: 10px !important;
   }
-  
 }
-.mrgt45{
-  margin-top:45px;
+.mrgt45 {
+  margin-top: 45px;
+}
+/* sudha sri (6-9-2023) */
+.highletClass {
+  color: #008fd5 !important;
+}
+.color-css {
+  color: #111;
 }

@@ -1061,6 +1061,10 @@ input.cmn-toggle-round-flat:checked + label:after {
 }
 
 @media screen and (max-width: 600px) {
+  .widthauto{
+    width: auto!important;
+
+  }
   .mPortlet {
     overflow-x: auto;
     padding-right: 10px !important;
@@ -1233,7 +1237,8 @@ ul.t-b-spacings {
 } 
 @media only screen and (min-width: 766px) and (max-width: 1024px) {  
   .list__item .item__actions {
-    top: 16px;
-    margin-right: 0px;
+    top: 25px;
+    margin-right: 16px;
   }
+  
 }

@@ -247,7 +247,7 @@
                   <td class="mAlign" (click)="sendPartnerReminder(item)">
                     <div class="actions-block float-none">
                       <a data-toggle="tooltip" data-placement="left" title="Send reminder email">
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                        <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
                       </a>
                     </div>
                   </td>
@@ -544,9 +544,8 @@
                       </td>
                       <td class="text-center">
                         <a data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(campaign)"
-                          data-toggle="tooltip" data-placement="top" title="Campaign Based Reports"
-                          class='circled-number'>
-                          <i class="fa fa-line-chart" aria-hidden="true"></i>
+                          data-toggle="tooltip" data-placement="top" title="Campaign Based Reports">
+                          <i class="circled-number fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                         </a>
                       </td>
                     </tr>
@@ -612,9 +611,9 @@
                           <span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>
                           <span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>
                         </div>
-                        <div class="bar">
+                        <div class="bar gridIconCustomization">
                           <a (click)="referenseService.goToCampaignAnalytics(campaign)" data-toggle="tooltip"
-                            data-placement="top" title="Campaign Based Reports">
+                            data-placement="top" title="Campaign Based Reports" class="Iconhover">
                             <i class="fa fa-line-chart" aria-hidden="true"></i>
                           </a>
                         </div>

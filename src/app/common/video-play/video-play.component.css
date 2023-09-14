@@ -17,3 +17,16 @@
   right: 17px;
 }
 
+@media only screen and (max-width:578px){
+  .video-js{
+    width: 100%!important;
+  }
+  .video_play{
+    padding: 0px 12px!important;
+  }
+}
+:host /deep/.video-js .vjs-big-play-button { 
+ top:50%!important;
+ left: 50%!important;
+ transform: translate(-50px, -50px)!important;
+}

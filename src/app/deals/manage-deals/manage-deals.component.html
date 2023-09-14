@@ -322,7 +322,7 @@
                             <td style="width: 20%;">
                               <div class="actions-block override-actions actionbtn">
                                   <a data-rel="fancybox-button" (click)="viewDeal(deal)" data-toggle="tooltip" data-placement="bottom" title="View Deal" id="deal">
-                                    <i class="fa fa-eye mr5" aria-hidden="true"></i>
+                                    <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
                                     <span *ngIf="deal.unReadPropertyChatCount > 0" class="badge badge-default"
                                       style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
                                   </a>
@@ -330,7 +330,7 @@
                                     <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="editDeal(deal)" 
                                     data-toggle="tooltip" data-placement="bottom" title="Edit Deal"
                                       id="deal">
-                                      <i class="fa fa-edit mr5" aria-hidden="true"></i>
+                                      <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
                                     </a>
                                     <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="confirmDeleteDeal(deal)"
                                     data-toggle="tooltip" data-placement="bottom" title="Delete Deal" id="deal">
@@ -339,7 +339,7 @@
                                   </ng-container>
                                     <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" 
                                     data-toggle="tooltip" data-placement="bottom" title="Comments" style="margin-top: 10px">                            
-                                      <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
+                                      <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px"> </i>
                                       <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
                                         style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
                                     </a>
@@ -418,22 +418,18 @@
                             </td>
                             <td>
                               <a data-toggle="tooltip" data-placement="top" title="Number of Deals" style="cursor: default">
-                                <span class="circled-number"><strong>{{campaign.leadsCount}}</strong></span>
+                                <i class="circled-number IconCustomization fontStyleNormal"><strong>{{campaign.leadsCount}}</strong></i>
                               </a>
         
                               <a *ngIf="campaign.channelCampaign" (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top"
                                 title="View deals for this campaign">
-                                <span class="circled-number">
-                                  <i class="fa" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"
+                                  <i class="circled-number fa IconCustomization" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"
                                     aria-hidden="true"></i>
-                                </span>
                               </a>
   
                               <a *ngIf="!campaign.channelCampaign" (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" 
                                 title="View deals for this campaign">
-                                <span class="circled-number">
-                                  <i class="fa fa-users" aria-hidden="true"></i>
-                                </span>
+                                  <i class="circled-number fa fa-users IconCustomization" aria-hidden="true"></i>
                               </a>
         
                             </td>
@@ -490,7 +486,7 @@
                                                 <td>
                                                   <a (click)="showCampaignDealsByPartner(item)" data-toggle="tooltip"
                                                     data-placement="top" title="Number Of Deals">
-                                                    <span class="circled-number"><b>{{item.dealsCount}}</b></span>
+                                                    <i class="circled-number IconCustomization fontStyleNormal"><b>{{item.dealsCount}}</b></i>
                                                   </a>
                                                 </td>
                                               </tr>

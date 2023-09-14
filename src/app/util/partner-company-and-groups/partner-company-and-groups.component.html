@@ -74,7 +74,7 @@
                       <td class="cw">
                         <div class="actions-block left-float">
                           <a (click)="viewTeamMembers(partner)" title="View/Hide Team Members">
-                            <i class="fa"
+                            <i class="fa IconCustomization"
                               [ngClass]="{'fa-angle-right': !partner.expand, 'fa-angle-down': partner.expand}"
                               aria-hidden="true"></i>
                           </a>
@@ -102,7 +102,7 @@
                             <div class="input-icon right" id="icon">
                               <input type="text" id="sort-text" class="form-control"
                                 [(ngModel)]="teamMembersPagination.searchKey" [ngModelOptions]="{standalone: true}"
-                                placeholder="search..." (keypress)="adminAndTeamMembersKeySearch($event.keyCode)" autocomplete="off">
+                                placeholder="Search..." (keypress)="adminAndTeamMembersKeySearch($event.keyCode)" autocomplete="off">
                               <button class="glyphicon glyphicon-remove search-box-item-clear"
                                 *ngIf="teamMembersPagination?.searchKey"
                                 (click)="teamMembersPagination.searchKey='';searchAdminsAndTeamMembers();"></button>
@@ -262,7 +262,7 @@
                     </td>
                     <td class="text-center">
                       <div class="actions-block none-float" (click)="$event.stopPropagation();previewUserListUsers(partnerGroup)">
-                        <a data-toggle="tooltip" data-placement="bottom" title="Preview"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="bottom" title="Preview"><i class="fa fa-eye IconCustomization" aria-hidden="true"></i></a>
                       </div>
                     </td>
                   </tr>

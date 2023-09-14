@@ -56,11 +56,11 @@
                                             alt="Not Found">
                                     </div>
                                     <h4 title="{{form.name}}">{{form.name|slice:0:23}} <span *ngIf="form.name?.length>23">....</span></h4>
-                                    <div class="bar">
-                                        <a data-toggle="tooltip" data-placement="top" title="Create Form" (click)="$event.stopPropagation();createForm(form.id)">
+                                    <div class="bar gridIconCustomization">
+                                        <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Create Form" (click)="$event.stopPropagation();createForm(form.id)">
                                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                         </a>
-                                        <a *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip" data-placement="top" title="Delete Form" (click)="$event.stopPropagation();confirmDeleteForm(form.id)">
+                                        <a class="Iconhover" *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip" data-placement="top" title="Delete Form" (click)="$event.stopPropagation();confirmDeleteForm(form.id)">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </a>
                                     </div>

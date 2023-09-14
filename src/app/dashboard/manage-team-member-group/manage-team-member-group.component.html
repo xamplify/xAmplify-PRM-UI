@@ -156,17 +156,17 @@
           </tbody>
         </table>
        </div> 
-      <div class="bar full-width-folder" *ngIf="isPreview">
-        <a  data-toggle="tooltip" data-placement="top" title="Save As" (click)="saveAs(group)">
+      <div class="bar full-width-folder gridIconCustomization" *ngIf="isPreview">
+        <a class="Iconhover"  data-toggle="tooltip" data-placement="top" title="Save As" (click)="saveAs(group)">
           <i class="fa fa-copy" aria-hidden="true"></i>
         </a>
-        <a  data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(group.id,false)">
+        <a  class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(group.id,false)">
           <i class="fa fa-eye" aria-hidden="true"></i>
         </a>
-        <a data-toggle="tooltip" data-placement="top" [title]="group?.defaultGroup ? 'Default group cannot be edited':'Edit'" [className]="group?.defaultGroup ? 'inactive':''" (click)="findGroupDetailsById(group)">
+        <a data-toggle="tooltip" data-placement="top" [title]="group?.defaultGroup ? 'Default group cannot be edited':'Edit'" [className]="group?.defaultGroup ? 'inactive':'Iconhover'" (click)="findGroupDetailsById(group)">
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
         </a>
-        <a  data-toggle="tooltip" data-placement="top" [title]="group?.defaultGroup ? 'Default group cannot be deleted':'Delete'" [className]="group?.defaultGroup ? 'delete inactive':'delete'" (click)="confirmAlert(group)">
+        <a  class="delete" data-toggle="tooltip" data-placement="top" [title]="group?.defaultGroup ? 'Default group cannot be deleted':'Delete'" [className]="group?.defaultGroup ? 'delete inactive':'delete'" (click)="confirmAlert(group)">
           <i class="fa fa-trash-o" aria-hidden="true"></i>
         </a>
       </div>

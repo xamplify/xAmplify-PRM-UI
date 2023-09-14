@@ -48,14 +48,14 @@
                                     <span class="ribbon1" *ngIf="!landingPage.coBranded"><span translate>Regular</span></span>
                                     <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}" alt="">
                                     <h4 title="{{landingPage.name}}">{{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
-                                    <div class="bar">
-                                        <a data-toggle="tooltip" data-placement="top" title="Create  Page" (click)="showLandingPage(landingPage.id)">
+                                    <div class="bar gridIconCustomization">
+                                        <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Create  Page" (click)="showLandingPage(landingPage.id)">
                                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                         </a>
-                                        <a *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip" data-placement="top" title="Save As Default Page" (click)="goToCreatePage(landingPage.id)">
+                                        <a class="Iconhover" *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip" data-placement="top" title="Save As Default Page" (click)="goToCreatePage(landingPage.id)">
                                             <i class="fa fa-save" aria-hidden="true"></i>
                                         </a>
-                                        <a *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip" data-placement="top" title="Delete Default Page" (click)="confirmDeleteLandingPage(landingPage)">
+                                        <a class="delete" *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip" data-placement="top" title="Delete Default Page" (click)="confirmDeleteLandingPage(landingPage)">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </a>
                                     </div>

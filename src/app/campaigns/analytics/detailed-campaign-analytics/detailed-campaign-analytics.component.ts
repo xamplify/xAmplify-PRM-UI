@@ -412,8 +412,9 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
         valueSuffix: '',
         backgroundColor: 'black', 
         style: {
-          color: '#fff' 
+          color: '#fff'
         }
+      
       },
       plotOptions: {
         bar: {

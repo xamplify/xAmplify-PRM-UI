@@ -8,7 +8,7 @@
         </button>
         <h4 class="modal-title text-center">{{leadFormTitle}}</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body border-bottom-1px">
         <div class="portlet light" id="del-profile-div" style="border: 0px !important">
           <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px',fullScreenBackdrop:true }">
           </ngx-loading>
@@ -157,15 +157,15 @@
                       </select>
                     </div>
                   </div>
-                  <div class="pull-right" style="margin: 15px" *ngIf="!preview">
-                    <button type="submit" id="saveLead" (click)="validateAndSubmit()" class="btn btn-primary">Submit
-                    </button>
-                  </div>
                 </div>
               </form>
             </div>
           </div>
         </div>
+      </div>
+      <div class="pull-right" style="margin: 15px" *ngIf="!preview">
+        <button type="submit" id="saveLead" (click)="validateAndSubmit()" class="btn btn-primary">Submit
+        </button>
       </div>
     </div>
   </div>

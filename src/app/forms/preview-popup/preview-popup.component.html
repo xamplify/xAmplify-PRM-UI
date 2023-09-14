@@ -19,7 +19,7 @@
                     <div class="col-xs-12 p5" style="margin-bottom: -10px;">
                         <div class="portlet light">
                             <div class="portlet-title">
-                                <div class="inputs mMargin" id="right">
+                                <div class="inputs mMargin tab_formsearch" id="right">
                                     <div id="left" class="mPadSort">
                                         <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
                                             <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
@@ -81,7 +81,7 @@
                                                     <span class="modal-icon ml10" id="custom-margin-{{i}}">
                                                         <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy"
                                                             (click)="copyInputMessage(userinput,'Page Link',i)">
-                                                            <i class="fa fa-copy" aria-hidden="true"></i>
+                                                            <i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
                                                         </a>
                                                     </span>
                                                 </div>                                                
@@ -99,7 +99,7 @@
                                                     <span class="modal-icon cmif ml10" id="cmif-{{i}}">
                                                         <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" 
                                                             (click)="copyInputMessage(iframeUrlInput,'Embed Link',i)">
-                                                            <i class="fa fa-copy" aria-hidden="true"></i>
+                                                            <i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
                                                         </a>
                                                     </span>
                                                 </div>                                                
@@ -111,7 +111,7 @@
                                             </td>                                            
                                             <td id="actions-row" style="text-align: center;  vertical-align: middle;">
                                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewForm(form.id)">
-                                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                                    <i class="fa fa-eye IconCustomization campaignViewIcon" aria-hidden="true"></i>
                                                 </a>
                                             </td>
                                         </tr>

@@ -141,7 +141,7 @@ html {
 /* Comment form */
 
 .write-new {
-    margin: 80px auto 0;
+    margin: 60px auto 0;
     width: 50%;
 }
 
@@ -334,7 +334,7 @@ background: green;
 
 .comment-text-area {
     margin-bottom: 25px;
-    width: 85%;
+    width: 91%;
     max-width: 1150px;
 }
 

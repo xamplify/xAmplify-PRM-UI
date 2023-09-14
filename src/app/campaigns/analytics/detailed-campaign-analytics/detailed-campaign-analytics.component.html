@@ -1544,7 +1544,7 @@
      ? ''
      : 'inactive'
      " data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="User Level Campaign Analytics">
-                                                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                                            <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                                                          </a>
                                                       </div>
                                                    </td>
@@ -1567,19 +1567,19 @@
                                                    </td>
                                                    <td *ngIf="campaign.dipCampaign">
                                                       <div class="actions-block" (click)="$event.stopPropagation()">
-                                                         <font class="circled-number"
+                                                         <i class="circled-number IconCustomization fontStyleNormal"
                                                             *ngIf="item.autoResponsesCount == 0" style="
      margin-right: 50px;
      cursor: not-allowed;
-     ">{{ item.autoResponsesCount }}</font>
-                                                         <font class="circled-number"
+     ">{{ item.autoResponsesCount }}</i>
+                                                         <i class="circled-number IconCustomization fontStyleNormal"
                                                             *ngIf="item.autoResponsesCount > 0">
-                                                            {{ item.autoResponsesCount }}</font>
+                                                            {{ item.autoResponsesCount }}</i>
                                                          <a *ngIf="item.autoResponsesCount > 0" (click)="
   $event.stopPropagation();
   showAutoResponseAnalytics(item, i)
   " data-toggle="tooltip" data-placement="top" title="View Auto Response Analytics">
-                                                            <i class="fa" [ngClass]="{
+                                                            <i class="fa IconCustomization" [ngClass]="{
      'fa-plus': !item.expanded,
      'fa-minus': item.expanded
      }"></i>
@@ -2874,7 +2874,7 @@
                <div class="col-xs-2 col-sm-2 col-lg-2 setting-icon-cu ml10" data-toggle="tooltip" data-placement="top" title="Click here to export excel">
                   <span class="delbtn">
                      <a id="delete_button" (click)="downloadCampaignDetailsByActionType(campaignReport.emailActionType)">
-                       <i class="fas fa-file-export"></i>
+                       <i class="fas fa-file-export singleIconCustomization"></i>
                      </a>
                   </span>
                </div>

@@ -161,3 +161,9 @@ img.Selected-email-template-imgcu {
     margin-left:0px!important;
   }
 }
+@media only screen and (min-width:768px) and (max-width: 1024px) { 
+  .scheduler_height{
+    height:auto!important;
+  }
+
+}

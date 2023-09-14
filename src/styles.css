@@ -45,7 +45,7 @@ button:hover {
 
 button:disabled {
   /* background-color: #eee; */
-  color: #fff;
+  /* color: #fff; */
   cursor: auto;
 }
 
@@ -685,8 +685,8 @@ a {
 }
 
 .actions-block .fa-trash-o {
-  color: #cb5a5e !important;
-  border: 1px solid #cb5a5e !important;
+  color: #cb5a5e;
+  border: 1px solid #cb5a5e;
 }
 
 .actions-block i:hover,
@@ -867,9 +867,9 @@ legend {
   opacity: 1;
 }
 
-.bar .fa {
+/* .bar .fa {
   color: #fff;
-}
+} */
 
 /* 13-6-2023 campaign icon-alignment*/
 .bar a {
@@ -878,7 +878,7 @@ legend {
   width: 28px;
   height: 28px;
   border: 1px solid #fff;
-  padding: 3px 0px;
+  padding: 2px 0px;
   border-radius: 100%;
   margin: 10px 2px;
   display: inline-block;
@@ -2215,6 +2215,7 @@ h5.view-banner {
   font-size: 10px;
   border-radius: 3px;
   line-height: 3.5;
+  width: 125px;
 }
 .tag.tablegray-tag {
   background-color: #c5c5c5 !important;
@@ -2322,7 +2323,7 @@ button.table-scbscribe-btn:hover {
 }
 .actions-block .fa-trash-o:hover {
   background: #cb5a5e;
-  color: #fff !important;
+  color: #fff;
 }
 /***14/07/2023 */
 .assettype-bgcolor {
@@ -2357,6 +2358,57 @@ button.table-scbscribe-btn:hover {
 /* Sort By box paddings */
 select.form-control.SeclectBoxPaddingsAbj {
   padding: 6px 4px;
+}
+
+
+/* 23-8-2023 */
+i.fontStyleNormal{font-style: normal;}
+.campaignViewIcon {font-size: 14px !important;width: 27px;height: 27px;border-radius: 50%;line-height: 25px !important;}
+
+/* Table icon Customization  START*/
+/* List View icon Customization start*/
+i.IconCustomization { border: 1px solid #5bb2f5;color: #5bb2f5;}
+i.IconCustomization:hover {border: 1px solid #5bb2f5;background: #5bb2f5;color: #fff;}
+
+.IconCustomizationcondition a i {border: 1px solid #5bb2f5;color: #5bb2f5;}
+.IconCustomizationcondition a i:hover {border: 1px solid #5bb2f5;background: #5bb2f5;color: #fff;}
+
+#download-template {border: 1px solid #5ab2f5;color: #5ab2f5;}
+#download-template:hover {border: 1px solid #5ab2f5;background: #5bb2f5;color: #fff;}
+
+button.btn.TableDataBtn {border-color: #00a6e8;}
+button.btn.TableDataBtn .sky-blue {color: #00a6e8;}
+
+.custome-dropdown-changs li a {border: 1px solid #54a7e9;}
+.custome-dropdown-changs li a i {color: #00a6e8;}
+
+.setting-icon-cu {border: 1px solid #5bb2f5;color: #5bb2f5;}
+.setting-icon-cu .gearDropdownMenu {color: #5bb2f5;}
+
+i.singleIconCustomization {color: #0085d5;}
+
+i.fa.fa-trash-o.trashIconCustomization{border: 1px solid #cb5a5e;color: #cb5a5e;}
+i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e;background: #cb5a5e;color: #fff;}
+/* List View icon Customization End*/
+
+/* Grid View icon Customization start*/
+.gridIconCustomization a {border: 1px solid #fff;color: #fff;}
+.gridIconCustomization a.Iconhover:hover{border: 1px solid #fff;background:#fff; color: #5bb2f5;}
+
+#download-template-grid {border: 1px solid #fff;color: #fff;}
+#download-template-grid:hover {border: 1px solid #fff;background: #fff;color: #5ab2f5;}
+
+.gridIconCustomization a.delete {border: 1px solid #cb5a5e;background: transparent;color: #cb5a5e;}
+.gridIconCustomization a.delete:hover {border: 1px solid #cb5a5e;background: #cb5a5e;color: #fff;}
+/* Grid View icon Customization End*/
+/* Table icon Customization END*/
+
+.card-align {
+    margin-top: -4px;
+    padding: 0px 5px !important;
+}
+label.floatLeftText {
+  text-align: left !important;
 }
 
 .inline-flex {

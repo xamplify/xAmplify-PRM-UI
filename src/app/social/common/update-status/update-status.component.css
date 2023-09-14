@@ -401,3 +401,17 @@ body {
 .left-flt {
   float: left !important;
 }
+@media screen and (max-width:578px){
+  .soical_status{
+    word-wrap: break-word;
+    padding:10px 0px 0px 0px!important;
+  }
+}
+@media only screen and (max-width:1024px){
+  .status_profile{
+    padding-left:4px;
+  }
+} 
+textarea{
+  padding:5px 10px;
+}
