@@ -21,6 +21,7 @@ export class EmailTemplateService {
     URL = this.authenticationService.REST_URL;
     MARKETO_URL = this.authenticationService.REST_URL;
     isNewTemplate = false;
+    isTemplateSaved = false;
     constructor( private http: Http,  private authenticationService: AuthenticationService,
     		 private refService:ReferenceService,private router:Router) {
        }

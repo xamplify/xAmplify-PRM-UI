@@ -3049,9 +3049,18 @@ configSalesforce() {
 	}
 
 	deleteStage(divIndex: number) {
-		this.pipeline.stages.splice(divIndex, 1);
+		const deletedStage = this.pipeline.stages.splice(divIndex, 1)[0]; 
 		if (this.defaultStageIndex > divIndex) {
 			this.defaultStageIndex = this.defaultStageIndex - 1;
+		}
+		if (this.pipeline.stages.length === 1) {
+			this.pipeline.stages[0].private = false; 
+		  }
+		  if (deletedStage.private) {
+			const selectedStages = this.pipeline.stages.filter(item => item.private);
+			if (selectedStages.length === 0) {
+				this.pipeline.stages[this.pipeline.stages.length - 1].canDelete = false;
+			}
 		}
 	}
 
@@ -4132,4 +4141,37 @@ configSalesforce() {
 	}
 
  /************* XNFR-238 *********************/	
+
+ /************* XNFR-338 *********************/
+ 
+ shouldDisableCheckbox(index: number): boolean {
+	const selectedCount = this.pipeline.stages.filter(item => item.private).length;
+    const remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
+
+    if (remainingUnselectedCount === 0 && !this.pipeline.stages[index].private) {
+        this.pipeline.stages[index].canDelete = false;
+    } else {
+        this.pipeline.stages[index].canDelete = true;
+    }
+
+    return remainingUnselectedCount === 0 && !this.pipeline.stages[index].private;
+  }	
+  handleMarkAsChange(changedIndex: number): void {
+	const changedStage = this.pipeline.stages[changedIndex];
+
+	if (changedStage.markAs === 'won' || changedStage.markAs === 'lost') {
+	  this.resetOtherMarkedStages(changedIndex, changedStage.markAs);
+	}
+  }
+
+  resetOtherMarkedStages(changedIndex: number, newMarking: string): void {
+	for (let i = 0; i < this.pipeline.stages.length; i++) {
+	  if (i !== changedIndex && this.pipeline.stages[i].markAs === newMarking) {
+		this.pipeline.stages[i].markAs = 'markAs';
+	  }
+	}
+  }
+  /************* XNFR-338 *********************/
+
+
 }

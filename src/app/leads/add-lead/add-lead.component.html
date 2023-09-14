@@ -121,6 +121,7 @@
                         [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="pipelineStageId"
                         [disabled]="preview">
                         <option [value]="0">Select Stage</option>
+                        <option *ngIf="!isVendorVersion && lead.currentStagePrivate" [value]="lead.currentStageId">{{lead.currentStageName}}</option>
                         <option *ngFor="let stage of stages" [value]="stage.id">{{stage.stageName}}</option>
                       </select>
                     </div>

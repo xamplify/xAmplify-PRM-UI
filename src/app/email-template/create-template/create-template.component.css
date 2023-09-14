@@ -1,6 +1,5 @@
 #bee-plugin-container {
-  height: 935px;
-  width: 100%;
+  overflow: auto;
 }
 .tile {
   min-height: 1000px;
@@ -12,12 +11,26 @@
   transition: all 0.3s ease-in-out;
   padding: 15px;
 }
-.page-breadcrumb {
-  padding: 8px 10px;
-  margin: 7px 0px;
+.page-bar .page-breadcrumb {
+  padding: 14px 6px;
 }
+
+@media screen and (max-width: 600px) {
+  .mScroll {
+    overflow-x: auto;
+  }
+  .mWidth {
+    width: 96%;
+  }
+  .mPad {
+    width: 150%;
+    margin-left: -40px;
+  }
+}
+
 @media screen and (max-width: 600px) {
   .mscroll {
     overflow-x: auto;
   }
 }
+

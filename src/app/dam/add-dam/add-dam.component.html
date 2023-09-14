@@ -192,7 +192,13 @@
                            </td>
                            <td class="desc">
                              <div class="mDesc">
-                               <app-partner-company-and-groups [moduleName]="'dam'" [inputId]="assetId" (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+                              <app-list-loader  *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
+                               <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader" 
+                                [moduleName]="'dam'"
+                                 [isAssetPublishedEmailNotification]="isAssetPublishedEmailNotification"
+                                  [inputId]="assetId"
+                                  (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" >
+                                 </app-partner-company-and-groups>
                              </div>
                            </td>
                          </tr>

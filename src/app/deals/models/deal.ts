@@ -27,6 +27,7 @@ export class Deal {
     answers: DealAnswer[];
     associatedContact: User;
     createdByCompanyId: number;
+    currentStagePrivate = false;
 
     // Sf Custom Form Fields
    description: string;

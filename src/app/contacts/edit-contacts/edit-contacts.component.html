@@ -226,7 +226,7 @@
 							</li>
 							<li><a id="saveAs_button"
 							   *ngIf=" ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads))"
-							   (click)="saveAs(true)" translate>Save As </a>
+							   (click)="saveAs(true)" translate>Create New List </a>
 							</li>
 							<li><a id="exportToExcel"
 							   *ngIf="selectedAddContactsOption == 8 && (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads)) && !sharedLeads"
@@ -248,7 +248,7 @@
 						 </ul>
 					  </div>
 					  <button id="cancel_button" class="btn pull-right" *ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) "
-					  (click)="saveAs(true)" style="margin-right: 5px;" translate> Save As
+					  (click)="saveAs(true)" style="margin-right: 5px;" translate> Create New List
 					  </button>
 				   </div>
 				   <div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt mt_9" style="margin-right: 5px;">

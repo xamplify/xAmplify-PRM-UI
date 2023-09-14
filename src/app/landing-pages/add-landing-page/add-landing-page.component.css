@@ -1,5 +1,5 @@
 #bee-plugin-container {
-  height: 935px;
+  overflow: auto;
 }
 
 .tile {

@@ -5,13 +5,14 @@ import { AddLandingPageComponent } from './add-landing-page/add-landing-page.com
 import { ManageLandingPageComponent } from './manage-landing-page/manage-landing-page.component';
 import { PartnerLandingPageComponent } from './partner-landing-page/partner-landing-page.component';
 import { LandingPageAnalyticsComponent } from './landing-page-analytics/landing-page-analytics.component';
+import { PendingChangesGuard } from 'app/component-can-deactivate';
 
 export const routes: Routes = [
     { path: "", redirectTo: "manage", pathMatch: "full" },
     { path: "select", component: SelectLandingPageComponent },
-    { path: "add", component: AddLandingPageComponent },
-    { path: "saveAsDefault", component: AddLandingPageComponent },
-    { path: "add/:categoryId", component: AddLandingPageComponent },
+    { path: "add", component: AddLandingPageComponent,canDeactivate: [PendingChangesGuard]  },
+    { path: "saveAsDefault", component: AddLandingPageComponent,canDeactivate: [PendingChangesGuard]  },
+    { path: "add/:categoryId", component: AddLandingPageComponent,canDeactivate: [PendingChangesGuard]  },
     { path: "manage", component: ManageLandingPageComponent },
     { path: "manage/:categoryId", component: ManageLandingPageComponent },
     { path: "partner", component: PartnerLandingPageComponent },

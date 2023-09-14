@@ -68,7 +68,8 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     constructor(private emailTemplateService: EmailTemplateService,
         private router: Router, private authenticationService: AuthenticationService,
         private logger: XtremandLogger, public refService: ReferenceService, private hubSpotService: HubSpotService,private utilService:UtilService) {
-            this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
+        this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
+        this.emailTemplateService.isTemplateSaved = false;
 
     }
     ngOnInit() {

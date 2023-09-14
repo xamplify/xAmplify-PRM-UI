@@ -65,6 +65,8 @@ export class FolderTypeViewUtilComponent implements OnInit {
       this.titleHeader = "Play Books";
     }else if(this.pagination.categoryType == "CAMPAIGN"){
       this.titleHeader = "Campaigns";
+    }else if(this.pagination.categoryType == "EMAIL_TEMPLATE"){
+      this.titleHeader = "Email Templates";
     }
 
     pagination.userId = this.authenticationService.getUserId();
@@ -129,6 +131,8 @@ export class FolderTypeViewUtilComponent implements OnInit {
       this.referenceService.goToManageTracksOrPlayBooksByCategoryId("fg","l",categoryId,this.isPartnerView,false);
     }else if(this.moduleId==this.roles.campaignId){
       this.referenceService.goToManageCampaignsByCategoryId("fg","l",categoryId);
+    }else if(this.moduleId==this.roles.emailTemplateId){
+      this.referenceService.goToManageEmailTemplatesByCategoryId("fg","l",categoryId);
     }
   }
 
@@ -142,6 +146,8 @@ export class FolderTypeViewUtilComponent implements OnInit {
         this.referenceService.goToManageTracksOrPlayBooks(viewType,this.isPartnerView,false);
       }else if(this.moduleId==this.roles.campaignId){
         this.referenceService.goToManageCampaigns(viewType);
+      }else if(this.moduleId==this.roles.emailTemplateId){
+        this.referenceService.goToManageEmailTemplates(viewType);
       }
     }
   }
@@ -155,6 +161,8 @@ export class FolderTypeViewUtilComponent implements OnInit {
       category.expanded = !category.expanded;  
       $('.child-row-list-view').css("background-color", "#fff");          
     if (category.expanded) {
+        this.referenceService.isCreated = false;
+        this.referenceService.isUpdated = false;
         $('#folder-row-' + selectedIndex).css("background-color", "#f1f5f9");
     } else {
         $('#folder-row-' + selectedIndex).css("background-color", "#fff");

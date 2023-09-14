@@ -1,7 +1,7 @@
 <div class="panel with-nav-tabs panel-default">
   <div class="panel-heading" id="company-and-group-tabs">
     <ul class="nav nav-tabs">
-      <li id="partners-li" class="active">
+      <li id="partners-li">
         <a class="partnersC"  data-placement="top"  title="Click to see {{authenticationService?.partnerModule?.customName}} companies" href="#partners" data-toggle="tab"
           (click)="findPartnerCompanies(pagination)">{{authenticationService?.partnerModule?.customName}}</a>
       </li>
@@ -13,7 +13,7 @@
   </div>
   <div class="panel-body">
     <div class="tab-content">
-      <div class="tab-pane fade in active" id="partners">
+      <div class="tab-pane fade" id="partners">
         <div class="col-xs-12">
           <div class="row">
           <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0">

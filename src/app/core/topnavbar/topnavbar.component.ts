@@ -267,7 +267,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
         if (response.statusCode == 200) {
           this.vendorCount = response.data;
         }     
-        this.myVendorsLoader = false;
+       this.myVendorsLoader = false;
       },error=>{
         this.myVendorsLoader = false;
       }

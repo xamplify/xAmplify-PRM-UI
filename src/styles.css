@@ -523,6 +523,7 @@ tr.highlight {
   display: flex;
 }
 
+
 .white {
   color: #fff;
 }
@@ -2359,6 +2360,7 @@ select.form-control.SeclectBoxPaddingsAbj {
   padding: 6px 4px;
 }
 
+
 /* 23-8-2023 */
 i.fontStyleNormal{font-style: normal;}
 .campaignViewIcon {font-size: 14px !important;width: 27px;height: 27px;border-radius: 50%;line-height: 25px !important;}
@@ -2407,4 +2409,8 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e;backgroun
 }
 label.floatLeftText {
   text-align: left !important;
+}
+
+.inline-flex {
+  display: inline-flex;
 }

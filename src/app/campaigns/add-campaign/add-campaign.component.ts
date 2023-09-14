@@ -1497,9 +1497,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
 
     editTemplate(emailTemplate:any){
         this.isShowEditTemplateMessageDiv = false;
-        if (emailTemplate['type'] != 'UPLOADED' && emailTemplate.userDefined) {
+        if (emailTemplate['emailTemplateType'] != 'UPLOADED' && emailTemplate.userDefined) {
             this.isEditTemplateLoader = true;
-           this.referenceService.goToTop();
+            this.referenceService.goToTop();
            $('#campaign-details-and-launch-tabs').hide(600);
            $('#edit-campaign-template').show(600);
            this.beeContainerInput['emailTemplateName'] = emailTemplate.name;
@@ -1512,7 +1512,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                     let anyCoBrandingTemplate = emailTemplate['regularCoBrandingTemplate'] || emailTemplate['surveyCoBrandingTemplate'] ||
                     emailTemplate['videoCoBrandingTemplate'] || emailTemplate['beeEventCoBrandingTemplate'] ;
                     this.beeContainerInput['anyCoBrandingTemplate'] =anyCoBrandingTemplate;
-                    this.beeContainerInput['isVideoTemplate'] = this.isVideoCampaign;
+                    this.beeContainerInput['isVideoTemplate'] = emailTemplate['videoTemplate'] || emailTemplate['videoCoBrandingTemplate'] || emailTemplate['beeVideoTemplate'];
                     /****XBI-1685******/
                     this.isShowEditTemplatePopup = true;
                     this.isEditTemplateLoader = false;
