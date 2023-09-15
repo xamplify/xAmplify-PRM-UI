@@ -339,10 +339,10 @@
                                 </label>
                             </div>
                             
-                            <div class="col-xs-12 col-sm-9 soical_status"><a title="{{socialStatus.statusMessage}}" href="{{socialStatus.statusMessage}}" target="_blank">{{socialStatus.statusMessage | slice:0:160}}
+                            <div class="col-xs-12 col-sm-9 soical_status"><a class="ContnetAbjustment" title="{{socialStatus.statusMessage}}" href="{{socialStatus.statusMessage}}" target="_blank">{{socialStatus.statusMessage | slice:0:160}}
                                     <span *ngIf="socialStatus.statusMessage?.length>160">..</span>
                             </a>
-                            <textarea class="div-background-color" [(ngModel)]="socialStatus.ogTitle" contenteditable="true">{{socialStatus.ogTitle}}</textarea>
+                            <textarea class="div-background-color topMargin" [(ngModel)]="socialStatus.ogTitle" contenteditable="true">{{socialStatus.ogTitle}}</textarea>
                             <textarea class="div-background-color" [(ngModel)]="socialStatus.ogDescription" contenteditable="true" [innerHTML]="socialStatus.ogDescription">{{socialStatus.ogDescription}}</textarea>
                             </div>
                         </section>

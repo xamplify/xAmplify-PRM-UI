@@ -274,17 +274,17 @@
                     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                       <thead>
                         <tr>
-                          <th class="center-aligned" translate>Lead Details</th>
-                          <th class="center" translate>Added By</th>
-                          <th class="center" translate>Status</th>
-                          <th style="width: 18%; text-align:center" translate>Actions</th>
+                          <th class="center-aligned leadTablewidth0" translate>Lead Details</th>
+                          <th class="center leadTablewidth1" translate>Added By</th>
+                          <th class="center leadTablewidth2" translate>Status</th>
+                          <th class="leadTablewidth3" style="text-align:center" translate>Actions</th>
                         </tr>
                       </thead>
 
                       <tbody>
                         <ng-container *ngFor='let lead of leadsPagination.pagedItems; let i=index'>
                           <tr>
-                            <td style="width: 40%;">
+                            <td>
                               <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
                               <div style="margin-left: 60px;">
                                 <h5 *ngIf="isPartnerVersion"><strong>Added For:</strong>
@@ -317,7 +317,7 @@
                               </div>
 
                             </td>
-                            <td style="width: 20%;">
+                            <td>
                               <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByCompanyName}}">{{lead.createdByCompanyName | slice:0:30}}
                                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
                               </h5>
@@ -335,7 +335,7 @@
                                 </app-timestamp>
                               </h5>
                             </td>
-                            <td style="width: 10%;">
+                            <td>
                               {{lead.currentStageName | slice:0:30}}
                               <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
                                 <i class="fa fa-check-circle mr5" aria-hidden="true"

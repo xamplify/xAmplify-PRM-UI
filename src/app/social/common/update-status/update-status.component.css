@@ -327,7 +327,7 @@ body {
 }
 .actions-group i {
   color: #357ebd;
-  margin-right: 7px;
+  margin-right: 0px;
   cursor: pointer;
 }
 .fa.fa-rss-square {
@@ -351,8 +351,8 @@ body {
 }
 .ogImage-Gear-Icon {
   position: absolute;
-  right: 6px;
-  top: 6px;
+  right: 2px;
+  top: 2px;
   font-size: 15px;
   cursor: pointer;
 }
@@ -414,4 +414,7 @@ body {
 } 
 textarea{
   padding:5px 10px;
+}
+a.ContnetAbjustment {
+  word-wrap: break-word;
 }
