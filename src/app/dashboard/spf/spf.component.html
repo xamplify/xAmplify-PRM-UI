@@ -14,7 +14,7 @@
     <!-- Tab One start-->
     <div role="tabpanel" class="tab-pane active" id="Manual_SPF">
       <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <div class="{{bootstrapAlertClass}}">
+      <div class="{{bootstrapAlertClass}}" *ngIf="spfConfigured">
         <strong>{{successOrErrorMessage}}</strong>
       </div>
       <div class="portlet-border">
@@ -158,9 +158,15 @@
 
     <!-- API Key Start -->
     <div class="paddingSides" id="step-5">
-      <div *ngIf="statusCode === 400" class="alert alert-info">
+      <div *ngIf="statusCode === 404" class="alert alert-info">
         <strong>{{message}}</strong>
         <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" style="margin-top: -7px;"  (click)="goToAddDomainDiv()">Change the Domain Name</button>
+      </div>
+      <div *ngIf="statusCode === 401" class="alert alert-info">
+        <strong>{{message}}</strong>
+      </div>
+      <div *ngIf="statusCode === 500" class="alert alert-info">
+        <strong>{{message}}</strong>
       </div>
       <form>
         <div class="form-group row">
