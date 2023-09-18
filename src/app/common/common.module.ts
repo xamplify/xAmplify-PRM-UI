@@ -127,6 +127,7 @@ import { CopyGroupUsersModalPopupComponent } from 'app/util/copy-group-users-mod
 import { XamplifyVideoPlayerComponent } from 'app/util/xamplify-video-player/xamplify-video-player.component';
 import { DonutPieChartComponent } from 'app/dashboard/dashboard-analytics-components/donut-pie-chart/donut-pie-chart.component';
 import { QueryBuilderModule } from "angular2-query-builder";
+import { SelectEmailTemplateComponent } from 'app/util/select-email-template/select-email-template.component';
 
 
 @NgModule({
@@ -153,7 +154,7 @@ import { QueryBuilderModule } from "angular2-query-builder";
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,
 		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
-		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent, DonutPieChartComponent],
+		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent, DonutPieChartComponent,SelectEmailTemplateComponent],
 
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
@@ -177,7 +178,7 @@ import { QueryBuilderModule } from "angular2-query-builder";
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,
 		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
-		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent, DonutPieChartComponent,QueryBuilderModule]
+		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent, DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent]
 
 
 

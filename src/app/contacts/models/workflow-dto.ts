@@ -8,5 +8,6 @@ export class WorkflowDto {
     userListIds = [];
     customTemplate = false;
     templateId = 0;
+    subject= "";
     message = "";
 }

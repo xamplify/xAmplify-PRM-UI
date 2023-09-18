@@ -2223,3 +2223,6 @@ button {
   font-family: FontAwesome !important;
   content: "\f068" !important;
 }
+.full-width{
+  width: 100%  !important;
+}
