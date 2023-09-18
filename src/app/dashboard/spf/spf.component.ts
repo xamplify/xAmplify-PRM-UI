@@ -60,6 +60,7 @@ export class SpfComponent implements OnInit {
           this.successOrErrorMessage = "SPF Configuration Done"; 
         } else {
           this.spfConfigured = false;
+          this.isChecked = false;
         }
       },error=>{
         this.loading = false;
@@ -310,9 +311,6 @@ export class SpfComponent implements OnInit {
 
 		}).then(function () {
       self.updateGodaddyConfiguration(self.companyId, isConnected);
-      self.isSpfConfigured();
-      self.spfConfigured = false;
-      self.isChecked = false;
      self.showStep1();
 		},function (dismiss: any) {
 			console.log("you clicked showAlert cancel" + dismiss);
@@ -327,13 +325,12 @@ export class SpfComponent implements OnInit {
     $('#step-5').hide();
     $('#step-6').hide();
     $('#step-7').hide();
+    this.spfConfigured = false;
+    this.isChecked = false;
     this.godaddyRecordDto = new GodaddyDetailsDto();
     this.apiKey ="";
     this.apiSecret= "";
     this.updateButton = false;
-  }
-  removeAlert(event:any){
-    this.statusCode != 401;
   }
 
 }
