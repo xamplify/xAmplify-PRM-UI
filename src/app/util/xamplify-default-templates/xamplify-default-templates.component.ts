@@ -212,7 +212,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Campaign Type', value: '{{campaignType}}' },
         ];
       }
-      if("PAGE_CAMPAIGN"==emailTemplateType){
+      if("PAGE_CAMPAIGN_PARTNER"==emailTemplateType){
         mergeTags =[{ name: 'Sender First Name', value: '{{firstName}}' },
         { name: 'Sender Last Name', value: '{{lastName}}' },
         { name: 'Sender Full Name', value: '{{fullName}}' },
@@ -223,7 +223,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Shared On', value: '{{sharedDate}}' },
         ];
       }
-      if("MARKETING_PAGE_CAMPAIGN"==emailTemplateType){
+      if("PAGE_CAMPAIGN_CONTACT"==emailTemplateType){
         mergeTags =[{ name: 'Sender First Name', value: '{{firstName}}' },
         { name: 'Sender Last Name', value: '{{lastName}}' },
         { name: 'Sender Full Name', value: '{{fullName}}' },
