@@ -15,16 +15,18 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 })
 export class SelectEmailTemplateComponent implements OnInit {
 
-  pagination:Pagination = new Pagination();
+  emailTemplatesPagination:Pagination = new Pagination();
   @Output() selectedEmailTemplateEventEmitter = new EventEmitter();
+  @Input() selectedEmailTemplateId = 0;
+  emailTemplatesLoader = false;
   constructor(private campaignService:CampaignService,private xtremandLogger:XtremandLogger,
     private pagerService:PagerService,private properties:Properties,private authenticationService:AuthenticationService) { }
 
   ngOnInit() {
-    alert("Template Loaded");
-    this.pagination.maxResults = 4;
-    this.pagination.userId = this.authenticationService.getUserId();
-    this.loadRegularEmailTemplates(this.pagination);
+    this.emailTemplatesLoader = true;
+    this.emailTemplatesPagination.maxResults = 4;
+    this.emailTemplatesPagination.userId = this.authenticationService.getUserId();
+    this.loadRegularEmailTemplates(this.emailTemplatesPagination);
   }
 
   loadRegularEmailTemplates(pagination:Pagination){
@@ -33,6 +35,7 @@ export class SelectEmailTemplateComponent implements OnInit {
           const data = response.data;
           pagination.totalRecords = data.totalRecords;
           pagination = this.pagerService.getPagedItems(pagination, data.list);
+          this.emailTemplatesLoader = false;
       },error=>{
           this.xtremandLogger.errorPage(error);
       });
