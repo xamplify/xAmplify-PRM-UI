@@ -12,6 +12,7 @@
   text-align: center;
   border-radius: 3px;
   font-size: 12px;
+  width: 130px;
 }
 
 .register_deal:hover {
@@ -138,3 +139,7 @@
   position: relative;
   top: -3px;
 }
+th.leadTablewidth0{width: 35%;}
+th.leadTablewidth1{width: 25%;}
+th.leadTablewidth2{width: 20%;}
+th.leadTablewidth3{width: 20%;}

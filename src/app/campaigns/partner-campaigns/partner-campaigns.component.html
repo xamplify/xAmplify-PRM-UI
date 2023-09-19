@@ -253,17 +253,17 @@
 								  </b> </span>
 							   </td>
 							   <td>
-								  <div class="actions-block override-actions"
+								  <div class="actions-block override-actions IconCustomizationcondition"
 									 style="text-align: center !important;width: max-content;">
 									 <a *ngIf="campaign.campaignType !== 'SOCIAL'"
 									 (click)="showCampaignPreview(campaign)"
 									 data-toggle="tooltip" data-placement="bottom"
-									 title="Preview Campaign"> <i class="fa fa-eye mr5"
+									 title="Preview Campaign"> <i class="fa fa-eye mr5 IconCustomization"
 										aria-hidden="true"></i>
 									 </a> <a *ngIf="campaign.campaignType === 'SOCIAL'"
 									 (click)="showSocialCampaignPreview(campaign)"
 									 data-toggle="tooltip" data-placement="bottom"
-									 title="Preview Campaign"> <i class="fa fa-eye mr5"
+									 title="Preview Campaign"> <i class="fa fa-eye mr5 IconCustomization"
 										aria-hidden="true"></i>
 									 </a> 
 									 <span>
@@ -295,7 +295,7 @@
 													(click)="downloadFile(campaign,'html')"
 													data-toggle="tooltip" data-placement="bottom"
 													title="Download Html" data-rel="fancybox-button"
-													translate> <i class="fa fa-file"
+													translate> <i class="fa fa-file IconCustomization"
 													style="width: 30px;" aria-hidden="true"></i> Download
 													Html
 													</a>
@@ -304,7 +304,7 @@
 													(click)="downloadFile(campaign,'pdf')"
 													data-toggle="tooltip" data-placement="bottom"
 													title="Download Pdf" data-rel="fancybox-button"
-													translate> <i class="fa fa-file-pdf-o"
+													translate> <i class="fa fa-file-pdf-o IconCustomization"
 													style="width: 30px;" aria-hidden="true"></i> Download
 													Pdf
 													</a>
@@ -313,7 +313,7 @@
 													(click)="downloadHTMLFile(campaign,'html')"
 													data-toggle="tooltip" data-placement="bottom"
 													title="Download Html" data-rel="fancybox-button"
-													translate> <i class="fa fa-file"
+													translate> <i class="fa fa-file IconCustomization"
 													style="width: 30px;" aria-hidden="true"></i> Download
 													Html
 													</a>
@@ -323,16 +323,16 @@
 										   <a data-toggle="tooltip" data-placement="bottom"
 											  (click)="viewDownloadedHistory(campaign)"
 											  title="View Download History" data-rel="fancybox-button">
-										   <i class="fa fa-history" aria-hidden="true"></i>
+										   <i class="fa fa-history IconCustomization" aria-hidden="true"></i>
 										   </a> <a *ngIf="!campaign.allowDownload" data-toggle="tooltip"
 											  data-placement="top"
 											  title="Please turn on GDPR settings to download"
 											  data-rel="fancybox-button"> <i
-											  class="fa fa-download cancelled-event" aria-hidden="true"></i>
+											  class="fa fa-download cancelled-event IconCustomization" aria-hidden="true"></i>
 										   </a> 
 										</ng-container>
 									 </span>
-									 <a class="hidden"> <i class="fa fa-trash"
+									 <a class="hidden"> <i class="fa fa-trash trashIconCustomization"
 										aria-hidden="true"></i>
 									 </a>
 								  </div>
@@ -411,12 +411,12 @@
 										*ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1"
 										translate>Cancelled</div>
 								  </div>
-								  <div class="bar">
-									 <a *ngIf="campaign.campaignType !== 'SOCIAL'"
+								  <div class="bar gridIconCustomization">
+									 <a class="Iconhover" *ngIf="campaign.campaignType !== 'SOCIAL'"
 									 (click)="showCampaignPreview(campaign)"
 									 data-toggle="tooltip" data-placement="bottom"
 									 title="Preview campaign"> <i class="fa fa-eye mr4"></i>
-									 </a> <a *ngIf="campaign.campaignType == 'SOCIAL'"
+									 </a> <a class="Iconhover" *ngIf="campaign.campaignType == 'SOCIAL'"
 									 (click)="showSocialCampaignPreview(campaign)"
 									 data-toggle="tooltip" data-placement="bottom"
 									 title="Preview Campaign"> <i class="fa fa-eye"
@@ -442,8 +442,7 @@
 										   data-toggle="dropdown" data-toggle="tooltip" title="Download">
 										   <span
 											  class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu"
-											  data-toggle="dropdown" id="download-drop" title="Download"
-											  style="color: white;"></span> <span data-toggle="dropdown"
+											  data-toggle="dropdown" id="download-drop" title="Download"></span> <span data-toggle="dropdown"
 											  data-toggle="tooltip" data-placement="bottom"  title="Download"></span>
 										   <ul class="dropdown-menu pull-right custome-dropdown-changs">
 											  <li><a (click)="downloadFile(campaign,'html')"
@@ -453,7 +452,7 @@
 												 Html
 												 </a>
 											  </li>
-											  <li *ngIf="campaign.campaignType != 'EVENT'"><a
+											  <li class="Iconhover" *ngIf="campaign.campaignType != 'EVENT'"><a
 												 (click)="downloadFile(campaign,'pdf')"
 												 data-toggle="tooltip" data-placement="bottom"
 												 title="Download Pdf" data-rel="fancybox-button" target="_blank" translate>
@@ -463,12 +462,12 @@
 											  </li>
 										   </ul>
 										</div>
-										<a *ngIf="!campaign.allowDownload" data-toggle="tooltip"
+										<a class="Iconhover" *ngIf="!campaign.allowDownload" data-toggle="tooltip"
 										   data-placement="bottom"
 										   title="Please turn on GDPR settings to download"
 										   data-rel="fancybox-button"> <i
 										   class="fa fa-download cancelled-event" aria-hidden="true"></i>
-										</a> <a data-toggle="tooltip" data-placement="bottom"
+										</a> <a class="Iconhover"  data-toggle="tooltip" data-placement="bottom"
 										   (click)="viewDownloadedHistory(campaign)"
 										   title="View Download History" data-rel="fancybox-button">
 										<i class="fa fa-history" aria-hidden="true"></i>
@@ -622,7 +621,7 @@
 	   </a> 
 	</ng-container>
  </ng-template>
- <ng-template #redistributeIcon let-campaign="campaign"> <a
+ <ng-template #redistributeIcon let-campaign="campaign"> <a class="Iconhover" 
 	*ngIf="campaign.campaignType != 'EVENT'  && !campaign.ended && campaign?.shareLeadsListExists "
 	(click)="reDistributeCampaign(campaign)" data-toggle="tooltip"
 	data-placement="top" title="Redistribute Campaign"
@@ -632,16 +631,16 @@
 	*ngIf="campaign.campaignType != 'EVENT' && (campaign.ended || !campaign?.shareLeadsListExists)"
 	data-toggle="tooltip" data-placement="top"
 	[title]="campaign.ended ? 'Campaign can not be further redistributed':!campaign?.shareLeadsListExists? properties?.emptyOneClickLaunchCampaignErrorMessage:'' "
-	data-rel="fancybox-button"> <i class="fa fa-rocket cancelled-event"></i>
+	data-rel="fancybox-button"> <i class="fa fa-rocket cancelled-event IconCustomization"></i>
 	</a> <a
 	*ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton"
 	(click)="reDistributeCampaign(campaign)" data-toggle="tooltip"
 	data-placement="top" title="Redistribute Campaign"
-	data-rel="fancybox-button"> <i class="fa fa-rocket"></i>
+	data-rel="fancybox-button"> <i class="fa fa-rocket IconCustomization"></i>
 	</a> <a
 	   *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton"
 	   data-toggle="tooltip" data-placement="top"
 	   title="Not available for cancelled event" data-rel="fancybox-button">
-	<i class="fa fa-rocket" style="cursor: not-allowed"></i>
+	<i class="fa fa-rocket IconCustomization" style="cursor: not-allowed"></i>
 	</a> 
  </ng-template>

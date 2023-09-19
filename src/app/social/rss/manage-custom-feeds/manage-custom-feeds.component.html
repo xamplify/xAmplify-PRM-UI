@@ -20,10 +20,10 @@
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
          <div class="row">
             <app-left-nav></app-left-nav>
-            <div class="col-xs-12 col-sm-8 col-lg-9">
+            <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">
 					<div class="row" style = "margin-bottom: -4px;">
 						<div class="page-bar page-bar-shadow pb-m">
-							<div class="portlet light shared-feeds-border">
+							<div class="portlet light shared-feeds-border borderNone">
 								<div class="portlet-body pt0">
 									<div class="col-sm-12 col-xs-12 head-h p0" *ngIf="showCollectionPanel">
 										<div class="col-sm-6 col-xs-12">
@@ -117,11 +117,11 @@
                 <div *ngFor="let feed of pagination.pagedItems ;let i =index" >
                 	<div class="row mb10" style = "margin-bottom: -4px;">
 						<div class="page-bar page-bar-shadow pb-m">
-							<div class="portlet light shared-feeds-border">
+							<div class="portlet light shared-feeds-border borderNone">
 								<div class="portlet-body pt0">
 									<div class="col-sm-12 col-xs-12 col-lg-12 mt10">
 										<div class="row">
-											<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style = "padding: 0px;">
+											<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8" style = "padding: 0px;">
 											<div style="margin-top: 10px; margin-bottom: 10px; ">
 												<span title="{{feed?.statusMessage}}"> <span><strong>{{feed?.statusMessage}}</strong>
 								 </span> 
@@ -139,7 +139,7 @@
 											</div>
 											</ng-container> </ng-container>
 										</div>
-										<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 mb_p0" style="margin-bottom: 20px;">
+										<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mb_p0" style="margin-bottom: 20px;">
 												<div class="text-right" style="margin-top: 10px">							
 													<span *ngIf="selectedType=='p'"
 														class="published-banner uppercase">{{feed?.companyName}}</span>
@@ -159,24 +159,24 @@
 														<a *ngIf="selectedType!='p' && feed.canUpdate" data-toggle="tooltip"
 															data-placement="top" title="Edit"
 															(click)="editFeed(feed)"> <i
-															class="fa fa-pencil-square-o" aria-hidden="true"></i>
+															class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
 														</a> <a *ngIf="selectedType!='p' && feed.canUpdate" data-toggle="tooltip"
 															data-placement="top" title="Share"
-															(click)="publishFeed(feed)"> <i class="fa fa-upload"
+															(click)="publishFeed(feed)"> <i class="fa fa-upload IconCustomization"
 															aria-hidden="true"></i>
 														</a> <a data-toggle="tooltip" data-placement="top"
 															title="Publish" (click)="shareFeed(feed)"> <i
-															class="fa fa-share" aria-hidden="true"></i>
+															class="fa fa-share IconCustomization" aria-hidden="true"></i>
 														</a>
 														<a *ngIf="selectedType!='p'" data-toggle="tooltip" 
 															data-placement="top"
 															title="Analytics" (click)="showFeedAnalyticsPopUp(feed.id)"> <i
-															class="fa fa-bar-chart" aria-hidden="true"></i>
+															class="fa fa-bar-chart IconCustomization" aria-hidden="true"></i>
 														</a>
 														 <a *ngIf="selectedType!='p' && feed.canDelete" data-toggle="tooltip"
 															data-placement="top" title="Delete"
 															(click)="confirmDeleteFeed(feed)"> <i
-															class="fa fa-trash-o" aria-hidden="true"></i>
+															class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
 														</a>
 													</div>
 												</div>

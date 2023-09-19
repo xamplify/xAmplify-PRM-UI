@@ -293,7 +293,7 @@ a {
 }
 
 .action-btn {
-  border: 1px solid #4c98dd;
+  /* border: 1px solid #4c98dd; */
   padding: 10px;
   border-radius: 50%;
 }

@@ -1,8 +1,11 @@
 .register_deal{
     margin-top: 10px;
     padding: 2px;
-    border: 1px solid #529de1;
+    border: 2px solid #529de1;
     background-color: #eeeeee;
+    text-align: center;
+    border-radius: 3px;
+    font-size: 12px;
 }
 
 .register_deal:hover{

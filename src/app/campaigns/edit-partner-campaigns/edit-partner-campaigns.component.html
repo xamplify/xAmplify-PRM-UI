@@ -176,14 +176,14 @@
                  </fieldset>
               </div>
               <div class="col-xs-12 col-sm-6" *ngIf="campaignType=='VIDEO'">
-                 <fieldset class="scheduler-border height160">
+                 <fieldset class="scheduler-border height160 scheduler_height">
                     <legend class="scheduler-border">Selected video</legend>
                     <app-video-thumbnail [videoFile]="campaign.campaignVideoFile" (notifyParent)="previewVideo($event)"></app-video-thumbnail>
                  </fieldset>
               </div>
               <div class="col-xs-12 col-sm-6">
                  <!-- ----------Email Template -->
-                 <fieldset class="scheduler-border height160"  *ngIf="campaignType!='LANDINGPAGE'">
+                 <fieldset class="scheduler-border height160 scheduler_height"  *ngIf="campaignType!='LANDINGPAGE'">
                     <legend class="scheduler-border">
                        Selected email template
                     </legend>
@@ -341,7 +341,7 @@
                                                   <td class="text-center">
                                                      <div [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block float-none'">
                                                         <a title="Preview" (click)="$event.stopPropagation();previewUsers(contacts)">
-                                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                                        <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                                                         </a>
                                                      </div>
                                                   </td>

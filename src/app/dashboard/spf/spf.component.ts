@@ -58,6 +58,9 @@ export class SpfComponent implements OnInit {
           this.spfConfigured = true;
           this.bootstrapAlertClass = "alert alert-success";
           this.successOrErrorMessage = "SPF Configuration Done"; 
+        } else {
+          this.spfConfigured = false;
+          this.isChecked = false;
         }
       },error=>{
         this.loading = false;
@@ -140,6 +143,9 @@ export class SpfComponent implements OnInit {
   goToConnectdStep() {
     $('#step-6').hide();
     $('#step-7').show();
+    this.isChecked = true;
+    this.spfConfigured = true;
+    this.saveSpf()
   }
   goToStep3(){
     $('#step-3').show();
@@ -191,9 +197,17 @@ export class SpfComponent implements OnInit {
           this.statusCode = 200;
           $('#step-5').hide();
           $('#step-6').show();
-        } else {
-          this.statusCode = 400;
-          this.message = "Domain Name Invalid";
+        }else if(response.statusCode == 401) {
+          this.statusCode = 401;
+          this.message = response.message;
+          this.loading = false;
+        }  else if(response.statusCode == 404){
+          this.statusCode = 404;
+          this.message = "Invalid Domain :"+this.domainName;
+          this.loading = false;
+        }else {
+          this.statusCode = 500;
+          this.message = response.message;
           this.loading = false;
         }
       }, error => {
@@ -214,6 +228,9 @@ export class SpfComponent implements OnInit {
           $('#step-6').hide();
           $('#step-7').show();
           this.updateGodaddyConfiguration(this.companyId,isConnected);
+          this.isChecked = true;
+          this.spfConfigured = true;
+          this.saveSpf()
           this.updateButton = false;
         } else if (response.statusCode == 422) {
           this.statusCode = 422;
@@ -308,6 +325,8 @@ export class SpfComponent implements OnInit {
     $('#step-5').hide();
     $('#step-6').hide();
     $('#step-7').hide();
+    this.spfConfigured = false;
+    this.isChecked = false;
     this.godaddyRecordDto = new GodaddyDetailsDto();
     this.apiKey ="";
     this.apiSecret= "";
