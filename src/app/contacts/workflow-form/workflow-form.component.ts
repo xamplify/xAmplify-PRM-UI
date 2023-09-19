@@ -82,7 +82,7 @@ export class WorkflowFormComponent implements OnInit{
     inputControl: 'form-control',
     inputControlSize: 'col-auto'
   }
-  worfklowDto:WorkflowDto = new WorkflowDto();
+  workflowDto:WorkflowDto = new WorkflowDto();
   errorClass = "form-group has-error has-feedback";
   successClass = "form-group has-success has-feedback";
   defaultTabClass = "col-block";
@@ -131,15 +131,15 @@ getQueryBuilder(){
       let data = response.data;
       this.subjects = data.subjects;
       if(this.subjects.length>0){
-        this.worfklowDto.subjectId = this.subjects[0].id;
+        this.workflowDto.subjectId = this.subjects[0].id;
       }
       this.actions = data.actions;
       if(this.actions.length>0){
-        this.worfklowDto.actionId = this.actions[0].id;
+        this.workflowDto.actionId = this.actions[0].id;
       }
       this.timePhrases = data.timePhrases;
       if(this.timePhrases.length>0){
-        this.worfklowDto.timePhraseId = this.timePhrases[0].id;
+        this.workflowDto.timePhraseId = this.timePhrases[0].id;
       }
       let queryBuilderJsonInput  = data.queryBuilderJson;
       let fieldsLength = Object.keys(queryBuilderJsonInput.fields).length;
@@ -152,7 +152,7 @@ getQueryBuilder(){
             
           ]
         };
-        this.query = query;
+        this.workflowDto.query = query;
       }else{
       this.queryBuilderCustomResponse = new CustomResponse('INFO','No Filters Found',true);
       }
@@ -380,16 +380,13 @@ checkAll(ev: any) {
 
 
 validateTitle(){
-  let trimmedTitle = $.trim(this.worfklowDto.title);
-  console.log(trimmedTitle);
+  let trimmedTitle = $.trim(this.workflowDto.title);
 }
 
 getData(){
-  console.log(this.query)
 }
 
 loadEmailTemplates(customTemplate:boolean){
- alert(customTemplate);
 }
 
 
@@ -429,7 +426,14 @@ loadEmailTemplates(customTemplate:boolean){
 }
 
  
-  submitForm(){ this.router.navigate(["/home/partners/manage"]);}
+  submitForm(){ 
+    this.parterService.saveWorkflow(this.workflowDto).subscribe(
+        response=>{
+        },error=>{
+          alert("Error");
+        }
+    );
+  }
   
   addDiv() {
     this.divs.push(this.divs.length + 1);

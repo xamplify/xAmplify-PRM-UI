@@ -5,9 +5,11 @@ export class WorkflowDto {
     actionId = 0;
     timePhraseId = 0;
     rules = {};
-    userListIds = [];
-    customTemplate = false;
+    query = {};
+    selectedPartnerListIds = [];
+    customTemplateSelected = false;
     templateId = 0;
-    subject= "";
-    message = "";
+    notificationSubject= "";
+    notificationMessage = "";
+    loggedInUserId = 0;
 }

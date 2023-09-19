@@ -55,15 +55,15 @@
               <p class="align-paratext">Enter Title<span class="required">*</span></p>
               <div class="col-sm-4">
                 <div class="form-group">
-                  <input type="text" placeholder="Enter Title" class="form-control full-width" [(ngModel)]="worfklowDto.title" 
-                  name="worfklowDto.title" autocomplete="false" (input)="validateTitle()" >
+                  <input type="text" placeholder="Enter Title" class="form-control full-width" [(ngModel)]="workflowDto.title" 
+                  name="workflowDto.title" autocomplete="false" (input)="validateTitle()" >
                 </div>
               </div>
               <br><br>
               <p class="align-paratext">Define the trigger when this happens</p>
               <div class="col-sm-4">
                 <div class="form-group">
-                  <select class="form-control full-width" name="worfklowDto.subjectId" [(ngModel)]="worfklowDto.subjectId">
+                  <select class="form-control full-width" name="workflowDto.subjectId" [(ngModel)]="workflowDto.subjectId">
                     <option *ngFor="let subject of subjects"
                         [ngValue]="subject.id">
                          {{subject.value}}
@@ -73,7 +73,7 @@
               </div>
               <div class="col-sm-4">
                 <div class="form-group">
-                  <select class="form-control full-width" name="worfklowDto.actionId" [(ngModel)]="worfklowDto.actionId">
+                  <select class="form-control full-width" name="workflowDto.actionId" [(ngModel)]="workflowDto.actionId">
                     <option *ngFor="let action of actions"
                         [ngValue]="action.id">
                          {{action.value}}
@@ -83,7 +83,7 @@
               </div>
               <div class="col-sm-4">
                 <div class="form-group full-width">
-                  <select class="form-control" name="worfklowDto.timePhraseId" [(ngModel)]="worfklowDto.timePhraseId">
+                  <select class="form-control" name="workflowDto.timePhraseId" [(ngModel)]="workflowDto.timePhraseId">
                     <option *ngFor="let timePhrase of timePhrases"
                         [ngValue]="timePhrase.id">
                          {{timePhrase.value}}
@@ -98,7 +98,7 @@
               <app-response-message [customResponse]="queryBuilderCustomResponse" [showCloseIcon]="false" *ngIf="queryBuilderCustomResponse?.isVisible"></app-response-message>
             </ng-container>
             <ng-container *ngIf="!loadQueryBuilder && showQueryBuilder">
-              <query-builder   id="queryBuilderCu" [(ngModel)]='query' [config]='config'></query-builder>
+              <query-builder   id="queryBuilderCu" [(ngModel)]='workflowDto.query' [config]='config'></query-builder>
             </ng-container>
             <!--Query Builder-->
             <button type="submit" class="btn  btn Btn-Green float-right" (click)="showAndHideDivs()"
@@ -239,7 +239,7 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <label for="sel1" class="form-label">Subject</label>
-                  <input type="text" class="form-control" placeholder="Subject">
+                  <input type="text" class="form-control" placeholder="Subject" [(ngModel)]="workflowDto.notificationSubject" name="workflowDto.notificationSubject">
                 </div>
               </div>
               <div class="col-sm-12">
@@ -261,27 +261,27 @@
                                   <div class="pull-right">
                                     <label class="switch-choose" translate>Choose Template
                                     </label>
-                                    <switch class="switch-choose" [status]="worfklowDto.customTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                    (statusChange)="worfklowDto.customTemplate=!worfklowDto.customTemplate;loadEmailTemplates(worfklowDto.customTemplate)">
+                                    <switch class="switch-choose" [status]="workflowDto.customTemplateSelected" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                    (statusChange)="workflowDto.customTemplateSelected=!workflowDto.customTemplateSelected;loadEmailTemplates(workflowDto.customTemplateSelected)">
                                   </switch>
                                   </div>
                                 </div>
                               </div>
                               <div class="row">
                                 <!--CK Editor-->
-                                <form class="role add-custom-message" *ngIf="!worfklowDto.customTemplate">
+                                <form class="role add-custom-message" *ngIf="!workflowDto.customTemplateSelected">
                                   <div class="col-xs-12 p0">
                                     <div class="col-xs-12">
                                       <div>
                                         <div>
-                                          <ckeditor [(ngModel)]="worfklowDto.message" name="worfklowDto.message"></ckeditor>
+                                          <ckeditor [(ngModel)]="workflowDto.notificationMessage" name="workflowDto.notificationMessage"></ckeditor>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                 </form>
                                 <!--Email Template-->
-                                <div class="col-sm-12 col-md-12 col-lg-12" *ngIf="worfklowDto.customTemplate">
+                                <div class="col-sm-12 col-md-12 col-lg-12" *ngIf="workflowDto.customTemplateSelected">
                                   <!-- Email templates 1 start-->
                                   <div class="col-sm-6 col-md-3 col-lg-3">
                                     <div class="grid-box imgage-paddings" ng-reflect-klass="grid-box imgage-paddings"

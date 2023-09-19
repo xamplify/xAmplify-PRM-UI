@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CampaignService } from 'app/campaigns/services/campaign.service';
+
 
 @Component({
   selector: 'app-select-email-template',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SelectEmailTemplateComponent implements OnInit {
 
-  constructor() { }
+  constructor(private campaignService:CampaignService) { }
 
   ngOnInit() {
+
   }
+
+  
+
+
 
 }

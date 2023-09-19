@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http'
 import { Pagination } from '../../core/models/pagination';
 import { User } from '../../core/models/user';
 import { PartnerJourneyRequest } from '../models/partner-journey-request';
+import { WorkflowDto } from 'app/contacts/models/workflow-dto';
 @Injectable()
 export class ParterService {
     URL = this.authenticationService.REST_URL;
@@ -325,6 +326,15 @@ export class ParterService {
         let userId = this.authenticationService.getUserId();
         const url = this.URL + 'workflow/findDefaultTriggerOptions/'+userId+'?access_token=' + this.authenticationService.access_token;
         return this.httpClient.get(url)
+            .catch( this.handleError );
+    }
+
+
+    saveWorkflow(workflowDto:WorkflowDto){
+        let userId = this.authenticationService.getUserId();
+        workflowDto.loggedInUserId = userId;
+        const url = this.URL + 'workflow/save/?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url,workflowDto)
             .catch( this.handleError );
     }
 
