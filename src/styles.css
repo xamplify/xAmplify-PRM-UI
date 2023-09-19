@@ -2417,3 +2417,10 @@ label.floatLeftText {
 button.unlink-button {
   color: #333;
 }
+
+/* Qa issues 19-09-2023 */
+.iconAligntCu i.fa.fa-edit {
+  position: relative;
+  top: 1px;
+  left: 1px;
+}
