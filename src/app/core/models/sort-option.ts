@@ -167,7 +167,9 @@ export class SortOption {
 
 	shareCampaignSortDropDownOptions = [
 		{ 'name': 'Campaign Name (A-Z)', 'value': 'name-ASC' },
-		{ 'name': 'Campaign Name  (Z-A)', 'value': 'name-DESC' }
+		{ 'name': 'Campaign Name  (Z-A)', 'value': 'name-DESC' },
+		{ 'name': 'Launched On (ASC)', 'value': 'launchedOn-ASC' },
+		{ 'name': 'Launched On (DESC)', 'value': 'launchedOn-DESC' }
 	];
 
 	activeUsersSortDropDownOptions = [
@@ -362,6 +364,14 @@ export class SortOption {
 		{ 'name': 'Updated On(DESC)', 'value': 'updatedTime-DESC' }
 	];
 
+	videosDropDownOptions = [
+        { 'name': 'Name(A-Z)', 'value': 'title-ASC' },
+        { 'name': 'Name(Z-A)', 'value': 'title-DESC' },
+        { 'name': 'Uploaded Date(ASC)', 'value': 'uploadedDate-ASC' },
+        { 'name': 'Uploaded Date(DESC)', 'value': 'uploadedDate-DESC' }
+    ];
+
+
 	numberOfItemsPerPage = [
 		{ 'name': '12', 'value': '12' },
 		{ 'name': '24', 'value': '24' },
@@ -381,7 +391,7 @@ export class SortOption {
 	public partnerLandingPageSortOption: any = this.partnerLandingPageSortOptions[3];
 	public selectedDemoRequestSortOption:  any = this.demoRequestSortOptions[7];
 	public selectedCategoryDropDownOption: any = this.categorySortDropDownOptions[0];
-	public selectedShareCampaignDropDownOption: any = this.shareCampaignSortDropDownOptions[0];
+	public selectedShareCampaignDropDownOption: any = this.shareCampaignSortDropDownOptions[3];
 	public selectedActiveUsersSortOption: any = this.activeUsersSortDropDownOptions[4];//This is used in multiple places.Be careful while changing it dude.
 	public selectedDamPartnerDropDownOption: any = this.partnerCompaniesDropDownOptions[this.partnerCompaniesDropDownOptions.length - 1];
 	public mdfPartnersSortOption: any = this.mdfPartnersSortDropDownOptions[9];
@@ -408,6 +418,10 @@ export class SortOption {
 	public selectedAgencySortDropDownOption: any = this.activeUsersSortDropDownOptions[this.activeUsersSortDropDownOptions.length-1];
 	/****XNFR-278*****/
 	public selectedUserListGroupDropDownOption = this.campaignRecipientsDropDownOptions[0];
+	/*****XNFR-318*****/
+	public selectedCampaignEmailTemplateDropDownOption = this.eventCampaignRecipientsDropDownOptions[this.eventCampaignRecipientsDropDownOptions.length-1];
+
+	public selectedVideoDropDownOption = this.videosDropDownOptions[this.videosDropDownOptions.length-1];
 
 
 }

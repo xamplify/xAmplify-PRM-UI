@@ -1,73 +1,93 @@
-<div class="col-sm-12 col-md-12 col-lg-12">
-  <app-landing-page-loader *ngIf="emailTemplatesLoader"></app-landing-page-loader>
-  <div *ngIf="!emailTemplatesLoader">
-    <div class="col-sm-6 col-md-3 col-lg-3" *ngFor="let emailTemplate of emailTemplatesPagination?.pagedItems ;let i =index">
-    <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === selectedEmailTemplateId ? 'template-selected-border' :'' " (click)="setWebsiteLinkEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)">
-      <span class="select-check-box" [class.hide]="emailTemplate?.draft">
-        <label>
-            <input  type="radio" class="radio-custimization pointer" [checked]="emailTemplate?.id === selectedEmailTemplateId">
-        </label>
-    </span>
-    <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
-    <span class="icon-alignments"> 
-      <a data-toggle="tooltip" data-placement="bottom" title="Preview" (click)="$event.stopPropagation();previewEmailTemplate(emailTemplate)" data-original-title="Preview">
-      <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
-    </span>
-      <div class="bar hover-bar" [class.white-labeled-custom-css]="emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor">
-        <a class="border-none-dark" data-placement="top">
-          <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
-                <div class="content-hover-align fontsize-cls">
-                    <span class="item__name cardDetails-mar" data-toggle="tooltip" data-placement="bottom" [title]="emailTemplate?.name">
-                        <strong>{{emailTemplate?.name |slice:0:20}}</strong>
-                        <strong *ngIf="emailTemplate?.name?.length>20">..</strong>
-                    </span>
-                    <br>
-                    <span class="item__name" data-toggle="tooltip" data-placement="bottom" title="Created On" style="float:left; margin: 3px;">
-                        <span>
-                        <app-display-date-and-time [dateAndTimeUTCString]="emailTemplate?.createdDate"></app-display-date-and-time>
-                        </span>
-                    </span>
-                    <p class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate?.createdBy}}">
-                        <strong translate>Created By:</strong>
-                        <span>{{emailTemplate?.createdBy|slice:0:20}}
-                            <span *ngIf="emailTemplate?.createdBy?.length>20">..</span>
-                        </span>
-                    </p>
-                    <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate?.category}}">
-                        <strong translate>Folder:</strong>
-                        <span >{{emailTemplate?.category|slice:0:20}}</span>
-                        <span *ngIf="emailTemplate?.category?.length>20">..</span>
-                    </span>
-                    <!--XBI-1836-->
-                    <ng-template [ngTemplateOutlet]="whiteLabeledContent" [ngTemplateOutletContext]="{vendorCompanyName:emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName,isWhiteLabeledContent:emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor}"></ng-template>
-                    <!--XBI-1836-->
-                </div> 
-                <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
-            </div>       
-        </div>
-        </a>
+<div class="portlet light shadow">
+  <div class="portlet-body clearfix">
+      <div class="col-xs-12">
+          <!--Email Templates-->
+          <fieldset class="scheduler-border">
+              <app-landing-page-loader *ngIf="emailTemplatesLoader"></app-landing-page-loader>
+              <div *ngIf="!emailTemplatesLoader">
+                  <!--Search Key Icon-->
+                  <div class="input-icon right pull-right pr-epx">
+                      <input type="text" [(ngModel)]="emailTemplatesSortOption.searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="findEmailTemplatesOnEnterKeyPress($event.keyCode)">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear search-button-padding" *ngIf="emailTemplatesSortOption.searchKey" (click)="emailTemplatesSortOption.searchKey='';searchEmailTemplates()"></button>
+                      <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplates()" style="right: 9px !important;">
+                          <i class="fa fa-search cesf-xamp" aria-hidden="true"></i></button>
+                  </div>
+                  <!--Sort DropDown-->
+                  <div class="input-icon right pull-right pr-epx mrg10">
+                      <select class="form-control" [(ngModel)]="emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption" (ngModelChange)="sortEmailTemplates($event)" id="select-dropdown" [ngModelOptions]="{standalone: true}">
+                      <option   *ngFor="let option of emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions" [ngValue]="option">{{option.name}}</option>
+                      </select>
+                  </div>
+                  <!--List Of Email Templates-->
+                  <div class="portlet-body padding-top-45px">
+                      <div class="row">
+                          <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
+                              <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of emailTemplatesPagination?.pagedItems ;let i =index" >                         
+                                  <div  class="row">
+                                      <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12"> 
+                                          <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === selectedEmailTemplateRow ? 'template-selected-border' :'' " (click)="selectEmailTemplate(emailTemplate)">
+                                              <span class="select-check-box" [class.hide]="emailTemplate?.draft">
+                                                  <label>
+                                                      <input  type="radio" class="radio-custimization pointer" [checked]="emailTemplate?.id === selectedEmailTemplateRow">
+                                                  </label>
+                                              </span>
+                                              <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
+                                                  <span class="icon-alignments"> 
+                                                      <a data-toggle="tooltip" data-placement="bottom" title="Preview" (click)="$event.stopPropagation();previewEmailTemplate(emailTemplate)" data-original-title="Preview">
+                                                      <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
+                                                  </span>
+                                                  <div  class="bar hover-bar" [class.white-labeled-custom-css]="emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor">
+                                                      <a  data-placement="top"  class="border-none-dark">
+                                                      <div class="row">
+                                                          <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+                                                              <div class="content-hover-align fontsize-cls">
+                                                                  <span class="item__name cardDetails-mar" data-toggle="tooltip" data-placement="bottom" [title]="emailTemplate?.name">
+                                                                      <strong>{{emailTemplate?.name |slice:0:20}}</strong>
+                                                                      <strong *ngIf="emailTemplate?.name?.length>20">..</strong>
+                                                                  </span>
+                                                                  <br>
+                                                                  <span class="item__name" data-toggle="tooltip" data-placement="bottom" title="Created On" style="float:left; margin: 3px;">
+                                                                      <span>
+                                                                      <app-display-date-and-time [dateAndTimeUTCString]="emailTemplate?.createdDate"></app-display-date-and-time>
+                                                                      </span>
+                                                                  </span>
+                                                                  <p class="cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate?.createdBy}}">
+                                                                      <strong translate>Created By:</strong>
+                                                                      <span>{{emailTemplate?.createdBy|slice:0:20}}
+                                                                          <span *ngIf="emailTemplate?.createdBy?.length>20">..</span>
+                                                                      </span>
+                                                                  </p>
+                                                                  <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category cardDetails-mar" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate?.category}}">
+                                                                      <strong translate>Folder:</strong>
+                                                                      <span >{{emailTemplate?.category|slice:0:20}}</span>
+                                                                      <span *ngIf="emailTemplate?.category?.length>20">..</span>
+                                                                  </span>
+                                                                  <!--XBI-1836-->
+                                                                  <ng-template [ngTemplateOutlet]="whiteLabeledContent" [ngTemplateOutletContext]="{vendorCompanyName:emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName,isWhiteLabeledContent:emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor}"></ng-template>
+                                                                  <!--XBI-1836-->
+                                                              </div> 
+                                                              <span class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
+                                                          </div>       
+                                                      </div>
+                                                      </a>
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div *ngIf="emailTemplatesPagination?.totalRecords==0 && !emailTemplatesLoader" class="alert alert-info text-center">
+                                  <strong>No Data Found.</strong>
+                              </div>
+                          </form>      
+                      </div>
+                  </div>       
+              </div>
+              <!--Pagination-->
+              <div *ngIf="emailTemplatesPagination?.pagedItems?.length !== 0 && !emailTemplatesLoader">
+                  <app-pagination [pagination]="emailTemplatesPagination" (notifyParent)="paginateEmailTempaltes($event)" (notifyParentDropDown)="findEmailTemplates($event)" [customDropDown]="true">
+                  </app-pagination>
+              </div>
+          </fieldset>
       </div>
-    </div>
-    </div>
   </div>
-  <div *ngIf="emailTemplatesPagination?.totalRecords==0 && !emailTemplatesLoader" class="alert alert-info text-center">
-    <strong>No Data Found.</strong>
 </div>
-<!--Pagination-->
-<div *ngIf="emailTemplatesPagination?.pagedItems?.length !== 0 && !emailTemplatesLoader">
-  <app-pagination [pagination]="emailTemplatesPagination" (notifyParent)="paginateEmailTempaltes($event)" (notifyParentDropDown)="findEmailTemplates($event)" [customDropDown]="true">
-  </app-pagination>
-</div>
-</div>
-
-<!--XBI-1836-->
-<ng-template #whiteLabeledContent let-vendorCompanyName="vendorCompanyName" let-isWhiteLabeledContent = "isWhiteLabeledContent">
-  <span *ngIf="isWhiteLabeledContent" class="campaign-email-template-category cardDetails-mar" 
-      data-toggle="tooltip" data-placement="bottom" title="{{vendorCompanyName}}">
-      <strong translate>Received From:</strong>
-      <span >{{vendorCompanyName|slice:0:20}}</span>
-      <span *ngIf="vendorCompanyName?.length>20">..</span>
-  </span>
-  <span *ngIf="isWhiteLabeledContent" class="view-banner campaign-email-template-category">{{whiteLabeledBannerText}}</span>
-</ng-template>
