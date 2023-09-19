@@ -386,7 +386,14 @@ validateTitle(){
 getData(){
 }
 
-loadEmailTemplates(customTemplate:boolean){
+loadEmailTemplates(customTemplateTemplated:boolean){
+  if(customTemplateTemplated){
+    
+  }
+}
+
+getSelectedEmailTemplateReceiver(event:any){
+  alert("Event Received");
 }
 
 

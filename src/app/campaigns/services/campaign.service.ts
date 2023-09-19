@@ -17,7 +17,8 @@ import { UtilService } from 'app/core/services/util.service';
 
 declare var swal:any, $:any, Promise: any;
 @Injectable()
-export class CampaignService {    
+export class CampaignService {
+       
    
     campaign: Campaign;
     eventCampaign:any;
@@ -744,7 +745,6 @@ export class CampaignService {
             }
             data['selectedVideoId'] = campaign.selectedVideoId;
             data['parentCampaignId'] = campaign.parentCampaignId;
-          console.log(data);
             this.sendTestEmail(data)
                 .subscribe(
                 data => {
@@ -767,7 +767,7 @@ export class CampaignService {
     }
     addErrorClassToDiv(list: any) {
         let self = this;
-        $.each(list, function (index, divId) {
+        $.each(list, function (index:number, divId:string) {
             $('#' + divId).removeClass('portlet light dashboard-stat2 border-error');
             self.removeStyleAttrByDivId('send-time-' + divId);
             $('#' + divId).addClass('portlet light dashboard-stat2 border-error');
@@ -953,7 +953,7 @@ export class CampaignService {
 
     listEmailTemplateOrLandingPageFolders(userId:number,campaignType:string){
         let url = "listEmailTemplateCategories";
-        if("landingPage"==campaignType){
+        if("landingPage"==campaignType || "page"==campaignType){
             url = "listLandingPageCategories"
         }
         return this.http.get(this.URL + "category/"+url+"/"+userId+"?access_token=" + this.authenticationService.access_token, "")
@@ -1279,6 +1279,39 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    /*******XNFR-318******/
+    findCampaignDetailsData() {
+        return this.http.get(this.URL + "campaign/findCampaignDetailsData/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+     /********XNFR-318********/
+    findCampaignEmailTemplates(emailTemplatesPagination:Pagination){
+        emailTemplatesPagination.userId = this.authenticationService.getUserId();
+        let url = this.URL + "campaign/findCampaignEmailTemplates?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, emailTemplatesPagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    /********XNFR-318********/
+    findVideos(videosPagination: Pagination) {
+        videosPagination.userId = this.authenticationService.getUserId();
+        let url = this.URL + "videos/findVideos?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, videosPagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    } 
+
+     /********XNFR-318********/
+    findPages(pagesPagination:Pagination){
+        pagesPagination.userId = this.authenticationService.getUserId();
+        let url = this.URL + "landing-page/findPagesForCampaign?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, pagesPagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         let body = res.json();
