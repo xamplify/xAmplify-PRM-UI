@@ -25,10 +25,10 @@
                               <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of emailTemplatesPagination?.pagedItems ;let i =index" >                         
                                   <div  class="row">
                                       <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12"> 
-                                          <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === selectedEmailTemplateRow ? 'template-selected-border' :'' " (click)="selectEmailTemplate(emailTemplate)">
+                                          <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === selectedEmailTemplateId ? 'template-selected-border' :'' " (click)="selectEmailTemplate(emailTemplate)">
                                               <span class="select-check-box" [class.hide]="emailTemplate?.draft">
                                                   <label>
-                                                      <input  type="radio" class="radio-custimization pointer" [checked]="emailTemplate?.id === selectedEmailTemplateRow">
+                                                      <input  type="radio" class="radio-custimization pointer" [checked]="emailTemplate?.id === selectedEmailTemplateId">
                                                   </label>
                                               </span>
                                               <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
@@ -91,3 +91,5 @@
       </div>
   </div>
 </div>
+
+<!--Preview  Email Template-->

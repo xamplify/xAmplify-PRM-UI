@@ -483,4 +483,21 @@ img.icon-alignmnt {
     background-color: lightblue;
     padding: 10px;
   }
-  
+
+  .pr-epx {
+    padding-right: 8px;
+  }
+  .padding-top-45px {
+    padding-top: 45px!important;
+  }
+  .search-button-padding{
+    padding: 8px 10px 0 0;
+  }
+
+  .template-selected-border {
+    box-shadow: 0 0 0 0.5px #54a7e9;
+    border-radius: 5px;
+  }
+  .grid-box.imgage-paddings.template-selected-border {
+    border: none !important;
+  }
