@@ -23,7 +23,7 @@
       </li>
     </ul>
     <app-team-member-filter-option [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
-    <div style="margin-top: 3px;" class="float-right">
+    <div *ngIf="authenticationService?.module?.showWorkFlow" style="margin-top: 3px;" class="float-right">
 		  <a [routerLink]="['/home/partners/partner-workflow']">
 		  <button type="button" class="btn Btn-Green" style="margin-right: 3px;">
 		  Create Workflow<i class="fa fa-sitemap" aria-hidden="true" style="margin-left: 5px"></i>
