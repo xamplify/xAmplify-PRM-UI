@@ -1,4 +1,4 @@
-<div class="flex margin-flex align-tableimg-center" >
+<div class="flex margin-flex align-tableimg-center mrgleft_0" >
 	<span *ngIf="true" class='profile' [style.background-color]="backgroudColor">
 	<span class='uppercase'> {{highlightLetter}} </span>
 	</span>
@@ -6,23 +6,29 @@
 	   && (userInfo?.email |slice:0:1)==null">-
 	</span>
 	<span class="margin-left" *ngIf="!isPartnerEntityInfo">
-	   <!-- -Only First Name -->
+	  
 	   <ng-container *ngIf="isFromAdminList">
-		  <h5 *ngIf="userInfo?.firstName && userInfo?.lastName" class='ellipsis user-name' data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName}} {{userInfo?.lastName}}">{{userInfo?.firstName | slice:0:15}}
+		  <h5 *ngIf="userInfo?.firstName || userInfo?.lastName" class='ellipsis user-name'
+		   data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName || ''}} {{userInfo?.lastName || ''}}">
+			{{userInfo?.firstName | slice:0:15}}
 			 <span *ngIf="userInfo?.firstName?.length>15">..</span>
 			 &nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
 		  </h5>
-		  <h5 *ngIf="userInfo?.firstName && !userInfo?.lastName" class='ellipsis user-name' data-toggle="tooltip" data-placement="bottom"  title="{{userInfo?.firstName}}">{{userInfo?.firstName | slice:0:15}}
+		   <!-- -Only First Name -->
+		  <h5 *ngIf="userInfo?.firstName" class='ellipsis user-name'><span  data-toggle="tooltip" data-placement="bottom"  title="{{userInfo?.firstName}}">{{userInfo?.firstName | slice:0:15}}</span>
 			 <span *ngIf="userInfo?.firstName?.length>15">..</span>
 		  </h5>
 		  <!-- -Only Last Name Name -->
-		  <h5 *ngIf="!userInfo?.firstName && userInfo?.lastName" class='ellipsis user-name' data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.lastName}}">{{userInfo?.lastName | slice:0:15}}
+		  <h5 *ngIf="userInfo?.lastName" class='ellipsis user-name' >
+			<span data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.lastName}}">{{userInfo?.lastName | slice:0:15}}</span>
 			 <span *ngIf="userInfo?.lastName?.length>15">..</span>
 		  </h5>
 	   </ng-container>
-	   <h5 *ngIf="!isFromAdminList" class='ellipsis user-name' data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName}} {{userInfo?.lastName}}">{{userInfo?.firstName | slice:0:15}}
-		  <span *ngIf="userInfo?.firstName?.length>15">..</span>
-		  &nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
+	   <h5 *ngIf="!isFromAdminList" class=''>
+		<span  data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName || ''}} {{userInfo?.lastName || ''}} ">
+			{{userInfo?.firstName | slice:0:15}} <span *ngIf="userInfo?.firstName?.length>15">..</span>
+		    &nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
+		</span>
 	   </h5>
 	   <h6 class='m0 user-email'>
 		  <a style="display: table;" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.emailId}}">{{userInfo?.emailId | slice:0:30}}<span *ngIf="userInfo?.emailId?.length>30">...</span></a>
@@ -61,7 +67,7 @@
 	   <h5 *ngIf="!userInfo?.firstName && userInfo?.lastName" class='ellipsis user-name' data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.lastName}}">{{userInfo?.lastName | slice:0:15}}
 		  <span *ngIf="userInfo?.lastName?.length>15">..</span>
 	   </h5>
-	   <h5 *ngIf="userInfo?.lastName && userInfo?.firstName" class='ellipsis user-name' data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName}} {{userInfo?.lastName}}">{{userInfo?.firstName | slice:0:15}}
+	   <h5 *ngIf="userInfo?.lastName && userInfo?.firstName" class='ellipsis user-name' data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName}}">{{userInfo?.firstName | slice:0:15}}
 		  <span *ngIf="userInfo?.firstName?.length>15">..</span>
 		  &nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
 	   </h5>

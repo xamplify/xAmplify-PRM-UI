@@ -1,0 +1,10 @@
+.timeline {
+    padding: 21px 13px 10px !important;
+}
+@media only screen and (min-width: 991px) and (max-width: 1120px) {
+    a.textBreak {
+        line-break: anywhere;
+        padding-right: 10px;
+    } 
+}
+  

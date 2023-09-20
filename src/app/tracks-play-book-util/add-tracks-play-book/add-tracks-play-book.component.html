@@ -12,25 +12,26 @@
     <div id="step-1" [attr.class]="stepOneTabClass" (click)="changeActiveTab('step-1')">
       <div class="cenetered-block">
           <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Details1.svg">
-        <h5 class="hidden-xs" translate>Details</h5>
+        <h5 translate>Details</h5>
       </div>
     </div>
     <div id="step-2" [attr.class]="stepTwoTabClass" (click)="changeActiveTab('step-2')">
       <div class="cenetered-block">
         <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Description2.svg">
-        <h5 class="hidden-xs" translate>Description</h5>
+        <!-- class="hidden-xs" -->
+        <h5 translate>Description</h5> 
       </div>
     </div>
     <div id="step-3" [attr.class]="stepThreeTabClass" (click)="changeActiveTab('step-3')">
       <div class="cenetered-block">
         <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/Assets3.svg">
-        <h5 class="hidden-xs" translate>Assets</h5>
+        <h5 translate>Assets</h5>
       </div>
     </div>
     <div id="step-4" [attr.class]="stepFourTabClass" (click)="changeActiveTab('step-4')">
       <div class="cenetered-block">
         <img  alt="" class="newicons" src="assets/images/campaignnew-icon/Add_Tracks/share4.svg">
-        <h5 class="hidden-xs" translate>Share</h5>
+        <h5 translate>Share</h5>
       </div>
     </div>
   </div>
@@ -82,11 +83,11 @@
                       <div class="inline-box link" action="action_page.php" style="width: 100%;">
                         <input class="form-control" id="copy-link" type="text" readonly="readonly"
                           [ngModel]="completeLink" #link>
-                        <button type="button" class="right-border" (click)="editSlug()"
+                        <button type="button" class="right-border widthauto" (click)="editSlug()"
                         data-toggle="tooltip" data-placement="top" title="Edit"
                           style="border-radius:0px !important;"><i
                             class="fa fa-edit"></i></button>
-                        <button type="button" (click)="copyInputMessage(link)"
+                        <button type="button" class="widthauto" (click)="copyInputMessage(link)"
                         data-toggle="tooltip" data-placement="top" title="Copy"
                           style="border-radius:0px !important;"><i                      
                             class="fa fa-copy"></i></button>
@@ -157,7 +158,7 @@
                                 <div class="col-sm-5" style="padding-left: 0px !important;" 
                                 data-toggle="tooltip" data-placement="bottom"  title="{{tag?.tagName}}">
                                 <div  class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 5px !important;">
-                                    {{tag.tagName | slice:0:15}} <span *ngIf="tag.tagName?.length>15">..</span></div>
+                                    {{tag.tagName | slice:0:10}} <span *ngIf="tag.tagName?.length>15">..</span></div>
                               </div>
                               </td>
                               <td style="padding: 5px;vertical-align: middle;"
@@ -173,7 +174,7 @@
                                   *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
                                   data-toggle="tooltip" data-placement="bottom" title="{{tagsListSecondColumn[i]?.tagName}}">
                                   <div   class="btn btn-primary-dark btn-primary-light" style="padding: 4px 10px;border-radius: 5px !important;">
-                                    {{tagsListSecondColumn[i].tagName | slice:0:15}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span></div>
+                                    {{tagsListSecondColumn[i].tagName | slice:0:10}} <span *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span></div>
 
                                 </div>
                               </td>
@@ -202,7 +203,7 @@
                   <div class="feature-img-bg" style="cursor: pointer;text-align:center;color:#fff;"
                     (click)="imageClick()">
                     <div *ngIf="!croppedImage">
-                      <img *ngIf="!imageChangedEvent && !featuredImagePath" src="assets/images/background-form.png"
+                      <img *ngIf="!imageChangedEvent && !featuredImagePath" src="assets/images/contentPlaceholderImages.png"
                         class="profile-image img-grid" alt="">
                     </div>
                     <div *ngIf="croppedImage; else showImage">
@@ -298,7 +299,7 @@
               <div class="btn-group pull-right">
                 <div class="inputs float-right" style="display: inline-flex;padding-top: 12px;">
                   <div id="left" style="padding-left: 5px;">
-                    <select class="form-control" [(ngModel)]="assetSortOption.damSortOption"
+                    <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="assetSortOption.damSortOption"
                       (ngModelChange)="assetSortBy($event)">
                       <option *ngFor="let option of assetSortOption.damSortDropDownOptions" [ngValue]="option">
                         {{option.name}}</option>
@@ -306,7 +307,7 @@
                   </div>
 
                   <div id="left" *ngIf="fileTypesForFilter?.length>0">
-                    <select class="form-control mDamSort"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)" 
+                    <select class="form-control mDamSort SeclectBoxPaddingsAbj"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)" 
                         style="position: relative; right: -3px;">
                       <option value="">Select Asset Type</option>
                       <option	*ngFor="let fileType of fileTypesForFilter" [ngValue]="fileType">{{fileType}}</option>
@@ -330,7 +331,7 @@
           <div class="portlet-body pt5" style="padding-left: 12px;
           padding-right: 12px;">
             <app-grid-loader *ngIf="assetLoader.isLoading"></app-grid-loader>
-            <div class="row" *ngIf="!assetError">
+            <div class="row" *ngIf="!assetError && !assetLoader.isLoading">
               <ul class="content__list mContentWid" *ngFor="let file of assetPagination.pagedItems; let i =index;" (click)="setSelectedAsset(file); validateAssets(); validateAllSteps()">
                 <li class="list__item" [ngClass]="{'list__item--selected': isAssetSelected(file)}">
                   <div class="flex-row pointer mContentHeight custom-height">
@@ -359,7 +360,9 @@
                         </div>
                         <div class="wrap-asset-name" style="-webkit-box-orient: vertical;">
                           <span data-toggle="tooltip" data-placement="bottom"  [title]="file.assetName">
-                            <strong>{{file.assetName}}</strong>
+                            <strong>{{file.assetName | slice:0:40}}<span
+                              *ngIf="file.assetName?.length>40">...</span>
+                            </strong>
                           </span>
                         </div>
                         <div class="item__size">
@@ -370,7 +373,7 @@
                         </div>
                         <div style="padding-top: 10px;">
                           <ng-container *ngIf="file.tagNames?.length > 0">
-                            <div class="tag" data-toggle="tooltip" data-placement="bottom"  title="{{file.tagNames[0]}}">
+                            <div class="tag tablegray-tag" data-toggle="tooltip" data-placement="bottom"  title="{{file.tagNames[0]}}">
                               <ng-container *ngIf="file.tagNames?.length == 1">{{file.tagNames[0] | slice:0:10}} <span
                                 *ngIf="file.tagNames[0]?.length>10">..</span>
                               </ng-container>
@@ -378,16 +381,14 @@
                                   *ngIf="file.tagNames[0]?.length>5">..</span>
                               </ng-container>
                             </div>
-                            <ng-container *ngIf="file.tagNames.length > 1">
-                              <div class="tag" data-toggle="tooltip" data-placement="bottom"  title="{{file.tagNames[1]}}">
-                                {{file.tagNames[1] | slice:0:5}} <span *ngIf="file.tagNames[1]?.length>5">..</span>
-                              </div>
+                            <ng-container *ngIf="file.tagNames?.length > 1" >
+                            <span class="tag-dots" data-toggle="tooltip" data-placement="bottm"
+                              title="{{file.toolTipTagNames}}" style="font-size: 12px;
+                              padding-left: 4px;">more..</span>
                             </ng-container>
-                            <span *ngIf="file.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="bottm"
-                              title="{{file.toolTipTagNames}}">...</span>
                           </ng-container>
                         </div>
-                        <div class="item__actions">
+                        <div class="item__actions moveLinkIcon">
                           <span> <a class="fm external-link" data-toggle="tooltip" data-placement="top" title="preview"
                               (click)="$event.stopPropagation();assetPreview(file, false)" style="left: 10px;">
                               <i class="fa fa-external-link preview-edit-color" aria-hidden="true"
@@ -402,7 +403,7 @@
                 </li>
               </ul>
             </div>
-            <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8" style="margin-top: 20px;">
+            <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8 " style="margin-top: 20px;">
               <app-pagination [pagination]="assetPagination" (notifyParent)="setAssetPage($event)"
                 (notifyParentDropDown)="listAssets($event)" [hidden]="assetLoader.isLoading">
               </app-pagination>
@@ -427,9 +428,12 @@
       <div *ngIf="!isGroupOrCompanyValid" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center" style="margin: 5px;">
         <span class="required">{{groupOrCompanyErrorMessage}}</span>
       </div>
-      <app-tracks-play-book-partner-company-and-lists [inputId]="tracksPlayBook.id" [companyId]="loggedInUserCompanyId"
+      <app-tracks-play-book-partner-company-and-lists *ngIf="!trackOrPlaybookPublishEmailNotificationLoader" 
+        [inputId]="tracksPlayBook.id" [companyId]="loggedInUserCompanyId"
         [moduleName]="'lms'" [selectedPartnerGroupIds]="tracksPlayBook.groupIds"
-        [selectedTeamMemberIds]="tracksPlayBook.userIds" [selectedPartnershipIds]="tracksPlayBook.partnershipIds"
+        [selectedTeamMemberIds]="tracksPlayBook.userIds" 
+        [selectedPartnershipIds]="tracksPlayBook.partnershipIds"
+        [isTrackOrPlaybookPublishedEmailNotification]="isTrackOrPlaybookPublishedEmailNotification"
         (notifyParentComponent)="changePartnerCompanyAndList($event)">
       </app-tracks-play-book-partner-company-and-lists>
       <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-3')"
@@ -464,21 +468,22 @@
           <span>Upload image</span> <input style="height: 36px;" title=" " id="custom-input" type="file"
             (change)="filenewChangeEvent($event)">
         </div>
+        <ng-template #uploadButton> 
+          <div style="position: relative;top: -5px;" class="btn Btn-Green fileinput-button-css"><span>Upload
+                   image</span>
+               <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file" (change)="filenewChangeEvent($event)">
+           </div>
+       </ng-template>
         <!-- <button style="position: relative; top: -5px; width: 118px;" class="btn green" (click)="chooseFileFromList()">Your images</button> -->
         <div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only
           images
         </div>
         <div style="position: relative; top: -5px;" *ngIf="fileSizeError" style="color:red">*File size should be less
-          than 10MB</div>
+          than or equal to 10MB</div>
         <div>
           <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }">
           </ngx-loading>
           <div [hidden]="!imageChangedEvent">
-            <!-- <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false" [onlyScaleDown]="true"
-              [roundCropper]="false" format="jpg" outputType="base64" (imageCropped)="imageCroppedMethod($event)"
-              (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()" [resizeToWidth]="1000" (preserveSize)="true"
-              (imageQuality)=0 (loadImageFailed)="loadImageFailed()" [style.display]="showCropper ? null : 'none'">
-            </image-cropper> -->
             <app-img-croppr-v2
                     [imageChangedEvent]="imageChangedEvent"
                     [maintainAspectRatio]="true"
@@ -499,7 +504,7 @@
                     </app-img-croppr-v2>
           </div>
           <div *ngIf="!imageChangedEvent">
-            <fieldset style="background: #cacaca; height: 227px; margin-bottom: 5px;">
+            <fieldset style="background: #cacaca; height: 345px; margin-bottom: 5px;">
             </fieldset>
           </div>
         </div>
@@ -610,10 +615,10 @@
                         </app-timestamp>
                       </td>
                       <td id="actions-row" style="text-align: center;">
-                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                        <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview"
                             (click)="$event.stopPropagation();previewForm(form.id)">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
+                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                           </a>
                         </div>
                       </td>
@@ -696,11 +701,11 @@
                         </div>
                       </td>
                       <td>
-                        <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom"  title="{{asset.quiz.name}}" translate>
-                          <span><strong>{{asset.quiz.name}}</strong></span>
+                        <h4 class="mt5 mb5 f-w-600" translate>
+                          <span  data-toggle="tooltip" data-placement="bottom"  title="{{asset.quiz.name}}" ><strong>{{asset.quiz.name}}</strong></span>
                         </h4>
-                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  title="{{asset.displayName}}">
-                          <span translate> Created By
+                        <h6 class="">
+                          <span data-toggle="tooltip" data-placement="bottom"  title="{{asset.displayName}}" translate> Created By
                             <strong>{{asset.quiz.createdName}}</strong></span>
                         </h6>
                       </td>
@@ -712,12 +717,12 @@
                         </app-timestamp>
                       </td>
                       <td id="actions-row " class="mActionsAlign" style="text-align: center;">
-                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                        <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewForm(asset.quiz.id)">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
+                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                           </a>
                           <a data-toggle="tooltip" data-placement="top" title="Remove" (click)="selectedQuiz(asset.quiz); validateAssets(); validateAllSteps()">
-                            <i class="fa fa-times remove-button" aria-hidden="true "></i>
+                            <i class="fa fa-times remove-button IconCustomization" aria-hidden="true "></i>
                           </a>
                         </div>
                       </td>
@@ -729,11 +734,11 @@
                         </div>
                       </td>
                       <td>
-                        <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom"  title="{{asset.dam.assetName}}" translate>
-                          <span><strong>{{asset.dam.assetName}}</strong></span>
+                        <h4 class="mt5 mb5 f-w-600"  translate>
+                          <span data-toggle="tooltip" data-placement="bottom"  title="{{asset.dam.assetName}}"><strong>{{asset.dam.assetName}}</strong></span>
                         </h4>
-                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  title="{{asset.dam.displayName}}">
-                          <span translate> Created By
+                        <h6 class="" >
+                          <span data-toggle="tooltip" data-placement="bottom"  title="{{asset.dam.displayName}}" translate> Created By
                             <strong>{{asset.dam.displayName}}</strong></span>
                         </h6>
                       </td>
@@ -745,12 +750,12 @@
                         </app-timestamp>
                       </td>
                       <td id="actions-row " class="mActionsAlign" style="text-align: center;">
-                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                        <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="assetPreview(asset.dam, true)">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
+                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                           </a>
                           <a data-toggle="tooltip" data-placement="top" title="Remove" (click)="setSelectedAsset(asset.dam); validateAssets(); validateAllSteps()">
-                            <i class="fa fa-times remove-button" aria-hidden="true "></i>
+                            <i class="fa fa-times remove-button IconCustomization" aria-hidden="true "></i>
                           </a>
                         </div>
                       </td>
@@ -843,10 +848,10 @@
                         </app-timestamp>
                       </td>
                       <td id="actions-row" style="text-align: center;">
-                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                        <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview"
                             (click)="$event.stopPropagation();previewForm(form.id)">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
+                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                           </a>
                         </div>
                       </td>
@@ -894,7 +899,7 @@
       </div>
       <div
         [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}"
-        [style.backgroundColor]="pageBackgroundColor">
+        id="form-background-image">
         <div class="modal-body">
           <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
           <div *ngIf="form.showCompanyLogo">
@@ -904,49 +909,47 @@
               alt="" />
           </div>
           <div class="vertical-center">
-            <div class="panel panel-info mFormWidth " *ngIf="!formError" [style.backgroundColor]="form.backgroundColor"
-              [style.borderColor]="form.borderColor">
-              <div *ngIf="form.showTitleHeader" class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor"
-                [style.borderColor]="form.borderColor">
+           <div class="panel panel-info mFormWidth " id="form-panel-info" *ngIf="!formError">
+              <div *ngIf="form.showTitleHeader" class="panel-heading" id="form-panel-heading">
                 <div class="panel-title form-name-wrap" data-toggle="tooltip" data-placement="bottom"  title="{{form.name}}">{{form.name}}</div>
               </div>
               <div class="panel-body" *ngIf="!formError">
-                <div class="form-name-wrap form-description" data-toggle="tooltip" data-placement="bottom" title="{{form.description}}" [style.color]="form.descriptionColor">{{form.description}}</div>
+                <div class="form-name-wrap form-description" data-toggle="tooltip" data-placement="bottom" title="{{form.description}}">{{form.description}}</div>
                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
-                  <div class="form-group">
+                  <div class="form-group form-custom form-placeholder">
                     <label class="control-label">
-                      <span [style.color]="form.labelColor">{{columnInfo.labelName}}</span>
+                      <span class="label-name" >{{columnInfo.labelName}}</span>
                       <span class="required" *ngIf="columnInfo.required">*</span>
                     </label>
                     <ng-container
                       *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email' || columnInfo.labelType=='number'">
-                      <input type="{{columnInfo.labelType}}" class="form-control"
+                      <input type="{{columnInfo.labelType}}" class="form-control form-placeholder"
                         placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000"
                         disabled="disabled">
                     </ng-container>
  
                     <ng-container *ngIf="columnInfo.labelType=='textarea'">
-                      <textarea rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}"
+                      <textarea rows="4" cols="4" class="form-control form-placeholder" placeholder="{{columnInfo.placeHolder}}"
                         maxlength="1000" disabled="disabled"></textarea>
                     </ng-container>
                     <!-- ---------------------------Date----------------------------- -->
                     <ng-container *ngIf="columnInfo.labelType=='date'">
-                      <app-date-picker [class.disabled]='true' [isFromForm]='true'>
+                      <app-date-picker class="form-placeholder" [class.disabled]='true' [isFromForm]='true'>
                       </app-date-picker>
                     </ng-container>
                     <!-- ---------------------------Price----------------------------- -->
                     <ng-container *ngIf="columnInfo.labelType=='price'">
                       <div class="input-group prefix">
-                        <span class="input-group-addon" style="pointer-events: none;">
+                        <span class="input-group-addon form-placeholder" style="pointer-events: none;">
                           {{columnInfo.priceSymbol}}
                         </span>
-                        <input type="number" min="0" class="form-control" disabled="disabled"
+                        <input type="number" min="0" class="form-control form-placeholder" disabled="disabled"
                           placeholder="{{columnInfo.placeHolder}}">
                       </div>
                     </ng-container>
                     <!-- ---------------------------Upload----------------------------- -->
                     <ng-container *ngIf="columnInfo.labelType=='upload'">
-                      <input type="file" class="form-control" disabled="disabled">
+                      <input type="file" class="form-control form-placeholder" disabled="disabled">
                     </ng-container>
                     <!-- ---------------------------Radio Button----------------------------- -->
                     <ng-container *ngIf="columnInfo.labelType=='radio'">
@@ -955,7 +958,7 @@
                           <label class="form-check-label" style="border:0px !important;">
                             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
                               class="form-check-input" disabled="disabled">
-                              <span [style.color]="form.labelColor">{{radioButton.name}}</span>
+                              <span class="label-name">{{radioButton.name}}</span>
                           </label>
                         </div>
         
@@ -968,7 +971,7 @@
                           <label class="form-check-label" style="border:0px !important;">
                             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
                               class="form-check-input" disabled="disabled">
-                              <span [style.color]="form.labelColor">{{checkBox.name}}</span>
+                              <span class="label-name">{{checkBox.name}}</span>
                           </label>
                         </div>
                         <!-- <br> -->
@@ -976,7 +979,7 @@
                     </ng-container>
                     <!-- ---------------------------DropDown Menu----------------------------- -->
                     <ng-container *ngIf="columnInfo.labelType=='select'">
-                      <select class="form-control">
+                      <select class="form-control form-placeholder">
                         <option *ngFor="let dropDownValue of columnInfo.dropDownChoices">
                           {{dropDownValue.name}}</option>
                       </select>
@@ -989,7 +992,7 @@
                           <label class="form-check-label" style="border:0px !important;">
                             <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}"
                               class="form-check-input" disabled="disabled">
-                              <span [style.color]="form.labelColor" class="quiz_optionname">{{choice.name}} </span>
+                              <span class="label-name quiz_optionname">{{choice.name}} </span>
 
                           </label>
                         </div>
@@ -1058,7 +1061,7 @@
                   </div>
                   <!--Filter Types---->
                   <div id="left" class="mSortAlign ml10" *ngIf="fileTypesForFilter?.length>0">
-                    <select class="form-control mDamSort"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)"style="position: relative; right: -3px;">
+                    <select class="form-control mDamSort SeclectBoxPaddingsAbj"	[(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)"style="position: relative; right: -3px;">
                       <option value="">Select Asset Type</option>
                       <option	*ngFor="let fileType of fileTypesForFilter" [ngValue]="fileType">{{fileType}}</option>
                     </select> 
@@ -1104,11 +1107,11 @@
                         </div>
                       </td>
                       <td>
-                        <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom"  title="{{asset.assetName}}" translate>
-                          <span><strong>{{asset.assetName}}</strong></span>
+                        <h4 class="mt5 mb5 f-w-600"  translate>
+                          <span data-toggle="tooltip" data-placement="bottom"  title="{{asset.assetName}}"><strong>{{asset.assetName}}</strong></span>
                         </h4>
-                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  title="{{asset.displayName}}">
-                          <span translate> Created By
+                        <h6 class="" >
+                          <span data-toggle="tooltip" data-placement="bottom"  title="{{asset.displayName}}" translate> Created By
                             <strong>{{asset.displayName}}</strong></span>
                         </h6>
                       </td>
@@ -1120,10 +1123,10 @@
                         </app-timestamp>
                       </td>
                       <td id="actions-row" style="text-align: center;">
-                        <div class="actions-block override-actions custom-width-icon" style="float: none;">
+                        <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview"
                             (click)="$event.stopPropagation();assetPreview(asset, true)">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
+                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                           </a>
                         </div>
                       </td>
@@ -1131,7 +1134,7 @@
                   </tbody>
                 </table>
               </div>
-              <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8">
+              <div *ngIf="assetPagination.pagedItems.length !== 0" class="pg8 add-contnet-poup-paddibg">
                 <app-pagination [pagination]="assetPagination" (notifyParent)="setAssetPage($event)"
                   (notifyParentDropDown)="listAssets($event)" [hidden]="assetLoader.isLoading">
                 </app-pagination>

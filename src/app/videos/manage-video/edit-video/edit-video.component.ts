@@ -153,8 +153,12 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   categoryNames: any;
   showFolderDropDown = false;
   folderId:number = 0;
-    hasShareWhiteLabeledContentAccess: any;
-    loading: boolean;
+  hasShareWhiteLabeledContentAccess: any;
+  loading: boolean;
+  /***XNFR-326****/
+  assetPublishEmailNotificationLoader = true;
+  isAssetPublishedEmailNotification = false;
+  /***XNFR-326****/
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch, public userService: UserService,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
       public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
@@ -185,10 +189,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.saveVideoFile.viewBy === 'DRAFT') {
           this.isThisDraftVideo = true;
           this.saveVideoFile.viewBy = 'PRIVATE';
-          //this.saveButtonTitle = 'Save';
           this.categories.forEach(element => { if(element.name  === 'None'){ this.saveVideoFile.categoryId = element.id; }});
       } else { this.saveButtonTitle = 'Update'; }
-      
       this.saveButtonTitle = 'Update'; 
       this.formErrors = this.videoUtilService.formErrors;
       this.defaultImagePath = this.saveVideoFile.imagePath + '?access_token=' + this.authenticationService.access_token;
@@ -460,14 +462,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       $('.h-video').remove();
       this.videoUtilService.player360VideoJsFiles();
       this.videoUtilService.video360withm3u8();
-      const str = '<video id=videoId poster=' + this.defaultImagePath + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
+      const str = '<video id=videoId muted  poster=' + this.defaultImagePath + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
       $('#newPlayerVideo').append(str);
-      this.videoPlayListSourceChange();
-      this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+      this.videoUrl = this.authenticationService.getDefaultM3U8FileForLocal(this.videoUrl);
       $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
       this.setVideoIdHeightWidth();
       const newThis = this;
-      const player = videojs('videoId').ready(function () {
+      const player = videojs('videoId',{ playbackRates: [0.5, 1, 1.5, 2] }).ready(function () {
           this.hotkeys({
               volumeStep: 0.1, seekStep: 5, enableMute: true,
               enableFullscreen: false, enableNumbers: false,
@@ -716,6 +717,8 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       $('.vjs-VR-control .vjs-control .vjs-button').css('cssText', 'color:'+this.saveVideoFile.playerColor+'!important');
       $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
       $('.vjs-VR-control .vjs-control .vjs-button enable').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+      $('.video-js .vjs-playback-rate').css('cssText', 'color:' + this.saveVideoFile.playerColor + '!important');
+
   }
   changeControllerColor(event: any, enableVideoController:boolean) {
      try{
@@ -875,15 +878,15 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   videoPlayListSourceM3U8() {
       this.videoPlayListSourceChange();
-      this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+      this.videoUrl = this.authenticationService.getDefaultM3U8FileForLocal(this.videoUrl);
       const self = this;
-      this.videoJSplayer.playlist([{ sources: [{ src: self.videoUrl, type: 'application/x-mpegURL' }] }]);
+      this.videoJSplayer.src({ src: self.videoUrl, type: 'application/x-mpegURL' });
   }
   videoPlayListSourceMP4() {
       this.videoPlayListSourceChange();
       this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
       const self = this;
-      this.videoJSplayer.playlist([{ sources: [{ src: self.videoUrl, type: 'video/mp4' }] }]);
+      this.videoJSplayer.src({ src: self.videoUrl, type: 'video/mp4' });
   }
   // default methods when component initilized
   settingDefaultImagePath(image1: boolean, image2: boolean, image3: boolean) {
@@ -1026,10 +1029,25 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.listCategories();
       /*******XNFR-255***/
       this.findShareWhiteLabelContentAccess();
+      /***XNFR-326******/
+      this.findAssetPublishEmailNotificationOption();
       } catch (error) {
           this.clientError = true;
       }
   }
+
+   /****XNFR-326*****/
+   findAssetPublishEmailNotificationOption() {
+    this.assetPublishEmailNotificationLoader = true;
+    this.authenticationService.findAssetPublishEmailNotificationOption()
+    .subscribe(
+        response=>{
+            this.isAssetPublishedEmailNotification = response.data;
+            this.assetPublishEmailNotificationLoader = false;
+        },error=>{
+            this.assetPublishEmailNotificationLoader = false;
+        });
+   }
 
   /*******XNFR-255***/
   findShareWhiteLabelContentAccess() {
@@ -1070,6 +1088,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           const callactionValue = this;
           const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
           this.videoJSplayer = videojs(document.getElementById('edit_video_player'), {
+           playbackRates: [0.5, 1, 1.5, 2],
               html5: {
                   hls: {
                       overrideNative: overrideNativeValue
@@ -1217,7 +1236,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                   });
               });
           if (this.videoFileService.actionValue === 'Save') {
-              // this.videoPlayListSourceMP4();
               this.videoPlayListSourceM3U8();
           } else {
               this.videoPlayListSourceM3U8();

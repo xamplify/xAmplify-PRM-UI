@@ -1,0 +1,38 @@
+.form-placeholder::placeholder, .form-custom .form-control, .input-group > .input-group-addon, 
+.input-group > .edit-field-prefix, .label-name, #formQuizExplanation, #formPriceField {
+  color: var(--form-label-color) !important;
+}
+
+.label-box, .form-custom .form-control, .input-group > .input-group-addon, .input-group > .edit-field-prefix,
+.panel.panel-info#form-panel-info, .score, #formPriceField {
+  border: 1px solid var(--form-border-color) !important;
+}
+
+.form-custom .form-control, .input-group .input-group-addon, 
+.input-group .edit-field-prefix, #form-background-image, #formPriceField {
+  background-color: var(--form-page-bg-color) !important;
+}
+
+.panel.panel-info#form-panel-info {
+  background-color: var(--form-bg-color) !important;
+}
+
+.score {
+  color: var(--form-title-color) !important;
+}
+
+.panel-body > .form-name-wrap, .panel-body > .name-wrap {
+  color: var(--form-description-color) !important;
+}
+
+.panel-heading#form-panel-heading {
+  background-color: var(--form-border-color) !important;
+  border-radius: 5px !important;
+  color: var(--form-title-color) !important;
+  border: 1px solid var(--form-border-color) !important;
+}
+
+.panel.panel-info#form-panel-info, .score {
+  border-radius: 5px !important;
+}
+

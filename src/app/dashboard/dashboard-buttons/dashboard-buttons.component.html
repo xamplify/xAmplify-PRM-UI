@@ -56,7 +56,7 @@
     <div class="form-row">
       <div class="form-group col-md-12">
         <button *ngIf="buttonActionType" type="submit" class="btn btn-primary"
-          [disabled]="!dashboardButton.buttonTitle || !dashboardButton.buttonLink" (click)="save()">Save</button>
+          [disabled]="!dashboardButton.buttonTitle || !dashboardButton.buttonLink || saving" (click)="save()">Save</button>
         <button *ngIf="!buttonActionType" type="submit" class="btn btn-primary"
           [disabled]="!dashboardButton.buttonTitle || !dashboardButton.buttonLink" (click)="update()">Update</button>
         <button *ngIf="!buttonActionType" type="submit" class="btn btn-danger" (click)="cancel()">Cancel</button>
@@ -82,9 +82,6 @@
           <td><span><i class="fa {{item.buttonIcon}}"></i></span>
             {{item.buttonTitle}}</td>
           <td>{{item.buttonLink}}</td>
-          <!-- <td>
-          <span><i class="fa {{item.buttonIcon}}"></i></span>
-        </td> -->
           <td>
             <div class="actions-block override-actions">
               <a (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="edit"> <i

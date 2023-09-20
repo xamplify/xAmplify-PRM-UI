@@ -57,8 +57,7 @@
 		<div style="box-shadow: none;margin-top: 14px;">
 			<table class="table-new" style="width: 100%;" height=120>
 				<tr>
-					<th class="td-new-n" rowspan="2" translate>ANONYMOUS VIEWERS
-            <!-- <span>(Views from indirect sources <br>such as social campaigns and <br>embedded videos)</span> -->
+					<th class="td-new-n" rowspan="2" translate>ANONYMOUS VIEWERS         
             <span class="tooltip-css"  data-toggle="tooltip" data-placement="bottom"  title="Views from indirect sources such as social campaigns and embedded videos">
               <i class="fa fa-question-circle circle-custome-css" ></i>
            </span>
@@ -132,8 +131,7 @@
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp uppercase" translate>VIEWING TRENDS</span>
-          <!-- <span class="caption-helper">Details on played and skipped portions of your video</span> -->
+					<span class="caption-subject font-green-sharp uppercase" translate>VIEWING TRENDS</span>      
           <span class="tooltip-css"  data-toggle="tooltip" data-placement="bottom" title="Details on played and skipped portions of your video">
             <i class="fa fa-question-circle circle-custome-css" ></i>
          </span>
@@ -206,19 +204,12 @@
 						<li><a id="delete_button" (click)="downloadFunctionality()" translate> Export To Excel </a></li>
 					</ul>
 				</div>
-      <!--   <div class="panel-title pull-right">
-					<span style="float:right; font-size: 13px;">
-					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedCampaignWatchedUsers($event.value)">
-						<option *ngFor="let sort of videoUtilService.sortMonthDates" [ngValue]="sort"> {{sort.name}} </option>
-					</select>
-				</span>
-				</div> -->
 			</div>
 			<div class="portlet-body">
 			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
 					<div class="loader"
 						style="margin-right: 10px; width: 25px; height: 25px;"></div>
-					<strong class="m5" translate>Please wait while we process your request.</strong>
+					<strong class="m5" translate style="padding-left:10px;">Please wait while we process your request.</strong>
 				</div>
           <div class="alert alert-info" *ngIf="videoLeadsDetailsPagination.pagedItems?.length == 0" translate>
             No data available
@@ -267,10 +258,6 @@
 	<div class="modal-dialog modal-lg video-modal" role="document" >
 		<div class="modal-content">
 			<div class="modal-header">
-				<!-- <button type="button" class="close" data-dismiss="modal" (click)="clearPaginationValues()"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button> -->
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
 				<h4 class="modal-title" style="text-align: center" translate>Viewer Details</h4>
 				<div class="btn-group pull-right gear-icon" style="margin-top: 4px; cursor:pointer;">
@@ -286,7 +273,7 @@
 			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
 					<div class="loader"
 						style="margin-right: 10px; width: 25px; height: 25px;"></div>
-					<strong class="m5" translate>Please wait while we process your request.</strong>
+					<strong class="m5" translate style="padding-left:10px;">Please wait while we process your request.</strong>
 				</div>
 				<div class="row">
 					<div class="table-responsive" style="padding: 0px 7px;">
@@ -306,7 +293,6 @@
 									<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
-									<!-- <td class="center">{{item.videoTitle}}</td> -->
 									<td class="center">{{item.campaignName }}</td>
 									<td class="center">
 									<app-timestamp [dateAndTime]="item.date"> </app-timestamp>
@@ -328,7 +314,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()" translate>Close</button>
+				<button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="clearPaginationValues()" translate>Close</button>
 			</div>
 		</div>
 	</div>
@@ -341,10 +327,6 @@
 	<div class="modal-dialog modal-lg video-modal" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<!-- <button type="button" class="close" data-dismiss="modal" (click)="clearPaginationValues()"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button> -->
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
 				<h4 class="modal-title m0 center" translate>Video Watched Completely Details</h4>
 				<div class="btn-group pull-right gear-icon" style="margin-top:4px; cursor:pointer;;margin-top:4px;">
@@ -360,7 +342,7 @@
 			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
 					<div class="loader"
 						style="margin-right: 10px; width: 25px; height: 25px;"></div>
-					<strong class="m5" translate>Please wait while we process your request.</strong>
+					<strong class="m5" translate style="padding-left:10px;">Please wait while we process your request.</strong>
 				</div>
 				<div class="row">
 					<div *ngIf="watchedFullyReportData?.length < 1" class="col-md-9 alert alert-info m0" style="width: 98%;position: relative;right: -10px;">
@@ -405,7 +387,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()" translate> Close</button>
+				<button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="clearPaginationValues()" translate> Close</button>
 			</div>
 		</div>
 	</div>
@@ -417,10 +399,6 @@
 	<div class="modal-dialog video-modal" role="document" >
 		<div class="modal-content">
 			<div class="modal-header">
-				<!-- <button type="button" class="close" data-dismiss="modal"
-					aria-label="Close" >
-					<span aria-hidden="true">&times;</span>
-				</button> -->
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
 				<h4 align="center" class="m0" translate>Total Minutes Watched By Top Recipients</h4>
 				<div class="btn-group pull-right gear-icon" style="margin-top: 10px; cursor:pointer; margin-right:-15px;">
@@ -436,7 +414,7 @@
 			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
 					<div class="loader"
 						style="margin-right: 10px; width: 25px; height: 25px;"></div>
-					<strong class="m5" translate>Please wait while we process your request.</strong>
+					<strong class="m5" translate style="padding-left:10px;">Please wait while we process your request.</strong>
 				</div>
 				<div class="table-responsive">
 					<table class="table tgrid">
@@ -470,7 +448,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()" translate>Close</button>
+				<button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="clearPaginationValues()" translate>Close</button>
 			</div>
 		</div>
 	</div>
@@ -499,7 +477,7 @@
 					<div class="alert alert-info flex" *ngIf="isLoadingDownloadList && isVideoPlayedDurationDownload">
 					<div class="loader"
 						style="margin-right: 10px; width: 25px; height: 25px;"></div>
-					<strong class="m5" translate>Please wait while we process your request.</strong>
+					<strong class="m5" translate style="padding-left:10px;">Please wait while we process your request.</strong>
 				</div>
 					<div class="table-responsive" style="padding: 11px; margin: -3px;">
 						<table class="table tgrid" id="sample_editable_1">
@@ -516,7 +494,6 @@
 									<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
-									<!--|date:'MM/dd/yyyy @ h:mma'  -->
 									<td class="center">
 										<h5>
 										<app-timestamp [dateAndTime]="item.date"> </app-timestamp>
@@ -551,7 +528,7 @@
 					<div class="alert alert-info flex" *ngIf="isLoadingDownloadList && !isVideoPlayedDurationDownload">
 					<div class="loader"
 						style="margin-right: 10px; width: 25px; height: 25px;"></div>
-					<strong class="m5" translate>Please wait while we process your request.</strong>
+					<strong class="m5" translate style="padding-left:10px;">Please wait while we process your request.</strong>
 				</div>
 					<div class="table-responsive" style="padding: 11px; margin: -3px;">
 						<table class="table tgrid" id="sample_editable_1">
@@ -568,7 +545,6 @@
 									<td>
 										<app-user-info  [userInfo]="item"> </app-user-info>
 									</td>
-									<!--|date:'MM/dd/yyyy @ h:mma'  -->
 									<td class="center">
 										<h5>
 										<app-timestamp [dateAndTime]="item.date"> </app-timestamp>
@@ -590,7 +566,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()" translate>Close</button>
+				<button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="clearPaginationValues()" translate>Close</button>
 			</div>
 		</div>
 	</div>
@@ -617,7 +593,7 @@
 			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
 					<div class="loader"
 						style="margin-right: 10px; width: 25px; height: 25px;"></div>
-					<strong class="m5" translate>Please wait while we process your request.</strong>
+					<strong class="m5" translate style="padding-left:10px;">Please wait while we process your request.</strong>
 				</div>
 				<div class="table-responsive">
 					<table class="table tgrid">
@@ -642,7 +618,6 @@
                   </h5>
 									<h4 *ngIf="item.campaignName==null">-</h4>
 								</td>
-								<!-- |date:'MM/dd/yyyy @ h:mma' -->
 								<td class="center">
 									<h5>
 									<app-timestamp [dateAndTime]="item.time"> </app-timestamp>
@@ -661,7 +636,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()" translate>Close</button>
+				<button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="clearPaginationValues()" translate>Close</button>
 			</div>
 		</div>
 	</div>

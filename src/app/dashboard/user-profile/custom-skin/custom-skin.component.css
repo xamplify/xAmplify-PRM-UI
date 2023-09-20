@@ -641,14 +641,14 @@ label {
 
 .color-pick {
   position: absolute;
-  top: 27px;
-  left: 18px;
+  top: 28px;
+  left: 20px;
 }
 
 .color-pick-1 {
   position: absolute;
-  top: 27px;
-  left: 18px;
+  top: 28px;
+  left: 20px;
 }
 
 .input-group-addon,
@@ -1601,7 +1601,7 @@ div.switch5 > input.switch:focus ~ label:before {
   background-color: #008fd5;
   margin-left: 2px;
   margin-right: 0px;
-  color: black !important;
+  /* color: black; */
 }
 
 /* .active-tab{
@@ -1648,7 +1648,7 @@ div.switch5 > input.switch:focus ~ label:before {
 
 .main-content {
   height: 85px;
-  color: black !important;
+  /* color: black !important; */
   font-family: "Gantari", "Open Sans", sans-serif;
   font-size: 12px;
   /* display: flex;
@@ -1765,4 +1765,203 @@ input:checked + .slider:before {
   .dropdown-toggle
   > img {
   background-color: var(--page-content) !important;
+}
+.portlet-light-fields {
+  text-align: center;
+  padding: 10px !important;
+  border-radius: 5px;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  background-color: #dddddd94;
+}
+/* 18-07-2023 */
+img.gif-img-cu {
+  width: 100%;
+  height: 210px;
+  object-fit: contain;
+  border-radius: 5px;
+}
+.btn-alignment-theme {
+  padding: 6px 14px;
+  font-size: 14px;
+  border-radius: 4px;
+  margin: 0 auto;
+  display: block;
+}
+
+/* 19-07-2023 */
+.bg-color-for-card {
+  border-radius: 5px;
+  border: 1px solid rgba(221, 221, 221, 0.87);
+  background: #f1f5f9;
+  padding-top: 8px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  height: 306px;
+}
+.rowpadding {
+  padding: 10px 0px;
+}
+.cardleft-paddingzero {
+  padding-right: 0px !important;
+}
+.bg-color-for-card1 {
+  border-radius: 5px;
+  border: 1px solid rgba(221, 221, 221, 0.87);
+  background: #f1f5f9;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 0px;
+  padding-left: 10px;
+  height: 306px;
+}
+p.layoutcontent {
+  color: #333;
+}
+
+.bg-color-for-secondcard {
+  border-radius: 5px;
+  border: 1px solid rgba(221, 221, 221, 0.87);
+  background: #f1f5f9;
+  padding-top: 8px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+.bg-color-for-secondcard1 {
+  border-radius: 5px;
+  border: 1px solid rgba(221, 221, 221, 0.87);
+  background: #f1f5f9;
+  padding: 10px;
+}
+.sectiontwo-card {
+  padding: 20px 0px;
+}
+.padd-cu {
+  padding: 0px 2px;
+}
+.alignmiddlebtn {
+  margin: 24px 15px !important;
+}
+
+.bg-color-for-thirdcard {
+  border-radius: 5px;
+  border: 1px solid rgba(221, 221, 221, 0.87);
+  background: #f1f5f9;
+  padding-top: 8px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+.bg-color-for-thirdcard1 {
+  border-radius: 5px;
+  border: 1px solid rgba(221, 221, 221, 0.87);
+  background: #f1f5f9;
+  padding: 10px;
+}
+.bg-color-for-footercard {
+  border-radius: 5px;
+  border: 1px solid rgba(221, 221, 221, 0.87);
+  background: #f1f5f9;
+  padding-top: 8px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  height: 250px;
+}
+.bg-color-for-footercard1 {
+  border-radius: 5px;
+  border: 1px solid rgba(221, 221, 221, 0.87);
+  background: #f1f5f9;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 0px;
+  padding-left: 10px;
+  height: 250px;
+}
+
+@media (min-width: 1000px) and (max-width: 1200px) {
+  .form-group label {
+    font-size: 12px;
+  }
+  p.layoutcontent {
+    font-size: 13px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .color-pick {
+    position: absolute;
+    top: 31px;
+    left: 20px;
+  }
+  .color-pick-1 {
+    position: absolute;
+    top: 31px;
+    left: 20px;
+  }
+}
+
+@media (min-width: 300px) and (max-width: 767px) {
+  .layout-cu-paddings {
+    margin-top: 15px;
+    padding: 0px;
+  }
+  .sectiontwo-card {
+    padding: 10px 0px;
+  }
+  .alignmiddlebtn {
+    float: left !important;
+    margin-top: 0px !important;
+    margin-right: 0px !important;
+    margin-bottom: 14px !important;
+    margin-left: 0px !important;
+  }
+  .color-pick {
+    position: absolute;
+    top: 31px;
+    left: 20px;
+  }
+  .color-pick-1 {
+    position: absolute;
+    top: 31px;
+    left: 20px;
+  }
+  .active-tab-anchor-text {
+    padding: 5px 8px;
+  }
+  .text-white {
+    padding: 5px 8px;
+  }
+}
+.bg-color-for-card {
+  height: auto;
+  border: none !important;
+}
+.bg-color-for-footercard {
+  height: auto;
+  border: none !important;
+}
+.bg-color-for-footercard2 {
+  height: 250px;
+  border: none !important;
+  border-radius: 5px;
+  border: 1px solid rgba(221, 221, 221, 0.87);
+  background: #f1f5f9;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+.cardfotter-toggleon {
+  background: #f1f5f9;
+  padding: 10px 0px;
+  border-radius: 5px;
+  border: 1px solid #dddddda1;
+  margin-top: 25px !important;
+  margin-right: -15px !important;
+  margin-bottom: 10px !important;
+  margin-left: -15px !important;
 }

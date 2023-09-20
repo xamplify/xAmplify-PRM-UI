@@ -1,0 +1,8 @@
+@media only screen and (max-width:600px){
+    .mb_height{
+     height:auto!important;
+    }
+    .pt_8{
+     padding-top: 8px;
+    }
+}

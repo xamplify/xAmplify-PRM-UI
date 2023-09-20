@@ -149,7 +149,7 @@
 									 </switch>
 								  </div>
 								  <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-									 <span style="cursor: pointer;color: #54a7e9;" title="Push your leads into marketo">
+									 <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="Push your leads into marketo">
 									 <i class="fa fa-question-circle" style="font-size: 20px;float: left;margin: -18px 0 0 0px;"></i>
 									 </span>
 								  </div>
@@ -174,7 +174,7 @@
 			 </div>
 		  </div>
 		  <button *ngIf="campaignType=='sms'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green"
-		  (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid">Next</button>
+		  (click)="resetActive($event, 40, 'step-4');" data-toggle="tooltip" data-placement="bottom" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid">Next</button>
 	</div>
 	</form>
  </div>
@@ -235,13 +235,13 @@
 								  name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)">
 							   </div>
 							   <div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
-								  <input type="checkbox" disabled="disabled" title="Contacts are in progress">
+								  <input type="checkbox" disabled="disabled" data-toggle="tooltip" data-placement="bottom" title="Contacts are in progress">
 							   </div>
 							</td>
-							<td class="text-center" *ngIf="contacts.name?.length>50" title="{{contacts.name}}">
+							<td class="text-center" *ngIf="contacts.name?.length>50" data-toggle="tooltip" data-placement="bottom" title="{{contacts.name}}">
 							   {{contacts.name | slice:0:50}}...
 							</td>
-							<td class="text-center" *ngIf="contacts.name?.length<=50" title="{{contacts.name}}">
+							<td class="text-center" *ngIf="contacts.name?.length<=50" data-toggle="tooltip" data-placement="bottom" title="{{contacts.name}}">
 							   {{contacts.name}}
 							</td>
 							<td *ngIf="showContactType">
@@ -339,21 +339,21 @@
 													</div>
 													<div class="item__content">
 													   <div class="flex-row">
-														  <span class="item__name" style="float:left"
+														  <span class="item__name" style="float:left" data-toggle="tooltip" data-placement="bottom"
 															 [title]="campaign.emailTemplate.name"><b>{{campaign.emailTemplate.name |slice:0:15}}</b><b *ngIf="campaign.emailTemplate?.name?.length>15">...</b>
 														  </span>
-														  <span lass="item__name" title="created on" style="float:left">
+														  <span lass="item__name" data-toggle="tooltip" data-placement="bottom" title="created on" style="float:left">
 														  <span><app-timestamp [isOnlyDate]="true"
 														  [dateAndTime]="campaign?.emailTemplate?.createdDate">
 														  </app-timestamp></span>
 														  </span>
 														  <ng-container *ngIf="emailTemplate?.type?.toLocaleString()!='PARTNER'">
-															 <span style="float:left"  title="{{campaign.emailTemplate.createdBy}}">
+															 <span style="float:left"  data-toggle="tooltip" data-placement="bottom" title="{{campaign.emailTemplate.createdBy}}">
 															 <b>By:</b> <span>{{campaign.emailTemplate.createdBy|slice:0:12}}<span *ngIf="campaign.emailTemplate.createdBy?.length>12">...</span></span>
 															 </span>
 														  </ng-container>
 														  <ng-container *ngIf="emailTemplate?.type?.toLocaleString()=='PARTNER'">
-															 <span style="float:left" title="{{campaign.emailTemplate.vendorName}}">
+															 <span style="float:left" data-toggle="tooltip" data-placement="bottom" title="{{campaign.emailTemplate.vendorName}}">
 															 <b>By:</b>  <span>{{campaign.emailTemplate.vendorName|slice:0:12}}<span *ngIf="campaign.emailTemplate.vendorName?.length>12">...</span></span>
 															 </span>
 														  </ng-container>
@@ -392,23 +392,23 @@
 										   </div>
 										   <div class="item__content">
 											  <div class="flex-row">
-												 <span class="item__name" style="float:left"
+												 <span class="item__name" style="float:left" data-toggle="tooltip" data-placement="bottom"
 													[title]="emailTemplate.name"><b>{{emailTemplate.name |slice:0:17}}</b><b *ngIf="emailTemplate?.name?.length>15">...</b>
 												 </span>
 												 <br>
-												 <span lass="item__name" title="created on" style="float:left">                       
+												 <span lass="item__name" data-toggle="tooltip" data-placement="bottom" title="created on" style="float:left">                       
 												 <span><app-timestamp [isOnlyDate]="true"
 												 [dateAndTime]="emailTemplate.createdDate">
 												 </app-timestamp></span>
 												 </span>
 												 <br>
 												 <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-													<span  style="float:left" title="{{emailTemplate.createdBy}}">
+													<span  style="float:left" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.createdBy}}">
 													<b>By:</b><span>{{emailTemplate.createdBy|slice:0:12}}<span *ngIf="emailTemplate.createdBy?.length>12">...</span></span>
 													</span>
 												 </ng-container>
 												 <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-													<span style="float:left" title="{{emailTemplate.vendorName}}">
+													<span style="float:left" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.vendorName}}">
 													<b>By</b><span>{{emailTemplate.vendorName|slice:0:12}}<span *ngIf="emailTemplate.vendorName?.length>12">...</span></span>
 													</span>
 												 </ng-container>
@@ -443,7 +443,7 @@
 					  </div>
 					  <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')">Previous</button>
 					  <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate"
-					  title="Please Select Email Template">Next</button>
+					 >Next</button>
 				   </div>
 				</form>
 			 </div>
@@ -491,11 +491,11 @@
 								  <img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png">
 							   </div>
 							   <div class="profile-name">
-								  <h5 *ngIf="socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.profileName}}"
+								  <h5 *ngIf="socialStatusProvider.socialConnection.profileName" data-toggle="tooltip" data-placement="bottom" title="{{socialStatusProvider.socialConnection.profileName}}"
 									 class="heading-primary">
 									 <b>{{socialStatusProvider.socialConnection.profileName}}</b>
 								  </h5>
-								  <h5 *ngIf="!socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
+								  <h5 *ngIf="!socialStatusProvider.socialConnection.profileName" data-toggle="tooltip" data-placement="bottom" title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
 									 class="heading-primary">
 									 <b>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</b>
 								  </h5>
@@ -530,7 +530,7 @@
 						 <div id="main_video_src" [hidden]="campaignType!='video'"></div>
 						 <div class="pricing hover-effect" [hidden]="campaignType=='video'">
 							<div class="pricing-head">
-							   <h4 title="{{campaign.campaignName}}">Campaign name: {{campaign.campaignName | slice:0:30}}<span *ngIf="campaign.campaignName?.length>30">...</span></h4>
+							   <h4 data-toggle="tooltip" data-placement="bottom" title="{{campaign.campaignName}}">Campaign name: {{campaign.campaignName | slice:0:30}}<span *ngIf="campaign.campaignName?.length>30">...</span></h4>
 							   <h4><img style="margin: 0 auto;height: 106px;" alt="E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png"></h4>
 							</div>
 						 </div>
@@ -556,7 +556,7 @@
 							<td width="55%">
 							   <ng-container *ngFor="let contactList of userListDTOObj;let i=index;">
 								  <div>
-									 <a *ngIf="i<2" (click)="loadUsers(contactList.id,contactsUsersPagination,contactList.name)" title="{{contactList.name}}">
+									 <a *ngIf="i<2" (click)="loadUsers(contactList.id,contactsUsersPagination,contactList.name)" data-toggle="tooltip" data-placement="bottom" title="{{contactList.name}}">
 									 <span *ngIf="contactList.name">  {{contactList.name | slice:0:40}}<span *ngIf="contactList.name?.length>40">...</span></span>
 									 </a>
 								  </div>
@@ -580,7 +580,7 @@
 							   <ng-container class="h4-text" *ngIf="campaignType == 'regular'">Email Template</ng-container>
 							</td>
 							<td width="55%">
-							   <a (click)="getEmailTemplatePreview(emailTemplate)" title="{{emailTemplate.name}}">
+							   <a (click)="getEmailTemplatePreview(emailTemplate)" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.name}}">
 								  <ng-container *ngIf="emailTemplate.name?.length>50">
 									 {{emailTemplate.name | slice:0:50}}...
 								  </ng-container>
@@ -743,15 +743,15 @@
 													   </div>
 													   <div class="item__content" style="text-align: left;">
 														  <div class="flex-row">
-															 <span class="item__name"
+															 <span class="item__name" data-toggle="tooltip" data-placement="bottom"
 																[title]="reply.emailTemplate.name"><b>{{reply.emailTemplate.name |slice:0:15}}</b><b *ngIf="reply.emailTemplate?.name?.length>15">...</b>
 															 </span>
-															 <span lass="item__name" title="created on" style="float:left">
+															 <span lass="item__name" data-toggle="tooltip" data-placement="bottom" title="created on" style="float:left">
 															 <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="reply.emailTemplate.createdDate">
 															 </app-timestamp></span>
 															 </span>
-															 <span *ngIf="reply.emailTemplate.createdBy?.length>20" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy|slice:0:20}}....</span>
-															 <span *ngIf="reply.emailTemplate.createdBy?.length<=20" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy}}</span>
+															 <span *ngIf="reply.emailTemplate.createdBy?.length>20" data-toggle="tooltip" data-placement="bottom" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy|slice:0:20}}....</span>
+															 <span *ngIf="reply.emailTemplate.createdBy?.length<=20" data-toggle="tooltip" data-placement="bottom" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy}}</span>
 															 <div class="item__actions">
 																<span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
 																   data-toggle="tooltip" data-placement="top"
@@ -778,7 +778,7 @@
 													<input *ngIf="!emailTemplate.draft" type="checkbox" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}"
 													(click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)"
 													[checked]="emailTemplate.id == reply.selectedEmailTemplateId">
-													<input *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="checkbox" name="reply-email-template">
+													<input *ngIf="emailTemplate.draft" data-toggle="tooltip" data-placement="bottom" title="draft template cannot be selected" disabled="disabled" type="checkbox" name="reply-email-template">
 													</label>
 													</span>
 													<span class="ng-scope">
@@ -794,7 +794,7 @@
 													   <span *ngIf="emailTemplate.name?.length>18">...</span></b>
 													   </span>
 													   <div class="item__last-modified">
-														  <span [title]="emailTemplate.createdBy"><span>By: </span>{{emailTemplate.createdBy | slice:0:15}}
+														  <span data-toggle="tooltip" data-placement="bottom" [title]="emailTemplate.createdBy"><span>By: </span>{{emailTemplate.createdBy | slice:0:15}}
 														  <span *ngIf="emailTemplate.createdBy?.length>15">...</span>
 														  </span>
 													   </div>
@@ -965,15 +965,15 @@
 													   </div>
 													   <div class="item__content" style="text-align:left">
 														  <div class="flex-row">
-															 <span class="item__name"
+															 <span class="item__name" data-toggle="tooltip" data-placement="bottom"
 																[title]="url.emailTemplate.name"><b>{{url.emailTemplate.name |slice:0:15}}</b><b *ngIf="url.emailTemplate?.name?.length>15">...</b>
 															 </span>
-															 <span lass="item__name" title="created on" style="float:left">
+															 <span lass="item__name" data-toggle="tooltip" data-placement="bottom" title="created on" style="float:left">
 															 <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="url.emailTemplate.createdDate">
 															 </app-timestamp></span>
 															 </span>
-															 <span *ngIf="url.emailTemplate.createdBy?.length>20" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy|slice:0:20}}....</span>
-															 <span *ngIf="url.emailTemplate.createdBy?.length<=20" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy}}</span>
+															 <span *ngIf="url.emailTemplate.createdBy?.length>20" data-toggle="tooltip" data-placement="bottom" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy|slice:0:20}}....</span>
+															 <span *ngIf="url.emailTemplate.createdBy?.length<=20" data-toggle="tooltip" data-placement="bottom" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy}}</span>
 															 <div class="item__actions">
 																<span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
 																   data-toggle="tooltip" data-placement="top"
@@ -999,7 +999,7 @@
 													<input *ngIf="!emailTemplate.draft" type="checkbox" name="url-email-template" [value]="emailTemplate.id" id="url-{{i}}-{{emailTemplate.id}}"
 													(click)="setClickEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)"
 													[checked]="emailTemplate.id == url.selectedEmailTemplateId">
-													<input *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="checkbox" name="url-email-template">
+													<input *ngIf="emailTemplate.draft" data-toggle="tooltip" data-placement="bottom" title="draft template cannot be selected" disabled="disabled" type="checkbox" name="url-email-template">
 													</label>
 													</span>
 													<span class="ng-scope"> <a class="item__preview item__preview--image img-container custom"
@@ -1015,7 +1015,7 @@
 													   <span *ngIf="emailTemplate.name?.length>18">...</span></b>
 													   </span>
 													   <div class="item__last-modified">
-														  <span [title]="emailTemplate.createdBy"><span>By: </span>{{emailTemplate.createdBy | slice:0:15}}
+														  <span data-toggle="tooltip" data-placement="bottom" [title]="emailTemplate.createdBy"><span>By: </span>{{emailTemplate.createdBy | slice:0:15}}
 														  <span *ngIf="emailTemplate.createdBy?.length>15">...</span>
 														  </span>
 													   </div>
@@ -1157,7 +1157,7 @@
 			 <i class="fa fa-times"></i>
 			 </button>
 			 <div>
-				<h4 class="modal-title" id="user-list-name" align="center"  title="{{listName}}">
+				<h4 class="modal-title" id="user-list-name" align="center" data-toggle="tooltip" data-placement="bottom"  title="{{listName}}">
 				   <b>{{listName|slice:0:20}}<span *ngIf="listName?.length>20">...</span></b>
 				</h4>
 			 </div>

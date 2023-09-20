@@ -25,6 +25,7 @@ export class SelectLandingPageComponent implements OnInit, OnDestroy {
     searchKey = "";
     selectedLandingPageTypeIndex = 0;
     loggedInAsSuperAdmin = false;
+    mergeTagForGuide:any
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -36,6 +37,7 @@ export class SelectLandingPageComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.selectedLandingPageTypeIndex = 0;
+        this.mergeTagForGuide = 'designing_pages';
         this.pagination.filterKey = "All";
         this.listLandingPages(this.pagination);
     }

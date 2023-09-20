@@ -1,15 +1,15 @@
 .frame {
-    height: 100px;      /* equals max image height */
-    line-height: 100px;
-    width: 100%;
-}    
-   
-.deal-details {
-    margin: auto;
-    width: 87%;
-    padding: 0px;
-    background-color: white;
+  height: 100px;
+  /* equals max image height */
+  line-height: 100px;
+  width: 100%;
 }
-.bg-color{
-    background: #f1f1f1;
+.deal-details {
+  margin: auto;
+  width: 87%;
+  padding: 0px;
+  background-color: white;
+}
+.bg-color {
+  background: #f1f1f1;
 }

@@ -1,4 +1,4 @@
-<div class="page-content-wrapper">
+<div class="page-content-wrapper" *ngIf="!isReload">
     <div class="page-content" [style.background-color]="refService.pageContnetBgColor">
         <div class="my-container">
             <ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -9,7 +9,7 @@
                     <i class="fa fa-home"></i><a [routerLink]="refService.homeRouter">Home</a><i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <a routerLink="{{routerLink}}">Manage Templates</a><i class="fa fa-angle-right"></i>
+                    <a (click)="navigateToManageSection()">Manage Templates</a><i class="fa fa-angle-right"></i>
                 </li>
                 <li><a>Update Template</a></li>
             </ul>
@@ -17,21 +17,21 @@
         <div class="portlet light">
             <div class="portlet-body">
                 <form>
-                    <div class="col-md-12">
-                        <div class="col-md-2" style="font-weight: 500;font-size: 17px;margin-bottom: 34px;padding: 2px;">Name</div>
-                        <div class="col-md-4">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="font-weight: 500;font-size: 17px;margin-bottom:21px;padding: 2px;">Name</div>
+                        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
                             <input type="text" class="form-control" id="templateName" [(ngModel)]="model.templateName" name="templateName" minlength="1" maxlength="50" placeholder="Template name" #templateName="ngModel" (ngModelChange)="checkUpdatedAvailableNames($event)">
                             <span *ngIf="invalidTemplateName" style="color:red">Name is required</span>
                             <span *ngIf="duplicateTemplateName && !invalidTemplateName" style="color:red">Name already exists.</span>
                             <span *ngIf="isVideoTagError" style="color:red">{{videoTagsError}}</span>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-xs-4 col-sm-2 col-md-6 col-lg-6">
                             <button type="button" class="btn btn-info" (click)="update()" [disabled]="duplicateTemplateName ||invalidTemplateName">Update</button>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <div class="col-md-2" id="templateTypeDiv">Folder</div>
-                        <div class="col-md-4">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb10">
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 m0" id="templateTypeDiv">Folder</div>
+                        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
                             <div>
                                 <select class="form-control" id="uploadType" [(ngModel)]="model.categoryId" name="uploadType" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectCategory($event)">
 									<option *ngFor="let category of categoryNames" [value]="category.id">
@@ -47,8 +47,7 @@
                             <div>
                                 <select class="form-control" id="uploadType" [(ngModel)]="model.uploadType" name="uploadType" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectUploadType($event)">
 							<option [value]="'REGULAR'" selected>REGULAR</option>
-							<option [value]="'VIDEO'">VIDEO</option>
-							<!-- <option [value]="'EVENT'">EVENT</option> -->
+							<option [value]="'VIDEO'">VIDEO</option>							
 						</select>
                             </div>
                         </div>
@@ -59,13 +58,13 @@
                     <div *ngIf="!authenticationService?.module?.isMarketingCompany">
                         <label for="info"><font style="color: red;">Copy the below image tag link to enable co-branding.</font></label>
                         <button type="button" class="btn-xs btn-success" (click)="copyLink(coBrandingTag,'co-branding-copy')">Copy Link</button>
-                        <textarea class="form-control" style="cursor: default;resize: none;" id="info" readonly="readonly" rows="1" #coBrandingTag>{{refService.coBrandingTag}}</textarea>
+                        <textarea class="form-control" style="cursor: default;resize: none;margin-top: 11px;" id="info" readonly="readonly" rows="1" #coBrandingTag>{{refService.coBrandingTag}}</textarea>
                         <font class="success" id="co-branding-copy" style="display:none"><b>Copied successfully<i class="fa fa-check"></i></b></font>
                     </div>
                     <div *ngIf="emailTemplateService.emailTemplate.videoTemplate || model.uploadType=='VIDEO'" class="form-group" id="infoDiv">
                         <br><label for="info"><font style="color: red;">Your HTML template must include the code below.</font></label>
                         <button type="button" class="btn-xs btn-success" (click)="copyLink(videoTag,'video-tag-copy')">Copy Link</button>
-                        <textarea class="form-control" style="cursor: default;resize: none;" id="info" readonly="readonly" rows="1" #videoTag>{{refService.videoTag}}</textarea>
+                        <textarea class="form-control" style="cursor: default;resize: none;margin-top: 11px;" id="info" readonly="readonly" rows="1" #videoTag>{{refService.videoTag}}</textarea>
                         <font class="success" id="video-tag-copy" style="display:none"><b>Copied successfully<i class="fa fa-check"></i></b></font>
                     </div>
                     <br>
@@ -73,15 +72,9 @@
                         <label class="control-label col-sm-5">Enable Co-Branding Logo</label>
                         <switch [status]="coBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="setCoBrandingLogo($event)">
                         </switch>
-                    </div>
-                    <!-- <div>
-					 		<br><label for="info"><font style="color: red;">**Be sure to use these merge tags if you�re doing a mail merge.</font></label>
-						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{refService.emailMergeTags}}</textarea>
-					</div> -->
-
+                    </div>                  
                 </div>
                 <div class="col-xs-12">
-                    <!--  -->
                     <ckeditor [(ngModel)]="model.content" name="subject"></ckeditor>
                 </div>
                 <div class="clearfix" style="margin: 5px;"></div>

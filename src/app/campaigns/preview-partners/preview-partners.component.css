@@ -7,3 +7,12 @@
 #history-tr {
   background-color: #d3d3d317;
 }
+.prt_caption{
+  position: relative;
+  top:5px;
+}
+@media screen and (max-width:578px){
+  .mb-display{
+    display: flex!important;
+  }
+}

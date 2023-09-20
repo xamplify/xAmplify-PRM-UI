@@ -31,7 +31,7 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
   loggedInUserId = 0;
   UnPublishedId =0 ;
   showFolderView = true;
-  selectedOption : string ;
+  selectedOption : boolean ;
   message = "";
   customResponse: CustomResponse = new CustomResponse();
   modulesDisplayType = new ModulesDisplayType();
@@ -54,6 +54,8 @@ export class ManageTracksPlayBookComponent implements OnInit, OnDestroy {
 	@Input() folderListViewExpanded = false;
   titleHeader:string = "";
   suffixHeader:string = "";
+  /****XNFR-327****/
+  showRefreshNotification = false;
   constructor(private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService,
     public tracksPlayBookUtilService: TracksPlayBookUtilService, public pagerService: PagerService, private router: Router, private vanityUrlService: VanityURLService,
     public httpRequestLoader: HttpRequestLoader, public sortOption: SortOption, public logger: XtremandLogger, private utilService: UtilService, public renderer: Renderer,) {
@@ -157,12 +159,13 @@ setViewType(viewType: string) {
         if (response.statusCode == 200) {
           pagination.totalRecords = data.totalRecords;
           this.sortOption.totalRecords = data.totalRecords;
-          $.each(data.data, function (index, learningTrack) {
+          let publishingTracks = [];
+          $.each(data.data, function (_index:number, learningTrack:any) {
             learningTrack.createdDateString = new Date(learningTrack.createdTime);
             learningTrack.featuredImage = learningTrack.featuredImage + "?" + Date.now();
             let toolTipTagNames: string = "";
             learningTrack.tagNames.sort();
-            $.each(learningTrack.tagNames, function (index, tagName) {
+            $.each(learningTrack.tagNames, function (index:any, tagName:string) {
               if (index > 1) {
                 if(toolTipTagNames.length > 0){
                   toolTipTagNames = toolTipTagNames + ", " + tagName ;
@@ -172,7 +175,11 @@ setViewType(viewType: string) {
               }
             });
             learningTrack.toolTipTagNames = toolTipTagNames;
+            if(learningTrack.publishingOrWhiteLabelingInProgress){
+              publishingTracks.push(learningTrack);
+            }
           });
+          this.showRefreshNotification = publishingTracks.length>0;
           pagination = this.pagerService.getPagedItems(pagination, data.data);
         }
         this.referenceService.loading(this.httpRequestLoader, false);
@@ -335,7 +342,7 @@ setViewType(viewType: string) {
   unPublishAction(id: number, isPublish: boolean,){
     if(this.UnPublishedId != 0){
       this.ChangePublish(this.UnPublishedId, isPublish);
-      this.selectedOption = null ;
+      this.selectedOption = false ;
       this.closePopUp()
       
     }
@@ -344,7 +351,8 @@ setViewType(viewType: string) {
 
   closePopUp(){
     $('#unpublished-modal').modal('hide');
-    this.selectedOption = null ;
+    $('input[name="rdaction"]').prop('checked', false);
+    this.selectedOption = false;
     this.notifyParentComponent.emit();
   }
 

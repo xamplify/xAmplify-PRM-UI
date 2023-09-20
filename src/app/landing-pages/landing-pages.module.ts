@@ -12,12 +12,13 @@ import { ManageLandingPageComponent } from './manage-landing-page/manage-landing
 import { LandingPageAnalyticsComponent } from './landing-page-analytics/landing-page-analytics.component';
 import { LandingPageAnalyticsUtilComponent } from './landing-page-analytics-util/landing-page-analytics-util.component';
 import { PartnerLandingPageComponent } from './partner-landing-page/partner-landing-page.component';
+import { PendingChangesGuard } from 'app/component-can-deactivate';
 
 @NgModule( {
     imports: [
         CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, LandingPagesRoutingModule
     ],
     declarations: [AddLandingPageComponent, SelectLandingPageComponent, ManageLandingPageComponent, LandingPageAnalyticsComponent, LandingPageAnalyticsUtilComponent, PartnerLandingPageComponent],
-    providers: [LandingPageService]
+    providers: [LandingPageService,PendingChangesGuard]
 })
 export class LandingPagesModule { }

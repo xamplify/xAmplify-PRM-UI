@@ -37,13 +37,13 @@
                         <i class="fa" [ngClass]="{'fa-check': userDefaultPage.responseType == 'SUCCESS',
                             'fa-exclamation': userDefaultPage.responseType == 'ERROR'}" aria-hidden="true"
                             style="padding-right: 7px;"></i>
-                        <span>{{userDefaultPage.responseMessage}}</span>
+                        <span class="msg-color">{{userDefaultPage.responseMessage}}</span>
                     </h4>
                 </div>
             </div>
             <div class="page-bar p0" [hidden]="ngxLoading">
                 <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
-                <div [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-md-11 col-xs-11 col-sm-11':'col-md-5 col-xs-5 col-sm-5'">
+                <div [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-md-11 col-xs-9 col-sm-11':'col-md-5 col-xs-5 col-sm-5'">
                     <h4 title="{{logedInCustomerCompanyName}}"  class="welcome-header text-overflow">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
                 </div>
                 <div class="col-md-6 col-xs-6 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
@@ -57,6 +57,7 @@
                 </div>
                 <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
                 && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
+                <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
                 </div>
             </div>
         </div>
@@ -150,8 +151,7 @@
                                             </span>
                                         </div>
                                         <div class="portlet-title">
-                                            <div class="caption">
-                                                <!-- Remove color: #909090 !important; -->
+                                            <div class="caption">                                              
                                                 <h3 class="caption-subject camp-title-color" style="margin: 0;"
                                                     title="{{campaign[1]}}">
                                                     {{campaign[1] | slice: 0: 23}}<span
@@ -304,10 +304,7 @@
                 <div class="portlet-title" style="min-height: 0px;">
                     <div class="caption">
                         <span class="caption-subject" translate>High Level Analytics</span>
-                    </div>
-                    <!-- <span *ngIf="!downloadRequestButtonClicked"  class="close-circle" (click)="saveDownloadRequest(false);downloadRequestButtonClicked = true">
-                        <i class="fa fa-download p10" aria-hidden="true"></i>
-                    </span> -->
+                    </div>                   
                     <span data-placement="top" class="btn btn-xs  l-g-view pull-right" data-toggle="tooltip" style="margin-top: -8px;"
                     (click)="saveDownloadRequest(false);downloadRequestButtonClicked = true" *ngIf="!downloadRequestButtonClicked">
                      <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
@@ -317,13 +314,13 @@
                     <app-response-message class="pg8" [customResponse]="downloadRequestCustomResponse" *ngIf="downloadRequestCustomResponse.isVisible">
                     </app-response-message>
                     <div class="row">
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" *ngIf="!(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
+                        <div class="col-xs-12 col-sm-6 col-md-5 col-lg-6" *ngIf="!(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
                         || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner) ">
                             <app-donut-pie-chart *ngIf="!authenticationService?.module?.isMarketingCompany && !ngxLoading" [applyFilter]="applyFilter"></app-donut-pie-chart> 
                             <app-horizontal-bat-chart *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-horizontal-bat-chart> 
                         </div>
                     <div [className]= "(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
-                    || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)?'col-xs-12 col-sm-12 col-md-12 col-lg-12': 'col-xs-12 col-sm-6 col-md-6 col-lg-6' " style="padding-left: 26px;padding-right: 26px;">
+                    || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)?'col-xs-12 col-sm-12 col-md-12 col-lg-12': 'col-xs-12 col-sm-6 col-md-7 col-lg-6' " style="padding-left: 26px;padding-right: 26px;">
                         <app-highlevel-analytics-detail-reports *ngIf="!ngxLoading"  [applyFilter]="applyFilter"></app-highlevel-analytics-detail-reports>
                     </div>
                     </div>
@@ -429,9 +426,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="color1 btn-campaign"
+                <button type="button" class="btn-primary"
                     (click)="validateUserCampaignReport(userCampaignReport)">Save changes</button>
-                <button type="button" class="btn-campaign btn-hvr-text" data-dismiss="modal"
+                <button type="button" class="Btn-Gray" data-dismiss="modal"
                     (click)="userCampaignReport.response = null">Close</button>
             </div>
         </div>

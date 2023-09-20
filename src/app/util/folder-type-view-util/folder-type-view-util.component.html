@@ -2,12 +2,12 @@
 <div>
 	<div class="portlet-title">
 		<div class="row" style="padding-right: 5px;">
-			<div class="col-xs-6">
+			<div class="col-xs-12 col-sm-6 col-lg-6">
 				<h4 class="pull-left m10 text-primary">
 					{{titleHeader}}</h4>
 			</div>
-			<div class="page-toolbar col-xs-6" *ngIf="!httpRequestLoader.isLoading">
-				<div class="btn-group pull-right">
+			<div class="page-toolbar col-xs-12 col-sm-6 col-lg-6" *ngIf="!httpRequestLoader.isLoading">
+				<div class="pull-right d-flex">
 					<div class="group-dropdown" style="padding-right: 4px;">
 						<button
 							[ngClass]="folderViewType=='l' ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :folderViewType == 'g' ?'fa fa-th-large btn-xs hidden-xs l-g-view':
@@ -70,7 +70,7 @@
 	</div>
 	<br>
 	<!-----------------------Folder Grid View----------------------------------------->
-	<div class="row mix-grid p10" *ngIf="folderViewType=='fg'">
+	<div class="row mix-grid p10 mt10" *ngIf="folderViewType=='fg'">
 		<app-response-message [customResponse]="customResponse"
 			*ngIf="customResponse.isVisible && !httpRequestLoader.isLoading "></app-response-message>
 		<app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
@@ -87,24 +87,13 @@
 					</div>
 					<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 align-itams">
 					<div class="bg-folder">
-					<h4 class="ellipsis align-titletext" title="{{category.name}}">
+					<h4 class="ellipsis align-titletext tab_whitespace" title="{{category.name}}">
 						{{category.name | slice:0:22}} <span
 							*ngIf="category.name?.length>22">...</span>
 					</h4>
-
-					<span class="Track-countbg" 	
-					*ngIf="pagination.categoryType == 'DAM'">
-					 Digital Assets {{category.count}}
-						</span>
-						<span class="Track-countbg" 	
-					*ngIf="pagination.categoryType == 'LEARNING_TRACK'">
-					     Tracks  {{category.count}}
-						</span>
-						<span class="Track-countbg" 	
-					*ngIf="pagination.categoryType == 'PLAY_BOOK'">
-					    Play Books {{category.count}}
-						</span>
-
+					<span class="Track-countbg">
+						{{titleHeader}} {{category.count}}
+					</span>
 
 					<h6 [title]="category.createdBy" translate>
 						By <strong>{{category.createdBy | slice:0:15}}<span
@@ -125,10 +114,11 @@
 					</h6>
 				</div>
 				</div>
-					<div class="bar barview">	
-						<a data-toggle="tooltip" data-placement="top" title="View Items"
+					<div class="bar barview full-width-folder gridIconCustomization">	
+						<a class="Iconhover" data-toggle="tooltip" data-placement="top" title="View Items"
 							(click)="viewItemsByCategoryId(category.id)"> <i
-							class="fa fa-eye color-chnage" aria-hidden="true"></i>
+							class="fa fa-eye" aria-hidden="true"></i>
+							<!-- color-chnage -->
 						</a>
 					</div>
 				</div>
@@ -140,7 +130,7 @@
 	</div>
 
 	<!-----------------------Folder List View----------------------------------------->
-	<div class="table-responsive overflow-x-hidden"
+	<div class="table-responsive overflow-x-hidden mscroll_x"
 		*ngIf="folderViewType=='fl'">
 		<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 		<table class='table tgrid table-hover table-sm' id="folder-list-view"
@@ -163,6 +153,7 @@
 				<tr id="folder-row-{{i}}" class="child-row-list-view border-cls" >
 					<td class="custom-icon-width"><a
 						(click)="$event.stopPropagation();viewFolderItems(category,i)"
+						data-toggle="tooltip" data-placement="bottom"
 						title="View Items"> <i class="fa" id="fa-folder-custom-size"
 							[ngClass]="{'fa-angle-right': !category.expanded, 'fa-angle-down': category.expanded}"
 							aria-hidden="true"> </i> <i class="fa" id="fa-folder-custom-size"
@@ -170,8 +161,9 @@
 							aria-hidden="true"> </i>
 					</a></td>
 					<td>
-						<h4 class="moreipsis" title="{{category.name}}">
-							<span>{{category.name}}</span>
+						<h4 class="">
+							<span data-toggle="tooltip" data-placement="bottom" title="{{category.name}}"
+							>{{category.name}}</span>
 						</h4>
 						<h6 class="moreipsis">
 							<span translate> Created By <strong>{{category.createdBy}}</strong></span>
@@ -190,18 +182,41 @@
 				</tr>
 				<tr [ngClass]="{'hidden': !category.expanded}"
 					id="list-folder-items">
-					<td class="td-netbg" colspan="5"><ng-container *ngIf="category.expanded">
-						<ng-container *ngIf="moduleId==roles.damId"> <app-dam-list-and-grid-view
+					<td class="td-netbg" colspan="5">
+						<!----DAM---->
+						<ng-container *ngIf="category.expanded">
+							<ng-container *ngIf="moduleId==roles.damId"> <app-dam-list-and-grid-view
+								[folderListViewCategoryId]="category.id"
+								[folderListViewExpanded]="category.expanded"
+								(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-dam-list-and-grid-view>
+							</ng-container>
+						<!----TRACKS / PLAYBOOKS---->
+						 <ng-container	*ngIf="moduleId==roles.learningTrackId || moduleId==roles.playbookId">
+							<app-manage-tracks-play-book
+								[folderListViewCategoryId]="category.id" [type]="type"
+								[folderListViewExpanded]="category.expanded"
+								(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-manage-tracks-play-book>
+						</ng-container> 
+
+						<!----Manage Campaigns---->
+						<ng-container *ngIf="moduleId==roles.campaignId">
+							 <app-campaign-list-and-grid-view
 							[folderListViewCategoryId]="category.id"
 							[folderListViewExpanded]="category.expanded"
-							(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-dam-list-and-grid-view>
-						</ng-container> <ng-container
-							*ngIf="moduleId==roles.learningTrackId || moduleId==roles.playbookId">
-						<app-manage-tracks-play-book
-							[folderListViewCategoryId]="category.id" [type]="type"
-							[folderListViewExpanded]="category.expanded"
-							(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-manage-tracks-play-book>
-						</ng-container> </ng-container></td>
+							(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-campaign-list-and-grid-view>
+						</ng-container>
+
+						<!----Email Templates---->
+						<ng-container *ngIf="moduleId==roles.emailTemplateId">
+							<app-email-templates-list-and-grid-view
+						   [folderListViewCategoryId]="category.id"
+						   [folderListViewExpanded]="category.expanded"
+						   (updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-email-templates-list-and-grid-view>
+					   </ng-container>
+
+
+					</ng-container>
+				</td>
 				</tr>
 				</ng-container>
 			</tbody>

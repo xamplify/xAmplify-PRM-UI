@@ -1,13 +1,4 @@
 <style>
-    .textCss {
-        background-color: rgba(0, 0, 0, 0.12);
-        bottom: -2px;
-        height: 1px;
-        left: 13;
-        margin: 0;
-        padding: 0;
-        width: 91%;
-    }
     
     a.disabled {
         pointer-events: none;
@@ -30,9 +21,9 @@
         opacity: 0.9;
     }
     
-    .textWhite {
+    /* .textWhite {
         color: white;
-    }
+    } */
     
     img:hover {
         -webkit-filter: grayscale(0%);
@@ -70,6 +61,7 @@
                     </button>
                 </a>
             </div>
+            <app-user-guide-help-button  [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
         </div>
         <div class="">
             <!----XNFR-222-->
@@ -82,30 +74,30 @@
                                     add your {{authenticationService?.partnerModule?.customName}}?</div>
                                 <div class="portlet-body">
                                     <div class="row">
-                                        <div class="col-xs-12 col-sm-4 col-md-4">
-                                            <button class="btn-primary btn-block" id="addContacts"
+                                        <div class="col-xs-12 col-sm-4 col-md-4 SideParddings1">
+                                            <button class="btn-primary btn-block SidePaddings" id="addContacts"
                                                 (click)="addPartnerModalOpen()"
                                                 [disabled]="selectedAddPartnerOption != 1 && selectedAddPartnerOption != 5 || disableOtherFuctionality">
-                                                <i class="fa fa-user-plus" aria-hidden="true"></i> <span
+                                                <i class="fa fa-user-plus IconTopMargin" aria-hidden="true"></i> <span
                                                     translate>One at a Time</span>
                                             </button>
                                         </div>
                                         <ng-container *ngIf="!referenceService.isMobileScreenSize()">
-                                        <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
-                                            <button class="btn-success btn-block" id="copyFromClipBoard"
+                                        <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs SideParddings2">
+                                            <button class="Btn-Green btn-block SidePaddings" id="copyFromClipBoard"
                                                 (click)="copyFromClipboard()"
                                                 [disabled]="selectedAddPartnerOption != 5">
-                                                <i class="fa fa-users" aria-hidden="true"></i> <span
+                                                <i class="fa fa-users IconTopMargin" aria-hidden="true"></i> <span
                                                     translate>Copy list from clipboard</span>
                                             </button>
                                         </div>
-                                        <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
-                                            <button class="btn-info fileinput-button btn-block"
+                                        <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs SideParddings3">
+                                            <button class="btn-primary fileinput-button btn-block SidePaddings"
                                                 id="uploadCSV"
                                                 
                                                 [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
-                                                <i class="fa fa-file-excel-o cct" aria-hidden="true"></i> <span
-                                                    style="display: block; font-size: 12px; text-align: center"
+                                                <i class="fa fa-file-excel-o cct IconTopMargin" aria-hidden="true"></i> <span
+                                                    style="display: block; text-align: center"
                                                     translate>Upload a CSV</span> <input type="file"
                                                     ng2FileSelect [uploader]="uploader" title=" "
                                                     (click)="input.value = null;resetResponse();"
@@ -144,7 +136,7 @@
                                 <div class="portlet-body">
                                     <div class="row">
     
-                                        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8"
                                             style="margin-top: 10px;">
                                             <a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal" class="setting_icon_color"
                                                 style="background-color: white"
@@ -174,12 +166,12 @@
                                                 <a
                                                     [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
                                                     (click)="settingSocialNetworkOpenModal('Salesforce')"> <i
-                                                    id="SgearIcon" class="fa fa-cog cloud-css cloud-items"
+                                                    id="SgearIcon" class="fa fa-cog cloud-css cloud-items gear_mbv"
                                                     aria-hidden="true"></i>
                                                 </a>
                                             </div>
                                         </div>
-                                        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8"
                                             style="margin-top: 10px;">
                                             <a *ngIf="googleImageBlur" id="googleContact_button"
                                                 style="background-color: white" (click)="googleContacts()"
@@ -207,12 +199,12 @@
                                                 <a
                                                     [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
                                                     (click)="settingSocialNetworkOpenModal('Google')"> <i
-                                                    id="GgearIcon" class="fa fa-cog cloud-css cloud-items"
+                                                    id="GgearIcon" class="fa fa-cog cloud-css cloud-items gear_mbv"
                                                     aria-hidden="true"></i>
                                                 </a>
                                             </div>
                                         </div>
-                                        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8"
                                             style="margin-top: 10px;">
                                             <a *ngIf="zohoImageBlur" id="zohoContact_button"
                                                 style="background-color: white"
@@ -242,12 +234,12 @@
                                                 <a
                                                     [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
                                                     (click)="settingSocialNetworkOpenModal('Zoho')"> <i
-                                                    id="ZgearIcon" class="fa fa-cog cloud-css cloud-items"
+                                                    id="ZgearIcon" class="fa fa-cog cloud-css cloud-items gear_mbv"
                                                     aria-hidden="true"></i>
                                                 </a>
                                             </div>
                                         </div>
-                                        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8"
                                             style="margin-top: 10px;">
                                             <a *ngIf="marketoImageBlur" id="marketoContact_button"
                                                 style="background-color: white"
@@ -273,20 +265,10 @@
                                                 title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Marketo account"
                                                 height="86" width="90">
                                             </a>
-                                            <!-- <div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
-                                                <a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Marketo')">
-                                                    <i id="ZgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
-                                                </a>
-                                            </div> -->
-                                            <!-- <div style="position: relative" *ngIf="!marketoImageNormal">
-                                                <a [class.disabled]="selectedAddContactsOption != 6" (click)="checkingMarketoContactsAuthentication()">
-                                                    <i class="fa fa-plug cloud-items gray-color cloud-css" aria-hidden="true"></i>
-                                                </a>
-                                            </div> -->
                                         </div>
     
                                         <!-- Hubspot -->
-                                        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8"
                                             style="margin-top: 10px;">
                                             <a *ngIf="hubspotImageBlur" id="hubspotContact_button"
                                                 style="background-color: white"
@@ -311,20 +293,10 @@
                                                 data-toggle="tooltip" data-placement="bottom"
                                                 title="Click here to access {{authenticationService?.partnerModule?.customName}} from your HubSpot account"
                                                 height="86" width="90">
-                                            </a>
-                                            <!-- <div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
-                                                <a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Marketo')">
-                                                    <i id="ZgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
-                                                </a>
-                                            </div> -->
-                                            <!-- <div style="position: relative" *ngIf="!hubspotImageNormal">
-                                                <a [class.disabled]="selectedAddPartnerOption != 9" (click)="checkingHubSpotContactsAuthentication()">
-                                                    <i class="fa fa-plug cloud-items gray-color cloud-css" aria-hidden="true"></i>
-                                                </a>
-                                            </div> -->
+                                            </a>                                        
                                         </div>
                                         <!-- Microsoft -->
-                                        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8"
                                             style="margin-top: 10px;">
                                             <a *ngIf="microsoftDynamicsImageBlur"
                                                 id="microsoftDynamicsContact_button"
@@ -356,7 +328,7 @@
                                         </div>
                                         <!-- XNFR-230 -->
                                         <div id="showCRM" class="collapse">
-                                            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+                                            <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8"
                                                 style="margin-top: 10px;">
                                             <a *ngIf="pipedriveImageBlur"
                                                 id="pipedriveContact_button" style="background-color: white"
@@ -400,7 +372,7 @@
                 style="padding-bottom: 10px; width: 100%">
                 <span style="float: left; width: 70%"
                     *ngIf="referenceService.isMobileScreenSize()"> <select
-                    class="form-control" [(ngModel)]="sortOption"
+                    class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
                     (ngModelChange)="sortByOption($event)">
                         <ng-container *ngFor="let sort of sortOptions; let i = index">
                         <option [ngValue]="sort">{{sort.name}}</option>
@@ -408,14 +380,14 @@
                 </select>
                 </span>
                     <ng-template #actionsButton>
-                        <button class="btn dropdown-toggle" id="save&delete_button"
+                        <button class="btn dropdown-toggle mb-btn" id="save&delete_button"
                             style="color: white; float: right; margin-left: 10px;"
                             [ngClass]="{'Btn-Green': !referenceService.isMobileScreenSize()}"
                             data-toggle="dropdown">
                             <span *ngIf="!referenceService.isMobileScreenSize()" translate>Actions
                                 <i class="fa fa-angle-down"></i>
                             </span> <span *ngIf="referenceService.isMobileScreenSize()"><i
-                                style="font-size: 25px; color: #3598dc;" class="fa fa-cog"></i></span>
+                                style="font-size: 25px; color: #3598dc;" class="fa fa-cog mb-gear"></i></span>
                         </button>
                         <ul class="dropdown-menu pull-right">
                             <li><a id="save_button" *ngIf="selectedAddPartnerOption != 5"
@@ -426,7 +398,7 @@
                             <li><a id="saveAs_button" [class.disabled]="isSaveAsList"
                                 *ngIf="selectedAddPartnerOption == 5 && !clipBoard"
                                 (click)="saveAsChange(true); editContactComponent.addPartnerSave = true"
-                                translate>Save As </a></li>
+                                translate>Create New List </a></li>
                             <li><a id="exportToExcel"
                                 *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard"
                                 (click)="downloadPartnerList()" translate>Export To Excel </a></li>
@@ -444,7 +416,7 @@
                         <ng-template *ngIf="referenceService.isMobileScreenSize()" [ngTemplateOutlet]="actionsButton"></ng-template>
                
             </div>
-            <div class="col-xs-12 p0"
+            <div class="col-xs-12 p0 mb_10"
                 *ngIf="referenceService.isMobileScreenSize()">
                 <input type="text" [(ngModel)]="searchKey"
                     [ngModelOptions]="{standalone: true}" class="form-control"
@@ -478,7 +450,7 @@
                 style="width: 100%">
                 <a class="close" data-dismiss="alert" aria-label="close"
                     (click)="closeDuplicateEmailErrorMessage()">&times;</a>
-                <h4 class="m0" translate>
+                <h4 class="m0 alert-rd" translate>
                     Duplicate EmailId Exist Please Remove..<u>{{duplicateEmailIds}}</u>
                 </h4>
             </div>
@@ -489,7 +461,7 @@
                 <a class="close-circle" *ngIf="clipBoard" data-dismiss="modal"
                     (click)="cancelPartners()"><i class="fa fa-times"></i></a>
                 <div class="form-group">
-                    <label for="name" class="col-xs-12 col-sm-2 control-label" translate>Legal
+                    <label for="name" class="col-xs-12 col-sm-3 control-label" translate>Legal
                         Basis Options <span class="danger">*</span>
                     </label>
                     <div id="multiselect-sample" class="control-section">
@@ -523,7 +495,7 @@
             </div>
             </ng-template>
             <div class="row" id="Gfile_preview">
-                <div class="col-md-12">
+                <div class="col-md-12 col-sm-12">
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <div class="portlet light">
                         <div class="portlet-title">
@@ -580,7 +552,7 @@
                                             <td *ngIf="selectedAddPartnerOption === 6">{{user.contactCompany}}</td>
                                             <td
                                                 *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 11">
-                                                <button id='more_less_button_{{i}}'
+                                                <button class="lightgray-btn" id='more_less_button_{{i}}'
                                                     (click)="user.isShowDetails = ! user.isShowDetails">
                                                     <span *ngIf="!user.isShowDetails" translate>More</span> <span
                                                         *ngIf="user.isShowDetails" translate>Less</span>
@@ -686,7 +658,7 @@
                             <div class="col-xs-6" style="margin-bottom: 10px">
                                 <button class="btn Btn-Green" type="button"  
                                                            
-                                    (click)="clipboardShowPreview()" translate>VERIFY DATA</button>
+                                    (click)="clipboardShowPreview()" translate>Verify Data</button>
                             </div>
                             <div class="col-xs-12">
                                 <textarea id="copyFromclipTextArea" class="textareaNumber"
@@ -711,7 +683,6 @@
             <div class="clearfix">
                 <div class="col-xs-12 pl0 pr0" 
                     *ngIf="(selectedAddPartnerOption == 2 || selectedAddPartnerOption == 4)">
-                    <!-- style="width: 103%; left: -18px;" -->
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <div
                         *ngIf="newPartnerUser?.length == 0 && selectedAddPartnerOption == 2 && isListLoader">
@@ -745,7 +716,6 @@
                                                     <th class="hidden-xs" translate>TYPE</th>
                                                     <th class="hidden-xs" translate>CATEGORY</th>
                                                     <th class='hidden-xs hidden-sm text-left' translate>ADDRESS</th>
-                                                    <!-- <th class='text-center'>MORE</th> -->
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -755,25 +725,15 @@
                                                     <td><app-user-info [isPartnerEntityInfo]="true"
                                                             [isPartnerInfo]="true" [isPartnerInfo]="true"
                                                             [userInfo]="newContact"> </app-user-info></td>
-                                                    <td class="hidden-xs">
-                                                        <!--  <div *ngIf="newContact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
-                                                                <int-phone-prefix [(ngModel)]="newContact.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-                                                            </div> -->
+                                                    <td class="hidden-xs">                                             
                                                         <h5>
-                                                            <span *ngIf="newContact?.mobileNumber; else NA">
-                                                                <!-- {{newContact.mobileNumber}} --> <a
+                                                            <span *ngIf="newContact?.mobileNumber; else NA"> <a
                                                                 href="tel:{{newContact?.mobileNumber}}"><i
                                                                     class="fa fa-phone" aria-hidden="true"
                                                                     style="padding-right: 4px;"></i>{{newContact?.mobileNumber}}</a>
                                                             </span>
                                                         </h5>
-                                                    </td>
-                                                    <!-- <td>
-                                                        <h5 class='mb0 ellipsis'>{{newContact.jobTitle | slice:0:25}}
-                                                        <span *ngIf="newContact.jobTitle?.length>25">...</span>
-                                                        </h5>
-                                                        <h6 class='mt0'>{{newContact.contactCompany}}</h6>
-                                                    </td> -->
+                                                    </td>                                            
                                                     <td class="hidden-xs">{{newContact.vertical |
                                                         slice:0:15}} <span *ngIf="newContact.vertical?.length>15">...</span>
                                                     </td>
@@ -798,31 +758,9 @@
                                                                 *ngIf="newContact?.country">{{newContact.country}}</span>
                                                         </h5>
                                                     </td>
-                                                    <!-- <td align="center">
-                                                        <button id='more_less_button_{{i}}'
-                                                            (click)="newContact.isShowDetails = ! newContact.isShowDetails">
-                                                            <span *ngIf="!newContact.isShowDetails">More</span> <span
-                                                                *ngIf="newContact.isShowDetails">Less</span>
-                                                        </button>
-                                                    </td> -->
                                                     <ng-template #NA>
                                                     <span>N/A</span></ng-template>
-                                                </tr>
-                                                <!-- 	<tr
-                                                    [ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}"
-                                                    >
-                                                    <td colspan="8">
-                                                        <table cellpadding="5" cellspacing="0"
-                                                            style="padding-left: 50px; margin-left: 55px;">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class='bold pt10 pb10 bold'>Notes:</td>
-                                                                    <td class='pt10 pb10'>{{newContact.description}}</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                </tr> --> </ng-container>
+                                                </tr> </ng-container>
     
                                             </tbody>
                                         </table>
@@ -860,9 +798,7 @@
                 <div class="col-xs-12 pl0 pr0"
                     [class.p0]="referenceService.isMobileScreenSize()"
                     style=""
-                    *ngIf="selectedAddPartnerOption == 5 && !clipBoard">
-                    <!-- [ngStyle]="{'left': !referenceService.isMobileScreenSize() ? '-18px': '-3px' }" -->
-
+                    *ngIf="selectedAddPartnerOption == 5 && !clipBoard">       
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <div class="portlet light">
                         <div class="portlet-title" style="border-bottom: none !important;">
@@ -878,7 +814,7 @@
                                 (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
 
                                 <div style="float: left; margin: 3px 10px;">
-                                    <select class="form-control" [(ngModel)]="sortOption"
+                                    <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
                                         (ngModelChange)="sortByOption($event)">
                                         <ng-container *ngFor="let sort of sortOptions; let i = index">
                                         <option [ngValue]="sort">{{sort.name}}</option>
@@ -888,14 +824,13 @@
                                 <div class="portlet-input input-inline" style="margin:3px;">
                                     <div class="input-icon right">
                                         <input type="text" style="height: 34px;" [(ngModel)]="searchKey"
-                                            [ngModelOptions]="{standalone: true}" class="form-control"
+                                            [ngModelOptions]="{standalone: true}" class="form-control PartnerSearchBox"
                                             placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                                         <button
                                             class="glyphicon glyphicon-remove search-box-item-clear"
                                             *ngIf="searchKey" (click)="searchKey='';search()"></button>
                                         <button type="submit" class="search-box-item-click"
                                             (click)="search()">
-                                            <!-- REmoved style="color: black !important"-->
                                             <i class="fa fa-search"
                                                 aria-hidden="true"></i>
                                         </button>
@@ -913,9 +848,8 @@
                             </div>
                             <div class="clearfix">
                                 <div class="col-xs-12" style="padding: 0px 0;">
-                                    <div class="alert alert-info flex" *ngIf="isLoadingList">
-                                        <div class="loader processing-loader-style"></div>
-                                        <strong translate>Please wait while we process your request</strong>
+                                    <div class="alert alert-info" *ngIf="isLoadingList">
+                                        <strong>Please wait while we process your request</strong>
                                     </div>
                                     <div
                                         *ngIf="pagination.pagedItems?.length == 0 && newPartnerUser?.length == 0 && !isLoadingList"
@@ -989,7 +923,7 @@
                                                     </td>
                         
                                                     <td>
-                                                        <button id='more_less_button_{{i}}' class="hidden-xs" (click)="contact.isShowDetails = ! contact.isShowDetails">
+                                                        <button id='more_less_button_{{i}}' class="hidden-xs lightgray-btn" (click)="contact.isShowDetails = ! contact.isShowDetails">
                                                             <span *ngIf="!contact.isShowDetails" translate>More</span> <span
                                                                 *ngIf="contact.isShowDetails" translate>Less</span>
                                                         </button>
@@ -997,7 +931,7 @@
                                                     <td>
                                                         <div class="actions-block override-actions" style="display: flex;">
                                                             <a id="envolope_{{i}}" (click)="sendMail(contact.id)">
-                                                                <i class="fa fa-envelope" aria-hidden="true"
+                                                                <i class="fa fa-envelope IconCustomization" aria-hidden="true"
                                                                 data-toggle="tooltip" data-placement="bottom"
                                                                 title="Send Email Notification"></i>
                                                             </a>
@@ -1005,12 +939,12 @@
                                                                 data-placement="bottom"
                                                                 title="Edit {{authenticationService?.partnerModule?.customName}}"
                                                                 (click)="editUserDetails(contact)"> <i
-                                                                class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                                class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
                                                             </a> <a id="delete_{{i}}" data-toggle="tooltip"
                                                                 data-placement="bottom"
                                                                 title="Delete {{authenticationService?.partnerModule?.customName}}"
                                                                 (click)="deleteUserShowAlert(contact.id)"> <i
-                                                                class="fa fa-trash-o" 
+                                                                class="fa fa-trash-o trashIconCustomization" 
                                                                 aria-hidden="true"></i>
                                                             </a>
                                                             <ng-container
@@ -1018,14 +952,14 @@
                                                             <a data-toggle="tooltip" data-placement="bottom"
                                                                 title="{{actionsDescription.send_campaigns}}"
                                                                 (click)="addCampaigns(contact)"> <i
-                                                                class="fa fa-bullhorn" aria-hidden="true"></i>
+                                                                class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i>
                                                             </a> </ng-container>
                                                             <a
                                                                 *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember"
                                                                 data-toggle="tooltip" data-placement="bottom"
                                                                 title="Campaign Analytics"
                                                                 (click)="goToCampaigns(contact)"> <i
-                                                                class="fa fa-line-chart" aria-hidden="true"></i>
+                                                                class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                                                             </a>
                                                             <app-login-as-partner [contact]="contact" [showLoginAsButton]="true"></app-login-as-partner>
                                                             <!---XNFR-224--->
@@ -1172,7 +1106,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                            <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                                 (click)="hideZohoModal()" translate>Close</button>
                             <button type="button" class="btn btn-primary"
                                 (click)="zohoContacts()" translate>Authorize</button>
@@ -1222,7 +1156,7 @@
                             </form>
                         </div>
                         <div class="modal-footer" style="border-top:0px !important">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                            <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                                 (click)="hideZohoAuthorisedPopup()" translate>Close</button>
                             <button type="button" class="btn btn-primary"
                                 (click)="checkingZohoPopupValues()" translate>Submit</button>
@@ -1281,7 +1215,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                            <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                                 translate>Close</button>
                             <button type="button" id="salesforce_save_button"
                                 class="btn btn-primary" (click)="checkingPopupValues()"
@@ -1328,7 +1262,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal"
+                            <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                                 translate>Close</button>
                         </div>
                     </div>
@@ -1394,7 +1328,7 @@
                     </div>
                 </div>
                 <div class="modal-footer" style="border-top:none !important;">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"
+                    <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                         translate>Close</button>
                     <button type="button" id="salesforce_save_button"
                         class="btn btn-primary" (click)="checkingPopupValues()"
@@ -1422,8 +1356,6 @@
             <div class="modal-dialog modal-css" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <!-- <button type="button" class="close"  (click)="hideZohoModal()"
-                                data-dismiss="modal">&times;</button> -->
                         <a class="close-circle" data-dismiss="modal"
                             (click)="hideMarketoModal()"><i class="fa fa-times"></i></a>
                         <h4 class="modal-title" id="templateRetrieve" translate>Marketo
@@ -1479,7 +1411,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal"
+                        <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                             (click)="hideMarketoModal()" translate>Close</button>
                         <button type="button" class="btn btn-primary"
                             [disabled]="!isMarketoModelFormValid || !marketoClientId || !marketoSecretId || !marketoInstance"
@@ -1592,7 +1524,7 @@
                     </div>
                 </div>
                 <div class="modal-footer" style="border-top:none !important">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"
+                    <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                         (click)="hideHuspotModal()" translate>Close</button>
                     <button type="button" id="hubspot_save_button"
                         class="btn btn-primary" (click)="getHubSpotData()"
@@ -1661,7 +1593,7 @@
                     </div>
                     <app-modal-popup-loader *ngIf="processingPartnersLoader"></app-modal-popup-loader>
                     <div class="table-responsive" *ngIf="!processingPartnersLoader">
-                        <table class="table tgrid table-hover table-sm beige"
+                        <table class="table tgrid table-hover table-sm beige dark-beige"
                             id="assignContactAndTable"
                             aria-describedby="assignContactAndTable">
                             <thead>
@@ -1723,20 +1655,20 @@
                                                     {{teamMemberGroup?.name}}
                                                     ({{teamMemberGroup?.teamMembersCount}})</option>
                                             </select> <span class="input-group-btn">
-                                                <button title="Preview Modules"
-                                                data-toggle="tooltip" data-placement="bottom"
+                                                <button 
                                                     [disabled]="partner.teamMemberGroupId==0"
                                                     class="btn btn-info" type="button" tabindex="-1"
                                                     (click)="previewModules(partner.teamMemberGroupId)">
-                                                    <i class="fa fa-eye white" aria-hidden="true"></i>
+                                                    <i title="Preview Modules"
+                                                    data-toggle="tooltip" data-placement="top" class="fa fa-eye white" aria-hidden="true"></i>
                                                 </button>
                                             </span> <span class="input-group-btn">
-                                                <button title="Select Team Members"
-                                                data-toggle="tooltip" data-placement="bottom"
+                                                <button 
                                                     [disabled]="partner.teamMemberGroupId==0"
                                                     class="btn btn-info" type="button" tabindex="-1"
                                                     (click)="getTeamMembers(partner,i)">
-                                                    <i class="fa"
+                                                    <i title="Select Team Members"
+                                                    data-toggle="tooltip" data-placement="top" class="fa" 
                                                         [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}"
                                                         aria-hidden="true"></i>
                                                 </button>

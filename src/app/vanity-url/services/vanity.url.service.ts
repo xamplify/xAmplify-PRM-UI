@@ -96,18 +96,20 @@ export class VanityURLService {
 
   isVanityURLEnabled() {
    let url = window.location.hostname;
-    let isLocalHost = this.envService.SERVER_URL.indexOf('localhost')>-1 && this.envService.CLIENT_URL.indexOf('localhost')>-1;
+    let isLocalHost = this.envService.SERVER_URL.indexOf('localhost')>-1 && 
+    this.envService.CLIENT_URL.indexOf('localhost')>-1;
     if(isLocalHost){
       let domainName = this.envService.domainName;
       if(domainName!="" && domainName!=window.location.hostname){
         url = this.envService.domainName+".xamplify.com";
       }
     }
-    if (!url.includes("192.168") || !url.includes("172.16")) {
+    if (!url.includes("192.168") && !url.includes("172.16")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {
         this.authenticationService.vanityURLEnabled = true;
         this.authenticationService.companyProfileName = domainName[0];
+        this.authenticationService.setDomainUrl();
         if (!this.authenticationService.vanityURLUserRoles) {
           let currentUser = localStorage.getItem('currentUser');
           if (currentUser) {
@@ -172,7 +174,6 @@ export class VanityURLService {
 
   extractData(res: Response) {
     let body = res.json();
-    console.log(body);
     return body || {};
   }
 

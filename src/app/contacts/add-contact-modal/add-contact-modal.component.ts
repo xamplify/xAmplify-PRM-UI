@@ -253,16 +253,26 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.addContactuser.selectedTeamMembersCount = this.contactDetails['selectedTeamMembersCount'];
             this.addContactuser.partnershipId = this.contactDetails.partnershipId;
             this.addContactuser.teamMemberGroupId = this.contactDetails.teamMemberGroupId;
-            this.addContactuser.selectedTeamMemberIds = this.contactDetails['selectedTeamMemberIds'];
             this.validTeamMemberGroupId = this.addContactuser.teamMemberGroupId>0;
-            this.authenticationService.findAllTeamMemberGroupIdsAndNames(true).
-            subscribe(
+            this.addContactuser.selectedTeamMemberIds = this.contactDetails['selectedTeamMemberIds'];
+            /****XBI-1887****/
+            this.authenticationService.findSelectedTeamMemberIds(this.contactDetails.partnershipId)
+            .subscribe(
                 response=>{
-                    this.teamMemberGroups = response.data;
-                    this.enableOrDisableTeamMemberGroupDropDown();
-                    this.loading = false;
+                    this.addContactuser.selectedTeamMemberIds = response.data;
                 },error=>{
                     this.loading = false;
+                },()=>{
+                    this.authenticationService.findAllTeamMemberGroupIdsAndNames(true).
+                    subscribe(
+                        response=>{
+                            this.teamMemberGroups = response.data;
+                            this.enableOrDisableTeamMemberGroupDropDown();
+                            this.loading = false;
+                        },error=>{
+                            this.loading = false;
+                        }
+                    );
                 }
             );
         }
@@ -296,10 +306,10 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 
     enableOrDisableTeamMemberGroupDropDown(){
         if(this.addContactuser.selectedTeamMembersCount>0 || this.isTeamMemberPartnerList){
-            $('#sel-partner-tm').addClass("disable-dropdown");
+            $('#sel-partner-tm').addClass("disabled-div");
         }else{
             this.addContactuser.teamMemberGroupId = 0;
-            $('#sel-partner-tm').removeClass("disable-dropdown");
+            $('#sel-partner-tm').removeClass("disabled-div");
         }
     }
 

@@ -84,6 +84,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     showSweetAlert = false;
     sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
     oneClickLaunchParentCampaignId = 0;
+    /********** user guide **************/
+    mergeTagForGuide:any;
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
         public referenceService: ReferenceService, private socialService: SocialService,
@@ -103,6 +105,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             this.role = "Vendor"
         } else {
             this.role = "Partner"
+            this.mergeTagForGuide = 'redistribute_one_click_launch_campaigns';
         }
         this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
     }
@@ -248,6 +251,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                         }
                         this.modulesDisplayType.isFolderListView = false;
                         this.modulesDisplayType.isFolderGridView = false;
+                        this.pagination.campaignType = this.campaignType;
                         this.listCampaign(this.pagination);
                     }else if(this.modulesDisplayType.isFolderGridView){
                         this.setViewType('Folder-Grid');

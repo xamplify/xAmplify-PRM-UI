@@ -22,11 +22,14 @@ import { User } from "../../core/models/user";
 import { ModulesDisplayType } from "app/util/models/modules-display-type";
 import { RegularExpressions } from "app/common/models/regular-expressions";
 import { Pagination } from "app/core/models/pagination";
+import { EnvService } from "app/env.service";
+
 
 declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
 @Injectable()
 export class ReferenceService {
+ 
   renderer: Renderer;
   swalConfirmButtonColor: "#54a7e9";
   swalCancelButtonColor: "#999";
@@ -138,15 +141,17 @@ export class ReferenceService {
   regularExpressions = new RegularExpressions();
   loaderFromAdmin = false;
   newVersionDeployed = false;
+  /*** XNFR-user-guides */
+  mergeTagName:any;
+  hideLeftMenu : boolean = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
     private logger: XtremandLogger,
     private router: Router,
     public deviceService: Ng2DeviceService,
-    private route: ActivatedRoute
+    private envService:EnvService
   ) {
-    console.log("reference service constructor");
     this.videoTag =
       '<img src="' + authenticationService.imagesHost + 'xtremand-video.gif">';
     this.coBrandingTag =
@@ -339,6 +344,11 @@ export class ReferenceService {
   }
   validateEmailId(emailId: string) {
     return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
+  }
+
+  validateEmail(text: string) {
+    var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
+    return (text && EMAIL_REGEXP.test(text));
   }
 
   validateWebsiteURL(url: string) {
@@ -3042,6 +3052,10 @@ export class ReferenceService {
       categoryType="LEARNING_TRACK";
     }else if(this.roles.playbookId==moduleId){
       categoryType = "PLAY_BOOK";
+    }else if(this.roles.campaignId==moduleId){
+      categoryType = "CAMPAIGN";
+    }else if(this.roles.emailTemplateId==moduleId){
+      categoryType="EMAIL_TEMPLATE";
     }
     return categoryType;
   }
@@ -3155,11 +3169,112 @@ export class ReferenceService {
     return description;
   }
 
+
+  /**** user guide *****/
+  hideLeftSideMenu(){
+    if(this.router.url.includes('/help/')){
+      return  false;
+    } else {
+      return true;
+    }
+  }
+  getUserMergeTag(){
+    return this.mergeTagName;
+  }
+
   closeSweetAlertWithDelay() {
     setTimeout(() => {
       swal.close();
     }, 1000);
   }
+
+  /********Campaigns****/
+  goToManageCampaigns(viewType: string) {
+    this.router.navigate(["/home/campaigns/manage/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  navigateToManageCampaignsByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToManageCampaignsByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToManageCampaigns(viewType);
+    }
+  }
+  goToManageCampaignsByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/campaigns/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+   /********Campaigns****/
+
+  public isProduction(){
+    return this.envService.SERVER_URL=="https://xamp.io/" && this.envService.CLIENT_URL=="https://xamplify.io/";
+  }
+
+  public isQA(){
+    return this.envService.SERVER_URL=="https://aravindu.com/" && this.envService.CLIENT_URL=="https://xamplify.co/";
+  }
+
+
+  addBlur(divId:string){
+    $('#'+divId).addClass('xamplify-blur');
+  }
+
+  removeBlur(divId:string){
+    $('#'+divId).removeClass('xamplify-blur');
+  }
+
+  updateBeeIframeContainerHeight(){
+    document.getElementById('bee-plugin-container__bee-plugin-frame').style.height='935px';
+  }
+
+   /********Email Templates****/
+   goToManageEmailTemplates(viewType: string) {
+    this.router.navigate(["/home/emailtemplates/manage/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  navigateToManageEmailTemplatesByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToManageEmailTemplatesByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToManageEmailTemplates(viewType);
+    }
+  }
+  goToManageEmailTemplatesByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/emailtemplates/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
    
+  goToEditEmailTemplate(viewType: string) {
+    this.router.navigate(["/home/emailtemplates/edit/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  navigateToEditEmailTemplateByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToEditEmailTemplateByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToEditEmailTemplate(viewType);
+    }
+  }
+  goToEditEmailTemplateByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/emailtemplates/edit/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  goToUpdateEmailTemplate(viewType: string) {
+    this.router.navigate(["/home/emailtemplates/update/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  navigateToUpdateEmailTemplateByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToUpdateEmailTemplateByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToUpdateEmailTemplate(viewType);
+    }
+  }
+  goToUpdateEmailTemplateByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/emailtemplates/update/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+  
+  
+  /********Email Templates****/
+  
+
   
 }

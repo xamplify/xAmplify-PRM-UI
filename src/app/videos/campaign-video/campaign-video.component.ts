@@ -410,12 +410,14 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
              "autoplay": true,
              "preload": "auto",
              "customControlsOnMobile": true,
-             "nativeControlsForTouch": true
+             "nativeControlsForTouch": true,
+              playbackRates: [0.5, 1, 1.5, 2]
              }).ready(function () {
             this.hotkeys({
-                volumeStep: 0.1, seekStep: 5, enableMute: true,
+                volumeStep: 0.1, seekStep: 5, enableMute: false,
                 enableFullscreen: false, enableNumbers: false,
                 enableVolumeScroll: true,
+                 playbackRates: [0.5, 1, 1.5, 2],
                 fullscreenKey: function (event: any, player: any) {
                     return ((event.which === 70) || (event.ctrlKey && event.which === 13));
                 },
@@ -612,6 +614,8 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         const self = this;
         const overrideNativeValue = this.referService.getBrowserInfoForNativeSet();
             this.videoJSplayer = videojs('videoId', {
+             playbackRates: [0.5, 1, 1.5, 2],
+            
                 // "controls": true,
                 // "autoplay": false,
                 // "preload": "auto",
@@ -745,9 +749,10 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         e.preventDefault();
                     });
                     this.hotkeys({
-                        volumeStep: 0.1, seekStep: 5, enableMute: true,
+                        volumeStep: 0.1, seekStep: 5, enableMute: false,
                         enableFullscreen: false, enableNumbers: false,
                         enableVolumeScroll: true,
+                         playbackRates: [0.5, 1, 1.5, 2],
                         fullscreenKey: function (event: any, player: any) {
                             return ((event.which === 70) || (event.ctrlKey && event.which === 13));
                         },

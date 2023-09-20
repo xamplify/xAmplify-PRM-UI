@@ -17,5 +17,9 @@ export class ThemePropertiesDto {
     divBgColor : string;
    headerBackgroundColor: string;
    defaultSkin = false;
-    
+    buttonPrimaryBorderColor:string;
+    buttonSecondaryColor: string;
+    buttonSecondaryBorderColor: string;
+    buttonSecondaryTextColor: string;
+    secondaryButtonTextColor = "";
 }

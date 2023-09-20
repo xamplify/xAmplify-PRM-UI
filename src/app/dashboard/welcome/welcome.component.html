@@ -8,9 +8,7 @@
  pointer-events:none;
  cursor: not-allowed;
  }
- .page-bar-shadow {
-     /* box-shadow: 0 0 5px rgba(0, 0, 0, .4)!important; */
- }
+
  </style>
  <div class="page-content" *ngIf="!showDealForm">
   <div *ngIf="showSandboxText" class="alert alert-info">
@@ -24,7 +22,7 @@
                 <i class="fa" [ngClass]="{'fa-check': userDefaultPage.responseType == 'SUCCESS',
                'fa-exclamation': userDefaultPage.responseType == 'ERROR'}"
                 aria-hidden="true" style="padding-right: 7px;"></i>
-                <span>{{userDefaultPage.responseMessage}}</span>
+                <span class="msg-color">{{userDefaultPage.responseMessage}}</span>
              </h4>
       </div>
     </div>
@@ -64,19 +62,20 @@
        <ng-container *ngIf="sourceType!='ALLBOUND' && welcomePageItems?.showPartners">
        <div class="flex">
          <div  class="col-sm-6 col-xs-12 block">
-            <div class="text-block">
+            <div class="text-block block_align">
               <h1 title="{{authenticationService?.partnerModule?.customName}}" class="welcome-item-header" translate>
                 {{authenticationService?.partnerModule?.customName | slice:0:15}}
                 <span *ngIf="authenticationService?.partnerModule?.customName?.length>15">...</span>
               </h1>
-              <p class="left-side">{{welcome_text.contacts}}</p>
-              <div class="text-left">
-                <button class="btn btn-xs color2 " [routerLink]="['/home/partners/add']" translate>Add {{authenticationService?.partnerModule?.customName}}</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addPartnerCreateUrl, 'Partners')" translate>Tell me how</button>
+              <p class="left-side  mb_left0">{{welcome_text.contacts}}</p>
+              <div class="text-left tab_Flex">
+                <button class="btn btn-xs btn-primary" [routerLink]="['/home/partners/add']" translate>Add {{authenticationService?.partnerModule?.customName}}</button>
+                <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal" (click)="goToUserGuidePage(11,true)" translate>
+                  <a class="UserguideBtnCustomization" href="{{urlLink}}" target="_blank">Tell me how</a></button>
               </div>
             </div>
           </div>
-          <div class="col-sm-6 col-xs-12 block image-block">
+          <div class="col-sm-6 col-xs-12 block image-block tab_imgblock">
            <img src="../../assets/images/welcome/distributor.svg" alt="" class="dash-img-svg">
          </div>
         </div>
@@ -85,23 +84,24 @@
         <!--Content-->
         <ng-container *ngIf="welcomePageItems?.showContent">
         <div class="flex">
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.contentImagePosition=='left'">
+          <div class="col-sm-6 col-xs-12 block image-block tab_imgblock" *ngIf="welcomePageItems?.contentImagePosition=='left'">
            <img alt="First slide [900x500]" class="dash-img-svg"
            data-src="holder.js/900x500/auto/#777:#555/text:First slide"
            src="../../../assets/images/welcome/content.svg"
            data-holder-rendered="true">
          </div>
           <div class="col-sm-6 col-xs-12 block">
-            <div class="text-block">
+            <div class="text-block block_align">
               <h1 style="text-align: left" translate>Content</h1>
-              <p style="position: relative;left: -19px;">{{welcome_text.videos}}</p>
-              <div style="text-align: left">
-                <button class="btn btn-xs color2" [routerLink]="['/home/select-modules']" translate>Upload Content</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(uploadVideoUrl,'Videos')" translate>Tell me how</button>
+              <p  class ="mb_left0" style="position: relative;left: -19px;">{{welcome_text.videos}}</p>
+              <div class="tab_Flex" style="text-align: left">
+                <button class="btn btn-xs btn-primary" [routerLink]="['/home/select-modules']" translate>Upload Content</button>
+                <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal" (click)="goToUserGuidePage(4,true)" translate>
+                  <a class="UserguideBtnCustomization"  href="{{urlLink}}"  target="_blank">Tell me how</a></button>
               </div>
             </div>
           </div>
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.contentImagePosition=='right'">
+          <div class="col-sm-6 col-xs-12 block image-block tab_imgblock" *ngIf="welcomePageItems?.contentImagePosition=='right'">
            <img alt="First slide [900x500]" class="dash-img-svg"
            data-src="holder.js/900x500/auto/#777:#555/text:First slide"
            src="../../../assets/images/welcome/content.svg"
@@ -113,20 +113,21 @@
          <!--Contacts---->
          <ng-container *ngIf="welcomePageItems?.showContacts">
           <div class="flex">
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.contactsImagePosition=='left'">
+          <div class="col-sm-6 col-xs-12 block image-block tab_imgblock" *ngIf="welcomePageItems?.contactsImagePosition=='left'">
             <img src="../../../assets/images/welcome/contacts.svg" class="dash-img-svg" alt="">
           </div>
-          <div class="col-sm-6 col-xs-12 block" style="right: -46px;">
-            <div class="text-block">
+          <div class="col-sm-6 col-xs-12 block tab_right0 mb_v_right0" style="right: -46px;">
+            <div class="text-block block_align">
               <h1 style="text-align: left;" translate>Contacts</h1>
-              <p style="position: relative;right: 19px;">{{welcome_text.contacts}}</p>
-              <div style="text-align: left;">
-                <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/contacts/add')" translate>Add contacts</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addContactsUrl,'Contacts')" translate>Tell me how</button>
+              <p class="mb_v_right0" style="position: relative;right: 19px;">{{welcome_text.contacts}}</p>
+              <div class="tab_Flex" style="text-align: left;">
+                <button class="btn btn-xs btn-primary" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/contacts/add')" translate>Add contacts</button>
+                <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal" (click)="goToUserGuidePage(3,true)" translate>
+                  <a class="UserguideBtnCustomization" href="{{urlLink}}"  target="_blank">Tell me how</a></button>
               </div>
             </div>
           </div>
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.contactsImagePosition=='right'">
+          <div class="col-sm-6 col-xs-12 block image-block tab_imgblock" *ngIf="welcomePageItems?.contactsImagePosition=='right'">
             <img src="../../../assets/images/welcome/contacts.svg"  alt="" class="dash-img-svg">
           </div>
         </div>
@@ -135,20 +136,21 @@
         <!----Templates----->
         <ng-container *ngIf="welcomePageItems?.showTemplates">
         <div class="flex">
-        <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.templatesImagePosition=='left'">
+        <div class="col-sm-6 col-xs-12 block image-block tab_imgblock" *ngIf="welcomePageItems?.templatesImagePosition=='left'">
             <img class="dash-img-svg" alt="" src="../../../assets/images/welcome/templates.svg">
           </div>
           <div class="col-sm-6 col-xs-12 block">
-            <div class="text-block">
+            <div class="text-block block_align">
               <h1 class="text-left"  translate>Templates</h1>
-              <p class="left-side">{{welcome_text.templates}}</p>
-              <div class="text-left">
-                <button  class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/emailtemplates/select')" translate>Create templates</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(createEmailTemplateUrl,'Templates')" translate>Tell me how</button>
+              <p class="left-side mb_left0">{{welcome_text.templates}}</p>
+              <div class="text-left tab_Flex">
+                <button  class="btn btn-xs btn-primary" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/emailtemplates/select')" translate>Create templates</button>
+                <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal" (click)="goToUserGuidePage('how_to_designing_email_template',false)" translate>
+                  <a class="UserguideBtnCustomization"  href="{{urlLink}}"  target="_blank" >Tell me how</a></button>
               </div>
             </div>
           </div>
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.templatesImagePosition=='right'" >
+          <div class="col-sm-6 col-xs-12 block image-block tab_imgblock" *ngIf="welcomePageItems?.templatesImagePosition=='right'" >
            <img class="dash-img-svg" alt="" src="../../../assets/images/welcome/templates.svg">
          </div>
         </div>
@@ -157,20 +159,21 @@
         <!----Campaigns----->
         <ng-container *ngIf="welcomePageItems?.showCampaigns">
             <div class="flex">
-            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.campaignsImagePosition=='left'">
+            <div class="col-sm-6 col-xs-12 block image-block tab_imgblock" *ngIf="welcomePageItems?.campaignsImagePosition=='left'">
               <img src="../../../assets/images/welcome/campaigns.svg" alt="" class="dash-img-svg">
             </div>
-              <div class="col-sm-6 col-xs-12 block" style="right: -52px; position: relative;">
-                <div class="text-block">
+              <div class="col-sm-6 col-xs-12 block tab_right0 mb_v_right0" style="right: -52px; position: relative;">
+                <div class="text-block block_align">
                   <h1 class="text-left"  translate>Campaigns</h1>
-                  <p class="left-side">{{welcome_text.campaigns}}</p>
-                  <div class="text-left">
-                    <button  class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/campaigns/select')" translate>Create campaigns</button>
-                    <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(createCampaignUrl,'Campaigns')" translate>Tell me how</button>
-                  </div>
+                  <p class="left-side mb_left0">{{welcome_text.campaigns}}</p>
+                  <div class="text-left tab_Flex">
+                    <button  class="btn btn-xs btn-primary" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/campaigns/select')" translate>Create campaigns</button>
+                    <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal" (click)="goToUserGuidePage(2,true)" translate>
+                      <a class="UserguideBtnCustomization" href="{{urlLink}}"  target="_blank">Tell me how</a></button>
+                    </div>
                 </div>
               </div>
-              <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.campaignsImagePosition=='right'">
+              <div class="col-sm-6 col-xs-12 block image-block tab_imgblock" *ngIf="welcomePageItems?.campaignsImagePosition=='right'">
                 <img src="../../../assets/images/welcome/campaigns.svg" alt="" class="dash-img-svg">
               </div>
             </div>
@@ -179,20 +182,21 @@
         <!--Team Members------>
         <ng-container *ngIf="welcomePageItems?.showTeamMembers">
         <div class="flex">
-            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.teamMembersImagePosition=='left'" >
+            <div class="col-sm-6 col-xs-12 block image-block tab_imgblock" *ngIf="welcomePageItems?.teamMembersImagePosition=='left'" >
               <img src="../../../assets/images/welcome/team.svg" alt="" class="dash-img-svg">
             </div>
             <div class="col-sm-6 col-xs-12 block">
-                  <div class="text-block">
+                  <div class="text-block block_align">
                     <h1 class="text-left" translate>Team members</h1>
-                    <p class="left-side">Add team members to make content and campaign management a group effort</p>
-                    <div class="text-left">
-                      <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/team/add-team')" translate>Add team member</button>
-                      <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" (click)="showHowToVideo(addTeamMemberUrl,'Team members')" translate>Tell me how</button>
-                    </div>
+                    <p class="left-side mb_left0">Add team members to make content and campaign management a group effort</p>
+                    <div class="text-left tab_Flex">
+                      <button class="btn btn-xs btn-primary" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/team/add-team')" translate>Add team member</button>
+                      <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal" (click)="goToUserGuidePage(16,true)" translate>
+                        <a class="UserguideBtnCustomization"  href="{{urlLink}}"  target="_blank">Tell me how</a></button>
+                      </div>
                   </div>
                 </div>
-                <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.teamMembersImagePosition=='right'">
+                <div class="col-sm-6 col-xs-12 block image-block tab_imgblock" *ngIf="welcomePageItems?.teamMembersImagePosition=='right'">
                   <img src="../../../assets/images/welcome/team.svg" alt="" class="dash-img-svg">
                 </div>
           </div>
@@ -201,20 +205,20 @@
           <!---Social Accounts-->
           <ng-container *ngIf="welcomePageItems?.showSocialAccounts">
         <div class="flex">
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.socialAccountsImagePosition=='left'">
+          <div class="col-sm-6 col-xs-12 block image-block tab_imgblock" *ngIf="welcomePageItems?.socialAccountsImagePosition=='left'">
             <img class="" class="dash-img-svg" alt="" src="../../../assets/images/welcome/social.svg">
           </div>
-          <div class="col-sm-6 col-xs-12 block" style="position: relative; right: -40px;">
-            <div class="text-block">
+          <div class="col-sm-6 col-xs-12 block tab_right0 mb_v_right0" style="position: relative; right: -40px;">
+            <div class="text-block block_align">
               <h1 class="text-left"  translate>Social Accounts</h1>
-              <p class="left-side">{{welcome_text.socialMedia}}</p>
-              <div class="text-left">
-                <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/social/manage/all')" [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Connect</button>
-                <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
+              <p class="left-side mb_left0">{{welcome_text.socialMedia}}</p>
+              <div class="text-left tab_Flex">
+                <button class="btn btn-xs btn-primary" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/social/manage/all')" [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Connect</button>
+                <button type="button" class="btn btn-xs Btn-Green" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
               </div>
             </div>
           </div>
-          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.socialAccountsImagePosition=='right'">
+          <div class="col-sm-6 col-xs-12 block image-block tab_imgblock" *ngIf="welcomePageItems?.socialAccountsImagePosition=='right'">
             <img  src="../../../assets/images/welcome/social.svg" alt=""  class="dash-img-svg">
           </div>
         </div>
@@ -223,20 +227,20 @@
         <!---Analytics---->
         <ng-container *ngIf="welcomePageItems?.showAnalytics">
             <div class="flex">
-            <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.analyticsImagePosition=='left'">
+            <div class="col-sm-6 col-xs-12 block image-block tab_imgblock" *ngIf="welcomePageItems?.analyticsImagePosition=='left'">
                 <img src="../../../assets/images/welcome/analytics.svg" alt="" class="dash-img-svg">
               </div>
               <div class="col-sm-6 col-xs-12 block">
-                <div class="text-block">
+                <div class="text-block block_align">
                   <h1  class="text-left" translate>Analytics</h1>
-                  <p class="left-side">{{welcome_text.analytics}}</p>
-                  <div  class="text-left">
-                    <button class="btn btn-xs color2" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/dashboard')"  [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Analytics</button>
-                    <button type="button" class="btn btn-xs color2-invert" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
+                  <p class="left-side mb_left0">{{welcome_text.analytics}}</p>
+                  <div  class="text-left tab_Flex">
+                    <button class="btn btn-xs btn-primary" (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/dashboard')"  [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate>Analytics</button>
+                    <button type="button" class="btn btn-xs Btn-Green" data-toggle="modal" [disabled]="true" data-target="#myModal" translate>Tell me how</button>
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6 col-xs-12 block image-block" *ngIf="welcomePageItems?.analyticsImagePosition=='right'">
+              <div class="col-sm-6 col-xs-12 block image-block tab_imgblock" *ngIf="welcomePageItems?.analyticsImagePosition=='right'">
                 <img src="../../../assets/images/welcome/analytics.svg" alt="" class="dash-img-svg">
               </div>
             </div>

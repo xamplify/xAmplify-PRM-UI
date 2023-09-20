@@ -84,6 +84,9 @@ import { ProcessingCampaignsComponent } from './processing-campaigns/processing-
 import { ActiveQueriesComponent } from './active-queries/active-queries.component';
 import { PipedriveAuthenticationComponent } from './pipedrive-authentication/pipedrive-authentication/pipedrive-authentication.component';
 import { EnableSupportAccessToVendorComponent } from './enable-support-access-to-vendor/enable-support-access-to-vendor.component';
+import { LeftsidenavbarCustomComponent } from './leftsidenavbar-custom/leftsidenavbar-custom.component';
+import { EmailNotificationSettingsComponent } from './email-notification-settings/email-notification-settings.component';
+import { ActiveThreadsInfoComponent } from './active-threads-info/active-threads-info.component';
 
 
 
@@ -144,7 +147,10 @@ import { EnableSupportAccessToVendorComponent } from './enable-support-access-to
         ProcessingCampaignsComponent,
         ActiveQueriesComponent,
         PipedriveAuthenticationComponent,
-        EnableSupportAccessToVendorComponent
+        EnableSupportAccessToVendorComponent,
+        LeftsidenavbarCustomComponent,
+        EmailNotificationSettingsComponent,
+        ActiveThreadsInfoComponent
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

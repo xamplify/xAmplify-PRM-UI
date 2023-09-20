@@ -11,17 +11,17 @@
           </div>
           <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
             <div class="inputs" style="float: right">
-              <div class="col-xs-6 col-sm-6 col-lg-6 p0">
-              <div style="float: left;">
+              <div class="col-xs-6 col-sm-5 col-lg-6 p0">
+              <div style="float: left;margin-right: 7px;">
                 <select class="form-control" [(ngModel)]="channelCampaignsSortOption.selectedChannelCampaignSortDropDownOption" (ngModelChange)="sortChannelCampaigns($event)"
                   style="position: relative;right: -3px;">
                   <option *ngFor="let option of channelCampaignsSortOption.channelCampaignSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
                 </select>
               </div>
             </div>
-            <div class="col-xs-6 col-sm-6 col-lg-6 p0">
-              <div class="portlet-input input-inline mRedistributedSearch" style="margin-right: 12px; width:170px">
-                <div class="input-icon right" style="position: relative;right: -7px;width: 178px;">
+            <div class="col-xs-6 col-sm-7 col-lg-6 p0">
+              <div class="portlet-input input-inline mRedistributedSearch mb_download" style="width:186px;">
+                <div class="input-icon right">
                   <input type="text" style="height:34px;" class="form-control" [(ngModel)]="channelCampaignsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
                     placeholder="Search" (keypress)="searchInCampaignsOnKeyPress($event.keyCode,'channel-campaigns')">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="channelCampaignsSortOption.searchKey" (click)="channelCampaignsSortOption.searchKey='';searchCampaigns('channel-campaigns')"></button>
@@ -29,7 +29,7 @@
                     <i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
               </div>
-              <a  class="close-circle" (click)="downloadCsv()">
+              <a  class="close-circle" data-toggle="tooltip" data-placement="top" title = "Download CSV file"  (click)="downloadCsv()">
                   <i  class="fa fa-download" aria-hidden="true"></i>
               </a>
               </div>
@@ -71,7 +71,7 @@
                   </td>
                   <td class="center">
                     <div>
-                    <button class="btn btn-default btn-xs re-distributed-high-level">
+                    <button class="btn btn-default btn-xs re-distributed-high-level TableDataBtn">
                       <div class="portlet-body text-center">
                         <h4>
                           <strong class="sky-blue">{{item?.totalRecipients}}</strong>
@@ -82,7 +82,7 @@
                    </td>
                     <td class="center">
                      <div>
-                      <button class="btn btn-default btn-xs re-distributed-high-level">
+                      <button class="btn btn-default btn-xs re-distributed-high-level TableDataBtn">
                         <div class="portlet-body text-center">
                           <h4>
                             <strong class="sky-blue">{{item?.activeRecipients}}</strong>
@@ -93,7 +93,7 @@
                    </td>
                    <td class="center">
                     <div>
-                    <button class="btn btn-default btn-xs re-distributed-high-level">
+                    <button class="btn btn-default btn-xs re-distributed-high-level TableDataBtn">
                       <div class="portlet-body text-center">
                         <h4>
                           <strong class="sky-blue">{{item?.clickedUrls}}</strong>
@@ -104,7 +104,7 @@
                   </td>
                    <td class="center">
                       <div>
-                      <button class="btn btn-default btn-xs re-distributed-high-level">
+                      <button class="btn btn-default btn-xs re-distributed-high-level TableDataBtn">
                         <div class="portlet-body text-center">
                           <h4>
                             <strong class="sky-blue">{{item?.views}}</strong>
@@ -115,9 +115,9 @@
                    </td>
                    <td style="text-align: right;">
                     <div class="actions-block">
-                      <span class="circled-number">{{item?.redistributedCount}}</span>
+                      <i class="circled-number IconCustomization fontStyleNormal">{{item?.redistributedCount}}</i>
                       <a  (click)="showRedistributedCampaings(item)" data-toggle="tooltip" data-placement="top" title="View Redistributed Campaigns"   *ngIf="item?.redistributedCount> 0">
-                        <i class="fa" aria-hidden="true" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}" ></i>
+                        <i class="fa IconCustomization" aria-hidden="true" [ngClass]="{'fa-plus': !item.expand, 'fa-minus': item.expand}" ></i>
                       </a>
                     </div>
                   </td>
@@ -157,39 +157,39 @@
                               <td class="center">
                                 <div class="actions-block float-none ">
                                   <a data-toggle="tooltip" data-placement="top">
-                                        <span class="circled-number"><strong>{{redistributedCampaign?.totalRecipients}}</strong></span>
+                                        <i class="circled-number IconCustomization fontStyleNormal"><strong>{{redistributedCampaign?.totalRecipients}}</strong></i>
                                       </a>
                                   </div>
                                </td>
                                <td class="center">
                                 <div class="actions-block float-none">
                                  <a data-toggle="tooltip" data-placement="top">
-                                     <span class="circled-number"><strong>{{redistributedCampaign?.activeRecipients}}</strong></span>
+                                     <i class="circled-number IconCustomization fontStyleNormal"><strong>{{redistributedCampaign?.activeRecipients}}</strong></i>
                                      </a>
                                    </div>
                               </td>
                               <td class="center">
                                <div class="actions-block float-none">
                                  <a data-toggle="tooltip" data-placement="top">
-                                       <span class="circled-number"><strong>{{redistributedCampaign?.clickedUrls}}</strong></span>
+                                       <i class="circled-number IconCustomization fontStyleNormal"><strong>{{redistributedCampaign?.clickedUrls}}</strong></i>
                                      </a>
                                  </div>
                              </td>
                               <td class="center">
                                  <div class="actions-block float-none">
                                  <a data-toggle="tooltip" data-placement="top">
-                                       <span class="circled-number"><strong>{{redistributedCampaign?.views}}</strong></span>
+                                       <i class="circled-number IconCustomization fontStyleNormal"><strong>{{redistributedCampaign?.views}}</strong></i>
                                      </a>
                                  </div>
                               </td>
                                  <td class="text-center">
                                    <a *ngIf="!redistributedCampaign.dataShare" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
-                                     data-placement="top" title="Campaign Based Reports" class='circled-number'>
-                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                     data-placement="top" title="Campaign Based Reports">
+                                     <i class="circled-number fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                                    </a>
                                    <a *ngIf="redistributedCampaign.dataShare" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
-                                     data-placement="top" title="Campaign Based Reports" class='circled-number' style="margin-left: -47px;">
-                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                     data-placement="top" title="Campaign Based Reports" style="margin-left: -47px;">
+                                     <i class="circled-number fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                                    </a>
                                  </td>
                           </tr>

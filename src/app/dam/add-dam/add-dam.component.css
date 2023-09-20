@@ -35,6 +35,17 @@
   background-color: #c0c0c0;
 }
 
-.modal-dialog{
+.modal-dialog {
   width: 60% !important;
+}
+
+.help-iconcu-inpopup {
+  margin: 8px 0px 1px 14px !important;
+}
+.bar-border-bottom{
+  border-top: none !important;
+  border-right: none !important;
+  border-left: none !important;
+  border-bottom: 1px solid #ddd;
+  border-radius: 0px;
 }

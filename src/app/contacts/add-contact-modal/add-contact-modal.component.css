@@ -75,7 +75,8 @@
   margin-left: 74px;
 }
 #custom-width {
-  width: 84.333333%;
+  /* width: 84.333333%; */
+  width: 82.9%;
 }
 .right-twelevepx {
   right: -12px;
@@ -89,4 +90,23 @@
   border-bottom-left-radius: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+}
+.hide-scrollbar {
+  overflow: hidden;
+}
+/* 22-8-2023 sudha sri */
+.legal-basis-width {
+  padding-left: 6px;
+}
+#major-field-width {
+  width: 82.9%;
+}
+#minor-field-width {
+  width: 42%;
+}
+#mobile-field-width {
+  width: 80%;
+}
+.border-bottom-1px {
+  border-bottom: 1px solid #ddd;
 }

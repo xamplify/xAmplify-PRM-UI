@@ -1,3 +1,14 @@
+@media screen and (max-width:578px){
+    .d_flex{
+        display: flex!important;
+    }
+    .pt_0{
+        padding-top:0px!important;
+    }
+    .pt_8{
+        padding-top: 8px;
+    }
+}
 /* sudha sri */
 @media (max-width:425px){
     .pt{
@@ -7,4 +18,8 @@
         padding-top: 7px;
         padding-left: 9px;
     }
+}
+
+@media only screen and (min-width: 991px) and (max-width: 1088px) { 
+.table thead tr th {font-size: 11px;}
 }

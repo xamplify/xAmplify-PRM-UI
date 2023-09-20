@@ -1,27 +1,6 @@
-.td-color {
-  color: white;
-  background-color: rgb(0, 166, 232);
-}
-
-.td-chart {
-  position: relative;
-  cursor: pointer;
-}
-
-.td-new,
 th {
   text-align: center;
   padding: 2px;
-}
-.text-danger {
-  color: red !important;
-}
-
-.campaign-type {
-  min-width: 310px;
-  max-width: 800px;
-  height: 110px;
-  margin: 0 auto -10px;
 }
 
 .portlet.light .portlet-body {
@@ -31,28 +10,7 @@ th {
   height: auto;
   min-height: auto;
 }
-.campaign-type-selected {
-  background-color: #6dcff6;
-}
 
-.more {
-  color: #fff;
-  background-color: #357ca5;
-}
-.more {
-  color: #fff;
-  background-color: #258fd7;
-}
-.more {
-  clear: both;
-  display: block;
-  padding: 6px 10px;
-  position: relative;
-  text-transform: uppercase;
-  font-weight: 300;
-  font-size: 11px;
-  opacity: 0.7;
-}
 .center-aligned {
   text-align: left;
 }
@@ -68,21 +26,6 @@ th {
   -ms-filter: blur(1px);
   filter: blur(1px);
 }
-.disabled {
-  pointer-events: none;
-}
-
-#disabled-icon {
-  border: none;
-  margin: -5px 15px 0 0;
-  cursor: default;
-}
-
-#grid-disabled-analytics {
-  background-color: white;
-  margin-top: 9px;
-  margin-left: 2px;
-}
 
 .re-distributed-high-level {
   width: 100px;
@@ -94,41 +37,9 @@ th {
 .sky-blue {
   color: #00a6e8;
 }
-.child-campaigns {
-  margin-left: 50px;
-  background-color: #fff;
-}
+
 .float-none {
   float: none;
-}
-.override-action {
-  margin: 0 auto;
-  display: table;
-  float: none !important;
-}
-
-.greay {
-  background-color: #8a8282c4;
-}
-#notification {
-  background-color: #ed1c24;
-  color: white;
-  margin-bottom: 25px;
-  margin-left: -25px;
-  margin-top: -5px;
-}
-
-.imageClass {
-  background: #f2f4f9;
-  border: solid 1px #008fd5;
-  border-radius: 3px;
-}
-
-@media (min-width: 768px) {
-  .col-sm-5ths {
-    width: 20% !important;
-    float: left !important;
-  }
 }
 
 .redisbgcolor {
@@ -138,5 +49,16 @@ th {
 @media screen and (max-width: 600px) {
   .mRedistributedSearch {
     width: 160px !important;
+  }
+}
+@media screen and (max-width: 600px) {
+  .mb_download {
+    width: unset !important;
+    margin-bottom: 6px;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .mb_download {
+    width: 170px !important;
   }
 }

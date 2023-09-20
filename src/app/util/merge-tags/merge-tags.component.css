@@ -1,47 +1,56 @@
-#bottom-right{
-	float: right;
+#bottom-right {
+  float: right;
 }
-#right{
-	float: right;
-	margin-bottom: 10px;
-	margin-right: 10px;
+#right {
+  float: right;
+  margin-bottom: 10px;
+  margin-right: 10px;
 }
-#left{
-	float: left;;
+#left {
+  float: left;
 }
-#search{
-	margin-right: 35px;
+#search {
+  margin-right: 35px;
 }
-#search-icon{
-	position: relative;
-	right: -11px;
+#search-icon {
+  position: relative;
+  right: -11px;
 }
-#search-text{
-	height:34px;
+#search-text {
+  height: 34px;
 }
-#circle{
-	margin-top: 4px;
+#circle {
+  margin-top: 4px;
 }
-.merge-tag-success-message{
-	color: green;
+.merge-tag-success-message {
+  color: green;
 }
-#merge-tag-text{
-	width: 50%;
-}
-
-.merge-tags-btn{
-	color: white;
-    background-color: #008fd5;
-    float: right;
-    margin-right: 10px;
-    margin-bottom: 10px;
-	margin-right: 10px;
+#merge-tag-text {
+  width: 50%;
 }
 
-.npcfs{
-    padding-top: 0px !important;
-    font-size: 15px !important;
+.merge-tags-btn {
+  color: white;
+  background-color: #008fd5;
+  float: right;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
 }
-.btn{
-	padding:5px 14px !important;
+
+.npcfs {
+  padding-top: 0px !important;
+  font-size: 15px !important;
+}
+.btn {
+  padding: 5px 14px !important;
+}
+/* 02-8-2023 */
+.btn-select-templates {
+  padding: 7px 14px !important;
+  margin-right: 8px !important;
+}
+/* sudha sri (05-9-2023) */
+.btn-mb {
+  margin-bottom: 8px;
 }

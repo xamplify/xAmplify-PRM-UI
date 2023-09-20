@@ -17,10 +17,11 @@
 }
 #sort-text {
   height: 34px;
+  margin-top: 14px;
 }
 .table tr.row-selected td {
   background-color: #00a6e847;
-  color: white;
+  color: #333;
 }
 .partner-company-selected {
   background-color: #00a6e824 !important;
@@ -131,4 +132,15 @@
 }
 .marg-top {
   margin-top: -14px !important;
+}
+.search-position {
+  position: relative;
+  right: 12px;
+}
+/* sudha sri(31-7-2023) */
+#search-align {
+  position: relative;
+}
+.hide-scrollbar {
+  overflow: hidden;
 }

@@ -32,29 +32,30 @@
                                  </span>
                                  <span class="margin-left" style="margin-left: 20px;">
                                      <h6 class='m0 user-email' *ngIf="userDetails?.companyName?.length>0">
-                                         <p class="user-company" title="{{userDetails?.companyName}}">
+                                         <p class="user-company"  data-toggle="tooltip" data-placement="bottom"  title="{{userDetails?.companyName}}">
                                              <span>{{userDetails?.companyName |slice:0:50}}</span>
                                              <span *ngIf="userDetails?.companyName?.length>50">..</span>
                                          </p>
                                        </h6>
                                        <br>
-                                       <h5 *ngIf="userDetails?.fullName?.length>0" class='ellipsis user-name' title="{{userDetails?.fullName}}">
+                                       <h5 *ngIf="userDetails?.fullName?.length>0" class='ellipsis user-name'  data-toggle="tooltip" data-placement="bottom"  title="{{userDetails?.fullName}}">
                                            {{userDetails?.fullName | slice:0:50}}
                                          <span *ngIf="userDetails?.fullName?.length>50">..</span>
                                         </h5>
-                                        <a style="display: table;" title="{{userDetails?.emailId}}">
+                                        <a style="display: table;"  data-toggle="tooltip" data-placement="bottom"  title="{{userDetails?.emailId}}">
                                          {{userDetails?.emailId | slice:0:50}}<span *ngIf="userDetails?.emailId?.length>50">...</span></a>
                                  </span>
                              </div>
                      </div>
                   </div>
-                  <div title="{{totalCampaignsCount}}" class="{{tileClass}} pr0 mtop mWidth">
+                  <div    class="{{tileClass}} pr0 mtop mWidth">
                      <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
-                        <div class="visual">
+                        <div class="visual" >
                            <i aria-hidden="true" class=""></i>
                         </div>
                         <div class="details">
-                           <div class="number">{{totalCampaignsCount}}</div>
+                           
+                           <div data-toggle="tooltip" data-placement="bottom" title="{{totalCampaignsCount}}" class="number">{{totalCampaignsCount}}</div>
                            <div class="desc">Total Campaigns</div>
                         </div>
                         <span class="morePadding">
@@ -63,13 +64,13 @@
                      </span>
                      </a>
                   </div>
-                  <div title="{{activeCampaignsCount}}" class="{{tileClass}} pr0 mWidth">
+                  <div   class="{{tileClass}} pr0 mWidth">
                      <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
                         <div class="visual">
                            <i aria-hidden="true" class=""></i>
                         </div>
                         <div class="details">
-                           <div class="number">{{activeCampaignsCount}}</div>
+                           <div data-toggle="tooltip" data-placement="bottom"  title="{{activeCampaignsCount}}" class="number">{{activeCampaignsCount}}</div>
                            <div class="desc">Active Campaigns</div>
                         </div>
                         <span class="morePadding">
@@ -91,18 +92,18 @@
         <div class="col-xs-12">
            <!-- BEGIN EXAMPLE TABLE PORTLET-->
            <div class="portlet light">
-              <div class="portlet-title" style="border-bottom: none;padding-top: 6px;">
+              <div class="portlet-title pt0" style="border-bottom: none;padding-top: 6px;">
                  <div class="caption" translate style="padding-left: 3px !important;padding-top: 12px !important;">
                     <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                     Campaigns
                  </div>
-                 <div class="inputs w100 display"  style="float: right;display: flex;">
+                 <div class="inputs w100 display"  style="float: right;display: flex!important;">
                   <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 campaign-filter-option" style="margin-right: -6px !important;">
                      <li class="filter padding p4 p3" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
                      <li class="filter p4 p3 " (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" translate>Email</li>
                      <li class="filter p4 p3" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == selectedCampaignTypeIndex" translate>Video</li>
                  </ul> 
-                    <div class="mMargin" style="float: left; margin: 1px 10px;">
+                    <div class="mMargin" style="float: left; margin: 1px 10px!important;">
                       <select class="form-control" [(ngModel)]="sortOption.userLevelCampaignAnalyticsSortOption" (ngModelChange)="sortBy($event)" style="padding-left: 5px;height: 34px;">
                         <option *ngFor="let option of sortOption.userLevelCampaignAnalyticsSortDropDownOptions"
                             [ngValue]="option" translate>
@@ -113,7 +114,6 @@
                        <div class="input-icon right p-top">
                           <input style="height: 35px !important;" type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                           <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
-                          <!--Removed color:black !important-->
                           <button type="submit" class="search-box-item-click align" style="height: 33px;" (click)="searchCampaigns()"><i class="fa fa-search" style="" aria-hidden="true"></i></button>
                        </div>
                     </div>
@@ -122,11 +122,6 @@
               </div>
               
               <div class="portlet-body table-responsive" style="overflow: hidden;padding-top: 0px !important;">
-               <!-- <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 campaign-filter-option">
-                  <li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
-                  <li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" translate>Email</li>
-                  <li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == selectedCampaignTypeIndex" translate>Video</li>
-              </ul>  -->
               <app-list-loader *ngIf="listLoader.isLoading"></app-list-loader>
                  <div class="clearfix"  *ngIf="!listLoader.isLoading">
                     <div class="col-xs-12" style="padding: 0px 0;">
@@ -149,7 +144,7 @@
                                   <td>
                                      <img *ngIf="campaignAnalytics?.campaignType=='REGULAR'" class="imageClass active image-padding" src="assets/images/regular-email.svg" alt="Regular Campaign Logo Not Found">
                                      <img *ngIf="campaignAnalytics?.campaignType=='VIDEO'" class="imageClass active image-padding" src="assets/images/video-email.svg" alt="Video Campaign Logo Not Found">
-                                     <a class="campaign-name-padding" title="{{campaignAnalytics?.campaignName}}" (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId)">
+                                     <a class="campaign-name-padding"  data-toggle="tooltip" data-placement="bottom"  title="{{campaignAnalytics?.campaignName}}" (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId)">
                                        {{campaignAnalytics?.campaignName | slice:0:15}}
                                        <span *ngIf="campaignAnalytics?.campaignName?.length>15">...</span> 
                                     </a>
@@ -173,14 +168,15 @@
                                   </td>
                                   <td class="center-align">
                                     <div (click)="$event.stopPropagation()">
-                                       <span class="circled-number" *ngIf="campaignAnalytics?.autoResponsesCount==0"
-                                         style="margin-right: 50px;cursor: not-allowed">{{campaignAnalytics?.autoResponsesCount}}</span>
-                                       <span class="circled-number" *ngIf="campaignAnalytics?.autoResponsesCount>0">
-                                         {{campaignAnalytics?.autoResponsesCount}}</span>
-                                       <a class="circled-number" *ngIf="campaignAnalytics?.autoResponsesCount>0"
+                                       <i class="circled-number IconCustomization fontStyleNormal" *ngIf="campaignAnalytics?.autoResponsesCount==0"
+                                         style="margin-right: 50px;cursor: not-allowed">{{campaignAnalytics?.autoResponsesCount}}</i>
+                                       <i class="circled-number IconCustomization fontStyleNormal" *ngIf="campaignAnalytics?.autoResponsesCount>0">
+                                         {{campaignAnalytics?.autoResponsesCount}}</i>
+                                       <a *ngIf="campaignAnalytics?.autoResponsesCount>0"
                                          (click)="$event.stopPropagation();showAutoResponseAnalytics(campaignAnalytics,i)"
+                                         data-toggle="tooltip" data-placement="bottom" 
                                          title="View Auto Response Analytics">
-                                         <i class="fa"
+                                         <i class="fa IconCustomization circled-number"
                                            [ngClass]="{'fa-plus': !campaignAnalytics?.expanded, 'fa-minus': campaignAnalytics?.expanded}" aria-hidden="true"></i>
                                        </a>
                                        
@@ -188,9 +184,7 @@
                                   </td>
                                   <td class="center-align">
                                     <div  (click)="viewTimeLine(campaignAnalytics)" >
-                                       <a class="circled-number" title="View History">
-                                          <i class="fa fa-history action-btn" aria-hidden="true"></i>
-                                          </a>
+                                          <i class="circled-number fa fa-history action-btn IconCustomization pointer" aria-hidden="true"  data-toggle="tooltip" data-placement="bottom"  title="View History"></i>
                                        </div>
                                   </td>
                                </tr>

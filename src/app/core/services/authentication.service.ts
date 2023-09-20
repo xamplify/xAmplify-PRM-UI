@@ -28,6 +28,8 @@ import { LoginAsEmailNotificationDto } from 'app/dashboard/models/login-as-email
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { CopyGroupUsersDto } from 'app/common/models/copy-group-users-dto';
+import { SendTestEmailDto } from 'app/common/models/send-test-email-dto';
+import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play-book-type.enum';
 
 @Injectable()
 export class AuthenticationService {
@@ -38,6 +40,7 @@ export class AuthenticationService {
   expires_in: number;
   logged_in_time: Date;
   APP_URL: any;
+  DOMAIN_URL = "";
   SERVER_URL: any;
   REST_URL: string;
   MEDIA_URL: string;
@@ -147,6 +150,7 @@ export class AuthenticationService {
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
+    this.DOMAIN_URL = this.APP_URL;
     this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
     if(this.SERVER_URL.indexOf('localhost')>-1){
       this.MEDIA_URL = 'http://localhost:8000/';
@@ -638,6 +642,7 @@ export class AuthenticationService {
   }
 
   logout(): void {
+    this.module.logoutButtonClicked = true;
    $("body").addClass("logout-loader");
     this.resetData();
     this.access_token = null;
@@ -1042,10 +1047,60 @@ copyUsersToUserGroups(copyGroupUsersDto: CopyGroupUsersDto) {
   copyGroupUsersDto.loggedInUserId = this.getUserId();
   return this.callPostMethod(url,copyGroupUsersDto);
 }
-
-
 /*****XNFR-278****/
 
+/****XNFR-317****/
+getTemplateHtmlBodyAndMergeTagsInfo(id:number) {
+  let url = this.REST_URL +"email-template/getHtmlBodyAndMergeTags?access_token=" + this.access_token;
+  let map = {};
+  map['id'] = id;
+  map['emailId'] = this.user.emailId;
+  return this.callPostMethod(url,map);
+}
+
+sendTestEmail(sendTestEmailDto:SendTestEmailDto){
+  sendTestEmailDto.fromEmail = this.user.emailId;
+  let url = this.REST_URL +"email-template/sendTestEmail?access_token=" + this.access_token;
+  return this.callPostMethod(url,sendTestEmailDto);
+}
+
+sendCampaignTestEmail(data:any){
+  let url = this.REST_URL +"admin/sendTestEmail?access_token=" + this.access_token;
+  return this.callPostMethod(url,data);
+}
+
+/******XNFR-326******/
+findAssetPublishEmailNotificationOption() {
+  let companyProfileName = this.getSubDomain();
+  let url = this.REST_URL+"admin/assetPublishedEmailNotification/";
+  if(companyProfileName!=""){
+    url+= "companyProfileName/"+companyProfileName;
+  }else{
+    url+= "loggedInUserId/"+this.getUserId();
+  }
+  let apiUrl= url+"?access_token=" + this.access_token;
+  return this.callGetMethod(apiUrl);
+}
+
+findTrackOrPlaybookPublishEmailNotificationOption(type:any) {
+  let isTrack = type == TracksPlayBookType[TracksPlayBookType.TRACK];
+  let suffixUrl = isTrack ? "trackPublishedEmailNotification":"playbookPublishedEmailNotification";
+  let companyProfileName = this.getSubDomain();
+  let url = this.REST_URL+"admin/"+suffixUrl+"/";
+  if(companyProfileName!=""){
+    url+= "companyProfileName/"+companyProfileName;
+  }else{
+    url+= "loggedInUserId/"+this.getUserId();
+  }
+  let apiUrl= url+"?access_token=" + this.access_token;
+  return this.callGetMethod(apiUrl);
+}
+
+
+/******XNFR-326******/
+
+
+/****XNFR-317****/
 
 private callGetMethod(url: string) {
   return this.http.get(url)
@@ -1058,6 +1113,62 @@ private callPostMethod(url: string,requestDto:any) {
     .map(this.extractData)
     .catch(this.handleError);
 }
+
+
+public isLocalHost(){
+  return this.envService.CLIENT_URL=="http://localhost:4200/";
+}
+
+public isQADomain(){
+  return this.envService.CLIENT_URL=="https://xamplify.co/";
+}
+
+public isProductionDomain(){
+  return this.envService.CLIENT_URL=="https://xamplify.io/";
+}
+
+setDomainUrl(){
+  if(this.vanityURLEnabled){
+    if(this.isQADomain() || this.isLocalHost()){
+      this.DOMAIN_URL = "https://"+this.getSubDomain()+".xamplify.co/";
+    }else{
+      this.DOMAIN_URL = "https://"+this.getSubDomain()+".xamplify.io/";
+    }
+  }else{
+    this.DOMAIN_URL =  this.APP_URL;
+  }
+}
+
+stopLoaders(){
+  this.module.contentLoader = false;
+  this.leftSideMenuLoader = false;
+  this.module.topNavBarLoader = false;
+}
+
+
+/***XNFR-326***/
+getPartnerModuleCustomName(){
+  return localStorage.getItem("partnerModuleCustomName");
+}
+
+getDefaultM3U8FileForLocal(videoUrl:string){
+  if(this.envService.CLIENT_URL.indexOf("localhost")>-1){
+    videoUrl = "https://aravindu.com/vod/videos/54888/11082023/Dhoni1691751422924_mobinar.m3u8?access_token=" + this.access_token;
+  }else{
+    videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.access_token;
+  }
+  return videoUrl;
+}
+
+getDefault360M3U8FileForLocal(videoUrl:string){
+  if(this.envService.CLIENT_URL.indexOf("localhost")>-1){
+    videoUrl = "https://aravindu.com/vod/videos/54888/27062023/360VideoSCIENCELAB1EscapeTsunamiWave6kDisasterSurvival1687809605028_mobinar.m3u8?access_token=" + this.access_token;
+  }else{
+   videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.access_token;
+  }
+  return videoUrl;
+}
+
 
   
 }

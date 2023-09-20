@@ -35,7 +35,7 @@
         </app-response-message>
      </div>
      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-     <div [hidden]="isEditPartnerTemplate">
+     <div [hidden]="isEditPartnerTemplate || isEditAutoResponseTemplate">
         <div class="portlet light shadow">
            <div class="portlet-title">
               <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Redistribute a Campaign</h4>
@@ -64,13 +64,21 @@
                              <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200"
                              />
                           </div>
+                          <div class="form-group" [attr.class]="campaignDescriptionDivClass">
+                           <label>Descripton</label>
+                           <div>
+                              <textarea class="form-control" maxlength="1000" rows="5" [(ngModel)]="campaign.description" name="description" (input)="changeDescriptionClassName(campaign.description)" placeholder="Description"></textarea>
+                           </div>
+                        </div>
+
                           <div class="form-group" [attr.class]="subjectLineDivClass">
                              <label for="exampleInputPassword1">Subject line</label>
                              <span style="color: red"><strong> * </strong></span>
                              <div class="input-group merge-tag-input-border">
                                 <input type="text" id="subjectLine" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm();validateField('subjectLine');" maxlength="1000" />
                                 <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
+                                <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="right"
+                                 title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
                                 <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
                                 </button>
                                 </span>
@@ -132,7 +140,7 @@
                           <!--Email Opened-->
                           <div class="form-group">
                              <label class="control-label col-sm-4 p0">Notify Me When</label>
-                             <div class="col-sm-8">
+                             <div class="col-sm-8 mb10">
                                 <strong id="download-drop">Email Opened</strong>
                                 <switch class="pull-left"  [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                 (statusChange)="setEmailOpened($event)">
@@ -144,7 +152,7 @@
                           <!--Link Opened-->
                           <div class="form-group">
                              <label class="control-label col-sm-4 p0"></label>
-                             <div class="col-sm-8">
+                             <div class="col-sm-8 mb10">
                                 <strong id="download-drop">Link Opened</strong>
                                 <switch class="pull-left"  [status]="campaign.linkOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                 (statusChange)="setLinkOpened($event)">
@@ -155,7 +163,7 @@
                           <!--Video Played-->
                           <div class="form-group" *ngIf="campaignType=='VIDEO'">
                              <label class="control-label col-sm-4 p0"></label>
-                             <div class="col-sm-8">
+                             <div class="col-sm-8 mb10">
                                 <strong id="download-drop">Video Played</strong>
                                 <switch class="pull-left"  [status]="campaign.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                 (statusChange)="setVideoPlayed($event)">
@@ -168,24 +176,24 @@
                  </fieldset>
               </div>
               <div class="col-xs-12 col-sm-6" *ngIf="campaignType=='VIDEO'">
-                 <fieldset class="scheduler-border height160">
+                 <fieldset class="scheduler-border height160 scheduler_height">
                     <legend class="scheduler-border">Selected video</legend>
                     <app-video-thumbnail [videoFile]="campaign.campaignVideoFile" (notifyParent)="previewVideo($event)"></app-video-thumbnail>
                  </fieldset>
               </div>
               <div class="col-xs-12 col-sm-6">
                  <!-- ----------Email Template -->
-                 <fieldset class="scheduler-border height160"  *ngIf="campaignType!='LANDINGPAGE'">
+                 <fieldset class="scheduler-border height160 scheduler_height"  *ngIf="campaignType!='LANDINGPAGE'">
                     <legend class="scheduler-border">
                        Selected email template
                     </legend>
                     <div class="row m0"  style="cursor: pointer;">
                        <div class="col-xs-3">
-                          <img src="{{campaign.emailTemplate.subject}}" height="100" alt="">
+                          <img src="{{campaign.emailTemplate.subject}}" class="Selected-email-template-imgcu" alt="">
                        </div>
                        <div class="col-xs-8">
                           <a>
-                             <h4 class="ellipsis mt5 mb5" style="color: #777676;font-weight: 500 !important;" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name | slice:0:25}}
+                             <h4 class="ellipsis mt5 mb5 mb_wrap" style="color: #777676;font-weight: 500 !important;" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name | slice:0:25}}
                                 <span *ngIf="campaign.emailTemplate.name?.length>25">...</span>
                              </h4>
                              <h5 style="color: #656565;" class="m0" *ngIf="campaign.emailTemplate?.type?.toLocaleString() ==='PARTNER'" title="{{campaign.emailTemplate.vendorName}}">
@@ -198,9 +206,11 @@
                              </h5>
                           </a>
                           <br>
+                          <div class="d-flex">
                           <a class="pull-right btn btn-primary btn-sm" (click)="previewEmailTemplate(campaign.emailTemplate)">  <i class="fa fa-eye"></i> Preview </a>
                           <a *ngIf="campaign?.emailTemplate?.editPartnerTemplate"  class="pull-right btn btn-primary btn-sm" style="margin-right: 6px" (click)="editPartnerTemplate()"> <i class="fa fa-edit"></i> Edit </a>
-                       </div>
+                          </div>
+                        </div>
                     </div>
                  </fieldset>
                  <!-- ----------Landing Page---------- -->
@@ -331,7 +341,7 @@
                                                   <td class="text-center">
                                                      <div [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block float-none'">
                                                         <a title="Preview" (click)="$event.stopPropagation();previewUsers(contacts)">
-                                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                                        <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                                                         </a>
                                                      </div>
                                                   </td>
@@ -398,7 +408,7 @@
                                                   Add an Auto-response to your e-mail-{{i+1}}
                                                </h4>
                                             </div>
-                                            <div class="col-xs-5" style="text-align:right">
+                                            <div class="col-xs-5 mb-flex" style="text-align:right">
                                                <button type="button" class="btn btn-danger button-blue" (click)="remove(reply.divId,'replies')">
                                                <span class="glyphicon glyphicon-trash"></span>
                                                </button>
@@ -411,7 +421,7 @@
                                             <form class="role add-reply" id="form-{{reply.divId}}">
                                                <div class="col-xs-12" style="padding:0">
                                                   <div class="col-xs-12" style="padding:0">
-                                                     <div class="col-xs-4">
+                                                     <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
                                                         <label for="reason" style="cursor:default">Reason</label>
                                                         <select class="form-control" name="actionId" [(ngModel)]="reply.actionId" style="cursor:pointer">
                                                         <option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
@@ -428,7 +438,7 @@
                                                         </select>
                                                      </div>
                                                      <div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
-                                                        <div class="col-xs-2">
+                                                        <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2">
                                                            <label style="cursor:default" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 || reply.actionId==33 " id="reply-days-{{reply.divId}}">Reply
                                                            In X Days
                                                            <strong style="color: red">*</strong>
@@ -442,7 +452,7 @@
                                                            </label>
                                                            <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
                                                         </div>
-                                                        <div class="col-xs-3 time-col p0" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
+                                                        <div class="col-xs-12 col-sm-5 col-md-3 col-lg-3 time-col p0" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
                                                            <div class="col-xs-2" style="position: relative;top: 28px; cursor: default;">
                                                               <label for="time" id="send-time-{{reply.divId}}">At<strong style="color: red">*</strong>
                                                               </label>
@@ -452,14 +462,14 @@
                                                            </div>
                                                         </div>
                                                      </div>
-                                                     <div class="col-xs-3" style="margin-left: -16px;">
+                                                     <div class="col-xs-8 col-sm-3 col-md-3 col-lg-3 tab_sub" style="margin-left: -16px;">
                                                         <label for="time" style="cursor:default" id="reply-subject-{{reply.divId}}">Subject
                                                         <strong style="color: red">*</strong>
                                                         </label>
                                                         <div class="input-group merge-tag-input-border">
                                                            <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
                                                            <span class="input-group-btn">
-                                                           <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('nurture-campaign-reply',reply)">
+                                                           <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags" (click)="openMergeTagsPopup('nurture-campaign-reply',reply)">
                                                            <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
                                                            </button>
                                                            </span>
@@ -498,8 +508,8 @@
                                                                  </div>
                                                                  <div class="item__content" style="text-align: left;">
                                                                     <div class="flex-row">
-                                                                       <span class="item__name" [title]="reply.emailTemplate.name"><strong>{{reply?.emailTemplate?.name |slice:0:20}}</strong>
-                                                                       <strong *ngIf="reply?.emailTemplate?.name?.length>20">...</strong>
+                                                                       <span class="item__name" [title]="reply.emailTemplate.name"><strong>{{reply?.emailTemplate?.name |slice:0:12}}</strong>
+                                                                       <strong *ngIf="reply?.emailTemplate?.name?.length>12">...</strong>
                                                                        </span>
                                                                        <br>
                                                                        <br>
@@ -517,17 +527,20 @@
                                                                        </span>
                                                                        </span>
                                                                        <br>
-                                                                       <span *ngIf="reply?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{reply?.emailTemplate?.category}}">
-                                                                       <strong translate>Folder:</strong><span>{{reply?.emailTemplate?.category|slice:0:10}}</span>
-                                                                       <span *ngIf="reply?.emailTemplate?.category?.length>10">..</span>
-                                                                       </span>
-                                                                       <br>
                                                                        <div class="item__actions">
-                                                                          <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+                                                                          <span> 
+                                                                           <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                                                              data-toggle="tooltip" data-placement="top"
                                                                              title="Preview"  (click)="$event.stopPropagation();previewEmailTemplate(reply.emailTemplate)">
-                                                                          <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                              <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
                                                                           </a>
+                                                                          <!--XNFR-330---->
+                                                                          <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+                                                                             data-toggle="tooltip" data-placement="top"
+                                                                             title="Edit"  (click)="$event.stopPropagation();editAutoResponseTemplate(reply,'reply')">
+                                                                              <i class="fa fa-pencil-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                          </a>
+                                                                           <!--XNFR-330---->
                                                                           </span>
                                                                        </div>
                                                                     </div>
@@ -556,7 +569,7 @@
                                                Add an Auto-response to a website visit - {{i+1}}
                                             </h4>
                                          </div>
-                                         <div class="col-xs-5" style="text-align:right">
+                                         <div class="col-xs-5 mb-flex" style="text-align:right">
                                             <button type="button" class="btn btn-danger button-blue" (click)="remove(url.divId,'url')">
                                             <span class="glyphicon glyphicon-trash"></span>
                                             </button>
@@ -569,7 +582,7 @@
                                          <form class="role" id="form-{{url.divId}}" class="add-click">
                                             <div class="col-xs-12" style="padding:0">
                                                <div class="col-xs-12" style="padding:0">
-                                                  <div class="col-xs-4">
+                                                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                                      <label for="reason" style="cursor:default">When To Send Email</label>
                                                      <select style="cursor:pointer" class="form-control" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
                                                      <option [value]="19" [selected]="url.actionId ==19">Send if not clicked</option>
@@ -594,20 +607,20 @@
                                                         </div>
                                                      </div>
                                                   </div>
-                                                  <div class="col-xs-4">
+                                                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                                      <label style="cursor:default" for="time" id="click-subject-{{url.divId}}">Subject
                                                      <strong style="color: red" aria-hidden="true">*</strong>
                                                      </label>
                                                      <div class="input-group merge-tag-input-border">
                                                         <input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
                                                         <span class="input-group-btn">
-                                                        <button class="btn btn-default" type="button" title="Insert Merge Tags" (click)="openMergeTagsPopup('nurture-web-site',url)">
+                                                        <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags" (click)="openMergeTagsPopup('nurture-web-site',url)">
                                                         <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
                                                         </button>
                                                         </span>
                                                      </div>
                                                   </div>
-                                                  <div class="col-xs-4">
+                                                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                                      <label style="cursor:default" for="reason">Available URLs</label>
                                                      <select style="cursor:pointer" class="form-control" name="url" [(ngModel)]="url.url" style="width: 100%">
                                                      <option *ngFor="let hrefLink of emailTemplateHrefLinks;" [ngValue]="hrefLink" [selected]="hrefLink==url.url">
@@ -645,8 +658,8 @@
                                                               <div class="item__content" style="text-align: left;">
                                                                  <div class="flex-row">
                                                                     <span class="item__name" [title]="url.emailTemplate.name">
-                                                                    <strong>{{url.emailTemplate.name |slice:0:20}}</strong>
-                                                                    <strong *ngIf="url.emailTemplate?.name?.length>20">...</strong>
+                                                                    <strong>{{url.emailTemplate.name |slice:0:12}}</strong>
+                                                                    <strong *ngIf="url.emailTemplate?.name?.length>12">...</strong>
                                                                     </span>
                                                                     <br>
                                                                     <br>
@@ -659,8 +672,8 @@
                                                                     </span>
                                                                     </span>
                                                                     <br>
-                                                                    <span style="float:left" title="{{url.emailTemplate.createdBy}}">
-                                                                    <span>{{url.emailTemplate.createdBy|slice:0:15}}<span *ngIf="url.emailTemplate.createdBy?.length>15">...</span></span>
+                                                                    <span style="float:left" data-toggle="tooltip" data-placement="bottom" title="{{url.emailTemplate.createdBy}}">
+                                                                    <span>{{url.emailTemplate.createdBy|slice:0:12}}<span *ngIf="url.emailTemplate.createdBy?.length>12">...</span></span>
                                                                     </span>
                                                                     <br>
                                                                     <span *ngIf="url?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{url?.emailTemplate?.category}}">
@@ -669,11 +682,19 @@
                                                                     </span>
                                                                     <br>
                                                                     <div class="item__actions">
-                                                                       <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+                                                                       <span>
+                                                                         <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                                                           data-toggle="tooltip" data-placement="top"
                                                                           title="Preview"  (click)="$event.stopPropagation();previewEmailTemplate(url.emailTemplate)">
-                                                                       <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
-                                                                       </a>
+                                                                           <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                        </a>
+                                                                       <!--XNFR-330---->
+                                                                       <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Edit"  (click)="$event.stopPropagation();editAutoResponseTemplate(url,'url')">
+                                                                           <i class="fa fa-pencil-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                        </a>
+                                                                        <!--XNFR-330---->
                                                                        </span>
                                                                     </div>
                                                                  </div>
@@ -696,11 +717,11 @@
                     </div>
                  </div>
               </div>
-              <div class="col-xs-12" style="margin-top: 8px;">
+              <div class="col-xs-12 mb_p0" style="margin-top: 8px;">
                  <fieldset class="scheduler-border">
                     <legend class="scheduler-border">Launch Option</legend>
                     <div>
-                       <div class="btn-group btn-group-justified">
+                       <div class="btn-group btn-group-justified width_unset">
                           <ng-container>
                              <label  class="btn btn-primary button-border">
                              <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
@@ -712,7 +733,7 @@
                                 [value]="campaignLaunchOptions[1]" formControlName="scheduleCampaign"
                                 ngDefaultControl style="margin-right:10px " /><span class="text-algn">Schedule</span>
                              </label>
-                             <label class="btn green mBtnAlign button-border">
+                             <label class="btn Btn-Green mBtnAlign button-border">
                              <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
                                 [value]="campaignLaunchOptions[2]" formControlName="scheduleCampaign"
                                 ngDefaultControl style="margin-right:10px" /><span class="text-algn">Save</span>
@@ -753,9 +774,11 @@
                     </div>
                     <div class="portlet-title border-none">
                        <div class="col-xs-12 center-block pt20 text-center">
-                          <button type="button" class="btn green" [disabled]="!isCampaignDetailsFormValid" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)" style="width:10em">Send Test Email</button>
-                          <button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid" style="width:10em">{{buttonName}}</button>
+                        <div class="mb_flex">
+                          <button type="button" class="btn Btn-Green" [disabled]="!isCampaignDetailsFormValid" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)" style="width:10em">Send Test Email</button>
+                          <button type="submit" class="btn Btn-Green" [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid" style="width:10em">{{buttonName}}</button>
                        </div>
+                     </div>
                     </div>
                  </fieldset>
               </div>
@@ -772,8 +795,25 @@
               <i class="fa fa-times" aria-hidden="true"></i>
               </a>
            </div>
-           <div class="portlet-body clearfix" *ngIf="isEditPartnerTemplate">
+           <div class="portlet-body clearfix" *ngIf="isEditPartnerTemplate" style="padding-top: 0px;">
               <app-create-bee-template [partnerEmailTemplate]="campaign.emailTemplate"></app-create-bee-template>
+           </div>
+        </div>
+     </div>
+     <!---XNFR-330-->
+     <div [hidden]="!isEditAutoResponseTemplate">
+        <ngx-loading [show]="partnerTemplateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <div class="portlet light shadow">
+           <div class="portlet-title">
+              <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Edit Template</h4>
+              <a class="close-circle pull-right" data-dismiss="modal" (click)="resetAutoResponseEmailTemplate()">
+              <i class="fa fa-times" aria-hidden="true"></i>
+              </a>
+           </div>
+           <div class="portlet-body clearfix" *ngIf="isEditAutoResponseTemplate">
+              <app-create-bee-template [partnerEmailTemplate]="selectedAutoResponseEmailTemplate" [isAutoResponseEmailTemplate]="true" 
+              [autoResponseId]="selectedAutoResponseId" [selectedAutoResponseCustomEmailTemplateId]="selectedAutoResponseCustomEmailTemplateId"
+              (eventEmitter)="getUpdatedTemplateBodyAndJsonBody($event)"></app-create-bee-template>
            </div>
         </div>
      </div>
@@ -795,7 +835,7 @@
            <div id="email-template-content"></div>
         </div>
         <div class="modal-footer">
-           <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+           <a href="javascript:void(0)" data-dismiss="modal" class="btn Btn-Gray" style="float: right">Close</a>
         </div>
      </div>
   </div>
@@ -837,7 +877,7 @@
            </div>
         </div>
         <div class="modal-footer">
-           <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+           <a href="javascript:void(0)" data-dismiss="modal" class="btn Btn-Gray" style="float: right">Close</a>
         </div>
      </div>
   </div>

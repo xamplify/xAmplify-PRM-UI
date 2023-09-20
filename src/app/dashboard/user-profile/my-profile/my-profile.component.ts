@@ -57,6 +57,7 @@ import { ThemePropertiesListWrapper } from 'app/dashboard/models/theme-propertie
 import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { CompanyThemeActivate } from 'app/dashboard/models/company-theme-activate';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { LeftsidenavbarCustomComponent } from 'app/dashboard/leftsidenavbar-custom/leftsidenavbar-custom.component';
 
 declare var swal, $, videojs: any, Papa: any;
 
@@ -296,6 +297,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	isNoThemes:boolean = false;
 	vanityLoginDto:VanityLoginDto = new VanityLoginDto();
 	/*** XNFR-238******/
+	searchWithModuleName:any;
+	showTemplates = false;
+	/****XNFR-326*****/
+	showEmailNotificationSettingsOption = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -396,11 +401,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
         fileObj = this.utilService.blobToFile(fileObj);
         this.fileUploadCode(fileObj);
-		console.log("sudha",fileObj);
       }else{
-        //   this.refService.showSweetAlertErrorMessage("Please upload an image");
 		this.errorUploadCropper = false;
-            this.showCropper = false;
+        this.showCropper = false;
       }
       
 	}
@@ -444,6 +447,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
 			this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
 				{
+				 playbackRates: [0.5, 1, 1.5, 2],
 					html5: {
 						hls: {
 							overrideNative: overrideNativeValue
@@ -479,6 +483,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 						}
 					});
 				});
+			this.videoUtilService.setDefaultPlayBackRateText();
 			this.defaultVideoSettings();
 			this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
 			if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
@@ -503,11 +508,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 			this.getUserByUserName(this.currentUser.userName);
 			this.cropperSettings();
-			
-			// this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
 			this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
-			console.log(this.videoUtilService.videoTempDefaultSettings);
 			this.loggedInUserId = this.authenticationService.getUserId();
 			/**** show themes to partner ***/
 			this.vanityLoginDto.userId = this.loggedInUserId;
@@ -530,7 +531,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			if (this.isEmpty(this.userData.roles) || !this.userData.profileImagePath) {
 				this.router.navigateByUrl(this.referenceService.homeRouter);
 			} else {
-				console.log(this.userData);
 				this.parentModel.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
 				if (!(this.userData.profileImagePath.indexOf(null) > -1)) {
 					this.userProfileImage = this.userData.profileImagePath;
@@ -548,15 +548,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnInit() {
 		try {
-			// if (this.referenceService.integrationCallBackStatus) {
-			// 	this.activeTabName = 'integrations';
-			// 	this.activeTabHeader = this.properties.integrations;
-			// 	//this.referenceService.integrationCallBackStatus = false;
-			// } else {
-			// 	this.activeTabName = 'personalInfo';
-			// 	this.activeTabHeader = this.properties.personalInfo;
-			// }
-
+            this.searchWithModuleName =  19;
 			this.activeTabName = 'personalInfo';
 			this.activeTabHeader = this.properties.personalInfo;
 			this.customConstructorCall();
@@ -573,7 +565,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.getModulesDisplayDefaultView();
 			this.validateUpdatePasswordForm();
 			this.validateUpdateUserProfileForm();
-			this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
 			this.isOnlyPartner = this.authenticationService.isOnlyPartner();
 			this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
 			if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length > 1 && this.hasCompany)) {
@@ -649,7 +640,25 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !== 0) {
 					this.roleNames = "Partner";
 				}
+				/****XBI-1723*****/
+				let isLoggedAsPartner = this.utilService.isLoggedAsPartner();
+				if(isLoggedAsPartner){
+					let loggedInUserRole = this.authenticationService.loggedInUserRole;
+					let isPrm = loggedInUserRole.indexOf("Prm")>-1;
+					let isVendor = loggedInUserRole.indexOf("Vendor")>-1;
+					let isMarketing = loggedInUserRole.indexOf("Marketing")>-1;
+					let isOrgAdmin = loggedInUserRole.indexOf("OrgAdmin")>-1;
+					let isAnyAdmin = isPrm || isVendor || isMarketing || isOrgAdmin;
+					if(isAnyAdmin){
+						this.roleNames = "Partner";
+					}
+				/****XBI-1723*****/
 			}
+
+				
+			}
+
+
            }else{
                this.authenticationService.loggedInUserRole = 'User';
 		   }
@@ -715,6 +724,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				.subscribe(
 					data => {
 						this.userData = data;
+						/***XBI-1673****/
+						this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
+						/***XBI-1673****/
 						this.authenticationService.userProfile = data;
 					},
 					error => { console.log(error); this.router.navigate(['/su']) },
@@ -724,7 +736,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	updatePassword() {
 		this.ngxloading = true;
-		console.log(this.updatePasswordForm.value);
 		var userPassword = {
 			'oldPassword': this.updatePasswordForm.value.oldPassword,
 			'newPassword': this.updatePasswordForm.value.newPassword,
@@ -1054,7 +1065,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			(result: any) => {
 				this.active = true;
 				const response = result;
-				console.log(response);
 				this.referenceService.defaultPlayerSettings = response;
 				this.tempDefaultVideoPlayerSettings = response;
 				this.defaultVideoPlayer = response;
@@ -1112,6 +1122,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		$('.video-js .vjs-remaining-time-display').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
 		$('.video-js .vjs-fullscreen-control').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
 		$('.video-js .vjs-volume-panel').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+		$('.video-js .vjs-playback-rate').css('cssText', 'color:' + this.defaultVideoPlayer.playerColor + '!important');
+
+
 	}
 	transperancyControllBar(value: any) {
 		this.valueRange = value;
@@ -1153,10 +1166,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	defaultVideoSettings() {
 		if (this.referenceService.defaultPlayerSettings !== null && this.referenceService.defaultPlayerSettings !== undefined) {
-			console.log('default settings called');
-			console.log(this.referenceService.defaultPlayerSettings);
-			console.log(this.referenceService.defaultPlayerSettings.playerColor);
-
 			if (this.referenceService.defaultPlayerSettings.playerColor === undefined || this.referenceService.defaultPlayerSettings.playerColor === null) {
 				this.referenceService.defaultPlayerSettings.playerColor = '#454';
 				this.referenceService.defaultPlayerSettings.controllerColor = '#234';
@@ -1191,8 +1200,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			);
 	}
 	resetForm() {
-		console.log(this.referenceService.defaultPlayerSettings);
-		console.log(this.videoUtilService.videoTempDefaultSettings);
 		this.compControllerColor = this.videoUtilService.videoTempDefaultSettings.controllerColor;
 		this.compPlayerColor = this.videoUtilService.videoTempDefaultSettings.playerColor;
 		this.valueRange = this.videoUtilService.videoTempDefaultSettings.transparency;
@@ -1269,7 +1276,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				},
 				error => {
 					this.ngxloading = false;
-					console.log(error);
 					this.customResponse = new CustomResponse('ERROR', this.properties.PROCESS_REQUEST_ERROR, true);
 				},
 				() => { }
@@ -1367,10 +1373,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	//Forms section
 
 	initializeForm() {
-
 		this.userService.listForm(this.loggedInUserId).subscribe(result => {
-
-			console.log(result)
 			if (result.length > 0) {
 				this.form = result[0];
 				this.questions = result;
@@ -1415,16 +1418,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	remove(i, id) {
 		if (id)
-			console.log(id)
-		console.log(i)
 		var index = 1;
-
 		this.questions = this.questions.filter(question => question.divId !== 'question-' + i)
 			.map(question => {
 				question.divId = 'question-' + index++;
 				return question;
 			});
-		console.log(this.questions);
 		this.submitBUttonStateChange();
 
 	}
@@ -1450,14 +1449,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				confirmButtonText: 'Yes, delete it!'
 
 			}).then(function(myData: any) {
-				console.log("deleteQuestion showAlert then()" + question);
 				self.userService.deleteQuestion(question).subscribe(result => {
-					console.log(result)
 					self.remove(i, question.id);
 					self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
 				}, error => console.log(error))
 			}, function(dismiss: any) {
-				console.log('you clicked on option');
+				
 			});
 		} catch (error) {
 			console.log(error);
@@ -1503,7 +1500,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		let data = []
 		this.questions.forEach(question => {
 			const q = new DealQuestions();
-			console.log(self.authenticationService.getUserId())
 			q.question = question.question;
 			if (question.id) {
 				let obj = {
@@ -1572,7 +1568,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				confirmButtonText: 'Yes, delete it!'
 
 			}).then(function(myData: any) {
-				console.log("dealType showAlert then()" + dealType);
 				self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
 					if (result.statusCode == 200) {
 						self.removeDealType(i, dealType.id);
@@ -1613,7 +1608,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				dealtype.divId = 'dealtype-' + index++;
 				return dealtype;
 			});
-		console.log(this.dealtypes);
 		this.dealTypeButtonStateChange();
 
 	}
@@ -1664,8 +1658,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 					dtArr.push(obj);
 				}
 			})
-			console.log(dtArr)
-
 			this.dealRegSevice.saveDealTypes(dtArr, this.authenticationService.getUserId()).subscribe(result => {
 				this.ngxloading = false;
 				this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
@@ -1840,8 +1832,17 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.listCategories(this.categoryPagination);
 		} else if (this.activeTabName == "dbButtonSettings") {
 			this.activeTabHeader = 'Dashboard Buttons';
+		} else if (this.activeTabName == "customizeleftmenu") {
+			this.activeTabHeader = this.properties.customizeleftmenu;
 		} else if (this.activeTabName == "templates") {
+			this.ngxloading = true;
+			this.showTemplates = false;
 			this.activeTabHeader = 'Your Templates';
+			let self = this;
+			setTimeout(()=>{                         
+				  self.showTemplates = true;
+				  self.ngxloading = false;
+ 			}, 500);
 		} else if (this.activeTabName == "leadPipelines") {
 			this.activeTabHeader = this.properties.leadPipelines;
 			this.pipelinePagination = new Pagination();
@@ -1904,6 +1905,17 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				  self.ngxloading = false;
  			}, 500);
 			this.activeTabHeader = this.properties.supportText;
+		}
+		/****XNFR-326*****/
+		else if(this.activeTabName==this.properties.emailNotificationSettings){
+			this.ngxloading = true;
+			this.showEmailNotificationSettingsOption = false;
+			let self = this;
+			setTimeout(()=>{                         
+				self.showEmailNotificationSettingsOption = true;
+				self.ngxloading = false;
+		   }, 500);
+		  this.activeTabHeader = this.properties.emailNotificationSettings;
 		}
 		this.referenceService.goToTop();
 		this.showThemes();
@@ -2004,7 +2016,6 @@ configSalesforce() {
 			const encodedData = window.btoa(salesforceCurrentUser);
 			const encodedUrl = window.btoa(this.sfRedirectURL);
 			let vanityUserId = JSON.parse(salesforceCurrentUser)['userId'];
-			console.log("vanityUserId: "+vanityUserId);
 			let url = null;
 			if (this.sfRedirectURL) {
 				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + null;
@@ -2668,7 +2679,6 @@ configSalesforce() {
 		this.selectedCustomFieldIds = [];
 		$('[name="sfcf[]"]:checked').each(function() {
 			var id = $(this).val();
-			console.log(id);
 			self.selectedCustomFieldIds.push(id);
 		});
 
@@ -2694,7 +2704,6 @@ configSalesforce() {
 		this.selectedCustomFieldIds = [];
 		$('[name="sfcf[]"]:checked').each(function() {
 			var id = $(this).val();
-			console.log(id);
 			self.selectedCustomFieldIds.push(id);
 		});
 
@@ -2781,7 +2790,6 @@ configSalesforce() {
 
 	checkAll(ev: any) {
 		if (ev.target.checked) {
-			console.log("checked");
 			$('[name="sfcf[]"]').prop('checked', true);
 			let self = this;
 			$('[name="sfcf[]"]:checked').each(function() {
@@ -2791,7 +2799,6 @@ configSalesforce() {
 			});
 			this.selectedCfIds = this.referenceService.removeDuplicates(this.selectedCfIds);
 			this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
-			console.log(self.selectedCfIds);
 		} else {
 			let self = this;
 			//$( '[name="sfcf[]"]' ).prop( 'checked', false );
@@ -2821,7 +2828,6 @@ configSalesforce() {
 
 	selectCf(cfName: string) {
 		let isChecked = $('#' + cfName).is(':checked');
-		console.log(this.selectedCfIds)
 		if (isChecked) {
 			if (this.selectedCfIds.indexOf(cfName) == -1) {
 				this.selectedCfIds.push(cfName);
@@ -2829,8 +2835,6 @@ configSalesforce() {
 			if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
 				this.paginatedSelectedIds.push(cfName);
 			}
-
-			console.log(this.selectedCfIds);
 		} else {
 			this.selectedCfIds.splice($.inArray(cfName, this.selectedCfIds), 1);
 			this.paginatedSelectedIds.splice($.inArray(cfName, this.paginatedSelectedIds), 1);
@@ -3018,8 +3022,6 @@ configSalesforce() {
 		//     self.pipeline.stages.splice(removeIndex, 1);
 		//    });
 		this.pipeline.stages[this.defaultStageIndex].defaultStage = true;
-		console.log(this.pipeline);
-
 		this.dashBoardService.saveOrUpdatePipeline(this.pipeline)
 			.subscribe(
 				data => {
@@ -3047,9 +3049,18 @@ configSalesforce() {
 	}
 
 	deleteStage(divIndex: number) {
-		this.pipeline.stages.splice(divIndex, 1);
+		const deletedStage = this.pipeline.stages.splice(divIndex, 1)[0]; 
 		if (this.defaultStageIndex > divIndex) {
 			this.defaultStageIndex = this.defaultStageIndex - 1;
+		}
+		if (this.pipeline.stages.length === 1) {
+			this.pipeline.stages[0].private = false; 
+		  }
+		  if (deletedStage.private) {
+			const selectedStages = this.pipeline.stages.filter(item => item.private);
+			if (selectedStages.length === 0) {
+				this.pipeline.stages[this.pipeline.stages.length - 1].canDelete = false;
+			}
 		}
 	}
 
@@ -3737,7 +3748,6 @@ configSalesforce() {
             allowOutsideClick: false,
             confirmButtonText: 'Yes'
         }).then(function() {
-            console.log("save");
             self.saveExcludedDomains(excludedDomains);
         }, function(dismiss: any) {
             console.log('you clicked on option' + dismiss);
@@ -3961,7 +3971,6 @@ configSalesforce() {
 		}).then(
 		  function (allowOutsideClick) {
 			if (allowOutsideClick) {
-			  console.log('CONFIRMED');
 		    window.location.reload();
 			}
 		  });
@@ -3988,12 +3997,6 @@ configSalesforce() {
 			(response) => {
 				this.ngxloading = false
 				 this.defaultThemes = response.data;
-				 console.log(this.defaultThemes)
-				//  for (let i = 0; i < 2; i++) {
-				// 	if(this.defaultThemes[i].id == 1 || this.defaultThemes[i].id ==2){
-				// 	this.lightdark.push(this.defaultThemes[i])
-				// 	}
-				//   }
 			},
 			error => {
 				this.ngxloading = false;
@@ -4014,8 +4017,6 @@ configSalesforce() {
 	activateThemeForCompany(companyThemeId:number){
 	 this.activateTheme.createdBy = this.authenticationService.getUserId();
      this.activateTheme.themeId =companyThemeId; 
-	 console.log(companyThemeId ,'sudha');
-	 console.log( this.activateTheme.createdBy,'companyId');
 	 this.activateThemeApi(this.activateTheme);
 	}
 	activateThemeApi(theme:CompanyThemeActivate) {
@@ -4138,5 +4139,39 @@ configSalesforce() {
 		this.themeResponse.isVisible = false;
 		this.referenceService.goToTop();
 	}
+
  /************* XNFR-238 *********************/	
+
+ /************* XNFR-338 *********************/
+ 
+ shouldDisableCheckbox(index: number): boolean {
+	const selectedCount = this.pipeline.stages.filter(item => item.private).length;
+    const remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
+
+    if (remainingUnselectedCount === 0 && !this.pipeline.stages[index].private) {
+        this.pipeline.stages[index].canDelete = false;
+    } else {
+        this.pipeline.stages[index].canDelete = true;
+    }
+
+    return remainingUnselectedCount === 0 && !this.pipeline.stages[index].private;
+  }	
+  handleMarkAsChange(changedIndex: number): void {
+	const changedStage = this.pipeline.stages[changedIndex];
+
+	if (changedStage.markAs === 'won' || changedStage.markAs === 'lost') {
+	  this.resetOtherMarkedStages(changedIndex, changedStage.markAs);
+	}
+  }
+
+  resetOtherMarkedStages(changedIndex: number, newMarking: string): void {
+	for (let i = 0; i < this.pipeline.stages.length; i++) {
+	  if (i !== changedIndex && this.pipeline.stages[i].markAs === newMarking) {
+		this.pipeline.stages[i].markAs = 'markAs';
+	  }
+	}
+  }
+  /************* XNFR-338 *********************/
+
+
 }

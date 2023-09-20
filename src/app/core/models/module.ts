@@ -114,5 +114,14 @@ export class Module {
     showAddLeadOrDealButtonInMyProfileSection = false;
     navigateToPartnerSection = false;
 
+    /***XNFR-318***/
+    isOrgAdminCompany = false;
+
+    topNavBarLoader = false;
+    logoutButtonClicked =false;
+
+    /****XNFR-326****/
+    emailNotificationSettings = false;
+
 
 }

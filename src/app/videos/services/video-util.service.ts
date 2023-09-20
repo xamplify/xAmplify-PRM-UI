@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SaveVideoFile } from '../models/save-video-file';
 import { DefaultVideoPlayer } from '../models/default-video-player';
+import { EnvService } from 'app/env.service';
+
 declare var $: any;
 
 @Injectable()
@@ -56,6 +58,10 @@ export class VideoUtilService {
         'upperText': { 'required': 'upper text is required', },
         'lowerText': { 'required': 'lower text is required', },
     };
+
+    constructor(public envService: EnvService) { }
+
+    
     videojshotkeys() {
         $('head').append('<script src="assets/js/indexjscss/videojs.hotkeys.min.js"" type="text/javascript"  class="p-video" />');
     }
@@ -71,17 +77,25 @@ export class VideoUtilService {
 
     }
     normalVideoJsFiles() {
-        $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript" class="h-video"  />');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-flash.js" type="text/javascript" class="h-video"  />');
-        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-testing-contrib-hls.js" type="text/javascript"  class="h-video"/>');
-        $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
+        let loadLatestVideoJsFiles = this.envService.loadLatestVideoJsFiles;
+        if(loadLatestVideoJsFiles){
+            $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-js7.4.1.css" class="h-video" rel="stylesheet">');
+            $('head').append('<script src="assets/js/indexjscss/video-hls-player/video7.4.1.js" type="text/javascript" class="h-video"  />');
+            $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-http-source-selector.js" type="text/javascript" class="h-video"  />');
+            $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-contrib-quality-levels.js" type="text/javascript" class="h-video"  />');
+        }else{
+          $('head').append('<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="h-video" rel="stylesheet">');
+          $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript" class="h-video"  />');
+          $('head').append('<script src="assets/js/indexjscss/videojs-playlist.js" type="text/javascript"  class="h-video" />');
+          $('head').append('<script src="assets/js/indexjscss/video-hls-player/videojs-flash.js" type="text/javascript" class="h-video"  />');
+          $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-testing-contrib-hls.js" type="text/javascript"  class="h-video"/>');
+        }
         this.videojshotkeys();
     }
     video360withm3u8(){
        $('head').append('<script src="assets/js/indexjscss/video-hls-player/video-testing-contrib-hls.js" type="text/javascript"  class="h-video"/>');
     }
-    constructor() { }
+    
     validateEmail(email: string) {
         const validation = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return validation.test(email);
@@ -146,7 +160,14 @@ export class VideoUtilService {
         $('.video-js .vjs-volume-panel').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.vjs-VR-control vjs-control vjs-button ').css('cssText', 'color:' + videoFile.playerColor + '!important');
         $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        $('.video-js .vjs-playback-rate').css('cssText', 'color:' + videoFile.playerColor + '!important');
+        this.setDefaultPlayBackRateText();
     }
+
+    setDefaultPlayBackRateText(){
+        $('.vjs-playback-rate-value').text('1x');
+      }
+
     modalWindowPopUp(url, width, height) {
         let leftPosition, topPosition;
         leftPosition = (window.screen.width / 2) - ((width / 2) + 10);

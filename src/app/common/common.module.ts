@@ -54,7 +54,6 @@ import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/ad
 import { CreateBeeTemplateComponent } from 'app/util/create-bee-template/create-bee-template.component';
 import { FormsListViewUtilComponent } from 'app/util/forms-list-view-util/forms-list-view-util.component';
 import { CampaignsListViewUtilComponent } from 'app/util/campaigns-list-view-util/campaigns-list-view-util.component';
-import { EmailTemplatesListViewUtilComponent } from 'app/util/email-templates-list-view-util/email-templates-list-view-util.component';
 import { LandingPagesListViewUtilComponent } from 'app/util/landing-pages-list-view-util/landing-pages-list-view-util.component';
 import { PreviewCampaignComponent } from "app/campaigns/preview-campaign/preview-campaign.component";
 import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
@@ -80,7 +79,6 @@ import { ImageLoaderComponent } from './image-loader/image-loader.component';
 import { AddTagsUtilComponent } from 'app/util/add-tags-util/add-tags-util.component';
 import { CampaignsLaunchedByPartnersComponent } from 'app/util/campaigns-launched-by-partners/campaigns-launched-by-partners.component';
 import { SpfDescriptionComponent } from 'app/util/spf-description/spf-description.component';
-import { PartnerCompanyAndGroupsModalPopupComponent } from 'app/util/partner-company-and-groups-modal-popup/partner-company-and-groups-modal-popup.component';
 import { PreviewUserListComponent } from 'app/util/preview-user-list/preview-user-list.component';
 import { AddTracksPlayBookComponent } from 'app/tracks-play-book-util/add-tracks-play-book/add-tracks-play-book.component'
 import { ManageTracksPlayBookComponent } from 'app/tracks-play-book-util/manage-tracks-play-book/manage-tracks-play-book.component'
@@ -124,10 +122,24 @@ import { PipedriveAuthenticationPopupComponent } from 'app/contacts/pipedrive-au
 /*********XNFR-255******/
 import { PartnerCompanyAndGroupsComponent } from 'app/util/partner-company-and-groups/partner-company-and-groups.component';
 import { CopyGroupUsersModalPopupComponent } from 'app/util/copy-group-users-modal-popup/copy-group-users-modal-popup.component';
+
+import { UserGuideHelpButtonComponent } from './user-guide-help-button/user-guide-help-button.component';
+import { GuideLeftMenuComponent } from 'app/guides/guide-left-menu/guide-left-menu.component';
+import { SearchGuidesComponent } from 'app/guides/search-guides/search-guides.component';
+import { GuideHelpIconComponent } from 'app/guides/guide-help-icon/guide-help-icon.component';
+
 import { XamplifyVideoPlayerComponent } from 'app/util/xamplify-video-player/xamplify-video-player.component';
+
 import { DonutPieChartComponent } from 'app/dashboard/dashboard-analytics-components/donut-pie-chart/donut-pie-chart.component';
 import { QueryBuilderModule } from "angular2-query-builder";
 import { SelectEmailTemplateComponent } from 'app/util/select-email-template/select-email-template.component';
+
+import { SendTestEmailComponent } from 'app/util/send-test-email/send-test-email.component';
+import { AddMultipleEmailsInputComponent } from 'app/util/add-multiple-emails-input/add-multiple-emails-input.component';
+import { CampaignListAndGridViewComponent } from 'app/util/campaign-list-and-grid-view/campaign-list-and-grid-view.component';
+import { HomeGuideComponent } from 'app/guides/home-guide/home-guide.component';
+import { EmailTemplatesListAndGridViewComponent } from 'app/util/email-templates/email-templates-list-and-grid-view/email-templates-list-and-grid-view.component';
+
 
 
 @NgModule({
@@ -141,11 +153,11 @@ import { SelectEmailTemplateComponent } from 'app/util/select-email-template/sel
 		ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent, PreviewPopupComponent, PreviewLandingPageComponent, FormPreviewComponent,
 		LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent, FormAnalyticsUtilComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent,
 		SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent,
-		CampaignsListViewUtilComponent, EmailTemplatesListViewUtilComponent, LandingPagesListViewUtilComponent, PreviewCampaignComponent, SocialStatusComponent,
+		CampaignsListViewUtilComponent, LandingPagesListViewUtilComponent, PreviewCampaignComponent, SocialStatusComponent,
 		AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent, RedistributeCampaignsListViewUtilComponent, XamplifyDefaultTemplatesComponent, 
 		EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTracksPlayBookComponent, AddTagsUtilComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent,
-		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, 
+		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PreviewUserListComponent, 
 		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
 		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent,
 		SelectDropdownComponent,PreviewAssetPopupComponent,AssetGridViewActionsComponent,DownloadAssetPopupComponent,DeleteAssetsComponent,
@@ -154,7 +166,11 @@ import { SelectEmailTemplateComponent } from 'app/util/select-email-template/sel
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,
 		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
-		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent, DonutPieChartComponent,SelectEmailTemplateComponent],
+		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
+		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,
+		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,SelectEmailTemplateComponent],
+
+
 
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
@@ -164,12 +180,12 @@ import { SelectEmailTemplateComponent } from 'app/util/select-email-template/sel
 		ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent,
 		PreviewPopupComponent, PreviewLandingPageComponent, FormPreviewComponent, LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent,
 		FormAnalyticsUtilComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent,
-		AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent, CampaignsListViewUtilComponent, EmailTemplatesListViewUtilComponent,
+		AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent, CampaignsListViewUtilComponent,
 		LandingPagesListViewUtilComponent, PreviewCampaignComponent, SocialStatusComponent, AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent,
 		RedistributeCampaignsListViewUtilComponent, XamplifyDefaultTemplatesComponent, EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTagsUtilComponent, 
 		AddTracksPlayBookComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent, 
-		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PartnerCompanyAndGroupsModalPopupComponent, PreviewUserListComponent, 
+		TracksPlayBookAnalyticsComponent, TracksPlayBookPartnerAnalyticsComponent, PreviewUserListComponent, 
 		TracksPlayBookPartnerCompanyAndListsComponent, AddDefaultTemplateDetailsComponent, UserlistUsersComponent, PartnerCompanyModalPopupComponent,
 		FormPreviewWithSubmittedAnswersComponent,TeamMembersUtilComponent,ConfirmSweetAlertUtilComponent,ChartPieComponent, ChartVariablePieComponent,
 		SelectDropdownComponent,PreviewAssetPopupComponent,AssetGridViewActionsComponent,DownloadAssetPopupComponent,DeleteAssetsComponent,
@@ -178,7 +194,9 @@ import { SelectEmailTemplateComponent } from 'app/util/select-email-template/sel
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,
 		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
-		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent, DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent]
+		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
+		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent]
+
 
 
 

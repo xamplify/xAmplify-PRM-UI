@@ -22,6 +22,8 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DownloadRequestDto } from 'app/util/models/download-request-dto';
 import { CustomSkin } from '../models/custom-skin';
 import { VideoFileService } from '../../videos/services/video-file.service';
+import { Roles } from 'app/core/models/roles';
+import { UserGuideDashboardDto } from 'app/guides/models/user-guide-dashboard-dto';
 
 declare var swal, $:any, Highcharts: any;
 @Component({
@@ -81,7 +83,11 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
    userId: number;
     editVideo : boolean = false;
    playVideo : boolean = false;
-
+    /** user guide */
+    mergeTagForGuide:any;
+    roleName: Roles = new Roles();
+    userGuideDashboardDto:UserGuideDashboardDto = new UserGuideDashboardDto();
+    /** user guide */
   constructor(public envService:EnvService,public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
     public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute, private vanityURLService:VanityURLService,
@@ -108,6 +114,7 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
     localStorage.removeItem('assetName');
     localStorage.removeItem('campaignReport');
     localStorage.removeItem('saveVideoFile');
+
     this.getMainContent(this.userId);
     let companyProfileName = this.authenticationService.companyProfileName;
     if(companyProfileName!=undefined){
@@ -124,8 +131,46 @@ export class DashboardAnalyticsComponent implements OnInit,OnDestroy {
         this.dashboardAnalyticsDto = this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
         this.getUserCampaignReport();
     }
+      /** User Guide **/
+      this.getMergeTagForGuide();
+        /** User Guide **/
   }
-
+    /** User Guide **/
+    getMergeTagForGuide() {
+        this.dashBoardService.getUserGuidesForDashBoard(this.vanityLoginDto)
+            .subscribe(
+                (response) => {
+                    this.userGuideDashboardDto = response.data;
+                    if (this.userGuideDashboardDto.partnerLoggedInThroughVanityUrl) {
+                        this.mergeTagForGuide = 'partner_account_dashboard';
+                    } else if (this.userGuideDashboardDto.vendorLoggedInThroughOwnVanityUrl) {
+                        if (this.userGuideDashboardDto.orgAdminCompany || this.userGuideDashboardDto.vendorCompany) {
+                            this.mergeTagForGuide = 'vanity_vendor_account_dashboard';
+                        } else if(this.userGuideDashboardDto.prmCompany) {
+                            this.mergeTagForGuide = 'vanity_prm_account_dashboard';
+                        } else {
+                            this.mergeTagForGuide = 'vanity_marketing_account_dashboard';
+                        }
+                    } else {
+                        if (this.userGuideDashboardDto.orgAdminCompany) {
+                            this.mergeTagForGuide = 'orgadmin_account_dashboard';
+                        } else if (this.userGuideDashboardDto.vendorCompany) {
+                            this.mergeTagForGuide = 'vendor_account_dashboard';
+                        } else if (this.userGuideDashboardDto.marketingCompany) {
+                            this.mergeTagForGuide = 'marketing_account_dashboard';
+                        } else if (this.userGuideDashboardDto.prmCompany) {
+                            this.mergeTagForGuide = 'prm_account_dashboard';
+                        } else {
+                            this.mergeTagForGuide = 'partner_account_dashboard';
+                        }
+                    }
+                },
+                error => {
+                    console.log(error);
+                }
+            );
+    }
+      /** User Guide */
   ngOnDestroy(){
     $('#customizeCampaignModal').modal('hide');
   }
@@ -387,7 +432,6 @@ generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) 
                     point: {
                         events: {
                             click: function () {
-                                //  alert('campaign: ' + this.category + ', value: ' + this.y);
                             }
                         }
                     }
@@ -521,7 +565,6 @@ showCampaignDetails(campaign:any){
           (response) =>{
            let cskinMap  = response.data;
            this.skin  = cskinMap.MAIN_CONTENT;
-           console.log(this.skin);
         }
         )
         

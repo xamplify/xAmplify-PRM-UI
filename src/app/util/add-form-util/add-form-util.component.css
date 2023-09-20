@@ -14,7 +14,7 @@
   margin-bottom: 10px;
 }
 
-.btn-group button:not (:last-child) {
+.btn-group button:not(:last-child) {
   border-bottom: none;
 }
 
@@ -673,6 +673,8 @@ label {
 .img-grid {
   max-width: 218px !important;
   height: 118px !important;
+  object-fit: contain;
+  width: 218px !important;
 }
 
 /* new switch */
@@ -1491,7 +1493,7 @@ div.switch5 > input.switch:focus ~ label:before {
   /* background-color: #008fd5;
     border: 1px solid #3575b5; */
   color: #fff;
-  padding: 6px 16px;
+  padding: 8px 17px;
   cursor: pointer;
   float: left;
   font-size: 14px;
@@ -1579,6 +1581,7 @@ div.switch5 > input.switch:focus ~ label:before {
     width: 100%;
     margin-left: 0px;
   }
+ 
 }
 
 .icon-margin {
@@ -1618,7 +1621,6 @@ div.switch5 > input.switch:focus ~ label:before {
   bottom: 22px;
 }
 
-
 .preview-edit-color {
   color: #5a5a5a;
 }
@@ -1627,8 +1629,6 @@ div.switch5 > input.switch:focus ~ label:before {
 
 .popup-align {
   position: relative !important;
-  top: 67px;
-  height: 89% !important;
   float: right;
 }
 .modal-dialog {
@@ -1642,7 +1642,7 @@ div.switch5 > input.switch:focus ~ label:before {
 #add-form-name-modal {
   padding-right: 0px !important;
 }
-
+/* 
 .rmv-overflow {
   overflow-y: hidden !important;
   background: #00000085;
@@ -1650,7 +1650,7 @@ div.switch5 > input.switch:focus ~ label:before {
 .modal-content {
   overflow-y: hidden !important;
   border: 1px solid #dddddd;
-}
+} */
 .width-btn {
   width: 112px;
   margin-left: 18px;
@@ -1682,4 +1682,55 @@ div.switch5 > input.switch:focus ~ label:before {
 }
 .form-control .form-padding-left {
   padding-left: 12px !important;
+}
+
+.custom-design-Popup {
+  width: 40% !important ;
+  float: right !important;
+}
+/* 11/07/23 */
+
+.item__algn {
+  margin-top: 12px;
+}
+.ft-size {
+  font-size: 20px;
+}
+.icon-algn {
+  position: relative;
+  top: -1px;
+}
+.cust-modal {
+  position: relative;
+  top: 60px;
+  left: 66px;
+}
+
+.button-fixed {
+  max-width: fit-content;
+  min-width: 30% !important;
+  max-height: fit-content;
+  min-height: 32px;
+}
+@media (min-width: 992px) and (max-width: 1300px) {
+  .BtnWidthForPopup {
+    width: 100px;
+  }
+  .vertical-center {
+    margin: 10px 50px 0px 50px;
+  }
+}
+.hide-scrollbar {
+  overflow: hidden;
+}
+@media only screen and (max-width:1024px){
+  .vertical-center{
+    margin:10px 70px 0px 70px!important;
+  }
+}
+@media only screen and (max-width:578px){
+  .modal.left.fade.in .modal-dialog,
+  .modal.right.fade.in .mb-wth {
+    width: 85%!important;
+  }
 }

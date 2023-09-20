@@ -27,6 +27,7 @@ export class DashboardButtonsComponent implements OnInit {
   iconNamesFilePath: string;
   iconsList: any = [];
   selectedProtocol: string;
+  saving = false;
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, private xtremandLogger: XtremandLogger, private properties: Properties, private httpRequestLoader: HttpRequestLoader, private referenceService: ReferenceService, private pagerService: PagerService) {
     this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
     this.vanityURLService.getDashboardButtonIcons(this.iconNamesFilePath).subscribe(result => {
@@ -62,11 +63,12 @@ export class DashboardButtonsComponent implements OnInit {
   }
 
   save() {
+    this.saving = true;
     this.dashboardButton.vendorId = this.authenticationService.getUserId();
     this.dashboardButton.companyProfileName = this.authenticationService.companyProfileName;
     this.vanityURLService.saveDashboardButton(this.dashboardButton).subscribe(result => {
+      this.saving = false;
       if (result.statusCode === 200) {
-        console.log("Created");
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT, true);
         this.getDashboardButtons(this.pagination);
       } else if (result.statusCode === 100) {
@@ -76,6 +78,7 @@ export class DashboardButtonsComponent implements OnInit {
     }, error => {
       this.customResponse = new CustomResponse('ERROR', "Error while saving dashboard button", true)
       this.referenceService.goToTop();
+      this.saving = false;
     });
   }
 
@@ -153,7 +156,7 @@ export class DashboardButtonsComponent implements OnInit {
   }
 
   selectedIconName() {
-    //alert(this.dashboardButton.buttonIcon);
+    
   }
 
   selectedProtocolOption(selectedProtocolOption: string) {

@@ -33,6 +33,7 @@ import { CampaignService } from '../../campaigns/services/campaign.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { UtilService } from 'app/core/services/util.service';
+import { UserGuide } from 'app/guides/models/user-guide';
 declare var $:any, Papa:any, swal:any;
 
 @Component({
@@ -253,7 +254,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    mergeOptionClicked = false;
    selectedUserIdsForMerging: any[];
 	/****XNFR-278****/
-
+   /****** User guide ******/
+   searchWithModuleName:any;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -2639,10 +2641,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		}
 	}
 
-
+ urlLink:any;
 	ngOnInit() {
 		try {
 			this.socialContactImage();
+			this.searchWithModuleName = 11 ;
 			$("#Gfile_preview").hide();
 			this.socialContactsValue = true;
 			this.loggedInUserId = this.authenticationService.getUserId();
@@ -2805,7 +2808,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	}
 	checkingMarketoContactsAuthentication() {
 		if (this.loggedInThroughVanityUrl) {
-			this.referenceService.showSweetAlertInfoMessage();
+			// this.referenceService.showSweetAlertInfoMessage();
+			this.vanityCheckingMarketoContactsAuthentication();
 		} else {
 			this.selectedAddPartnerOption = 8;
 			try {
@@ -2858,6 +2862,48 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	}
 
+	vanityCheckingMarketoContactsAuthentication(){
+		try {
+				this.contactService.checkMarketoCredentials(this.authenticationService.getUserId())
+					.subscribe(
+						(data: any) => {
+
+							if (data.statusCode == 8000) {
+								this.showMarketoForm = false;
+								this.marketoAuthError = false;
+								this.loading = false;
+								this.retriveMarketoContacts();
+							}
+							else {
+								$("#marketoShowLoginPopup").modal('show');
+								this.marketoAuthError = false;
+								this.loading = false;
+							}
+							this.xtremandLogger.info(data);
+
+						},
+						(error: any) => {
+							var body = error['_body'];
+							if (body != "") {
+								var response = JSON.parse(body);
+								if (response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!") {
+									this.customResponse = new CustomResponse('ERROR', 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account', true);
+								} else {
+									this.xtremandLogger.errorPage(error);
+								}
+							} else {
+								this.xtremandLogger.errorPage(error);
+							}
+							console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
+
+						},
+						() => this.xtremandLogger.info("Add contact component loadContactListsName() finished")
+					)
+
+	} catch (error) {
+		this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
+	}
+}
 	saveMarketoContacts() {
 
 		this.socialPartners.socialNetwork = "MARKETO";

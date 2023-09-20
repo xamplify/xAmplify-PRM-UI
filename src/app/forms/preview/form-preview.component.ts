@@ -159,6 +159,7 @@ export class FormPreviewComponent implements OnInit {
                 value.value = self.loggedInUserEmail;
               }
           });
+          this.setCustomCssValues();
           } else if (response.statusCode === 409) {
             this.formSubmitted = true;
           }else {
@@ -522,6 +523,16 @@ export class FormPreviewComponent implements OnInit {
         value.skipped = true;
       }
     });
+  }
+
+  setCustomCssValues() {
+    document.documentElement.style.setProperty('--form-page-bg-color', this.pageBackgroundColor);
+    document.documentElement.style.setProperty('--form-border-color', this.form.borderColor);
+    document.documentElement.style.setProperty('--form-label-color', this.form.labelColor);
+    document.documentElement.style.setProperty('--form-description-color', this.form.descriptionColor);
+    document.documentElement.style.setProperty('--form-title-color', this.form.titleColor);
+    document.documentElement.style.setProperty('--form-bg-color', this.form.backgroundColor);
+    require("style-loader!../../../assets/admin/layout2/css/themes/form-custom-skin.css");
   }
 
 }

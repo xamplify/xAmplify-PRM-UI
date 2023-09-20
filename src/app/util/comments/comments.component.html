@@ -109,7 +109,7 @@
             <textarea placeholder="Write your comment here"  [(ngModel)]="commentDto.comment" [ngModelOptions]="{standalone: true}" maxlength="5000" (input)="validateComment(commentDto)"></textarea>
             <div>
                <button (click)="save($event)" [disabled]="commentDto?.invalidComment" [style.pointer-events]="commentDto?.invalidComment ? 'none' : 'auto' "  class="btn btn-primary comment">Submit</button>
-               <button  (click)="closeModalPopUp()" class="btn btn-default comment mr10">Cancel</button>
+               <button  (click)="closeModalPopUp()" class="btn Btn-Gray comment mr10">Cancel</button>
                <button  (click)="findComments()" class="btn btn-default comment mr10">Refresh</button>
 
             </div>
@@ -166,7 +166,7 @@
          </div>
           <!---Footer-->
          <div class="modal-footer" [hidden]="commentModalPopUpLoader">
-            <button  (click)="closeHistoryModalPopUp()" class="btn btn-default float-right">Close</button>
+            <button  (click)="closeHistoryModalPopUp()" class="btn Btn-Gray float-right">Close</button>
        </div>
       </div>
    </div>

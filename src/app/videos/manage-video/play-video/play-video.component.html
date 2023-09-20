@@ -78,7 +78,7 @@
                 title="less" (click)="showFullTitle(false)">...</a></span>
             </h3>
           </div>
-          <div class="col-xs-12 col-sm-7 col-md-8" style="padding: 0;"
+          <div class="col-xs-7 col-sm-7 col-md-8" style="padding: 0;"
             [hidden]="isVideoChanged">
             <div
               *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == selectedVideo.uploadedUserId ) || authenticationService.isOnlyPartner">
@@ -95,7 +95,7 @@
               </button>
             </div>
           </div>
-          <div class="col-xs-12 col-sm-5 col-md-4" style="padding: 0;"
+          <div class="col-xs-5 col-sm-5 col-md-4" style="padding: 0;"
             [hidden]="isVideoChanged">
             <div class="col-xs-12" style="padding: 0;">
               <span class="pull-right videoViews">
@@ -325,22 +325,11 @@
                         title="Uploaded By">By {{videoFile.uploadedUserName |
                           slice:0:15}}<span
                           *ngIf="videoFile.uploadedUserName?.length>15">...</span>
-                      </span>
-              <!--          <span class="video-uploaded-by"
-                        *ngIf="videoFileService.videoType==='partnerVideos'"
-                        title="Uploaded By">By <span
-                          *ngIf="videoFile.companyName">{{videoFile.companyName
-                            | slice:0:15}}<span
-                            *ngIf="videoFile.companyName?.length>15">...</span>
-                        </span> <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName
-                            | slice:0:15}}<span
-                            *ngIf="videoFile.uploadedUserName?.length>15">...</span>
-                        </span>
-                      </span> -->
+                      </span>    
                     </span> <span *ngIf="authenticationService.isOnlyPartner()"> <span
                         style="float: left;">By {{videoFile.companyName |
                           slice:0:15}}<span *ngIf="videoFile.companyName?.length>15">...</span>
-                      </span> <!-- <span *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName}}</span> -->
+                      </span>
                     </span>
                     </span>
                   </div>

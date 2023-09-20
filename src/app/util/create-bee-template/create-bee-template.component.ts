@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { EmailTemplate } from '../../email-template/models/email-template';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -20,11 +20,28 @@ export class CreateBeeTemplateComponent implements OnInit {
   partnerTemplateLoader: boolean;
   loggedInUserId: number = 0;
   @Input() partnerEmailTemplate: EmailTemplate;
+  /****XNFR-330*****/
+  @Input() isAutoResponseEmailTemplate = false;
+  @Input() autoResponseId = 0;
+  @Input() selectedAutoResponseCustomEmailTemplateId = 0;
+  @Output() eventEmitter = new EventEmitter();
+  /****XNFR-330*****/
   customResponse: CustomResponse = new CustomResponse();
   loading = false;
   senderMergeTag: SenderMergeTag = new SenderMergeTag();
   mergeTagsInput: any = {};
+  videoGif = "xtremand-video.gif";
   ngOnInit() {
+    this.referenceService.scrollSmoothToTop();
+    if(this.isAutoResponseEmailTemplate==undefined){
+      this.isAutoResponseEmailTemplate = false;
+    }
+    if(this.selectedAutoResponseCustomEmailTemplateId==undefined){
+      this.selectedAutoResponseCustomEmailTemplateId = 0;
+    }
+    if(this.autoResponseId==undefined){
+      this.autoResponseId = 0;
+    }
     this.editPartnerTemplate();
 
   }
@@ -33,10 +50,10 @@ export class CreateBeeTemplateComponent implements OnInit {
   }
 
   editPartnerTemplate() {
-          let self = this;
-  
+    let self = this;
     let emailTemplate = this.partnerEmailTemplate;
-    if (emailTemplate.vendorCompanyId != undefined && emailTemplate.vendorCompanyId > 0) {
+    let isPartnerTemplate = !this.isAutoResponseEmailTemplate && emailTemplate.vendorCompanyId != undefined && emailTemplate.vendorCompanyId > 0;
+    if (isPartnerTemplate || this.isAutoResponseEmailTemplate) {
       if (emailTemplate.jsonBody != undefined) {
         var request = function (method, url, data, type, callback) {
           var req = new XMLHttpRequest();
@@ -68,6 +85,13 @@ export class CreateBeeTemplateComponent implements OnInit {
 
         var save = function (jsonContent: string, htmlContent: string) {
           self.partnerTemplateLoader = true;
+          if (emailTemplate.beeVideoTemplate || emailTemplate.videoCoBrandingTemplate) {
+            if (jsonContent.indexOf(self.videoGif) < 0) {
+                swal("", "Whoops! We're unable to save this template because you deleted the default gif. You'll need to select a new email template and start over.", "error");
+                self.partnerTemplateLoader = false;
+                return false;
+            }
+        }
           emailTemplate.jsonBody = jsonContent;
           emailTemplate.body = htmlContent;
           emailTemplate.userId = self.loggedInUserId;
@@ -131,6 +155,7 @@ export class CreateBeeTemplateComponent implements OnInit {
                     bee.start(jsonBody);
                   } else {
                     this.referenceService.showSweetAlert("", "Unable to load the template", "error");
+                    this.loading = false;
                   }
                 });
             });
@@ -148,9 +173,14 @@ export class CreateBeeTemplateComponent implements OnInit {
 
 
   updatePartnerTemplate(emailTemplate: EmailTemplate) {
+    this.loading = true;
     this.customResponse = new CustomResponse();
     this.replaceToDefaultLogos(emailTemplate);
-    this.loading = true;
+    /*****XNFR-330******/
+    emailTemplate.autoResponseEmailTemplate = this.isAutoResponseEmailTemplate;
+    emailTemplate.selectedAutoResponseCustomEmailTemplateId = this.selectedAutoResponseCustomEmailTemplateId;
+    emailTemplate.autoResponseId = this.autoResponseId;
+    /*****XNFR-330******/
     this.emailTemplateService.updatePartnerTemplate(emailTemplate).
       subscribe(
         data => {
@@ -158,6 +188,14 @@ export class CreateBeeTemplateComponent implements OnInit {
           if (data.access) {
             if (data.statusCode === 200) {
               this.customResponse = new CustomResponse('SUCCESS', 'Template updated successfully', true);
+              /********XNFR-330*******/
+              let emitterData = {};
+              emitterData['htmlBody'] = emailTemplate.body;
+              emitterData['jsonBody'] = emailTemplate.jsonBody;
+              emitterData['autoResponseId'] = this.autoResponseId;
+              emitterData['autoResponseType']=emailTemplate.autoResponseType;
+              this.eventEmitter.emit(emitterData);
+              /********XNFR-330*******/
             } else if (data.statusCode === 500) {
               this.customResponse = new CustomResponse('ERROR', data.message, true);
             }            
@@ -167,10 +205,8 @@ export class CreateBeeTemplateComponent implements OnInit {
         },
         error => {
           this.loading = false;
-          this.referenceService.showSweetAlertErrorMessage(error);
-        },
-        () => console.log("Email Template Updated")
-      );
+          this.referenceService.showSweetAlertServerErrorMessage();
+        });
   }
 
   replaceToDefaultLogos(emailTemplate: EmailTemplate) {

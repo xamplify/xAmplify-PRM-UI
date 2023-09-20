@@ -158,7 +158,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   filteredCategoryNames: any;
 
   ckeditorEvent: any;
-  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();;
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   isAdd: boolean = true;
   @Input() type: string;
 
@@ -181,6 +181,10 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   selectedFileType = "";
   fileTypesForFilter:Array<any> = new Array<any>();
   uploadButton = false;
+  /****XNFR-326*****/
+  isTrackOrPlaybookPublishedEmailNotification = false;
+  trackOrPlaybookPublishEmailNotificationLoader = true;
+ /****XNFR-326*****/
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
@@ -222,6 +226,20 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       this.stepThreeTabClass = this.disableTabClass;
       this.stepFourTabClass = this.disableTabClass;
     }
+    /****XNFR-326******/
+    this.findTrackOrPlaybookPublishEmailNotificationOption();
+  }
+   /****XNFR-326******/
+  findTrackOrPlaybookPublishEmailNotificationOption() {
+    this.trackOrPlaybookPublishEmailNotificationLoader = true;
+    this.authenticationService.findTrackOrPlaybookPublishEmailNotificationOption(this.type)
+    .subscribe(
+        response=>{
+            this.isTrackOrPlaybookPublishedEmailNotification = response.data;
+            this.trackOrPlaybookPublishEmailNotificationLoader = false;
+        },error=>{
+            this.trackOrPlaybookPublishEmailNotificationLoader = false;
+        });
   }
 
   onReady(event: any) {
@@ -267,6 +285,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     } else if (activeTab == "step-4") {
       this.stepFourTabClass = this.activeTabClass;
     }
+    this.clearTagsResponse();
     this.validateAllSteps();
   }
 
@@ -469,7 +488,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
           let toolTipTagNames: string = "";
           asset.tagNames.sort();
           $.each(asset.tagNames, function (index, tagName) {
-            if (index > 1) {
+            if (index > 0) {
               if (toolTipTagNames.length > 0) {
                 toolTipTagNames = toolTipTagNames + ", " + tagName;
               } else {
@@ -614,7 +633,15 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   previewForm(id: number) {
     this.customResponse = new CustomResponse();
     this.ngxloading = true;
-    this.formService.getById(id)
+    let formInput:Form = new Form();
+    formInput.id = id;
+    formInput.userId = this.authenticationService.getUserId();
+    let companyProfileName = this.authenticationService.companyProfileName;
+    if (companyProfileName !== undefined && companyProfileName !== "") {
+      formInput.vendorCompanyProfileName = companyProfileName;
+      formInput.vanityUrlFilter = true;
+    }
+    this.formService.getById(formInput)
       .subscribe(
         (data: any) => {
           if (data.statusCode === 200) {
@@ -634,6 +661,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
                 value.choices = value.checkBoxChoices;
               }
             });
+            this.setCustomCssValues();
             this.formError = false;
           } else {
             this.formError = true;
@@ -847,6 +875,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   fileChangeEvent() {
     this.cropRounded = false;
     this.fileSizeError = false;
+    this.imageChangedEvent = null;
     $('#cropImage').modal('show');
   }
 
@@ -1583,5 +1612,34 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
                 this.circleData = {};
                 this.imageChangedEvent = null;
                  this.croppedImage = '';
-              }    
+              }  
+              fileBgImageChangeEvent(event){
+                const image:any = new Image();
+                const file:File = event.target.files[0];
+                const isSupportfile = file.type;
+                if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
+                    this.errorUploadCropper = false;
+                    this.imageChangedEvent = event;
+                } else {
+                  this.errorUploadCropper = true;
+                  this.showCropper = false;
+                }
+              }       
+              
+  setCustomCssValues() {
+    document.documentElement.style.setProperty('--form-page-bg-color', this.pageBackgroundColor);
+    document.documentElement.style.setProperty('--form-border-color', this.form.borderColor);
+    document.documentElement.style.setProperty('--form-label-color', this.form.labelColor);
+    document.documentElement.style.setProperty('--form-description-color', this.form.descriptionColor);
+    document.documentElement.style.setProperty('--form-title-color', this.form.titleColor);
+    document.documentElement.style.setProperty('--form-bg-color', this.form.backgroundColor);
+    require("style-loader!../../../assets/admin/layout2/css/themes/form-custom-skin.css");
+  } 
+
+  clearTagsResponse() {
+    if (this.folderOrTagsCustomResponse.isVisible) {
+      this.folderOrTagsCustomResponse = new CustomResponse();
+    }
+  }
+
 }

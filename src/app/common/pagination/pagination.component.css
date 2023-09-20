@@ -1,8 +1,17 @@
 .pagination{
 	margin: 0px !important;
+	z-index: 0;
+    position: relative;
 }
 @media (max-width:425px){
 	.padding{
 		padding-top: 5px;
+	}
+}
+
+/* 09-08-2023 */
+@media (min-width: 1079px) and (max-width: 1220px)  { 
+	.scroll-top-abj {
+	  padding-top: 15px;
 	}
 }

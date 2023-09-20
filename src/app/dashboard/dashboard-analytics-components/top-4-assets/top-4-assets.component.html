@@ -7,8 +7,8 @@
 				<a  (click)="goToManage()" style="font-size: 13px;">( {{manageAssetsText}} )</a>
 			</h4>
 			<span class="close-circle" title="Refresh"  (click)="refresh()" translate>
-				 <i class="fa fa-refresh" aria-hidden="true"></i>
-			</span>
+				<a><i class="fa fa-refresh" aria-hidden="true"></i></a>
+		   </span>
 			<button *ngIf="!isPartnerView" class="btn btn-primary add-design-upload" (click)="goToAddDam()">
 				<i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i>
 				<span class="hidden-xs" translate>Design / Upload</span>
@@ -32,6 +32,14 @@
 								<br>
 								<br>
 							</h4>
+							<!---XNFR-255-->
+							<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
+								<h6 class="moreipsis"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+									<span translate>Received From <strong>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
+								</h6>
+								<span class="view-banner-white-labeled mb5">White-Labeled</span>
+							</ng-container>
+							 <!---XNFR-255-->
 							<div>
 								<span class="view-banner-dam">{{asset?.assetType}}</span>
 								<h6 translate>
@@ -62,6 +70,7 @@
 								<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset" (assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
 								(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
 								(assetGridViewActionsDeleteActionEmitter) = "assetGridViewActionsDeleteActionEmitter($event)"
+								(assetGridViewRefreshListEmitter)="refresh()"
 								>
 								</app-asset-grid-view-actions>
 							</div>
@@ -81,17 +90,11 @@
 <ng-container *ngIf="showPdfModalPopup">
 	<app-download-asset-popup [asset]="asset" [isPartnerView]="isPartnerView" (downloadAssetPopupEventEmitter)="downloadAssetPopupEventEmitter()"></app-download-asset-popup>
 </ng-container>
-<!--Publish To Partners Popup-->
-<ng-container *ngIf="showPublishPopup"> 
-<app-partner-company-and-groups-modal-popup
-	[companyId]="loggedInUserCompanyId" [inputId]="selectedAssetId" [moduleName]="'dam'"
-	(notifyOtherComponent)="notificationFromPublishToPartnersComponent()"></app-partner-company-and-groups-modal-popup>
-</ng-container>
 
 <!-----Delete-------->
 <ng-container *ngIf="deleteAsset">
 	<app-delete-assets [asset]="asset" (deleteAssetLoaderEmitter)="deleteAssetLoaderEmitter()"
-	 (deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter()" 
-	 (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()">
+	 (deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter($event)" 
+	 (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()" (deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
 	</app-delete-assets>
 </ng-container>

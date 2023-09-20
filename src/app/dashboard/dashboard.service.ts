@@ -15,15 +15,17 @@ import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
 import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 import { LoginAsPartnerDto } from './models/login-as-partner-dto';
 
-import { ThemePropertiesListWrapper } from './models/theme-properties-list-wrapper';
 import { CompanyThemeActivate } from './models/company-theme-activate';
 import { ThemeDto } from './models/theme-dto';
 
 import { UtilService } from 'app/core/services/util.service';
+import { EmailNotificationSettingsDto } from './user-profile/models/email-notification-settings-dto';
+import { GodaddyDetailsDto } from './user-profile/models/godaddy-details-dto';
 
 
 @Injectable()
 export class DashboardService {
+  
     
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
@@ -32,6 +34,10 @@ export class DashboardService {
     moduleUrl = this.authenticationService.REST_URL + "module/";
     upgradeRoleUrl = this.authenticationService.REST_URL + "upgradeRole/";
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
+    /****XNFR-326****/
+    companyUrl = this.authenticationService.REST_URL + "company/";
+    emailNotificationSettingsUrl = this.companyUrl+"/emailNotificationSettings";
+     /****XNFR-326****/
     saveVideoFile: SaveVideoFile;
     pagination: Pagination;
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
@@ -125,7 +131,6 @@ export class DashboardService {
 
     sendWelcomeEmail(vendorInvitation: any, alias: string) {
         vendorInvitation['alias'] = alias;
-        console.log(vendorInvitation);
         const url = this.authenticationService.REST_URL + 'superadmin/account/mail/welcome?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, vendorInvitation)
             .map(this.extractData)
@@ -148,7 +153,6 @@ export class DashboardService {
             .catch(this.handleError);
     }
     getCampaignsEmailReports(campaignIdsList: any) {
-        console.log(campaignIdsList);
         const url = this.authenticationService.REST_URL + 'dashboard/barChart-data?userId=' + this.authenticationService.user.id +
             '&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, campaignIdsList)
@@ -163,7 +167,6 @@ export class DashboardService {
             .catch(this.handleError);
     }
     getVideoViewsLevelOneReports(daysInterval: number, dateValue: any) {
-        console.log("data value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/videostats/views/level1?userId=' +
             this.authenticationService.user.id + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue +
             '&access_token=' + this.authenticationService.access_token;
@@ -172,7 +175,6 @@ export class DashboardService {
             .catch(this.handleError);
     }
     getVideoViewsLevelTwoReports(daysInterval: number, dateValue: any, videoId: number, pagination: Pagination) {
-        console.log("data value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/videostats/views/level2?videoId=' + videoId + '&userId=' +
             this.authenticationService.user.id + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue +
             '&access_token=' + this.authenticationService.access_token;
@@ -181,7 +183,6 @@ export class DashboardService {
             .catch(this.handleError);
     }
     getVideoMinutesWatchedLevelOneReports(daysInterval: any, dateValue: number) {
-        console.log("data value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/videostats/minuteswatched/level1?userId=' +
             this.authenticationService.user.id + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue +
             '&access_token=' + this.authenticationService.access_token;
@@ -190,7 +191,6 @@ export class DashboardService {
             .catch(this.handleError);
     }
     getVideoMinutesWatchedLevelTwoReports(daysInterval: any, dateValue: number, videoId: number, pagination: Pagination) {
-        console.log("data value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/videostats/minuteswatched/level2?videoId=' + videoId + '&userId=' +
             this.authenticationService.user.id + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue +
             '&access_token=' + this.authenticationService.access_token;
@@ -301,7 +301,7 @@ export class DashboardService {
         let url = "";
         if (report.userStatus == "APPROVED") {
             url = this.authenticationService.REST_URL + "superadmin/account/deactivate?access_token=" + this.authenticationService.access_token;
-        } else if (report.userStatus == "UNAPPROVED" || report.userStatus == "SUSPEND") {
+        } else if (report.userStatus == "UNAPPROVED" || report.userStatus == "DECLINE") {
             url = this.authenticationService.REST_URL + "superadmin/account/activate?access_token=" + this.authenticationService.access_token;
         }
         return this.http.post(url, report)
@@ -478,7 +478,6 @@ export class DashboardService {
     }
 
     getVideoViewsLevelTwoReportsForVanityURL(daysInterval: number, dateValue: any, videoId: number, pagination: Pagination) {
-        console.log("data value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/views/level2?access_token=' + this.authenticationService.access_token + '&videoId=' + videoId + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
         return this.http.post(url, pagination)
             .map(this.extractData)
@@ -491,7 +490,6 @@ export class DashboardService {
         if(xamplifyLogin){
             dto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
         }
-        console.log("date value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/minuteswatched/level1?access_token=' + this.authenticationService.access_token + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
         return this.http.post(url, dto)
             .map(this.extractData)
@@ -524,6 +522,20 @@ export class DashboardService {
         return this.http.post(url, vanityUrlPostDto)
             .map(this.extractData)
             .catch(this.handleError);
+    }
+    
+    getLeftSideNavBarItems(vanityUrlPostDto: any){
+        const url = this.moduleUrl + 'getCustomizedLeftMenuItems?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, vanityUrlPostDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    updateLeftSideNavBarItems(customleftmenu: any){
+        const url = this.moduleUrl + 'updateLeftMenuItems?access_token=' +this.authenticationService.access_token;
+        return this.http.post(url, customleftmenu)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
 
     getWelcomePageItems(vanityUrlPostDto: any) {
@@ -918,9 +930,8 @@ updateCustomDefaultSettings(custom:any) {
     .catch(this.handleError);
 }
 
-/*************** Neew Changes *****************/
+/*************** New Changes *****************/
 saveMultipleTheme(wrapper:any){
-    console.log(wrapper);
     const url = this.authenticationService.REST_URL + 'custom/skin/savetheme/?access_token=' + this.authenticationService.access_token;
     return this.http.post(url,wrapper)
     .map(this.extractData)
@@ -1091,4 +1102,129 @@ getDefaultThemes(){
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+    /***  user-guides ***/
+    getUserGuideLeftMenu(vanityLoginDto:VanityLoginDto){
+        const url = this.moduleUrl + 'getCustomizedLeftMenuItems?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,vanityLoginDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    getSearchResultsOfUserGuides(pagination:Pagination){
+        const url = this.authenticationService.REST_URL + 'user/guide/search/?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getUserGuidesByModuleName(pagination:Pagination){
+        const url =this.authenticationService.REST_URL + 'user/guide/moduleName/?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getGuideLinkByTitle(pagination:Pagination){
+        const url = this.authenticationService.REST_URL + 'user/guide/title/?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getGuideGuideBySlug(pagination:Pagination){
+        const url = this.authenticationService.REST_URL + 'user/guide/slug/?access_token=' + this.authenticationService.access_token;
+        return this.http.post( url ,pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    getUserGuidesForDashBoard(vanityLoginDto:VanityLoginDto){
+        let companyProfileName = this.authenticationService.companyProfileName;
+        let xamplifyLogin =  companyProfileName== undefined || companyProfileName.length==0; 
+        if(xamplifyLogin){
+           vanityLoginDto.loginAsUserId = this.utilService.getLoggedInVendorAdminCompanyUserId();
+        }
+        const url = this.authenticationService.REST_URL + 'user/guide/getGuidesForDashboard/?access_token=' + this.authenticationService.access_token;
+        return this.http.post( url ,vanityLoginDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    getModuleNameByModuleId(moduleId:number){
+        const url = this.authenticationService.REST_URL + 'user/guide/moduleId/'+ moduleId +'/?access_token=' + this.authenticationService.access_token;
+        return this.callGetMethod(url);
+    }
+    /** User Guides */
+
+    /***XNFR-326****/
+
+    findEmailNotificationSettings(){
+        const url = this.emailNotificationSettingsUrl + '/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token;
+        return this.callGetMethod(url);
+    }
+
+    updateEmailNotificationSettings(emailNotificationSettingsDto: EmailNotificationSettingsDto) {
+        const url = this.emailNotificationSettingsUrl + '/'+this.authenticationService.getUserId()+'?access_token=' + this.authenticationService.access_token;
+        return this.callPutMethod(url,emailNotificationSettingsDto);
+    }
+
+    private callGetMethod(url: string) {
+        return this.http.get(url)
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
+      
+    private callPostMethod(url: string,requestDto:any) {
+    return this.http.post(url,requestDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    private callPutMethod(url: string,requestDto:any) {
+    return this.http.put(url,requestDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    /***XNFR-326****/
+
+    findActiveThreads(){
+    const url = this.superAdminUrl + 'findActiveThreads?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url)
+    .map(this.extractData)
+    .catch(this.handleError);
+    }
+
+    /*** XNFR-335 ****/
+    addDnsRecordOfGodaddy(godaddyDetailsDto:GodaddyDetailsDto){
+        const url = this.authenticationService.REST_URL + 'godaddy/dns/add/?access_token=' + this.authenticationService.access_token;
+        return this.http.post( url ,godaddyDetailsDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    checkDomainName(godaddyDetailsDto:GodaddyDetailsDto){
+        const url = this.authenticationService.REST_URL + 'godaddy/domainName/valid/?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,godaddyDetailsDto)
+         .map(this.extractData)
+         .catch(this.handleError);
+    }
+    updateGodaddyConfiguration(companyId:number,isConnected:boolean){
+        return this.http.get(this.authenticationService.REST_URL + "godaddy/updateGodaddyConfiguration/" + companyId + "/"+isConnected+"/?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    isGodaddyConfigured(companyId:number){
+        return this.http.get(this.authenticationService.REST_URL + `godaddy/isGodaddyConfigured/${companyId}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    foundDuplicateDnsRecord(value:string){
+        return this.http.get(this.authenticationService.REST_URL + `godaddy/fetchDnsRecordByValue/${value}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    getDomainName(companyId:number){
+        return this.http.get(this.authenticationService.REST_URL + "godaddy/getDomainName/" + companyId + "/?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    /*** XNFR-335 ****/
 }

@@ -267,7 +267,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
         if (response.statusCode == 200) {
           this.vendorCount = response.data;
         }     
-        this.myVendorsLoader = false;
+       this.myVendorsLoader = false;
       },error=>{
         this.myVendorsLoader = false;
       }
@@ -492,10 +492,11 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
 
 // getting loading from here
 delayAndNavigate(url:string){
-  this.loadTopNavBar = true;
+  this.authenticationService.module.topNavBarLoader = true;
   let self = this;
-    setTimeout(()=>{                         
+    setTimeout(()=>{     
       self.refService.goToRouter(url);
+      self.authenticationService.module.topNavBarLoader = false;          
 		}, 500);
   }
 //

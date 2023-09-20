@@ -14,7 +14,7 @@
                  <div class="portlet-title">
                     <div class="inputs" align="right">
                        <a href="{{authenticationService.REST_URL}}campaign/downloadClickedUrlAnalyticsForVendor/{{pagination.campaignId}}/Urls.csv?access_token={{authenticationService.access_token}}"
-                          *ngIf="pagination.totalRecords>0" class="close-circle"  title="Download">
+                          *ngIf="pagination.totalRecords>0" class="close-circle" data-toggle="tooltip" data-placement="bottom"  title="Download">
                        <i class="fa fa-download margin"></i>
                        </a>
                        <div class="portlet-input input-inline input-large" id="search-margin">

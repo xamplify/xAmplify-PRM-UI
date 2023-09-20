@@ -210,11 +210,11 @@ h3 {
 .view-banner {
   background-color: #00a6e8;
   color: white;
-  padding: 6px;
+  padding: 5px 10px;
   text-align: center;
   width: auto;
   margin: 0 auto;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   margin-bottom: 2px;
 }
@@ -333,8 +333,8 @@ h6 {
 
 /* 26-06-2023 */  
   .table-eye-circle {
-    border: 1px solid #5bb2f5;
-    color: #5bb2f5;
+    /* border: 1px solid #5bb2f5;
+    color: #5bb2f5; */
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -348,3 +348,48 @@ h6 {
   background: #5bb2f5;
     color: white;
   }
+  .moreipsis span {
+    position: relative;
+    /* left: 0; */
+    /* right: 0; */
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 30px;
+}
+@media screen and (max-width: 1024px){
+.table-responsive>.table>tbody>tr>td, .table-responsive>.table>tbody>tr>th, .table-responsive>.table>tfoot>tr>td, .table-responsive>.table>tfoot>tr>th, .table-responsive>.table>thead>tr>td, .table-responsive>.table>thead>tr>th {
+    white-space: nowrap;
+ }
+}
+/* 07-07-2023 - PARTner Manage PARTner grid view glad logins */
+@media (min-width: 1322px) and (max-width: 1358px)  { 
+  .media-querryfor-small-dev {
+    height: 225px;
+}
+}
+@media (min-width: 1049px) and (max-width: 1076px)  { 
+  .media-querryfor-small-dev {
+    height: 225px;
+}
+}
+.delete{
+  background: #cb5a5e;
+}
+
+/* 11-08-2023 */
+@media (min-width: 1024px) and (max-width: 1125px)  { 
+  td.Mark-as-ValidBtn {width: 150px;}
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) { 
+  .tab_v_flex{
+    display: flex!important;
+  }
+  .tab_ml0{
+    margin-left: 0px!important;
+  }
+  .filter_del{
+    left: 45px!important;
+  }
+ } 

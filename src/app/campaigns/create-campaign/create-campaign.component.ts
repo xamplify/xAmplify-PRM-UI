@@ -333,6 +333,8 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
     /***XNFR-255****/
     shareWhiteLabeledContent = false;
+    /** user guide****/
+    mergeTagForGuide:any;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder, public refService: ReferenceService,
         private logger: XtremandLogger, private videoFileService: VideoFileService,
@@ -669,10 +671,14 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
             enableTime: true,
             dateFormat: 'm/d/Y h:i K',
             time_24hr: false
-        });        
-        
+        });  
+        /** user guide **/      
+        if(this.campaignType == "regular"){
+            this.mergeTagForGuide = "create_launch_email_campaigns";
+        }
         this.isListView = !this.refService.isGridView;
         if (this.campaignType == "video") {
+            this.mergeTagForGuide = "create_launch_video_campaigns";
             this.width = "20%";
             this.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
             $('#videoTab').show();
@@ -696,6 +702,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
                // this.isEmailTemplate = true;
                 this.isLandingPageSwitch = true;
                 this.campaign.campaignTypeInString = "LANDINGPAGE";
+                this.mergeTagForGuide = "create_launch_page_campaigns";
             } else if (this.campaignType == "emailTemplate") {
                // this.isLandingPage = true;
                 this.isLandingPageSwitch = false;
@@ -703,6 +710,7 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
 
             if (this.campaignType == "survey") {
                 this.emailTemplatesPagination.filterBy = "CampaignSurveyEmails";
+                this.mergeTagForGuide = "create_launch_survey_campaigns";
             }
         }
         this.listCategories();
@@ -2790,7 +2798,6 @@ export class CreateCampaignComponent implements OnInit, OnDestroy {
     /***************************Email Rules***********************************/
     addReplyRows() {
         this.reply = new Reply();
-        //$('.bs-timepicker-field').attr("disabled",'disabled');
         let length = this.allItems.length;
         length = length + 1;
         var id = 'reply-' + length;

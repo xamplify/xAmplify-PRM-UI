@@ -1,5 +1,5 @@
 #bee-plugin-container {
-  height: 935px;
+  overflow: auto;
 }
 
 .tile {
@@ -15,61 +15,20 @@
 .page-bar .page-breadcrumb {
   padding: 14px 6px;
 }
-.top-bar-left .title {
-  display: none;
-}
-
-#right {
-  float: right;
-  margin-bottom: 10px;
-}
-#left {
-  float: left;
-}
-#search {
-  margin-right: 35px;
-}
-#search-icon {
-  position: relative;
-  right: -11px;
-}
-#search-text {
-  height: 34px;
-}
-#circle {
-  margin-top: 4px;
-}
-.success {
-  color: green;
-}
-.page-type {
-  color: #575757;
-  font-size: 17px;
-  font-weight: 500;
-}
-
-.button-loader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.75) url(../../../assets/images/loading.gif)
-    no-repeat center center;
-  z-index: 10000;
-}
 
 @media screen and (max-width: 600px) {
   .mScroll {
     overflow-x: auto;
   }
   .mWidth {
-    width: 96%;
+    width: 100%;
   }
   .mPad {
     width: 150%;
     margin-left: -40px;
+  }
+  .mb_width{
+  width: 100%;
   }
 }
 .new-tab-button {

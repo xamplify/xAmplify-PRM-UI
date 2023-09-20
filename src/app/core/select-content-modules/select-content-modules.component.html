@@ -1,14 +1,16 @@
 <div class="page-content" *ngIf="!authenticationService?.module?.prmDashboard">
   <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="page-bar mPageBar">
-     <ul class="page-breadcrumb">
-        <li>
-           <i class="fa fa-home" aria-hidden="true"></i> 
-           <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
-           <i class="fa fa-angle-right" aria-hidden="true"></i>
-        </li>
-        <li><a translate>Select Module</a></li>
-     </ul>
+    <ul class="page-breadcrumb">
+      <li>
+        <i class="fa fa-home" aria-hidden="true"></i> 
+        <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li><a translate>Select Module</a></li>
+    </ul>
+    <app-user-guide-help-button  [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
+
   </div>
   <div *ngIf="authenticationService?.module?.contentLoader">
      <app-modal-popup-loader></app-modal-popup-loader>
@@ -173,6 +175,9 @@
            <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
         </li>
      </ul>
+     <!-- User Guide for vanity -->
+     <app-user-guide-help-button  [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
+     <!-- User Guide-->
   </div>
   <div>
      <!--Top 4 Assets--------------->

@@ -77,6 +77,9 @@ import { ErrorHandler } from '@angular/core';
 import { VanitySocialContactsCallbackComponent } from './vanity-social-contacts-callback/vanity-social-contacts-callback.component';
 import { LinkedinService } from './social/services/linkedin.service';
 import { DatePipe } from '@angular/common';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 
 
 @NgModule({
@@ -84,7 +87,7 @@ import { DatePipe } from '@angular/common';
         CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
         , LogRegularCampaignComponentSMS, CampaignSMSVideoComponent, RsvpComponent, LogEventCampaignComponentSMS,
         LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent, VanitySocialLoginComponent, DomainErrorComponent,
-        VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent
+        VanityAddContactsComponent, VanitySynchronizeContactsComponent, VanitySocialContactsCallbackComponent, ConfirmationComponent
     ],
 
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
@@ -96,8 +99,9 @@ import { DatePipe } from '@angular/common';
                 useFactory: HttpLoaderFactory,
                 deps: [HttpClient]
             }
-        })],
-
+        }),
+        ModalModule.forRoot()],
+        entryComponents: [ConfirmationComponent], // Only when using old ViewEngine
     providers: [{
         provide: Http,
         useFactory: httpService,

@@ -59,8 +59,8 @@ export class FormService {
             .catch( this.handleError );
     }
 
-    getById( id: number ) {
-        return this.http.get( this.URL + "getById/" + id + "?access_token=" + this.authenticationService.access_token, "" )
+    getById( form: Form) {
+        return this.http.post( this.URL + "getById?access_token=" + this.authenticationService.access_token, form )
             .map( this.extractData )
             .catch( this.handleError );
     }

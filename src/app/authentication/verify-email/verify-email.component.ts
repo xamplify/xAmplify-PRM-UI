@@ -27,14 +27,11 @@ export class VerifyEmailComponent implements OnInit {
             .subscribe(
                 (result: any) => {
                     this.processor.remove(this.processor);
-                    this.xtremandLogger.log(result);
-                    this.xtremandLogger.info("your account activated successfully")
                     this.referenceService.userProviderMessage = this.properties.ACCOUNT_ACTIVATED_SUCESS;
                     this.router.navigate(['/login']);
                 },
               (error:any)=>{
                 this.processor.remove(this.processor);
-                this.xtremandLogger.error('error'+error);
                 this.errorMessage=error;
                 $('body').css('cssText', 'background-color: white !important');
               });

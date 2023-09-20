@@ -87,6 +87,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   primaryAdminSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
   adminsLoader:HttpRequestLoader = new HttpRequestLoader();
   admins:Array<any> = new Array<any>();
+  mergeTagForGuide:any;
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
     public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
     private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -106,9 +107,19 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     this.isTeamMemberModule = this.moduleName == 'teamMember';
     this.moveToTop = "/home/team/add-team" == this.referenceService.getCurrentRouteUrl();
     this.findAll(this.pagination);
-    
+    /** User Guide */
+    this.getGuideUrlByMergeTag()
+    /** User Guide */
   }
-
+  /** User Guide **/
+  getGuideUrlByMergeTag(){
+    if(this.authenticationService.module.loggedInThroughVendorVanityUrl || this.authenticationService.module.isOnlyPartnerCompany){
+      this.mergeTagForGuide = 'adding_team_members_partner';
+    } else {
+      this.mergeTagForGuide = 'add_and_manage_team_members';
+    }
+  }
+  /** User Guide **/
   findMaximumAdminsLimitDetails(){
     this.teamMemberService.findMaximumAdminsLimitDetails().subscribe(
       response=>{

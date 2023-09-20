@@ -16,12 +16,14 @@ export class DesignComponent implements OnInit {
     form:boolean = false;
     landingPage:boolean = false;
     landingPageDescription:string = "";
+    searchWithModuleName:any;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     customResponse:CustomResponse = new CustomResponse();
     constructor(public logger: XtremandLogger,public authenticationService: AuthenticationService,public referenceService:ReferenceService) {
      }
 
     ngOnInit() {
+      this.searchWithModuleName = 6;
         this.landingPageDescription = "Create custom pages with xAmplify that convert more visitors than any other website.";
         this.getModuleAccess();
     }

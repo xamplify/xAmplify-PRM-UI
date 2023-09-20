@@ -1,245 +1,180 @@
 .alert-dismissible .close {
-	top: 5px;
-	right: 0;
+  top: 5px;
+  right: 0;
 }
 
-.alert-success, .alert-danger, .alert-warning {
-	color: #ffffff;
-	border-radius: 0;
-	padding: 3px 10px;
-	margin: 0;
+.alert-success,
+.alert-danger,
+.alert-warning {
+  color: #ffffff;
+  border-radius: 0;
+  padding: 3px 10px;
+  margin: 0;
 }
 
 .alert-success {
-	background-color: #77bf81;
+  background-color: #77bf81;
 }
 
 .alert-danger {
-	background-color: #ec6262;
+  background-color: #ec6262;
 }
 
-.alert-warning {
-	background-color: #f1d43b;
-}
-
-.alert-success, .alert-danger, .alert-warning> h5 {
-	font-size: 14px;
-}
-.fa-line-chart{
-	font-size: 1em;
-}
-h3 {
-	font-size: 1.5em;
-}
-
-.carousel-control {
-	display: none;
-}
-
-.modal-content, .border-radius-0 {
-	border-radius: 0;
-}
-
-.icon-div {
-	margin-top: 0em;
-}
-
-.p5 {
-	padding: 2em;
+.alert-success,
+.alert-danger > h5 {
+  font-size: 14px;
 }
 
 .page-bar {
-	padding: 1em 1em 0 1em;
-}
-
-.padding-top-bottom-5 {
-    padding: 2em 0;
-    min-height: 9.0em;
+  padding: 1em 1em 0 1em;
 }
 
 .flex {
-	display: flex;
+  display: flex;
 }
 
-.header-text {
-	text-transform: lowercase;
-    background: rgb(38, 204, 204);
-    color: #fff;
-    font-weight: 500;
-    border-radius: 0;
-    padding: 0.2em 1em;
-    margin-bottom: 1em;
+.glyphicon {
+  font-size: 2em;
 }
 
-.center {
-	text-align: center;
+.color2,
+.color2-invert:hover {
+  background-color: #00b3b3;
+  color: #fff;
+  border: 1px solid #00b3b3;
 }
 
-.glyphicon, .fa-3 {
-	font-size: 2em;
+.color2:hover,
+.color2-invert {
+  background-color: #fff;
+  color: #00b3b3;
+  border: 1px solid #00b3b3;
 }
 
-.color1, .color1-invert:hover {
-	background-color: #76c9ff;
-	color: #fff;
-	border: 1px solid #76c9ff;
-}
-
-.color1:hover, .color1-invert {
-	color: #76c9ff;
-	background-color: #fff;
-	border: 1px solid #76c9ff;
-}
-
-.color2, .color2-invert:hover {
-	background-color: #00B3B3;
-	color: #fff;
-	border: 1px solid #00B3B3;
-}
-
-.color2:hover, .color2-invert {
-	background-color: #fff;
-	color: #00B3B3;
-	border: 1px solid #00B3B3;
-}
-
-.color3, .color3-invert:hover {
-	background-color: #827596;
-	color: #fff;
-	border: 1px solid #827596;
-}
-
-.color3:hover, .color3-invert {
-	color: #827596;
-	background-color: #fff;
-	border: 1px solid #827596;
-}
-
-.color4, .color4-invert:hover {
-	background-color: #fbb23e;
-	color: #fff;
-	border: 1px solid #fbb23e;
-}
-
-.color4:hover, .color4-invert {
-	color: #fbb23e;
-	background-color: #fff;
-	border: 1px solid #fbb23e;
-}
-
-.color1:hover, .color2:hover, .color3:hover, .color4:hover {
-	cursor: pointer;
-}
-
-.img-responsive {
-	height: 180px;
-	min-width: 100%;
-}
-.dashboard-stat-lighter {
-    margin-bottom: 1em;
+.color2:hover {
+  cursor: pointer;
 }
 
 @media only screen and (min-width: 600px) {
-    .text-block {
-		padding: 6em 2em 2em 2em;
-		text-align: center;
-	}
-	.text-block p {
-		margin: 0 0 10px;
-		font-size: 18px;
-		text-align: justify;
-		padding: 1em;
-	}
-	.text-block h1 {
-		font-weight: bolder;
-		margin: 0;
-	}
-	.btn {
-		min-width: 12em;
-		font-weight: 600;
-		min-height: 3em;
-	}
-	.image-block {
-		margin: 4em;
-	}
+  .text-block {
+    padding: 6em 2em 2em 2em;
+    text-align: center;
+  }
+  .text-block p {
+    margin: 0 0 10px;
+    font-size: 18px;
+    text-align: justify;
+    padding: 1em;
+  }
+  .text-block h1 {
+    font-weight: bolder;
+    margin: 0;
+  }
+  .btn {
+    min-width: 12em;
+    font-weight: 600;
+    min-height: 3em;
+  }
+  .image-block {
+    margin: 4em;
+  }
 }
 
 @media screen and (max-width: 600px) {
-	.image-block {
-		display: none;
-	}
-	.text-block {
-		text-align: left;
-		margin-bottom: 5em;
-	}
-	.text-block .flex {
-		margin: 1em 0;
-	}
-	.text-block h1 {
-		font-weight: 600;
-		font-size: 25px;
-	}
-	.block {
-		border-bottom: 1px solid #f1f1f1;
-	}
-}
-.container-video {
-  position: relative;
-  width: 100%;
-  height: 0;
-  padding-bottom: 56.25%;
-}
-.video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-#videoId{
-  height: 485px !important;
-  width: 859px !important;
-  outline: none;
+  .image-block {
+    display: none;
+  }
+  .text-block {
+    text-align: left;
+    margin-bottom: 5em;
+  }
+  .text-block .flex {
+    margin: 1em 0;
+  }
+  .text-block h1 {
+    font-weight: 600;
+    font-size: 25px;
+  }
+  .block {
+    border-bottom: 1px solid #f1f1f1;
+  }
 }
 
-.videoId-dimensions {
-  height: 485px !important;
-  width: 859px !important;
-}
-
-.videoId-dimensions.vjs-fluid {
-  padding-top: 56.25%;
-}
-.social-analytics{
-  width: 319px;
-  height: 218px;
-  float: right;
-  margin-top: -12px;
-}
 .divider-border {
   background: url(../../../assets/images/partition.png) center center no-repeat;
   margin: 20px 0;
   height: 10px;
 }
-.left-side{
+.left-side {
   position: relative;
   left: -16px;
 }
-.text-left{
+.text-left {
   text-align: left;
 }
-.text-left-analytics {
-  position: relative;
-  right: -46px;
-}
 
-.welcome-item-header{
-	text-align: left
+.welcome-item-header {
+  text-align: left;
 }
 /******* tharak ******/
-.welcome-header{
-	padding:10px 0px;
+.welcome-header {
+  padding: 10px 0px;
 }
 .dash-img-svg {
-	height: 240px;
+  height: 240px;
+  width:100%;
+}
+
+.msg-color{
+  color: #555555
+}
+
+a.UserguideBtnCustomization {
+  border-radius: 4px;
+  font-weight: 600;
+  padding: 12px 41px;
+  background-color: #26a69a;
+  border-color: #26a69a;
+  position: relative;
+  color: #fff;
+}
+
+a.UserguideBtnCustomization:hover {
+  background-color: #1f897f;
+  border-color: #1f897f;
+  color: #fff;
+}
+.Btn-transparent{
+  background: transparent;
+}
+.Btn-transparent:hover{
+  background: transparent;
+}
+@media only screen and (min-width: 600px) and (max-width: 1180px){ 
+  .block_align{
+    padding: 2em 0em 2em 0em!important;
+  }
+  .tab_Flex{
+    display: flex;
+  }
+  .tab_imgblock{
+    margin: 1em 2em!important;
+  }
+  .tab_right0{
+    right:0px!important;
+  }
+}
+@media only screen and (max-width:578px){
+  .UserguideBtnCustomization{
+    padding: 4px 5px!important;
+  }
+  .mb_left0{
+    left: 0px!important;
+  }
+  .mb_v_right0{
+    right: 0px!important;
+  }
+  .text-block{
+    margin-bottom: 3em!important;
+  }
 }

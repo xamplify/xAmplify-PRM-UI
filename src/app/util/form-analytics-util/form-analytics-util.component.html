@@ -1,4 +1,5 @@
-<div class="row" id="responsive">
+<div class="row">
+	<!-- <div class="row" id="responsive">  -->
 	<div class="col-xs-12 p5" *ngIf="statusCode==200">
 		<div class="portlet light">
 			<div class="portlet-title">
@@ -55,6 +56,7 @@
 					<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
 					</app-response-message>
 				</div>
+				<div class="table-responsive">
 				<table class="table tgrid" aria-describedby="form-analytics-table">
 					<thead>
 						<tr>
@@ -130,6 +132,7 @@
 						</ng-container>
 					</tbody>
 				</table>
+			  </div>
 			</div>
 
 			<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">

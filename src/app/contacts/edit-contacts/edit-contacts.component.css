@@ -122,6 +122,9 @@ a.disabled {
   .mWidthSort {
     width: 75.333333% !important;
   }
+  .mb_btn{
+    padding: 6px 10px!important;
+  }
 }
 @media (max-width: 425px) {
   .pr15 {
@@ -203,3 +206,18 @@ a.disabled {
 .border-btn-small{
 	border-radius: 4px;
   } 
+
+ .alert-message-aln{
+  margin-top: 8px; 
+ } 
+ @media only screen and (min-width: 768px) and (max-width: 991px) { 
+  .tab_v_flex{
+    display: flex!important;
+  }
+  .tab_ml0{
+    margin-left: 0px!important;
+  }
+  .filter_del{
+    left: 45px!important;
+  }
+ } 

@@ -2,7 +2,7 @@
     min-width: 170px;
 }
 #notification-list{
-    margin-top: -1px !important;
+    margin-top: 6px !important;
 }
 
 .grid-box-height{
@@ -10,10 +10,24 @@
 }
 
 .view-banner-white-labeled {
-  background-color: green;
-  color: white !important;
-  padding: 3px 6px 3px 6px;
+    background-color: #68B4F1;
+    color: white !important;
+    padding: 5px 10px;
   text-align: center;
   font-size: 10px;
   border-radius: 3px;
+  line-height: 1;
+}
+
+@media (min-width: 992px) and (max-width: 1245px)  { 
+    .DropdownBoxWidth {
+        width: 120px;
+    }
+    .input-icon.right.SerachBoxWidth {
+        width: 190px;
+        float: right;
+    }
+
+
+
 }

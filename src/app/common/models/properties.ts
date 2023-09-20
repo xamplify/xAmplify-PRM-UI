@@ -3,7 +3,8 @@ export class Properties {
 
 	/*App Info*/
 	COMPANY_LOGO = 'assets/images/xamplify-logo.png';
-	COPY_RIGHT_PREFIX = '&copy; '+new Date().getFullYear();
+	FULL_YEAR = new Date().getFullYear();
+	COPY_RIGHT_PREFIX = '&copy; '+this.FULL_YEAR;
 	BOTTOM_MESSAGE = this.COPY_RIGHT_PREFIX+' xAmplify. All rights reserved.'
 	APP_WEBSITE = 'xAmplify';
 	APP_WELCOME_MESSAGE = 'Welcome to xAmplify';
@@ -86,11 +87,12 @@ export class Properties {
 
 	/* Authentication Module*/
 
+	ACCOUNT_NOT_CREATED = "You don't have an account, Please sign up to create your account.";
 	ACCOUNT_ACTIVATED_WITH_PASSWORD = 'Thanks for adding password. Please login to access the platform.'
 	FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Check your inbox for a temporary password.";
 	FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail.";
 
-	SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for our account activation email.";
+	SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for activation email.";
 	ACCOUNT_ACTIVATED_SUCESS = 'Thanks for activating your account. Please log in to complete your company profile.';
 	SIGN_UP_ERROR = "An error occurred while processing your request. Please try after some time.";
 	ACCOUNT_DEACTIVATE_SUCCESS = "OrgAdmin deactivation successfully done.";
@@ -100,10 +102,12 @@ export class Properties {
 
 	BAD_CREDENTIAL_ERROR = "Username or password is incorrect.";
 	USER_ACCOUNT_DOESNOT_EXIST = "The email address that you've entered doesn't match any account. Sign for an account.";
-	USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated. Please check your inbox for our activation email.";
-	USER_ACCOUNT_ACTIVATION_ERROR_NEW = "Your account has not been activated. Please contact admin.";
+	/*****XNFR-334 *****/
+	RESEND_ACTIVATION_MAIL = 'Please check your inbox for the account activation email.';
+	USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated."+this.RESEND_ACTIVATION_MAIL;
+	ACCOUNT_SUSPENDED = "This account has been suspended.Please contact admin.";
+	/*****XNFR-334 *****/
 	EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty.";
-	RESEND_ACTIVATION_MAIL = 'Please check your inbox	for	our	account activation email.'
 	SOMTHING_WENT_WRONG = 'Something went wrong. Please try again.';
 	/* User */
 	PROCESS_REQUEST_SUCCESS = "Your request has been successfully processed.";
@@ -189,12 +193,12 @@ export class Properties {
 
 	/****************** Vanity Relates *********************/
 	VANITY_URL_ERROR1 = "You are not associated to vendor company";
-	VANITY_URL_DB_BUTTON_SUCCESS_TEXT = "Button added succesfully";
-	VANITY_URL_DB_BUTTON_UPDATE_TEXT = "Button updated succesfully";
-	VANITY_URL_DB_BUTTON_DELETE_TEXT = "Button deleted succesfully";
+	VANITY_URL_DB_BUTTON_SUCCESS_TEXT = "Button added successfully";
+	VANITY_URL_DB_BUTTON_UPDATE_TEXT = "Button updated successfully";
+	VANITY_URL_DB_BUTTON_DELETE_TEXT = "Button deleted successfully";
 	VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT = "Button title already exists";
-	VANITY_URL_ET_SUCCESS_TEXT = "Email Template updated succesfully";
-	VANITY_URL_ET_DELETE_TEXT = "Email Template deleted succesfully";
+	VANITY_URL_ET_SUCCESS_TEXT = "Email Template updated successfully";
+	VANITY_URL_ET_DELETE_TEXT = "Email Template deleted successfully";
 	VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT = "Error while Updating Email Template";
 
 	reAuthenticateMessage = 'Please unlink  and reconnect your account.';
@@ -222,6 +226,7 @@ export class Properties {
 	privacyPolicyUrl = "https://xamplify.com/privacy-policy-2/";
 	cookiesPolicyUrl = "https://xamplify.com/cookies-policy/";
 	termsOfServiceUrl ="https://xamplify.com/terms-of-uses/";
+	subProcessorsUrl = "https://www.xamplify.com/subprocessors/";
 
 	/***One-Click Launch Error Messages */
 	emptyShareListErrorMessage =  "Edit campaign is no longer available because the vendor deleted the shared list (or) no list associated with this campaign";
@@ -265,6 +270,22 @@ export class Properties {
 	/****XNFR-314****/
 	teamMemberPartnerFilter = "Default Partner Filter";
 
+	/***XNFR-318***/
+	campaignRegularEmailsFilter = "CampaignRegularEmails";
+	campaignVideoEmailsFilter = "CampaignVideoEmails";
+	campaignSurveyEmailsFilter = "CampaignSurveyEmails";
+	sendTestEmail = "Send Test Email";
+	
+	/***24/07/2023******/
+	playbackRates = [0.5, 1, 1.5, 2];
+
+
+	customThemeDescription = "Custom Themes enable the creation of unique branded experiences such as Background Color, Text Color, Button Color, Icon Color and so on. You can select from existing Light and Dark Themes. Set your own theme by choosing colors for the Header, Left Menu, Footer and Page Content blocks.";
+
+	whiteLabeledBanner = "White-Labeled";
+
+	/***XNFR-326*****/
+	emailNotificationSettings = "Email Notification Settings";
 
 
 

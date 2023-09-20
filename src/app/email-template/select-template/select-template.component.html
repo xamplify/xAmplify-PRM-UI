@@ -13,6 +13,9 @@
             </li>
             <li><a translate>Design Templates</a></li>
         </ul>
+        <app-user-guide-help-button
+                 *ngIf="5 != selectedTemplateTypeIndex && 11 != selectedTemplateTypeIndex && 12 != selectedTemplateTypeIndex"
+                [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     </div>
     <!-- END PAGE HEADER-->
     <!-- BEGIN PAGE CONTENT-->
@@ -21,7 +24,7 @@
             <div class="portlet light">
                 <div class="portlet-title m0" style="border-bottom:0px;padding-top: 5px;">
                     <div class="row">
-                        <div class="colxs-12 col-sm-9">
+                        <div class="col-xs-12 col-sm-9">
                             <div>
                                 <ul class="mix-filter">
                                     <li class="filter" (click)="showAllTemplates(0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex" translate>All</li>
@@ -41,8 +44,8 @@
                             </div>
                         </div>
                         <div class="colxs-12 col-sm-3">
-                            <div class="inputs regular_emails" align="right" style="float: right">
-                                <div class="portlet-input input-inline input-small">
+                            <div class="inputs regular_emails"  style="float: right">
+                                <div class="portlet-input input-inline input-small mb_10">
                                     <div class="input-icon right" style="width: 200px;margin-left: -55px;padding-top: 5px;">
                                         <input type="text" class="form-control" [(ngModel)]="templateFilter.name" placeholder="Search for a template">
                                         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="templateFilter.name" (click)="templateFilter.name=''"></button>
@@ -56,29 +59,28 @@
                 </div>
                 <div class="portlet-body" style="padding: 0px 3px 0px 3px;">
                     <div class="row">
-                        <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
                         <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
-                        <app-landing-page-loader [maxBoxLength]=4 *ngIf="importLoading"></app-landing-page-loader>
+                        <app-landing-page-loader [maxBoxLength]=4 *ngIf="importLoading || httpRequestLoader.isLoading"></app-landing-page-loader>
                         <ng-container *ngIf="!importLoading && !httpRequestLoader.isLoading">
                         <div style="position: relative; top: -10px">
                             <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
                         </div>
                         <div *ngIf="(selectedTemplateTypeIndex == 11 || selectedTemplateTypeIndex == 12) && filteredEmailTemplates?.length > 0" style="width: 100%;padding-left: 15px;" class="row">
-                            <label class="select-all-filter" style="float:right;"> <input type="checkbox" value="" 
+                            <label class="select-all-filter filter_btn" style="float:right;"> <input type="checkbox" value="" 
 									[(ngModel)]="selectAllTemplates" (ngModelChange)="selectAll(selectAllTemplates)" >
 									<span style="font-weight: 600;font-size: 12px;" translate>Select All</span> </label>
                             <div *ngIf="isSaveMarketoTemplatesButtonState" style="float:right;margin-right: 10px">
-                                <button class="btn" style="height: 36px;background-color: #6dcff6;" (click)="importMarketotemplates()" translate>IMPORT</button>
+                                <button class="btn filter_btn" style="height: 36px;background-color: #6dcff6;" (click)="importMarketotemplates()" translate>IMPORT</button>
                             </div>
                             <div *ngIf="isSaveHubSpotTemplatesButtonState" style="float:right;margin-right: 10px">
-                                <button class="btn" style="height: 36px;background-color: #6dcff6;" (click)="importHubSpotTemplates()" translate>IMPORT</button>
+                                <button class="btn filter_btn" style="height: 36px;background-color: #6dcff6;" (click)="importHubSpotTemplates()" translate>IMPORT</button>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-4 col-xs-12" *ngIf="filteredEmailTemplates?.length == 0">
+                        <div class="alert alert-info ml10 mr10 text-center" *ngIf="filteredCount?.count==0">
                             No Templates Available
                         </div>
-                        <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index">
-                            <div class="grid-box">
+                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 mrg_10" *ngFor="let beeRegularTemplate of filteredEmailTemplates | selectEmailTemplatesFilter: templateFilter:filteredCount;let i=index">
+                            <div class="grid-box mb_hgh_grid">
                                 <div *ngIf="beeRegularTemplate.marketoTemplate" style="width: 100%;padding-left: 15px;">
                                     <label class="checkbox-inline" style="float:left;"><input type="checkbox" value="" style="width: 20px;height: 20px;"
 										[(ngModel)]="beeRegularTemplate.isSelectedMarketoTemplate" (ngModelChange)="setSelectedTemplates(beeRegularTemplate)"></label>
@@ -91,24 +93,24 @@
                                 <img class="img-responsive center-block" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate" src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
                                 <img class="img-responsive center-block" *ngIf="beeRegularTemplate.marketoTemplate || beeRegularTemplate.hubSpotTemplate" src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
                                 <h4 title="{{beeRegularTemplate.name}}">{{beeRegularTemplate.name|slice:0:23}}<span *ngIf="beeRegularTemplate.name?.length>23">....</span></h4>
-                                <div class="bar">
-                                    <a data-toggle="tooltip" data-placement="top" title="Create template" (click)="showTemplateById(beeRegularTemplate)" *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
+                                <div class="bar gridIconCustomization">
+                                    <a class="Iconhover"  data-toggle="tooltip" data-placement="top" title="Create template" (click)="showTemplateById(beeRegularTemplate)" *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
                                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                     </a>
-                                    <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(beeRegularTemplate)" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
+                                    <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(beeRegularTemplate)" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
                                         <i class="fa fa-eye" aria-hidden="true"></i></a>
-                                    <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showMarketoEmailtemplatePreview(beeRegularTemplate.id)" *ngIf="beeRegularTemplate.marketoTemplate">
+                                    <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showMarketoEmailtemplatePreview(beeRegularTemplate.id)" *ngIf="beeRegularTemplate.marketoTemplate">
                                         <i class="fa fa-eye" aria-hidden="true"></i></a>
-                                    <a (click)="edit(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="Create Template" *ngIf="beeRegularTemplate.marketoTemplate">
+                                    <a class="Iconhover" (click)="edit(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="Create Template" *ngIf="beeRegularTemplate.marketoTemplate">
                                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                     </a>
-                                    <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showHubSpotEmailtemplatePreview(beeRegularTemplate.id)" *ngIf="beeRegularTemplate.hubSpotTemplate">
+                                    <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showHubSpotEmailtemplatePreview(beeRegularTemplate.id)" *ngIf="beeRegularTemplate.hubSpotTemplate">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                     </a>
-                                    <a (click)="createTemplate(beeRegularTemplate.id)" data-toggle="tooltip" data-placement="top" title="Create Template" *ngIf="beeRegularTemplate.hubSpotTemplate">
+                                    <a class="Iconhover" (click)="createTemplate(beeRegularTemplate.id)" data-toggle="tooltip" data-placement="top" title="Create Template" *ngIf="beeRegularTemplate.hubSpotTemplate">
                                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                     </a>
-                                    <a  (click)="confirmDeleteEmailTemplate(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="Delete Default Template" *ngIf="loggedInAsSuperAdmin && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
+                                    <a class="delete" (click)="confirmDeleteEmailTemplate(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="Delete Default Template" *ngIf="loggedInAsSuperAdmin && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     </a>
                                 </div>
@@ -134,7 +136,7 @@
                 <div id="htmlContent"></div>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
+                <a href="javascript:void(0)" data-dismiss="modal" class="btn Btn-Gray" style="float: right" translate>Close</a>
             </div>
         </div>
     </div>
@@ -187,7 +189,7 @@
             </div>
             <div class="modal-footer">
                 <div style="text-align: right;">
-                    <button class="btn btn-default" (click)="clearValues()" translate>Clear</button>
+                    <button class="btn Btn-Gray" (click)="clearValues()" translate>Clear</button>
                     <button class="btn btn-primary" [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitRetrieTemplates()" translate>Submit</button>
                 </div>
             </div>

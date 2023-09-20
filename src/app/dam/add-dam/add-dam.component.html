@@ -3,7 +3,7 @@
 <div class="row">
    <div class="col-xs-12">
       <div class="tile" style="border-radius: 5px;">
-         <div class="page-bar" style="border:none !important">
+         <div class="page-bar bar-border-bottom">
             <ul class="page-breadcrumb">
                <li>
                   <i class="fa fa-home" aria-hidden="true"></i>
@@ -53,7 +53,7 @@
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
             <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
-            <form role="form" class="form-horizontal form-bordered form-label-stripped" *ngIf="!modalPopupLoader">
+            <div class="form-horizontal form-bordered form-label-stripped" *ngIf="!modalPopupLoader">
                <div class="portlet box">
                   <div class="">
                      <div class="col-md-12 col-lg-12 ">
@@ -86,7 +86,7 @@
                             (statusChange)="setWhiteLabeled($event)">
                             </switch>
                             <span class="info-color-xampc">
-                              <i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip"
+                              <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup" data-toggle="tooltip"
                                   data-placement="top" aria-hidden="true"
                                   title="Share As White Labeled Content"></i>
                           </span>
@@ -192,7 +192,13 @@
                            </td>
                            <td class="desc">
                              <div class="mDesc">
-                               <app-partner-company-and-groups [moduleName]="'dam'" [inputId]="assetId" (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+                              <app-list-loader  *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
+                               <app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader" 
+                                [moduleName]="'dam'"
+                                 [isAssetPublishedEmailNotification]="isAssetPublishedEmailNotification"
+                                  [inputId]="assetId"
+                                  (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" >
+                                 </app-partner-company-and-groups>
                              </div>
                            </td>
                          </tr>
@@ -200,10 +206,9 @@
                      </table>
                     </div>
                    <!---XNFR-255-->
-
                   </div>
                </div>
-            </form>
+            </div>
          </div>
          <div class="modal-footer cmr" style="border:none;border-top:none !important" *ngIf="!modalPopupLoader">
             <button class="btn Btn-Gray" type="reset" (click)="hidePopup();" translate>Cancel</button>

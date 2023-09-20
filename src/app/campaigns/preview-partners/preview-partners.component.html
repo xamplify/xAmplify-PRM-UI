@@ -8,10 +8,10 @@
          <div class="col-xs-12 p5">
             <div class="portlet light">
                <div class="portlet-title">
-                  <div class="caption">
+                  <div class="caption prt_caption">
                      <span class="caption-subject font-red-sunglo uppercase">{{authenticationService?.partnerModule?.customName}}</span>
                   </div>
-                  <div class="inputs" style="float: right">
+                  <div class="inputs pt0 mb-display" style="float: right">
                      <div style="float: left;">
                         <select class="form-control"
                         [(ngModel)]="sortOption.campaignPartnersRemoveAccessDefaultSortOption"
@@ -22,7 +22,7 @@
                         [ngValue]="option">{{option.name}}</option>
                         </select>
                      </div>
-                     <div class="portlet-input input-inline input-small"
+                     <div class="portlet-input input-inline input-small mb_v_srch"
                         style="margin-right: 10px;">
                         <div class="input-icon right"
                            style="position: relative; right: -11px;">
@@ -68,7 +68,7 @@
                                        <span class="circled-number" title="Download Count">{{partner?.downloadCount}}</span>
                                        <!----Download History-->
                                        <a title="View Download History" (click)="expandHistory(partner,i)"> 
-                                       <i class="fa"
+                                       <i class="fa IconCustomization"
                                           [ngClass]="{'fa-plus': !partner?.expand, 'fa-minus': partner?.expand}" aria-hidden="true"></i>
                                        </a>
                                     </ng-container>
@@ -76,14 +76,15 @@
                                        <span class="circled-number" title="Email Opened Count">{{partner?.emailOpenedCount}}</span>
                                        <!----Download History-->
                                        <a title="View Email Opened History" (click)="expandHistory(partner,i)"> 
-                                       <i class="fa"
+                                       <i class="fa IconCustomization"
                                           [ngClass]="{'fa-plus': !partner?.expand, 'fa-minus': partner?.expand}" aria-hidden="true"></i>
                                        </a>
                                     </ng-container>
                                     <!----Delete-->
                                     <a *ngIf="viewType=='plc'" (click)="confirmDeletePartnerById(partner,i)"
+                                    data-toggle="tooltip" data-placement="bottom"
                                     title="{{actionsDescription.campaign_delete_partner}}"> <i
-                                       class="fa fa-trash-o" aria-hidden="true"></i>
+                                       class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                                     </a>
                                  </div>
                               </td>

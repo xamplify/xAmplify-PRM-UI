@@ -297,7 +297,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         point: {
                             events: {
                                 click: function () {
-                                    //  alert('campaign: ' + this.category + ', value: ' + this.y);
                                 }
                             }
                         }

@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { DamService } from 'app/dam/services/dam.service';
 import { ActivatedRoute } from '@angular/router';
-
 /*****Common Imports**********************/
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
@@ -676,7 +675,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
                  this.referenceService.campaignVideoFile = videoFile;
                  this.referenceService.selectedCampaignType = 'video';
                  this.referenceService.isCampaignFromVideoRouter = true;
-                 this.router.navigateByUrl('/home/campaigns/create');
+                 this.router.navigateByUrl('/home/campaigns/create/'+this.referenceService.selectedCampaignType);
 				 this.referenceService.closeSweetAlertWithDelay();
                  }else{
 					this.referenceService.closeSweetAlert();

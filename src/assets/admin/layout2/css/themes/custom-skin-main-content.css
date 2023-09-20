@@ -84,6 +84,11 @@ h6 {
 .progress {
   background-color: var(--page-content) !important;
 }
+/* 08-08-2023 */
+#CardBgforSection {
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
 .special-progress-bar span {
   color: var(---text-color) !important;
 }
@@ -170,10 +175,10 @@ th,
 .div.thembgc {
   border: 1px solid var(--border-color) !important;
 }
-td > button {
+/* td > button {
   background-color: #00a99d !important;
   border-radius: 3px !important;
-}
+} */
 .list-group-item,
 /* input, */
 .card {
@@ -205,7 +210,8 @@ ul.alt-row-style1 li:hover,
 .l-g-view,
 .alert-success,
 .campaign-email-template-filter-icon,
-.list__item.list__item--selected > .flex-row {
+.list__item.list__item--selected > .flex-row,
+.filter-button-color {
   background-color: var(--page-content) !important;
   border: 1px solid var(--border-color) !important;
   color: var(---text-color) !important;
@@ -297,13 +303,29 @@ fieldset,
   background-color: var(--page-content) !important;
   /* color: var(---text-color) !important; */
 }
-.table-striped > tbody > tr:nth-of-type(odd),
+
+/* 04-07-2023 Templates privew background */
+/* .table-striped > tbody > tr:nth-of-type(odd),
 table tr:nth-child(odd) td,
 table tr:nth-child(even) td,
 .search-box-item-clear,
 input {
-  background-color: var(--div-bg-color) !important ;
+  background-color: transparent !important;
+} */
+.table-striped > tbody > tr:nth-of-type(odd),
+table tr:nth-child(odd),
+table tr:nth-child(even),
+.search-box-item-clear {
+  background-color: transparent !important;
 }
+.table .table {
+  background: transparent !important;
+}
+table#folder-list-view,
+tr {
+  background: transparent !important;
+}
+/* 04-07-2023 Templates privew background */
 .table-hover > tbody > tr:hover,
 .page-header.navbar
   .top-menu
@@ -342,6 +364,7 @@ input {
   background-color: var(--div-bg-color) !important;
   border-color: var(--border-color) !important;
 }
+.border-bottom-1px,
 .modal .modal-header,
 .page-header.navbar
   .top-menu
@@ -419,7 +442,8 @@ input {
   color: var(---text-color) !important;
 }
 /** alert **/
-.swal2-modal {
+.swal2-modal,
+.hash-table-color {
   background-color: var(--div-bg-color) !important;
 }
 .loader-container {
@@ -744,7 +768,7 @@ select {
   border: 1px solid var(--border-color) !important;
   color: var(---text-color) !important;
 }
-.nav-tabs,
+/* .nav-tabs, */
 .def-player-border {
   border-bottom: 1px solid var(--border-color) !important;
 }
@@ -981,7 +1005,7 @@ textarea:focus {
     linear-gradient(to bottom, #2f4758, #2f4758) !important;
 }
 .phone {
-  color: #fff !important;
+  color: #000 !important;
 }
 .c-btn {
   border: 1px solid var(--border-color) !important;
@@ -1244,14 +1268,18 @@ span.ui-column-resize {
 }
 /* 14-6-2023 sudha sri */
 .comment .info a,
-.comment-color {
+.comment-color,
+.countColor {
   color: var(---text-color) !important;
 }
-.dropdown-menu li > a > [class*=" fa-"],
+.dropdown-menu li > a {
+  color: var(---text-color) !important;
+}
+/* .dropdown-menu li > a > [class*=" fa-"],
 .bar .fa,
 i.fa.fa-eye.color-chnage {
   color: var(---text-color) !important;
-}
+} */
 .partner-company-selected,
 .table tr.row-selected td {
   background-color: var(--page-content) !important;
@@ -1312,6 +1340,35 @@ a.dropdown-toggle.circlebg-none-v:hover {
   opacity: 0.8;
   color: var(--top-button-value-color) !important;
 }
+@media only screen and (min-width: 300px) and (max-width: 580px) {
+  a.dropdown-toggle.circlebg-none-v {
+    background: transparent !important;
+    border: none !important;
+  }
+  a.dropdown-toggle.circlebg-none-v:hover {
+    background: transparent !important;
+  }
+  .page-header.navbar
+    .top-menu
+    .navbar-nav
+    > li.dropdown
+    > .dropdown-toggle:hover {
+    background-color: transparent !important;
+  }
+  .page-header.navbar.top-menu.navbar-nav
+    > li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
+    background-color: transparent !important;
+  }
+}
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown-user
+  .dropdown-toggle
+  > img {
+  background-color: var(--top-buton-color) !important;
+  border: 1px solid var(--top-button-border-color) !important;
+}
 .nav .open > a,
 .nav .open > a:focus,
 .nav .open > a:hover {
@@ -1351,3 +1408,454 @@ a.dropdown-toggle.circlebg-none-v:hover {
 .option-color {
   color: var(--title-heading--text) !important;
 }
+
+/*01-07-2023*/
+.rss-title {
+  color: var(--title-heading--text) !important;
+}
+.dark-beige {
+  background: transparent;
+}
+
+/* 10-07-2023 */
+.dark-card-body-cu {
+  background-color: var(--div-bg-color) !important;
+}
+/* .portlet.light, */
+.custome-portlet {
+  border: none !important;
+}
+ul.drag-menu-cu li:hover {
+  background-color: var(--page-content) !important;
+}
+.dragdrop-gif-cu {
+  border: 1px solid var(--border-color) !important;
+}
+
+.card-paddings-vcu {
+  background-color: var(--page-content) !important;
+}
+
+.backgroundfor-mv-title {
+  background-color: var(--top-buton-color) !important;
+  color: var(--top-button-value-color) !important;
+}
+h5.designpage-dark-cu {
+  padding-bottom: 12px;
+}
+/* 11-7-2023 sudha sri */
+.btn-primary {
+  background-color: var(--btn-primary-bg-color) !important;
+  color: var(--btn-primary-text-color) !important;
+  border: 1px solid var(--btn-primary-border-color) !important;
+}
+.btn-primary:hover {
+  background-color: var(--btn-primary-bg-color) !important;
+  color: var(--btn-primary-text-color) !important;
+  border: 1px solid var(--btn-primary-border-color) !important;
+  opacity: 0.8;
+}
+.Btn-Green {
+  background-color: var(--btn-secondary-bg-color) !important;
+  border: 1px solid var(--btn-secondary-border-color) !important;
+  color: var(--btn-secondary-text-color) !important;
+}
+.Btn-Green:hover {
+  background-color: var(--btn-secondary-bg-color) !important;
+  border: 1px solid var(--btn-secondary-border-color) !important;
+  opacity: 0.8;
+}
+.Btn-Green.btn:hover {
+  color: var(--btn-secondary-text-color) !important;
+}
+.Btn-Green.btn.active,
+.Btn-Green.btn:active,
+.Btn-Green.btn:focus,
+.Btn-Green.btn:hover,
+.open .Btn-Green.btn.dropdown-toggle {
+  color: var(--btn-secondary-text-color) !important;
+}
+.custom-header-img-color {
+  color: var(--top-button-value-color) !important;
+  background-color: var(--top-bg-color) !important;
+  border: 1px solid var(--top-button-border-color) !important;
+}
+.custom-left-img-color {
+  color: var(--left-text-color) !important;
+  background-color: var(--left-bg-color) !important;
+  border: 1px solid var(--left-border-color) !important;
+}
+.custom-footer-img-color {
+  color: var(--footer-text-color) !important;
+  background-color: var(--footer-bg-color) !important;
+  border: 1px solid var(--footer-border-color) !important;
+}
+.custom-main-img-color {
+  color: var(---text-color) !important;
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+a.UserguideBtnCustomization {
+  background-color: var(--btn-secondary-bg-color) !important;
+  border: 1px solid var(--btn-secondary-border-color) !important;
+  color: var(--btn-secondary-text-color) !important;
+}
+a.UserguideBtnCustomization:hover {
+  background-color: var(--btn-secondary-bg-color) !important;
+  border: 1px solid var(--btn-secondary-border-color) !important;
+  opacity: 0.8;
+}
+
+.custom-btn-ref {
+  /* background-color: var(--button-primary-bg-color) !important;
+  color: var(--button-primary-text-color) !important; */
+  /* border: 1px solid var(--button-primary-border-color) !important; */
+}
+.custom-sec-btn-ref {
+  /* background-color: var(--button-secondary-bg-color) !important;
+  color: var(--button-secondary-text-color) !important; */
+  /* border: 1px solid var(--button-secondary-border-color) !important; */
+}
+div#removeborder {
+  border: none !important;
+}
+.drap-arrow-cu {
+  color: var(---text-color) !important;
+}
+
+/* user guides hover icon */
+.help-iconbgadd:hover {
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.help-iconbgadd i:hover {
+  color: var(---text-color) !important;
+}
+.help-iconbgadd {
+  border: 1px solid var(--top-button-border-color) !important;
+}
+.helpcircle-cu {
+  color: var(---text-color) !important;
+}
+
+/* end */
+
+/* Create Campaign Select Campaign bar bg */
+.custometheme-bar {
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+/* .custometheme-bar span,
+strong {
+  color: var(---text-color) !important;
+} */
+.custometheme-bar span {
+  color: var(---text-color) !important;
+}
+/* end */
+
+td.bgc-lg {
+  background: transparent !important;
+}
+td.td-netbg {
+  background: transparent !important;
+}
+
+.dark-beige {
+  background-color: var(--page-content);
+}
+td.td-netbg {
+  background: transparent !important;
+}
+tag {
+  background: var(--page-content) !important;
+  color: var(---text-color) !important;
+}
+.placeholder-bg-color {
+  background-color: transparent !important;
+}
+select.form-control.same-bgcolor-for-select {
+  background-color: var(--div-bg-color) !important;
+}
+
+/* 19-07-2023 Custom Theme Settings bg colors */
+.bg-color-for-card {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.bg-color-for-card1 {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+p.layoutcontent {
+  color: var(---text-color) !important;
+}
+.bg-color-for-footercard {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.bg-color-for-footercard1 {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.bg-color-for-secondcard {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.bg-color-for-secondcard1 {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.bg-color-for-thirdcard {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.bg-color-for-thirdcard1 {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.portlet-light-fields.custom-header-img-color {
+  color: var(--top-button-value-color) !important;
+}
+.portlet-light-fields.custom-left-img-color.left-left.box-center {
+  color: var(--left-text-color) !important;
+}
+.portlet-light-fields.custom-footer-img-color {
+  color: var(--footer-text-color) !important;
+}
+.required {
+  color: red !important;
+}
+.vendor-img-cu img {
+  border: 1px solid var(--border-color) !important;
+}
+.template-height {
+  margin-top: 9px !important;
+}
+/* app preview */
+input[type="file"]::file-selector-button {
+  color: var(---text-color) !important;
+  background-color: var(--page-content) !important;
+}
+.brodercolorcu {
+  border: 1px solid var(--border-color) !important;
+}
+span.center-itams a {
+  color: var(---text-color) !important;
+}
+p.addhrtosvg {
+  background: var(--border-color) !important;
+}
+.appmobileview .mobileview-align {
+  background: var(--page-content) !important;
+}
+/* app preview End*/
+
+.profile-usermenu {
+  border-top: 1px dashed var(--border-color) !important;
+}
+.cardfotter-toggleon {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+.bg-color-for-footercard2 {
+  border: 1px solid var(--border-color) !important;
+  background-color: var(--page-content) !important;
+}
+
+ul.nav.nav-tabs.tabsactievcolorinu li.active a {
+  color: var(---text-color) !important;
+}
+ul.nav.nav-tabs.tabsactievcolorinu li a {
+  color: var(---text-color) !important;
+}
+
+.nav.nav-tabs.tabsactievcolorinu > li.active > a,
+.nav.nav-tabs.tabsactievcolorinu > li.active > a:hover,
+.nav.nav-tabs.tabsactievcolorinu > li.active > a:focus {
+  color: var(---text-color) !important;
+}
+
+/* sweet alert btn */
+button.swal2-confirm.styled {
+  background-color: var(--btn-primary-bg-color) !important;
+  color: var(--btn-primary-text-color) !important;
+  border: 1px solid var(--btn-primary-border-color) !important;
+}
+button.swal2-confirm.styled:hover {
+  background-color: var(--btn-primary-bg-color) !important;
+  color: var(--btn-primary-text-color) !important;
+  border: 1px solid var(--btn-primary-border-color) !important;
+}
+
+/* form placeholder color */
+::placeholder {
+  color: var(---text-color) !important;
+  opacity: 0.5;
+}
+::-webkit-input-placeholder {
+  /* Edge */
+  color: var(---text-color) !important;
+  opacity: 0.5;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer */
+  color: var(---text-color) !important;
+  opacity: 0.5;
+}
+
+/* design Manage Forms  Analytics table borders */
+table.table.table-allsideboders {
+  border: 1px solid var(--border-color) !important;
+}
+
+/* form fields white-bg */
+/* input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid {
+  background: transparent;
+}
+input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:active, input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:focus {
+  border: none !important;
+  outline: none !important;
+}
+
+input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched, input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched:active , input.ng2-tag-input__text-input.ng-valid.ng-dirty.ng-touched:focus {
+  background: transparent;
+  fill: none;
+} */
+.search-box-item-clear,
+input {
+  background: transparent;
+  fill: none;
+}
+/* .search-box-item-clear, input:active, input:focus {
+  border: none !important;
+  outline: none !important;
+} */
+/* 10-8-2023 sudha sri */
+input#copy-link {
+  background-color: var(--page-content) !important;
+}
+/* 22-8-2023 sudha sri */
+ul.nav.nav-tabs.hideBorder {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+.disable-btn-text-color {
+  border: 1px solid var(--btn-secondary-border-color) !important;
+}
+
+
+
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li:hover > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li.open > a, .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu > li.active > a, .page-sidebar .page-sidebar-menu .sub-menu > li:hover > a, .page-sidebar .page-sidebar-menu .sub-menu > li.open > a, .page-sidebar .page-sidebar-menu .sub-menu > li.active > a {
+  background-color: var(--left-bg-color) !important;
+  opacity: 0.9;
+}
+.dropdown-menu.custome-dropdown-changs .active > a, .dropdown-menu.custome-dropdown-changs .active > a:hover, .dropdown-menu.custome-dropdown-changs li > a:hover {
+  background: transparent !important;
+}
+
+
+
+
+
+/* Table icon Customization  START*/
+/* List View icon Customization start*/
+i.IconCustomization { border: 1px solid var(--border-color) !important;color: var(--border-color) !important;}
+i.IconCustomization:hover {border: 1px solid var(--border-color) !important;background: var(--border-color) !important;color: var(--div-bg-color) !important;}
+
+.IconCustomizationcondition a i {border: 1px solid var(--border-color) !important;color: var(--border-color) !important;}
+.IconCustomizationcondition a i:hover {border: 1px solid var(--border-color) !important;background: var(--border-color) !important;color: var(--div-bg-color) !important;}
+
+#download-template {border: 1px solid var(--border-color) !important;color: var(--border-color) !important;}
+#download-template:hover {border: 1px solid var(--border-color) !important;background: var(--border-color) !important;color: var(--div-bg-color) !important;}
+
+button.btn.TableDataBtn {border-color: var(--border-color) !important;}
+button.btn.TableDataBtn .sky-blue {color: var(--border-color)!important;}
+
+.custome-dropdown-changs li a {border: 1px solid var(--border-color) !important;}
+.custome-dropdown-changs li a i {color: var(--border-color) !important;}
+
+.setting-icon-cu {border: 1px solid var(--border-color) !important; color: var(--border-color) !important;}
+.setting-icon-cu .gearDropdownMenu {color: var(--border-color) !important;}
+
+i.singleIconCustomization {color: var(--border-color) !important;}
+
+i.fa.fa-trash-o.trashIconCustomization{border: 1px solid #cb5a5e !important;color: #cb5a5e !important;}
+i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !important;background: #cb5a5e !important;color: #fff !important;}
+/* List View icon Customization End*/
+
+/* Grid View icon Customization start*/
+.gridIconCustomization a {border: 1px solid #fff !important;color: #fff !important;}
+.gridIconCustomization a.Iconhover:hover{border: 1px solid #fff !important;background:#fff !important; color: #5bb2f5 !important;}
+
+#download-template-grid {border: 1px solid #fff !important;color: #fff !important;}
+#download-template-grid:hover {border: 1px solid #fff !important;background: #fff !important;color: #5ab2f5 !important;}
+
+.gridIconCustomization a.delete {border: 1px solid #cb5a5e !important;background: transparent;color: #cb5a5e !important;}
+.gridIconCustomization a.delete:hover {border: 1px solid #cb5a5e !important;background: #cb5a5e !important; color: #fff !important;}
+/* Grid View icon Customization End*/
+/* Table icon Customization END*/
+
+.portlet.light.borderNone {
+  border: none !important;
+}
+.listColorCu {color: var(---text-color) !important;}
+.listColorCu:hover {opacity: 0.7;}
+.list-card.listColorCu {border-top: 1px solid var(--border-color) !important;}
+.lbg.show a h6 {
+  color: var(---text-color) !important;
+}
+.lbg{
+  background-color: var(--page-content) !important;
+}
+
+ /* XNFR-335 start */
+ .nav-tabs.dcTheme{
+  background-color: var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 5px;
+}
+.nav-tabs.dcTheme>li.active>a,
+.nav-tabs.dcTheme>li>a:hover {
+    border: none !important;
+    color: var(---text-color) !important;
+    background-color: var(--page-content) !important;
+    
+}
+.nav-tabs.dcTheme>li>a {
+  border: none !important;
+  color: var(---text-color) !important;
+}
+.dcBorderNone.table-bordered > tbody > tr > td {
+  border: none !important;
+}
+.dcbar.progressbar li:before {
+    border: 1px solid var(--page-content) !important;
+    background-color: var(--page-content) !important;
+}
+.dcbar.progressbar li.active  {
+  color: var(---text-color) !important;
+}
+.dcbar.progressbar li.active+ li:after {
+  background-color: var(--page-content) !important;
+}
+.dcbar.progressbarVerification li:before {
+  border: 1px solid var(--page-content) !important;
+  background-color: var(--page-content) !important;
+}
+.dcbar.progressbarVerification li.activeVerification {
+  color: var(---text-color) !important;
+}
+.dcbar.progressbarVerification li:before {
+  border: 1px solid var(--page-content) !important;
+  background-color: var(--page-content) !important;
+}
+.progressbarVerification li.activeVerification + li:after {
+  background-color: var(--page-content) !important;
+}
+.dcBorderNone.table-bordered {  border: 1px solid var(--page-content) !important;}
+ /* XNFR-335 End */
+
+
+ .toggleOnOff .labels::after {color: var(---text-color) !important;}
+ .toggleOnOff .labels::before {color: var(---text-color) !important;}
+

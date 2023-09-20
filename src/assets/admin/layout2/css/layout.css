@@ -925,7 +925,7 @@ Page Header
   }
   .page-header.navbar .top-menu .navbar-nav {
     display: inline-block;
-    margin: 0 10px 0 0;
+    margin: 0 0px 0 0;
   }
   .page-header.navbar .top-menu .navbar-nav > li {
     float: left;
@@ -1162,6 +1162,7 @@ Page container
   .page-container {
     margin: 0 !important;
     padding: 0 !important;
+    overflow: hidden;
   }
   .page-header-fixed.page-header-fixed-mobile .page-container {
     margin-top: 68px !important;

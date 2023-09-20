@@ -41,7 +41,7 @@
           <div class="caption">Vendor Report</div>
 		  <div class="inputs sort-class col-xs-5" align="right" style="float: right; margin-top: 2px;">
       <div class="col-xs-6" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-        <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+        <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
 			<ng-container *ngFor="let sort of sortOptions; let i = index">
 				<option [ngValue]="sort">{{sort.name}}</option>
 			</ng-container>
@@ -145,6 +145,7 @@
     <app-processing-campaigns [scheduledCampaigns]="false"  *ngIf="!detailsTielsView"></app-processing-campaigns>
     <app-processing-campaigns [scheduledCampaigns]="true" *ngIf="!detailsTielsView"></app-processing-campaigns>
     <app-active-queries *ngIf="!detailsTielsView"></app-active-queries>
+    <app-active-threads-info *ngIf="!detailsTielsView"></app-active-threads-info>
     <section *ngIf="detailsTielsView">
       <div class="portlet light">
         <div class="portlet-title">

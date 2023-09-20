@@ -123,6 +123,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     editButtonClicked = false;
     selectedCampaignId = 0;
     showUpArrowButton = false;
+    /******** user guide *************/
+    mergeTagForGuide:any;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,
@@ -170,7 +172,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     listCampaign(pagination: Pagination) {
-        // this.selectedCampaignTypeIndex = 0;
         this.refService.goToTop();
         this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);
@@ -288,6 +289,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     this.isloading = false;
                     this.logger.errorPage(error);
                 });
+                 /******* user guide  ********/
+            if (this.authenticationService.isOnlyPartner() || this.authenticationService.module.loggedInThroughVendorVanityUrl) {
+                this.mergeTagForGuide = 'manage_campaigns_partner';
+            } else {
+                this.mergeTagForGuide = 'manage_campaigns_vendor';
+            }
+            /******* user guide  ********/
             
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
@@ -433,7 +441,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                             }
                             else {
                                 /********XNFR-125*******/
-                                this.checkOneClickLaunchAccess(campaign.campaignId);
+                                this.checkOneClickLaunchAccess(campaign.campaignId,data.campaignType);
                             }
                         }
                     }
@@ -456,7 +464,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     /*****XNFR-125*****/
-    checkOneClickLaunchAccess(campaignId:number){
+    checkOneClickLaunchAccess(campaignId:number,campaignType:string){
         this.isloading = true;
         this.customResponse = new CustomResponse();
         this.campaignService.checkOneClickLaunchAccess(campaignId).
@@ -465,7 +473,21 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 let access = response.data;
                 if(access){
                     this.refService.isEditNurtureCampaign = false;
-                    this.router.navigate(["/home/campaigns/edit"]);
+                    if("REGULAR"==campaignType || "SURVEY"==campaignType || "VIDEO"==campaignType || "LANDINGPAGE"==campaignType){
+                        let urlSuffix = "";
+                        if("REGULAR"==campaignType){
+                            urlSuffix="email";
+                        }else if("SURVEY"==campaignType){
+                            urlSuffix = "survey";
+                        }else if("VIDEO"==campaignType){
+                            urlSuffix = "video";
+                        }else if("LANDINGPAGE"==campaignType){
+                            urlSuffix = "page";
+                        }
+                        this.router.navigate(["/home/campaigns/edit/"+urlSuffix]);
+                    }else{
+                        this.router.navigate(["/home/campaigns/edit"]);
+                    }
                 }else{
                     this.refService.scrollSmoothToTop();
                     let message = "Edit Campaign is not available, as One-Click Launch access has been removed for your account";

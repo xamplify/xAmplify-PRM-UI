@@ -14,11 +14,12 @@ export class SelectContentModulesComponent implements OnInit {
 
   loading = false;
   prefixUrl = "home/";
+  searchWithModuleName:any;
   constructor(public router:Router,public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger) { }
 
   ngOnInit() {
-
+    this.searchWithModuleName = 4;
   }
   navigate(suffixUrl:string){
     this.loading = true;

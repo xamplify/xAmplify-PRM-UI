@@ -19,7 +19,7 @@ export class VendorReportsComponent implements OnInit {
   loading = false;
   customResponse: CustomResponse = new CustomResponse();
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
-
+  
   constructor(
     public referenseService: ReferenceService,
     public pagination: Pagination,
@@ -27,7 +27,7 @@ export class VendorReportsComponent implements OnInit {
     public authenticationService: AuthenticationService,
     public pagerService: PagerService,
     private vanityURLService: VanityURLService
-  ) { 
+  ) {
     if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.vanityLoginDto.userId = this.authenticationService.getUserId();
@@ -49,7 +49,7 @@ export class VendorReportsComponent implements OnInit {
     this.getVendors();
   }
 
-  navigateToVendorCampaigns(venderReport: any) {
+  navigateToVendorCampaigns(venderReport: any, moduleToRedirect: any) {
     this.loading = true;
     this.referenseService.vendorDetails = venderReport;
     this.vanityURLService
@@ -57,7 +57,7 @@ export class VendorReportsComponent implements OnInit {
       .subscribe((result) => {
         if (result.statusCode === 200) {
           let vanityURL =
-            result.data + "au/" + this.authenticationService.user.alias;
+            result.data + "au/" + this.authenticationService.user.alias + "/" + moduleToRedirect.toLowerCase();
           window.open(vanityURL);
           this.loading = false;
         } else if (result.statusCode === 100) {
@@ -69,7 +69,7 @@ export class VendorReportsComponent implements OnInit {
         this.referenseService.showSweetAlertServerErrorMessage();
       });
   }
-  errorHandler(event:any) {
+  errorHandler(event: any) {
     event.target.src = "assets/images/default-company.png";
   }
 
@@ -83,7 +83,7 @@ export class VendorReportsComponent implements OnInit {
     this.pagination.partnerId = this.authenticationService.getUserId();
     if (this.vanityLoginDto.vanityUrlFilter) {
       this.pagination.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
-      this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;      
+      this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
     }
 
     this.dashboardService
@@ -104,8 +104,8 @@ export class VendorReportsComponent implements OnInit {
         }
       );
   }
-
-  userProfileErrorHandler(event:any) {
+  
+  userProfileErrorHandler(event: any) {
     event.target.src = "assets/images/icon-user-default.png";
   }
 

@@ -46,6 +46,7 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
     teamMembersLoader: HttpRequestLoader = new HttpRequestLoader();
     selectedFilterIndex: number = 0;
     showFilter = true;
+    isTableLoaded: boolean = true;
   constructor(public partnerService: ParterService,public xtremandLogger: XtremandLogger, private pagerService: PagerService, public authenticationService: AuthenticationService,
 	        public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public userService: UserService, public contactService: ContactService) { 
 	  this.loggedInUserId = this.authenticationService.getUserId();
@@ -128,24 +129,28 @@ export class PartnerCompanyModalPopupComponent implements OnInit {
   }
   
   viewTeamMembers(item: any) {
-      this.teamMembersPagination = new Pagination();
-      this.isHeaderCheckBoxChecked = false;
-      this.adminsAndTeamMembersErrorMessage = new CustomResponse();
-      this.pagination.pagedItems.forEach((element) => {
-          let partnerCompanyId = element.partnerCompanyId;
-          let clickedCompanyId = item.partnerCompanyId;
-          if (clickedCompanyId != partnerCompanyId) {
-              element.expand = false;
-          }
-      });
-      item.expand = !item.expand;
-      if (item.expand) {
-          this.referenceService.loading(this.teamMembersLoader, true);
-          this.teamMembersPagination.companyId = item.partnerCompanyId;
-          this.teamMembersPagination.partnershipId = item.partnershipId;
-          this.getTeamMembersAndAdmins(this.teamMembersPagination);
-
-      }
+    /***XBI-1883**/
+    let isPartnerCompanySelected = this.selectedPartnershipIds.length>0 && this.selectedPartnershipIds.indexOf(item.partnershipId)<=-1;
+    if(!isPartnerCompanySelected){
+        this.teamMembersPagination = new Pagination();
+        this.isHeaderCheckBoxChecked = false;
+        this.adminsAndTeamMembersErrorMessage = new CustomResponse();
+        this.pagination.pagedItems.forEach((element) => {
+            let partnerCompanyId = element.partnerCompanyId;
+            let clickedCompanyId = item.partnerCompanyId;
+            if (clickedCompanyId != partnerCompanyId) {
+                element.expand = false;
+            }
+        });
+        item.expand = !item.expand;
+        if (item.expand) {
+            this.referenceService.loading(this.teamMembersLoader, true);
+            this.teamMembersPagination.companyId = item.partnerCompanyId;
+            this.teamMembersPagination.partnershipId = item.partnershipId;
+            this.getTeamMembersAndAdmins(this.teamMembersPagination);
+  
+        }
+    }
   }
   
   getTeamMembersAndAdmins(teamMembersPagination: Pagination) {

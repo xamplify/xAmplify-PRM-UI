@@ -26,13 +26,16 @@
                <app-box-loader [countLoader]=4 *ngIf="tilesLoader"></app-box-loader>
                <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
                   <div class="row">
-                     <div title="{{tileData?.totalPartners}}" class="col-sm-3 col-xs-6 col-lg-3 col-md-3 ">
+                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
                         <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">{{tileData?.totalPartners}}</div>
+                              <div class="number NumberFontDecrease">
+                                 <span data-toggle="tooltip" data-placement="top" title="{{tileData?.totalPartners}}" >
+                                    {{tileData?.totalPartners}}
+                                 </span></div>
                               <div class="desc">Total {{authenticationService?.partnerModule?.customName}}</div>
                            </div>
                            <span class="morePadding">
@@ -41,13 +44,16 @@
                         </span>
                         </a>
                      </div>
-                     <div title="$ {{tileData?.totalBalance}}" class="col-sm-3 col-xs-6 col-lg-3 col-md-3 ">
+                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
                         <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">{{tileData?.totalBalanceInString}}</div>
+                              <div class="number NumberFontDecrease">
+                                 <span  data-toggle="tooltip" data-placement="top" title="$ {{tileData?.totalBalance}}" >
+                                    {{tileData?.totalBalanceInString}}
+                                 </span></div>
                               <div class="desc">Total MDF Balance</div>
                            </div>
                            <span class="morePadding">
@@ -56,13 +62,17 @@
                         </span>
                         </a>
                      </div>
-                     <div title="$ {{tileData?.usedBalance}}" class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt">
+                     <div  class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt_8">
                         <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">{{tileData?.usedBalanceInString}}</div>
+                              <div class="number NumberFontDecrease">
+                                 <span data-toggle="tooltip" data-placement="top" title="$ {{tileData?.usedBalance}}" >
+                                    {{tileData?.usedBalanceInString}}
+                                 </span>
+                                </div>
                               <div class="desc">Total Used Balance</div>
                            </div>
                            <span class="morePadding">
@@ -71,13 +81,14 @@
                         </span>
                         </a>
                      </div>
-                     <div title="$ {{tileData?.availableBalance}}" class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt">
+                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt_8">
                         <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">{{tileData?.availableBalanceInString}}</div>
+                              <div class="number NumberFontDecrease">
+                                 <span  data-toggle="tooltip" data-placement="top" title="$ {{tileData?.availableBalance}}">{{tileData?.availableBalanceInString}}</span></div>
                               <div class="desc">Total Available Balance</div>
                            </div>
                            <span class="morePadding">
@@ -104,7 +115,7 @@
                         <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                         Manage MDF Details
                      </div>
-                     <div class="inputs"  style="float: right; padding: 4px">
+                     <div class="inputs d_flex"  style="float: right; padding: 4px">
                         <div style="float: left; margin: 0 10px;">
                           <select class="form-control" [(ngModel)]="sortOption.mdfPartnersSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                             <option *ngFor="let option of sortOption.mdfPartnersSortDropDownOptions"
@@ -112,7 +123,7 @@
                                 {{option.name}}</option>
                         </select>
                         </div>
-                        <div class="portlet-input input-inline pt-pl">
+                        <div class="portlet-input input-inline pt-pl pt_0">
                            <div class="input-icon right" style="margin-bottom: 8px;">
                               <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)" style="height: 34px !important;">
                               <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>
@@ -155,14 +166,15 @@
                                          <span>${{partner?.availableBalance | number:'1.0':'en-US'}}</span>
                                       </td>
                                       <td style="text-align: center;">
-                                         <div class=" override-actions">
+                                         <div class="actions-block override-actions action_inline float-left">
                                             <a (click)="openMdfAmountPopup(partner)"  data-toggle="tooltip" data-placement="bottom" title="Add/Remove MDF Amount">
-                                            <i class="fa fa-pencil-square-o action-btn" aria-hidden="true"></i>
+                                            <i class="fa fa-pencil-square-o p0 IconCustomization" aria-hidden="true"></i>
                                             </a>
                                             <!----Timeline History-->
                                             <a (click)="viewMdfAmountHistory(partner)"  data-toggle="tooltip" data-placement="bottom" title="View History">
-                                             <i class="fa fa-history action-btn" aria-hidden="true"></i>
-                                             </a>
+                                             <i class="fa fa-history p0 IconCustomization" aria-hidden="true"></i>
+                                             </a> 
+                                             <!-- action-btn  -->
                                          </div>
                                       </td>
                                    </tr>

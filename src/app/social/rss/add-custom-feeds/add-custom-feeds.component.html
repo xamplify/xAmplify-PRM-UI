@@ -11,14 +11,14 @@
   </div>
   <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="row">
-      <div class="col-md-12 col-lg-12">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <div class="row">
               <app-left-nav></app-left-nav>
-              <div class="col-sm-9" >
+              <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">
                           <div class="portlet-body pt0">
                                   <div>
                                       <div>
-                                          <div class="col-md-12 col-lg-12">
+                                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                             <div class="col-sm-12 dashboard-stat2 p0 clearfix">
                                               <div class="clearfix">
                                             </div>
@@ -46,14 +46,14 @@
                                               </section>
                                         <div>
                                       <div class="p10">
-                                                <div class="update-status-profile col-xs-2 col-sm-1">
+                                                <div class="update-status-profile col-xs-2 col-sm-2 col-lg-1 mb_v_Pl0">
                                                     <div class="profile-image-box">
                                                       <img  class="profile-image" src="assets/images/social/avatar.png" alt="">
                                                       <img  class="profile-icon" src="assets/images/social/share-icon.png" alt="">
                                                     </div>
                                                 </div>
                                           
-                                                <div class="update-status-content col-xs-10 col-sm-11">
+                                                <div class="update-status-content col-xs-10 col-sm-10 col-lg-11">
                                                   <textarea placeholder="What's happening?" rows="4" class="form-control form-group rounded-0 mb5"
                                                    [(ngModel)]="socialStatus.statusMessage" maxlength="280"></textarea>
                                                   <h6 class="text-count"><b>{{280 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
@@ -246,7 +246,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" (click)="closeListVideosModal()">Close</button>
+					<button type="button" class="btn Btn-Gray" (click)="closeListVideosModal()">Close</button>
 					<button type="button" class="btn btn-primary" style="color:white" (click)="addVideo()">Select</button>
 				</div>
 			</div>

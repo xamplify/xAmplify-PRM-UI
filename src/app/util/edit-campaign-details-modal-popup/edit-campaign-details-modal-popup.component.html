@@ -37,7 +37,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-3">From Name<span class="required">*</span></label>
                             <div class="col-sm-9">
-                            <input class="form-control" autocomplete="false" maxlength="200" placeholder="From Name" [(ngModel)]="campaignDetailsDto.fromName" [ngModelOptions]="{standalone: true}" >
+                            <input class="form-control" autocomplete="false" placeholder="From Name" [(ngModel)]="campaignDetailsDto.fromName" [ngModelOptions]="{standalone: true}" >
                             </div>
                         </div>
                         <!---From Email------>
@@ -52,7 +52,7 @@
                             </div>
                         </div>
                         
-                        <div class="form-group">
+                        <div class="form-group" *ngIf="campaignDetailsDto?.campaignType!='LANDINGPAGE'">
                             <label class="control-label col-sm-3" translate>Notify Me When</label>
                             <div class="col-sm-9">
                                 <div class="email-options-checkbox-group email-options-notify">
@@ -66,7 +66,7 @@
                                             <label translate>Email is opened</label>
                                         </div>
                                     </div>
-                                    <div *ngIf="campaignDetailsDto.campaignType!='SOCIAL'" class="email-options-checkbox clearfix">
+                                    <div *ngIf="campaignDetailsDto?.campaignType!='SOCIAL'" class="email-options-checkbox clearfix">
                                         <div class="col-sm-4 ui-switch-custom-div">
                                             <switch [status]="campaignDetailsDto.linkOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
                                                 (statusChange)="setOptionByType($event,2)">

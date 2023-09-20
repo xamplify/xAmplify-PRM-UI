@@ -25,4 +25,5 @@ export class Roles {
   damId = 22;
   learningTrackId = 23;
   playbookId = 24;
+  campaignId = 5;
 }

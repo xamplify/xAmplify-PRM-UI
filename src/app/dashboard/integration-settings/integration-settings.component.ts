@@ -6,7 +6,8 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { ReferenceService } from 'app/core/services/reference.service';
-declare var swal, $;
+import { CustomFieldsDto } from '../models/custom-fields-dto';
+declare var swal:any, $:any;
 
 @Component({
 	selector: 'app-integration-settings',
@@ -25,6 +26,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	loading: boolean = false;
 	userProfileImage = "assets/images/icon-user-default.png";
 	selectedCfIds = [];
+	canNotUnSelectIds = [];
 	ngxloading: boolean;
 	sfCustomFieldsResponse: any;
 	sfcfMasterCBClicked: boolean = false;
@@ -32,7 +34,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	paginatedSelectedIds = [];
 	sfcfPager: any = {};
 	pageSize: number = 12;
-	sfcfPagedItems: any[];
+	sfcfPagedItems = new Array<CustomFieldsDto>();
 	isHeaderCheckBoxChecked: boolean = false;
 	pageNumber: any;
 	selectedCustomFieldIds = [];
@@ -40,6 +42,8 @@ export class IntegrationSettingsComponent implements OnInit {
 	activeCRMDetails: any;
 	integrationDetails: any;
 	integrationPipelines = [];
+	selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
+	customFieldsDtosLoader = false;
 
 	constructor(private integrationService: IntegrationService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent,
 		public referenceService: ReferenceService, public authenticationService: AuthenticationService) {
@@ -107,6 +111,7 @@ export class IntegrationSettingsComponent implements OnInit {
 
 	listExternalCustomFields() {
 		this.ngxloading = true;
+		this.customFieldsDtosLoader = true;
 		let self = this;
 		self.selectedCfIds = [];
 		self.integrationService.listExternalCustomFields(this.integrationType.toLowerCase(), this.loggedInUserId)
@@ -126,15 +131,20 @@ export class IntegrationSettingsComponent implements OnInit {
 								if (!customField.selected) {
 									self.selectedCfIds.push(customField.name);
 								}
+								if (!customField.canUnselect){
+									self.canNotUnSelectIds.push(customField.name)
+								}
 							}
 						});
 						this.setSfCfPage(1);
 					}
+					this.customFieldsDtosLoader = false;
 				},
 				error => {
 					this.ngxloading = false;
 					let errorMessage = this.referenceService.getApiErrorMessage(error);
                     this.customFieldsResponse = new CustomResponse('ERROR',errorMessage,true);
+					this.customFieldsDtosLoader = false;
 				},
 				() => { }
 			);
@@ -142,6 +152,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	}
 
 	setSfCfPage(page: number) {
+		this.referenceService.goToTop();
 		this.paginatedSelectedIds = [];
 		try {
 			if (page < 1 || (this.sfcfPager.totalPages > 0 && page > this.sfcfPager.totalPages)) {
@@ -165,7 +176,6 @@ export class IntegrationSettingsComponent implements OnInit {
 				}
 			}
 		} catch (error) {
-			// this.xtremandLogger.error( error, "setSfCfPage()." )
 		}
 
 	}
@@ -183,41 +193,51 @@ export class IntegrationSettingsComponent implements OnInit {
 		this.selectedCustomFieldIds = [];
 		$('[name="sfcf[]"]:checked').each(function () {
 			var id = $(this).val();
-			console.log(id);
 			self.selectedCustomFieldIds.push(id);
 		});
 
-		if (this.integrationType.toLowerCase() === 'salesforce') {
-			this.integrationService.syncSalesforceCustomForm(this.loggedInUserId, this.selectedCfIds)
-				.subscribe(
-					data => {
-						this.ngxloading = false;
+		/*****XNFR-339*****/
+		this.selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
+		$.each(this.sfCustomFieldsResponse,function(_index:number,customFiledDto:any){
+			if(customFiledDto.selected){
+				let selectedCustomFieldsDto = new CustomFieldsDto();
+				selectedCustomFieldsDto.name = customFiledDto.name;
+				selectedCustomFieldsDto.required = customFiledDto.required;
+				selectedCustomFieldsDto.placeHolder = customFiledDto.placeHolder;
+				self.selectedCustomFieldsDtos.push(selectedCustomFieldsDto);
+			}
+		});
+		 if (this.integrationType.toLowerCase() === 'salesforce') {
+		 	this.integrationService.syncSalesforceCustomForm(this.loggedInUserId, this.selectedCfIds)
+		 		.subscribe(
+		 			data => {
+		 				this.ngxloading = false;
 						if (data.statusCode == 200) {
 							this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
 							this.listSalesforceCustomFields();
-						}
-					},
+		 				}
+		 			},
 					error => {
 						this.ngxloading = false;
-					},
+				},
 					() => { }
-				);
-		} else {
-			this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCfIds, this.integrationType.toLowerCase())
+		 		);
+		 } else {
+		 	this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, this.integrationType.toLowerCase())
 				.subscribe(
-					data => {
-						this.ngxloading = false;
+		 			data => {
+	 				this.ngxloading = false;
 						if (data.statusCode == 200) {
-							this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-							this.listExternalCustomFields();
-						}
+		 					this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+		 					this.listExternalCustomFields();
+		 				}
 					},
 					error => {
 						this.ngxloading = false;
 					},
-					() => { }
-				);
-		}
+		 			() => { }
+		 		);
+		 }
 
 	}
 
@@ -225,9 +245,9 @@ export class IntegrationSettingsComponent implements OnInit {
 		this.closeEvent.emit();
 	}
 
-	selectCf(cfName: string) {
+	selectCf(sfCustomField: any) {
+		let cfName = sfCustomField.name;
 		let isChecked = $('#' + cfName).is(':checked');
-		console.log(this.selectedCfIds)
 		if (isChecked) {
 			if (this.selectedCfIds.indexOf(cfName) == -1) {
 				this.selectedCfIds.push(cfName);
@@ -235,26 +255,20 @@ export class IntegrationSettingsComponent implements OnInit {
 			if (this.paginatedSelectedIds.indexOf(cfName) == -1) {
 				this.paginatedSelectedIds.push(cfName);
 			}
-
-			console.log(this.selectedCfIds);
+			sfCustomField.selected = true;
 		} else {
 			this.selectedCfIds.splice($.inArray(cfName, this.selectedCfIds), 1);
 			this.paginatedSelectedIds.splice($.inArray(cfName, this.paginatedSelectedIds), 1);
-
+			sfCustomField.selected = false;
 		}
-		if (this.paginatedSelectedIds.length == this.sfcfPagedItems.length) {
-			this.isHeaderCheckBoxChecked = true;
-		} else {
-			this.isHeaderCheckBoxChecked = false;
-		}
-		event.stopPropagation();
+		this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
+		
 	}
 
 	reloadCustomFields() {
 		this.sfcfPagedItems = [];
 		this.sfcfMasterCBClicked = false;
 		this.customFieldsResponse.isVisible = false;
-		//this.ngxloading = true;
 		if (this.integrationType.toLowerCase() === 'salesforce') {
 			this.listSalesforceCustomFields();
 		} else {
@@ -349,7 +363,6 @@ export class IntegrationSettingsComponent implements OnInit {
 				request.defaultDealPipelineId = $.trim($('#deal-pipeline-dropdown option:selected').val());
 				self.setActiveCRM(request);
 			})).append(self.createButton('Cancel', function () {
-				//self.buttonName = "CANCEL";
 				swal.close();
 			}));
 			swal({ html: modalPopUp, showConfirmButton: false, showCancelButton: false });
@@ -362,7 +375,7 @@ export class IntegrationSettingsComponent implements OnInit {
 		if (text == "Activate") {
 			return $('<input type="submit" class="btn btn-primary" value="' + text + '" id="activate">').on('click', cb);
 		} else {
-			return $('<input type="submit" class="btn btn-primary" value="' + text + '">').on('click', cb);
+			return $('<input type="submit" class="btn Btn-Gray" value="' + text + '">').on('click', cb);
 		}
 	}
 
@@ -451,31 +464,36 @@ export class IntegrationSettingsComponent implements OnInit {
 			});
 			this.selectedCfIds = this.referenceService.removeDuplicates(this.selectedCfIds);
 			this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
+			$.each(this.sfcfPagedItems,function(index:number,value:any){
+				value.selected = true;
+			});
+
 		} else {
 			let self = this;
-			//$( '[name="sfcf[]"]' ).prop( 'checked', false );
-
 			$('[name="sfcf[]"]').each(function () {
 				var id = $(this).val();
-				if (self.requiredCfIds.indexOf(id) == -1) {
+				if (self.canNotUnSelectIds.indexOf(id) == -1) {
 					$(this).prop('checked', false);
 					self.paginatedSelectedIds.splice($.inArray(id, self.paginatedSelectedIds), 1);
 				}
-
 			});
 
 			if (this.sfcfPager.maxResults == this.sfcfPager.totalItems) {
 				this.selectedCfIds = [];
 				this.paginatedSelectedIds = [];
-				//this.allselectedUsers.length = 0;
 			} else {
-				//this.paginatedSelectedIds = [];
 				let currentPageCfIds = this.sfcfPagedItems.map(function (a) { if (self.requiredCfIds.indexOf(a.name) == -1) { return a.name; } });
 				this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
 				this.selectedCfIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedCfIds, currentPageCfIds);
 			}
+			$.each(self.sfcfPagedItems,function(index:number,value:any){
+				if(value.canUnselect){
+					value.selected = false;
+				}
+			});
 		}
 		ev.stopPropagation();
 	}
 
+	
 }

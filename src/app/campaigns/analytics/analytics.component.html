@@ -28,7 +28,7 @@
         <a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"
            aria-hidden="true"></i>
      </li>
-     <li class="breadcrumb-font-color" style="color: #888;" title="{{campaignName}}">
+     <li class="breadcrumb-font-color" style="color: #888;" data-toggle="tooltip" data-placement="bottom" title="{{campaignName}}">
         {{campaignName | slice: 0: 35}}<span *ngIf="campaignName?.length>35">...</span>
         <strong *ngIf="!notifyPartners" style="color:#ed1d24">(Notify
         {{authenticationService?.partnerModule?.customName}} is OFF)</strong>

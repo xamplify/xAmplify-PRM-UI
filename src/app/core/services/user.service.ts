@@ -208,7 +208,10 @@ export class UserService {
     }
 
     resendActivationMail(emailId: string) {
-        return this.http.get(this.URL + '/register/resend/activationemail?email=' + emailId)
+        let input = {};
+        input['emailId'] = emailId;
+        input['vendorCompanyProfileName'] = this.authenticationService.getSubDomain();
+        return this.http.post(this.URL + '/register/resend/activationemail', input)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -510,5 +513,12 @@ export class UserService {
         .map(this.extractData)
         .catch(this.handleServerError);
 	}
+
+     /**** user-guides ***** */
+ showUserGuide(tagName: string) {
+    return this.http.get(this.authenticationService.REST_URL + 'user/guide/get/' + tagName + '?access_token=' + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+  }
 
 }

@@ -37,18 +37,18 @@
    </div>
    <div class="row">
       <div class="col-md-12 col-lg-12">
-         <div class="portlet light height" style="height: 153px;">
+         <div class="portlet light height hgt_auto" style="height: 153px;">
             <div class="row mt" style="margin-top: 13px;">
               <app-box-loader [countLoader]="countLoader" [mdfModule]="true" *ngIf="tilesLoader"></app-box-loader>
                <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 24px;">
                   <div class="row">
-                     <div title="{{mdfRequestTiles?.totalPartners}}" class="{{tileClass}}" id="pl" *ngIf="!isPartnerView">
+                     <div  class="{{tileClass}}" id="pl" *ngIf="!isPartnerView">
                         <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">{{mdfRequestTiles?.totalPartners}}</div>
+                              <div  class="number NumberFontDecrease"><span  data-toggle="tooltip" data-placement="top" title="{{mdfRequestTiles?.totalPartners}}">{{mdfRequestTiles?.totalPartners}}</span></div>
                               <div class="desc">Number of {{authenticationService?.partnerModule?.customName}}</div>
                            </div>
                            <span class="morePadding">
@@ -63,24 +63,27 @@
                              <img class="img-circle" src="{{mdfRequestVendorDto?.companyLogoPath}}" alt="">
                            </div>
                            <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
-                              <label title="{{mdfRequestVendorDto?.companyName}}" style="font-size: 15px;font-weight: 600;">
+                              <label data-toggle="tooltip" data-placement="top" title="{{mdfRequestVendorDto?.companyName}}" style="font-size: 15px;font-weight: 600;">
                                  {{mdfRequestVendorDto?.companyName | slice:0:20}}
                                  <span *ngIf="mdfRequestVendorDto?.companyName.length>20">..</span>
                               </label><br>
-                              <label title="{{mdfRequestVendorDto?.companyProfileName}}" style="font-size: 15px;font-weight: 600;">
+                              <label data-toggle="tooltip" data-placement="top" title="{{mdfRequestVendorDto?.companyProfileName}}" style="font-size: 15px;font-weight: 600;">
                                  {{mdfRequestVendorDto?.companyProfileName | slice:0:20}}
                                  <span *ngIf="mdfRequestVendorDto?.companyProfileName.length>20">..</span>
                               </label>
                            </div>
                         </div>
                      </div>
-                     <div title="{{mdfRequestTiles?.totalRequests}}" class="{{tileClass}}" id="pb-pr">
+                     <div  class="{{tileClass}}" id="pb-pr">
                         <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">{{mdfRequestTiles?.totalRequestsInString}}</div>
+                              <div class="number NumberFontDecrease"><span data-toggle="tooltip" data-placement="top" title="{{mdfRequestTiles?.totalRequests}}">
+                                 {{mdfRequestTiles?.totalRequestsInString}}
+                              </span>
+                                </div>
                               <div class="desc">Number of Requests</div>
                            </div>
                            <span class="morePadding">
@@ -89,13 +92,17 @@
                            </span>
                         </a>
                      </div>
-                     <div title="$ {{mdfRequestTiles?.averageRequestSize}}" id="pl" class="{{tileClass}}">
+                     <div  id="pl" class="{{tileClass}} mb_12">
                         <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">{{mdfRequestTiles?.averageRequestSizeInString}}</div>
+                              <div class="number NumberFontDecrease">
+                                 <span data-toggle="tooltip" data-placement="top" title="{{mdfRequestTiles?.averageRequestSize}}">
+                                    {{mdfRequestTiles?.averageRequestSizeInString}}
+                                 </span>
+                                </div>
                               <div class="desc">Average Request Size</div>
                            </div>
                            <span class="morePadding">
@@ -104,13 +111,17 @@
                         </span>
                         </a>
                      </div>
-                     <div title="$ {{mdfRequestTiles?.totalValue}}" id="pr"  class="{{tileClass}}">
+                     <div  id="pr"  class="{{tileClass}}">
                         <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">{{mdfRequestTiles?.totalValueInString}}</div>
+                              <div class="number NumberFontDecrease">
+                                 <span data-toggle="tooltip" data-placement="top" title="$ {{mdfRequestTiles?.totalValue}}">
+                                    {{mdfRequestTiles?.totalValueInString}}
+                                 </span>
+                                 </div>
                               <div class="desc">Total Value</div>
                            </div>
                            <span class="morePadding">
@@ -138,7 +149,7 @@
                         <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                         Manage Vendors
                      </div>
-                     <div class="inputs"  style="float: right; padding: 4px">
+                     <div class="inputs d_flex"  style="float: right; padding: 4px">
                         <div style="float: left; margin: 0 10px;">
                           <select class="form-control" [(ngModel)]="sortOption.mdfVendorsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                             <option *ngFor="let option of sortOption.mdfVendorsSortDropDownOptions"
@@ -146,11 +157,10 @@
                                 {{option.name}}</option>
                         </select>
                         </div>
-                        <div class="portlet-input input-inline ml-pt">
+                        <div class="portlet-input input-inline ml-pt pt_0">
                            <div class="input-icon right">
                               <input type="text" id="sort-text" class="form-control" style="height: 34px;" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a vendor" (keypress)="eventHandler($event.keyCode)">
                               <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchVendors();"></button>
-                              <!-- removed style balck color (SS)-->
                               <button type="submit" class="search-box-item-click" (click)="searchVendors()"><i class="fa fa-search" aria-hidden="true"></i></button>
                            </div>
                         </div>
@@ -168,7 +178,7 @@
                               <table class='table tgrid' aria-describedby="manage-mdf-requests-table">
                                  <thead>
                                     <tr>
-                                       <th scope="row" style="width: 23%;" translate>Vendor Info</th>
+                                       <th scope="row" style="width: 30%;" translate>Vendor Info</th>
                                        <th scope="row" class="hidden-xs center-align"   translate>Number Of Requests</th>
                                        <th scope="row" class="hidden-xs center-align"  translate>Actions</th>
                                     </tr>
@@ -180,14 +190,14 @@
                                           <div class="col-md-12 col-lg-12">
                                              <div class="row">
                                                 <div class="col-md-2 col-lg-2 text-right">
-                                                  <img class="img-circle" src="{{vendor?.companyLogoPath}}" alt="">
+                                                  <img class="img-circle float-left" src="{{vendor?.companyLogoPath}}" alt="">
                                                 </div>
                                                 <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
-                                                   <label title="{{vendor?.companyName}}" style="font-size: 15px;font-weight: 600;">
+                                                   <label data-toggle="tooltip" data-placement="bottom" title="{{vendor?.companyName}}" style="font-size: 15px;font-weight: 600;">
                                                       {{vendor?.companyName | slice:0:20}}
                                                       <span *ngIf="vendor?.companyName.length>20">..</span>
                                                    </label><br>
-                                                   <label title="{{vendor?.companyProfileName}}" style="font-size: 15px;font-weight: 600;">
+                                                   <label data-toggle="tooltip" data-placement="bottom" title="{{vendor?.companyProfileName}}" style="font-size: 15px;font-weight: 600;">
                                                       {{vendor?.companyProfileName | slice:0:20}}
                                                       <span *ngIf="vendor?.companyProfileName.length>20">..</span>
                                                    </label>
@@ -200,12 +210,12 @@
                                        </td>
                                        <td class="center-align">
                                           <div class="override-actions">
-                                             <a (click)="goToAddRequest(vendor.companyId)" title="Add Request">
-                                                <i class="fa fa-user-plus action-btn fa-fa-consistency" aria-hidden="true"></i>
+                                             <a (click)="goToAddRequest(vendor.companyId)" data-toggle="tooltip" data-placement="bottom" title="Add Request">
+                                                <i class="fa fa-user-plus fa-fa-consistency IconCustomization" aria-hidden="true"></i>
                                              </a>
                                              <!----See Request Analytics-->
-                                             <a (click)="viewRequests(vendor)" title="View Requests">
-                                              <i class="fa fa-expand action-btn fa-fa-consistency" aria-hidden="true"></i>
+                                             <a (click)="viewRequests(vendor)"  data-toggle="tooltip" data-placement="bottom" title="View Requests">
+                                              <i class="fa fa-expand fa-fa-consistency IconCustomization" aria-hidden="true"></i>
                                               </a>
                                           </div>
                                        </td>

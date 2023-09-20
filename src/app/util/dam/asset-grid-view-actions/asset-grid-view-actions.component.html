@@ -1,51 +1,51 @@
-<div class="bar auto-height" *ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress">
-	<a
+<div class="bar auto-height gridIconCustomization iconAligntCu" *ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress">
+	<a class="Iconhover" 
 		*ngIf="asset?.history && !isPartnerView && asset?.edit "
 		data-toggle="tooltip" data-placement="top"
 		title="History" (click)="viewGirdHistory(asset)"> <i class="fa"
 		[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}"
 		aria-hidden="true"></i>
-	</a> <a class="mMobileDisable mDisableColor"
+	</a> <a class="mMobileDisable mDisableColor Iconhover"
 		*ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"
 		data-toggle="tooltip" data-placement="top"
 		title="Design" (click)="addOrEdit(asset.id)"> <i
 		class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
-	</a> <a class="mMobileDisable mDisableColor"
+	</a> <a class="mMobileDisable mDisableColor Iconhover"
 		*ngIf="asset?.beeTemplate && isPartnerView"  data-toggle="tooltip" data-placement="top" title="Edit"
 		(click)="addOrEdit(asset.id)"> <i class="fa fa-edit mDisableColor"
 		aria-hidden="true"></i>
-	</a> <a class="mMobileDisable mDisableColor"
+	</a> <a class="mMobileDisable mDisableColor Iconhover"
 		*ngIf="!isPartnerView && asset?.edit"  data-toggle="tooltip" data-placement="top"  title="Edit"
 		(click)="editDetails(asset)"> <i
 		class="fa fa-edit mDisableColor" aria-hidden="true"></i>
-	</a> <a *ngIf="!isPartnerView && asset?.showPreviewIcon"  data-toggle="tooltip" data-placement="top" title="Preview"
+	</a> <a class="Iconhover" *ngIf="!isPartnerView && asset?.showPreviewIcon"  data-toggle="tooltip" data-placement="top" title="Preview"
 		(click)="preview(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
 	</a>
-	 <a *ngIf="!isPartnerView"  data-toggle="tooltip" data-placement="top"  title="Download"
+	 <a class="Iconhover" *ngIf="!isPartnerView"  data-toggle="tooltip" data-placement="top"  title="Download"
 		(click)="openDownloadPopup(asset)"> <i class="fa fa-download"
 		aria-hidden="true"></i>
-	</a> <a *ngIf="!authenticationService.module.isMarketingCompany"  data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(asset)"> <i
+	</a> <a class="Iconhover" *ngIf="!authenticationService.module.isMarketingCompany"  data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(asset)"> <i
 		class="fa fa-line-chart" aria-hidden="true"></i>
-	</a> <a *ngIf="isPartnerView"  data-toggle="tooltip" data-placement="top" title="View Details"
+	</a> <a class="Iconhover" *ngIf="isPartnerView"  data-toggle="tooltip" data-placement="top" title="View Details"
 		(click)="viewDetails(asset)"> <i class="fa fa-eye"
 		aria-hidden="true"></i>
-	</a> <a *ngIf="!isPartnerView && asset?.delete"  data-toggle="tooltip" data-placement="top" title="Delete"
-		class="delete" (click)="confirmDelete(asset)"> <i
+	</a> <a *ngIf="!isPartnerView && asset?.delete" class="delete"  data-toggle="tooltip" data-placement="top" title="Delete"
+		 (click)="confirmDelete(asset)"> <i
 		class="fa fa-trash-o" aria-hidden="true"></i>
 	</a>
 	<ng-container
 		*ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
-	<a
+	<a class="Iconhover"
 		*ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 		(click)="campaignRouter(asset)"
 		data-toggle="tooltip" data-placement="top" title="Create campaign">
 		<i class="fa fa-bullhorn" aria-hidden="true"></i>
-	</a> <a class="disabled" 
+	</a> <a class="disabled Iconhover" 
 		*ngIf="asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
 		data-toggle="tooltip" data-placement="top"
 		[title]="actionsDescription.video_draft"> <i
 		class="fa fa-bullhorn" aria-hidden="true"></i>
-	</a> <a class="disabled" 
+	</a> <a class="disabled Iconhover" 
 		*ngIf="!asset.processed && authenticationService?.module?.showCampaignOptionInManageVideo"
 		data-toggle="tooltip" data-placement="top"
 		title="Unavailable for processing"> <i class="fa fa-bullhorn"
@@ -53,5 +53,13 @@
 	</a>
  </ng-container>
 </div>
+
+<!--Added On 02/08/2023-->
+<div *ngIf="asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress">
+	<a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="refreshListEmitter()"> 
+		<i class="fa fa-refresh" aria-hidden="true"></i>
+	</a> 
+</div>
+<!--Added On 02/08/2023-->
 
 

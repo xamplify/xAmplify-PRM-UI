@@ -51,7 +51,12 @@ export class DeleteAssetsComponent implements OnInit,OnDestroy {
 
 	deleteById(asset: any) {
 		this.deleteAssetLoaderEmitter.emit();
-		this.referenceService.goToTop();
+		let currentUrl = this.referenceService.getCurrentRouteUrl();
+		/****XBI-1661***/
+		if(currentUrl.indexOf("dam")>-1){
+			this.referenceService.goToTop();
+		}
+		/****XBI-1661***/
 		let damUploadPostDto = new DamUploadPostDto();
 		damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
 		damUploadPostDto.id = asset.id;

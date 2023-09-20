@@ -14,6 +14,7 @@ import { DealsService } from 'app/deals/services/deals.service';
 import { EnvService } from 'app/env.service';
 import { CustomSkin } from '../models/custom-skin';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
+import { Roles } from 'app/core/models/roles';
 
 
 declare var $:any;
@@ -81,6 +82,11 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     vanityLoginDto: VanityLoginDto = new VanityLoginDto();
     skin:CustomSkin = new CustomSkin();
     userId: number;
+    /****** User Guide ******/
+    mergeTagForGuide:any;
+    isOnlyPartner:boolean;
+    roleName: Roles = new Roles();
+    /****** User Guide *******/
 
     constructor(
         private userService: UserService,
@@ -205,6 +211,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
       }catch(error){ console.log(error);this.xtremandLogger.error(error);
         this.xtremandLogger.errorPage(error);}
   }
+
     ngOnDestroy(){
       $('#myModal').modal('hide');
     }
@@ -274,5 +281,15 @@ export class WelcomeComponent implements OnInit, OnDestroy {
       )
       
     }
+    /** User Guide **/
+    urlLink:any;
+    goToUserGuidePage(moduleId:any,isTrue:boolean){
+      if(isTrue){
+      this.urlLink = this.authenticationService.DOMAIN_URL +'home/help/guides/' + moduleId;
+      } else {
+        this.urlLink = this.authenticationService.DOMAIN_URL + 'home/help/' + moduleId;
+      }
+    }
+    /** User Guide **/
   
 }

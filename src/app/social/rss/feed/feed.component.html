@@ -1,10 +1,10 @@
 <div class="col-md-12 col-lg-12">
   <div class="rss-entry clearfix">
     <div class="row">
-      <div class="col-sm-2">
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
         <div class="rss-visual" [ngStyle]="{'background-image': 'url('+feed.thumbnail+')'}"></div>
       </div>
-      <div class="col-sm-10">
+      <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
         <div class="rss-content" [ngClass]="{'alignment' : isRssWelcome }">
           <a class="rss-title" title="{{feed.link}}" href="{{feed.link}}" target="_blank" [innerHTML]="feed.title">{{feed.title}}</a>
           <div class="rss-summary" [innerHTML]="feed.description">{{feed.description}}</div>

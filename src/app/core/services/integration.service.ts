@@ -13,7 +13,6 @@ export class IntegrationService {
        
 
     constructor(private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService) {
-        console.log(logger);
     }
 
     checkConfigurationByType(type: string) {
@@ -35,7 +34,6 @@ export class IntegrationService {
         if (code !== undefined) {
 				let vanityUrlFilter = localStorage.getItem('vanityUrlFilter');
 				let vanityUserId = localStorage.getItem('vanityUserId');
-                console.log("vanityUserId: "+vanityUserId);
 				if(vanityUrlFilter){
 					return this._http.get(this.authenticationService.REST_URL + type + "/" + vanityUserId + "/oauth/callback?code=" + code)
                 .map(this.extractData)
@@ -51,7 +49,6 @@ export class IntegrationService {
 
     extractData(res: Response) {
         let body = res.json();
-        console.log(body);
         return body || {};
     }
 
@@ -139,7 +136,7 @@ export class IntegrationService {
       }  
 
     syncCustomForm(userId: number, request: any, type: any) {
-        return this._http.post(this.authenticationService.REST_URL + `external/form/sync/${userId}/${type}?access_token=${this.authenticationService.access_token}`, request)
+        return this._http.post(this.authenticationService.REST_URL + `external/form/sync/${userId}/${type}/v2?access_token=${this.authenticationService.access_token}`, request)
             .map(this.extractData)
             .catch(this.handleError);
     }

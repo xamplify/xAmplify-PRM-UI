@@ -9,11 +9,12 @@
     /* border: solid 1px #008fd5; */
 }
 .img-class{
-	  height: 80px;
-    max-width: 150px;
-    width: 150px;
-    margin: 10px 0px 0px 80px;
-    overflow: hidden;
+  height: 80px;
+  max-width: 150px;
+  width: 150px;
+  margin: 10px auto;
+  overflow: hidden;
+  display: block;
 }
 #actions-row{
 	width: 30%
@@ -73,14 +74,16 @@ cursor: default;
 }
 
 .view-banner-white-labeled{
-  background-color: green;
-   color: white !important;
-   padding: 4px;
+  background-color: #68B4F1;
+  color: white !important;
+  padding: 5px 10px;
+  width: 125px;
    text-align: center;
-   width: 125px;
+   /* width: 125px; */
    margin: 0 0;
-   font-size: 11px;
+   font-size: 10px;
    font-weight: 600;
+   line-height: 1;
 }
 
 .ribbon div {
@@ -182,6 +185,9 @@ cursor: default;
   }
   .mMobileAlignAction2{
     white-space: initial!important;
+  }
+  .mb-dflex{
+    display: flex!important;
   }
 }
 

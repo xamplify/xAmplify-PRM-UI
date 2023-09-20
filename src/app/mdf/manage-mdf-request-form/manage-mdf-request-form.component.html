@@ -15,7 +15,6 @@
                         <div class="input-icon right">
                            <input type="text" id="sort-text" class="form-control" style="height: 34px;" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                            <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="searchKey" (click)="searchKey='';search();"></button>
-                           <!-- removed style balck color (SS)-->
                            <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
                         </div>
                      </div>
@@ -36,7 +35,7 @@
                                           <th id="th-width">{{column.labelName}}<span class="required" *ngIf="column.required">*</span></th>
                                        </ng-container>
                                     </ng-container>
-                                    <th class="center-align" id="th-width">
+                                    <th class="center-align alignItamsleft" id="th-width">
                                        Actions
                                     </th>
                                  </tr>
@@ -52,27 +51,27 @@
                                                       <img class="img-circle" src="{{columnValue?.values[0]}}" alt="">
                                                    </div>
                                                    <div class="col-md-10 col-lg-10">
-                                                      <label title="{{columnValue?.values[1]}}">
+                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[1]}}">
                                                       {{columnValue?.values[1] | slice:0:30}}
                                                       <span *ngIf="columnValue?.values[1].length>30">..</span>
                                                       </label><br>
                                                       <ng-container *ngIf="columnValue?.values[6].length>0">
-                                                         <label title="{{columnValue?.values[6]}}">
+                                                         <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[6]}}">
                                                             {{columnValue?.values[6] | slice:0:30}}
                                                             <span *ngIf="columnValue?.values[6].length>30">..</span>
                                                          </label><br>
                                                       </ng-container>
-                                                      <label title="{{columnValue?.values[2]}}">
+                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[2]}}">
                                                       {{columnValue?.values[2] | slice:0:30}}
                                                       <span *ngIf="columnValue?.values[2].length>30">..</span>
                                                       </label><br>
                                                       <label><strong>Request Created On:</strong></label>
-                                                      <label title="{{columnValue?.values[3]}}">
+                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[3]}}">
                                                       {{columnValue?.values[3]}}
                                                       </label>
                                                       <br>
                                                       <label><strong>Status:</strong></label>
-                                                      <label title="{{columnValue?.values[4]}}">
+                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[4]}}">
                                                       <span class="label label-warning">{{columnValue?.values[4]}}</span>
                                                       </label><br>
                                                    </div>
@@ -93,20 +92,20 @@
                                        <td *ngIf="columns?.length>3">
                                           <div class="request-form-actions-div">
                                              <!--View More Columns-->
-                                             <a (click)="expandColumns(formDataRow,rowIndex)" title="View More Columns" *ngIf="columns.length>4">
-                                             <i *ngIf="!formDataRow.expanded" class="fa fa-plus action-btn fa-fa-consistency"aria-hidden="true"></i>
-                                             <i *ngIf="formDataRow.expanded" class="fa fa-minus action-btn fa-fa-consistency"aria-hidden="true"></i>
+                                             <a (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip" data-placement="bottom" title="View More Columns" *ngIf="columns.length>4">
+                                             <i *ngIf="!formDataRow.expanded" class="fa fa-plus fa-fa-consistency IconCustomization"aria-hidden="true"></i>
+                                             <i *ngIf="formDataRow.expanded" class="fa fa-minus fa-fa-consistency IconCustomization"aria-hidden="true"></i>
                                              </a>
                                              <!---Change Request-->
-                                             <a title="Change Request" *ngIf="!partnerView">
-                                             <i (click)="changeRequest(formDataRow.values[0])" class="fa fa-pencil-square-o action-btn fa-fa-consistency" aria-hidden="true"></i>
+                                             <a data-toggle="tooltip" data-placement="bottom" title="Change Request" *ngIf="!partnerView">
+                                             <i (click)="changeRequest(formDataRow.values[0])" class="fa fa-pencil-square-o fa-fa-consistency IconCustomization" aria-hidden="true"></i>
                                              </a>
                                              <!----Timeline History-->
-                                             <a  title="View History" (click)="goToTimeLine(formDataRow.values[0])">
-                                             <i class="fa fa-history action-btn fa-fa-consistency" aria-hidden="true"></i>
+                                             <a data-toggle="tooltip" data-placement="bottom" title="View History" (click)="goToTimeLine(formDataRow.values[0])">
+                                             <i class="fa fa-history fa-fa-consistency IconCustomization" aria-hidden="true"></i>
                                              </a>
-                                             <a  title="Comments" (click)="showRequestCommentPopup(formDataRow.values[0])">
-                                             <i class="fa fa-comment action-btn fa-fa-consistency" aria-hidden="true"></i>
+                                             <a data-toggle="tooltip" data-placement="bottom" title="Comments" (click)="showRequestCommentPopup(formDataRow.values[0])">
+                                             <i class="fa fa-comment fa-fa-consistency IconCustomization" aria-hidden="true"></i>
                                              </a>
                                           </div>
                                        </td>

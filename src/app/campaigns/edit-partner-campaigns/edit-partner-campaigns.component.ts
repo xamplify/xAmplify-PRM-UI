@@ -30,6 +30,9 @@ import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
+import { HostListener } from '@angular/core';
+import { ComponentCanDeactivate } from 'app/component-can-deactivate';
+import { Observable } from 'rxjs/Observable';
 
 declare var  $,swal,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -40,7 +43,7 @@ var moment = require('moment-timezone');
   styleUrls: ['./edit-partner-campaigns.component.css','../../../assets/css/content.css'],
   providers:[CallActionSwitch,HttpRequestLoader,Pagination,Properties,LandingPageService]
 })
-export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
+export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactivate,OnDestroy {
     ngxloading: boolean;
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     selectedEmailTemplateId = 0;
@@ -126,6 +129,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     campaignNameDivClass:string = this.formGroupClass;
     fromNameDivClass:string =  this.formGroupClass;
     subjectLineDivClass:string = this.formGroupClass;
+    campaignDescriptionDivClass = this.formGroupClass;
     fromEmaiDivClass:string = this.formGroupClass;
     preHeaderDivClass:string = this.formGroupClass;
     messageDivClass:string = this.formGroupClass;
@@ -192,7 +196,17 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     mergeTagsInput:any = {};
     dataShare: boolean;
     /*******XNFR-125******/
-    oneClickLaunchCampaignRedistributedMessage:CustomResponse = new CustomResponse();                           
+    oneClickLaunchCampaignRedistributedMessage:CustomResponse = new CustomResponse();  
+    /*****XNFR-330****/
+    isEditAutoResponseTemplate = false;
+    selectedAutoResponseEmailTemplate:EmailTemplate;    
+    selectedAutoResponseId = 0;  
+    selectedAutoResponseCustomEmailTemplateId = 0;
+    anyLaunchButtonClicked = false;
+
+    /*****XNFR-330****/             
+    errorClass = "form-group has-error has-feedback";
+    successClass = "form-group has-success has-feedback";      
 
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
@@ -473,8 +487,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
      }
      validateField(fieldId:string){
-         var errorClass = "form-group has-error has-feedback";
-         var successClass = "form-group has-success has-feedback";
+         var errorClass = this.errorClass;
+         var successClass = this.successClass;
          let fieldValue = $.trim($('#'+fieldId).val())
          if(fieldId=="campaignName"){
              if(fieldValue.length>0&&this.isValidCampaignName){
@@ -732,7 +746,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             'parentCampaignId':this.campaign.parentCampaignId,
             'landingPageId':this.selectedLandingPageId,
             'vanityUrlDomainName':vanityUrlDomainName,
-            'vanityUrlCampaign':vanityUrlCampaign
+            'vanityUrlCampaign':vanityUrlCampaign,
+            'description':this.campaign.description
         };
         return data;
     }
@@ -1310,6 +1325,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
 
   launchCampaign() {
+    /***XNFR-330****/
+     this.anyLaunchButtonClicked = false;
+     /***XNFR-330****/
       this.validateCampaignName(this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName));
       if(this.isValidCampaignName){
           this.referenceService.startLoader(this.httpRequestLoader);
@@ -1338,6 +1356,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                         this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
                         this.referenceService.launchedCampaignType = this.campaignType;
                         this.campaign = null;
+                        /***XNFR-330****/
+                        this.anyLaunchButtonClicked = true;
+                        /***XNFR-330****/
                         this.router.navigate(["/home/campaigns/manage"]);
                     } else {
                         this.invalidScheduleTime = true;
@@ -1512,6 +1533,73 @@ appendValueToSubjectLine(event:any){
         }
     }
 
+    /****XNFR-330****/
+    editAutoResponseTemplate(autoResponse:any,autoResponseType:string){
+        if("UPLOADED"!=autoResponse.emailTemplate.type){
+            this.partnerTemplateLoader = true;
+            autoResponse.emailTemplate.autoResponseType = autoResponseType;
+            this.selectedAutoResponseEmailTemplate = autoResponse.emailTemplate;
+            this.selectedAutoResponseId = autoResponse.id;
+            this.selectedAutoResponseCustomEmailTemplateId = autoResponse.customEmailTemplateId;
+            this.partnerTemplateLoader = false;
+            this.isEditAutoResponseTemplate = true;
+        }else{
+            this.referenceService.showSweetAlertErrorMessage("This template cannot be edited.");
+        }
+        
+    }
+    /****XNFR-330****/
+    resetAutoResponseEmailTemplate(){
+        this.selectedAutoResponseEmailTemplate = new EmailTemplate();
+        this.selectedAutoResponseId = 0;
+        this.selectedAutoResponseCustomEmailTemplateId = 0;
+        this.isEditAutoResponseTemplate = false;
+    }
+      
+    /****XNFR-330****/
+    getUpdatedTemplateBodyAndJsonBody(input:any){
+        let id = input.autoResponseId;
+        let type = input.autoResponseType;
+        if("reply"==type){
+            if(this.replies!=undefined && this.replies.length>0){
+                for ( var i = 0; i < this.replies.length; i++ ) {
+                    let reply = this.replies[i];
+                     if(reply.id==id){
+                         reply.jsonBody = input.jsonBody;
+                         reply.htmlBody = input.htmlBody;
+                         reply.body = input.htmlBody;
+                     } 
+                 }
+            }
+        }else if("url"==type){
+            if(this.urls!=undefined && this.urls.length>0){
+                for ( var i = 0; i < this.urls.length; i++ ) {
+                    let url = this.urls[i];
+                     if(url.id==id){
+                        url.jsonBody = input.jsonBody;
+                        url.htmlBody = input.htmlBody;
+                        url.body = input.htmlBody;
+                     } 
+                 }
+            }
+        }
+    }
+    /***XNFR-330****/
+    @HostListener('window:beforeunload')
+    canDeactivate(): Observable<boolean> | boolean {
+        this.ngxloading = false;
+        this.authenticationService.stopLoaders();
+        if(this.anyLaunchButtonClicked || this.authenticationService.module.logoutButtonClicked){
+            return true;
+        }else{
+            return this.campaignService.reDistributeCampaign==undefined;
+        }
+        
+    }
 
+    changeDescriptionClassName(description:any){
+        let trimmedDescription = $.trim(description);
+        this.campaignDescriptionDivClass = trimmedDescription.length>0 ? this.successClass : this.formGroupClass;
+    }
 
 }

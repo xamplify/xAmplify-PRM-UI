@@ -20,6 +20,7 @@
                 <a translate>User Account</a>
             </li>
         </ul>
+        <app-user-guide-help-button  [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
     </div>
     <div>
     <div id="org-admin-info" class="alert alert-info" style="display: none;">
@@ -29,7 +30,7 @@
     <!-- END PAGE HEADER-->
     <!-- BEGIN PAGE CONTENT-->
     <div class="row" *ngIf="!editXamplifyDefaultTemplate">
-        <div class="col-md-12">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <!-- BEGIN PROFILE SIDEBAR -->
             <div class="profile-sidebar" style="width:250px;" *ngIf="userData">
                 <!-- PORTLET MAIN -->
@@ -47,7 +48,9 @@
                     </div>
                     <div class="profile-usertitle">
                         <div class="profile-usertitle-name" style="overflow: auto">
-                            <span style="font-size: 17px !important;" [title]="userData.displayName">{{userData.displayName | slice:0:18}}</span><span *ngIf="userData.displayName?.length>18">...</span>
+                            <span style="font-size: 17px !important;"
+                             [title]="userData?.displayName">{{userData?.displayName | slice:0:18}}</span>
+                             <span *ngIf="userData?.displayName?.length>18">...</span>
                             <h5>{{userData.emailId}}</h5>
                         </div>
                         <div class="profile-usertitle-job">
@@ -94,22 +97,24 @@
                             </li>
                             <!---View Type-->
                             <li [ngClass]="{'active-tab': activeTabName == 'settings'}" [class.disabled]="authenticationService.isSuperAdmin()">
-                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('settings');clearCustomResponse()">{{properties.viewType | translate}}</a>
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('settings');clearCustomResponse();">{{properties.viewType | translate}}</a>
                             </li>
                             <!---Tags-->
                             <li *ngIf="authenticationService.lmsAccess || authenticationService?.module?.playbookAccess" [ngClass]="{'active-tab': activeTabName == 'tags'}">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'tags'}"  (click)="activateTab('tags');clearCustomResponse()" translate>
                                     {{properties.tags | translate}} </a>
                             </li>
-                             <!---Themes-->
+
+                            <!-- Customize left menu -->
+                            <li [ngClass]="{'active-tab': activeTabName == 'customizeleftmenu'}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="authenticationService.module.isAnyAdminOrSupervisor">
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'customizeleftmenu'}" (click)="activateTab('customizeleftmenu');clearCustomResponse()" translate>{{properties.customizeleftmenu | translate}}</a>
+                            </li>
+
+                            <!---Themes-->
                             <li *ngIf="customSkinSettingOption && ((authenticationService.module.isPrmAndPartner && roleNames !='Partner') || !authenticationService.isOnlyPartner())"  [ngClass]="{'active-tab': activeTabName == 'customskin'}">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customskin'}"  (click)="activateTab('customskin');clearCustomResponse()" translate>
                                     {{properties.customskin | translate}} </a>
                             </li>
-                            <!-- <li *ngIf="authenticationService?.module?.isTeamMember"  [ngClass]="{'active-tab': activeTabName == 'teamMemberPartnerFilter'}">
-                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'teamMemberPartnerFilter'}"  (click)="activateTab('teamMemberPartnerFilter');clearCustomResponse()" translate>
-                                    {{properties.customskin | translate}} </a>
-                            </li> -->
                              <!--------------Lead/Deal Configuration----------------------->
                             <div class="my-profile-header-text" *ngIf="((hasAllAccess || 
                             hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
@@ -169,22 +174,18 @@
                             <!--------------Admin----------------------->
                             <div class="my-profile-header-text">Admin</div>
                             <!--Dashboard Buttons-->
-                            <li [ngClass]="{'active': activeTabName == 'dbButtonSettings'}" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
+                            <li [ngClass]="{'active': activeTabName == 'dbButtonSettings'}" *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor">
                                 <a (click)="activateTab('dbButtonSettings');clearCustomResponse()">{{properties.dashboardButtons}}</a>
                             </li>
                             <!--Your Templates--> 
-                            <li *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" [ngClass]="{'active': activeTabName == 'templates'}">
+                            <li *ngIf="authenticationService.vanityURLEnabled && authenticationService?.module?.isAnyAdminOrSupervisor" [ngClass]="{'active': activeTabName == 'templates'}">
                                 <a (click)="activateTab('templates');clearCustomResponse()" translate>
                                      Your Templates </a>
                             </li>
                             	
                             <!--Unsubscribe Reasons-->
-                            <li *ngIf="authenticationService.module.isAnyAdminOrSupervisor"  [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}">
+                            <li *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor"  [ngClass]="{'active-tab': activeTabName == 'unsubscribeReasons'}">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'unsubscribeReasons'}" (click)="activateTab('unsubscribeReasons');clearCustomResponse()">{{properties.unsubscribeReasons | translate}}</a>
-                            </li>
-                            <!--Partner Invitation Configuration-->
-                            <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module.notifyPartners" [ngClass]="{'active-tab': activeTabName == 'notifyPartners'}" >
-                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'notifyPartners'}" (click)="activateTab('notifyPartners');clearCustomResponse()">{{authenticationService?.partnerModule?.customName | translate}} Invitation Configuration</a>
                             </li>
                              <!--Exclusion-->
                             <ng-container *ngIf="excludeUsersOrDomains">
@@ -197,12 +198,15 @@
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'categories'}" (click)="activateTab('categories');clearCustomResponse()">{{properties.folders | translate}}</a>
                             </li>
                             <!--Team Member Groups-->
-                            <li   [ngClass]="{'active-tab': activeTabName == 'team-group'}"  *ngIf="authenticationService.user.hasCompany && (authenticationService.module.isOrgAdmin || authenticationService.module.isVendor || 
-                            authenticationService.module.isCompanyPartner|| authenticationService.module.isVendorTier || authenticationService.module.isMarketing || authenticationService.module.isPrm )" style="border-bottom:none !important">
+                            <li   [ngClass]="{'active-tab': activeTabName == 'team-group'}"  *ngIf="authenticationService?.user?.hasCompany &&  authenticationService?.module?.isAnyAdminOrSupervisor">
                             <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'team-group'}" (click)="activateTab('team-group');clearCustomResponse()">{{properties.teamMemberGroups | translate}}</a>
                             </li>
-                            
-                        </ng-container>
+                            <!---XNFR-326---->
+                            <!--Email Notification Settings-->
+                            <li *ngIf="authenticationService.user.hasCompany && authenticationService?.module?.emailNotificationSettings" [ngClass]="{'active-tab': activeTabName == properties?.emailNotificationSettings}" style="border-bottom: none !important;">
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.emailNotificationSettings}" (click)="activateTab(properties?.emailNotificationSettings);clearCustomResponse()">{{properties?.emailNotificationSettings}}</a>
+                            </li>
+                             </ng-container>
                         </ul>
                     </div>
                     <!-- END MENU -->
@@ -264,7 +268,7 @@
             </div>
             <div class="profile-content">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="portlet light"
                         [ngClass]="activeTabName == 'lightTheme'?'padding-bottomonly':''">
                             <div class="portlet-title tabbable-line">
@@ -272,31 +276,15 @@
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
                                     <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName=='notifyPartners'">{{authenticationService?.partnerModule?.customName | translate}} Invitation</span>
                                     <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName!='notifyPartners'">{{activeTabHeader | translate}}</span>
-                                    <!-- <span class="caption-subject font-blue-madison bold"  *ngIf="activeTabName== 'customskin' ">
-                                        
-                                    </span> -->
                                     <div class="btn-toolbar" style="float: right;"
                                     *ngIf="activeTabName == 'customTheme'|| activeTabName == 'lightTheme'
-                             || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
+                                        || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
                                     <div class="btn-group" style="padding-top: 7px;">
                                         <button class="btn btn-primary padding align"
                                             style="border-radius: 3px;" *ngIf="activeTabName == 'lightTheme' && themeDto?.id != activeThemeDetails?.themeId"
                                             (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
                                             Theme</button>
-                                        <!-- <button class="btn btn-primary padding align"
-                                            style="border-radius: 3px;" *ngIf="activeTabName == 'DarkTheme'"
-                                            (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
-                                            Theme</button>
-                                        <button class="btn btn-primary padding align"
-                                            style="border-radius: 3px;"
-                                            *ngIf="activeTabName == 'neumorphismLight'"
-                                            (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
-                                            Theme</button>
-                                        <button class="btn btn-primary padding align"
-                                            style="border-radius: 3px;"
-                                            *ngIf="activeTabName == 'neumorphismDark'"
-                                            (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
-                                            Theme</button> -->
+                                        
                                     </div>
 
                                     <a class="close-circle xamp-margin-left-icon"
@@ -311,8 +299,7 @@
                                 <app-response-message class="pg8" [customResponse]="themeResponse"
                                         *ngIf="themeResponse.isVisible">
                                     </app-response-message>
-                                Custom Skin Settings helps to change your application colors like background color ,icon color, text color, button color etc.
-                                Based on selecting color in below tab.
+                                {{properties?.customThemeDescription}}
                                 <br><br>
                                 <div class="div thembgc">
                                     <div class="row">
@@ -334,34 +321,25 @@
                                                     <br>
                                                     <h5 class="card-title themefont">{{dto.name}} Theme</h5>
 
-                                                    <!-- <button type="button" class="btn  btn-size btn-selectcolor"
-                                                        (click)="viewTheme();showDto(dto)"> <i
-                                                            class="fa fa-eye" aria-hidden="true"></i>
-                                                        View </button>
-                                                    <button type="button" *ngIf="dto.defaultTheme"
-                                                        class="btn  btn-size"
-                                                        [ngClass]="authenticationService?.isCustomTheme?'btn-selectcolor':'btn-notselectcolor'"
-                                                        (click)="goToCustomThemes();showDto(dto);"> <i
-                                                            class="fa fa-files-o" aria-hidden="true"></i>
-                                                        Copy</button> -->
+                                                   
                                                         <!-- responsive-alignment -->
                                                         <td class="mAlignView responsive-alignment">
-                                                            <div class="actions-block override-actions ActionAlign">
+                                                            <div class="actions-block override-actions ActionAlign mb_whitespace">
                                                                 <div class="mActionAlign ActionButtonPad iconmobile-align">
                                                                     <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="View"
                                                                         (click)="viewTheme();showDto(dto);"><i
                                                                             aria-hidden="true"
-                                                                            class="fa fa-eye mDisableColor"></i>
+                                                                            class="fa fa-eye mDisableColor IconCustomization"></i>
                                                                         </a>
                                                                     <a data-toggle="tooltip" data-placement="bottom" title="Activate"
                                                                         (click)="activateThemeForCompanyWithAlert(dto.id)"
                                                                         *ngIf="dto?.id != activeThemeDetails?.themeId"><i
                                                                             _ngcontent-c69="" aria-hidden="true"
-                                                                            class="fa fa-power-off"></i></a>
+                                                                            class="fa fa-power-off IconCustomization"></i></a>
                                                                     <a  data-toggle="tooltip" data-placement="bottom" class="mMobileDisable" title="Copy"
                                                                         (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
                                                                             aria-hidden="true"
-                                                                            class="fa fa-files-o mDisableColor"></i></a>
+                                                                            class="fa fa-files-o mDisableColor IconCustomization"></i></a>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -397,25 +375,25 @@
                                                 </app-timestamp>
                                             </td>
                                             <td class="mAlignView">
-                                                <div class="actions-block override-actions ActionAlign">
+                                                <div class="actions-block override-actions ActionAlign mb_whitespace">
                                                     <div class="mActionAlign ActionButtonPad iconmobile-align">
                                                         <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="Edit"
                                                             (click)="goToCustomThemes();showDto(dto);updateTheme();"><i
                                                                 aria-hidden="true"
-                                                                class="fa fa-edit mDisableColor"></i></a>
+                                                                class="fa fa-edit mDisableColor IconCustomization"></i></a>
                                                         <a data-toggle="tooltip" data-placement="bottom" title="Activate"
                                                             (click)="activateThemeForCompanyWithAlert(dto.id)"
                                                             *ngIf="dto?.id != activeThemeDetails?.themeId"><i
                                                                 _ngcontent-c69="" aria-hidden="true"
-                                                                class="fa fa-power-off"></i></a>
+                                                                class="fa fa-power-off IconCustomization"></i></a>
                                                         <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="Copy"
                                                             (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
                                                                 aria-hidden="true"
-                                                                class="fa fa-files-o mDisableColor"></i></a>
+                                                                class="fa fa-files-o mDisableColor IconCustomization"></i></a>
                                                         <a data-toggle="tooltip" data-placement="bottom" title="Delete" (click)="deleteByThemeIdWithAlert(dto.id)"
                                                             *ngIf="dto?.id != activeThemeDetails?.themeId"> <i
                                                                 _ngcontent-c69="" aria-hidden="true"
-                                                                class="fa fa-trash-o"></i></a>
+                                                                class="fa fa-trash-o trashIconCustomization"></i></a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -425,7 +403,7 @@
 
                                 <div *ngIf="themeDtoList?.length<1" style="max-width: 100%;text-align: center;">
                                     <div class="alert alert-info">
-                                        <strong>No Data Found</strong>
+                                        <strong>No Theme(s) Found</strong>
                                     </div>
                                 </div>
 
@@ -436,8 +414,9 @@
                                 </app-response-message>
                                 <div class="tab-content">
                                     <!---Personal Info-->
-                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'personalInfo'}">
+                                    <div class="tab-pane row" [ngClass]="{'active': activeTabName == 'personalInfo'}">
                                         <form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()" aria-labelledby="personal-info-form">
+                                           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>First Name</label>
                                                 <span class="star"> *</span>
@@ -445,44 +424,56 @@
                                                 <div *ngIf="formErrors.firstName" class="alert alert-danger">
                                                     {{ formErrors.firstName }}</div>
                                             </div>
-
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Middle Name</label>
                                                 <input type="text" placeholder="Middle Name" class="form-control" formControlName="middleName" maxlength="50">
                                                 <div *ngIf="formErrors.middleName" class="alert alert-danger">
                                                     {{ formErrors.middleName }}</div>
                                             </div>
-
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Last Name</label>
                                                 <input type="text" placeholder="Last Name" class="form-control" formControlName="lastName" maxlength="50">
                                                 <div *ngIf="formErrors.lastName" class="alert alert-danger">
                                                     {{ formErrors.lastName }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Mobile Number</label>
                                                 <input type="text" maxlength="20" class="form-control" [(ngModel)]="userData.mobileNumber" [ngModelOptions]="{standalone: true}">
                                                 <div *ngIf="formErrors.mobileNumber" class="alert alert-danger">
                                                     {{ formErrors.mobileNumber }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Interests</label>
                                                 <input type="text" placeholder="Interests" class="form-control" formControlName="interests" />
                                                 <div *ngIf="formErrors.interests" class="alert alert-danger">
                                                     {{ formErrors.interests }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
                                             <div class="form-group">
                                                 <label class="control-label" translate>Job Title</label>
                                                 <input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Job Title" class="form-control" formControlName="occupation" />
                                                 <div *ngIf="formErrors.occupation" class="alert alert-danger">
                                                     {{ formErrors.occupation }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                                             <div class="form-group">
                                                 <label class="control-label" translate>About</label>
                                                 <textarea class="form-control" rows="3" placeholder="About You" formControlName="description" style="resize: none;"></textarea>
                                                 <div *ngIf="formErrors.description" class="alert alert-danger">
                                                     {{ formErrors.description }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
                                             <div class="form-group">
                                                 <label class="control-label" translate>Select Preferred Language</label>                                                
                                                 <select formControlName="preferredLanguage" class="form-control">
@@ -492,14 +483,19 @@
                                                 <div *ngIf="formErrors.preferredLanguage" class="alert alert-danger">
                                                     {{ formErrors.preferredLanguage }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
                                             <div class="form-group">
                                                 <label class="control-label" translate>Website Url</label>
                                                 <input type="url" placeholder="WebSite Url" class="form-control" formControlName="websiteUrl" />
                                                 <div *ngIf="formErrors.websiteUrl" class="alert alert-danger">
                                                     {{ formErrors.websiteUrl }}</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
                                             <button type="submit" [disabled]="!updateUserProfileForm.valid || authenticationService.isSuperAdmin()" class="btn Btn-Green" translate>
                                                 Save Changes</button>
+                                            </div>
                                         </form>
                                     </div>
                                     <!---Deal Types-->
@@ -523,7 +519,7 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-12">
+                                            <div class="col-xs-12 p0">
                                                 <div *ngFor="let question of questions;let i=index">
                                                     <div class="portlet light dashboard-stat2">
                                                         <div class="portlet-title custom-change-css" style="border-bottom: 0px">
@@ -546,11 +542,11 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-xs-2">
-                                                                <div class="pull-right" id="question-icons">
-                                                                    <button type="button" class="btn-danger button-blue" (click)="showAlert(i+1,question)" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                <div class="pull-right mb-flex" id="question-icons">
+                                                                    <button type="button" class="btn-danger button-blue btn_add mr_4" (click)="showAlert(i+1,question)" data-toggle="tooltip" data-placement="top" title="Delete">
                                                                         <span  class="glyphicon glyphicon-trash"></span>
                                                                     </button>
-                                                                    <button type="button" class="btn-primary button-blue" (click)="addQuestion()" *ngIf="questions.length== i+1"  data-toggle="tooltip" data-placement="top" title="Add">
+                                                                    <button type="button" class="btn-primary button-blue btn_add" (click)="addQuestion()" *ngIf="questions.length== i+1"  data-toggle="tooltip" data-placement="top" title="Add">
                                                                         <span class="glyphicon glyphicon-plus"></span>
                                                                     </button>
 
@@ -572,7 +568,7 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-12">
+                                            <div class="col-xs-12 p0">
                                                 <div *ngFor="let dealType of dealtypes;let i=index">
                                                     <div class="portlet light dashboard-stat2">
                                                         <div class="portlet-title custom-change-css" style="border-bottom: 0px">
@@ -595,11 +591,11 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-xs-2">
-                                                                <div class="pull-right" id="question-icons">
-                                                                    <button type="button" class="btn-danger button-blue" (click)="deleteDealType(i+1,dealType)" data-toggle="tooltip" data-placement="top" title="Delete" >
+                                                                <div class="pull-right mb-flex" id="question-icons">
+                                                                    <button type="button" class="btn-danger button-blue btn_add mr_4" (click)="deleteDealType(i+1,dealType)" data-toggle="tooltip" data-placement="top" title="Delete" >
                                                                         <span class="glyphicon glyphicon-trash"></span>
                                                                     </button>
-                                                                    <button type="button" class="btn-primary button-blue" (click)="addDealtype()" *ngIf="dealtypes.length== i+1"  data-toggle="tooltip" data-placement="top" title="Add">
+                                                                    <button type="button" class="btn-primary button-blue btn_add" (click)="addDealtype()" *ngIf="dealtypes.length== i+1"  data-toggle="tooltip" data-placement="top" title="Add">
                                                                         <span class="glyphicon glyphicon-plus"></span>
                                                                     </button>
 
@@ -617,7 +613,7 @@
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
                                         <section class="pricing py-5 border-none" *ngIf="integrationTabIndex == 0">
                                             <div class="col-xs-12 integration-row">
-                                                <div class="col-lg-4" [class.disabled] = "isMarketoProcess" (click)="configmarketo()" *ngIf="!httpRequestLoader.isLoading">
+                                                <div class="col-lg-4 col-sm-6 intg_mb_16" [class.disabled] = "isMarketoProcess" (click)="configmarketo()" *ngIf="!httpRequestLoader.isLoading">
                                                     <div [className]="activeCRMDetails?.type === 'MARKETO'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px">
                                                             <span *ngIf="integrateRibbonText == 'configured'" 
@@ -627,9 +623,7 @@
                                                                     style="font-size: 20px !important;"></i></a>
                                                                 </span>
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Marketo</h5>
-                                                            <!-- <div class="ribbon draft" style="left:10px">
-                                                                <span [style.background-color]="integrateRibbonText == 'configured' ? 'green':'yello'">{{integrateRibbonText}}</span>
-                                                            </div> -->
+                                                           
 
                                                             <div class="ribbon draft config" style="left:10px"  *ngIf="integrateRibbonText == 'configured'">
                                                                 <span [style.background-color]="'green'"
@@ -643,7 +637,7 @@
                                                                     <img src="assets/images/crm/Mark-amplify.png" style="margin-top:20px; text-align: center;width:100%">
                                                                 </div>
                                                             </div>
-                                                                <span class="arrow" *ngIf = "isMarketoProcess"  style="position: absolute; margin-top: -40px;"> 
+                                                                <span class="arrow process-sync" *ngIf = "isMarketoProcess" > 
                                                                 <img src="assets/images/Spinner.gif" class="loaderGif" style="height: 40px;"> Synchronization in process...																
                                                                 </span> 
                                                                 <a class="btn btn-block btn-primary text-uppercase" *ngIf="integrateRibbonText == 'configure'" translate>configure</a>
@@ -653,7 +647,7 @@
                                                     </div>
                                                 </div>   
 
-                                                <div class="col-lg-4" *ngIf="!httpRequestLoader.isLoading">
+                                                <div class="col-lg-4 col-sm-6 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
                                                     <div [className]="activeCRMDetails?.type === 'HUBSPOT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">                                                            
                                                             <span *ngIf="hubSpotRibbonText == 'configured'" 
@@ -671,9 +665,6 @@
                                                                 <span [style.background-color]="'yello'">{{hubSpotRibbonText}}</span>
                                                             </div>
 
-                                                            <!-- <div class="ribbon draft" style="left:10px">
-                                                                <span [style.background-color]="hubSpotRibbonText == 'configured' ? 'green':'yello'">{{hubSpotRibbonText}}</span>
-                                                            </div> -->
 
                                                             <div style="height: 120px;">
                                                                 <div>
@@ -688,7 +679,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-4" *ngIf="!httpRequestLoader.isLoading">                                                        
+                                                <div class="col-lg-4 col-sm-6 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">                                                        
                                                     <div [className]="activeCRMDetails?.type === 'SALESFORCE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">
                                                                 <span *ngIf="sfRibbonText == 'configured'" 
@@ -699,9 +690,6 @@
                                                                 </span>
                                                                 <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Salesforce</h5>
 
-                                                            <!-- <div class="ribbon draft" style="left:10px">
-                                                                <span [style.background-color]="sfRibbonText == 'configured' ? 'green':'yello'">{{sfRibbonText}}</span>
-                                                            </div> -->
 
                                                             <div class="ribbon draft config" style="left:10px" *ngIf="sfRibbonText == 'configured'">
                                                                 <span [style.background-color]="'green'">{{sfRibbonText}}</span>
@@ -714,17 +702,16 @@
                                                                     <img src="assets/images/crm/xamplify-salesforce.png" style="margin-top:20px; text-align: center;width:100%">
                                                                 </div>
                                                             </div>
-                                                            <!-- <a (click)="salesforceSettings()" style="margin:5px"><span class="fa fa-cogs" *ngIf="sfRibbonText == 'configured'"> Settings</span></a>
-                                                             -->
+                                                           
                                                              <a (click)="configSalesforce()" class="btn btn-block btn-primary text-uppercase" *ngIf="sfRibbonText == 'configure'" translate>configure</a>
                                                             <a (click)="reConfigSalesforce()" class="btn btn-block btn-primary text-uppercase" *ngIf="sfRibbonText == 'configured'" translate>re configure</a>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                            </div>
-                                            <div class="col-xs-12 integration-row">
-                                                <div class="col-lg-4" *ngIf="!httpRequestLoader.isLoading">
+                                           
+                                        
+                                                <div class="col-lg-4 col-sm-6 tab_mt_20 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
                                                     <div [className]="activeCRMDetails?.type === 'MICROSOFT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">    
                                                             <span *ngIf="microsoftRibbonText == 'configured'" 
@@ -735,9 +722,6 @@
                                                                 </span>                                                       
                                                             <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Microsoft</h5>
 
-                                                            <!-- <div class="ribbon draft" style="left:10px">
-                                                                <span [style.background-color]="microsoftRibbonText == 'configured' ? 'green':'yello'">{{microsoftRibbonText}}</span>
-                                                            </div> -->
 
                                                             <div class="ribbon draft config" style="left:10px" *ngIf="microsoftRibbonText == 'configured'">
                                                                 <span [style.background-color]="'green'">{{microsoftRibbonText}}</span>
@@ -757,7 +741,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4" *ngIf="!httpRequestLoader.isLoading">
+                                                <div class="col-lg-4 col-sm-6 tab_mt_20 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
                                                     <div [className]="activeCRMDetails?.type === 'PIPEDRIVE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">    
                                                             <span *ngIf="pipedriveRibbonText == 'configured'" 
@@ -822,14 +806,12 @@
                                         	
                                         	<div>*Note: Please pick all fields that are marked required in Salesforce.  Otherwise, leads and deals will not be pushed into Salesforce. </div>
                                         	
-                                        	<!-- <app-response-message [customResponse]="customResponse"
-														*ngIf="customResponse.isVisible" style="margin: 10px"></app-response-message> -->
+                                        	
 													<form class="form-horizontal" autocomplete="off">
 														<table class='table tgrid'>
 															<thead>
 															<tr>
-																<!-- <th class="text-center"><input type="checkbox" value="sfcfSelectAll"
-																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="sfcfSelectAll" (change)="sfcfMasterCB()"/></th> -->
+																
 																<th class="text-center"><input type="checkbox" value="sfcfSelectAll"
 																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"/></th>
 																		
@@ -841,8 +823,7 @@
 																<ng-container
 																	*ngFor="let sfCustomField of sfcfPagedItems ">
 																<tr>
-																	<!-- <td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
-																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(!sfcfMasterCBClicked && sfCustomField.selected) || (sfcfMasterCBClicked && sfcfSelectAll)"/></td> -->
+																	
 																	<td align="center"><input type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
 																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required" [disabled] ="sfCustomField.required"/></td>
 																	<td><span>{{sfCustomField.label}}</span></td>
@@ -926,8 +907,7 @@
                                                                     <ng-container
                                                                         *ngFor="let sfCustomField of sfcfPagedItems ">
                                                                     <tr>
-                                                                        <!-- <td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
-                                                                            id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(!sfcfMasterCBClicked && sfCustomField.selected) || (sfcfMasterCBClicked && sfcfSelectAll)"/></td> -->
+                                                                       
                                                                         <td align="center"><input type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
                                                                             id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required" [disabled] ="sfCustomField.required"/></td>
                                                                         <td><span>{{sfCustomField.label}}</span></td>
@@ -982,7 +962,7 @@
                                             <div class="portlet-title" style="border-bottom: none;">
                                                 <div class="row">
                                                     <div class="col-xs-12 col-sm-12 col-lg-12">
-                                                        <div class="col-xs-12 col-sm-5 col-lg-5 p0">
+                                                        <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
                                                              <button class="btn btn-primary"  (click)="addPipeline()" translate>Create Pipeline</button>
                                                         </div>
                                                         <div class="col-xs-12 col-sm-7 col-lg-7 p0">
@@ -1021,9 +1001,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr *ngFor="let pipeline of pipelinePagination.pagedItems ;let i =index" id="pipeline_{{pipeline.id}}">
-                                                                        <!-- <td class="custom-icon-width">
-                                                                            <i class="{{category.icon}}" aria-hidden="true" id="fa-custom-width"></i>
-                                                                        </td> -->
+                                                                       
                                                                         <td><i class="fa fa-sort-amount-asc" style="margin-right:10px;display: inline-block;
                                                                             border-radius: 50%;border: 1px solid #000000;padding: 8px 8px 8px 9px;font-size: 13px !important;"></i>
                                                                             <span data-toggle="tooltip" data-placement="top" title="{{pipeline.name}}">{{pipeline.name | slice:0:45}}<span
@@ -1045,19 +1023,19 @@
                                                                         </td>
                                                                         <td class="mAlign">{{pipeline.stages.length}}</td>
                                                                        <td class="mAlign">
-                                                                            <div class="actions-block override-actions">                                                                                
+                                                                            <div class="actions-block override-actions mb_whitespace tb_view_actions">                                                                                
                                                                                 <ng-container>
                                                                                     <a *ngIf="pipeline.canSync" data-toggle="tooltip" data-placement="top" title="Synchronize with {{pipeline.integrationType}}" (click)="syncPipeline(pipeline)">
-                                                                                        <i class="fa fa-refresh"></i>
+                                                                                        <i class="fa fa-refresh IconCustomization"></i>
                                                                                     </a>
                                                                                     <a data-toggle="tooltip" data-placement="top" title="View" (click)="viewPipeline(pipeline)">
-                                                                                        <i class="fa fa-eye"></i>
+                                                                                        <i class="fa fa-eye IconCustomization"></i>
                                                                                     </a>
                                                                                     <a *ngIf="pipeline.canUpdate" data-toggle="tooltip" data-placement="top" title="Edit" (click)="editPipeline(pipeline)">
-                                                                                        <i class="fa fa-pencil-square-o"></i>
+                                                                                        <i class="fa fa-pencil-square-o IconCustomization"></i>
                                                                                     </a>
                                                                                     <a *ngIf="pipeline.canDelete" id="template-delete" (click)="confirmDeletePipeline(pipeline)" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                                        <i class="fa fa-trash-o"></i>
+                                                                                        <i class="fa fa-trash-o trashIconCustomization"></i>
                                                                                     </a>
                                                                                 </ng-container>                                                                                
                                                                             </div>
@@ -1081,8 +1059,9 @@
                                         </ng-container>
                                     </div>
                                     <!--Pasword-->
-                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'password'}">
+                                    <div class="tab-pane row" [ngClass]="{'active': activeTabName == 'password'}">
                                         <form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
+                                            <div class="col-lg-12 col-md-13 col-sm-12 col-xs-12">
                                             <div class="form-group" *ngIf="userData.hasPassword">
                                                 <label class="control-label" translate>Current Password</label>
                                                 <input id="oldPassword" type="password" [class]="className" formControlName="oldPassword" required="required" />
@@ -1093,6 +1072,8 @@
                                                 <div *ngIf="formErrors.oldPassword" class="alert alert-danger" style="margin-top: 5px;">
                                                     {{formErrors.oldPassword}}</div>
                                             </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>New Password</label>
                                                 <input id="password" type="password" class="form-control" formControlName="newPassword" required="required" />
@@ -1102,6 +1083,8 @@
                                                 <div *ngIf="formErrors.newPassword" class="alert alert-danger" style="margin-top: 5px;">
                                                     {{formErrors.newPassword}}</div>
                                             </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>Re-type New Password</label>
                                                 <input id="comfirmPassword" type="password" class="form-control" formControlName="confirmNewPassword" required="required" />
@@ -1114,16 +1097,20 @@
                                                     {{formErrors.confirmNewPassword}}</div>
                                                 <div *ngIf="updatePasswordForm.hasError('mismatchedPasswords')" class="alert alert-danger" style="margin-top: 5px;">Password do not match.</div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-13 col-sm-12 col-xs-12">
                                             <div class="margin-top-10">
                                                 <button type="submit" id="register-submit-btn" [disabled]="!updatePasswordForm.valid" class="btn Btn-Green" translate>
                                                     Change Password</button>
                                                 <input type="reset" class="btn Btn-Gray" value="Cancel">
                                             </div>
+                                        </div>
                                         </form>
                                     </div>
                                     <!-- PRIVACY SETTINGS TAB -->
-                                    <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'settings'}">
-                                       <div class="container">
+                                    <!-- hidden-xs -->
+                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'settings'}">
+                                       <div class="">
                                             <label class="container-checkbox-xamplify" translate>List View
                                                 <input type="radio"  name="moduleDisplayType"  
                                                  value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.LIST]}}" 
@@ -1153,16 +1140,9 @@
                                         </div>
                                     </div>
                                     <!-- END PRIVACY SETTINGS TAB -->
-
                                     <!-- Customize Left Menu -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'customizeleftmenu'}">
-
-                                        <!-- <div>
-                                            <app-customize-leftsidenavbar></app-customize-leftsidenavbar>
-                                        </div> -->    
-                                                                         
-                                        </div>
-
+                                      </div>
                                     <!-- GDPR SETTINGS TAB -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
                                         <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
@@ -1186,8 +1166,8 @@
                                                                         <a rel="noopener noreferrer" class="link" href="{{properties.privacyPolicyUrl}}" target="_blank" translate>Privacy & consent</a> &nbsp;|
                                                                         <a rel="noopener noreferrer" class="link" href="{{properties.cookiesPolicyUrl}}" target="_blank" translate>Cookies & tracking</a> &nbsp;
                                                                     </h5>
-                                                                    <h5 id="text-color-my-profile" translate>
-                                                                        <input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
+                                                                    <h5 id="text-color-my-profile">
+                                                                        <input type="checkbox" class="pointer" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
                                                                     </h5>
                                                                 </div>
                                                                 <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
@@ -1215,15 +1195,20 @@
                                      <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'dbButtonSettings'}">                                        
                                         <app-dashboard-buttons> </app-dashboard-buttons>
                                     </div>
-                                    
+
+                                    <!-- Customize Left Menu -->
+                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'customizeleftmenu'}">
+                                        <app-leftsidenavbar-custom></app-leftsidenavbar-custom>
+                                    </div>
+
                                     <!-- Saml SETTINGS TAB -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'samlSettings'}">                                        
                                         <app-samlsecurity> </app-samlsecurity>
                                     </div>
                                     
                                      <!-- Your Templates TAB -->
-                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'templates'}">                                        
-                                        <app-vanity-email-templates (editTemplate)="openBeeEditor($event)"></app-vanity-email-templates>
+                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'templates'}">                                        
+                                        <app-vanity-email-templates *ngIf="showTemplates" (editTemplate)="openBeeEditor($event)"></app-vanity-email-templates>
                                     </div>
                                     
                                     <!-- Categories -->
@@ -1234,7 +1219,7 @@
                                         <div class="portlet-title" style="border-bottom: none;">
                                             <div class="row">
                                                 <div class="col-xs-12 col-sm-12 col-lg-12">
-                                                    <div class="col-xs-12 col-sm-5 col-lg-5 p0">
+                                                    <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
                                                          <button class="btn-primary"  (click)="addCategory()" translate>Create a Folder</button>
                                                     </div>
                                                     <div class="col-xs-12 col-sm-7 col-lg-7 p0">
@@ -1304,34 +1289,34 @@
                                                                 <span>{{category.count}}</span>
                                                             </td>
                                                             <td>
-                                                                <div class="actions-block override-actions cwotpx">
+                                                                <div class="actions-block override-actions cwotpx mb_whitespace">
                                                                     <ng-container *ngIf="category.defaultCategory">
                                                                         <a data-placement="top" class="disabled-event" title="Default Folder Can't Be Edited">
-                                                                            <i class="fa fa-pencil-square-o disabled-event" aria-hidden="true"></i>
+                                                                            <i class="fa fa-pencil-square-o disabled-event IconCustomization" aria-hidden="true"></i>
                                                                         </a>
                                                                         <a id="template-delete" class="disabled-event" data-placement="top" title="Default Folder Can't Be Deleted">
-                                                                            <i class="fa fa-trash-o disabled-event" aria-hidden="true"></i>
+                                                                            <i class="fa fa-trash-o disabled-event trashIconCustomization" aria-hidden="true"></i>
                                                                         </a>
                                                                     </ng-container>
                                                                     <ng-container *ngIf="!category.defaultCategory">
                                                                         <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="getCategoryById(category)">
-                                                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                                            <i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
                                                                         </a>
                                                                         <a id="template-delete" (click)="confirmDeleteCategory(category)" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                                            <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                                                                         </a>
                                                                     </ng-container>
                                                                     <ng-container *ngIf="category?.count>0">
                                                                         <a *ngIf="categoryPagination.previewAccess" data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewItems(category)">
-                                                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                                                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                                                                         </a>
                                                                         <a *ngIf="!categoryPagination.previewAccess" title="You do not have permission to preview">
-                                                                            <i class="fa fa-eye disabled-event" aria-hidden="true"></i>
+                                                                            <i class="fa fa-eye disabled-event IconCustomization" aria-hidden="true"></i>
                                                                         </a>
                                                                     </ng-container>
                                                                     <ng-container *ngIf="category?.count==0">
                                                                         <a data-toggle="tooltip" data-placement="top" title="Nothing To Preview">
-                                                                            <i class="fa fa-eye  disabled-event" aria-hidden="true"></i>
+                                                                            <i class="fa fa-eye disabled-event IconCustomization" aria-hidden="true"></i>
                                                                         </a>
                                                                     </ng-container>
                                                                 </div>
@@ -1376,8 +1361,8 @@
                                                             <td>
                                                                 <div  class="override-actions">
                                                                     <a  [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'" data-toggle="tooltip" data-placement="bottom">
-                                                                       <span *ngIf="item.previewAccess" class="circled-number" (click)="goToFolder(categoryPreviewItem.categoryId,item)"><b>{{item.moduleItemsCount}}</b></span>
-                                                                       <span *ngIf="!item.previewAccess" class="circled-number xampify-cursor-not-allowed"><b>{{item.moduleItemsCount}}</b></span>
+                                                                       <i *ngIf="item.previewAccess" class="circled-number fontStyleNormal IconCustomization" (click)="goToFolder(categoryPreviewItem.categoryId,item)"><b>{{item.moduleItemsCount}}</b></i>
+                                                                       <i *ngIf="!item.previewAccess" class="circled-number fontStyleNormal IconCustomization xampify-cursor-not-allowed"><b>{{item.moduleItemsCount}}</b></i>
                                                                     </a>
                                                                 </div >
                                                             </td> 
@@ -1427,25 +1412,28 @@
                                                     Activated On:<app-display-date-and-time
                                                         [dateAndTimeUTCString]="activeThemeDetails?.updatedDate"></app-display-date-and-time>
                                                 </p>
-                                                <!-- <div class="col-md-4 col-sm-4 col-xs-12"> 
-                                                <span class="button-style float-right"> Customize </span>
-                                            </div> -->
+                                              
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <app-custom-skin class="tab-pane" [themeDTO]="themeDto" [themeId]="themeDto.id"
-                                [isSaveTheme]="isSaveTheme" [activeThemeId]="activeThemeDetails.themeId"
-                                [ngClass]="{'active': activeTabName == 'customTheme'}"
-                                *ngIf="activeTabName == 'customTheme'"
-                                (closeEvent)="showThemeAlert($event)"></app-custom-skin>
+                                    <!---Custom Skin Settings-->
+                                    <app-custom-skin class="tab-pane" [themeDTO]="themeDto" [themeId]="themeDto.id"
+                                    [isSaveTheme]="isSaveTheme" [activeThemeId]="activeThemeDetails.themeId"
+                                    [ngClass]="{'active': activeTabName == 'customTheme'}"
+                                    *ngIf="activeTabName == 'customTheme'"
+                                    (closeEvent)="showThemeAlert($event)">
+                                    </app-custom-skin>
                                     <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
                                     <app-spf class="tab-pane" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
                                     <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
                                     <app-manage-team-member-group *ngIf="showTeamMemberGroups" class="tab-pane" [ngClass]="{'active': activeTabName == 'team-group'}"></app-manage-team-member-group>
                                     <!--Notify Partners--> 
                                     <app-notify-partners *ngIf="showNotifyPartnersOption && authenticationService?.module.notifyPartners" class="tab-pane" [ngClass]="{'active': activeTabName == 'notifyPartners'}"></app-notify-partners>
-                                  
+                                   <!--XNFR-326 Email Notification Settings--> 
+                                   <app-email-notification-settings *ngIf="showEmailNotificationSettingsOption && authenticationService?.module?.emailNotificationSettings" class="tab-pane" 
+                                        [ngClass]="{'active': activeTabName == properties?.emailNotificationSettings}">
+                                    </app-email-notification-settings>
                                     <!--video default player settings-->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
                                         <div>
@@ -1454,47 +1442,47 @@
                                                     <div class="col-xs-12" style="padding:0">
                                                         <fieldset class="fild-custome-borders-none">
                                                             <legend class="leg-custome-borders-bot" translate>Video Player Apperance</legend>
-                                                            <div class="col-xs-12 col-sm-6 col-md-8" style="padding:0">
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 align-itms-center">
                                                                 <div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">
+                                                                    <label class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 control-label">
                                                                         {{'Player Color' | translate}}:</label>
-                                                                    <div class="col-xs-9 colsm-6 col-md-6">
+                                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                                         <input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor" formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
-                                                                        class="field-border-customization" [cpWidth]="'200px'" [cpHeight]="'265px'" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
-                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" class="field-border-customization"
+                                                                        class="field-border-customization picker-width" [cpWidth]="'200px'" [cpHeight]="'265px'" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
+                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" class="field-border-customization picker-width"
                                                                         />
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="col-xs-3 col-sm-6 col-md-6 control-label">
+                                                                    <label class="col-xs-12 col-sm-6 col-md-12 col-lg-6 control-label">
                                                                         {{'Enable Video Controller' | translate}}:</label>
-                                                                    <div class="col-xs-9 col-sm-6 col-md-6">
+                                                                    <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
                                                                         <switch [(status)]="defaultVideoPlayer.enableVideoController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableVideoController($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="col-xs-3 col-sm-6 col-md-6 control-label">
+                                                                    <label class="col-xs-12 col-sm-6 col-md-6 col-lg-6 control-label">
                                                                         {{'Controller Color' | translate}}:</label>
-                                                                    <div class="col-xs-9 colsm-6 col-md-6">
+                                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                                         <input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event, defaultVideoPlayer.enableVideoController)"
-                                                                        class="field-border-customization"   [value]="compControllerColor" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
-                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" class="field-border-customization" 
+                                                                        class="field-border-customization picker-width"   [value]="compControllerColor" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
+                                                                        <input [hidden]="!hasVideoRole && defaultVideoPlayer.enableVideoController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" class="field-border-customization picker-width" 
                                                                         />
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="col-xs-5 col-sm-6 col-md-6 control-label">{{'Transparency' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-5 col-md-5">
-                                                                        <input type="range" id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 100%;" (input)="transperancyControllBar(Transvalue.value)" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" #Transvalue>
+                                                                    <label class="col-xs-12 col-sm-6 col-md-6 col-lg-6 control-label">{{'Transparency' | translate}}:</label>
+                                                                    <div class="col-xs-12 col-sm-5 col-md-6 col-lg-6">
+                                                                        <input class="ranger-width" type="range" id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 100%;" (input)="transperancyControllBar(Transvalue.value)" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" #Transvalue>
                                                                     </div>
-                                                                    <div class="col-xs-1" style="padding:0">
+                                                                    <div class="col-xs-1" style="padding-left:15px">
                                                                         {{valueRange}}</div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-xs-12 col-sm-6 col-md-4">
-                                                                <video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull" controls height="160" poster="" data-setup='{"example_option":true }'>
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 custome video-sidepadding">
+                                                                <video id="profile_video_player" class="video-js vjs-default-skin vjs-nofull custome-video" controls height="160" poster="" data-setup='{"example_option":true }'>
                                                                     <source [src]="videoUrl"
                                                                         type="application/x-mpegURL">
                                                                 </video>
@@ -1512,28 +1500,28 @@
                                                             <legend class="leg-custome-borders-bot" translate>Controls of the player</legend>
                                                             <div class="col-xs-12">
                                                                 <div class="form-group">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Sharing' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow Sharing' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowSharing($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Fullscreen' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow Fullscreen' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowFullscreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="changeFullscreen($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group" style="margin-top: 38px;">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Likes' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow Likes' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowLikes($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Embed' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow Embed' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableEmbed($event)" [disabled]="hasVideoRole">
                                                                         </switch>
@@ -1543,28 +1531,28 @@
 
                                                             <div class="col-xs-12" style="margin-top: 4px;">
                                                                 <div class="form-group">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Enable Settings' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Enable Settings' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.enableSettings" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableSettings($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Comments' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Allow Comments' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowComments($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group" style="margin-top: 37px;">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Enable Casting' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'Enable Casting' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.enableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableCasting($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'360 video' | translate}}:</label>
-                                                                    <div class="col-xs-6 col-sm-3 col-md-3">
+                                                                    <label class="col-xs-6 col-sm-3 col-md-6 col-lg-3 control-label">{{'360 video' | translate}}:</label>
+                                                                    <div class="col-xs-6 col-sm-3 col-md-6 col-lg-3">
                                                                         <switch [(status)]="defaultVideoPlayer.is360video" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enable360Video($event)" [disabled]="hasVideoRole">
                                                                         </switch>
@@ -1602,14 +1590,14 @@
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                                         <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                            <button  class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" [disabled] ="csvExcludeUsersFilePreview"
+                                                            <button  class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" [disabled] ="csvExcludeUsersFilePreview"
                                                                 (click)="addContactModalOpen()" translate>
                                                                 One at a Time <i class="fa fa-plus"
                                                                     style="font-size: 12px; margin-left: 2px;"></i>
                                                             </button>
                                                             
-                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" translate>
-                                                                <span style="font-size: 14px; text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
+                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" translate>
+                                                                <span style="text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
                                                     (click)="input.value = null" (change)="fileChange(input, 'exclude-users')" accept=".csv" #input />
                                                                 <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
                                                             </button>											
@@ -1693,10 +1681,7 @@
                                                 *ngIf="excludeUserPagination.pagedItems?.length>0" >
                                                 <thead>
                                                     <tr>
-                                                        <!-- <th class='text-center'><input type="checkbox"
-                                                            name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-                                                            (change)="checkAll($event)"
-                                                            id="checkAllExistingContacts"/></th> -->
+                                                       
                                                         <th style="width: 25%"  translate>Name</th>
                                                         <th style="width: 25%"  translate>Time</th>										
                                                     <th style="width:16%"  translate>ACTIONS</th>
@@ -1705,7 +1690,7 @@
                                                 <tbody>
                                                     <ng-container *ngFor="let user of excludeUserPagination.pagedItems ;let i =index">															
                                                     <tr class='row_{{i}}' style="background-color: #FFFFFF;">
-                                                        <!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
+                                                       
                                                         <td>
                                                         <app-user-info  [userInfo]="user" [isExclusion]="true"> </app-user-info>
                                                         </td>
@@ -1715,10 +1700,10 @@
                     </h6>
                                                         </td>
                                                             <td  >
-                                                        <div class="actions-block override-actions"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                                                        <div class="actions-block override-actions mb_whitespace"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                             <a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedUserAlert(user.userId)" >
-                                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                                    <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
                                                         </td>
@@ -1763,14 +1748,14 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                                         <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                            <button id="add_domain" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" [disabled] ="csvExcludeDomainsFilePreview"
+                                                            <button id="add_domain" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" [disabled] ="csvExcludeDomainsFilePreview"
                                                                 (click)="addDomainModalOpen()" translate>
                                                                 One at a Time <i class="fa fa-plus"
                                                                     style="font-size: 12px; margin-left: 2px;"></i>
                                                             </button>
                                                             
-                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green" translate>
-                                                                <span style="font-size: 14px; text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
+                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" translate>
+                                                                <span style="text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
                                                     (click)="input.value = null" (change)="fileChange(input, 'exclude-domains')" accept=".csv" #input />
                                                                 <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
                                                             </button>											
@@ -1855,10 +1840,7 @@
                                                 *ngIf="excludeDomainPagination.pagedItems?.length>0" >
                                                 <thead>
                                                     <tr>
-                                                        <!-- <th class='text-center'><input type="checkbox"
-                                                            name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-                                                            (change)="checkAll($event)"
-                                                            id="checkAllExistingContacts"/></th> -->
+                                                    
                                                         <th style="width: 25%"  translate>Name</th>
                                                         <th style="width: 25%"  translate>Time</th>										
                                                     <th style="width:16%"  translate>ACTIONS</th>
@@ -1867,7 +1849,7 @@
                                                 <tbody>
                                                     <ng-container *ngFor="let obj of excludeDomainPagination.pagedItems ;let i =index">															
                                                     <tr class='row_{{i}}' style="background-color: #FFFFFF;">
-                                                        <!-- <td align="center"><input type="checkbox" checked="user.checked"></td> -->
+                                                     
                                                         <td><h6>
                                                         {{obj.domainName}}  </h6>
                                                         </td>
@@ -1877,10 +1859,10 @@
                     </h6>
                                                         </td>
                                                             <td >
-                                                        <div class="actions-block override-actions"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
+                                                        <div class="actions-block override-actions mb_whitespace"  style="float:none;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                             <a data-toggle="tooltip" data-placement="top" title="delete" (click)="showDeleteExcludedDomainAlert(obj.domainName)" >
-                                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                                    <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                                                             </a>
                                                         </div>
                                                         </td>
@@ -1988,8 +1970,8 @@
                 <div style="position: relative;top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only images</div>
                 <div>
                     <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                    <!-- <img-cropper #cropper *ngIf="!cropRounded" [image]="circleData" [settings]="circleCropperSettings">
-                    </img-cropper> -->
+                   
+                    
                     <div [hidden]="!imageChangedEvent">
                     <app-img-croppr-v2
                     [imageChangedEvent]="imageChangedEvent"
@@ -2019,7 +2001,7 @@
                 <div class="d-flex justify-content-between">
 					<div class="button-group" style="position: relative;text-align:left">
 						<button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
-							<!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
+							
 							{{
 							  containWithinAspectRatio
 								? 'Fill Aspect Ratio'
@@ -2053,7 +2035,7 @@
                 <app-dashboard-loader *ngIf="addCategoryLoader.isLoading"></app-dashboard-loader>
                 <ng-container *ngIf="!addCategoryLoader.isLoading">
                     <div class="form-group" id="categoryNameDiv">
-                        <label>Name <font class="required">*</font></label>
+                        <label>Name <span class="required">*</span></label>
                         <input type="text" class="form-control" [(ngModel)]="category.name" id="categoryName" placeholder="Enter Name" maxlength="55" (input)="validateCategoryNames(category.name)" (keydown)="sumbitOnEnter($event)">
                         <span *ngIf="!category.isValid" class="required">{{categoryNameErrorMessage}}</span>
                     </div>
@@ -2100,7 +2082,8 @@
 
 <!------------------------------Add/Edit Pipeline----------->
 <div class="modal fade right" id="addPipelineModalPopup" tabindex="-1" role="dialog" aria-labelledby="addPipelineModalPopup" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog pipelinePopupWidth" role="document">
+        <!-- [ngClass]="isDeal?'pipelinePopupWidth':''" -->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" (click)="closePipelineModal()">
@@ -2117,52 +2100,58 @@
                         <label>Name of the Pipeline<font class="required">*</font></label>
                         <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipeline.name" class="form-control" id="pipelineName" placeholder="Enter Name" maxlength="100" (input)="validatePipelineName(pipeline.name)" (keydown)="pipelineSumbitOnEnter($event)"> 
                         <span *ngIf="!pipeline.isValidName" class="required">{{pipelineNameErrorMessage}}</span>
-                        <!-- <input type="text" class="form-control" [(ngModel)]="pipeline.name" id="pipelineName" placeholder="Enter Name" maxlength="100" (input)="validateCategoryNames(category.name)" >
-                        <span *ngIf="!pipeline.isValid" class="required">{{PipelineNameErrorMessage}}</span> -->
+                       
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" [disabled]="pipelinePreview || !pipeline.enablePrivateCheckBox" [(ngModel)]="pipeline.private" name="private"> Private <span class="fa fa-info-circle" data-toggle="tooltip"
+                        <input type="checkbox" [disabled]="pipelinePreview || !pipeline.enablePrivateCheckBox" [(ngModel)]="pipeline.private" name="private" class="alignEqualtoText" > Private <span class="fa fa-info-circle" data-toggle="tooltip"
                         data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span>
                         <div *ngIf="pipeline.showSinglePublicPipelineMessage" class="red">You can't mark this pipeline as private as this is the only public {{pipeline.integrationType}} pipeline available in your account</div>
                     </div>
                     <div class="form-group" id="pipelineStageDiv">
                         <label>Stages</label>
+                        <label style="text-align: center;width: 80%;">Options</label>
                         <span *ngIf="!pipeline.isValidStage" class="required">{{pipelineStageErrorMessage}}</span>
                         <ul id="sortable" [dragula]='"pipelineStagesDragula"' class="list-group" [dragulaModel]='pipeline.stages'>
                             <ng-container *ngFor="let pipelineStage of pipeline.stages; let x = index">
                                 <li class="list-group-item" id="stage{{x}}" *ngIf="pipelineStage != undefined">
                                     <div class="row">
-                                        <span class="col-lg-1">
-                                            <span class="fa fa-ellipsis-v"></span>
-                                        </span>
-                                        
-                                        <span class="col-lg-5">
+                                        <!-- <span class="col-xs-1 co-sm-1 col-md-1 col-lg-1">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                        </span> -->
+                                        <span class="col-lg-5 col-md-5 col-sm-12 col-xs-12 mb_pl10">
+                                            <i class="fa fa-ellipsis-v"></i>
                                             <input type="text" [disabled]="pipelinePreview || pipeline.crmPipeline" [(ngModel)]="pipelineStage.stageName"
-                                            placeholder="Enter Stage Name" style="width: 240px;
-                                                                    margin-right: 10px;" (input)="validateStage(pipelineStage.stageName)"
-                                            (keydown)="pipelineSumbitOnEnter($event)" class="bg-color field-border-customization">
+                                            placeholder="Enter Stage Name" (input)="validateStage(pipelineStage.stageName)"
+                                            (keydown)="pipelineSumbitOnEnter($event)" class="bg-color field-border-customization inputFieldWidth">
                                         </span>
-                                        <span class="col-lg-6">
-                                            <div>
+                                        <span class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                                            <div class="mb_mt7 alignEqualtoFields">
                                                 <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex"
-                                                    id="defaultStage{{x}}" name="defaultStage" style="margin: 5px;" (change)="defaultStageChange(pipelineStage)">
-                                                <span style="margin-right: 5px;">Default</span>
-                                                <select [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE')">
+                                                    id="defaultStage{{x}}" name="defaultStage" class="alignEqualtoText" (change)="defaultStageChange(pipelineStage)">
+                                                <span>Default</span>&nbsp;&nbsp;
+                                                <select  class="formSelectCustomization" [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE')" (change)="handleMarkAsChange(x)">
                                                     <option value="markAs">Mark as</option>
                                                     <option value="won">Won</option>
                                                     <option value="lost">Lost</option>
                                                     <option value="none">None</option>
                                                 </select>
-                                                <button type="button" *ngIf="!pipelineStage.defaultStage && !pipelinePreview && !pipeline.crmPipeline" class="btn-danger button-blue"
+                                                <button type="button" *ngIf="!pipelineStage.defaultStage && !pipelinePreview && !pipeline.crmPipeline && pipelineStage.canDelete" class="btn-danger button-blue deleteBntAligment"
+                                                data-toggle="tooltip" data-placement="top" title="Delete" 
                                                     (click)="deleteStage(x)" style="float: right;" [disabled]="!pipelineStage.canDelete"><span
-                                                        class="glyphicon glyphicon-trash"></span></button>
+                                                        class="glyphicon glyphicon-trash"></span></button>   
+
+                                                        <span class="pdLeftforspace" *ngIf="(!pipeline.private)">Private <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="This pipeline stage will not be accesible by your partners if you check this option."></span>
+                                                          <label class="toggleOnOff">
+                                                            <input type="checkbox" [(ngModel)]="pipelineStage.private" name="private" [disabled]="shouldDisableCheckbox(x) || pipelinePreview">
+                                                            <span class="sliderOnOff"></span>
+                                                            <span class="labels" data-on="ON" data-off="OFF"></span>
+                                                          </label>
+                                                        </span>                 
+                                                        <div *ngIf="(!pipelineStage.private && !pipeline.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines')">
+                                                            <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
+                                                                name="nonInteractive" class="alignEqualtoText"> Non Interactive <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="Your partners will only be able to select the stage once and will not be able to update further for the non-interactive stage."></span>
+                                                        </div>                                                 
                                             </div>
-                                            <div>
-                                                <span *ngIf="pipeline.type === 'deal' || activeTabName == 'dealPipelines'">
-                                                    <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
-                                                    name="nonInteractive" style="margin: 5px;"> Non Interactive
-                                                </span>                                                 
-                                            </div> 
                                         </span>
                                     </div>
                                     
@@ -2179,7 +2168,7 @@
             </div> 
             <div class="modal-footer" *ngIf="!pipelinePreview">
                 <button type="submit" [disabled]="!pipeline.isValid || addPipelineLoader.isLoading" class="btn Btn-Green" (click)="saveOrUpdatePipeline()">Submit</button>
-                <!-- <button type="submit" [disabled]="!pipeline.isValid || addPipelineLoader.isLoading " class="btn green-haze" (click)="saveOrUpdatePipeline()">Submit</button> -->
+               
             </div>
         </div>
     </div>
@@ -2237,7 +2226,6 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 <div class="modal-dialog  accounts-modal" style="position: relative !important;">
   <!-- Modal content-->
   <div class="modal-content">
-    <!-- <app-dashboard-loader *ngIf="httpRequestLoader.isLoading"></app-dashboard-loader> -->
     <div class="modal-header">
       <button type="button" class="close-circle" data-dismiss="modal" (click)="addDomainModalClose()">
           <i class="fa fa-times" aria-hidden="true"></i>

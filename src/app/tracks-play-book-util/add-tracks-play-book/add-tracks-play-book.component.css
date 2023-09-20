@@ -265,14 +265,21 @@ h5 {
 }
 
 .img-grid {
-  max-width: 218px !important;
-  height: 118px !important;
-  position: relative;
-  top: 11px;
+  width: auto !important;
+  height: auto !important;
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 .img-grids {
-  max-width: 218px !important;
-  height: 118px !important;
+  /* max-width: 218px !important;
+  height: 118px !important; */
+  max-width: 100% !important;
+  height: 165px !important;
+  border-radius: 5px;
 }
 
 .isDisabled {
@@ -1054,6 +1061,10 @@ input.cmn-toggle-round-flat:checked + label:after {
 }
 
 @media screen and (max-width: 600px) {
+  .widthauto{
+    width: auto!important;
+
+  }
   .mPortlet {
     overflow-x: auto;
     padding-right: 10px !important;
@@ -1148,13 +1159,15 @@ input.cmn-toggle-round-flat:checked + label:after {
 .feature-img-bg {
   display: block;
   width: 100% !important;
-  height: auto;
+  /* height: auto; */
+  height: 172px;
   background: #fff;
   padding: 1px;
   margin: 0 auto;
   border: 2px dotted #ddd;
   position: relative;
   border-radius: 5px;
+  background: linear-gradient(45deg, #cdcdcd, transparent);
 }
 .right-border {
   border-right: 1px solid #eee;
@@ -1211,9 +1224,21 @@ ul.t-b-spacings {
 }
 
 .custom-height {
-  height: 150px;
+  height: 155px;
 }
 /* 12-6-2023 sudha sri */
 .inline-box {
   display: inline-flex;
+}
+@media only screen and (min-width: 766px) and (max-width: 1783px) {  
+  .add-contnet-poup-paddibg {
+    margin-top: 26px;
+  } 
+} 
+@media only screen and (min-width: 766px) and (max-width: 1024px) {  
+  .list__item .item__actions {
+    top: 25px;
+    margin-right: 16px;
+  }
+  
 }

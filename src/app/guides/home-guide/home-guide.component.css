@@ -1,0 +1,221 @@
+/* dashboard*/
+.section-height {height: 205px;}
+.bg-img{
+    background-image: url(/assets/images/user-guide3.png);
+    background-size: cover;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+}
+.search-guide{
+    transform: translate(0px, 84px);
+}
+.user-search{
+    padding: 0px 7px;
+}
+.content-end{
+    display: flex;
+    justify-content: end;
+}
+.actions-block{
+    float: inherit!important;
+}
+td.text-center {
+    font-size: 13px;
+    font-weight: 500;
+}
+.table{
+    margin-bottom: 2px!important;
+}
+
+/* add user guide css */
+.d-flex{
+    display: flex;
+}
+.justify-content-center{
+    justify-content: center;
+}
+.col-form-label {
+    padding-top: calc(0.375rem + 1px);
+    padding-bottom: calc(0.375rem + 1px);
+    margin-bottom: 0;
+    font-size: inherit;
+    line-height: 1.5;
+}
+.mb-3 {
+    margin-bottom: 18px;
+}
+
+@media(max-width:600px){
+    .sort-class{
+     padding:12px;
+    }
+}
+
+.user_card{
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+   min-width: 0; 
+  word-wrap: break-word;
+  background-clip: border-box;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  height: auto;
+  padding-top: 20px;
+  padding-right: 10px;
+  padding-bottom: 20px;
+  padding-left: 12px;
+  }
+  img.m-auto {
+    display: block;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+    padding: 13px 11px;
+    position: relative;
+    top: 6px;
+}
+  .user_txt{
+    font-size: 15px;
+    padding-top: 17px;
+    text-align: center;
+    margin: 0;
+  }
+  .p_20{
+    padding:30px 30px 30px 30px;
+  }
+    /* @media (min-width: 300px) and (max-width: 1920px)  {
+        .bg-img {height: 309px;}
+    } */
+
+ 
+.guide-width {
+    /* width: 1200px; */
+    display: block;
+    margin: 0 auto !important;
+  }
+  .pad-row {
+    padding: 20px 50px;
+    background: #f1f5f9;
+  }
+.page-bar-padding-cu-thispageonly {
+  margin-bottom: 0px !important;
+  padding-top: 30px;
+  padding-right: 40px;
+  padding-bottom: 10px;
+  padding-left: 40px;
+  }
+.user_card:hover {
+    box-shadow: 0 1px 3px 0 rgba(48, 48, 48, .30), 0 4px 8px 3px rgba(48, 48, 48, .15);
+    border-radius: 8px;
+} 
+  @media (min-width: 769px) and (max-width: 1119px)  {
+    .pad-row{padding: 20px 5px;}
+  }
+  @media (min-width: 300px) and (max-width: 768px)  {
+    .pad-row{padding: 20px 20px;}
+  }
+  @media (min-width: 300px) and (max-width: 992px)  {
+    .card-paddings-cu{padding: 0px 7px;}
+    .user_card {margin-bottom: 10px;}
+    h4.user_txt {font-size: 13px !important;}
+  }
+
+  
+  
+/* 12-07-2023 */
+.acc_img {
+  background: #fff;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
+  display: block;
+}
+.card-paddings-cu{
+  margin: 0px;
+  padding: 0px 12px;
+}
+
+
+
+/* iconsbg */
+.icon-bg1 {background: #FFF2EF;}
+.icon-bg2 {background: #E8F9FF;}
+.icon-bg3 {background: #ECFFEC;}
+.icon-bg4 {background: #F7F3FE;}
+.icon-bg5 {background: #FEF8E1;}
+.icon-bg6 {background: #FFF2EF;}
+.icon-bg7 {background: #FFF9E2;}
+.icon-bg8 {background: #E8F9FF;}
+.icon-bg9 {background: #FDF0ED;}
+.icon-bg10 {background: #E8F9FF;}
+.icon-bg11 {background: #ECFFEC;}
+.icon-bg12 {background: #FFF9E2;}
+.icon-bg13 {background: #FFF9E2;}
+.icon-bg14 {background: #FFF2EF;}
+
+.pageBarPaddings {
+  margin-bottom: 0px !important;
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+}
+
+.subCardBg {
+  padding: 10px 0px 10px 0px;
+  background: #f1f3fa7a;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.label-CuColor {
+  background: #ddd;
+  padding: 5px 10px !important;
+  color: #333;
+}
+
+h4.fontWeigtug {
+  font-weight: 600 !important;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.allignItemsRight {
+  text-align: right;
+}
+
+.allignItemsLeft {
+  text-align: left;
+}
+
+button.ColorCu {
+  background: #ddd;
+  padding: 5px 15px;
+  cursor: auto;
+}
+
+button.primaryBtnCu {
+  padding: 1px 7px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+i.eyeCu {
+  font-size: 12px;
+}
+
+@media only screen and (min-width: 360px) and (max-width: 767px) {
+  .allignItemsRight {
+    text-align: left;
+    padding-bottom: 5px;
+  }
+}
+

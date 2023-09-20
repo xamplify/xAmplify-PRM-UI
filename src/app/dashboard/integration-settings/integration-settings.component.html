@@ -3,7 +3,7 @@
 </app-response-message>
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div>
-  <ul class="nav nav-tabs" style="margin-bottom:0px;">
+  <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
     <li class="active"><a data-toggle="tab" href="#home">User Info</a></li>
     <li><a data-toggle="tab" href="#menu1">Custom fields</a></li>
     <li class="closebtn"><button type="button" class="btn btn-warning" (click)="closeSfSettings()">Close</button></li>
@@ -21,7 +21,7 @@
         <h5>{{integrationDetails?.externalEmail}}</h5>
         <span>Username: {{integrationDetails?.externalUserName}}</span>
       </div>
-      <div class="btn-group active-btns" role="group" aria-label="Basic example">
+      <div class="btn-group active-btns mb_right0" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-primary activate-btn" *ngIf="!(integrationDetails?.activeCRM)" (click)="activateCRM()">Activate</button>
         <button type="button" class="btn btn-primary activated-btn" *ngIf="integrationDetails?.activeCRM"><i class="fa fa-star"
             style="font-size: 15px !important;"></i>Activated</button>
@@ -33,82 +33,90 @@
 
   </div>
   <div id="menu1" class="tab-pane fade pt-top">
-    <div class="row m0">
-      <div class="col-md-6">
-        <div style="margin-bottom:20px">
-          <h3>{{ integrationType }} custom fields
-            <span class="reload-btn">
-              <a (click)="reloadCustomFields()" data-toggle="tooltip" data-placement="top"
-                title="Refresh Custom Fields"><i class="fa fa-refresh" style="font-size: 15px !important;"></i>
-                Reload</a>
-            </span>
-          </h3>
-        </div>
-      </div>
-      <!-- <div class="col-md-6 user-search">
-        <div class="portlet-input input-inline">
-          <div class="input-icon right">
-            <input class="form-control" placeholder="Search" type="text">
-            <button class="search-box-item-click" type="submit">
-              <i aria-hidden="true" class="fa fa-search" style="color:black !important"></i>
-            </button>
+    <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
+    <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
+      <div class="row m0">
+        <div class="col-md-8">
+          <div style="margin-bottom:20px">
+            <h3>{{ integrationType }} custom fields
+              <span class="reload-btn">
+                <a (click)="reloadCustomFields()" data-toggle="tooltip" data-placement="top"
+                  title="Refresh Custom Fields"><i class="fa fa-refresh" style="font-size: 15px !important;"></i>
+                  Reload</a>
+              </span>
+            </h3>
           </div>
         </div>
-      </div> -->
-    </div>
-    <form class="form-horizontal" autocomplete="off">
-      <table class='table tgrid'>
-        <thead>
-          <tr>
-            <th class="text-center"><input type="checkbox" value="sfcfSelectAll" id="sfcfSelectAll" name="sfcfSelectAll"
-                [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" /></th>
-
-            <th>Field Name</th>
-            <th>Data Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let sfCustomField of sfcfPagedItems ">
+      </div>
+      <form class="form-horizontal" autocomplete="off">
+        <table class='table tgrid'>
+          <thead>
             <tr>
-              <!-- <td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
-                    id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(!sfcfMasterCBClicked && sfCustomField.selected) || (sfcfMasterCBClicked && sfcfSelectAll)"/></td> -->
-              <td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
-                  (click)="selectCf(sfCustomField.name)" id="{{sfCustomField.name}}" name="sfcf[]"
-                  [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required"
-                  [disabled]="sfCustomField.required" /></td>
-              <td><span>{{sfCustomField.label}}</span></td>
-              <td><span>{{sfCustomField.type}}</span></td>
+              <th class="text-center"><input type="checkbox" value="sfcfSelectAll" id="sfcfSelectAll" name="sfcfSelectAll"
+                  [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"  class="pointer" /></th>
+              <th>Field Name</th>
+              <th>Data Type</th>
+              <th *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE'">Required</th>
+              <th *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE'">Place Holder</th>
             </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </form>
-    <ul *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="pagination pl10">
-      <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a (click)="setSfCfPage(1)">First</a></li>
-      <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a
-          (click)="setSfCfPage(sfcfPager.currentPage - 1)">Previous</a></li>
-      <li *ngFor="let page of sfcfPager.pages" [ngClass]="{active:sfcfPager.currentPage === page}"><a
-          (click)="setSfCfPage(page)">{{page}}</a></li>
-      <li [ngClass]="{disabled:sfcfPager.currentPage === sfcfPager.totalPages}">
-        <a (click)="setSfCfPage(sfcfPager.currentPage + 1)">Next</a>
-      </li>
-      <li [ngClass]="{disabled:sfcfPager.currentPage === sfcfPager.totalPages}">
-        <a (click)="setSfCfPage(sfcfPager.totalPages)">Last</a>
-      </li>
-    </ul>
-    <div *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="p-drop-down pl10" style="width: max-content;">
-      <select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber"
-        [ngModelOptions]="{standalone: true}" (ngModelChange)="selectedPageNumber($event.value)">
-        <option *ngFor="let pageNo of paginationComponent.numberPerPage" [ngValue]="pageNo">{{pageNo.name}}</option>
-      </select>
-    </div>
-    <div *ngIf="!sfcfPager.pages || sfcfPager.pages.length == 0" style="margin-bottom: 10px;">
-      <span>There are no custom fields in your {{ integrationType | titlecase }} account.</span>
-    </div>
-    <div class="modal-footer border-none">      
-      <button type="button" class="btn btn-primary" *ngIf="sfcfPager.pages && sfcfPager.pages.length"
-        (click)="saveCustomFieldsSelection()">Submit</button>
-    </div>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let sfCustomField of sfcfPagedItems ">
+              <tr>    
+                <td class="text-center"><input type="checkbox" value="{{sfCustomField.name}}"
+                  (click)="selectCf(sfCustomField)" id="{{sfCustomField.name}}" name="sfcf[]"
+                  [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required"
+                  [disabled]="!sfCustomField.canUnselect" class="pointer" /></td>
+                <td><span>{{sfCustomField.label}}</span></td>
+                <td><span>{{sfCustomField.type}}</span></td>
+                <td>
+                  <span *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE')">Required
+                    <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="Your partner must fill in this custom field if you toggle on this option."></span>
+                      <label class="toggleOnOff" [ngClass]="!sfCustomField?.canUnselect ? 'disabled-opacity':''">
+                        <input  type="checkbox" [disabled]="!sfCustomField.canUnselect" [(ngModel)]="sfCustomField.required" [ngModelOptions]="{standalone: true}">
+                        <span class="sliderOnOff"></span>
+                        <span class="labels" data-on="ON" data-off="OFF"></span>
+                      </label>
+                    </span>   
+                </td>
+              <td>
+                <input *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE')" type="text" class="form-control"  placeholder="PlaceHolder"
+                 [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </form>
+      <ul *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="pagination pl10">
+        <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a (click)="setSfCfPage(1)">First</a></li>
+        <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a
+            (click)="setSfCfPage(sfcfPager.currentPage - 1)">Previous</a></li>
+        <li *ngFor="let page of sfcfPager.pages" [ngClass]="{active:sfcfPager.currentPage === page}"><a
+            (click)="setSfCfPage(page)">{{page}}</a></li>
+        <li [ngClass]="{disabled:sfcfPager.currentPage === sfcfPager.totalPages}">
+          <a (click)="setSfCfPage(sfcfPager.currentPage + 1)">Next</a>
+        </li>
+        <li [ngClass]="{disabled:sfcfPager.currentPage === sfcfPager.totalPages}">
+          <a (click)="setSfCfPage(sfcfPager.totalPages)">Last</a>
+        </li>
+      </ul>
+      <div *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="p-drop-down pl10 custom-fields-items-count">
+        <select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber"
+          [ngModelOptions]="{standalone: true}" (ngModelChange)="selectedPageNumber($event.value)">
+          <option *ngFor="let pageNo of paginationComponent.numberPerPage" [ngValue]="pageNo">{{pageNo.name}}</option>
+        </select>
+      </div>
+      <div class="text-center" *ngIf="!sfcfPager.pages || sfcfPager.pages.length == 0" style="margin-bottom: 10px;">
+        <span>There are no custom fields in your {{ integrationType | titlecase }} account.</span>
+      </div>
+      <div class="modal-footer border-none">      
+        <button type="button" class="btn btn-primary" *ngIf="sfcfPager.pages && sfcfPager.pages.length"
+          (click)="saveCustomFieldsSelection()">Submit</button>
+      </div>
+    </ng-container>
+
+
   </div>
 </div>
 <!--Nav-end-->

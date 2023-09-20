@@ -21,6 +21,7 @@ export class EmailTemplateService {
     URL = this.authenticationService.REST_URL;
     MARKETO_URL = this.authenticationService.REST_URL;
     isNewTemplate = false;
+    isTemplateSaved = false;
     constructor( private http: Http,  private authenticationService: AuthenticationService,
     		 private refService:ReferenceService,private router:Router) {
        }
@@ -188,6 +189,7 @@ export class EmailTemplateService {
     }
 
     updatePartnerTemplate(emailTemplate: EmailTemplate) {
+        /*******XNFR-330*******/
         return this.http.post(this.URL + `email-template/updatePartnerTemplate/?access_token=${this.authenticationService.access_token}`, emailTemplate)
         .map(this.extractData)
         .catch(this.handleError);

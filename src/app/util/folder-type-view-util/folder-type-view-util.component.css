@@ -28,7 +28,7 @@
 }
 
 .ffolder.big:before {
-    top: -22px;
+    top: -23px;
     left: 0;
     width: 96px;
     height: 24px;
@@ -36,7 +36,7 @@
 }
 
 .ffolder.big:after {
-    top: -46px;
+    top: -47px;
     left: 72px;
     border: 24px solid transparent
 }
@@ -44,7 +44,7 @@
 .ffolder span {
     font-size: 12px;
     border-radius: 15px;
-    white-space: nowrap
+    /* white-space: nowrap */
 }
 
 .ffolder.gray {
@@ -64,7 +64,10 @@
     background-color: transparent
 }
 
-.ffolder.gray i {
+/* .ffolder.gray i {
+    color: #54a7e9
+} */
+.ffolder.gray{
     color: #54a7e9
 }
 

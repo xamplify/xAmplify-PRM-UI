@@ -1,29 +1,23 @@
-#search-margin{
-	margin-right: 15px;
+#search-margin {
+  margin-right: 15px;
 }
-#icon-right{
-	position: relative;right: -11px;
-}
-
-#search-text{
-	height:34px;
-}
-.fa.fa-refresh.margin{
-	line-height: 15px;
-}
-#left{
-	float:left;
-}
-#center{
-	text-align: center;
-}
-.xAmpColor{
-	color:#5aadf0;
-}
-#create-account{
-	font-size: 20px;
+#icon-right {
+  position: relative;
+  right: -11px;
 }
 
-.full-width{
-    width: 100% !important;
+#search-text {
+  height: 34px;
+}
+.fa.fa-refresh.margin {
+  line-height: 15px;
+}
+#left {
+  float: left;
+}
+#center {
+  text-align: center;
+}
+.full-width {
+  width: 100% !important;
 }

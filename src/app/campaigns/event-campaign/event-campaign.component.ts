@@ -2542,7 +2542,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     } else {
                         this.templateError = false;
                         this.loading = false;
-                        alert("Custom Objects are not found")
                     }
 
                 }, error => {

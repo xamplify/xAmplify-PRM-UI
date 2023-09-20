@@ -1,5 +1,5 @@
 .alert-dismissible .close {
-  top: 0 !important;
+  top: 0px !important;
   right: 0px !important;
 }
 .alert-success,
@@ -17,6 +17,13 @@
   border-radius: 3px !important;
   color: #a94442 !important;
 }
+
+.alert-info {
+  background-color: #d9edf7 !important;
+  border-color: #bce8f1 !important;
+  color: #31708f !important;
+}
+
 .alert-warning {
   background-color: #f1d43b;
   border-radius: 3px !important;
@@ -41,4 +48,22 @@
 }
 .login-success {
   color: #3c763d;
+}
+.login-info{
+  color: #31708f;
+}
+
+.msg-algn{
+  text-align: center;
+  padding-top: 6px;
+}
+.alert-danger .close {
+  position: relative;
+  top: 10px !important;
+}
+.alert-success .close  {
+  top: 10px !important;
+}
+.alert-warning .close {
+  top: 10px !important;
 }

@@ -115,7 +115,7 @@
 }
 
 .min-h {
-  min-height: 280px;
+  min-height: 315px;
 }
 
 .ref-mar {
@@ -255,3 +255,7 @@
   border-right: 3px solid #5ab1eb;
   border-top: 3px solid #5ab1eb;
 }
+.divapdding-or-cards {
+  margin: 5px 0px;
+}
+

@@ -1,7 +1,7 @@
 <ng-container *ngIf="deviceTypeOs">
 	<span *ngIf="userPlatform.os == 'windows'"><i data-toggle="tooltip" data-placement="top" title="{{userPlatform.os}}"
-	   class="fa fa-windows" aria-hidden="true"
-	   style="color: #0085d5; font-size: 18px !important"></i> </span>
+	   class="fa fa-windows singleIconCustomization" aria-hidden="true"
+	   style="font-size: 18px !important"></i> </span>
 	<span *ngIf="userPlatform.os == 'mac'"><i class="fa fa fa-apple" data-toggle="tooltip" data-placement="top" title="{{userPlatform.os}}"
 	   aria-hidden="true" style="color: green; font-size: 22px !important"></i>
 	</span>
@@ -14,8 +14,8 @@
  </ng-container>
  <ng-container *ngIf="!deviceTypeOs">
 	<span *ngIf="userPlatform.deviceType == 'windows'"><i data-toggle="tooltip" data-placement="top" title="{{userPlatform.deviceType}}"
-	   class="fa fa-windows" aria-hidden="true"
-	   style="color: #0085d5; font-size: 18px !important"></i> </span>
+	   class="fa fa-windows singleIconCustomization" aria-hidden="true"
+	   style="font-size: 18px !important"></i> </span>
 	<span *ngIf="userPlatform.deviceType == 'mac'"><i class="fa fa fa-apple" data-toggle="tooltip" data-placement="top" title="{{userPlatform.deviceType}}"
 	   aria-hidden="true" style="color: green; font-size: 22px !important"></i>
 	</span>
@@ -27,19 +27,19 @@
 	   style="color: #a4ca39; font-size: 22px !important"></i> 
 	</span>
 	<span *ngIf="userPlatform.deviceType == 'computer'"><i data-toggle="tooltip" data-placement="top" title="{{userPlatform.deviceType}}"
-	   class="fa fa-desktop" aria-hidden="true"
-	   style="color: #0085d5; font-size: 18px !important"></i> </span>
+	   class="fa fa-desktop singleIconCustomization" aria-hidden="true"
+	   style="font-size: 18px !important"></i> </span>
 	<span *ngIf="userPlatform.deviceType == 'ipad'"><i data-toggle="tooltip" data-placement="top" title="{{userPlatform.deviceType}}"
-	   class="fa fa-tablet" aria-hidden="true"
-	   style="color: #0085d5; font-size: 18px !important"></i> </span>
+	   class="fa fa-tablet singleIconCustomization" aria-hidden="true"
+	   style="font-size: 18px !important"></i> </span>
 	<span *ngIf="userPlatform.deviceType == 'iphone'"><i data-toggle="tooltip" data-placement="top" title="{{userPlatform.deviceType}}"
-	   class="fa fa-mobile" aria-hidden="true"
-	   style="color: #0085d5; font-size: 18px !important"></i> </span>
+	   class="fa fa-mobile singleIconCustomization" aria-hidden="true"
+	   style="font-size: 18px !important"></i> </span>
  </ng-container>
  <ng-container *ngIf="userPlatform.deviceType==null && userPlatform.os==null">
 	<span *ngIf="userPlatform.device == 'windows'"><i data-toggle="tooltip" data-placement="top" title="{{userPlatform.device}}"
-	   class="fa fa-windows" aria-hidden="true"
-	   style="color: #0085d5; font-size: 18px !important"></i> </span>
+	   class="fa fa-windows singleIconCustomization" aria-hidden="true"
+	   style="font-size: 18px !important"></i> </span>
 	<span *ngIf="userPlatform.device == 'mac'"><i class="fa fa fa-apple" data-toggle="tooltip" data-placement="top" title="{{userPlatform.device}}"
 	   aria-hidden="true" style="color: green; font-size: 22px !important"></i>
 	</span>
@@ -51,13 +51,13 @@
 	   style="color: #a4ca39; font-size: 22px !important"></i> 
 	</span>
 	<span *ngIf="userPlatform.device == 'computer'"><i data-toggle="tooltip" data-placement="top" title="{{userPlatform.device}}"
-	   class="fa fa-desktop" aria-hidden="true"
-	   style="color: #0085d5; font-size: 18px !important"></i> </span>
+	   class="fa fa-desktop singleIconCustomization" aria-hidden="true"
+	   style="font-size: 18px !important"></i> </span>
 	<span *ngIf="userPlatform.device == 'ipad'"><i data-toggle="tooltip" data-placement="top" title="{{userPlatform.device}}"
-	   class="fa fa-tablet" aria-hidden="true"
-	   style="color: #0085d5; font-size: 18px !important"></i> </span>
+	   class="fa fa-tablet singleIconCustomization" aria-hidden="true"
+	   style="font-size: 18px !important"></i> </span>
 	<span *ngIf="userPlatform.device == 'iphone'"><i data-toggle="tooltip" data-placement="top" title="{{userPlatform.device}}"
-	   class="fa fa-mobile" aria-hidden="true"
-	   style="color: #0085d5; font-size: 18px !important"></i> </span>
+	   class="fa fa-mobile singleIconCustomization" aria-hidden="true"
+	   style="font-size: 18px !important"></i> </span>
  </ng-container>
  <span *ngIf="userPlatform.deviceType == null && userPlatform.device == null && userPlatform.os == null"> - </span>

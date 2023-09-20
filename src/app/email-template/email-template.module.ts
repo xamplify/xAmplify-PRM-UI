@@ -5,7 +5,6 @@ import { ErrorPagesModule } from '../error-pages/error-pages.module';
 import { CommonComponentModule} from '../common/common.module';
 import { EmailEditorComponent } from './email-editor/email-editor.component';
 import { CreateTemplateComponent } from './create-template/create-template.component';
-import { ManageTemplateComponent } from './manage-template/manage-template.component';
 import { SelectTemplateComponent } from './select-template/select-template.component';
 import { UpdateTemplateComponent } from './update-template/update-template.component';
 import { UploadEmailTemplateComponent } from './upload-email-template/upload-email-template.component';
@@ -17,6 +16,9 @@ import { UploadMarketoEmailTemplateComponent } from './upload-marketo-email-temp
 import { UpdateMarketoTemplateComponent } from './update-marketo-template/update-marketo-template.component';
 import { SharedContactsModule } from 'app/shared/shared-contacts.module';
 import {CkEditorUploadComponentModule} from '../ck-editor-upload-component/ck-editor-upload-component.module';
+import { SelectEmailTemplatesFilterPipe } from './select-email-templates-filter.pipe';
+import { PendingChangesGuard } from "app/component-can-deactivate";
+import { ManageEmailTemplatesComponent } from './manage-email-templates/manage-email-templates.component';
 
 
 
@@ -24,7 +26,8 @@ import {CkEditorUploadComponentModule} from '../ck-editor-upload-component/ck-ed
 
 @NgModule({
   imports: [ CommonModule,SharedModule,EmailTemplateRoutingModule,CKEditorModule, ErrorPagesModule,CommonComponentModule,SharedContactsModule,CkEditorUploadComponentModule ],
-  declarations: [EmailEditorComponent, CreateTemplateComponent,ManageTemplateComponent, SelectTemplateComponent,
-                 UpdateTemplateComponent, UploadEmailTemplateComponent, HelpComponent, UploadMarketoEmailTemplateComponent, UpdateMarketoTemplateComponent],
+  declarations: [EmailEditorComponent, CreateTemplateComponent, SelectTemplateComponent,
+                 UpdateTemplateComponent, UploadEmailTemplateComponent, HelpComponent, UploadMarketoEmailTemplateComponent, UpdateMarketoTemplateComponent, SelectEmailTemplatesFilterPipe, ManageEmailTemplatesComponent],
+  providers:[PendingChangesGuard]
 })
 export class EmailTemplateModule { }

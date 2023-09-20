@@ -24,7 +24,7 @@
 				</div>
 				<div *ngFor="let learningTrack of contents ;let i =index;"  class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 					<div class="grid-box box-shadow">
-                        <img class="img-grid-track " [src]="learningTrack?.featuredImage" onerror="this.src='assets/images/lms.jpg';" alt="{{learningTrack?.title}}">
+                        <img class="img-grid-track " [src]="learningTrack?.featuredImage" onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack?.title}}">
                         <h4 class="ellipsis mt5 mb5 f-w-600" title="{{learningTrack?.title}}" style="float: none !important;" translate>
                             {{learningTrack?.title | slice:0:25}} <span *ngIf="learningTrack?.title?.length>25">...</span><br><br>
                         </h4>
@@ -53,28 +53,43 @@
                                 <span *ngIf="learningTrack?.createdByName?.length>17">..</span>
                             </h6>
                         </div>
-                        <div class="ribbon">
-                            <span style="background-color: #5cb85c;" *ngIf="learningTrack?.published && !isPartnerView" translate>Published</span>
+                        <div class="ribbon tab-ribbon">
+                            <!---XNFR-327--->
+                            <span style="background-color: #5cb85c;" *ngIf="learningTrack?.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress" translate>Published</span>
+                            <span *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress && !isPartnerView">
+                                <img src="assets/images/loading.gif" class="margin-0-ht5px" alt="Processing">Processing
+                            </span>
+                            <!---XNFR-327--->
                         </div>
-                        <div class="bar auto-height">
-                            <a *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
-                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            </a>
-                            <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false)">
-                                <i class="fa fa-reply" aria-hidden="true"></i>
-                            </a>
-                            <a *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true)">
-                                <i class="fa fa-share" aria-hidden="true"></i>
-                            </a>
-                            <a data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
-                                <i class="fa fa-eye" aria-hidden="true"></i>
-                            </a>
-                            <a *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="goToAnalytics(learningTrack)">
-                                <i class="fa fa-line-chart" aria-hidden="true"></i>
-                            </a>
-                            <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Delete" class="delete" (click)="confirmDelete(learningTrack.id)">
-                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                            </a>
+                        <div class="bar auto-height gridIconCustomization">
+                             <!---XNFR-327--->
+                            <ng-container *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress">
+                                <a class="Iconhover" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </a>
+                                <a class="Iconhover" *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false)">
+                                    <i class="fa fa-reply" aria-hidden="true"></i>
+                                </a>
+                                <a class="Iconhover" *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true)">
+                                    <i class="fa fa-share" aria-hidden="true"></i>
+                                </a>
+                                <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+                                <a class="Iconhover" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="goToAnalytics(learningTrack)">
+                                    <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                </a>
+                                <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Delete" class="delete" (click)="confirmDelete(learningTrack.id)">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </a>
+                            </ng-container>
+                            <!---XNFR-327--->
+                            <ng-container *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress">
+                                <a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listLearningTracks(pagination)"> 
+                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                </a> 
+                            </ng-container>
+                            <!---XNFR-327--->
                         </div>
 					</div>
 				</div>

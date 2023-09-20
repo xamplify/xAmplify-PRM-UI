@@ -62,3 +62,28 @@
 .portlet{
 	margin-bottom: 20px !important;
 }
+
+/* design Manage Forms Analytics table borders */
+table.table.table-allsideboders {
+    border: 1px solid #ddd;
+}
+@media screen and (max-width:600px){
+	.mb_v_mrg{
+		margin-top: 10px!important;
+	}
+	.mb-height_unset {
+		overflow: hidden;
+		height: unset!important;
+	}
+	.mb_mrg_unset{
+		margin: unset!important;
+	}
+	.mb_display_inline{
+		display: inline-block;
+	}
+}
+@media screen and (max-width:380px){
+	.mb_V_tab{
+		padding: 10px 7px!important;
+	}
+}

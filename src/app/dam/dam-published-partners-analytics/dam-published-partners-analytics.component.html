@@ -36,8 +36,8 @@
                            <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                            Published {{authenticationService?.partnerModule?.customName}}
                         </div>
-                        <div class="inputs sort-published-partners">
-                           <div class="mSort" style="float: left; margin: 0 10px;">
+                        <div class="inputs sort-published-partners d-flex">
+                           <div class="" style="float: left; margin: 0 10px;">
                               <select class="form-control" [(ngModel)]="sortOption.publishedPartnerAnalyticsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                               <option *ngFor="let option of sortOption.publishedPartnerAnalyticsDropDown"
                               [ngValue]="option" translate>
@@ -94,7 +94,7 @@
                                              <td class="text-center">
                                                 <div class=" actions-block no-float override-actions">
                                                    <a (click)="viewDetailedAnalytics(partner)" title="View Detailed Analytics">
-                                                   <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                                   <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                                                    </a>
                                                 </div>
                                              </td>

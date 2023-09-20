@@ -20,7 +20,8 @@
   <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
      <div class="tabbable tabbable-custom tabbable-noborder" id="header">
         <div class="tab-content">
-           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader> 
+
            <div class="page-bar m10" [hidden]="httpRequestLoader.isLoading">
               <div class="page-toolbar col-xs-12 col-sm-12 col-md-7">
                  <div class="btn-group pull-right">
@@ -42,7 +43,7 @@
               </div>
            </div>
            <section class='m10' *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-              <div class="table-responsive">
+            <div class="table-responsive">
                  <table class='table tgrid table-hover table-sm' aria-describedby="">
                     <thead>
                        <tr>
@@ -55,7 +56,7 @@
                        <ng-container *ngFor='let campaign of pagination.pagedItems; let i=index'>
                           <tr>
                              <td>
-                                <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">
+                                <h4 class="ellipsis mt5 mb5 f-w-600 m_t_view" style="font-size: 14px;" data-toggle="tooltip" data-placement="top" title="{{campaign.campaignName}}">
                                    {{campaign.campaignName | slice:0:50}}
                                    <span *ngIf="campaign.campaignName?.length>50">...</span>
                                 </h4>
@@ -82,6 +83,7 @@
                  </table>
               </div>
            </section>
+
            <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
               <app-pagination [pagination]="pagination"
               (notifyParent)="setPage($event)"

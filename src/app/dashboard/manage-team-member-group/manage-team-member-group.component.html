@@ -8,7 +8,7 @@
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-lg-12">
       <div class="col-xs-12 col-sm-5 col-lg-5">
-        <button class="btn-primary" style="padding: 5px 13px !important;" (click)="openCreateDiv()" translate>Create Group</button>
+        <button class="btn-primary mb_10" style="padding: 5px 13px !important;" (click)="openCreateDiv()" translate>Create Group</button>
       </div>
       <div class="col-xs-12 col-sm-7 col-lg-7">
         <div class="page-toolbar">
@@ -125,7 +125,7 @@
 
 <!--ng-template-outlet-->
 <ng-template #groupGridView let-group="groupInfo" let-isPreview="showPreviewIcon">
-  <div class="col-md-4 col-sm-4 col-xs-12">
+  <div class="col-md-6 col-sm-6 col-xs-12 col-lg-4">
     <div class="grid-box-team">
       <h4 class="ellipsis mt5 mb5 f-w-600 left-align plfpx" title="{{group?.name}}">
         {{group?.name | slice:0:15}}
@@ -156,17 +156,17 @@
           </tbody>
         </table>
        </div> 
-      <div class="bar" *ngIf="isPreview">
-        <a  data-toggle="tooltip" data-placement="top" title="Save As" (click)="saveAs(group)">
+      <div class="bar full-width-folder gridIconCustomization" *ngIf="isPreview">
+        <a class="Iconhover"  data-toggle="tooltip" data-placement="top" title="Save As" (click)="saveAs(group)">
           <i class="fa fa-copy" aria-hidden="true"></i>
         </a>
-        <a  data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(group.id,false)">
+        <a  class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(group.id,false)">
           <i class="fa fa-eye" aria-hidden="true"></i>
         </a>
-        <a data-toggle="tooltip" data-placement="top" [title]="group?.defaultGroup ? 'Default group cannot be edited':'Edit'" [className]="group?.defaultGroup ? 'inactive':''" (click)="findGroupDetailsById(group)">
+        <a data-toggle="tooltip" data-placement="top" [title]="group?.defaultGroup ? 'Default group cannot be edited':'Edit'" [className]="group?.defaultGroup ? 'inactive':'Iconhover'" (click)="findGroupDetailsById(group)">
           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
         </a>
-        <a  data-toggle="tooltip" data-placement="top" [title]="group?.defaultGroup ? 'Default group cannot be deleted':'Delete'" [className]="group?.defaultGroup ? 'delete inactive':'delete'" (click)="confirmAlert(group)">
+        <a  class="delete" data-toggle="tooltip" data-placement="top" [title]="group?.defaultGroup ? 'Default group cannot be deleted':'Delete'" [className]="group?.defaultGroup ? 'delete inactive':'delete'" (click)="confirmAlert(group)">
           <i class="fa fa-trash-o" aria-hidden="true"></i>
         </a>
       </div>

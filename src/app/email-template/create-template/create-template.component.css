@@ -1,72 +1,36 @@
 #bee-plugin-container {
-    height: 935px;
-    width: 100%;
+  overflow: auto;
 }
-
 .tile {
-    min-height: 1000px;
-    position: relative;
-    background: #ffffff;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-    margin-bottom: 10px;
-    transition: all 0.3s ease-in-out;
-    padding: 15px;
+  min-height: 1000px;
+  position: relative;
+  background: #ffffff;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12),
+    0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+  transition: all 0.3s ease-in-out;
+  padding: 15px;
+}
+.page-bar .page-breadcrumb {
+  padding: 14px 6px;
 }
 
-.page-breadcrumb {
-    padding: 8px 0 10px;
-}
-
-.top-bar-left .title {
-    display: none;
-}
-
-#right {
-    float: right;
-    margin-bottom: 10px;
-}
-
-#left {
-    float: left;
-    ;
-}
-
-#search {
-    margin-right: 35px;
-}
-
-#search-icon {
-    position: relative;
-    right: -11px;
-}
-
-#search-text {
-    height: 34px;
-}
-
-#circle {
-    margin-top: 4px;
-}
-
-.success {
-    color: green;
-}
-
-.button-loader{
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    background: rgba(0,0,0,0.75) url(../../../assets/images/loading.gif) no-repeat center center;
-    z-index: 10000;
+@media screen and (max-width: 600px) {
+  .mScroll {
+    overflow-x: auto;
   }
-
-  @media screen and (max-width:600px){
-
-  .mscroll{
-      overflow-x: auto;
+  .mWidth {
+    width: 96%;
   }
-
+  .mPad {
+    width: 150%;
+    margin-left: -40px;
   }
+}
+
+@media screen and (max-width: 600px) {
+  .mscroll {
+    overflow-x: auto;
+  }
+}
+

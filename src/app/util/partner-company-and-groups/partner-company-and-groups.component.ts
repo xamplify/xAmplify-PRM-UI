@@ -32,6 +32,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	@Input() inputId:any;
 	@Input() moduleName: any;
 	@Output() partnerCompanyAndGroupsEventEmitter = new EventEmitter();
+	@Input() isPublishedToPartnerGroups:boolean;
 	httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 	sendSuccess = false;
 	responseMessage = "";
@@ -42,19 +43,17 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	isEdit = false;
 	/******Partner Companies Varaibles******/
 	isHeaderCheckBoxChecked = false;
-	selectedTeamMemberIds: any[] = [];
+	@Input()selectedTeamMemberIds: any[] = [];
 	teamMembersLoader: HttpRequestLoader = new HttpRequestLoader();
 	sortOption: SortOption = new SortOption();
 	teamMembersPagination: Pagination = new Pagination();
 	adminsAndTeamMembersErrorMessage: CustomResponse = new CustomResponse();
-	selectedPartnershipIds: any[] = [];
+	@Input()selectedPartnershipIds: any[] = [];
 	/************Partner Group related variables**********/
-	selectedPartnerGroupIds: any[] = [];
+	@Input()selectedPartnerGroupIds: any[] = [];
 	partnerGroupsPagination: Pagination = new Pagination();
 	partnerGroupsSortOption: SortOption = new SortOption();
 	isParnterGroupHeaderCheckBoxChecked = false;
-	isPublishedToPartnerGroup = false;
-	modalPopupLoader: boolean;
 	isModalPopupshow : boolean = false ;
 	showUsersPreview = false;
 	selectedPartnerGroupName = "";
@@ -65,7 +64,8 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 	selectedFilterIndex: number = 1;
 	showFilter = true;
 	selectedTab = 1;
-
+	/***XNFR-326****/
+	@Input() isAssetPublishedEmailNotification = false;
 	constructor(public partnerService: ParterService, public xtremandLogger: XtremandLogger, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService,
 		public referenceService: ReferenceService, public properties: Properties,
 		 public utilService: UtilService, public userService: UserService,public callActionSwitch:CallActionSwitch) {
@@ -77,7 +77,25 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			this.pagination.partnerTeamMemberGroupFilter = true;
 			this.showFilter = true;
 			if(this.inputId!=undefined && this.inputId>0){
-				this.findPublishedType();
+				this.referenceService.startLoader(this.httpRequestLoader);
+				if (this.isPublishedToPartnerGroups) {
+					this.isEdit = this.selectedPartnerGroupIds!=undefined && this.selectedPartnerGroupIds.length>0;
+					$('#partnerGroups-li').addClass('active');
+					$('#partnerGroups').addClass('tab-pane fade in active');
+					this.showFilter = false;
+					this.selectedTab = 2;
+					this.findPartnerGroups(this.partnerGroupsPagination);
+					this.disableOrEnablePartnerCompaniesTab();
+				}else {
+					this.isEdit = this.selectedTeamMemberIds != undefined &&this.selectedTeamMemberIds.length > 0;
+					$('#partners-li').addClass('active');
+					$('#partners').addClass('tab-pane fade in active');
+					this.showFilter = true;
+					this.selectedTab = 1;
+					this.findPartnerCompanies(this.pagination);
+					this.disableOrEnablePartnerListsTab();
+
+				}
 			}else{
 				$('#partners-li').addClass('active');
 				$('#partners').addClass('tab-pane fade in active');
@@ -88,85 +106,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
 			this.resetFields();
 		}
-	}
-
-	findPublishedType() {
-		this.modalPopupLoader = true;
-		this.referenceService.startLoader(this.httpRequestLoader);
-		this.damService.isPublishedToPartnerGroups(this.inputId, this.moduleName).subscribe(
-			response => {
-				this.isPublishedToPartnerGroup = response.data;
-				if (this.isPublishedToPartnerGroup) {
-					$('#partnerGroups-li').addClass('active');
-					$('#partnerGroups').addClass('tab-pane fade in active');
-					this.showFilter = false;
-					this.selectedTab = 2;
-				}else {
-					$('#partners-li').addClass('active');
-					$('#partners').addClass('tab-pane fade in active');
-					this.showFilter = true;
-					this.selectedTab = 1;
-				}
-			}, error => {
-				this.referenceService.showSweetAlertErrorMessage("Invalid Request.Please try after sometime");
-				this.resetFields();
-			},() => {
-				if (this.isPublishedToPartnerGroup) {
-					this.findPublishedPartnerGroupIdsByInputId();
-				} else {
-					this.findPublishedPartnershipIdsByInputId();
-					this.findPublishedPartnerIds();
-				}
-			}
-		);
-	}
-
-	findPublishedPartnerGroupIdsByInputId() {
-		this.referenceService.startLoader(this.httpRequestLoader);
-		this.damService.findPublishedPartnerGroupIdsByDamId(this.inputId, this.moduleName).subscribe(
-			response => {
-				this.selectedPartnerGroupIds = response.data;
-				if (response.data != undefined && response.data.length > 0) {
-					this.isEdit = true;
-				}
-				this.disableOrEnablePartnerCompaniesTab();
-			}, error => {
-				this.xtremandLogger.error(error);
-				this.findPartnerGroups(this.partnerGroupsPagination);
-			}, () => {
-				this.findPartnerGroups(this.partnerGroupsPagination);
-			}
-		);
-	}
-
-	findPublishedPartnerIds() {
-		this.referenceService.startLoader(this.httpRequestLoader);
-		this.damService.findPublishedPartnerIds(this.inputId, this.moduleName).subscribe(
-			response => {
-				this.selectedTeamMemberIds = response.data;
-				if (response.data != undefined && response.data.length > 0) {
-					this.isEdit = true;
-				}
-				this.disableOrEnablePartnerListsTab();
-				this.referenceService.stopLoader(this.httpRequestLoader);
-			}, error => {
-				this.referenceService.stopLoader(this.httpRequestLoader);
-				this.xtremandLogger.error(error);
-			});
-	}
-
-	findPublishedPartnershipIdsByInputId() {
-		this.referenceService.startLoader(this.httpRequestLoader);
-		this.damService.findPublishedPartnershipIdsByDamId(this.inputId, this.moduleName).subscribe(
-			response => {
-				this.selectedPartnershipIds = response.data;
-			}, error => {
-				this.xtremandLogger.error(error);
-				this.findPartnerCompanies(this.pagination);
-			}, () => {
-				this.findPartnerCompanies(this.pagination);
-			}
-		);
 	}
 
 	findPartnerCompanies(pagination: Pagination) {
@@ -182,12 +121,10 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			});
 			pagination = this.pagerService.getPagedItems(pagination, data.list);
 			this.referenceService.stopLoader(this.httpRequestLoader);
-			this.modalPopupLoader = false;
 		}, _error => {
 			this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-			this.modalPopupLoader = false;
 		}, () => {
-
+			
 		});
 	}
 
@@ -385,7 +322,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			this.selectedPartnershipIds.push(partnershipId);
 		} else {
 			$('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', false);
-			$('#parnter-companies tr').removeClass("row-selected");
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
 			let currentPageSelectedIds = this.teamMembersPagination.pagedItems.map(function (a) { return a.userId; });
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedTeamMemberIds, currentPageSelectedIds);
@@ -405,6 +341,7 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 			showCancelButton: true,
 			swalConfirmButtonColor: '#54a7e9',
 			swalCancelButtonColor: '#999',
+			allowOutsideClick: false,
 			confirmButtonText: 'Yes, delete it!'
 		}).then(function () {
 			self.clearTabs();
@@ -469,7 +406,6 @@ export class PartnerCompanyAndGroupsComponent implements OnInit {
 				});
 				this.isParnterGroupHeaderCheckBoxChecked = (items.length == partnerGroupIds.length && partnerGroupIds.length > 0);
 				this.referenceService.stopLoader(this.httpRequestLoader);
-				this.modalPopupLoader = false;
 			}, _error => {
 				this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
 			}, () => {

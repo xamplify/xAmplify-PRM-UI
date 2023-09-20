@@ -92,7 +92,8 @@ body,
 }
 .portlet.box > .portlet-body,
 .copyright-css,
-.video {
+.video,
+.hash-table-color {
   background-color: #2b3c46 !important;
 }
 .page-bar .page-breadcrumb > li > a,
@@ -222,13 +223,13 @@ ul.alt-row-style1 li a {
 }
 .td-new,
 th {
-  border: 1px solid #1c313a !important;
-  /* border: 1px solid #2f4857 !important; old one */
+  /* border: 1px solid #2f4857 !important; */
+  border: transparent !important;
 }
-td > button {
+/* td > button {
   background-color: #00a99d !important;
   border-radius: 3px !important;
-}
+} */
 .list-group-item,
 /* input, */
 .card {
@@ -251,7 +252,7 @@ ul.alt-row-style1 li:hover,
 
 .re-distributed-high-level {
   background-color: #2b3c46 !important;
-  border: 3px solid #2f4857 !important;
+  border: 1px solid #2f4857 !important;
 }
 .list__item > .flex-row {
   background-color: #22313a !important;
@@ -331,7 +332,7 @@ fieldset,
 .ng2-tag-input,
 .nav-tabs,
 .nav-pills {
-  border-bottom: 2px solid #2f4857 !important;
+  border-bottom: 1px solid #2f4857 !important;
 }
 .table > tbody > tr > td,
 .table > tbody > tr > th,
@@ -367,13 +368,29 @@ fieldset,
   background-color: #22313a !important;
   color: white !important;
 }
-.table-striped > tbody > tr:nth-of-type(odd),
+/* 04-07-2023 Templates privew background */
+/* .table-striped > tbody > tr:nth-of-type(odd),
 table tr:nth-child(odd) td,
 table tr:nth-child(even) td,
 .search-box-item-clear,
 input {
-  background-color: #2b3c46 !important ;
+  background-color: transparent !important;
+} */
+.table-striped > tbody > tr:nth-of-type(odd),
+table tr:nth-child(odd),
+table tr:nth-child(even),
+.search-box-item-clear {
+  background-color: transparent !important;
 }
+.table .table {
+  background: transparent !important;
+}
+table#folder-list-view,
+tr {
+  background: transparent !important;
+}
+/***End Of 04-07-2023 Templates privew background  */
+
 .table-hover > tbody > tr:hover,
 .page-header.navbar
   .top-menu
@@ -491,6 +508,17 @@ input {
 .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle {
   background-color:#22313a !important;
 } */
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown-user
+  .dropdown-toggle
+  > img {
+  border: 1px solid #2f4857 !important;
+}
+.profile-image-wrapper-color {
+  border: 1px solid #2f4857 !important;
+}
 
 /**** dropdownmenu ***/
 .dropdown-menu {
@@ -649,8 +677,7 @@ select {
   background-color: #22313a;
   border: 1px solid #2f4857 !important;
 }
-.input-group-addon,
-.input-group-btn {
+.input-group-addon {
   border: 1px solid #2f4857 !important;
 }
 .design-bgcolor {
@@ -793,8 +820,9 @@ span.ui-column-resize {
 .activeCRM {
   background-color: #2f4857 !important;
 }
-.alert-warning,
-.register_deal {
+/* .alert-warning,
+.register_deal */
+.alert-warning {
   background-color: #22313a !important;
   border: 1px solid #2f4857 !important;
   color: white !important;
@@ -1519,11 +1547,85 @@ a.dropdown-toggle.circlebg-none-v:hover {
   > i {
   color: #fff !important;
 }
+@media only screen and (min-width: 300px) and (max-width: 580px) {
+  a.dropdown-toggle.circlebg-none-v {
+    background: transparent !important;
+    border: none !important;
+  }
+  a.dropdown-toggle.circlebg-none-v:hover {
+    background: transparent !important;
+  }
+  .page-header.navbar
+    .top-menu
+    .navbar-nav
+    > li.dropdown-user
+    .dropdown-toggle
+    > img {
+    border: 1px solid #5a738e !important;
+  }
+  .page-header.navbar
+    .top-menu
+    .navbar-nav
+    > li.dropdown
+    > .dropdown-toggle:hover {
+    background-color: transparent !important;
+  }
+  .page-header.navbar.top-menu.navbar-nav
+    > li.dropdown.open.dropdown-toggle.circlebg-color-bell-v {
+    background-color: transparent !important;
+  }
+}
 
-.alert-success {
+/* .alert-success {
   background-color: #dff0d8 !important;
   border-color: #d6e9c6 !important;
   color: #3c763d !important;
+} */
+
+/* .alert-info {
+  background-color: #d9edf7 !important;
+  border-color: #bce8f1 !important;
+  color: #31708f !important;
+} */
+/* 27-06-2023 */
+.option-color {
+  color: #fff !important;
+}
+/* 28-6-2023 table btns,lables and tags*/
+.lightgray-btn:hover {
+  background: #ddd !important;
+}
+
+/*01-07-2023*/
+.rss-title {
+  color: white !important;
+}
+/* 04-07-2024 */
+.dark-beige {
+  background: #2a404d !important;
+}
+
+/* 10-07-2023 */
+.vendor-img-cu img {
+  background-color: #22313a54 !important;
+}
+.dark-card-body-cu {
+  background-color: #2b3c46 !important;
+}
+.number-vedor-card {
+  background: #b8def1;
+  color: #333;
+}
+
+.alert-success {
+  background-color: #dff0d8 !important;
+  border-radius: 3px !important;
+  color: #3c763d !important;
+}
+.alert-danger {
+  background-color: #f2dede !important;
+  border-radius: 3px !important;
+  color: #a94442 !important;
 }
 
 .alert-info {
@@ -1531,12 +1633,318 @@ a.dropdown-toggle.circlebg-none-v:hover {
   border-color: #bce8f1 !important;
   color: #31708f !important;
 }
-/* 27-06-2023 */
-.option-color {
+.login-error {
+  color: #a94442;
+}
+.login-success {
+  color: #3c763d;
+}
+
+/* 13-07-2023 */
+ul.drag-menu-cu li:hover {
+  background-color: #22313a !important;
+}
+.custome-portlet {
+  border: none !important;
+}
+.dragdrop-gif-cu {
+  border: 1px solid #2f4857 !important;
+}
+.drap-arrow-cu {
+  color: #fff !important;
+}
+.dropdown-menu li > a > [class^="icon-"],
+.dropdown-menu li > a > [class*=" icon-"] {
+  color: #fff !important;
+}
+.card-paddings-vcu {
+  background: #22313a !important;
+}
+.backgroundfor-mv-title {
+  background: #5a738e !important;
+}
+.mv-color-text {
+  color: #fff !important;
+}
+h5.designpage-dark-cu {
+  padding-bottom: 12px;
+}
+.portlet-light-fields {
+  border: 1px solid #2f4857 !important;
+  background-color: #5a738e85 !important;
+}
+div#removeborder {
+  border: none !important;
+}
+/* user guides hover icon */
+.help-iconbgadd:hover {
+  background: #22313a !important;
+  border: 1px solid #2f4857 !important;
+}
+.help-iconbgadd i:hover {
+  color: #fff !important;
+} /* end */
+.help-iconbgadd {
+  border: 1px solid #2f4857 !important;
+}
+/* 18-07-2023 */
+td.bgc-lg {
+  background-color: #2b3c46 !important;
+}
+td.td-netbg {
+  background: transparent !important;
+}
+h5.Socialmedia-card-textcolor {
+  color: #31708f !important;
+}
+td.td-netbg {
+  background: transparent !important;
+}
+tag {
+  background: #22313a !important;
+  color: #fff !important;
+}
+.placeholder-bg-color {
+  background-color: transparent !important;
+}
+select.form-control.same-bgcolor-for-select {
+  background: #2b3c46 !important;
+}
+
+/* 19-07-2023 Custom Theme Settings bg colors */
+.bg-color-for-card {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.bg-color-for-card1 {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+p.layoutcontent {
+  color: #fff !important;
+}
+.bg-color-for-footercard {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.bg-color-for-footercard1 {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.bg-color-for-secondcard {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.bg-color-for-secondcard1 {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.bg-color-for-thirdcard {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.bg-color-for-thirdcard1 {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.portlet-light-fields.custom-header-img-color,
+.portlet-light-fields.custom-left-img-color.left-left.box-center,
+.portlet-light-fields.custom-footer-img-color {
+  color: white !important;
+}
+.required {
+  color: red !important;
+}
+.filter-button-color {
+  background-color: #22313a !important;
+  border: 1px solid #2f4857 !important;
+}
+.vendor-img-cu img {
+  border: 1px solid #2f4857 !important;
+}
+.template-height {
+  margin-top: 9px !important;
+}
+/* app preview */
+input[type="file"]::file-selector-button {
+  background-color: #22313a !important;
+  color: #fff !important;
+}
+.appmobileview .mobileview-align {
+  background: #22313a !important;
+}
+.brodercolorcu {
+  border: 1px solid #2f4857 !important;
+}
+span.center-itams a {
+  color: #fff !important;
+}
+p.addhrtosvg {
+  background: #2f4857 !important;
+}
+/* app preview End*/
+
+.profile-usermenu {
+  border-top: 1px dashed #2f4857 !important;
+}
+.bg-color-for-footercard2 {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+.cardfotter-toggleon {
+  border: 1px solid #2f4857 !important;
+  background: #22313a !important;
+}
+/* design Manage Forms  Analytics table borders */
+table.table.table-allsideboders {
+  border: 1px solid #2f4857 !important ;
+}
+rect.highcharts-background {
+  fill: none !important;
+}
+
+/* form fields white-bg */
+/* input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid {
+  background: transparent;
+}
+input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:active, input.ng2-tag-input__text-input.ng-untouched.ng-pristine.ng-valid:focus {
+  border: none !important;
+  outline: none !important;
+} */
+.search-box-item-clear,
+input {
+  background: transparent;
+  fill: none;
+}
+/* .search-box-item-clear, input:active, input:focus {
+  border: none !important;
+  outline: none !important;
+} */
+
+/* 08-08-2023 */
+#CardBgforSection {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
+/* 10-8-2023 sudha sri */
+input#copy-link {
+  background-color: #2b3c46 !important;
+}
+/* 11-8-2023 sudha sri */
+.no-data-alert.alert-info h4 {
+  color: inherit !important;
+}
+/* 16-8-2023 sudha sri */
+.border-none {
+  border: none !important;
+}
+/* search box boder */
+/* input.ng-valid.ng-dirty.ng-touched {
+  border: none !important;
+  outline: none !important;
+}  */
+
+
+/* Table icon Customization  START*/
+/* List View icon Customization start*/
+i.IconCustomization { border: 1px solid #fff !important;color: #fff !important;}
+i.IconCustomization:hover {border: 1px solid #fff !important;background: #fff !important;color: #22313a !important;}
+
+.IconCustomizationcondition a i {border: 1px solid #fff !important;color: #fff !important;}
+.IconCustomizationcondition a i:hover {border: 1px solid #fff !important;background: #fff !important; color: #22313a !important;}
+
+#download-template {border: 1px solid #fff !important;color: #fff !important;}
+#download-template:hover {border: 1px solid #fff !important;background: #fff !important; color:#22313a !important;}
+
+button.btn.TableDataBtn {border-color: #fff !important;}
+button.btn.TableDataBtn .sky-blue {color: #fff !important;}
+
+.custome-dropdown-changs li a {border: 1px solid #fff !important;}
+.custome-dropdown-changs li a i {color: #fff !important;}
+
+.setting-icon-cu {border: 1px solid #fff !important; color: #fff !important;}
+.setting-icon-cu .gearDropdownMenu {color: #fff !important;}
+
+i.singleIconCustomization {color: #fff !important;}
+
+i.fa.fa-trash-o.trashIconCustomization{border: 1px solid #cb5a5e !important;color: #cb5a5e !important;}
+i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !important;background: #cb5a5e !important;color: #fff !important;}
+/* List View icon Customization End*/
+
+/* Grid View icon Customization start*/
+.gridIconCustomization a {border: 1px solid #fff !important;color: #fff !important;}
+.gridIconCustomization a.Iconhover:hover{border: 1px solid #fff !important;background:#fff !important; color:#22313a !important;}
+
+#download-template-grid {border: 1px solid #fff !important;color: #fff !important;}
+#download-template-grid:hover {border: 1px solid #fff !important;background: #fff !important; color: #22313a !important;}
+
+.gridIconCustomization a.delete {border: 1px solid #cb5a5e !important;background: transparent;color: #cb5a5e !important;}
+.gridIconCustomization a.delete:hover {border: 1px solid #cb5a5e !important;background: #cb5a5e !important; color: #fff !important;}
+/* Grid View icon Customization End*/
+/* Table icon Customization END*/
+
+.portlet.light.borderNone {
+  border: none !important;
+}
+.listColorCu {color: #fff !important;}
+.listColorCu:hover {opacity: 0.7;}
+.list-card.listColorCu {border-top: 1px solid rgb(47 72 87) !important;}
+.lbg{
+  background-color: #22313a !important;
+}
+.lbg.show a h6 {
   color: #fff !important;
 }
 
-input.ng-valid.ng-dirty.ng-touched {
-  border: none !important;
-  outline: none !important;
+/* sudha sri (28-8-2023) */
+.border-bottom-1px {border-bottom: 1px solid #2f4857 !important;}
+
+ /* XNFR-335 start */
+.nav-tabs.dcTheme{
+  background: #22313a54;
 }
+.nav-tabs.dcTheme>li.active>a,
+.nav-tabs.dcTheme>li>a:hover {
+    border: none !important;
+    color: #fff !important;
+    background: #22313a !important ;
+}
+.nav-tabs.dcTheme>li>a {
+  border: none !important;
+  color: #fff !important;
+}
+.dcBorderNone.table-bordered > tbody > tr > td {
+  border: none !important;
+}
+/* .dcbar.progressbar li:before {
+    border: 1px solid #337ab700 !important;
+    background-color: #337ab747 !important;
+} */
+.dcbar.progressbar li.active  {
+  color: #fff !important;
+}
+/* .dcbar.progressbar li.active:before {
+  background: #22313a !important;
+} */
+/* .dcbar.progressbar li.active+ li:after {
+  background: #22313a !important ;
+} */
+/* .dcbar.progressbarVerification li:before {
+  border: #22313a !important ;
+  background: #22313a !important ;
+} */
+.dcbar.progressbarVerification li.activeVerification {
+  color: #fff !important;
+}
+/* .dcbar.progressbarVerification li:before {
+  border: #22313a !important ;
+  background: #22313a !important ;
+} */
+/* .progressbarVerification li.activeVerification + li:after {
+  background: #22313a !important ;
+} */
+ /* XNFR-335 End */
+
+ .toggleOnOff .labels::after{color:#fff !important;}
+ .toggleOnOff .labels::before {color:#fff !important;}
+

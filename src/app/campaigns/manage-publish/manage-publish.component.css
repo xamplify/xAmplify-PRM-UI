@@ -69,7 +69,7 @@ td h5 {
 .gearDropdownMenu {
   font-size: 18px;
   top: 9px;
-  color: #00a6e8;
+  /* color: #00a6e8; */
   cursor: pointer;
 }
 .caretDropdownMenu {
@@ -173,12 +173,12 @@ td h5 {
 .custom-font-size {
   font-size: 16px !important;
 }
-table tr:nth-child(odd) td {
+/* table tr:nth-child(odd) td {
   background: rgb(240 240 240);
 }
 table tr:nth-child(even) td {
   background: rgb(250 250 250);
-}
+} */
 .campaign-search-rr {
   position: relative;
   right: -11px;
@@ -221,8 +221,8 @@ table tr:nth-child(even) td {
 }
 /* 21-06-2023 */
 .setting-icon-cu {
-  border: 1px solid #5bb2f5;
-  color: #5bb2f5;
+  /* border: 1px solid #5bb2f5;
+  color: #5bb2f5; */
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -247,4 +247,24 @@ span.gearicon-font-cu {
 }
 .mix-filter li:hover {
   background: #6dcff6;
+}
+
+/* 06-07-2023 */
+.active-campaigns-all-btns-oneinline span {
+  white-space: break-spaces;
+  line-height: 2.5;
+}
+
+@media (min-width: 767px) and (max-width: 1268px) {
+  .scroll-top-margin {
+    margin-top: 26px;
+  }
+}
+
+.prt3px {
+  position: relative;
+  top: -3px;
+}
+.active-campaign-color {
+  background-color: #5cb85c;
 }

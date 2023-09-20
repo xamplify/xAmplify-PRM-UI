@@ -63,7 +63,7 @@
   background-color: green !important;
 }
 .view-banner {
-  margin-top: 7px;
+  margin: 5px 0px;
   margin-left: 0px;
   background-color: #00a6e8;
   color: white;
@@ -85,10 +85,11 @@
   display: inline;
 }
 .view-banner-white-labeled {
-  background-color: green;
-  color: white;
-  padding: 3px 6px 3px 6px;
+  background-color: #68B4F1;
+  color: white !important;
+  padding: 5px 10px;
   text-align: center;
   font-size: 10px;
   border-radius: 3px;
+  line-height: 1;
 }

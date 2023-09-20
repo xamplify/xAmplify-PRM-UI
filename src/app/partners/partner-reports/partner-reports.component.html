@@ -42,7 +42,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{activePartnersCount}}</div>
-                  <div class="desc" title="Active {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Active
+                  <div class="desc" data-toggle="tooltip" data-placement="top" title="Active {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Active
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -68,7 +68,7 @@
                 <div class="details">
                   <div class="number"><span *ngIf="redistributedCampaignsCount">{{redistributedCampaignsCount}}</span><span
                       *ngIf="!redistributedCampaignsCount">0</span></div>
-                  <div class="desc mlabelWidth" style="font-size: 13px">Redistributed Campaigns</div>
+                  <div class="desc mlabelWidth"   data-toggle="tooltip" data-placement="top" title="Redistributed Campaigns" style="font-size: 13px">Redistributed Campaigns</div>
                 </div>
                 <span id="permhref" class="morePadding">
                   <a class="more" (click)="goToReDistributedPartnersDiv()"> Detailed view <i
@@ -89,7 +89,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{throughPartnerCampaignsCount}}</div>
-                  <div class="desc" style="font-size:13px" title="{{throughPartnerCampaignsTabName}}">
+                  <div class="desc" style="font-size:13px" data-toggle="tooltip" data-placement="top" title="{{throughPartnerCampaignsTabName}}">
                     {{throughPartnerCampaignsTabName | slice:0:20}}
                     <span *ngIf="throughPartnerCampaignsTabName?.length>20">...</span>
                   </div>
@@ -112,7 +112,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{inActivePartnersCount}}</div>
-                  <div class="desc" title="Inactive {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Inactive
+                  <div class="desc"  data-toggle="tooltip" data-placement="top" title="Inactive {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Inactive
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -135,7 +135,7 @@
                 </div>
                 <div class="details">
                   <div class="number">{{approvePartnersCount}}</div>
-                  <div class="desc" title="Approve {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Approve
+                  <div class="desc"  data-toggle="tooltip" data-placement="top" title="Approve {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Approve
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -254,7 +254,7 @@
                   <td class="mAlign" (click)="sendPartnerReminder(item)">
                     <div class="actions-block float-none">
                       <a data-toggle="tooltip" data-placement="left" title="Send reminder email">
-                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                        <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
                       </a>
                     </div>
                   </td>
@@ -280,16 +280,6 @@
               <span class="caption-subject font-red-sunglo uppercase">Approve
                 {{authenticationService?.partnerModule?.customName}}</span>
             </div>
-            <!-- <div class="inputs" align="right" style="float: right">
-              <div class="portlet-input input-inline input-medium">
-                <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
-                  <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}"
-                    placeholder="Search for a Partner" (keypress)="inActivePartnersSearch($event.keyCode)">
-                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="inActivePartnersSearchKey" (click)="inActivePartnersSearchKey=''"></button>
-                  <button type="submit" class="search-box-item-click" (click)="searchInActivePartnerAnalytics()"><i class="fa fa-search"></i></button>
-                </div>
-              </div>
-            </div> -->
           </div>
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse"
@@ -325,11 +315,7 @@
                               (click)="requestText='Decline';approveAndDeclineRequest(item.partnerId, item.firstName,authenticationService.partnerModule.customName)">Decline</a>
                           </li>
                         </ul>
-                      </div>
-                      <!--  <button type="submit" [disabled]="item.invitationStatus == 'approved'" class="btn green"
-					(click)="showApprovePartnerSweetAlert(item.partnerId)">Approve</button>
-					<button [disabled]="item.invitationStatus == 'approved' || item.invitationStatus == 'declined'" type="submit" class="btn green"
-					(click)="showDeclinePartnerSweetAlert(item.partnerId)">Decline</button> -->
+                      </div>                   
                     </td>
                   </tr>
                 </tbody>
@@ -379,7 +365,7 @@
                   [class.campaign-type-selected]="6 == sortOption.selectedCampaignTypeIndex" *ngIf="survey">Survey</li>
                 <li class="filter" style="display: none;">Own Template</li>
               </ul>
-              <div class="page-toolbar col-xs-12 col-sm-7 col-md-7 p0">
+              <div class="page-toolbar col-xs-12 col-sm-12 col-md-7 p0 mb_6">
                 <div class="btn-group pull-right">
                   <ng-container class='m10 hidden-xs'>
                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
@@ -566,9 +552,8 @@
                       </td>
                       <td class="text-center">
                         <a data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(campaign)"
-                          data-toggle="tooltip" data-placement="top" title="Campaign Based Reports"
-                          class='circled-number'>
-                          <i class="fa fa-line-chart" aria-hidden="true"></i>
+                          data-toggle="tooltip" data-placement="top" title="Campaign Based Reports">
+                          <i class="circled-number fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                         </a>
                       </td>
                     </tr>
@@ -587,7 +572,7 @@
                   <ng-container
                     *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                     <div *ngFor="let campaign of throughPartnerCampaignPagination.pagedItems; let i= index"
-                      class="col-xs-12 col-sm-4 col-lg-3">
+                      class="col-xs-12 col-sm-4 col-lg-3 mt_13">
                       <div class="grid-box">
                         <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                         <h4 class="ellipsis" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
@@ -629,14 +614,14 @@
                               aria-hidden="true"></i>
                           </span>
                         </div>
-                        <div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
+                        <div class="ribbon tab-ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
                           <span *ngIf="campaign.launched">Launched</span>
                           <span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>
                           <span *ngIf="!campaign.launched && campaign.launchedOn?.length==0">Saved</span>
                         </div>
-                        <div class="bar">
+                        <div class="bar gridIconCustomization">
                           <a (click)="referenseService.goToCampaignAnalytics(campaign)" data-toggle="tooltip"
-                            data-placement="top" title="Campaign Based Reports">
+                            data-placement="top" title="Campaign Based Reports" class="Iconhover">
                             <i class="fa fa-line-chart" aria-hidden="true"></i>
                           </a>
                         </div>
@@ -683,17 +668,6 @@
           <i class="fa fa-times"></i>
         </a>
         <h4 class="m0">partner campaign interactions</h4>
-        <!-- <div class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
-					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
-						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
-						<i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
-					</span>
-					<ul class="dropdown-menu pull-right">
-						<li>
-							<a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a>
-						</li>
-					</ul>
-				</div> -->
       </div>
       <div class="modal-body clearfix">
         <div *ngIf="campaignInteractionPagination.pagedItems?.length == 0" class="col-md-6"
@@ -783,7 +757,7 @@
 
       </div>
       <div class="modal-footer" style="border: none">
-        <button class="btn btn-default" (click)="closeRequestModal()" data-dismiss="modal">Cancel</button>
+        <button class="btn Btn-Gray" (click)="closeRequestModal()" data-dismiss="modal">Cancel</button>
         <button *ngIf="requestText=='Approve'" type="submit" class="btn green" (click)="approvePartnerRequest()">Send &
           Approve</button>
         <button *ngIf="requestText=='Decline'" type="submit" class="btn green" (click)="declinePartnerRequest()">Send &

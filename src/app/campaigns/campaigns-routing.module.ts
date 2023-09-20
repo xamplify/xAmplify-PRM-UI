@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-
 import { ManagePublishComponent } from "./manage-publish/manage-publish.component";
 import { SelectCampaignTypeComponent } from "./select-campaign-type/select-campaign-type.component";
 import { CreateCampaignComponent } from "./create-campaign/create-campaign.component";
@@ -17,12 +16,17 @@ import { CreateSmsCampaignComponent } from "./create-sms-campaign/create-sms-cam
 import { EventCheckInComponent } from './event-check-in/event-check-in.component';
 import { UserLevelTimelineComponent } from './user-level-timeline/user-level-timeline.component';
 import { UserCampaignsListUtilComponent } from '../util/user-campaigns-list-util/user-campaigns-list-util.component';
+import { AddCampaignComponent } from "./add-campaign/add-campaign.component";
+import { ManageCampaignsComponent } from "./manage-campaigns/manage-campaigns.component";
+import { PendingChangesGuard } from "app/component-can-deactivate";
+
 
 
 export const campaignRoutes: Routes = [
   { path: "", redirectTo: "manage", pathMatch: "full" },
   { path: "select", component: SelectCampaignTypeComponent },
-  { path: "create", component: CreateCampaignComponent },
+  { path: "create/:campaignType", component: AddCampaignComponent,canDeactivate: [PendingChangesGuard] },
+  { path: "edit/:campaignType", component: AddCampaignComponent,canDeactivate: [PendingChangesGuard] },
   { path: "social", component: SocialCampaignComponent },
   { path: "social/:alias", component: SocialCampaignComponent },
   { path: "edit", component: CreateCampaignComponent },
@@ -40,7 +44,7 @@ export const campaignRoutes: Routes = [
   { path: "partner/f/:categoryId", component: PartnerCampaignsComponent },
   { path: "partner/f/:categoryId/:type", component: PartnerCampaignsComponent },
   { path: "vendor/:type", component: PartnerCampaignsComponent },
-  { path: "re-distribute-campaign", component: EditPartnerCampaignsComponent },
+  { path: "re-distribute-campaign", component: EditPartnerCampaignsComponent,canDeactivate: [PendingChangesGuard] },
   { path: "preview/:id", component: PreviewCampaignComponent },
   { path: "event", component: EventCampaignComponent },
   { path: "event-preview/:id", component: EventCampaignComponent },
@@ -61,8 +65,12 @@ export const campaignRoutes: Routes = [
   { path: "timeline/:type/:campaignId/:userId/:navigatedFrom/:analyticsCampaignId", component: UserLevelTimelineComponent },
   { path: 'user-campaigns/:type/:userId',component:UserCampaignsListUtilComponent},
   { path: 'user-campaigns/:type/:userId/:navigatedFrom',component:UserCampaignsListUtilComponent},
-  { path: 'user-campaigns/:type/:userId/:navigatedFrom/:analyticsCampaignId',component:UserCampaignsListUtilComponent}
+  { path: 'user-campaigns/:type/:userId/:navigatedFrom/:analyticsCampaignId',component:UserCampaignsListUtilComponent},
 
+
+  //  { path: "manage", component: ManageCampaignsComponent },
+  //  { path: "manage/:viewType", component: ManageCampaignsComponent },
+	//  { path: "manage/:viewType/:categoryId/:folderViewType", component: ManageCampaignsComponent },
 
 
 

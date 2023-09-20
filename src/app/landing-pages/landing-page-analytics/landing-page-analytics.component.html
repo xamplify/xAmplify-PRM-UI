@@ -33,7 +33,7 @@
     </div>
     <div class="row" id="responsive">
         <ng-container *ngTemplateOutlet="estimateTemplate;context:landingPageAnalyticsContext"></ng-container>
-        <div class="col-xs-6" style="padding-top: 13px;" *ngIf="viewsStatusCode==200">
+        <div class="col-xs-12 col-sm-6 col-lg-6" style="padding-top: 13px;" *ngIf="viewsStatusCode==200">
             <div class="portlet light">
                 <div class="portlet-title">
                     <div class="caption">
@@ -57,7 +57,7 @@
                     </div>
                     <div class="panel-title pull-right" *ngIf="barChartStatusCode==200 && barChartErrorMessage?.length==0">
                         <span id="font" class="right">
-					<select class="form-control" style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="getBarChartAnalytics($event.value)">
+					<select class="form-control SeclectBoxPaddingsAbj" style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="getBarChartAnalytics($event.value)">
 						<option *ngFor="let sort of videoUtilService.sortMonthDates" [ngValue]="sort"> {{sort.name}} </option>
 					</select>
 				</span>
@@ -107,27 +107,6 @@
                     <div class="caption">
                         <span class="caption-subject font-red-sunglo uppercase">Page Statistics</span>
                     </div>
-                    <!-- <div class="inputs" align="right">
-						<a class="close-circle" (click)="refreshList(xtreme)" data-toggle="tooltip" data-placement="top" title="Refresh">
-							<i class="fa fa-refresh margin"></i>
-						</a>
-						<div style="float: left;">
-						 <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
-                      		<option *ngFor="let sortOption of columns" [ngValue]="sortOption">{{sortOption.labelName}}</option>
-                    	</select>
-					</div>
-						<div class="portlet-input input-inline input-small" id="search-margin">
-							<div class="input-icon right" id="icon-right">
-								<input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
-									[ngModelOptions]="{standalone: true}" placeholder="search..."
-									(keypress)="eventHandler($event.keyCode)">
-								<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
-									(click)="sortOption.searchKey='';search()"></button>
-								<button type="submit" class="search-box-item-click" (click)="search()">
-									<i class="fa fa-search"></i></button>
-							</div>
-						</div>
-					</div> -->
                 </div>
 
                 <app-list-loader *ngIf="xtreme.loader.isLoading"></app-list-loader>

@@ -79,4 +79,7 @@
 	window.__env.microsoftDevClientId = "f4598ddb-daaf-48a5-be86-74b80d791f05";
 	window.__env.microsoftDevClientSecret = "Tns7Q~OdMWU3GaIsSmdFS-_-PSNdFcSuiV~Tj";
 
+	/******Video Player******/
+	window.__env.loadLatestVideoJsFiles = true;
+
 }(this));

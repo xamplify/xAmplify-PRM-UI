@@ -1,49 +1,49 @@
 <style>
-   a.disabled {
-   pointer-events: none;
-   }
- </style>
- <div [hidden]="pagination.pagedItems.length == 0" class="scroll-top-abj">
-   <div *ngIf="(pagination.pager.pages && pagination.pager.pages.length) && !isDropdown" style="float: right;font-size: 15px;">
-      <select class="form-control margin-top pointer" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
-       <ng-container *ngIf="customDropDown">
-          <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
-          <option *ngIf="pagination.totalRecords>4" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
-          <option *ngIf="pagination.totalRecords>12" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
-          <option *ngIf="pagination.totalRecords>24" [ngValue]="numberPerPage[3]"> {{numberPerPage[3].name}}</option>
-       </ng-container>
-       <ng-container *ngIf="!customDropDown">
-          <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
-          <option *ngIf="pagination.totalRecords>12" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
-          <option *ngIf="pagination.totalRecords>24" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
-       </ng-container>
-      </select>
-   </div>
- </div>
- <ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination padding">
-   <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-      <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">
-      <span><i data-toggle="tooltip" data-placement="bottom" title="First" class="fa fa-angle-double-left" aria-hidden="true"></i></span>
-      </a>
-   </li>
-   <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
-      <a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1">
-      <span><i  data-toggle="tooltip" data-placement="bottom" title="Previous" class="fa fa-angle-left" aria-hidden="true"></i></span>
-      </a>
-   </li>
-   <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
-   <a (click)="setPage(page)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a>
-   </li>
-   <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}" >
-      <a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">
-      <span><i data-toggle="tooltip" data-placement="bottom" title="Next" class="fa fa-angle-right" aria-hidden="true"></i></span>
-      </a>
-   </li>
-   <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}" >
-      <a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">
-      <span><i data-toggle="tooltip" data-placement="bottom" title="Last" class="fa fa-angle-double-right" aria-hidden="true"></i></span>
-      </a>
-   </li>
- </ul>
- <br>
- <span class="total-records-bg-color"><strong>Total Records : {{pagination?.totalRecords}}</strong></span>
+  a.disabled {
+  pointer-events: none;
+  }
+</style>
+<div [hidden]="pagination.pagedItems.length == 0" class="scroll-top-abj">
+  <div *ngIf="(pagination.pager.pages && pagination.pager.pages.length) && !isDropdown" style="float: right;font-size: 15px;">
+     <select class="form-control margin-top pointer" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
+      <ng-container *ngIf="customDropDown">
+         <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
+         <option *ngIf="pagination.totalRecords>4" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
+         <option *ngIf="pagination.totalRecords>12" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
+         <option *ngIf="pagination.totalRecords>24" [ngValue]="numberPerPage[3]"> {{numberPerPage[3].name}}</option>
+      </ng-container>
+      <ng-container *ngIf="!customDropDown">
+         <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
+         <option *ngIf="pagination.totalRecords>12" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
+         <option *ngIf="pagination.totalRecords>24" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
+      </ng-container>
+     </select>
+  </div>
+</div>
+<ul *ngIf="pagination.pager.pages && pagination.pager.pages.length" class="pagination padding">
+  <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+     <a (click)="setPage(1)" [class.disabled]="pagination.pager.currentPage === 1">
+     <span><i data-toggle="tooltip" data-placement="bottom" title="First" class="fa fa-angle-double-left" aria-hidden="true"></i></span>
+     </a>
+  </li>
+  <li [ngClass]="{disabled:pagination.pager.currentPage === 1}">
+     <a (click)="setPage(pagination.pager.currentPage - 1)" [class.disabled]="pagination.pager.currentPage === 1">
+     <span><i  data-toggle="tooltip" data-placement="bottom" title="Previous" class="fa fa-angle-left" aria-hidden="true"></i></span>
+     </a>
+  </li>
+  <li *ngFor="let page of pagination.pager.pages" [ngClass]="{active:pagination.pager.currentPage === page}">
+  <a (click)="setPage(page)" [class.disabled]="pagination.pager.currentPage === page">{{page}}</a>
+  </li>
+  <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}" >
+     <a (click)="setPage(pagination.pager.currentPage + 1)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">
+     <span><i data-toggle="tooltip" data-placement="bottom" title="Next" class="fa fa-angle-right" aria-hidden="true"></i></span>
+     </a>
+  </li>
+  <li [ngClass]="{disabled:pagination.pager.currentPage === pagination.pager.totalPages}" >
+     <a (click)="setPage(pagination.pager.totalPages)" [class.disabled]="pagination.pager.currentPage === pagination.pager.totalPages">
+     <span><i data-toggle="tooltip" data-placement="bottom" title="Last" class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+     </a>
+  </li>
+</ul>
+<br>
+<span class="total-records-bg-color"><strong>Total Records : {{pagination?.totalRecords}}</strong></span>

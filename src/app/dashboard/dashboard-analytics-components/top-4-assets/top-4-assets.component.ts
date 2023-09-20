@@ -248,6 +248,15 @@ deleteAssetSuccessEmitter(){
   this.listAssets(this.pagination);
 }
 
+/*****XBI-1661****/
+deleteAssetFailEmitter(message: any) {
+  this.customResponse = new CustomResponse('ERROR', message, true);
+  this.deleteAsset = false;
+  this.assetsLoader = false;
+  this.asset = {};		
+}
+
+
 deleteAssetLoaderEmitter(){
   this.assetsLoader = true;
 }

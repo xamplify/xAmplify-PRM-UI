@@ -904,7 +904,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               }
               else {
                 /********XNFR-125*******/
-                this.checkOneClickLaunchAccess(campaign.campaignId);
+                this.checkOneClickLaunchAccess(campaign.campaignId,data.campaignType);
                
               }
             }
@@ -929,7 +929,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
 
 
      /*****XNFR-125*****/
-     checkOneClickLaunchAccess(campaignId:number){
+     checkOneClickLaunchAccess(campaignId:number,campaignType:string){
       this.ngxloading = true;
       this.campaignErrorResponse = new CustomResponse();
       this.campaignService.checkOneClickLaunchAccess(campaignId).
@@ -939,7 +939,21 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               if(access){
                   $('#myModal').modal('hide');
                   this.referenceService.isEditNurtureCampaign = false;
-                  this.router.navigate(["/home/campaigns/edit"]);
+                  if("REGULAR"==campaignType || "SURVEY"==campaignType || "VIDEO"==campaignType || "LANDINGPAGE"==campaignType){
+                        let urlSuffix = "";
+                        if("REGULAR"==campaignType){
+                            urlSuffix="email";
+                        }else if("SURVEY"==campaignType){
+                            urlSuffix = "survey";
+                        }else if("VIDEO"==campaignType){
+                            urlSuffix = "video";
+                        }else if("LANDINGPAGE"==campaignType){
+                            urlSuffix = "page";
+                        }
+                        this.router.navigate(["/home/campaigns/edit/"+urlSuffix]);
+                    }else{
+                        this.router.navigate(["/home/campaigns/edit"]);
+                    }
               }else{
                   this.referenceService.scrollToModalBodyTopByClass();
                   this.campaignErrorResponse = new CustomResponse('ERROR',this.properties.oneClickLaunchAccessErrorMessage,true);

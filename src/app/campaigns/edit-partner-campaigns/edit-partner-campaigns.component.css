@@ -133,3 +133,37 @@ table.table-bordered.dataTable {
 .inc-width {
   padding: 0px 25px;
 }
+@media(max-width:578px){
+  .fa-users{
+    margin-left:unset!important;
+  }
+  .height160{
+    height: unset !important;
+  }
+  .mb_wrap{
+    white-space: unset!important;
+    word-wrap: break-word!important;
+  }
+  .mb_flex{
+    display: flex;
+  }
+}
+
+/* 19-07-2023 */
+img.Selected-email-template-imgcu {
+  width: 100%;
+  height: 102px;
+  object-fit: fill;
+  border-radius: 2px;
+}
+@media screen and (max-width:1024px){
+  .tab_sub{
+    margin-left:0px!important;
+  }
+}
+@media only screen and (min-width:768px) and (max-width: 1024px) { 
+  .scheduler_height{
+    height:auto!important;
+  }
+
+}

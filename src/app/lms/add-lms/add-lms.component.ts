@@ -18,6 +18,7 @@ export class AddLmsComponent implements OnInit {
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  mergeTagForGuide:any;
   constructor(public referenceService: ReferenceService, private router: Router,private route: ActivatedRoute) {
     /****XNFR-170****/
     this.viewType = this.route.snapshot.params["viewType"];
@@ -31,6 +32,7 @@ export class AddLmsComponent implements OnInit {
     } else {
       this.isAdd = true;
     }
+    this.mergeTagForGuide = 'creating_and_publishing_learning_tracks';
   }
   goToManageTracks(){
     this.referenceService.navigateToManageTracksByViewType(this.folderViewType,this.viewType,this.categoryId,false);

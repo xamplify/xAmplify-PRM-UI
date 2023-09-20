@@ -145,12 +145,13 @@ cursor: default;
 }
 
 .view-banner-white-labeled{
-  background-color: green;
-   color: white !important;
-   padding: 4px;
+  background-color: #68B4F1;
+  color: white !important;
+  padding: 5px 10px;
    text-align: center;
-   width: 125px;
+   /* width: 125px; */
    margin: 0 0;
-   font-size: 11px;
+   font-size: 10px;
    font-weight: 600;
+   line-height: 1;
 }

@@ -2,17 +2,16 @@
 <div>
     <div class="portlet-title">
         <div class="row">
-            <div class="col-xs-3 caption pull-left">
+            <div class="col-xs-12 col-sm-3 col-lg-3 caption pull-left">
                <h4>{{titleHeader}}</h4>
             </div>
-            <div class="page-toolbar col-xs-9" style="padding-right: 23px;">
+            <div class="page-toolbar col-xs-12 col-sm-9 col-lg-9" style="padding-right: 23px;">
                 <div class="btn-group pull-right">
                     <div class="group-dropdown" style="padding-right:5px">
                         <button
                         [ngClass]="folderViewType=='List' ? 'fa fa-th-list' :folderViewType=='Grid' ?'fa fa-th-large':
                         folderViewType=='Folder-List' ? 'fa fa-th': folderViewType=='Folder-Grid' ?'fa fa-folder':'fa fa-th-list'"
-                        style="padding: 10px !important" class=" btn-xs hidden-xs l-g-view"></button>
-                        <!-- <button class="btn btn-xs l-g-view hidden-xs {{viewClass}}" style="padding:10px !important;"></button> -->
+                        style="padding: 10px !important" class=" btn-xs hidden-xs l-g-view"></button>                       
                     <div class="group-dd-content" style="min-width: max-content;">
                     <ng-container class='m10'>
                         <span *ngIf="isFromCampaignModule && !isFromRedistributedCampaignSection" class=" btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Calendar View">
@@ -27,8 +26,7 @@
                         <span class="btn btn-xs hidden-xs l-g-view margin-right-calendar" [class.disabled]="folderViewType=='Folder-Grid'" (click)="folderViewType='Folder-Grid';"  data-toggle="tooltip" data-placement="bottom" title="Folder Grid View">
                             <i class="fa fa-folder p10"  aria-hidden="true"></i>
                         </span>
-                        <span class="btn btn-xs hidden-xs l-g-view margin-right-calendar folder-list-span-custom-width " [class.disabled]="folderViewType=='Folder-List'"  (click)="folderViewType='Folder-List';" data-toggle="tooltip" data-placement="bottom" title="Folder List View">
-                            <!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/> -->
+                        <span class="btn btn-xs hidden-xs l-g-view margin-right-calendar folder-list-span-custom-width " [class.disabled]="folderViewType=='Folder-List'"  (click)="folderViewType='Folder-List';" data-toggle="tooltip" data-placement="bottom" title="Folder List View">                         
                             <i class="fa fa-th p10" aria-hidden="true"></i>
                         </span>
                     </ng-container>
@@ -67,7 +65,7 @@
 			<div class="col-xs-12 col-sm-4 col-lg-3"
 			*ngFor="let category of pagination.pagedItems; let i= index">
 			<div class="ffolder big gray folder-cheight">
-				<div class="grid-box folder-height" style="max-height: 194px;">
+				<div class="grid-box folder-height full-height-folder" style="max-height: 194px;">
 					<div id="category-icon-div" class="col-xs-3 col-sm-3 col-md-3 col-lg-3 icon-align">
 						<i class="{{category.icon}} icon-align" id="category-icon-size"
 							aria-hidden="true">
@@ -75,7 +73,7 @@
 					</div>
 					<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 align-itams">
 					<div class="bg-folder">
-					<h4 class="ellipsis align-titletext" title="{{category.name}}">
+					<h4 class="ellipsis align-titletext tab_whitespace" title="{{category.name}}">
 						{{category.name | slice:0:22}} <span
 							*ngIf="category.name?.length>22">...</span>
 					</h4>
@@ -106,10 +104,11 @@
 					</h6>
 				</div>
 				</div>
-					<div class="bar barview">	
-						<a data-toggle="tooltip" data-placement="top" title="View Items"
+					<div class="bar barview full-width-folder gridIconCustomization">	
+						<a class="Iconhover" data-toggle="tooltip" data-placement="top" title="View Items"
 							(click)="viewItemsByCategoryId(category.id)"> <i
-							class="fa fa-eye color-chnage" aria-hidden="true"></i>
+							class="fa fa-eye" aria-hidden="true"></i>
+                            <!-- color-chnage -->
 						</a>
 					</div>
 				</div>
@@ -121,7 +120,7 @@
 	</div>
 
     <!-----------------------Folder List View----------------------------------------->
-    <div class="table-responsive" *ngIf="folderViewType=='Folder-List'" style="overflow-x: hidden;">
+    <div class="table-responsive scroll-onoverflow" *ngIf="folderViewType=='Folder-List'">
         <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
         <table class='table tgrid table-hover table-sm' id="folder-list-view" *ngIf="pagination.pagedItems?.length>0" aria-describedby="">
             <thead>
@@ -138,7 +137,8 @@
                 <ng-container *ngFor="let category of pagination.pagedItems ;let i =index">
                     <tr id="folder-row-{{i}}" class="child-row-list-view">
                         <td class="custom-icon-width">
-                            <a  (click)="$event.stopPropagation();viewFolderItems(category,i)"  title="View Items">
+                            <a  (click)="$event.stopPropagation();viewFolderItems(category,i)" 
+                            data-toggle="tooltip" data-placement="bottom" title="View Items">
                             <i class="fa" id="fa-folder-custom-size"
                               [ngClass]="{'fa-angle-right': !category.expanded, 'fa-angle-down': category.expanded}" aria-hidden="true">
                             </i>
@@ -148,8 +148,9 @@
                             </a>
                         </td>
                         <td>
-                            <h4 class="moreipsis" title="{{category.name}}">
-                                <span>{{category.name}}</span>
+                            <h4 class="" >
+                                <span data-toggle="tooltip" data-placement="bottom"
+                                title="{{category.name}}"> {{category.name}}</span>
                             </h4>
                             <h6 class="moreipsis">
                                 <span translate> Created By <strong>{{category.createdBy}}</strong></span>
@@ -162,17 +163,13 @@
                         </td>
                         <td class="text-center">
                             <div  class="override-actions">
-                                <span id="count-{{selectedModuleType}}-{{category.id}}"><b>{{category.count}}</b></span>
-                                <!-- <span *ngIf="archived" id="count-{{selectedModuleType}}-{{category.id}}"><b>{{category.archivedCount}}</b></span> -->
+                                <span id="count-{{selectedModuleType}}-{{category.id}}"><b>{{category.count}}</b></span>                             
                             </div> 
                         </td>
                     </tr>
                     <tr [ngClass]="{'hidden': !category.expanded}" id="list-folder-items">
                         <td colspan="5">
                             <ng-container *ngIf="category.expanded">
-                                <ng-container *ngIf="selectedModuleType==1">
-                                    <app-email-templates-list-view-util [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-email-templates-list-view-util>
-                                </ng-container>
                                 <ng-container *ngIf="selectedModuleType==2">
                                     <app-forms-list-view-util [folderListViewInput]="folderListViewInput" (updatedItemsCount)="getUpdatedItemsCount($event)"></app-forms-list-view-util>
                                 </ng-container>
@@ -185,7 +182,6 @@
                                 <ng-container *ngIf="selectedModuleType==5">
                                     <app-redistribute-campaigns-list-view-util [folderListViewInput]="folderListViewInput"></app-redistribute-campaigns-list-view-util>
                                 </ng-container>
-                                
                             </ng-container>
                         </td>
                      </tr>                   
@@ -195,7 +191,7 @@
     </div>
 
     
-    <div *ngIf="pagination.pagedItems.length !== 0" style="margin-top: 25px;">
+    <div *ngIf="pagination.pagedItems.length !== 0">
             <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCategories($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
         </div>
         <!-- End of 24 -->

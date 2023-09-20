@@ -33,7 +33,7 @@ a.disabled {
     padding: 24px 1px 24px 1px !important;
   }
   .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle {
-    padding: 6px 0px 6px 0px !important;
+    padding: 7px 0px 6px 0px !important;
   }
   .btn {
     padding: 7px 10px !important;
@@ -65,7 +65,7 @@ a.disabled {
     margin-right: 5px !important;
   }
   .refer-vendor-button {
-    padding: 17px 0px 0px 0px !important;
+    padding: 17px 8px 0px 0px !important;
   }
 }
 .img-circle {
@@ -162,7 +162,7 @@ label {
 }
 @media only screen and (max-width: 600px) {
   .btnVendor {
-    left: -18px;
+    left: 0px;
   }
   .btnShare {
     left: -20px;
@@ -186,11 +186,8 @@ label {
   margin-top: 17px;
   margin-right: 15px;
 }
-
-
 /* 19/06/2023 */
-
-a.dropdown-toggle.circlebg-color-bell-v{
+a.dropdown-toggle.circlebg-color-bell-v {
   border-radius: 50%;
   position: relative;
   top: 17px;
@@ -203,7 +200,7 @@ a.dropdown-toggle.circlebg-color-bell-v{
   text-align: center;
   color: #333;
 }
-a.dropdown-toggle.circlebg-color-bell-v:hover{
+a.dropdown-toggle.circlebg-color-bell-v:hover {
   color: #333;
 }
 a.dropdown-toggle.circlebg-color-bell-v i {
@@ -217,25 +214,38 @@ a.dropdown-toggle.circlebg-none-v {
   background: transparent;
   color: #333;
 }
-a.dropdown-toggle.circlebg-none-v:hover{
+a.dropdown-toggle.circlebg-none-v:hover {
   background: #e8eaed;
   color: #333;
 }
- /* .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle.circlebg-none-v > i {
+/* .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle.circlebg-none-v > i {
   color: #0095da;
 }   */
 
 /* .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v > i {
   color: #0095da;
 } */
-.page-header.navbar .top-menu .navbar-nav> li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover > i {
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown
+  .dropdown-toggle.circlebg-color-bell-v:hover
+  > i {
   color: #333;
 }
-.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v:hover {
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown
+  .dropdown-toggle.circlebg-color-bell-v:hover {
   background: #e8eaed;
   color: #333;
 }
-.page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v{
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown.open
+  .dropdown-toggle.circlebg-color-bell-v {
   background-color: #e8eaed;
 }
 /* .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v > i {
@@ -244,8 +254,13 @@ a.dropdown-toggle.circlebg-none-v:hover{
 /* .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle.circlebg-color-bell-v > span {
   color: #333;
 } */
-.page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle > .badge {
-  font-family: 'Gantari',"Open Sans", sans-serif;
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown
+  > .dropdown-toggle
+  > .badge {
+  font-family: "Gantari", "Open Sans", sans-serif;
   position: absolute;
   top: -8px;
   left: 24px;
@@ -256,16 +271,20 @@ a.dropdown-toggle.circlebg-none-v:hover{
   width: 21px;
   font-size: 10px !important;
 }
-.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+.nav .open > a,
+.nav .open > a:focus,
+.nav .open > a:hover {
   background: #e8eaed;
   color: #333;
-} 
-.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle.circlebg-color-bell-v > i {
+}
+.page-header.navbar
+  .top-menu
+  .navbar-nav
+  > li.dropdown
+  .dropdown-toggle.circlebg-color-bell-v
+  > i {
   color: #333;
 }
-
-
-
 /* .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle.circlebg-none-v > .username {
   color: #008fd5;
 } */
@@ -276,15 +295,12 @@ a.dropdown-toggle.circlebg-none-v:hover{
 /* .page-header.navbar .top-menu .navbar-nav > li.dropdown-user > .dropdown-toggle > .username:hover {
   color: #ffffff;
 } */
-
-
-
 /* tablet */
- @media (min-width: 810px) and (max-width: 850px) {
+@media (min-width: 810px) and (max-width: 850px) {
   .page-header.navbar .top-menu {
-    margin-top: 22px !important;
+    margin-top: 0px !important;
   }
- } 
-.cls-pointer{
+}
+.cls-pointer {
   cursor: pointer;
 }

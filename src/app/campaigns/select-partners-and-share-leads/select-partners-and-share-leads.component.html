@@ -2,7 +2,7 @@
 <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12 row-fluid p0">
     <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
     <div class="dataTables_wrapper form-inline no-footer pt10" *ngIf="!httpRequestLoader.isLoading">
-       <div class="note-vid pull-left">
+       <div class="note-vid pull-left" *ngIf="!hideHeaderText">
           Select One {{authenticationService?.partnerModule?.customName}} Company
        </div>
        <!---Search & Sort-->
@@ -18,7 +18,7 @@
           </div>
        </div>
        <!--List-->
-       <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
+       <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0 mt5">
           <div class="table-responsive">
              <table class="table tgrid table-hover table-sm" id="one-click-partner-company-table" role="grid" aria-describedby="" *ngIf="pagination.totalRecords > 0">
                 <thead>
@@ -34,7 +34,7 @@
                    <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
                       <tr [class.xamp-tr-selected]="selectedPartnershipId==partner.partnershipId">
                          <td class="cw">
-                            <input class="form-control" value="{{partner.partnershipId}}" id="one-launch-campaign-radio-{{partner.partnershipId}}" type="radio" name="one-launch-campaign-partner-company" 
+                            <input class="form-control pointer" value="{{partner.partnershipId}}" id="one-launch-campaign-radio-{{partner.partnershipId}}" type="radio" name="one-launch-campaign-partner-company" 
                             [checked]="selectedPartnershipId==partner.partnershipId" [disabled]="selectedPartnershipId==partner.partnershipId" (click)="selectPartnerCompanyAndExpandShareLeadsList(partner)">
                          </td>
                          <td class="wtpc" title="{{partner?.companyName}}">
@@ -63,16 +63,16 @@
                                </a>
                             </div>
                          </td>
-                      </tr>
+                      </tr>                    
                       <tr *ngIf="partner?.expand">
                          <td colspan="5" class="bgc-lg">
                             <div class="alert alert-success text-center" *ngIf="selectedShareLeadsListIds?.length>0 && selectedPartnershipId==partner.partnershipId">
                                <strong>Selected Rows : {{selectedShareLeadsListIds?.length}}</strong>
                             </div>
-                            <div class="table-responsive x-hidden">
+                            <div class="table-responsive x-hidden" [ngClass]="{'hide-scrollbar': isTableLoaded}">
                                <div class="portlet-input input-inline float-right mb10p" id="search-div" *ngIf="shareLeadsErrorMessage.responseType!='ERROR'">
                                   <div class="input-icon right" id="icon">
-                                     <input type="text" id="sort-text" class="form-control" [(ngModel)]="shareLeadsPagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="shareLeadsEventHandler($event.keyCode)">
+                                     <input type="text" autocomplete="off" id="sort-text" class="form-control" [(ngModel)]="shareLeadsPagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="shareLeadsEventHandler($event.keyCode)">
                                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="shareLeadsPagination?.searchKey" (click)="shareLeadsPagination.searchKey='';searchShareLeadsList();"></button>
                                      <button type="submit" class="search-box-item-click" (click)="searchShareLeadsList()">
                                      <i class="fa fa-search" aria-hidden="true"></i>
@@ -84,17 +84,18 @@
                                      <app-response-message [customResponse]="shareLeadsErrorMessage"></app-response-message>
                                   </div>
                                </ng-container>
+
                                <div *ngIf="shareLeadsErrorMessage.responseType!='ERROR'">
                                   <app-auto-response-loader *ngIf="shareLeadsLoader.isLoading"></app-auto-response-loader>
                                   <ng-container *ngIf="!shareLeadsLoader.isLoading">
                                      <table  class="table tgrid table-condensed child-table-xamp bgc-lg" aria-describedby="" id="one-click-share-leads-{{partner?.partnershipId}}">
                                         <thead>
                                            <tr>
-                                              <th *ngIf="selectedPartnershipId==partner.partnershipId" scope="row" class="text-center" [hidden]="shareLeadsPagination.totalRecords==0">
-                                              <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked" id="one-click-share-leads-header-checkbox-id"
+                                              <th *ngIf="selectedPartnershipId==partner.partnershipId" scope="row" class="text-center pointer" [hidden]="shareLeadsPagination.totalRecords==0">
+                                              <input class="pointer" type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked" id="one-click-share-leads-header-checkbox-id"
                                               (change)="selectOrUnselectAllRowsOfTheCurrentPage($event,partner.partnershipId)">
                                               </th>
-                                              <th *ngIf="selectedPartnershipId!=partner.partnershipId" scope="row" class="text-center" [hidden]="shareLeadsPagination.totalRecords==0">
+                                              <th *ngIf="selectedPartnershipId!=partner.partnershipId" scope="row" class="text-center pointer" [hidden]="shareLeadsPagination.totalRecords==0">
                                               <input type="checkbox" title="Please select the company" disabled>
                                               </th>
                                               <th scope="row" [attr.colspan]="colspanValue">List Name</th>
@@ -105,9 +106,9 @@
                                         </thead>
                                         <tbody>
                                            <ng-container *ngFor="let shareLead of shareLeadsPagination.pagedItems;let i = index;">
-                                              <tr  id="one-click-share-leads-tr-{{shareLead.id}}" [class.xamp-tr-selected]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1 && selectedPartnershipId==partner.partnershipId" (click)="highlightSelectedShareListOnRowClick(shareLead.id,partner.partnershipId,$event)" >
-                                              <td class="text-center">
-                                                 <input type="checkbox" id="{{shareLead.id}}" [title]="selectedPartnershipId!=partner.partnershipId ? 'Please select company':''" [disabled]="selectedPartnershipId!=partner.partnershipId"  [checked]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1 && selectedPartnershipId==partner.partnershipId" name="oneClickShareLeadsCheckBox[]"   
+                                              <tr class="pointer" id="one-click-share-leads-tr-{{shareLead.id}}" [class.xamp-tr-selected]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1 && selectedPartnershipId==partner.partnershipId" (click)="highlightSelectedShareListOnRowClick(shareLead.id,partner.partnershipId,$event)" >
+                                              <td class="text-center pointer">
+                                                 <input class="pointer" type="checkbox" id="{{shareLead.id}}" [title]="selectedPartnershipId!=partner.partnershipId ? 'Please select company':''" [disabled]="selectedPartnershipId!=partner.partnershipId"  [checked]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1 && selectedPartnershipId==partner.partnershipId" name="oneClickShareLeadsCheckBox[]"   
                                                  value="{{shareLead.id}}" (click)="$event.stopPropagation();highlightShareListRowOnCheckBoxClick(shareLead.id,partner.partnershipId,$event)">
                                               </td>
                                               <td class="cw" *ngIf="showExpandButton">
@@ -188,15 +189,17 @@
                                      <strong>No Data Found</strong>
                                   </div>
                                </div>
+                              
                             </div>
                          </td>
-                      </tr>
+                      </tr>                 
                    </ng-container>
                 </tbody>
              </table>
              <!--Pagination-->
              <div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading" class="pg8">
-                <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="findPartnerCompanies($event)">
+                <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" 
+                (notifyParentDropDown)="findPartnerCompanies($event)" [customDropDown]="hideHeaderText">
                 </app-pagination>
              </div>
              <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">

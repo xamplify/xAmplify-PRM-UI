@@ -51,9 +51,9 @@
            <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
            <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
               <div class="row" style="margin-top: -14px;">
-                 <div  id="vendor-details-tile" class="{{tileClass}} mPad2" style="border-radius: 5px !important;">
+                 <div  id="vendor-details-tile" class="{{tileClass}} mPad mrg_b5" style="border-radius: 5px !important;">
                     <div class="row">
-                        <div class="flex margin-flex" style="padding-left: 5px;">
+                        <div class="flex margin-flex  mb_v_center" style="padding-left: 5px;">
                             <span class='profile'>
                                 <span class='uppercase'>{{damAnalyticsTilesDto?.circleAlphabet}}</span>
                                 </span>
@@ -69,7 +69,7 @@
                                           {{damAnalyticsTilesDto?.fullName | slice:0:50}}
                                         <span *ngIf="damAnalyticsTilesDto?.fullName?.length>50">..</span>
                                        </h5>
-                                       <a style="display: table;" title="{{damAnalyticsTilesDto?.emailId}}">
+                                       <a class="wordLengthControl" style="display: table;" title="{{damAnalyticsTilesDto?.emailId}}">
                                         {{damAnalyticsTilesDto?.emailId | slice:0:50}}<span *ngIf="damAnalyticsTilesDto?.emailId?.length>50">...</span></a>
                                 </span>
                             </div>
@@ -124,12 +124,12 @@
                      Analytics
                   </div>
                   <div class="inputs"  style="float: right; padding: 4px">
-                     <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 m0 campaign-filter-option">
+                     <ul class="mix-filter m0 campaign-filter-option">
                         <li class="filter" (click)="filterAnalytics('NONE',0)" [class.campaign-type-selected]="0 == selectedAnalyticsTypeIndex" translate>All</li>
                         <li class="filter" (click)="filterAnalytics('VIEW',1)" [class.campaign-type-selected]="1 == selectedAnalyticsTypeIndex" translate>View</li>
                         <li class="filter" (click)="filterAnalytics('DOWNLOAD',2)" [class.campaign-type-selected]="2 == selectedAnalyticsTypeIndex" translate>Download</li>
                     </ul>
-                     <div class="portlet-input input-inline" style="margin-left: 97px;margin-right: -104px;">
+                     <div class="portlet-input input-inline">
                         <div class="input-icon right">
                            <input type="text" id="sort-text"  style="height: 34px;" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                            <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchAnalytics();"></button>
@@ -168,10 +168,10 @@
                               </td>
                               <td class="text-center">
                                  <ng-container *ngIf="damAnalytics?.actionType=='View'">
-                                    <span title="View Icon"><i class="fa fa-eye icon-class" aria-hidden="true"></i></span>
+                                    <span title="View Icon"><i class="fa fa-eye campaignViewIcon IconCustomization" aria-hidden="true"></i></span>
                                  </ng-container>
                                  <ng-container *ngIf="damAnalytics?.actionType=='Download'">
-                                    <span title="Download Icon"><i class="fa fa-download icon-class" aria-hidden="true"></i></span>
+                                    <span title="Download Icon"><i class="fa fa-download icon-class IconCustomization" aria-hidden="true"></i></span>
                                  </ng-container>
                               </td>
                            </tr>

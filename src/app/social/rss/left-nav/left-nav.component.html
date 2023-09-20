@@ -1,7 +1,6 @@
-<div class="col-md-3 pr0">
+<div class="col-xs-12 col-sm-4 col-md-3 col-lg-3 pr0 pr_15">
     <ngx-loading [show]="isloading" [config]="{ backdropBorderRadius: '14px' }">
     </ngx-loading>
-    <!-- id="leftbar"-->
     <div class="page-bar">
         <div class="portlet-body" style="min-height:777px!important;padding-top:0px!important;overflow-y: auto;">
             <div class="single category">
@@ -19,7 +18,7 @@
                         <div class="heading-top heading-top-border" *ngFor="let vendor of vendors">
                             <a (click)="goToVendorFeeds(vendor.companyId,'p')" class="social-feeds-text-color">
                                 {{vendor.companyName}} 
-                                <span class="circled-number" id="vpc">{{vendor.publishedFeedCount}}</span>
+                                <i class="circled-number IconCustomization fontStyleNormal" id="vpc">{{vendor.publishedFeedCount}}</i>
                                 <br>
                             </a>
                         </div>
@@ -32,13 +31,13 @@
                     <h4 aria-expanded="false" class="social-feeds">YOUR FEEDS</h4>
                     <div class="heading-top heading-top-border">
                     <a (click)="goToAllCustomFeeds('v', 0)" class="social-feeds-text-color">
-                        All Feeds <span class="circled-number" id="vpc">{{vendorFeedsCount}}</span>
+                        All Feeds <i class="circled-number IconCustomization fontStyleNormal" id="vpc">{{vendorFeedsCount}}</i>
                     </a>
                 </div>
                 <div class="heading-top heading-top-border" *ngFor="let customFeedCollection of customFeedCollections">
                             <a (click)="goToAllCustomFeeds('v', customFeedCollection.id)" class="social-feeds-text-color">
                                 {{customFeedCollection.title}} 
-                                <span class="circled-number" id="vpc">{{customFeedCollection.feedCount}}</span>
+                                <i class="circled-number IconCustomization fontStyleNormal" id="vpc">{{customFeedCollection.feedCount}}</i>
                                 <br>
                             </a>
                         </div>

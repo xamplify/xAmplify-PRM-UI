@@ -1,0 +1,43 @@
+<div class="modal fade right" id="send-test-email-modal-popup" tabindex="-1"
+   role="dialog" aria-labelledby="myModalLabel" data-backdrop="static"
+   data-keyboard="false">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <a class="close-circle" (click)="callEventEmitter()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+            <h4  class="modal-title left" id="myModalLabel">{{headerTitle}}</h4>
+         </div>
+         <div class="modal-body">
+            <div id="modal-content">
+               <app-modal-popup-loader *ngIf="processing"></app-modal-popup-loader>
+               <div [hidden]="processing">
+
+                  <div *ngIf="!isPreviewEmailTemplate">
+                  <div class="form-group" >
+                     <label>Email Address<span class="required">*</span></label>
+                     <input type="email" autocomplete="off" placeholder="Please Enter Email Address" [(ngModel)]="sendTestEmailDto.toEmail" [ngModelOptions]="{standalone: true}" (input)="validateForm()" class="form-control">
+                     <span class="required" *ngIf="!isValidEmailFormat">Please enter a valid email address</span>
+                  </div>
+                  <div class="form-group">
+                     <label>Email Subject<span class="required">*</span></label>
+                     <input type="text" autocomplete="off"  [(ngModel)]="sendTestEmailDto.subject" (input)="validateForm()" [ngModelOptions]="{standalone: true}" placeholder="Please Enter Email Subject" class="form-control" name="subjectLine" />
+                  </div>
+                  <div class="form-group">
+                     <label>Email Body</label>
+                  </div>
+                  </div>
+
+                  <div id="sendTestEmailHtmlBody" class="plspx"></div>
+               </div>
+            </div>
+            
+         </div>
+         <div class="modal-footer" *ngIf="!processing">
+            <button class="btn Btn-Gray" (click)="callEventEmitter()" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn Btn-Green" [disabled]="!isValidForm || clicked" (click)="send();clicked = true" *ngIf="!sent && !isPreviewEmailTemplate">
+               <i class="fa fa-paper-plane mr5" aria-hidden="true"></i>Send Test
+            </button>
+         </div>
+      </div>
+   </div>
+</div>

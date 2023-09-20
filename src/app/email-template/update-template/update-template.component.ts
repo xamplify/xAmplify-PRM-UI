@@ -1,4 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HostListener } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { Router, ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { EmailTemplateService } from '../services/email-template.service';
@@ -9,9 +11,10 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { User } from '../../core/models/user';
-import { EmailTemplateSource } from '../../email-template/models/email-template-source';
+import { ComponentCanDeactivate } from 'app/component-can-deactivate';
+import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 
-declare var Metronic ,Layout ,Demo ,TableManaged,$,CKEDITOR,swal:any;
+declare var $:any,CKEDITOR:any,swal:any;
 
 @Component({
     selector: 'app-update-template',
@@ -19,7 +22,7 @@ declare var Metronic ,Layout ,Demo ,TableManaged,$,CKEDITOR,swal:any;
     styleUrls: ['./update-template.component.css'],
     providers: [EmailTemplate,HttpRequestLoader,CallActionSwitch]
 })
-export class UpdateTemplateComponent implements OnInit, OnDestroy {
+export class UpdateTemplateComponent implements OnInit,ComponentCanDeactivate, OnDestroy {
 
     public duplicateTemplateName: boolean = false;
     public invalidTemplateName: boolean = false;
@@ -41,39 +44,46 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     showDropDown = false;
     categoryNames: any;
     routerLink = "/home/emailtemplates/manage";
+    isReload = false;
+    categoryId = 0;
+    isUpdateButtonClicked = false;
+    modulesDisplayType:ModulesDisplayType = new ModulesDisplayType();
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService,
             private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
             public authenticationService:AuthenticationService,public refService:ReferenceService,
             public callActionSwitch: CallActionSwitch,private route:ActivatedRoute) {
-        logger.debug("updateTemplateComponent() Loaded");
         CKEDITOR.config.allowedContent = true;
-        let categoryId = this.route.snapshot.params['categoryId'];
-        if(categoryId>0){
-            this.routerLink+= "/"+categoryId;
+        this.categoryId = this.route.snapshot.params['categoryId'];
+        if(this.categoryId>0){
+            this.routerLink+= "/"+this.categoryId;
         }
         this.loggedInUserId = this.authenticationService.getUserId();
         if(this.emailTemplateService.emailTemplate == undefined){
+            this.isReload = true;
             this.navigateToManageSection();
+        }else{
+            this.listAvailableNames();
+            this.getCategories();
+             this.model.isRegularUpload =0;
+             if (emailTemplateService.emailTemplate != undefined) {
+                 let emailTemplate = emailTemplateService.emailTemplate;
+                 let body  = emailTemplate.body.replace(this.emailOpenTrackingUrl,"");
+                 this.model.content = body;
+                 this.model.categoryId = emailTemplate.categoryId;
+                 this.isValidType = true;
+                 this.model.draft = emailTemplate.draft;
+                 this.mycontent = this.model.content;
+                 this.model.templateName = emailTemplate.name;
+                 this.coBrandingLogo = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate;
+                 if(emailTemplate.source.toString()!="MANUAL"){
+                     if(this.model.draft){
+                         this.showDropDown = true;
+                         this.model.uploadType = "REGULAR";
+                     }
+                 }
+             }
         }
-       this.listAvailableNames();
-       this.getCategories();
-        this.model.isRegularUpload =0;
-        if (emailTemplateService.emailTemplate != undefined) {
-            let emailTemplate = emailTemplateService.emailTemplate;
-            let body  = emailTemplate.body.replace(this.emailOpenTrackingUrl,"");
-            this.model.content = body;
-            this.model.categoryId = emailTemplate.categoryId;
-            this.isValidType = true;
-            this.model.draft = emailTemplate.draft;
-            this.mycontent = this.model.content;
-            this.model.templateName = emailTemplate.name;
-            if(emailTemplate.source.toString()!="MANUAL"){
-                if(this.model.draft){
-                    this.showDropDown = true;
-                    this.model.uploadType = "REGULAR";
-                }
-            }
-        }
+       
 
     }
 
@@ -141,6 +151,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     }
 
     updateHtmlTemplate(isOnDestroy:boolean,ckEditorBody:any) {
+        this.isUpdateButtonClicked = true;
        this.refService.startLoader(this.httpRequestLoader);
         this.emailTemplate.id = this.emailTemplateService.emailTemplate.id;
         this.emailTemplate.name = this.model.templateName;
@@ -275,16 +286,12 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
       return body;
     }
     ngOnInit() {
-        try {
-        } catch (errr) { }
+       
     }
 
 
     ngOnDestroy() {
-        let body = this.getCkEditorData();
-        if(this.emailTemplateService.emailTemplate != undefined && this.clickedButtonName!=this.updateButton && $.trim(body).length>0){
-            this.showSweetAlert(body);
-        }
+                
     }
 
 
@@ -333,12 +340,19 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     }
 
     navigateToManageSection(){
-        let categoryId = this.route.snapshot.params['categoryId'];
-        if(categoryId>0){
-          this.router.navigate(["/home/emailtemplates/manage/"+categoryId]);
-        }else{
-          this.router.navigate(["/home/emailtemplates/manage"]);
+        let viewType = this.route.snapshot.params['viewType'];
+        let folderViewType = this.route.snapshot.params['folderViewType'];
+        this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);
+        if(viewType==undefined){
+            viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
         }
+        this.refService.navigateToManageEmailTemplatesByViewType(folderViewType,viewType,this.categoryId);
       }
 
+      @HostListener('window:beforeunload')
+      canDeactivate(): Observable<boolean> | boolean {
+          this.authenticationService.stopLoaders();
+          let isInvalidEditPage = this.emailTemplateService.emailTemplate==undefined;
+          return this.isUpdateButtonClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked;
+      }
 }

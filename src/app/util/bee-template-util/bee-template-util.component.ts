@@ -5,7 +5,7 @@ import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { Router } from '@angular/router';
 
-declare var BeePlugin: any;
+declare var BeePlugin: any, swal:any;
 
 @Component({
 	selector: 'app-bee-template-util',
@@ -28,13 +28,18 @@ export class BeeTemplateUtilComponent implements OnInit {
 	mergeTagsInput: any = {};
 	mergeTagsLoader = true;
 	id:number = 0;
+	/****XBI-1685******/
+	videoGif = "xtremand-video.gif";
+    coBraningImage = "co-branding.png";
+	isCoBrandingTemplate = false;
+	isVideoTemplate = false;
+	/****XBI-1685******/
 	constructor(private referenceService: ReferenceService, private authenticationService: AuthenticationService, private router: Router, private xtremandLogger: XtremandLogger) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
 	ngOnInit() {
 		this.loading = true;
-		
 		if (this.beeContainerInput != undefined) {
 			this.defaultJsonBody = this.beeContainerInput['jsonBody'];
 			this.vendorCompanyLogoPath = this.beeContainerInput['vendorCompanyLogoPath'];
@@ -42,6 +47,10 @@ export class BeeTemplateUtilComponent implements OnInit {
 			this.module = this.beeContainerInput['module'];
 			this.id = this.beeContainerInput['id'];
 			this.mergeTagsInput['isEvent'] = this.beeContainerInput['isEvent'];
+			/****XBI-1685******/
+			this.isCoBrandingTemplate = this.beeContainerInput['anyCoBrandingTemplate'];
+			this.isVideoTemplate = this.beeContainerInput['isVideoTemplate'];
+			/****XBI-1685******/
 			this.isPartnerView = this.router.url.indexOf('/editp') > -1;
 			this.getCompanyId();
 		} else {
@@ -110,6 +119,24 @@ export class BeeTemplateUtilComponent implements OnInit {
 				if(self.module=="dam"){
 					self.saveContentForDam(jsonContent, htmlContent);
 				}else if(self.module=="emailTemplates" || self.module=="pages"){
+					/****XBI-1685******/
+					if(self.module=="emailTemplates"){
+						if (self.isVideoTemplate) {
+							if (jsonContent.indexOf(self.videoGif) < 0) {
+								swal("", "Whoops! We're unable to save this template because you deleted the default gif. You'll need to select a new email template and start over.", "error");
+								self.loading = false;
+								return false;
+							}
+						}
+						if (self.isCoBrandingTemplate) {
+							if (jsonContent.indexOf(self.coBraningImage) < 0) {
+								swal("", "Whoops! We're unable to save this template because you deleted the co-branding logo. You'll need to select a new email template and start over.", "error");
+								self.loading = false;
+								return false;
+							}
+						}
+					}
+					/****XBI-1685******/
 					self.updateJsonAndHtmlContentAndSendDataBack(jsonContent,htmlContent);
 				}
 			};
