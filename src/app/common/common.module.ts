@@ -129,6 +129,11 @@ import { SearchGuidesComponent } from 'app/guides/search-guides/search-guides.co
 import { GuideHelpIconComponent } from 'app/guides/guide-help-icon/guide-help-icon.component';
 
 import { XamplifyVideoPlayerComponent } from 'app/util/xamplify-video-player/xamplify-video-player.component';
+
+import { DonutPieChartComponent } from 'app/dashboard/dashboard-analytics-components/donut-pie-chart/donut-pie-chart.component';
+import { QueryBuilderModule } from "angular2-query-builder";
+import { SelectEmailTemplateComponent } from 'app/util/select-email-template/select-email-template.component';
+
 import { SendTestEmailComponent } from 'app/util/send-test-email/send-test-email.component';
 import { AddMultipleEmailsInputComponent } from 'app/util/add-multiple-emails-input/add-multiple-emails-input.component';
 import { CampaignListAndGridViewComponent } from 'app/util/campaign-list-and-grid-view/campaign-list-and-grid-view.component';
@@ -138,7 +143,8 @@ import { EmailTemplatesListAndGridViewComponent } from 'app/util/email-templates
 
 
 @NgModule({
-	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule, DragulaModule, ColorPickerModule, CKEditorModule],
+	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
+		 DragulaModule, ColorPickerModule, CKEditorModule,QueryBuilderModule],
 	declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
 		BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
 		PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
@@ -162,7 +168,8 @@ import { EmailTemplatesListAndGridViewComponent } from 'app/util/email-templates
 		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,
-		HomeGuideComponent,EmailTemplatesListAndGridViewComponent],
+		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,SelectEmailTemplateComponent],
+
 
 
 
@@ -188,7 +195,8 @@ import { EmailTemplatesListAndGridViewComponent } from 'app/util/email-templates
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,
 		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
-		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent]
+		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent]
+
 
 
 

@@ -1,9 +1,11 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
 import { Router } from "@angular/router";
 import { Properties } from "app/common/models/properties";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { DashboardService } from "app/dashboard/dashboard.service";
 import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
+import { PartnerJourneyRequest } from "app/partners/models/partner-journey-request";
+import { ParterService } from "app/partners/services/parter.service";
 import { VanityLoginDto } from "app/util/models/vanity-login-dto";
 declare var Highcharts: any;
 
@@ -22,12 +24,23 @@ export class DonutPieChartComponent implements OnInit {
   loggedInUserId: number = 0;
   val: any;
   vanityLogin = false;
+
+  //XNFR-316
+  @Input() partnerCompanyId: any;
+  @Input() teamMemberId: any;
+  @Input() chartId: any;
+  @Input() trackType: any = "";
+  @Output() notifySelectSlice = new EventEmitter();
+  @Output() notifyUnSelectSlice = new EventEmitter();
+  headerText: string;
+
   constructor(
     public authenticationService: AuthenticationService,
     public properties: Properties,
     public dashboardService: DashboardService,
     public xtremandLogger: XtremandLogger,
-    public router: Router
+    public router: Router,
+    public partnerService: ParterService
   ) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.vanityLoginDto.userId = this.loggedInUserId;
@@ -39,33 +52,92 @@ export class DonutPieChartComponent implements OnInit {
     }
   }
   ngOnInit() {
+    //this.vanityLoginDto.applyFilter = this.applyFilter;
+    //this.findDonutChart();
+  }
+
+  ngOnChanges() {      
     this.vanityLoginDto.applyFilter = this.applyFilter;
     this.findDonutChart();
   }
 
   findDonutChart() {
     this.loader = true;
+    if (this.chartId == "interactedAndNotInteractedTracksDonut") {
+      this.headerText = 'Interacted & Not Interacted Tracks';
+      this.loadDonutChartForInteractedAndNotInteractedTracks();
+    } else if (this.chartId == "typewiseTrackContentDonut") {
+      this.headerText = 'Status Wise Track Assets';
+      this.loadDonutChartForTypewiseTrackContents();
+    } else {
+      this.headerText = "";
+      this.chartId = 'activeInActivePartnersDonut';
+      this.loadDonutChartForActiveAndInActivePartners();
+    }
+  }
+
+  loadDonutChartForTypewiseTrackContents() {
+    let partnerJourneyRequest = new PartnerJourneyRequest();
+    partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
+    partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
+    partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
+    partnerJourneyRequest.trackTypeFilter = this.trackType;
+    this.partnerService.getPartnerJourneyTypewiseTrackCounts(partnerJourneyRequest).subscribe(
+      response => {
+        this.processResponse(response);
+      }, error => {
+        this.setErrorResponse(error);
+      }
+    );
+  }
+
+  loadDonutChartForActiveAndInActivePartners() {
     this.dashboardService
       .findActivePartnersAndInActivePartnersForDonutChart(this.vanityLoginDto)
       .subscribe(
         (response) => {
-          this.statusCode = response.statusCode;
-          this.donutData = response.data;
-          if (this.statusCode == 200) {
-            this.loadDonutChart(this.donutData);
-          }
-          this.loader = false;
+          this.processResponse(response);
         },
         (error) => {
-          this.xtremandLogger.error(error);
-          this.loader = false;
-          this.statusCode = 500;
+          this.setErrorResponse(error);
         }
       );
   }
 
+  loadDonutChartForInteractedAndNotInteractedTracks() {
+    let partnerJourneyRequest = new PartnerJourneyRequest();
+    partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
+    partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
+    partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
+    this.partnerService.getPartnerJourneyInteractedAndNotInteractedCounts(partnerJourneyRequest).subscribe(
+      response => {
+        this.processResponse(response);
+      }, error => {
+        this.setErrorResponse(error);
+      }
+    );
+  }
+
+  setErrorResponse(error: any) {
+    this.xtremandLogger.error(error);
+    this.loader = false;
+    this.statusCode = 500;
+  }
+
+  processResponse(response: any) {
+    this.statusCode = response.statusCode;
+    this.donutData = response.data;
+    if (this.statusCode == 200) {
+      this.loadDonutChart(this.donutData);
+    }
+    this.loader = false;
+  }
+
   loadDonutChart(donutData: any) {
-    Highcharts.chart("donut-chart-container", {
+    let chartId = this.chartId;
+    let headerText = this.headerText;
+    let self = this;
+    Highcharts.chart(chartId, {
       chart: {
         type: "pie",
         backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff",
@@ -77,12 +149,12 @@ export class DonutPieChartComponent implements OnInit {
         text: "",
       },
       tooltip: {
-        backgroundColor: 'black', 
+        backgroundColor: 'black',
         style: {
-          color: '#fff' 
+          color: '#fff'
         }
       },
-      
+
       subtitle: {
         text: "",
       },
@@ -93,21 +165,43 @@ export class DonutPieChartComponent implements OnInit {
         pie: {
           innerSize: 70,
           depth: 10,
-          dataLabels:{
-            style:{
+          dataLabels: {
+            style: {
               color: this.authenticationService.isDarkForCharts ? "#fff" : "#696666",
             }
           }
         },
+        series: {
+          allowPointSelect: true,
+          marker: {
+            states: {
+              select: {
+                radius: 1,
+                fillColor: '#666'
+              }
+            }
+          },
+          point:{
+            events:{
+                select: function (event) {
+                  self.notifySelectSlice.emit(this.name);                   
+                },
+
+                unselect: function (event) {
+                  self.notifyUnSelectSlice.emit(this.name);                   
+                }
+            }
+          } 
+        }
       },
       credits: {
         enabled: false,
       },
-      colors: ["#E87E04", "#5C9BD1"],
+      colors: ["#5C9BD1", "#E87E04", "#2bc2b5", "#90ed7d"],
       series: [
         {
           name: "Count",
-          data: this.donutData,
+          data: this.donutData,          
         },
       ],
     });

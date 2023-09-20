@@ -1,0 +1,57 @@
+<div class="col-sm-12 col-md-12 col-lg-12 ml15m">
+  <div class="panel panel-info">
+    <div class="panel-heading panel-heading-custom">
+      <h3 class="panel-title mt7">Deal Details</h3>
+      <span class="pull-right mt25m">
+        <div class="input-icon right" style="position: relative;width: 178px;">
+          <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
+            [ngModelOptions]="{standalone: true}" placeholder="Search"
+            (keypress)="searchKeyPress($event.keyCode)">
+          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+            (click)="sortOption.searchKey='';search()"></button>
+          <button type="submit" class="search-box-item-click" (click)="search()">
+            <i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+      </span>
+    </div>
+    <div class="panel-body">    
+      <div class="scroll">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Created By</th>
+              <th scope="col">Deal Title</th>
+              <th scope="col">Deal Type</th>
+              <th scope="col">amount</th>
+              <th scope="col">Created On</th>              
+            </tr>
+          </thead>
+          <tbody>          
+            <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+              <td scope="row">{{((pagination.pageIndex-1)*pagination.maxResults)+i+1}}</td>
+              <td>{{item?.createdByEmail}}</td>
+              <td>{{item?.title}}</td>
+              <td>{{item?.dealType}}</td>
+              <td>{{item?.amount}}</td>
+              <td>
+                <app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.createdDateInUTC">
+                </app-timestamp>
+              </td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+        <strong>No Data Found.</strong>
+      </div>
+      <!--Pagination-->
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+        <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
+          (notifyParentDropDown)="getDealDetails($event)">
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

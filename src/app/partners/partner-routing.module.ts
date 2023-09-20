@@ -5,6 +5,10 @@ import { AddPartnersComponent } from './add-partners/add-partners.component';
 import { ManagePartnersComponent } from './manage-partners/manage-partners.component';
 import { SocialContactsCallbackComponent } from '../contacts/social-contacts-callback/social-contacts-callback.component';
 import { PartnerReportsComponent } from './partner-reports/partner-reports.component';
+import { IndividualPartnerAnalyticsComponent } from './individual-partner-analytics/individual-partner-analytics.component';
+import { PartnersJourneyAutomationComponent } from './partners-journey-automation/partners-journey-automation.component';
+import { WorkflowFormComponent } from '../contacts/workflow-form/workflow-form.component';
+
 
 const routes: Routes = [
     { path: '', redirectTo: 'add', pathMatch: 'full' },
@@ -18,8 +22,9 @@ const routes: Routes = [
     /*** For XNFR-127 *********/
     { path: 'manage/:id', component: ManagePartnersComponent},
     {path: 'analytics/:id', component: PartnerReportsComponent},
-
-
+    {path: 'individual-partner', component:IndividualPartnerAnalyticsComponent},
+    {path: 'journey-automation', component:PartnersJourneyAutomationComponent},
+    {path: 'partner-workflow', component:WorkflowFormComponent}
 ];
 
 @NgModule({

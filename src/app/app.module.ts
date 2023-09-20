@@ -81,6 +81,7 @@ import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 
+
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
         CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent

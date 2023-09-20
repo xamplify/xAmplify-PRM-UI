@@ -139,8 +139,15 @@ th {
   border-top: 3px solid #5ab1eb;
 }
 
+img.brand-logo-custom {
+  width: 190px;
+  height: 75px;
+  vertical-align: middle;
+  border-radius: 5px;
+}
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .mt_13 {
     margin-top: 13px;
   }
+
 }
