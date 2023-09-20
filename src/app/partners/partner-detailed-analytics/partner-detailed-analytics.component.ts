@@ -31,10 +31,8 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
       this.loggedInUserId = this.authenticationService.getUserId();
     }
 
-  ngOnInit() {
-    alert(this.partnerCompanyId);
-  }
-  
+  ngOnInit() {    
+  }  
 
   closeDetailedAnalytics(){
     this.notifyCloseDetailedAnalytics.emit();
