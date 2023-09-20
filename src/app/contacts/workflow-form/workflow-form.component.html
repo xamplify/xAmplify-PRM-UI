@@ -2,13 +2,19 @@
 <div class="page-content">
   <div class="page-bar">
     <ul class="page-breadcrumb">
-      <li><i class="fa fa-home" aria-hidden="true"></i> <a translate>Home</a>
+      <li>
+        <i class="fa fa-home" aria-hidden="true"></i> 
+        <a translate>Home</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
       <li>
-        <a translate>
-          <span>Partner Journey Automation</span>
+        <a (click)="navigateBack()">
+          <span>{{authenticationService.partnerModule.customName}} Journey Automation</span>
         </a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li>
+        <span>Create Workflow</span>
       </li>
     </ul>
   </div>

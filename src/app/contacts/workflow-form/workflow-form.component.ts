@@ -409,6 +409,7 @@ getSelectedEmailTemplateReceiver(event:any){
   
 
   showAndHideDivs(){
+    this.referenceService.goToTop();
     $('#step-1').hide();
     $('#step-2').show();
     this.activeClass2 = true;
@@ -416,6 +417,7 @@ getSelectedEmailTemplateReceiver(event:any){
   }
 
   goToPrevious(){
+    this.referenceService.goToTop();
     $('#step-1').show();
     $('#step-2').hide();
     this.activeClass1 = true;
@@ -434,12 +436,17 @@ getSelectedEmailTemplateReceiver(event:any){
 
  
   submitForm(){ 
-    this.parterService.saveWorkflow(this.workflowDto).subscribe(
-        response=>{
-        },error=>{
-          alert("Error");
-        }
-    );
+    let self = this;
+    this.referenceService.showSweetAlertSuccessMessage("Trigger Added Successfully");
+    this.navigateBack();
+
+
+    // this.parterService.saveWorkflow(this.workflowDto).subscribe(
+    //     response=>{
+    //     },error=>{
+    //       alert("Error");
+    //     }
+    // );
   }
   
   addDiv() {
@@ -447,6 +454,9 @@ getSelectedEmailTemplateReceiver(event:any){
   }
   deleteDiv(index: number) {
     this.divs.splice(index, 1);
+  }
+  navigateBack(){
+    this.referenceService.goToRouter("/home/partners/journey-automation");
   }
 
 

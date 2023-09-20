@@ -2,21 +2,20 @@
 <div class="page-content">
   <div class="page-bar">
     <ul class="page-breadcrumb">
-      <li><i class="fa fa-home" aria-hidden="true"></i> <a
-translate>Home</a>
+      <li>
+        <i class="fa fa-home" aria-hidden="true"></i> 
+        <a>Home</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
      </li>
    <li>
-    <a translate>
-    <span>Partner Journey Automation</span>
+    <a>
+    <span>{{authenticationService.partnerModule.customName}} Journey Automation</span>
     </a> 
  </li>
     </ul>
-    <div align="right" style="margin-top: 3px;" class="hidden-xs">
+    <div style="margin-top: 3px;" class="float-right">
 		  <a>
-		  <button type="button" class="btn Btn-Green" download
-			 style="margin-right: 3px;" (click)="goToWorkflow()"
-			 translate>
+		  <button type="button" class="btn Btn-Green" style="margin-right: 3px;" (click)="goToWorkflow()">
 		  Create Workflow<i class="fa fa-sitemap" aria-hidden="true" style="margin-left: 5px"></i>
 		  </button>
 		  </a>
@@ -36,7 +35,7 @@ translate>Home</a>
     </div>
     <div class="details" style="right: 13px !important;">
       <div class="number">10</div>
-      <div class="desc" title="Active Partner" style="font-size: 13px">Partner Journey Analytics                           
+      <div class="desc" title="Active Partner" style="font-size: 13px">{{authenticationService?.partnerModule?.customName}} Journey Analytics                           
         <!-- <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span> -->
       </div>
     </div>
@@ -58,7 +57,7 @@ translate>Home</a>
     </div>
     <div class="details" style="right: 13px !important;">
       <div class="number"><span>{{redistributedCampaignsCount}}</span>
-        <span>100</span></div>
+        <span>3</span></div>
       <div class="desc mlabelWidth" style="font-size: 13px">Triggers</div>
     </div>
     <span id="permhref" class="morePadding">
@@ -153,10 +152,10 @@ translate>Home</a>
                        <span class="gridHeader" translate>Triggers</span>
                     </th>
                     <th scope="col" style="width:21%" colspan="1" translate>
-                       CREATED ON
-                    </th>
-                    <th scope="col" class="text-center hidden-xs" style="width:17%" translate>
-                       Trigger Hits
+                      Title
+                   </th>
+                    <th scope="col" style="width:21%" colspan="1" translate>
+                       Created On
                     </th>
                     <th scope="col" class="text-center" style="width:27%"
                        translate>Actions</th>
@@ -168,24 +167,18 @@ translate>Home</a>
                       <img src="assets/images/trigger.png" style="height: 64px;" alt="manual">
                    </td>
                    <td>
-                      <span class="float-left">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</span>
+                      <span class="float-left">Partner has registered in the past 7 days.</span>
+                   </td>
+                   <td>
+                    <span class="float-left">Trigger For Registered Partners</span>
                    </td>
                    <td>
                       <span class="float-left">Aug 9, 2023</span>
                    </td>
-                   <td  class="text-center">
-                    <span>1</span>
-                   </td>
                    <td>
-                      <div class="actions-block override-actions" style="float:none !important;">
-                        <a href="#"><i  class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-files-o" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-bullhorn" aria-hidden="true"></i></a>
-                         <a href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                         <!-- <a href="#"><i class="fa fa-info" aria-hidden="true"></i></a> 
-                         <a href="#"><i class="fa fa-files-o" aria-hidden="true"></i></a>
-                         <a href="#"><i class="fa fa-download" aria-hidden="true"></i></a> -->
-                         <!-- <a href="#"><i class="icon-bell" aria-hidden="true"></i></a> -->
+                      <div class="actions-block override-actions text-center" style="float:none !important;">
+                        <a (click)="goToWorkflow()"><i  class="fa fa-pencil-square-o" aria-hidden="true" ></i></a>
+                         <a (click)="goToWorkflow()"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                       </div>
                     </td>
                 </tr>
@@ -194,20 +187,18 @@ translate>Home</a>
                     <img src="assets/images/trigger.png" style="height: 64px;" alt="manual">
                  </td>
                  <td>
-                  <span class="float-left">when an unknown printer took a galley of type and scrambled it to make a type specimen book.</span>
+                  <span class="float-left">Partner has not activated in the past 30 days.</span>
+               </td>
+               <td>
+                <span class="float-left">Trigger For InActive Partners</span>
                </td>
                <td>
                 <span class="float-left">Aug 12, 2023</span>
              </td>
-             <td  class="text-center">
-              <span>2</span>
-             </td>
              <td>
-              <div class="actions-block override-actions" style="float:none !important;">
-                <a href="#"><i  class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-files-o" aria-hidden="true"></i></a>
-                        <a href="#"><i class="fa fa-bullhorn" aria-hidden="true"></i></a>
-                         <a href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+              <div class="actions-block override-actions text-center" style="float:none !important;">
+                <a (click)="goToWorkflow()"><i  class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                <a (click)="goToWorkflow()"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
               </div>
             </td>
                 </tr>
@@ -216,19 +207,18 @@ translate>Home</a>
                     <img src="assets/images/trigger.png" style="height: 64px;" alt="manual">
                  </td>
                  <td>
-                  <span class="float-left">It has survived not only five centuries.</span>
+                  <span class="float-left">Partner has  activated in the past 7 days.</span>
                </td>
                <td>
-                <span class="float-left">Jan 1, 2023</span>
-             </td>
-             <td  class="text-center">
-              <span>3</span>
+                <span class="float-left">Trigger For Active Partners</span>
+               </td>
+               <td>
+                <span class="float-left">Aug 14, 2023</span>
              </td>
              <td>
-              <div class="actions-block override-actions" style="float:none !important;">
-                <a href="#"><i  class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                <a href="#"><i class="fa fa-files-o" aria-hidden="true"></i></a>
-                <a href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+              <div class="actions-block override-actions text-center" style="float:none !important;">
+                <a (click)="goToWorkflow()"><i  class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                <a (click)="goToWorkflow()"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
               </div>
             </td>
                 </tr>
