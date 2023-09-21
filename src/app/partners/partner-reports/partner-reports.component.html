@@ -3,7 +3,9 @@
     display: none;
   }
 </style>
-<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
+
+<div *ngIf="!showDetailedAnalytics" class="page-content" [class.ml0]="authenticationService.isSuperAdmin()" >
+  <!-- --------------------Breadcrumb-------- -->
   <div class="page-bar">
     <ul class="page-breadcrumb">
       <li *ngIf="!authenticationService.isSuperAdmin()">
@@ -21,8 +23,16 @@
       </li>
     </ul>
     <app-team-member-filter-option [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
+    <div *ngIf="authenticationService?.module?.showWorkFlow" style="margin-top: 3px;" class="float-right">
+		  <a [routerLink]="['/home/partners/partner-workflow']">
+		  <button type="button" class="btn Btn-Green" style="margin-right: 3px;">
+		  Create Workflow<i class="fa fa-sitemap" aria-hidden="true" style="margin-left: 5px"></i>
+		  </button>
+		  </a>
+	   </div>
   </div>
-
+  
+  <!-- --------------------Counts-------- -->
   <div class="row">
     <div class="col-xs-12 col-md-12 col-sm-12">
       <div>
@@ -149,13 +159,19 @@
       </div>
     </div>
   </div>
+
   <app-modal-popup-loader *ngIf="loadAllCharts"></app-modal-popup-loader>
+  <!-- --------------------Active Partners Analytics-------- -->
   <div id="active-partner-div" *ngIf="!loadAllCharts && selectedTabIndex == 0" style="padding-right: 12px;padding-bottom: 10px;">
     <div class="row">
       <div class="">
         <!---XNFR-220----->
         <!-- <app-view-partners></app-view-partners> -->
         <!---XNFR-220----->
+        <ng-container *ngIf="reloadWithFilter">
+            <app-active-partners-table [applyFilter]="applyFilter" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-active-partners-table>
+        </ng-container>
+
         <div class="col-xs-12 col-sm-6" style="padding-right: 5px;">
           <!-- Word Cloud Map-->
           <div class="portlet light" style="margin-bottom: 20px;">
@@ -196,10 +212,8 @@
 
     </div>
   </div>
-  <!-- End Of active-partners-div -->
-
-
-  <!-- --------------------Inactive Partners Count-------- -->
+ 
+  <!-- --------------------Inactive Partners Analytics-------- -->
   <div id="inactive-partners-div" style="display: none;">
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-lg-12 p5">
@@ -263,8 +277,8 @@
     </div>
   </div>
 
-  <!-- --------------------Approve Partners Count-------- -->
-  <div id="approve-partners-div">
+  <!-- --------------------Approve Partners Analytics-------- -->
+  <div id="approve-partners-div" style="display: none;">
     <div class="row">
       <div class="col-xs-12 p5">
         <div class="portlet light">
@@ -323,12 +337,13 @@
     </div>
   </div>
 
-  <!-- ------****************Through Partner Div************************** -->
+  <!-- ------****************Redistribute Partner Analytics************************** -->
   <div id="redistribute-partners-div" style="display: none;">
     <app-modal-popup-loader *ngIf="!reloadRedistributeCampaigns"></app-modal-popup-loader>
     <app-redistributed-campaigns *ngIf="selectedTabIndex==2 && reloadRedistributeCampaigns" [selectedIndex]="2" [applyFilter]="applyFilter"></app-redistributed-campaigns>
   </div>
 
+  <!-- ------****************Through Partner Analytics************************** -->
   <div id="through-partner-div" style="display: none;">
     <div class="row">
       <div class="col-md-12">
@@ -644,6 +659,13 @@
   <app-scroll-top></app-scroll-top>
 </div>
 
+<!--*******************Detailed Analytics****************-->
+<div *ngIf="showDetailedAnalytics">
+  <app-partner-detailed-analytics [partnerCompanyId]="detailedAnalyticsPartnerCompany"
+    (notifyCloseDetailedAnalytics)="closeDetailedAnalytics()"></app-partner-detailed-analytics>
+</div>
+
+
 <div class="modal fade" id="campaignInteractionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog" role="document" style="width: 80%; margin: 1em auto">
@@ -704,7 +726,6 @@
 </div>
 
 <!-- ..........Approve and Decline Partner request modal........... -->
-
 <div class="modal fade right" id="approve-decline-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
   data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog" role="document">

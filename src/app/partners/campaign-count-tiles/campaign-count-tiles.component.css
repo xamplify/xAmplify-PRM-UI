@@ -1,0 +1,29 @@
+.PaddingTwenty {padding:20px 20px}
+
+.dashboard-stat.green-soft {background-color: #3faba4;}
+.dashboard-stat.purple-soft {background-color: #8877a9;}
+.dashboard-stat.blue-soft {background-color: #4c87b9;}
+
+.dashboard-stat.green-soft .more {color: #fff;background-color: #3a9c96;}
+.dashboard-stat.purple-soft .more {color: #ffffff;background-color: #7d6ba1;}
+.dashboard-stat.blue-soft .more {color: #ffffff;background-color: #447dad;}
+
+.dashboard-stat-lighter {padding-bottom: 0;margin-bottom: 20px;}
+.dashboard-stat {display: block;overflow: hidden;border-radius: 3px!important;margin: 0px !important;}
+.dashboard-stat .visual {width: 80px;height: 80px;display: block;float: left;padding-top: 10px;padding-left: 15px;margin-bottom: 15px;font-size: 35px;line-height: 35px;}
+.dashboard-stat .visual {height: 60px!important;}
+.dashboard-stat .details {position: absolute;right: 10px;padding-right: 15px;}
+.dashboard-stat .more {clear: both;display: block;padding: 6px 10px 6px 10px;position: relative;text-transform: uppercase;font-weight: 300;font-size: 11px;opacity: .7; filter: alpha(opacity=70);}
+.dashboard-stat .visual > i {margin-left: 0;font-size: 70px;line-height: 56px !important;}
+.dashboard-stat .more>i {display: inline-block;margin-top: 1px;float: right;}
+.m-icon-swapright {background-position: -27px -10px;}
+.dashboard-stat .more {clear: both;display: block;padding: 6px 10px 6px 10px;position: relative;text-transform: uppercase;font-weight: 300;font-size: 11px;opacity: .7;filter: alpha(opacity=70);}
+
+/*  Detailed view cards font */
+@media only screen and (min-width: 768px) and (max-width:1200px) {  
+  .NumberFontDecrease {font-size: 22px !important;}
+  .TextFontDecrease {font-size: 12px !important;} 
+}
+@media (min-width: 300px) and (max-width: 767px)  {
+  .dashboard-stat {margin-bottom: 15px !important;}
+}

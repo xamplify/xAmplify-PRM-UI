@@ -178,7 +178,7 @@ h4.ellipsis.align-titletext {
 .bar a {
     width: 25px;
     height: 25px;
-    margin: 6px 5px;
+    margin: 6px 5px !important;
     padding: 2px;
 }
 .bar {

@@ -1,0 +1,318 @@
+<ngx-loading [config]="{ backdropBorderRadius: '14px' }" style="padding-bottom:20px"></ngx-loading>
+<div class="page-content">
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <i class="fa fa-home" aria-hidden="true"></i> 
+        <a translate>Home</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li>
+        <a (click)="navigateBack()">
+          <span>{{authenticationService.partnerModule.customName}} Journey Automation</span>
+        </a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li>
+        <span>Create Workflow</span>
+      </li>
+    </ul>
+  </div>
+  <!--2 cards start -->
+  <div class="page-bar p10">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="portlet light row steps-view">
+          <div class="col-block  width" [ngClass]="activeClass1?'col-block-active':'col-block-disable'" id=""
+            (click)="goToPrevious()" ng-reflect-ng-style="[object Object]" style="width: 50%;">
+            <div class="cenetered-block colorbox-1">
+              <img alt="" class="newicons" src="assets/images/campaignnew-icon/19.svg">
+              <h5 class="hidden-xs text-clr" translate="" ng-reflect-translate="">Trigger</h5>
+            </div>
+          </div>
+          <div ng-reflect-ng-style="[object Object]" class="col-block" (click)="showAndHideDivs()"
+            [ngClass]="activeClass2?'col-block-active':'col-block-disable'" style="width: 50%;" [ngClass]="">
+            <div class="cenetered-block colorbox-2">
+              <img alt="" class="newicons" src="assets/images/campaignnew-icon/8.svg">
+              <h5 class="hidden-xs text-clr">
+                Notification
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--2 cards End -->
+  <div>
+    <div>
+      <div>
+        <app-modal-popup-loader *ngIf="triggerLoader"></app-modal-popup-loader>
+        <div *ngIf="!triggerLoader" class="row" style="margin-right: -4px;margin-left: 0px;">
+          <!--Trigger start -->
+          <div class="page-bar p20 activeStepInfo" id="step-1">
+            <div class="caption" style="padding-top: 11px !important;">
+              <img src="assets/admin/pages/media/works/icon.png" class="icon-alignmnt" alt="">
+              <span class="textaligncenter">Trigger</span>
+            </div>
+            <hr>
+            <!-- Partner forms row start -->
+            <div class="row">
+              <p class="align-paratext">Enter Title<span class="required">*</span></p>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <input type="text" placeholder="Enter Title" class="form-control full-width" [(ngModel)]="workflowDto.title" 
+                  name="workflowDto.title" autocomplete="false" (input)="validateTitle()" >
+                </div>
+              </div>
+              <br><br>
+              <p class="align-paratext">Define the trigger when this happens</p>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <select class="form-control full-width" name="workflowDto.subjectId" [(ngModel)]="workflowDto.subjectId">
+                    <option *ngFor="let subject of subjects"
+                        [ngValue]="subject.id">
+                         {{subject.value}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <select class="form-control full-width" name="workflowDto.actionId" [(ngModel)]="workflowDto.actionId">
+                    <option *ngFor="let action of actions"
+                        [ngValue]="action.id">
+                         {{action.value}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group full-width">
+                  <select class="form-control" name="workflowDto.timePhraseId" [(ngModel)]="workflowDto.timePhraseId">
+                    <option *ngFor="let timePhrase of timePhrases"
+                        [ngValue]="timePhrase.id">
+                         {{timePhrase.value}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- Partner forms row end -->
+            <!--Query Builder-->
+            <ng-container *ngIf="!loadQueryBuilder && !showQueryBuilder">
+              <app-response-message [customResponse]="queryBuilderCustomResponse" [showCloseIcon]="false" *ngIf="queryBuilderCustomResponse?.isVisible"></app-response-message>
+            </ng-container>
+            <ng-container *ngIf="!loadQueryBuilder && showQueryBuilder">
+              <query-builder   id="queryBuilderCu" [(ngModel)]='workflowDto.query' [config]='config'></query-builder>
+            </ng-container>
+            <!--Query Builder-->
+            <button type="submit" class="btn  btn Btn-Green float-right" (click)="showAndHideDivs()"
+              translate>Next</button>
+          </div>
+          <!--Trigger End -->
+
+          <!--Action start -->
+          <div class="page-bar p20 {{activeStepInfo}}" id="step-2" *ngIf="activeClass2">
+            <div class="caption" style="padding-top: 11px !important;">
+              <img src="assets/admin/pages/media/works/mail.png" class="icon-alignmnt for-Action-only" alt="">
+              <span class="textaligncenterforaction">Action</span>
+            </div>
+            <hr> <br>
+            <!-- Action forms row start -->
+            <div class="row">
+              <!-- table -->
+              <app-list-loader *ngIf="partnerListsLoader"></app-list-loader>
+              <div class="col-xs-12" *ngIf="!partnerListsLoader">
+                <div class="mt10">
+                  <div class="note-vid pull-left" style="padding-top: 8px;">
+                    <div class="">Send To
+                    </div>
+                  </div>
+                  <div class="inputs search-align" style="float: right;margin-top: -12px">
+                    <div _ngcontent-c63="" style="float: left;;margin-right: 10px;margin-top: -5px">
+                      <select class="form-control cc mTopSort" [(ngModel)]="partnerListsSortOption.selectedCampaignRecipientsDropDownOption"
+                      (ngModelChange)="sortPartnerLists($event)"  [ngModelOptions]="{standalone: true}">                                                    
+                      <option  *ngFor="let option of partnerListsSortOption.campaignRecipientsDropDownOptions"
+                          [ngValue]="option">{{option.name}}</option>
+                  </select> 
+                    </div>
+                    <div class="portlet-input input-inline mAlign pr" style="position: relative;top: -6px;">
+                      <div class="input-icon right" id="icon-right" style="padding-right: 1px;margin-right: -5px;">
+                        <input type="text" id="search-text" class="form-control" [(ngModel)]="partnerListsSortOption.searchKey"
+                          [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                          (keypress)="findPartnerListsOnEnterKeyPress($event.keyCode)" autocomplete="off">
+                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="partnerListsSortOption.searchKey"
+                          (click)="partnerListsSortOption.searchKey='';searchPartnerLists()">
+                        </button>
+                        <button type="submit" class="search-box-item-click" (click)="searchPartnerLists()">
+                          <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
+                    <div class="table-responsive pt">
+                      <table class="table tgrid table-hover table-sm" id="partnerListsTable" role="grid" aria-describedby="" *ngIf="partnerListsPagination?.totalRecords > 0">
+                          <thead>
+                            <tr>
+                              <th scope="row" class="text-center">
+                                <input class="pointer" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="partnerJouneyPartnerListHeaderCheckBox" />
+                              </th>
+                              <th class="hidden-xs" *ngIf="showPartnerListSearchResultExpandButton" scope="col"></th>
+                              <th class="hidden-xs" colspan="2" style="width: 35%">
+                                <span class="ui-column-resizer" (mousedown)="referenceService?.onMouseDown($event,'partnerListsTable',2)"></span>
+                                <span class="gridHeader" translate>List Name</span>
+                              </th>
+                              <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
+                                List Info
+                            </th>
+                            <th scope="row" class="text-center" translate>Created On</th>
+                            <th scope="row" class="text-center" translate>Count</th>
+                            <th scope="row" class="text-center" translate>Preview</th>
+                            </tr>
+                          </thead>
+                          <tbody class="pointer">   
+                          <ng-container *ngFor="let partnerList of partnerListsPagination?.pagedItems;let i = index">
+                              <tr role="row" id="partnerJouneyPartnerListTable_{{partnerList.id}}" (click)="highlightContactRow(partnerList,$event,partnerList.count,partnerList.emailValidationInd)" 
+                                  [class.contact-list-selected]="(selectedPartnerListIds.indexOf(partnerList.id)>-1 && partnerList.count>0)" >
+                                  <td class="text-center pointer">
+                                      <div class="form-group">
+                                          <input type="checkbox" class="chk pointer" lang="{{partnerList.name}}" id="{{partnerList.id}}" [checked]="selectedPartnerListIds.indexOf(partnerList.id)>-1" 
+                                          name="partnerListCheckBoxName[]" value="{{partnerList.id}}" (click)="highlightRow(partnerList,$event)"
+                                          [disabled]="(partnerList.name==properties.activeMasterPartnerList  || partnerList.name==properties.inActiveMasterPartnerList) && partnerList.count==0">
+                                      </div>
+                                  </td>
+                                  <td class="cw" *ngIf="showPartnerListSearchResultExpandButton">
+                                      <div class="actions-block left-float">
+                                      <a (click)="$event.stopPropagation();viewMatchedContacts(partnerList)" data-toggle="tooltip" data-placement="bottom" title="Matched Results">
+                                          <i class="fa" [ngClass]="{'fa-angle-right': !partnerList.expand, 'fa-angle-down': partnerList.expand}"
+                                          aria-hidden="true" style=" padding-top: 0px;"></i>
+                                      </a>
+                                      </div>
+                                  </td>
+                                  <td style="width: 10%;text-align: left;" class="hidden-xs">
+                                      <img  *ngIf="partnerList?.socialNetwork=='ZOHO'" src="{{properties?.zohoImage}}" alt="Zoho" class="img-class-list">
+                                      <img *ngIf="partnerList?.socialNetwork=='GOOGLE'" src="{{properties?.googleImage}}" alt="Google" class="img-class-list">
+                                      <img *ngIf="partnerList?.socialNetwork=='SALESFORCE'" src="{{properties?.salesforceImage}}" alt="Salesforce" class="img-class-list"> 
+                                      <img *ngIf="partnerList?.socialNetwork=='MANUAL'" src="{{properties?.manualImage}}" alt="Manual" class="img-class-list list-icons-sm">
+                                      <img *ngIf="partnerList?.socialNetwork=='HUBSPOT'" src="{{properties?.hubspotImage}}" alt="Hubspot" class="img-class-list">
+                                      <img *ngIf="partnerList?.socialNetwork=='MARKETO'" src="{{properties?.marketoImage}}" alt="Marketo" class="img-class-list">
+                                      <img *ngIf="partnerList?.socialNetwork=='MICROSOFT'" src="{{properties?.microsoftImage}}" alt="Microsoft" class="img-class-list">
+                                      <img *ngIf="partnerList?.socialNetwork=='PIPEDRIVE'" src="{{properties?.pipedriveImage}}" alt="Pipedrive" class="img-class-list">
+
+                                  </td>
+                                  <td style="text-align: left;">
+                                      <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{partnerList?.name}}">
+                                          <span><strong>{{partnerList?.name}}</strong></span>
+                                      </h4>
+                                      <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom" title="{{partnerList?.createdName}}">
+                                          <span translate> Created By <strong>{{partnerList?.creatorName}}</strong></span>
+                                      </h6>
+                                  </td>
+                                  <td class="text-center sorting_1">
+                                      <app-display-date-and-time [dateAndTimeUTCString]="partnerList?.createdTimeInString"></app-display-date-and-time>
+                                  </td>
+                                  <td class="text-center">
+                                      {{partnerList?.count}}
+                                  </td>
+                                  <td class="text-center">
+                                      <a (click)="$event.stopPropagation();previewUsers(partnerList)">
+                                          <i class="fa fa-eye IconCustomization campaignViewIcon" aria-hidden="true" data-toggle="tooltip" data-replacement="bottom" title="Preview" data-original-title="Preview"></i>
+                                      </a>
+                                  </td>
+                              </tr>
+                              <tr role="row" *ngIf="partnerList?.expand">
+                                  <td colspan="12">
+                                  <app-userlist-users [searchKey]="partnerListsPagination.searchKey" [userListId]="partnerList.id"></app-userlist-users>
+                                  </td>
+                              </tr>
+                          </ng-container>                                                     
+                          </tbody>
+                      </table>
+                    </div>
+                    <!--Pagination-->
+                    <div *ngIf="partnerListsPagination?.pagedItems?.length !== 0 && !partnerListsLoader">
+                      <app-pagination [pagination]="partnerListsPagination"  (notifyParent)="paginatePartnerLists($event)" (notifyParentDropDown)="findPartnerListsOnLimitChange($event)">
+                      </app-pagination>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              
+
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="sel1" class="form-label">Subject</label>
+                  <input type="text" class="form-control" placeholder="Subject" [(ngModel)]="workflowDto.notificationSubject" name="workflowDto.notificationSubject">
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <!--Email templates start -->
+                  <div class="row">
+                    <div class="col-xs-12 col-md-12 col-sm-12">
+                      <div class="">
+                        <!-- removed page-bar class -->
+                        <fieldset>
+                          <legend>Message</legend>
+                          <div>
+                            <div class="portlet light dashboard-stat2">
+                              <div class="portlet-title custom-change-css">
+                                <div class="col-xs-6">
+                                  <h4 class="text-left">Add your Message to Trigger</h4>
+                                </div>
+                                <div class="col-xs-6">
+                                  <div class="pull-right">
+                                    <label class="switch-choose" translate>Choose Template
+                                    </label>
+                                    <switch class="switch-choose" [status]="workflowDto.customTemplateSelected" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                    (statusChange)="workflowDto.customTemplateSelected=!workflowDto.customTemplateSelected;loadEmailTemplates(workflowDto.customTemplateSelected)">
+                                  </switch>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <!--CK Editor-->
+                                <form class="role add-custom-message" *ngIf="!workflowDto.customTemplateSelected">
+                                  <div class="col-xs-12 p0">
+                                    <div class="col-xs-12">
+                                      <div>
+                                        <div>
+                                          <ckeditor [(ngModel)]="workflowDto.notificationMessage" name="workflowDto.notificationMessage"></ckeditor>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
+                                <!--Email Template-->
+                                <app-select-email-template *ngIf="workflowDto.customTemplateSelected" (selectedEmailTemplateEventEmitter)="getSelectedEmailTemplateReceiver($event)"></app-select-email-template>
+                              </div>
+                            </div>
+                          </div>
+                        </fieldset>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Action forms row end -->
+
+            <button type="button" class="btn Btn-Gray margin-left-negative-fifteen-px" (click)="goToPrevious()"
+              translate>Previous</button>
+            <button type="submit" class="btn  btn Btn-Green float-right mrm-15" (click)="submitForm()"
+              translate>Submit</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="showUsersPreview">
+  <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
+</ng-container>
+

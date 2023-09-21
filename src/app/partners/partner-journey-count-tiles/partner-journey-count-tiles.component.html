@@ -1,0 +1,96 @@
+<div class="page-bar p_20">
+   <div class="row" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+      <!-- card one  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showRedistributedCampaignCount">
+         <div class="pa-Card pa-CardOne">
+            <i class="fa fa-user pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextOne">{{partnerJourneyAnalytics?.redistributedCampaignCount}}</p>
+            <p class="pa-text pa-TextOne">Redistributed Campaigns</p>
+         </div>
+      </div>
+      <!-- card two  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showTeamMemberCount">
+         <div class="pa-Card pa-CardTwo">
+            <i class="fa fa-envelope-o pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextTwo">{{partnerJourneyAnalytics?.teamMemberCount}}</p>
+            <p class="pa-text pa-TextTwo">Team Members</p>
+         </div>
+      </div>
+      <!-- card three  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showContactCount">
+         <div class="pa-Card pa-CardThree">
+            <i class="fa fa-envelope pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextThree">{{partnerJourneyAnalytics?.contactCount}}</p>
+            <p class="pa-text pa-TextThree">Contacts</p>
+         </div>
+      </div>
+      <!-- card four  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showShareLeadCount">
+         <div class="pa-Card pa-CardFour">
+            <i class="fa fa-user-circle-o pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextFour">{{partnerJourneyAnalytics?.shareLeadCount}}</p>
+            <p class="pa-text pa-TextFour">Share Leads</p>
+         </div>
+      </div>
+      <!-- card five  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showLeadCount">
+         <div class="pa-Card pa-CardFive">
+            <i class="fa fa-envelope-open-o pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextFive">{{partnerJourneyAnalytics?.leadCount}}</p>
+            <p class="pa-text pa-TextFive">Leads</p>
+         </div>
+      </div>
+      <!-- card six  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showDealCount">
+         <div class="pa-Card pa-CardSix">
+            <i class="fa fa-globe pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextSix">{{partnerJourneyAnalytics?.dealCount}}</p>
+            <p class="pa-text pa-TextSix">Deals</p>
+         </div>
+      </div>
+      <!-- card seven  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showMDFAmount">
+         <div class="pa-Card pa-CardSeven">
+            <i class="fa fa-envelope-open pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextSeven">{{partnerJourneyAnalytics?.mdfAmount}}</p>
+            <p class="pa-text pa-TextSeven">MDF Amount</p>
+         </div>
+      </div>
+      <!-- card eight  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showAssetCount">
+         <div class="pa-Card pa-CardEight">
+            <i class="fa fa-eye pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextEight">{{partnerJourneyAnalytics?.assetCount}}</p>
+            <p class="pa-text pa-TextEight">Assets</p>
+         </div>
+      </div>
+      <!-- card nine  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showTrackCount">
+         <div class="pa-Card pa-CardNine">
+            <i class="fa fa-ban pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextNine">{{partnerJourneyAnalytics?.trackCount}}</p>
+            <p class="pa-text pa-TextNine">Tracks</p>
+         </div>
+      </div>
+      <!-- card ten  -->
+      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
+         *ngIf="partnerJourneyAnalytics?.showPlaybookCount">
+         <div class="pa-Card pa-CardTen">
+            <i class="fa fa-trash-o pa-fafaIconCustomization" aria-hidden="true"></i>
+            <p class="pa-text pa-TextTen">{{partnerJourneyAnalytics?.playbookCount}}</p>
+            <p class="pa-text pa-TextTen">Playbooks</p>
+         </div>
+      </div>
+   </div>
+   <app-box-loader [countLoader]=5 *ngIf="httpRequestLoader.isLoading"></app-box-loader>
+</div>
+

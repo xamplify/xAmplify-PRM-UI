@@ -1,0 +1,53 @@
+<div class="page-bar PaddingTwenty">
+  <div class="row" *ngIf="!httpRequestLoader.isLoading">
+    <!-- card one  -->
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+      <a href="#" class="dashboard-stat dashboard-stat-lighter green-soft">
+        <div class="visual">
+          <i aria-hidden="true" class="fa fa-bullhorn dbiconscss"></i>
+        </div>
+        <div class="details">
+          <div class="number NumberFontDecrease">{{campaignCounts?.totalCampaignCount}}</div>
+          <div class="desc default-name-font TextFontDecrease" translate="">Total Campaigns</div>
+        </div>
+        <span class="morePadding">
+          <a href="#" translate="" class="more"> Detailed view
+            <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+        </span>
+      </a>
+    </div>
+    <!-- card two  -->
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+      <a href="#" class="dashboard-stat dashboard-stat-lighter purple-soft">
+        <div class="visual">
+          <i aria-hidden="true" class="fa fa-bullhorn dbiconscss"></i>
+        </div>
+        <div class="details">
+          <div class="number NumberFontDecrease">{{campaignCounts?.toCampaignCount}}</div>
+          <div class="desc default-name-font TextFontDecrease" translate="">To Campaigns</div>
+        </div>
+        <span class="morePadding">
+          <a href="#" translate="" class="more"> Detailed view
+            <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+        </span>
+      </a>
+    </div>
+    <!-- card three  -->
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+      <a href="#" class="dashboard-stat dashboard-stat-lighter blue-soft">
+        <div class="visual">
+          <i aria-hidden="true" class="fa fa-bullhorn dbiconscss"></i>
+        </div>
+        <div class="details">
+          <div class="number NumberFontDecrease">{{campaignCounts?.throughCampaignCount}}</div>
+          <div class="desc default-name-font TextFontDecrease" translate="">Through Campaigns</div>
+        </div>
+        <span class="morePadding">
+          <a href="#" translate="" class="more"> Detailed view
+            <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+        </span>
+      </a>
+    </div>
+  </div>
+  <app-box-loader [countLoader]=3 *ngIf="httpRequestLoader.isLoading"></app-box-loader>
+</div>
