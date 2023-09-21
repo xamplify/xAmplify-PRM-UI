@@ -60,3 +60,9 @@
     text-align: right;
   }
 }
+
+.LeftsidepaddingCu {padding-right: 20px !important;}
+
+@media screen and (max-width:1050px) and (min-width: 992px ) {
+  .LeftsidepaddingCu {padding-right: 14px !important;}
+}

@@ -520,7 +520,7 @@
 
 /* XNFR-319 */
 @media only screen and (min-width:1171px) and (max-width:1200px) { 
-  .percentage-circle > .percentage-value {
+  /* .percentage-circle > .percentage-value {
     margin: -3.4em 0px 0px 16px !important;
   }
   .percentage-circle > .percentage-text {
@@ -528,11 +528,18 @@
   }
   h5.percentageBelowHeading {
     margin-left: 13px  !important;
+  } */
+  h2.percentage-value.customePercentageValue {
+      margin: -82px 0px 0px 5px !important;
+  }
+  h6.percentage-text.customePercentagetext {
+    margin: 0 0px 0px 0px !important;
   }
 }
 
+
 @media only screen and (min-width:1092px) and (max-width:1171px) { 
-  .percentage-circle > .percentage-value {
+  /* .percentage-circle > .percentage-value {
     margin: -3.4em 0px 0px 29px  !important;
   }
   .percentage-circle > .percentage-text {
@@ -540,10 +547,16 @@
   }
   h5.percentageBelowHeading {
     margin-left: 17px  !important;
+  } */
+  h2.percentage-value.customePercentageValue {
+    margin: -82px 0px 0px 5px !important;
+  }
+  h6.percentage-text.customePercentagetext {
+    margin: 0 0px 0px 0px !important;
   }
 }
 @media only screen and (min-width:1025px) and (max-width:1092px) { 
-  .percentage-circle > .percentage-value {
+  /* .percentage-circle > .percentage-value {
     margin: -3.4em 0px 0px 44px  !important;
   }
   .percentage-circle > .percentage-text {
@@ -551,10 +564,16 @@
   }
   h5.percentageBelowHeading {
     margin-left: 37px  !important;
-  } 
+  }  */
+  h2.percentage-value.customePercentageValue {
+    margin: -82px 0px 0px 5px !important;
+  }
+  h6.percentage-text.customePercentagetext {
+    margin: 0 0px 0px 0px !important;
+  }
 }
 @media only screen and (min-width:992px) and (max-width:1024px) { 
-  .percentage-circle > .percentage-value {
+  /* .percentage-circle > .percentage-value {
     margin: -3.4em 0px 0px 33px  !important;
   }
   .percentage-circle > .percentage-text {
@@ -565,6 +584,12 @@
   } 
   section.percentage-circle {
     margin-left: -14px  !important;
+  } */
+  h2.percentage-value.customePercentageValue {
+    margin: -82px 0px 0px 5px !important;
+  }
+  h6.percentage-text.customePercentagetext {
+    margin: 0 0px 0px 0px !important;
   }
 }
 
@@ -583,4 +608,15 @@
   }
 }
 
+@media only screen and (min-width:1135px) and (max-width:1177px) { 
+  select.form-control.decressOptionfont {
+    font-size: 10px !important;
+  }
+}
+@media only screen and (min-width:992px) and (max-width:1135px) { 
+  select.form-control.decressOptionfont {
+    font-size: 8px !important;
+    padding-left: 0px !important;
+  }
+}
 

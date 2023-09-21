@@ -173,8 +173,8 @@
                                                         stroke-width="5" stroke-dasharray="339.292006588"
                                                         [ngStyle]="{'stroke-dashoffset': campaign[5] === 0 ? 339.292006588 : 339.292 * (1 - campaign[4]/campaign[5])}" />
                                                 </svg>
-                                                <h2 class="percentage-value">{{campaign[6]}}%</h2>
-                                                <h6 class="percentage-text">interaction</h6>
+                                                <h2 class="percentage-value customePercentageValue">{{campaign[6]}}%</h2>
+                                                <h6 class="percentage-text customePercentagetext">interaction</h6>
                                             </section>
                                             <h5 class="text-primary" style="margin-top: 3.2em;">Released on
                                                 <app-timestamp [dateAndTime]="campaign[3]"> </app-timestamp>

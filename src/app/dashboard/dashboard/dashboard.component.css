@@ -255,7 +255,7 @@ a.social-stats {
 }
 @media screen and (min-width: 601px) {
   .modal-customize {
-    width: 45% !important;
+    width: 50% !important;
   }
   .modal-css {
     width: 75% !important;

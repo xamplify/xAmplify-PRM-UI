@@ -18,19 +18,17 @@
       <div class="scroll"  *ngIf="!httpRequestLoader.isLoading">
         <table class="table">
           <thead>
-            <tr>
-              <th scope="col">#</th>
+            <tr>         
+              <th scope="col">Team Member</th>
               <th scope="col">Track</th>
-              <th scope="col">Email ID</th>
               <th scope="col">Progress</th>
               <th></th>
             </tr>
           </thead>
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td scope="row">{{((pagination.pageIndex-1)*pagination.maxResults)+i+1}}</td>
-              <td>{{item?.title}}</td>
-              <td>{{item?.createdByEmail}}</td>
+              <td> <app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
+              <td>{{item?.title}}</td>              
               <td>{{item.progress}}%</td>
             </tr>
           </tbody>

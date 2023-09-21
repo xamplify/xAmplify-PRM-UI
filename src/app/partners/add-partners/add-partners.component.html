@@ -1647,7 +1647,7 @@
                                     <td *ngIf="authenticationService?.module?.adminOrSuperVisor"
                                         id="team-member-group-error-count-{{i}}">
                                         <div class="input-group">
-                                            <select id="partner-tm-group-{{i}}" class="form-control"
+                                            <select id="partner-tm-group-{{i}}" class="form-control decressOptionfont"
                                                 [(ngModel)]="partner.teamMemberGroupId"
                                                 (ngModelChange)="getTeamMembersByGroupId(partner,i)">
                                                 <option *ngFor="let teamMemberGroup of teamMemberGroups"

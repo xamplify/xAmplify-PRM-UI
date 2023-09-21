@@ -1948,3 +1948,9 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
  .toggleOnOff .labels::after{color:#fff !important;}
  .toggleOnOff .labels::before {color:#fff !important;}
 
+ .input-group > select.form-control {
+  border: 1px solid #2f4857 !important;
+}
+.input-group > select.form-control:focus {
+  border-color: none !important;
+}

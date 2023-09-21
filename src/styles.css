@@ -162,9 +162,11 @@ nav a.active {
 	  font-family: Open Sans !important;
   } */
 .percentage-circle > .percentage-value {
-  margin: -3.4em 0 0 0;
+  margin: -81px 0 0 0;
   font-weight: 600;
   color: #54a7e9;
+  
+  font-size: 21px;
 }
 
 .percentage-circle > .percentage-text {
