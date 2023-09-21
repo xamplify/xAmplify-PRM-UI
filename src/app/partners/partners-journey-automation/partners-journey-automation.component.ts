@@ -23,7 +23,10 @@ export class PartnersJourneyAutomationComponent implements OnInit {
   public searchKey: string;
   notifications = [];
   public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-
+  loading = false;
+  selectedTabIndex = 0;
+  redistributedCampaignsCount = 0;
+  checkingContactTypeName = "";
   constructor(private router: Router, public userService: UserService, public authenticationService: AuthenticationService,
     public referenceService:ReferenceService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent,
     public utilService: UtilService, public pagerService:PagerService) { }
@@ -55,4 +58,23 @@ listNotifications(pagination:Pagination) {
 goToAnalytics(){
   this.router.navigate(["/home/partners/individual-partner"]);
 }
+
+goToReDistributedPartnersDiv(){
+
+}
+
+goToThroughPartnersDiv(){
+
+}
+searchKeyValue(string){
+
+}
+eventHandler(keyCode){
+  
+}
+search(string){
+
+}
+
+
 }

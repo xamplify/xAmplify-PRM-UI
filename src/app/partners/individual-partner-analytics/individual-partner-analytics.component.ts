@@ -74,6 +74,7 @@ export class IndividualPartnerAnalyticsComponent implements OnInit, OnDestroy {
   redistributedCampaignsCount = 0;
   reloadWithFilter = true;
   loadAllCharts = false;
+  partner:any;
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger, public campaignService: CampaignService, public sortOption: SortOption,
@@ -902,6 +903,12 @@ export class IndividualPartnerAnalyticsComponent implements OnInit, OnDestroy {
             });
     }
     goToAnalytics(){this.router.navigate(["/home/partners/analytics"]);} 
+
+    eventHandler(eventKeyCode){
+
+    }
+
+    
 }
 
 
