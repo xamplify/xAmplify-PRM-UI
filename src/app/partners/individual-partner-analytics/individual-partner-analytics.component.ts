@@ -908,6 +908,10 @@ export class IndividualPartnerAnalyticsComponent implements OnInit, OnDestroy {
 
     }
 
+    searchPartnerCompanies(){
+        
+    }
+
     
 }
 
