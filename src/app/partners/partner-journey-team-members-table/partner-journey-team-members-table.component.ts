@@ -26,6 +26,8 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
 	pagination: Pagination = new Pagination();
   teamEmails: any = [];
   teamMemberId: any = 0;
+  showModulesPopup: boolean;
+  teamMemberGroupId: number;
  
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -129,6 +131,15 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
         this.xtremandLogger.error(_error);
 			}
 		);
+  }
+
+  previewModules(teamMemberGroupId: number) {
+    this.showModulesPopup = true;
+    this.teamMemberGroupId = teamMemberGroupId;
+  }
+
+  hideModulesPreviewPopUp(){
+    this.showModulesPopup = false;
   }
 
 }

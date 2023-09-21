@@ -70,3 +70,7 @@
     </div>
   </div>
 </div>
+
+<!-- Group Preview Popup -->
+<app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
+<!-- End of  Group Preview Popup -->
