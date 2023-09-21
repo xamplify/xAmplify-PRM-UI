@@ -255,11 +255,7 @@ export class TeamMemberService{
 
 	/************XNFR-2********************** */
 	findAll(pagination: Pagination) {
-		pagination.userId = this.authenticationService.getUserId();
-		var url = this.URL + "teamMember/findAll?access_token=" + this.authenticationService.access_token;
-		return this.http.post(url, pagination)
-			.map(this.extractData)
-			.catch(this.handleError);
+		return this.authenticationService.findAllTeamMembers(pagination);
 	}
 
 	findAllTeamMemberGroupIdsAndNames(addDefaultOption:boolean) {

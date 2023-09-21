@@ -26,19 +26,35 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Email ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Mobile Number</th>
+            <th scope="col">Team Member</th>
+            <th scope="col" class="text-center">Group</th>
             <th></th>
           </tr>
         </thead>
         <tbody>          
           <tr *ngFor="let teamMember of pagination.pagedItems;let i  = index">
-            <td scope="row">{{((pagination.pageIndex-1)*pagination.maxResults)+i+1}}</td>
-            <td>{{teamMember.emailId}}</td>
-            <td>{{teamMember.fullName}}</td>
-            <td>{{teamMember.mobileNumber}}</td>
+            <td>
+              <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
+              <span class="active-status" *ngIf="teamMember?.primaryAdmin"><strong>Primary Admin:<i class="fa fa-check active-status"></i></strong></span>
+            </td>
+            <td class="text-center">
+              <div class="btn-group" *ngIf="teamMember.teamMemberGroupId!=null &&!teamMember?.primaryAdmin">
+                <button class="group-name-cclass btn-primary default-btn-cursor" >
+                  <span  data-toggle="tooltip" data-placement="bottom" title="{{teamMember?.teamMemberGroupName}}">
+                    {{teamMember?.teamMemberGroupName | slice:0:15}}</span>
+                  <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
+                </button>
+                <button class="tm-group-preview-css btn-primary" (click)="previewModules(teamMember.teamMemberGroupId)">
+                <i  data-toggle="tooltip" data-placement="bottom" title="Preview" class="fa fa-eye" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="alert alert-danger" *ngIf="teamMember.teamMemberGroupId==null && !teamMember?.primaryAdmin">
+                <span><strong>No Group Selected</strong></span>
+              </div>
+              <div class="alert alert-info NaNAData" *ngIf="teamMember?.primaryAdmin">
+                <span><strong>N/A</strong></span>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -43,19 +43,22 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
+    this.pagination.partnerJourneyFilter = true;
     if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
       this.pagination.teamMemberId = this.teamMemberId;
+      this.pagination.filterKey = "teamMemberFilter";
     } else {
+      this.pagination.filterKey = "";
       this.pagination.teamMemberId = undefined;
     }
-    this.parterService.getPartnerJourneyTeamInfo(this.pagination).subscribe(
+    this.authenticationService.findAllTeamMembers(this.pagination).subscribe(
 			(response: any) => {	
-        this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          
           this.sortOption.totalRecords = response.data.totalRecords;
 				  this.pagination.totalRecords = response.data.totalRecords;
 				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
-        }        	
+        }     
+        this.referenseService.loading(this.httpRequestLoader, false);
 			},
 			(_error: any) => {
         this.httpRequestLoader.isServerError = true;

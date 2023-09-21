@@ -109,5 +109,6 @@ export class Pagination {
 	/** User Guide ***/
 	selectedEmailTempalteId = 0;
 	selectedVideoId = 0;
+	partnerJourneyFilter = false;
 
 }

@@ -1102,6 +1102,12 @@ findTrackOrPlaybookPublishEmailNotificationOption(type:any) {
 
 /****XNFR-317****/
 
+findAllTeamMembers(pagination:Pagination){
+  pagination.userId = this.getUserId();
+  let url = this.REST_URL +"teamMember/findAll?access_token=" + this.access_token;
+  return this.callPostMethod(url,pagination);
+}
+
 private callGetMethod(url: string) {
   return this.http.get(url)
     .map(this.extractData)
