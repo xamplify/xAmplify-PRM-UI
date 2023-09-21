@@ -69,7 +69,7 @@ goToThroughPartnersDiv(){
 searchKeyValue(string){
 
 }
-eventHandler(keyCode){
+eventHandler(keyCode,string){
   
 }
 search(string){
