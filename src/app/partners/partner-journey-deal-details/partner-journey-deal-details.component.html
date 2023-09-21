@@ -19,7 +19,6 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">#</th>
               <th scope="col">Created By</th>
               <th scope="col">Deal Title</th>
               <th scope="col">Deal Type</th>
@@ -29,8 +28,7 @@
           </thead>
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td scope="row">{{((pagination.pageIndex-1)*pagination.maxResults)+i+1}}</td>
-              <td>{{item?.createdByEmail}}</td>
+              <td><app-user-info [isPartnerEntityInfo]="true" [isCreatedByUser]="true" [userInfo]="item"></app-user-info></td>
               <td>{{item?.title}}</td>
               <td>{{item?.dealType}}</td>
               <td>{{item?.amount}}</td>

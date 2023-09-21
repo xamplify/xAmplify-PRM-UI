@@ -40,26 +40,22 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
 
   interactionTracksDonutSliceSelected(type: any) {
     this.selectedTrackType = type;
-    alert("Selected "+type);
   }
 
   interactionTracksDonutSliceUnSelected(type: any) {
     if (this.selectedTrackType == type) {
       this.selectedTrackType = "";
       this.selectedAssetType = "";
-      alert("Unselected "+type);
     } 
   }
 
   typeWiseTrackAssetsDonutSliceSelected(type: any) {
     this.selectedAssetType = type;
-    alert("Selected Asset"+type);
   }
   
   typeWiseTrackAssetsDonutSliceUnSelected(type: any) {
     if (this.selectedAssetType == type) {
       this.selectedAssetType = "";
-      alert("Unselected "+type);
     } 
   }
 
