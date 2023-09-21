@@ -82,7 +82,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		const currentUser = localStorage.getItem( 'currentUser' );
 		if (currentUser) {
 			const userName = JSON.parse( currentUser )['userName'];
-			this.authenticationService.module.showWorkFlow = true; //"spai@mobinar.com"==userName;
+			if(this.referenceService.isQA() || this.referenceService.isProduction()){
+				this.authenticationService.module.showWorkFlow = "spai@mobinar.com"==userName;
+			}else{
+				this.authenticationService.module.showWorkFlow = true;
+			}
+			
 		}
 
 	}
