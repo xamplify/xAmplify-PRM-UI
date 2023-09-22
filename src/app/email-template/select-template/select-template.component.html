@@ -22,7 +22,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="portlet light">
-                <div class="portlet-title m0" style="border-bottom:0px;padding-top: 5px;">
+                <div class="portlet-title m0" style="border-bottom:none !important;padding-top: 5px;">
                     <div class="row">
                         <div class="col-xs-12 col-sm-9">
                             <div>
@@ -48,7 +48,7 @@
                                 <div class="portlet-input input-inline input-small mb_10">
                                     <div class="input-icon right" style="width: 200px;margin-left: -55px;padding-top: 5px;">
                                         <input type="text" class="form-control" [(ngModel)]="templateFilter.name" placeholder="Search for a template">
-                                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="templateFilter.name" (click)="templateFilter.name=''"></button>
+                                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="templateFilter.name" (click)="templateFilter.name=''" style="padding-top: 10px;"></button>
                                         <button type="submit" class="search-box-item-click">
                                             <i class="fa fa-search" aria-hidden="true"></i></button>
                                     </div>

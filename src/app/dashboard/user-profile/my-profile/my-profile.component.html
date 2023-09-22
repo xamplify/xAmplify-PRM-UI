@@ -2110,7 +2110,7 @@
                     <div class="form-group" id="pipelineStageDiv">
                         <label>Stages</label>
                         <label style="text-align: center;width: 80%;">Options</label>
-                        <span *ngIf="!pipeline.isValidStage" class="required">{{pipelineStageErrorMessage}}</span>
+                        <div *ngIf="!pipeline.isValidStage" class="required">{{pipelineStageErrorMessage}}</div>
                         <ul id="sortable" [dragula]='"pipelineStagesDragula"' class="list-group" [dragulaModel]='pipeline.stages'>
                             <ng-container *ngFor="let pipelineStage of pipeline.stages; let x = index">
                                 <li class="list-group-item" id="stage{{x}}" *ngIf="pipelineStage != undefined">

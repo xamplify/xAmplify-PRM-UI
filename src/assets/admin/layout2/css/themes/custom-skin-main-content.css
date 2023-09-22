@@ -364,7 +364,9 @@ tr {
   background-color: var(--div-bg-color) !important;
   border-color: var(--border-color) !important;
 }
-.border-bottom-1px,
+
+/* sudha sri (28-8-2023) */
+.border-bottom-1px {border-bottom: none !important;}
 .modal .modal-header,
 .page-header.navbar
   .top-menu
