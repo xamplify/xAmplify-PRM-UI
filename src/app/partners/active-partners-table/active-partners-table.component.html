@@ -55,40 +55,14 @@
                   </span>
                 </td>
                 <td>
-                  <h4 class="ellipsis" style="font-size: 14px;" title="{{item?.companyName}}">
-                    {{item?.companyName | slice:0:25}}
-                    <span *ngIf="item?.companyName?.length>25">...</span>
+                  <h4 class="ellipsis" style="font-size: 14px;" title="{{item?.partnerCompanyName}}">
+                    {{item?.partnerCompanyName | slice:0:25}}
+                    <span *ngIf="item?.partnerCompanyName?.length>25">...</span>
                   </h4>
-                  <h5 class='m0' style="float:left">{{item?.partnerName | slice:0:15}}
-                    <span class='f-w-300'>{{item?.partnerName | slice:0:25}}<span
-                        *ngIf="item?.partnerName?.length>25">...</span></span>
-                  </h5>
-                  <h5 class='ellipsis' title="{{item?.companyName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
-                    {{item?.companyName | slice:0:25}}
-                    <span *ngIf="item?.companyName?.length>25">...</span>
-                  </h5>
-                  <h6 class='m0' style="font-weight: 400; display: table;">
-                    <span title="">{{item?.partnerName | slice:0:25}}</span>
-                    <span *ngIf="item?.partnerName?.length>25">...</span>
-                  </h6>
                 </td>
                 <td>
-                  <h4 class="ellipsis" style="font-size: 14px;" title="{{item?.companyName}}">
-                    {{item?.companyName | slice:0:25}}
-                    <span *ngIf="item?.companyName?.length>25">...</span>
-                  </h4>
-                  <h5 class='m0' style="float:left">{{item?.partnerName | slice:0:15}}
-                    <span class='f-w-300'>{{item?.partnerName | slice:0:25}}<span
-                        *ngIf="item?.partnerName?.length>25">...</span></span>
-                  </h5>
-                  <h5 class='ellipsis' title="{{item?.companyName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
-                    {{item?.companyName | slice:0:25}}
-                    <span *ngIf="item?.companyName?.length>25">...</span>
-                  </h5>
-                  <h6 class='m0' style="font-weight: 400; display: table;">
-                    <span title="">{{item?.partnerName | slice:0:25}}</span>
-                    <span *ngIf="item?.partnerName?.length>25">...</span>
-                  </h6>
+                  <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="item">
+                  </app-user-info>
                 </td>
                 <td>
                   <div class="actions-block override-actions">
