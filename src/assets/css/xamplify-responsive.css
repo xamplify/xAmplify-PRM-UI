@@ -1,9 +1,4 @@
-.vjs-big-play-button{
- position: absolute;
- top: 50%!important;
- left:50%!important;
- transform: translate(-50px, -50px)!important;
-}
+
 /* 03-07-2023 - Account Dashboard */
 @media (min-width: 1025px) and (max-width: 1300px)  { 
 /* Dashboard icons size */
@@ -35,9 +30,6 @@
   }
   /*app-detailed-campaign-analytics */
   @media only screen and (min-width: 768px) and (max-width: 991px) { 
-  section.percentage-circle {
-    margin: 0px -22px;
-  }
   span.dropdown-toggle {
     float: none!important;
   }
@@ -130,6 +122,9 @@
   .tab_p0{
    padding: 0px!important;
   }
+  .tab_pl0{
+    padding-left: 0px!important;
+  }
 }
 /* Manage Campaigns ribbon adjustment 04-07-2023 */
 @media only screen and (min-width: 601px) and (max-width: 992px) { 
@@ -193,7 +188,7 @@
     background-color:unset!important;
   }
   .mt_10{
-    margin-top: 10px;
+    margin-top: 10px!important;
   }
   .mb_pt{
     padding: 8px 0px;
@@ -323,7 +318,7 @@
     margin-top:0px!important;
    }
    .m_mb8{
-    margin-bottom: 8px;
+    margin-bottom: 8px!important;
    }
    .mb_whitespace{
     white-space: nowrap;
@@ -414,6 +409,12 @@
   .pt_10{
     padding-top: 10px!important;
   }
+  .mb_20{
+   margin-bottom: 20px;
+  }
+  .img_fit-content{
+    width: 100%!important;
+  }
 }
 /*Select Campaign- campaign */
 @media only screen and (min-width: 991px) and (max-width: 1035px) {  
@@ -458,9 +459,164 @@
   } 
   
 }
+@media only screen and (min-width: 768px) and (max-width: 992px) { 
+  section.percentage-circle {
+    margin: 0px -22px;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width:1200px) {  
+  .register_deal {
+    margin-top: 7px !important;
+    padding: 2px !important;
+    border: 1px solid #529de1 !important;
+    font-size: 10px !important;
+}
+}
+
+@media only screen and (min-width: 992px) and (max-width:1150px) {  
+  .shareVideoButton { padding: 5px 10px !important;}
+  .embedVideoButton { padding: 5px 10px !important;}
+}
+
+@media only screen and (min-width: 992px) and (max-width:1200px) {  
+  .videoViews {width: 80% !important;}
+}
+@media only screen and (min-width:300px) and (max-width:990px) {  
+  .videoInfoTopBtns {margin-top: 10px;}
+  .shareVideoButton { padding: 5px 15px !important;}
+  .embedVideoButton { padding: 5px 15px !important;}
+}
+
+/* XNFR-319 */
+@media only screen and (min-width:992px) and (max-width:1130px) { 
+  a.wordLengthControl { line-break: anywhere;}
+}
+@media only screen and (min-width:1769px) and (max-width:1920px) { 
+  .item__actions.moveLinkIcon {width: calc(11% - 0px) !important;}
+}
+@media only screen and (min-width:1500px) and (max-width:1769px) { 
+  .item__actions.moveLinkIcon {
+    width: calc(13% - 0px) !important;
+  }
+}
+@media only screen and (min-width:1147px) and (max-width:1251px) { 
+  .item__actions.moveLinkIcon {
+    width: calc(19% - 0px) !important;
+  }
+}
+@media only screen and (min-width:1025px) and (max-width:1147px) { 
+  .item__actions.moveLinkIcon {
+    width: calc(21% - 0px) !important;
+  }
+}
+@media only screen and (min-width:992px) and (max-width:1024px) { 
+  .item__actions.moveLinkIcon {
+    width: calc(16% - 0px) !important;
+  }
+
+}
 
 
+/* XNFR-319 */
+@media only screen and (min-width:1171px) and (max-width:1200px) { 
+  /* .percentage-circle > .percentage-value {
+    margin: -3.4em 0px 0px 16px !important;
+  }
+  .percentage-circle > .percentage-text {
+    margin: 0 0px 0px 9px !important;
+  }
+  h5.percentageBelowHeading {
+    margin-left: 13px  !important;
+  } */
+  h2.percentage-value.customePercentageValue {
+      margin: -82px 0px 0px 5px !important;
+  }
+  h6.percentage-text.customePercentagetext {
+    margin: 0 0px 0px 0px !important;
+  }
+}
 
 
+@media only screen and (min-width:1092px) and (max-width:1171px) { 
+  /* .percentage-circle > .percentage-value {
+    margin: -3.4em 0px 0px 29px  !important;
+  }
+  .percentage-circle > .percentage-text {
+    margin: 0 0px 0px 22px  !important;
+  }
+  h5.percentageBelowHeading {
+    margin-left: 17px  !important;
+  } */
+  h2.percentage-value.customePercentageValue {
+    margin: -82px 0px 0px 5px !important;
+  }
+  h6.percentage-text.customePercentagetext {
+    margin: 0 0px 0px 0px !important;
+  }
+}
+@media only screen and (min-width:1025px) and (max-width:1092px) { 
+  /* .percentage-circle > .percentage-value {
+    margin: -3.4em 0px 0px 44px  !important;
+  }
+  .percentage-circle > .percentage-text {
+    margin: 0 0px 0px 33px  !important;
+  }
+  h5.percentageBelowHeading {
+    margin-left: 37px  !important;
+  }  */
+  h2.percentage-value.customePercentageValue {
+    margin: -82px 0px 0px 5px !important;
+  }
+  h6.percentage-text.customePercentagetext {
+    margin: 0 0px 0px 0px !important;
+  }
+}
+@media only screen and (min-width:992px) and (max-width:1024px) { 
+  /* .percentage-circle > .percentage-value {
+    margin: -3.4em 0px 0px 33px  !important;
+  }
+  .percentage-circle > .percentage-text {
+    margin: 0 0px 0px 23px  !important;
+  }
+  h5.percentageBelowHeading {
+    margin-left: 0px  !important;
+  } 
+  section.percentage-circle {
+    margin-left: -14px  !important;
+  } */
+  h2.percentage-value.customePercentageValue {
+    margin: -82px 0px 0px 5px !important;
+  }
+  h6.percentage-text.customePercentagetext {
+    margin: 0 0px 0px 0px !important;
+  }
+}
 
+@media only screen and (min-width:992px) and (max-width:1211px) { 
+  a.dashboard-stat.totalBoxFlex {
+    min-height: 120px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    -ms-flex-direction: column;
+    -ms-flex-line-pack: center;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    align-content: stretch;
+  }
+}
+
+@media only screen and (min-width:1135px) and (max-width:1177px) { 
+  select.form-control.decressOptionfont {
+    font-size: 10px !important;
+  }
+}
+@media only screen and (min-width:992px) and (max-width:1135px) { 
+  select.form-control.decressOptionfont {
+    font-size: 8px !important;
+    padding-left: 0px !important;
+  }
+}
 

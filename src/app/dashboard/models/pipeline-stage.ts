@@ -6,6 +6,6 @@ export class PipelineStage {
     lost: boolean = false;
     markAs: string = "";
     displayIndex: number;
-    canDelete: true;
+    canDelete: boolean = true;
     private: boolean;
 }

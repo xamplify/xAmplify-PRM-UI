@@ -42,3 +42,13 @@
   display: flex;
   align-items: stretch;
 }
+
+@media (min-width: 992px) and (max-width: 1200px)  {  
+  .figurePieResponsiveOverflow {
+    overflow: initial !important;
+    position: relative;
+    right: 0;
+    left: 0;
+}
+
+}

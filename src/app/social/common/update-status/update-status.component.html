@@ -117,7 +117,7 @@
             <div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
                 <div class="portlet-body clearfix p10">
                     <div class="col-sm-7 col-xs-12">
-                        <div class="form-group m0">
+                        <div class="form-group m0 m_mb8">
                             <label for="campaignName">
                                 <label class="caption-subject font-red-sunglo uppercase bold m0">Campaign</label>
                                 <span style="color: red"><strong> * </strong></span>
@@ -289,7 +289,7 @@
 
                 <div *ngIf="!alias">
                     <div class="p10" *ngFor="let socialStatus of socialStatusList" [hidden]="isSocialCampaign && alias" >
-                    <div class="update-status-profile col-xs-2 col-sm-1">
+                    <div class="update-status-profile col-xs-2 col-sm-1 status_profile">
                         <ng-container *ngIf="socialStatusList.length === 1 && (selectedAccounts > 1 || selectedAccounts < 1) && !isCustomizeButtonClicked; then defaultProfile"></ng-container>
                         <ng-container *ngIf="socialStatusList.length === 1 && selectedAccounts === 1 && !isCustomizeButtonClicked; then socialProfile"></ng-container>
                         <ng-container *ngIf="isCustomizeButtonClicked">
@@ -327,9 +327,9 @@
                             </div>
                         </section>
 
-                        <section *ngIf="socialStatus.validLink" class="update-status-content col-xs-10 col-sm-12" style="float:left">
+                        <section *ngIf="socialStatus.validLink" class="update-status-content col-xs-12 col-sm-12" style="float:left">
                             <button type='button' class='close' onclick='$(this).parent().remove();' (click) = "closeOgTags(socialStatus)">×</button>                            
-                            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 ogImage" style="margin-top: 0px;">
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ogImage mt_10" style="margin-top: 0px;">
                                 <img  src="{{socialStatus.ogImage}}"                                      
                                      height="86" width="100%" alt="No Image Found">
                                 <label class="actions-group add-photos m0">
@@ -339,10 +339,10 @@
                                 </label>
                             </div>
                             
-                            <div class="col-sm-9"><a title="{{socialStatus.statusMessage}}" href="{{socialStatus.statusMessage}}" target="_blank">{{socialStatus.statusMessage | slice:0:160}}
+                            <div class="col-xs-12 col-sm-9 soical_status"><a class="ContnetAbjustment" title="{{socialStatus.statusMessage}}" href="{{socialStatus.statusMessage}}" target="_blank">{{socialStatus.statusMessage | slice:0:160}}
                                     <span *ngIf="socialStatus.statusMessage?.length>160">..</span>
                             </a>
-                            <textarea class="div-background-color" [(ngModel)]="socialStatus.ogTitle" contenteditable="true">{{socialStatus.ogTitle}}</textarea>
+                            <textarea class="div-background-color topMargin" [(ngModel)]="socialStatus.ogTitle" contenteditable="true">{{socialStatus.ogTitle}}</textarea>
                             <textarea class="div-background-color" [(ngModel)]="socialStatus.ogDescription" contenteditable="true" [innerHTML]="socialStatus.ogDescription">{{socialStatus.ogDescription}}</textarea>
                             </div>
                         </section>
@@ -661,7 +661,7 @@
                                         </td>
                                         <td class='text-center'>
                                             <a class="actions-block float-none">
-                                                <i class="fa fa-eye"  data-toggle="tooltip" data-placement="bottom" [attr.title]="emptyContactsMessage" (click)="$event.stopPropagation();previewUsers(contactList)" aria-hidden="true"></i>
+                                                <i class="fa fa-eye IconCustomization"  data-toggle="tooltip" data-placement="bottom" [attr.title]="emptyContactsMessage" (click)="$event.stopPropagation();previewUsers(contactList)" aria-hidden="true"></i>
                                             </a>
                                         </td>
                                     </tr>

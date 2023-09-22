@@ -1,0 +1,51 @@
+<div class="col-sm-7 col-md-7 col-lg-7 ml15m">
+  <div class="panel panel-info mh480">
+    <div class="panel-heading panel-heading-custom">
+      <h3 class="panel-title mt7">Track Asset Details</h3>
+      <span class="pull-right mt25m">
+        <div class="input-icon right" style="position: relative;width: 178px;">
+          <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
+            [ngModelOptions]="{standalone: true}" placeholder="Search"
+            (keypress)="searchKeyPress($event.keyCode)">
+          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+            (click)="sortOption.searchKey='';search()"></button>
+          <button type="submit" class="search-box-item-click" (click)="search()">
+            <i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+      </span>
+    </div>
+    <div class="panel-body">    
+      <div class="scroll">
+        <table class="table">
+          <thead>
+            <tr> 
+              <th scope="col">Team Member</th>         
+              <th scope="col">Asset Details</th>           
+              <th scope="col">Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>          
+            <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+              <td><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
+              <td><p>{{item.assetName}} <br> Type: {{item.assetType}}  <br> Track : {{item?.title}} </p></td>
+              <td>{{item.status}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+        <strong>No Data Found.</strong>
+      </div>
+      <!--Pagination-->
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+        <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
+          (notifyParentDropDown)="getTypeWiseTrackContentDetails($event)">
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

@@ -21,11 +21,14 @@
     overflow-x: auto;
   }
   .mWidth {
-    width: 96%;
+    width: 100%;
   }
   .mPad {
     width: 150%;
     margin-left: -40px;
+  }
+  .mb_width{
+  width: 100%;
   }
 }
 .new-tab-button {

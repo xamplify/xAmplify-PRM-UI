@@ -1,0 +1,43 @@
+<!-- <div class="container"> 
+</div> -->
+
+<div class="page-bar PaddingTwentyCU">
+  <div class="row">
+    <div class="col-md-12 col-md-12 col-xs-12 col-sm-12">
+      <h4>Company Name: {{companyInfo?.companyName}}</h4>
+    </div>
+  </div>
+  <div class="row BgForCard">
+    <div class="col-md-12 col-md-12 col-xs-12 col-sm-12">
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="logo-wrapper" style="margin-top: 5px;">
+          <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';" class="CompanyLogoCu"
+          [src]="authenticationService.MEDIA_URL+companyInfo?.companyLogo">
+        </div>           
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="EqualPaddings">
+          <!-- <p title="{{deal.createdByEmail}}">{{deal.createdByEmail | slice:0:30}}</p>
+          <span *ngIf="deal.createdByEmail?.length>30">...</span> -->
+          <!-- <p><i class="fa fa-building" aria-hidden="true"></i> {{companyInfo?.companyName}}</p> -->
+          <p><i class="fa fa-calendar" aria-hidden="true"></i> Onboarded On :
+            <app-timestamp [isOnlyDate]="false" [dateAndTime]="companyInfo?.partnerAddedDateStr">
+            </app-timestamp>
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="EqualPaddings">
+          <p> <i class="fa fa-user" aria-hidden="true"></i> <b>{{authenticationService.partnerModule.customName}} Manager:</b> {{companyInfo?.partnerName}}</p>
+          <p><i class="fa fa-briefcase" aria-hidden="true"></i> <b>Job Title:</b> {{companyInfo?.partnerJobTitle}}</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="EqualPaddings">
+          <p><i class="fa fa-phone" aria-hidden="true"></i>{{companyInfo?.partnerMobileNumber}}</p>
+          <p><i class="fa fa-envelope" aria-hidden="true"></i> {{companyInfo?.partnerEmail}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

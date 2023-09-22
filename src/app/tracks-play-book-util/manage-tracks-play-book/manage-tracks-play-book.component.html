@@ -168,33 +168,33 @@
                                             <div *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress" class="actions-block override-actions custom-width-icon mb_whitespace" [ngClass]="{actionAlignment : !isPartnerView}">
                                                 <div>
                                                 <a class="mMobileDisable" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
-                                                    <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
+                                                    <i class="fa fa-pencil-square-o mDisableColor IconCustomization" aria-hidden="true"></i>
                                                 </a>
                                                 <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)=" UnpublishedModalPopUp(learningTrack.id, false, learningTrack)">
-                                                    <i class="fa fa-reply" aria-hidden="true"></i>
+                                                    <i class="fa fa-reply IconCustomization" aria-hidden="true"></i>
                                                 </a>
                                                 </div>
                                                 <div>
                                                 <a *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
-                                                    <i class="fa fa-share" aria-hidden="true"></i>
+                                                    <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
                                                 </a>
                                                 <a data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
-                                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                                    <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                                                 </a>
                                                 </div>
                                                 <div>
                                                 <a *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(learningTrack)">
-                                                    <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                                    <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                                                 </a>
                                                 </div>
                                                 <a *ngIf="learningTrack.canDelete && !isPartnerView" id="template-delete" data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(learningTrack.id)">
-                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                    <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                                                 </a>
                                             </div>
                                             <!--XNFR-327-->
                                             <ng-container *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress">
                                                 <a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listLearningTracks(pagination)"> 
-                                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                                    <i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
                                                 </a> 
                                             </ng-container>
 											<!--XNFR-327-->
@@ -247,35 +247,35 @@
                                 </span>
                             </div>
                             <!---XNFR-327--->
-                            <div *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress" [ngClass]="{actionAlignment_sp_even : !isPartnerView}"  class="bar" style="padding: 0px 10px;">
-                                <div class="btnAlignPad mbtnAlignPad">
-                                <a class="mMobileDisable mDisableColor" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
+                            <div *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress" [ngClass]="{actionAlignment_sp_even : !isPartnerView}"  class="bar gridIconCustomization" style="padding: 0px 10px;">
+                                <div class="btnAlignPad edit_icons mbtnAlignPad ">
+                                <a class="mMobileDisable mDisableColor Iconhover" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
                                 </a>
                                 </div>
                                 <div class="btnAlignPad mbtnAlignPad">
-                                    <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="UnpublishedModalPopUp(learningTrack.id, false, learningTrack)">
+                                    <a class="Iconhover" *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="UnpublishedModalPopUp(learningTrack.id, false, learningTrack)">
                                         <i class="fa fa-reply" aria-hidden="true"></i>
                                     </a>
                                 </div>
-                                <div class="btnAlignPad mbtnAlignPad"> 
-                                <a *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
+                                <div class="btnAlignPad edit_icons mbtnAlignPad"> 
+                                <a class="Iconhover" *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
                                     <i class="fa fa-share" aria-hidden="true"></i>
                                 </a>
                                 </div>
-                                <div class="btnAlignPad mbtnAlignPad">
-                                    <a data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
+                                <div class="btnAlignPad edit_icons mbtnAlignPad">
+                                    <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                     </a>
                                 </div>
 
-                                <div class="btnAlignPad mbtnAlignPad">
-                                <a *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(learningTrack)">
+                                <div class="btnAlignPad edit_icons mbtnAlignPad">
+                                <a class="Iconhover" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(learningTrack)">
                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                                 </a>
                                 </div>
 
-                              <div class="btnAlignPad mbtnAlignPad">
+                              <div class="btnAlignPad edit_icons mbtnAlignPad">
                                 <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Delete" class="delete" (click)="confirmDelete(learningTrack.id)">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </a>

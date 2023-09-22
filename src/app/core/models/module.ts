@@ -122,6 +122,7 @@ export class Module {
 
     /****XNFR-326****/
     emailNotificationSettings = false;
+    showWorkFlow = false;
 
 
 }

@@ -69,7 +69,7 @@ td h5 {
 .gearDropdownMenu {
   font-size: 18px;
   top: 9px;
-  color: #00a6e8;
+  /* color: #00a6e8; */
   cursor: pointer;
 }
 .caretDropdownMenu {
@@ -221,8 +221,8 @@ table tr:nth-child(even) td {
 }
 /* 21-06-2023 */
 .setting-icon-cu {
-  border: 1px solid #5bb2f5;
-  color: #5bb2f5;
+  /* border: 1px solid #5bb2f5;
+  color: #5bb2f5; */
   width: 28px;
   height: 28px;
   border-radius: 50%;

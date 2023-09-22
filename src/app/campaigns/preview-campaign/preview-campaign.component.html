@@ -178,7 +178,7 @@
                <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor" [hidden]="previewCampaignType === 'SOCIAL'">
                <legend class="scheduler-border">Selected:</legend>
                <div class="col-xs-12 row p0">
-                  <div [hidden]="!campaign.campaignVideoFile" class="col-xs-12 col-sm-6 p0">
+                  <div [hidden]="!campaign.campaignVideoFile" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 p0 mb_20">
                      <app-video-play *ngIf="campaign?.campaignVideoFile" [isPreview]="true" [videoFile]="campaign.campaignVideoFile" [videoWidth]="'280px'" [videoHeight]="'165px'"></app-video-play>
                   </div>
                   <div *ngIf="(previewCampaignType==='REGULAR' || previewCampaignType==='EVENT' ||  previewCampaignType==='LANDINGPAGE')" class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -201,9 +201,9 @@
                      <div *ngIf="!campaign.emailTemplate?.id" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 p0" style="margin-top: 60px; text-align: center;">
                         <p style="color: #ff3a3a;">No Template found</p>
                      </div>
-                     <div *ngIf="campaign.emailTemplate?.id" class="col-xs-12 col-sm-6 p0">
+                     <div *ngIf="campaign.emailTemplate?.id" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 p0">
                         <ul class="content__list">
-                           <li class="list__item" style="width:auto !important;float:none;margin-right: -29px;margin-top: -13px;" [class.list__item--selected]="true">
+                           <li class="list__item mb_mr0" style="width:auto !important;float:none;margin-right: -29px;margin-top: -13px;" [class.list__item--selected]="true">
                               <div class="flex-row">
                                  <div class="item__select-box-wrapper">
                                     <span class="select-box"> <label> <input type="checkbox" checked="checked"></label></span>
@@ -333,7 +333,7 @@
                                     <td *ngIf="previewCampaignType!='SOCIAL'" (click)="viewCampaigns(campaignUser,campaign)"
                                     >
                                     <div class="actions-block override-actions">
-                                       <a data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics"><i class="fa fa-line-chart" aria-hidden="true"></i></a>
+                                       <a data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics"><i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i></a>
                                     </div>
                                     </td>
                                     <td class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0)">
@@ -390,7 +390,7 @@
                                                       <div class="col-lg-10 col-md-9 col-sm-9 col-xs-10">
                                                          <div class="auto-resp">Auto-response to your e-mail-{{i+1}} </div>
                                                       </div>
-                                                      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-2" *ngIf="campaign.launched && !campaign.channelCampaign">
+                                                      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-2 tab_pl0" *ngIf="campaign.launched && !campaign.channelCampaign">
                                                          <ng-container *ngIf="reply.statusInString=='ACTIVE'">
                                                             <button class="btn btn-default workflow-style pause-style" (click)="pauseAutoReplyWorkflow(reply)">
                                                             <span class="hidden-xs pause-text-style">Pause</span>
@@ -405,7 +405,7 @@
                                                          </ng-container>
                                                       </div>
                                                    </div>
-                                                   <div class="col-xs-6">
+                                                   <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                       <h5 for="reason">Reason</h5>
                                                       <h6 *ngIf="reply.actionId ==0"> <input type="text" style="width:100%;height: 22px;" disabled value="Email is not opened"></h6>
                                                       <h6 *ngIf="reply.actionId==13"><input type="text" style="width:100%;height: 22px;" disabled value="Email is opened"></h6>
@@ -427,19 +427,19 @@
                                                       </ng-container>
                                                    </div>
                                                    <div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18 && reply.actionId!=28">
-                                                      <div class="col-xs-3">
+                                                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                                                          <h5 for="days" *ngIf="reply.actionId==22 || reply.actionId==23 || reply.actionId==33 " id="reply-days-{{reply.divId}}">Reply In X Days
                                                          </h5>
                                                          <h5 for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23 && reply.actionId!=33" id="reply-days-{{reply.divId}}">Reply In X Days
                                                          </h5>
                                                          <h6><input style="width:50%;height: 22px;" type="text" disabled value="{{reply.replyInDays}}"></h6>
                                                       </div>
-                                                      <div class="col-xs-3" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
+                                                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
                                                          <h5>At</h5>
                                                          <h6><input type="text" style="width:50%;height: 22px;" disabled value="{{reply.replyTime | date: 'shortTime'}}"></h6>
                                                       </div>
                                                    </div>
-                                                   <div class="col-xs-6">
+                                                   <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
                                                       <h5>Subject</h5>
                                                       <h6 title="{{reply?.subject}}">
                                                          <input type="text" style="width:100%;height: 22px;" disabled value="{{reply?.subject}}">
@@ -507,7 +507,7 @@
                                                       <div class="col-lg-10 col-md-9 col-sm-9 col-xs-10">
                                                          <div class="auto-resp"> Auto-response to a website visit - {{i+1}} </div>
                                                       </div>
-                                                      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-2" *ngIf="campaign.launched && !campaign.channelCampaign">
+                                                      <div class="col-lg-2 col-md-3 col-sm-3 col-xs-2 tab_pl0" *ngIf="campaign.launched && !campaign.channelCampaign">
                                                          <ng-container *ngIf="url.statusInString=='ACTIVE'">
                                                             <button class="btn btn-default workflow-style pause-style" (click)="pauseClickedUrlsWorkflow(url)">
                                                             <span class="hidden-xs pause-text-style">Pause</span>
@@ -637,42 +637,42 @@
       <ng-container *ngIf="campaign.launched">
          <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier ) && campaign.channelCampaign && campaign.redistributedCount>0" (click)="navigateRedistributedCampaigns(campaign)"
          data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
-         <span class="circled-number">{{campaign.redistributedCount}}</span>
+         <i class="circled-number IconCustomization fontStyleNormal">{{campaign.redistributedCount}}</i>
          </a>
          <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && campaign.redistributedCount==0" data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
-         <span class="circled-number disabled">{{campaign.redistributedCount}}</span>
+         <i class="circled-number disabled IconCustomization fontStyleNormal">{{campaign.redistributedCount}}</i>
          </a>
          <a *ngIf="(previewCampaignType!=='EVENT' && previewCampaignType!=='SOCIAL') && ((campaign.campaignScheduleType === 'NOW') ||hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier)" data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)"
          data-toggle="tooltip" data-placement="top" title="Analytics">
-         <i class="fa fa-line-chart"></i>
+         <i class="fa fa-line-chart IconCustomization"></i>
          </a>
          <a *ngIf="(previewCampaignType!=='EVENT') && ((campaign.campaignScheduleType === 'NOW')  && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier)) && !campaign.nurtureCampaign &&  previewCampaignType!='SOCIAL'" data-rel="fancybox-button"
          (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
-         <i class="fa fa-files-o"></i>
+         <i class="fa fa-files-o IconCustomization"></i>
          </a>
          <a *ngIf="(hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && !campaign.oneClickLaunch" (click)="navigatePreviewPartners(campaign)" data-rel="fancybox-button" data-toggle="tooltip"
          data-placement="auto" title="Preview & Delete {{authenticationService?.partnerModule?.customName}}">
-         <i class="fa fa-handshake-o" id="partner-icon"></i>
+         <i class="fa fa-handshake-o IconCustomization" id="partner-icon"></i>
          </a>
       </ng-container>
       <ng-container *ngIf="(previewCampaignType==='EVENT') && campaign.launched">
          <a *ngIf="campaign.launched || hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier" data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)"
          data-toggle="tooltip" data-placement="top" title="Analytics">
-         <i class="fa fa-line-chart"></i>
+         <i class="fa fa-line-chart IconCustomization"></i>
          </a>
          <a *ngIf="(campaign.launched && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier)) && !campaign.nurtureCampaign && previewCampaignType!='SOCIAL'" data-rel="fancybox-button"
          (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
-         <i class="fa fa-files-o"></i>
+         <i class="fa fa-files-o IconCustomization"></i>
          </a>
       </ng-container>
       <a *ngIf="(hasAllAccess || hasCampaignRole && loggedInUserId==campaign.userId  || isOnlyPartner  || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier)" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="auto"
       title="Edit">
-      <i class="fa fa-pencil-square-o"></i>
+      <i class="fa fa-pencil-square-o IconCustomization"></i>
       </a>
       <a *ngIf=" ( (campaign.campaignType!=='EVENT')  && (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isVendorTier) )"
       (click)="confirmDeleteCampaign(campaign)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="auto"
       title="Delete">
-      <i class="fa fa-trash-o"> </i></a>
+      <i class="fa fa-trash-o trashIconCustomization"> </i></a>
    </div>
 </div>
 </div>

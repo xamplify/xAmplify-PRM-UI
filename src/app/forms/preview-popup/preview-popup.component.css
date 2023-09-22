@@ -33,8 +33,8 @@
 }
 
 .modal-icon {
-  border: 1px solid #5bb2f5;
-  color: #5bb2f5;
+  /* border: 1px solid #5bb2f5;
+  color: #5bb2f5; */
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -149,6 +149,9 @@
   .mFloat {
     display: contents;
   }
+  .modal.right.fade.in .modal-dialog{
+    width: 100% !important;
+  }
 }
 .pg8 {
   top: -3px !important;
@@ -205,4 +208,13 @@ span.quiz_optionname {
       margin-top: 26px;
   }
 }
-  
+  @media only screen and (max-width:1024px){
+    .tab_formsearch{
+      display: flex!important;
+      margin-right: 10px;
+    }
+    #search{
+      margin-right: 0px;
+    }
+
+  }

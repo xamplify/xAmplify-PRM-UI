@@ -15,15 +15,23 @@ export class UserInfoComponent implements OnInit {
     @Input() isFromAdminList: boolean;
     @Input() isLeadInfo: boolean;
     @Input() isExclusion : boolean=false;
+    @Input() isCreatedByUser: boolean;
     backgroudColor: any;
     highlightLetter: string = "*";
     constructor() { }
 
-    ngOnInit() {
+    ngOnInit() {        
         if(this.userInfo!=undefined){
+            if (this.isCreatedByUser) {
+                this.userInfo.firstName = this.userInfo.createdByName;
+                this.userInfo.emailId = this.userInfo.createdByEmail;
+                this.userInfo.mobileNumber = this.userInfo.createdByMobileNumber;            
+            }
             this.setBackgroundColor();
             this.setHighlightLetter();  
         }
+
+        
     }
 
     setHighlightLetter() {

@@ -83,11 +83,11 @@
                       <div class="inline-box link" action="action_page.php" style="width: 100%;">
                         <input class="form-control" id="copy-link" type="text" readonly="readonly"
                           [ngModel]="completeLink" #link>
-                        <button type="button" class="right-border" (click)="editSlug()"
+                        <button type="button" class="right-border widthauto" (click)="editSlug()"
                         data-toggle="tooltip" data-placement="top" title="Edit"
                           style="border-radius:0px !important;"><i
                             class="fa fa-edit"></i></button>
-                        <button type="button" (click)="copyInputMessage(link)"
+                        <button type="button" class="widthauto" (click)="copyInputMessage(link)"
                         data-toggle="tooltip" data-placement="top" title="Copy"
                           style="border-radius:0px !important;"><i                      
                             class="fa fa-copy"></i></button>
@@ -388,7 +388,7 @@
                             </ng-container>
                           </ng-container>
                         </div>
-                        <div class="item__actions">
+                        <div class="item__actions moveLinkIcon">
                           <span> <a class="fm external-link" data-toggle="tooltip" data-placement="top" title="preview"
                               (click)="$event.stopPropagation();assetPreview(file, false)" style="left: 10px;">
                               <i class="fa fa-external-link preview-edit-color" aria-hidden="true"
@@ -618,7 +618,7 @@
                         <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview"
                             (click)="$event.stopPropagation();previewForm(form.id)">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
+                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                           </a>
                         </div>
                       </td>
@@ -719,10 +719,10 @@
                       <td id="actions-row " class="mActionsAlign" style="text-align: center;">
                         <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewForm(asset.quiz.id)">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
+                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                           </a>
                           <a data-toggle="tooltip" data-placement="top" title="Remove" (click)="selectedQuiz(asset.quiz); validateAssets(); validateAllSteps()">
-                            <i class="fa fa-times remove-button" aria-hidden="true "></i>
+                            <i class="fa fa-times remove-button IconCustomization" aria-hidden="true "></i>
                           </a>
                         </div>
                       </td>
@@ -752,10 +752,10 @@
                       <td id="actions-row " class="mActionsAlign" style="text-align: center;">
                         <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="assetPreview(asset.dam, true)">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
+                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                           </a>
                           <a data-toggle="tooltip" data-placement="top" title="Remove" (click)="setSelectedAsset(asset.dam); validateAssets(); validateAllSteps()">
-                            <i class="fa fa-times remove-button" aria-hidden="true "></i>
+                            <i class="fa fa-times remove-button IconCustomization" aria-hidden="true "></i>
                           </a>
                         </div>
                       </td>
@@ -851,7 +851,7 @@
                         <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview"
                             (click)="$event.stopPropagation();previewForm(form.id)">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
+                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                           </a>
                         </div>
                       </td>
@@ -1126,7 +1126,7 @@
                         <div class="actions-block override-actions custom-width-icon action_inline" style="float: none;">
                           <a data-toggle="tooltip" data-placement="top" title="Preview"
                             (click)="$event.stopPropagation();assetPreview(asset, true)">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
+                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                           </a>
                         </div>
                       </td>

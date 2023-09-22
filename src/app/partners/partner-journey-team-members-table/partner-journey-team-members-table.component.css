@@ -1,0 +1,22 @@
+.mt25m {
+	margin-top: -25px !important;
+}
+
+.group-name-cclass {
+	border-radius: 3px 0px 0px 3px !important;
+	width: 180px;
+  }
+  
+  .tm-group-preview-css {
+	border-radius: 0px 3px 3px 0px !important;
+  }
+  
+  .btn-group button {
+	background-color: #008fd5;
+	border: 1px solid #3575b5;
+	color: #fff;
+	padding: 6px 16px;
+	cursor: pointer;
+	float: left;
+	font-size: 14px;
+  }

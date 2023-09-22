@@ -85,7 +85,7 @@
                       <td class="cw">
                         <div class="actions-block left-float">
                           <a (click)="viewTeamMembers(partner)" data-toggle="tooltip" data-placement="bottom"  title="View/Hide Team Members">
-                            <i class="fa"
+                            <i class="fa IconCustomization"
                               [ngClass]="{'fa-angle-right': !partner.expand, 'fa-angle-down': partner.expand}"
                               aria-hidden="true"></i>
                           </a>
@@ -268,7 +268,7 @@
                     <td class="cw" *ngIf="showExpandButton">
                       <div class="actions-block left-float">
                         <a (click)="$event.stopPropagation();viewMatchedContacts(partnerGroup)" data-toggle="tooltip" data-placement="bottom"  title="Matched Results">
-                          <i class="fa" [ngClass]="{'fa-angle-right': !partnerGroup.expand, 'fa-angle-down': partnerGroup.expand}"
+                          <i class="fa IconCustomization" [ngClass]="{'fa-angle-right': !partnerGroup.expand, 'fa-angle-down': partnerGroup.expand}"
                             aria-hidden="true"></i>
                         </a>
                       </div>
@@ -286,7 +286,7 @@
                     </td>
                     <td class="text-center">
                       <div class="actions-block none-float" (click)="$event.stopPropagation();previewUserListUsers(partnerGroup)">
-                        <a data-toggle="tooltip" data-placement="top" title="Preview"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                        <a data-toggle="tooltip" data-placement="top" title="Preview"><i class="fa fa-eye IconCustomization" aria-hidden="true"></i></a>
                       </div>
                     </td>
                   </tr>

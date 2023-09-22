@@ -706,21 +706,21 @@
 								  <td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard && !sharedLeads">
 									 <div class="actions-block override-actions" style="width:170px" >
 										<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_edit}}" (click)="editUserDetails(contact)" *ngIf= "(!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)">
-										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+										<i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
 										</a>
 										<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_delete}}" (click)="deleteUserShowAlert(contact.id)"
 										*ngIf= "selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 										&& ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))
 										&& !isTeamMemberPartnerList">
-										<i class="fa fa-trash-o" aria-hidden="true"></i>
+										<i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
 										</a>
 										<ng-container *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads
 										   && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)">
 										   <a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)" *ngIf= "(!sharedLeads)">
-										   <i class="fa fa-bullhorn" aria-hidden="true"></i></a>
+										   <i class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i></a>
 										</ng-container>
 										<a *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads && (!sharedLeads) "   data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
-										<i class="fa fa-line-chart" aria-hidden="true"></i></a>
+										<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i></a>
 									 </div>
 								  </td>
 								  <ng-template #NA>N/A</ng-template>
@@ -1009,12 +1009,12 @@
 						 <div class="actions-block no-float" *ngIf="isPartner && (contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' || contactsByType.selectedCategory == 'all')">
 							<ng-container *ngIf="allcontacts?.validEmail">
 							   <a  (click)="sendMail(allcontacts.id)">
-							   <i class="fa fa-envelope"   aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Send Email Notification"></i>
+							   <i class="fa fa-envelope IconCustomization"   aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Send Email Notification"></i>
 							   </a>
 							</ng-container>
 							<ng-container *ngIf="!allcontacts?.validEmail">
 							   <a>
-							   <i class="fa fa-envelope gray"  aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Email can't be sent for invalid email Id"></i>
+							   <i class="fa fa-envelope gray IconCustomization"  aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Email can't be sent for invalid email Id"></i>
 							   </a>
 							</ng-container>
 						 </div>

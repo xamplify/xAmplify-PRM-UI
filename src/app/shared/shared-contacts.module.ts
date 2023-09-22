@@ -12,6 +12,7 @@ import { CommonComponentModule } from '../common/common.module';
 import { SocialContactsCallbackComponent } from '../contacts/social-contacts-callback/social-contacts-callback.component';
 import { SharedLibraryModule } from '../shared/shared-library.module';
 import { AddContactModalComponent } from '../contacts/add-contact-modal/add-contact-modal.component';
+import { CKEditorModule } from 'ng2-ckeditor';
 
 @NgModule({
         imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, SharedModule, CommonComponentModule, SharedLibraryModule ],

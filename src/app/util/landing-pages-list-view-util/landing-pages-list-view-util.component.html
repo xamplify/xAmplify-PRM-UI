@@ -158,37 +158,37 @@
                                         <td id="actions-td-width-xamp">
                                             <div class="actions-block override-actions min-width-icon">
                                                 <a *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)" data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">
-                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                    <i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
                                                 </a>
                                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(landingPage)">
-                                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                                    <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                                                 </a>
                                                 <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
                                                     <a data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showPageLinkPopup(landingPage)">
-                                                        <i class="fa fa-clipboard" aria-hidden="true"></i>
+                                                        <i class="fa fa-clipboard IconCustomization" aria-hidden="true"></i>
                                                     </a>
                                                 </ng-container>
                                                 <ng-container *ngIf="landingPage.formsCount>0 && !(isPartnerLandingPage && landingPage.type=='PRIVATE')">
-                                                    <a *ngIf="!isPartnerLandingPage" data-rel="fancybox-button" (click)="goToFormAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Form Count"><i class="fa fa-wpforms"
+                                                    <a *ngIf="!isPartnerLandingPage" data-rel="fancybox-button" (click)="goToFormAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Form Count"><i class="fa fa-wpforms IconCustomization"
                                                                 aria-hidden="true"></i></a>
                                                     <a *ngIf="isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Form Count"><i
-                                                                class="fa fa-wpforms" aria-hidden="true"></i></a>
+                                                                class="fa fa-wpforms IconCustomization" aria-hidden="true"></i></a>
                                                     <span class="badge" id="notification-list">{{landingPage.formsCount}}</span>
                                                 </ng-container>
                                                 <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
                                                     <a *ngIf="landingPage.analyticsCount<=0" data-rel="fancybox-button" id="cursor-not-allowed" data-toggle="tooltip" data-placement="top" title="Analytics">
-                                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                                        <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                                                     </a>
                                                     <a *ngIf="landingPage.analyticsCount>0 && !isPartnerLandingPage" data-rel="fancybox-button" (click)="goToLandingPageAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Analytics">
-                                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                                        <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                                                     </a>
                                                     <a *ngIf="landingPage.analyticsCount>0 && isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Analytics">
-                                                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                                        <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                                                     </a>
                                                     <span class="badge" id="notification-list">{{landingPage.analyticsCount}}</span>
                                                 </ng-container>
                                                 <a *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)" data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(landingPage)">
-                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                    <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                                                 </a>
                                             </div>
                                         </td>
@@ -245,33 +245,33 @@
                                     </h6>
                                 </div>
 
-                                <div class="bar">
-                                    <a *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)" data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">
+                                <div class="bar gridIconCustomization">
+                                    <a class="Iconhover" *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)" data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">
                                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                     </a>
-                                    <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(landingPage)">
+                                    <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(landingPage)">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                     </a>
                                     <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
-                                        <a data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showPageLinkPopup(landingPage)">
+                                        <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showPageLinkPopup(landingPage)">
                                             <i class="fa fa-clipboard" aria-hidden="true"></i>
                                         </a>
                                     </ng-container>
                                     <ng-container *ngIf="landingPage.formsCount>0 && !(isPartnerLandingPage && landingPage.type=='PRIVATE')">
-                                        <a *ngIf="!isPartnerLandingPage" data-rel="fancybox-button" (click)="goToFormAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Form Count"><i class="fa fa-wpforms"
+                                        <a class="Iconhover" *ngIf="!isPartnerLandingPage" data-rel="fancybox-button" (click)="goToFormAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Form Count"><i class="fa fa-wpforms"
                                                     aria-hidden="true"></i></a>
-                                        <a *ngIf="isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Form Count"><i
+                                        <a class="Iconhover" *ngIf="isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Form Count"><i
                                                     class="fa fa-wpforms" aria-hidden="true"></i></a>
                                         <span class="badge" id="notification-list">{{landingPage.formsCount}}</span>
                                     </ng-container>
                                     <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
-                                        <a *ngIf="landingPage.analyticsCount<=0" data-rel="fancybox-button" id="cursor-not-allowed" data-toggle="tooltip" data-placement="top" title="Analytics">
+                                        <a class="Iconhover" *ngIf="landingPage.analyticsCount<=0" data-rel="fancybox-button" id="cursor-not-allowed" data-toggle="tooltip" data-placement="top" title="Analytics">
                                             <i class="fa fa-line-chart" aria-hidden="true"></i>
                                         </a>
-                                        <a *ngIf="landingPage.analyticsCount>0 && !isPartnerLandingPage" data-rel="fancybox-button" (click)="goToLandingPageAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Analytics">
+                                        <a class="Iconhover" *ngIf="landingPage.analyticsCount>0 && !isPartnerLandingPage" data-rel="fancybox-button" (click)="goToLandingPageAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Analytics">
                                             <i class="fa fa-line-chart" aria-hidden="true"></i>
                                         </a>
-                                        <a *ngIf="landingPage.analyticsCount>0 && isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Analytics">
+                                        <a class="Iconhover" *ngIf="landingPage.analyticsCount>0 && isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Analytics">
                                             <i class="fa fa-line-chart" aria-hidden="true"></i>
                                         </a>
                                         <span class="badge" id="notification-list">{{landingPage.analyticsCount}}</span>

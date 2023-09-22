@@ -1,0 +1,131 @@
+<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
+  <!-- --------------------Breadcrumb-------- -->
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li *ngIf="!authenticationService.isSuperAdmin()">
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a [routerLink]="referenseService.homeRouter">Home</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li *ngIf="authenticationService.isSuperAdmin()">
+        <i class="fa fa-home" aria-hidden="true"></i>
+        <a [routerLink]="['/home/dashboard/admin-report']">Admin
+          Report</a><i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
+      <li>
+        <a (click)="closeDetailedAnalytics()">{{authenticationService?.partnerModule?.customName}} Analytics</a>
+      </li>
+    </ul>
+    <button type="button" class="close-circle m2" [disabled]="httpRequestLoader.isLoading"
+      (click)="closeDetailedAnalytics()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </button>
+
+  </div>
+
+  <!--******************Company Info*******************--> 
+  <app-partner-journey-company-info [partnerCompanyId]="partnerCompanyId"></app-partner-journey-company-info>
+
+  <!--******************Campaign Counts - Tiles*******************-->
+  <app-campaign-count-tiles [partnerCompanyId]="partnerCompanyId"></app-campaign-count-tiles>
+
+  <!--******************All Counts - Tiles*******************-->
+  <app-partner-journey-count-tiles [partnerCompanyId]="partnerCompanyId"
+    [teamMemberId]="teamMemberId"></app-partner-journey-count-tiles>
+
+  <!--******************Team Member Details*******************-->
+  <app-partner-journey-team-members-table [partnerCompanyId]="partnerCompanyId"
+    (notifyTeamMemberSelection)="applyTeamMemberSelection($event)">
+  </app-partner-journey-team-members-table>
+
+  <!--******************Lead To Deal Conversion Chart & User wise Track Counts*******************-->
+  <div class="row mb15">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <!--******************Lead To Deal Conversion Chart*******************-->
+      <div class="ml15m">
+        <app-redistributed-campaigns-and-leads-bar-chart [partnerCompanyId]="partnerCompanyId"
+          [teamMemberId]="teamMemberId"
+          [chartId]="'partnerJourneyLeadsAndDealsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
+      </div>
+
+      <!--******************User wise Track Counts*******************-->
+      <app-userwise-track-counts [partnerCompanyId]="partnerCompanyId"
+        [teamMemberId]="teamMemberId"></app-userwise-track-counts>
+    </div>
+  </div>
+
+
+  <!--******************Interacted & Not Interacted Donut Chart & Details******************-->
+  <div class="row mb15">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <!--******************Interacted & Not Interacted Donut Chart******************-->
+      <div class="ml15m">
+        <app-donut-pie-chart [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+          [chartId]="'interactedAndNotInteractedTracksDonut'"
+          (notifySelectSlice)="interactionTracksDonutSliceSelected($event)"
+          (notifyUnSelectSlice)="interactionTracksDonutSliceUnSelected($event)"></app-donut-pie-chart>
+
+      </div>
+
+      <!--******************Interacted & Not Interacted Track Details*******************-->
+      <app-interacted-not-interacted-track-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+        [trackType]="selectedTrackType"></app-interacted-not-interacted-track-details>
+    </div>
+  </div>
+
+  <!--******************Status wise Track Assets Donut Chart & Details******************-->
+  <div class="row mb15">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <!--******************Type wise Track Assets Donut Chart******************-->
+      <div class="ml15m">
+        <app-donut-pie-chart [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+          [trackType]="selectedTrackType" [chartId]="'typewiseTrackContentDonut'"
+          (notifySelectSlice)="typeWiseTrackAssetsDonutSliceSelected($event)"
+          (notifyUnSelectSlice)="typeWiseTrackAssetsDonutSliceUnSelected($event)"></app-donut-pie-chart>
+      </div>
+
+      <!--******************Type wise Track Content Details*******************-->
+      <app-typewise-track-content-details [partnerCompanyId]="partnerCompanyId" [trackType]="selectedTrackType"
+        [assetType]="selectedAssetType" [teamMemberId]="teamMemberId"></app-typewise-track-content-details>
+    </div>
+  </div>
+
+  <!--******************Track Assets Detailed Report*******************-->
+  <app-userwise-track-details [partnerCompanyId]="partnerCompanyId"
+    [teamMemberId]="teamMemberId"></app-userwise-track-details>
+
+  <!--******************Track & Playbook Asset Details*******************-->
+  <div class="row mb15">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <!--******************Track Asset Details*******************-->
+      <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+        [type]="'TRACK'"></app-track-asset-details>
+
+      <!--******************Playbook Asset Details*******************-->
+      <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+        [type]="'PLAYBOOK'"></app-track-asset-details>
+    </div>
+  </div>
+
+  <!--******************Share Lead Details*******************-->
+  <app-share-lead-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"></app-share-lead-details>
+
+  <!--******************Redistributed Camapign Details*******************-->
+  <app-redistributed-campaign-details [partnerCompanyId]="partnerCompanyId"
+    [teamMemberId]="teamMemberId"></app-redistributed-campaign-details>
+
+  <!--******************Lead Details*******************-->
+  <app-partner-journey-lead-details [partnerCompanyId]="partnerCompanyId"
+    [teamMemberId]="teamMemberId"></app-partner-journey-lead-details>
+
+  <!--******************Deal Details*******************-->
+  <app-partner-journey-deal-details [partnerCompanyId]="partnerCompanyId"
+    [teamMemberId]="teamMemberId"></app-partner-journey-deal-details>
+
+  <!--******************Contact Details*******************-->
+  <!-- This is commented for GDPR Compliance
+    <app-partner-journey-contact-details [partnerCompanyId]="partnerCompanyId"
+  [teamMemberId]="teamMemberId"></app-partner-journey-contact-details> -->
+
+
+</div>

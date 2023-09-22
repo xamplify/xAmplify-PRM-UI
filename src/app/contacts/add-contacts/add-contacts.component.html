@@ -810,13 +810,16 @@
 								  <tbody>
 									 <ng-container *ngFor="let user of pagedItems;let i=index">
 										<tr>
-										   <td data-toggle="tooltip" data-placement="bottom" title="{{user.firstName}}">{{user.firstName |
+											<!-- data-toggle="tooltip" data-placement="bottom" title="{{user.firstName}}" -->
+										   <td>{{user.firstName |
 											  slice:0:30}} <span *ngIf="user.firstName?.length>30">...</span>
 										   </td>
-										   <td data-toggle="tooltip" data-placement="bottom" title="{{user.lastName}}">{{user.lastName |
+										   <!-- data-toggle="tooltip" data-placement="bottom" title="{{user.lastName}}" -->
+										   <td>{{user.lastName |
 											  slice:0:25}} <span *ngIf="user.lastName?.length>25">...</span>
 										   </td>
-										   <td data-toggle="tooltip" data-placement="bottom" title="{{user.emailId}}">{{user.emailId |
+										   <!-- data-toggle="tooltip" data-placement="bottom" title="{{user.emailId}}" -->
+										   <td>{{user.emailId |
 											  slice:0:35}} <span *ngIf="user.emailId?.length>35">...</span>
 										   </td>
 										   <td>

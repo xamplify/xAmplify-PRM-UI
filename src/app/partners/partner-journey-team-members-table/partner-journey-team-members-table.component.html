@@ -1,0 +1,76 @@
+<div class="panel panel-info">
+  <div class="panel-heading panel-heading-custom">
+    <h3 class="panel-title mt7">Team Member Details</h3>
+    <span class="pull-right mt25m">
+      <div class="input-icon right" style="position: relative;width: 178px;">
+        <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
+          [ngModelOptions]="{standalone: true}" placeholder="Search"
+          (keypress)="searchKeyPress($event.keyCode)">
+        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+          (click)="sortOption.searchKey='';search()"></button>
+        <button type="submit" class="search-box-item-click" (click)="search()">
+          <i class="fa fa-search" aria-hidden="true"></i></button>
+      </div>
+    </span>
+    <span class="pull-right mt25m">
+      <select class="form-control" [(ngModel)]="teamMemberId" [ngModelOptions]="{standalone: true}" placeholder="teamMemberId"
+        id="teamMemberId" (ngModelChange)="onChangeTeamMember()">
+        <option [value]="0">Select a Member</option>
+        <option *ngFor="let teamMember of teamEmails" [value]="teamMember.userId">{{teamMember.emailId}}
+        </option>
+      </select>
+    </span>
+  </div>
+  <div class="panel-body">
+    <div class="scroll">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Team Member</th>
+            <th scope="col" class="text-center">Group</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>          
+          <tr *ngFor="let teamMember of pagination.pagedItems;let i  = index">
+            <td>
+              <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
+              <span class="active-status" *ngIf="teamMember?.primaryAdmin"><strong>Primary Admin:<i class="fa fa-check active-status"></i></strong></span>
+            </td>
+            <td class="text-center">
+              <div class="btn-group" *ngIf="teamMember.teamMemberGroupId!=null &&!teamMember?.primaryAdmin">
+                <button class="group-name-cclass btn-primary default-btn-cursor" >
+                  <span  data-toggle="tooltip" data-placement="bottom" title="{{teamMember?.teamMemberGroupName}}">
+                    {{teamMember?.teamMemberGroupName | slice:0:15}}</span>
+                  <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
+                </button>
+                <button class="tm-group-preview-css btn-primary" (click)="previewModules(teamMember.teamMemberGroupId)">
+                <i  data-toggle="tooltip" data-placement="bottom" title="Preview" class="fa fa-eye" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="alert alert-danger" *ngIf="teamMember.teamMemberGroupId==null && !teamMember?.primaryAdmin">
+                <span><strong>No Group Selected</strong></span>
+              </div>
+              <div class="alert alert-info NaNAData" *ngIf="teamMember?.primaryAdmin">
+                <span><strong>N/A</strong></span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+      <strong>No Data Found.</strong>
+    </div>
+    <!--Pagination-->
+    <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+      <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+        (notifyParentDropDown)="getTeamInfo($event)">
+      </app-pagination>
+    </div>
+  </div>
+</div>
+
+<!-- Group Preview Popup -->
+<app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
+<!-- End of  Group Preview Popup -->

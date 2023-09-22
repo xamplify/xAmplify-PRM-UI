@@ -95,7 +95,7 @@
           <th class="center-aligned" translate>Lead Details</th>                        
           <th class="center" translate>Added By</th>
           <th class="center" translate>Status</th>
-          <th style="width: 18%; text-align:right" translate>Actions</th>
+          <th style="width: 18%; text-align:center" translate>Actions</th>
         </tr>
 
       </thead>
@@ -158,25 +158,25 @@
                 Deal</div>
                 
               <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner" class="register_deal">
-                <a style="color: #008fd5;padding-left: 6px;" (click)="registerDeal(lead)" translate>
+                <a style="color: #008fd5;" (click)="registerDeal(lead)" translate>
                   Register Deal</a>
               </div>
                 
             </td>
             <td>
-              <div class="actions-block override-actions">
+              <div class="actions-block override-actions tb_view_actions">
                   <a data-rel="fancybox-button" (click)="viewLead(lead)" title="View Lead" id="lead">
-                    <i class="fa fa-eye mr5" aria-hidden="true"></i>
+                    <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
                   </a>
                   <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                     <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="editLead(lead)" title="Edit Lead" id="lead">
-                      <i class="fa fa-edit mr5" aria-hidden="true"></i>
+                      <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
                     </a>
                     <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="confirmDeleteLead(lead)" title="Delete Lead" id="lead">
-                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                     </a>
                     <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
-                      <i class="fa fa-comments" aria-hidden="true" style="font-size:18px"> </i>
+                      <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px"> </i>
                       <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default" style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
                     </a>
                   </ng-container>

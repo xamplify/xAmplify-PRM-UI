@@ -98,6 +98,9 @@ export class Pagination {
 	previewSelectedSharedLeads = false;
 	headerCheckBoxChecked = false;
 	loginAsUserId = 0;
+	//XNFR-316
+	trackTypeFilter: any = "";
+	assetTypeFilter: any = "";
 	/** user guides ***/
 	moduleName:string = "";
 	slug:string = "";
@@ -106,5 +109,6 @@ export class Pagination {
 	/** User Guide ***/
 	selectedEmailTempalteId = 0;
 	selectedVideoId = 0;
+	partnerJourneyFilter = false;
 
 }

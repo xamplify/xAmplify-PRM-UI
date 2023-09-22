@@ -63,10 +63,10 @@
                 <td class="custom-center">
                 <div class="actions-block override-actions float-none">
                   <a data-rel="fancybox-button" (click)="goToCampaignAnalytics(item)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports" class='mr5'>
-                      <i class="fa fa-line-chart" aria-hidden="true"></i>
+                      <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                   </a>
                   <a routerLink="/home/forms/cf/{{item.campaignId}}" *ngIf="item.formsCount>0 && item.campaignType.indexOf('EVENT')<0" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
-                    <i class="fa fa-wpforms" aria-hidden="true"></i>
+                    <i class="fa fa-wpforms IconCustomization" aria-hidden="true"></i>
                     <span class="badge" id="notification">{{item.formsCount}}</span>
                   </a>
                 </div>

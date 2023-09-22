@@ -61,9 +61,12 @@
     background-color: transparent
 }
 
-.ffolder.gray i {
+.ffolder.gray {
     color: #54a7e9
 }
+/* .ffolder.gray i {
+    color: #54a7e9
+} */
 
 .grid-box-folder {
     background: #f1f3fa;
@@ -175,7 +178,7 @@ h4.ellipsis.align-titletext {
 .bar a {
     width: 25px;
     height: 25px;
-    margin: 6px 5px;
+    margin: 6px 5px !important;
     padding: 2px;
 }
 .bar {

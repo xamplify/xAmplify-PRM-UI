@@ -53,7 +53,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 	/*** XNFR-134***/
 	skin:CustomSkin = new CustomSkin();
 	vanityLoginDto: VanityLoginDto = new VanityLoginDto();
-	showResellar = false;
+	showWorkFlow = false;
 	/*** XNFR-224***/
 	isLoggedInAsPartner = false;
 	/*** XNFR-276***/
@@ -82,7 +82,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		const currentUser = localStorage.getItem( 'currentUser' );
 		if (currentUser) {
 			const userName = JSON.parse( currentUser )['userName'];
-			this.showResellar = "bob@xtremand.com"==userName;
+			if(this.referenceService.isQA() || this.referenceService.isProduction()){
+				this.authenticationService.module.showWorkFlow = "spai@mobinar.com"==userName;
+			}else{
+				this.authenticationService.module.showWorkFlow = true;
+			}
+			
 		}
 
 	}

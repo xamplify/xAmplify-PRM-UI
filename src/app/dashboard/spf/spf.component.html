@@ -14,7 +14,7 @@
     <!-- Tab One start-->
     <div role="tabpanel" class="tab-pane active" id="Manual_SPF">
       <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <div class="{{bootstrapAlertClass}}">
+      <div class="{{bootstrapAlertClass}}" *ngIf="spfConfigured">
         <strong>{{successOrErrorMessage}}</strong>
       </div>
       <div class="portlet-border">
@@ -44,7 +44,7 @@
         <img alt="PC" class="domainImage" src="assets/images/godaddy-configuration/Domain_PC.png">
         <div class="align-middle">
           <h3 translate="">Let's get started.</h3>
-          <p translate="">Update SPF records in GoDaddy to ensure better delivery of emails and to protect against email spoofing attacks.</p>
+          <p translate="">Add or Update SPF records in GoDaddy domain registrar to ensure better delivery of emails and to protect against email spoofing attacks.</p>
           <button class="btn btn-primary text-center" translate="" (click)="addADomain()">Add a Domain</button>
         </div>
       </div>
@@ -100,7 +100,7 @@
          <td>Domain</td>
        </tr>
        <tr class="displayContents">
-         <td>:</td>
+         <td class="verticalMiddle hidden-xs">:</td>
        </tr>
        <tr class="displayContents">
          <td>
@@ -108,9 +108,9 @@
           </td>
        </tr>
    </table>
-   <div class="col-sm-12 marginBottom">
+   <div class="col-sm-12 marginBottom" style="padding: 0px;">
     <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToStepFour()">Next</button>
-    <button type="submit" class="btn Btn-Green btn-md float-left mobileFloatRight" (click)="addADomain()">Back</button>
+    <button type="submit" class="btn Btn-Gray btn-md  mobileFloatRight" (click)="addADomain()">Back</button>
   </div>
    </div>
     <!-- Verification Domain End -->
@@ -124,12 +124,19 @@
            <td class="verticalMiddle">Domain</td>
          </tr>
          <tr class="displayContents">
+          <td class="verticalMiddle hidden-xs">:</td>
+        </tr>
+         <tr class="displayContents">
            <td class="verticalMiddle">{{domainName}}
            </td>
          </tr>
+         <!-- <tr class="displayContents">
+          <td class="verticalMiddle hidden-xs">:</td>
+        </tr> -->
          <tr class="displayContents">
           <td class="verticalMiddle">
-            <span class="conectColor" (click)="goToStepFive()"><i class="fa fa-circle" aria-hidden="true"></i>
+            <span class="conectColor" (click)="goToStepFive()">
+              <!-- <i class="fa fa-circle faDecfontSize" aria-hidden="true"></i> -->
               Connect</span>
           </td>
         </tr>
@@ -143,6 +150,7 @@
      </table>
      <div >
       <button type="submit" class="btn Btn-Gray btn-md  mobileFloatRight" (click)="goToStep3()">Back</button>
+      <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToStepFive()">Connect</button>
     </div>
    </div>
    <!-- Domains Details End -->
@@ -150,19 +158,25 @@
 
     <!-- API Key Start -->
     <div class="paddingSides" id="step-5">
-      <div *ngIf="statusCode === 400" class="alert alert-info">
+      <div *ngIf="statusCode === 404" class="alert alert-info">
         <strong>{{message}}</strong>
-        <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" style="margin-top: -7px;"  (click)="goToAddDomainDiv()">Change To Domain Name</button>
+        <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" style="margin-top: -7px;"  (click)="goToAddDomainDiv()">Change the Domain Name</button>
+      </div>
+      <div *ngIf="statusCode === 401" class="alert alert-info">
+        <strong>{{message}}</strong>
+      </div>
+      <div *ngIf="statusCode === 500" class="alert alert-info">
+        <strong>{{message}}</strong>
       </div>
       <form>
         <div class="form-group row">
-          <label for="APIKey" class="col-sm-3 col-form-label">API Key<span class="star"> *</span>:</label>
+          <label for="APIKey" class="col-sm-3 col-form-label">API Key<span class="star"></span>:<span style="color: red;">*</span></label>
           <div class="col-sm-9">
             <input type="text" class="form-control" id="APIKey" [(ngModel)]="apiKey" [ngModelOptions]="{standalone: true}" placeholder="Enter API Key here">
           </div>
         </div>
         <div class="form-group row">
-          <label for="SecretCode" class="col-sm-3 col-form-label">Secret Code <span class="star"> *</span>:</label>
+          <label for="SecretCode" class="col-sm-3 col-form-label">Secret Code <span class="star"></span>:<span style="color: red;">*</span></label> 
           <div class="col-sm-9">
             <input type="text" class="form-control" id="SecretCode" [(ngModel)]="apiSecret" [ngModelOptions]="{standalone: true}" placeholder="Enter Secret Code here">
           </div>
@@ -174,11 +188,11 @@
           </div>
         </div>
         <div class="form-group row">
-          <div class="col-lg-8 col-md-7 col-sm-6 col-xs-6" style="display: flex;padding-bottom: 7px;">
+          <div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 order-sm-2" style="display: flex;padding-bottom: 7px;">
             <div style="padding-top: 7px;">Step 1 : Click On</div>&nbsp;&nbsp;
             <button type="submit" class="btn Btn-Green float-left mobileBottomPa responsiveBtnCU"><a href="https://developer.godaddy.com/keys" target="_blank" style="color: #fff;"> Generate API key from Godaddy</a></button>
           </div>
-          <div class="col-lg-4 col-md-5 col-sm-6 col-xs-6">
+          <div class="col-lg-4 col-md-5 col-sm-6 col-xs-12 order-sm-1">
             <button type="submit" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace responsiveBtnCU" (click)="authenticationOfGodaddy()" [disabled]="!isAuthorized()">Authenticate</button>
             <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight responsiveBtnCU" (click)="goToStepFour()">Back</button>
           </div>
@@ -196,22 +210,22 @@
   <form>
     <div class="form-row row">
       <div class="form-group col-md-4">
-        <label for="Typetoselect">Type</label>
+        <label for="Typetoselect">Type<span style="color: red;">*</span></label>
         <select class="form-control" id="Typetoselect" disabled>
           <option selected>TXT</option>
         </select>
       </div>
       <div class="form-group col-md-4">
-        <label for="Name">Name</label>
+        <label for="Name">Name<span style="color: red;">*</span></label>
         <input type="text" class="form-control disabled" [(ngModel)]="godaddyRecordDto.name"  [ngModelOptions]="{standalone: true}" id="Name" placeholder="@" disabled>
       </div>
       <div class="form-group col-md-4">
-        <label for="Value">Value</label>
+        <label for="Value">Value<span style="color: red;">*</span></label> 
         <input type="text" class="form-control disabled" id="Value"  [(ngModel)]="godaddyValue" (ngModelChange)="changeValue($event)" [ngModelOptions]="{standalone: true}" placeholder="Enter Value here" disabled>
         <p *ngIf="updateButton" class="star"  role="alert" style="font-size: 13px;">Dns Record already exists. Click on update to continue.</p>
       </div>
       <div class="col-md-12">
-        <button type="submit" *ngIf="!updateButton" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="addDNsRecord();foundDuplicateDnsRecord()">Save</button>
+        <button type="submit" *ngIf="!updateButton" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="addDNsRecord(true);foundDuplicateDnsRecord(true)">Save</button>
         <button type="submit" *ngIf="updateButton" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="goToConnectdStep()">Update</button>
 
         <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" (click)="goToStepFive()">Back</button>
@@ -236,13 +250,20 @@
          <td class="verticalMiddle">Domain</td>
        </tr>
        <tr class="displayContents">
+        <td class="verticalMiddle hidden-xs">:</td>
+      </tr>
+       <tr class="displayContents">
          <td class="verticalMiddle">{{domainName}}
          </td>
        </tr>
+       <!-- <tr class="displayContents">
+        <td class="verticalMiddle hidden-xs">:</td>
+      </tr> -->
        <tr class="displayContents">
         <td class="verticalMiddle">
-          <span class="connectedLive"> <i class="fa fa-circle" aria-hidden="true"></i>
-            Connected</span>
+          <span class="connectedLive">
+             <!-- <i class="fa fa-circle faDecfontSize" aria-hidden="true"></i> -->
+            Connected</span> 
         </td>
       </tr>
        <tr class="displayContents">
@@ -251,7 +272,16 @@
             <img alt="Godaddy Logo" class="godadyLogo" src="assets/images/godaddy-configuration/godaddy-logo.png">
           </a>
           </td>
+          <td class="verticalMiddle">
+            <span class="dropdown alignGareLeft">
+              <i class="fa fa-gear faGareIconCu" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;"></i>
+              <div class="dropdown-menu dropdownMenuCu" aria-labelledby="dropdownMenuButton">
+                <span><button type="button" class="UnlinkLabel unlink-button" (click)="unlinkConfiguration(false)">Unlink</button></span>
+              </div>
+            </span>
+            </td>
        </tr>
+   
    </table>
  </div>
  <!-- Connected Domains Details End -->

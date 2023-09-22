@@ -59,8 +59,9 @@ video {
 .published-banner {
   background-color: green;
   color: white;
-  padding: 4px;
-  text-align: center;
+  padding: 4px 8px;
+  border-radius:2px;
+   text-align: center;
   width: 125px;
   margin: 0 0;
   font-size: 11px;

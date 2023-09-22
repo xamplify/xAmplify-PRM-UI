@@ -187,19 +187,25 @@ td h6 {
 #notification-list {
   background-color: #ed1c24;
   color: white;
-  margin-bottom: 36px;
+  /* margin-bottom: 36px;
   margin-left: -23px;
-  margin-top: -6px;
+  margin-top: -6px; */
+  margin-bottom: 25px;
+  margin-left: -19px;
+  margin-top: -4px;
 }
-#notificationBarCu #notification-list {
+/* #notificationBarCu #notification-list {
   margin-top: 4px;
-}
+} */
 
 
 /* Naresh changes */
 
 .bar a i {
   font-size: 12px !important;
+}
+.bar {
+  height: 45px;
 }
 
 .grid-box h6 {
@@ -211,7 +217,7 @@ td h6 {
   width: 25px !important;
   height: 25px !important;
   padding: 2px 0px 0px 0px !important;
-  margin: 4px 2px 0px 0px !important;
+  /* margin: 4px 2px 0px 0px !important; */
 }
 
 #landing-page-title {

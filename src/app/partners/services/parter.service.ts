@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http'
 import { Pagination } from '../../core/models/pagination';
 import { User } from '../../core/models/user';
+import { PartnerJourneyRequest } from '../models/partner-journey-request';
+import { WorkflowDto } from 'app/contacts/models/workflow-dto';
 @Injectable()
 export class ParterService {
     URL = this.authenticationService.REST_URL;
@@ -201,7 +203,142 @@ export class ParterService {
         return this.httpClient.get( url )
             .catch( this.handleError );
     }
+
+    /*********Start : XNFR-316************/
+    getActivePartners(pagination:Pagination){
+        const url = this.URL + 'partner/active-partners?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getPartnerJourneyCompanyInfo(partnerCompanyId: any, loggedInUserId: number) {
+        const url = this.URL + 'partner/journey/company/info/'+partnerCompanyId+'/'+loggedInUserId+'?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.get( url )
+            .catch( this.handleError );
+    }
     
+    getPartnerJourneyCampaignCounts(partnerCompanyId: any, loggedInUserId: number) {
+        const url = this.URL + 'partner/journey/campaign/counts/'+partnerCompanyId+'/'+loggedInUserId+'?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.get( url )
+            .catch( this.handleError );
+    }
+
+    getPartnerJourneyTeamInfo(pagination:Pagination){
+        const url = this.URL + 'partner/journey/team/info?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getPartnerJourneyTeamEmails(partnerJourneyRequest: PartnerJourneyRequest) {
+        const url = this.URL + 'partner/journey/team/emails?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, partnerJourneyRequest )
+            .catch( this.handleError );
+    }
+
+    getPartnerJourneyCounts(partnerJourneyRequest: PartnerJourneyRequest) {
+        const url = this.URL + 'partner/journey/counts?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, partnerJourneyRequest )
+            .catch( this.handleError );
+    }
+
+    getPartnerJourneyTrackDetailsByInteraction(pagination:Pagination){
+        const url = this.URL + 'partner/journey/track/interaction?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getTypeWiseTrackContentDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/track/content/typewise?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getUserWiseTrackCounts(pagination:Pagination){
+        const url = this.URL + 'partner/journey/track/userwise/count?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getUserWiseTrackDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/track/userwise/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getTrackAssetDetails(pagination:Pagination){
+        let url = this.URL + 'partner/journey/track/asset/details?access_token=' + this.authenticationService.access_token;
+        if (pagination.lmsType === 'PLAYBOOK') {
+            url = this.URL + 'partner/journey/playbook/asset/details?access_token=' + this.authenticationService.access_token;
+        }        
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getShareLeadDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/share/lead/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getRedistributedCampaignDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/redistributed/campaign/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getLeadDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/lead/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getDealDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/deal/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getContactDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/contact/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
+    getPartnerJourneyLeadDealCounts(partnerJourneyRequest: PartnerJourneyRequest) {
+        const url = this.URL + 'partner/journey/lead-to-deal/counts?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, partnerJourneyRequest )
+            .catch( this.handleError );
+    }
+
+    getPartnerJourneyInteractedAndNotInteractedCounts(partnerJourneyRequest: PartnerJourneyRequest) {
+        const url = this.URL + 'partner/journey/track/interaction/counts?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, partnerJourneyRequest )
+            .catch( this.handleError );
+    }
+
+    getPartnerJourneyTypewiseTrackCounts(partnerJourneyRequest: PartnerJourneyRequest) {
+        const url = this.URL + 'partner/journey/track/typewise/counts?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, partnerJourneyRequest )
+            .catch( this.handleError );
+    }
+
+    findDefaultTriggerOptions() {
+        let userId = this.authenticationService.getUserId();
+        const url = this.URL + 'workflow/findDefaultTriggerOptions/'+userId+'?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.get(url)
+            .catch( this.handleError );
+    }
+
+
+    saveWorkflow(workflowDto:WorkflowDto){
+        let userId = this.authenticationService.getUserId();
+        workflowDto.loggedInUserId = userId;
+        const url = this.URL + 'workflow/save/?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post(url,workflowDto)
+            .catch( this.handleError );
+    }
+
+    /*********End : XNFR-316************/
     
     handleError( error: any ) {
         return Observable.throw( error );

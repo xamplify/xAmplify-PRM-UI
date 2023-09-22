@@ -74,6 +74,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     redistributedCampaignsCount = 0;
     reloadWithFilter = true;
     loadAllCharts = false;
+
+    //XNFR-316
+    showDetailedAnalytics = false;
+    detailedAnalyticsPartnerCompany: any;
     
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
@@ -903,6 +907,16 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.error(error);
                 this.approvePartnersCountLoader = false;
             });
+    }
+
+    //***************XNFR-316****************
+    goToDetailedAnalytics(partnerCompanyId: any){
+        this.detailedAnalyticsPartnerCompany = partnerCompanyId;
+        this.showDetailedAnalytics = true;        
+    }
+
+    closeDetailedAnalytics() {
+        this.showDetailedAnalytics = false;
     }
     
 }
