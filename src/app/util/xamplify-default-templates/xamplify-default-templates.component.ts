@@ -232,7 +232,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Customer Full Name', value: '{{customerFullName}}' },
         ];
       }
-      if("SOCIAL_CAMPAIGN"==emailTemplateType){
+      if("SOCIAL_CAMPAIGN"==emailTemplateType || "TO_SOCIAL_CAMPAIGN"==emailTemplateType){
         mergeTags =[{ name: 'Sender First Name', value: '{{firstName}}' },
         { name: 'Sender Last Name', value: '{{lastName}}' },
         { name: 'Sender Full Name', value: '{{fullName}}' },
