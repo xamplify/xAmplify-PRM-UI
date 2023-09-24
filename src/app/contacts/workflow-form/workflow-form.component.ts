@@ -39,9 +39,6 @@ declare var  $:any, CKEDITOR:any, swal: any;
 export class WorkflowFormComponent implements OnInit{
 
   isAdd = false;
-  activeClass: boolean;
-  activeClass1:boolean= true;
-  activeClass2:boolean;
   triggerTitles:Array<any> = new Array<any>();
   triggerTitlesLoader = true;
   divs: number[] = [];
@@ -135,6 +132,7 @@ export class WorkflowFormComponent implements OnInit{
   ngOnInit() {
     this.findTriggerTitles();
     this.getQueryBuilder();
+    this.showTriggersTab();
   }
 
   findTriggerTitles(){
@@ -231,8 +229,39 @@ export class WorkflowFormComponent implements OnInit{
     }else{
       this.isValidTriggerTab = isValidTitle;
     }
+    if(this.isValidTriggerTab){
+      this.notificationsTabClass = this.activeTabClass;
+    }else{
+      this.disableNotificationTab();
+    }
 
   }
+
+  disableNotificationTab(){
+    this.notificationsTabClass = this.disableTabClass;
+    this.triggersTabClass = this.activeTabClass;
+  }
+
+  showTriggersTab(){
+    this.triggersTabClass = this.activeTabClass;
+    if(this.isPartnerListSelected && this.isValidTriggerTab){
+        this.notificationsTabClass = this.completedTabClass;
+    }
+    $('#step-2').hide(600);
+    $('#step-1').show(600);
+    this.referenceService.goToTop();
+  }
+
+  showNotificationTab(){
+    if(this.isValidTriggerTab){
+        this.referenceService.goToTop();
+        this.triggersTabClass = this.completedTabClass;
+        this.notificationsTabClass = this.activeTabClass;
+        $('#step-1').hide(600);
+        $('#step-2').show(600);
+    }
+  }
+
 
   addCustomDaysTextBox(){
     this.findCustomOption();
@@ -478,34 +507,6 @@ export class WorkflowFormComponent implements OnInit{
     }
 
   goToWorkflow(){this.router.navigate(["/home/contacts/partner-workflow"]);}
-
-  
-
-  showAndHideDivs(){
-    this.referenceService.goToTop();
-    $('#step-1').hide();
-    $('#step-2').show();
-    this.activeClass2 = true;
-    this.activeClass1 = false;
-  }
-
-  goToPrevious(){
-    this.referenceService.goToTop();
-    $('#step-1').show();
-    $('#step-2').hide();
-    this.activeClass1 = true;
-    this.activeClass2 = false;
-  }
-
-
-  hideSteps() {
-    $("div").each(function () {
-        if ($(this).hasClass("activeStepInfo")) {
-            $(this).removeClass("activeStepInfo");
-            $(this).addClass("hiddenStepInfo");
-        }
-    });
-}
 
  
   submitForm(){ 
