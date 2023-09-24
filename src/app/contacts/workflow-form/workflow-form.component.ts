@@ -95,6 +95,7 @@ export class WorkflowFormComponent implements OnInit{
   notificationsTabClass = this.disableTabClass;
   formGroupClass = "form-group";
   titleDivClass:string = this.formGroupClass;
+  customDaysDivClass:string = this.formGroupClass;
   /***Send To******/
   partnerListsLoader = false;
   partnerListsPagination:Pagination = new Pagination();
@@ -116,6 +117,11 @@ export class WorkflowFormComponent implements OnInit{
   allUsersCount: any;
   isValidTitle = false;
   editedTriggerTitle = "";
+  isValidTriggerTab = false;
+  isValidNotificationTab = false;
+  isCustomOptionSelected = false;
+  isValidCustomDays = true;
+
   /****Send To*******/
   
   constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
@@ -140,6 +146,8 @@ export class WorkflowFormComponent implements OnInit{
         this.triggerTitlesLoader = false;
       });
   }
+
+  
 
   getQueryBuilder(){
     this.parterService.findDefaultTriggerOptions().subscribe(
@@ -181,6 +189,57 @@ export class WorkflowFormComponent implements OnInit{
         this.xtremandLogger.errorPage(error);
       }
     );
+  }
+
+  
+  validateTitle(){
+    let trimmedTitle = $.trim(this.workflowDto.title.toLowerCase());//Remove all spaces
+    var list = this.triggerTitles;
+    if (this.isAdd) {
+        if ($.inArray(trimmedTitle, list) > -1) {
+            this.isValidTitle = false;
+        } else {
+            this.isValidTitle = true;
+        }
+    } else {
+        if ($.inArray(trimmedTitle, list) > -1 && this.editedTriggerTitle.toLowerCase() != trimmedTitle) {
+            this.isValidTitle = false;
+        } else {
+            this.isValidTitle = true;
+        }
+    }
+    this.validateForm();
+  }
+
+  validateCustomDays(){
+    this.isValidCustomDays = this.workflowDto.customDays>=1;
+    this.validateForm();
+    
+  }
+
+  validateForm(){
+    let errorClass = this.errorClass;
+    let successClass = this.successClass;
+    /*******Title Name*****/
+    let trimmedTitle = $.trim(this.workflowDto.title)
+    let isValidTitle = trimmedTitle.length>0 &&  this.isValidTitle;
+    this.titleDivClass =  isValidTitle ? successClass :errorClass;
+    /***Custom Days****/
+    if(this.isCustomOptionSelected){
+      this.customDaysDivClass =  this.isValidCustomDays ? successClass :errorClass;
+      this.isValidTriggerTab = isValidTitle && this.isValidCustomDays;
+    }else{
+      this.isValidTriggerTab = isValidTitle;
+    }
+
+  }
+
+  addCustomDaysTextBox(){
+    this.findCustomOption();
+  }
+
+  findCustomOption(){
+    this.isCustomOptionSelected = "custom"==$.trim($('#time-phrase option:selected').text());
   }
 
   /*************Partner Lists********/
@@ -396,32 +455,6 @@ export class WorkflowFormComponent implements OnInit{
 
 
 
-  validateTitle(){
-    let trimmedTitle = $.trim(this.workflowDto.title.toLowerCase());//Remove all spaces
-    var list = this.triggerTitles;
-    if (this.isAdd) {
-        if ($.inArray(trimmedTitle, list) > -1) {
-            this.isValidTitle = false;
-        } else {
-            this.isValidTitle = true;
-        }
-    } else {
-        if ($.inArray(trimmedTitle, list) > -1 && this.editedTriggerTitle.toLowerCase() != trimmedTitle) {
-            this.isValidTitle = false;
-        } else {
-            this.isValidTitle = true;
-        }
-    }
-  }
-
-  validateForm(){
-    let errorClass = this.errorClass;
-    let successClass = this.successClass;
-    /*******Campaign Name*****/
-    let trimmedTitle = $.trim(this.workflowDto.title)
-    let isValidTitle = trimmedTitle.length>0 &&  this.isValidTitle;
-    this.titleDivClass =  isValidTitle ? successClass :errorClass;
-  }
 
   getData(){
   }

@@ -59,15 +59,16 @@
             <hr>
             <!-- Partner forms row start -->
             <div class="row">
-              <p class="align-paratext">Enter Title<span class="required">*</span></p>
               <!--Title-->
+              <p class="align-paratext">Enter Title<span class="required">*</span></p>
               <div class="col-sm-4">
                 <div class="form-group" [attr.class]="titleDivClass">
                   <input type="text" placeholder="Enter Title" class="form-control full-width" [(ngModel)]="workflowDto.title" 
-                  name="workflowDto.title" autocomplete="false" (input)="validateTitle();validateForm()" >
+                  name="workflowDto.title" autocomplete="false" (input)="validateTitle()" >
                   <span class="pull-left required" *ngIf="!isValidTitle &&workflowDto?.title?.length>0">Already Exists</span>
                 </div>
               </div>
+              
               <br><br>
               <p class="align-paratext">Define the trigger when this happens</p>
               <div class="col-sm-4">
@@ -92,13 +93,24 @@
               </div>
               <div class="col-sm-4">
                 <div class="form-group full-width">
-                  <select class="form-control" name="workflowDto.timePhraseId" [(ngModel)]="workflowDto.timePhraseId">
+                  <select class="form-control" name="workflowDto.timePhraseId" [(ngModel)]="workflowDto.timePhraseId" id="time-phrase" (change)="addCustomDaysTextBox()">
                     <option *ngFor="let timePhrase of timePhrases"
                         [ngValue]="timePhrase.id">
                          {{timePhrase.value}}
                     </option>
                   </select>
                 </div>
+              </div>
+              <!--Custom Template-->
+              <div *ngIf="isCustomOptionSelected">
+                <p class="align-paratext">Enter Custom Days<span class="required">*</span></p>
+                <div class="col-sm-4">
+                  <div class="form-group" [attr.class]="customDaysDivClass">
+                    <input type="number" placeholder="Enter Days" class="form-control full-width" [(ngModel)]="workflowDto.customDays" 
+                    name="workflowDto.customDays" autocomplete="false" (input)="validateCustomDays()">
+                    <span class="pull-left required" *ngIf="!isValidCustomDays">Minimum 1 Day Required</span>
+                  </div>
+              </div>
               </div>
             </div>
             <!-- Partner forms row end -->
@@ -110,8 +122,8 @@
               <query-builder   id="queryBuilderCu" [(ngModel)]='workflowDto.query' [config]='config'></query-builder>
             </ng-container>
             <!--Query Builder-->
-            <button type="submit" class="btn  btn Btn-Green float-right" (click)="showAndHideDivs()"
-              translate>Next</button>
+            <button type="submit" [disabled]="!isValidTriggerTab" class="btn btn Btn-Green float-right" 
+              (click)="!isValidTriggerTab && showAndHideDivs()">Next</button>
           </div>
           <!--Trigger End -->
 

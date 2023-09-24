@@ -12,4 +12,5 @@ export class WorkflowDto {
     notificationSubject= "";
     notificationMessage = "";
     loggedInUserId = 0;
+    customDays = 1;
 }
