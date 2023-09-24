@@ -21,7 +21,8 @@
   <!--2 cards start -->
   <div class="page-bar p10">
     <div class="row">
-      <div class="col-sm-12 col-md-12 col-lg-12">
+      <app-box-loader [countLoader]="2" *ngIf="triggerLoader || triggerTitlesLoader"></app-box-loader>
+      <div class="col-sm-12 col-md-12 col-lg-12" *ngIf="!triggerLoader && !triggerTitlesLoader">
         <div class="portlet light row steps-view">
           <div class="col-block  width" [ngClass]="activeClass1?'col-block-active':'col-block-disable'" id=""
             (click)="goToPrevious()" ng-reflect-ng-style="[object Object]" style="width: 50%;">
@@ -47,8 +48,8 @@
   <div>
     <div>
       <div>
-        <app-modal-popup-loader *ngIf="triggerLoader"></app-modal-popup-loader>
-        <div *ngIf="!triggerLoader" class="row" style="margin-right: -4px;margin-left: 0px;">
+        <app-modal-popup-loader *ngIf="triggerLoader || triggerTitlesLoader"></app-modal-popup-loader>
+        <div *ngIf="!triggerLoader && !triggerTitlesLoader" class="row mr-4px-ml-0px">
           <!--Trigger start -->
           <div class="page-bar p20 activeStepInfo" id="step-1">
             <div class="caption" style="padding-top: 11px !important;">
@@ -59,10 +60,12 @@
             <!-- Partner forms row start -->
             <div class="row">
               <p class="align-paratext">Enter Title<span class="required">*</span></p>
+              <!--Title-->
               <div class="col-sm-4">
-                <div class="form-group">
+                <div class="form-group" [attr.class]="titleDivClass">
                   <input type="text" placeholder="Enter Title" class="form-control full-width" [(ngModel)]="workflowDto.title" 
-                  name="workflowDto.title" autocomplete="false" (input)="validateTitle()" >
+                  name="workflowDto.title" autocomplete="false" (input)="validateTitle();validateForm()" >
+                  <span class="pull-left required" *ngIf="!isValidTitle &&workflowDto?.title?.length>0">Already Exists</span>
                 </div>
               </div>
               <br><br>

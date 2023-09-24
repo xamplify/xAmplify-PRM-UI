@@ -483,3 +483,8 @@ legend {
   background-color: lightblue;
   padding: 10px;
 }
+
+.mr-4px-ml-0px{
+  margin-right: -4px !important;
+  margin-left: 0px !important;
+}
