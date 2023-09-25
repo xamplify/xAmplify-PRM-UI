@@ -3181,6 +3181,7 @@ Page content
     margin-top: 0px;
     min-height: 1200px;
     padding: 20px 22px 10px 21px;
+    overflow: hidden;
   }
   .page-content-wrapper .page-content.no-min-height {
     min-height: auto;

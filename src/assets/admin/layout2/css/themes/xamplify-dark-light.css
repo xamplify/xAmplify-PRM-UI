@@ -876,9 +876,9 @@ span.ui-column-resize {
 .default-fieldset {
   border: 1px solid #2f4857 !important;
 }
-.actions-block i:hover,
+/* .actions-block i:hover, */
 .circled-number:hover,
-.actions-block i:hover,
+/* .actions-block i:hover, */
 .circled-number:hover,
 .xamplify-dropdown-option:hover {
   background-color: #22313a !important;
@@ -1957,4 +1957,14 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
 }
 .input-group > select.form-control:focus {
   border-color: none !important;
+}
+
+.bg-color {
+  background-color: #22313a !important;
+}
+.comment.user-comment p{
+  background-color: #22313a !important;
+}
+.borderColorsCU {
+  border: 1px solid #2f4857 !important;
 }
