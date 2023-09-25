@@ -119,7 +119,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
         <div id="multiselect-sample" class="control-section">
         <div class="col-lg-8 content-wrapper legal-basis-width" id="custom-width">
             <div class="control-styles">
-              <ejs-multiselect class="e-remain" [(ngModel)]='addContactuser.legalBasis' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+              <ejs-multiselect class="e-remain textFieldCustimization" [(ngModel)]='addContactuser.legalBasis' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
               [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (blur)="validateLegalBasisOptions()"></ejs-multiselect>
                 <span class="danger" *ngIf="!isValidLegalOptions" translate>Please select at least one option</span>
             </div>
