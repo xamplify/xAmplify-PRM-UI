@@ -56,7 +56,7 @@ a.disabled {
 }
 @media only screen and (min-width: 768px) {
   .filter-delete {
-    left: 85px;
+    left: 60px;
     top: 3px;
     cursor: pointer;
   }
@@ -221,3 +221,15 @@ a.disabled {
     left: 45px!important;
   }
  } 
+
+  /* XNFR-319   */
+  .dataAlignment{
+    position: absolute;
+    left: 0px;
+    bottom: 6px;
+  }
+  .form-inline .form-control {
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+}

@@ -207,3 +207,6 @@ cursor: default;
 	border-right: 3px solid #5ab1eb ;
 	border-top: 3px solid #5ab1eb;
 }
+.borderColorsCU {
+  border: 1px solid #e5e5e5;
+}

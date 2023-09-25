@@ -377,7 +377,7 @@
                     <br>
                     <div class="form-group">
                         <label class="control-label" translate>Copy Link</label>
-                        <input type="text" id="copy-link" class="form-control" readonly="readonly" [ngModel]="formAliasUrl" #userinput>
+                        <input type="text" id="copy-link" class="form-control borderColorsCU" readonly="readonly" [ngModel]="formAliasUrl" #userinput>
                         <br>
                         <div style="padding-top: 8px;">
                         <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Form link')" translate>Copy Link
@@ -387,7 +387,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label" translate>Copy Embed Link</label>
-                        <textarea class="text-color" id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
+                        <textarea class="text-color borderColorsCU" id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
                         <div style="padding-top: 10px;">
                         <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed Link
                             </a>
