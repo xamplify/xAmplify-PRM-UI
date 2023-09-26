@@ -175,7 +175,7 @@ export class WorkflowFormComponent implements OnInit{
               
             ]
           };
-          this.workflowDto.query = query;
+          this.workflowDto.filterQueryJson = query;
         }else{
         this.queryBuilderCustomResponse = new CustomResponse('INFO','No Filters Found',true);
         }
