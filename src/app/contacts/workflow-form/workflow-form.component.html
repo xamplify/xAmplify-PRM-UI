@@ -249,14 +249,14 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label for="sel1" class="form-label">Subject</label>
+              <div class="col-sm-12 mt10">
+                <div class="form-group" [attr.class]="notificationSubjectDivClass">
+                  <label  class="form-label">Subject</label>
                   <input type="text" class="form-control" placeholder="Subject" [(ngModel)]="workflowDto.notificationSubject" name="workflowDto.notificationSubject">
                 </div>
               </div>
               <div class="col-sm-12">
-                <div class="form-group">
+                <div class="form-group" [attr.class]="notificationMessageDivClass">
                   <!--Email templates start -->
                   <div class="row">
                     <div class="col-xs-12 col-md-12 col-sm-12">

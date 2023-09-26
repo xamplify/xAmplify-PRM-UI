@@ -11,17 +11,11 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UserService } from '../../core/services/user.service';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
-import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { ParterService } from 'app/partners/services/parter.service';
-import { DealQuestions } from '../../deal-registration/models/deal-questions';
-import { DealType } from '../../deal-registration/models/deal-type';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
 import { CustomResponse } from '../../common/models/custom-response';
-import { Pipeline } from '../../dashboard/models/pipeline';
-import { PipelineStage } from '../../dashboard/models/pipeline-stage';
 import { QueryBuilderConfig } from 'angular2-query-builder';
 import { QueryBuilderClassNames } from 'angular2-query-builder';
-import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { WorkflowDto } from '../models/workflow-dto';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
@@ -93,6 +87,8 @@ export class WorkflowFormComponent implements OnInit{
   formGroupClass = "form-group";
   titleDivClass:string = this.formGroupClass;
   customDaysDivClass:string = this.formGroupClass;
+  notificationSubjectDivClass:string = this.formGroupClass;
+  notificationMessageDivClass:string = this.formGroupClass;
   /***Send To******/
   partnerListsLoader = false;
   partnerListsPagination:Pagination = new Pagination();
