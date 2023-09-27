@@ -1226,5 +1226,17 @@ getDefaultThemes(){
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+    getDnsRecordsOfGodaddy(){
+        return this.http.get(this.authenticationService.REST_URL + "godaddy/records/?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    deleteDnsRecrds(){
+        const url = this.authenticationService.REST_URL + 'godaddy/deleteAll/?access_token=' + this.authenticationService.access_token;
+        return this.http.delete(url)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
     /*** XNFR-335 ****/
 }

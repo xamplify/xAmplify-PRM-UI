@@ -5,8 +5,9 @@ import {DashboardService} from 'app/dashboard/dashboard.service';
 import {ReferenceService} from 'app/core/services/reference.service';
 import {AuthenticationService} from 'app/core/services/authentication.service';
 import { GodaddyDetailsDto } from '../user-profile/models/godaddy-details-dto';
+import { forEach } from '@angular/router/src/utils/collection';
 
- declare var $,swal;
+ declare var $,swal,await:any;
 @Component({
   selector: 'app-spf',
   templateUrl: './spf.component.html',
@@ -34,6 +35,13 @@ export class SpfComponent implements OnInit {
  godaddyValue:any = "v=spf1 include:u10208008.wl009.sendgrid.net ~all";
  hasSpace:boolean = false;
  updateButton: boolean = false;
+ godaddyDtos:GodaddyDetailsDto[];
+ suggestValue:string;
+currentValue:string;
+showConnectButton:boolean;
+disabledCreateButton:boolean;
+finalButtonValue:string;
+errorMessage:string;
  /** XNFR-335*******/
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,public dashboardService:DashboardService) { }
 
@@ -47,6 +55,7 @@ export class SpfComponent implements OnInit {
       this.isSpfConfigured();
       this.isGodaddyConfigured();
       this.getDomainName();
+      this.getDnsRecordsOfGodaddy();
   }
 
   isSpfConfigured(){
@@ -116,7 +125,7 @@ export class SpfComponent implements OnInit {
   goToVerification() {
     this.loading = true;
     $('#step-2').hide();
-    $('#step-3').show();
+    $('#step-4').show();
     this.loading = false;
   }
   goToStepFour() {
@@ -140,15 +149,26 @@ export class SpfComponent implements OnInit {
     this.statusCode = 200;
     this.loading = false;
   }
+  UpdateScreen(){
+    $('#step-6').hide();
+    $('#step-7').show();
+    this.isChecked = true;
+    this.spfConfigured = true;
+    this.saveSpf();
+    this.updateButton = true;
+    this.statusCode = 422;
+  }
   goToConnectdStep() {
     $('#step-6').hide();
     $('#step-7').show();
     this.isChecked = true;
     this.spfConfigured = true;
-    this.saveSpf()
+    this.saveSpf();
+    this.updateGodaddyConfiguration(this.companyId,true);
+    this.getDnsRecordsOfGodaddy()
   }
-  goToStep3(){
-    $('#step-3').show();
+  goToEnterDomainName(){
+    $('#step-2').show();
     $('#step-4').hide();
   }
   changeDomainName(evn: any) {
@@ -162,20 +182,24 @@ export class SpfComponent implements OnInit {
     }
   }
   changeValue(event: any) {
+    this.godaddyValue = event;
     this.godaddyRecordDto.data = event;
-    //this.statusCode = 200;
   }
 
   isAuthorized(): boolean {
     // Check if both apiKey and apiSecret are provided
     return this.apiKey.length > 0 && this.apiSecret.length > 0;
   }
+  createTooltip:string;
   authenticationOfGodaddy() {
     this.loading = true;
     this.godaddyRecordDto.apiKey = this.apiKey;
     this.godaddyRecordDto.apiSecret = this.apiSecret;
     this.godaddyRecordDto.data = this.godaddyValue;
-    this.checkDomainName(this.godaddyRecordDto)
+    this.checkDomainName(this.godaddyRecordDto);
+    this.updateButton = false;
+    this.createTooltip = "Already SPF record is there in your DNS."
+    this.loading = false;
   }
   getDomainName(){
     this.dashboardService.getDomainName(this.companyId) .subscribe(
@@ -186,7 +210,12 @@ export class SpfComponent implements OnInit {
         }
       }
     );
-
+  }
+  showStep_5(){
+    //let self = this;
+    $('#step-5').hide();
+    $('#step-6').show();
+    this.getDnsRecordsOfGodaddy();
   }
   checkDomainName(godaddyDetailsDto: GodaddyDetailsDto) {
     this.loading = true;
@@ -195,8 +224,7 @@ export class SpfComponent implements OnInit {
         if (response.statusCode == 200) {
           this.loading = false;
           this.statusCode = 200;
-          $('#step-5').hide();
-          $('#step-6').show();
+          this.showStep_5();
         }else if(response.statusCode == 401) {
           this.statusCode = 401;
           this.message = response.message;
@@ -220,27 +248,23 @@ export class SpfComponent implements OnInit {
     this.godaddyRecordDto.type = "TXT";
     this.godaddyRecordDto.name = "@";
     this.loading = true;
+    this.updateButton = false;
     this.dashboardService.addDnsRecordOfGodaddy(this.godaddyRecordDto).subscribe(
       response => {
-        if (response.statusCode == 200) {
-          this.loading = false;
+        if (response.statusCode === 200) {
           this.statusCode = 200;
-          $('#step-6').hide();
-          $('#step-7').show();
           this.updateGodaddyConfiguration(this.companyId,isConnected);
-          this.isChecked = true;
-          this.spfConfigured = true;
-          this.saveSpf()
-          this.updateButton = false;
-        } else if (response.statusCode == 422) {
+          this.getDnsRecordsOfGodaddy();
+          this.goToConnectdStep();
+        } else if (response.statusCode === 422) {
           this.statusCode = 422;
+          this.updateButton = true;
           this.message = "DNS Record was Dulicated.";
-          this.loading = false;
         } else {
           this.statusCode = 400;
           this.message = "Domain Name Invalid";
-          this.loading = false;
         }
+        this.loading = false;
       }, error => {
         this.loading = false;
       }
@@ -252,12 +276,12 @@ export class SpfComponent implements OnInit {
       response => {
         this.loading = false;
         if (response.data) {
-          this.isGodaddyConnected = true;
+          this.isGodaddyConnected = response.data;
         }
         if (!this.isGodaddyConnected) {
           $('#addADomain').show();
           $('#step-2').hide();
-          $('#step-3').hide();
+          //$('#step-3').hide();
           $('#step-4').hide();
           $('#step-5').hide();
           $('#step-6').hide();
@@ -265,7 +289,7 @@ export class SpfComponent implements OnInit {
         } else {
           $('#addADomain').hide();
           $('#step-2').hide();
-          $('#step-3').hide();
+          //$('#step-3').hide();
           $('#step-4').hide();
           $('#step-5').hide();
           $('#step-6').hide();
@@ -278,6 +302,7 @@ export class SpfComponent implements OnInit {
     );
   }
   updateGodaddyConfiguration(companyId: number,isConnected:boolean) {
+    this.loading = true;
     this.dashboardService.updateGodaddyConfiguration(companyId,isConnected).subscribe(
       response => {
         this.loading = false;
@@ -287,10 +312,11 @@ export class SpfComponent implements OnInit {
     );
   }
   foundDuplicateDnsRecord(isConnected:boolean) {
+    this.loading = true;
     this.dashboardService.foundDuplicateDnsRecord(this.godaddyRecordDto.data).subscribe(
       response => {
         this.loading = false;
-        this.updateButton = true;
+        //this.updateButton = true;
         this.updateGodaddyConfiguration(this.companyId, isConnected);
         this.statusCode = 409;
       }, error => {
@@ -298,29 +324,28 @@ export class SpfComponent implements OnInit {
       }
     );
   }
-  unlinkConfiguration(isConnected:boolean){
+  unlinkConfiguration(isConnected: boolean) {
     let self = this;
-		swal({
-			title: 'Are you sure?',
-			text: "You won't be able to revert this!",
-			type: 'warning',
-			showCancelButton: true,
-			swalConfirmButtonColor: '#54a7e9',
-			swalCancelButtonColor: '#999',
-			confirmButtonText: 'Yes, Unlink it!'
-
-		}).then(function () {
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Yes, Reconfigure it!'
+    }).then(function () {
       self.updateGodaddyConfiguration(self.companyId, isConnected);
-     self.showStep1();
-		},function (dismiss: any) {
-			console.log("you clicked showAlert cancel" + dismiss);
-		});
-   
+      self.showStep1();
+    }, function (dismiss: any) {
+      console.log("you clicked showAlert cancel" + dismiss);
+    });
+
   }
   showStep1(){
     $('#addADomain').show();
     $('#step-2').hide();
-    $('#step-3').hide();
+    //$('#step-3').hide();
     $('#step-4').hide();
     $('#step-5').hide();
     $('#step-6').hide();
@@ -331,6 +356,123 @@ export class SpfComponent implements OnInit {
     this.apiKey ="";
     this.apiSecret= "";
     this.updateButton = false;
+  }
+
+  //Show Dns Details
+  getDnsRecordsOfGodaddy() {
+    //this.loading = true;
+    this.dashboardService.getDnsRecordsOfGodaddy().subscribe(
+      response => {
+        if (response.statusCode === 200) {
+          //this.statusCode = 200;
+          let goDaddyMap = response.data;
+          this.suggestValue = goDaddyMap.suggest;
+          this.godaddyDtos = goDaddyMap.data;
+          this.currentValue = this.godaddyDtos[this.godaddyDtos.length - 1].data;
+          if (this.currentValue === this.suggestValue && this.godaddyDtos.length === 1) {
+            this.showConnectButton = true;
+            this.finalButtonValue = "Verified";
+          } else if (this.currentValue != this.suggestValue && this.godaddyDtos.length === 1) {
+            this.showConnectButton = false;
+            this.finalButtonValue = "Mismatch";
+            this.errorMessage = "The recommended record indicates a mismatch, please reconfigure from the settings.";
+          } else {
+            this.showConnectButton = false;
+            this.finalButtonValue = "Invalid";
+            this.errorMessage = "It is showing multiple SPF records for your domain, please reconfigure from the settings.It's important to point out that each domain may have only one SPF entry.";
+          }
+          console.log(this.godaddyDtos)
+          this.loading = false;
+        } else {
+          this.statusCode = 409;
+          this.message = "No Records Found";
+          this.loading = false;
+        }
+      }
+    );
+  }
+  //delete All records
+  deleteDnsRecordsOfGodaddy(isReplace: boolean) {
+    this.loading = true;
+    this.dashboardService.deleteDnsRecrds().subscribe(
+      response => {
+        if (response.statusCode === 204) {
+          this.statusCode = 204;
+          this.message = response.message;
+          if (isReplace) {
+            this.loading = true;
+          } else {
+            this.showStep_5();
+          }
+          this.loading = false;
+          this.updateButton = false;
+        } else {
+          this.statusCode = 404;
+          this.message = response.message
+        }
+      }
+    );
+  }
+  openDomainCheck(){
+    window.open('https://dmarcian.com/domain-checker/', '_blank');
+  }
+  deleteDnsAllRecordsByTypeAndName(){
+    let self = this;
+    swal({
+			title: 'Are you sure?',
+			text: "All showed records will be deleted.",
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Yes, Delete it!'
+		}).then(function () {
+      self.deleteDnsRecordsOfGodaddy(false);
+		},function (dismiss: any) {
+			console.log("you clicked showAlert cancel" + dismiss);
+		});
+  }
+ 
+  copyToClipboard(inputElement: any, type: string) {
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    if (type === "suggested") {
+      $("#copyTextDiv").select();
+    } else {
+      $("#copyText").select();
+    }
+  }
+  replaceDnsRecord(){
+    $('#replaceRecord').show();
+  }
+
+  replaceConfirm(){
+    this.loading = true;
+    $('#replaceRecord').hide();
+    this.deleteDnsRecordsOfGodaddy(true); // Execute method1 immediately
+    this.godaddyRecordDto.data = this.suggestValue;
+    setTimeout(() => {
+    this.addDNsRecord(true); // Execute method2 after a 1-second delay
+    }, 1000);
+    this.loading = false;
+  }
+  replaceCancel(){
+    $('#replaceRecord').hide();
+  }
+  manuallyProcess(){
+    $('#unpublished-modal').show();
+  }
+  checkRecord() {
+    this.showStep_5();
+    $('#unpublished-modal').hide();
+  }
+  cancelManualProcess() {
+    $('#unpublished-modal').hide();
+  }
+  updateRecord() {
+    const fullURL = 'https://dcc.godaddy.com/control/dnsmanagement?domainName=' + this.domainName;
+    window.open(fullURL, '_blank');
   }
 
 }
