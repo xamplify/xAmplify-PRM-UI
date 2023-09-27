@@ -506,17 +506,15 @@ export class WorkflowFormComponent implements OnInit{
 
  
   submitForm(){ 
-    this.referenceService.showSweetAlertSuccessMessage("Trigger Added Successfully");
-    this.navigateBack();
-    // this.workflowDto.selectedPartnerListIds = this.selectedPartnerListIds;
-    //  this.parterService.saveWorkflow(this.workflowDto).subscribe(
-    //      response=>{
-    //       //this.referenceService.showSweetAlertSuccessMessage("Trigger Added Successfully");
-    //      // this.navigateBack();
-    //      },error=>{
-    //       alert("Error");
-    //     }
-    //  );
+     this.workflowDto.selectedPartnerListIds = this.selectedPartnerListIds;
+      this.parterService.saveWorkflow(this.workflowDto).subscribe(
+          response=>{
+           this.referenceService.showSweetAlertSuccessMessage("Trigger Added Successfully");
+           this.navigateBack();
+          },error=>{
+           alert("Error");
+         }
+      );
   }
   
   addDiv() {
