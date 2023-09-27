@@ -7,11 +7,11 @@
           <h4 class="ellipsis mt5 mb5 f-w-600 fontDecinModes" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.name}}">
               {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
           </h4>
-          <div class="bar">
-            <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="designTemplate(emailTemplate)">
+          <div class="bar gridIconCustomization">
+            <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Edit" (click)="designTemplate(emailTemplate)">
                 <i class="fa fa-edit" aria-hidden="true"></i>
             </a>
-            <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewTemplate(emailTemplate)">
+            <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewTemplate(emailTemplate)">
               <i class="fa fa-eye" aria-hidden="true"></i>
           </a>
         </div>

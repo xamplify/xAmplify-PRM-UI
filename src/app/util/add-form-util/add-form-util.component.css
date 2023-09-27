@@ -1734,3 +1734,9 @@ div.switch5 > input.switch:focus ~ label:before {
     width: 85%!important;
   }
 }
+
+@media (min-width: 1000px) and (max-width: 1220px) {
+  input.fieldWidthCustimization {
+    width: calc(100% - 70px) !important;
+  }
+}

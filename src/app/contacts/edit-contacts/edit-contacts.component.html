@@ -992,7 +992,7 @@
 					  <td *ngIf="contactsByType.selectedCategory == 'valid'"></td>
 					  <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td>
 					  <td *ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads">
-						 <span class="markas" (click)="validateUndeliverableContacts(allcontacts.id)">Mark as valid</span>
+						 <span class="markas markAsValidLable" (click)="validateUndeliverableContacts(allcontacts.id)">Mark as valid</span>
 					  </td>
 					  <td>
 						 <button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'

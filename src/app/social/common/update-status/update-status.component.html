@@ -289,7 +289,7 @@
 
                 <div *ngIf="!alias">
                     <div class="p10" *ngFor="let socialStatus of socialStatusList" [hidden]="isSocialCampaign && alias" >
-                    <div class="update-status-profile col-xs-2 col-sm-1 status_profile">
+                    <div class="update-status-profile col-lg-1 col-md-1 col-xs-2 col-sm-1 status_profile pl0 abjustprofileSec">
                         <ng-container *ngIf="socialStatusList.length === 1 && (selectedAccounts > 1 || selectedAccounts < 1) && !isCustomizeButtonClicked; then defaultProfile"></ng-container>
                         <ng-container *ngIf="socialStatusList.length === 1 && selectedAccounts === 1 && !isCustomizeButtonClicked; then socialProfile"></ng-container>
                         <ng-container *ngIf="isCustomizeButtonClicked">
@@ -312,7 +312,7 @@
                             </div>
                         </ng-template>
                     </div>
-                    <div class="update-status-content col-xs-10 col-sm-11" id="social-content-editor-div">
+                    <div class="update-status-content col-lg-11 col-md-11 col-xs-10 col-sm-11" id="social-content-editor-div">
 
                         <textarea placeholder="What's happening?" rows="3" class="form-control form-group rounded-0 mb5"
                          [(ngModel)]="socialStatus.statusMessage" (input)="onKeyPress(socialStatus)"></textarea>
