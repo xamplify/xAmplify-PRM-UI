@@ -338,6 +338,13 @@ export class ParterService {
             .catch( this.handleError );
     }
 
+    findTriggerTitles() {
+        let userId = this.authenticationService.getUserId();
+        const url = this.URL + 'workflow/findTriggerTitles/'+userId+'?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.get(url)
+            .catch( this.handleError );
+    }
+
     /*********End : XNFR-316************/
     
     handleError( error: any ) {

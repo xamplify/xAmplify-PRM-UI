@@ -225,5 +225,7 @@ i.fa.fa-file-excel-o.cct.IconTopMargin {
 @media only screen and (min-width: 1830px) and (max-width: 1882px) {.cloud-items{left: 87px !important;}}
 @media only screen and (min-width: 1883px) and (max-width: 1920px) {.cloud-items{left: 90px !important;}}
 
-
+.borderColorsCU {
+  border: 1px solid #e5e5e5;
+}
 

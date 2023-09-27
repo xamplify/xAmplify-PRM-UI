@@ -18,20 +18,18 @@
       </li>
     </ul>
   </div>
-  <!--2 cards start -->
   <div class="page-bar p10">
     <div class="row">
-      <div class="col-sm-12 col-md-12 col-lg-12">
+      <app-box-loader [countLoader]="2" *ngIf="triggerLoader || triggerTitlesLoader"></app-box-loader>
+      <div class="col-sm-12 col-md-12 col-lg-12" *ngIf="!triggerLoader && !triggerTitlesLoader">
         <div class="portlet light row steps-view">
-          <div class="col-block  width" [ngClass]="activeClass1?'col-block-active':'col-block-disable'" id=""
-            (click)="goToPrevious()" ng-reflect-ng-style="[object Object]" style="width: 50%;">
+          <div class="col-block width" [attr.class]="triggersTabClass" (click)="showTriggersTab()" style="width: 50%;">
             <div class="cenetered-block colorbox-1">
               <img alt="" class="newicons" src="assets/images/campaignnew-icon/19.svg">
               <h5 class="hidden-xs text-clr" translate="" ng-reflect-translate="">Trigger</h5>
             </div>
           </div>
-          <div ng-reflect-ng-style="[object Object]" class="col-block" (click)="showAndHideDivs()"
-            [ngClass]="activeClass2?'col-block-active':'col-block-disable'" style="width: 50%;" [ngClass]="">
+          <div  class="col-block" [attr.class]="notificationsTabClass" (click)="showNotificationTab()" style="width: 50%;" >
             <div class="cenetered-block colorbox-2">
               <img alt="" class="newicons" src="assets/images/campaignnew-icon/8.svg">
               <h5 class="hidden-xs text-clr">
@@ -43,14 +41,13 @@
       </div>
     </div>
   </div>
-  <!--2 cards End -->
   <div>
     <div>
       <div>
-        <app-modal-popup-loader *ngIf="triggerLoader"></app-modal-popup-loader>
-        <div *ngIf="!triggerLoader" class="row" style="margin-right: -4px;margin-left: 0px;">
-          <!--Trigger start -->
-          <div class="page-bar p20 activeStepInfo" id="step-1">
+        <app-modal-popup-loader *ngIf="triggerLoader || triggerTitlesLoader"></app-modal-popup-loader>
+        <div *ngIf="!triggerLoader && !triggerTitlesLoader" class="row mr-4px-ml-0px">
+          <!--Trigger Tab -->
+          <div class="page-bar p20" id="step-1">
             <div class="caption" style="padding-top: 11px !important;">
               <img src="assets/admin/pages/media/works/icon.png" class="icon-alignmnt" alt="">
               <span class="textaligncenter">Trigger</span>
@@ -58,13 +55,16 @@
             <hr>
             <!-- Partner forms row start -->
             <div class="row">
+              <!--Title-->
               <p class="align-paratext">Enter Title<span class="required">*</span></p>
               <div class="col-sm-4">
-                <div class="form-group">
+                <div class="form-group" [attr.class]="titleDivClass">
                   <input type="text" placeholder="Enter Title" class="form-control full-width" [(ngModel)]="workflowDto.title" 
                   name="workflowDto.title" autocomplete="false" (input)="validateTitle()" >
+                  <span class="pull-left required" *ngIf="!isValidTitle &&workflowDto?.title?.length>0">Already Exists</span>
                 </div>
               </div>
+              
               <br><br>
               <p class="align-paratext">Define the trigger when this happens</p>
               <div class="col-sm-4">
@@ -89,13 +89,24 @@
               </div>
               <div class="col-sm-4">
                 <div class="form-group full-width">
-                  <select class="form-control" name="workflowDto.timePhraseId" [(ngModel)]="workflowDto.timePhraseId">
+                  <select class="form-control" name="workflowDto.timePhraseId" [(ngModel)]="workflowDto.timePhraseId" id="time-phrase" (change)="addCustomDaysTextBox()">
                     <option *ngFor="let timePhrase of timePhrases"
                         [ngValue]="timePhrase.id">
                          {{timePhrase.value}}
                     </option>
                   </select>
                 </div>
+              </div>
+              <!--Custom Template-->
+              <div *ngIf="isCustomOptionSelected">
+                <p class="align-paratext">Enter Custom Days<span class="required">*</span></p>
+                <div class="col-sm-4">
+                  <div class="form-group" [attr.class]="customDaysDivClass">
+                    <input type="number" placeholder="Enter Days" class="form-control full-width" [(ngModel)]="workflowDto.customDays" 
+                    name="workflowDto.customDays" autocomplete="false" (input)="validateCustomDays()">
+                    <span class="pull-left required" *ngIf="!isValidCustomDays">Minimum 1 Day Required</span>
+                  </div>
+              </div>
               </div>
             </div>
             <!-- Partner forms row end -->
@@ -107,13 +118,12 @@
               <query-builder   id="queryBuilderCu" [(ngModel)]='workflowDto.query' [config]='config'></query-builder>
             </ng-container>
             <!--Query Builder-->
-            <button type="submit" class="btn  btn Btn-Green float-right" (click)="showAndHideDivs()"
-              translate>Next</button>
+            <button type="submit" [disabled]="!isValidTriggerTab" class="btn btn Btn-Green float-right" 
+              (click)="!isValidTriggerTab && showNotificationTab()">Next</button>
           </div>
-          <!--Trigger End -->
 
-          <!--Action start -->
-          <div class="page-bar p20 {{activeStepInfo}}" id="step-2" *ngIf="activeClass2">
+          <!--Notification Tab-->
+          <div class="page-bar p20" id="step-2" style="display: none;">
             <div class="caption" style="padding-top: 11px !important;">
               <img src="assets/admin/pages/media/works/mail.png" class="icon-alignmnt for-Action-only" alt="">
               <span class="textaligncenterforaction">Action</span>
@@ -239,9 +249,6 @@
                   </div>
                 </div>
               </div>
-
-              
-
               <div class="col-sm-12">
                 <div class="form-group">
                   <label for="sel1" class="form-label">Subject</label>
@@ -299,13 +306,9 @@
               </div>
             </div>
             <!-- Action forms row end -->
-
-            <button type="button" class="btn Btn-Gray margin-left-negative-fifteen-px" (click)="goToPrevious()"
-              translate>Previous</button>
-            <button type="submit" class="btn  btn Btn-Green float-right mrm-15" (click)="submitForm()"
-              translate>Submit</button>
+            <button type="button" class="btn Btn-Gray margin-left-negative-fifteen-px" (click)="showTriggersTab()">Previous</button>
+            <button type="submit" class="btn  btn Btn-Green float-right mrm-15" (click)="submitForm()">Submit</button>
           </div>
-
         </div>
       </div>
     </div>

@@ -216,7 +216,7 @@
         <img src="{{unsubscribePageContent?.companyLogoPath}}"  class="img-rounded" alt="" width="200" height="100" style="left: 8%;height: 52px;width: 130px;top: 0; margin-top: 10px;;filter: grayscale(0);"> 
         <div>
           <div   style="margin-top: 50px;">
-            <h1 [hidden]="unsubscribePageContent?.unsubscribePageDetails?.hideHeaderText" innerHtml="{{unsubscribePageContent?.unsubscribePageDetails?.headerText}}"></h1>
+            <h1 style="word-break: break-all;" [hidden]="unsubscribePageContent?.unsubscribePageDetails?.hideHeaderText" innerHtml="{{unsubscribePageContent?.unsubscribePageDetails?.headerText}}"></h1>
             <form style="line-height: 25px; font-size: 15px;">
               <ng-container *ngFor="let reason of unsubscribePageContent?.unsubscribeReasons;let i = index">
                 <input type="radio" name="reason" value="{{reason?.reason}}" (click)="addReason(reason)"> {{reason?.reason}}<br>
@@ -232,7 +232,7 @@
                 class="btn btn-primary">Submit</button>
             </div>
           <div style="margin-top:20px">
-                  <h4 [hidden]="unsubscribePageContent?.unsubscribePageDetails?.hideFooterText" innerHtml="{{unsubscribePageContent?.unsubscribePageDetails?.footerText}}"></h4>
+                  <h4 style="word-break: break-all;" [hidden]="unsubscribePageContent?.unsubscribePageDetails?.hideFooterText" innerHtml="{{unsubscribePageContent?.unsubscribePageDetails?.footerText}}"></h4>
                 </div>
           </div>
           </div>

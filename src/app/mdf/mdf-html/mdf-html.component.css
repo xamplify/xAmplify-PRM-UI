@@ -936,16 +936,16 @@ footer a.tz:after {
 
 /* Handle */
 
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
   background: green;
   border-radius: opx;
-}
+} */
 
 /* Handle on hover */
 
-::-webkit-scrollbar-thumb:hover {
+/* ::-webkit-scrollbar-thumb:hover {
   background: green;
-}
+} */
 
 .none {
   pointer-events: none;

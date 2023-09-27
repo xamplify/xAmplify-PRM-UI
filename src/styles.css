@@ -858,7 +858,7 @@ legend {
     height: 50px;
     position: absolute;
     bottom: 0px;
-    visibility: inherit;
+    visibility: hidden;
     opacity: 1;
     transition: visibility 0s, opacity 0.5s linear;
   }
@@ -2454,5 +2454,4 @@ button.unlink-button {
   position: relative;
   top: 1px;
   left: 1px;
-
 }

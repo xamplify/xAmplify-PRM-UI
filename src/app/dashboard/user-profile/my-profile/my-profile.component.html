@@ -543,11 +543,11 @@
                                                             </div>
                                                             <div class="col-xs-2">
                                                                 <div class="pull-right mb-flex" id="question-icons">
-                                                                    <button type="button" class="btn-danger button-blue btn_add mr_4" (click)="showAlert(i+1,question)" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                        <span  class="glyphicon glyphicon-trash"></span>
+                                                                    <button type="button" class="btn-danger button-blue btn_add mr_4" (click)="showAlert(i+1,question)">
+                                                                        <span data-toggle="tooltip" data-placement="top" title="Delete" class="glyphicon glyphicon-trash"></span>
                                                                     </button>
-                                                                    <button type="button" class="btn-primary button-blue btn_add" (click)="addQuestion()" *ngIf="questions.length== i+1"  data-toggle="tooltip" data-placement="top" title="Add">
-                                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                                    <button type="button" class="btn-primary button-blue btn_add" (click)="addQuestion()" *ngIf="questions.length== i+1">
+                                                                        <span data-toggle="tooltip" data-placement="top" title="Add" class="glyphicon glyphicon-plus"></span>
                                                                     </button>
 
                                                                 </div>
@@ -592,11 +592,11 @@
                                                             </div>
                                                             <div class="col-xs-2">
                                                                 <div class="pull-right mb-flex" id="question-icons">
-                                                                    <button type="button" class="btn-danger button-blue btn_add mr_4" (click)="deleteDealType(i+1,dealType)" data-toggle="tooltip" data-placement="top" title="Delete" >
-                                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                                    <button type="button" class="btn-danger button-blue btn_add mr_4" (click)="deleteDealType(i+1,dealType)">
+                                                                        <span data-toggle="tooltip" data-placement="top" title="Delete" class="glyphicon glyphicon-trash"></span>
                                                                     </button>
-                                                                    <button type="button" class="btn-primary button-blue btn_add" (click)="addDealtype()" *ngIf="dealtypes.length== i+1"  data-toggle="tooltip" data-placement="top" title="Add">
-                                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                                    <button type="button" class="btn-primary button-blue btn_add" (click)="addDealtype()" *ngIf="dealtypes.length== i+1">
+                                                                        <span data-toggle="tooltip" data-placement="top" title="Add" class="glyphicon glyphicon-plus"></span>
                                                                     </button>
 
                                                                 </div>
@@ -2110,7 +2110,7 @@
                     <div class="form-group" id="pipelineStageDiv">
                         <label>Stages</label>
                         <label style="text-align: center;width: 80%;">Options</label>
-                        <span *ngIf="!pipeline.isValidStage" class="required">{{pipelineStageErrorMessage}}</span>
+                        <div *ngIf="!pipeline.isValidStage" class="required">{{pipelineStageErrorMessage}}</div>
                         <ul id="sortable" [dragula]='"pipelineStagesDragula"' class="list-group" [dragulaModel]='pipeline.stages'>
                             <ng-container *ngFor="let pipelineStage of pipeline.stages; let x = index">
                                 <li class="list-group-item" id="stage{{x}}" *ngIf="pipelineStage != undefined">
