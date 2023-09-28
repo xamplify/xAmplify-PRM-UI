@@ -2,16 +2,16 @@
 <div class="tabscard">
   <ul class="nav nav-tabs dcTheme" role="tablist">
     <li role="presentation" class="active" id="tabWidthCu">
-     <a href="#Manual_SPF" class="tabColorOne" aria-controls="Manual SPF" role="tab" data-toggle="tab">SPF Configuration</a>
+      <a href="#Domain" class="tabColorTwo" aria-controls="Domain" role="tab" data-toggle="tab">GoDaddy SPF Configuration</a>
     </li>
     <li role="presentation" id="tabWidthCu">
-      <a href="#Domain" class="tabColorTwo" aria-controls="Domain" role="tab" data-toggle="tab">GoDaddy SPF Configuration</a>
+     <a href="#Manual_SPF" class="tabColorOne" aria-controls="Manual SPF" role="tab" data-toggle="tab">SPF Configuration</a>
     </li>
   </ul>
   <!-- Tab panes start-->
   <div class="tab-content">
     <!-- Tab One start-->
-    <div role="tabpanel" class="tab-pane active" id="Manual_SPF">
+    <div role="tabpanel" class="tab-pane " id="Manual_SPF">
       <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="{{bootstrapAlertClass}}" *ngIf="spfConfigured">
         <strong>{{successOrErrorMessage}}</strong>
@@ -36,11 +36,12 @@
 
 
     <!-- Tab Two start-->
-    <div role="tabpanel" class="tab-pane" id="Domain">
+    <div role="tabpanel" class="tab-pane active" id="Domain">
       <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <!-- Add a Domain -->
       <div class="paddingSides" id="addADomain">
-        <img alt="PC" class="domainImage" src="assets/images/godaddy-configuration/Domain_PC.png">
+        <!-- <img alt="PC" class="domainImage" src="assets/images/godaddy-configuration/Connect_with_Godaddy"> -->
+        <img alt="pc" class="domainImage" src="assets/images/godaddy-configuration/Connect_with_Godaddy.png" style="width: 50%;">
         <div class="align-middle">
           <h3 translate="">Let's get started.</h3>
           <p translate="">Add or Update SPF records in GoDaddy domain registrar to ensure better delivery of emails and to protect against email spoofing attacks.</p>
@@ -52,6 +53,8 @@
 
    <!-- progressbar Select Domain Start -->
    <div class="paddingSides" id="step-2" >
+    <img alt="pc" class="domainImage" src="assets/images/godaddy-configuration/Connect_with_Godaddy.png" style="width: 50%; margin: 0px 25% 30px;">
+
     <!-- <div class="progressbarCU">
       <ul class="dcbar progressbar">
         <li class="active leftAllign">Select Domain</li>
@@ -74,6 +77,8 @@
         <div class="form-group col-md-2"></div>
         <div class="col-md-12 marginBottom">
           <button type="submit" class="btn btn-primary btn-md float-right" id="sample_editable_1_new" (click)="goToVerification()" [disabled]="!(isDomainName && !hasSpace)">Next</button>
+          <button type="submit" class="btn  Btn-Gray btn-md  mobileFloatRight" id="sample_editable_1_new" (click)="goToFirstPage()">Back</button>
+
         </div>
       </div>
     </form>
@@ -117,6 +122,7 @@
     
     <!-- Domains Details Start -->
     <div class="paddingSides" id="step-4">
+      <img alt="pc" class="domainImage" src="assets/images/godaddy-configuration/Connect_with_Godaddy.png" style="width: 50%; margin: 0px 25% 30px;">
       <h4 class="text-start">Domain Details</h4>
       <table class="table dcBorderNone table-bordered">
          <tr class="displayContents">
@@ -139,7 +145,7 @@
          <tr class="displayContents">
            <td class="verticalMiddle">
             <a (click)="goToStepFive()"> 
-              <img alt="Godaddy Logo" class="godadyLogo" src="assets/images/godaddy-configuration/godaddy-logo.png">
+              <img alt="Godaddy Logo" class="godadyLogo" src="assets/images/godaddy-configuration/godaddy-logo2.png">
             </a>
             </td>
          </tr>
@@ -154,6 +160,8 @@
 
     <!-- API Key Start -->
     <div class="paddingSides" id="step-5">
+      <img alt="pc" class="domainImage" src="assets/images/godaddy-configuration/Connect_with_Godaddy.png" style="width: 50%; margin: 0px 25% 30px;">
+
       <div *ngIf="statusCode === 404" class="alert alert-info">
         <strong>{{message}}</strong>
         <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight mt-7px" (click)="goToAddDomainDiv()">Change the Domain Name</button>
@@ -445,7 +453,7 @@
        <tr class="displayContents">
          <td class="verticalMiddle">
           <a> 
-            <img alt="Godaddy Logo" class="godadyLogo" src="assets/images/godaddy-configuration/godaddy-logo.png">
+            <img alt="Godaddy Logo" class="godadyLogo" src="assets/images/godaddy-configuration/godaddy-logo2.png">
           </a>
           </td>
           <td class="verticalMiddle">
