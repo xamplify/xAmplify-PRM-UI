@@ -115,6 +115,11 @@ a.disabled {
   background: #008fd5;
   color: white;
 }
+.markAsValidLable {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 @media screen and (max-width: 600px) {
   .mWidth {
     width: 15.666667% !important;

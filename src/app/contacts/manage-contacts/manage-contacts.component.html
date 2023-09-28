@@ -1177,29 +1177,30 @@
             <a class="close-circle" data-dismiss="modal" (click)="cancelSegmentation()"><i class="fa fa-times" aria-hidden="true" ></i></a>
             <h4 class="modal-title" translate>Filter</h4>
          </div>
-         <div class="modal-body" style="padding: 28px;">
+         <div class="modal-body" style="padding: 15px;">
             <div class="row">
                <div class="col-xs-12 col-sm-12">
-                  <div class="row col-sm-11" *ngFor="let addRow of criterias; let i = index" style="padding-bottom: 10px;">
+                  <!-- <div class="row col-sm-11" *ngFor="let addRow of criterias; let i = index" style="padding-bottom: 10px;"> -->
+                     <div class="row col-sm-11" *ngFor="let addRow of criterias; let i = index"> 
                      <div class="form-group">
                         <div class="form-inline col-sm-12">
-                           <div class="form-group col-sm-6 col-lg-4 tab_v_flex tab_p0">
-                              <b>{{i}}</b>
-                              <select class="form-control" [(ngModel)]="criterias[i].property">
+                           <div class="form-group col-sm-6 col-lg-3 col-md-3 col-xs-12 tab_v_flex tab_p0 pr0">
+                              <b class="filterNumber">{{i}}</b>
+                              <select class="form-control filedWidthCu" [(ngModel)]="criterias[i].property">
                               <option *ngFor="let filterOption of filterOptions; let i = index">{{filterOption.name}}</option>
                               </select>
                            </div>
-                           <div class="form-group col-sm-6 col-lg-3">
-                              <select class="form-control" [(ngModel)]="criterias[i].operation">
+                           <div class="form-group col-sm-6 col-lg-4 col-md-3 col-xs-12">
+                              <select class="form-control filedWidthCu" [(ngModel)]="criterias[i].operation">
                               <option *ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.name}}
                               </option>
                               </select>
                            </div>
-                           <div class="form-group col-sm-6 col-lg-3 tb_view_10">
-                              <input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1"
+                           <div class="form-group col-sm-6 col-lg-4 col-md-4 col-xs-12 tb_view_10">
+                              <input type="text" class="form-control filedWidthCu" placeholder="value*" [(ngModel)]="criterias[i].value1"
                               (keypress)="eventEnterKeyHandler($event.keyCode)">
                            </div>
-                           <div class="form-group col-sm-2 col-lg-2 filter-delete tb_view_10 filter_del" data-toggle="tooltip" data-placement="left"
+                           <div class="form-group col-sm-2 col-lg-1 col-md-2 col-xs-12 filter-delete tb_view_10 filter_del" data-toggle="tooltip" data-placement="left"
                               title="Remove a condition"
                               [ngClass]="{'filter-css': !referenceService.isMobileScreenSize(), 'mobile-view-filter':referenceService.isMobileScreenSize()}">
                               <span (click)="cancelRow(i)"> <i class="fa fa-trash-o" aria-hidden="true"

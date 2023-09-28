@@ -7,15 +7,15 @@
   </app-response-message>
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-lg-12">
-      <div class="col-xs-12 col-sm-5 col-lg-5">
+      <div class="col-xs-12 col-sm-5 col-md-4 col-lg-5">
         <button class="btn-primary mb_10" style="padding: 5px 13px !important;" (click)="openCreateDiv()" translate>Create Group</button>
       </div>
-      <div class="col-xs-12 col-sm-7 col-lg-7">
+      <div class="col-xs-12 col-sm-7 col-md-8 col-lg-7">
         <div class="page-toolbar">
           <div class="btn-group pull-right">
             <div class="inputs float-right" style="display: inline-flex;">
               <div id="left">
-                <select class="form-control" [(ngModel)]="sortOption.selectedTeamMemberGroupSortDropDown" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                <select class="form-control SelectedFiledFontsize" [(ngModel)]="sortOption.selectedTeamMemberGroupSortDropDown" (ngModelChange)="sortBy($event)" id="select-dropdown">
                 <option
                 *ngFor="let option of sortOption.teamMemberGroupDropDownOptions"
                 [ngValue]="option">

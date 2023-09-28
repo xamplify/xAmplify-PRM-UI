@@ -665,16 +665,16 @@
 										</span>
 									 </ng-container>
 								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{contact.vertical}}">{{contact.vertical | slice:0:14}}
+								  <td class="white-space-transform" *ngIf="isPartner" >{{contact.vertical | slice:0:14}}
 									 <span *ngIf="contact.vertical?.length>14">..</span>
 								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{contact.region}}">{{contact.region | slice:0:14}}
+								  <td class="white-space-transform" *ngIf="isPartner">{{contact.region | slice:0:14}}
 									 <span *ngIf="contact.region?.length>14">..</span>
 								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{contact.partnerType}}">{{contact.partnerType | slice:0:14}}
+								  <td class="white-space-transform" *ngIf="isPartner">{{contact.partnerType | slice:0:14}}
 									 <span *ngIf="contact.partnerType?.length>14">..</span>
 								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{contact.category}}">{{contact.category | slice:0:14}}
+								  <td class="white-space-transform" *ngIf="isPartner">{{contact.category | slice:0:14}}
 									 <span *ngIf="contact.category?.length>14">..</span>
 								  </td>
 								  <td *ngIf="!isPartner">
@@ -992,7 +992,7 @@
 					  <td *ngIf="contactsByType.selectedCategory == 'valid'"></td>
 					  <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td>
 					  <td *ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads">
-						 <span class="markas" (click)="validateUndeliverableContacts(allcontacts.id)">Mark as valid</span>
+						 <span class="markas markAsValidLable" (click)="validateUndeliverableContacts(allcontacts.id)">Mark as valid</span>
 					  </td>
 					  <td>
 						 <button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'

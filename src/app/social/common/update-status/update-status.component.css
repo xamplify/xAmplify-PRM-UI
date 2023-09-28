@@ -418,3 +418,14 @@ textarea{
 a.ContnetAbjustment {
   word-wrap: break-word;
 }
+@media only screen and (min-width:1098px) and (max-width:1200px) { 
+	.abjustprofileSec {
+		padding-left: 0px;
+		margin-left: -5px;
+	}
+}
+@media only screen and (min-width:992px) and (max-width:1098px) { 
+	.abjustprofileSec {
+		margin-left: -10px;
+	}
+}

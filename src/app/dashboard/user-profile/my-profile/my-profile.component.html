@@ -1919,7 +1919,7 @@
                             <label class="col-md-2" style="margin-top: 6px;">Subject 
                                 <span style="color: #f55d7a"><strong>*</strong></span></label>   
                             <div class="col-md-4" style="margin-left: -100px;">
-                                <input type="text" class="form-control" name="subject" placeholder="subject"
+                                <input [disabled]="xamplifyDefaultTemplate.typeInString === 'ONE_CLICK_LAUNCH'" type="text" class="form-control" name="subject" placeholder="subject"
                               [(ngModel)]="xamplifyDefaultTemplate.subject" maxlength="255">
                             </div>                                        
                               <div class="col-md-4">

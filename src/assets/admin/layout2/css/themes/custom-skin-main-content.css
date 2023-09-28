@@ -1872,3 +1872,26 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
 .borderColorsCU {
   border: 1px solid var(--border-color) !important;
 }
+
+.maualSPFCardbg {
+  background-color: var(--page-content) !important;
+}
+/* Godaddy */
+.popupReportTextbg {
+  background-color:var(--page-content) !important;;
+}
+.copy-button {
+  background-color: var(--page-content) !important;;
+}
+.panel > .pannelBgColor {
+  background-color: var(--page-content) !important;;
+}
+.modalBgColor {
+  background-color: var(--page-content) !important;;
+}
+/* End Godaddy */
+/* Sudha Change */
+.popup-border-bottom {
+   border-bottom: 1px solid var(--border-color) !important;
+} 
+/* Sudha Changes */

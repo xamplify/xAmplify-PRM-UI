@@ -33,3 +33,8 @@
   height: 370px;
   position: relative;
 }
+@media only screen and (min-width:992px) and (max-width:1200px) { 
+  .modal-dialog.previewViewPopup {
+    width: 77% !important;
+  }
+}
