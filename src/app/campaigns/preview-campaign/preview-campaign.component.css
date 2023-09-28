@@ -162,3 +162,18 @@ legend.scheduler-border {
 .ml25{
   margin-left: 25px !important;
 }
+.list__item .item__actions.abjustPosition {
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  position: relative;
+  right: 2rem;
+  bottom: -1rem;
+  padding-top: 0rem;
+  border-top: none;
+  margin-right: 0px;
+}
+.borderTopcu{
+  border-bottom: 1px solid #eaebed;
+  padding-bottom: 5px;
+}
+.status-message {height:auto !important;}

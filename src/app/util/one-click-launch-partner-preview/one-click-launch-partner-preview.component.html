@@ -36,7 +36,7 @@
                         <span *ngIf="viewType=='teoa'" class="circled-number" title="Email Opened Count">{{openedCount}}</span>
                         <a *ngIf="showShareLeadsList || viewType=='analytics' || ((viewType=='tda' &&downloadCount>0) || (viewType=='teoa' && openedCount>0))"
                             (click)="expandList(oneClickLaunchPartnerCompany)">
-                           <i class="fa" [ngClass]="{'fa-plus': !oneClickLaunchPartnerCompany.expand, 'fa-minus': oneClickLaunchPartnerCompany.expand}" aria-hidden="true"></i>
+                           <i class="fa IconCustomization" [ngClass]="{'fa-plus': !oneClickLaunchPartnerCompany.expand, 'fa-minus': oneClickLaunchPartnerCompany.expand}" aria-hidden="true"></i>
                         </a>
                      </div>
                </td>
@@ -132,7 +132,7 @@
                                            <td class="text-center">
                                                <div class="actions-block float-none">
                                                    <a title="Preview" (click)="$event.stopPropagation();previewLeads(shareLead)">
-                                                       <i class="fa fa-eye" aria-hidden="true"></i>
+                                                       <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                                                    </a>
                                                </div>
                                            </td>

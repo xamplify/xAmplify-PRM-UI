@@ -279,3 +279,7 @@ td h6 {
 .grid-box-height {
   height: 565px !important;
 }
+.flexContant{
+  display: flex;
+  justify-content: center;
+}

@@ -171,15 +171,15 @@ errorMessage:string;
     this.updateButton = true;
     this.statusCode = 422;
   }
-  goToConnectdStep() {
-    $('#step-6').hide();
-    $('#step-7').show();
-    this.isChecked = true;
-    this.spfConfigured = true;
-    this.saveSpf();
-    this.updateGodaddyConfiguration(this.companyId,true);
-    this.getDnsRecordsOfGodaddy()
-  }
+  // goToConnectdStep() {
+  //   $('#step-6').hide();
+  //   $('#step-7').show();
+  //   this.isChecked = true;
+  //   this.spfConfigured = true;
+  //   this.saveSpf();
+  //   this.updateGodaddyConfiguration(this.companyId,true);
+  //   this.getDnsRecordsOfGodaddy()
+  // }
   goToEnterDomainName(){
     $('#step-2').show();
     $('#step-4').hide();
@@ -259,15 +259,21 @@ errorMessage:string;
   addDNsRecord(isConnected:boolean) {
     this.godaddyRecordDto.type = "TXT";
     this.godaddyRecordDto.name = "@";
-    // this.loading = true;
+    this.loading = true;
     this.updateButton = false;
     this.dashboardService.addDnsRecordOfGodaddy(this.godaddyRecordDto).subscribe(
       response => {
         if (response.statusCode === 200) {
           this.statusCode = 200;
+          this.showConnectButton = true;
+          this.finalButtonValue = "Verified";
+          this.spfConfigured = true;
+          $('#step-6').hide();
+          $('#step-7').show();
+          this.isChecked = true;
+          this.saveSpf();
           this.updateGodaddyConfiguration(this.companyId,isConnected);
           this.getDnsRecordsOfGodaddy();
-          this.goToConnectdStep();
         } else if (response.statusCode === 422) {
           this.statusCode = 422;
           this.updateButton = true;
@@ -384,14 +390,17 @@ errorMessage:string;
           if (this.currentValue === this.suggestValue && this.godaddyDtos.length === 1) {
             this.showConnectButton = true;
             this.finalButtonValue = "Verified";
+            this.spfConfigured = true;
           } else if (this.currentValue != this.suggestValue && this.godaddyDtos.length === 1) {
             this.showConnectButton = false;
             this.finalButtonValue = "Mismatch";
             this.errorMessage = "The recommended record indicates a mismatch, please reconfigure from the settings.";
+            this.spfConfigured = false;
           } else {
             this.showConnectButton = false;
             this.finalButtonValue = "Invalid";
             this.errorMessage = "It is showing multiple SPF records for your domain, please reconfigure from the settings.It's important to point out that each domain may have only one SPF entry.";
+            this.spfConfigured = false;
           }
           console.log(this.godaddyDtos)
           this.loading = false;
@@ -414,12 +423,13 @@ errorMessage:string;
             this.loading = true;
           } else {
             this.showStep_5();
+            this.loading = false;
           }
-          this.loading = false;
           this.updateButton = false;
         } else {
           this.statusCode = 404;
           this.message = response.message
+          this.loading = false;
         }
       }
     );

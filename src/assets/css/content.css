@@ -148,7 +148,7 @@
 }
 .list__item .item__name {
 	color: #505659;
-	white-space: nowrap;
+	/* white-space: nowrap; */
 	line-height: 1em;
 	/* font-size: 1.25rem; */
 }
