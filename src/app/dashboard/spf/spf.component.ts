@@ -120,7 +120,20 @@ errorMessage:string;
     $('#addADomain').hide();
     $('#step-2').show();
     $('#step-3').hide();
+    this.godaddyRecordDto = new GodaddyDetailsDto();
+    this.apiKey ="";
+    this.apiSecret= "";
     this.loading = false;
+  }
+  goToFirstPage(){
+    $('#addADomain').show();
+    $('#step-2').hide();
+    this.domainName = "";
+    if (this.domainName != "") {
+      this.isDomainName = true;
+    } else {
+      this.isDomainName = false;
+    }
   }
   goToVerification() {
     this.loading = true;
@@ -199,7 +212,6 @@ errorMessage:string;
     this.checkDomainName(this.godaddyRecordDto);
     this.updateButton = false;
     this.createTooltip = "Already SPF record is there in your DNS."
-    this.loading = false;
   }
   getDomainName(){
     this.dashboardService.getDomainName(this.companyId) .subscribe(
@@ -247,7 +259,7 @@ errorMessage:string;
   addDNsRecord(isConnected:boolean) {
     this.godaddyRecordDto.type = "TXT";
     this.godaddyRecordDto.name = "@";
-    this.loading = true;
+    // this.loading = true;
     this.updateButton = false;
     this.dashboardService.addDnsRecordOfGodaddy(this.godaddyRecordDto).subscribe(
       response => {
@@ -393,7 +405,6 @@ errorMessage:string;
   }
   //delete All records
   deleteDnsRecordsOfGodaddy(isReplace: boolean) {
-    this.loading = true;
     this.dashboardService.deleteDnsRecrds().subscribe(
       response => {
         if (response.statusCode === 204) {
@@ -427,6 +438,7 @@ errorMessage:string;
 			swalCancelButtonColor: '#999',
 			confirmButtonText: 'Yes, Delete it!'
 		}).then(function () {
+      self.loading = true;
       self.deleteDnsRecordsOfGodaddy(false);
 		},function (dismiss: any) {
 			console.log("you clicked showAlert cancel" + dismiss);
@@ -448,14 +460,13 @@ errorMessage:string;
   }
 
   replaceConfirm(){
-    this.loading = true;
     $('#replaceRecord').hide();
+    this.loading = true;
     this.deleteDnsRecordsOfGodaddy(true); // Execute method1 immediately
     this.godaddyRecordDto.data = this.suggestValue;
     setTimeout(() => {
-    this.addDNsRecord(true); // Execute method2 after a 1-second delay
-    }, 1000);
-    this.loading = false;
+    this.addDNsRecord(true); // Execute method2 after a 2-second delay
+    }, 2000);
   }
   replaceCancel(){
     $('#replaceRecord').hide();
