@@ -74,6 +74,26 @@
 					</thead>
 				</table>
 			  </div>
+			  <!--SPF-->
+			  <app-dashboard-loader *ngIf="spfLoader"></app-dashboard-loader>
+			  <div class="table-responsive" *ngIf="!spfLoader">
+				  <div *ngIf="spfError" class="alert alert-danger">
+						<strong>{{spfErrorMessage}}</strong>
+				  </div>
+				<table *ngIf="!spfError" class='table tgrid' aria-describedby="spf-table">
+					<thead>
+						<tr>
+							<th style="width: 20%;" scope="row">SPF</th>
+							<th scope="row">
+								<input type="checkbox" [(ngModel)]="spfConfigured"
+								[ngModelOptions]="{standalone: true}"></th>
+								<th scope="row">
+									<button class="btn btn-primary" (click)="updateSpf()">Update</button>
+								</th>
+							</tr>
+					</thead>
+				</table>
+			  </div>
 
 			  <div class="table-responsive">
 				<app-response-message [customResponse]="customResponse"
