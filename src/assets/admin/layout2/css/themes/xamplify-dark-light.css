@@ -1991,3 +1991,10 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
   border-bottom: 1px solid #2f4857 !important;
 } 
 /* Sudha Changes */
+
+.borderTopcu {
+  border-bottom: 1px solid #2f4857 !important;
+}
+.list__item .item__actions.abjustPosition {
+  border-top: none !important;
+}

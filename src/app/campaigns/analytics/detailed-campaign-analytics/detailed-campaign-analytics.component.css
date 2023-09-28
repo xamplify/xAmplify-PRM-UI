@@ -656,3 +656,60 @@ th.leftAlignTableth {
     left: 13px;
   }
 }
+
+.percentage-circle > .percentage-value {
+  margin: -75px 0 0 2px;
+  font-size: 19px !important;
+}
+
+
+  /* XNFR-319 */
+  @media only screen and (min-width:1171px) and (max-width:1200px) { 
+    .percentage-circle > .percentage-value {
+      margin: -75px 0px 0px 12px !important;
+    }
+    .percentage-circle > .percentage-text {
+      margin: 0 0px 0px 9px !important;
+    }
+    h5.percentageBelowHeading {
+      margin-left: 13px  !important;
+    }
+  }
+  
+  
+  @media only screen and (min-width:1092px) and (max-width:1171px) { 
+    .percentage-circle > .percentage-value {
+      margin: -75px 0px 0px 22px !important;
+    }
+    .percentage-circle > .percentage-text {
+      margin: 0 0px 0px 17px  !important;
+    }
+    h5.percentageBelowHeading {
+      margin-left: 25px  !important;
+    }
+  }
+  @media only screen and (min-width:1025px) and (max-width:1092px) { 
+    .percentage-circle > .percentage-value {
+      margin: -75px 0px 0px 37px  !important
+    }
+    .percentage-circle > .percentage-text {
+      margin: 0 0px 0px 33px  !important;
+    }
+    h5.percentageBelowHeading {
+      margin-left: 37px  !important;
+    } 
+  }
+  @media only screen and (min-width:992px) and (max-width:1024px) { 
+    .percentage-circle > .percentage-value {
+      margin: -75px 0px 0px 33px  !important
+    }
+    .percentage-circle > .percentage-text {
+      margin: 0 0px 0px 23px  !important;
+    }
+    h5.percentageBelowHeading {
+      margin-left: 0px  !important;
+    } 
+    section.percentage-circle {
+      margin-left: -14px  !important;
+    }
+  }
