@@ -1,11 +1,17 @@
 <!-- XNFR-335 -->
+<div class="{{bootstrapAlertClass}} alert-su" *ngIf="spfConfigured && !isGodaddyConnected">
+  <strong>SPF Configuration is done manually.</strong>
+</div>
+<div class="alert alert-success alert-su" *ngIf="isGodaddyConnected && finalButtonValue === 'Verified' ">
+  <strong>SPF Configuration is done through GoDaddy.</strong>
+</div>
 <div class="tabscard">
   <ul class="nav nav-tabs dcTheme" role="tablist">
     <li role="presentation" class="active" id="tabWidthCu">
-      <a href="#Domain" class="tabColorTwo" aria-controls="Domain" role="tab" data-toggle="tab">GoDaddy SPF Configuration</a>
+      <a href="#Domain" class="tabColorTwo" aria-controls="Domain" role="tab" data-toggle="tab"><b>GoDaddy SPF Configuration</b></a>
     </li>
     <li role="presentation" id="tabWidthCu">
-     <a href="#Manual_SPF" class="tabColorOne" aria-controls="Manual SPF" role="tab" data-toggle="tab">SPF Configuration</a>
+     <a href="#Manual_SPF" class="tabColorOne" aria-controls="Manual SPF" role="tab" data-toggle="tab"><b>SPF Configuration (Manually)</b></a>
     </li>
   </ul>
   <!-- Tab panes start-->
@@ -13,9 +19,9 @@
     <!-- Tab One start-->
     <div role="tabpanel" class="tab-pane " id="Manual_SPF">
       <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <div class="{{bootstrapAlertClass}}" *ngIf="spfConfigured">
+      <!-- <div class="{{bootstrapAlertClass}}" *ngIf="spfConfigured">
         <strong>{{successOrErrorMessage}}</strong>
-      </div>
+      </div> -->
       <div class="portlet-border">
         <div class="portlet box">
           <app-spf-description></app-spf-description>
@@ -445,8 +451,8 @@
        <tr class="displayContents">
         <td class="verticalMiddle">
           <span [ngClass]="showConnectButton?'selectRecord':godaddyDtos?.length >1?'multipleREcord':'missMatchRecord'">
-            <b *ngIf="statusCode != 409">{{finalButtonValue}}</b>
-            <b *ngIf="statusCode === 409 || godaddyDtos?.length === 0">Invalid</b>
+            <b>{{finalButtonValue}}</b>
+            <!-- <b *ngIf="statusCode === 409 || godaddyDtos?.length === 0">Invalid</b> -->
           </span> 
         </td>
       </tr>
@@ -474,18 +480,18 @@
     <ng-template [ngTemplateOutlet]="tableView"></ng-template>
    </div>
    <div class="col-md-12" *ngIf="!showConnectButton" [ngClass]="showConnectButton?'selectRecord':godaddyDtos?.length >1?'multipleREcord':'missMatchRecord'" style="padding: 5px 0px 0px 10px;">
-    <div class="col-md-1 p0" *ngIf="statusCode != 409 && godaddyDtos?.length != 0">
+    <div class="col-md-1 p0">
       <label><b style="color:#000 !important" >{{finalButtonValue}}:</b></label>
     </div>
-    <div class="col-md-1 p0" *ngIf="statusCode === 409 ||godaddyDtos?.length === 0">
+    <!-- <div class="col-md-1 p0" *ngIf="statusCode === 409 ||godaddyDtos?.length === 0">
       <label><b style="color:#000 !important" >Invalid:</b></label>
-    </div>
-    <div class="col-md-11" *ngIf="statusCode != 409 && godaddyDtos?.length != 0">
+    </div> -->
+    <div class="col-md-11">
       {{errorMessage}}
     </div>
-    <div class="col-md-11" *ngIf="statusCode === 409 || godaddyDtos?.length === 0">
+    <!-- <div class="col-md-11" *ngIf="statusCode === 409 || godaddyDtos?.length === 0">
        It is showing No SPF records for your domain, please reconfigure from the settings.It's important to point out that each domain may have one SPF entry.
-    </div>
+    </div> -->
    </div>
  </div>
  <!-- Connected Domains Details End -->
