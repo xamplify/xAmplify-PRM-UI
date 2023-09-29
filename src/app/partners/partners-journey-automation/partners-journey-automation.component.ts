@@ -1,80 +1,87 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Pagination } from '../../core/models/pagination';
-import { PaginationComponent } from '../../common/pagination/pagination.component';
 import { UserService } from '../../core/services/user.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
-import { SocialPagerService } from '../../contacts/services/social-pager.service';
 import { UtilService } from '../../core/services/util.service';
 import { PagerService } from '../../core/services/pager.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { ParterService } from '../services/parter.service';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { Properties } from 'app/common/models/properties';
+import { SortOption } from 'app/core/models/sort-option';
 
 
 @Component({
   selector: 'app-partners-journey-automation',
   templateUrl: './partners-journey-automation.component.html',
   styleUrls: ['./partners-journey-automation.component.css'],
-  providers: [ SocialPagerService, PaginationComponent, PagerService ]
+  providers:[Properties,SortOption]
 })
 export class PartnersJourneyAutomationComponent implements OnInit {
   pagination: Pagination = new Pagination();
-  pager: any = {};
-  public searchKey: string;
-  notifications = [];
-  public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loading = false;
-  selectedTabIndex = 0;
-  redistributedCampaignsCount = 0;
-  checkingContactTypeName = "";
+  sortOption:SortOption = new SortOption();
   constructor(private router: Router, public userService: UserService, public authenticationService: AuthenticationService,
-    public referenceService:ReferenceService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent,
-    public utilService: UtilService, public pagerService:PagerService) { }
+    public referenceService:ReferenceService,public utilService: UtilService,
+     public pagerService:PagerService,private partnerService:ParterService,
+     private xtremandLogger:XtremandLogger) { }
 
   ngOnInit() {
-    this.listNotifications(this.pagination);
+    this.findWorkflows(this.pagination);
   }
+
   goToWorkflow(){this.router.navigate(["/home/partners/partner-workflow"]);}
-  setPage(event: any) {
-    this.pagination.pageIndex = event.page;
-    this.listNotifications(this.pagination);
-}
-listNotifications(pagination:Pagination) {
-  try{
+
+  findWorkflows(pagination:Pagination) {
     this.referenceService.loading(this.httpRequestLoader, true);
-    this.userService.listNotifications(this.authenticationService.getUserId())
-        .subscribe(
-        data => {
-            this.notifications = data;
-            pagination.totalRecords = this.notifications.length;
-            pagination =this.pagerService.getPagedItems(pagination, data);
-            this.pager = this.socialPagerService.getPager( this.notifications.length, this.pagination.pageIndex, this.pagination.maxResults );
-            this.pagination.pagedItems = this.notifications.slice( this.pager.startIndex, this.pager.endIndex + 1 );
-            this.referenceService.loading(this.httpRequestLoader, false);
-        },
-        error => console.log(error));
-    }catch(error) {console.error('error'+error); }
-}
-goToAnalytics(){
-  this.router.navigate(["/home/partners/individual-partner"]);
+    this.partnerService.findAllWorkflows(pagination).subscribe(
+      response=>{
+        if(response.statusCode==200){
+          pagination = this.utilService.setPaginatedRows(response,pagination);
+          console.log(pagination.pagedItems);
+          this.referenceService.stopLoader(this.httpRequestLoader);
+        }else{
+          let error = {};
+          error['status'] = 400;
+          this.xtremandLogger.errorPage(error);
+        }
+      },error=>{
+        this.xtremandLogger.errorPage(error);
+      });
+  }
+
+  findWorkflowsOnEnterKeyPress(eventKeyCode:number){
+    if(eventKeyCode==13){
+        this.searchWorkflows();
+    }
 }
 
-goToReDistributedPartnersDiv(){
+  paginateEmailTempaltes(event:any){
+    this.pagination.pageIndex = event.page;
+    this.findWorkflows(this.pagination);
+  }
 
-}
+  sortWorkflows(text: any) {
+    this.sortOption.selectedWorkflowDropDownOption = text;
+    this.setSearchAndSortOptionsForWorkflows(this.pagination, this.sortOption);
+  }
 
-goToThroughPartnersDiv(){
+  searchWorkflows(){
+      this.setSearchAndSortOptionsForWorkflows(this.pagination,this.sortOption);
+  }
 
-}
-searchKeyValue(string){
+  setSearchAndSortOptionsForWorkflows(pagination: Pagination, sortOption: SortOption){
+    pagination.pageIndex = 1;
+    pagination.searchKey = sortOption.searchKey;
+    pagination = this.utilService.sortOptionValues(sortOption.selectedWorkflowDropDownOption, pagination);
+    this.findWorkflows(pagination);
+  }
 
-}
-eventHandler(keyCode,string){
-  
-}
-search(string){
 
-}
+
 
 
 }
