@@ -148,6 +148,11 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         return false;
       }
 
+      if(jsonContent.indexOf("pageLink")<0 && ("SOCIAL_CAMPAIGN"==emailTemplateType || "PAGE_CAMPAIGN_CONTACT"==emailTemplateType)){
+        swal( "", "Whoops! We are unable to save this template because you deleted 'Button' tag.", "error" );
+        return false;
+      }
+
       if("FORGOT_PASSWORD"==emailTemplateType){
         var count = (jsonContent.match(/<Vanity_Company_Logo_Href>/g) || []).length;
         let errorMessage = "";
