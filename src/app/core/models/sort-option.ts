@@ -371,7 +371,7 @@ export class SortOption {
         { 'name': 'Uploaded Date(DESC)', 'value': 'uploadedDate-DESC' }
     ];
 
-	workflowsDropDownOptions = [
+	partnerJourneyWorkflowsDropDownOptions = [
 		{ 'name': 'Title(A-Z)', 'value': 'title-ASC' },
 		{ 'name': 'Title(Z-A)', 'value': 'title-DESC' },
 		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
@@ -430,6 +430,6 @@ export class SortOption {
 
 	public selectedVideoDropDownOption = this.videosDropDownOptions[this.videosDropDownOptions.length-1];
 
-	public selectedWorkflowDropDownOption = this.workflowsSortDropDownOptions[this.workflowsSortDropDownOptions.length-1];
+	public selectedPartnerJourneyWorkflowDropDownOption = this.partnerJourneyWorkflowsDropDownOptions[this.partnerJourneyWorkflowsDropDownOptions.length-1];
 
 }

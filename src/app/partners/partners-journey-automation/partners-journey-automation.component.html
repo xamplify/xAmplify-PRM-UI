@@ -104,26 +104,24 @@
              <div class="inputs sort-class pb5" style="display: flex;">
                 <div 
                    [ngClass]="{'search-css pr10': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-                   <select class="form-control width">
-                      <option>Sort by</option>
-                      <option>Sort by</option>
-                      <option>List name (A-Z)</option>
-                      <option>List name (Z-A)</option>
-                      <option> Creation date (ASC)</option>
-                      <option>Creation date (DESC)</option>
-                   </select>
+                   <select class="form-control width" [(ngModel)]="sortOption.selectedPartnerJourneyWorkflowDropDownOption"
+                   (ngModelChange)="sortWorkflows($event)"  [ngModelOptions]="{standalone: true}">                                                    
+                   <option  *ngFor="let option of sortOption.partnerJourneyWorkflowsDropDownOptions"
+                       [ngValue]="option">{{option.name}}</option>
+                  </select> 
                 </div>
                 <div class="portlet-input input-inline search-class"
                    [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
                    <div class="input-icon right">
-                      <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-                      (input)="searchKeyValue('contactList')" class="form-control"
-                      placeholder="Search for a list" (keypress)="eventHandler($event.keyCode, 'contactList')">
-                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
-                      (click)="searchKey='';search('contactList')"></button>
-                      <button type="submit" class="search-box-item-click" (click)="search('contactList')">
-                      <i class="fa fa-search" aria-hidden="true"></i>
-                      </button>
+                    <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+                    [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                    (keypress)="findWorkflowsOnEnterKeyPress($event.keyCode)" autocomplete="off">
+                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                    (click)="sortOption.searchKey='';searchWorkflows()">
+                  </button>
+                  <button type="submit" class="search-box-item-click" (click)="searchWorkflows()">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </button>
                    </div>
                 </div>
              </div>

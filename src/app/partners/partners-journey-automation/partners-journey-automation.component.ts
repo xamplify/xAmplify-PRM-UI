@@ -41,7 +41,6 @@ export class PartnersJourneyAutomationComponent implements OnInit {
       response=>{
         if(response.statusCode==200){
           pagination = this.utilService.setPaginatedRows(response,pagination);
-          console.log(pagination.pagedItems);
           this.referenceService.stopLoader(this.httpRequestLoader);
         }else{
           let error = {};
@@ -65,7 +64,7 @@ export class PartnersJourneyAutomationComponent implements OnInit {
   }
 
   sortWorkflows(text: any) {
-    this.sortOption.selectedWorkflowDropDownOption = text;
+    this.sortOption.selectedPartnerJourneyWorkflowDropDownOption = text;
     this.setSearchAndSortOptionsForWorkflows(this.pagination, this.sortOption);
   }
 
@@ -76,7 +75,7 @@ export class PartnersJourneyAutomationComponent implements OnInit {
   setSearchAndSortOptionsForWorkflows(pagination: Pagination, sortOption: SortOption){
     pagination.pageIndex = 1;
     pagination.searchKey = sortOption.searchKey;
-    pagination = this.utilService.sortOptionValues(sortOption.selectedWorkflowDropDownOption, pagination);
+    pagination = this.utilService.sortOptionValues(sortOption.selectedPartnerJourneyWorkflowDropDownOption, pagination);
     this.findWorkflows(pagination);
   }
 
