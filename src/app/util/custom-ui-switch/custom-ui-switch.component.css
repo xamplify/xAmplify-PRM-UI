@@ -121,7 +121,7 @@
     transition: all 0.4s ease-in-out;
   }
   .toggleOnOff input:checked+.sliderOnOff {
-    background-color: #2196F3;
+    background-color: #5cb85c;
   }
   .toggleOnOff input:checked+.sliderOnOff::before {
     transform: translateX(calc(var(--width) - var(--height)));

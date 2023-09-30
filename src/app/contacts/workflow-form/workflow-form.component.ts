@@ -527,6 +527,10 @@ export class WorkflowFormComponent implements OnInit{
     this.referenceService.goToRouter("/home/partners/journey-automation");
   }
 
+  customUiSwitchEventReceiver(event:any){
+    this.workflowDto.customTemplateSelected = event;
+    this.loadEmailTemplates(this.workflowDto.customTemplateSelected);
+  }
 
 
 }

@@ -115,7 +115,7 @@
               <app-response-message [customResponse]="queryBuilderCustomResponse" [showCloseIcon]="false" *ngIf="queryBuilderCustomResponse?.isVisible"></app-response-message>
             </ng-container>
             <ng-container *ngIf="!loadQueryBuilder && showQueryBuilder">
-              <query-builder   id="queryBuilderCu" [(ngModel)]='workflowDto.query' [config]='config'></query-builder>
+              <query-builder id="queryBuilderCu" [(ngModel)]='workflowDto.query' [config]='config'></query-builder>
             </ng-container>
             <!--Query Builder-->
             <button type="submit" [disabled]="!isValidTriggerTab" class="btn btn Btn-Green float-right" 
@@ -274,10 +274,7 @@
                                   <div class="pull-right">
                                     <label class="switch-choose" >Choose Template
                                     </label>
-                                    <app-custom-ui-switch></app-custom-ui-switch>
-                                    <switch class="switch-choose" [status]="workflowDto.customTemplateSelected" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                    (statusChange)="workflowDto.customTemplateSelected=!workflowDto.customTemplateSelected;loadEmailTemplates(workflowDto.customTemplateSelected)">
-                                  </switch>
+                                    <app-custom-ui-switch [customSwitch]="workflowDto.customTemplateSelected" (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
                                   </div>
                                 </div>
                               </div>
