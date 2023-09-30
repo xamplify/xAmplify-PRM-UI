@@ -19,12 +19,9 @@
     <!-- Tab One start-->
     <div role="tabpanel" class="tab-pane " id="Manual_SPF">
       <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <!-- <div class="{{bootstrapAlertClass}}" *ngIf="spfConfigured">
-        <strong>{{successOrErrorMessage}}</strong>
-      </div> -->
       <div class="portlet-border">
         <div class="portlet box">
-          <app-spf-description></app-spf-description>
+          <app-spf-description [showGoDaddyConfiguration]="false"></app-spf-description>
         </div>
       </div>
       <ng-container *ngIf="!spfConfigured">
@@ -46,7 +43,6 @@
       <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <!-- Add a Domain -->
       <div class="paddingSides" id="addADomain">
-        <!-- <img alt="PC" class="domainImage" src="assets/images/godaddy-configuration/Connect_with_Godaddy"> -->
         <img alt="pc" class="domainImage" src="assets/images/godaddy-configuration/Connect_with_Godaddy.png" style="width: 50%;">
         <div class="align-middle">
           <h3 translate="">Let's get started.</h3>
@@ -60,13 +56,6 @@
    <!-- progressbar Select Domain Start -->
    <div class="paddingSides" id="step-2" >
     <img alt="pc" class="domainImage" src="assets/images/godaddy-configuration/Connect_with_Godaddy.png" style="width: 50%; margin: 0px 25% 30px;">
-
-    <!-- <div class="progressbarCU">
-      <ul class="dcbar progressbar">
-        <li class="active leftAllign">Select Domain</li>
-        <li class="rightAllign">Verification</li>
-      </ul>
-    </div> -->
 
     <form>
       <div class="form-row">
@@ -89,42 +78,7 @@
       </div>
     </form>
    </div>
-    <!-- progressbar Select Domain End -->
-
-
-  <!-- Verification Domain Start -->
-   <!-- <div class="paddingSides" id="step-3">
-    <div class="progressbarCU">
-      <ul class="dcbar progressbarVerification">
-        <li class="activeVerification">Select Domain</li>
-        <li>Verification</li>
-      </ul>
-    </div>
-
-    <div class="align-middle">
-      <h3 translate="">Confirm content type and URL selection</h3>
-      <!-- <p translate="">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p> --
-    </div>
-    <table class="table dcBorderNone table-bordered">
-       <tr class="displayContents">
-         <td>Domain</td>
-       </tr>
-       <tr class="displayContents">
-         <td class="verticalMiddle hidden-xs">:</td>
-       </tr>
-       <tr class="displayContents">
-         <td>
-          <span>{{domainName}}</span>
-          </td>
-       </tr>
-   </table>
-   <div class="col-sm-12 marginBottom" style="padding: 0px;">
-    <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToStepFour()">Next</button>
-    <button type="submit" class="btn Btn-Gray btn-md  mobileFloatRight" (click)="addADomain()">Back</button>
-  </div>
-   </div> -->
-    <!-- Verification Domain End -->
-
+ 
     
     <!-- Domains Details Start -->
     <div class="paddingSides" id="step-4">
