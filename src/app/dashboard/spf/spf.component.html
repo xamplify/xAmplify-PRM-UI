@@ -62,18 +62,17 @@
         <div class="form-group col-md-2"></div>
         <div class="form-group col-md-8">
           <label for="name">Enter The Domain</label>
-          <span class="star"> *</span>
-          <input type="text" class="form-control" id="name" #name="ngModel" [(ngModel)]="godaddyRecordDto.domainName" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeDomainName($event)"  placeholder="example.com" required> <br>
+          <span class="star">*</span>
+          <input type="text" class="form-control" id="name" autocomplete="off"  [(ngModel)]="godaddyRecordDto.domainName" [ngModelOptions]="{standalone: true}" (input)="validateDomainName()"  placeholder="example.com" pattern="\S(.*\S)?" required>
           <div *ngIf="hasSpace">
-            <p class="danger" translate>Domain cannot contain spaces</p>
+            <p class="required" translate>Domain cannot contain spaces</p>
           </div>
           <p class="domainDescriptio">Enter the domain name (example.com) that you are configuring with xAmplify.</p>
         </div>
         <div class="form-group col-md-2"></div>
         <div class="col-md-12 marginBottom">
-          <button type="submit" class="btn btn-primary btn-md float-right" id="sample_editable_1_new" (click)="goToVerification()" [disabled]="!(isDomainName && !hasSpace)">Next</button>
+          <button type="submit" class="btn btn-primary btn-md float-right" id="sample_editable_1_new" (click)="isDomainName && !hasSpace && goToVerification()" [disabled]="!isDomainName || hasSpace">Next</button>
           <button type="submit" class="btn  Btn-Gray btn-md  mobileFloatRight" id="sample_editable_1_new" (click)="goToFirstPage()">Back</button>
-
         </div>
       </div>
     </form>
@@ -136,19 +135,19 @@
         <div class="form-group row">
           <label for="APIKey" class="col-sm-3 col-form-label">API Key<span class="star"></span>:<span class="star">*</span></label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="APIKey" [(ngModel)]="apiKey" [ngModelOptions]="{standalone: true}" placeholder="Enter API Key here">
+            <input type="text" class="form-control" id="APIKey" autocomplete="off" [(ngModel)]="apiKey" [ngModelOptions]="{standalone: true}" placeholder="Enter API Key here">
           </div>
         </div>
         <div class="form-group row">
           <label for="SecretCode" class="col-sm-3 col-form-label">Secret Code <span class="star"></span>:<span class="star">*</span></label> 
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="SecretCode" [(ngModel)]="apiSecret" [ngModelOptions]="{standalone: true}" placeholder="Enter Secret Code here">
+            <input type="text" class="form-control" id="SecretCode" autocomplete="off" [(ngModel)]="apiSecret" [ngModelOptions]="{standalone: true}" placeholder="Enter Secret Code here">
           </div>
         </div>
         <div class="form-group row">
           <label for="DomainName" class="col-sm-3 col-form-label">Domain Name:</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="DomainName"  [(ngModel)]="domainName" [ngModelOptions]="{standalone: true}" disabled>
+            <input type="text" class="form-control" id="DomainName" autocomplete="off"  [(ngModel)]="domainName" [ngModelOptions]="{standalone: true}" disabled>
           </div>
         </div>
         <div class="form-group row">

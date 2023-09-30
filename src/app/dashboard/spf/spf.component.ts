@@ -1,20 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import {Properties} from 'app/common/models/properties';
 import { CustomResponse } from 'app/common/models/custom-response';
 import {DashboardService} from 'app/dashboard/dashboard.service';
 import {ReferenceService} from 'app/core/services/reference.service';
 import {AuthenticationService} from 'app/core/services/authentication.service';
-import { GodaddyDetailsDto } from '../user-profile/models/godaddy-details-dto';
-import { forEach } from '@angular/router/src/utils/collection';
+import {GodaddyDetailsDto} from '../user-profile/models/godaddy-details-dto';
 
- declare var $,swal,await:any;
+ declare var $:any,swal:any;
 @Component({
   selector: 'app-spf',
   templateUrl: './spf.component.html',
   styleUrls: ['./spf.component.css'],
   providers: [Properties]
 })
-export class SpfComponent implements OnInit {
+export class SpfComponent implements OnInit,OnDestroy {
  isChecked:boolean;
  loading = false;
  customResponse: CustomResponse = new CustomResponse();
@@ -46,6 +45,7 @@ isSpfDoneManually:boolean;
 isSpfDoneGodaddy:boolean;
  /** XNFR-335*******/
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,public dashboardService:DashboardService) { }
+ 
 
   ngOnInit() {
      const user = JSON.parse(localStorage.getItem('currentUser'));
@@ -58,6 +58,10 @@ isSpfDoneGodaddy:boolean;
       this.isGodaddyConfigured();
       this.getDomainName();
       this.getDnsRecordsOfGodaddy();
+  }
+
+  ngOnDestroy(): void {
+    this.authenticationService.module.navigateToSPFConfigurationSection = false;
   }
 
   isSpfConfigured(){
@@ -165,30 +169,20 @@ isSpfDoneGodaddy:boolean;
     this.statusCode = 200;
     this.loading = false;
   }
-  // UpdateScreen(){
-  //   this.isChecked = true;
-  //   this.spfConfigured = true;
-  //   this.saveSpf();
-  //   $('#step-6').hide();
-  //   $('#step-7').show();
-  // }
+ 
   goToConnectdStep() {
     $('#step-6').hide();
     $('#step-7').show();
-    // this.isChecked = true;
-    // this.spfConfigured = true;
     this.updateGodaddyConfiguration(this.companyId,true);
     this.isGodaddyConnected = true;
-    //this.isGodaddyConfigured();
   }
   goToEnterDomainName(){
     $('#step-2').show();
     $('#step-4').hide();
   }
-  changeDomainName(evn: any) {
-    this.godaddyRecordDto.domainName = evn;
+  validateDomainName() {
     this.domainName = this.godaddyRecordDto.domainName;
-    this.hasSpace = this.godaddyRecordDto.domainName.includes(' ');
+    this.hasSpace = this.domainName.includes(' ');
     if (this.domainName != "") {
       this.isDomainName = true;
     } else {

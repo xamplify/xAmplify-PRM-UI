@@ -1175,6 +1175,10 @@ getDefault360M3U8FileForLocal(videoUrl:string){
   return videoUrl;
 }
 
+navigateToMyProfileSection(){
+  this.router.navigate(["/home/dashboard/myprofile"])
+}
+
 
   
 }
