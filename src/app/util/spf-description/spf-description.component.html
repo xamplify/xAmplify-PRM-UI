@@ -3,8 +3,26 @@
   </h4>
   <label class="bold-font">With email services and ISPs increasing safeguards against spam, there is an additional step you will need to perform on your website domain hosting site to ensure better delivery of your emails. This quick process authenticates that xAmplify can send emails on your behalf.</label>
 </div>
+
+<div *ngIf="showGoDaddyConfiguration">
+  <div>
+    <h4>Godaddy SPF Configuration :</h4>
+  </div>
+  <div class="maualSPFCardbg">
+    <div class="tenpixelspaddig mttp">
+      <h4 class="bold-font-weight">We have API-based settings for adding or updating SPF entries in GoDaddy.</h4>
+    </div>
+    <div class="tenpixelspaddig">
+      <img alt="pc" class="domainImage" src="assets/images/godaddy-configuration/Connect_with_Godaddy.png" style="width: 50%;">
+      <button class="btn btn-primary text-center" translate="" style="float: right;margin: 10px;" (click)="navigateToSPFConfigurationSection()">Click here</button>
+    </div>
+  </div>
+    <br>
+</div>
+
+
 <div>
-  <h3>Manual SPF Configuration :</h3>
+  <h4>Manual SPF Configuration :</h4>
 </div>
 <div class="maualSPFCardbg">
 <div class="tenpixelspaddig mttp">
@@ -31,5 +49,7 @@
 </div>
 </div>
 <div class="tenpixelspaddig">
-  <label class="bold-font"> For any queries, please reach out to support team, <a href="mailto:support@xamplify.com">support@xamplify.com</a> +1 408.250.9503</label>
+  <label class="bold-font"> 
+  SPF configuration is done manually.
+   If you have any questions about unlinking and other queries, please contact the support team, <a href="mailto:support@xamplify.com">support@xamplify.com</a> +1 408.250.9503</label>
 </div>

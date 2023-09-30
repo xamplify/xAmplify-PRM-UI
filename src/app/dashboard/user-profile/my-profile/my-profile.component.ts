@@ -602,6 +602,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, false);
 			this.getModuleAccessByUser();
 			this.findUpgradeRequest();
+			if(this.authenticationService.module.navigateToSPFConfigurationSection){
+				this.activateTab('spf');
+			}
 		} catch (error) {
 			this.hasClientErrors = true;
 			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);

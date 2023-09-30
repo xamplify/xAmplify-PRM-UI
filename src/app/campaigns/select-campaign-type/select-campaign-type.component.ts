@@ -10,6 +10,7 @@ import { CampaignAccess } from '../models/campaign-access';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { EnvService } from 'app/env.service';
+import { DashboardService } from 'app/dashboard/dashboard.service';
 @Component({
     selector: 'app-select-campaign',
     templateUrl: './select-campaign-type-component.html',
@@ -34,10 +35,11 @@ export class SelectCampaignTypeComponent implements OnInit{
     companyIdError = false;
     loggedInUserCompanyId: number = 0;
     showSpf = false;
+    godadySpf=false;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     searchWithModuleName:any;
     constructor(private logger:XtremandLogger,private router:Router,public refService:ReferenceService,public authenticationService:AuthenticationService,
-      public campaignService: CampaignService, public userService:UserService, public campaignAccess: CampaignAccess,public envService: EnvService){
+      public campaignService: CampaignService, public userService:UserService, public campaignAccess: CampaignAccess,public envService: EnvService,public dashboardService:DashboardService){
         
        
     }
@@ -85,6 +87,7 @@ export class SelectCampaignTypeComponent implements OnInit{
             this.refService.companyId = this.loggedInUserCompanyId;
             this.getOrgCampaignTypes();
             this.isSpfConfigured();
+            this.isSpfConfiguredThroughGodaddy();
           }else{
             this.companyIdError = true;
             this.loading = false;
@@ -100,6 +103,17 @@ export class SelectCampaignTypeComponent implements OnInit{
         response=>{
           this.loading = false;
           this.showSpf = !response.data;
+        },error=>{
+          this.loading = false;
+        }
+      );
+    }
+    isSpfConfiguredThroughGodaddy(){
+      this.loading  = true;
+      this.dashboardService.isGodaddyConfigured(this.loggedInUserCompanyId).subscribe(
+        response=>{
+          this.loading = false;
+          this.godadySpf = !response.data;
         },error=>{
           this.loading = false;
         }
