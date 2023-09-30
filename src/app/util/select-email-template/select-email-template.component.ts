@@ -47,6 +47,7 @@ export class SelectEmailTemplateComponent implements OnInit {
     private emailTemplateService:EmailTemplateService,private utilService:UtilService) { }
 
   ngOnInit() {
+    alert(this.selectedEmailTemplateId);
     this.emailTemplatesLoader = true;
     this.emailTemplatesPagination.maxResults = 4;
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -75,13 +76,13 @@ export class SelectEmailTemplateComponent implements OnInit {
 }
 
   paginateEmailTempaltes(event:any){
-  this.emailTemplatesPagination.pageIndex = event.page;
-  this.findEmailTemplates(this.emailTemplatesPagination);
+    this.emailTemplatesPagination.pageIndex = event.page;
+    this.findEmailTemplates(this.emailTemplatesPagination);
   }
 
   sortEmailTemplates(text: any) {
-  this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption = text;
-  this.setSearchAndSortOptionsForEmailTemplates(this.emailTemplatesPagination, this.emailTemplatesSortOption);
+    this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption = text;
+    this.setSearchAndSortOptionsForEmailTemplates(this.emailTemplatesPagination, this.emailTemplatesSortOption);
   }
 
   searchEmailTemplates(){
@@ -89,14 +90,15 @@ export class SelectEmailTemplateComponent implements OnInit {
   }
 
   setSearchAndSortOptionsForEmailTemplates(pagination: Pagination, emailTemplatesSortOption: SortOption){
-  pagination.pageIndex = 1;
-  pagination.searchKey = emailTemplatesSortOption.searchKey;
-  pagination = this.utilService.sortOptionValues(emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption, pagination);
-  this.findEmailTemplates(pagination);
+    pagination.pageIndex = 1;
+    pagination.searchKey = emailTemplatesSortOption.searchKey;
+    pagination = this.utilService.sortOptionValues(emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption, pagination);
+    this.findEmailTemplates(pagination);
   }
 
-  callEmitter(){
-    this.selectedEmailTemplateEventEmitter.emit('S u c c e s s ');
+  callEmitter(emailTemplateId:number){
+    this.selectedEmailTemplateId = emailTemplateId;
+    this.selectedEmailTemplateEventEmitter.emit(emailTemplateId);
   }
 
   selectEmailTemplate(emailTemplate:any){
