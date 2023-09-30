@@ -60,7 +60,7 @@
               <div class="col-sm-4">
                 <div class="form-group" [attr.class]="titleDivClass">
                   <input type="text" placeholder="Enter Title" class="form-control full-width" [(ngModel)]="workflowDto.title" 
-                  name="workflowDto.title" autocomplete="false" (input)="validateTitle()" >
+                  name="workflowDto.title" autocomplete="off" (input)="validateTitle()" >
                   <span class="pull-left required" *ngIf="!isValidTitle &&workflowDto?.title?.length>0">Already Exists</span>
                 </div>
               </div>
@@ -103,7 +103,7 @@
                 <div class="col-sm-4">
                   <div class="form-group" [attr.class]="customDaysDivClass">
                     <input type="number" placeholder="Enter Days" class="form-control full-width" [(ngModel)]="workflowDto.customDays" 
-                    name="workflowDto.customDays" autocomplete="false" (input)="validateCustomDays()">
+                    name="workflowDto.customDays" autocomplete="off" (input)="validateCustomDays()">
                     <span class="pull-left required" *ngIf="!isValidCustomDays">Minimum 1 Day Required</span>
                   </div>
               </div>
@@ -274,6 +274,7 @@
                                   <div class="pull-right">
                                     <label class="switch-choose" >Choose Template
                                     </label>
+                                    <app-custom-ui-switch></app-custom-ui-switch>
                                     <switch class="switch-choose" [status]="workflowDto.customTemplateSelected" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                     (statusChange)="workflowDto.customTemplateSelected=!workflowDto.customTemplateSelected;loadEmailTemplates(workflowDto.customTemplateSelected)">
                                   </switch>

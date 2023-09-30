@@ -127,21 +127,16 @@ import { UserGuideHelpButtonComponent } from './user-guide-help-button/user-guid
 import { GuideLeftMenuComponent } from 'app/guides/guide-left-menu/guide-left-menu.component';
 import { SearchGuidesComponent } from 'app/guides/search-guides/search-guides.component';
 import { GuideHelpIconComponent } from 'app/guides/guide-help-icon/guide-help-icon.component';
-
 import { XamplifyVideoPlayerComponent } from 'app/util/xamplify-video-player/xamplify-video-player.component';
-
 import { DonutPieChartComponent } from 'app/dashboard/dashboard-analytics-components/donut-pie-chart/donut-pie-chart.component';
 import { QueryBuilderModule } from "angular2-query-builder";
 import { SelectEmailTemplateComponent } from 'app/util/select-email-template/select-email-template.component';
-
 import { SendTestEmailComponent } from 'app/util/send-test-email/send-test-email.component';
 import { AddMultipleEmailsInputComponent } from 'app/util/add-multiple-emails-input/add-multiple-emails-input.component';
 import { CampaignListAndGridViewComponent } from 'app/util/campaign-list-and-grid-view/campaign-list-and-grid-view.component';
 import { HomeGuideComponent } from 'app/guides/home-guide/home-guide.component';
 import { EmailTemplatesListAndGridViewComponent } from 'app/util/email-templates/email-templates-list-and-grid-view/email-templates-list-and-grid-view.component';
-
-
-
+import { CustomUiSwitchComponent } from 'app/util/custom-ui-switch/custom-ui-switch.component';
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
 		 DragulaModule, ColorPickerModule, CKEditorModule,QueryBuilderModule],
@@ -168,10 +163,8 @@ import { EmailTemplatesListAndGridViewComponent } from 'app/util/email-templates
 		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,
-		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,SelectEmailTemplateComponent],
-
-
-
+		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,
+		SelectEmailTemplateComponent,CustomUiSwitchComponent],
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
@@ -195,7 +188,8 @@ import { EmailTemplatesListAndGridViewComponent } from 'app/util/email-templates
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,
 		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
-		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent]
+		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent,
+		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent]
 
 
 
