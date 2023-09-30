@@ -14,7 +14,7 @@ declare var $:any;
   selector: 'app-select-email-template',
   templateUrl: './select-email-template.component.html',
   styleUrls: ['./select-email-template.component.css'],
-  providers:[Properties,SortOption]
+  providers:[Properties,SortOption],
 })
 export class SelectEmailTemplateComponent implements OnInit {
 

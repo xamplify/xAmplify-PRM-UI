@@ -10,7 +10,6 @@ import { Pagination } from '../../core/models/pagination';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UserService } from '../../core/services/user.service';
-import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { ParterService } from 'app/partners/services/parter.service';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
 import { CustomResponse } from '../../common/models/custom-response';
@@ -19,16 +18,14 @@ import { QueryBuilderClassNames } from 'angular2-query-builder';
 import { WorkflowDto } from '../models/workflow-dto';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
-
-
-
+import { CustomAnimation } from 'app/core/models/custom-animation';
 declare var  $:any, CKEDITOR:any, swal: any;
-
 @Component({
   selector: 'app-workflow-form',
   templateUrl: './workflow-form.component.html',
   styleUrls: ['./workflow-form.component.css'],
-  providers: [SocialContact, Pagination, Properties, ActionsDescription, CallActionSwitch,SortOption]
+  providers: [SocialContact, Pagination, Properties, ActionsDescription,SortOption],
+  animations:[CustomAnimation]
 })
 export class WorkflowFormComponent implements OnInit{
 
@@ -119,13 +116,13 @@ export class WorkflowFormComponent implements OnInit{
   
   constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
     public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
-		public actionsDescription: ActionsDescription, public callActionSwitch: CallActionSwitch,
-		public route: ActivatedRoute,public parterService: ParterService,public logger: XtremandLogger,public dealRegSevice: DealRegistrationService,
+		public actionsDescription: ActionsDescription,public route: ActivatedRoute,public parterService: ParterService,public logger: XtremandLogger,public dealRegSevice: DealRegistrationService,
     private pagerService:PagerService,private utilService:UtilService,private render: Renderer){
       this.referenceService.renderer = this.render;
     }
 
   ngOnInit() {
+    this.referenceService.goToTop();
     this.findTriggerTitles();
     this.getQueryBuilder();
     this.showTriggersTab();
