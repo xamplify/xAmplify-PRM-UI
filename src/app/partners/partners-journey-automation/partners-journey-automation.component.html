@@ -1,4 +1,3 @@
-<ngx-loading [config]="{ backdropBorderRadius: '14px' }" style="padding-bottom:20px"></ngx-loading>
 <div class="page-content">
   <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -6,217 +5,117 @@
         <i class="fa fa-home" aria-hidden="true"></i> 
         <a>Home</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
-     </li>
-   <li>
-    <a>
-    <span>{{authenticationService.partnerModule.customName}} Journey Automation</span>
-    </a> 
- </li>
+      </li>
+      <li>
+        <a>
+        <span>{{authenticationService.partnerModule.customName}} Journey Automation</span>
+        </a> 
+      </li>
     </ul>
     <div style="margin-top: 3px;" class="float-right">
 		  <a>
-		  <button type="button" class="btn Btn-Green" style="margin-right: 3px;" (click)="goToWorkflow()">
-		  Create Workflow<i class="fa fa-sitemap" aria-hidden="true" style="margin-left: 5px"></i>
-		  </button>
+        <button type="button" class="btn Btn-Green" style="margin-right: 3px;" (click)="goToWorkflow()">
+        Create Workflow<i class="fa fa-sitemap" aria-hidden="true" style="margin-left: 5px"></i>
+        </button>
 		  </a>
 	   </div>
   </div>
-  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  <div class="row">
-    <div class="page-bar" style="margin-bottom: 30px;padding-top: 18px;margin-left: 12px;margin-right: 12px;">
-<div  class="col-sm-4 col-xs-6 col-lg-4 col-md-4" (click)="goToAnalytics()" style="padding-left: 14px;padding-right: 0px;">
-  <a class="dashboard-stat dashboard-stat-lighter yellow-gold">
-    <div class="visual">
-      <i  style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
-        [ngStyle]="{'color': 0===selectedTabIndex ? '#white' : '#ccc' }"
-        aria-hidden="true"></i>
-    </div>
-    <div class="details" style="right: 13px !important;">
-      <div class="number">10</div>
-      <div class="desc" title="Active Partner" style="font-size: 13px">{{authenticationService?.partnerModule?.customName}} Journey Analytics                           
-        <!-- <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span> -->
-      </div>
-    </div>
-    <span id="permhref" class="morePadding">
-      <a class="more"> Detailed view
-        <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-    </span>
-  </a>
-</div>
-<!-- 2nd tile-->
-<div  class="col-sm-4 col-xs-6 col-lg-4 col-md-4" style="padding-right: 0px;">
-  <a class="dashboard-stat dashboard-stat-lighter purple-soft"
-    (click)="goToReDistributedPartnersDiv()">
-    <div class="visual">
-      <!-- <i class="fa fa-check-circle"
-        style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
-        [ngStyle]="{'color': 2===selectedTabIndex ? '#white' : '#ccc' }" aria-hidden="true">
-      </i> -->
-    </div>
-    <div class="details" style="right: 13px !important;">
-      <div class="number">
-        <span>3</span></div>
-      <div class="desc mlabelWidth" style="font-size: 13px">Triggers</div>
-    </div>
-    <span id="permhref" class="morePadding">
-      <a class="more" (click)="goToReDistributedPartnersDiv()"> Detailed view <i
-          class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-    </span>
-  </a>
-</div>
-
-<!-- 3rd tile-->
-<div class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-  <a class="dashboard-stat dashboard-stat-lighter green-soft"
-    (click)="goToThroughPartnersDiv()">
-    <div class="visual">
-      <!-- <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
-        [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }"
-        aria-hidden="true"></i> -->
-    </div>
-    <div class="details" style="right: 13px !important;">
-      <div class="number">63</div>
-      <div class="desc" style="font-size:13px">
-        Email Notifications
-        <!-- <span *ngIf="throughPartnerCampaignsTabName?.length>20">...</span> -->
-      </div>
-    </div>
-    <span id="permhref" class="morePadding">
-      <a class="more" (click)="goToThroughPartnersDiv()"> Detailed view
-        <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-    </span>
-  </a>
-</div>
-  </div>
-  </div>
-  <!--table-->
-<div class="page-bar">
-  <div class="tab-content">
-     <div class="tab-pane active" >
-      <div class="page-bar pd-mg border-none">
-        <div class="m0">          
-           <ul class="page-breadcrumb table-alignments">
-              <li id="header-custom-li-font">Workflow Triggers</li>
-           </ul>
-        </div>
-        <div class="col-xs-12 col-sm-6 col-lg-6 p0 pull-right" >
-          <div class="btn-group pull-right">
-             <div class="inputs sort-class pb5" style="display: flex;">
-                <div 
-                   [ngClass]="{'search-css pr10': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-                   <select class="form-control width" [(ngModel)]="sortOption.selectedPartnerJourneyWorkflowDropDownOption"
-                   (ngModelChange)="sortWorkflows($event)"  [ngModelOptions]="{standalone: true}">                                                    
-                   <option  *ngFor="let option of sortOption.partnerJourneyWorkflowsDropDownOptions"
-                       [ngValue]="option">{{option.name}}</option>
-                  </select> 
-                </div>
-                <div class="portlet-input input-inline search-class"
-                   [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
-                   <div class="input-icon right">
-                    <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
-                    [ngModelOptions]="{standalone: true}" placeholder="Search..."
-                    (keypress)="findWorkflowsOnEnterKeyPress($event.keyCode)" autocomplete="off">
-                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
-                    (click)="sortOption.searchKey='';searchWorkflows()">
-                  </button>
-                  <button type="submit" class="search-box-item-click" (click)="searchWorkflows()">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                  </button>
-                   </div>
-                </div>
-             </div>
+  <div class="page-bar">
+    <div class="tab-content">
+      <app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>
+      <div class="tab-pane active" *ngIf="!httpRequestLoader?.isLoading" >
+        <div class="page-bar pd-mg border-none">
+          <div class="m0">          
+            <ul class="page-breadcrumb table-alignments">
+                <li id="header-custom-li-font">Workflow Triggers</li>
+            </ul>
           </div>
-       </div>
-      </div>
-        <section class="col-xs-12 p0">
-          <div class="table-responsive pt5 pd-l-r">
-             <table class='table tgrid'>
-               <thead>
-                 <tr>
-                    <th scope="col" class="hidden-xs" colspan="2" style="width: 35%">
-                       <span class="ui-column-resizer"
-                          (mousedown)="referenceService.onMouseDown($event,'partner_contact_list',2)"> </span>
-                       <span class="gridHeader" translate>Triggers</span>
-                    </th>
-                    <th scope="col" style="width:21%" colspan="1" translate>
-                      Title
-                   </th>
-                    <th scope="col" style="width:21%" colspan="1" translate>
-                       Created On
-                    </th>
-                    <th scope="col" class="text-center" style="width:27%"
-                       translate>Actions</th>
-                 </tr>
-              </thead>
-                <tbody>
-                 <tr>
-                   <td style="width: 5%;">
-                      <img src="assets/images/trigger.png" style="height: 64px;" alt="manual">
-                   </td>
-                   <td>
-                      <span class="float-left">Partner has registered in the past 7 days.</span>
-                   </td>
-                   <td>
-                    <span class="float-left">Trigger For Registered Partners</span>
-                   </td>
-                   <td>
-                      <span class="float-left">Aug 9, 2023</span>
-                   </td>
-                   <td>
-                      <div class="actions-block override-actions text-center" style="float:none !important;">
-                        <a (click)="goToWorkflow()"><i  class="fa fa-pencil-square-o" aria-hidden="true" ></i></a>
-                         <a (click)="goToWorkflow()"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                      </div>
-                    </td>
-                </tr>
-                <tr>
-                  <td style="width: 5%;">
-                    <img src="assets/images/trigger.png" style="height: 64px;" alt="manual">
-                 </td>
-                 <td>
-                  <span class="float-left">Partner has not activated in the past 30 days.</span>
-               </td>
-               <td>
-                <span class="float-left">Trigger For InActive Partners</span>
-               </td>
-               <td>
-                <span class="float-left">Aug 12, 2023</span>
-             </td>
-             <td>
-              <div class="actions-block override-actions text-center" style="float:none !important;">
-                <a (click)="goToWorkflow()"><i  class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                <a (click)="goToWorkflow()"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+          <div class="col-xs-12 col-sm-6 col-lg-6 p0 pull-right" >
+            <div class="btn-group pull-right">
+              <div class="inputs sort-class pb5" style="display: flex;">
+                  <div 
+                    [ngClass]="{'search-css pr10': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+                    <select class="form-control width" [(ngModel)]="sortOption.selectedPartnerJourneyWorkflowDropDownOption"
+                    (ngModelChange)="sortWorkflows($event)"  [ngModelOptions]="{standalone: true}">                                                    
+                    <option  *ngFor="let option of sortOption.partnerJourneyWorkflowsDropDownOptions"
+                        [ngValue]="option">{{option.name}}</option>
+                    </select> 
+                  </div>
+                  <div class="portlet-input input-inline search-class"
+                    [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+                    <div class="input-icon right">
+                      <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+                      [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                      (keypress)="findWorkflowsOnEnterKeyPress($event.keyCode)" autocomplete="off">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                      (click)="sortOption.searchKey='';searchWorkflows()">
+                    </button>
+                    <button type="submit" class="search-box-item-click" (click)="searchWorkflows()">
+                      <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                    </div>
+                  </div>
               </div>
-            </td>
-                </tr>
-                <tr>
-                  <td style="width: 5%;">
-                    <img src="assets/images/trigger.png" style="height: 64px;" alt="manual">
-                 </td>
-                 <td>
-                  <span class="float-left">Partner has  activated in the past 7 days.</span>
-               </td>
-               <td>
-                <span class="float-left">Trigger For Active Partners</span>
-               </td>
-               <td>
-                <span class="float-left">Aug 14, 2023</span>
-             </td>
-             <td>
-              <div class="actions-block override-actions text-center" style="float:none !important;">
-                <a (click)="goToWorkflow()"><i  class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                <a (click)="goToWorkflow()"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-              </div>
-            </td>
-                </tr>
-                </tbody>
-             </table>
-          </div>
-          <div class="pdl-mgt">
-            <app-pagination [pagination]="pagination" (notifyParentDropDown)="listNotifications($event)" (notifyParent)="setPage($event)"></app-pagination>
-         </div>
-       </section>
+            </div>
         </div>
-     </div>
+        </div>
+          <section class="col-xs-12 p0">
+            <div class="table-responsive pt5 pd-l-r">
+              <div *ngIf="pagination?.totalRecords==0" class="alert alert-info text-center">
+                <strong>No Data Found</strong>
+              </div>
+              <table class='table tgrid table-hover table-sm' id="workflowsTable" role="grid" aria-describedby="" *ngIf="pagination?.totalRecords > 0">
+                <thead>
+                  <tr>
+                      <th scope="col" class="hidden-xs" colspan="2" style="width: 35%">
+                        <span class="ui-column-resizer"
+                            (mousedown)="referenceService?.onMouseDown($event,'workflowsTable',2)"> </span>
+                        <span class="gridHeader" translate>Triggers</span>
+                      </th>
+                      <th scope="col" style="width:21%" colspan="1">
+                        Title
+                    </th>
+                      <th scope="col" style="width:21%" colspan="1">
+                        Created On
+                      </th>
+                      <th scope="col" class="text-center">Actions</th>
+                  </tr>
+                </thead>
+                  <tbody>
+                    <ng-container *ngFor="let workflow of pagination?.pagedItems;let i = index">
+                      <tr>
+                        <td style="width: 5%;">
+                          <img src="assets/images/trigger.png" style="height: 64px;" alt="manual">
+                        </td>
+                        <td>
+                          <span class="float-left">{{workflow?.triggerDescription}}</span>
+                        </td>
+                        <td>
+                        <span class="float-left">{{workflow?.title}}</span>
+                        </td>
+                        <td>
+                          <span class="float-left">
+                            <app-display-date-and-time [dateAndTimeUTCString]="workflow?.createdTimeInString"></app-display-date-and-time>
+                          </span>
+                        </td>
+                        <td>
+                          <div class="actions-block override-actions text-center float-none">
+                            <a (click)="goToWorkflow()"><i  class="fa fa-pencil-square-o" aria-hidden="true" ></i></a>
+                              <a (click)="goToWorkflow()"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                          </div>
+                        </td>
+                    </tr>
+                    </ng-container>
+                  </tbody>
+              </table>
+            </div>
+            <div class="pdl-mgt" *ngIf="pagination?.totalRecords>0">
+              <app-pagination [pagination]="pagination" (notifyParentDropDown)="findWorkflows($event)" (notifyParent)="paginateWorkflows($event)"></app-pagination>
+          </div>
+          
+        </section>
+        
+        </div>
+      </div>
   </div>
 </div>

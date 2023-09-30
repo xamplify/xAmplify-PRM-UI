@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Renderer } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Pagination } from '../../core/models/pagination';
 import { UserService } from '../../core/services/user.service';
@@ -27,7 +27,9 @@ export class PartnersJourneyAutomationComponent implements OnInit {
   constructor(private router: Router, public userService: UserService, public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public utilService: UtilService,
      public pagerService:PagerService,private partnerService:ParterService,
-     private xtremandLogger:XtremandLogger) { }
+     private xtremandLogger:XtremandLogger,private render: Renderer) {
+      this.referenceService.renderer = this.render;
+      }
 
   ngOnInit() {
     this.findWorkflows(this.pagination);
@@ -41,7 +43,7 @@ export class PartnersJourneyAutomationComponent implements OnInit {
       response=>{
         if(response.statusCode==200){
           pagination = this.utilService.setPaginatedRows(response,pagination);
-          this.referenceService.stopLoader(this.httpRequestLoader);
+          this.referenceService.loading(this.httpRequestLoader, false);
         }else{
           let error = {};
           error['status'] = 400;
@@ -58,7 +60,7 @@ export class PartnersJourneyAutomationComponent implements OnInit {
     }
 }
 
-  paginateEmailTempaltes(event:any){
+  paginateWorkflows(event:any){
     this.pagination.pageIndex = event.page;
     this.findWorkflows(this.pagination);
   }

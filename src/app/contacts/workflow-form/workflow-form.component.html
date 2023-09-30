@@ -4,7 +4,7 @@
     <ul class="page-breadcrumb">
       <li>
         <i class="fa fa-home" aria-hidden="true"></i> 
-        <a translate>Home</a>
+        <a >Home</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
       <li>
@@ -26,7 +26,7 @@
           <div class="col-block width" [attr.class]="triggersTabClass" (click)="showTriggersTab()" style="width: 50%;">
             <div class="cenetered-block colorbox-1">
               <img alt="" class="newicons" src="assets/images/campaignnew-icon/19.svg">
-              <h5 class="hidden-xs text-clr" translate="" ng-reflect-translate="">Trigger</h5>
+              <h5 class="hidden-xs text-clr">Trigger</h5>
             </div>
           </div>
           <div  class="col-block" [attr.class]="notificationsTabClass" (click)="showNotificationTab()" style="width: 50%;" >
@@ -172,14 +172,14 @@
                               <th class="hidden-xs" *ngIf="showPartnerListSearchResultExpandButton" scope="col"></th>
                               <th class="hidden-xs" colspan="2" style="width: 35%">
                                 <span class="ui-column-resizer" (mousedown)="referenceService?.onMouseDown($event,'partnerListsTable',2)"></span>
-                                <span class="gridHeader" translate>List Name</span>
+                                <span class="gridHeader" >List Name</span>
                               </th>
-                              <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
+                              <th class="visible-xs" scope="row" colspan="1" style="width: 35%" >
                                 List Info
                             </th>
-                            <th scope="row" class="text-center" translate>Created On</th>
-                            <th scope="row" class="text-center" translate>Count</th>
-                            <th scope="row" class="text-center" translate>Preview</th>
+                            <th scope="row" class="text-center" >Created On</th>
+                            <th scope="row" class="text-center" >Count</th>
+                            <th scope="row" class="text-center" >Preview</th>
                             </tr>
                           </thead>
                           <tbody class="pointer">   
@@ -217,7 +217,7 @@
                                           <span><strong>{{partnerList?.name}}</strong></span>
                                       </h4>
                                       <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom" title="{{partnerList?.createdName}}">
-                                          <span translate> Created By <strong>{{partnerList?.creatorName}}</strong></span>
+                                          <span > Created By <strong>{{partnerList?.creatorName}}</strong></span>
                                       </h6>
                                   </td>
                                   <td class="text-center sorting_1">
@@ -272,7 +272,7 @@
                                 </div>
                                 <div class="col-xs-6">
                                   <div class="pull-right">
-                                    <label class="switch-choose" translate>Choose Template
+                                    <label class="switch-choose" >Choose Template
                                     </label>
                                     <switch class="switch-choose" [status]="workflowDto.customTemplateSelected" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                     (statusChange)="workflowDto.customTemplateSelected=!workflowDto.customTemplateSelected;loadEmailTemplates(workflowDto.customTemplateSelected)">
