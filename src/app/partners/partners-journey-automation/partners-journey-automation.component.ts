@@ -11,7 +11,8 @@ import { ParterService } from '../services/parter.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { Properties } from 'app/common/models/properties';
 import { SortOption } from 'app/core/models/sort-option';
-
+import { CustomResponse } from 'app/common/models/custom-response';
+declare var $:any;
 
 @Component({
   selector: 'app-partners-journey-automation',
@@ -24,6 +25,8 @@ export class PartnersJourneyAutomationComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loading = false;
   sortOption:SortOption = new SortOption();
+  customResponse = new CustomResponse();
+  message = "";
   constructor(private router: Router, public userService: UserService, public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public utilService: UtilService,
      public pagerService:PagerService,private partnerService:ParterService,
@@ -32,7 +35,19 @@ export class PartnersJourneyAutomationComponent implements OnInit {
       }
 
   ngOnInit() {
+    if (this.referenceService.isCreated) {
+      this.message = "Workflow created successfully";
+      this.showMessageOnTop(this.message);
+    } else if (this.referenceService.isUpdated) {
+      this.message = "Workflow updated successfully";
+      this.showMessageOnTop(this.message);
+    }
     this.findWorkflows(this.pagination);
+  }
+
+  showMessageOnTop(message: string) {
+    $(window).scrollTop(0);
+    this.customResponse = new CustomResponse("SUCCESS", message, true);
   }
 
   goToWorkflow(){this.router.navigate(["/home/partners/partner-workflow"]);}

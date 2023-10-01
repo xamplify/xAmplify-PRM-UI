@@ -20,6 +20,7 @@
 		  </a>
 	   </div>
   </div>
+  <app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
   <div class="page-bar">
     <div class="tab-content">
       <app-list-loader *ngIf="httpRequestLoader?.isLoading"></app-list-loader>

@@ -508,8 +508,13 @@ export class WorkflowFormComponent implements OnInit{
      this.workflowDto.selectedPartnerListIds = this.selectedPartnerListIds;
         this.parterService.saveWorkflow(this.workflowDto).subscribe(
             response=>{
+              if(response.statusCode==200){
+                this.referenceService.isCreated = true;
+                this.navigateToPartnerJourneyAutomationSection();
+              }else{
+                this.referenceService.showSweetAlertErrorMessage(this.properties.serverErrorMessage);
+              }
               this.triggerLoader = false;
-              this.navigateToPartnerJourneyAutomationSection();
             },error=>{
              this.xtremandLogger.errorPage(error);
            }

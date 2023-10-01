@@ -164,6 +164,7 @@
                   </div>
                   <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
                     <div class="table-responsive pt">
+                      <p *ngIf="selectedPartnerListIds?.length>0" class="success"><strong>Selected rows : {{selectedPartnerListIds?.length}}</strong></p>
                       <table class="table tgrid table-hover table-sm" id="partnerListsTable" role="grid" aria-describedby="" *ngIf="partnerListsPagination?.totalRecords > 0">
                           <thead>
                             <tr>
