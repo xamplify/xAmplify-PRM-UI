@@ -88,32 +88,6 @@
                   </app-pagination>
               </div>
           </fieldset>
-           <!---Edit Template---->
-            <div id="edit-selected-template" style="display: none;">
-                <div class="portlet light shadow">
-                    <div *ngIf="!isEditTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left zeropx">
-                        {{beeContainerInput?.emailTemplateName}}
-                        <div>
-                        <a class="close-circle pull-right" (click)="hideEditTemplateDiv()"
-                        [ngStyle]="{'margin-top':isShowEditTemplatePopup && campaignType=='page'? '10px':''}">
-                            <i class="fa fa-times" aria-hidden="true"></i>
-                        </a>
-                        <app-preview-popup #previewPopUpComponent *ngIf="isShowEditTemplatePopup && campaignType=='page'"></app-preview-popup>
-                        <app-merge-tags *ngIf="isShowEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
-                        <button (click)="toggleOpenLinksInNewTab()" class="btn-primary olint" *ngIf="isShowEditTemplatePopup && campaignType=='page'">
-                            Open Links In New Tab <input class="pointer" type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
-                        </button>
-                        </div>
-                    </div>
-                <div class="portlet-body clearfix">
-                    <div *ngIf="isShowEditTemplateMessageDiv"  [className]="templateMessageClass">
-                            <strong>{{templateUpdateMessage}}</strong>
-                    </div>
-                    <app-modal-popup-loader *ngIf="isEditTemplateLoader"></app-modal-popup-loader>
-                    <app-bee-template-util *ngIf="!isEditTemplateLoader && isShowEditTemplatePopup"  [beeContainerInput]="beeContainerInput" (notifyParentComponent)="updateTemplate($event)"></app-bee-template-util>
-                </div>
-                </div>
-            </div>
       </div>
   </div>
 </div>
@@ -126,4 +100,8 @@
   (sendTestEmailComponentEventEmitter)="previewEmailTemplateModalPopupEventReceiver()">
 </app-send-test-email>
 
-<!--Edit Template---->
+
+<app-edit-template-or-page-modal-popup
+ *ngIf="openEditTemplateModalPopup" [emailTemplate]="selectedEmailTemplate" 
+ (editTemplateOrPageModalPopupEventEmitter)="closeEditTemplateModalPopup()"></app-edit-template-or-page-modal-popup>
+
