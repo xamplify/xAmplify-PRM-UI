@@ -258,7 +258,7 @@
               <div class="col-sm-12 mt10">
                 <div class="form-group" [attr.class]="notificationSubjectDivClass">
                   <label  class="form-label">Subject<span class="required">*</span></label>
-                  <input type="text" class="form-control" placeholder="Subject" [(ngModel)]="workflowDto.notificationSubject" name="workflowDto.notificationSubject" (input)="validateNotificationSubject()">
+                  <input type="text" class="form-control" autocomplete="off" placeholder="Subject" [(ngModel)]="workflowDto.notificationSubject" name="workflowDto.notificationSubject" (input)="validateNotificationSubject()">
                   <span class="pull-left required" *ngIf="workflowDto?.notificationSubject?.length==0 && notificationSubjectDivClass=='form-group has-error has-feedback'">Please Enter Subject</span>
                 </div>
               </div>
