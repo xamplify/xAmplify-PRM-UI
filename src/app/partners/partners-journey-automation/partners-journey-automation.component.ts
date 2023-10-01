@@ -1,4 +1,4 @@
-import { Component, OnInit,Renderer } from '@angular/core';
+import { Component, OnDestroy, OnInit,Renderer } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { Pagination } from '../../core/models/pagination';
 import { UserService } from '../../core/services/user.service';
@@ -20,7 +20,7 @@ declare var $:any;
   styleUrls: ['./partners-journey-automation.component.css'],
   providers:[Properties,SortOption]
 })
-export class PartnersJourneyAutomationComponent implements OnInit {
+export class PartnersJourneyAutomationComponent implements OnInit,OnDestroy {
   pagination: Pagination = new Pagination();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loading = false;
@@ -33,6 +33,7 @@ export class PartnersJourneyAutomationComponent implements OnInit {
      private xtremandLogger:XtremandLogger,private render: Renderer) {
       this.referenceService.renderer = this.render;
       }
+
 
   ngOnInit() {
     if (this.referenceService.isCreated) {
@@ -96,6 +97,11 @@ export class PartnersJourneyAutomationComponent implements OnInit {
     this.findWorkflows(pagination);
   }
 
+
+  ngOnDestroy(): void {
+    this.referenceService.isCreated = false;
+    this.referenceService.isUpdated = false;
+  }
 
 
 
