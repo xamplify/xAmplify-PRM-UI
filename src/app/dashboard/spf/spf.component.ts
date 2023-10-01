@@ -68,7 +68,6 @@ isSpfDoneGodaddy:boolean;
     this.loading  = true;
     this.authenticationService.isSpfConfigured(this.companyId).subscribe(
       response=>{
-        this.loading = false;
         if(response.data){
           this.spfConfigured = response.data;
           this.bootstrapAlertClass = "alert alert-success";
@@ -77,6 +76,7 @@ isSpfDoneGodaddy:boolean;
           this.spfConfigured = false;
           this.isChecked = false;
         }
+        this.loading = false;
       },error=>{
         this.loading = false;
       }
@@ -195,7 +195,6 @@ isSpfDoneGodaddy:boolean;
   }
 
   isAuthorized(): boolean {
-    // Check if both apiKey and apiSecret are provided
     return this.apiKey.length > 0 && this.apiSecret.length > 0;
   }
   createTooltip:string;
@@ -219,7 +218,6 @@ isSpfDoneGodaddy:boolean;
     );
   }
   showStep_5(){
-    //let self = this;
     $('#step-5').hide();
     $('#step-6').show();
     this.getDnsRecordsOfGodaddy();
@@ -266,7 +264,6 @@ isSpfDoneGodaddy:boolean;
           $('#step-7').show();
           this.updateGodaddyConfiguration(this.companyId,isConnected);
           this.getDnsRecordsOfGodaddy();
-          //this.isGodaddyConfigured();
           this.isGodaddyConnected = true;
         } else if (response.statusCode === 422) {
           this.statusCode = 422;
@@ -289,11 +286,9 @@ isSpfDoneGodaddy:boolean;
         this.loading = false;
           this.isGodaddyConnected = response.data;
           this.isSpfConfigured();
-        //this.isSpfConfigured();
         if (!this.isGodaddyConnected) {
           $('#addADomain').show();
           $('#step-2').hide();
-          //$('#step-3').hide();
           $('#step-4').hide();
           $('#step-5').hide();
           $('#step-6').hide();
@@ -302,7 +297,6 @@ isSpfDoneGodaddy:boolean;
         } else {
           $('#addADomain').hide();
           $('#step-2').hide();
-          //$('#step-3').hide();
           $('#step-4').hide();
           $('#step-5').hide();
           $('#step-6').hide();

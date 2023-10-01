@@ -1425,7 +1425,7 @@
                                     (closeEvent)="showThemeAlert($event)">
                                     </app-custom-skin>
                                     <app-tags class="tab-pane" [ngClass]="{'active': activeTabName == 'tags'}"></app-tags>
-                                    <app-spf class="tab-pane" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
+                                    <app-spf class="tab-pane" *ngIf="showSpfConfigurationDiv" [ngClass]="{'active': activeTabName == 'spf'}"></app-spf>
                                     <app-unsubscribe-reasons *ngIf="showUnsubscribeReasonsDiv" class="tab-pane" [ngClass]="{'active': activeTabName == 'unsubscribeReasons'}"></app-unsubscribe-reasons>
                                     <app-manage-team-member-group *ngIf="showTeamMemberGroups" class="tab-pane" [ngClass]="{'active': activeTabName == 'team-group'}"></app-manage-team-member-group>
                                     <!--Notify Partners--> 
