@@ -21,7 +21,7 @@
       <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="portlet-border">
         <div class="portlet box">
-          <app-spf-description [showGoDaddyConfiguration]="false"></app-spf-description>
+          <app-spf-description *ngIf="!loading" [showGoDaddyConfiguration]="false" [spfConfigured]="spfConfigured"></app-spf-description>
         </div>
       </div>
       <ng-container *ngIf="!spfConfigured">
@@ -185,13 +185,10 @@
       <div class="form-group col-md-4">
         <label for="Value">Value<span class="star">*</span></label> 
         <input type="text" class="form-control disabled" id="Value"  [(ngModel)]="godaddyValue" (ngModelChange)="changeValue($event)" [ngModelOptions]="{standalone: true}" placeholder="Enter Value here" disabled>
-        <!-- <p *ngIf="updateButton" class="star"  role="alert" style="font-size: 13px;">
-          Dns Record already exists. Click on update to continue.</p> -->
       </div>
       <div class="col-md-12">
         <button type="submit" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" *ngIf="godaddyDtos?.length >=1"  [disabled]="godaddyDtos?.length >0"  (click)="addDNsRecord(true);foundDuplicateDnsRecord(true)" data-placement="bottom" data-toggle="tooltip" title="{{createTooltip}}">Create</button>
         <button type="submit" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" *ngIf="godaddyDtos?.length === 0"  (click)="addDNsRecord(true);foundDuplicateDnsRecord(true)">Create</button>
-        <!-- <button type="submit" *ngIf="updateButton" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="UpdateScreen()">Update</button> -->
 
         <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" (click)="goToStepFive()">Back</button>
       </div>

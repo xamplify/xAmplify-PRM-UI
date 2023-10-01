@@ -8,6 +8,7 @@ declare var $:any;
 })
 export class SpfDescriptionComponent implements OnInit {
  @Input() showGoDaddyConfiguration = false;
+ @Input() spfConfigured = false;
   constructor(private authenticationService:AuthenticationService) { }
 
   ngOnInit() {
