@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Observable } from 'rxjs/Observable';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http';
+import { Http } from "@angular/http";
 import { Pagination } from '../../core/models/pagination';
 import { User } from '../../core/models/user';
 import { PartnerJourneyRequest } from '../models/partner-journey-request';
@@ -15,7 +16,7 @@ export class ParterService {
     WORK_FLOW_PREFIX_URL = this.authenticationService.REST_URL + "workflow";
     WORK_FLOW_URL = this.WORK_FLOW_PREFIX_URL+this.ACCESS_TOKEN_SUFFIX_URL;
 
-    constructor( public authenticationService: AuthenticationService, public httpClient: HttpClient,private referenceService:ReferenceService ) { }
+    constructor(private http: Http,  public authenticationService: AuthenticationService, public httpClient: HttpClient,private referenceService:ReferenceService ) { }
     partnerReports( userId: number,applyFilter:boolean ): Observable<any> {
         userId = this.authenticationService.checkLoggedInUserId(userId);
         const url = this.URL + 'partner/analytics?access_token=' + this.authenticationService.access_token +
@@ -356,6 +357,14 @@ export class ParterService {
         let findAllUrl = this.WORK_FLOW_PREFIX_URL+'/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
         return this.httpClient.get(findAllUrl)
             .catch( this.handleError );
+    }
+
+    deleteWorkflow(id:number){
+        let userId = this.authenticationService.getUserId();
+        let deleteWorkflowUrl = this.WORK_FLOW_PREFIX_URL+'/id/'+id+'/loggedInUserId/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+        return this.http.delete(deleteWorkflowUrl)
+          .map(this.authenticationService.extractData)
+          .catch(this.authenticationService.handleError);
     }
 
     /*********End : XNFR-316************/

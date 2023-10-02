@@ -27,6 +27,8 @@ export class PartnersJourneyAutomationComponent implements OnInit,OnDestroy {
   sortOption:SortOption = new SortOption();
   customResponse = new CustomResponse();
   message = "";
+  isDeleteOptionClicked = false;
+  selectedWorkflowId = 0;
   constructor(private router: Router, public userService: UserService, public authenticationService: AuthenticationService,
     public referenceService:ReferenceService,public utilService: UtilService,
      public pagerService:PagerService,private partnerService:ParterService,
@@ -97,6 +99,47 @@ export class PartnersJourneyAutomationComponent implements OnInit,OnDestroy {
     this.findWorkflows(pagination);
   }
 
+ 
+
+  confirmDeleteWorkflow(id:number){
+    this.isDeleteOptionClicked = true;
+    this.selectedWorkflowId = id;
+  }
+
+  deleteWorkflow(event:any){
+    this.customResponse = new CustomResponse();
+    if(event){
+      this.referenceService.loading(this.httpRequestLoader, true);
+      this.partnerService.deleteWorkflow(this.selectedWorkflowId).subscribe(
+        response=>{
+          this.resetDeleteOptions();
+          this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.refreshList();
+        },error=>{
+          this.referenceService.loading(this.httpRequestLoader, false);
+          let message = this.referenceService.showHttpErrorMessage(error);
+          this.customResponse = new CustomResponse('ERROR', message, true);
+          this.resetDeleteOptions();
+        }
+      );
+    }else{
+      this.resetDeleteOptions();
+    }
+   
+  }
+
+  resetDeleteOptions(){
+    this.isDeleteOptionClicked = false;
+    this.selectedWorkflowId = 0;
+  }
+
+  refreshList() {
+    this.referenceService.scrollSmoothToTop();
+    this.pagination.pageIndex = 1;
+    this.pagination.searchKey = "";
+    this.findWorkflows(this.pagination);
+  }
 
   ngOnDestroy(): void {
     this.referenceService.isCreated = false;

@@ -101,8 +101,8 @@
                         </td>
                         <td>
                           <div class="actions-block override-actions text-center float-none">
-                            <a (click)="goToWorkflow()"><i  class="fa fa-pencil-square-o" aria-hidden="true" ></i></a>
-                              <a (click)="goToWorkflow()"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                            <a (click)="editWorkflow(workflow.id)"><i  class="fa fa-pencil-square-o" aria-hidden="true" ></i></a>
+                              <a (click)="confirmDeleteWorkflow(workflow.id)"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                           </div>
                         </td>
                     </tr>
@@ -113,10 +113,9 @@
             <div class="pdl-mgt" *ngIf="pagination?.totalRecords>0">
               <app-pagination [pagination]="pagination" (notifyParentDropDown)="findWorkflows($event)" (notifyParent)="paginateWorkflows($event)"></app-pagination>
           </div>
-          
         </section>
-        
         </div>
       </div>
   </div>
 </div>
+<app-confirm-sweet-alert-util *ngIf="isDeleteOptionClicked" (notifyComponent)="deleteWorkflow($event)"></app-confirm-sweet-alert-util>
