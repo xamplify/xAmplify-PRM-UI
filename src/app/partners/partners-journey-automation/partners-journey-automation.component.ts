@@ -12,13 +12,16 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { Properties } from 'app/common/models/properties';
 import { SortOption } from 'app/core/models/sort-option';
 import { CustomResponse } from 'app/common/models/custom-response';
+import { CustomAnimation } from 'app/core/models/custom-animation';
+
 declare var $:any;
 
 @Component({
   selector: 'app-partners-journey-automation',
   templateUrl: './partners-journey-automation.component.html',
   styleUrls: ['./partners-journey-automation.component.css'],
-  providers:[Properties,SortOption]
+  providers:[Properties,SortOption],
+  animations:[CustomAnimation]
 })
 export class PartnersJourneyAutomationComponent implements OnInit,OnDestroy {
   pagination: Pagination = new Pagination();
