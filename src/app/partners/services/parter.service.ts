@@ -340,8 +340,9 @@ export class ParterService {
         let userId = this.authenticationService.getUserId();
         workflowDto.loggedInUserId = userId;
         const url = this.URL + 'workflow?access_token=' + this.authenticationService.access_token;
-        return this.httpClient.post(url,workflowDto)
-            .catch( this.handleError );
+        return this.http.post(url,workflowDto)
+        .map(this.authenticationService.extractData)
+        .catch(this.authenticationService.handleError);
     }
 
     findTriggerTitles() {

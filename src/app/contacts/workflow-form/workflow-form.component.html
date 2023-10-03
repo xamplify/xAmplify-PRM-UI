@@ -63,6 +63,7 @@
                   name="workflowDto.title" autocomplete="off" (input)="validateTitle()" >
                   <span class="pull-left required" *ngIf="!isValidTitle && workflowDto?.title?.length>0">Already Exists</span>
                   <span class="pull-left required" *ngIf="workflowDto?.title?.length==0 && titleDivClass=='form-group has-error has-feedback'">Please Enter Title</span>
+                  <span class="pull-left required" *ngIf="invalidTitlePattern && titleDivClass=='form-group has-error has-feedback'">Invalid Title Pattern</span>
                 </div>
               </div>
               

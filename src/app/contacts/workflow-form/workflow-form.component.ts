@@ -106,6 +106,7 @@ export class WorkflowFormComponent implements OnInit{
   validUsersCount: any;
   allUsersCount: any;
   isValidTitle = false;
+  invalidTitlePattern = false;
   editedTriggerTitle = "";
   isValidTriggerTab = false;
   isValidPartnerListIds = false;
@@ -508,11 +509,20 @@ export class WorkflowFormComponent implements OnInit{
      this.workflowDto.selectedPartnerListIds = this.selectedPartnerListIds;
         this.parterService.saveWorkflow(this.workflowDto).subscribe(
             response=>{
+              this.titleDivClass = this.successClass;
               if(response.statusCode==200){
                 this.referenceService.isCreated = true;
                 this.navigateToPartnerJourneyAutomationSection();
               }else{
-                this.referenceService.showSweetAlertErrorMessage(this.properties.serverErrorMessage);
+                this.referenceService.scrollSmoothToTop();
+                let errorObject = response.data.errorMessages[0];
+                let field = errorObject['field'];
+                if("title"==field){
+                  this.invalidTitlePattern = true;
+                  this.titleDivClass = this.errorClass;
+                }else{
+                  this.referenceService.showSweetAlertErrorMessage(this.properties.serverErrorMessage);
+                }
               }
               this.triggerLoader = false;
             },error=>{
