@@ -144,6 +144,10 @@ export class PartnersJourneyAutomationComponent implements OnInit,OnDestroy {
     this.findWorkflows(this.pagination);
   }
 
+  editWorkflow(workflowId:number){
+    this.referenceService.showSweetAlertInfoMessage();
+  }
+
   ngOnDestroy(): void {
     this.referenceService.isCreated = false;
     this.referenceService.isUpdated = false;
