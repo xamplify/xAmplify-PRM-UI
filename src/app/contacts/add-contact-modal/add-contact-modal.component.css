@@ -110,3 +110,15 @@
 .border-bottom-1px {
   border-bottom: 1px solid #ddd;
 }
+/* XNFR 319 popup alignment */
+@media only screen and (min-width:992px) and (max-width:1040px) {   
+  #multiselect-sample {margin-left: 95px;}
+}
+@media only screen and (min-width:1040px) and (max-width:1065px) { 
+  #multiselect-sample {margin-left: 90px;}
+}
+@media only screen and (min-width:1065px) and (max-width:1200px) { 
+  #multiselect-sample {margin-left: 103px;}
+  #custom-width{width: 88.9%;}
+}
+

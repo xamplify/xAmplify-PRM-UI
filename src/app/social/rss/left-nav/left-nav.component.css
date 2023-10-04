@@ -77,3 +77,14 @@ img {
     padding-right: 15px !important;
   }
 }
+
+@media only screen and (min-width:1200px) and (max-width:1281px) { 
+  .social-feeds-text-color  {
+      font-size: 12px;
+  }
+}
+@media only screen and (min-width:991px) and (max-width:1015px) { 
+  .social-feeds-text-color  {
+    font-size: 12px;
+}
+}

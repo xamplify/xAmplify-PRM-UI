@@ -1162,7 +1162,7 @@
                                             (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isVendorTier || authenticationService.module.isPrm) && campaign.redistributedCount>0"
                                             (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip"
                                             data-placement="top" title="Show Redistributed Campaigns">
-                                            <strong style="color: white">{{campaign.redistributedCount}}</strong>
+                                            <strong>{{campaign.redistributedCount}}</strong>
                                             </a>
                                             <a class="Iconhover" [class.disablednew]="!campaign.hasAccess && !authenticationService?.module?.deletedPartner"
                                             *ngIf=" authenticationService?.module?.deletedPartner || hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier || isOnlyPartner"

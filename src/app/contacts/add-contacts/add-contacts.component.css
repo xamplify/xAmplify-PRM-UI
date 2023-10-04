@@ -172,3 +172,11 @@ i.fa.fa-file-excel-o.IconTopMargin {
 @media only screen and (min-width: 1780px) and (max-width: 1830px) {.cloud-items{left: 86px !important;}}
 @media only screen and (min-width: 1830px) and (max-width: 1882px) {.cloud-items{left: 87px !important;}}
 @media only screen and (min-width: 1883px) and (max-width: 1920px) {.cloud-items{left: 90px !important;}}
+
+
+@media only screen and (min-width: 992px) and (max-width: 1121px) {
+  h4.fontSizeDec {
+    font-size: 10px;
+    padding-top: 5px;
+  }
+}

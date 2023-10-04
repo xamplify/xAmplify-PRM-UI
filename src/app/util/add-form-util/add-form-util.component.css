@@ -1717,7 +1717,7 @@ div.switch5 > input.switch:focus ~ label:before {
     width: 100px;
   }
   .vertical-center {
-    margin: 10px 50px 0px 50px;
+    margin: 10px 40px 0px 40px;
   }
 }
 .hide-scrollbar {
@@ -1725,12 +1725,18 @@ div.switch5 > input.switch:focus ~ label:before {
 }
 @media only screen and (max-width:1024px){
   .vertical-center{
-    margin:10px 70px 0px 70px!important;
+    margin:10px 30px 0px 30px!important;
   }
 }
 @media only screen and (max-width:578px){
   .modal.left.fade.in .modal-dialog,
   .modal.right.fade.in .mb-wth {
     width: 85%!important;
+  }
+}
+
+@media (min-width: 1000px) and (max-width: 1220px) {
+  input.fieldWidthCustimization {
+    width: calc(100% - 70px) !important;
   }
 }

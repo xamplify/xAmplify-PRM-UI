@@ -1,25 +1,27 @@
 <!-- XNFR-335 -->
+<div class="{{bootstrapAlertClass}} alert-su" *ngIf="spfConfigured && !isGodaddyConnected">
+  <strong>SPF Configuration is done manually.</strong>
+</div>
+<div class="alert alert-success alert-su" *ngIf="isGodaddyConnected && finalButtonValue === 'Verified' ">
+  <strong>SPF Configuration is done through GoDaddy.</strong>
+</div>
 <div class="tabscard">
   <ul class="nav nav-tabs dcTheme" role="tablist">
     <li role="presentation" class="active" id="tabWidthCu">
-      <a href="#Manual_SPF" class="tabColorOne" aria-controls="Manual SPF" role="tab" data-toggle="tab">Manual SPF</a>
+      <a href="#Domain" class="tabColorTwo" aria-controls="Domain" role="tab" data-toggle="tab"><b>GoDaddy SPF Configuration</b></a>
     </li>
     <li role="presentation" id="tabWidthCu">
-      <a href="#Domain" class="tabColorTwo" aria-controls="Domain" role="tab" data-toggle="tab">Domain</a>
+     <a href="#Manual_SPF" class="tabColorOne" aria-controls="Manual SPF" role="tab" data-toggle="tab"><b>SPF Configuration (Manually)</b></a>
     </li>
   </ul>
   <!-- Tab panes start-->
   <div class="tab-content">
-
     <!-- Tab One start-->
-    <div role="tabpanel" class="tab-pane active" id="Manual_SPF">
+    <div role="tabpanel" class="tab-pane " id="Manual_SPF">
       <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <div class="{{bootstrapAlertClass}}" *ngIf="spfConfigured">
-        <strong>{{successOrErrorMessage}}</strong>
-      </div>
       <div class="portlet-border">
         <div class="portlet box">
-          <app-spf-description></app-spf-description>
+          <app-spf-description *ngIf="!loading" [showGoDaddyConfiguration]="false" [spfConfigured]="spfConfigured"></app-spf-description>
         </div>
       </div>
       <ng-container *ngIf="!spfConfigured">
@@ -37,11 +39,11 @@
 
 
     <!-- Tab Two start-->
-    <div role="tabpanel" class="tab-pane" id="Domain">
+    <div role="tabpanel" class="tab-pane active" id="Domain">
       <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <!-- Add a Domain -->
       <div class="paddingSides" id="addADomain">
-        <img alt="PC" class="domainImage" src="assets/images/godaddy-configuration/Domain_PC.png">
+        <img alt="pc" class="domainImage" src="assets/images/godaddy-configuration/Connect_with_Godaddy.png" style="width: 50%;">
         <div class="align-middle">
           <h3 translate="">Let's get started.</h3>
           <p translate="">Add or Update SPF records in GoDaddy domain registrar to ensure better delivery of emails and to protect against email spoofing attacks.</p>
@@ -53,72 +55,34 @@
 
    <!-- progressbar Select Domain Start -->
    <div class="paddingSides" id="step-2" >
-    <div class="progressbarCU">
-      <ul class="dcbar progressbar">
-        <li class="active leftAllign">Select Domain</li>
-        <li class="rightAllign">Verification</li>
-      </ul>
-    </div>
+    <img alt="pc" class="domainImage" src="assets/images/godaddy-configuration/Connect_with_Godaddy.png" style="width: 50%; margin: 0px 25% 30px;">
 
     <form>
       <div class="form-row">
         <div class="form-group col-md-2"></div>
         <div class="form-group col-md-8">
           <label for="name">Enter The Domain</label>
-          <span class="star"> *</span>
-          <input type="text" class="form-control" id="name" #name="ngModel" [(ngModel)]="godaddyRecordDto.domainName" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeDomainName($event)"  placeholder="example.com" required> <br>
+          <span class="star">*</span>
+          <input type="text" class="form-control" id="name" autocomplete="off"  [(ngModel)]="godaddyRecordDto.domainName" [ngModelOptions]="{standalone: true}" (input)="validateDomainName()"  placeholder="example.com" pattern="\S(.*\S)?" required>
           <div *ngIf="hasSpace">
-            <p class="danger" translate>Domain cannot contain spaces</p>
+            <p class="required" translate>Domain cannot contain spaces</p>
           </div>
           <p class="domainDescriptio">Enter the domain name (example.com) that you are configuring with xAmplify.</p>
         </div>
         <div class="form-group col-md-2"></div>
         <div class="col-md-12 marginBottom">
-          <button type="submit" class="btn btn-primary btn-md float-right" id="sample_editable_1_new" (click)="goToVerification()" [disabled]="!(isDomainName && !hasSpace)">Next</button>
+          <button type="submit" class="btn btn-primary btn-md float-right" id="sample_editable_1_new" (click)="isDomainName && !hasSpace && goToVerification()" [disabled]="!isDomainName || hasSpace">Next</button>
+          <button type="submit" class="btn  Btn-Gray btn-md  mobileFloatRight" id="sample_editable_1_new" (click)="goToFirstPage()">Back</button>
         </div>
       </div>
     </form>
    </div>
-    <!-- progressbar Select Domain End -->
-
-
-  <!-- Verification Domain Start -->
-   <div class="paddingSides" id="step-3">
-    <div class="progressbarCU">
-      <ul class="dcbar progressbarVerification">
-        <li class="activeVerification">Select Domain</li>
-        <li>Verification</li>
-      </ul>
-    </div>
-
-    <div class="align-middle">
-      <h3 translate="">Confirm content type and URL selection</h3>
-      <!-- <p translate="">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p> -->
-    </div>
-    <table class="table dcBorderNone table-bordered">
-       <tr class="displayContents">
-         <td>Domain</td>
-       </tr>
-       <tr class="displayContents">
-         <td class="verticalMiddle hidden-xs">:</td>
-       </tr>
-       <tr class="displayContents">
-         <td>
-          <span>{{domainName}}</span>
-          </td>
-       </tr>
-   </table>
-   <div class="col-sm-12 marginBottom" style="padding: 0px;">
-    <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToStepFour()">Next</button>
-    <button type="submit" class="btn Btn-Gray btn-md  mobileFloatRight" (click)="addADomain()">Back</button>
-  </div>
-   </div>
-    <!-- Verification Domain End -->
-
+ 
     
     <!-- Domains Details Start -->
     <div class="paddingSides" id="step-4">
-      <h4 class="text-start">Domains Details</h4>
+      <img alt="pc" class="domainImage" src="assets/images/godaddy-configuration/Connect_with_Godaddy.png" style="width: 50%; margin: 0px 25% 30px;">
+      <h4 class="text-start">Domain Details</h4>
       <table class="table dcBorderNone table-bordered">
          <tr class="displayContents">
            <td class="verticalMiddle">Domain</td>
@@ -127,30 +91,27 @@
           <td class="verticalMiddle hidden-xs">:</td>
         </tr>
          <tr class="displayContents">
-           <td class="verticalMiddle">{{domainName}}
+           <td class="verticalMiddle"><b>{{domainName}}</b>
            </td>
          </tr>
-         <!-- <tr class="displayContents">
-          <td class="verticalMiddle hidden-xs">:</td>
-        </tr> -->
          <tr class="displayContents">
           <td class="verticalMiddle">
             <span class="conectColor" (click)="goToStepFive()">
               <!-- <i class="fa fa-circle faDecfontSize" aria-hidden="true"></i> -->
-              Connect</span>
+              Configure</span>
           </td>
         </tr>
          <tr class="displayContents">
            <td class="verticalMiddle">
             <a (click)="goToStepFive()"> 
-              <img alt="Godaddy Logo" class="godadyLogo" src="assets/images/godaddy-configuration/godaddy-logo.png">
+              <img alt="Godaddy Logo" class="godadyLogo" src="assets/images/godaddy-configuration/godaddy-logo2.png">
             </a>
             </td>
          </tr>
      </table>
      <div >
-      <button type="submit" class="btn Btn-Gray btn-md  mobileFloatRight" (click)="goToStep3()">Back</button>
-      <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToStepFive()">Connect</button>
+      <button type="submit" class="btn Btn-Gray btn-md  mobileFloatRight" (click)="goToEnterDomainName()">Back</button>
+      <button type="submit" class="btn btn-primary btn-md float-right" (click)="goToStepFive()">Next</button>
     </div>
    </div>
    <!-- Domains Details End -->
@@ -158,11 +119,13 @@
 
     <!-- API Key Start -->
     <div class="paddingSides" id="step-5">
+      <img alt="pc" class="domainImage" src="assets/images/godaddy-configuration/Connect_with_Godaddy.png" style="width: 50%; margin: 0px 25% 30px;">
+
       <div *ngIf="statusCode === 404" class="alert alert-info">
         <strong>{{message}}</strong>
-        <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" style="margin-top: -7px;"  (click)="goToAddDomainDiv()">Change the Domain Name</button>
+        <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight mt-7px" (click)="goToAddDomainDiv()">Change the Domain Name</button>
       </div>
-      <div *ngIf="statusCode === 401" class="alert alert-info">
+      <div *ngIf="statusCode === 401" class="alert alert-danger">
         <strong>{{message}}</strong>
       </div>
       <div *ngIf="statusCode === 500" class="alert alert-info">
@@ -170,26 +133,26 @@
       </div>
       <form>
         <div class="form-group row">
-          <label for="APIKey" class="col-sm-3 col-form-label">API Key<span class="star"></span>:<span style="color: red;">*</span></label>
+          <label for="APIKey" class="col-sm-3 col-form-label">API Key<span class="star"></span>:<span class="star">*</span></label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="APIKey" [(ngModel)]="apiKey" [ngModelOptions]="{standalone: true}" placeholder="Enter API Key here">
+            <input type="text" class="form-control" id="APIKey" autocomplete="off" [(ngModel)]="apiKey" [ngModelOptions]="{standalone: true}" placeholder="Enter API Key here">
           </div>
         </div>
         <div class="form-group row">
-          <label for="SecretCode" class="col-sm-3 col-form-label">Secret Code <span class="star"></span>:<span style="color: red;">*</span></label> 
+          <label for="SecretCode" class="col-sm-3 col-form-label">Secret Code <span class="star"></span>:<span class="star">*</span></label> 
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="SecretCode" [(ngModel)]="apiSecret" [ngModelOptions]="{standalone: true}" placeholder="Enter Secret Code here">
+            <input type="text" class="form-control" id="SecretCode" autocomplete="off" [(ngModel)]="apiSecret" [ngModelOptions]="{standalone: true}" placeholder="Enter Secret Code here">
           </div>
         </div>
         <div class="form-group row">
           <label for="DomainName" class="col-sm-3 col-form-label">Domain Name:</label>
           <div class="col-sm-9">
-            <input type="text" class="form-control" id="DomainName"  [(ngModel)]="domainName" [ngModelOptions]="{standalone: true}" disabled>
+            <input type="text" class="form-control" id="DomainName" autocomplete="off"  [(ngModel)]="domainName" [ngModelOptions]="{standalone: true}" disabled>
           </div>
         </div>
         <div class="form-group row">
-          <div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 order-sm-2" style="display: flex;padding-bottom: 7px;">
-            <div style="padding-top: 7px;">Step 1 : Click On</div>&nbsp;&nbsp;
+          <div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 order-sm-2 d-f-pb7px" >
+            <div class="pt7px">Step 1 : Click On</div>&nbsp;&nbsp;
             <button type="submit" class="btn Btn-Green float-left mobileBottomPa responsiveBtnCU"><a href="https://developer.godaddy.com/keys" target="_blank" style="color: #fff;"> Generate API key from Godaddy</a></button>
           </div>
           <div class="col-lg-4 col-md-5 col-sm-6 col-xs-12 order-sm-1">
@@ -210,41 +173,220 @@
   <form>
     <div class="form-row row">
       <div class="form-group col-md-4">
-        <label for="Typetoselect">Type<span style="color: red;">*</span></label>
+        <label for="Typetoselect">Type<span class="star">*</span></label>
         <select class="form-control" id="Typetoselect" disabled>
           <option selected>TXT</option>
         </select>
       </div>
       <div class="form-group col-md-4">
-        <label for="Name">Name<span style="color: red;">*</span></label>
+        <label for="Name">Name<span class="star">*</span></label>
         <input type="text" class="form-control disabled" [(ngModel)]="godaddyRecordDto.name"  [ngModelOptions]="{standalone: true}" id="Name" placeholder="@" disabled>
       </div>
       <div class="form-group col-md-4">
-        <label for="Value">Value<span style="color: red;">*</span></label> 
+        <label for="Value">Value<span class="star">*</span></label> 
         <input type="text" class="form-control disabled" id="Value"  [(ngModel)]="godaddyValue" (ngModelChange)="changeValue($event)" [ngModelOptions]="{standalone: true}" placeholder="Enter Value here" disabled>
-        <p *ngIf="updateButton" class="star"  role="alert" style="font-size: 13px;">Dns Record already exists. Click on update to continue.</p>
       </div>
       <div class="col-md-12">
-        <button type="submit" *ngIf="!updateButton" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="addDNsRecord(true);foundDuplicateDnsRecord(true)">Save</button>
-        <button type="submit" *ngIf="updateButton" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" (click)="goToConnectdStep()">Update</button>
+        <button type="submit" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" *ngIf="godaddyDtos?.length >=1"  [disabled]="godaddyDtos?.length >0"  (click)="addDNsRecord(true);foundDuplicateDnsRecord(true)" data-placement="bottom" data-toggle="tooltip" title="{{createTooltip}}">Create</button>
+        <button type="submit" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace" *ngIf="godaddyDtos?.length === 0"  (click)="addDNsRecord(true);foundDuplicateDnsRecord(true)">Create</button>
 
         <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight" (click)="goToStepFive()">Back</button>
       </div>
     </div>
   </form>
+  <div class="alert alert-danger deleterror" *ngIf="statusCode === 404">
+    <strong>Something went wrong please try manually</strong>
+    <button class="btn Btn-Gray btn-md float-right mobileFloatRight mt-7px" type="button" (click)="updateRecord()">Redirect</button>
+  </div>
+  <div class="col-md-12 p0">
+    <h4>List of records in your Domain: <b>{{domainName}}</b></h4>
+    <ng-template [ngTemplateOutlet]="tableView"></ng-template>
+    <ng-template #tableView>
+    <table class="table tgrid dcBorderNone table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Type</th>
+          <th scope="col">Name</th>
+          <th scope="col">Value</th>
+        </tr>
+      </thead>
+      <tbody  *ngFor="let dto of godaddyDtos">
+        <tr class="displayContents">
+          <td class="verticalMiddle">{{dto.type}}</td>
+        </tr>
+        <tr class="displayContents">
+          <td class="verticalMiddle">{{dto.name}}</td>
+        </tr>
+        <tr class="displayContents">
+          <td class="verticalMiddle"><span [ngClass]="showConnectButton?'selectRecord':godaddyDtos?.length >1?'multipleREcord':'missMatchRecord'">{{dto.data}}</span></td>
+        </tr>
+      <tbody>
+    </table>
+    
+    <div *ngIf="godaddyDtos?.length === 0" class="alert alert-info">
+      <strong>No Records Found.</strong>
+    </div>
+  </ng-template>
+    <div *ngIf="suggestValue != null && suggestValue !='Already There' && godaddyDtos?.length === 1">
+      <div *ngIf="!showConnectButton">
+        <button type="submit" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace"
+          (click)="manuallyProcess()">Update Manually</button>
+        <button type="submit" class="btn orange-btn btn-md float-right mobileFloatRight MlSpace"
+          (click)="replaceDnsRecord()">Replace</button>
+      </div>
+      <div *ngIf="showConnectButton">
+        <button type="submit" class="btn orange-btn btn-md float-right mobileFloatRight MlSpace"
+          (click)="goToConnectdStep()">Connect</button>
+      </div>
+    </div>
+
+
+    <div class="row" *ngIf="suggestValue != null">
+      <div class="col-md-12 p0 twodivdiff">
+        <div  class="col-md-2 pr0"> <label class="top">Recommended:</label></div>
+        <div  class="col-md-10 pl0"> 
+          <div  class="col-md-11 pr0"> 
+              <input class="form-control" id="copyTextDiv" type="text" readonly="readonly" [ngModel]="suggestValue"
+              #suggested>
+             </div>
+            <div  class="col-md-1"> 
+             <button type="button" class="widthauto br3px-p7px12px copy-button" (click)="copyToClipboard(suggested,'suggested')" data-toggle="tooltip"
+             data-placement="bottom" title="Copy"><i class="fa fa-copy"></i></button>
+          </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="col-md-12 p0">
+    <div class="panel mt5" [ngClass]="godaddyDtos?.length > 1?'panel-danger':'panel-success'">
+      <div class="panel-heading" *ngIf="godaddyDtos?.length > 1">
+        <h3 class="panel-title" translate style="color:#000 !important">Warning: It is showing multiple SPF records for your domain.</h3>
+      </div>
+      <div class="panel-heading pannelBgColor" *ngIf="godaddyDtos?.length <= 1">
+        <h3 class="panel-title" translate>Notes</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+          <li translate *ngIf="godaddyDtos?.length != 0">
+            You have the choice to remove all of your domain's TYPE=TXT and NAME=@ entries and replace them with new ones
+            that adhere to SPF requirements.
+            <span class="label danger" (click)="deleteDnsAllRecordsByTypeAndName()">Delete</span>
+          </li>
+          <li translate>
+            It's important to point out that each domain may have only one SPF entry. If your domain contains more than
+            one entry, recipient servers will decline both. As a result, it will cause your emails to fail an SPF check.
+          </li>
+          <li translate>
+            SPF Validity recommends an -all as it is the most secure record. SPF records cannot be over 255 characters in
+            length and cannot include more than ten include statements.
+          </li>
+          <li>
+            Please <span class="label blue" (click)="openDomainCheck()">audit</span> your domain before using this to
+            check the status of your SPF records.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Popup code-->
+  <div class="modal fade in" id="unpublished-modal" data-backdrop="static">
+    <div class="modal-dialog modal-copy m120-auto" role="document">
+      <div class="modal-content mSweetalertWid popup-cu-widthalign">
+        <div class="modal-header modalBgColor">
+          <h4 class="modal-title f-w-600" id="" translate="">Manually replacing the current SPF record with the one that was recommended.
+  
+          </h4>
+        </div>
+        <div class="modal-body p20-15-0-15">
+          <div class="form-check pointer mt15">
+            <div class="col-md-12 flex">
+              <input class="form-control" id="copyText" type="text" readonly="readonly" [ngModel]="suggestValue"
+                #suggestInputValue>
+              <button type="button" class="widthauto copy-button" (click)="copyToClipboard(suggestInputValue,'suggestInputValue')" data-toggle="tooltip"
+                data-placement="bottom" title="Copy" style="border-radius:0px !important;"><i
+                  class="fa fa-copy"></i></button>
+            </div>
+            <div class="col-md-12">
+              <div class="panel panel-info mt10">
+                <div class="panel-heading pannelBgColor">
+                  <h3 class="panel-title" translate>Procedure Steps</h3>
+                </div>
+                <div class="panel-body p0">
+                  <ol  class="pt10">
+                    <li translate>
+                      Login to your Godaddy account
+                    </li>
+                    <li translate>
+                      Click on the <span class="label blue" (click)="updateRecord()">Redirect</span> button, it will redirect to your domain DNS page
+                    </li>
+                    <li translate>
+                      Update the VALUE with the recommended SPF record
+                    </li>
+                    <li>
+                      Save the changes, once you saved in Godaddy come back and
+                    </li>
+                    <li>
+                      once you saved in Godaddy come back and click <span class="label check" (click)="checkRecord()">check</span>.
+                    </li>
+                    <li>
+                      You will be redirected to the SUCESS screen.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+  
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" (click)="updateRecord()">Redirect</button>
+          <button class="btn Btn-Green" type="button" (click)="checkRecord()">Check</button>
+          <button class="btn Btn-Gray" type="button" (click)="cancelManualProcess()">Cancel</button>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade in" id="replaceRecord" data-backdrop="static">
+    <div class="modal-dialog modal-copy m120-auto" role="document">
+      <div class="modal-content mSweetalertWid popup-cu-widthalign">
+        <div class="modal-header modalBgColor">
+          <h4 class="modal-title f-w-600" id="" translate=""> Replacing the current SPF record with the one that was recommended.</h4>
+        </div>
+        <div class="modal-body mp-ch-padding">
+          <div class="form-check pointer mt15">
+              <h5>Current:</h5>
+              <span class="popupReportTextbg">{{currentValue}}</span>
+              <h5>Recommended:</h5>  
+              <span class="popupReportTextbg">{{suggestValue}}</span>
+          </div>
+          <div>
+  
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="button" (click)="replaceConfirm()">Confirm</button>
+          <button class="btn Btn-Gray" type="button" (click)="replaceCancel()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Close code-->
  </div>
 <!-- Type End -->
 
 
    <!-- Connected Domains Details Start -->
    <div class="paddingSides" id="step-7">
-    <div class="alert alert-info" *ngIf="statusCode === 200">
+    <div class="alert alert-info" *ngIf="statusCode === 200 && !updateButton">
       <strong>DNS Record added Successfully</strong>
     </div>
-    <div class="alert alert-info" *ngIf="updateButton && statusCode !== 200">
+    <div class="alert alert-info" *ngIf="updateButton && statusCode === 422">
       <strong>DNS Record Updated Successfully</strong>
     </div>
-    <h4 class="text-start">Domains Details</h4>
+    <h4 class="text-start">Domain Details</h4>
     <table class="table dcBorderNone table-bordered">
        <tr class="displayContents">
          <td class="verticalMiddle">Domain</td>
@@ -253,36 +395,54 @@
         <td class="verticalMiddle hidden-xs">:</td>
       </tr>
        <tr class="displayContents">
-         <td class="verticalMiddle">{{domainName}}
+         <td class="verticalMiddle"><b>{{domainName}}</b>
          </td>
        </tr>
-       <!-- <tr class="displayContents">
-        <td class="verticalMiddle hidden-xs">:</td>
-      </tr> -->
        <tr class="displayContents">
         <td class="verticalMiddle">
-          <span class="connectedLive">
-             <!-- <i class="fa fa-circle faDecfontSize" aria-hidden="true"></i> -->
-            Connected</span> 
+          <span [ngClass]="showConnectButton?'selectRecord':godaddyDtos?.length >1?'multipleREcord':'missMatchRecord'">
+            <b>{{finalButtonValue}}</b>
+            <!-- <b *ngIf="statusCode === 409 || godaddyDtos?.length === 0">Invalid</b> -->
+          </span> 
         </td>
       </tr>
        <tr class="displayContents">
          <td class="verticalMiddle">
           <a> 
-            <img alt="Godaddy Logo" class="godadyLogo" src="assets/images/godaddy-configuration/godaddy-logo.png">
+            <img alt="Godaddy Logo" class="godadyLogo" src="assets/images/godaddy-configuration/godaddy-logo2.png">
           </a>
           </td>
           <td class="verticalMiddle">
             <span class="dropdown alignGareLeft">
               <i class="fa fa-gear faGareIconCu" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer;"></i>
               <div class="dropdown-menu dropdownMenuCu" aria-labelledby="dropdownMenuButton">
-                <span><button type="button" class="UnlinkLabel unlink-button" (click)="unlinkConfiguration(false)">Unlink</button></span>
+                <span>
+                  <button type="button" class="UnlinkLabel unlink-button" (click)="unlinkConfiguration(false);">Reconfigure</button>
+                </span>
               </div>
             </span>
             </td>
        </tr>
    
    </table>
+   <div class="col-ms-12">
+    <h4>Record in your Domain:</h4>
+    <ng-template [ngTemplateOutlet]="tableView"></ng-template>
+   </div>
+   <div class="col-md-12" *ngIf="!showConnectButton" [ngClass]="showConnectButton?'selectRecord':godaddyDtos?.length >1?'multipleREcord':'missMatchRecord'" style="padding: 5px 0px 0px 10px;">
+    <div class="col-md-1 p0">
+      <label><b style="color:#000 !important" >{{finalButtonValue}}:</b></label>
+    </div>
+    <!-- <div class="col-md-1 p0" *ngIf="statusCode === 409 ||godaddyDtos?.length === 0">
+      <label><b style="color:#000 !important" >Invalid:</b></label>
+    </div> -->
+    <div class="col-md-11">
+      {{errorMessage}}
+    </div>
+    <!-- <div class="col-md-11" *ngIf="statusCode === 409 || godaddyDtos?.length === 0">
+       It is showing No SPF records for your domain, please reconfigure from the settings.It's important to point out that each domain may have one SPF entry.
+    </div> -->
+   </div>
  </div>
  <!-- Connected Domains Details End -->
  </div>

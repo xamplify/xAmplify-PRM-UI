@@ -13,3 +13,22 @@
 .grid-box {
   padding-bottom: 0px !important;
 }
+.sidePaddingsAbjustment {
+  padding: 0px 5px !important;
+}
+.row.fullRowCuPaddings {
+  padding: 0px 10px;
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1300px) {  
+  h4.fontDecinModes {
+    font-size: 13px !important;
+  }
+}
+@media only screen and (min-width: 300px) and (max-width: 600px) {  
+  .grid-box img{
+    height: auto;
+  }
+}
+
+

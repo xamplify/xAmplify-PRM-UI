@@ -178,10 +178,10 @@
                <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor" [hidden]="previewCampaignType === 'SOCIAL'">
                <legend class="scheduler-border">Selected:</legend>
                <div class="col-xs-12 row p0">
-                  <div [hidden]="!campaign.campaignVideoFile" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 p0 mb_20">
+                  <div [hidden]="!campaign.campaignVideoFile" class="col-xs-12 col-sm-12 col-md-4 col-lg-6 p0 mb_20">
                      <app-video-play *ngIf="campaign?.campaignVideoFile" [isPreview]="true" [videoFile]="campaign.campaignVideoFile" [videoWidth]="'280px'" [videoHeight]="'165px'"></app-video-play>
                   </div>
-                  <div *ngIf="(previewCampaignType==='REGULAR' || previewCampaignType==='EVENT' ||  previewCampaignType==='LANDINGPAGE')" class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                  <div *ngIf="(previewCampaignType==='REGULAR' || previewCampaignType==='EVENT' ||  previewCampaignType==='LANDINGPAGE')" class="col-xs-12 col-sm-12 col-md-4 col-lg-6">
                      <div class="portlet light clearfix" style="padding:0px">
                         <div class="p0">
                            <div class="pricing hover-effect" style="border:none !important">
@@ -198,10 +198,10 @@
                      </div>
                   </div>
                   <ng-container *ngIf="previewCampaignType!=='LANDINGPAGE'">
-                     <div *ngIf="!campaign.emailTemplate?.id" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 p0" style="margin-top: 60px; text-align: center;">
+                     <div *ngIf="!campaign.emailTemplate?.id" class="col-xs-12 col-sm-12 col-md-4 col-lg-6 p0" style="margin-top: 60px; text-align: center;">
                         <p style="color: #ff3a3a;">No Template found</p>
                      </div>
-                     <div *ngIf="campaign.emailTemplate?.id" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 p0">
+                     <div *ngIf="campaign.emailTemplate?.id" class="col-xs-12 col-sm-12 col-md-8 col-lg-6 p0">
                         <ul class="content__list">
                            <li class="list__item mb_mr0" style="width:auto !important;float:none;margin-right: -29px;margin-top: -13px;" [class.list__item--selected]="true">
                               <div class="flex-row">
@@ -223,7 +223,7 @@
                                        <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign?.emailTemplate?.createdDate"></app-timestamp></span>
                                        </span>
                                        <ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()!='PARTNER'">
-                                          <span style="float:left" title="{{campaign.emailTemplate.createdBy}}">
+                                          <span style="float:left" title="{{campaign.emailTemplate.createdBy}}" class="borderTopcu">
                                           <strong>By:</strong>
                                           <span>{{campaign.emailTemplate.createdBy|slice:0:12}}
                                           <span *ngIf="campaign.emailTemplate.createdBy?.length>12">...</span>
@@ -231,12 +231,12 @@
                                           </span>
                                        </ng-container>
                                        <ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()=='PARTNER'">
-                                          <span style="float:left" title="{{campaign.emailTemplate.vendorName}}">
+                                          <span style="float:left" title="{{campaign.emailTemplate.vendorName}}" class="borderTopcu">
                                           <strong>By:</strong>  
                                           <span>{{campaign.emailTemplate.vendorName|slice:0:12}}<span *ngIf="campaign.emailTemplate.vendorName?.length>12">...</span></span>
                                           </span>
                                        </ng-container>
-                                       <div class="item__actions">
+                                       <div class="item__actions abjustPosition">
                                           <span>
                                           <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                              data-toggle="tooltip" data-placement="top"
@@ -280,11 +280,11 @@
                                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign?.landingPage?.createdDateInString"></app-timestamp></span>
                                        </span>
                                        <ng-container>
-                                          <span style="float:left" title="{{campaign?.landingPage?.createdUser}}">
+                                          <span style="float:left" title="{{campaign?.landingPage?.createdUser}}" class="borderTopcu">
                                           <strong>By:</strong> <span>{{campaign?.landingPage?.createdUser|slice:0:12}}<span *ngIf="campaign?.landingPage?.createdUser?.length>12">...</span></span>
                                           </span>
                                        </ng-container>
-                                       <div class="item__actions">
+                                       <div class="item__actions abjustPosition">
                                           <span>
                                           <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                              data-toggle="tooltip" data-placement="top"

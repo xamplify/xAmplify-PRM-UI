@@ -1968,3 +1968,33 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
 .borderColorsCU {
   border: 1px solid #2f4857 !important;
 }
+
+.maualSPFCardbg {
+  background-color:#22313a !important
+}
+/* Godaddy */
+.popupReportTextbg {
+  background-color:#22313a !important;
+}
+.copy-button {
+  background-color: #22313a !important;
+}
+.panel > .pannelBgColor {
+  background-color: #22313a !important;
+}
+.modalBgColor {
+  background-color: #22313a !important;
+}
+/* End Godaddy */
+/* Sudha Change */
+.popup-border-bottom {
+  border-bottom: 1px solid #2f4857 !important;
+} 
+/* Sudha Changes */
+
+.borderTopcu {
+  border-bottom: 1px solid #2f4857 !important;
+}
+.list__item .item__actions.abjustPosition {
+  border-top: none !important;
+}

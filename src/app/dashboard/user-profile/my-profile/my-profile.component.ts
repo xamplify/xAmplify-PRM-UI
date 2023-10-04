@@ -301,6 +301,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showTemplates = false;
 	/****XNFR-326*****/
 	showEmailNotificationSettingsOption = false;
+	showSpfConfigurationDiv: boolean;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -602,6 +603,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, false);
 			this.getModuleAccessByUser();
 			this.findUpgradeRequest();
+			if(this.authenticationService.module.navigateToSPFConfigurationSection){
+				this.activateTab('spf');
+			}
 		} catch (error) {
 			this.hasClientErrors = true;
 			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
@@ -1869,7 +1873,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.excludeDomainPagination.maxResults = 12;
             this.listExcludedDomains(this.excludeDomainPagination);
 		} else if(this.activeTabName =="spf"){
+			this.ngxloading = true;
 			this.activeTabHeader = this.properties.spfHeaderText;
+			this.showSpfConfigurationDiv = false;
+			let self = this;
+			setTimeout(()=>{                         
+				self.showSpfConfigurationDiv = true;
+				self.ngxloading = false;
+		   }, 500);
+			
 		}else if(this.activeTabName== "unsubscribeReasons"){
 			this.ngxloading = true;
 			this.showUnsubscribeReasonsDiv = false;

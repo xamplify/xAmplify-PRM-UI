@@ -284,6 +284,19 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    getSpfConfigurationDetails(companyId:number){
+        return this.http.get(this.authenticationService.REST_URL + `superadmin/getSpfConfigurationDetails/${companyId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    updateSpfConfigurationDetails(companyId:number,isSpfConfigured:boolean){
+        return this.http.get(this.authenticationService.REST_URL + `superadmin/updateSpfConfiguration/${companyId}/${isSpfConfigured}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
     updateDnsConfigurationDetails(companyId:number,isDnsConfigured:boolean){
         return this.http.get(this.authenticationService.REST_URL + `superadmin/updateDnsConfiguration/${companyId}/${isDnsConfigured}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
@@ -1223,6 +1236,18 @@ getDefaultThemes(){
     }
     getDomainName(companyId:number){
         return this.http.get(this.authenticationService.REST_URL + "godaddy/getDomainName/" + companyId + "/?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getDnsRecordsOfGodaddy(){
+        return this.http.get(this.authenticationService.REST_URL + "godaddy/records/?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    deleteDnsRecrds(){
+        const url = this.authenticationService.REST_URL + 'godaddy/deleteAll/?access_token=' + this.authenticationService.access_token;
+        return this.http.delete(url)
         .map(this.extractData)
         .catch(this.handleError);
     }
