@@ -27,7 +27,8 @@
         width: 190px;
         float: right;
     }
-
-
-
+}
+.flexContant{
+    display: flex;
+    justify-content: center;
 }

@@ -250,14 +250,24 @@ body {
 }
 
 .fit-preview-asset {
-  max-height: 600px;
+  /* max-height: 600px;
   height: 485px;
   max-width: 100%;
   width: 98%;
   object-fit: cover;
-  border-radius: 5px;
+  border-radius: 5px; */
+    max-height: 600px;
+    height: 485px;
+    max-width: 100%;
+    width: 78%;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-left: 170px;
 }
-
+.page-content.custimizaPageContent {
+  width: 100%;
+  margin-left: 0px;
+}
 .description-scroll {
   margin-left: 10px;
   word-break: break-word;

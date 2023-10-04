@@ -161,7 +161,7 @@ h3 {
   width: 45%;
 }
 .filter-css {
-  left: 85px;
+  left: 50px;
   top: 3px;
   cursor: pointer;
 }
@@ -393,3 +393,11 @@ h6 {
     left: 45px!important;
   }
  } 
+ .form-control.filedWidthCu {
+  width: 100%;
+}
+.filterNumber {
+  position: absolute;
+  left: 0;
+  top: 7px;
+}

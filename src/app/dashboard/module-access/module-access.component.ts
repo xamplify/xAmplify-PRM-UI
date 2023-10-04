@@ -36,6 +36,10 @@ export class ModuleAccessComponent implements OnInit {
   dnsLoader = false;
   dnsError = false;
   dnsErrorMessage = "";
+  spfConfigured = false;
+  spfLoader = false;
+  spfError = false;
+  spfErrorMessage = "";
   scheduledCampaignsCount: number = 0;
   showOneClickLaunchErrorMessage: boolean;
   statusCode = 0;
@@ -48,6 +52,7 @@ export class ModuleAccessComponent implements OnInit {
     this.getCompanyAndUserDetails();
     this.getModuleAccessByCompanyId();
     this.getDnsConfiguredDetails();
+    this.getSpfConfiguredDetails();
     this.findMaximumAdminsLimitDetails();
   }
 
@@ -64,10 +69,29 @@ export class ModuleAccessComponent implements OnInit {
     });
   }
 
+  
+  getSpfConfiguredDetails(){
+    this.startSpfLoader();
+    this.dashboardService.getSpfConfigurationDetails(this.companyId).subscribe(result => {
+      this.spfLoader = false;
+      this.spfError = false;
+      this.spfConfigured = result.data; 
+
+    }, _error => {
+      this.stopLoaderWithErrorMessage('SPF Configuration Details Not Found.');
+    });
+  }
+
   startDnsLoader(){
     this.dnsLoader = true;
     this.dnsError = false;
     this.dnsErrorMessage = '';
+  }
+
+  startSpfLoader(){
+    this.spfLoader = true;
+    this.spfError = false;
+    this.spfErrorMessage = '';
   }
 
   updateDnsConfiguration(){
@@ -87,10 +111,32 @@ export class ModuleAccessComponent implements OnInit {
     });
   }
 
+  updateSpf(){
+    this.startSpfLoader();
+    this.dashboardService.updateSpfConfigurationDetails(this.companyId,this.spfConfigured).
+    subscribe(result => {
+      this.spfLoader = false;
+      if(result.statusCode==200){
+        this.referenceService.showSweetAlertSuccessMessage('SPF Configuration Updated Successfully');
+      }else{
+        this.stopSpfLoaderWithErrorMessage('Unable to update SPF Configuartion.');
+      }
+      this.spfError = false;
+    }, _error => {
+        this.stopSpfLoaderWithErrorMessage('Unable to update SPF Configuartion.');
+    });
+  }
+
   stopLoaderWithErrorMessage(message:string){
     this.dnsLoader = false;
     this.dnsError = true;
     this.dnsErrorMessage = message;
+  }
+
+  stopSpfLoaderWithErrorMessage(message:string){
+    this.spfLoader = false;
+    this.spfError = true;
+    this.spfErrorMessage = message;
   }
 
 

@@ -1,5 +1,5 @@
 >>> .input-group > .form-control {
-    border: none !important;
+    border: none;
     height: 36px !important;
     padding-left: 12px !important;
 }

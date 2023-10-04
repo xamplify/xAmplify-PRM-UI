@@ -181,7 +181,8 @@
       background-color: orange;
       border: 1px solid orange;
       border-radius: 5px;
-      padding:5px 10px;
+      /* padding:5px 10px; */
+      padding: 2px 6px;
       color:white;
       cursor: pointer;
     }
@@ -193,7 +194,8 @@
     background-color: green;
     border: 1px solid green;
     border-radius: 5px;
-    padding: 5px 10px;
+    /* padding: 5px 10px; */
+    padding: 2px 6px;
     color: white;
 }
 .star {
@@ -221,9 +223,15 @@ i.faGareIconCu {
   box-shadow: none;
   border: none;
   margin-top: 9px;
-  margin-left: -9px;
-
+  margin-left: -44px;
 }
+
+.dropdown > .dropdown-menu:before {  position: absolute;
+  left: 44px !important;}
+.dropdown > .dropdown-menu:after {  position: absolute;
+    left: 45px !important;}
+
+
 .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
   border: none;
 }
@@ -232,7 +240,9 @@ i.faDecfontSize {
   position: relative;
   bottom: 1px;
 }
-
+.danger {background-color: #f44336;cursor: pointer;} /* Red */
+.blue {background-color: #2196F3;cursor: pointer;} /* Blue */
+.orange-btn{background: #F77D24;color: white;}
 
 @keyframes lineH{
     0%{
@@ -269,3 +279,70 @@ i.faDecfontSize {
     font-size: 7px;
   }
 }
+.copyCardBg {
+  background: #dddddd54 !important;
+  padding: 10px 20px;
+  border-radius: 5px !important;
+}
+.selectRecord{
+  background-color: #a7e392;
+  padding: 4px 8px;
+  border-radius: 3px;
+  color:#000000;
+}
+.missMatchRecord{
+  background-color: #fff2cc;
+  padding: 4px 8px;
+  border-radius: 3px;
+  color: #000000;
+}
+.multipleREcord {
+  background-color: #f4cccc;
+  padding: 4px 8px;
+  border-radius: 3px;
+  color:#000000;
+}
+
+.twodivdiff {padding: 15px 0px !important;}
+.popupReportTextbg {background-color: #eeeeee;
+  width: 100%;
+  padding: 5px 10px;
+  border-radius: 2px;
+  position: relative;
+  display: block;}
+  .redirect {
+    background-color: #2196F3;
+  }
+  .check{
+    background-color: #1f897f;
+  }
+  .mp-ch-padding{
+    padding: 0px 15px 15px 15px;
+  }
+  .mt-7px {
+   margin-top: -7px;
+  }
+  .d-f-pb7px {
+    display: flex;
+    padding-bottom: 7px;
+  }
+  .pt7px {
+   padding-top: 7px;
+  }
+  .br3px-p7px12px{
+  border-radius: 3px;padding: 7px 12px;
+  }
+  .m120-auto {
+  margin: 120px auto;
+  }
+  .p20-15-0-15 {
+  padding: 20px 15px 0px 15px;
+  }
+  .deleterror {
+    padding: 10px;
+    margin-top: 31px;
+  }
+
+  .alert-su {
+    padding:6px 12px;
+  }

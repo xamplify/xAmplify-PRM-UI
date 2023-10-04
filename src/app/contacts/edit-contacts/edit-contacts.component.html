@@ -665,16 +665,16 @@
 										</span>
 									 </ng-container>
 								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{contact.vertical}}">{{contact.vertical | slice:0:14}}
+								  <td class="white-space-transform" *ngIf="isPartner" >{{contact.vertical | slice:0:14}}
 									 <span *ngIf="contact.vertical?.length>14">..</span>
 								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{contact.region}}">{{contact.region | slice:0:14}}
+								  <td class="white-space-transform" *ngIf="isPartner">{{contact.region | slice:0:14}}
 									 <span *ngIf="contact.region?.length>14">..</span>
 								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{contact.partnerType}}">{{contact.partnerType | slice:0:14}}
+								  <td class="white-space-transform" *ngIf="isPartner">{{contact.partnerType | slice:0:14}}
 									 <span *ngIf="contact.partnerType?.length>14">..</span>
 								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{contact.category}}">{{contact.category | slice:0:14}}
+								  <td class="white-space-transform" *ngIf="isPartner">{{contact.category | slice:0:14}}
 									 <span *ngIf="contact.category?.length>14">..</span>
 								  </td>
 								  <td *ngIf="!isPartner">
@@ -992,7 +992,7 @@
 					  <td *ngIf="contactsByType.selectedCategory == 'valid'"></td>
 					  <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td>
 					  <td *ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads">
-						 <span class="markas" (click)="validateUndeliverableContacts(allcontacts.id)">Mark as valid</span>
+						 <span class="markas markAsValidLable" (click)="validateUndeliverableContacts(allcontacts.id)">Mark as valid</span>
 					  </td>
 					  <td>
 						 <button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'
@@ -1081,7 +1081,7 @@
 			 <a class="close-circle" data-dismiss="modal" (click)="cancelSegmentation()"><i class="fa fa-times"></i></a>
 			 <h4 class="modal-title" translate>Filter</h4>
 		  </div>
-		  <div class="modal-body" style="padding: 28px;">
+		  <div class="modal-body" style="padding: 20px 10px;">
 			 <div class="row">
 				<div class="col-sm-12">
 				   <div class="row col-sm-11"
@@ -1089,25 +1089,25 @@
 					  style="padding-bottom: 10px;">
 					  <div class="form-group">
 						 <div class="form-inline col-sm-12">
-							<div class="form-group col-sm-6 col-lg-4 tab_v_flex tab_p0">
-							   <b [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}">{{i}}</b>
+							<div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-4 tab_v_flex tab_p0">
+							   <b [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}"  class="dataAlignment">{{i}}</b>
 							   <select class="form-control"
 							   [(ngModel)]="criterias[i].property" [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}">
 							   <option
 								  *ngFor="let filterOption of filterOptions; let i = index">{{filterOption.value}}</option>
 							   </select>
 							</div>
-							<div class="form-group col-sm-6 col-lg-3">
+							<div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
 							   <select class="form-control"
 							   [(ngModel)]="criterias[i].operation">
 							   <option
 								  *ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.value}}</option>
 							   </select>
 							</div>
-							<div class="form-group col-sm-6 col-lg-3 tb_view_10">
+							<div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3 tb_view_10">
 							   <input type="text" class="form-control" placeholder="value*"	[(ngModel)]="criterias[i].value1" required (keypress)="eventEnterKeyHandler($event.keyCode)">
 							</div>
-							<div class="form-group col-sm-2 col-lg-2 filter-delete tb_view_10 filter_del" data-toggle="tooltip"
+							<div class="form-group col-xs-6 col-sm-3 col-md-1 col-lg-1 filter-delete tb_view_10 filter_del" data-toggle="tooltip"
 							   data-placement="left" title="Remove a condition">
 							   <span (click)="cancelSegmentationRow(i)">
 							   <i class="fa fa-trash-o" aria-hidden="true" 	style="color: red; font-size: 26px; margin-top: 6px"></i>
@@ -1116,7 +1116,8 @@
 						 </div>
 					  </div>
 				   </div>
-				   <div class="row col-sm-1 tab_ml0" style="margin-left: 30px;">
+				   <!-- <div class="row col-sm-3 col-lg-1 tab_ml0" style="margin-left: 30px;"> -->
+					<div class="row col-xs-6 col-sm-3 col-md-1 col-lg-1 tab_ml0">
 					  <div>
 						 <span  [class.disabled]="criterias.length > 5"  (click)="addNewRow()" type="button" class="btn btn-default pull-right">
 						 <i data-toggle="tooltip" data-placement="left" title="Add a condition" class="fa fa-plus-square" aria-hidden="true"

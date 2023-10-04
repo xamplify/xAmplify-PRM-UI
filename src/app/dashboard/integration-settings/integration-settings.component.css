@@ -72,7 +72,7 @@
   font-size: 15px;
 }
 
-@media only screen and (min-width: 992px) and (max-width:1240px) {  
+@media only screen and (min-width: 990px) and (max-width:1240px) {  
   .activated-btn {padding: 9px 9px !important;}
   .activate-btn {padding: 9px 9px !important;}
   .unlink-btn {padding: 9px 9px !important;}

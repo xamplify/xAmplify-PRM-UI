@@ -389,7 +389,7 @@
                                                                     <!-- ---------------CheckBoxes--------------- -->
                                                                     <ng-container *ngFor="let dropDown of selectedColumn.dropDownChoices;let index=index">
                                                                         <br>
-                                                                        <input type="text" class="form-control" [(ngModel)]="dropDown.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(dropDown)" maxlength="1000">
+                                                                        <input type="text" class="form-control fieldWidthCustimization" [(ngModel)]="dropDown.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(dropDown)" maxlength="1000">
                                                                         <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
                                                                             <span
                                                                                 class="glyphicon glyphicon-plus"></span>

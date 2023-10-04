@@ -20,6 +20,7 @@ import { AgmCoreModule } from "@agm/core";
 import { AccessAccountComponent } from './access-account/access-account.component';
 import { SamlsecurityauthComponent } from './samlsecurityauth/samlsecurityauth.component';
 import { LogoutComponent } from './logout/logout.component';
+import { MaintenanceComponent } from './maintenance/maintenance.component';
 
 @NgModule({
   imports: [
@@ -44,7 +45,8 @@ import { LogoutComponent } from './logout/logout.component';
     RequestDemoComponent,
     AccessAccountComponent,
     SamlsecurityauthComponent,
-    LogoutComponent
+    LogoutComponent,
+    MaintenanceComponent
   ],
   exports: []
 })

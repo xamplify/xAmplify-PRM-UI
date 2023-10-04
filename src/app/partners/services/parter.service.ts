@@ -1,16 +1,22 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Observable } from 'rxjs/Observable';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http';
+import { Http } from "@angular/http";
 import { Pagination } from '../../core/models/pagination';
 import { User } from '../../core/models/user';
 import { PartnerJourneyRequest } from '../models/partner-journey-request';
 import { WorkflowDto } from 'app/contacts/models/workflow-dto';
+import { ReferenceService } from 'app/core/services/reference.service';
+
 @Injectable()
 export class ParterService {
     URL = this.authenticationService.REST_URL;
+    ACCESS_TOKEN_SUFFIX_URL = "?access_token=";
+    WORK_FLOW_PREFIX_URL = this.authenticationService.REST_URL + "workflow";
+    WORK_FLOW_URL = this.WORK_FLOW_PREFIX_URL+this.ACCESS_TOKEN_SUFFIX_URL;
 
-    constructor( public authenticationService: AuthenticationService, public httpClient: HttpClient ) { }
+    constructor(private http: Http,  public authenticationService: AuthenticationService, public httpClient: HttpClient,private referenceService:ReferenceService ) { }
     partnerReports( userId: number,applyFilter:boolean ): Observable<any> {
         userId = this.authenticationService.checkLoggedInUserId(userId);
         const url = this.URL + 'partner/analytics?access_token=' + this.authenticationService.access_token +
@@ -333,9 +339,33 @@ export class ParterService {
     saveWorkflow(workflowDto:WorkflowDto){
         let userId = this.authenticationService.getUserId();
         workflowDto.loggedInUserId = userId;
-        const url = this.URL + 'workflow/save/?access_token=' + this.authenticationService.access_token;
-        return this.httpClient.post(url,workflowDto)
+        const url = this.URL + 'workflow?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,workflowDto)
+        .map(this.authenticationService.extractData)
+        .catch(this.authenticationService.handleError);
+    }
+
+    findTriggerTitles() {
+        let userId = this.authenticationService.getUserId();
+        const url = this.URL + 'workflow/findTriggerTitles/'+userId+'?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.get(url)
             .catch( this.handleError );
+    }
+
+    findAllWorkflows(pagination:Pagination){
+        let userId = this.authenticationService.getUserId();
+        let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+        let findAllUrl = this.WORK_FLOW_PREFIX_URL+'/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+        return this.httpClient.get(findAllUrl)
+            .catch( this.handleError );
+    }
+
+    deleteWorkflow(id:number){
+        let userId = this.authenticationService.getUserId();
+        let deleteWorkflowUrl = this.WORK_FLOW_PREFIX_URL+'/id/'+id+'/loggedInUserId/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+        return this.http.delete(deleteWorkflowUrl)
+          .map(this.authenticationService.extractData)
+          .catch(this.authenticationService.handleError);
     }
 
     /*********End : XNFR-316************/

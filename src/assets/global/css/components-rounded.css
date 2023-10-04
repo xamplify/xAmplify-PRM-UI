@@ -6482,6 +6482,11 @@ Custom tables
   margin-left: 0px;
   margin-right: 5px;
 }
+@media (min-width: 991px) and (max-width: 1015px) {
+  .table .btn {
+    margin-right: 3px;
+	}
+}
 
 .table thead tr th {
   /* 10-01-2023 */

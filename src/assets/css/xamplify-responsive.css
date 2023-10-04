@@ -619,4 +619,12 @@
     padding-left: 0px !important;
   }
 }
+@media only screen and (min-width:992px) and (max-width:1403px) { 
+  .card-height  {
+    padding: 10px 4px!important;
+  }
+  .LeftsidepaddingCu{
+    padding-right: 12px !important;
+  }
+}
 

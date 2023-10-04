@@ -216,6 +216,7 @@ export class EmailTemplateService {
     }
 
     updateJsonAndHtmlBody(emailTemplateDto:EmailTemplate){
+        emailTemplateDto.userId = this.authenticationService.getUserId();
         return this.http.post(this.URL+"/email-template/updateJsonAndHtmlBody/?access_token="+this.authenticationService.access_token,emailTemplateDto)
         .map(this.extractData)
         .catch(this.handleError);

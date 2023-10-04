@@ -140,6 +140,7 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
     this.customResponse = new CustomResponse();
     this.campaignDetailsDto.timezone = $('#timezoneId option:selected').val();
     this.campaignDetailsDto.country = $.trim($('#edit-social-campaign-countryName option:selected').text());
+    this.campaignDetailsDto.description = $.trim(this.campaignDetailsDto.description);
     this.campaignService.updateCampaignDetails(this.campaignDetailsDto)
     .subscribe(
       response=>{

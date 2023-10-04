@@ -364,7 +364,9 @@ tr {
   background-color: var(--div-bg-color) !important;
   border-color: var(--border-color) !important;
 }
-.border-bottom-1px,
+
+/* sudha sri (28-8-2023) */
+.border-bottom-1px {border-bottom: none !important;}
 .modal .modal-header,
 .page-header.navbar
   .top-menu
@@ -1101,11 +1103,11 @@ h4 > a,
   border-bottom: 1px solid var(--border-color) !important;
 }
 input.field-border-customization {
-  border: 2px solid var(--border-color) !important;
+  border: 1px solid var(--border-color) !important;
   /* padding: 0px 7px; */
 }
 input#copy-link {
-  border: 2px solid var(--border-color) !important;
+  border: 1px solid var(--border-color) !important;
   /* border-radius: 5px;
     padding: 0px 10px; */
 }
@@ -1120,7 +1122,7 @@ th {
   border: none !important;
 }
 input.field-border-customization {
-  border: 2px solid var(--border-color) !important;
+  border: 1px solid var(--border-color) !important;
 }
 rect.highcharts-background {
   fill: none;
@@ -1859,3 +1861,44 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
  .toggleOnOff .labels::after {color: var(---text-color) !important;}
  .toggleOnOff .labels::before {color: var(---text-color) !important;}
 
+
+ .bg-color {
+  background-color: var(--page-content) !important;
+}
+.comment.user-comment p{
+  background-color: var(--page-content) !important;
+}
+
+.borderColorsCU {
+  border: 1px solid var(--border-color) !important;
+}
+
+.maualSPFCardbg {
+  background-color: var(--page-content) !important;
+}
+/* Godaddy */
+.popupReportTextbg {
+  background-color:var(--page-content) !important;;
+}
+.copy-button {
+  background-color: var(--page-content) !important;;
+}
+.panel > .pannelBgColor {
+  background-color: var(--page-content) !important;;
+}
+.modalBgColor {
+  background-color: var(--page-content) !important;;
+}
+/* End Godaddy */
+/* Sudha Change */
+.popup-border-bottom {
+   border-bottom: 1px solid var(--border-color) !important;
+} 
+/* Sudha Changes */
+
+.borderTopcu {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+.list__item .item__actions.abjustPosition {
+  border-top: none !important;
+}

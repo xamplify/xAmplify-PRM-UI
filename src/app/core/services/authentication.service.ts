@@ -190,6 +190,7 @@ export class AuthenticationService {
     this.imagesHost = this.envService.imagesHost;
     this.vendorRoleHash = this.envService.vendorRoleHash;
     this.partnerRoleHash = this.envService.partnerRoleHash;
+    this.module.xamplifyCustomerSupportContactNumber = this.envService.xamplifyCustomerSupportContactNumber;
     this.userLoggedIn.next(false);
   }
 
@@ -1173,6 +1174,10 @@ getDefault360M3U8FileForLocal(videoUrl:string){
    videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.access_token;
   }
   return videoUrl;
+}
+
+navigateToMyProfileSection(){
+  this.router.navigate(["/home/dashboard/myprofile"])
 }
 
 

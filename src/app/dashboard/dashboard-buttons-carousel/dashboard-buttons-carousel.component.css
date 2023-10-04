@@ -47,10 +47,11 @@
   clear: left;
 }
 .h4-class {
-  font-size: 18px;
+  font-size: 15px;
   color: #000;
   margin: 0px 0px 10px;
   padding-top: 0px !important;
+  word-wrap: break-word;
 }
 /* 12-06-2023 */
 .col-item .separator p {

@@ -40,7 +40,9 @@ export class XtremandLogger {
 
 	errorPage(error: any) {
 	  this.router.navigate(['/home/error/', error.status]);
+	  if(error['_body']!=undefined){
 		this.error(JSON.parse(error['_body']).message);
+	  }
 	}
 
 	showClientErrors(componentName:string,methodName:string,error:any){

@@ -5,16 +5,18 @@ import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from 'app/core/models/sort-option';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PagerService } from 'app/core/services/pager.service';
+import { ReferenceService } from 'app/core/services/reference.service';
 import { UtilService } from 'app/core/services/util.service';
 import { EmailTemplate } from 'app/email-template/models/email-template';
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+
 declare var $:any;
 @Component({
   selector: 'app-select-email-template',
   templateUrl: './select-email-template.component.html',
   styleUrls: ['./select-email-template.component.css'],
-  providers:[Properties,SortOption]
+  providers:[Properties,SortOption],
 })
 export class SelectEmailTemplateComponent implements OnInit {
 
@@ -32,19 +34,13 @@ export class SelectEmailTemplateComponent implements OnInit {
   selectedEmailTemplateNameForPreview = "";
   isPreviewEmailTemplateButtonClicked = false;
   emailTemplatesSortOption:SortOption = new SortOption();
-  isShowEditTemplateMessageDiv: boolean;
-  isEditTemplateLoader: boolean;
-  referenceService: any;
-  beeContainerInput: any;
-  isShowEditTemplatePopup: boolean;
-  editTemplateMergeTagsInput: {};
   loggedInUserId: any;
-  templateMessageClass: string;
-  templateUpdateMessage: string;
+  selectedEmailTemplate = {};
+  openEditTemplateModalPopup = false;
   constructor(private campaignService:CampaignService,private xtremandLogger:XtremandLogger,
     private pagerService:PagerService,private properties:Properties,
     private authenticationService:AuthenticationService,
-    private emailTemplateService:EmailTemplateService,private utilService:UtilService) { }
+    private emailTemplateService:EmailTemplateService,private utilService:UtilService,public referenceService:ReferenceService) { }
 
   ngOnInit() {
     this.emailTemplatesLoader = true;
@@ -75,13 +71,13 @@ export class SelectEmailTemplateComponent implements OnInit {
 }
 
   paginateEmailTempaltes(event:any){
-  this.emailTemplatesPagination.pageIndex = event.page;
-  this.findEmailTemplates(this.emailTemplatesPagination);
+    this.emailTemplatesPagination.pageIndex = event.page;
+    this.findEmailTemplates(this.emailTemplatesPagination);
   }
 
   sortEmailTemplates(text: any) {
-  this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption = text;
-  this.setSearchAndSortOptionsForEmailTemplates(this.emailTemplatesPagination, this.emailTemplatesSortOption);
+    this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption = text;
+    this.setSearchAndSortOptionsForEmailTemplates(this.emailTemplatesPagination, this.emailTemplatesSortOption);
   }
 
   searchEmailTemplates(){
@@ -89,14 +85,15 @@ export class SelectEmailTemplateComponent implements OnInit {
   }
 
   setSearchAndSortOptionsForEmailTemplates(pagination: Pagination, emailTemplatesSortOption: SortOption){
-  pagination.pageIndex = 1;
-  pagination.searchKey = emailTemplatesSortOption.searchKey;
-  pagination = this.utilService.sortOptionValues(emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption, pagination);
-  this.findEmailTemplates(pagination);
+    pagination.pageIndex = 1;
+    pagination.searchKey = emailTemplatesSortOption.searchKey;
+    pagination = this.utilService.sortOptionValues(emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption, pagination);
+    this.findEmailTemplates(pagination);
   }
 
-  callEmitter(){
-    this.selectedEmailTemplateEventEmitter.emit('S u c c e s s ');
+  callEmitter(emailTemplateId:number){
+    this.selectedEmailTemplateId = emailTemplateId;
+    this.selectedEmailTemplateEventEmitter.emit(emailTemplateId);
   }
 
   selectEmailTemplate(emailTemplate:any){
@@ -132,97 +129,17 @@ previewEmailTemplateModalPopupEventReceiver(){
 }
 
 editTemplate(emailTemplate:any){
-  this.isShowEditTemplateMessageDiv = false;
-  if (emailTemplate['emailTemplateType'] != 'UPLOADED' && emailTemplate.userDefined) {
-      this.isEditTemplateLoader = true;
-      this.referenceService.goToTop();
-     $('#campaign-details-and-launch-tabs').hide(600);
-     $('#edit-campaign-template').show(600);
-     this.beeContainerInput['emailTemplateName'] = emailTemplate.name;
-     this.emailTemplateService.findJsonBody(emailTemplate.id).subscribe(
-          response => {
-              this.beeContainerInput['module'] = "emailTemplates";
-              this.beeContainerInput['jsonBody'] = response;
-              this.beeContainerInput['id'] = emailTemplate.id;
-              /****XBI-1685******/
-              let anyCoBrandingTemplate = emailTemplate['regularCoBrandingTemplate'] || emailTemplate['surveyCoBrandingTemplate'] ||
-              emailTemplate['videoCoBrandingTemplate'] || emailTemplate['beeEventCoBrandingTemplate'] ;
-              this.beeContainerInput['anyCoBrandingTemplate'] =anyCoBrandingTemplate;
-              this.beeContainerInput['isVideoTemplate'] = emailTemplate['videoTemplate'] || emailTemplate['videoCoBrandingTemplate'] || emailTemplate['beeVideoTemplate'];
-              /****XBI-1685******/
-              this.isShowEditTemplatePopup = true;
-              this.isEditTemplateLoader = false;
-          }, error => {
-              this.hideEditTemplateDiv();
-              this.referenceService.showSweetAlertServerErrorMessage();
-          }
-      );
-  } else {
-      this.referenceService.showSweetAlertErrorMessage('Uploaded Templates Cannot Be Edited');
-  }
+    this.selectedEmailTemplate = emailTemplate;
+    this.openEditTemplateModalPopup = true;
+
 }
 
-hideEditTemplateDiv() {
-  $('#edit-campaign-template').hide(600);
-  this.isShowEditTemplatePopup = false;
-  this.isEditTemplateLoader = false;
-  this.beeContainerInput = {};
-  this.editTemplateMergeTagsInput = {};
-  $('#campaign-details-and-launch-tabs').show(600);
-}
-
-updateTemplate(event:any){
-  this.ngxLoading =true;
-  let module = event['module'];
-  this.updateEmailTemplate(event);
-}
-updateEmailTemplate(event: any) {
- let emailTemplate = new EmailTemplate();
- emailTemplate.id = event.id;
- emailTemplate.jsonBody = event.jsonContent;
- emailTemplate.body = event.htmlContent;
- emailTemplate.userId = this.loggedInUserId;
- this.emailTemplateService.updateJsonAndHtmlBody(emailTemplate).subscribe(
-     response => {
-         if (response.statusCode == 200) {
-             this.showTemplateUpdatedSuccessMessage();
-         } else if (response.statusCode == 500) {
-             this.showUpdateTemplateErrorMessage(response.message);
-         }                
-     }, error => {
-         this.showTemplateUpdateErrorMessage();
-     }
- )
+closeEditTemplateModalPopup(){
+  this.selectedEmailTemplate = {};
+  this.openEditTemplateModalPopup = false;
 }
 
 
-showTemplateUpdatedSuccessMessage(){
-  this.ngxLoading =false;
-  this.isShowEditTemplateMessageDiv = true;
-  this.templateMessageClass = "alert alert-success";
-  this.templateUpdateMessage = "Template Updated Successfully";
-  this.referenceService.goToTop();
-}
-
-showTemplateUpdateErrorMessage(){
-  this.ngxLoading =false;
-  this.templateMessageClass = "alert alert-danger";
-  this.templateUpdateMessage = this.properties.serverErrorMessage;
-  this.isShowEditTemplateMessageDiv = true;
-}
-
-showUpdateTemplateErrorMessage(message: string){
-  this.ngxLoading =false;
-  this.templateMessageClass = "alert alert-danger";
-  if (message != undefined && message != null && message.trim().length > 0) {
-      this.templateUpdateMessage = message;
-  } else {
-      this.templateUpdateMessage = this.properties.serverErrorMessage;
-  }
-  
-  this.isShowEditTemplateMessageDiv = true;
-}
-  
 
   
 

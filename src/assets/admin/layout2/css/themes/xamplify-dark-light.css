@@ -876,9 +876,9 @@ span.ui-column-resize {
 .default-fieldset {
   border: 1px solid #2f4857 !important;
 }
-.actions-block i:hover,
+/* .actions-block i:hover, */
 .circled-number:hover,
-.actions-block i:hover,
+/* .actions-block i:hover, */
 .circled-number:hover,
 .xamplify-dropdown-option:hover {
   background-color: #22313a !important;
@@ -1280,7 +1280,7 @@ div#box-dark-defalut-clr {
 }
 /* 30-5-2023 sudha */
 input.field-border-customization {
-  border: 2px solid #2f4857 !important;
+  border: 1px solid #2f4857 !important;
   padding: 0px 7px;
 }
 .d-p-bg-color-cust {
@@ -1409,9 +1409,13 @@ ul.alt-row-style1 li:nth-child(even) {
   border: 1px solid #2f4857 !important;
 }
 /* 14-6-2023 sudha sri */
-.dropdown-menu li > a > [class*=" fa-"] {
+.dropdown-menu li > a  {
   color: white !important;
 }
+/* .dropdown-menu li > a > [class*=" fa-"] {
+  color: white !important;
+} */
+
 .table tr.row-selected td {
   background-color: #22313a !important ;
   /*****Added By Sravan****/
@@ -1897,7 +1901,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
 }
 
 /* sudha sri (28-8-2023) */
-.border-bottom-1px {border-bottom: 1px solid #2f4857 !important;}
+.border-bottom-1px {border-bottom: none !important;}
 
  /* XNFR-335 start */
 .nav-tabs.dcTheme{
@@ -1953,4 +1957,44 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
 }
 .input-group > select.form-control:focus {
   border-color: none !important;
+}
+
+.bg-color {
+  background-color: #22313a !important;
+}
+.comment.user-comment p{
+  background-color: #22313a !important;
+}
+.borderColorsCU {
+  border: 1px solid #2f4857 !important;
+}
+
+.maualSPFCardbg {
+  background-color:#22313a !important
+}
+/* Godaddy */
+.popupReportTextbg {
+  background-color:#22313a !important;
+}
+.copy-button {
+  background-color: #22313a !important;
+}
+.panel > .pannelBgColor {
+  background-color: #22313a !important;
+}
+.modalBgColor {
+  background-color: #22313a !important;
+}
+/* End Godaddy */
+/* Sudha Change */
+.popup-border-bottom {
+  border-bottom: 1px solid #2f4857 !important;
+} 
+/* Sudha Changes */
+
+.borderTopcu {
+  border-bottom: 1px solid #2f4857 !important;
+}
+.list__item .item__actions.abjustPosition {
+  border-top: none !important;
 }

@@ -5,11 +5,12 @@ export class WorkflowDto {
     actionId = 0;
     timePhraseId = 0;
     rules = {};
-    query = {};
+    filterQueryJson = {};
     selectedPartnerListIds = [];
     customTemplateSelected = false;
     templateId = 0;
     notificationSubject= "";
     notificationMessage = "";
     loggedInUserId = 0;
+    customDays = 1;
 }
