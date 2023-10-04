@@ -78,6 +78,7 @@
 	window.__env.microsoftProdClientSecret = "auh8Q~4-BZNl8RAOHdx1DNZ-5Zq8vfI9VEKCdbiz";
 	window.__env.microsoftDevClientId = "f4598ddb-daaf-48a5-be86-74b80d791f05";
 	window.__env.microsoftDevClientSecret = "Tns7Q~OdMWU3GaIsSmdFS-_-PSNdFcSuiV~Tj";
+	window.__env.xamplifyCustomerSupportContactNumber = "+1 510.660.6089";
 
 	/******Video Player******/
 	window.__env.loadLatestVideoJsFiles = true;

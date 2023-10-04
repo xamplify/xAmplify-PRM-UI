@@ -30,6 +30,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	ngxloading: boolean;
 	sfCustomFieldsResponse: any;
 	sfcfMasterCBClicked: boolean = false;
+	isOnlyPartner: boolean = false;
 	requiredCfIds = [];
 	paginatedSelectedIds = [];
 	sfcfPager: any = {};
@@ -49,8 +50,9 @@ export class IntegrationSettingsComponent implements OnInit {
 		public referenceService: ReferenceService, public authenticationService: AuthenticationService) {
 		this.pageNumber = this.paginationComponent.numberPerPage[0];
 		this.loggedInUserId = this.authenticationService.getUserId();
+		this.isOnlyPartner = this.authenticationService.isOnlyPartner();
 	}
-
+	
 	ngOnInit() {
 		this.getIntegrationDetails();
 	}

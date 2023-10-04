@@ -4,11 +4,11 @@
     <ul class="page-breadcrumb">
       <li>
         <i class="fa fa-home" aria-hidden="true"></i> 
-        <a translate>Home</a>
+        <a >Home</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
       <li>
-        <a (click)="navigateBack()">
+        <a (click)="navigateToPartnerJourneyAutomationSection()">
           <span>{{authenticationService.partnerModule.customName}} Journey Automation</span>
         </a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -26,7 +26,7 @@
           <div class="col-block width" [attr.class]="triggersTabClass" (click)="showTriggersTab()" style="width: 50%;">
             <div class="cenetered-block colorbox-1">
               <img alt="" class="newicons" src="assets/images/campaignnew-icon/19.svg">
-              <h5 class="hidden-xs text-clr" translate="" ng-reflect-translate="">Trigger</h5>
+              <h5 class="hidden-xs text-clr">Trigger</h5>
             </div>
           </div>
           <div  class="col-block" [attr.class]="notificationsTabClass" (click)="showNotificationTab()" style="width: 50%;" >
@@ -60,8 +60,10 @@
               <div class="col-sm-4">
                 <div class="form-group" [attr.class]="titleDivClass">
                   <input type="text" placeholder="Enter Title" class="form-control full-width" [(ngModel)]="workflowDto.title" 
-                  name="workflowDto.title" autocomplete="false" (input)="validateTitle()" >
-                  <span class="pull-left required" *ngIf="!isValidTitle &&workflowDto?.title?.length>0">Already Exists</span>
+                  name="workflowDto.title" autocomplete="off" (input)="validateTitle()" >
+                  <span class="pull-left required" *ngIf="!isValidTitle && workflowDto?.title?.length>0">Already Exists</span>
+                  <span class="pull-left required" *ngIf="workflowDto?.title?.length==0 && titleDivClass=='form-group has-error has-feedback'">Please Enter Title</span>
+                  <span class="pull-left required" *ngIf="invalidTitlePattern && titleDivClass=='form-group has-error has-feedback'">Invalid Title Pattern</span>
                 </div>
               </div>
               
@@ -103,7 +105,7 @@
                 <div class="col-sm-4">
                   <div class="form-group" [attr.class]="customDaysDivClass">
                     <input type="number" placeholder="Enter Days" class="form-control full-width" [(ngModel)]="workflowDto.customDays" 
-                    name="workflowDto.customDays" autocomplete="false" (input)="validateCustomDays()">
+                    name="workflowDto.customDays" autocomplete="off" (input)="validateCustomDays()">
                     <span class="pull-left required" *ngIf="!isValidCustomDays">Minimum 1 Day Required</span>
                   </div>
               </div>
@@ -115,11 +117,11 @@
               <app-response-message [customResponse]="queryBuilderCustomResponse" [showCloseIcon]="false" *ngIf="queryBuilderCustomResponse?.isVisible"></app-response-message>
             </ng-container>
             <ng-container *ngIf="!loadQueryBuilder && showQueryBuilder">
-              <query-builder   id="queryBuilderCu" [(ngModel)]='workflowDto.query' [config]='config'></query-builder>
+              <query-builder id="queryBuilderCu" [(ngModel)]='workflowDto.filterQueryJson' [config]='config'></query-builder>
             </ng-container>
             <!--Query Builder-->
             <button type="submit" [disabled]="!isValidTriggerTab" class="btn btn Btn-Green float-right" 
-              (click)="!isValidTriggerTab && showNotificationTab()">Next</button>
+              (click)="isValidTriggerTab && showNotificationTab()">Next</button>
           </div>
 
           <!--Notification Tab-->
@@ -140,7 +142,7 @@
                     </div>
                   </div>
                   <div class="inputs search-align" style="float: right;margin-top: -12px">
-                    <div _ngcontent-c63="" style="float: left;;margin-right: 10px;margin-top: -5px">
+                    <div style="float: left;;margin-right: 10px;margin-top: -5px">
                       <select class="form-control cc mTopSort" [(ngModel)]="partnerListsSortOption.selectedCampaignRecipientsDropDownOption"
                       (ngModelChange)="sortPartnerLists($event)"  [ngModelOptions]="{standalone: true}">                                                    
                       <option  *ngFor="let option of partnerListsSortOption.campaignRecipientsDropDownOptions"
@@ -163,6 +165,7 @@
                   </div>
                   <div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
                     <div class="table-responsive pt">
+                      <p *ngIf="selectedPartnerListIds?.length>0" class="success"><strong>Selected rows : {{selectedPartnerListIds?.length}}</strong></p>
                       <table class="table tgrid table-hover table-sm" id="partnerListsTable" role="grid" aria-describedby="" *ngIf="partnerListsPagination?.totalRecords > 0">
                           <thead>
                             <tr>
@@ -172,14 +175,14 @@
                               <th class="hidden-xs" *ngIf="showPartnerListSearchResultExpandButton" scope="col"></th>
                               <th class="hidden-xs" colspan="2" style="width: 35%">
                                 <span class="ui-column-resizer" (mousedown)="referenceService?.onMouseDown($event,'partnerListsTable',2)"></span>
-                                <span class="gridHeader" translate>List Name</span>
+                                <span class="gridHeader" >List Name</span>
                               </th>
-                              <th class="visible-xs" scope="row" colspan="1" style="width: 35%" translate>
+                              <th class="visible-xs" scope="row" colspan="1" style="width: 35%" >
                                 List Info
                             </th>
-                            <th scope="row" class="text-center" translate>Created On</th>
-                            <th scope="row" class="text-center" translate>Count</th>
-                            <th scope="row" class="text-center" translate>Preview</th>
+                            <th scope="row" class="text-center" >Created On</th>
+                            <th scope="row" class="text-center" >Count</th>
+                            <th scope="row" class="text-center" >Preview</th>
                             </tr>
                           </thead>
                           <tbody class="pointer">   
@@ -217,7 +220,7 @@
                                           <span><strong>{{partnerList?.name}}</strong></span>
                                       </h4>
                                       <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom" title="{{partnerList?.createdName}}">
-                                          <span translate> Created By <strong>{{partnerList?.creatorName}}</strong></span>
+                                          <span>Created By<strong>{{partnerList?.creatorName}}</strong></span>
                                       </h6>
                                   </td>
                                   <td class="text-center sorting_1">
@@ -243,62 +246,61 @@
                     </div>
                     <!--Pagination-->
                     <div *ngIf="partnerListsPagination?.pagedItems?.length !== 0 && !partnerListsLoader">
-                      <app-pagination [pagination]="partnerListsPagination"  (notifyParent)="paginatePartnerLists($event)" (notifyParentDropDown)="findPartnerListsOnLimitChange($event)">
+                      <app-pagination [pagination]="partnerListsPagination"  (notifyParent)="paginatePartnerLists($event)" 
+                      (notifyParentDropDown)="findPartnerListsOnLimitChange($event)" [customDropDown]="true">
                       </app-pagination>
+                    </div>
+                    <div *ngIf="partnerListsPagination?.pagedItems?.length == 0 && !partnerListsLoader" class="alert alert-info text-center">
+                      <strong>No Data Found</strong>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-sm-12">
-                <div class="form-group">
-                  <label for="sel1" class="form-label">Subject</label>
-                  <input type="text" class="form-control" placeholder="Subject" [(ngModel)]="workflowDto.notificationSubject" name="workflowDto.notificationSubject">
+              <div class="col-sm-12 mt10">
+                <div class="form-group" [attr.class]="notificationSubjectDivClass">
+                  <label  class="form-label">Subject<span class="required">*</span></label>
+                  <input type="text" class="form-control" autocomplete="off" placeholder="Subject" [(ngModel)]="workflowDto.notificationSubject" name="workflowDto.notificationSubject" (input)="validateNotificationSubject()">
+                  <span class="pull-left required" *ngIf="workflowDto?.notificationSubject?.length==0 && notificationSubjectDivClass=='form-group has-error has-feedback'">Please Enter Subject</span>
                 </div>
               </div>
               <div class="col-sm-12">
                 <div class="form-group">
-                  <!--Email templates start -->
                   <div class="row">
                     <div class="col-xs-12 col-md-12 col-sm-12">
-                      <div class="">
-                        <!-- removed page-bar class -->
-                        <fieldset>
-                          <legend>Message</legend>
+                      <div class="portlet light dashboard-stat2">
+                        <div class="portlet-title custom-change-css">
                           <div>
-                            <div class="portlet light dashboard-stat2">
-                              <div class="portlet-title custom-change-css">
-                                <div class="col-xs-6">
-                                  <h4 class="text-left">Add your Message to Trigger</h4>
-                                </div>
-                                <div class="col-xs-6">
-                                  <div class="pull-right">
-                                    <label class="switch-choose" translate>Choose Template
-                                    </label>
-                                    <switch class="switch-choose" [status]="workflowDto.customTemplateSelected" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                    (statusChange)="workflowDto.customTemplateSelected=!workflowDto.customTemplateSelected;loadEmailTemplates(workflowDto.customTemplateSelected)">
-                                  </switch>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <!--CK Editor-->
-                                <form class="role add-custom-message" *ngIf="!workflowDto.customTemplateSelected">
-                                  <div class="col-xs-12 p0">
-                                    <div class="col-xs-12">
-                                      <div>
-                                        <div>
-                                          <ckeditor [(ngModel)]="workflowDto.notificationMessage" name="workflowDto.notificationMessage"></ckeditor>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </form>
-                                <!--Email Template-->
-                                <app-select-email-template *ngIf="workflowDto.customTemplateSelected" (selectedEmailTemplateEventEmitter)="getSelectedEmailTemplateReceiver($event)"></app-select-email-template>
-                              </div>
+                            <h4 class="float-left" *ngIf="workflowDto.customTemplateSelected">Select an email template<span class="required">*</span></h4>
+                            <h4 class="float-left"  *ngIf="!workflowDto.customTemplateSelected">Message<span class="required">*</span></h4>
+                          </div>
+                          <div class="col-xs-6 float-right">
+                            <div class="pull-right">
+                              <label class="switch-choose">Choose Template
+                              </label>
+                              <app-custom-ui-switch [customSwitch]="workflowDto.customTemplateSelected" (customUiSwitchEventEmitter)="customUiSwitchEventReceiver($event)"></app-custom-ui-switch>
                             </div>
                           </div>
-                        </fieldset>
+                        </div>
+                        <span class="pull-left required" *ngIf="!isValidNotificationMessage && workflowDto.customTemplateSelected && notificationMessageDivClass=='form-group has-error has-feedback'">Please Select an email template</span>
+                        <span class="pull-left required" *ngIf="!isValidNotificationMessage && !workflowDto.customTemplateSelected && notificationMessageDivClass=='form-group has-error has-feedback'">Please Enter Message</span>
+                        <div class="row">
+                          <!--CK Editor-->
+                          <form [@fadeInOut] class="role add-custom-message" *ngIf="!workflowDto?.customTemplateSelected">
+                            <div class="col-xs-12 p0">
+                              <div class="col-xs-12">
+                                <div>
+                                  <div>
+                                    <ckeditor (ngModelChange)="validateNotificationMessage()" [(ngModel)]="workflowDto.notificationMessage" name="workflowDto.notificationMessage"></ckeditor>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
+                          <!--Email Template-->
+                          <app-select-email-template [@fadeInOut]  *ngIf="workflowDto?.customTemplateSelected"
+                          [selectedEmailTemplateId]="workflowDto?.templateId"  (selectedEmailTemplateEventEmitter)="getSelectedEmailTemplateReceiver($event)">
+                          </app-select-email-template>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -307,8 +309,10 @@
             </div>
             <!-- Action forms row end -->
             <button type="button" class="btn Btn-Gray margin-left-negative-fifteen-px" (click)="showTriggersTab()">Previous</button>
-            <button type="submit" class="btn  btn Btn-Green float-right mrm-15" (click)="submitForm()">Submit</button>
+            <button type="submit" class="btn  btn Btn-Green float-right mrm-15" [disabled]="!isValidNotificationSubject ||!isValidNotificationMessage  || this.selectedPartnerListIds==0"
+               (click)="isValidNotificationSubject && this.selectedPartnerListIds.length>0 && isValidNotificationMessage && submitForm()">Submit</button>
           </div>
+
         </div>
       </div>
     </div>

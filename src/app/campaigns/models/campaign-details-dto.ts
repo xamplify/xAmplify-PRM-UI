@@ -25,4 +25,5 @@ export class CampaignDetailsDto {
     launchTime:any;
     showAllowPartnerToEditThePostOption = false;
     showScheduleOptions = false;
+    description = "";
 }

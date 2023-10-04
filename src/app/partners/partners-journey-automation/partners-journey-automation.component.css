@@ -23,3 +23,7 @@
   padding-right: 12px;
   margin-top: -5px;
 }
+
+.mw-200px{
+  min-width: 200px !important;
+}

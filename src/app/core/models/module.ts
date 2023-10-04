@@ -124,6 +124,7 @@ export class Module {
     emailNotificationSettings = false;
     showWorkFlow = false;
     navigateToSPFConfigurationSection = false;
+    xamplifyCustomerSupportContactNumber = "";
 
 
 }
