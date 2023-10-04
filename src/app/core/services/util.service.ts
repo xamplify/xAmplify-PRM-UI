@@ -3,12 +3,14 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Pagination } from '../models/pagination';
 import { CropperSettings} from 'ng2-img-cropper';
+import { PagerService } from './pager.service';
+
 declare var $:any;
 @Injectable()
 export class UtilService {
     topnavBareLoading = false;
     pagination: Pagination;
-    constructor( private http: Http) { }
+    constructor( private http: Http,private pagerService:PagerService) { }
 
     intlNumberFormat( num ) {
         return new Intl.NumberFormat().format( Math.round( num * 10 ) / 10 );
@@ -180,6 +182,13 @@ export class UtilService {
 
     addLoginAsLoader(){
         $("body").addClass("login-as-loader");
+    }
+
+    setPaginatedRows(response:any,pagination:Pagination){
+        const data = response.data;
+        pagination.totalRecords = data.totalRecords;
+        pagination = this.pagerService.getPagedItems(pagination, data.list);
+        return pagination;
     }
     
 

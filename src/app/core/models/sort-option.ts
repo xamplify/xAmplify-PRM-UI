@@ -371,6 +371,13 @@ export class SortOption {
         { 'name': 'Uploaded Date(DESC)', 'value': 'uploadedDate-DESC' }
     ];
 
+	partnerJourneyWorkflowsDropDownOptions = [
+		{ 'name': 'Title(A-Z)', 'value': 'title-ASC' },
+		{ 'name': 'Title(Z-A)', 'value': 'title-DESC' },
+		{ 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
+		{ 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
+	];
+
 
 	numberOfItemsPerPage = [
 		{ 'name': '12', 'value': '12' },
@@ -423,5 +430,6 @@ export class SortOption {
 
 	public selectedVideoDropDownOption = this.videosDropDownOptions[this.videosDropDownOptions.length-1];
 
+	public selectedPartnerJourneyWorkflowDropDownOption = this.partnerJourneyWorkflowsDropDownOptions[this.partnerJourneyWorkflowsDropDownOptions.length-1];
 
 }

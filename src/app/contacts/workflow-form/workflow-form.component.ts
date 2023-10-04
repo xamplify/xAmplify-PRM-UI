@@ -10,31 +10,22 @@ import { Pagination } from '../../core/models/pagination';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { UserService } from '../../core/services/user.service';
-import { CallActionSwitch } from '../../videos/models/call-action-switch';
-import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { ParterService } from 'app/partners/services/parter.service';
-import { DealQuestions } from '../../deal-registration/models/deal-questions';
-import { DealType } from '../../deal-registration/models/deal-type';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
 import { CustomResponse } from '../../common/models/custom-response';
-import { Pipeline } from '../../dashboard/models/pipeline';
-import { PipelineStage } from '../../dashboard/models/pipeline-stage';
 import { QueryBuilderConfig } from 'angular2-query-builder';
 import { QueryBuilderClassNames } from 'angular2-query-builder';
-import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { WorkflowDto } from '../models/workflow-dto';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
-
-
-
+import { CustomAnimation } from 'app/core/models/custom-animation';
 declare var  $:any, CKEDITOR:any, swal: any;
-
 @Component({
   selector: 'app-workflow-form',
   templateUrl: './workflow-form.component.html',
   styleUrls: ['./workflow-form.component.css'],
-  providers: [SocialContact, Pagination, Properties, ActionsDescription, CallActionSwitch,SortOption]
+  providers: [SocialContact, Pagination, Properties, ActionsDescription,SortOption],
+  animations:[CustomAnimation]
 })
 export class WorkflowFormComponent implements OnInit{
 
@@ -93,6 +84,8 @@ export class WorkflowFormComponent implements OnInit{
   formGroupClass = "form-group";
   titleDivClass:string = this.formGroupClass;
   customDaysDivClass:string = this.formGroupClass;
+  notificationSubjectDivClass:string = this.formGroupClass;
+  notificationMessageDivClass:string = this.formGroupClass;
   /***Send To******/
   partnerListsLoader = false;
   partnerListsPagination:Pagination = new Pagination();
@@ -113,23 +106,25 @@ export class WorkflowFormComponent implements OnInit{
   validUsersCount: any;
   allUsersCount: any;
   isValidTitle = false;
+  invalidTitlePattern = false;
   editedTriggerTitle = "";
   isValidTriggerTab = false;
-  isValidNotificationTab = false;
+  isValidPartnerListIds = false;
+  isValidNotificationSubject = false;
+  isValidNotificationMessage = false;
   isCustomOptionSelected = false;
   isValidCustomDays = true;
-
   /****Send To*******/
   
   constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
     public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
-		public actionsDescription: ActionsDescription, public callActionSwitch: CallActionSwitch,
-		public route: ActivatedRoute,public parterService: ParterService,public logger: XtremandLogger,public dealRegSevice: DealRegistrationService,
+		public actionsDescription: ActionsDescription,public route: ActivatedRoute,public parterService: ParterService,public logger: XtremandLogger,public dealRegSevice: DealRegistrationService,
     private pagerService:PagerService,private utilService:UtilService,private render: Renderer){
       this.referenceService.renderer = this.render;
     }
 
   ngOnInit() {
+    this.referenceService.goToTop();
     this.findTriggerTitles();
     this.getQueryBuilder();
     this.showTriggersTab();
@@ -175,11 +170,11 @@ export class WorkflowFormComponent implements OnInit{
               
             ]
           };
-          this.workflowDto.query = query;
+          this.workflowDto.filterQueryJson = query;
         }else{
         this.queryBuilderCustomResponse = new CustomResponse('INFO','No Filters Found',true);
         }
-        //this.partnerListsPagination.maxResults = 4;
+        this.partnerListsPagination.maxResults = 4;
         this.findPartnerLists(this.partnerListsPagination);
         this.loadQueryBuilder = false;
         this.triggerLoader = false;
@@ -191,7 +186,8 @@ export class WorkflowFormComponent implements OnInit{
 
   
   validateTitle(){
-    let trimmedTitle = $.trim(this.workflowDto.title.toLowerCase());//Remove all spaces
+    this.workflowDto.title = $.trim(this.workflowDto.title);
+    let trimmedTitle = this.workflowDto.title.toLowerCase();//Remove all spaces
     var list = this.triggerTitles;
     if (this.isAdd) {
         if ($.inArray(trimmedTitle, list) > -1) {
@@ -268,13 +264,13 @@ export class WorkflowFormComponent implements OnInit{
   }
 
   findCustomOption(){
-    this.isCustomOptionSelected = "custom"==$.trim($('#time-phrase option:selected').text());
+    this.isCustomOptionSelected = "Custom-In the past custom days"==$.trim($('#time-phrase option:selected').text());
   }
 
   /*************Partner Lists********/
 
   findPartnerLists(pagination: Pagination) {
-    this.referenceService.goToTop();
+    this.referenceService.goToDiv('step-2');
     this.partnerListsLoader = true;
     if (!this.isAdd) {
         //campaignRecipientsPagination.campaignId = this.campaign.campaignId;
@@ -481,24 +477,7 @@ export class WorkflowFormComponent implements OnInit{
     }
     ev.stopPropagation();
   }
-
-
-
-
-  getData(){
-  }
-
-  loadEmailTemplates(customTemplateTemplated:boolean){
-    if(customTemplateTemplated){
-      
-    }
-  }
-
-  getSelectedEmailTemplateReceiver(event:any){
-    alert("Event Received");
-  }
-
-
+  
 
   ngOnDestroy() { }
 
@@ -508,31 +487,74 @@ export class WorkflowFormComponent implements OnInit{
 
   goToWorkflow(){this.router.navigate(["/home/contacts/partner-workflow"]);}
 
- 
-  submitForm(){ 
-    this.referenceService.showSweetAlertSuccessMessage("Trigger Added Successfully");
-    this.navigateBack();
-    // this.workflowDto.selectedPartnerListIds = this.selectedPartnerListIds;
-    //  this.parterService.saveWorkflow(this.workflowDto).subscribe(
-    //      response=>{
-    //       //this.referenceService.showSweetAlertSuccessMessage("Trigger Added Successfully");
-    //      // this.navigateBack();
-    //      },error=>{
-    //       alert("Error");
-    //     }
-    //  );
-  }
-  
-  addDiv() {
-    this.divs.push(this.divs.length + 1);
-  }
-  deleteDiv(index: number) {
-    this.divs.splice(index, 1);
-  }
-  navigateBack(){
+  navigateToPartnerJourneyAutomationSection(){
     this.referenceService.goToRouter("/home/partners/journey-automation");
   }
 
+  getSelectedEmailTemplateReceiver(event:any){
+    this.workflowDto.templateId = event;
+    this.validateNotificationMessage();
+  }
+  customUiSwitchEventReceiver(event:any){
+    this.workflowDto.customTemplateSelected = event;
+    this.validateNotificationMessage();
+  }
+
+  
+  submitForm(){ 
+    this.validateNotificationSubject();
+    this.validateNotificationMessage();
+    if(this.isValidNotificationMessage && this.isValidNotificationSubject && this.selectedPartnerListIds.length>0){
+     this.triggerLoader = true;
+     this.workflowDto.selectedPartnerListIds = this.selectedPartnerListIds;
+        this.parterService.saveWorkflow(this.workflowDto).subscribe(
+            response=>{
+              this.titleDivClass = this.successClass;
+              if(response.statusCode==200){
+                this.referenceService.isCreated = true;
+                this.navigateToPartnerJourneyAutomationSection();
+              }else{
+                this.referenceService.scrollSmoothToTop();
+                let errorObject = response.data.errorMessages[0];
+                let field = errorObject['field'];
+                if("title"==field){
+                  this.invalidTitlePattern = true;
+                  this.titleDivClass = this.errorClass;
+                }else{
+                  this.referenceService.showSweetAlertErrorMessage(this.properties.serverErrorMessage);
+                }
+              }
+              this.triggerLoader = false;
+            },error=>{
+             this.xtremandLogger.errorPage(error);
+           }
+        );
+    }
+  
+ }
+  
+
+  private validateNotificationSubject(){
+      this.workflowDto.notificationSubject = $.trim(this.workflowDto.notificationSubject);
+      let trimmedNotificationSubject = $.trim(this.workflowDto.notificationSubject.toLowerCase());
+      this.isValidNotificationSubject = trimmedNotificationSubject.length>0;
+      let isValidNotificationSubject = trimmedNotificationSubject.length>0 &&  this.isValidNotificationSubject;
+      this.notificationSubjectDivClass =  isValidNotificationSubject ? this.successClass :this.errorClass;
+    }
 
 
+  private validateNotificationMessage() {
+    if(this.workflowDto.customTemplateSelected){
+      this.isValidNotificationMessage = this.workflowDto.templateId > 0;
+      this.notificationMessageDivClass =  this.isValidNotificationMessage ? this.successClass :this.errorClass;
+    }else{
+      let notificationMessage = this.referenceService.getCkEditorPlainDescription(this.workflowDto.notificationMessage);
+      this.isValidNotificationMessage = notificationMessage.length > 0;
+      this.notificationMessageDivClass =  this.isValidNotificationMessage ? this.successClass :this.errorClass;
+    }
+  }
+
+  
+
+ 
 }

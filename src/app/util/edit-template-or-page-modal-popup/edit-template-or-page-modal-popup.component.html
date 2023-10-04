@@ -1,0 +1,33 @@
+<div class="modal right rmv-overflow" id="edit-template-modal" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog  modal-sm popup-align">
+      <div class="modal-content mPad col-lg-12 col-md-12">
+          <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+          <div class="modal-header">
+              <button type="button" class="close-circle"  (click)="closeModal()">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+              </button>               
+          </div>
+          <div class="modal-body" *ngIf="!ngxloading">
+            <div class="portlet light shadow">
+                <div *ngIf="!isEditTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left zeropx">
+                    {{beeContainerInput?.emailTemplateName}}
+                    <div>
+                    <app-merge-tags *ngIf="isShowEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
+                    </div>
+                </div>
+              <div class="portlet-body clearfix">
+                  <div *ngIf="isShowEditTemplateMessageDiv"  [className]="templateMessageClass">
+                        <strong>{{templateUpdateMessage}}</strong>
+                  </div>
+                  <app-modal-popup-loader *ngIf="isEditTemplateLoader"></app-modal-popup-loader>
+                  <app-bee-template-util *ngIf="!isEditTemplateLoader && isShowEditTemplatePopup"  [beeContainerInput]="beeContainerInput"
+                   (notifyParentComponent)="updateTemplate($event)"></app-bee-template-util>
+            </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button type="submit"  class="btn Btn-Green col-lg-1 col-md-1 BtnWidthForPopup float-right" (click)="closeModal()">Close</button>
+          </div>
+      </div>
+  </div>
+</div>

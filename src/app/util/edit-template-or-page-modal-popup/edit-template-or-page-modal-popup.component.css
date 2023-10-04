@@ -1,0 +1,8 @@
+.popup-align{ position: relative!important;float: right;}
+.modal-dialog{ width: 85%!important;}
+.modal-content{ box-shadow: 0 0 0 rgb(255 255 255 / 0%)!important;border-radius: 0!important;}
+#add-form-name-modal{ padding-right: 0!important;}
+.custom-design-Popup{ width: 40%!important;float: right!important;}
+@media (min-width:992px) and (max-width:1300px){ .BtnWidthForPopup{  width: 100px; }
+ .vertical-center{  margin: 10px 50px 0 50px; }}.hide-scrollbar{ overflow: hidden;}
+@media only screen and (max-width:1024px){ .vertical-center{  margin: 10px 70px 0 70px!important; }}@media only screen and (max-width:578px){ .modal.left.fade.in .modal-dialog, .modal.right.fade.in .mb-wth{  width: 100%!important; }}

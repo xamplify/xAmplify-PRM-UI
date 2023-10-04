@@ -1,4 +1,4 @@
-<div class="portlet light shadow">
+<div>
   <div class="portlet-body clearfix">
       <div class="col-xs-12">
           <!--Email Templates-->
@@ -28,7 +28,7 @@
                                           <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === selectedEmailTemplateId ? 'template-selected-border' :'' " (click)="selectEmailTemplate(emailTemplate)">
                                               <span class="select-check-box" [class.hide]="emailTemplate?.draft">
                                                   <label>
-                                                      <input  type="radio" class="radio-custimization pointer" [checked]="emailTemplate?.id === selectedEmailTemplateId">
+                                                      <input  type="radio" class="radio-custimization pointer" [checked]="emailTemplate?.id === selectedEmailTemplateId" (click)="callEmitter(emailTemplate?.id)">
                                                   </label>
                                               </span>
                                               <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
@@ -93,3 +93,15 @@
 </div>
 
 <!--Preview  Email Template-->
+<app-send-test-email *ngIf="isPreviewEmailTemplateButtonClicked"
+ [id]="selectedEmailTemplateIdForPreview"
+  [isPreviewEmailTemplate]="isPreviewEmailTemplateButtonClicked" 
+  [templateName]="selectedEmailTemplateNameForPreview"
+  (sendTestEmailComponentEventEmitter)="previewEmailTemplateModalPopupEventReceiver()">
+</app-send-test-email>
+
+
+<app-edit-template-or-page-modal-popup
+ *ngIf="openEditTemplateModalPopup" [emailTemplate]="selectedEmailTemplate" 
+ (editTemplateOrPageModalPopupEventEmitter)="closeEditTemplateModalPopup()"></app-edit-template-or-page-modal-popup>
+
