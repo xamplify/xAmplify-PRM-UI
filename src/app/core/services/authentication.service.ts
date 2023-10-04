@@ -190,7 +190,6 @@ export class AuthenticationService {
     this.imagesHost = this.envService.imagesHost;
     this.vendorRoleHash = this.envService.vendorRoleHash;
     this.partnerRoleHash = this.envService.partnerRoleHash;
-    this.module.xamplifyCustomerSupportContactNumber = this.envService.xamplifyCustomerSupportContactNumber;
     this.userLoggedIn.next(false);
   }
 
