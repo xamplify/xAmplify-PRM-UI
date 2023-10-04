@@ -226,7 +226,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                 this.campaignAccess.landingPageCampaign = campaignAccess.page;
                 this.campaignAccess.survey = campaignAccess.survey;
                 this.companyId = this.referenceService.companyId;
-                this.isSpfConfigured();
+                this.isSpfConfiguredOrDomainConnected();
             },_error=>{
                 this.referenceService.showSweetAlertErrorMessage("Unable to fetch campaign types");
                 this.ngxloading = false;
@@ -263,9 +263,9 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         );
     }
 
-    isSpfConfigured(){
+    isSpfConfiguredOrDomainConnected(){
         this.ngxloading  = true;
-        this.authenticationService.isSpfConfigured(this.companyId).subscribe(
+        this.authenticationService.isSpfConfiguredOrDomainConnected(this.companyId).subscribe(
           response=>{
             this.ngxloading = false;
             this.showSpf = !response.data;
