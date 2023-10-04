@@ -844,7 +844,7 @@ export class AuthenticationService {
     return this.http.get(this.REST_URL + `admin/isSpfConfigured/${companyId}?access_token=${this.access_token}`)
         .map(this.extractData)
         .catch(this.handleError);
-}
+  }
 
 saveAsDefaultTemplate(input:any){
   return this.http.post(this.REST_URL + "superadmin/saveAsDefaultTemplate?access_token=" + this.access_token, input)
@@ -1177,6 +1177,13 @@ getDefault360M3U8FileForLocal(videoUrl:string){
 
 navigateToMyProfileSection(){
   this.router.navigate(["/home/dashboard/myprofile"])
+}
+
+/*** XBI-1968 ***/
+isSpfConfiguredOrDomainConnected(companyId:number){
+  return this.http.get(this.REST_URL + `admin/isSpfConfiguredOrDomainConnected/${companyId}?access_token=${this.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
 }
 
 

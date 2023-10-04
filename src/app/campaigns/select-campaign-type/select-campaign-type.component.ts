@@ -86,8 +86,7 @@ export class SelectCampaignTypeComponent implements OnInit{
             this.companyIdError = false;
             this.refService.companyId = this.loggedInUserCompanyId;
             this.getOrgCampaignTypes();
-            this.isSpfConfigured();
-            this.isSpfConfiguredThroughGodaddy();
+            this.isSpfConfiguredOrDomainConnected();
           }else{
             this.companyIdError = true;
             this.loading = false;
@@ -97,9 +96,9 @@ export class SelectCampaignTypeComponent implements OnInit{
       );
      }
 
-     isSpfConfigured(){
+     isSpfConfiguredOrDomainConnected(){
       this.loading  = true;
-      this.authenticationService.isSpfConfigured(this.loggedInUserCompanyId).subscribe(
+      this.authenticationService.isSpfConfiguredOrDomainConnected(this.loggedInUserCompanyId).subscribe(
         response=>{
           this.loading = false;
           this.showSpf = !response.data;
@@ -108,17 +107,7 @@ export class SelectCampaignTypeComponent implements OnInit{
         }
       );
     }
-    isSpfConfiguredThroughGodaddy(){
-      this.loading  = true;
-      this.dashboardService.isGodaddyConfigured(this.loggedInUserCompanyId).subscribe(
-        response=>{
-          this.loading = false;
-          this.godadySpf = !response.data;
-        },error=>{
-          this.loading = false;
-        }
-      );
-    }
+  
 
     ngOnInit() {
         try{
