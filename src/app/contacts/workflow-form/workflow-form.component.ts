@@ -488,7 +488,7 @@ export class WorkflowFormComponent implements OnInit{
   goToWorkflow(){this.router.navigate(["/home/contacts/partner-workflow"]);}
 
   navigateToPartnerJourneyAutomationSection(){
-    this.referenceService.goToRouter("/home/partners/journey-automation");
+    this.referenceService.goToRouter("/home/partners/experience-automation");
   }
 
   getSelectedEmailTemplateReceiver(event:any){
