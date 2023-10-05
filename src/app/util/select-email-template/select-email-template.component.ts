@@ -107,6 +107,7 @@ export class SelectEmailTemplateComponent implements OnInit {
                 this.selectedEmailTemplateId = emailTemplate.id;
                 this.isEmailTemplateSelected = true;
                 this.sendTestEmailToolTip = "Send Test Email";
+                this.selectedEmailTemplateEventEmitter.emit(this.selectedEmailTemplateId);
                 this.ngxLoading = false;
             },
             error => {
