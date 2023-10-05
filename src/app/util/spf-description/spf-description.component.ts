@@ -1,5 +1,6 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { EnvService } from 'app/env.service';
 declare var $:any;
 @Component({
   selector: 'app-spf-description',
@@ -9,7 +10,7 @@ declare var $:any;
 export class SpfDescriptionComponent implements OnInit {
  @Input() showGoDaddyConfiguration = false;
  @Input() spfConfigured = false;
-  constructor(private authenticationService:AuthenticationService) { }
+  constructor(public authenticationService:AuthenticationService,public envService: EnvService) { }
 
   ngOnInit() {
     if(this.showGoDaddyConfiguration==undefined){

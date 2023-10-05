@@ -21,6 +21,14 @@
                             <input disabled type="text" class="form-control" autocomplete="false" placeholder="Campaign Name" [(ngModel)]="campaignDetailsDto.campaignName" [ngModelOptions]="{standalone: true}">
                             </div>
                         </div>
+                        <!---Description-->
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 mName tab_p0">Description
+                            </label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control" maxlength="1000" rows="5" [(ngModel)]="campaignDetailsDto.description" name="description"  placeholder="Description"></textarea>
+                            </div>
+                        </div>
                         <!---Folder------>
                         <div class="form-group">
                             <label class="control-label col-sm-3">Folder<span class="required">*</span></label>

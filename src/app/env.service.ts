@@ -71,6 +71,7 @@ export class EnvService {
   microsoftDevClientSecret = "";
 
   loadLatestVideoJsFiles = false;
+  xamplifyCustomerSupportContactNumber= "";
 
   constructor() {
   }

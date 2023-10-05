@@ -9,7 +9,7 @@
       </li>
       <li>
         <a (click)="navigateToPartnerJourneyAutomationSection()">
-          <span>{{authenticationService.partnerModule.customName}} Journey Automation</span>
+          <span>{{authenticationService.partnerModule.customName}} Experience Automation</span>
         </a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
@@ -26,7 +26,7 @@
           <div class="col-block width" [attr.class]="triggersTabClass" (click)="showTriggersTab()" style="width: 50%;">
             <div class="cenetered-block colorbox-1">
               <img alt="" class="newicons" src="assets/images/campaignnew-icon/19.svg">
-              <h5 class="hidden-xs text-clr">Trigger</h5>
+              <h5 class="hidden-xs text-clr">Prompt</h5>
             </div>
           </div>
           <div  class="col-block" [attr.class]="notificationsTabClass" (click)="showNotificationTab()" style="width: 50%;" >
@@ -46,11 +46,11 @@
       <div>
         <app-modal-popup-loader *ngIf="triggerLoader || triggerTitlesLoader"></app-modal-popup-loader>
         <div *ngIf="!triggerLoader && !triggerTitlesLoader" class="row mr-4px-ml-0px">
-          <!--Trigger Tab -->
+          <!--Prompt Tab -->
           <div class="page-bar p20" id="step-1">
             <div class="caption" style="padding-top: 11px !important;">
               <img src="assets/admin/pages/media/works/icon.png" class="icon-alignmnt" alt="">
-              <span class="textaligncenter">Trigger</span>
+              <span class="textaligncenter">Prompt</span>
             </div>
             <hr>
             <!-- Partner forms row start -->
@@ -68,7 +68,7 @@
               </div>
               
               <br><br>
-              <p class="align-paratext">Define the trigger when this happens</p>
+              <p class="align-paratext">Define the prompt when this happens</p>
               <div class="col-sm-4">
                 <div class="form-group">
                   <select class="form-control full-width" name="workflowDto.subjectId" [(ngModel)]="workflowDto.subjectId">
