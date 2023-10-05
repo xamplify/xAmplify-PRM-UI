@@ -23,7 +23,7 @@ const routes: Routes = [
     { path: 'manage/:id', component: ManagePartnersComponent},
     {path: 'analytics/:id', component: PartnerReportsComponent},
     {path: 'individual-partner', component:IndividualPartnerAnalyticsComponent},
-    {path: 'journey-automation', component:PartnersJourneyAutomationComponent},
+    {path: 'experience-automation', component:PartnersJourneyAutomationComponent},
     {path: 'partner-workflow', component:WorkflowFormComponent}
 ];
 
