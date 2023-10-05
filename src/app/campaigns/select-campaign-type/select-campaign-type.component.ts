@@ -35,7 +35,6 @@ export class SelectCampaignTypeComponent implements OnInit{
     companyIdError = false;
     loggedInUserCompanyId: number = 0;
     showSpf = false;
-    godadySpf=false;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     searchWithModuleName:any;
     constructor(private logger:XtremandLogger,private router:Router,public refService:ReferenceService,public authenticationService:AuthenticationService,
