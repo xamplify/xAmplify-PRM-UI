@@ -196,5 +196,18 @@ export class UtilService {
         return route.snapshot.params[parameter];
     }
     
+    
+    isValidJsonString(str:string) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+
+    convertJsonStringToJsonObject(jsonString:string){
+        return JSON.parse(jsonString);
+    }
 
 }

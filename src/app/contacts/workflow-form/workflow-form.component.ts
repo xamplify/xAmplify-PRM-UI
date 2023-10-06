@@ -39,7 +39,9 @@ export class WorkflowFormComponent implements OnInit{
   config:QueryBuilderConfig  = {
     fields:{}
   }
-  query  = {};
+  query:any  = { condition: 'and',
+    rules: []
+    };
   showQueryBuilder = false;
   queryBuilderCustomResponse:CustomResponse = new CustomResponse();
   triggerLoader = true;
@@ -146,6 +148,9 @@ export class WorkflowFormComponent implements OnInit{
       response=>{
         this.triggerTitles = response.data;
         this.triggerTitlesLoader = false;
+        if(!this.isAdd){
+          this.validateTitle();
+        }
       },error=>{
         this.triggerTitlesLoader = false;
       });
@@ -176,11 +181,18 @@ export class WorkflowFormComponent implements OnInit{
           this.parterService.findWorkflowById(this.id).subscribe(
             response=>{
               this.workflowDto = response.data;
+              let jsonString = this.workflowDto.filterQueryJsonString;
+              let isValidJson = this.utilService.isValidJsonString(jsonString);
+              if(isValidJson){
+                let json = this.utilService.convertJsonStringToJsonObject(jsonString);
+                this.workflowDto.filterQueryJson = json;
+              }else{
+                this.workflowDto.filterQueryJson = this.query;
+              }
               this.setDropDownDataAndQueryBuilderData(this.workflowDto.subjectId,this.workflowDto.actionId,this.workflowDto.timePhraseId);
             },error=>{
               this.xtremandLogger.errorPage(error);
             },()=>{
-              alert("In 178");
               this.stopLoaders();
             }
           );
@@ -208,12 +220,10 @@ export class WorkflowFormComponent implements OnInit{
         let fieldsLength = Object.keys(queryBuilderJsonInput.fields).length;
         this.showQueryBuilder = fieldsLength > 0;
         if (this.showQueryBuilder) {
-          this.config = queryBuilderJsonInput;
-          let query = {
-            condition: 'and',
-            rules: []
-          };
-          this.workflowDto.filterQueryJson = query;
+           this.config = queryBuilderJsonInput;
+          if(this.isAdd){
+            this.workflowDto.filterQueryJson = this.query;
+          }
         } else {
           this.queryBuilderCustomResponse = new CustomResponse('INFO', 'No Filters Found', true);
         }
