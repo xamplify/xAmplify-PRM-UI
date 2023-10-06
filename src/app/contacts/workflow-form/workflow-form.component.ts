@@ -148,9 +148,7 @@ export class WorkflowFormComponent implements OnInit{
       response=>{
         this.triggerTitles = response.data;
         this.triggerTitlesLoader = false;
-        if(!this.isAdd){
-          this.validateTitle();
-        }
+        
       },error=>{
         this.triggerTitlesLoader = false;
       });
@@ -175,12 +173,12 @@ export class WorkflowFormComponent implements OnInit{
         this.xtremandLogger.errorPage(error);
       },()=>{
         if(this.isAdd){
-          this.partnerListsPagination.maxResults = 4;
-          this.findPartnerLists(this.partnerListsPagination);
+          this.loadPartnerListsWithMinimumLimit();
         }else{
           this.parterService.findWorkflowById(this.id).subscribe(
             response=>{
               this.workflowDto = response.data;
+              this.editedTriggerTitle = this.workflowDto.title;
               let jsonString = this.workflowDto.queryBuilderInputString;
               let isValidJson = this.utilService.isValidJsonString(jsonString);
               if(isValidJson){
@@ -190,9 +188,16 @@ export class WorkflowFormComponent implements OnInit{
                 this.workflowDto.filterQueryJson = this.query;
               }
               this.setDropDownDataAndQueryBuilderData(this.workflowDto.subjectId,this.workflowDto.actionId,this.workflowDto.timePhraseId);
+              if(!this.isAdd){
+                this.validateTitle();
+                this.addCustomDaysTextBox();
+              }
             },error=>{
               this.xtremandLogger.errorPage(error);
             },()=>{
+              this.selectedPartnerListIds = this.workflowDto.selectedPartnerListIds.sort();
+              this.getValidUsersCount();
+              this.loadPartnerListsWithMinimumLimit();
               this.stopLoaders();
             }
           );
@@ -202,6 +207,11 @@ export class WorkflowFormComponent implements OnInit{
   }
 
   
+  private loadPartnerListsWithMinimumLimit() {
+    this.partnerListsPagination.maxResults = 4;
+    this.findPartnerLists(this.partnerListsPagination);
+  }
+
   private setDropDownDataAndQueryBuilderData(subjectId:number,actionId:number,timePhraseId:number) {
     if (this.subjects.length > 0) {
       this.workflowDto.subjectId = subjectId;
@@ -307,12 +317,12 @@ export class WorkflowFormComponent implements OnInit{
 
 
   addCustomDaysTextBox(){
-    this.findCustomOption();
+    let conditionCheckWithText = "Custom-In the past custom days"==$.trim($('#time-phrase option:selected').text());
+    let conditionCheckWithId = this.workflowDto.timePhraseId==35;
+    this.isCustomOptionSelected = conditionCheckWithText || conditionCheckWithId;
+
   }
 
-  findCustomOption(){
-    this.isCustomOptionSelected = "Custom-In the past custom days"==$.trim($('#time-phrase option:selected').text());
-  }
 
   /*************Partner Lists********/
 

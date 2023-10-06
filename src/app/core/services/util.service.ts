@@ -211,11 +211,7 @@ export class UtilService {
     }
 
     convertJsonToString(jsonInput:any){
-        if(this.isValidJsonString(jsonInput)){
-            return JSON.stringify(jsonInput);
-        }else{
-            return "{}";
-        }
+        return JSON.stringify(jsonInput);
         
     }
 
