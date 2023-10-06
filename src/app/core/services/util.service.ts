@@ -210,4 +210,13 @@ export class UtilService {
         return JSON.parse(jsonString);
     }
 
+    convertJsonToString(jsonInput:any){
+        if(this.isValidJsonString(jsonInput)){
+            return JSON.stringify(jsonInput);
+        }else{
+            return "{}";
+        }
+        
+    }
+
 }

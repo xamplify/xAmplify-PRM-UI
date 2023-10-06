@@ -13,5 +13,5 @@ export class WorkflowDto {
     notificationMessage = "";
     loggedInUserId = 0;
     customDays = 1;
-    filterQueryJsonString:any;
+    queryBuilderInputString:any;
 }

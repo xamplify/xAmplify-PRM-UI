@@ -181,7 +181,7 @@ export class WorkflowFormComponent implements OnInit{
           this.parterService.findWorkflowById(this.id).subscribe(
             response=>{
               this.workflowDto = response.data;
-              let jsonString = this.workflowDto.filterQueryJsonString;
+              let jsonString = this.workflowDto.queryBuilderInputString;
               let isValidJson = this.utilService.isValidJsonString(jsonString);
               if(isValidJson){
                 let json = this.utilService.convertJsonStringToJsonObject(jsonString);
@@ -554,6 +554,7 @@ export class WorkflowFormComponent implements OnInit{
     if(this.isValidNotificationMessage && this.isValidNotificationSubject && this.selectedPartnerListIds.length>0){
      this.triggerLoader = true;
      this.workflowDto.selectedPartnerListIds = this.selectedPartnerListIds;
+     this.workflowDto.queryBuilderInputString  = this.utilService.convertJsonToString(this.workflowDto.filterQueryJson);
         this.parterService.saveWorkflow(this.workflowDto).subscribe(
             response=>{
               this.titleDivClass = this.successClass;
