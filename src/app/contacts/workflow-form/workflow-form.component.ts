@@ -46,6 +46,7 @@ export class WorkflowFormComponent implements OnInit{
   subjects:Array<any> = new Array<any>();
   actions:Array<any> = new Array<any>();
   timePhrases:Array<any> = new Array<any>();
+  queryBuilderJson = {};
   classNames: QueryBuilderClassNames = {
     removeIcon: 'fa fa-minus',
     addIcon: 'fa fa-plus',
@@ -114,6 +115,7 @@ export class WorkflowFormComponent implements OnInit{
   isValidNotificationMessage = false;
   isCustomOptionSelected = false;
   isValidCustomDays = true;
+  id:number = 0;
   /****Send To*******/
   
   constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
@@ -121,13 +123,22 @@ export class WorkflowFormComponent implements OnInit{
 		public actionsDescription: ActionsDescription,public route: ActivatedRoute,public parterService: ParterService,public logger: XtremandLogger,public dealRegSevice: DealRegistrationService,
     private pagerService:PagerService,private utilService:UtilService,private render: Renderer){
       this.referenceService.renderer = this.render;
+      
     }
 
   ngOnInit() {
     this.referenceService.goToTop();
+    this.id = this.utilService.getRouterParameterValue(this.route,'id');
+    this.isAdd = this.id==undefined || this.id==0;
     this.findTriggerTitles();
-    this.getQueryBuilder();
+    this.loadPromptAndNotificationTabsData();
     this.showTriggersTab();
+  }
+
+  stopLoaders(){
+    this.partnerListsLoader = false;
+    this.loadQueryBuilder = false;
+    this.triggerLoader = false;
   }
 
   findTriggerTitles(){
@@ -140,51 +151,77 @@ export class WorkflowFormComponent implements OnInit{
       });
   }
 
-  
-
-  getQueryBuilder(){
+  loadPromptAndNotificationTabsData(){
     this.parterService.findDefaultTriggerOptions().subscribe(
       response=>{
         this.queryBuilderCustomResponse = new CustomResponse();
         let data = response.data;
         this.subjects = data.subjects;
-        if(this.subjects.length>0){
-          this.workflowDto.subjectId = this.subjects[0].id;
-        }
         this.actions = data.actions;
-        if(this.actions.length>0){
-          this.workflowDto.actionId = this.actions[0].id;
-        }
         this.timePhrases = data.timePhrases;
-        if(this.timePhrases.length>0){
-          this.workflowDto.timePhraseId = this.timePhrases[0].id;
+        this.queryBuilderJson = data.queryBuilderJson;
+        if(this.isAdd){
+          let subjectId = this.subjects[0].id;
+          let actionId = this.actions[0].id;
+          let timePhraseId = this.timePhrases[0].id;
+          this.setDropDownDataAndQueryBuilderData(subjectId,actionId,timePhraseId);
         }
-        let queryBuilderJsonInput  = data.queryBuilderJson;
-        let fieldsLength = Object.keys(queryBuilderJsonInput.fields).length;
-        this.showQueryBuilder = fieldsLength>0;
-        if(this.showQueryBuilder){
-          this.config = queryBuilderJsonInput;
-          let query = {
-            condition: 'and',
-            rules: [
-              
-            ]
-          };
-          this.workflowDto.filterQueryJson = query;
-        }else{
-        this.queryBuilderCustomResponse = new CustomResponse('INFO','No Filters Found',true);
-        }
-        this.partnerListsPagination.maxResults = 4;
-        this.findPartnerLists(this.partnerListsPagination);
-        this.loadQueryBuilder = false;
-        this.triggerLoader = false;
       },error=>{
         this.xtremandLogger.errorPage(error);
+      },()=>{
+        if(this.isAdd){
+          this.partnerListsPagination.maxResults = 4;
+          this.findPartnerLists(this.partnerListsPagination);
+        }else{
+          this.parterService.findWorkflowById(this.id).subscribe(
+            response=>{
+              this.workflowDto = response.data;
+              this.setDropDownDataAndQueryBuilderData(this.workflowDto.subjectId,this.workflowDto.actionId,this.workflowDto.timePhraseId);
+            },error=>{
+              this.xtremandLogger.errorPage(error);
+            },()=>{
+              alert("In 178");
+              this.stopLoaders();
+            }
+          );
+        }
       }
     );
   }
 
   
+  private setDropDownDataAndQueryBuilderData(subjectId:number,actionId:number,timePhraseId:number) {
+    if (this.subjects.length > 0) {
+      this.workflowDto.subjectId = subjectId;
+    }
+    if (this.actions.length > 0) {
+      this.workflowDto.actionId = actionId;
+    }
+    if (this.timePhrases.length > 0) {
+      this.workflowDto.timePhraseId = timePhraseId;
+    }
+    this.setQueryBuilderData(this.queryBuilderJson);
+  }
+
+  private setQueryBuilderData(queryBuilderJsonInput: any) {
+    if(queryBuilderJsonInput.fields!=undefined){
+        let fieldsLength = Object.keys(queryBuilderJsonInput.fields).length;
+        this.showQueryBuilder = fieldsLength > 0;
+        if (this.showQueryBuilder) {
+          this.config = queryBuilderJsonInput;
+          let query = {
+            condition: 'and',
+            rules: []
+          };
+          this.workflowDto.filterQueryJson = query;
+        } else {
+          this.queryBuilderCustomResponse = new CustomResponse('INFO', 'No Filters Found', true);
+        }
+    }else{
+      this.queryBuilderCustomResponse = new CustomResponse('INFO', 'No Filters Found', true);
+    }
+  }
+
   validateTitle(){
     this.workflowDto.title = $.trim(this.workflowDto.title);
     let trimmedTitle = this.workflowDto.title.toLowerCase();//Remove all spaces
@@ -292,7 +329,7 @@ export class WorkflowFormComponent implements OnInit{
                 } else {
                     this.isHeaderCheckBoxChecked = false;
                 }
-                this.partnerListsLoader = false;
+                this.stopLoaders();
             },
             (error: string) => {
                 this.xtremandLogger.errorPage(error);

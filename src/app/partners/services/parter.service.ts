@@ -331,8 +331,7 @@ export class ParterService {
     findDefaultTriggerOptions() {
         let userId = this.authenticationService.getUserId();
         const url = this.URL + 'workflow/findDefaultTriggerOptions/'+userId+'?access_token=' + this.authenticationService.access_token;
-        return this.httpClient.get(url)
-            .catch( this.handleError );
+        return this.authenticationService.callGetMethod(url);
     }
 
 
@@ -340,32 +339,34 @@ export class ParterService {
         let userId = this.authenticationService.getUserId();
         workflowDto.loggedInUserId = userId;
         const url = this.URL + 'workflow?access_token=' + this.authenticationService.access_token;
-        return this.http.post(url,workflowDto)
-        .map(this.authenticationService.extractData)
-        .catch(this.authenticationService.handleError);
+        return this.authenticationService.callPostMethod(url,workflowDto);
+        
     }
 
     findTriggerTitles() {
         let userId = this.authenticationService.getUserId();
         const url = this.URL + 'workflow/findTriggerTitles/'+userId+'?access_token=' + this.authenticationService.access_token;
-        return this.httpClient.get(url)
-            .catch( this.handleError );
+        return this.authenticationService.callGetMethod(url);
     }
 
     findAllWorkflows(pagination:Pagination){
         let userId = this.authenticationService.getUserId();
         let pageableUrl = this.referenceService.getPagebleUrl(pagination);
         let findAllUrl = this.WORK_FLOW_PREFIX_URL+'/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
-        return this.httpClient.get(findAllUrl)
-            .catch( this.handleError );
+        return this.authenticationService.callGetMethod(findAllUrl);
     }
+
 
     deleteWorkflow(id:number){
         let userId = this.authenticationService.getUserId();
         let deleteWorkflowUrl = this.WORK_FLOW_PREFIX_URL+'/id/'+id+'/loggedInUserId/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
-        return this.http.delete(deleteWorkflowUrl)
-          .map(this.authenticationService.extractData)
-          .catch(this.authenticationService.handleError);
+        return this.authenticationService.callDeleteMethod(deleteWorkflowUrl);
+    }
+
+    findWorkflowById(id:number){
+        let userId = this.authenticationService.getUserId();
+        let findByWorkFlowUrl = this.WORK_FLOW_PREFIX_URL+'/id/'+id+'/loggedInUserId/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(findByWorkFlowUrl);
     }
 
     /*********End : XNFR-316************/

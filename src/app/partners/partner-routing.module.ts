@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { AddPartnersComponent } from './add-partners/add-partners.component';
 import { ManagePartnersComponent } from './manage-partners/manage-partners.component';
 import { SocialContactsCallbackComponent } from '../contacts/social-contacts-callback/social-contacts-callback.component';
@@ -24,7 +23,8 @@ const routes: Routes = [
     {path: 'analytics/:id', component: PartnerReportsComponent},
     {path: 'individual-partner', component:IndividualPartnerAnalyticsComponent},
     {path: 'experience-automation', component:PartnersJourneyAutomationComponent},
-    {path: 'partner-workflow', component:WorkflowFormComponent}
+    {path: 'partner-workflow', component:WorkflowFormComponent},
+    {path: 'partner-workflow/:id', component:WorkflowFormComponent}
 ];
 
 @NgModule({
