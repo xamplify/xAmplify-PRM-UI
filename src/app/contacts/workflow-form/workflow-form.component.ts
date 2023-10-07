@@ -196,6 +196,11 @@ export class WorkflowFormComponent implements OnInit{
               this.xtremandLogger.errorPage(error);
             },()=>{
               this.selectedPartnerListIds = this.workflowDto.selectedPartnerListIds.sort();
+                let selectedListSortOption = {
+                'name': 'Selected List', 'value': 'selectedList'
+               };
+              this.partnerListsSortOption.campaignRecipientsDropDownOptions.push(selectedListSortOption);
+              this.partnerListsSortOption.selectedCampaignRecipientsDropDownOption = this.partnerListsSortOption.campaignRecipientsDropDownOptions[this.partnerListsSortOption.campaignRecipientsDropDownOptions.length - 1];
               this.getValidUsersCount();
               this.loadPartnerListsWithMinimumLimit();
               this.stopLoaders();
@@ -330,7 +335,8 @@ export class WorkflowFormComponent implements OnInit{
     this.referenceService.goToDiv('step-2');
     this.partnerListsLoader = true;
     if (!this.isAdd) {
-        //campaignRecipientsPagination.campaignId = this.campaign.campaignId;
+        pagination.campaignId = this.id;
+        pagination.type = 'workflow';
     }
     this.contactService.findContactsAndPartnersForCampaign(pagination)
         .subscribe(

@@ -153,6 +153,7 @@ export class ParterService {
     }
 
     findPartnerGroups(pagination:Pagination){
+        pagination.userId = this.authenticationService.getUserId();
         const apiUrl = this.URL + 'partnership/findPartnerGroups?access_token=' + this.authenticationService.access_token
         return this.findPartnerCompainesOrGroups(apiUrl,pagination);
     }
