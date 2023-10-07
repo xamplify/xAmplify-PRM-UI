@@ -118,6 +118,7 @@ export class WorkflowFormComponent implements OnInit{
   isCustomOptionSelected = false;
   isValidCustomDays = true;
   id:number = 0;
+  previouslySelectedTemplateId = 0;
   /****Send To*******/
   
   constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
@@ -203,6 +204,8 @@ export class WorkflowFormComponent implements OnInit{
               this.partnerListsSortOption.selectedCampaignRecipientsDropDownOption = this.partnerListsSortOption.campaignRecipientsDropDownOptions[this.partnerListsSortOption.campaignRecipientsDropDownOptions.length - 1];
               this.getValidUsersCount();
               this.loadPartnerListsWithMinimumLimit();
+              let previouslySelectedTemplateId = this.workflowDto.templateId;
+              this.previouslySelectedTemplateId = previouslySelectedTemplateId;
               this.stopLoaders();
             }
           );

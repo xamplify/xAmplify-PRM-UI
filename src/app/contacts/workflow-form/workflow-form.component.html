@@ -298,7 +298,8 @@
                           </form>
                           <!--Email Template-->
                           <app-select-email-template [@fadeInOut]  *ngIf="workflowDto?.customTemplateSelected"
-                          [selectedEmailTemplateId]="workflowDto?.templateId"  (selectedEmailTemplateEventEmitter)="getSelectedEmailTemplateReceiver($event)">
+                          [selectedEmailTemplateId]="workflowDto?.templateId" [previouslySelectedTemplateId]="previouslySelectedTemplateId"
+                           (selectedEmailTemplateEventEmitter)="getSelectedEmailTemplateReceiver($event)">
                           </app-select-email-template>
                         </div>
                       </div>
