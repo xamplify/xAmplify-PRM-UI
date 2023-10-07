@@ -207,6 +207,8 @@ export class WorkflowFormComponent implements OnInit{
               this.loadPartnerListsWithMinimumLimit();
               let previouslySelectedTemplateId = this.workflowDto.templateId;
               this.previouslySelectedTemplateId = previouslySelectedTemplateId;
+              this.validateNotificationSubject();
+              this.validateNotificationMessage();
               this.stopLoaders();
             }
           );
