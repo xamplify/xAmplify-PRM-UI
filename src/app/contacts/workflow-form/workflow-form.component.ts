@@ -119,6 +119,7 @@ export class WorkflowFormComponent implements OnInit{
   isValidCustomDays = true;
   id:number = 0;
   previouslySelectedTemplateId = 0;
+  isDuplicateTitle: boolean;
   /****Send To*******/
   
   constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
@@ -585,7 +586,9 @@ export class WorkflowFormComponent implements OnInit{
                 let errorObject = response.data.errorMessages[0];
                 let field = errorObject['field'];
                 if("title"==field){
-                  this.invalidTitlePattern = true;
+                  let message = errorObject['message'];
+                  this.invalidTitlePattern = message.indexOf("Invalid title pattern")>-1;
+                  this.isDuplicateTitle = message.indexOf("Already Exists")>-1;
                   this.titleDivClass = this.errorClass;
                 }else{
                   this.referenceService.showSweetAlertErrorMessage(this.properties.serverErrorMessage);
