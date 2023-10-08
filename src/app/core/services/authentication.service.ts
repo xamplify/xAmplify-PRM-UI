@@ -1114,6 +1114,13 @@ public callPostMethod(url: string,requestDto:any) {
     .catch(this.handleError);
 }
 
+public callPutMethod(url: string,requestDto:any){
+  return this.http.put(url,requestDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
+
 public callDeleteMethod(url:string){
   return this.http.delete(url)
           .map(this.extractData)

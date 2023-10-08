@@ -14,4 +14,5 @@ export class WorkflowDto {
     loggedInUserId = 0;
     customDays = 1;
     queryBuilderInputString:any;
+    isAdd = false;
 }

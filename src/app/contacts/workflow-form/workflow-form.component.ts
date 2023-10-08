@@ -577,7 +577,9 @@ export class WorkflowFormComponent implements OnInit{
      this.triggerLoader = true;
      this.workflowDto.selectedPartnerListIds = this.selectedPartnerListIds;
      this.workflowDto.queryBuilderInputString  = this.utilService.convertJsonToString(this.workflowDto.filterQueryJson);
-        this.parterService.saveWorkflow(this.workflowDto).subscribe(
+     this.workflowDto.id = this.id;
+     this.workflowDto.isAdd = this.isAdd;
+        this.parterService.saveOrUpdateWorkflow(this.workflowDto).subscribe(
             response=>{
               this.titleDivClass = this.successClass;
               if(response.statusCode==200){

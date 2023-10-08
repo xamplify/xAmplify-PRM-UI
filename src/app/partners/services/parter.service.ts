@@ -336,12 +336,16 @@ export class ParterService {
     }
 
 
-    saveWorkflow(workflowDto:WorkflowDto){
+    saveOrUpdateWorkflow(workflowDto:WorkflowDto){
         let userId = this.authenticationService.getUserId();
         workflowDto.loggedInUserId = userId;
-        const url = this.URL + 'workflow?access_token=' + this.authenticationService.access_token;
-        return this.authenticationService.callPostMethod(url,workflowDto);
-        
+        if(workflowDto.isAdd){
+            const url = this.URL + 'workflow?access_token=' + this.authenticationService.access_token;
+            return this.authenticationService.callPostMethod(url,workflowDto);
+        }else{
+            const url = this.URL + 'workflow/'+workflowDto.id+'?access_token=' + this.authenticationService.access_token;
+            return this.authenticationService.callPutMethod(url,workflowDto);
+        }
     }
 
     findTriggerTitles() {
