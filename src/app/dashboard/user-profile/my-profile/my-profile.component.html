@@ -543,10 +543,10 @@
                                                             </div>
                                                             <div class="col-xs-2">
                                                                 <div class="pull-right mb-flex" id="question-icons">
-                                                                    <button type="button" class="btn-danger button-blue btn_add mr_4" (click)="showAlert(i+1,question)">
+                                                                    <button type="button" class="btn-danger button-blue btn_add mr_4 spaceTopBottom" (click)="showAlert(i+1,question)">
                                                                         <span data-toggle="tooltip" data-placement="top" title="Delete" class="glyphicon glyphicon-trash"></span>
                                                                     </button>
-                                                                    <button type="button" class="btn-primary button-blue btn_add" (click)="addQuestion()" *ngIf="questions.length== i+1">
+                                                                    <button type="button" class="btn-primary button-blue btn_add spaceTopBottom" (click)="addQuestion()" *ngIf="questions.length== i+1">
                                                                         <span data-toggle="tooltip" data-placement="top" title="Add" class="glyphicon glyphicon-plus"></span>
                                                                     </button>
 
@@ -592,10 +592,10 @@
                                                             </div>
                                                             <div class="col-xs-2">
                                                                 <div class="pull-right mb-flex" id="question-icons">
-                                                                    <button type="button" class="btn-danger button-blue btn_add mr_4" (click)="deleteDealType(i+1,dealType)">
+                                                                    <button type="button" class="btn-danger button-blue btn_add mr_4 spaceTopBottom" (click)="deleteDealType(i+1,dealType)">
                                                                         <span data-toggle="tooltip" data-placement="top" title="Delete" class="glyphicon glyphicon-trash"></span>
                                                                     </button>
-                                                                    <button type="button" class="btn-primary button-blue btn_add" (click)="addDealtype()" *ngIf="dealtypes.length== i+1">
+                                                                    <button type="button" class="btn-primary button-blue btn_add spaceTopBottom" (click)="addDealtype()" *ngIf="dealtypes.length== i+1">
                                                                         <span data-toggle="tooltip" data-placement="top" title="Add" class="glyphicon glyphicon-plus"></span>
                                                                     </button>
 
@@ -613,7 +613,7 @@
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
                                         <section class="pricing py-5 border-none" *ngIf="integrationTabIndex == 0">
                                             <div class="col-xs-12 integration-row">
-                                                <div class="col-lg-4 col-sm-6 intg_mb_16" [class.disabled] = "isMarketoProcess" (click)="configmarketo()" *ngIf="!httpRequestLoader.isLoading">
+                                                <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 intg_mb_16" [class.disabled] = "isMarketoProcess" (click)="configmarketo()" *ngIf="!httpRequestLoader.isLoading">
                                                     <div [className]="activeCRMDetails?.type === 'MARKETO'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px">
                                                             <span *ngIf="integrateRibbonText == 'configured'" 
@@ -647,7 +647,7 @@
                                                     </div>
                                                 </div>   
 
-                                                <div class="col-lg-4 col-sm-6 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
+                                                <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
                                                     <div [className]="activeCRMDetails?.type === 'HUBSPOT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">                                                            
                                                             <span *ngIf="hubSpotRibbonText == 'configured'" 
@@ -679,7 +679,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-4 col-sm-6 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">                                                        
+                                                <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">                                                        
                                                     <div [className]="activeCRMDetails?.type === 'SALESFORCE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">
                                                                 <span *ngIf="sfRibbonText == 'configured'" 
@@ -711,7 +711,7 @@
 
                                            
                                         
-                                                <div class="col-lg-4 col-sm-6 tab_mt_20 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
+                                                <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
                                                     <div [className]="activeCRMDetails?.type === 'MICROSOFT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">    
                                                             <span *ngIf="microsoftRibbonText == 'configured'" 
@@ -741,7 +741,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4 col-sm-6 tab_mt_20 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
+                                                <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
                                                     <div [className]="activeCRMDetails?.type === 'PIPEDRIVE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">    
                                                             <span *ngIf="pipedriveRibbonText == 'configured'" 
@@ -989,7 +989,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-xs-12 p0 mScroll" style="padding-top: 10px !important;">
+                                                        <div class="col-xs-12 p0 mScroll table-responsive" style="padding-top: 10px !important;">
                                                             <table class='table tgrid' id="pipeline-list">
                                                                 <thead>
                                                                     <tr>

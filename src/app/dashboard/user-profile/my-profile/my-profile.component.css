@@ -2861,6 +2861,16 @@ th.border-top {
 .tab_mt_20 {
   margin-top: 20px;
 }
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+  .tab_mt_20 {
+    margin-top: 0px;
+  }
+  .pricing .card:hover {
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
+}
+
 @media only screen and (min-width: 300px) and (max-width: 767px) {
   .container-checkbox-xamplify {
     display: block;
@@ -3062,4 +3072,9 @@ span.pdLeftforspace {
 button.deleteBntAligment {
   position: relative;
   top: 7px;
+}
+
+button.spaceTopBottom{
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
