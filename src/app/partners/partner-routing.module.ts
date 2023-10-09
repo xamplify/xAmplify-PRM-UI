@@ -7,6 +7,7 @@ import { PartnerReportsComponent } from './partner-reports/partner-reports.compo
 import { IndividualPartnerAnalyticsComponent } from './individual-partner-analytics/individual-partner-analytics.component';
 import { PartnersJourneyAutomationComponent } from './partners-journey-automation/partners-journey-automation.component';
 import { WorkflowFormComponent } from '../contacts/workflow-form/workflow-form.component';
+import { PendingChangesGuard } from "app/component-can-deactivate";
 
 
 const routes: Routes = [
@@ -23,8 +24,8 @@ const routes: Routes = [
     {path: 'analytics/:id', component: PartnerReportsComponent},
     {path: 'individual-partner', component:IndividualPartnerAnalyticsComponent},
     {path: 'experience-automation', component:PartnersJourneyAutomationComponent},
-    {path: 'partner-workflow', component:WorkflowFormComponent},
-    {path: 'partner-workflow/:id', component:WorkflowFormComponent}
+    {path: 'partner-workflow', component:WorkflowFormComponent,canDeactivate: [PendingChangesGuard]},
+    {path: 'partner-workflow/:id', component:WorkflowFormComponent,canDeactivate: [PendingChangesGuard]}
 ];
 
 @NgModule({

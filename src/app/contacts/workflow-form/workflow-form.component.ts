@@ -1,4 +1,5 @@
-import { Component, ElementRef, OnInit, Renderer} from '@angular/core';
+import { Component, OnInit, Renderer,HostListener} from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { ContactService } from '../services/contact.service';
 import { Properties } from '../../common/models/properties';
 import { ActionsDescription } from '../../common/models/actions-description';
@@ -19,7 +20,9 @@ import { WorkflowDto } from '../models/workflow-dto';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
 import { CustomAnimation } from 'app/core/models/custom-animation';
-declare var  $:any, CKEDITOR:any, swal: any;
+import { ComponentCanDeactivate } from 'app/component-can-deactivate';
+
+declare var  $:any;
 @Component({
   selector: 'app-workflow-form',
   templateUrl: './workflow-form.component.html',
@@ -27,7 +30,7 @@ declare var  $:any, CKEDITOR:any, swal: any;
   providers: [SocialContact, Pagination, Properties, ActionsDescription,SortOption],
   animations:[CustomAnimation]
 })
-export class WorkflowFormComponent implements OnInit{
+export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
 
   isAdd = false;
   triggerTitles:Array<any> = new Array<any>();
@@ -120,6 +123,7 @@ export class WorkflowFormComponent implements OnInit{
   id:number = 0;
   previouslySelectedTemplateId = 0;
   isDuplicateTitle: boolean;
+  isSubmitButtonClicked = false;
   /****Send To*******/
   
   constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
@@ -571,6 +575,7 @@ export class WorkflowFormComponent implements OnInit{
 
   
   submitForm(){ 
+    this.isSubmitButtonClicked = true;
     this.validateNotificationSubject();
     this.validateNotificationMessage(false);
     if(this.isValidNotificationMessage && this.isValidNotificationSubject && this.selectedPartnerListIds.length>0){
@@ -637,9 +642,11 @@ export class WorkflowFormComponent implements OnInit{
     }
   }
 
-  
-
-  
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> | boolean {
+      this.authenticationService.stopLoaders();
+      return this.isSubmitButtonClicked || this.authenticationService.module.logoutButtonClicked;
+  }
 
  
 }
