@@ -208,7 +208,7 @@ export class WorkflowFormComponent implements OnInit{
               let previouslySelectedTemplateId = this.workflowDto.templateId;
               this.previouslySelectedTemplateId = previouslySelectedTemplateId;
               this.validateNotificationSubject();
-              this.validateNotificationMessage();
+              this.validateNotificationMessage(true);
               this.stopLoaders();
             }
           );
@@ -562,17 +562,17 @@ export class WorkflowFormComponent implements OnInit{
 
   getSelectedEmailTemplateReceiver(event:any){
     this.workflowDto.templateId = event;
-    this.validateNotificationMessage();
+    this.validateNotificationMessage(false);
   }
   customUiSwitchEventReceiver(event:any){
     this.workflowDto.customTemplateSelected = event;
-    this.validateNotificationMessage();
+    this.validateNotificationMessage(false);
   }
 
   
   submitForm(){ 
     this.validateNotificationSubject();
-    this.validateNotificationMessage();
+    this.validateNotificationMessage(false);
     if(this.isValidNotificationMessage && this.isValidNotificationSubject && this.selectedPartnerListIds.length>0){
      this.triggerLoader = true;
      this.workflowDto.selectedPartnerListIds = this.selectedPartnerListIds;
@@ -583,7 +583,8 @@ export class WorkflowFormComponent implements OnInit{
             response=>{
               this.titleDivClass = this.successClass;
               if(response.statusCode==200){
-                this.referenceService.isCreated = true;
+                this.referenceService.isCreated = this.isAdd;
+                this.referenceService.isUpdated = !this.isAdd;
                 this.navigateToPartnerJourneyAutomationSection();
               }else{
                 this.referenceService.scrollSmoothToTop();
@@ -617,16 +618,26 @@ export class WorkflowFormComponent implements OnInit{
     }
 
 
-  private validateNotificationMessage() {
+  private validateNotificationMessage(isEdit:boolean) {
     if(this.workflowDto.customTemplateSelected){
       this.isValidNotificationMessage = this.workflowDto.templateId > 0;
       this.notificationMessageDivClass =  this.isValidNotificationMessage ? this.successClass :this.errorClass;
     }else{
       let notificationMessage = this.referenceService.getCkEditorPlainDescription(this.workflowDto.notificationMessage);
-      this.isValidNotificationMessage = notificationMessage.length > 0;
+      if(isEdit){
+        this.isValidNotificationMessage = this.workflowDto.notificationMessage.length > 0;
+      }else{
+        if(this.isAdd){
+          this.isValidNotificationMessage = notificationMessage.length > 0;
+        }else{
+          this.isValidNotificationMessage = notificationMessage.length > 0 || this.workflowDto.notificationMessage.length>0;
+        }
+      }
       this.notificationMessageDivClass =  this.isValidNotificationMessage ? this.successClass :this.errorClass;
     }
   }
+
+  
 
   
 
