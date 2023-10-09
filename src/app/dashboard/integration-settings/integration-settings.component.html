@@ -5,7 +5,7 @@
 <div>
   <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
     <li class="active"><a data-toggle="tab" href="#home">User Info</a></li>
-    <li *ngIf="!isOnlyPartner"><a data-toggle="tab" href="#menu1">Custom fields</a></li>
+    <li *ngIf="!(isOnlyPartner || isPartnerTeamMember)"><a data-toggle="tab" href="#menu1">Custom fields</a></li>
     <li class="closebtn"><button type="button" class="btn btn-warning" (click)="closeSfSettings()">Close</button></li>
   </ul>  
 </div>

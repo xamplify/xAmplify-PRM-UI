@@ -1,3 +1,8 @@
-#donut-chart-container{
+#donut-chart-container,
+#activeInActivePartnersDonut{
     height: 250px;
+}
+.active-donut-pie-chart {
+    min-height: 480px;
+    margin-bottom:20px
 }
