@@ -20,8 +20,8 @@
   </div>
   <div class="page-bar p10">
     <div class="row">
-      <app-box-loader [countLoader]="2" *ngIf="triggerLoader || triggerTitlesLoader"></app-box-loader>
-      <div class="col-sm-12 col-md-12 col-lg-12" *ngIf="!triggerLoader && !triggerTitlesLoader">
+      <app-box-loader [countLoader]="2" *ngIf="triggerLoader || triggerTitlesLoader || fromEmailLoader"></app-box-loader>
+      <div class="col-sm-12 col-md-12 col-lg-12" *ngIf="!triggerLoader && !triggerTitlesLoader && !fromEmailLoader">
         <div class="portlet light row steps-view">
           <div class="col-block width" [attr.class]="triggersTabClass" (click)="showTriggersTab()" style="width: 50%;">
             <div class="cenetered-block colorbox-1">
@@ -44,8 +44,8 @@
   <div>
     <div>
       <div>
-        <app-modal-popup-loader *ngIf="triggerLoader || triggerTitlesLoader"></app-modal-popup-loader>
-        <div *ngIf="!triggerLoader && !triggerTitlesLoader" class="row mr-4px-ml-0px">
+        <app-modal-popup-loader *ngIf="triggerLoader || triggerTitlesLoader || fromEmailLoader"></app-modal-popup-loader>
+        <div *ngIf="!triggerLoader && !triggerTitlesLoader && !fromEmailLoader" class="row mr-4px-ml-0px">
           <!--Prompt Tab -->
           <div class="page-bar p20" id="step-1">
             <div class="caption" style="padding-top: 11px !important;">
@@ -66,7 +66,6 @@
                   <span class="pull-left required" *ngIf="invalidTitlePattern && titleDivClass=='form-group has-error has-feedback'">Invalid Title Pattern</span>
                 </div>
               </div>
-              
               <br><br>
               <p class="align-paratext">Define the prompt when this happens</p>
               <div class="col-sm-4">
@@ -268,11 +267,23 @@
               <div class="col-sm-12 mt10">
                 <div class="form-group" [attr.class]="preHeaderDivClass">
                   <label  class="form-label">Pre Header<span class="required">*</span></label>
-                  <input type="text" class="form-control" autocomplete="off" placeholder="Subject" [(ngModel)]="workflowDto.preHeader" name="workflowDto.preHeader" (input)="validatePreHeader()">
+                  <input type="text" class="form-control" autocomplete="off" placeholder="Pre Header" [(ngModel)]="workflowDto.preHeader" name="workflowDto.preHeader" (input)="validatePreHeader()">
                   <span class="pull-left required" *ngIf="workflowDto?.preHeader?.length==0 && preHeaderDivClass=='form-group has-error has-feedback'">Please Enter Pre Header</span>
                 </div>
               </div>
-
+              <!--From Email-->
+              <div class="col-sm-12 mt10">
+                <div class="form-group">
+                  <label  class="form-label">From Email<span class="required">*</span></label>
+                  <select class="form-control" name="workflowDto.fromEmailUserId" [(ngModel)]="workflowDto.fromEmailUserId" style="width: 100%">
+                    <option *ngFor="let fromEmailUser of fromEmailUsers"
+                        [ngValue]="fromEmailUser.id">
+                        {{fromEmailUser.emailId}}
+                    </option>
+                </select>
+                </div>
+              </div>
+              <!--Email Template-->
               <div class="col-sm-12">
                 <div class="form-group">
                   <div class="row">

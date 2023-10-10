@@ -35,6 +35,8 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
   isAdd = false;
   triggerTitles:Array<any> = new Array<any>();
   triggerTitlesLoader = true;
+  fromEmailLoader = true;
+  fromEmailUsers:Array<any> = new Array<any>();
   divs: number[] = [];
   newDivs: number[] = [];
   clickOr = true;
@@ -126,6 +128,7 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
   previouslySelectedTemplateId = 0;
   isDuplicateTitle: boolean;
   isSubmitButtonClicked = false;
+  loggedInUserId = 0;
   /****Send To*******/
   
   constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
@@ -133,6 +136,7 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
 		public actionsDescription: ActionsDescription,public route: ActivatedRoute,public parterService: ParterService,public logger: XtremandLogger,public dealRegSevice: DealRegistrationService,
     private pagerService:PagerService,private utilService:UtilService,private render: Renderer){
       this.referenceService.renderer = this.render;
+      this.loggedInUserId = this.authenticationService.getUserId();
       
     }
 
@@ -141,9 +145,25 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
     this.id = this.utilService.getRouterParameterValue(this.route,'id');
     this.isAdd = this.id==undefined || this.id==0;
     this.findTriggerTitles();
+    this.findAllUsers();
     this.loadPromptAndNotificationTabsData();
     this.showTriggersTab();
   }
+  findAllUsers() {
+    this.authenticationService.findAllUsers().subscribe(
+      response=>{
+        this.fromEmailUsers = response.data;
+        this.fromEmailLoader = false;
+        if(this.isAdd){
+          let teamMember = this.fromEmailUsers.filter((teamMember) => teamMember.id == this.loggedInUserId)[0];
+          this.workflowDto.fromEmailUserId = teamMember.id;
+          this.workflowDto.fromName = $.trim(teamMember.firstName + " " + teamMember.lastName);
+        }
+      },error=>{
+        this.fromEmailLoader = false;
+      });
+  }
+ 
 
   stopLoaders(){
     this.partnerListsLoader = false;
@@ -183,48 +203,52 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
         if(this.isAdd){
           this.loadPartnerListsWithMinimumLimit();
         }else{
-          this.parterService.findWorkflowById(this.id).subscribe(
-            response=>{
-              this.workflowDto = response.data;
-              this.editedTriggerTitle = this.workflowDto.title;
-              let jsonString = this.workflowDto.queryBuilderInputString;
-              let isValidJson = this.utilService.isValidJsonString(jsonString);
-              if(isValidJson){
-                let json = this.utilService.convertJsonStringToJsonObject(jsonString);
-                this.workflowDto.filterQueryJson = json;
-              }else{
-                this.workflowDto.filterQueryJson = this.query;
-              }
-              this.setDropDownDataAndQueryBuilderData(this.workflowDto.subjectId,this.workflowDto.actionId,this.workflowDto.timePhraseId);
-              if(!this.isAdd){
-                this.validateTitle();
-                this.addCustomDaysTextBox();
-              }
-            },error=>{
-              this.xtremandLogger.errorPage(error);
-            },()=>{
-              this.selectedPartnerListIds = this.workflowDto.selectedPartnerListIds.sort();
-                let selectedListSortOption = {
-                'name': 'Selected List', 'value': 'selectedList'
-               };
-              this.partnerListsSortOption.campaignRecipientsDropDownOptions.push(selectedListSortOption);
-              this.partnerListsSortOption.selectedCampaignRecipientsDropDownOption = this.partnerListsSortOption.campaignRecipientsDropDownOptions[this.partnerListsSortOption.campaignRecipientsDropDownOptions.length - 1];
-              this.getValidUsersCount();
-              this.loadPartnerListsWithMinimumLimit();
-              let previouslySelectedTemplateId = this.workflowDto.templateId;
-              this.previouslySelectedTemplateId = previouslySelectedTemplateId;
-              this.validateNotificationSubject();
-              this.validatePreHeader();
-              this.validateNotificationMessage(true);
-              this.stopLoaders();
-            }
-          );
+          this.findWorkflowData();
         }
       }
     );
   }
 
   
+  private findWorkflowData() {
+    this.parterService.findWorkflowById(this.id).subscribe(
+      response => {
+        this.workflowDto = response.data;
+        this.editedTriggerTitle = this.workflowDto.title;
+        let jsonString = this.workflowDto.queryBuilderInputString;
+        let isValidJson = this.utilService.isValidJsonString(jsonString);
+        if (isValidJson) {
+          let json = this.utilService.convertJsonStringToJsonObject(jsonString);
+          this.workflowDto.filterQueryJson = json;
+        } else {
+          this.workflowDto.filterQueryJson = this.query;
+        }
+        this.setDropDownDataAndQueryBuilderData(this.workflowDto.subjectId, this.workflowDto.actionId, this.workflowDto.timePhraseId);
+        if (!this.isAdd) {
+          this.validateTitle();
+          this.addCustomDaysTextBox();
+        }
+      }, error => {
+        this.xtremandLogger.errorPage(error);
+      }, () => {
+        this.selectedPartnerListIds = this.workflowDto.selectedPartnerListIds.sort();
+        let selectedListSortOption = {
+          'name': 'Selected List', 'value': 'selectedList'
+        };
+        this.partnerListsSortOption.campaignRecipientsDropDownOptions.push(selectedListSortOption);
+        this.partnerListsSortOption.selectedCampaignRecipientsDropDownOption = this.partnerListsSortOption.campaignRecipientsDropDownOptions[this.partnerListsSortOption.campaignRecipientsDropDownOptions.length - 1];
+        this.getValidUsersCount();
+        this.loadPartnerListsWithMinimumLimit();
+        let previouslySelectedTemplateId = this.workflowDto.templateId;
+        this.previouslySelectedTemplateId = previouslySelectedTemplateId;
+        this.validateNotificationSubject();
+        this.validatePreHeader();
+        this.validateNotificationMessage(true);
+        this.stopLoaders();
+      }
+    );
+  }
+
   private loadPartnerListsWithMinimumLimit() {
     this.partnerListsPagination.maxResults = 4;
     this.findPartnerLists(this.partnerListsPagination);

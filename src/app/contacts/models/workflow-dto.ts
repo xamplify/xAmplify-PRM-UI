@@ -17,4 +17,6 @@ export class WorkflowDto {
     isAdd = false;
     preHeader = "";
     fromEmailUserId = 0;
+    fromEmail = "";
+    fromName = "";
 }

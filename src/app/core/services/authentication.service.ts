@@ -1102,6 +1102,13 @@ findAllTeamMembers(pagination:Pagination){
   return this.callPostMethod(url,pagination);
 }
 
+findAllUsers(){
+  let url = this.REST_URL +"company/users/"+this.getUserId()+"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+}
+
+
+
 public callGetMethod(url: string) {
   return this.http.get(url)
     .map(this.extractData)
