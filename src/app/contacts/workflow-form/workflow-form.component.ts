@@ -95,6 +95,7 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
   notificationSubjectDivClass:string = this.formGroupClass;
   notificationMessageDivClass:string = this.formGroupClass;
   preHeaderDivClass:string = this.formGroupClass;
+  mergeTagsInput: any = {};
   /***Send To******/
   partnerListsLoader = false;
   partnerListsPagination:Pagination = new Pagination();
@@ -677,6 +678,33 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
       this.notificationMessageDivClass =  this.isValidNotificationMessage ? this.successClass :this.errorClass;
     }
   }
+
+  openMergeTagsPopup(type: string, autoResponseSubject: any) {
+    this.mergeTagsInput['isEvent'] = false;
+    this.mergeTagsInput['isCampaign'] = false;
+    this.mergeTagsInput['hideButton'] = true;
+    this.mergeTagsInput['type'] = type;
+    this.mergeTagsInput['autoResponseSubject'] = autoResponseSubject;
+  }
+
+  clearHiddenClick() {
+    this.mergeTagsInput['hideButton'] = false;
+  }
+
+appendValueToSubjectLine(event: any) {
+  if (event != undefined) {
+      let type = event['type'];
+      let copiedValue = event['copiedValue'];
+      if (type == "subject") {
+          let subjectLine = $.trim($('#notificationSubject').val());
+          let updatedValue = subjectLine + " " + copiedValue;
+          $('#notificationSubject').val(updatedValue);
+          this.workflowDto.notificationSubject = updatedValue;
+          this.validateNotificationSubject();
+      } 
+  }
+  this.mergeTagsInput['hideButton'] = false;
+}
 
   @HostListener('window:beforeunload')
   canDeactivate(): Observable<boolean> | boolean {

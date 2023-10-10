@@ -258,8 +258,19 @@
               <!--Subject Line--->
               <div class="col-sm-12 mt10">
                 <div class="form-group" [attr.class]="notificationSubjectDivClass">
-                  <label  class="form-label">Subject<span class="required">*</span></label>
-                  <input type="text" class="form-control" autocomplete="off" placeholder="Subject" [(ngModel)]="workflowDto.notificationSubject" name="workflowDto.notificationSubject" (input)="validateNotificationSubject()">
+                  <label  class="form-label float-left">Subject<span class="required">*</span></label>
+                  <div class="col-sm-12 mt10 ml--15px">
+                    <div class="input-group merge-tag-input-border">
+                        <input type="text" id="notificationSubject"  placeholder="{merge tag} + Subject" class="form-control" [(ngModel)]="workflowDto.notificationSubject" name="workflowDto.notificationSubject"  (input)="validateNotificationSubject();" autocomplete="off" />
+                        <span class="input-group-btn" style="border: none !important;">
+                            <button class="btn btn-default button-color" type="button" 
+                            data-toggle="tooltip" data-placement="right"
+                            title="Insert Merge Tags" (click)="openMergeTagsPopup('subject',0)">
+                                <i class="fa fa-plus-circle npcfs plus-color" aria-hidden="true"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
                   <span class="pull-left required" *ngIf="workflowDto?.notificationSubject?.length==0 && notificationSubjectDivClass=='form-group has-error has-feedback'">Please Enter Subject</span>
                 </div>
               </div>
@@ -344,4 +355,7 @@
 <ng-container *ngIf="showUsersPreview">
   <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
 </ng-container>
+
+<app-merge-tags *ngIf="mergeTagsInput?.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()" (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>
+
 
