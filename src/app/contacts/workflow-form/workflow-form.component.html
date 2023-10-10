@@ -256,6 +256,7 @@
                   </div>
                 </div>
               </div>
+              <!--Subject Line--->
               <div class="col-sm-12 mt10">
                 <div class="form-group" [attr.class]="notificationSubjectDivClass">
                   <label  class="form-label">Subject<span class="required">*</span></label>
@@ -263,6 +264,15 @@
                   <span class="pull-left required" *ngIf="workflowDto?.notificationSubject?.length==0 && notificationSubjectDivClass=='form-group has-error has-feedback'">Please Enter Subject</span>
                 </div>
               </div>
+              <!--PreHeader-->
+              <div class="col-sm-12 mt10">
+                <div class="form-group" [attr.class]="preHeaderDivClass">
+                  <label  class="form-label">Pre Header<span class="required">*</span></label>
+                  <input type="text" class="form-control" autocomplete="off" placeholder="Subject" [(ngModel)]="workflowDto.preHeader" name="workflowDto.preHeader" (input)="validatePreHeader()">
+                  <span class="pull-left required" *ngIf="workflowDto?.preHeader?.length==0 && preHeaderDivClass=='form-group has-error has-feedback'">Please Enter Pre Header</span>
+                </div>
+              </div>
+
               <div class="col-sm-12">
                 <div class="form-group">
                   <div class="row">
@@ -310,8 +320,8 @@
             </div>
             <!-- Action forms row end -->
             <button type="button" class="btn Btn-Gray margin-left-negative-fifteen-px" (click)="showTriggersTab()">Previous</button>
-            <button type="submit" class="btn  btn Btn-Green float-right mrm-15" [disabled]="!isValidNotificationSubject ||!isValidNotificationMessage  || this.selectedPartnerListIds==0"
-               (click)="isValidNotificationSubject && this.selectedPartnerListIds.length>0 && isValidNotificationMessage && submitForm()">Submit</button>
+            <button type="submit" class="btn btn Btn-Green float-right mrm-15" [disabled]="!isValidNotificationSubject ||!isValidNotificationMessage || !isValidPreHeader
+              || this.selectedPartnerListIds==0"  (click)="isValidNotificationSubject && this.selectedPartnerListIds.length>0 && isValidNotificationMessage && isValidPreHeader && submitForm()">Submit</button>
           </div>
 
         </div>

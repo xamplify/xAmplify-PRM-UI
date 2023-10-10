@@ -92,6 +92,7 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
   customDaysDivClass:string = this.formGroupClass;
   notificationSubjectDivClass:string = this.formGroupClass;
   notificationMessageDivClass:string = this.formGroupClass;
+  preHeaderDivClass:string = this.formGroupClass;
   /***Send To******/
   partnerListsLoader = false;
   partnerListsPagination:Pagination = new Pagination();
@@ -117,6 +118,7 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
   isValidTriggerTab = false;
   isValidPartnerListIds = false;
   isValidNotificationSubject = false;
+  isValidPreHeader = false;
   isValidNotificationMessage = false;
   isCustomOptionSelected = false;
   isValidCustomDays = true;
@@ -212,6 +214,7 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
               let previouslySelectedTemplateId = this.workflowDto.templateId;
               this.previouslySelectedTemplateId = previouslySelectedTemplateId;
               this.validateNotificationSubject();
+              this.validatePreHeader();
               this.validateNotificationMessage(true);
               this.stopLoaders();
             }
@@ -577,6 +580,7 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
   submitForm(){ 
     this.isSubmitButtonClicked = true;
     this.validateNotificationSubject();
+    this.validatePreHeader();
     this.validateNotificationMessage(false);
     if(this.isValidNotificationMessage && this.isValidNotificationSubject && this.selectedPartnerListIds.length>0){
      this.triggerLoader = true;
@@ -620,6 +624,14 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
       this.isValidNotificationSubject = trimmedNotificationSubject.length>0;
       let isValidNotificationSubject = trimmedNotificationSubject.length>0 &&  this.isValidNotificationSubject;
       this.notificationSubjectDivClass =  isValidNotificationSubject ? this.successClass :this.errorClass;
+    }
+
+    private validatePreHeader(){
+      this.workflowDto.preHeader = $.trim(this.workflowDto.preHeader);
+      let trimmedPreHeader = $.trim(this.workflowDto.preHeader.toLowerCase());
+      this.isValidPreHeader = trimmedPreHeader.length>0;
+      let isValidPreHeader = trimmedPreHeader.length>0 &&  this.isValidPreHeader;
+      this.preHeaderDivClass =  isValidPreHeader ? this.successClass :this.errorClass;
     }
 
 

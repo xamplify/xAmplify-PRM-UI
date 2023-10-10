@@ -15,4 +15,6 @@ export class WorkflowDto {
     customDays = 1;
     queryBuilderInputString:any;
     isAdd = false;
+    preHeader = "";
+    fromEmailUserId = 0;
 }
