@@ -397,8 +397,8 @@
                                         <div class="portlet-body scrollbar launchedCampaignsMaster"
                                             [dragula]='"bag-items"'>
                                             <div class="gu-block" *ngFor="let item of launchedCampaignsMaster">
-                                                <h6 class="gu-block-content" [id]="item.id">{{item.campaign |
-                                                    slice:0:27}}<span *ngIf="item.campaign?.length>27">...</span></h6>
+                                                <h6 data-placement="bottom" data-toggle="tooltip" title="{{item.campaign}}" class="gu-block-content" [id]="item.id">{{item.campaign |
+                                                    slice:0:19}}<span *ngIf="item.campaign?.length>19">...</span></h6>
                                             </div>
                                         </div>
                                     </div>
