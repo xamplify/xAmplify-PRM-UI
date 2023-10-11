@@ -685,15 +685,15 @@
 								
 							</div>
 							<ng-template #companyAdreddAndSocialAccounts>
-								<div class="panel-group">
+								<div class="panel-group edit_account">
 									<div class="panel panel-default" style="border-style: none !important;">
-										<div class="panel-heading" data-toggle="collapse"
+										<div class="panel-heading panel-header" data-toggle="collapse"
 											href="#collapse1" (click)="refService.scrollSmoothToBottom()">
 											<h4 class="panel-title f-w-500" translate>
 												Company Address <i class="fa fa-caret-down pull-right" aria-hidden="true"></i>
 											</h4>
 										</div>
-										<div id="collapse1" class="panel-collapse collapse">
+										<div id="collapse1" class="panel-collapse collapse panel-account">
 											<div class="form-group">
 												<label class="control-label" translate>Street</label> <input
 													type="text" id="street" [(ngModel)]="companyProfile.street"
@@ -736,15 +736,15 @@
 										</div>
 									</div>
 								</div>
-								<div class="panel-group">
+								<div class="panel-group edit_account">
 									<div class="panel panel-default" style="border-style: none !important;">
-										<div class="panel-heading" data-toggle="collapse"
+										<div class="panel-heading  panel-header" data-toggle="collapse"
 											href="#collapse2" (click)="refService.scrollSmoothToBottom()">
 											<h4 class="panel-title f-w-500" translate>
 												Social Accounts <i class="fa fa-caret-down pull-right" aria-hidden="true"></i>
 											</h4>
 										</div>
-										<div id="collapse2" class="panel-collapse collapse">
+										<div id="collapse2" class="panel-collapse collapse panel-account">
 											<div class="form-group" [attr.class]="facebookDivClass">
 												<label class="control-label" translate>Facebook</label> <input
 													type="text" id="facebook" name="facebook"

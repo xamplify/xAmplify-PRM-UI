@@ -193,3 +193,16 @@ svg {
 .upload-imgheight {
   height: 115px;
 }
+.edit_account{
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+}
+.panel-header{
+ padding:6px 10px;
+}
+.panel-account{
+padding: 10px;
+background-color: #eeeeee;
+border-radius: 3px;
+margin: 10px 10px;
+}

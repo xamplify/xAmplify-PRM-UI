@@ -1998,3 +1998,12 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .bg_color {
   background-color: var(--page-content) !important;
 }
+
+/*edit-company-profile*/
+.panel-account{
+  background-color: var(--page-content) !important;
+  opacity: 0.8;
+}
+.edit_account{
+  border: 1px solid var(--border-color) !important;
+}

@@ -2078,3 +2078,10 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .bg_color {
   background-color: #22313a !important;
 }
+/*edit-company-profile*/
+.panel-account{
+  background-color: #22313a !important;
+}
+.edit_account{
+  border: 1px solid #2f4857 !important;
+}
