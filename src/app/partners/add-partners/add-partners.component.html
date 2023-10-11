@@ -930,6 +930,12 @@
                                                     </td>
                                                     <td>
                                                         <div class="actions-block override-actions" style="display: flex;">
+                                                        <a *ngIf= "!contact.unsubscribed" data-toggle="tooltip" data-placement="bottom" title="unsubscribe user" (click)="unsubscribeUser(contact)">
+										                  <i class="fa fa-camera-retro"></i> 
+														</a>
+													  	<a *ngIf= "contact.unsubscribed" data-toggle="tooltip" data-placement="bottom" title="resubscribe user" (click)="resubscribeUser()">
+															<i class="fa-envelope-circle-check"></i>
+														</a>
                                                             <a id="envolope_{{i}}" (click)="sendMail(contact.id)">
                                                                 <i class="fa fa-envelope IconCustomization" aria-hidden="true"
                                                                 data-toggle="tooltip" data-placement="bottom"
@@ -1721,4 +1727,9 @@
  <ng-container *ngIf="mergeOptionClicked">
     <app-copy-group-users-modal-popup [userListId]="partnerListId" [selectedUserIds]="selectedUserIdsForMerging" (copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>      
  </ng-container>
+ 
+   <div *ngIf="contactService.isUnsubscribeContactModalPopup">
+	<app-unsubscribe-contact-modal [selectedUser] = "selectedUser" (notifyParent)="unsubscribeUserResult($event)">
+	</app-unsubscribe-contact-modal>
+ </div>
  

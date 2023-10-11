@@ -595,7 +595,13 @@
 							   <th scope="col" class="text-center hidden-xs"  *ngIf="!isPartner" translate>ADDRESS</th>
 							   <th scope="col" class="text-center " *ngIf="gdprStatus || isPartner"></th>
 							   <th scope="col" class="text-center hidden-xs" *ngIf="isPartner"></th>
-							   <th scope="col"  class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard && !sharedLeads" translate>ACTIONS</th>
+							   <th scope="col"  class='text-center' style="width:16%"
+							  *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  ||
+							  authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner
+							 || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList
+							 || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard" translate>
+							 ACTIONS
+							 </th>
 							</tr>
 						 </thead>
 						 <tbody>
@@ -703,15 +709,21 @@
 										*ngIf="contact.isShowDetails" translate>Less</span>
 									 </button>
 								  </td>
-								  <td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard && !sharedLeads">
+								  <td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard">
 									 <div class="actions-block override-actions" style="width:170px" >
+										<a *ngIf= "!contact.unsubscribed" data-toggle="tooltip" data-placement="bottom" title="unsubscribe user" (click)="unsubscribeUser(contact)">
+										<i class="fa fa-camera-retro"></i> 
+										</a>
+										<a *ngIf= "contact.unsubscribed" data-toggle="tooltip" data-placement="bottom" title="resubscribe user" (click)="resubscribeUser()">
+										<i class="fa-solid fa-mug-saucer"></i>
+										</a>
 										<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_edit}}" (click)="editUserDetails(contact)" *ngIf= "(!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)">
 										<i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
 										</a>
 										<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_delete}}" (click)="deleteUserShowAlert(contact.id)"
 										*ngIf= "selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 										&& ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))
-										&& !isTeamMemberPartnerList">
+										&& !isTeamMemberPartnerList && !sharedLeads">
 										<i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
 										</a>
 										<ng-container *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads
@@ -1288,3 +1300,13 @@
  <ng-container *ngIf="mergeOptionClicked">
 	<app-copy-group-users-modal-popup [userListId]="selectedContactListId" [selectedUserIds]="selectedUserIdsForMerging" (copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>      
  </ng-container>
+ 
+ 
+ 
+  <div *ngIf="contactService.isUnsubscribeContactModalPopup">
+	<app-unsubscribe-contact-modal [selectedUser] = "selectedUser" (notifyParent)="unsubscribeUserResult($event)">
+	</app-unsubscribe-contact-modal>
+ </div>
+ 
+ 
+ 

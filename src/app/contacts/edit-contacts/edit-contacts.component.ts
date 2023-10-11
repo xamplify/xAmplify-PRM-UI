@@ -75,7 +75,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	csvContacts = [];
 
 	contactListObject: ContactList;
-	selectedUser: User;
+	selectedUser: User = null;
 	selectedContactListName: string;
 	public validEmailPatternSuccess: boolean = true;
 	emailNotValid: boolean;
@@ -245,8 +245,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	 mergeOptionClicked = false;
 	 selectedUserIdsForMerging: any[];
 	  /****XNFR-278****/
-
-
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -3609,6 +3607,25 @@ copyGroupUsersModalPopupEventReceiver(){
 	this.mergeOptionClicked = false;
 	this.selectedUserIdsForMerging = [];
 }
+
+ unsubscribeUser(selectedUserForUnsubscribed : any){
+  this.contactService.isUnsubscribeContactModalPopup = true;
+  this.selectedUser = selectedUserForUnsubscribed;
+ }
+ 
+ 
+ unsubscribeUserResult(event : any){
+ this.contactService.isUnsubscribeContactModalPopup = false;
+ this.selectedUser = null ;
+ this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+ this.contactsCount(this.selectedContactListId);
+ this.customResponse = new CustomResponse('SUCCESS', event, true);
+ }
+ 
+  resubscribeUser(){
+  this.contactService.isUnsubscribeContactModalPopup = true;
+  this.loggedInUserId = this.authenticationService.getUserId();
+ }
 
     
 }
