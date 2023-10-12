@@ -357,7 +357,7 @@
                               </div>
                               <div class="row div table-color" *ngIf="activeTabName == 'customskin' ">
 
-                                <table class="table tgrid table-hover" id="manage-assets-table">
+                                <table class="table tgrid table-responsive table-hover" id="manage-assets-table">
                                     <thead class="table-bgcolor">
                                         <tr>
                                             <th class="text-center">Custom Themes</th>
@@ -381,7 +381,7 @@
                                             </td>
                                             <td class="mAlignView">
                                                 <div class="actions-block override-actions ActionAlign mb_whitespace">
-                                                    <div class="mActionAlign ActionButtonPad iconmobile-align">
+                                                    <div class="mActionAlign ActionButtonPad iconmobile-align tableIconWidth">
                                                         <a class="mMobileDisable" data-toggle="tooltip" data-placement="bottom" title="Edit"
                                                             (click)="goToCustomThemes();showDto(dto);updateTheme();"><i
                                                                 aria-hidden="true"
@@ -998,23 +998,23 @@
                                                             <table class='table tgrid' id="pipeline-list">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th style="width:40%;"><span>Name</span></th>
-                                                                        <th style="width:20%;">Created By</th> 
-                                                                        <th style="width:20%;">Stages</th>                                                                        
-                                                                        <th style="text-align:right;width:20%;">Actions</th>
+                                                                        <th class="PipelinesTablet-thWidth"><span>Name</span></th>
+                                                                        <th class="PipelinesTablet-thWidth1">Created By</th> 
+                                                                        <th class="PipelinesTablet-thWidth2">Stages</th>                                                                        
+                                                                        <th class="PipelinesTablet-thWidth3">Actions</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr *ngFor="let pipeline of pipelinePagination.pagedItems ;let i =index" id="pipeline_{{pipeline.id}}">
                                                                        
-                                                                        <td><i class="fa fa-sort-amount-asc" style="margin-right:10px;display: inline-block;
+                                                                        <td><i class="fa fa-sort-amount-asc" style="margin-right:5px;display: inline-block;
                                                                             border-radius: 50%;border: 1px solid #000000;padding: 8px 8px 8px 9px;font-size: 13px !important;"></i>
-                                                                            <span data-toggle="tooltip" data-placement="top" title="{{pipeline.name}}">{{pipeline.name | slice:0:45}}<span
-                                                                                    *ngIf="pipeline?.name?.length>45">...</span></span>
+                                                                            <span class="PipelinesNameTextCu" data-toggle="tooltip" data-placement="top" title="{{pipeline.name}}">{{pipeline.name | slice:0:30}}<span
+                                                                                    *ngIf="pipeline?.name?.length>30">...</span></span>
                                                                             <h6 class="view-banner" *ngIf="pipeline.crmPipeline" translate>{{pipeline.integrationType}}</h6>
                                                                         </td>                                                                        
                                                                         <td>
-                                                                            <h5 class='ellipsis' title="{{pipeline.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{pipeline.createdByName | slice:0:20}}
+                                                                            <h5 class='ellipsis' title="{{pipeline.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;padding: 0px;">{{pipeline.createdByName | slice:0:20}}
                                                                                 <span *ngIf="pipeline.createdByName?.length>20">...</span>
                                                                               </h5>
                                                                               <h6 class='m0' style="font-weight: 400;">
@@ -1027,7 +1027,7 @@
                                                                               </h5>
                                                                         </td>
                                                                         <td class="mAlign">{{pipeline.stages.length}}</td>
-                                                                       <td class="mAlign">
+                                                                       <td class="mAlign tableIconsAliggnLine">
                                                                             <div class="actions-block override-actions mb_whitespace tb_view_actions">                                                                                
                                                                                 <ng-container>
                                                                                     <a *ngIf="pipeline.canSync" data-toggle="tooltip" data-placement="top" title="Synchronize with {{pipeline.integrationType}}" (click)="syncPipeline(pipeline)">

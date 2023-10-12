@@ -2007,3 +2007,6 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .edit_account{
   border: 1px solid var(--border-color) !important;
 }
+.dropdown-menu li > a > [class^="icon-"], .dropdown-menu li > a > [class*=" icon-"] {
+  color: var(---text-color) !important;
+}
