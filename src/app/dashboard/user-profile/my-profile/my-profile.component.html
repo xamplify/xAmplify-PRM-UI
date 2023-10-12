@@ -115,6 +115,11 @@
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'customskin'}"  (click)="activateTab('customskin');clearCustomResponse()" translate>
                                     {{properties.customskin | translate}} </a>
                             </li>
+                            <!--XNFR-386--->
+                            <!--Custom Login Screen Settings-->
+                            <li  [ngClass]="{'active-tab': activeTabName == properties?.customLoginScreen}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="authenticationService?.vanityURLEnabled && authenticationService.module.isAnyAdminOrSupervisor">
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.customLoginScreen}" (click)="activateTab(properties?.customLoginScreen);clearCustomResponse()" translate>{{properties?.customLoginScreen}}</a>
+                            </li>
                              <!--------------Lead/Deal Configuration----------------------->
                             <div class="my-profile-header-text" *ngIf="((hasAllAccess || 
                             hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
@@ -1571,7 +1576,7 @@
                                     </div>
 
                                     <!--Exclude functionality code-->
-                                    <div class="tab-pane hidden-xs"[ngClass]="{'active': activeTabName == 'exclude'}">
+                                    <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'exclude'}">
                                         <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
                                         </app-dashboard-loader>
                                         <app-response-message [customResponse]="excludeUserCustomResponse"></app-response-message>
@@ -1892,6 +1897,8 @@
                                      <!-- Support Settings -->
                                      <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption" class="tab-pane" [ngClass]="{'active': activeTabName == 'support'}"></app-enable-support-access-to-vendor>
                                      
+                                     <!--XNFR-386-->
+                                     <app-custom-login-screen-settings *ngIf="isCustomLoginScreenSettingsOptionClicked"></app-custom-login-screen-settings>
                                 </div>
                             </div>
                         </div>
