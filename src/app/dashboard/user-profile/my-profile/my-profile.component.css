@@ -3093,17 +3093,19 @@ button.spaceTopBottom{
 .PipelinesTablet-thWidth1{width:20%;}
 .PipelinesTablet-thWidth2{width:20%;}
 .PipelinesTablet-thWidth3{text-align:right;width:20%;}
-
+.exclusionNoRecordsFound {margin-top: 100px;}
 @media only screen and (min-width: 1080px) and (max-width: 1260px) {  
   span.PipelinesNameTextCu {
     font-size: 10px;
   }
 } 
-@media only screen and (min-width: 992px) and (max-width: 1080px) {  
+@media only screen and (min-width: 992px) and (max-width: 1086px) {  
   span.PipelinesNameTextCu {
     font-size: 8px;
   }
   td.thisTabletdTextCu h5, h6, a {
     font-size: 11px;
   }
+  .exclusionNoRecordsFound {margin-top: 140px;}
 } 
+
