@@ -238,7 +238,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   emailTemplateNameForSendTestEmail = "";
   anyLaunchButtonClicked = false;
   whiteLabeledBannerText = "";
-  
+  /***XNFR-387 ****/
+  notifyWorkflowToolTipMessage = "";
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -602,6 +603,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                     this.campaign.emailNotification = true;
                     this.getTimeZones(this.campaign.countryId);
                 }
+                /***XNFR-382 */
+                this.notifyWorkflowToolTipMessage = "Send email notifications to your "+this.partnerModuleCustomName+" about your campaign workflows";
                 this.removeBlur();
             },error=>{
                 this.removeBlur();
@@ -2164,7 +2167,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             'configurePipelines': this.campaign.configurePipelines,
             /***XNFR-255****/
             'whiteLabeled':this.campaign.whiteLabeled,
-            'description':this.campaign.description
+            'description':this.campaign.description,
+            'notifyChannelCampaignWorkflows':this.campaign.notifyChannelCampaignWorkflows
         };
         return data;
     }
@@ -2403,5 +2407,9 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     changeDescriptionClassName(description:any){
         let trimmedDescription = $.trim(description);
         this.campaignDescriptionDivClass = trimmedDescription.length>0 ? this.successClass : this.formGroupClass;
+    }
+
+    setNotifyChannelCampaignWorkflows(event:boolean){
+        this.campaign.notifyChannelCampaignWorkflows = event;
     }
 }
