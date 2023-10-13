@@ -1,10 +1,10 @@
-<div id="unsubscribeContactModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+<div id="resubscribeContactModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
 <div class="modal-dialog  accounts-modal" style="position: relative !important;">
   <!-- Modal content-->
   <div class="modal-content">
     <div class="modal-header">
-      <button type="button" class="close-circle"  (click)="unsubscribeContactModalClose()">
+      <button type="button" class="close-circle"  (click)="resubscribeContactModalClose()">
       <i class="fa fa-times" aria-hidden="true" style="margin-top: 0px;"></i></button>
       <h4 class="modal-title size-font" translate>Add Reason</h4>
     </div>
@@ -15,16 +15,12 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       <form class="form-horizontal" autocomplete="off">
       
       <div style="background-color:#d9edf7; padding:10px;">
-      By unsubscribing, the specified email will no longer receive emails from you. <br/>     
+      By subscribing, the specified email will continue to receive the emails from you. <br/>     
       Email : {{selectedUser.emailId}}
       <br/>    
       </div>
       <br/>
-      
-				   <ng-container *ngFor="let reason of unsubscribeReasons;let i = index">
-					  <input type="radio" name="reason" value="{{reason?.reason}}" (click)="addReason(reason)"> {{reason?.reason}}<br>
-				   </ng-container>
-				   <div *ngIf="isOtherReason" style="width: 50%;">
+				   <div>
 					  <label for="comment">Reason:</label>
 					  <textarea class="form-control" [(ngModel)]="reason" (input)="characterSize()" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
 					  <label class="text-area-css">{{characterleft}} characters left</label>
@@ -33,8 +29,8 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
     </div>
   </div>
   <div class="modal-footer" style="border:none" >
-    <button class="btn Btn-Gray" (click)="unsubscribeContactModalClose()" translate>Cancel</button>
-    <button  type="submit" class="btn Btn-Green" [disabled]="!reason.length>0"  (click)="unsubscribeUser()" translate>Unsubscribe</button>
+    <button class="btn Btn-Gray" (click)="resubscribeContactModalClose()" translate>Cancel</button>
+    <button  type="submit" class="btn Btn-Green" [disabled]="!reason.length>0"  (click)="resubscribeUser()" translate>Subscribe</button>
   </div>
 
   </div>

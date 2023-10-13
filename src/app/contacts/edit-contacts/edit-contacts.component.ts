@@ -3612,8 +3612,6 @@ copyGroupUsersModalPopupEventReceiver(){
   this.contactService.isUnsubscribeContactModalPopup = true;
   this.selectedUser = selectedUserForUnsubscribed;
  }
- 
- 
  unsubscribeUserResult(event : any){
  this.contactService.isUnsubscribeContactModalPopup = false;
  this.selectedUser = null ;
@@ -3622,10 +3620,19 @@ copyGroupUsersModalPopupEventReceiver(){
  this.customResponse = new CustomResponse('SUCCESS', event, true);
  }
  
-  resubscribeUser(){
-  this.contactService.isUnsubscribeContactModalPopup = true;
-  this.loggedInUserId = this.authenticationService.getUserId();
+ resubscribeUser(selectedUserForUnsubscribed : any){
+  this.contactService.isresubscribeContactModalPopup = true;
+  this.selectedUser = selectedUserForUnsubscribed;
  }
+ resubscribeUserResult(event : any){
+ this.contactService.isresubscribeContactModalPopup = false;
+ this.selectedUser = null ;
+ this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+ this.contactsCount(this.selectedContactListId);
+ this.customResponse = new CustomResponse('SUCCESS', event, true);
+ }
+ 
+
 
     
 }

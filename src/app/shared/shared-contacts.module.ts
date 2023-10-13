@@ -13,14 +13,15 @@ import { SocialContactsCallbackComponent } from '../contacts/social-contacts-cal
 import { SharedLibraryModule } from '../shared/shared-library.module';
 import { AddContactModalComponent } from '../contacts/add-contact-modal/add-contact-modal.component';
 import { UnsubscribeContactModalComponent } from '../contacts/unsubscribe-contact-modal/unsubscribe-contact-modal.component';
+import { ResubscribeContactModalComponent } from '../contacts/resubscribe-contact-modal/resubscribe-contact-modal.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 
 @NgModule({
         imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, SharedModule, CommonComponentModule, SharedLibraryModule ],
         declarations: [AddContactsComponent, ManageContactsComponent,EditContactsComponent,SocialContactsCallbackComponent, AddContactModalComponent,
-        UnsubscribeContactModalComponent],
+        UnsubscribeContactModalComponent, ResubscribeContactModalComponent],
         exports: [FormsModule, CommonModule, RouterModule, AddContactsComponent,ManageContactsComponent,EditContactsComponent,
-                  SocialContactsCallbackComponent, AddContactModalComponent, UnsubscribeContactModalComponent],
+                  SocialContactsCallbackComponent, AddContactModalComponent, UnsubscribeContactModalComponent, ResubscribeContactModalComponent],
         providers: [SocialPagerService],
 })
 

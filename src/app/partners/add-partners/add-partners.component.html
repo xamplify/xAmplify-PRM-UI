@@ -928,13 +928,13 @@
                                                                 *ngIf="contact.isShowDetails" translate>Less</span>
                                                         </button>
                                                     </td>
-                                                    <td>
+                                                    <td class="white-space-transform">
                                                         <div class="actions-block override-actions" style="display: flex;">
-                                                        <a *ngIf= "!contact.unsubscribed" data-toggle="tooltip" data-placement="bottom" title="unsubscribe user" (click)="unsubscribeUser(contact)">
-										                  <i class="fa fa-camera-retro"></i> 
+                                                        <a *ngIf= "!contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor" data-toggle="tooltip" data-placement="bottom" title="unsubscribe" (click)="unsubscribeUser(contact)">
+										                  <i class="fa fa-bell-slash-o" aria-hidden="true"></i>
 														</a>
-													  	<a *ngIf= "contact.unsubscribed" data-toggle="tooltip" data-placement="bottom" title="resubscribe user" (click)="resubscribeUser()">
-															<i class="fa-envelope-circle-check"></i>
+													  	<a *ngIf= "contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor" data-toggle="tooltip" data-placement="bottom" title="subscribe" (click)="resubscribeUser(contact)">
+															<i class="fa fa-bell-o" aria-hidden="true"></i>
 														</a>
                                                             <a id="envolope_{{i}}" (click)="sendMail(contact.id)">
                                                                 <i class="fa fa-envelope IconCustomization" aria-hidden="true"
@@ -1732,4 +1732,11 @@
 	<app-unsubscribe-contact-modal [selectedUser] = "selectedUser" (notifyParent)="unsubscribeUserResult($event)">
 	</app-unsubscribe-contact-modal>
  </div>
+ 
+    <div *ngIf="contactService.isresubscribeContactModalPopup">
+	<app-resubscribe-contact-modal [selectedUser] = "selectedUser" (notifyParent)="resubscribeUserResult($event)">
+	</app-resubscribe-contact-modal>
+ </div>
+ 
+ 
  

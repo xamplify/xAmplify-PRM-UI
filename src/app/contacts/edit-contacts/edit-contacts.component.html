@@ -598,8 +598,10 @@
 							   <th scope="col"  class='text-center' style="width:16%"
 							  *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  ||
 							  authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner
-							 || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList
-							 || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard" translate>
+							 || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId))
+							 || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard
+							 && (!assignLeads || (assignLeads && !isSynchronizationList))
+							 " translate>
 							 ACTIONS
 							 </th>
 							</tr>
@@ -709,29 +711,32 @@
 										*ngIf="contact.isShowDetails" translate>Less</span>
 									 </button>
 								  </td>
-								  <td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard">
-									 <div class="actions-block override-actions" style="width:170px" >
-										<a *ngIf= "!contact.unsubscribed" data-toggle="tooltip" data-placement="bottom" title="unsubscribe user" (click)="unsubscribeUser(contact)">
-										<i class="fa fa-camera-retro"></i> 
+								  <td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || 
+								  authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !clickBoard  && (!assignLeads || (assignLeads && !isSynchronizationList))">
+									 <div class="actions-block override-actions white-space-transform" style="width:170px;" >
+										<a *ngIf= "!contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)" 
+										data-toggle="tooltip" data-placement="bottom" title="unsubscribe" (click)="unsubscribeUser(contact)">
+										<i class="fa fa-bell-slash-o" aria-hidden="true"></i>
 										</a>
-										<a *ngIf= "contact.unsubscribed" data-toggle="tooltip" data-placement="bottom" title="resubscribe user" (click)="resubscribeUser()">
-										<i class="fa-solid fa-mug-saucer"></i>
+										<a *ngIf= "contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)" 
+										data-toggle="tooltip" data-placement="bottom" title="subscribe" (click)="resubscribeUser(contact)">
+										<i class="fa fa-bell-o" aria-hidden="true"></i>
 										</a>
-										<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_edit}}" (click)="editUserDetails(contact)" *ngIf= "(!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)">
+										<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_edit}}" (click)="editUserDetails(contact)" *ngIf= "((!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)) && !isSynchronizationList">
 										<i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
 										</a>
 										<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_delete}}" (click)="deleteUserShowAlert(contact.id)"
 										*ngIf= "selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 										&& ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))
-										&& !isTeamMemberPartnerList && !sharedLeads">
+										&& !isTeamMemberPartnerList && !sharedLeads && !isSynchronizationList">
 										<i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
 										</a>
 										<ng-container *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads
-										   && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)">
+										   && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && !isSynchronizationList">
 										   <a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)" *ngIf= "(!sharedLeads)">
 										   <i class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i></a>
 										</ng-container>
-										<a *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads && (!sharedLeads) "   data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
+										<a *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads && (!sharedLeads) && !isSynchronizationList"   data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
 										<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i></a>
 									 </div>
 								  </td>
@@ -1013,8 +1018,14 @@
 							*ngIf="allcontacts.isShowDetails" translate>Less</span>
 						 </button>
 					  </td>
+					  
+					   <td  *ngIf="contactsByType.selectedCategory == 'unsubscribe'">
+                       unsubscribe reason
+                      </td>
+					  
+					  
 					  <td  *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribe'">
-						 <button class="btn Btn-Green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (hasAllAccess || refService.roles.contactsRole || refService.roles.partnersRole || authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner())"
+						 <button class="btn Btn-Green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces)"
 						 [disabled] = "assignLeads" (click)="activateUnsubscribedUser(allcontacts.id)" translate>
 						 Subscribe
 						 </button>
@@ -1301,11 +1312,14 @@
 	<app-copy-group-users-modal-popup [userListId]="selectedContactListId" [selectedUserIds]="selectedUserIdsForMerging" (copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>      
  </ng-container>
  
- 
- 
   <div *ngIf="contactService.isUnsubscribeContactModalPopup">
 	<app-unsubscribe-contact-modal [selectedUser] = "selectedUser" (notifyParent)="unsubscribeUserResult($event)">
 	</app-unsubscribe-contact-modal>
+ </div>
+ 
+   <div *ngIf="contactService.isresubscribeContactModalPopup">
+	<app-resubscribe-contact-modal [selectedUser] = "selectedUser" (notifyParent)="resubscribeUserResult($event)">
+	</app-resubscribe-contact-modal>
  </div>
  
  

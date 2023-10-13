@@ -53,6 +53,7 @@ export class ContactService {
     hubSpotContactUrl = this.authenticationService.REST_URL + 'hubSpot';
     oauthCallbackMessage: string = "";
     isUnsubscribeContactModalPopup : boolean = false;
+    isresubscribeContactModalPopup : boolean = false;
     
     constructor(private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private utilService: UtilService) {
     }
@@ -827,8 +828,8 @@ export class ContactService {
             .catch(this.handleError);
     }
     
-       unSubscribeUser(object:any){
-        return this._http.post(this.contactsUrl + "unsubscribeUser"+  "/"  + this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token, object)
+       unsubscribeOrResubscribeUser(object:any){
+        return this._http.post(this.contactsUrl + "unsubscribe-or-resubscribe-User"+  "/"  + this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token, object)
         .map(this.extractData)
         .catch(this.handleError);
     }

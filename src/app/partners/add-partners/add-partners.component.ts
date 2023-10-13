@@ -4378,8 +4378,6 @@ unsubscribeUser(selectedUserForUnsubscribed : any){
   this.contactService.isUnsubscribeContactModalPopup = true;
   this.selectedUser = selectedUserForUnsubscribed;
  }
- 
- 
  unsubscribeUserResult(event : any){
  this.contactService.isUnsubscribeContactModalPopup = false;
  this.selectedUser = null ;
@@ -4387,9 +4385,16 @@ unsubscribeUser(selectedUserForUnsubscribed : any){
  this.customResponse = new CustomResponse('SUCCESS', event, true);
  }
 
-resubscribeUser(){
-
-}
+ resubscribeUser(selectedUserForUnsubscribed : any){
+  this.contactService.isresubscribeContactModalPopup = true;
+  this.selectedUser = selectedUserForUnsubscribed;
+ }
+ resubscribeUserResult(event : any){
+ this.contactService.isresubscribeContactModalPopup = false;
+ this.selectedUser = null ;
+ this.loadPartnerList(this.pagination);
+ this.customResponse = new CustomResponse('SUCCESS', event, true);
+ }
 
 
 }

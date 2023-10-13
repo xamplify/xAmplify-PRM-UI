@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter,OnDestroy } from '@angular/core';
 import { ContactService } from '../services/contact.service';
-import { LogService } from "../../core/services/log.service";
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Router } from '@angular/router';
 import { User } from '../../core/models/user';
@@ -25,23 +24,11 @@ public companyId: number;
 isPartner: boolean;
 isAssignLeads = false;
 checkingContactTypeName = '';
- @Output() notifyParent: EventEmitter<any>;
+@Output() notifyParent: EventEmitter<any>;
 
-  constructor(public router:Router, public contactService: ContactService, private logService: LogService,
+  constructor(public router:Router, public contactService: ContactService,
               public authenticationService: AuthenticationService) {
           this.notifyParent = new EventEmitter();
-        if ( this.router.url.includes( 'home/contacts' ) ) {
-          this.isPartner = false;
-          this.checkingContactTypeName = "Contact"
-      } else if( this.router.url.includes( 'home/assignleads' ) ){
-          this.isPartner = false;
-          this.isAssignLeads = true;
-          this.checkingContactTypeName = "Lead"
-      }
-      else {
-          this.isPartner = true;
-          this.checkingContactTypeName = this.authenticationService.partnerModule.customName;
-      }
    }
   
     findUnsubscribeReasons(){
@@ -89,7 +76,7 @@ checkingContactTypeName = '';
         this.contactService.isUnsubscribeContactModalPopup = false;
     }
     
-   unSubscribeUser(){
+   unsubscribeUser(){
     this.loading = true;
         var object = {
                 "userId": this.selectedUser.id,
@@ -97,7 +84,7 @@ checkingContactTypeName = '';
                 "type":"unsubscribed"
         }
    
-      this.contactService.unSubscribeUser(object)
+      this.contactService.unsubscribeOrResubscribeUser(object)
       .subscribe(
         (result: any) => {
          this.loading = false;
