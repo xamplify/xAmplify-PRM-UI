@@ -2010,6 +2010,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .dropdown-menu li > a > [class^="icon-"], .dropdown-menu li > a > [class*=" icon-"] {
   color: var(---text-color) !important;
 }
+/* myprofile dropdown border */
 li.divider-bottom {
   border-bottom: 1px solid var(--border-color) !important;
 }
