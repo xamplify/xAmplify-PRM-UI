@@ -854,7 +854,7 @@
                           <div *ngIf="socialConnection.profileName;then profileName else fullName"></div>
                           <br>
                           <ng-template #profileName>
-                            <h5 class="caption-subject ellipsis text-center" style="margin: 0 5px;" title="{{socialConnection.profileName}}">{{socialConnection.profileName}}</h5>
+                            <h5 class="caption-subject ellipsis text-center" style="margin: 0 5px;" data-placement="top" data-toggle="tooltip" title="{{socialConnection.profileName}}">{{socialConnection.profileName | slice:0:35 }}<span *ngIf="socialConnection.profileName?.length>35">...</span></h5>
                           </ng-template>
                           <ng-template #fullName>
                             <h5 class="caption-subject ellipsis text-center" style="margin: 0 5px;" title="{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</h5>

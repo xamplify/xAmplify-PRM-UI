@@ -181,6 +181,7 @@ label {
 }
 #logoutButton {
   background-color: #e8edf2;
+  border-radius: 0px 0px 6px 6px;
 }
 .topnav-button-css {
   margin-top: 17px;
@@ -303,4 +304,7 @@ a.dropdown-toggle.circlebg-none-v:hover {
 }
 .cls-pointer {
   cursor: pointer;
+}
+li.divider-bottom {
+  border-bottom: 1px solid #eee;
 }
