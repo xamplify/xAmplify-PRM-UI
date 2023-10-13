@@ -121,13 +121,20 @@
                             || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
                             <a (click)="goToRouter('/home/social/manage/all')"  translate> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
                          </li>
+                          <!-- Guides Help Icon-->
+                          <li>
+                           <a href="{{guideHomeUrl}}" target="_blank">
+                              <i class="fa fa-question-circle-o" style="font-size: 15px;" aria-hidden="true"></i>&nbsp;Help
+                           </a>
+                         </li>
+                         <!-- Guides Help Icon-->
                          <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
                             <ng-container *ngFor="let dashboardType of dashboardTypes">
                                <li (click)="navigateToDashboardType(dashboardType)">
                                   <a>
                                      <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
                                      <ng-container *ngIf="dashboardType=='Welcome'">
-                                        Help (Welcome)
+                                        Welcome
                                      </ng-container>
                                      <ng-container *ngIf="dashboardType!='Welcome'">
                                         {{dashboardType}}

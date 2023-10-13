@@ -46,7 +46,7 @@
                 <div [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-lg-6 col-md-4 col-xs-6 col-sm-6':'col-md-5 col-xs-5 col-sm-5'">
                     <h4 title="{{logedInCustomerCompanyName}}"  class="welcome-header text-overflow">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
                 </div>
-                <div class="col-lg-6 col-md-5 col-xs-6 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
+                <div class="col-lg-5 col-md-5 col-xs-5 col-sm-5" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
                     <div class="df-mt5 dashboardfloatRight">
                     <h4 class="defaultScreenText" style="margin: 0.3em">Do you want to set this as your default screen?</h4>
                     <div>
