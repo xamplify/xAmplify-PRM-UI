@@ -121,13 +121,7 @@
                             || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
                             <a (click)="goToRouter('/home/social/manage/all')"  translate> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
                          </li>
-                          <!-- Guides Help Icon-->
-                          <li>
-                           <a href="{{guideHomeUrl}}" target="_blank">
-                              <i class="fa fa-question-circle-o" style="font-size: 15px;" aria-hidden="true"></i>&nbsp;Help
-                           </a>
-                         </li>
-                         <!-- Guides Help Icon-->
+                         
                          <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
                             <ng-container *ngFor="let dashboardType of dashboardTypes">
                                <li (click)="navigateToDashboardType(dashboardType)">
@@ -143,6 +137,13 @@
                                </li>
                             </ng-container>
                          </ng-container>
+                          <!-- Guides Help Icon-->
+                          <li>
+                           <a href="{{guideHomeUrl}}" target="_blank">
+                              <i class="fa fa-question-circle-o" style="font-size: 15px;" aria-hidden="true"></i>&nbsp;Help
+                           </a>
+                         </li>
+                         <!-- Guides Help Icon-->
                          <li *ngIf="myVendorsLoader &&authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
                            <a><img src="assets/images/loading.gif">Loading My Vendors...</a>
                          </li>
