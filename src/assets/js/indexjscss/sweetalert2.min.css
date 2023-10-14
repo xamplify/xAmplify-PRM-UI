@@ -688,10 +688,10 @@
     }
 }
 
-.animate-error-icon {
+/* .animate-error-icon {
     -webkit-animation: animate-error-icon .5s;
     animation: animate-error-icon .5s
-}
+} */
 
 @-webkit-keyframes animate-x-mark {
     0%,

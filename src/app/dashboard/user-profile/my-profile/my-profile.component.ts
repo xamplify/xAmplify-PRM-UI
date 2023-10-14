@@ -302,6 +302,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/****XNFR-326*****/
 	showEmailNotificationSettingsOption = false;
 	showSpfConfigurationDiv: boolean;
+	/***XNFR-386***/
+	isCustomLoginScreenSettingsOptionClicked = false;
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -1928,6 +1930,17 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				self.ngxloading = false;
 		   }, 500);
 		  this.activeTabHeader = this.properties.emailNotificationSettings;
+		}
+		/*****XNFR-386******/
+		else if(this.activeTabName==this.properties.customLoginScreen){
+			this.ngxloading = true;
+			this.isCustomLoginScreenSettingsOptionClicked = false;
+			let self = this;
+			setTimeout(()=>{                         
+				self.isCustomLoginScreenSettingsOptionClicked = true;
+				self.ngxloading = false;
+		   }, 500);
+		  this.activeTabHeader = this.properties.customLoginScreen;
 		}
 		this.referenceService.goToTop();
 		this.showThemes();

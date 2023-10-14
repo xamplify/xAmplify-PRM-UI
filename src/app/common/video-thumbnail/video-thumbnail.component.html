@@ -7,7 +7,7 @@
   </div>
   <div class="title-div">
      <a (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)">
-     <h4 (click)="titleClickVideo(videoFile)" data-toggle="tooltip" data-placement="bottom" [title]="videoFile?.title" class='mt5 mb5 f-w-500'>{{videoFile.title | slice: 0: 25}}
+     <h4 (click)="titleClickVideo(videoFile)" data-toggle="tooltip" data-placement="bottom" [title]="videoFile?.title" class='mt5 mb5 f-w-500 VideoTitlesDec'>{{videoFile.title | slice: 0: 25}}
      <span *ngIf="videoFile?.title?.length>25">...</span>
      </h4>
      <!-- XNFR-169 -->

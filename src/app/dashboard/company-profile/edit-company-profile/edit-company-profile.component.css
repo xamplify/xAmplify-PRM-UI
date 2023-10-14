@@ -153,8 +153,61 @@ svg {
 /* 26-07-2023 */
 .partlet-cardbody {
   text-align: center;
-  padding:12px 20px;
+  padding: 12px 20px;
 }
-.responsive-screen-wordwrap{
+.responsive-screen-wordwrap {
   word-wrap: break-word;
 }
+.fav-icon-responsive {
+  height: 94px !important;
+  width: 94px !important;
+  object-fit: fill;
+  margin-left: -12px;
+}
+.fav-icon-image-profile-wrapper {
+  width: 70% !important;
+  height: 100px !important;
+}
+.fav-img-grid {
+  height: 100px;
+  width: 120px;
+}
+.margin-61 {
+  margin-top: 61px !important;
+}
+.bg-image-responsive {
+  width: 180px !important;
+  height: 100px !important;
+}
+.bg-img-grid {
+  height: 95px;
+  width: 145px;
+}
+.bg_color {
+  margin: 0px 17px;
+  background-color: #f0f3fa;
+  width: 96%;
+  padding: 10px 0px;
+  border-radius: 3px;
+}
+.upload-imgheight {
+  height: 115px;
+}
+.edit_account{
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+}
+.panel-header{
+ padding:6px 10px;
+}
+.panel-account{
+padding: 10px;
+background-color: #eeeeee;
+border-radius: 3px;
+margin: 10px 10px;
+}
+@media only screen and (min-width: 992px) and (max-width: 1154px) {  
+  .imgCrop-modal{
+    width: 50% !important;
+  }
+} 
