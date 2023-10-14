@@ -117,9 +117,9 @@
                             </li>
                             <!--XNFR-386--->
                             <!--Custom Login Screen Settings-->
-                            <li  [ngClass]="{'active-tab': activeTabName == properties?.customLoginScreen}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="authenticationService?.vanityURLEnabled && authenticationService.module.isAnyAdminOrSupervisor">
+                            <!-- <li  [ngClass]="{'active-tab': activeTabName == properties?.customLoginScreen}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="authenticationService?.vanityURLEnabled && authenticationService.module.isAnyAdminOrSupervisor">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.customLoginScreen}" (click)="activateTab(properties?.customLoginScreen);clearCustomResponse()" translate>{{properties?.customLoginScreen}}</a>
-                            </li>
+                            </li> -->
                              <!--------------Lead/Deal Configuration----------------------->
                             <div class="my-profile-header-text" *ngIf="((hasAllAccess || 
                             hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
