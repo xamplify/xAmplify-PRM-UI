@@ -991,9 +991,6 @@
                                              *ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
                                        </h5>
                                     </td>
-                                    <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">
-                                       {{contact.unsubscribedReason}}
-                                    </td>
                                     <td class="Mark-as-ValidBtn" *ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads && !authenticationService?.module?.deletedPartner">
                                        <span class="markas" (click)="validateUndeliverableContacts(contact.id)">Mark as valid</span>
                                     </td>
@@ -1003,6 +1000,12 @@
                                        <span *ngIf="!contact.isShowDetails" translate>More</span> <span
                                           *ngIf="contact.isShowDetails" translate>Less</span>
                                        </button>
+                                    </td>
+                                    <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">
+                                       <h5 *ngIf="contact?.unsubscribedReason" title="{{contact.unsubscribedReason}}" class='mb0'>{{contact.unsubscribedReason |
+                                          slice:0:30}}
+                                          <span *ngIf="contact.unsubscribedReason?.length>30">..</span>
+                                       </h5>
                                     </td>
                                     <td  *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribe'">
                                        <button class="btn table-scbscribe-btn" [disabled] = "assignLeads"

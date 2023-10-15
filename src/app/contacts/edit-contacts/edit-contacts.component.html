@@ -1007,7 +1007,7 @@
 							class='mt0'>{{allcontacts.zipCode}}<span *ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}</h5>
 					  </td>
 					  <td *ngIf="contactsByType.selectedCategory == 'valid'"></td>
-					  <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td>
+					 <!--  <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td> -->
 					  <td *ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads">
 						 <span class="markas markAsValidLable" (click)="validateUndeliverableContacts(allcontacts.id)">Mark as valid</span>
 					  </td>
@@ -1019,8 +1019,10 @@
 						 </button>
 					  </td>
 					  
-					   <td  *ngIf="contactsByType.selectedCategory == 'unsubscribe'">
-                       unsubscribe reason
+					   <td  class="hidden-xs" *ngIf="contactsByType.selectedCategory == 'unsubscribe'">
+					   <h5 class='mb0 ellipsis' data-toggle="tooltip" data-placement="bottom" title="{{allcontacts.unsubscribedReason}}" >{{allcontacts.unsubscribedReason | slice:0:25}}
+							<span *ngIf="allcontacts.unsubscribedReason?.length>25">...</span>
+						 </h5>
                       </td>
 					  
 					  
