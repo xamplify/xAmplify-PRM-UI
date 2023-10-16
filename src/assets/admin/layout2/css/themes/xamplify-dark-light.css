@@ -2089,3 +2089,11 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 li.divider-bottom {
   border-bottom: 1px solid #2f4857!important
 }
+.BgForCard {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
+.logo-wrapper {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
