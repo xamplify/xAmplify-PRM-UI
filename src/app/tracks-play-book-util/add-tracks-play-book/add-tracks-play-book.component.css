@@ -1242,3 +1242,12 @@ ul.t-b-spacings {
   }
   
 }
+
+@media only screen and (min-width:992px) and (max-width:1300px) {
+  .fit-preview-asset{
+    width: 82%;
+  }
+  .abjustScrren {
+    margin-left: 160px !important;
+  }
+}

@@ -146,3 +146,10 @@ a.social-stats {
 .msg-color{
   color: #555555
 }
+.dashboardfloatRight{float: right;}
+@media only screen and (min-width: 992px) and (max-width: 1200px) {  
+  h4.defaultScreenText {
+    font-size: 11px;
+    padding-top: 3px;
+  }
+}

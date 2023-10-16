@@ -42,3 +42,36 @@ li .disabled {
 .border-bottom-1px {
   border-bottom: 1px solid #ddd;
 }
+
+label.labelTextStyle{
+  font-size: 15px;
+  font-weight: 600;
+  display: block;
+}
+label.labelTextStyle1{
+  font-size: 14px;
+  color: #65b6e4;
+}
+label.labelTitleFonts{
+  font-size: 15px;
+  font-weight: 600;
+}
+.cardTextFontsize{
+  font-size: 13px !important;
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+  label.labelTextStyle{
+    font-size: 12px;
+  }
+  label.labelTextStyle1{
+    font-size: 12px;
+  }
+  label.labelTitleFonts{
+    font-size: 12px;
+  }
+  .cardTextFontsize{
+    font-size: 12px !important;
+  }
+  
+}

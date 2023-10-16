@@ -151,11 +151,11 @@
           </div>
         </div>
         <div class="form-group row">
-          <div class="col-lg-8 col-md-7 col-sm-6 col-xs-12 order-sm-2 d-f-pb7px" >
+          <div class="col-lg-8 col-md-7 col-sm-8 col-xs-12 order-sm-2 d-f-pb7px" >
             <div class="pt7px">Step 1 : Click On</div>&nbsp;&nbsp;
             <button type="submit" class="btn Btn-Green float-left mobileBottomPa responsiveBtnCU"><a href="https://developer.godaddy.com/keys" target="_blank" style="color: #fff;"> Generate API key from Godaddy</a></button>
           </div>
-          <div class="col-lg-4 col-md-5 col-sm-6 col-xs-12 order-sm-1">
+          <div class="col-lg-4 col-md-5 col-sm-4 col-xs-12 order-sm-1 mb_10">
             <button type="submit" class="btn btn-primary btn-md float-right mobileFloatRight MlSpace responsiveBtnCU" (click)="authenticationOfGodaddy()" [disabled]="!isAuthorized()">Authenticate</button>
             <button type="submit" class="btn Btn-Gray btn-md float-right mobileFloatRight responsiveBtnCU" (click)="goToStepFour()">Back</button>
           </div>
@@ -208,6 +208,7 @@
           <th scope="col">Type</th>
           <th scope="col">Name</th>
           <th scope="col">Value</th>
+          <!-- <th (click)="refresh()" style="float: right;cursor: pointer;"  data-placement="bottom" data-toggle="tooltip" title="{{refreshText}}"><i class="fa fa-refresh"></i></th> -->
         </tr>
       </thead>
       <tbody  *ngFor="let dto of godaddyDtos">
@@ -223,7 +224,7 @@
       <tbody>
     </table>
     
-    <div *ngIf="godaddyDtos?.length === 0" class="alert alert-info">
+    <div *ngIf="godaddyDtos?.length === 0" class="alert alert-danger alert-su">
       <strong>No Records Found.</strong>
     </div>
   </ng-template>
@@ -258,7 +259,7 @@
     </div>
   </div>
   <div class="col-md-12 p0">
-    <div class="panel mt5" [ngClass]="godaddyDtos?.length > 1?'panel-danger':'panel-success'">
+    <div class="panel mt5" [ngClass]="godaddyDtos?.length > 1 ?'panel-danger':'panel-success'">
       <div class="panel-heading" *ngIf="godaddyDtos?.length > 1">
         <h3 class="panel-title" translate style="color:#000 !important">Warning: It is showing multiple SPF records for your domain.</h3>
       </div>
@@ -318,6 +319,9 @@
                     </li>
                     <li translate>
                       Click on the <span class="label blue" (click)="updateRecord()">Redirect</span> button, it will redirect to your domain DNS page
+                    </li>
+                    <li translate>
+                      Click on the FILTER option select the TXT(Text) and click on the APPLY button.
                     </li>
                     <li translate>
                       Update the VALUE with the recommended SPF record
@@ -400,7 +404,7 @@
        </tr>
        <tr class="displayContents">
         <td class="verticalMiddle">
-          <span [ngClass]="showConnectButton?'selectRecord':godaddyDtos?.length >1?'multipleREcord':'missMatchRecord'">
+          <span class="{{classFinalStepShow}}">
             <b>{{finalButtonValue}}</b>
             <!-- <b *ngIf="statusCode === 409 || godaddyDtos?.length === 0">Invalid</b> -->
           </span> 
@@ -429,19 +433,14 @@
     <h4>Record in your Domain:</h4>
     <ng-template [ngTemplateOutlet]="tableView"></ng-template>
    </div>
-   <div class="col-md-12" *ngIf="!showConnectButton" [ngClass]="showConnectButton?'selectRecord':godaddyDtos?.length >1?'multipleREcord':'missMatchRecord'" style="padding: 5px 0px 0px 10px;">
+   <div class="col-md-12 {{classFinalStepShow}}" *ngIf="!showConnectButton"  style="padding: 5px 0px 5px 10px;margin: 0px 10px 10px 0px;">
     <div class="col-md-1 p0">
       <label><b style="color:#000 !important" >{{finalButtonValue}}:</b></label>
     </div>
-    <!-- <div class="col-md-1 p0" *ngIf="statusCode === 409 ||godaddyDtos?.length === 0">
-      <label><b style="color:#000 !important" >Invalid:</b></label>
-    </div> -->
     <div class="col-md-11">
       {{errorMessage}}
     </div>
-    <!-- <div class="col-md-11" *ngIf="statusCode === 409 || godaddyDtos?.length === 0">
-       It is showing No SPF records for your domain, please reconfigure from the settings.It's important to point out that each domain may have one SPF entry.
-    </div> -->
+
    </div>
  </div>
  <!-- Connected Domains Details End -->

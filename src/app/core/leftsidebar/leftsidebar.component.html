@@ -33,11 +33,7 @@
               <ul class="sub-menu" *ngIf="menu.showSubMenu"
                 [ngStyle]="{'display': menu.mergeTag === clickedMergeTag? 'block': 'none' }">
                 <li *ngFor="let subMenu of menu.subModules">
-                  <a *ngIf="subMenu?.customName?.indexOf('Journey')<0" (click)="startLoader()" [routerLink]="subMenu.angularPath">
-                    <i [className]="subMenu.angularIcon" aria-hidden="true"></i>
-                    <span class="title">{{subMenu.customName}}</span>
-                  </a>
-                  <a *ngIf="subMenu?.customName?.indexOf('Journey')>-1 && authenticationService?.module?.showWorkFlow" (click)="startLoader()" [routerLink]="subMenu.angularPath">
+                  <a (click)="startLoader()" [routerLink]="subMenu.angularPath">
                     <i [className]="subMenu.angularIcon" aria-hidden="true"></i>
                     <span class="title">{{subMenu.customName}}</span>
                   </a>

@@ -134,7 +134,7 @@
                               }})
                            </div>
                            <div class="camp-number">
-                              <strong class="m0" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignName }}">{{
+                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignName }}">{{
                                  campaign.campaignName | slice : 0 : 12
                                  }}</strong>
                               <span *ngIf="campaign.campaignName?.length > 17">...</span>
@@ -159,7 +159,7 @@
                         <div class="camp-details">
                            <div class="camp-title">Video Info</div>
                            <div class="camp-number">
-                              <strong class="m0" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignVideoFile.title }}">{{
+                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignVideoFile.title }}">{{
                                  campaign.campaignVideoFile.title | slice : 0 : 12
                                  }}</strong>
                               <span *ngIf="campaign.campaignVideoFile.title?.length > 17">...</span>
@@ -198,7 +198,7 @@
                         <div class="camp-details">
                            <div class="camp-title">{{ campaignType }}</div>
                            <div class="camp-number">
-                              <strong class="m0" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignName }}">{{
+                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignName }}">{{
                                  campaign.campaignName | slice : 0 : 25
                                  }}</strong>
                               <span *ngIf="campaign.campaignName?.length > 25">..</span>
@@ -234,7 +234,7 @@
                         <div class="camp-details">
                            <div class="camp-title">Email Info</div>
                            <div class="camp-number">
-                              <strong class="m0" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.emailTemplate.name }}">{{
+                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.emailTemplate.name }}">{{
                                  campaign.emailTemplate.name | slice : 0 : 12
                                  }}</strong>
                               <span *ngIf="campaign.emailTemplate.name?.length > 12">...</span>
@@ -272,7 +272,7 @@
                         <div class="camp-details">
                            <div class="camp-title">Page Info</div>
                            <div class="camp-number">
-                              <strong class="m0" data-toggle="tooltip" data-placement="top" title="{{ campaign.landingPage.name }}">{{ campaign.landingPage.name |
+                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="top" title="{{ campaign.landingPage.name }}">{{ campaign.landingPage.name |
                                  slice : 0 : 12 }}</strong>
                               <span *ngIf="campaign.landingPage.name?.length > 12">...</span>
                            </div>
@@ -356,7 +356,7 @@
                               List Info
                            </div>
                            <div class="camp-number">
-                              <strong class="m0" *ngIf="!campaign?.oneClickLaunch">{{ campaingContactLists?.length }}
+                              <strong class="m0 StongTextdc" *ngIf="!campaign?.oneClickLaunch">{{ campaingContactLists?.length }}
                                  List(s)</strong>
                               <strong class="m0" *ngIf="campaign?.oneClickLaunch">{{ campaingContactLists?.length }}
                                  Shared List(s)</strong>

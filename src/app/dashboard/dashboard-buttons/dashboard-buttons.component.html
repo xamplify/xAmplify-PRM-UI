@@ -24,15 +24,15 @@
         <input type="text" class="form-control" name="buttonLink" placeholder="Link"
           [(ngModel)]="dashboardButton.buttonLink" maxlength="2083" required>
       </div>
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-5">
         <label>Icon</label>
-        <select name="buttonIcon" class="form-control" [(ngModel)]="dashboardButton.buttonIcon"
+        <select name="buttonIcon" class="form-control IconSelectFont" [(ngModel)]="dashboardButton.buttonIcon"
           (change)="selectedIconName()">
           <option [ngValue]="undefined" disabled selected> Please select icon </option>
           <option [ngValue]="icon.id" *ngFor="let icon of iconsList">{{icon.name}}</option>
         </select>
       </div>
-      <div class="form-group col-md-2">
+      <div class="form-group col-md-1">
         <span><i class="fa {{dashboardButton.buttonIcon}}" style="padding-top: 35px;"></i></span>
       </div>
     </div>
@@ -71,15 +71,15 @@
     <table class='table tgrid table-hover'>
       <thead>
         <tr>
-          <th>Title</th>
-          <th>Link</th>
+          <th class="dashboardButtonTablewidth">Title</th>
+          <th class="dashboardButtonTablewidth1">Link</th>
           <!-- <th>Icon</th> -->
-          <th style="width:15%;" class="text-center">Actions</th>
+          <th class="text-center dashboardButtonTablewidth2">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of pagination.pagedItems">
-          <td><span><i class="fa {{item.buttonIcon}}"></i></span>
+          <td Class="brnTitleTextCu"><span><i class="fa {{item.buttonIcon}}"></i></span>
             {{item.buttonTitle}}</td>
           <td>{{item.buttonLink}}</td>
           <td>

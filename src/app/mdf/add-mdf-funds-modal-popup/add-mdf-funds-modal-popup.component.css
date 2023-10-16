@@ -1,3 +1,8 @@
 .border-bottom-1px {
   border-bottom: 1px solid #ddd;
 }
+
+
+@media only screen and (min-width:992px) and (max-width:1200px) { 
+  label.responsiveLabelFont {font-size: 12px;}
+}
