@@ -215,7 +215,7 @@
                                         </div>
 
                                          <!--Notify Workflow-->
-                                         <div class="form-group" *ngIf="campaign?.channelCampaign">
+                                         <div class="form-group" *ngIf="campaign?.channelCampaign && !isPageCampaign">
                                             <label class="control-label col-sm-4">Notify Workflows</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign.notifyChannelCampaignWorkflows" [onText]="callActionSwitch.yesTextValue" 
