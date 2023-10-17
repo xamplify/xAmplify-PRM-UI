@@ -656,6 +656,59 @@
     </div>
   </div>
 
+  <!--******************All Counts - Tiles*******************-->
+  <app-partner-journey-count-tiles [partnerCompanyId]="'273'"
+    [teamMemberId]="teamMemberId"></app-partner-journey-count-tiles>
+
+   <!--******************Interacted & Not Interacted Donut Chart & Details******************-->
+   <div class="row mb15">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <!--******************Interacted & Not Interacted Donut Chart******************-->
+      <div class="ml15m">
+        <app-donut-pie-chart [chartId]="'interactedAndNotInteractedTracksDonut'"
+          (notifySelectSlice)="interactionTracksDonutSliceSelected($event)"
+          (notifyUnSelectSlice)="interactionTracksDonutSliceUnSelected($event)"></app-donut-pie-chart>
+
+      </div>
+
+      <!--******************Interacted & Not Interacted Track Details*******************-->
+      <app-interacted-not-interacted-track-details
+        [trackType]="selectedTrackType"></app-interacted-not-interacted-track-details>
+    </div>
+  </div>
+
+  <!--******************Status wise Track Assets Donut Chart & Details******************-->
+  <div class="row mb15">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <!--******************Type wise Track Assets Donut Chart******************-->
+      <div class="ml15m">
+        <app-donut-pie-chart 
+          [trackType]="selectedTrackType" [chartId]="'typewiseTrackContentDonut'"
+          (notifySelectSlice)="typeWiseTrackAssetsDonutSliceSelected($event)"
+          (notifyUnSelectSlice)="typeWiseTrackAssetsDonutSliceUnSelected($event)"></app-donut-pie-chart>
+      </div>
+
+      <!--******************Type wise Track Content Details*******************-->
+      <app-typewise-track-content-details [trackType]="selectedTrackType"
+        [assetType]="selectedAssetType"></app-typewise-track-content-details>
+    </div>
+  </div>
+
+  <!--******************Company wise Track Counts*******************-->
+  <div class="row mb15">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <!--******************Company wise Track Counts******************-->
+      <app-userwise-track-counts  [type]="'TRACK'"></app-userwise-track-counts>
+
+      <!--******************Company wise Playbook Counts******************-->
+      <app-userwise-track-counts [type]="'PLAYBOOK'"></app-userwise-track-counts>
+    </div>
+  </div>
+
+  <!--******************Track Assets Detailed Report*******************-->
+  <app-userwise-track-details [partnerCompanyId]="'0'"></app-userwise-track-details>
+  
+
   <app-scroll-top></app-scroll-top>
 </div>
 

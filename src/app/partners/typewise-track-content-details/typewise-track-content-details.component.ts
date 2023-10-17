@@ -25,6 +25,7 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   loggedInUserId: number = 0;
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
+  isDetailedAnalytics: boolean = false;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -39,6 +40,11 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
 
   ngOnChanges() {   
     this.pagination.pageIndex = 1;   
+    if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
+      this.isDetailedAnalytics = true;
+    } else {
+      this.isDetailedAnalytics = false;
+    }
     this.getTypeWiseTrackContentDetails(this.pagination);
   }
 

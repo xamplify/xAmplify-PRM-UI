@@ -47,7 +47,7 @@
       <!--Pagination-->
       <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
         <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
-          (notifyParentDropDown)="getUserWiseTrackDetails($event)">
+          (notifyParentDropDown)="getShareLeadDetails($event)">
         </app-pagination>
       </div>
     </div>

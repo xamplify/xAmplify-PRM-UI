@@ -78,6 +78,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     //XNFR-316
     showDetailedAnalytics = false;
     detailedAnalyticsPartnerCompany: any;
+    selectedTrackType: any = "";
+    selectedAssetType: any = "";
     
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
         public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
@@ -918,5 +920,26 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     closeDetailedAnalytics() {
         this.showDetailedAnalytics = false;
     }
+
+    interactionTracksDonutSliceSelected(type: any) {
+        this.selectedTrackType = type;
+      }
+    
+      interactionTracksDonutSliceUnSelected(type: any) {
+        if (this.selectedTrackType == type) {
+          this.selectedTrackType = "";
+          this.selectedAssetType = "";
+        } 
+      }
+    
+      typeWiseTrackAssetsDonutSliceSelected(type: any) {
+        this.selectedAssetType = type;
+      }
+      
+      typeWiseTrackAssetsDonutSliceUnSelected(type: any) {
+        if (this.selectedAssetType == type) {
+          this.selectedAssetType = "";
+        } 
+      }
     
 }

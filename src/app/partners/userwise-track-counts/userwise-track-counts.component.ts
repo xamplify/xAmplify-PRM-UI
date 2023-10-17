@@ -18,11 +18,13 @@ import { SortOption } from 'app/core/models/sort-option';
 export class UserwiseTrackCountsComponent implements OnInit {
   @Input() partnerCompanyId: any;
   @Input() teamMemberId: any;
+  @Input() type: any;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
+  isDetailedAnalytics: boolean = false;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -34,8 +36,13 @@ export class UserwiseTrackCountsComponent implements OnInit {
   ngOnInit() {    
   }
 
-  ngOnChanges() {    
+  ngOnChanges() { 
     this.pagination.pageIndex = 1;
+    if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
+      this.isDetailedAnalytics = true;
+    } else {
+      this.isDetailedAnalytics = false;
+    }
     this.getUserWiseTrackCounts(this.pagination);
   }
 
@@ -43,6 +50,7 @@ export class UserwiseTrackCountsComponent implements OnInit {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
+    this.pagination.lmsType = this.type;
     this.pagination.maxResults = 6;
     if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
       this.pagination.teamMemberId = this.teamMemberId;

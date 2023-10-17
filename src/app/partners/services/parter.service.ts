@@ -261,13 +261,16 @@ export class ParterService {
     }
 
     getUserWiseTrackCounts(pagination:Pagination){
-        const url = this.URL + 'partner/journey/track/userwise/count?access_token=' + this.authenticationService.access_token;
+        let url = this.URL + 'partner/journey/track/userwise/count?access_token=' + this.authenticationService.access_token;
+        if (pagination.lmsType === 'PLAYBOOK') {
+            url = this.URL + 'partner/journey/playbook/userwise/count?access_token=' + this.authenticationService.access_token;
+        }
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }
 
     getUserWiseTrackDetails(pagination:Pagination){
-        const url = this.URL + 'partner/journey/track/userwise/details?access_token=' + this.authenticationService.access_token;
+        const url = this.URL + 'partner/journey/track/userwise/details?access_token=' + this.authenticationService.access_token;       
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }

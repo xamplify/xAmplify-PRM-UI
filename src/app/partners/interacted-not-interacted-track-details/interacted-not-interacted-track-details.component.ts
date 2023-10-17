@@ -25,6 +25,7 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
   heading:any = "Interacted & Not Interacted Track Details";
+  isDetailedAnalytics: boolean = false;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -51,6 +52,12 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
     } else {
       this.heading = "Interacted & Not Interacted Track Details"
     } 
+
+    if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
+      this.isDetailedAnalytics = true;
+    } else {
+      this.isDetailedAnalytics = false;
+    }
   }
 
   getInteractedNotInteractedTrackDetails(pagination : Pagination) {
