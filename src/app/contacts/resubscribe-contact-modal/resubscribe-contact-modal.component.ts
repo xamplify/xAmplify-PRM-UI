@@ -16,7 +16,7 @@ export class ResubscribeContactModalComponent implements OnInit {
 characterleft = 250;
 reason = '';
 loading = false;
-
+invalidReason = true;
   constructor(public contactService: ContactService) {
     this.notifyParent = new EventEmitter();
    }
@@ -24,7 +24,10 @@ loading = false;
      characterSize(){
       let reasonLength = $.trim(this.reason).length;
       if(reasonLength>0){
+        this.invalidReason = false;
         this.characterleft = 250 - reasonLength;
+      }else{
+        this.invalidReason = true;
       }
     }
     
@@ -52,7 +55,6 @@ loading = false;
           this.closeAndEmitData(result);
         },
         (error: any) => {
-        console.log(error);
         this.loading = false;
         }
       );
