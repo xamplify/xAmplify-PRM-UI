@@ -37,7 +37,6 @@ checkingContactTypeName = '';
     this.contactService.findUnsubscribeReasons(this.authenticationService.getUserId()).subscribe(
       response=>{
         this.unsubscribeReasons = response.data;
-        console.log(this.unsubscribeReasons);
         this.isOtherReason = this.unsubscribeReasons.length==0;
         this.loading = false;
          $( '#unsubscribeContactModal' ).modal( 'show' );
