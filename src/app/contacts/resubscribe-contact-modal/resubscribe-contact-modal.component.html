@@ -1,0 +1,39 @@
+<div id="resubscribeContactModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
+<div class="modal-dialog  accounts-modal" style="position: relative !important;">
+  <!-- Modal content-->
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close-circle"  (click)="resubscribeContactModalClose()">
+      <i class="fa fa-times" aria-hidden="true" style="margin-top: 0px;"></i></button>
+      <h4 class="modal-title size-font" translate>Add Reason</h4>
+    </div>
+    <div class="modal-body border-bottom-1px">
+      <div class="hide-scrollbar">
+      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      
+      <form class="form-horizontal" autocomplete="off">
+      
+      <div style="background-color:#d9edf7; padding:10px;">
+      By subscribing, the specified email will continue to receive the emails from you. <br/>     
+      Email : {{selectedUser.emailId}}
+      <br/>    
+      </div>
+      <br/>
+				   <div>
+					  <label for="comment">Reason:</label>
+					  <textarea class="form-control" [(ngModel)]="reason" (input)="characterSize()" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
+					  <label class="text-area-css">{{characterleft}} characters left</label>
+				   </div>
+				</form>
+    </div>
+  </div>
+  <div class="modal-footer" style="border:none" >
+    <button class="btn Btn-Gray" (click)="resubscribeContactModalClose()" translate>Cancel</button>
+    <button  type="submit" class="btn Btn-Green" [disabled]="!reason.length>0"  (click)="resubscribeUser()" translate>Subscribe</button>
+  </div>
+
+  </div>
+</div>
+</div>
+
