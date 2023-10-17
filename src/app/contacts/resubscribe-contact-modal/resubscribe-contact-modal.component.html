@@ -30,7 +30,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
   </div>
   <div class="modal-footer" style="border:none" >
     <button class="btn Btn-Gray" (click)="resubscribeContactModalClose()" translate>Cancel</button>
-    <button  type="submit" class="btn Btn-Green" [disabled]="!reason.length>0"  (click)="resubscribeUser()" translate>Subscribe</button>
+    <button  type="submit" class="btn Btn-Green" [disabled]="reason?.length==0"  (click)="resubscribeUser()" translate>Subscribe</button>
   </div>
 
   </div>
