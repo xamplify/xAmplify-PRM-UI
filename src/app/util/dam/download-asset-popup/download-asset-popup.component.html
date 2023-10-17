@@ -75,7 +75,7 @@
 			</div>
 			<div class="modal-footer" style="border: none;"
 				*ngIf="!modalPopupLoader && downloadOptionsCustomResponse?.responseType!='ERROR'">
-				<button type="button" class="btn btn-info"
+				<button type="button" class="btn btn-info" *ngIf="!isNavigatedFromAddSection"
 					(click)="updateDownloadOptions()" translate>Update</button>
 				<button type="button" class="btn btn-primary"
 					(click)="downloadAsPdf()" translate>Download</button>

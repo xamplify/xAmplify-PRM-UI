@@ -82,9 +82,7 @@
                         <div class="form-group">
                           <label class="control-label col-sm-3" translate>White Labeled</label>
                           <div class="col-sm-8">
-                            <switch class="pull-left" [status]="damPostDto?.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                            (statusChange)="setWhiteLabeled($event)">
-                            </switch>
+                            <app-custom-ui-switch [customSwitch]="damPostDto?.shareAsWhiteLabeledAsset" (customUiSwitchEventEmitter)="setWhiteLabeled($event)"></app-custom-ui-switch>
                             <span class="info-color-xampc">
                               <i class="fa fa-question-circle toggle-info-white-label help-iconcu-inpopup" data-toggle="tooltip"
                                   data-placement="top" aria-hidden="true"
@@ -212,6 +210,7 @@
          </div>
          <div class="modal-footer cmr" style="border:none;border-top:none !important" *ngIf="!modalPopupLoader">
             <button class="btn Btn-Gray" type="reset" (click)="hidePopup();" translate>Cancel</button>
+            <button type="button" class="btn btn-primary"  (click)="downloadPdf()">Download</button>
             <button type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(false)" translate>Save</button>
             <button *ngIf="!isAdd" type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(true)" translate>Save As</button>
          </div>
@@ -224,3 +223,8 @@
    </app-add-tags-util>
 </div>
 <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showFolderCreatedSuccessMessage($event)"></app-add-folder-modal-popup>
+
+<!--Download Pdf Modal Popup-->
+<ng-container *ngIf="isDownloaButtonClicked">
+   <app-download-asset-popup [isNavigatedFromAddSection]="true" [pdfTitle]="damPostDto.name" [htmlBody]="damPostDto.htmlBody" (downloadAssetPopupEventEmitter)="downloadAssetPopupEventReceiver()"></app-download-asset-popup>
+   </ng-container>

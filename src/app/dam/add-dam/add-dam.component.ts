@@ -71,6 +71,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
    /****XNFR-326***/
    isAssetPublishedEmailNotification = false;
    assetPublishEmailNotificationLoader = true;
+   isDownloaButtonClicked = false;
 
   constructor(
     private xtremandLogger: XtremandLogger,
@@ -493,4 +494,13 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
     this.damPostDto.partnerIds = event['partnerIds'];
     this.damPostDto.partnerGroupSelected = event['partnerGroupSelected'];
 }
+
+downloadPdf(){
+  this.isDownloaButtonClicked = true;
+}
+
+downloadAssetPopupEventReceiver(){
+  this.isDownloaButtonClicked = false;
+}
+
 }
