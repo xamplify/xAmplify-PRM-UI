@@ -134,9 +134,7 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
 		});
 		/**** XNFR-379 ****/
 		if(this.isNavigatedFromAddSection){
-			setTimeout(function () {
-				self.downloadPdfPreview(selectedSize, selectedOrientation);
-			},1500);
+			this.downloadPdfPreview(selectedSize, selectedOrientation);
 		}else{
 			setTimeout(function () {
 				if (self.isPartnerView) {
@@ -151,6 +149,7 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
 	}
 	/**** XNFR-379 ****/
 	private downloadPdfPreview(selectedSize: any, selectedOrientation: any) {
+		this.modalPopupLoader = true;
 		if (this.pdfTitle == undefined) {
 			this.pdfTitle = "Preview";
 		}

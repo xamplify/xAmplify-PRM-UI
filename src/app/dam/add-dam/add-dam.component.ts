@@ -496,11 +496,20 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
 }
 
 downloadPdf(){
-  this.isDownloaButtonClicked = true;
+  this.modalPopupLoader = true;
+		let param: any = {
+			'size': this.damPostDto.pageSize,
+			'orientation': this.damPostDto.pageOrientation,
+			'htmlBody': this.damPostDto.htmlBody,
+			'loggedInUserId': this.loggedInUserId,
+			'title': this.damPostDto.name
+		};
+		let completeUrl = this.authenticationService.REST_URL + "dam/downloadPdfPreview?access_token=" + this.authenticationService.access_token;
+		this.referenceService.post(param, completeUrl);
+		this.modalPopupLoader = false;
+
 }
 
-downloadAssetPopupEventReceiver(){
-  this.isDownloaButtonClicked = false;
-}
+
 
 }

@@ -9,6 +9,8 @@ export class DamPostDto {
 	createdBy:number = 0;
 	tagIds:Array<number> = new Array<number>();
 	saveAs =false;
+	pageSize = "A4";
+	pageOrientation="Portrait";
 
 	 /****XNFR-255****/
 	 shareAsWhiteLabeledAsset = false;
