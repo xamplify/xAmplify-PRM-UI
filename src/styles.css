@@ -2459,4 +2459,10 @@ button.unlink-button {
 div#bubble-chart {
   z-index: 0 !important;
 }
+.w75-per{
+  width: 75% !important;
+}
+.ml15{
+  margin-left: 15px !important;
+}
 

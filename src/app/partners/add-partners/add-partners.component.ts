@@ -256,6 +256,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	/****XNFR-278****/
    /****** User guide ******/
    searchWithModuleName:any;
+   selectedUser: User = null;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -4373,6 +4374,27 @@ copyGroupUsersModalPopupEventReceiver(){
 	this.selectedUserIdsForMerging = [];
 }
 
+unsubscribeUser(selectedUserForUnsubscribed : any){
+  this.contactService.isUnsubscribeContactModalPopup = true;
+  this.selectedUser = selectedUserForUnsubscribed;
+ }
+ unsubscribeUserResult(event : any){
+ this.contactService.isUnsubscribeContactModalPopup = false;
+ this.selectedUser = null ;
+ this.loadPartnerList(this.pagination);
+ this.customResponse = new CustomResponse('SUCCESS', event, true);
+ }
+
+ resubscribeUser(selectedUserForUnsubscribed : any){
+  this.contactService.isresubscribeContactModalPopup = true;
+  this.selectedUser = selectedUserForUnsubscribed;
+ }
+ resubscribeUserResult(event : any){
+ this.contactService.isresubscribeContactModalPopup = false;
+ this.selectedUser = null ;
+ this.loadPartnerList(this.pagination);
+ this.customResponse = new CustomResponse('SUCCESS', event, true);
+ }
 
 
 }
