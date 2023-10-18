@@ -35,8 +35,8 @@
 </div>
 <app-scroll-top></app-scroll-top>
 <!--Add Asset Details------->
-<div id="addAssetDetailsPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-   <div class="modal-dialog modal-css" role="document">
+<div id="addAssetDetailsPopup" class="modal fade right " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+   <div class="modal-dialog modal-css" role="document" style="width: 85% !important;">
       <!-- Modal content-->
       <div class="modal-content">
          <ngx-loading [show]="modalPopupLoader && !isCkeditorLoaded" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -58,7 +58,7 @@
                   <div class="">
                      <div class="col-md-12 col-lg-12 ">
                         <div class="form-group">
-                           <label class="control-label col-sm-3" translate>Name
+                           <label class="control-label col-sm-2" translate>Name
                            <span class="required">*</span></label>
                            <div class="col-sm-8">
                               <input class="form-control"  type="text" placeholder="Name" (input)="validateForm('name')" [(ngModel)]="damPostDto.name"  [ngModelOptions]="{standalone: true}" >
@@ -69,7 +69,7 @@
                      <!---XNFR-169-->
                      <div class="col-md-12 col-lg-12 ">
                         <div class="form-group">
-                           <label class="control-label col-sm-3" translate>Folder
+                           <label class="control-label col-sm-2" translate>Folder
                            <span class="required">*</span>
                            </label>
                            <div class="col-sm-8" *ngIf="showFolderDropDown">
@@ -80,7 +80,7 @@
                       <!---White Labeled-- XNFR-255-->
                       <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" *ngIf="hasShareWhiteLabeledContentAccess">
                         <div class="form-group">
-                          <label class="control-label col-sm-3" translate>White Labeled</label>
+                          <label class="control-label col-sm-2" translate>White Labeled</label>
                           <div class="col-sm-8">
                             <app-custom-ui-switch [customSwitch]="damPostDto?.shareAsWhiteLabeledAsset" (customUiSwitchEventEmitter)="setWhiteLabeled($event)"></app-custom-ui-switch>
                             <span class="info-color-xampc">
@@ -96,8 +96,8 @@
                         <span class="required" *ngIf="!damPostDto.validDescription && descriptionErrorMessage?.length > 0"
                            style="position: absolute;margin: auto 25%;">{{descriptionErrorMessage}}</span>
                         <div class="form-group" style="padding-top: 20px;">
-                           <label class="control-label col-sm-3" translate>Description<span class="required">*</span></label>
-                           <div class="col-sm-8" *ngIf="isAddAssetDetailsPopupLoaded">
+                           <label class="control-label col-sm-2" translate>Description<span class="required">*</span></label>
+                           <div class="col-sm-10" *ngIf="isAddAssetDetailsPopupLoaded">
                               <ckeditor #ckeditor [(ngModel)]="damPostDto.description" [ngModelOptions]="{standalone: true}" [config]="ckeConfig"
                               (ready)="onReady($event)" debounce="500" maxlength="5000" (change)="validateForm('description')"
                               (input)="getCkEditorData();validateForm('description')">
@@ -108,7 +108,7 @@
                      
                      <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
                         <div class="form-group">
-                           <label class="control-label col-sm-3" translate>Tags
+                           <label class="control-label col-sm-2" translate>Tags
                            </label>
                            <div class="col-sm-8 inline" style="padding: 5px 8px 0px 16px;">
                               <ngx-loading [show]="tagsLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
