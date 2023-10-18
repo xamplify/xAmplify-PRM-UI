@@ -217,7 +217,7 @@
          </div>
          <div class="modal-footer cmr" style="border:none;border-top:none !important" *ngIf="!modalPopupLoader">
             <button class="btn Btn-Gray" type="reset" (click)="hidePopup();" translate>Cancel</button>
-            <button type="button" class="btn btn-primary"  (click)="downloadPdf()">Download</button>
+            <button type="button" class="btn btn-primary"  (click)="downloadPdf()">Download <a style="font-weight: 100;font-size: x-small;color: #fff;">(Preview PDF)</a></button>
             <button type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(false)" translate>Save</button>
             <button *ngIf="!isAdd" type="button" class="btn btn-primary" [disabled]="!validForm"  (click)="saveOrUpdate(true)" translate>Save As</button>
          </div>
