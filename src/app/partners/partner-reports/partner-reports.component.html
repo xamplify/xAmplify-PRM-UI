@@ -707,6 +707,17 @@
 
   <!--******************Track Assets Detailed Report*******************-->
   <app-userwise-track-details [partnerCompanyId]="'0'"></app-userwise-track-details>
+
+  <!--******************Track & Playbook Asset Details*******************-->
+  <div class="row mb15">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <!--******************Track Asset Details*******************-->
+      <app-track-asset-details [partnerCompanyId]="'0'" [type]="'TRACK'"></app-track-asset-details>
+
+      <!--******************Playbook Asset Details*******************-->
+      <app-track-asset-details [partnerCompanyId]="'0'" [type]="'PLAYBOOK'"></app-track-asset-details>
+    </div>
+  </div>
   
 
   <app-scroll-top></app-scroll-top>
