@@ -2014,3 +2014,11 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 li.divider-bottom {
   border-bottom: 1px solid var(--border-color) !important;
 }
+/* XNFR-376 */
+.unsubscribingPopup span {
+  color: var(---text-color) !important;
+}
+.unsubscribingPopup{  
+  background-color: var(--page-content) !important;
+}
+/* XNFR-376 End*/

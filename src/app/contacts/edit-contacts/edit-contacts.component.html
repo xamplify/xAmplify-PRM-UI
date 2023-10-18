@@ -716,11 +716,11 @@
 									 <div class="actions-block override-actions white-space-transform" style="width:170px;" >
 										<a *ngIf= "!contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)" 
 										data-toggle="tooltip" data-placement="bottom" title="unsubscribe" (click)="unsubscribeUser(contact)">
-										<i class="fa fa-bell-slash-o" aria-hidden="true"></i>
+										<i class="fa fa-bell-slash-o IconCustomization" aria-hidden="true"></i>
 										</a>
 										<a *ngIf= "contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)" 
 										data-toggle="tooltip" data-placement="bottom" title="subscribe" (click)="resubscribeUser(contact)">
-										<i class="fa fa-bell-o" aria-hidden="true"></i>
+										<i class="fa fa-bell-o IconCustomization" aria-hidden="true"></i>
 										</a>
 										<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_edit}}" (click)="editUserDetails(contact)" *ngIf= "((!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)) && !isSynchronizationList">
 										<i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>

@@ -2097,3 +2097,12 @@ li.divider-bottom {
   background-color: #2b3c46 !important;
   border: 1px solid #2f4857 !important;
 }
+
+/* XNFR-376 */
+.unsubscribingPopup span {
+  color: #ffffff;
+}
+.unsubscribingPopup{  
+  background-color: #22313a !important;
+}
+/* XNFR-376 End*/
