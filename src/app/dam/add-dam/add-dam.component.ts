@@ -497,10 +497,9 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
 
 downloadPdf(){
   this.isDownloaButtonClicked = true;
+
 }
 
-downloadAssetPopupEventReceiver(){
-  this.isDownloaButtonClicked = false;
-}
+
 
 }
