@@ -1,6 +1,6 @@
 <div class="col-xs-12 pr0" *ngIf="authenticationService?.module?.showWorkFlow">
   <div class="portlet light">
-    <div class="portlet-title" style="font-size: 16px; padding-bottom: 8px;">
+    <div class="portlet-title" style="font-size: 16px; padding-bottom: 8px;margin-bottom: 8px;">
       <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
         <div class="caption">
           <span class="caption-subject font-red-sunglo uppercase">Active
@@ -8,8 +8,8 @@
         </div>
       </div>
       <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
-        <div class="inputs" style="float: right">
-          <div class="col-xs-6 col-sm-6 col-lg-6 p0">
+        <div class="inputs" style="float: right; margin-bottom:-22px;">
+          <div class="col-xs-6 col-sm-6 col-lg-6 p0" style="position: relative;right: 19px;">
             <div style="float: left;">
               <select class="form-control" [(ngModel)]="sortOption.selectedSortedOption"
                 (ngModelChange)="getSortedResults($event)" style="position: relative;right: -3px;">
@@ -19,7 +19,7 @@
           </div>
           <div class="col-xs-6 col-sm-6 col-lg-6 p0">
             <div class="portlet-input input-inline mSearch" style="margin-right: 12px; width:170px">
-              <div class="input-icon right" style="position: relative;width: 178px;">
+              <div class="input-icon right" style="position: relative;width: 178px; right: 21px;">
                 <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
                   [ngModelOptions]="{standalone: true}" placeholder="Search"
                   (keypress)="searchKeyPress($event.keyCode)">
@@ -29,65 +29,69 @@
                   <i class="fa fa-search" aria-hidden="true"></i></button>
               </div>
             </div>
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#activePartnerTable"
+            style="float: right; position: relative; bottom: 30px;"></a>
           </div>
         </div>
       </div>
     </div>
     <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-    <div class="portlet-body table-responsive" style="overflow: hidden;" [hidden]="httpRequestLoader.isLoading">
-      <div class="table-responsive">
-        <table class="table tgrid" aria-describedby="active-partners-table">
-          <thead>
-            <tr>
-              <th scope="row" class="center-aligned">Company Logo</th>
-              <th scope="row" class="center-aligned">Company Name</th>
-              <th scope="row" class="center-aligned">Partner Details</th>
-              <th scope="row" class="center">Journey</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let item of pagination.pagedItems;let i=index">
+    <div id="activePartnerTable" class="panel-collapse collapse in">
+      <div class="portlet-body table-responsive" style="overflow: hidden;" [hidden]="httpRequestLoader.isLoading">
+        <div class="table-responsive">
+          <table class="table tgrid" aria-describedby="active-partners-table">
+            <thead>
               <tr>
-                <td>
-                  <span _ngcontent-c11="" class="thumbnail-wrapper" style="margin-top: 15px;">
-                    <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';"
-                      [src]="authenticationService.MEDIA_URL+item.companyLogo">
-                  </span>
-                </td>
-                <td>
-                  <h4 class="ellipsis" style="font-size: 14px;" title="{{item?.partnerCompanyName}}">
-                    {{item?.partnerCompanyName | slice:0:25}}
-                    <span *ngIf="item?.partnerCompanyName?.length>25">...</span>
-                  </h4>
-                </td>
-                <td>
-                  <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="item">
-                  </app-user-info>
-                </td>
-                <td>
-                  <div class="actions-block override-actions">
-                    <a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)" data-toggle="tooltip"
-                      data-placement="bottom" title="View Partner Journey" id="pj">
-                      <!-- <i class="fa fa-line-chart" aria-hidden="true"></i> -->
-                      <i class="fas fa-route"></i>
-                    </a>
-                  </div>
-                </td>
+                <th scope="row" class="center-aligned">Company Logo</th>
+                <th scope="row" class="center-aligned">Company Name</th>
+                <th scope="row" class="center-aligned">Partner Details</th>
+                <th scope="row" class="center">Journey</th>
               </tr>
-            </ng-container>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let item of pagination.pagedItems;let i=index">
+                <tr>
+                  <td>
+                    <span _ngcontent-c11="" class="thumbnail-wrapper" style="margin-top: 15px;">
+                      <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';"
+                        [src]="authenticationService.MEDIA_URL+item.companyLogo">
+                    </span>
+                  </td>
+                  <td>
+                    <h4 class="ellipsis" style="font-size: 14px;" title="{{item?.partnerCompanyName}}">
+                      {{item?.partnerCompanyName | slice:0:25}}
+                      <span *ngIf="item?.partnerCompanyName?.length>25">...</span>
+                    </h4>
+                  </td>
+                  <td>
+                    <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="item">
+                    </app-user-info>
+                  </td>
+                  <td>
+                    <div class="actions-block override-actions">
+                      <a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)" data-toggle="tooltip"
+                        data-placement="bottom" title="View Partner Journey" id="pj">
+                        <!-- <i class="fa fa-line-chart" aria-hidden="true"></i> -->
+                        <i class="fas fa-route"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+        <!---Message-->
+        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+          <strong>No Partners Found.</strong>
+        </div>
       </div>
-      <!---Message-->
-      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-        <strong>No Partners Found.</strong>
+      <!--Pagination-->
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+          (notifyParentDropDown)="getActivePartners($event)">
+        </app-pagination>
       </div>
-    </div>
-    <!--Pagination-->
-    <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
-      <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-        (notifyParentDropDown)="getActivePartners($event)">
-      </app-pagination>
     </div>
   </div>
 </div>

@@ -161,6 +161,9 @@
   </div>
 
   <app-modal-popup-loader *ngIf="loadAllCharts"></app-modal-popup-loader>
+  <!--******************All Counts - Tiles*******************-->
+  <app-partner-journey-count-tiles [partnerCompanyId]="'0'"></app-partner-journey-count-tiles>
+
   <!-- --------------------Active Partners Analytics-------- -->
   <div id="active-partner-div" *ngIf="!loadAllCharts && selectedTabIndex == 0"
     style="padding-right: 12px;padding-bottom: 10px;">
@@ -663,9 +666,6 @@
       </div>
     </div>
   </div>
-  
-  <!--******************All Counts - Tiles*******************-->
-  <app-partner-journey-count-tiles [partnerCompanyId]="'0'"></app-partner-journey-count-tiles>
   
   <!--******************Interacted & Not Interacted Donut Chart & Details******************-->
   <div class="row mb15">
