@@ -37,7 +37,7 @@
           </app-list-loader>
           <div class="page-bar" style="padding: 15px 0px 15px 15px;" *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
             <!-- -------Total Leads------- -->
-            <div class="col-xs-6 col-sm-3 col-md-3" style="padding-left: 0px!important;" *ngIf="!countsLoader"
+            <div class="col-xs-6 col-sm-3 col-md-3 tiles_hover_effect" style="padding-left: 0px!important;" *ngIf="!countsLoader"
               [style.pointer-events]="counts.totalLeads != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important;" [class.greay]="1!=selectedTabIndex"
                 (click)="showLeads()">
@@ -59,7 +59,7 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-3 col-md-3" style="padding-left: 0px!important;" *ngIf="!countsLoader"
+            <div class="col-xs-6 col-sm-3 col-md-3 tiles_hover_effect" style="padding-left: 0px!important;" *ngIf="!countsLoader"
               [style.pointer-events]="counts.wonLeads != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important" [class.greay]="2!=selectedTabIndex"
                 (click)="showWonLeads()">
@@ -80,7 +80,7 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-3 col-md-3 pt15" style="padding-left: 0px!important;" *ngIf="!countsLoader"
+            <div class="col-xs-6 col-sm-3 col-md-3 pt15 tiles_hover_effect" style="padding-left: 0px!important;" *ngIf="!countsLoader"
               [style.pointer-events]="counts.lostLeads != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important" [class.greay]="3!=selectedTabIndex"
                 (click)="showLostLeads()">
@@ -101,7 +101,7 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-3 col-md-3 mr0 pt15" style="padding-left: 0px!important;" *ngIf="!countsLoader"
+            <div class="col-xs-6 col-sm-3 col-md-3 mr0 pt15 tiles_hover_effect" style="padding-left: 0px!important;" *ngIf="!countsLoader"
               [style.pointer-events]="counts.convertedLeads != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom: 0px !important;" [class.greay]="4!=selectedTabIndex"
                 (click)="showConvertedLeads()">

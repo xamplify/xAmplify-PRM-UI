@@ -35,9 +35,9 @@
             <div class="profile-sidebar" style="width:250px;" *ngIf="userData">
                 <!-- PORTLET MAIN -->
                 <div class="portlet light profile-sidebar-portlet">
-                    <div class="profile-image-wrapper-color">
+                    <div class="profile-image-wrapper-color shadow-inset">
                         <ng-container *ngIf="(circleData | json) != '{}'; else showImage">
-                            <img class="profile-image" alt="" *ngIf="!cropRounded && circleData?.image; else Other" [src]="circleData.image">
+                            <img class="profile-image shadow-inset" alt="" *ngIf="!cropRounded && circleData?.image; else Other" [src]="circleData.image">
                             <ng-template #Other><img alt="" class="profile-image" [src]="userProfileImage" [width]="circleCropperSettings.croppedWidth" [height]="circleCropperSettings.croppedHeight" (error)="errorHandler($event)">
                             </ng-template>
                         </ng-container>
@@ -68,7 +68,7 @@
                     <div class="profile-usermenu">
                         <!--------------Account Details----------------------->
                         <div class="my-profile-header-text">Account Details</div>
-                        <ul class="nav">
+                        <ul class="nav neumorphismDark">
                             <!---Personal Info--->
                             <li [ngClass]="{'active-tab': activeTabName == 'personalInfo'}">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'personalInfo'}" (click)="activateTab('personalInfo');clearCustomResponse()">
@@ -477,7 +477,7 @@
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
                                             <div class="form-group">
                                                 <label class="control-label" translate>Select Preferred Language</label>                                                
-                                                <select formControlName="preferredLanguage" class="form-control">
+                                                <select formControlName="preferredLanguage" class="form-control depth-shadow">
                                                 <option [ngValue]="undefined" disabled selected> Select Preferred Language </option>                                                
                                                 <option [ngValue]="language.id" *ngFor="let language of authenticationService.allLanguagesList">{{language.name}}</option>
                                                 </select>

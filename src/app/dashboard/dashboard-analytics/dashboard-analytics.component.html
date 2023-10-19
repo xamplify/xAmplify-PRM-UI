@@ -129,7 +129,7 @@
                         </div>
                         <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
                             <section *ngFor="let campaign of campaigns; let i=index">
-                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="i<4">
+                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 campaign_card" *ngIf="i<4">
                                     <div class="portlet light border-radius-0 campaign-box"
                                         (click)="showCampaignDetails(campaign)" style="cursor: pointer">
                                         <div class="bookmark-ribbon">

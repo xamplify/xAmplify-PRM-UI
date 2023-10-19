@@ -37,7 +37,7 @@
            <div class="col-xs-12 col-md-12 col-sm-12">
             <div class="page-bar" style="padding: 15px 15px 15px 0px">
             <!-- -------Total Deals------- -->
-            <div class="col-xs-12 col-sm-4 col-md-4 pr0 pb15" *ngIf="!countsLoader"
+            <div class="col-xs-12 col-sm-4 col-md-4 pr0 pb15 tiles_hover_effect" *ngIf="!countsLoader"
               [style.pointer-events]="counts.totalDeals != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="1!=selectedTabIndex"
                 (click)="showDeals()">
@@ -59,7 +59,7 @@
             </div>
 
             <!-- -------Won Deals------- -->
-            <div class="col-xs-12 col-sm-4 col-md-4 pr0 pb15" *ngIf="!countsLoader"
+            <div class="col-xs-12 col-sm-4 col-md-4 pr0 pb15 tiles_hover_effect" *ngIf="!countsLoader"
               [style.pointer-events]="counts.wonDeals != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
                 (click)="showWonDeals()">
@@ -81,7 +81,7 @@
             </div>
 
             <!-- -------Lost Deals------- -->
-            <div class="col-xs-12 col-sm-4 col-md-4 pr0" *ngIf="!countsLoader"
+            <div class="col-xs-12 col-sm-4 col-md-4 pr0 tiles_hover_effect" *ngIf="!countsLoader"
               [style.pointer-events]="counts.lostDeals != 0 ? 'auto' : 'none' ">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="3!=selectedTabIndex"
                 (click)="showLostDeals()">

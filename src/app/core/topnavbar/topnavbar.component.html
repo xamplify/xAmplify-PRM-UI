@@ -63,8 +63,8 @@
                 <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                    &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
                    <div class="btn-group refer-vendor-button btnVendor">
-                      <button [ngClass]="authenticationService?.isTop?'customskin':''" (click)="openRequestAsVendorModal()" style="border-radius: 5px 0px 0px 5px;" translate>Refer a vendor</button>
-                      <button [ngClass]="authenticationService?.isTop?'customskin':''" [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 5px 5px 0px;">
+                      <button class="btnND" [ngClass]="authenticationService?.isTop?'customskin':''" (click)="openRequestAsVendorModal()" style="border-radius: 5px 0px 0px 5px;" translate>Refer a vendor</button>
+                      <button class="btnND" [ngClass]="authenticationService?.isTop?'customskin':''" [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 5px 5px 0px;">
                       <i class="fa fa-line-chart" [ngClass]="authenticationService?.isTop?'customskin-icon':''"  data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
                    </div>
                 </li>
