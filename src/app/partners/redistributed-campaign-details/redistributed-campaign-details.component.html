@@ -19,7 +19,8 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Team Member</th>
+              <th scope="col" *ngIf="isDetailedAnalytics">Team Member</th>
+              <th scope="col" *ngIf="!isDetailedAnalytics">Company Name</th>
               <th scope="col">Campaign Name</th>
               <th scope="col">Campaign Type</th>
               <th scope="col">Schedule Type</th>
@@ -28,7 +29,8 @@
           </thead>
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
+              <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
+              <td *ngIf="!isDetailedAnalytics">{{item?.companyName}}</td>
               <td>{{item?.campaignName}}</td>
               <td>{{item?.campaignType}}</td>
               <td>{{item?.campaignScheduleType}}</td>
