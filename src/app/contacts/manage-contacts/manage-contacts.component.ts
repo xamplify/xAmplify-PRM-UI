@@ -235,6 +235,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
   mergeTagForGuide:any
   showHelpGuideIcon:boolean;
   showDownloadOptionForSharedLeads = false;
+  selectedUser: User = null;
+  
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
@@ -2718,4 +2720,20 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				this.showHelpGuideIcon = true;
 			}
 		  }
+		  
+		  
+resubscribeUser(selectedUserForUnsubscribed : any){
+  this.contactService.isresubscribeContactModalPopup = true;
+  this.selectedUser = selectedUserForUnsubscribed;
+}
+ 
+resubscribeUserResult(event : any){
+ this.contactService.isresubscribeContactModalPopup = false;
+ this.selectedUser = null ;
+ this.listContactsByType(this.contactsByType.selectedCategory);
+ this.contactsCount();
+ this.customResponse = new CustomResponse('SUCCESS', event, true);
+ }
+ 
+ 
 }

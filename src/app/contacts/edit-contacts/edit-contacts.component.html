@@ -1028,7 +1028,7 @@
 					  
 					  <td  *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribe'">
 						 <button class="btn Btn-Green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces)"
-						 [disabled] = "assignLeads" (click)="activateUnsubscribedUser(allcontacts.id)" translate>
+						 [disabled] = "assignLeads" (click)="resubscribeUser(allcontacts)" translate>
 						 Subscribe
 						 </button>
 						 <div class="actions-block no-float" *ngIf="isPartner && (contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' || contactsByType.selectedCategory == 'all')">
@@ -1319,7 +1319,7 @@
 	</app-unsubscribe-contact-modal>
  </div>
  
-   <div *ngIf="contactService.isresubscribeContactModalPopup">
+   <div *ngIf="contactService.isresubscribeContactModalPopup && showEdit">
 	<app-resubscribe-contact-modal [selectedUser] = "selectedUser" (notifyParent)="resubscribeUserResult($event)">
 	</app-resubscribe-contact-modal>
  </div>
