@@ -977,20 +977,20 @@
 					  <td *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs" >{{allcontacts.emailCategory}}
 						 <span *ngIf="!allcontacts.emailCategory"><strong>-</strong></span>
 					  </td>
-					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{allcontacts.vertical}}">{{allcontacts.vertical | slice:0:14}}
+					  <td *ngIf="isPartner">{{allcontacts.vertical | slice:0:14}}
 						 <span *ngIf="allcontacts.vertical?.length>14">..</span>
 					  </td>
-					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{allcontacts.region}}">{{allcontacts.region | slice:0:14}}
+					  <td *ngIf="isPartner">{{allcontacts.region | slice:0:14}}
 						 <span *ngIf="allcontacts.region?.length>14">..</span>
 					  </td>
-					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{allcontacts.partnerType}}">{{allcontacts.partnerType | slice:0:14}}
+					  <td *ngIf="isPartner">{{allcontacts.partnerType | slice:0:14}}
 						 <span *ngIf="allcontacts.partnerType?.length>14">..</span>
 					  </td>
-					  <td *ngIf="isPartner" data-toggle="tooltip" data-placement="bottom" title="{{allcontacts.category}}">{{allcontacts.category | slice:0:14}}
+					  <td *ngIf="isPartner">{{allcontacts.category | slice:0:14}}
 						 <span *ngIf="allcontacts.category?.length>14">..</span>
 					  </td>
 					  <td class="hidden-xs" *ngIf="!isPartner">
-						 <h5 class='mb0 ellipsis' data-toggle="tooltip" data-placement="bottom" title="{{allcontacts.jobTitle}}" >{{allcontacts.jobTitle | slice:0:25}}
+						 <h5 class='mb0 ellipsis'  >{{allcontacts.jobTitle | slice:0:25}}
 							<span *ngIf="allcontacts.jobTitle?.length>25">...</span>
 						 </h5>
 					  </td>
