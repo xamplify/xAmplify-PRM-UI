@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -19,6 +19,7 @@ export class UserwiseTrackCountsComponent implements OnInit {
   @Input() partnerCompanyId: any;
   @Input() teamMemberId: any;
   @Input() type: any;
+  @Output() notifyShowDetailedAnalytics = new EventEmitter();
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -101,6 +102,10 @@ export class UserwiseTrackCountsComponent implements OnInit {
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
     this.getAllFilteredResults(this.pagination);
-  }  
+  } 
+  
+  viewAnalytics(partnerCompanyId: any) {
+    this.notifyShowDetailedAnalytics.emit(partnerCompanyId); 
+  }
 
 }
