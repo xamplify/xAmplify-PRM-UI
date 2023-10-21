@@ -95,8 +95,8 @@ export class ActivePartnersTableComponent implements OnInit {
     }
   }  
 
-  viewAnalytics(partnerCompany: any) {
-    this.notifyShowDetailedAnalytics.emit(partnerCompany.companyId); 
+  viewAnalytics(partnerCompanyId: any) {
+    this.notifyShowDetailedAnalytics.emit(partnerCompanyId); 
   }
 
 }

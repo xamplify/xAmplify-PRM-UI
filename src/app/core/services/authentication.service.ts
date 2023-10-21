@@ -1095,29 +1095,43 @@ findTrackOrPlaybookPublishEmailNotificationOption(type:any) {
   let apiUrl= url+"?access_token=" + this.access_token;
   return this.callGetMethod(apiUrl);
 }
-
-
-/******XNFR-326******/
-
-
 /****XNFR-317****/
-
 findAllTeamMembers(pagination:Pagination){
   pagination.userId = this.getUserId();
   let url = this.REST_URL +"teamMember/findAll?access_token=" + this.access_token;
   return this.callPostMethod(url,pagination);
 }
 
-private callGetMethod(url: string) {
+findAllUsers(){
+  let url = this.REST_URL +"company/users/"+this.getUserId()+"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+}
+
+
+
+public callGetMethod(url: string) {
   return this.http.get(url)
     .map(this.extractData)
     .catch(this.handleError);
 }
 
-private callPostMethod(url: string,requestDto:any) {
+public callPostMethod(url: string,requestDto:any) {
   return this.http.post(url,requestDto)
     .map(this.extractData)
     .catch(this.handleError);
+}
+
+public callPutMethod(url: string,requestDto:any){
+  return this.http.put(url,requestDto)
+    .map(this.extractData)
+    .catch(this.handleError);
+}
+
+
+public callDeleteMethod(url:string){
+  return this.http.delete(url)
+          .map(this.extractData)
+          .catch(this.handleError);
 }
 
 

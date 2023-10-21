@@ -153,6 +153,7 @@ export class ParterService {
     }
 
     findPartnerGroups(pagination:Pagination){
+        pagination.userId = this.authenticationService.getUserId();
         const apiUrl = this.URL + 'partnership/findPartnerGroups?access_token=' + this.authenticationService.access_token
         return this.findPartnerCompainesOrGroups(apiUrl,pagination);
     }
@@ -260,13 +261,16 @@ export class ParterService {
     }
 
     getUserWiseTrackCounts(pagination:Pagination){
-        const url = this.URL + 'partner/journey/track/userwise/count?access_token=' + this.authenticationService.access_token;
+        let url = this.URL + 'partner/journey/track/userwise/count?access_token=' + this.authenticationService.access_token;
+        if (pagination.lmsType === 'PLAYBOOK') {
+            url = this.URL + 'partner/journey/playbook/userwise/count?access_token=' + this.authenticationService.access_token;
+        }
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }
 
     getUserWiseTrackDetails(pagination:Pagination){
-        const url = this.URL + 'partner/journey/track/userwise/details?access_token=' + this.authenticationService.access_token;
+        const url = this.URL + 'partner/journey/track/userwise/details?access_token=' + this.authenticationService.access_token;       
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }
@@ -331,42 +335,49 @@ export class ParterService {
     findDefaultTriggerOptions() {
         let userId = this.authenticationService.getUserId();
         const url = this.URL + 'workflow/findDefaultTriggerOptions/'+userId+'?access_token=' + this.authenticationService.access_token;
-        return this.httpClient.get(url)
-            .catch( this.handleError );
+        return this.authenticationService.callGetMethod(url);
     }
 
 
-    saveWorkflow(workflowDto:WorkflowDto){
+    saveOrUpdateWorkflow(workflowDto:WorkflowDto){
         let userId = this.authenticationService.getUserId();
         workflowDto.loggedInUserId = userId;
-        const url = this.URL + 'workflow?access_token=' + this.authenticationService.access_token;
-        return this.http.post(url,workflowDto)
-        .map(this.authenticationService.extractData)
-        .catch(this.authenticationService.handleError);
+        if(workflowDto.isAdd){
+            const url = this.URL + 'workflow?access_token=' + this.authenticationService.access_token;
+            return this.authenticationService.callPostMethod(url,workflowDto);
+        }else{
+            const url = this.URL + 'workflow/'+workflowDto.id+'?access_token=' + this.authenticationService.access_token;
+            return this.authenticationService.callPutMethod(url,workflowDto);
+        }
     }
 
     findTriggerTitles() {
         let userId = this.authenticationService.getUserId();
         const url = this.URL + 'workflow/findTriggerTitles/'+userId+'?access_token=' + this.authenticationService.access_token;
-        return this.httpClient.get(url)
-            .catch( this.handleError );
+        return this.authenticationService.callGetMethod(url);
     }
 
     findAllWorkflows(pagination:Pagination){
         let userId = this.authenticationService.getUserId();
         let pageableUrl = this.referenceService.getPagebleUrl(pagination);
         let findAllUrl = this.WORK_FLOW_PREFIX_URL+'/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
-        return this.httpClient.get(findAllUrl)
-            .catch( this.handleError );
+        return this.authenticationService.callGetMethod(findAllUrl);
     }
+
 
     deleteWorkflow(id:number){
         let userId = this.authenticationService.getUserId();
         let deleteWorkflowUrl = this.WORK_FLOW_PREFIX_URL+'/id/'+id+'/loggedInUserId/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
-        return this.http.delete(deleteWorkflowUrl)
-          .map(this.authenticationService.extractData)
-          .catch(this.authenticationService.handleError);
+        return this.authenticationService.callDeleteMethod(deleteWorkflowUrl);
     }
+
+    findWorkflowById(id:number){
+        let userId = this.authenticationService.getUserId();
+        let findByWorkFlowUrl = this.WORK_FLOW_PREFIX_URL+'/id/'+id+'/loggedInUserId/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token;
+        return this.authenticationService.callGetMethod(findByWorkFlowUrl);
+    }
+
+   
 
     /*********End : XNFR-316************/
     

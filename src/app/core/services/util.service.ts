@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Pagination } from '../models/pagination';
 import { CropperSettings} from 'ng2-img-cropper';
 import { PagerService } from './pager.service';
+import { ActivatedRoute } from '@angular/router';
 
 declare var $:any;
 @Injectable()
@@ -190,6 +191,28 @@ export class UtilService {
         pagination = this.pagerService.getPagedItems(pagination, data.list);
         return pagination;
     }
+
+    getRouterParameterValue(route:ActivatedRoute,parameter:string){
+        return route.snapshot.params[parameter];
+    }
     
+    
+    isValidJsonString(str:string) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+
+    convertJsonStringToJsonObject(jsonString:string){
+        return JSON.parse(jsonString);
+    }
+
+    convertJsonToString(jsonInput:any){
+        return JSON.stringify(jsonInput);
+        
+    }
 
 }
