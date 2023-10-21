@@ -22,6 +22,9 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
   @Input() asset:any;
   @Input() isPartnerView:boolean;
   @Output() downloadAssetPopupEventEmitter = new EventEmitter();
+  @Input() isNavigatedFromAddSection:boolean;
+  @Input() htmlBody:any;
+  @Input() pdfTitle = "";
   selectedPdfAlias: any;
   loggedInUserId: number = 0;
   downloadOptionsCustomResponse: CustomResponse = new CustomResponse();
@@ -43,21 +46,36 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
   /***************Download*************/
 	openPopup(asset: any) {
 		try {
-			let alias = asset.alias;
-			if (asset.beeTemplate) {
-				this.selectedPdfAlias = alias;
-				if (this.isPartnerView) {
-					this.downloadAsPdf();
-				} else {
-					$('#downloadPdfModalPopup').modal('show');
-					this.getDownloadOptions(alias);
-				}
-			} else {
-				this.downloadContent(asset);
+			if(this.isNavigatedFromAddSection){
+				$('#downloadPdfModalPopup').modal('show');
+				this.modalPopupLoader = true;
+				let data = {};
+				data['pageSize'] = 'A4';
+				data['pageOrientation']  = 'Portrait';
+				$('#selectedSize').val(data['pageSize']);
+				$('#selectedOrientation').val(data['pageOrientation']);
+				this.modalPopupLoader = false;
+			}else{
+				this.downloadSavedPdf(asset);
 			}
 		} catch (error) {
 			this.xtremandLogger.error(error);
 			this.referenceService.showSweetAlertErrorMessage(error.message + " " + error.name);
+		}
+	}
+
+	private downloadSavedPdf(asset: any) {
+		let alias = asset.alias;
+		if (asset.beeTemplate) {
+			this.selectedPdfAlias = alias;
+			if (this.isPartnerView) {
+				this.downloadAsPdf();
+			} else {
+				$('#downloadPdfModalPopup').modal('show');
+				this.getDownloadOptions(alias);
+			}
+		} else {
+			this.downloadContent(asset);
 		}
 	}
 
@@ -114,15 +132,39 @@ export class DownloadAssetPopupComponent implements OnInit,OnDestroy {
 			showConfirmButton: false,
 			imageUrl: 'assets/images/loader.gif',
 		});
-		setTimeout(function () {
-			if (self.isPartnerView) {
-				self.downloadForPartner();
-			} else {
-				let downloadUrl = 'download/' + self.selectedPdfAlias + "/" + selectedSize + "/" + selectedOrientation;
-				self.downloadPdfForVendor(self, downloadUrl);
-			}
-			//swal.close();
-		}, 1500);
+		/**** XNFR-379 ****/
+		if(this.isNavigatedFromAddSection){
+			this.downloadPdfPreview(selectedSize, selectedOrientation);
+		}else{
+			setTimeout(function () {
+				if (self.isPartnerView) {
+					self.downloadForPartner();
+				} else {
+					let downloadUrl = 'download/' + self.selectedPdfAlias + "/" + selectedSize + "/" + selectedOrientation;
+					self.downloadPdfForVendor(self, downloadUrl);
+				}
+			}, 1500);
+		}
+		
+	}
+	/**** XNFR-379 ****/
+	private downloadPdfPreview(selectedSize: any, selectedOrientation: any) {
+		this.modalPopupLoader = true;
+		if (this.pdfTitle == undefined) {
+			this.pdfTitle = "Preview";
+		}
+		let param: any = {
+			'size': selectedSize,
+			'orientation': selectedOrientation,
+			'htmlBody': this.htmlBody,
+			'loggedInUserId': this.loggedInUserId,
+			'title': this.pdfTitle
+		};
+		let completeUrl = this.authenticationService.REST_URL + "dam/downloadPdfPreview?access_token=" + this.authenticationService.access_token;
+		this.referenceService.post(param, completeUrl);
+		swal.close();
+		this.downloadAssetPopupEventEmitter.emit();
+		this.modalPopupLoader = false;
 	}
 
 	downloadPdfForVendor(self: any, downloadUrl: string) {

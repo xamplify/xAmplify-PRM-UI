@@ -87,6 +87,7 @@ import { EnableSupportAccessToVendorComponent } from './enable-support-access-to
 import { LeftsidenavbarCustomComponent } from './leftsidenavbar-custom/leftsidenavbar-custom.component';
 import { EmailNotificationSettingsComponent } from './email-notification-settings/email-notification-settings.component';
 import { ActiveThreadsInfoComponent } from './active-threads-info/active-threads-info.component';
+import { CustomLoginScreenSettingsComponent } from './custom-login-screen-settings/custom-login-screen-settings.component';
 
 
 
@@ -150,7 +151,8 @@ import { ActiveThreadsInfoComponent } from './active-threads-info/active-threads
         EnableSupportAccessToVendorComponent,
         LeftsidenavbarCustomComponent,
         EmailNotificationSettingsComponent,
-        ActiveThreadsInfoComponent
+        ActiveThreadsInfoComponent,
+        CustomLoginScreenSettingsComponent
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

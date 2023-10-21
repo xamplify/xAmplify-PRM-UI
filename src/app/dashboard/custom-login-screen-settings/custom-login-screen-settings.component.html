@@ -1,0 +1,53 @@
+<!-- new UI Of select Login screen and Bg Image-->
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bg_color mb10">
+  <div class="col-sm-6 col-md-6 col-lg-8 pr0">
+    <div class="col-md-12 col-lg-12">
+      <div class="form-group">
+        <label class="control-label" translate>Select Login Screen Direction <span class="required">
+            <strong>*</strong></span></label>
+        <select [ngModelOptions]="{standalone: true}" [(ngModel)]="companyProfile.loginScreenDirection"
+          class="form-control">
+          <option [ngValue]="undefined" disabled selected> Select Login Screen Direction </option>
+          <option *ngFor="let direction of properties?.loginScreenDirectionOptions">{{direction}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-12 col-lg-12">
+      <div class="form-group">
+        <label class="control-label" translate>Display My Logo <span class="requried"><strong>*</strong></span>
+          </label>
+        <div>
+          <app-custom-ui-switch [customSwitch]="companyProfile?.showVendorCompanyLogo" (customUiSwitchEventEmitter)="setVendorLogoOption($event)"></app-custom-ui-switch>
+        </div>
+        <div class="col-sm-12" style="padding: 0; margin-left: 100px;margin-top: -32px">
+          <span style="cursor: pointer;color: #54a7e9;">
+            <i class="fa fa-question-circle" data-html="true" data-toggle="tooltip" data-placement="right"
+              title="{{properties?.vendorLogoTooltipText}}" style="font-size: 20px;float: left;margin: 8px 0 0 15px;"
+              aria-hidden="true"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-md-6 col-lg-4 pl0">
+    <div>
+      <label class="control-label">Upload Background Image</label>
+      <div class="profile-image-wrapper dotted-image-border upload-imgheight" (click)="bgImageClick()">
+        <span *ngIf="(squareDataForBgImage | json) == '{}'"> <img *ngIf="!companyBgImagePath"
+            src="assets/images/company-profile-logo.png" class="profile-image img-grid" alt="" style="width: 100%;height: 110px;border-radius: 3px;"></span>
+
+        <span *ngIf="croppedImageForBgImage; else showBgImage"> <img class="img-grid" style="width: 100%;height: 110px;border-radius: 3px;"
+            [src]="croppedImageForBgImage" alt="">
+        </span>
+        <ng-template #showBgImage> <img class="img-grid" *ngIf="companyBgImagePath" style="width: 100%;height: 110px;border-radius: 3px;"
+            [src]="authenticationService.MEDIA_URL + companyBgImagePath" (error)="errorHandler($event)"
+            alt=""> </ng-template>
+        <a class="btn btn-primary1 profile-pic" (click)="bgImageClick()" data-toggle="tooltip"
+          data-placement="top" title="upload 2:1 ratio logo !">
+          &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
+            style="font-size:25px;padding-top:10px;left: 5px !important;bottom: -60px !important;"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- new UI Of select Login screen and Bg Image-->

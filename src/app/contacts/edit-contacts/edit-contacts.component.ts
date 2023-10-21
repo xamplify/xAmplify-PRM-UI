@@ -75,7 +75,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	csvContacts = [];
 
 	contactListObject: ContactList;
-	selectedUser: User;
+	selectedUser: User = null;
 	selectedContactListName: string;
 	public validEmailPatternSuccess: boolean = true;
 	emailNotValid: boolean;
@@ -245,8 +245,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	 mergeOptionClicked = false;
 	 selectedUserIdsForMerging: any[];
 	  /****XNFR-278****/
-
-
+	  
+	 @Input() showEdit: boolean;
+	  
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -3398,6 +3399,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			swal.close();
 			$('#filterModal').modal('hide');
 			$('#saveAsEditModal').modal('hide');
+			this.showEdit = false;
 
 			if (this.selectedAddContactsOption != 8 && this.router.url !== '/login' && !this.isDuplicateEmailId && !this.isSegmentation) {
 				let self = this;
@@ -3609,6 +3611,37 @@ copyGroupUsersModalPopupEventReceiver(){
 	this.mergeOptionClicked = false;
 	this.selectedUserIdsForMerging = [];
 }
+
+ unsubscribeUser(selectedUserForUnsubscribed : any){
+  this.contactService.isUnsubscribeContactModalPopup = true;
+  this.selectedUser = selectedUserForUnsubscribed;
+ }
+ unsubscribeUserResult(event : any){
+ this.contactService.isUnsubscribeContactModalPopup = false;
+ this.selectedUser = null ;
+ this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+ this.contactsCount(this.selectedContactListId);
+ this.customResponse = new CustomResponse('SUCCESS', event, true);
+ }
+ 
+ resubscribeUser(selectedUserForUnsubscribed : any){
+  this.selectedUser = selectedUserForUnsubscribed;
+  this.contactService.isresubscribeContactModalPopup = true;
+ }
+ 
+ resubscribeUserResult(event : any){
+ this.contactService.isresubscribeContactModalPopup = false;
+ this.selectedUser = null ;
+ if(this.contactsByType.selectedCategory === 'unsubscribe'){
+   this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+ }else if (this.currentContactType == "all_contacts"){
+   this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+ }
+  this.contactsCount(this.selectedContactListId);
+  this.customResponse = new CustomResponse('SUCCESS', event, true);
+ }
+ 
+
 
     
 }

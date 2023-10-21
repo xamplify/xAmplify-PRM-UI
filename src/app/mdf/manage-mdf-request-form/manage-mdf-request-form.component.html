@@ -221,7 +221,7 @@
                   <ul class="comment-section" *ngFor="let c of comments" style="margin: 0px">
                      <li [attr.class]="c.companyId!=loggedInUserCompanyId ? 'comment author-comment':'comment user-comment'" style="width: 135%;">
                         <div class="info">
-                           <a title="{{c?.displayName}}">{{c?.displayName| slice:0:30}}<span *ngIf="c?.displayName?.length>30">...</span></a>
+                           <a data-placement="top" data-toggle="tooltip" title="{{c?.displayName}}">{{c?.displayName| slice:0:30}}<span *ngIf="c?.displayName?.length>30">...</span></a>
                            <span *ngIf="c?.createdTime">
                               <app-timestamp-new [dateAndTime]="c.createdTime"> </app-timestamp-new>
                            </span>

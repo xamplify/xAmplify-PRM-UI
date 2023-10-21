@@ -1409,7 +1409,7 @@ ul.alt-row-style1 li:nth-child(even) {
   border: 1px solid #2f4857 !important;
 }
 /* 14-6-2023 sudha sri */
-.dropdown-menu li > a  {
+.dropdown-menu li > a {
   color: white !important;
 }
 /* .dropdown-menu li > a > [class*=" fa-"] {
@@ -1848,52 +1848,122 @@ input#copy-link {
   outline: none !important;
 }  */
 
-
 /* Table icon Customization  START*/
 /* List View icon Customization start*/
-i.IconCustomization { border: 1px solid #fff !important;color: #fff !important;}
-i.IconCustomization:hover {border: 1px solid #fff !important;background: #fff !important;color: #22313a !important;}
+i.IconCustomization {
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+i.IconCustomization:hover {
+  border: 1px solid #fff !important;
+  background: #fff !important;
+  color: #22313a !important;
+}
 
-.IconCustomizationcondition a i {border: 1px solid #fff !important;color: #fff !important;}
-.IconCustomizationcondition a i:hover {border: 1px solid #fff !important;background: #fff !important; color: #22313a !important;}
+.IconCustomizationcondition a i {
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+.IconCustomizationcondition a i:hover {
+  border: 1px solid #fff !important;
+  background: #fff !important;
+  color: #22313a !important;
+}
 
-#download-template {border: 1px solid #fff !important;color: #fff !important;}
-#download-template:hover {border: 1px solid #fff !important;background: #fff !important; color:#22313a !important;}
+#download-template {
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+#download-template:hover {
+  border: 1px solid #fff !important;
+  background: #fff !important;
+  color: #22313a !important;
+}
 
-button.btn.TableDataBtn {border-color: #fff !important;}
-button.btn.TableDataBtn .sky-blue {color: #fff !important;}
+button.btn.TableDataBtn {
+  border-color: #fff !important;
+}
+button.btn.TableDataBtn .sky-blue {
+  color: #fff !important;
+}
 
-.custome-dropdown-changs li a {border: 1px solid #fff !important;}
-.custome-dropdown-changs li a i {color: #fff !important;}
+.custome-dropdown-changs li a {
+  border: 1px solid #fff !important;
+}
+.custome-dropdown-changs li a i {
+  color: #fff !important;
+}
 
-.setting-icon-cu {border: 1px solid #fff !important; color: #fff !important;}
-.setting-icon-cu .gearDropdownMenu {color: #fff !important;}
+.setting-icon-cu {
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+.setting-icon-cu .gearDropdownMenu {
+  color: #fff !important;
+}
 
-i.singleIconCustomization {color: #fff !important;}
+i.singleIconCustomization {
+  color: #fff !important;
+}
 
-i.fa.fa-trash-o.trashIconCustomization{border: 1px solid #cb5a5e !important;color: #cb5a5e !important;}
-i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !important;background: #cb5a5e !important;color: #fff !important;}
+i.fa.fa-trash-o.trashIconCustomization {
+  border: 1px solid #cb5a5e !important;
+  color: #cb5a5e !important;
+}
+i.fa.fa-trash-o.trashIconCustomization:hover {
+  border: 1px solid #cb5a5e !important;
+  background: #cb5a5e !important;
+  color: #fff !important;
+}
 /* List View icon Customization End*/
 
 /* Grid View icon Customization start*/
-.gridIconCustomization a {border: 1px solid #fff !important;color: #fff !important;}
-.gridIconCustomization a.Iconhover:hover{border: 1px solid #fff !important;background:#fff !important; color:#22313a !important;}
+.gridIconCustomization a {
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+.gridIconCustomization a.Iconhover:hover {
+  border: 1px solid #fff !important;
+  background: #fff !important;
+  color: #22313a !important;
+}
 
-#download-template-grid {border: 1px solid #fff !important;color: #fff !important;}
-#download-template-grid:hover {border: 1px solid #fff !important;background: #fff !important; color: #22313a !important;}
+#download-template-grid {
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+#download-template-grid:hover {
+  border: 1px solid #fff !important;
+  background: #fff !important;
+  color: #22313a !important;
+}
 
-.gridIconCustomization a.delete {border: 1px solid #cb5a5e !important;background: transparent;color: #cb5a5e !important;}
-.gridIconCustomization a.delete:hover {border: 1px solid #cb5a5e !important;background: #cb5a5e !important; color: #fff !important;}
+.gridIconCustomization a.delete {
+  border: 1px solid #cb5a5e !important;
+  background: transparent;
+  color: #cb5a5e !important;
+}
+.gridIconCustomization a.delete:hover {
+  border: 1px solid #cb5a5e !important;
+  background: #cb5a5e !important;
+  color: #fff !important;
+}
 /* Grid View icon Customization End*/
 /* Table icon Customization END*/
 
 .portlet.light.borderNone {
   border: none !important;
 }
-.listColorCu {color: #fff !important;}
-.listColorCu:hover {opacity: 0.7;}
-.list-card.listColorCu {border-top: 1px solid rgb(47 72 87) !important;}
-.lbg{
+.listColorCu {
+  color: #fff !important;
+}
+.listColorCu:hover {
+  opacity: 0.7;
+}
+.list-card.listColorCu {
+  border-top: 1px solid rgb(47 72 87) !important;
+}
+.lbg {
   background-color: #22313a !important;
 }
 .lbg.show a h6 {
@@ -1901,19 +1971,21 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
 }
 
 /* sudha sri (28-8-2023) */
-.border-bottom-1px {border-bottom: none !important;}
+.border-bottom-1px {
+  border-bottom: none !important;
+}
 
- /* XNFR-335 start */
-.nav-tabs.dcTheme{
+/* XNFR-335 start */
+.nav-tabs.dcTheme {
   background: #22313a54;
 }
-.nav-tabs.dcTheme>li.active>a,
-.nav-tabs.dcTheme>li>a:hover {
-    border: none !important;
-    color: #fff !important;
-    background: #22313a !important ;
+.nav-tabs.dcTheme > li.active > a,
+.nav-tabs.dcTheme > li > a:hover {
+  border: none !important;
+  color: #fff !important;
+  background: #22313a !important ;
 }
-.nav-tabs.dcTheme>li>a {
+.nav-tabs.dcTheme > li > a {
   border: none !important;
   color: #fff !important;
 }
@@ -1924,7 +1996,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
     border: 1px solid #337ab700 !important;
     background-color: #337ab747 !important;
 } */
-.dcbar.progressbar li.active  {
+.dcbar.progressbar li.active {
   color: #fff !important;
 }
 /* .dcbar.progressbar li.active:before {
@@ -1947,12 +2019,16 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
 /* .progressbarVerification li.activeVerification + li:after {
   background: #22313a !important ;
 } */
- /* XNFR-335 End */
+/* XNFR-335 End */
 
- .toggleOnOff .labels::after{color:#fff !important;}
- .toggleOnOff .labels::before {color:#fff !important;}
+.toggleOnOff .labels::after {
+  color: #fff !important;
+}
+.toggleOnOff .labels::before {
+  color: #fff !important;
+}
 
- .input-group > select.form-control {
+.input-group > select.form-control {
   border: 1px solid #2f4857 !important;
 }
 .input-group > select.form-control:focus {
@@ -1962,7 +2038,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
 .bg-color {
   background-color: #22313a !important;
 }
-.comment.user-comment p{
+.comment.user-comment p {
   background-color: #22313a !important;
 }
 .borderColorsCU {
@@ -1970,11 +2046,11 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
 }
 
 .maualSPFCardbg {
-  background-color:#22313a !important
+  background-color: #22313a !important;
 }
 /* Godaddy */
 .popupReportTextbg {
-  background-color:#22313a !important;
+  background-color: #22313a !important;
 }
 .copy-button {
   background-color: #22313a !important;
@@ -1989,7 +2065,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
 /* Sudha Change */
 .popup-border-bottom {
   border-bottom: 1px solid #2f4857 !important;
-} 
+}
 /* Sudha Changes */
 
 .borderTopcu {
@@ -1998,3 +2074,35 @@ i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e !importan
 .list__item .item__actions.abjustPosition {
   border-top: none !important;
 }
+/* sudha sri (10-10-2023) */
+.bg_color {
+  background-color: #22313a !important;
+}
+/*edit-company-profile*/
+.panel-account{
+  background-color: #22313a !important;
+}
+.edit_account{
+  border: 1px solid #2f4857 !important;
+}
+/* myprofile dropdown border */
+li.divider-bottom {
+  border-bottom: 1px solid #2f4857!important
+}
+.BgForCard {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
+.logo-wrapper {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
+
+/* XNFR-376 */
+.unsubscribingPopup span {
+  color: #ffffff;
+}
+.unsubscribingPopup{  
+  background-color: #22313a !important;
+}
+/* XNFR-376 End*/

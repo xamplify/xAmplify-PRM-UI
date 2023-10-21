@@ -43,6 +43,8 @@ finalButtonValue:string;
 errorMessage:string;
 isSpfDoneManually:boolean;
 isSpfDoneGodaddy:boolean;
+classFinalStepShow:string;
+refreshText :string;
  /** XNFR-335*******/
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,public dashboardService:DashboardService) { }
  
@@ -56,8 +58,7 @@ isSpfDoneGodaddy:boolean;
       }
       this.isSpfConfigured();
       this.isGodaddyConfigured();
-      this.getDomainName();
-      this.getDnsRecordsOfGodaddy();
+      this.refreshText = "refresh";
   }
 
   ngOnDestroy(): void {
@@ -153,6 +154,7 @@ isSpfDoneGodaddy:boolean;
     $('#step-3').hide();
     $('#step-4').show();
     $('#step-5').hide();
+    this.statusCode = 200;
     this.loading = false;
   }
   goToStepFive() {
@@ -220,6 +222,9 @@ isSpfDoneGodaddy:boolean;
   showStep_5(){
     $('#step-5').hide();
     $('#step-6').show();
+    this.refresh();
+  }
+  refresh(){
     this.getDnsRecordsOfGodaddy();
   }
   checkDomainName(godaddyDetailsDto: GodaddyDetailsDto) {
@@ -254,16 +259,18 @@ isSpfDoneGodaddy:boolean;
     this.godaddyRecordDto.name = "@";
     this.loading = true;
     this.updateButton = false;
+    this.godaddyDtos = [];
     this.dashboardService.addDnsRecordOfGodaddy(this.godaddyRecordDto).subscribe(
       response => {
         if (response.statusCode === 200) {
+          this.refresh();
           this.statusCode = 200;
           this.showConnectButton = true;
           this.finalButtonValue = "Verified";
+          this.classFinalStepShow = "selectRecord";
           $('#step-6').hide();
           $('#step-7').show();
           this.updateGodaddyConfiguration(this.companyId,isConnected);
-          this.getDnsRecordsOfGodaddy();
           this.isGodaddyConnected = true;
         } else if (response.statusCode === 422) {
           this.statusCode = 422;
@@ -285,7 +292,7 @@ isSpfDoneGodaddy:boolean;
       response => {
         this.loading = false;
           this.isGodaddyConnected = response.data;
-          this.isSpfConfigured();
+          //this.isSpfConfigured();
         if (!this.isGodaddyConnected) {
           $('#addADomain').show();
           $('#step-2').hide();
@@ -303,6 +310,8 @@ isSpfDoneGodaddy:boolean;
           $('#step-7').hide();
           $('#step-7').show();
           this.isGodaddyConnected = true;
+          this.refresh();
+          this.getDomainName();
         }
       }, error => {
         this.loading = false;
@@ -358,7 +367,6 @@ isSpfDoneGodaddy:boolean;
     $('#step-5').hide();
     $('#step-6').hide();
     $('#step-7').hide();
-    //this.isGodaddyConfigured();
     this.isGodaddyConnected = false;
     this.godaddyRecordDto = new GodaddyDetailsDto();
     this.apiKey ="";
@@ -368,7 +376,9 @@ isSpfDoneGodaddy:boolean;
 
   //Show Dns Details
   getDnsRecordsOfGodaddy() {
-    //this.loading = true;
+    this.loading = true;
+    this.classFinalStepShow = "";
+    this.finalButtonValue = "";
     this.dashboardService.getDnsRecordsOfGodaddy().subscribe(
       response => {
         if (response.statusCode === 200) {
@@ -379,20 +389,27 @@ isSpfDoneGodaddy:boolean;
           if(this.godaddyDtos.length  != 0){
           this.currentValue = this.godaddyDtos[this.godaddyDtos.length - 1].data;
           }
-          console.log(this.currentValue, this.suggestValue)
           if (this.currentValue === this.suggestValue && this.godaddyDtos.length === 1) {
             this.showConnectButton = true;
             this.finalButtonValue = "Verified";
-            //this.isGodaddyConnected = true;
+            this.classFinalStepShow = "selectRecord";
           } else if (this.currentValue != this.suggestValue && this.godaddyDtos.length === 1) {
             this.showConnectButton = false;
             this.finalButtonValue = "Mismatch";
             this.errorMessage = "The recommended record indicates a mismatch, please reconfigure from the settings.";
             this.isGodaddyConnected = false;
+            this.classFinalStepShow = "missMatchRecord";
           } else {
             this.showConnectButton = false;
-            this.finalButtonValue = "Invalid";
-            this.errorMessage = "It is showing multiple SPF records for your domain, please reconfigure from the settings.It's important to point out that each domain may have only one SPF entry.";
+            if(this.godaddyDtos.length  === 0){
+              this.finalButtonValue = "Warning";
+              this.classFinalStepShow = "missMatchRecord";
+              this.errorMessage = "No SPF records are seen for your domain, please reconfigure from the settings. It's important to point out that each domain may have only one SPF entry.";
+            } else {
+              this.finalButtonValue = "Invalid";
+              this.classFinalStepShow = "multipleREcord"
+              this.errorMessage = "It is showing multiple SPF records for your domain, please reconfigure from the settings.It's important to point out that each domain may have only one SPF entry.";
+            }
             this.isGodaddyConnected = false;
           }
           console.log(this.godaddyDtos)
@@ -409,6 +426,7 @@ isSpfDoneGodaddy:boolean;
   }
   //delete All records
   deleteDnsRecordsOfGodaddy(isReplace: boolean) {
+    this.loading = true;
     this.dashboardService.deleteDnsRecrds().subscribe(
       response => {
         if (response.statusCode === 204) {

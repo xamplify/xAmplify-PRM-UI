@@ -25,6 +25,11 @@
     font-size: 13px !important;
   }
 }
+@media only screen and (min-width: 992px) and (max-width: 1200px) {  
+  h4.fontDecinModes {
+    font-size: 10px !important;
+  }
+}
 @media only screen and (min-width: 300px) and (max-width: 600px) {  
   .grid-box img{
     height: auto;

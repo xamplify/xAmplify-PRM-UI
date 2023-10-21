@@ -1,0 +1,209 @@
+.div-loader {
+    padding: 5px 5px 10px 10px;
+    background-color: #fff;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.4);
+    border-radius: 0;
+    margin: 1em;
+    height: 500px;
+    position: relative;
+  }
+  #process-loader {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #3498db;
+    width: 80px;
+    height: 80px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+  }
+  .profile-image-wrapper {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #fff;
+    padding: 1px;
+    margin: 0 auto;
+    border: 2px dotted #ddd;
+    position: relative;
+  }
+  .profile-image-wrapper:hover .profile-overlay {
+    width: 100%;
+    background: #111;
+    position: relative;
+    bottom: 35px;
+    left: 0;
+    display: inline-block;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  .profile-image {
+    width: auto;
+    height: 93%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .profile-pic {
+    position: absolute;
+    margin-top: 9px;
+    left: -2px;
+    border: none;
+  }
+  a:hover {
+    text-decoration: none;
+  }
+  .disabled .progress-bar {
+    background: #ebebeb !important;
+    width: 100% !important;
+  }
+  .disabled i {
+    color: #898989 !important;
+  }
+  .panel-heading {
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+  .panel-default {
+    border-color: #ffffff;
+  }
+  .divider {
+    border: 1px solid #f1f1f1;
+    width: 93%;
+    margin: 0 auto;
+    margin: 1em auto;
+  }
+  svg {
+    margin: 0 auto;
+  }
+  .icon {
+    font-size: 23px !important;
+    padding-top: 8px !important;
+    position: absolute !important;
+    left: 2px !important;
+    bottom: 4px !important;
+  }
+  @media screen and (max-width: 600px) {
+    .imgCrop-modal {
+      width: 100%;
+    }
+  }
+  @media screen and (min-width: 601px) {
+    .imgCrop-modal {
+      width: 40% !important;
+    }
+  }
+  .blur-content {
+    -webkit-filter: url(#svg-blur);
+    filter: url(#svg-blur);
+    pointer-events: none;
+    tab-index: -1;
+  }
+  #right {
+    float: right;
+  }
+  #check-user {
+    margin-top: 26px;
+    display: none;
+  }
+  .img-grid {
+    height: 42px;
+    width: 120px;
+  }
+  @media screen and (max-width: 600px) {
+    .mPadCompanyProfile {
+      padding-left: 15px !important;
+    }
+    .mPad1 {
+      padding-right: 0px !important;
+      padding-left: 0px !important;
+    }
+    .mPad2 {
+      padding-left: 2px !important;
+      padding-right: 0px !important;
+    }
+  }
+  .image-border {
+    padding: 0px 0px 0px 0px !important;
+    border: 1px solid #eaeaea;
+    border-radius: 4px !important;
+  }
+  .dotted-image-border {
+    cursor: pointer;
+    text-align: center;
+    color: #fff;
+  }
+  .company-details-border {
+    padding-left: 17px !important;
+    padding-right: 17px !important;
+    border-radius: 4px !important;
+    border: 1px solid #eaeaea;
+    padding-bottom: 48px !important;
+  }
+  .alert-success {
+    background-color: #dff0d8 !important;
+    border-radius: 3px !important;
+    color: #3c763d !important;
+  }
+  /* 26-07-2023 */
+  .partlet-cardbody {
+    text-align: center;
+    padding: 12px 20px;
+  }
+  .responsive-screen-wordwrap {
+    word-wrap: break-word;
+  }
+  .fav-icon-responsive {
+    height: 94px !important;
+    width: 94px !important;
+    object-fit: fill;
+    margin-left: -12px;
+  }
+  .fav-icon-image-profile-wrapper {
+    width: 70% !important;
+    height: 100px !important;
+  }
+  .fav-img-grid {
+    height: 100px;
+    width: 120px;
+  }
+  .margin-61 {
+    margin-top: 61px !important;
+  }
+  .bg-image-responsive {
+    width: 180px !important;
+    height: 100px !important;
+  }
+  .bg-img-grid {
+    height: 95px;
+    width: 145px;
+  }
+  .bg_color {
+    margin: 0px 17px;
+    background-color: #f0f3fa;
+    width: 96%;
+    padding: 10px 0px;
+    border-radius: 3px;
+  }
+  .upload-imgheight {
+    height: 115px;
+  }
+  .edit_account{
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+  }
+  .panel-header{
+   padding:6px 10px;
+  }
+  .panel-account{
+  padding: 10px;
+  background-color: #eeeeee;
+  border-radius: 3px;
+  margin: 10px 10px;
+  }
+  

@@ -71,6 +71,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
    /****XNFR-326***/
    isAssetPublishedEmailNotification = false;
    assetPublishEmailNotificationLoader = true;
+   isDownloaButtonClicked = false;
 
   constructor(
     private xtremandLogger: XtremandLogger,
@@ -493,4 +494,22 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
     this.damPostDto.partnerIds = event['partnerIds'];
     this.damPostDto.partnerGroupSelected = event['partnerGroupSelected'];
 }
+
+downloadPdf(){
+  this.modalPopupLoader = true;
+		let param: any = {
+			'size': this.damPostDto.pageSize,
+			'orientation': this.damPostDto.pageOrientation,
+			'htmlBody': this.damPostDto.htmlBody,
+			'loggedInUserId': this.loggedInUserId,
+			'title': this.damPostDto.name
+		};
+		let completeUrl = this.authenticationService.REST_URL + "dam/downloadPdfPreview?access_token=" + this.authenticationService.access_token;
+		this.referenceService.post(param, completeUrl);
+		this.modalPopupLoader = false;
+
+}
+
+
+
 }

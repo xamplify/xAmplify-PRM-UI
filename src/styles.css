@@ -677,7 +677,8 @@ a {
   text-align: center;
   line-height: 26px !important;
   vertical-align: middle;
-  margin-right: 7px;
+  margin-right: 5px;
+  margin-bottom: 2px;
   font-size: 14px !important;
 }
 
@@ -2455,3 +2456,13 @@ button.unlink-button {
   top: 1px;
   left: 1px;
 }
+div#bubble-chart {
+  z-index: 0 !important;
+}
+.w75-per{
+  width: 75% !important;
+}
+.ml15{
+  margin-left: 15px !important;
+}
+

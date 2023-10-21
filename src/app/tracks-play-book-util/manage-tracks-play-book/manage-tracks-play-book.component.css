@@ -183,3 +183,10 @@ p.warning-red-textcolor {
   margin: 0;
   height:5px;
 }
+
+@media (min-width: 768px) and (max-width: 1118px) {
+  .ProcessingTextWidth {
+    display: flex !important;
+    justify-content: center;
+  }
+}

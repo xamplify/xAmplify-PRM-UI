@@ -429,3 +429,8 @@ a.ContnetAbjustment {
 		margin-left: -10px;
 	}
 }
+
+.displayinline-flex {
+  /* display: inline-flex; */
+  display: inherit;
+}

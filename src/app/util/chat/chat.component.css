@@ -305,21 +305,21 @@ width: 7px;
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
 box-shadow: inset 0 0 5px grey;
 border-radius: 0px;
-}
+} */
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
 background: green;
 border-radius: opx;
-}
+} */
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+/* ::-webkit-scrollbar-thumb:hover {
 background: green;
-}
+} */
 
 
 .comment-div {
