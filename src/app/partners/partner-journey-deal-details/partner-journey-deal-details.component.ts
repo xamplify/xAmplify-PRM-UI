@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PagerService } from 'app/core/services/pager.service';
 import { ReferenceService } from 'app/core/services/reference.service';
@@ -18,11 +18,13 @@ import { SortOption } from 'app/core/models/sort-option';
 export class PartnerJourneyDealDetailsComponent implements OnInit {
   @Input() partnerCompanyId: any;
   @Input() teamMemberId: any;
+  @Output() notifyShowDetailedAnalytics = new EventEmitter();
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
+  isDetailedAnalytics: boolean = false;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -36,6 +38,11 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
 
   ngOnChanges() {    
     this.pagination.pageIndex = 1;
+    if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
+      this.isDetailedAnalytics = true;
+    } else {
+      this.isDetailedAnalytics = false;
+    }
     this.getDealDetails(this.pagination);
   }
 
@@ -93,6 +100,10 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
     this.getAllFilteredResults(this.pagination);
+  }
+  
+  viewAnalytics(partnerCompanyId: any) {
+    this.notifyShowDetailedAnalytics.emit(partnerCompanyId); 
   }
 
 }

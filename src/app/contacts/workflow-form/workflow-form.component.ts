@@ -1,4 +1,5 @@
-import { Component, ElementRef, OnInit, Renderer} from '@angular/core';
+import { Component, OnInit, Renderer,HostListener} from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { ContactService } from '../services/contact.service';
 import { Properties } from '../../common/models/properties';
 import { ActionsDescription } from '../../common/models/actions-description';
@@ -19,7 +20,9 @@ import { WorkflowDto } from '../models/workflow-dto';
 import { SortOption } from 'app/core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
 import { CustomAnimation } from 'app/core/models/custom-animation';
-declare var  $:any, CKEDITOR:any, swal: any;
+import { ComponentCanDeactivate } from 'app/component-can-deactivate';
+
+declare var  $:any;
 @Component({
   selector: 'app-workflow-form',
   templateUrl: './workflow-form.component.html',
@@ -27,11 +30,13 @@ declare var  $:any, CKEDITOR:any, swal: any;
   providers: [SocialContact, Pagination, Properties, ActionsDescription,SortOption],
   animations:[CustomAnimation]
 })
-export class WorkflowFormComponent implements OnInit{
+export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
 
   isAdd = false;
   triggerTitles:Array<any> = new Array<any>();
   triggerTitlesLoader = true;
+  fromEmailLoader = true;
+  fromEmailUsers:Array<any> = new Array<any>();
   divs: number[] = [];
   newDivs: number[] = [];
   clickOr = true;
@@ -39,13 +44,16 @@ export class WorkflowFormComponent implements OnInit{
   config:QueryBuilderConfig  = {
     fields:{}
   }
-  query  = {};
+  query:any  = { condition: 'and',
+    rules: []
+    };
   showQueryBuilder = false;
   queryBuilderCustomResponse:CustomResponse = new CustomResponse();
   triggerLoader = true;
   subjects:Array<any> = new Array<any>();
   actions:Array<any> = new Array<any>();
   timePhrases:Array<any> = new Array<any>();
+  queryBuilderJson = {};
   classNames: QueryBuilderClassNames = {
     removeIcon: 'fa fa-minus',
     addIcon: 'fa fa-plus',
@@ -86,6 +94,8 @@ export class WorkflowFormComponent implements OnInit{
   customDaysDivClass:string = this.formGroupClass;
   notificationSubjectDivClass:string = this.formGroupClass;
   notificationMessageDivClass:string = this.formGroupClass;
+  preHeaderDivClass:string = this.formGroupClass;
+  mergeTagsInput: any = {};
   /***Send To******/
   partnerListsLoader = false;
   partnerListsPagination:Pagination = new Pagination();
@@ -111,9 +121,15 @@ export class WorkflowFormComponent implements OnInit{
   isValidTriggerTab = false;
   isValidPartnerListIds = false;
   isValidNotificationSubject = false;
+  isValidPreHeader = false;
   isValidNotificationMessage = false;
   isCustomOptionSelected = false;
   isValidCustomDays = true;
+  id:number = 0;
+  previouslySelectedTemplateId = 0;
+  isDuplicateTitle: boolean;
+  isSubmitButtonClicked = false;
+  loggedInUserId = 0;
   /****Send To*******/
   
   constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
@@ -121,13 +137,39 @@ export class WorkflowFormComponent implements OnInit{
 		public actionsDescription: ActionsDescription,public route: ActivatedRoute,public parterService: ParterService,public logger: XtremandLogger,public dealRegSevice: DealRegistrationService,
     private pagerService:PagerService,private utilService:UtilService,private render: Renderer){
       this.referenceService.renderer = this.render;
+      this.loggedInUserId = this.authenticationService.getUserId();
+      
     }
 
   ngOnInit() {
     this.referenceService.goToTop();
+    this.id = this.utilService.getRouterParameterValue(this.route,'id');
+    this.isAdd = this.id==undefined || this.id==0;
     this.findTriggerTitles();
-    this.getQueryBuilder();
+    this.findAllUsers();
+    this.loadPromptAndNotificationTabsData();
     this.showTriggersTab();
+  }
+  findAllUsers() {
+    this.authenticationService.findAllUsers().subscribe(
+      response=>{
+        this.fromEmailUsers = response.data;
+        this.fromEmailLoader = false;
+        if(this.isAdd){
+          let teamMember = this.fromEmailUsers.filter((teamMember) => teamMember.id == this.loggedInUserId)[0];
+          this.workflowDto.fromEmailUserId = teamMember.id;
+          this.workflowDto.fromName = $.trim(teamMember.firstName + " " + teamMember.lastName);
+        }
+      },error=>{
+        this.fromEmailLoader = false;
+      });
+  }
+ 
+
+  stopLoaders(){
+    this.partnerListsLoader = false;
+    this.loadQueryBuilder = false;
+    this.triggerLoader = false;
   }
 
   findTriggerTitles(){
@@ -135,56 +177,114 @@ export class WorkflowFormComponent implements OnInit{
       response=>{
         this.triggerTitles = response.data;
         this.triggerTitlesLoader = false;
+        
       },error=>{
         this.triggerTitlesLoader = false;
       });
   }
 
-  
-
-  getQueryBuilder(){
+  loadPromptAndNotificationTabsData(){
     this.parterService.findDefaultTriggerOptions().subscribe(
       response=>{
         this.queryBuilderCustomResponse = new CustomResponse();
         let data = response.data;
         this.subjects = data.subjects;
-        if(this.subjects.length>0){
-          this.workflowDto.subjectId = this.subjects[0].id;
-        }
         this.actions = data.actions;
-        if(this.actions.length>0){
-          this.workflowDto.actionId = this.actions[0].id;
-        }
         this.timePhrases = data.timePhrases;
-        if(this.timePhrases.length>0){
-          this.workflowDto.timePhraseId = this.timePhrases[0].id;
+        this.queryBuilderJson = data.queryBuilderJson;
+        if(this.isAdd){
+          let subjectId = this.subjects[0].id;
+          let actionId = this.actions[0].id;
+          let timePhraseId = this.timePhrases[0].id;
+          this.setDropDownDataAndQueryBuilderData(subjectId,actionId,timePhraseId);
         }
-        let queryBuilderJsonInput  = data.queryBuilderJson;
-        let fieldsLength = Object.keys(queryBuilderJsonInput.fields).length;
-        this.showQueryBuilder = fieldsLength>0;
-        if(this.showQueryBuilder){
-          this.config = queryBuilderJsonInput;
-          let query = {
-            condition: 'and',
-            rules: [
-              
-            ]
-          };
-          this.workflowDto.filterQueryJson = query;
-        }else{
-        this.queryBuilderCustomResponse = new CustomResponse('INFO','No Filters Found',true);
-        }
-        this.partnerListsPagination.maxResults = 4;
-        this.findPartnerLists(this.partnerListsPagination);
-        this.loadQueryBuilder = false;
-        this.triggerLoader = false;
       },error=>{
         this.xtremandLogger.errorPage(error);
+      },()=>{
+        if(this.isAdd){
+          this.loadPartnerListsWithMinimumLimit();
+        }else{
+          this.findWorkflowData();
+        }
       }
     );
   }
 
   
+  private findWorkflowData() {
+    this.parterService.findWorkflowById(this.id).subscribe(
+      response => {
+        this.workflowDto = response.data;
+        this.editedTriggerTitle = this.workflowDto.title;
+        let jsonString = this.workflowDto.queryBuilderInputString;
+        let isValidJson = this.utilService.isValidJsonString(jsonString);
+        if (isValidJson) {
+          let json = this.utilService.convertJsonStringToJsonObject(jsonString);
+          this.workflowDto.filterQueryJson = json;
+        } else {
+          this.workflowDto.filterQueryJson = this.query;
+        }
+        this.setDropDownDataAndQueryBuilderData(this.workflowDto.subjectId, this.workflowDto.actionId, this.workflowDto.timePhraseId);
+        if (!this.isAdd) {
+          this.validateTitle();
+          this.addCustomDaysTextBox();
+        }
+      }, error => {
+        this.xtremandLogger.errorPage(error);
+      }, () => {
+        this.selectedPartnerListIds = this.workflowDto.selectedPartnerListIds.sort();
+        let selectedListSortOption = {
+          'name': 'Selected List', 'value': 'selectedList'
+        };
+        this.partnerListsSortOption.campaignRecipientsDropDownOptions.push(selectedListSortOption);
+        this.partnerListsSortOption.selectedCampaignRecipientsDropDownOption = this.partnerListsSortOption.campaignRecipientsDropDownOptions[this.partnerListsSortOption.campaignRecipientsDropDownOptions.length - 1];
+        this.getValidUsersCount();
+        this.loadPartnerListsWithMinimumLimit();
+        let previouslySelectedTemplateId = this.workflowDto.templateId;
+        this.previouslySelectedTemplateId = previouslySelectedTemplateId;
+        this.validateNotificationSubject();
+        this.validatePreHeader();
+        this.validateNotificationMessage(true);
+        this.stopLoaders();
+      }
+    );
+  }
+
+  private loadPartnerListsWithMinimumLimit() {
+    this.partnerListsPagination.maxResults = 4;
+    this.findPartnerLists(this.partnerListsPagination);
+  }
+
+  private setDropDownDataAndQueryBuilderData(subjectId:number,actionId:number,timePhraseId:number) {
+    if (this.subjects.length > 0) {
+      this.workflowDto.subjectId = subjectId;
+    }
+    if (this.actions.length > 0) {
+      this.workflowDto.actionId = actionId;
+    }
+    if (this.timePhrases.length > 0) {
+      this.workflowDto.timePhraseId = timePhraseId;
+    }
+    this.setQueryBuilderData(this.queryBuilderJson);
+  }
+
+  private setQueryBuilderData(queryBuilderJsonInput: any) {
+    if(queryBuilderJsonInput.fields!=undefined){
+        let fieldsLength = Object.keys(queryBuilderJsonInput.fields).length;
+        this.showQueryBuilder = fieldsLength > 0;
+        if (this.showQueryBuilder) {
+           this.config = queryBuilderJsonInput;
+          if(this.isAdd){
+            this.workflowDto.filterQueryJson = this.query;
+          }
+        } else {
+          this.queryBuilderCustomResponse = new CustomResponse('INFO', 'No Filters Found', true);
+        }
+    }else{
+      this.queryBuilderCustomResponse = new CustomResponse('INFO', 'No Filters Found', true);
+    }
+  }
+
   validateTitle(){
     this.workflowDto.title = $.trim(this.workflowDto.title);
     let trimmedTitle = this.workflowDto.title.toLowerCase();//Remove all spaces
@@ -260,12 +360,12 @@ export class WorkflowFormComponent implements OnInit{
 
 
   addCustomDaysTextBox(){
-    this.findCustomOption();
+    let conditionCheckWithText = "Custom-In the past custom days"==$.trim($('#time-phrase option:selected').text());
+    let conditionCheckWithId = this.workflowDto.timePhraseId==35;
+    this.isCustomOptionSelected = conditionCheckWithText || conditionCheckWithId;
+
   }
 
-  findCustomOption(){
-    this.isCustomOptionSelected = "Custom-In the past custom days"==$.trim($('#time-phrase option:selected').text());
-  }
 
   /*************Partner Lists********/
 
@@ -273,7 +373,8 @@ export class WorkflowFormComponent implements OnInit{
     this.referenceService.goToDiv('step-2');
     this.partnerListsLoader = true;
     if (!this.isAdd) {
-        //campaignRecipientsPagination.campaignId = this.campaign.campaignId;
+        pagination.campaignId = this.id;
+        pagination.type = 'workflow';
     }
     this.contactService.findContactsAndPartnersForCampaign(pagination)
         .subscribe(
@@ -292,7 +393,7 @@ export class WorkflowFormComponent implements OnInit{
                 } else {
                     this.isHeaderCheckBoxChecked = false;
                 }
-                this.partnerListsLoader = false;
+                this.stopLoaders();
             },
             (error: string) => {
                 this.xtremandLogger.errorPage(error);
@@ -493,32 +594,40 @@ export class WorkflowFormComponent implements OnInit{
 
   getSelectedEmailTemplateReceiver(event:any){
     this.workflowDto.templateId = event;
-    this.validateNotificationMessage();
+    this.validateNotificationMessage(false);
   }
   customUiSwitchEventReceiver(event:any){
     this.workflowDto.customTemplateSelected = event;
-    this.validateNotificationMessage();
+    this.validateNotificationMessage(false);
   }
 
   
   submitForm(){ 
+    this.isSubmitButtonClicked = true;
     this.validateNotificationSubject();
-    this.validateNotificationMessage();
+    this.validatePreHeader();
+    this.validateNotificationMessage(false);
     if(this.isValidNotificationMessage && this.isValidNotificationSubject && this.selectedPartnerListIds.length>0){
      this.triggerLoader = true;
      this.workflowDto.selectedPartnerListIds = this.selectedPartnerListIds;
-        this.parterService.saveWorkflow(this.workflowDto).subscribe(
+     this.workflowDto.queryBuilderInputString  = this.utilService.convertJsonToString(this.workflowDto.filterQueryJson);
+     this.workflowDto.id = this.id;
+     this.workflowDto.isAdd = this.isAdd;
+        this.parterService.saveOrUpdateWorkflow(this.workflowDto).subscribe(
             response=>{
               this.titleDivClass = this.successClass;
               if(response.statusCode==200){
-                this.referenceService.isCreated = true;
+                this.referenceService.isCreated = this.isAdd;
+                this.referenceService.isUpdated = !this.isAdd;
                 this.navigateToPartnerJourneyAutomationSection();
               }else{
                 this.referenceService.scrollSmoothToTop();
                 let errorObject = response.data.errorMessages[0];
                 let field = errorObject['field'];
                 if("title"==field){
-                  this.invalidTitlePattern = true;
+                  let message = errorObject['message'];
+                  this.invalidTitlePattern = message.indexOf("Invalid title pattern")>-1;
+                  this.isDuplicateTitle = message.indexOf("Already Exists")>-1;
                   this.titleDivClass = this.errorClass;
                 }else{
                   this.referenceService.showSweetAlertErrorMessage(this.properties.serverErrorMessage);
@@ -542,19 +651,66 @@ export class WorkflowFormComponent implements OnInit{
       this.notificationSubjectDivClass =  isValidNotificationSubject ? this.successClass :this.errorClass;
     }
 
+    private validatePreHeader(){
+      this.workflowDto.preHeader = $.trim(this.workflowDto.preHeader);
+      let trimmedPreHeader = $.trim(this.workflowDto.preHeader.toLowerCase());
+      this.isValidPreHeader = trimmedPreHeader.length>0;
+      let isValidPreHeader = trimmedPreHeader.length>0 &&  this.isValidPreHeader;
+      this.preHeaderDivClass =  isValidPreHeader ? this.successClass :this.errorClass;
+    }
 
-  private validateNotificationMessage() {
+
+  private validateNotificationMessage(isEdit:boolean) {
     if(this.workflowDto.customTemplateSelected){
       this.isValidNotificationMessage = this.workflowDto.templateId > 0;
       this.notificationMessageDivClass =  this.isValidNotificationMessage ? this.successClass :this.errorClass;
     }else{
       let notificationMessage = this.referenceService.getCkEditorPlainDescription(this.workflowDto.notificationMessage);
-      this.isValidNotificationMessage = notificationMessage.length > 0;
+      if(isEdit){
+        this.isValidNotificationMessage = this.workflowDto.notificationMessage.length > 0;
+      }else{
+        if(this.isAdd){
+          this.isValidNotificationMessage = notificationMessage.length > 0;
+        }else{
+          this.isValidNotificationMessage = notificationMessage.length > 0 || this.workflowDto.notificationMessage.length>0;
+        }
+      }
       this.notificationMessageDivClass =  this.isValidNotificationMessage ? this.successClass :this.errorClass;
     }
   }
 
-  
+  openMergeTagsPopup(type: string, autoResponseSubject: any) {
+    this.mergeTagsInput['isEvent'] = false;
+    this.mergeTagsInput['isCampaign'] = false;
+    this.mergeTagsInput['hideButton'] = true;
+    this.mergeTagsInput['type'] = type;
+    this.mergeTagsInput['autoResponseSubject'] = autoResponseSubject;
+  }
+
+  clearHiddenClick() {
+    this.mergeTagsInput['hideButton'] = false;
+  }
+
+appendValueToSubjectLine(event: any) {
+  if (event != undefined) {
+      let type = event['type'];
+      let copiedValue = event['copiedValue'];
+      if (type == "subject") {
+          let subjectLine = $.trim($('#notificationSubject').val());
+          let updatedValue = subjectLine + " " + copiedValue;
+          $('#notificationSubject').val(updatedValue);
+          this.workflowDto.notificationSubject = updatedValue;
+          this.validateNotificationSubject();
+      } 
+  }
+  this.mergeTagsInput['hideButton'] = false;
+}
+
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> | boolean {
+      this.authenticationService.stopLoaders();
+      return this.isSubmitButtonClicked || this.authenticationService.module.logoutButtonClicked;
+  }
 
  
 }

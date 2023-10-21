@@ -32,13 +32,14 @@ import { PartnerJourneyCompanyInfoComponent } from './partner-journey-company-in
 import { CampaignCountTilesComponent } from './campaign-count-tiles/campaign-count-tiles.component';
 import { PartnersJourneyAutomationComponent } from './partners-journey-automation/partners-journey-automation.component';
 import { WorkflowFormComponent } from '../contacts/workflow-form/workflow-form.component';
+import { PendingChangesGuard } from "app/component-can-deactivate";
 
 
 @NgModule({
   imports: [
     CKEditorModule, CommonModule, PartnerRoutingModule, SharedModule, SharedContactsModule, CommonComponentModule, SharedLibraryModule
   ],
-  providers: [],
+  providers: [PendingChangesGuard],
   declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyCountTilesComponent, InteractedNotInteractedTrackDetailsComponent, TypewiseTrackContentDetailsComponent, UserwiseTrackCountsComponent, UserwiseTrackDetailsComponent, TrackAssetDetailsComponent, ShareLeadDetailsComponent, RedistributedCampaignDetailsComponent, PartnerJourneyLeadDetailsComponent, PartnerJourneyDealDetailsComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent]
 })
 export class PartnersModule { }

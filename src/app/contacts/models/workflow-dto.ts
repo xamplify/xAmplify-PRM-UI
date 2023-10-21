@@ -13,4 +13,10 @@ export class WorkflowDto {
     notificationMessage = "";
     loggedInUserId = 0;
     customDays = 1;
+    queryBuilderInputString:any;
+    isAdd = false;
+    preHeader = "";
+    fromEmailUserId = 0;
+    fromEmail = "";
+    fromName = "";
 }

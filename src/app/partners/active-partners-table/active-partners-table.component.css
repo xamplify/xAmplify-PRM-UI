@@ -3,3 +3,14 @@
       width: 160px !important;
     }
   }
+
+  .accordion-toggle:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\e113";
+    float: right;
+    color: grey;       
+}
+
+ .accordion-toggle.collapsed:after {
+  content: "\e114";     
+}

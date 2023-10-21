@@ -19,7 +19,8 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Team Member</th>
+              <th scope="col" *ngIf="isDetailedAnalytics">Team Member</th>
+              <th scope="col" *ngIf="!isDetailedAnalytics">Company Name</th>
               <th scope="col">List Name</th>
               <th scope="col">Created On</th>
               <th scope="col">Assigned On</th>
@@ -28,7 +29,8 @@
           </thead>
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
+              <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
+              <td *ngIf="!isDetailedAnalytics"><a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">{{item?.companyName}}</a></td>
               <td>{{item?.listName}}</td>
               <td><app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.createdTimeInUTC">
                 </app-timestamp></td>
@@ -47,7 +49,7 @@
       <!--Pagination-->
       <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
         <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
-          (notifyParentDropDown)="getUserWiseTrackDetails($event)">
+          (notifyParentDropDown)="getShareLeadDetails($event)">
         </app-pagination>
       </div>
     </div>

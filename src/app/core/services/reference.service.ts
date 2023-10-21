@@ -3163,7 +3163,7 @@ export class ReferenceService {
   }
 
   getCkEditorPlainDescription(description:string){
-    description = $(description).text(); // html to text        
+    description = $(description).text(); // html to text
     description = description.replace(/\r?\n|\r/gm," "); // remove line breaks   
     description = description.replace(/\s\s+/g, " ").trim(); // remove double spaces
     return description;

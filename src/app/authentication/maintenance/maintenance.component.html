@@ -5,8 +5,8 @@
   <nav  class="navBg navbar-default" [class.active]="isNavbarBackgroundVisible">
     <div class="wrapper sidePaddings">
       <div class="XamolifyLogo">
-        <a href="#">
-          <img alt="Logo" class="XamolifyLogoWidth" src="assets/images/maintenance/xamplifyLogo.png">
+        <a>
+          <img alt="Logo" class="XamolifyLogoWidth" src="assets/images/maintenance/xamplifyLogo.png" (click)="alertClick()">
         </a>
       </div>
       <input type="radio" name="slider" id="menu-btn">
@@ -14,11 +14,11 @@
       <ul class="nav-links">
         <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
         <!-- Home tab start  -->
-        <li><a href="#" class="desktop-item active">Home</a></li>
+        <li><a class="desktop-item active" (click)="alertClick()">Home</a></li>
         <!-- Home tab end  -->
         <!-- Solutions tab start  -->
         <li>
-          <a href="#" class="desktop-item">Solutions</a>
+          <a class="desktop-item">Solutions</a>
           <!-- <input type="checkbox" id="showMega">
           <label for="showMega" class="mobile-item">Solutions</label> -->
           <!-- <div class="mega-box">
@@ -72,7 +72,7 @@
         <!-- Solutions tab End -->
         <!-- Industries tab start -->
         <li>
-          <a href="#" class="desktop-item">Industries</a>
+          <a class="desktop-item">Industries</a>
           <!-- <input type="checkbox" id="showMega">
           <label for="showMega" class="mobile-item">Industries</label> -->
           <!-- <div class="mega-box">
@@ -102,7 +102,7 @@
         <!-- Solutions tab End -->
  <!-- Company tab start -->
         <li>
-          <a href="#" class="desktop-item">Company</a>
+          <a class="desktop-item">Company</a>
           <!-- <input type="checkbox" id="showDrop">
           <label for="showDrop" class="mobile-item">Company</label> -->
           <!-- <ul class="drop-menu">
@@ -111,7 +111,7 @@
           </ul> -->
         </li>
         <li>
-          <a href="#" class="desktop-item">Resources</a>
+          <a class="desktop-item">Resources</a>
           <!-- <input type="checkbox" id="showMega">
           <label for="showMega" class="mobile-item">Resources</label> -->
           <!-- <div class="mega-box">
@@ -168,8 +168,8 @@
                         <p class="heroText">Decentralized Marketing and Sales Automation</p>
                         <h1 class="herotitle"><span  class="heroTextColor">Faster Partner</span> <br> <span class="heroTextColor2">Revenue</span></h1>
                         <p class="heroTextDescription">xAmplify's powerful Platform is the easiest way to Co-Market and Co-Sell to get the fastest time-to-revenue</p>
-                        <a href="https://xamplify.io/requestdemo"  class="btn btn-light customization">Get a Demo</a>
-                        <a href="https://xamplify.io/requestdemo" class="btn btn-primary customization">Request Pricing </a>
+                        <a  class="btn btn-light customization" (click)="alertClick()">Get a Demo</a>
+                        <a class="btn btn-primary customization">Request Pricing </a>
                       </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12">
@@ -185,8 +185,8 @@
                       <p class="heroText"> A Data Driven Partner Management Platform</p>
                       <h1 class="herotitle"><span  class="heroTextColor">A Next Generation</span> <br> <span class="heroTextColor2">PRM</span></h1>
                       <p class="heroTextDescription">The best partner teams use data to maximize partnerships and grow their programs faster</p>
-                      <a href="https://xamplify.io/requestdemo" class="btn btn-light customization">Get a Demo</a>
-                      <a href="https://xamplify.io/requestdemo" class="btn btn-primary customization">Request Pricing </a>
+                      <a class="btn btn-light customization" (click)="alertClick()">Get a Demo</a>
+                      <a class="btn btn-primary customization">Request Pricing </a>
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12">
@@ -202,8 +202,8 @@
                       <p class="heroText">A Data-Driven, Partner Enablement Platform</p>
                       <h1 class="herotitle"><span  class="heroTextColor">Work Smarter,</span> <br> <span class="heroTextColor2">Not Harder</span></h1>
                       <p class="heroTextDescription">xAmplify's powerful Partner Enablement Platform is the easiest way to Co-Market and Co-Sell to get the fastest time-to-revenue</p>
-                      <a href="https://xamplify.io/requestdemo" class="btn btn-light customization">Get a Demo</a>
-                      <a href="https://xamplify.io/requestdemo" class="btn btn-primary customization">Request Pricing </a>
+                      <a class="btn btn-light customization" (click)="alertClick()">Get a Demo</a>
+                      <a class="btn btn-primary customization">Request Pricing </a>
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12">
@@ -280,7 +280,7 @@
               <li> <i aria-hidden="true" class="far fa-folder faconSize"></i> Collateral Library</li>
               <li> <i aria-hidden="true" class="fas fa-bullhorn faconSize"></i> Social Syndication</li>
             </ul>
-            <a href="https://xamplify.io/requestdemo" class="btn btn-ligh SectionTwo">Learn More <i class="fa fa-angle-right"></i></a>
+            <a class="btn btn-ligh SectionTwo" (click)="alertClick()">Learn More <i class="fa fa-angle-right"></i></a>
           </div>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12">
@@ -307,7 +307,7 @@
               <li> <i aria-hidden="true" class="far fa-chart-bar faconSize"></i> Partner Attribution</li>
               <li> <i aria-hidden="true" class="fas fa-chart-pie faconSize"></i> Content Attribution</li>
             </ul>
-            <a href="https://xamplify.io/requestdemo" class="btn btn-ligh SectionTwo">Learn More <i class="fa fa-angle-right"></i></a>
+            <a class="btn btn-ligh SectionTwo" (click)="alertClick()">Learn More <i class="fa fa-angle-right"></i></a>
           </div>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12">
@@ -335,7 +335,7 @@
               <li> <i aria-hidden="true" class="far fa-calendar-check faconSize"></i> Automate Reminders</li>
               <li> <i aria-hidden="true" class="fas fa-chart-bar faconSize"></i> Get Attribution</li>
             </ul>
-            <a href="https://xamplify.io/requestdemo" class="btn btn-ligh SectionTwo">Learn More <i class="fa fa-angle-right"></i></a>
+            <a class="btn btn-ligh SectionTwo" (click)="alertClick()">Learn More <i class="fa fa-angle-right"></i></a>
           </div>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12 ResponsivePaddingRemove">
@@ -368,7 +368,7 @@
                           <div class="SectionFive">
                             <h2 class="TabTitleColor">Be the CMO for your Reseller Partners</h2>
                             <p>With xAmplify’s vertically integrated platform, each reseller partner gets a complete marketing automation stack from email, social media, video hosting, forms, landing pages and much more. Automatic logo merge tags lets you scale co-branding to as many resellers as you wish. The platform gives you analytics on partners, content, reach and much more. Have control over branding, messaging, look and feel. </p>
-                            <a href="https://xamplify.io/requestdemo" class="btn btn-ligh SectionTwo whitebg">Get A Demo <i class="fa fa-angle-right"></i></a>
+                            <a class="btn btn-ligh SectionTwo whitebg" (click)="alertClick()">Get A Demo <i class="fa fa-angle-right"></i></a>
                           </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -383,7 +383,7 @@
                           <div class="SectionFive">
                             <h2 class="TabTitleColor">Co-Market with Alliances</h2>
                             <p>Forming an Alliance of peer companies builds your brand and credibility with prospects. xAmply’s unique architecture gives peer level access to each company to enable cohesive marketing and selling efforts. Competitive platforms are designed for tiered or hierarchical access which makes alliance companies feel less than equal. With xAmplify, all are equals.</p>
-                            <a href="https://xamplify.io/requestdemo" class="btn btn-ligh SectionTwo whitebg">Get A Demo <i class="fa fa-angle-right"></i></a>
+                            <a class="btn btn-ligh SectionTwo whitebg" (click)="alertClick()">Get A Demo <i class="fa fa-angle-right"></i></a>
                           </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -397,7 +397,7 @@
                           <div class="SectionFive">
                             <h2 class="TabTitleColor">Enable Brands to Sell your Product</h2>
                             <p>Companies that sell through distributors or other brands face enablement challenges resorting to mass pdf manipulation. xAmplify’s platform is designed to help companies enable their brands or distributors with content and then co-brand with partners as needed. </p>
-                            <a href="https://xamplify.io/requestdemo" class="btn btn-ligh SectionTwo whitebg">Get A Demo <i class="fa fa-angle-right"></i></a>
+                            <a class="btn btn-ligh SectionTwo whitebg" (click)="alertClick()">Get A Demo <i class="fa fa-angle-right"></i></a>
                           </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -411,7 +411,7 @@
                           <div class="SectionFive">
                             <h2 class="TabTitleColor">Ecosystem Visibility</h2>
                             <p>With xAmplify, build an ecosystem of partners where you see their activity without sharing private CRM data. Get visibility into activity, lead and deal registration.</p>
-                            <a href="https://xamplify.io/requestdemo" class="btn btn-ligh SectionTwo whitebg">Get A Demo <i class="fa fa-angle-right"></i></a>
+                            <a class="btn btn-ligh SectionTwo whitebg" (click)="alertClick()">Get A Demo <i class="fa fa-angle-right"></i></a>
                           </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -468,39 +468,39 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
            <h2 class="Sectionthreetitle text-center titleBottom"><span class="SectionthreeTextColor">CASE</span> <span class="SectionthreeTextColor2"> STUDIES</span> </h2>
            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mobileResponsivepadding">
-            <a href="#">
+            <a (click)="alertClick()">
             <div class="Blogcard">
               <div class="Blogcardimagediv">
-                <a href="#">
+                <a (click)="alertClick()">
                   <img class="BlogcardImg" src="assets/images/maintenance/sections/7/1.png" alt="Blog">
                 </a>
               </div>
               <div class="Blogbody">
                 <h3 class="Blogtitle">TELECOM CASE STUDY</h3>
                 <p class="Blogtext">Customer Activates 600 partners in 1 month</p>
-                <a href="#" class="btn btn-danger Custimization">Download</a>
+                <a class="btn btn-danger Custimization" (click)="alertClick()">Download</a>
               </div>
             </div>
             </a>
            </div>
            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 TabCasePaddindg">
-            <a href="#">
+            <a (click)="alertClick()">
             <div class="Blogcard">
               <div class="Blogcardimagediv">
-                <a href="#">
+                <a (click)="alertClick()">
                 <img class="BlogcardImg" src="assets/images/maintenance/sections/7/2.png" alt="Blog">
             </a>  
             </div>
               <div class="Blogbody">
                 <h3 class="Blogtitle">TSAAS CASE STUDY</h3>
                 <p class="Blogtext">Customer Increases Revenue by 300% in 6 Months</p>
-                <a href="#" class="btn btn-danger Custimization">Download</a>
+                <a class="btn btn-danger Custimization" (click)="alertClick()">Download</a>
               </div>
             </div>
           </a>
            </div>
            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <a href="#">
+            <a  (click)="alertClick()">
             <div class="Blogcard">
               <div class="Blogcardimagediv">
                 <img class="BlogcardImg" src="assets/images/maintenance/sections/7/3.png" alt="Blog">
@@ -508,7 +508,7 @@
               <div class="Blogbody">
                 <h3 class="Blogtitle">CYBERSECURITY CASE STUDY</h3>
                 <p class="Blogtext">Customer Gets 2x MSP Growth in a Quarter</p>
-                <a href="#" class="btn btn-danger Custimization">Download</a>
+                <a  class="btn btn-danger Custimization" (click)="alertClick()">Download</a>
               </div>
             </div>
           </a>
@@ -530,57 +530,57 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <h2 class="SectionSix text-center titleBottom"><span class="SectionSixTextColor">PARTNERING</span>  RESOURCES</h2>
            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 Responsivebottompadding">
-            <a href="#">
+            <a  (click)="alertClick()">
             <div class="Sectioneight">
               <div class="Sectioneightimg">
-                <a href="#">
+                <a (click)="alertClick()">
                   <img class="Sectioneightimage" src="assets/images/maintenance/sections/8/1.jpeg" alt="Blog">
                 </a>
               </div>
               <div class="Sectioneightbody">
                 <p class="Sectioneighttext">The Evolution of Partner Relationship Management: Trends and xAmplify’s Vision</p>
-                <a href="#" class="Readtext">READ MORE »</a>
+                <a class="Readtext" (click)="alertClick()">READ MORE »</a>
               </div>
             </div>
             </a>
            </div>
            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 Responsivebottompadding">
-            <a href="#">
+            <a (click)="alertClick()">
             <div class="Sectioneight">
               <div class="Sectioneightimg">
-                <a href="#">
+                <a (click)="alertClick()">
                 <img class="Sectioneightimage" src="assets/images/maintenance/sections/8/2.jpg" alt="Blog">
             </a>  
             </div>
               <div class="Sectioneightbody">
                 <p class="Sectioneighttext">Scaling Partner Relationships: Strategies for Managing a Growing Network</p>
-                <a href="#" class="Readtext">READ MORE »</a>
+                <a class="Readtext" (click)="alertClick()">READ MORE »</a>
               </div>
             </div>
           </a>
            </div>
            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 mobileResponsivepadding">
-            <a href="#">
+            <a (click)="alertClick()">
             <div class="Sectioneight">
               <div class="Sectioneightimg">
                 <img class="Sectioneightimage" src="assets/images/maintenance/sections/8/3.jpeg" alt="Blog">
               </div>
               <div class="Sectioneightbody">
                 <p class="Sectioneighttext">Expanding Reach Beyond Borders: How PRM Grows Reach Where Direct Sales Can’t Go</p>
-                <a href="#" class="Readtext">READ MORE »</a>
+                <a class="Readtext" (click)="alertClick()">READ MORE »</a>
               </div>
             </div>
           </a>
            </div>
            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-            <a href="#">
+            <a (click)="alertClick()">
             <div class="Sectioneight">
               <div class="Sectioneightimg">
                 <img class="Sectioneightimage" src="assets/images/maintenance/sections/8/4.jpg" alt="Blog">
               </div>
               <div class="Sectioneightbody">
                 <p class="Sectioneighttext">Navigating the Competitive Landscape: How PRM Software Sets You Apart</p>
-                <a href="#" class="Readtext">READ MORE »</a>
+                <a class="Readtext" (click)="alertClick()">READ MORE »</a>
               </div>
             </div>
           </a>
@@ -602,7 +602,7 @@
               <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                 <div class="widget subscribe no-box">
                   <div class="XamolifyLogo">
-                    <a href="#">
+                    <a (click)="alertClick()">
                       <img alt="Logo" class="XamolifyLogoWidth" src="assets/images/maintenance/xamplifyLogo.png">
                     </a>
                   </div>
@@ -627,9 +627,9 @@
                 <div class="widget no-box">
                  <h5 class="widget-title">Solutions</h5>
                     <ul class="thumbnail-widget">
-                      <li><div class="thumb-content"><a href="#">Partner Relationship</a></div> </li>
-                      <li><div class="thumb-content"><a href="#">Through Channel Marketing</a></div> </li>
-                      <li><div class="thumb-content"><a href="#">Customer Success</a></div> </li>
+                      <li><div class="thumb-content"><a>Partner Relationship</a></div> </li>
+                      <li><div class="thumb-content"><a>Through Channel Marketing</a></div> </li>
+                      <li><div class="thumb-content"><a>Customer Success</a></div> </li>
                     </ul>
                 </div>
               </div>
@@ -638,13 +638,13 @@
                 <div class="widget no-box">
                  <h5 class="widget-title">Features</h5>
                     <ul class="thumbnail-widget">
-                      <li><div class="thumb-content"><a href="#">Deal Registration</a></div> </li>
-                      <li><div class="thumb-content"><a href="#">End-to-End Analytics</a></div> </li>
-                      <li><div class="thumb-content"><a href="#">Campaign Creator</a></div> </li>
-                      <li><div class="thumb-content"><a href="#">Automated Co-branding</a></div> </li>
-                      <li><div class="thumb-content"><a href="#">Digital Asset Manager</a></div> </li>
-                      <li><div class="thumb-content"><a href="#">Market Development Funds Manager</a></div> </li>
-                      <li><div class="thumb-content"><a href="#">GDPR CCPA Compliance</a></div> </li>
+                      <li><div class="thumb-content"><a>Deal Registration</a></div> </li>
+                      <li><div class="thumb-content"><a>End-to-End Analytics</a></div> </li>
+                      <li><div class="thumb-content"><a>Campaign Creator</a></div> </li>
+                      <li><div class="thumb-content"><a>Automated Co-branding</a></div> </li>
+                      <li><div class="thumb-content"><a>Digital Asset Manager</a></div> </li>
+                      <li><div class="thumb-content"><a>Market Development Funds Manager</a></div> </li>
+                      <li><div class="thumb-content"><a>GDPR CCPA Compliance</a></div> </li>
                     </ul>
                 </div>
               </div>
@@ -652,8 +652,8 @@
                 <div class="widget no-box">
                  <h5 class="widget-title">Company</h5>
                     <ul class="thumbnail-widget">
-                      <li><div class="thumb-content"><a href="#">About xAmplify</a></div> </li>
-                      <li><div class="thumb-content"><a href="#">Blog</a></div> </li>
+                      <li><div class="thumb-content"><a>About xAmplify</a></div> </li>
+                      <li><div class="thumb-content"><a>Blog</a></div> </li>
                     </ul>
                 </div>
               </div>
@@ -680,10 +680,10 @@
             </div>
             <div class="col-md-6">
                 <div class="copyright-menu">
-                   <a href="#">Terms of Uses <span>|</span> </a> 
-                    <a href="#">Privacy Policy <span>|</span> </a> 
-                    <a href="#"> Sub Processors <span>|</span> </a> 
-                  <a href="#">Cookies Policy</a>
+                   <a>Terms of Uses <span>|</span> </a> 
+                    <a>Privacy Policy <span>|</span> </a> 
+                    <a> Sub Processors <span>|</span> </a> 
+                    <a>Cookies Policy</a>
                 </div>
             </div>
       </div>
@@ -706,6 +706,19 @@
   </div>
 </div>
  <!-- footer one end -->
+ <!-- popup Start-->
+ <div aria-hidden="true" aria-labelledby="tcModalLabel" class="modal fade in" data-backdrop="static" data-keyboard="false" id="underMaintenanceSite" role="dialog" tabindex="-1" style="display: block; padding-right: 10px;">
+  <div class="modal-dialog modal-copy" role="document">
+      <div class="modal-content mSweetalertWid" style="width: 65%;top: 118px;left: 125px;background: #f9f9f9;">
+          <div class="modal-body">
+            <h4 class="text-center custimizeText" translate="" ng-reflect-translate="">This Site is  <span class="MaintenanceTextcolor"> under Maintenance </span></h4>
+            <img src="assets/images/maintenance/under-maintenance.png" alt="" class="underMaintenanceImage">
+            <button  class="btn btn-primary alignBtnCu" translate="" type="button" ng-reflect-translate="" (click)="hideAlert()">Okay</button>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- popup End --> 
 
 </div>
 

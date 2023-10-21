@@ -1529,8 +1529,9 @@ div#removeborder {
 
 /* user guides hover icon */
 .help-iconbgadd:hover {
-  background-color: var(--page-content) !important;
-  border: 1px solid var(--border-color) !important;
+  background-color: none !important;
+  border: 1px solid transparent !important;
+  opacity: 0.8 !important;
 }
 .help-iconbgadd i:hover {
   color: var(---text-color) !important;
