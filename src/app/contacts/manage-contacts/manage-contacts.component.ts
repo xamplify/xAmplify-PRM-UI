@@ -1860,7 +1860,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						"Total Campaigns": this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
 						"Active Campaigns": this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
 						"Email Opend": this.contactsByType.listOfAllContacts[i].emailOpenedCount,
-						"Clicked Urls": this.contactsByType.listOfAllContacts[i].clickedUrlsCount,
+						"Clicked Urls": this.contactsByType.listOfAllContacts[i].clickedUrlsCount
+					}
+					if (this.contactsByType.selectedCategory === 'unsubscribe') {
+					  object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
 					}
 					this.downloadDataList.push(object);
 				}else{
@@ -1876,6 +1879,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						"Country": this.contactsByType.listOfAllContacts[i].country,
 						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
 						"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber
+					}
+					if (this.contactsByType.selectedCategory === 'unsubscribe') {
+					  object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
 					}
 					this.downloadDataList.push(object);
 				}

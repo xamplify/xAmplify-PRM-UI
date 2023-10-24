@@ -3151,7 +3151,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
 				//"Notes": this.contactsByType.listOfAllContacts[i].description
 			}
-
+			if (this.contactsByType.selectedCategory === 'unsubscribe') {
+			  object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+			}
 			this.downloadDataList.push(object);
 		}
 		if(this.contactsByType.listOfAllContacts.length===0){
@@ -3166,7 +3168,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	                 "Country": null,
 	                 "Mobile Number": null
 	             }
-	             this.downloadDataList.push(object);
+	           if (this.contactsByType.selectedCategory === 'unsubscribe') {
+			       object["Unsubscribed Reason"] = null;
+			   }
+	         this.downloadDataList.push(object);
 		}
 		
 		this.refService.isDownloadCsvFile = true;

@@ -1009,7 +1009,8 @@
                                     </td>
                                     <td  *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribe'">
                                        <button class="btn table-scbscribe-btn" [disabled] = "assignLeads"
-                                       *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (hasAllAccess || referenceService.roles.contactsRole || referenceService.roles.partnersRole || authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner()) && !authenticationService?.module?.deletedPartner"
+                                       *ngIf="contactsByType.selectedCategory == 'unsubscribe' &&
+                                        (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces)"
                                        (click)="resubscribeUser(contact)" translate>
                                        Subscribe
                                        </button>
