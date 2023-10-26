@@ -4,7 +4,7 @@
   }
 </style>
 
-<div *ngIf="!showDetailedAnalytics" class="page-content" [class.ml0]="authenticationService.isSuperAdmin()" >
+<div *ngIf="!showDetailedAnalytics" class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
   <!-- --------------------Breadcrumb-------- -->
   <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -22,16 +22,17 @@
         <a>{{authenticationService?.partnerModule?.customName}} Analytics</a>
       </li>
     </ul>
-    <app-team-member-filter-option [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
+    <app-team-member-filter-option [filterIcon]="true"
+      (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
     <div *ngIf="authenticationService?.module?.showWorkFlow" style="margin-top: 3px;" class="float-right">
-		  <a [routerLink]="['/home/partners/partner-workflow']">
-		  <button type="button" class="btn Btn-Green" style="margin-right: 3px;">
-		  Create Workflow<i class="fa fa-sitemap" aria-hidden="true" style="margin-left: 5px"></i>
-		  </button>
-		  </a>
-	   </div>
+      <a [routerLink]="['/home/partners/partner-workflow']">
+        <button type="button" class="btn Btn-Green" style="margin-right: 3px;">
+          Create Workflow<i class="fa fa-sitemap" aria-hidden="true" style="margin-left: 5px"></i>
+        </button>
+      </a>
+    </div>
   </div>
-  
+
   <!-- --------------------Counts-------- -->
   <div class="row">
     <div class="col-xs-12 col-md-12 col-sm-12">
@@ -40,7 +41,8 @@
           <div class="page-bar" style="padding-right: 12px;padding-bottom: 10px;">
             <app-box-loader [countLoader]=5 *ngIf="activePartnersLoader"></app-box-loader>
             <!---Active Partners Count-->
-            <div *ngIf="!activePartnersLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths pd-l" (click)="goToActivePartnersDiv()">
+            <div *ngIf="!activePartnersLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths pd-l"
+              (click)="goToActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
@@ -49,7 +51,8 @@
                 </div>
                 <div class="details">
                   <div class="number">{{activePartnersCount}}</div>
-                  <div class="desc" data-toggle="tooltip" data-placement="top" title="Active {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Active
+                  <div class="desc" data-toggle="tooltip" data-placement="top"
+                    title="Active {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Active
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -63,7 +66,7 @@
 
             <!--Redistributed Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="redistributedCampaignsCountLoader"></app-box-loader>
-            <div *ngIf="!redistributedCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths" >
+            <div *ngIf="!redistributedCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
                 (click)="goToReDistributedPartnersDiv()">
                 <div class="visual">
@@ -73,9 +76,11 @@
                   </i>
                 </div>
                 <div class="details">
-                  <div class="number"><span *ngIf="redistributedCampaignsCount">{{redistributedCampaignsCount}}</span><span
+                  <div class="number"><span
+                      *ngIf="redistributedCampaignsCount">{{redistributedCampaignsCount}}</span><span
                       *ngIf="!redistributedCampaignsCount">0</span></div>
-                  <div class="desc mlabelWidth"   data-toggle="tooltip" data-placement="top" title="Redistributed Campaigns" style="font-size: 13px">Redistributed Campaigns</div>
+                  <div class="desc mlabelWidth" data-toggle="tooltip" data-placement="top"
+                    title="Redistributed Campaigns" style="font-size: 13px">Redistributed Campaigns</div>
                 </div>
                 <span id="permhref" class="morePadding">
                   <a class="more" (click)="goToReDistributedPartnersDiv()"> Detailed view <i
@@ -96,7 +101,8 @@
                 </div>
                 <div class="details">
                   <div class="number">{{throughPartnerCampaignsCount}}</div>
-                  <div class="desc" style="font-size:13px" data-toggle="tooltip" data-placement="top" title="{{throughPartnerCampaignsTabName}}">
+                  <div class="desc" style="font-size:13px" data-toggle="tooltip" data-placement="top"
+                    title="{{throughPartnerCampaignsTabName}}">
                     {{throughPartnerCampaignsTabName | slice:0:20}}
                     <span *ngIf="throughPartnerCampaignsTabName?.length>20">...</span>
                   </div>
@@ -110,7 +116,8 @@
 
             <!--InActive Partner Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
-            <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths" (click)="goToInActivePartnersDiv()">
+            <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths"
+              (click)="goToInActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
@@ -119,7 +126,9 @@
                 </div>
                 <div class="details">
                   <div class="number">{{inActivePartnersCount}}</div>
-                  <div class="desc"  data-toggle="tooltip" data-placement="top" title="Inactive {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Inactive
+                  <div class="desc" data-toggle="tooltip" data-placement="top"
+                    title="Inactive {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">
+                    Inactive
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -133,7 +142,8 @@
 
             <!--Active Partner Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="approvePartnersCountLoader"></app-box-loader>
-            <div *ngIf="!approvePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths" (click)="goToApprovePartnersDiv()">
+            <div *ngIf="!approvePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths"
+              (click)="goToApprovePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter red-soft" [class.greay]="5!=selectedTabIndex">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"
@@ -142,7 +152,8 @@
                 </div>
                 <div class="details">
                   <div class="number">{{approvePartnersCount}}</div>
-                  <div class="desc"  data-toggle="tooltip" data-placement="top" title="Approve {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Approve
+                  <div class="desc" data-toggle="tooltip" data-placement="top"
+                    title="Approve {{authenticationService?.partnerModule?.customName}}" style="font-size: 13px">Approve
                     {{authenticationService?.partnerModule?.customName | slice:0:10}}
                     <span *ngIf="authenticationService?.partnerModule?.customName?.length>10">...</span>
                   </div>
@@ -161,8 +172,15 @@
   </div>
 
   <app-modal-popup-loader *ngIf="loadAllCharts"></app-modal-popup-loader>
+  <div class="row" style="padding-right: 12px;padding-bottom: 10px;">
+    <ng-container *ngIf="reloadWithFilter && !loadAllCharts && selectedTabIndex == 0">
+      <app-active-partners-table [applyFilter]="applyFilter"
+        (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-active-partners-table>
+    </ng-container>
+  </div>
   <!--******************All Counts - Tiles*******************-->
-  <app-partner-journey-count-tiles [partnerCompanyId]="'0'" *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-count-tiles>
+  <app-partner-journey-count-tiles [partnerCompanyId]="'0'"
+    *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-count-tiles>
 
   <!-- --------------------Active Partners Analytics-------- -->
   <div id="active-partner-div" *ngIf="!loadAllCharts && selectedTabIndex == 0"
@@ -172,11 +190,8 @@
         <!---XNFR-220----->
         <!-- <app-view-partners></app-view-partners> -->
         <!---XNFR-220----->
-        <ng-container *ngIf="reloadWithFilter">
-          <app-active-partners-table [applyFilter]="applyFilter"
-            (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-active-partners-table>
-        </ng-container>
-  
+
+
         <div class="col-xs-12 col-sm-6" style="padding-right: 5px;">
           <!-- Word Cloud Map-->
           <div class="portlet light" style="margin-bottom: 20px;">
@@ -193,8 +208,8 @@
             <div class="portlet-body text-center">
               <app-modal-popup-loader *ngIf="worldMapLoader"></app-modal-popup-loader>
               <app-worldmap *ngIf="worldMapdataReport && !worldMapLoader"
-                [partnerModuleName]="authenticationService?.partnerModule?.customName" [worldMapData]='worldMapdataReport'
-                (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
+                [partnerModuleName]="authenticationService?.partnerModule?.customName"
+                [worldMapData]='worldMapdataReport' (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
             </div>
           </div>
           <!---Bar Chart-->
@@ -205,22 +220,12 @@
           </div>
           <!-- END PORTLET-->
         </div>
-        <!-- -Campaigns Launched By Partners -->
-        <ng-container *ngIf="reloadWithFilter">
-          <app-campaigns-launched-by-partners [applyFilter]="applyFilter"></app-campaigns-launched-by-partners>
-          <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
-            [chartId]="'redistributeCampaignsAndLeadsCountBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
-          <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
-            [chartId]="'redistributeCampaignsAndLeadsCountBarChartQuarterly'"></app-redistributed-campaigns-and-leads-bar-chart>
-          <app-kpi [applyTeamMemberFilter]="applyFilter"></app-kpi>
-          <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
-            [chartId]="'top10LeadsAndDealsBarChart'"></app-redistributed-campaigns-and-leads-bar-chart>
-        </ng-container>
       </div>
-  
+      <app-campaigns-launched-by-partners [applyFilter]="applyFilter"
+        *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-campaigns-launched-by-partners>
     </div>
   </div>
-  
+
   <!-- --------------------Inactive Partners Analytics-------- -->
   <div id="inactive-partners-div" style="display: none;">
     <div class="row">
@@ -284,7 +289,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- --------------------Approve Partners Analytics-------- -->
   <div id="approve-partners-div" style="display: none;">
     <div class="row">
@@ -318,9 +323,9 @@
                     </td>
                     <td style="text-align: center;">
                       <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" [disabled]="item.invitationStatus === 'approved'"
-                          style="text-transform: capitalize" type="button"
-                          data-toggle="dropdown">{{item.invitationStatus}}
+                        <button class="btn btn-default dropdown-toggle"
+                          [disabled]="item.invitationStatus === 'approved'" style="text-transform: capitalize"
+                          type="button" data-toggle="dropdown">{{item.invitationStatus}}
                           <span class="caret"></span></button>
                         <ul class="dropdown-menu" style="left: 68px;" *ngIf="item.invitationStatus != 'approved'">
                           <li *ngIf="item.invitationStatus != 'approved'"><a
@@ -344,14 +349,14 @@
       </div>
     </div>
   </div>
-  
+
   <!-- ------****************Redistribute Partner Analytics************************** -->
   <div id="redistribute-partners-div" style="display: none;">
     <app-modal-popup-loader *ngIf="!reloadRedistributeCampaigns"></app-modal-popup-loader>
     <app-redistributed-campaigns *ngIf="selectedTabIndex==2 && reloadRedistributeCampaigns" [selectedIndex]="2"
       [applyFilter]="applyFilter"></app-redistributed-campaigns>
   </div>
-  
+
   <!-- ------****************Through Partner Analytics************************** -->
   <div id="through-partner-div" style="display: none;">
     <div class="row">
@@ -387,9 +392,9 @@
                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
                       title="List View" [class.disabled]="isListView" (click)="isListView = true"><i
                         class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                    <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
-                      title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i
-                        class="fa fa-th-large p10" aria-hidden="true"></i></span>
+                    <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip"
+                      data-placement="bottom" title="Grid View" [class.disabled]="!isListView"
+                      (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
                   </ng-container>
                   <div class="inputs" style="float: right;display: inline-flex;">
                     <div style="float: left;">
@@ -421,7 +426,8 @@
               </div>
             </div>
             <!-- -------------------- Apply Filters Box-------------------- -->
-            <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+            <div class="row"
+              *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
               <div class="col-xs-12 col-sm-12">
                 <div class="portlet light m10">
                   <div class="portlet-title">
@@ -431,7 +437,8 @@
                     </button>
                   </div>
                   <div class="portlet box">
-                    <app-response-message class="pg8" [customResponse]="filterResponse" *ngIf="filterResponse.isVisible">
+                    <app-response-message class="pg8" [customResponse]="filterResponse"
+                      *ngIf="filterResponse.isVisible">
                     </app-response-message>
                     <form role="form" class="form-horizontal form-bordered form-label-stripped">
                       <div class="form-group">
@@ -486,7 +493,7 @@
                           src="assets/images/video-email.svg"
                           style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
-  
+
                         <img class="imageClass image-padding"
                           *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched"
                           src="assets/images/regular-email.svg" style="height: 50px;"
@@ -496,7 +503,7 @@
                           src="assets/images/regular-email.svg"
                           style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
-  
+
                         <img class="imageClass image-padding"
                           *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched"
                           src="assets/images/social-campaign.svg" style="height: 50px;"
@@ -506,7 +513,7 @@
                           src="assets/images/social-campaign.svg"
                           style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
-  
+
                         <img class="imageClass image-padding"
                           *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && campaign.launched"
                           src="assets/images/event-campaign.svg" style="height: 50px;"
@@ -516,7 +523,7 @@
                           src="assets/images/event-campaign.svg"
                           style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
-  
+
                         <img class="imageClass image-padding"
                           *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && campaign.launched"
                           src="assets/images/landing-page.svg" style="height: 50px;"
@@ -526,7 +533,7 @@
                           src="assets/images/landing-page.svg"
                           style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
-  
+
                         <img class="imageClass image-padding"
                           *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && campaign.launched"
                           src="assets/images/survey.svg" style="height: 50px;" alt="{{campaign.campaignType}} Campaign">
@@ -576,11 +583,11 @@
                 </table>
               </div>
             </section>
-  
+
             <div *ngIf="sortOption.totalRecords <= 0 && isListView" class="alert alert-info">
               <strong>No campaigns found</strong>
             </div>
-  
+
             <div class="tab-pane active" *ngIf="!isListView">
               <div class="margin-top-10">
                 <div class="row mix-grid p10">
@@ -651,8 +658,8 @@
                 <strong>No campaigns found</strong>
               </div>
             </div>
-  
-  
+
+
             <div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
               class="bg-card-header">
               <app-pagination [pagination]="throughPartnerCampaignPagination"
@@ -666,7 +673,7 @@
       </div>
     </div>
   </div>
-  
+
   <!--******************Interacted & Not Interacted Donut Chart & Details******************-->
   <div class="row mb15" *ngIf="!loadAllCharts && selectedTabIndex == 0">
     <div class="col-sm-12 col-md-12 col-lg-12">
@@ -675,15 +682,15 @@
         <app-donut-pie-chart [chartId]="'interactedAndNotInteractedTracksDonut'"
           (notifySelectSlice)="interactionTracksDonutSliceSelected($event)"
           (notifyUnSelectSlice)="interactionTracksDonutSliceUnSelected($event)"></app-donut-pie-chart>
-  
+
       </div>
-  
+
       <!--******************Interacted & Not Interacted Track Details*******************-->
       <app-interacted-not-interacted-track-details [trackType]="selectedTrackType"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-interacted-not-interacted-track-details>
     </div>
   </div>
-  
+
   <!--******************Status wise Track Assets Donut Chart & Details******************-->
   <div class="row mb15" *ngIf="!loadAllCharts && selectedTabIndex == 0">
     <div class="col-sm-12 col-md-12 col-lg-12">
@@ -693,57 +700,76 @@
           (notifySelectSlice)="typeWiseTrackAssetsDonutSliceSelected($event)"
           (notifyUnSelectSlice)="typeWiseTrackAssetsDonutSliceUnSelected($event)"></app-donut-pie-chart>
       </div>
-  
+
       <!--******************Type wise Track Content Details*******************-->
       <app-typewise-track-content-details [trackType]="selectedTrackType" [assetType]="selectedAssetType"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-typewise-track-content-details>
     </div>
   </div>
-  
+
   <!--******************Company wise Track Counts*******************-->
   <div class="row mb15" *ngIf="!loadAllCharts && selectedTabIndex == 0">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--******************Company wise Track Counts******************-->
       <app-userwise-track-counts [type]="'TRACK'"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-userwise-track-counts>
-  
+
       <!--******************Company wise Playbook Counts******************-->
       <app-userwise-track-counts [type]="'PLAYBOOK'"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-userwise-track-counts>
     </div>
   </div>
-  
+
   <!--******************Track Assets Detailed Report*******************-->
-  <app-userwise-track-details [partnerCompanyId]="'0'"
-    (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-userwise-track-details>
-  
+  <app-userwise-track-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+    *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-userwise-track-details>
+
   <!--******************Track & Playbook Asset Details*******************-->
   <div class="row mb15" *ngIf="!loadAllCharts && selectedTabIndex == 0">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--******************Track Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="'0'" [type]="'TRACK'"></app-track-asset-details>
-  
+
       <!--******************Playbook Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="'0'" [type]="'PLAYBOOK'"></app-track-asset-details>
     </div>
   </div>
-  
+
   <!--******************Share Lead Details*******************-->
-  <app-share-lead-details [partnerCompanyId]="'0'"
-    (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-share-lead-details>
-  
+  <app-share-lead-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+    *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-share-lead-details>
+
+  <!-- -Campaigns Launched By Partners -->
+  <!-- <ng-container *ngIf="reloadWithFilter"> -->
+  <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
+    [chartId]="'redistributeCampaignsAndLeadsCountBarChart'"
+    *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaigns-and-leads-bar-chart>
+  <!-- <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
+        [chartId]="'redistributeCampaignsAndLeadsCountBarChartQuarterly'"></app-redistributed-campaigns-and-leads-bar-chart> -->
+  <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
+    [chartId]="'top10LeadsAndDealsBarChart'"
+    *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaigns-and-leads-bar-chart>
+  <!-- </ng-container> -->
+
   <!--******************Redistributed Camapign Details*******************-->
   <app-redistributed-campaign-details [partnerCompanyId]="'0'"
-    (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaign-details>
-  
+    (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+    *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaign-details>
+
   <!--******************Lead Details*******************-->
-  <app-partner-journey-lead-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-lead-details>
-  
+  <app-partner-journey-lead-details [partnerCompanyId]="'0'"
+    (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+    *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-lead-details>
+
   <!--******************Deal Details*******************-->
-  <app-partner-journey-deal-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-deal-details>
-  
+  <app-partner-journey-deal-details [partnerCompanyId]="'0'"
+    (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+    *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-deal-details>
+
+  <app-kpi [applyTeamMemberFilter]="applyFilter" *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-kpi>
+  <app-mdf-detail-analytics *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-mdf-detail-analytics>
   <app-scroll-top></app-scroll-top>
-  </div>
+</div>
 
 <!--*******************Detailed Analytics****************-->
 <div *ngIf="showDetailedAnalytics">
