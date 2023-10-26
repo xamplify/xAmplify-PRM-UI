@@ -2180,7 +2180,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             let reply = this.replies[i];
             $('#' + reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('reply-days-' + reply.divId);
-            this.removeStyleAttrByDivId('send-time-' + reply.divId);
             this.removeStyleAttrByDivId('message-' + reply.divId);
             this.removeStyleAttrByDivId('reply-subject-' + reply.divId);
             this.removeStyleAttrByDivId('email-template-' + reply.divId);
@@ -2189,9 +2188,6 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             this.validateReplySubject(reply);
             if (reply.actionId !== 16 && reply.actionId !== 17 && reply.actionId !== 18) {
                 this.validateReplyInDays(reply);
-                if (reply.actionId !== 22 && reply.actionId !== 23) {
-                    this.validateReplyTime(reply);
-                }
                 this.validateEmailTemplateForAddReply(reply);
             } else {
                 this.validateEmailTemplateForAddReply(reply);
@@ -2220,15 +2216,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         $('#reply-days-' + reply.divId).css('color', 'red');
     }
 
-    validateReplyTime(reply: Reply) {
-        if (reply.replyTime == undefined || reply.replyTime == null) {
-            this.addReplyDivError(reply.divId);
-            $('#send-time-' + reply.divId).css('color', 'red');
-        } else {
-            reply.replyTime = this.campaignService.setAutoReplyDefaultTime(this.selectedLaunchOption, reply.replyInDays, reply.replyTime, this.campaign.scheduleTime);
-            reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
-        }
-    }
+  
     extractTimeFromDate(replyTime) {
         let dt = replyTime;
         let hours = dt.getHours() > 9 ? dt.getHours() : '0' + dt.getHours();
@@ -2265,14 +2253,12 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             let url = this.urls[i];
             $('#' + url.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('click-days-' + url.divId);
-            this.removeStyleAttrByDivId('send-time-' + url.divId);
             this.removeStyleAttrByDivId('click-message-' + url.divId);
             this.removeStyleAttrByDivId('click-email-template-' + url.divId);
             this.removeStyleAttrByDivId('click-subject-' + url.divId);
             $('#' + url.divId).addClass('portlet light dashboard-stat2');
             if (url.actionId == 21) {
                 url.scheduled = true;
-                this.validateOnClickReplyTime(url);
                 this.validateOnClickSubject(url);
                 this.validateOnClickReplyInDays(url);
                 this.validateEmailTemplateForAddOnClick(url);
@@ -2288,15 +2274,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
         }
     }
 
-    validateOnClickReplyTime(url: Url) {
-        if (url.replyTime == undefined || url.replyTime == null) {
-            this.addReplyDivError(url.divId);
-            $('#send-time-' + url.divId).css('color', 'red');
-        } else {
-            url.replyTime = this.campaignService.setAutoReplyDefaultTime(this.selectedLaunchOption, url.replyInDays, url.replyTime, this.campaign.scheduleTime);
-            url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
-        }
-    }
+   
 
     validateOnClickSubject(url: Url) {
         if (url.subject == null || url.subject == undefined || $.trim(url.subject).length == 0) {
