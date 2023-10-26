@@ -67,6 +67,7 @@ invalidReason = true;
     }
     
     openResubscribeContactModalPopup(){
+      console.log(this.selectedUser);
       $( '#resubscribeContactModal' ).modal( 'show' );
     }
     

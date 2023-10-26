@@ -735,7 +735,7 @@
 </div>
 </div>
       </div>
-      <app-edit-contacts *ngIf="showEdit" [contacts]="users" (notifyParent)="update($event)"
+      <app-edit-contacts *ngIf="showEdit" [showEdit]="showEdit" [contacts]="users" (notifyParent)="update($event)"
       [selectedContactListId]="selectedContactListId" [uploadedUserId]="uploadedUserId"
       [contactListId]="selectedContactListId" [contactListName]="selectedContactListName"
       [isDefaultPartnerList]="isDefaultPartnerList" [isSynchronizationList]="isSynchronizationList"
@@ -1009,8 +1009,9 @@
                                     </td>
                                     <td  *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribe'">
                                        <button class="btn table-scbscribe-btn" [disabled] = "assignLeads"
-                                       *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (hasAllAccess || referenceService.roles.contactsRole || referenceService.roles.partnersRole || authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner()) && !authenticationService?.module?.deletedPartner"
-                                       (click)="activateUnsubscribedUser(contact.id)" translate>
+                                       *ngIf="contactsByType.selectedCategory == 'unsubscribe' &&
+                                        (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces)"
+                                       (click)="resubscribeUser(contact)" translate>
                                        Subscribe
                                        </button>
                                        <div class="actions-block no-float" *ngIf="isPartner && (contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' || contactsByType.selectedCategory == 'all')">
@@ -1368,3 +1369,11 @@
       </div>
    </div>
 </div>
+
+
+ <div *ngIf="contactService.isresubscribeContactModalPopup && !showEdit">
+	<app-resubscribe-contact-modal [selectedUser] = "selectedUser" (notifyParent)="resubscribeUserResult($event)">
+	</app-resubscribe-contact-modal>
+ </div>
+ 
+ 

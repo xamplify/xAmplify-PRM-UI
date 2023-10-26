@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, AfterViewInit, HostListener} from '@angular/core';
 
+declare var $;
 @Component({
   selector: 'app-maintenance',
   templateUrl: './maintenance.component.html',
@@ -7,9 +8,10 @@ import { Component, OnInit, ElementRef, AfterViewInit, HostListener} from '@angu
 })
 export class MaintenanceComponent implements OnInit {
 
+  route:string;
   constructor(private el: ElementRef) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {  $('#underMaintenanceSite').hide(); }
 
   // number countdown start
   ngAfterViewInit(): void {
@@ -49,11 +51,27 @@ export class MaintenanceComponent implements OnInit {
 
   // header navbar start
   isNavbarBackgroundVisible: boolean = false;
+  isMaintenance:boolean = false;
 
   @HostListener('window:scroll', ['$event'])
   onScroll() {
     const scrollY = window.scrollY;
+    if(scrollY>0){
+   this.isMaintenance = false;
+    } else {
+      this.isMaintenance = true;
+    }
     this.isNavbarBackgroundVisible = scrollY > 50;
   }
     // header navbar end
+
+ alertClick(){
+    $('#underMaintenanceSite').show(); 
+}
+hideAlert(){
+  $('#underMaintenanceSite').hide(); 
+}
+homeRouter(){
+  window.location.reload();
+}
 }

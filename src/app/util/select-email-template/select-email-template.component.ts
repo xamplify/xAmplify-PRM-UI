@@ -23,6 +23,7 @@ export class SelectEmailTemplateComponent implements OnInit {
   emailTemplatesPagination:Pagination = new Pagination();
   @Output() selectedEmailTemplateEventEmitter = new EventEmitter();
   @Input() selectedEmailTemplateId = 0;
+  @Input() previouslySelectedTemplateId = 0;
   emailTemplatesLoader = false;
   ngxLoading: boolean;
   emailTemplateIdForSendTestEmail: any;
@@ -37,6 +38,7 @@ export class SelectEmailTemplateComponent implements OnInit {
   loggedInUserId: any;
   selectedEmailTemplate = {};
   openEditTemplateModalPopup = false;
+  isAdd = false;
   constructor(private campaignService:CampaignService,private xtremandLogger:XtremandLogger,
     private pagerService:PagerService,private properties:Properties,
     private authenticationService:AuthenticationService,
@@ -47,6 +49,18 @@ export class SelectEmailTemplateComponent implements OnInit {
     this.emailTemplatesPagination.maxResults = 4;
     this.loggedInUserId = this.authenticationService.getUserId();
     this.emailTemplatesPagination.userId = this.loggedInUserId;
+    let isValidSelectedEmailTemplateId = this.selectedEmailTemplateId!=undefined && this.selectedEmailTemplateId>0;
+    let isValidPreviouslySelectedEmailTemplateId = this.previouslySelectedTemplateId!=undefined && this.previouslySelectedTemplateId>0;
+    if(isValidSelectedEmailTemplateId && isValidPreviouslySelectedEmailTemplateId){
+      let selectedEmailTemplateSortOption = {
+        'name': 'Selected Email Template', 'value': 'selectedEmailTemplate'
+      };
+      this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions.push(selectedEmailTemplateSortOption);
+      this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption = this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions[this.emailTemplatesSortOption.eventCampaignRecipientsDropDownOptions.length - 1];
+      this.emailTemplatesPagination = this.utilService.sortOptionValues(this.emailTemplatesSortOption.selectedCampaignEmailTemplateDropDownOption, this.emailTemplatesPagination);
+      this.emailTemplatesPagination.editCampaign = true;
+      this.emailTemplatesPagination.selectedEmailTempalteId = this.selectedEmailTemplateId;
+    }
     this.findEmailTemplates(this.emailTemplatesPagination);
   }
 

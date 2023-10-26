@@ -1,7 +1,7 @@
 <div class="col-sm-6 col-md-6 col-lg-6 ml15m">
   <div class="panel panel-info mh530">
     <div class="panel-heading panel-heading-custom">
-      <h3 class="panel-title mt7">Track Counts</h3>
+      <h3 class="panel-title mt7">{{type | titlecase }} Counts</h3>
       <span class="pull-right mt25m">
         <div class="input-icon right" style="position: relative;width: 178px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
@@ -19,13 +19,16 @@
         <table class="table">
           <thead>
             <tr>              
-              <th scope="col">Team Member</th>
-              <th scope="col">Track Count</th>
+              <th scope="col" *ngIf="isDetailedAnalytics">Team Member</th>
+              <th scope="col" *ngIf="!isDetailedAnalytics">Partner Company Name</th>
+              <th scope="col">{{type | titlecase }} Count</th>
             </tr>
           </thead>
-          <tbody>          
-            <tr *ngFor="let item of pagination.pagedItems;let i  = index">              
-              <td> <app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
+          <tbody>
+            <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+              <td *ngIf="isDetailedAnalytics"> <app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
+              <td *ngIf="!isDetailedAnalytics"><a data-rel="fancybox-button"
+                  (click)="viewAnalytics(item.companyId)">{{item.companyName}}</a></td>
               <td>{{item.trackCount}}</td>
             </tr>
           </tbody>

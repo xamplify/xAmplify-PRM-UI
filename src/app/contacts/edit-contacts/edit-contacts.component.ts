@@ -245,6 +245,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	 mergeOptionClicked = false;
 	 selectedUserIdsForMerging: any[];
 	  /****XNFR-278****/
+	  
+	 @Input() showEdit: boolean;
+	  
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -3148,7 +3151,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
 				//"Notes": this.contactsByType.listOfAllContacts[i].description
 			}
-
+			if (this.contactsByType.selectedCategory === 'unsubscribe') {
+			  object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
+			}
 			this.downloadDataList.push(object);
 		}
 		if(this.contactsByType.listOfAllContacts.length===0){
@@ -3163,7 +3168,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	                 "Country": null,
 	                 "Mobile Number": null
 	             }
-	             this.downloadDataList.push(object);
+	           if (this.contactsByType.selectedCategory === 'unsubscribe') {
+			       object["Unsubscribed Reason"] = null;
+			   }
+	         this.downloadDataList.push(object);
 		}
 		
 		this.refService.isDownloadCsvFile = true;
@@ -3396,6 +3404,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			swal.close();
 			$('#filterModal').modal('hide');
 			$('#saveAsEditModal').modal('hide');
+			this.showEdit = false;
 
 			if (this.selectedAddContactsOption != 8 && this.router.url !== '/login' && !this.isDuplicateEmailId && !this.isSegmentation) {
 				let self = this;
@@ -3621,15 +3630,20 @@ copyGroupUsersModalPopupEventReceiver(){
  }
  
  resubscribeUser(selectedUserForUnsubscribed : any){
-  this.contactService.isresubscribeContactModalPopup = true;
   this.selectedUser = selectedUserForUnsubscribed;
+  this.contactService.isresubscribeContactModalPopup = true;
  }
+ 
  resubscribeUserResult(event : any){
  this.contactService.isresubscribeContactModalPopup = false;
  this.selectedUser = null ;
- this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
- this.contactsCount(this.selectedContactListId);
- this.customResponse = new CustomResponse('SUCCESS', event, true);
+ if(this.contactsByType.selectedCategory === 'unsubscribe'){
+   this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+ }else if (this.currentContactType == "all_contacts"){
+   this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+ }
+  this.contactsCount(this.selectedContactListId);
+  this.customResponse = new CustomResponse('SUCCESS', event, true);
  }
  
 
