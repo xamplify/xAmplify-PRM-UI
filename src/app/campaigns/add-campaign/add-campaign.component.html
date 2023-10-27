@@ -1166,18 +1166,8 @@
                                                                         <select class="form-control pointer" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
                                                                             <option [value]="19" [selected]="url.actionId ==19" translate>Send if not clicked</option>
                                                                             <option [value]="20" [selected]="url.actionId ==20" translate>Send immediately after clicked</option>
-                                                                            <option [value]="21" [selected]="url.actionId ==21" translate>Schedule</option>
+                                                                            <option [value]="21" [selected]="url.actionId ==21" translate>Schedule (Wait X Days After Click)</option>
                                                                         </select>
-                                                                    </div>
-                                                                    <div *ngIf="url?.actionId==21" class="col-xs-6 p0">
-                                                                         <!--Wait X Days After Click-->
-                                                                        <div class="col-xs-4" style="padding:0">
-                                                                            <label for="days" id="click-days-{{url.divId}}" style="cursor: default;" translate>
-                                                                                Wait X Days After Click
-                                                                                <strong class="required">*</strong>
-                                                                            </label>
-                                                                            <input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
-                                                                        </div>
                                                                     </div>
                                                                     <!--Subject-->
                                                                     <div class="col-xs-12 col-sm-6">
@@ -1206,6 +1196,17 @@
                                                                             </option>
                                                                         </select>
                                                                     </div>
+                                                                    <div *ngIf="url?.actionId==21" class="col-xs-6">
+                                                                        <!--Wait X Days After Click-->
+                                                                       <div class="col-xs-6" style="padding:0">
+                                                                           <label for="days" id="click-days-{{url.divId}}" style="cursor: default;">
+                                                                               Wait X Days After Click
+                                                                               <strong class="required">*</strong>
+                                                                           </label>
+                                                                           <input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="1" oninput="validity.valid||(value='');">
+                                                                           <span><strong>(Minimum 1 Day)</strong></span>
+                                                                        </div>
+                                                                   </div>
                                                                 </div>
 
                                                                 <!-- Message--->
