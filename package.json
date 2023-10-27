@@ -60,6 +60,7 @@
     "ng2-filter-pipe": "^0.1.7",
     "ng2-highcharts": "^1.0.0",
     "ng2-img-cropper": "^0.9.0",
+    "ng2-scroll-to-el": "^1.2.1",
     "ng2-slim-loading-bar": "^4.0.0",
     "ng2-timezone-selector": "^0.1.4",
     "ng4-intl-phone": "^1.2.1",

@@ -2,8 +2,9 @@
    <div class="row" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
       <!-- card one  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showRedistributedCampaignCount">
-         <div class="pa-Card pa-CardOne">
+         *ngIf="partnerJourneyAnalytics?.showRedistributedCampaignCount" 
+         [scrollTo]="'#pj-redistributed-campaigns-div'" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div class="pa-Card pa-CardOne xamplify-cursor-pointer">
             <i class="fa fa-user pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextOne">{{partnerJourneyAnalytics?.redistributedCampaignCount}}</p>
             <p class="pa-text pa-TextOne">Redistributed Campaigns</p>
