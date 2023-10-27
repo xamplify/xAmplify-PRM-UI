@@ -30,8 +30,8 @@
       </div>
       <!-- card four  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showShareLeadCount">
-         <div class="pa-Card pa-CardFour">
+         *ngIf="partnerJourneyAnalytics?.showShareLeadCount" [scrollTo]="'#pj-share-lead-details-div'" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div class="pa-Card pa-CardFour xamplify-cursor-pointer">
             <i class="fa fa-user-circle-o pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextFour">{{partnerJourneyAnalytics?.shareLeadCount}}</p>
             <p class="pa-text pa-TextFour">Share Leads</p>
@@ -39,8 +39,8 @@
       </div>
       <!-- card five  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showLeadCount">
-         <div class="pa-Card pa-CardFive">
+         *ngIf="partnerJourneyAnalytics?.showLeadCount" [scrollTo]="'#pj-lead-details-div'" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div class="pa-Card pa-CardFive xamplify-cursor-pointer">
             <i class="fa fa-envelope-open-o pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextFive">{{partnerJourneyAnalytics?.leadCount}}</p>
             <p class="pa-text pa-TextFive">Leads</p>
@@ -48,8 +48,8 @@
       </div>
       <!-- card six  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showDealCount">
-         <div class="pa-Card pa-CardSix">
+         *ngIf="partnerJourneyAnalytics?.showDealCount" [scrollTo]="'#pj-deal-details-div'" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div class="pa-Card pa-CardSix xamplify-cursor-pointer">
             <i class="fa fa-globe pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextSix">{{partnerJourneyAnalytics?.dealCount}}</p>
             <p class="pa-text pa-TextSix">Deals</p>
@@ -57,8 +57,8 @@
       </div>
       <!-- card seven  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showMDFAmount">
-         <div class="pa-Card pa-CardSeven">
+         *ngIf="partnerJourneyAnalytics?.showMDFAmount" [scrollTo]="'#pj-mdf-details-div'" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div class="pa-Card pa-CardSeven xamplify-cursor-pointer">
             <i class="fa fa-dollar pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextSeven">{{partnerJourneyAnalytics?.mdfAmount}}</p>
             <p class="pa-text pa-TextSeven">MDF Amount</p>
@@ -66,8 +66,8 @@
       </div>
       <!-- card eight  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showAssetCount">
-         <div class="pa-Card pa-CardEight">
+         *ngIf="partnerJourneyAnalytics?.showAssetCount" [scrollTo]="'#pj-asset-details-div'" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div class="pa-Card pa-CardEight xamplify-cursor-pointer">
             <i class="fa fa-eye pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextEight">{{partnerJourneyAnalytics?.assetCount}}</p>
             <p class="pa-text pa-TextEight">Assets</p>
@@ -75,8 +75,8 @@
       </div>
       <!-- card nine  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showTrackCount">
-         <div class="pa-Card pa-CardNine">
+         *ngIf="partnerJourneyAnalytics?.showTrackCount" [scrollTo]="'#pj-track-playbook-details-div'" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div class="pa-Card pa-CardNine xamplify-cursor-pointer">
             <i class="fa fa-envelope-open pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextNine">{{partnerJourneyAnalytics?.trackCount}}</p>
             <p class="pa-text pa-TextNine">Tracks</p>
@@ -84,8 +84,8 @@
       </div>
       <!-- card ten  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showPlaybookCount">
-         <div class="pa-Card pa-CardTen">
+         *ngIf="partnerJourneyAnalytics?.showPlaybookCount" [scrollTo]="'#pj-track-playbook-details-div'" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div class="pa-Card pa-CardTen xamplify-cursor-pointer">
             <i class="fa fa-book pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextTen">{{partnerJourneyAnalytics?.playbookCount}}</p>
             <p class="pa-text pa-TextTen">Playbooks</p>
