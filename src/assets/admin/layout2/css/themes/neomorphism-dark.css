@@ -72,7 +72,11 @@ body,
     -6.223021507263184px -6.223021507263184px 6.223021507263184px 0px #41739d
       inset;
 }
-.dashboard-stat {
+.dashboard-stat,
+a.dashboard-stat.dashboard-stat-lighter.green-soft.min-h.default-cursor.tiles_bradius,
+a.dashboard-stat.dashboard-stat-lighter.blue-soft.min-h.default-cursor.tiles_bradius,
+a.dashboard-stat.dashboard-stat-lighter.purple-soft.min-h.default-cursor.tiles_bradius,
+a.dashboard-stat.dashboard-stat-lighter.yellow-gold.min-h.default-cursor.tiles_bradius {
   border-radius: 10px !important;
 }
 .tborders > tbody > tr > td,
@@ -1911,6 +1915,13 @@ i.IconCustomization :hover,
 .setting-icon-cu:hover {
   box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 }
+i.fa.fa-plus.fa-fa-consistency.IconCustomization :hover,
+i.fa.fa-pencil-square-o.fa-fa-consistency.IconCustomization :hover,
+i.fa.fa-history.fa-fa-consistency.IconCustomization :hover,
+i.fa.fa-comment.fa-fa-consistency.IconCustomization :hover {
+  background: #22313a !important;
+  line-height: 17px !important;
+}
 i.fa.fa-trash-o.trashIconCustomization,
 .gridIconCustomization a.delete {
   border: none;
@@ -2069,6 +2080,15 @@ textarea {
 }
 .campaign-box {
   box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #1d1f23 !important;
+}
+.maualSPFCardbg {
+  background-color: #2c2f33 !important;
+}
+.col-md-6.col-lg-6.track-title.text-color.content-bg,
+a.title.padding_bottom.text-color.content-bg,
+.col-md-12.col-lg-12.color-inline.border-line {
+  background: #2c2f33 !important;
+  border: none !important;
 }
 /** Tharak (17-10-2023) **/
 .Btn-Green,

@@ -42,13 +42,13 @@
               <app-box-loader [countLoader]="countLoader" [mdfModule]="true" *ngIf="tilesLoader"></app-box-loader>
                <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 24px;">
                   <div class="row">
-                     <div  class="{{tileClass}}" id="pl" *ngIf="!isPartnerView">
-                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor">
+                     <div  class="{{tileClass}} tiles_hover_effect" id="pl" *ngIf="!isPartnerView">
+                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor tiles_bradius">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div  class="number NumberFontDecrease"><span  data-toggle="tooltip" data-placement="top" title="{{mdfRequestTiles?.totalPartners}}">{{mdfRequestTiles?.totalPartners}}</span></div>
+                              <div  class="number NumberFontDecrease"><span  data-toggle="tooltip" data-placement="left" title="{{mdfRequestTiles?.totalPartners}}">{{mdfRequestTiles?.totalPartners}}</span></div>
                               <div class="desc">Number of {{authenticationService?.partnerModule?.customName}}</div>
                            </div>
                            <span class="morePadding">
@@ -74,13 +74,13 @@
                            </div>
                         </div>
                      </div>
-                     <div  class="{{tileClass}}" id="pb-pr">
-                        <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor">
+                     <div  class="{{tileClass}} tiles_hover_effect" id="pb-pr">
+                        <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor tiles_bradius">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number NumberFontDecrease"><span data-toggle="tooltip" data-placement="top" title="{{mdfRequestTiles?.totalRequests}}">
+                              <div class="number NumberFontDecrease"><span data-toggle="tooltip" data-placement="left" title="{{mdfRequestTiles?.totalRequests}}">
                                  {{mdfRequestTiles?.totalRequestsInString}}
                               </span>
                                 </div>
@@ -92,14 +92,14 @@
                            </span>
                         </a>
                      </div>
-                     <div  id="pl" class="{{tileClass}} mb_12">
-                        <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
+                     <div  id="pl" class="{{tileClass}} mb_12 tiles_hover_effect">
+                        <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor tiles_bradius">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
                               <div class="number NumberFontDecrease">
-                                 <span data-toggle="tooltip" data-placement="top" title="{{mdfRequestTiles?.averageRequestSize}}">
+                                 <span data-toggle="tooltip" data-placement="left" title="{{mdfRequestTiles?.averageRequestSize}}">
                                     {{mdfRequestTiles?.averageRequestSizeInString}}
                                  </span>
                                 </div>
@@ -111,14 +111,14 @@
                         </span>
                         </a>
                      </div>
-                     <div  id="pr"  class="{{tileClass}}">
-                        <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
+                     <div  id="pr"  class="{{tileClass}} tiles_hover_effect">
+                        <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor tiles_bradius">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
                               <div class="number NumberFontDecrease">
-                                 <span data-toggle="tooltip" data-placement="top" title="$ {{mdfRequestTiles?.totalValue}}">
+                                 <span data-toggle="tooltip" data-placement="left" title="$ {{mdfRequestTiles?.totalValue}}">
                                     {{mdfRequestTiles?.totalValueInString}}
                                  </span>
                                  </div>
