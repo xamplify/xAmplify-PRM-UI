@@ -53,7 +53,7 @@ var moment = require('moment-timezone');
 @Component({
     selector: 'app-event-campaign',
     templateUrl: './event-campaign-step.component.html',
-    styleUrls: ['./event-campaign.component.css', '../create-campaign/create-campaign.component.css', '../../../assets/css/content.css'],
+    styleUrls: ['./event-campaign.component.css', '../../../assets/css/content.css'],
     providers: [PagerService, Pagination, CallActionSwitch, Properties, EventError, HttpRequestLoader, CountryNames, FormService, SortOption]
 })
 export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
