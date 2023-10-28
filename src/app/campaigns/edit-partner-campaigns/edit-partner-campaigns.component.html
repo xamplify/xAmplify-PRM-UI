@@ -421,7 +421,7 @@
                                             <form class="role add-reply" id="form-{{reply.divId}}">
                                                <div class="col-xs-12" style="padding:0">
                                                   <div class="col-xs-12" style="padding:0">
-                                                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-4">
+                                                     <div class="col-xs-6 col-sm-5 col-md-5 col-lg-5">
                                                         <label for="reason" style="cursor:default" class="lableTitleDec">Reason</label>
                                                         <select class="form-control" name="actionId" [(ngModel)]="reply.actionId" style="cursor:pointer">
                                                         <option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
@@ -439,32 +439,17 @@
                                                      </div>
                                                      <div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
                                                         <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2 pl0">
-                                                           <label class="lableTitleDec" style="cursor:default" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 || reply.actionId==33 " id="reply-days-{{reply.divId}}">Reply
+                                                           <label class="lableTitleDec" style="cursor:default" for="days" *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18 " id="reply-days-{{reply.divId}}">Reply
                                                            In X Days
-                                                           <strong style="color: red">*</strong>
-                                                           <span>
-                                                           <strong>(Minimum 1 Day)</strong>
-                                                           </span>
+                                                           <strong class="required">*</strong>
                                                            </label>
-                                                           <label class="lableTitleDec" style="cursor:default" for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23 && reply.actionId!=33" id="reply-days-{{reply.divId}}">Reply
-                                                           In X Days
-                                                           <strong style="color: red">*</strong>
-                                                           </label>
-                                                           <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
-                                                        </div>
-                                                        <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 time-col p0" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-                                                           <div class="col-xs-2" style="position: relative;top: 28px; cursor: default;">
-                                                              <label for="time" id="send-time-{{reply.divId}}" class="lableTitleDec">At<strong style="color: red" >*</strong>
-                                                              </label>
-                                                           </div>
-                                                           <div>
-                                                              <timepicker [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
-                                                           </div>
-                                                        </div>
+                                                           <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="1" oninput="validity.valid||(value='');">
+                                                           <span><strong>(Minimum 1 Day)</strong></span>
+                                                         </div>
                                                      </div>
-                                                     <div class="col-xs-8 col-sm-3 col-md-3 col-lg-3 tab_sub" style="margin-left: -16px;">
+                                                     <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5 tab_sub">
                                                         <label for="time" style="cursor:default" id="reply-subject-{{reply.divId}}" class="lableTitleDec">Subject
-                                                        <strong style="color: red">*</strong>
+                                                        <strong class="required">*</strong>
                                                         </label>
                                                         <div class="input-group merge-tag-input-border">
                                                            <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
@@ -597,14 +582,6 @@
                                                         <strong style="color: red">*</strong>
                                                         </label>
                                                         <input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
-                                                     </div>
-                                                     <div class="col-xs-3 time-col p0">
-                                                        <div class="col-xs-3" style="position: relative;top: 28px; cursor: default;">
-                                                           <label for="time" id="send-time-{{url.divId}}">At <strong style="color: red">*</strong></label>
-                                                        </div>
-                                                        <div class="col-xs-9 p0" style="height: 66px;">
-                                                           <timepicker [(ngModel)]="url.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
-                                                        </div>
                                                      </div>
                                                   </div>
                                                   <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
