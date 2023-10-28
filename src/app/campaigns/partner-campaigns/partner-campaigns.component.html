@@ -584,7 +584,7 @@
  (notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
  <!--One Click Launch  Icon-->
  <ng-template #oneClickLaunchIconTemplate let-campaign="campaign">
-	<ng-container *ngIf="campaign?.oneClickLaunch"> <a
+	<ng-container *ngIf="campaign?.oneClickLaunch"> <a class="Iconhover" 
 	   *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended"
 	   data-toggle="tooltip" data-placement="top"
 	   [title]="campaign?.oneClickLaunchCampaignRedistributed ? properties.oneClickLaunchCampaignRedistributedErrorMessage :
@@ -598,7 +598,7 @@
 		  title="{{properties?.oneClickLaunchCampaignExpiredMessage}}"
 		  data-rel="fancybox-button"> <i
 		  class="fa fa-hand-pointer-o cancelled-event" aria-hidden="true"></i>
-	   </a> <a
+	   </a> <a 
 	   *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton"
 	   data-toggle="tooltip" data-placement="top" title="One Click Launch"
 	   data-rel="fancybox-button" (click)="launchOneClickCampaign(campaign)">

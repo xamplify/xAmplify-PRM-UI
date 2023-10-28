@@ -29,14 +29,17 @@
                   <i class="fa fa-search" aria-hidden="true"></i></button>
               </div>
             </div>
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#activePartnerTable"
-            style="float: right; position: relative; bottom: 30px;"></a>
+            <!-- <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" href="#activePartnerTable"
+            style="float: right; position: relative; bottom: 30px;"></a> -->
+            <a href="#activePartnerTable" data-toggle="collapse" style="float: right;"> <i
+              class="fa fa-chevron-down" aria-hidden="true"
+              style="float: right; position: relative; bottom: 25px; font-size: 18px !important"></i></a>
           </div>
         </div>
       </div>
     </div>
     <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-    <div id="activePartnerTable" class="panel-collapse collapse in">
+    <div id="activePartnerTable" class="collapse">
       <div class="portlet-body table-responsive" style="overflow: hidden;" [hidden]="httpRequestLoader.isLoading">
         <div class="table-responsive">
           <table class="table tgrid" aria-describedby="active-partners-table">

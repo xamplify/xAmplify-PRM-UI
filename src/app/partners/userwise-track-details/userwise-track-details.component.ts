@@ -103,6 +103,7 @@ export class UserwiseTrackDetailsComponent implements OnInit {
   }
     
   viewAnalytics(partnerCompanyId: any) {
-    this.notifyShowDetailedAnalytics.emit(partnerCompanyId); 
+    this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
+    this.referenseService.goToTop(); 
   }
 }
