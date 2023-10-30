@@ -184,7 +184,7 @@
 
   <!-- --------------------Active Partners Analytics-------- -->
   <div id="active-partner-div" *ngIf="!loadAllCharts && selectedTabIndex == 0"
-    style="padding-right: 12px;padding-bottom: 10px;">
+    style="padding-right: 12px;">
     <div class="row">
       <div class="">
         <!---XNFR-220----->
@@ -675,8 +675,8 @@
   </div>
 
   <!--******************Interacted & Not Interacted Donut Chart & Details******************-->
-  <div class="row mb15" *ngIf="!loadAllCharts && selectedTabIndex == 0">
-    <div class="col-sm-12 col-md-12 col-lg-12">
+  <div class="row rowPaddingCustomization" *ngIf="!loadAllCharts && selectedTabIndex == 0">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
       <!--******************Interacted & Not Interacted Donut Chart******************-->
       <div class="ml15m">
         <app-donut-pie-chart [chartId]="'interactedAndNotInteractedTracksDonut'"
@@ -692,8 +692,8 @@
   </div>
 
   <!--******************Status wise Track Assets Donut Chart & Details******************-->
-  <div class="row mb15" *ngIf="!loadAllCharts && selectedTabIndex == 0">
-    <div class="col-sm-12 col-md-12 col-lg-12">
+  <div class="row rowPaddingCustomization" *ngIf="!loadAllCharts && selectedTabIndex == 0">
+    <div class="col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
       <!--******************Type wise Track Assets Donut Chart******************-->
       <div class="ml15m">
         <app-donut-pie-chart [trackType]="selectedTrackType" [chartId]="'typewiseTrackContentDonut'"
@@ -708,7 +708,7 @@
   </div>
 
   <!--******************Company wise Track Counts*******************-->
-  <div class="row mb15" *ngIf="!loadAllCharts && selectedTabIndex == 0">
+  <div class="row rowPaddingCustomization1" *ngIf="!loadAllCharts && selectedTabIndex == 0">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--******************Company wise Track Counts******************-->
       <app-userwise-track-counts [type]="'TRACK'"
@@ -721,11 +721,13 @@
   </div>
 
   <!--******************Track Assets Detailed Report*******************-->
+  <div class="row rowPaddingCustomization2">
   <app-userwise-track-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
     *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-userwise-track-details>
+    </div>
 
   <!--******************Track & Playbook Asset Details*******************-->
-  <div class="row mb15" *ngIf="!loadAllCharts && selectedTabIndex == 0">
+  <div class="row rowPaddingCustomization1" *ngIf="!loadAllCharts && selectedTabIndex == 0">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--******************Track Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="'0'" [type]="'TRACK'"></app-track-asset-details>
@@ -736,9 +738,12 @@
   </div>
 
   <!--******************Share Lead Details*******************-->
+  <div class="row rowPaddingCustomization2">
   <app-share-lead-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
     *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-share-lead-details>
+    </div>
 
+    <div class="row rowMarginCustomization">
   <!-- -Campaigns Launched By Partners -->
   <!-- <ng-container *ngIf="reloadWithFilter"> -->
   <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
@@ -750,26 +755,33 @@
     [chartId]="'top10LeadsAndDealsBarChart'"
     *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaigns-and-leads-bar-chart>
   <!-- </ng-container> -->
-
+  </div>
   <!--******************Redistributed Camapign Details*******************-->
+  <div class="row rowPaddingCustomization2">
   <app-redistributed-campaign-details [partnerCompanyId]="'0'"
     (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
     *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaign-details>
+  </div>
 
   <!--******************Lead Details*******************-->
+  <div class="row rowPaddingCustomization2">
   <app-partner-journey-lead-details [partnerCompanyId]="'0'"
     (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
     *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-lead-details>
-
+  </div>
   <!--******************Deal Details*******************-->
+  <div class="row rowPaddingCustomization2">
   <app-partner-journey-deal-details [partnerCompanyId]="'0'"
     (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
     *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-deal-details>
-
+  </div>
+  <div class="row responsivepaddding1"> 
   <app-kpi [applyTeamMemberFilter]="applyFilter" *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-kpi>
 
   <!--******************MDF Details*******************-->
+  
   <app-mdf-detail-analytics *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-mdf-detail-analytics>
+</div>
   <app-scroll-top></app-scroll-top>
 </div>
 

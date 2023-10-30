@@ -8,4 +8,28 @@
 
 .mh480 {
 	min-height:480px;
+	height:480px;
+}
+.tableHeightScroll{   
+	 height: 359px !important;
+    overflow-y: scroll;
+    margin-bottom: 6px;
+}
+/* width */
+::-webkit-scrollbar {
+	width: 7px;
+  }
+@media (min-width: 992px) and (max-width: 1225px)  { 
+	.tableHeightScroll {
+		height: 330px !important;
+	}
+}
+@media (min-width: 200px) and (max-width: 767px)  { 
+    .ml15m {
+        margin-left: 0px !important;
+    }
+	.mh480 {
+		min-height: 521px;
+		height: 520px;
+	}
 }

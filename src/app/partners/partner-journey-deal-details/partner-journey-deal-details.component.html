@@ -15,7 +15,7 @@
       </span>
     </div>
     <div class="panel-body">    
-      <div class="scroll">
+      <div class="scroll table-responsive">
         <table class="table">
           <thead>
             <tr>
@@ -23,7 +23,7 @@
               <th scope="col" *ngIf="!isDetailedAnalytics">Company Name</th>
               <th scope="col">Deal Title</th>
               <th scope="col">Deal Type</th>
-              <th scope="col">amount</th>
+              <th scope="col">Amount</th>
               <th scope="col">Created On</th>              
             </tr>
           </thead>
@@ -33,7 +33,9 @@
               <td *ngIf="!isDetailedAnalytics"><a data-rel="fancybox-button" (click)="viewAnalytics(item.createdByCompanyId)">{{item?.createdByCompanyName}}</a></td>
               <td>{{item?.title}}</td>
               <td>{{item?.dealType}}</td>
-              <td>{{item?.amount}}</td>
+              <td>
+                <i class="fa fa-usd" aria-hidden="true">&nbsp;{{item?.amount}}</i>
+              </td>
               <td>
                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.createdDateInUTC">
                 </app-timestamp>
@@ -47,7 +49,7 @@
         <strong>No Data Found.</strong>
       </div>
       <!--Pagination-->
-      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin" [hidden]="httpRequestLoader.isLoading">
         <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
           (notifyParentDropDown)="getDealDetails($event)">
         </app-pagination>

@@ -9,3 +9,23 @@
 .mh480 {
 	min-height:480px;
 }
+.progress-bar {
+	background-color: #29d836 !important;
+}
+.progress.heightabjustment {
+    height: 6px!important;
+    background-color: #d0cfcf;
+    background-image: none;
+    box-shadow: none;
+    border-radius: 6px!important;
+}
+
+@media (min-width: 768px) and (max-width: 991px)  { 
+    .Responsivetitle{font-size: 11px;}
+}
+
+@media (min-width: 200px) and (max-width: 767px)  { 
+    .ml15m {
+        margin-left: 0px !important;
+    }
+}

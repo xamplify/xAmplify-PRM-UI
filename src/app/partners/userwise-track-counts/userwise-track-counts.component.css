@@ -6,6 +6,13 @@
 	margin-left: -15px !important;
 }
 
-.mh530{
-	min-height:530px;
+.mh400{
+	min-height:400px;
 }
+
+@media (min-width: 200px) and (max-width: 767px)  { 
+	.ml15m {
+		margin-left: 0px !important;
+		padding: 0px;
+	}
+  }
