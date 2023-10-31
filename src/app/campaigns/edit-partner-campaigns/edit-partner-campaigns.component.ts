@@ -824,7 +824,6 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             let url = this.urls[i];
             $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('click-days-'+url.divId);
-            this.removeStyleAttrByDivId('send-time-'+url.divId);
             this.removeStyleAttrByDivId('click-message-'+url.divId);
             this.removeStyleAttrByDivId('click-email-template-'+url.divId);
             this.removeStyleAttrByDivId('click-subject-'+url.divId);
@@ -833,7 +832,6 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             this.validateOnClickBody(url);
             if(url.actionId==21){
                 url.scheduled = true;
-                this.validateOnClickReplyTime(url);
                 this.validateOnClickReplyInDays(url);
             }else{
                 url.scheduled = false;
@@ -845,16 +843,7 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
         }
     }
 
-    validateOnClickReplyTime(url:Url){
-        if(url.replyTime==undefined || url.replyTime==null){
-            this.addReplyDivError(url.divId);
-            $('#send-time-'+url.divId).addClass('required');
-        }else{
-            url.replyTime = this.campaignService.setAutoReplyDefaultTime(this.campaignLaunchForm.value.scheduleCampaign, url.replyInDays,url.replyTime,this.campaignLaunchForm.value.launchTime);
-            url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
-        }
-    }
-
+  
     validateOnClickSubject(url:Url){
         if( url.subject==null||url.subject==undefined || $.trim(url.subject).length==0){
             this.addReplyDivError(url.divId);
