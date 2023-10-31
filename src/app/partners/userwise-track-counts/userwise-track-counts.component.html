@@ -19,9 +19,9 @@
         <table class="table">
           <thead>
             <tr>              
-              <th scope="col" *ngIf="isDetailedAnalytics">Team Member</th>
-              <th scope="col" *ngIf="!isDetailedAnalytics">Partner Company Name</th>
-              <th scope="col">{{type | titlecase }} Count</th>
+              <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"> Team Member </i></th>
+              <th scope="col" *ngIf="!isDetailedAnalytics"><i class="fa fa-building" aria-hidden="true"> Partner Company Name </i></th>
+              <th scope="col"><i class="fa fa-sort-numeric-desc" aria-hidden="true"> {{type | titlecase }} Count</i></th>
             </tr>
           </thead>
           <tbody>

@@ -10,3 +10,13 @@
 		padding-right: 0px !important;
 	}
   }
+  .progress-bar {
+	background-color: #29d836 !important;
+}
+.progress.heightabjustment {
+    height: 6px!important;
+    background-color: #d0cfcf;
+    background-image: none;
+    box-shadow: none;
+    border-radius: 6px!important;
+}

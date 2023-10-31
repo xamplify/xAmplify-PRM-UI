@@ -2106,3 +2106,13 @@ li.divider-bottom {
   background-color: #22313a !important;
 }
 /* XNFR-376 End*/
+.pa-CardOne[_ngcontent-c83] {
+  color: #00a6e8;
+}
+
+/* XNFR-316 start*/
+.pa-Card{
+  border: 1px solid #2f4857 !important;
+}
+
+/* XNFR-316 End*/

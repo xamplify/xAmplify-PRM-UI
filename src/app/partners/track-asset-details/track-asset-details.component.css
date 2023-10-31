@@ -10,7 +10,7 @@
 	min-height:500px;
 }
 .tableHeightScroll{   
-	height: 460px !important;
+	height: 399px !important;
    overflow-y: scroll;
    margin-bottom: 6px;
 }
