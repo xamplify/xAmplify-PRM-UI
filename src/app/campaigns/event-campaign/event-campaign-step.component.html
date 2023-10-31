@@ -1288,15 +1288,15 @@
 					</div>
 					<div *ngIf="reply.actionId == 0 || reply.actionId == 13 || reply.actionId == 24 || reply.actionId == 29 || reply.actionId == 30 || reply.actionId==33" [class.disabled]="isPreviewEvent">
 					<div class="col-xs-12 col-sm-2">
-					<label style="cursor: default;" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 || reply.actionId==33 " id="reply-days-{{reply.divId}}">Reply In X Days
-						<b class="required">*</b>
+					<label style="cursor: default;" for="days" *ngIf="reply.actionId == 0 || reply.actionId == 13 || reply.actionId == 24  || reply.actionId==22 || reply.actionId==23 || reply.actionId==33 " id="reply-days-{{reply.divId}}">Reply In X Days
+						<strong class="required">*</strong>
 					</label>
 					<label style="cursor: default;" for="days" *ngIf="reply.actionId ==29 || reply.actionId==30" id="reply-days-{{reply.divId}}">
-						<span *ngIf="reply.actionId == 29 || reply.actionId == 30">Send Before X Days<b class="required">*</b></span>
+						<span *ngIf="reply.actionId == 29 || reply.actionId == 30">Send Before X Days<strong class="required">*</strong></span>
 					</label>
 					<input *ngIf="reply.actionId == 29 || reply.actionId == 30" [attr.disabled]="isPreviewEvent? '' : null" type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="1" max="{{beforeDaysLength}}" oninput="validity.valid||(value='');">
 					<input *ngIf="reply.actionId !=29 && reply.actionId != 30" [attr.disabled]="isPreviewEvent? '' : null" type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="1" oninput="validity.valid||(value='');">
-						<span><b>(Minimum 1 Day)</b></span>
+						<span>(Minimum 1 Day)</span>
 					</div>
 					</div>
 					<div class="col-xs-12 col-sm-5">

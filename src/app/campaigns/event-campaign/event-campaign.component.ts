@@ -2155,12 +2155,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.removeStyleAttrByDivId('reply-message-' + reply.divId);
             $('#' + reply.divId).addClass('portlet light dashboard-stat2');
             this.validateReplySubject(reply);
-            if (reply.actionId != 16 && reply.actionId != 17 && reply.actionId != 18) {
-                this.validateReplyInDays(reply);
-                this.validateEmailTemplateForAddReply(reply);
-            } else {
-                this.validateEmailTemplateForAddReply(reply);
-            }
+            this.validateReplyInDays(reply);
+            this.validateEmailTemplateForAddReply(reply);
             this.errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
             if (this.errorLength == 0) {
                 this.addEmailNotOpenedReplyDaysSum(reply, i);
@@ -2190,7 +2186,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
     }
     validateReplyInDays(reply: Reply) {
-        if (reply.actionId != 16 && reply.actionId!=17 && reply.actionId!=18) {
+        if (reply.actionId == 0 || reply.actionId == 13 || reply.actionId == 24 || reply.actionId == 29 || reply.actionId == 30 || reply.actionId==33) {
             if (reply.replyInDays == null || reply.replyInDays == 0) {
                 this.addReplyDaysErrorDiv(reply);
             } 
