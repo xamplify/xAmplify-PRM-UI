@@ -766,7 +766,7 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             $('#'+reply.divId).addClass('portlet light dashboard-stat2');
             this.validateReplySubject(reply);
             this.validateReplyBody(reply);
-            if(reply.actionId!==16 && reply.actionId!==17 && reply.actionId!==18){
+            if(reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18){
                 this.validateReplyInDays(reply);
             }
             var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
@@ -779,7 +779,7 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
     }
 
     validateReplyInDays(reply: Reply) {
-        if (reply.actionId !== 16 && reply.actionId!=17 && reply.actionId!=18) {
+        if (reply.actionId!= 16 && reply.actionId!=17 && reply.actionId!=18) {
             if (reply.replyInDays == null || reply.replyInDays == 0) {
                 this.addReplyDaysErrorDiv(reply);
             } 
