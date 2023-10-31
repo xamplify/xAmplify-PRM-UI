@@ -40,7 +40,7 @@
                     <span *ngIf="item?.title?.length>10">...</span>
                   </p>
               </td>
-              <td>{{item.status}}</td>
+              <td [className]="getClassForStatus(item.status)">{{item.status}}</td>
             </tr>
           </tbody>
         </table>
