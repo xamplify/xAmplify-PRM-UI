@@ -51,7 +51,7 @@ h5 {
 }
 
 .cpad {
-  padding: 0px !important;
+  padding: 2px 0px !important;
 }
 
 .mauto {
@@ -98,7 +98,6 @@ h5 {
 p {
   margin: 0px;
 }
-
 
 @media (min-width: 1133px) and (max-width: 1261px) {
   .header-description-css {

@@ -63,7 +63,7 @@
                <div class="col-xs-12 col-md-12 col-sm-12">
                   <!-- Start Tiles here-->
                   <div class="page-bar" style="padding-bottom:10px;padding-right: 12px;">
-                     <div class="col-xs-6 col-sm-2 col-lg-2  margin-top-10 pr0 tiles_hover_effect"  style="padding-left: 12px;" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+                     <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0 tiles_hover_effect"  style="padding-left: 12px;" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                         <button class="btn-block dashboard-stat blue"
                         [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
                         (click)="loadContactsByType('all')"
