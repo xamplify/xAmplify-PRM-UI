@@ -2149,7 +2149,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             const reply = this.eventCampaign.campaignReplies[i];
             $('#' + reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('reply-days-' + reply.divId);
-            this.removeStyleAttrByDivId('send-time-' + reply.divId);
             this.removeStyleAttrByDivId('message-' + reply.divId);
             this.removeStyleAttrByDivId('reply-subject-' + reply.divId);
             this.removeStyleAttrByDivId('email-template-' + reply.divId);
@@ -2158,9 +2157,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.validateReplySubject(reply);
             if (reply.actionId !== 16 && reply.actionId !== 17 && reply.actionId !== 18) {
                 this.validateReplyInDays(reply);
-                if (reply.actionId !== 22 && reply.actionId !== 23) {
-                    this.validateReplyTime(reply);
-                }
                 this.validateEmailTemplateForAddReply(reply);
             } else {
                 this.validateEmailTemplateForAddReply(reply);
@@ -2194,27 +2190,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
     }
     validateReplyInDays(reply: Reply) {
-        if (reply.actionId !== 22 && reply.actionId !== 23  && reply.actionId!=33 && reply.replyInDays == null) {
-            this.addReplyDaysErrorDiv(reply);
-        } else if (reply.actionId === 22 || reply.actionId === 23 || reply.actionId==33) {
-            if (reply.replyInDays == null || reply.replyInDays === 0) { this.addReplyDaysErrorDiv(reply); }
+        if (reply.actionId !== 16 && reply.actionId!=17 && reply.actionId!=18) {
+            if (reply.replyInDays == null || reply.replyInDays == 0) {
+                this.addReplyDaysErrorDiv(reply);
+            } 
         }
     }
 
     addReplyDaysErrorDiv(reply: Reply) {
         this.addReplyDivError(reply.divId);
-        $('#reply-days-' + reply.divId).css('color', 'red');
+        $('#reply-days-' + reply.divId).addClass('required');
     }
 
-    validateReplyTime(reply: Reply) {
-        if (reply.replyTime == undefined || reply.replyTime == null) {
-            this.addReplyDivError(reply.divId);
-            $('#send-time-' + reply.divId).css('color', 'red');
-        } else {
-            reply.replyTime = this.campaignService.setAutoReplyDefaultTime(this.eventCampaign.campaignScheduleType, reply.replyInDays, reply.replyTime, this.eventCampaign.launchTimeInString);
-            reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
-        }
-    }
     extractTimeFromDate(replyTime) {
         //let dt = new Date(replyTime);
         let dt = replyTime;
@@ -2226,17 +2213,17 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         if (reply.subject == null || reply.subject == undefined || $.trim(reply.subject).length == 0) {
             this.addReplyDivError(reply.divId);
             console.log("Added Reply Subject Eror");
-            $('#reply-subject-' + reply.divId).css('color', 'red');
+            $('#reply-subject-' + reply.divId).addClass('required');
         }
     }
 
     validateEmailTemplateForAddReply(reply: Reply) {
         if (reply.defaultTemplate && reply.selectedEmailTemplateId == 0) {
             $('#' + reply.divId).addClass('portlet light dashboard-stat2 border-error');
-            $('#email-template-' + reply.divId).css('color', 'red');
+            $('#email-template-' + reply.divId).addClass('required');
         } else if (!reply.defaultTemplate && (reply.body == null || reply.body == undefined || $.trim(reply.body).length == 0)) {
             $('#' + reply.divId).addClass('portlet light dashboard-stat2 border-error');
-            $('#reply-message-' + reply.divId).css('color', 'red');
+            $('#reply-message-' + reply.divId).addClass('required');
         }
     }
 
