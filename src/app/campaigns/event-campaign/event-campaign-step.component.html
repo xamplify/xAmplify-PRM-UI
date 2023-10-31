@@ -88,7 +88,7 @@
 				</label>
 				<div class="col-sm-9">
 				   <input type="text" class="form-control" id="eventTitle"
-				   maxlength="250"
+				   maxlength="250" autocomplete="off"
 				   placeholder="Event Title" [(ngModel)]="eventCampaign.campaign"
 				   [ngModelOptions]="{standalone: true}"
 				   [ngClass]="{'has-error': eventError.eventTitleError}"
@@ -125,7 +125,7 @@
 				   [(ngModel)]="eventCampaign.fromName"
 				   [ngModelOptions]="{standalone: true}"
 				   [ngClass]="{'has-error': eventError.eventHostByError}"
-				   (input)="eventHostByError(); resetTabClass()" (blur)="eventHostByError()">
+				   (input)="eventHostByError(); resetTabClass()" (blur)="eventHostByError()" autocomplete="off">
 				   <div class="text-danger" *ngIf="eventError.eventHostByError" translate>Hosted By is required
 				   </div>
 				</div>
@@ -145,7 +145,7 @@
 			 </div>
 			 <div class="form-group">
 				<label class="col-sm-3 col-xs-12 labal-css color-css" translate>Subject Line
-				<font style="color: red"> <strong>*</strong></font>
+				<span class="required"><strong>*</strong></span>
 				</label>
 				<div class="col-sm-9">
 				   <div [className]="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate? 'input-group merge-tag-input-border':''">
@@ -155,7 +155,7 @@
 					  name="subjectLine"
 					  (input)="eventSubjectLineError()"
 					  [ngClass]="{'has-error': eventError.eventSubjectLineError}"
-					  maxlength="1000" />
+					  maxlength="1000" autocomplete="off" />
 					  <span *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" class="input-group-btn">
 					  <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="bottom"  title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
 					  <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
