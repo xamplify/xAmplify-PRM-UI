@@ -2155,7 +2155,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.removeStyleAttrByDivId('reply-message-' + reply.divId);
             $('#' + reply.divId).addClass('portlet light dashboard-stat2');
             this.validateReplySubject(reply);
-            if (reply.actionId !== 16 && reply.actionId !== 17 && reply.actionId !== 18) {
+            if (reply.actionId != 16 && reply.actionId != 17 && reply.actionId != 18) {
                 this.validateReplyInDays(reply);
                 this.validateEmailTemplateForAddReply(reply);
             } else {
@@ -2170,8 +2170,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     addEmailNotOpenedReplyDaysSum(reply: Reply, index: number) {
-        if (reply.actionId === 0) {
-            if (index === 0) {
+        if (reply.actionId == 0) {
+            if (index == 0) {
                 this.emailNotOpenedReplyDaysSum = reply.replyInDays;
             } else {
                 this.emailNotOpenedReplyDaysSum = reply.replyInDays + this.emailNotOpenedReplyDaysSum;
@@ -2180,8 +2180,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
     }
     addEmailOpenedReplyDaysSum(reply: Reply, index: number) {
-        if (reply.actionId === 13) {
-            if (index === 0) {
+        if (reply.actionId == 13) {
+            if (index == 0) {
                 this.emailOpenedReplyDaysSum = reply.replyInDays;
             } else {
                 this.emailOpenedReplyDaysSum = reply.replyInDays + this.emailOpenedReplyDaysSum;
@@ -2190,7 +2190,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
     }
     validateReplyInDays(reply: Reply) {
-        if (reply.actionId !== 16 && reply.actionId!=17 && reply.actionId!=18) {
+        if (reply.actionId != 16 && reply.actionId!=17 && reply.actionId!=18) {
             if (reply.replyInDays == null || reply.replyInDays == 0) {
                 this.addReplyDaysErrorDiv(reply);
             } 

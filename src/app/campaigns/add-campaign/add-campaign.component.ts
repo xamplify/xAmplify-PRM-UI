@@ -2186,7 +2186,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             this.removeStyleAttrByDivId('reply-message-' + reply.divId);
             $('#' + reply.divId).addClass('portlet light dashboard-stat2');
             this.validateReplySubject(reply);
-            if (reply.actionId !== 16 && reply.actionId!=17 && reply.actionId!=18) {
+            if (reply.actionId!= 16 && reply.actionId!=17 && reply.actionId!=18) {
                 this.validateReplyInDays(reply);
                 this.validateEmailTemplateForAddReply(reply);
             } else {
@@ -2202,7 +2202,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     }
 
     validateReplyInDays(reply: Reply) {
-        if (reply.actionId !== 16 && reply.actionId!=17 && reply.actionId!=18) {
+        if (reply.actionId!= 16 && reply.actionId!=17 && reply.actionId!=18) {
             if (reply.replyInDays == null || reply.replyInDays == 0) {
                 this.addReplyDaysErrorDiv(reply);
             } 
