@@ -9,3 +9,36 @@
 .m2 {
 	margin: 2px;
 }
+
+
+/* Partner Analytics Ui adjustments */
+.customeRow{margin:0px}
+.cardPaddingCustomization {
+	padding: 0px !important;
+  }
+  .rowPaddingCustomization{
+	margin-right: -51px !important;
+  }
+  .rowPaddingCustomization1{
+	margin-right: -25px !important;
+	margin-left:0px;
+  }
+  .rowMarginCustomization{margin-right: 0px !important;}
+  .responsivepaddding1 {
+	margin-right: -10px !important;
+  }
+  
+  @media (min-width: 200px) and (max-width: 767px)  { 
+	.cardPaddingCustomization {
+	  padding-left: 0px !important;
+	}
+	.rowPaddingCustomization{
+	  margin-right: -15px !important;
+	}
+	.rowPaddingCustomization1{
+	  margin-right: -15px !important;
+	}
+	.rowPaddingCustomization2 { margin-right: 0px !important;margin-left:0px !important;}
+	.rowMarginCustomization{margin-right:0px !important;}
+	.responsivepaddding1{margin-right: -5px;}
+  }
