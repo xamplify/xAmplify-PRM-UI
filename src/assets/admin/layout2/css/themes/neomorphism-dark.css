@@ -147,9 +147,11 @@ h6 {
 }
 .bar,
 .tile,
-.heading-top,
 .progress {
   background-color: #22313a !important;
+}
+.heading-top {
+  background-color: #2e3033 !important;
 }
 .text-primary,
 .special-progress-bar span {
@@ -164,7 +166,7 @@ h6 {
 .pagination .active > a,
 .pagination .active > a:hover,
 .nav-tabs > li > a:hover {
-  background: #22313a !important;
+  background: #2c2f33 !important;
   border-color: #2f4857 !important;
   color: white !important;
 }
@@ -216,9 +218,12 @@ ul.alt-row-style1 li a {
 }
 /**** buttons ****/
 
-.table tr.contact-list-selected td,
-.div-background-color {
+.table tr.contact-list-selected td {
   background-color: #22313a !important;
+  color: white !important;
+}
+.div-background-color {
+  background-color: #2e3033 !important;
   color: white !important;
 }
 .td-new-n {
@@ -230,7 +235,11 @@ ul.alt-row-style1 li a {
 th {
   border: transparent !important;
 }
-.list-group-item,
+.list-group-item {
+  color: white !important;
+  background-color: #2e3033 !important;
+  border: 1px solid #2f4857 !important;
+}
 .card {
   color: white !important;
   background-color: #2b3c46 !important;
@@ -250,7 +259,7 @@ ul.alt-row-style1 li:hover,
 }
 
 .list__item > .flex-row {
-  background-color: #22313a !important;
+  background-color: #2e3033 !important;
   border: 1px solid #2f4857 !important;
 }
 .re-distributed-high-level:hover {
@@ -295,7 +304,7 @@ ul.alt-row-style1 li:hover,
 .col-block.col-block-disable,
 .bg-card-header,
 .clear-search {
-  background-color: #2b3c46 !important;
+  background-color: #2e3033 !important;
 }
 .col-block.col-block-active {
   background-color: #00a8e7 !important;
@@ -342,7 +351,7 @@ fieldset,
   border-top: 1px solid #2f4857 !important;
 }
 .table > tbody > tr > th {
-  background-color: #2b3c46 !important;
+  background-color: #2e3033 !important;
 }
 .list__item .item__actions {
   margin-right: -4px;
@@ -390,10 +399,13 @@ tr {
 }
 
 /**** Model PopUp ****/
-.modal-content,
 .bar-background,
 .div.table-color {
   background-color: #2b3c46 !important;
+  color: white !important;
+}
+.modal-content {
+  background-color: #2e3033 !important;
   color: white !important;
 }
 .upload-asset-div,
@@ -558,7 +570,7 @@ tr {
   color: white !important;
 }
 .mdf-bgcolor {
-  background-color: #2b3c46 !important;
+  background-color: #2c2f33 !important;
 }
 /** 26-03-2023 **/
 .control-label {
@@ -585,7 +597,7 @@ tr {
 }
 .write-new textarea,
 .card-bg {
-  background-color: #2b3c46 !important;
+  background-color: #2e3033 !important;
   color: white !important;
   border-color: #2f4857 !important;
 }
@@ -603,14 +615,14 @@ label {
 }
 .panel-default > .panel-heading,
 .panel-success > .panel-heading {
-  background-color: #2b3c46 !important;
+  background-color: #2e3033 !important;
   border-color: #2f4857 !important;
 }
 .with-nav-tabs.panel-default .nav-tabs > li.active > a,
 .with-nav-tabs.panel-default .nav-tabs > li.active > a:hover,
 .with-nav-tabs.panel-default .nav-tabs > li.active > a:focus {
   color: #f8f6f9 !important;
-  background-color: #1c313a !important;
+  background-color: #2c2f33 !important;
 }
 .with-nav-tabs.panel-default .nav-tabs > li > a {
   color: #f8f6f9 !important;
@@ -657,7 +669,7 @@ select {
 .panel-success > .panel-heading,
 .deal-details,
 .bg-color {
-  background-color: #2b3c46 !important;
+  background-color: #2e3033 !important;
 }
 .setting_icon_color {
   color: #5b9bd1 !important;
@@ -899,7 +911,7 @@ span.ui-column-resize {
   color: #5bb2f5 !important;
 }
 .btn-hvr-text {
-  color: #fff !important;
+  color: black !important;
 }
 .table tr.row-selected td {
   background-color: #2b3c46 !important;
@@ -1093,7 +1105,7 @@ input#copy-link {
 }
 .mix-filter li {
   color: white !important;
-  background-color: #2b3c46;
+  background-color: #2e3033;
   border: 1px solid #2f4857 !important;
 }
 .filter-box-selected {
@@ -1104,7 +1116,7 @@ input#copy-link {
   border-style: none !important;
 }
 .tracks-bg-color {
-  background-color: #2b3c46 !important;
+  background-color: #2e3033 !important;
   border: 1px solid #2f4857 !important;
 }
 .portlet.light,
@@ -1268,6 +1280,7 @@ table#team-members {
 }
 .portlet.light.rss-border {
   border-color: #2f4857 !important;
+  box-shadow: none !important;
 }
 /* 6-6-2023 sudha sri */
 ul.alt-row-style1 li:nth-child(even) {
@@ -1630,7 +1643,7 @@ tag {
   background-color: transparent !important;
 }
 select.form-control.same-bgcolor-for-select {
-  background: #2b3c46 !important;
+  background: #2e3033 !important;
 }
 
 /* 19-07-2023 Custom Theme Settings bg colors */
@@ -1735,7 +1748,7 @@ input {
 }
 /* 10-8-2023 sudha sri */
 input#copy-link {
-  background-color: #22313a !important;
+  background-color: #2e3033 !important;
 }
 /* 11-8-2023 sudha sri */
 .no-data-alert.alert-info h4 {
@@ -1832,7 +1845,7 @@ i.singleIconCustomization {
   border-top: 1px solid rgb(47 72 87) !important;
 }
 .lbg {
-  background-color: #22313a !important;
+  background-color: #2e3033 !important;
 }
 .lbg.show a h6 {
   color: #fff !important;
@@ -1945,9 +1958,9 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .full_popup {
   box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 }
-.popup_body {
+/* .popup_body {
   box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #1d1f23 !important;
-}
+} */
 .popup_header {
   box-shadow: -4px -4px 5px #3e4247, 2px 0px 7px #1d1f23 !important;
 }
@@ -2001,7 +2014,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
 .mix-filter li.emailtemplate-selected {
-  background: #22313a !important;
+  background: #2e3033 !important;
   box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 }
 thead > tr {
@@ -2032,9 +2045,11 @@ tbody {
       #000,
     -6.223021507263184px -6.223021507263184px 18.669065475463867px 0px #3b4451;
 }
-.actions-block i.fa.fa-edit,
-.actions-block i.fa.fa-eye {
+.actions-block i.fa.fa-edit {
   line-height: 34px !important;
+}
+.actions-block i.fa.fa-eye {
+  line-height: 31px !important;
 }
 .col-sm-4.col-xs-6.col-lg-3.col-md-3.tiles_hover_effect:hover,
 .col-sm-6.col-xs-12.col-lg-6.col-md-6.tiles_hover_effect:hover,
@@ -2051,7 +2066,9 @@ tbody {
 .col-sm-4.col-xs-6.col-lg-4.col-md-4.tiles_hover_effect:hover,
 .col-xs-6.col-sm-2.col-lg-2.margin-top-10.pr0.tiles_hover_effect.col-sm-4ths:hover,
 .col-xs-6.col-sm-2.col-lg-2.mt5.pr2.pr15.tiles_hover_effect.col-sm-4ths:hover,
-.col-xs-6.col-sm-2.col-lg-2.mt5.pr.pr15.tiles_hover_effect.col-sm-4ths:hover {
+.col-xs-6.col-sm-2.col-lg-2.mt5.pr.pr15.tiles_hover_effect.col-sm-4ths:hover,
+.col-sm-4.col-xs-8.col-lg-4.col-md-4.pr0.mtop.mWidth:hover,
+.col-sm-4.col-xs-8.col-lg-4.col-md-4.pr0.mWidth.tiles_hover_effect:hover {
   transform: scale(1.05);
   transition: all 0.3s ease;
 }
@@ -2078,7 +2095,7 @@ textarea {
 }
 .text-color {
   color: white !important;
-  background-color: #22313a !important;
+  background-color: #2e3033 !important;
   border: 2px solid #2f4857 !important;
 }
 .tiles_bradius {
@@ -2127,11 +2144,26 @@ i.fa.fa-expand.fa-fa-consistency.IconCustomization {
   border: 1px solid #2f4857 !important;
 }
 .pricing-head h4#image-style {
-  background-color: #22313a !important;
-  border-bottom: 1px solid #2f4857 !important;
+  background-color: #2c2f33 !important;
+  border-bottom: 0px solid #2f4857 !important;
 }
 .setting-icon-cu {
   line-height: 28px !important;
+}
+button.btn.Btn-Gray.btn-hvr-text {
+  color: white !important;
+}
+button.btn.btn-white {
+  color: #5b9bd1 !important;
+}
+.actions-block i.fa.fa-pencil-square-o {
+  line-height: 34px !important;
+}
+.actions-block i.fa.fa-trash-o {
+  line-height: 34px !important;
+}
+.actions-block i.fa.fa-files-o {
+  line-height: 34px !important;
 }
 /** Tharak (17-10-2023) **/
 a.UserguideBtnCustomization {
@@ -2159,7 +2191,7 @@ left-menu-color ul li a,
     -6.223021507263184px -6.223021507263184px 18.669065475463867px 0px #3b4451 !important;
 }
 .table tbody tr:hover {
-  background-color: #7b7b7b !important;
+  background-color: #23272c !important;
 }
 .neumorphismDark li a {
   appearance: none;
@@ -2198,13 +2230,15 @@ a.UserguideBtnCustomization:hover {
   padding: 0px 5px !important;
 }
 .neumorphismDark li a:hover,
-input,
 .depth-shadow {
   outline: none !important;
   background-image: none !important;
   filter: none;
   text-shadow: none;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+input {
+  color: #000;
 }
 .shadow-inset {
   /* box-shadow: 3px 3px 3px #000, -3px -3px 3px #3b4451; */
