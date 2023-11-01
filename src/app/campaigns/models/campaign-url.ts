@@ -2,7 +2,7 @@ import { Pagination } from '../../core/models/pagination';
 import { EmailTemplate } from '../../email-template/models/email-template';
 export class Url{
     id:number;
-    replyInDays:number=0;
+    replyInDays:number=1;
     replyTime:Date=new Date();
     subject:string;
     body:string;

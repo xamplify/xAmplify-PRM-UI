@@ -95,6 +95,33 @@
                         </div>
                      </div>
                   </div>
+
+                   <!--Notify Partner / Notify Workflows-->
+                   <ng-container *ngIf="campaign?.campaignTypeInString!='LANDINGPAGE' && campaign?.campaignTypeInString!='SOCIAL' && campaign?.channelCampaign">
+                     <div class="media col-xs-12">
+                        <!--Notify Partner-->
+                        <div class="col-xs-6 col-sm-6">
+                           <div class="ml10">
+                              <h5>Notify {{authenticationService?.partnerModule?.customName}} ?</h5>
+                           </div>
+                           <div class="media-body pt5">
+                              <switch class="ml10" [disabled]="true" [status]="campaign?.emailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize">
+                              </switch>
+                           </div>
+                        </div>
+                        <!--Notify Workflows-->
+                        <div class="col-xs-6 col-sm-6" >
+                           <div class="ml10">
+                              <h5>Notify Workflows</h5>
+                           </div>
+                           <div class="media-body pt5">
+                              <switch class="ml10" [disabled]="true" [status]="campaign?.notifyChannelCampaignWorkflows" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize">
+                              </switch>
+                           </div>
+                        </div>
+                     </div>
+                  </ng-container>
+
                   <!--XNFR-118-->
                   <ng-container *ngIf="campaign?.emailNotification && !campaign?.oneClickLaunchChannelCampaign && campaign?.campaignTypeInString!='LANDINGPAGE'">
                      <div class="media col-xs-12">
@@ -158,6 +185,7 @@
                         <textarea class="ml25 disabled-background-color" rows="5" disabled>{{campaign?.description}}</textarea>
                      </div>
                   </ng-container>
+
                </fieldset>
                <fieldset class="scheduler-border" *ngIf="previewCampaignType === 'SOCIAL'">
                   <legend class="scheduler-border">Social Accounts</legend>
