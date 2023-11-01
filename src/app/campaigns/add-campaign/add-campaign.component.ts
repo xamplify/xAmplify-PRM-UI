@@ -1170,6 +1170,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
             this.campaign.emailOpened = false;
             this.campaign.videoPlayed = false;
             this.campaign.linkOpened = false;
+            this.campaign.notifyChannelCampaignWorkflows = false;
         }else{
             this.getValidUsersCount();
         }
