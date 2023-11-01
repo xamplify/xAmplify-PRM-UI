@@ -11,7 +11,7 @@
 }
 .tableHeightScroll{   
 	height: 399px !important;
-   overflow-y: scroll;
+	overflow-y: auto;
    margin-bottom: 6px;
 }
 /* width */

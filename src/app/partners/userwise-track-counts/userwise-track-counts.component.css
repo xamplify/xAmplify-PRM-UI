@@ -16,3 +16,9 @@
 		padding: 0px;
 	}
   }
+
+  .tableHeightScroll{   
+    height: 399px !important;
+   overflow-y: auto;
+   margin-bottom: 6px;
+}

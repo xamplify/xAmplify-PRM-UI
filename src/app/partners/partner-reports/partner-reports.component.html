@@ -780,7 +780,7 @@
 
   <!--******************MDF Details*******************-->
   
-  <app-mdf-detail-analytics *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-mdf-detail-analytics>
+  <app-mdf-detail-analytics *ngIf="!loadAllCharts && selectedTabIndex == 0" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-mdf-detail-analytics>
 </div>
   <app-scroll-top></app-scroll-top>
 </div>
