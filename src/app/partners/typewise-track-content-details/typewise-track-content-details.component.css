@@ -30,8 +30,17 @@
     }
 	.mh480 {
 		min-height: 521px;
-		height: 520px;
+		height: 560px;
 	}
+}
+
+@media (min-width: 992px) and (max-width: 1187px)  { 
+    .notOpened-class{ font-size: 7px  !important;}
+    .submitted-class{ font-size: 7px !important;}
+    .viewed-class{font-size: 7px !important;}
+    .opened-class{font-size: 7px !important;}
+    .downloaded-class{font-size: 7px !important;}
+    .default-class{font-size: 7px !important;}
 }
 
 .notOpened-class{
@@ -87,3 +96,5 @@
     line-height: 7;
     font-size: 12px;
 }
+
+

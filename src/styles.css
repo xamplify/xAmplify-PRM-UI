@@ -419,7 +419,7 @@ nav a.active {
 
 /* table */
 .table thead > tr > th {
-  color: rgba(66, 66, 66, 0.7);
+  color: #333;
 }
 
 .rounded-0,

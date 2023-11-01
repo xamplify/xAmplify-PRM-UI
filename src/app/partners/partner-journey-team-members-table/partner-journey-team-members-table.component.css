@@ -20,3 +20,8 @@
 	float: left;
 	font-size: 14px;
   }
+.serachvoxwidth{position: relative;width: 178px;}
+  @media (min-width: 200px) and (max-width: 767px)  { 
+	.mobileBtnLeftnone{float:none !important;}
+	.serachvoxwidth{width:100%}
+  }

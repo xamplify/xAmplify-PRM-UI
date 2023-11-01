@@ -10,7 +10,7 @@
         <div class="inputs" id="right">
           <div class="portlet-input input-inline">
             <div class="input-icon right" style="position: relative; margin: -5px 0 0 0;">
-              <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="activePartnersSearchKey" [ngModelOptions]="{standalone: true}"
+              <input type="text" style="height: 34px;" class="form-control responsiveSearch" [(ngModel)]="activePartnersSearchKey" [ngModelOptions]="{standalone: true}"
               placeholder="Search" (keypress)="activePartnerSearch($event.keyCode)">
               <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="activePartnersSearchKey" (click)="activePartnersSearchKey='';searchActivePartnerAnalytics();"></button>
               <button type="submit" class="search-box-item-click" (click)="searchActivePartnerAnalytics()"><i class="fa fa-search" aria-hidden="true"></i></button>

@@ -20,3 +20,34 @@
     box-shadow: none;
     border-radius: 6px!important;
 }
+
+i.IconopenedCount {
+  border: 1px solid #3598dc;
+  color: #3598dc;
+}
+i.IconopenedCount:hover {
+  border: 1px solid #3598dc;
+  background: #3598dc;
+  color: #fff;
+}
+
+
+i.IconviewedCount {
+  border: 1px solid #8e5fa2;
+  color: #8e5fa2;
+}
+i.IconviewedCount:hover {
+  border: 1px solid #8e5fa2;
+  background: #8e5fa2;
+  color: #fff;
+}
+
+i.IconodownloadedCount {
+  border: 1px solid #e87e04;
+  color: #e87e04;
+}
+i.IconodownloadedCount:hover {
+  border: 1px solid #e87e04;
+  background: #e87e04;
+  color: #fff;
+}

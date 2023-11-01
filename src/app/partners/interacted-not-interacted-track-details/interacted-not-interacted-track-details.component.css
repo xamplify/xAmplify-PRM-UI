@@ -28,4 +28,10 @@
     .ml15m {
         margin-left: 0px !important;
     }
+ 
+}
+.tableHeightScroll{   
+    height: 348px !important;
+   overflow-y: auto;
+   margin-bottom: 6px;
 }

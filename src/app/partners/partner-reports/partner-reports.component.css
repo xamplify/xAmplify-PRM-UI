@@ -1,6 +1,7 @@
 th {
   text-align: center;
   padding: 2px;
+  color: #333 !important;
 }
 .text-danger {
   color: red !important;

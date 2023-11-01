@@ -2,8 +2,8 @@
   <div class="panel panel-info">
     <div class="panel-heading panel-heading-custom">
       <h3 class="panel-title mt7">Track Assets Detailed Report</h3>
-      <span class="pull-right mt25m">
-        <div class="input-icon right" style="position: relative;width: 178px;">
+      <span class="pull-right mt25m mobilesearchdisplay">
+        <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
             [ngModelOptions]="{standalone: true}" placeholder="Search"
             (keypress)="searchKeyPress($event.keyCode)">
@@ -46,14 +46,23 @@
                   <span *ngIf="item.title?.length>15">...</span>
                 </span>
                 </td>
-              <td>{{item?.assetCount}}</td>
+              <td>
+              <i class="circled-number IconCustomization fontStyleNormal"> <strong >{{item?.assetCount}}</strong></i>
+              </td>
               <td>
                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOnInUTC">
                 </app-timestamp>
               </td>
-              <td>{{item?.openedCount}}</td>
-              <td>{{item?.viewedCount}}</td>
-              <td>{{item?.downloadedCount}}</td>              
+              <td>
+                <i class="circled-number IconopenedCount fontStyleNormal"> <strong >{{item?.openedCount}}</strong></i>
+              </td>
+              <td>
+                <i class="circled-number IconviewedCount fontStyleNormal"> <strong >{{item?.viewedCount}}</strong></i>
+              </td> 
+              <td>
+                <i class="circled-number IconodownloadedCount fontStyleNormal"> <strong >{{item?.downloadedCount}}</strong></i>
+              </td> 
+                   
               <!-- <td>{{item?.progress}}%</td> -->
               <td>
                 <div class="progress heightabjustment">

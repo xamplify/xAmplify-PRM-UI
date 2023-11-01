@@ -2,8 +2,8 @@
   <div class="panel panel-info">
     <div class="panel-heading panel-heading-custom" id="pj-share-lead-details-div">
       <h3 class="panel-title mt7">Share Leads Details</h3>
-      <span class="pull-right mt25m">
-        <div class="input-icon right" style="position: relative;width: 178px;">
+      <span class="pull-right mt25m mobilesearchdisplay">
+        <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
             [ngModelOptions]="{standalone: true}" placeholder="Search"
             (keypress)="searchKeyPress($event.keyCode)">
@@ -38,7 +38,11 @@
                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.assignedDateInUTC">
                 </app-timestamp>
               </td>
-              <td>{{item?.shareLeadCount}}</td>
+              <td>
+                <i class="circled-number IconCustomization fontStyleNormal">
+                  <strong  >{{item?.shareLeadCount}}</strong>
+                </i>
+                </td>
             </tr>
           </tbody>
         </table>
