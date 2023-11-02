@@ -95,9 +95,9 @@
                         </div>
                      </div>
                   </div>
-
+                 
                    <!--Notify Partner / Notify Workflows-->
-                   <ng-container *ngIf="campaign?.campaignTypeInString!='LANDINGPAGE' && campaign?.campaignTypeInString!='SOCIAL' && campaign?.channelCampaign">
+                   <ng-container *ngIf="(campaign?.campaignTypeInString=='REGULAR' || campaign?.campaignTypeInString=='SURVEY' || campaign?.campaignTypeInString=='VIDEO' )  && campaign?.channelCampaign">
                      <div class="media col-xs-12">
                         <!--Notify Partner-->
                         <div class="col-xs-6 col-sm-6">
@@ -120,7 +120,7 @@
                            </div>
                         </div>
                      </div>
-                  </ng-container>
+                   </ng-container>
 
                   <!--XNFR-118-->
                   <ng-container *ngIf="campaign?.emailNotification && !campaign?.oneClickLaunchChannelCampaign && campaign?.campaignTypeInString!='LANDINGPAGE'">
