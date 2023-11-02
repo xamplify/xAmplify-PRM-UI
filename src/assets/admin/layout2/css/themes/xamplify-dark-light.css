@@ -2116,3 +2116,191 @@ li.divider-bottom {
 }
 
 /* XNFR-316 End*/
+/* partner analytics  */
+.pa-CardOne {
+  color: #ffffff !important;
+}
+p.pa-TextOne {
+  color: #ffffff !important;
+}
+.pa-CardOne:hover {
+  background-color: #22313a !important;
+}
+.pa-CardOne:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardTwo {
+  color: #ffffff !important;
+}
+p.pa-TextTwo {
+  color: #ffffff !important;
+}
+.pa-CardTwo:hover {
+  background-color: #22313a !important;
+}
+.pa-CardTwo:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardThree {
+  color: #ffffff !important;
+}
+p.pa-TextThree {
+  color: #ffffff !important;
+}
+.pa-CardThree:hover {
+  background-color: #22313a !important;
+}
+.pa-CardThree:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardFour {
+  color: #ffffff !important;
+}
+p.pa-TextFour {
+  color: #ffffff !important;
+}
+.pa-CardFour:hover {
+  background-color: #22313a !important;
+}
+.pa-CardFour:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardFive {
+  color: #ffffff !important;
+}
+p.pa-TextFive {
+  color: #ffffff !important;
+}
+.pa-CardFive:hover {
+  background-color: #22313a !important;
+}
+.pa-CardFive:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardSix {
+  color: #ffffff !important;
+}
+p.pa-TextSix {
+  color: #ffffff !important;
+}
+.pa-CardSix:hover {
+  background-color: #22313a !important;
+}
+.pa-CardSix:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardSeven {
+  color: #ffffff !important;
+}
+p.pa-TextSeven {
+  color: #ffffff !important;
+}
+.pa-CardSeven:hover {
+  background-color: #22313a !important;
+}
+.pa-CardSeven:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardEight {
+  color: #ffffff !important;
+}
+p.pa-TextEight {
+  color: #ffffff !important;
+}
+.pa-CardEight:hover {
+  background-color: #22313a !important;
+}
+.pa-CardEight:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardNine {
+  color: #ffffff !important;
+}
+p.pa-TextNine {
+  color: #ffffff !important;
+}
+.pa-CardNine:hover {
+  background-color: #22313a !important;
+}
+.pa-CardNine:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardTen {
+  color: #ffffff !important;
+}
+p.pa-TextTen {
+  color: #ffffff !important;
+}
+.pa-CardTen:hover {
+  background-color: #22313a !important;
+}
+.pa-CardTen:hover p {
+  background-color: #22313a !important;
+}
+i.IconopenedCount {
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+i.IconopenedCount:hover {
+  border: 1px solid #fff !important;
+  background: #fff !important;
+  color: #22313a !important;
+}
+i.IconviewedCount {
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+i.IconviewedCount:hover {
+  border: 1px solid #fff !important;
+  background: #fff !important;
+  color: #22313a !important;
+}
+i.IconodownloadedCount {
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+i.IconodownloadedCount:hover {
+  border: 1px solid #fff !important;
+  background: #fff !important;
+  color: #22313a !important;
+}
+.BgForCard {
+  background-color: #1c313a !important;
+  border: 1px solid #2f4857 !important;
+}
+.hrCustimization {
+  border-top: 1px solid #2f4857 !important;
+}
+#queryBuilderCu label.q-switch-label {
+  color: white !important;
+  background-color: #22313a !important;
+  border: 1px solid #2f4857 !important;
+}
+#queryBuilderCu .q-button {
+  color: white !important;
+  background-color: #22313a !important;
+  border: 1px solid #2f4857 !important;
+}
+.q-add-icon {
+  color: white !important;
+}
+.q-rule {
+  background-color: #22313a !important;
+  border: 1px solid #2f4857 !important;
+}
+.q-field-control {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+  color: #ffffff !important;
+}
+.q-operator-control {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+  color: #ffffff !important;
+}
+.q-input-control {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+  color: #ffffff !important;
+}
+

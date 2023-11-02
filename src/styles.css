@@ -2212,6 +2212,7 @@ h5.view-banner {
 }
 #queryBuilderCu .q-button {
   padding: 7px 8px !important;
+  border-radius: 4px;
 }
 #queryBuilderCu .q-switch-label, .q-button {
   line-height: 1 !important;
