@@ -415,7 +415,7 @@ fieldset {
   font-size: 14px;
 }
 .portlet.light.dashboard-stat2.border-error {
-  border-color: red;
+  border-color: red  !important;
 }
 .blur {
   -webkit-filter: blur(1px);

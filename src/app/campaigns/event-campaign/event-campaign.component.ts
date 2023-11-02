@@ -53,7 +53,7 @@ var moment = require('moment-timezone');
 @Component({
     selector: 'app-event-campaign',
     templateUrl: './event-campaign-step.component.html',
-    styleUrls: ['./event-campaign.component.css', '../create-campaign/create-campaign.component.css', '../../../assets/css/content.css'],
+    styleUrls: ['./event-campaign.component.css', '../../../assets/css/content.css'],
     providers: [PagerService, Pagination, CallActionSwitch, Properties, EventError, HttpRequestLoader, CountryNames, FormService, SortOption]
 })
 export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
@@ -369,7 +369,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         // this.loadContactLists(this.contactListsPagination);
 
         if (this.referenceService.selectedCampaignType !== 'eventCampaign' && this.router.url.includes('/home/campaigns/event') && !this.activatedRoute.snapshot.params['id']) {
-            console.log("This page is reloaded");
             this.router.navigate(['/home/campaigns/select']);
             this.isReloaded = true;
         }
@@ -420,7 +419,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                             this.eventCampaign.email = userProfile.emailId;
                         }
                     }
-                    console.log(this.eventCampaign);
                     this.eventCampaign.emailTemplate = result.data.emailTemplateDTO;
                     if (!this.eventCampaign.emailTemplate) { this.eventCampaign.emailTemplate = new EmailTemplate(); }
                     else { this.showSelectedTemplate = result.data.emailTemplateDTO.id; }
@@ -462,7 +460,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                         this.checkLaunchOption = this.eventCampaign.campaignScheduleType;
                     }
                     this.eventCampaign.userLists = [];
-                    console.log(this.userListIds);
                     if (this.authenticationService.isOnlyPartner()) {
                         const emailTemplates: any = [];
                         this.emailTemplates.forEach((element, index) => {
@@ -508,8 +505,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                         this.selectedFormName = this.selectedFormData[i].name;
                         this.selectedFormId = this.selectedFormData[i].id;
                     }
-                    console.log(this.selectedFormName);
-                    console.log(this.selectedFormId);
                     if (this.previewPopUpComponent && this.selectedFormId && this.selectedFormData) {
                         this.previewPopUpComponent['selectedFormId'] = this.selectedFormId;
                         this.previewPopUpComponent.selectedFormData = this.selectedFormData;
@@ -1265,14 +1260,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     checkAllForPartners(ev: any) {
         try {
             if (ev.target.checked) {
-                console.log("checked");
                 $('[name="campaignContact[]"]').prop('checked', true);
                 let self = this;
                 $('[name="campaignContact[]"]:checked').each(function (index) {
                     var id = $(this).val();
                     self.parternUserListIds.push(parseInt(id));
                     self.userListDTOObj.push(self.contactListsPagination.pagedItems[index]);
-                    console.log(self.parternUserListIds);
                     $('#campaignContactListTable_' + id).addClass('contact-list-selected');
                     self.eventError.eventContactError = false;
                 });
@@ -1339,7 +1332,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     //Removing Highlighted Row
                     $('#' + contactId).prop("checked", false);
                     $('#campaignContactListTable_' + contactId).removeClass('contact-list-selected');
-                    console.log("Revmoing" + contactId);
                     this.parternUserListIds.splice($.inArray(contactId, this.parternUserListIds), 1);
                     if (this.parternUserListIds.length > 0) {
                         this.eventError.eventContactError = false;
@@ -1349,7 +1341,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     //Highlighting Row
                     $('#' + contactId).prop("checked", true);
                     $('#campaignContactListTable_' + contactId).addClass('contact-list-selected');
-                    console.log("Adding" + contactId);
                     this.parternUserListIds.push(contactId);
                     if (this.parternUserListIds.length === 0) {
                         this.eventError.eventContactError = true;
@@ -1363,7 +1354,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     this.isHeaderCheckBoxChecked = false;
                 }
                 event.stopPropagation();
-                console.log(this.parternUserListIds);
             } else {
                 // this.emptyContactsMessage = "Contacts are in progress";
             }
@@ -1616,7 +1606,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         if (eventCampaign.campaignScheduleType === "NOW" || eventCampaign.campaignScheduleType === "SAVE") { eventCampaign.launchTimeInString = this.campaignService.setLaunchTime(); }
         if (this.validForm(eventCampaign) && this.isFormSubmitted) {
             this.referenceService.startLoader(this.httpRequestLoader);
-            console.log(eventCampaign);
             this.campaignService.createEventCampaign(eventCampaign, this.isEventUpdate)
                 .subscribe(
                     response => {
@@ -1624,6 +1613,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                             this.authenticationService.forceToLogout();
                         }
                         if (response.statusCode === 2000) {
+                            this.referenceService.goToTop();
                             this.isLaunched = true;
                             this.referenceService.stopLoader(this.httpRequestLoader);
                             this.router.navigate(["/home/campaigns/manage"]);
@@ -1676,7 +1666,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.campaignService.getAllTeamMemberEmailIds(this.loggedInUserId)
             .subscribe(
                 data => {
-                    console.log(data);
                     const self = this;
                     $.each(data, function (index, value) {
                         self.teamMemberEmailIds.push(data[index]);
@@ -1835,7 +1824,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     remove(divId: string, type: string) {
         if (type === "replies") {
             this.eventCampaign.campaignReplies = this.spliceArray(this.eventCampaign.campaignReplies, divId);
-            console.log(this.eventCampaign.campaignReplies);
         }
         $('#' + divId).remove();
         const index = divId.split('-')[1];
@@ -1865,7 +1853,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         this.emailTemplateService.getById(emailTemplate.id)
             .subscribe(
                 (data: any) => {
-                    console.log(data);
                     emailTemplate.body = data.body;
                     this.getEmailTemplatePreview(emailTemplate);
                 },
@@ -2149,22 +2136,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             const reply = this.eventCampaign.campaignReplies[i];
             $('#' + reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('reply-days-' + reply.divId);
-            this.removeStyleAttrByDivId('send-time-' + reply.divId);
             this.removeStyleAttrByDivId('message-' + reply.divId);
             this.removeStyleAttrByDivId('reply-subject-' + reply.divId);
             this.removeStyleAttrByDivId('email-template-' + reply.divId);
             this.removeStyleAttrByDivId('reply-message-' + reply.divId);
             $('#' + reply.divId).addClass('portlet light dashboard-stat2');
             this.validateReplySubject(reply);
-            if (reply.actionId !== 16 && reply.actionId !== 17 && reply.actionId !== 18) {
-                this.validateReplyInDays(reply);
-                if (reply.actionId !== 22 && reply.actionId !== 23) {
-                    this.validateReplyTime(reply);
-                }
-                this.validateEmailTemplateForAddReply(reply);
-            } else {
-                this.validateEmailTemplateForAddReply(reply);
-            }
+            this.validateReplyInDays(reply);
+            this.validateEmailTemplateForAddReply(reply);
             this.errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
             if (this.errorLength == 0) {
                 this.addEmailNotOpenedReplyDaysSum(reply, i);
@@ -2174,8 +2153,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     addEmailNotOpenedReplyDaysSum(reply: Reply, index: number) {
-        if (reply.actionId === 0) {
-            if (index === 0) {
+        if (reply.actionId == 0) {
+            if (index == 0) {
                 this.emailNotOpenedReplyDaysSum = reply.replyInDays;
             } else {
                 this.emailNotOpenedReplyDaysSum = reply.replyInDays + this.emailNotOpenedReplyDaysSum;
@@ -2184,8 +2163,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
     }
     addEmailOpenedReplyDaysSum(reply: Reply, index: number) {
-        if (reply.actionId === 13) {
-            if (index === 0) {
+        if (reply.actionId == 13) {
+            if (index == 0) {
                 this.emailOpenedReplyDaysSum = reply.replyInDays;
             } else {
                 this.emailOpenedReplyDaysSum = reply.replyInDays + this.emailOpenedReplyDaysSum;
@@ -2194,27 +2173,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         }
     }
     validateReplyInDays(reply: Reply) {
-        if (reply.actionId !== 22 && reply.actionId !== 23  && reply.actionId!=33 && reply.replyInDays == null) {
-            this.addReplyDaysErrorDiv(reply);
-        } else if (reply.actionId === 22 || reply.actionId === 23 || reply.actionId==33) {
-            if (reply.replyInDays == null || reply.replyInDays === 0) { this.addReplyDaysErrorDiv(reply); }
+        if (reply.actionId == 0 || reply.actionId == 13 || reply.actionId == 24 || reply.actionId == 29 || reply.actionId == 30 || reply.actionId==33) {
+            if (reply.replyInDays == null || reply.replyInDays == 0) {
+                this.addReplyDaysErrorDiv(reply);
+            } 
         }
     }
 
     addReplyDaysErrorDiv(reply: Reply) {
         this.addReplyDivError(reply.divId);
-        $('#reply-days-' + reply.divId).css('color', 'red');
+        $('#reply-days-' + reply.divId).addClass('required');
     }
 
-    validateReplyTime(reply: Reply) {
-        if (reply.replyTime == undefined || reply.replyTime == null) {
-            this.addReplyDivError(reply.divId);
-            $('#send-time-' + reply.divId).css('color', 'red');
-        } else {
-            reply.replyTime = this.campaignService.setAutoReplyDefaultTime(this.eventCampaign.campaignScheduleType, reply.replyInDays, reply.replyTime, this.eventCampaign.launchTimeInString);
-            reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
-        }
-    }
     extractTimeFromDate(replyTime) {
         //let dt = new Date(replyTime);
         let dt = replyTime;
@@ -2226,17 +2196,17 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         if (reply.subject == null || reply.subject == undefined || $.trim(reply.subject).length == 0) {
             this.addReplyDivError(reply.divId);
             console.log("Added Reply Subject Eror");
-            $('#reply-subject-' + reply.divId).css('color', 'red');
+            $('#reply-subject-' + reply.divId).addClass('required');
         }
     }
 
     validateEmailTemplateForAddReply(reply: Reply) {
         if (reply.defaultTemplate && reply.selectedEmailTemplateId == 0) {
             $('#' + reply.divId).addClass('portlet light dashboard-stat2 border-error');
-            $('#email-template-' + reply.divId).css('color', 'red');
+            $('#email-template-' + reply.divId).addClass('required');
         } else if (!reply.defaultTemplate && (reply.body == null || reply.body == undefined || $.trim(reply.body).length == 0)) {
             $('#' + reply.divId).addClass('portlet light dashboard-stat2 border-error');
-            $('#reply-message-' + reply.divId).css('color', 'red');
+            $('#reply-message-' + reply.divId).addClass('required');
         }
     }
 
@@ -2302,8 +2272,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             this.campaignService.createEventCampaign(eventCampaign, this.isEventUpdate)
                 .subscribe(
                     response => {
-                        console.log(response);
                         if (response.statusCode === 2000) {
+                            this.referenceService.goToTop();
                             this.isLaunched = true;
                             this.reInitialize();
                             if ("/home/campaigns/manage" === this.router.url) {
@@ -2366,9 +2336,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             //let timeZoneId = $('#timezoneIdCampaignEventTime option:selected').val();
             var value = e.options[e.selectedIndex].value;
             var text = e.options[e.selectedIndex].text;
-            console.log(value + '::::' + text);
             this.timeZoneSetValue = text;
-            console.log(this.timezonesCampaignEventTime);
             for (let i = 0; i < this.timezonesCampaignEventTime.length; i++) {
                 if (this.timezonesCampaignEventTime[i].cityName === text) {
                     this.timeZoneSetValue = this.timezonesCampaignEventTime[i].timezoneId;
@@ -2830,7 +2798,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                         data => {
                             this.validUsersCount = data['validContactsCount'];
                             this.allUsersCount = data['allContactsCount'];
-                            console.log("valid contacts Data:" + data['validContactsCount']);
                         },
                         (error: any) => {
                             console.log(error);
@@ -2866,7 +2833,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
     }
 
     pushToCrmRequest(crmName: any, event: any) {
-        console.log(event.target.checked);
         if (event.target.checked) {
 
             if (crmName == 'marketo') {
@@ -2884,7 +2850,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
             if (crmName == 'marketo' || crmName == 'hubspot' || crmName == 'salesforce' || crmName == 'microsoft' ) {
                 this.eventCampaign.pushToCRM = this.eventCampaign.pushToCRM.filter(e => e !== crmName);
             }
-            console.log(this.eventCampaign.pushToCRM);
         }
 
         this.validatePushToCRM();
@@ -2920,7 +2885,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                 let response = data;
                 if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
                     this.eventCampaign.pushToCRM.push('salesforce');
-                    console.log("isPushToSalesforce ::::" + this.pushToCRM);
                     this.validatePushToCRM();
                 } else {
                     if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {

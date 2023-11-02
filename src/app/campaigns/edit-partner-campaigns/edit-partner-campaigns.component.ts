@@ -759,7 +759,6 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             let reply = this.replies[i];
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('reply-days-'+reply.divId);
-            this.removeStyleAttrByDivId('send-time-'+reply.divId);
             this.removeStyleAttrByDivId('message-'+reply.divId);
             this.removeStyleAttrByDivId('reply-subject-'+reply.divId);
             this.removeStyleAttrByDivId('email-template-'+reply.divId);
@@ -767,11 +766,8 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             $('#'+reply.divId).addClass('portlet light dashboard-stat2');
             this.validateReplySubject(reply);
             this.validateReplyBody(reply);
-            if(reply.actionId!==16 && reply.actionId!==17 && reply.actionId!==18){
+            if(reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18){
                 this.validateReplyInDays(reply);
-                if(reply.actionId!==22 && reply.actionId!==23){
-                    this.validateReplyTime(reply);
-                }
             }
             var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
             if(errorLength==0){
@@ -782,45 +778,35 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
         }
     }
 
-    validateReplyInDays(reply:Reply){
-        if( reply.actionId!== 22 &&  reply.actionId!== 23 && reply.actionId!=33 && reply.replyInDays==null){
-           this.addReplyDaysErrorDiv(reply);
-        }else if(reply.actionId==22 ||reply.actionId==23 || reply.actionId==33 ){
-           if(reply.replyInDays==null || reply.replyInDays==0){
-               this.addReplyDaysErrorDiv(reply);
-           }
+    validateReplyInDays(reply: Reply) {
+        if (reply.actionId!= 16 && reply.actionId!=17 && reply.actionId!=18) {
+            if (reply.replyInDays == null || reply.replyInDays == 0) {
+                this.addReplyDaysErrorDiv(reply);
+            } 
         }
     }
 
     addReplyDaysErrorDiv(reply:Reply){
         this.addReplyDivError(reply.divId);
-        $('#reply-days-'+reply.divId).css('color','red');
+        $('#reply-days-' + reply.divId).addClass('required');
     }
 
-    validateReplyTime(reply:Reply){
-        if(reply.replyTime==undefined || reply.replyTime==null){
-            this.addReplyDivError(reply.divId);
-            $('#send-time-'+reply.divId).css('color','red');
-        }else{
-            reply.replyTime = this.campaignService.setAutoReplyDefaultTime(this.campaignLaunchForm.value.scheduleCampaign, reply.replyInDays,reply.replyTime,this.campaignLaunchForm.value.launchTime);
-            reply.replyTimeInHoursAndMinutes = this.extractTimeFromDate(reply.replyTime);
-        }
-    }
+  
 
     validateReplySubject(reply:Reply){
         if( reply.subject==null||reply.subject==undefined || $.trim(reply.subject).length==0){
             this.addReplyDivError(reply.divId);
-            $('#reply-subject-'+reply.divId).css('color','red');
+            $('#reply-subject-'+reply.divId).addClass('required');
         }
     }
 
     validateReplyBody( reply: Reply ) {
         if ( reply.defaultTemplate && reply.selectedEmailTemplateId == 0 ) {
             $( '#' + reply.divId ).addClass( 'portlet light dashboard-stat2 border-error' );
-            $( '#email-template-' + reply.divId ).css( 'color', 'red' );
+            $( '#email-template-' + reply.divId ).addClass('required');
         } else if ( !reply.defaultTemplate && ( reply.body == null || reply.body == undefined || $.trim( reply.body ).length == 0 ) ) {
             $( '#' + reply.divId ).addClass( 'portlet light dashboard-stat2 border-error' );
-            $( '#reply-message-' + reply.divId ).css( 'color', 'red' );
+            $( '#reply-message-' + reply.divId ).addClass('required');
         }
 
 
@@ -838,7 +824,6 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             let url = this.urls[i];
             $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('click-days-'+url.divId);
-            this.removeStyleAttrByDivId('send-time-'+url.divId);
             this.removeStyleAttrByDivId('click-message-'+url.divId);
             this.removeStyleAttrByDivId('click-email-template-'+url.divId);
             this.removeStyleAttrByDivId('click-subject-'+url.divId);
@@ -847,7 +832,6 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
             this.validateOnClickBody(url);
             if(url.actionId==21){
                 url.scheduled = true;
-                this.validateOnClickReplyTime(url);
                 this.validateOnClickReplyInDays(url);
             }else{
                 url.scheduled = false;
@@ -859,30 +843,21 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
         }
     }
 
-    validateOnClickReplyTime(url:Url){
-        if(url.replyTime==undefined || url.replyTime==null){
-            this.addReplyDivError(url.divId);
-            $('#send-time-'+url.divId).css('color','red');
-        }else{
-            url.replyTime = this.campaignService.setAutoReplyDefaultTime(this.campaignLaunchForm.value.scheduleCampaign, url.replyInDays,url.replyTime,this.campaignLaunchForm.value.launchTime);
-            url.replyTimeInHoursAndMinutes = this.extractTimeFromDate(url.replyTime);
-        }
-    }
-
+  
     validateOnClickSubject(url:Url){
         if( url.subject==null||url.subject==undefined || $.trim(url.subject).length==0){
             this.addReplyDivError(url.divId);
-            $('#click-subject-'+url.divId).css('color','red');
+            $('#click-subject-'+url.divId).addClass('required');
         }
     }
 
     validateOnClickBody(url:Url){
         if(url.defaultTemplate && url.selectedEmailTemplateId==0){
             $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
-            $('#click-email-template-'+url.divId).css('color','red');
+            $('#click-email-template-'+url.divId).addClass('required');
         }else if(!url.defaultTemplate &&(url.body==null || url.body==undefined || $.trim(url.body).length==0)){
             $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
-            $('#click-message-'+url.divId).css('color','red');
+            $('#click-message-'+url.divId).addClass('required');
         }
 
     }
@@ -890,7 +865,7 @@ export class EditPartnerCampaignsComponent implements OnInit,ComponentCanDeactiv
     validateOnClickReplyInDays(url:Url){
         if(url.replyInDays==null){
             this.addReplyDivError(url.divId);
-            $('#click-days-'+url.divId).css('color','red');
+            $('#click-days-'+url.divId).addClass('required');
         }
     }
 
