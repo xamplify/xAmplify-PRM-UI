@@ -90,6 +90,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	/****XNFR-381*****/
 	isChangeAsParentPdfIconClicked = false;
 	changeAsParentPdfSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+	childAssetId = 0;
 	/****XNFR-381*****/
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 			public videoFileService: VideoFileService, public userService: UserService, public actionsDescription:ActionsDescription) {
@@ -744,14 +745,36 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	/****XNFR-381*****/
 	changeAsParentPdf(assetId:number){
-		this.loading = true;
-		this.damService.changeAsParentAsset(assetId).subscribe(
-			response=>{
-				this.referenceService.showSweetAlertSuccessMessage("Success");
-				this.listAssets(this.pagination);
-			},error=>{
-				this.loading = false;
-				this.referenceService.showSweetAlertServerErrorMessage();
-			});
+		this.childAssetId = assetId;
+		this.changeAsParentPdfSweetAlertParameterDto.text = 'Are you sure you want to switch this child template as the parent template?';
+		this.changeAsParentPdfSweetAlertParameterDto.confirmButtonText = "Yes,swtich it";
+		this.isChangeAsParentPdfIconClicked = true;
+	}
+
+	/****XNFR-381*****/
+	changeAsParentPdfEmitter(event:boolean){
+		if(event){
+			this.customResponse = new CustomResponse();
+			this.loading = true;
+			this.referenceService.showSweetAlertProceesor('We are processing your request');
+			this.damService.changeAsParentAsset(this.childAssetId).subscribe(
+				response=>{
+					this.resetChangeAsParentPdfValues();
+					this.customResponse = new CustomResponse('SUCCESS','Template switched successfully',true);
+					this.referenceService.closeSweetAlert();
+					this.listAssets(this.pagination);
+				},error=>{
+					this.loading = false;
+					this.referenceService.closeSweetAlert();
+					this.referenceService.showSweetAlertServerErrorMessage();
+				});
+		}else{
+			this.resetChangeAsParentPdfValues();
+		}
+	}
+	/****XNFR-381*****/
+	resetChangeAsParentPdfValues(){
+		this.childAssetId = 0;
+		this.isChangeAsParentPdfIconClicked = false;
 	}
 }
