@@ -126,42 +126,42 @@
 														<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView"   data-toggle="tooltip" data-placement="top" title="Edit"	(click)="addOrEdit(asset.id)">
 															<i class="fa fa-edit mDisableColor IconCustomization"	aria-hidden="true"></i>
 														</a> 
-														<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit"  data-toggle="tooltip" data-placement="top" title="Edit"	(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId )">
+														<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit"  data-toggle="tooltip" data-placement="top" title="Edit" (click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId )">
 															<i class="fa fa-edit mDisableColor IconCustomization"	aria-hidden="true"></i>
 														</a>
 													
-													<ng-container *ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
-														<a *ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos" (click)="campaignRouter(asset.alias, asset.viewBy)" data-toggle="tooltip" data-placement="top" title="Create campaign">
-															<i class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i>
-														</a>
+														<ng-container *ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
+															<a *ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos" (click)="campaignRouter(asset.alias, asset.viewBy)" data-toggle="tooltip" data-placement="top" title="Create campaign">
+																<i class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i>
+															</a>
 
-														<a class="disable" *ngIf="asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft">
-															<i class="fa fa-bullhorn IconCustomization" aria-hidden="true" ></i>
-														</a>
-														<a class="disable" *ngIf="!asset.processed && authenticationService?.module?.showCampaignOptionInManageVideo" data-toggle="tooltip" data-placement="top" title="Unavailable for processing">
-															<i class="fa fa-bullhorn IconCustomization" aria-hidden="true" ></i>
-														</a>
-													</ng-container>
-													<a *ngIf="!isPartnerView && asset?.showPreviewIcon"  data-toggle="tooltip" data-placement="top"	title="Preview" (click)="preview(asset)">
-														<i	class="fa fa-eye IconCustomization" aria-hidden="true"></i>
-													</a> 
+															<a class="disable" *ngIf="asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft">
+																<i class="fa fa-bullhorn IconCustomization" aria-hidden="true" ></i>
+															</a>
+															<a class="disable" *ngIf="!asset.processed && authenticationService?.module?.showCampaignOptionInManageVideo" data-toggle="tooltip" data-placement="top" title="Unavailable for processing">
+																<i class="fa fa-bullhorn IconCustomization" aria-hidden="true" ></i>
+															</a>
+														</ng-container>
+														<a *ngIf="!isPartnerView && asset?.showPreviewIcon"  data-toggle="tooltip" data-placement="top"	title="Preview" (click)="preview(asset)">
+															<i	class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+														</a> 
 													
-													<a *ngIf="!isPartnerView"  data-toggle="tooltip" data-placement="top" title="Download"	(click)="openPopup(asset)">
-														<i class="fa fa-download IconCustomization"	aria-hidden="true"></i>
-													</a> 
-													<a  data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(asset)">
-														<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
-													</a> 
-													<a *ngIf="isPartnerView"  data-toggle="tooltip" data-placement="top" title="View Details"
-														(click)="viewDetails(asset)">
-														<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
-													</a>
-													<a *ngIf="!isPartnerView && asset?.delete" 
-													data-toggle="tooltip" data-placement="top"
-													title="Delete"
-														(click)="confirmDelete(asset)"> 
-														<i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
-													</a>
+														<a *ngIf="!isPartnerView"  data-toggle="tooltip" data-placement="top" title="Download"	(click)="openPopup(asset)">
+															<i class="fa fa-download IconCustomization"	aria-hidden="true"></i>
+														</a> 
+														<a  data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(asset)">
+															<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+														</a> 
+														<a *ngIf="isPartnerView"  data-toggle="tooltip" data-placement="top" title="View Details"
+															(click)="viewDetails(asset)">
+															<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+														</a>
+														<a *ngIf="!isPartnerView && asset?.delete" 
+														data-toggle="tooltip" data-placement="top"
+														title="Delete"
+															(click)="confirmDelete(asset)"> 
+															<i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+														</a>
 													</div>
 												</ng-container>
 												<!--Added On 02/08/2023-->
@@ -243,8 +243,14 @@
 																<span class="assettype-bgcolor">{{asset?.assetType}} </span>
 																</td>
 															<td class="text-center"><app-timestamp	[dateAndTime]="asset?.displayTime"></app-timestamp></td>
+															<!--Child Assets-->
 															<td id="actions-row">
 																<div class="actions-block override-actions ActionAlign" *ngIf="!asset?.publishingOrWhiteLabelingInProgress">
+																	<!--XNFR-381-->
+																	<a class="mMobileDisable"  data-toggle="tooltip" data-placement="top"  title="Change As Parent" (click)="changeAsParentPdf(asset.id)"> <i
+																		class="fa fa-exchange mDisableColor IconCustomization" aria-hidden="true"></i>
+																	</a> 
+																	<!--XNFR-381-->
 																	<a class="mMobileDisable"  data-toggle="tooltip" data-placement="top"  title="Design" (click)="addOrEdit(asset.id)"> <i
 																		class="fa fa-paint-brush mDisableColor IconCustomization" aria-hidden="true"></i>
 																	</a> 
@@ -573,3 +579,5 @@
 		</div>
 	</div>
 </ng-template>
+ <!---XNFR-381-->
+<app-confirm-sweet-alert-util *ngIf="isChangeAsParentPdfIconClicked" [parameterDto]="changeAsParentPdfSweetAlertParameterDto" (notifyComponent)="changeAsParentPdfEmitter($event)"></app-confirm-sweet-alert-util>
