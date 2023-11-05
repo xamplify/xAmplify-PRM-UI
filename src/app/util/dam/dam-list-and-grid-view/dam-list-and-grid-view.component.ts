@@ -763,10 +763,12 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 					this.customResponse = new CustomResponse('SUCCESS','Template switched successfully',true);
 					this.referenceService.closeSweetAlert();
 					this.listAssets(this.pagination);
-				},error=>{
+				},(error:any)=>{
+					this.resetChangeAsParentPdfValues();
 					this.loading = false;
 					this.referenceService.closeSweetAlert();
-					this.referenceService.showSweetAlertServerErrorMessage();
+					let errorMessage = this.referenceService.getBadRequestErrorMessage(error);
+					this.customResponse = new CustomResponse('ERROR',errorMessage,true);
 				});
 		}else{
 			this.resetChangeAsParentPdfValues();

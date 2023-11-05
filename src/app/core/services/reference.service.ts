@@ -3271,6 +3271,17 @@ export class ReferenceService {
   goToUpdateEmailTemplateByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
     this.router.navigate(["/home/emailtemplates/update/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
   }
+
+  getBadRequestErrorMessage(error: any){
+    this.scrollSmoothToTop();
+    let jsonError = error['error'];
+    let statusCode = jsonError['statusCode'];
+    let message = this.properties.serverErrorMessage;
+    if (statusCode == 409 || statusCode == 400) {
+      message = jsonError['message'];
+    }
+    return message;
+  }
   
   
   /********Email Templates****/

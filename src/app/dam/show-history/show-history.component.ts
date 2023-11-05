@@ -450,10 +450,12 @@ export class ShowHistoryComponent implements OnInit {
 					this.resetChangeAsParentPdfValues();
 					this.referenceService.showSweetAlertSuccessMessage("Template switched successfully");
 					this.referenceService.navigateToRouterByViewTypes("/home/dam/history/"+assetId,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
-				},error=>{
+				},(error:any)=>{
+					this.resetChangeAsParentPdfValues();
 					this.loading = false;
 					this.referenceService.closeSweetAlert();
-					this.referenceService.showSweetAlertServerErrorMessage();
+					let errorMessage = this.referenceService.getBadRequestErrorMessage(error);
+					this.referenceService.showSweetAlertErrorMessage(errorMessage);
 				});
 		}else{
 			this.resetChangeAsParentPdfValues();
