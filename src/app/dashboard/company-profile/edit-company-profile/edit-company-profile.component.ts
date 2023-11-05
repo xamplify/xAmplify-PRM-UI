@@ -1807,6 +1807,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
               this.campaignAccess.shareLeads = false;
           }else if(this.marketing){
               this.campaignAccess.loginAsPartner = false;
+              this.campaignAccess.shareWhiteLabeledContent = false;
+              this.campaignAccess.createWorkflow = false;
           }
       }
 
