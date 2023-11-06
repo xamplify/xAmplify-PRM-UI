@@ -215,7 +215,7 @@
                                         </div>
 
                                          <!--Notify Workflow-->
-                                         <div class="form-group" *ngIf="campaign?.channelCampaign && !isPageCampaign">
+                                         <div class="form-group" *ngIf="campaign?.channelCampaign && !isPageCampaign && campaign.emailNotification ">
                                             <label class="control-label col-sm-4">Notify Workflows</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign.notifyChannelCampaignWorkflows" [onText]="callActionSwitch.yesTextValue" 
@@ -987,7 +987,7 @@
                                                             <form class="role add-reply" id="form-{{reply.divId}}">
                                                                 <div class="col-xs-12 p0">
                                                                     <!--Reason-->
-                                                                    <div class="col-xs-12 col-sm-6" style="margin-bottom: 6px;">
+                                                                    <div class="col-xs-12 col-sm-5" style="margin-bottom: 6px;">
                                                                         <label style="cursor: default;" for="reason">Reason</label>
                                                                         <select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
                                                                             <option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
@@ -1008,34 +1008,20 @@
                                                                     <!--Reply In X Days-->
                                                                     <div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
                                                                         <div class="col-xs-12 col-sm-2">
-                                                                            <label class="default" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 || reply.actionId==33 " id="reply-days-{{reply.divId}}" translate>
-                                                                                Reply In X Days
-                                                                                <strong class="required">*</strong>
-                                                                                <span><strong translate>(Minimum 1 Day)</strong></span>
-                                                                            </label>
-                                                                            <label class="default" for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23 && reply.actionId!=33" id="reply-days-{{reply.divId}}" translate>Reply In X Days
+                                                                            <label class="default" for="days" id="reply-days-{{reply.divId}}" translate>Reply In X Days
                                                                                 <strong class="required">*</strong>
                                                                             </label>
-                                                                            <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
-                                                                        </div>
-
-                                                                        <div class="col-xs-12 col-sm-3 time-col padding-left-0" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-                                                                            <div class="col-xs-4 col-sm-3 default">
-                                                                                <span for="time" id="send-time-{{reply.divId}}" class="time-picker-css" translate>At
-                                                                                    <strong class="required">*</strong></span>
-                                                                            </div>
-                                                                            <div class="col-xs-8 col-sm-9 height-66px">
-                                                                                <timepicker [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
-                                                                            </div>
+                                                                            <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="1" oninput="validity.valid||(value='');">
+                                                                            <span><strong>(Minimum 1 Day)</strong></span>
                                                                         </div>
                                                                     </div>
                                                                     <!---Subject-->
-                                                                    <div class="col-xs-12 col-sm-6">
+                                                                    <div class="col-xs-12 col-sm-5">
                                                                         <label class="default" for="time" id="reply-subject-{{reply.divId}}" translate>Subject
                                                                             <strong class="required">*</strong>
                                                                         </label>
                                                                         <div class="input-group merge-tag-input-border">
-                                                                            <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
+                                                                            <input type="text" autocomplete="off" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
                                                                             <span class="input-group-btn">
                                                                                 <button class="btn btn-default" type="button"  data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaign-reply',reply)">
                                                                                     <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
@@ -1176,33 +1162,12 @@
                                                             <form class="role" id="form-{{url.divId}}" class="add-click">
                                                                 <div class="col-xs-12 p0">
                                                                     <div class="col-xs-12 col-sm-6">
-                                                                        <label class="default" for="reason" translate>When To Send Email</label>
+                                                                        <label class="default" for="reason">When To Send Email</label>
                                                                         <select class="form-control pointer" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
-                                                                            <option [value]="19" [selected]="url.actionId ==19" translate>Send if not clicked</option>
-                                                                            <option [value]="20" [selected]="url.actionId ==20" translate>Send immediately after clicked</option>
-                                                                            <option [value]="21" [selected]="url.actionId ==21" translate>Schedule</option>
+                                                                            <option [value]="19" [selected]="url.actionId ==19">Send if not clicked</option>
+                                                                            <option [value]="20" [selected]="url.actionId ==20">Send immediately after clicked</option>
+                                                                            <option [value]="21" [selected]="url.actionId ==21">Schedule (Wait X Days After Click)</option>
                                                                         </select>
-                                                                    </div>
-                                                                    <div *ngIf="url?.actionId==21" class="col-xs-6 p0">
-                                                                         <!--Wait X Days After Click-->
-                                                                        <div class="col-xs-4" style="padding:0">
-                                                                            <label for="days" id="click-days-{{url.divId}}" style="cursor: default;" translate>
-                                                                                Wait X Days After Click
-                                                                                <strong class="required">*</strong>
-                                                                            </label>
-                                                                            <input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
-                                                                        </div>
-                                                                         <!-- At -->
-                                                                        <div class="col-xs-8 time-col">
-                                                                            <div class="col-xs-3 default">
-                                                                                <label for="time" id="send-time-{{url.divId}}" class="time-picker-css" translate>At
-                                                                                    <strong class="required">*</strong>
-                                                                                </label>
-                                                                            </div>
-                                                                            <div class="col-xs-9" style="height:66px">
-                                                                                <timepicker [(ngModel)]="url.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
-                                                                            </div>
-                                                                        </div>
                                                                     </div>
                                                                     <!--Subject-->
                                                                     <div class="col-xs-12 col-sm-6">
@@ -1231,6 +1196,17 @@
                                                                             </option>
                                                                         </select>
                                                                     </div>
+                                                                    <div *ngIf="url?.actionId==21" class="col-xs-6">
+                                                                        <!--Wait X Days After Click-->
+                                                                       <div class="col-xs-6" style="padding:0">
+                                                                           <label for="days" id="click-days-{{url.divId}}" style="cursor: default;">
+                                                                               Wait X Days After Click
+                                                                               <strong class="required">*</strong>
+                                                                           </label>
+                                                                           <input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="1" oninput="validity.valid||(value='');">
+                                                                           <span><strong>(Minimum 1 Day)</strong></span>
+                                                                        </div>
+                                                                   </div>
                                                                 </div>
 
                                                                 <!-- Message--->

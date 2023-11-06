@@ -33,9 +33,11 @@ export class DeleteAssetsComponent implements OnInit,OnDestroy {
 
 	confirmDelete(asset: any) {
 		let self = this;
+		let isParentTemplate = asset.history;
+		let text = isParentTemplate ? "Deleting the parent templates will also remove all the child templates.":"You won't be able to undo this action!";
 		swal({
 			title: 'Are you sure?',
-			text: "You won't be able to undo this action!",
+			text: text,
 			type: 'warning',
 			showCancelButton: true,
 			swalConfirmButtonColor: '#54a7e9',

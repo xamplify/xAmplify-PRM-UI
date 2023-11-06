@@ -59,8 +59,8 @@
                        <div class="col-xs-6">
                           <div class="form-group" [attr.class]="campaignNameDivClass">
                              <label for="exampleInputEmail1">Campaign name (save as)</label>
-                             <span style="color: red"><strong> * </strong></span>
-                             <span *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
+                             <span class="required"><strong> * </strong></span>
+                             <span *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" class="required">Already Exists</span>
                              <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200"
                              />
                           </div>
@@ -73,7 +73,7 @@
 
                           <div class="form-group" [attr.class]="subjectLineDivClass">
                              <label for="exampleInputPassword1">Subject line</label>
-                             <span style="color: red"><strong> * </strong></span>
+                             <span class="required"><strong> * </strong></span>
                              <div class="input-group merge-tag-input-border">
                                 <input type="text" id="subjectLine" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm();validateField('subjectLine');" maxlength="1000" />
                                 <span class="input-group-btn">
@@ -86,12 +86,12 @@
                           </div>
                           <div class="form-group col-xs-6 p0" [attr.class]="fromNameDivClass">
                              <label for="exampleInputPassword1">From name</label>
-                             <span style="color: red"><strong> * </strong></span>
+                             <span class="required"><strong> * </strong></span>
                              <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');" maxlength="200" />
                           </div>
                           <div class="form-group col-xs-6 pr0" [attr.class]="fromEmaiDivClass">
                              <label for="exampleInputPassword1">From email</label>
-                             <span style="color: red"><strong> * </strong></span>
+                             <span class="required"><strong> * </strong></span>
                              <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()">
                              <option *ngFor="let teamMember of teamMemberEmailIds" [ngValue]="teamMember.emailId" >
                              {{teamMember.emailId}}
@@ -102,7 +102,7 @@
                        <div class="col-xs-6">
                           <div class="form-group" [attr.class]="fromEmaiDivClass">
                              <label class="control-label">Folder
-                             <span style="color: red"><strong> * </strong></span>             
+                             <span class="required"><strong> * </strong></span>             
                              </label>
                              <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId" style="width: 100%">
                              <option *ngFor="let category of categoryNames"
@@ -113,7 +113,7 @@
                           </div>
                           <div class="form-group" [attr.class]="preHeaderDivClass">
                              <label for="exampleInputPassword1">Pre header</label>
-                             <span style="color: red"><strong> * </strong></span>  
+                             <span class="required"><strong> * </strong></span>  
                              <input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200" />
                           </div>
                           <!--Data Share--->
@@ -421,7 +421,7 @@
                                             <form class="role add-reply" id="form-{{reply.divId}}">
                                                <div class="col-xs-12" style="padding:0">
                                                   <div class="col-xs-12" style="padding:0">
-                                                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-4">
+                                                     <div class="col-xs-6 col-sm-5 col-md-5 col-lg-5">
                                                         <label for="reason" style="cursor:default" class="lableTitleDec">Reason</label>
                                                         <select class="form-control" name="actionId" [(ngModel)]="reply.actionId" style="cursor:pointer">
                                                         <option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
@@ -439,32 +439,17 @@
                                                      </div>
                                                      <div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
                                                         <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2 pl0">
-                                                           <label class="lableTitleDec" style="cursor:default" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 || reply.actionId==33 " id="reply-days-{{reply.divId}}">Reply
+                                                           <label class="lableTitleDec" style="cursor:default" for="days" *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18 " id="reply-days-{{reply.divId}}">Reply
                                                            In X Days
-                                                           <strong style="color: red">*</strong>
-                                                           <span>
-                                                           <strong>(Minimum 1 Day)</strong>
-                                                           </span>
+                                                           <strong class="required">*</strong>
                                                            </label>
-                                                           <label class="lableTitleDec" style="cursor:default" for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23 && reply.actionId!=33" id="reply-days-{{reply.divId}}">Reply
-                                                           In X Days
-                                                           <strong style="color: red">*</strong>
-                                                           </label>
-                                                           <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
-                                                        </div>
-                                                        <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 time-col p0" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-                                                           <div class="col-xs-2" style="position: relative;top: 28px; cursor: default;">
-                                                              <label for="time" id="send-time-{{reply.divId}}" class="lableTitleDec">At<strong style="color: red" >*</strong>
-                                                              </label>
-                                                           </div>
-                                                           <div>
-                                                              <timepicker [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
-                                                           </div>
-                                                        </div>
+                                                           <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="1" oninput="validity.valid||(value='');">
+                                                           <span><strong>(Minimum 1 Day)</strong></span>
+                                                         </div>
                                                      </div>
-                                                     <div class="col-xs-8 col-sm-3 col-md-3 col-lg-3 tab_sub" style="margin-left: -16px;">
+                                                     <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5 tab_sub">
                                                         <label for="time" style="cursor:default" id="reply-subject-{{reply.divId}}" class="lableTitleDec">Subject
-                                                        <strong style="color: red">*</strong>
+                                                        <strong class="required">*</strong>
                                                         </label>
                                                         <div class="input-group merge-tag-input-border">
                                                            <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
@@ -480,7 +465,7 @@
                                                      <div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
                                                         <div>
                                                            <label style="cursor:default" for="days" id="reply-message-{{reply.divId}}">Message
-                                                           <strong style="color: red">*</strong>
+                                                           <strong class="required">*</strong>
                                                            </label>
                                                         </div>
                                                         <div>
@@ -580,59 +565,57 @@
                                       </div>
                                       <div class="row">
                                          <form class="role" id="form-{{url.divId}}" class="add-click">
-                                            <div class="col-xs-12" style="padding:0">
-                                               <div class="col-xs-12" style="padding:0">
-                                                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                                     <label for="reason" style="cursor:default">When To Send Email</label>
-                                                     <select style="cursor:pointer" class="form-control" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
+                                            <div class="col-xs-12 p0">
+                                                  <!--When To Send Email-->
+                                                  <div class="col-xs-12 col-sm-6">
+                                                     <label class="default" for="reason">When To Send Email</label>
+                                                     <select class="form-control pointer" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
                                                      <option [value]="19" [selected]="url.actionId ==19">Send if not clicked</option>
                                                      <option [value]="20" [selected]="url.actionId ==20">Send immediately after clicked</option>
-                                                     <option [value]="21" [selected]="url.actionId ==21">Schedule</option>
+                                                     <option [value]="21" [selected]="url.actionId ==21">Schedule (Wait X Days After Click)</option>
                                                      </select>
                                                   </div>
-                                                  <div *ngIf="url.actionId==21">
-                                                     <div class="col-xs-3">
+                                                  <!--Subject-->
+                                                  <div class="col-xs-12 col-sm-6">
+                                                      <label class="default" for="time" id="click-subject-{{url.divId}}">Subject
+                                                       <strong class="required" aria-hidden="true">*</strong>
+                                                      </label>
+                                                      <div class="input-group merge-tag-input-border">
+                                                         <input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
+                                                         <span class="input-group-btn">
+                                                         <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags" (click)="openMergeTagsPopup('nurture-web-site',url)">
+                                                         <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
+                                                         </button>
+                                                         </span>
+                                                      </div>
+                                                  </div>
+                                                  <!--Available URLS-->
+                                                  <div class="col-xs-12 col-sm-6">
+                                                   <label for="reason" style="cursor: default;" translate>Available URLs
+                                                       </label>
+                                                    <select style="cursor:pointer" class="form-control" name="url" [(ngModel)]="url.url" style="width: 100%">
+                                                         <option *ngFor="let hrefLink of emailTemplateHrefLinks;" [ngValue]="hrefLink" [selected]="hrefLink==url.url">
+                                                         {{hrefLink}}
+                                                         </option>
+                                                   </select>
+                                                  </div>
+
+                                                   <!--Wait X Days After Click-->
+                                                  <div *ngIf="url.actionId==21" class="col-xs-6">
+                                                     <div class="col-xs-6">
                                                         <label style="cursor:default" for="days" id="click-days-{{url.divId}}">Wait X Days
                                                         After Click
-                                                        <strong style="color: red">*</strong>
+                                                        <strong class="required">*</strong>
                                                         </label>
-                                                        <input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
-                                                     </div>
-                                                     <div class="col-xs-3 time-col p0">
-                                                        <div class="col-xs-3" style="position: relative;top: 28px; cursor: default;">
-                                                           <label for="time" id="send-time-{{url.divId}}">At <strong style="color: red">*</strong></label>
-                                                        </div>
-                                                        <div class="col-xs-9 p0" style="height: 66px;">
-                                                           <timepicker [(ngModel)]="url.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
-                                                        </div>
+                                                        <input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="1" oninput="validity.valid||(value='');">
+                                                        <span><strong>(Minimum 1 Day)</strong></span>
                                                      </div>
                                                   </div>
-                                                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                                     <label style="cursor:default" for="time" id="click-subject-{{url.divId}}">Subject
-                                                     <strong style="color: red" aria-hidden="true">*</strong>
-                                                     </label>
-                                                     <div class="input-group merge-tag-input-border">
-                                                        <input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
-                                                        <span class="input-group-btn">
-                                                        <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags" (click)="openMergeTagsPopup('nurture-web-site',url)">
-                                                        <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
-                                                        </button>
-                                                        </span>
-                                                     </div>
-                                                  </div>
-                                                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                                     <label style="cursor:default" for="reason">Available URLs</label>
-                                                     <select style="cursor:pointer" class="form-control" name="url" [(ngModel)]="url.url" style="width: 100%">
-                                                     <option *ngFor="let hrefLink of emailTemplateHrefLinks;" [ngValue]="hrefLink" [selected]="hrefLink==url.url">
-                                                     {{hrefLink}}
-                                                     </option>
-                                                     </select>
-                                                  </div>
-                                               </div>
+                                                <!---Message-->  
                                                <div class="col-xs-12">
                                                   <div id="ck-editor-{{i}}" *ngIf="!url.defaultTemplate">
                                                      <label for="days" id="click-message-{{url.divId}}">Message
-                                                     <strong style="color: red">*</strong>
+                                                     <strong class="required">*</strong>
                                                      </label>
                                                      <div>
                                                         <ckeditor [(ngModel)]="url.body" name="body"></ckeditor>
@@ -745,7 +728,7 @@
                              <label style="float: left;">Date</label>
                              <br>
                              <input type="text" class="form-control flatpickr square-box" placeholder="Select" formControlName="launchTime" />
-                             <span style="color: red" *ngIf="campaignLaunchForm.hasError('invalidSchedule')">Date Required</span>
+                             <span class="required" *ngIf="campaignLaunchForm.hasError('invalidSchedule')">Date Required</span>
                           </div>
                           <div class="col-md-4">
                              <label style="float: left;">Country</label>
