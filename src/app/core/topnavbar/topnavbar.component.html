@@ -211,7 +211,7 @@
           <div class="modal-content">
              <div class="modal-header">
                 <a class="close-circle" (click)="closeInvitationModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
-                <h4 class="modal-title left" id="myModalLabel">Ask a vendor to join xAmplify</h4>
+                <h4 class="modal-title left" id="myModalLabel">{{properties?.inviteAVendorToJoinxAmplify}}</h4>
              </div>
              <div class="modal-body">
                 <div *ngIf="!isValidationMessage">

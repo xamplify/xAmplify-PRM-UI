@@ -303,6 +303,7 @@ export class Properties {
 	inviteVendorToJoinxAmplify = "Invite a vendor to join xAmplify";
 	vendorInvites = "Vendor Invites";
 	InvitedVendorAnalytics = "Invited Vendor Analytics"; 
+	inviteAVendorToJoinxAmplify = "Invite a vendor to join xAmplify";
 
 
 
