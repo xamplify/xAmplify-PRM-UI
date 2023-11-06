@@ -25,6 +25,7 @@ export class VendorRequestReportComponent implements OnInit {
     invitedVendorsCount: number = 0;
     declinedVendorsCount: number = 0;
     statusType = '';
+    tableHeader = "";
     
   constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService,
      public dashboardService: DashboardService, public pagerService: PagerService,
@@ -62,6 +63,11 @@ export class VendorRequestReportComponent implements OnInit {
   
   listOfVendorRequestReports(statusType: any) {
       this.statusType = statusType;
+      if("INVITED"==statusType){
+        this.tableHeader = this.properties.InvitedVendorAnalytics;
+      }else{
+        this.tableHeader = statusType+" "+this.properties.InvitedVendorAnalytics;
+      }
       this.referenceService.loading(this.httpRequestLoader, true);
       this.pagination.userId = this.authenticationService.user.id;
       this.pagination.filterBy = statusType;
