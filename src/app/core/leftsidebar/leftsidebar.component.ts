@@ -125,6 +125,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.setContentMenu(data, module);
 					this.menuItem.contacts = data.contacts;
 					this.menuItem.shareLeads = data.shareLeads;
+					this.authenticationService.module.hasShareLeadAccess = data.shareLeads;
 					this.menuItem.sharedLeads = data.sharedLeads;
 					this.menuItem.pagesAccessAsPartner = data.pagesAccessAsPartner;
 

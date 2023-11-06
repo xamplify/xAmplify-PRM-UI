@@ -29,7 +29,7 @@
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
               <td *ngIf="isDetailedAnalytics"> <app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
-              <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">{{item?.companyName}}</a></td> 
+              <td *ngIf="!isDetailedAnalytics"><a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">{{item?.companyName}}</a></td> 
               <td>{{item?.title}}</td>              
               <!-- <td>{{item.progress}}%</td> -->
               <td>

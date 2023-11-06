@@ -923,6 +923,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     interactionTracksDonutSliceSelected(type: any) {
         this.selectedTrackType = type;
+        this.selectedAssetType = "";
       }
     
       interactionTracksDonutSliceUnSelected(type: any) {

@@ -63,7 +63,7 @@
 
   <!--******************Interacted & Not Interacted Donut Chart & Details******************-->
   <div class="row rowPaddingCustomization mobilerowPadding1">
-    <div class="col-sm-12 col-md-12 col-lg-12">
+    <div class="col-sm-12 col-md-12 col-lg-12" *ngIf="authenticationService?.lmsAccess">
       <!--******************Interacted & Not Interacted Donut Chart******************-->
       <div class="ml15m">
         <app-donut-pie-chart [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
@@ -81,7 +81,7 @@
 
   <!--******************Status wise Track Assets Donut Chart & Details******************-->
   <div class="row rowPaddingCustomization mobilerowPadding1">
-    <div class="col-sm-12 col-md-12 col-lg-12">
+    <div class="col-sm-12 col-md-12 col-lg-12" *ngIf="authenticationService?.lmsAccess">
       <!--******************Type wise Track Assets Donut Chart******************-->
       <div class="ml15m">
         <app-donut-pie-chart [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
@@ -99,39 +99,39 @@
   <!--******************Track Assets Detailed Report*******************-->
   <div class="row rowPaddingCustomization1">
   <app-userwise-track-details [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId"></app-userwise-track-details>
+    [teamMemberId]="teamMemberId" *ngIf="authenticationService?.lmsAccess"></app-userwise-track-details>
   </div>
   <!--******************Track & Playbook Asset Details*******************-->
   <div class="row rowPaddingCustomization mobilerowPadding">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--******************Track Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
-        [type]="'TRACK'"></app-track-asset-details>
+        [type]="'TRACK'" *ngIf="authenticationService?.lmsAccess"></app-track-asset-details>
 
       <!--******************Playbook Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
-        [type]="'PLAYBOOK'"></app-track-asset-details>
+        [type]="'PLAYBOOK'" *ngIf="authenticationService.module?.playbookAccess"></app-track-asset-details>
     </div>
   </div>
 
   <!--******************Share Lead Details*******************-->
   <div class="row rowPaddingCustomization1">
-    <app-share-lead-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"></app-share-lead-details>
+    <app-share-lead-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId" *ngIf="authenticationService.module?.hasShareLeadAccess"></app-share-lead-details>
   </div>
   <!--******************Redistributed Camapign Details*******************-->
   <div class="row rowPaddingCustomization1">
   <app-redistributed-campaign-details [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId"></app-redistributed-campaign-details>
+    [teamMemberId]="teamMemberId" *ngIf="authenticationService.module?.isCampaign"></app-redistributed-campaign-details>
 </div>
   <!--******************Lead Details*******************-->
   <div class="row rowPaddingCustomization1">
   <app-partner-journey-lead-details [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId"></app-partner-journey-lead-details>
+    [teamMemberId]="teamMemberId" *ngIf="authenticationService?.enableLeads"></app-partner-journey-lead-details>
 </div>
   <!--******************Deal Details*******************-->
   <div class="row rowPaddingCustomization1">
   <app-partner-journey-deal-details [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId"></app-partner-journey-deal-details>
+    [teamMemberId]="teamMemberId" *ngIf="authenticationService?.enableLeads"></app-partner-journey-deal-details>
 </div>
   <!--******************Contact Details*******************-->
   <!-- This is commented for GDPR Compliance

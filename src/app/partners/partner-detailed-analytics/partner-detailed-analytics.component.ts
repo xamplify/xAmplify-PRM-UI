@@ -40,6 +40,7 @@ export class PartnerDetailedAnalyticsComponent implements OnInit {
 
   interactionTracksDonutSliceSelected(type: any) {
     this.selectedTrackType = type;
+    this.selectedAssetType = "";
   }
 
   interactionTracksDonutSliceUnSelected(type: any) {
