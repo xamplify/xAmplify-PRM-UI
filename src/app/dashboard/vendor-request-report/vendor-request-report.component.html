@@ -3,7 +3,7 @@
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i></li>
-			<li><a>Vendor request</a></li>
+			<li><a>{{properties?.vendorInvites}}</a></li>
 		</ul>
 	</div>
     <div class="row">
@@ -80,7 +80,7 @@
         <div class="portlet light">
           <div class="portlet-title">
             <div class="caption">
-              <span class="caption-subject font-red-sunglo uppercase">{{statusType}} requested vendors analytics</span>
+              <span class="caption-subject font-red-sunglo uppercase">{{statusType}} {{properties?.InvitedVendorAnalytics}}</span>
             </div>
           </div>
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
