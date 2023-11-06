@@ -298,6 +298,12 @@ export class Properties {
 
 	/***XNFR-386****/
 
+	/***Refer A Vendor ****/
+	inviteAVendor = "Invite A vendor";
+	inviteVendorToJoinxAmplify = "Invite a vendor to join xAmplify";
+	vendorInvites = "Vendor Invites";
+	InvitedVendorAnalytics = "Invited Vendor Analytics"; 
+
 
 
 

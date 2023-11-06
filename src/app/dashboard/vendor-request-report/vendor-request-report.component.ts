@@ -6,12 +6,13 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
+import { Properties } from 'app/common/models/properties';
 
 @Component({
   selector: 'app-vendor-request-report',
   templateUrl: './vendor-request-report.component.html',
   styleUrls: ['./vendor-request-report.component.css'],
-  providers: [DashboardService, Pagination, HttpRequestLoader]
+  providers: [DashboardService, Pagination, HttpRequestLoader,Properties]
 })
 export class VendorRequestReportComponent implements OnInit {
 
@@ -25,7 +26,9 @@ export class VendorRequestReportComponent implements OnInit {
     declinedVendorsCount: number = 0;
     statusType = '';
     
-  constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService, public dashboardService: DashboardService, public pagerService: PagerService, public pagination: Pagination) { }
+  constructor(public referenceService: ReferenceService, public authenticationService: AuthenticationService,
+     public dashboardService: DashboardService, public pagerService: PagerService,
+      public pagination: Pagination,public properties:Properties) { }
 
   paginationDropDown( event: Pagination ) {
        this.pagination = event;
