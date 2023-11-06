@@ -1,25 +1,25 @@
 <div class="col-xs-12 pr0" *ngIf="authenticationService?.module?.showWorkFlow">
   <div class="portlet light">
-    <div class="portlet-title" style="font-size: 16px; padding-bottom: 8px;margin-bottom: 8px;">
+    <div class="portlet-title portletCardCu">
       <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
-        <div class="caption">
+        <div class="caption TitlePaddingTop">
           <span class="caption-subject font-red-sunglo uppercase">Active
             {{authenticationService?.partnerModule?.customName}} Journey</span>
         </div>
       </div>
       <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
-        <div class="inputs" style="float: right; margin-bottom:-22px;">
-          <div class="col-xs-6 col-sm-6 col-lg-6 p0" style="position: relative;right: 19px;">
+        <div class="inputs Fullboxmargin">
+          <div class="col-xs-6 col-sm-6 col-lg-6 p0 SotybyBoxPosition">
             <div style="float: left;">
-              <select class="form-control" [(ngModel)]="sortOption.selectedSortedOption"
-                (ngModelChange)="getSortedResults($event)" style="position: relative;right: -3px;">
+              <select class="form-control Shortbyfield" [(ngModel)]="sortOption.selectedSortedOption"
+                (ngModelChange)="getSortedResults($event)">
                 <option *ngFor="let option of sortOption.sortByDropDown" [ngValue]="option">{{option.name}}</option>
               </select>
             </div>
           </div>
           <div class="col-xs-6 col-sm-6 col-lg-6 p0">
-            <div class="portlet-input input-inline mSearch" style="margin-right: 12px; width:170px">
-              <div class="input-icon right" style="position: relative;width: 178px; right: 21px;">
+            <div class="portlet-input input-inline mSearch SearchBoxCu">
+              <div class="input-icon right mainSearchBoxCu">
                 <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
                   [ngModelOptions]="{standalone: true}" placeholder="Search"
                   (keypress)="searchKeyPress($event.keyCode)">
@@ -32,8 +32,7 @@
             <!-- <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" href="#activePartnerTable"
             style="float: right; position: relative; bottom: 30px;"></a> -->
             <a href="#activePartnerTable" data-toggle="collapse" style="float: right;"> <i
-              class="fa fa-chevron-down" aria-hidden="true"
-              style="float: right; position: relative; bottom: 25px; font-size: 18px !important"></i></a>
+              class="fa fa-chevron-down arrowpositinon" aria-hidden="true"></i></a>
           </div>
         </div>
       </div>

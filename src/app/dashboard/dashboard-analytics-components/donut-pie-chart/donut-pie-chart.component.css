@@ -6,3 +6,6 @@
     min-height: 480px;
     margin-bottom:20px
 }
+/* @media (min-width:200px) and (max-width:767px){
+    .pr0responsive{padding-right: 0px !important;}
+} */

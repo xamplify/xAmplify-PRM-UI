@@ -283,4 +283,11 @@ export class DamService {
       .map(this.extractData)
       .catch(this.handleError);
   }
+
+  changeAsParentAsset(id: number) {
+    return this.http.put(this.URL + "changeAsParentAsset/"+id+"/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token,"")
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
 }

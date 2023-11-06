@@ -7,5 +7,32 @@
 }
 
 .mh530 {
-	min-height:530px;
+	min-height:500px;
 }
+.tableHeightScroll{   
+	height: 399px !important;
+	overflow-y: auto;
+   margin-bottom: 6px;
+}
+/* width */
+::-webkit-scrollbar {
+	width: 7px;
+  }
+  @media (min-width: 200px) and (max-width: 767px)  { 
+	.ml15m {
+		padding-right: 0px !important;
+	}
+	.tableHeightScroll {
+		height: 372px !important;
+	}
+  }
+
+  i.IconopenedCount {
+	border: 1px solid #3598dc;
+	color: #3598dc;
+  }
+  i.IconopenedCount:hover {
+	border: 1px solid #3598dc;
+	background: #3598dc;
+	color: #fff;
+  }

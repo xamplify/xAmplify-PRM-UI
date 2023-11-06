@@ -635,3 +635,8 @@
   }
 }
 
+@media (min-width: 200px) and (max-width: 767px)  { 
+  .mobilesearchdisplay{display: contents;}
+  .mobilesearchdisplayTop{Margin-top:7px;}
+}
+

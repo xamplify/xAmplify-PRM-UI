@@ -5,3 +5,8 @@
 .ml15m {
 	margin-left: -15px !important;
 }
+@media (min-width: 200px) and (max-width: 767px)  { 
+	.ml15m {
+		padding-right: 0px !important;
+	}
+}
