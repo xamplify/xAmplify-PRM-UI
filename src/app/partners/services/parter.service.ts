@@ -314,6 +314,12 @@ export class ParterService {
             .catch( this.handleError );
     }
 
+    getMdfDetails(pagination:Pagination){
+        const url = this.URL + 'partner/journey/mdf/details?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
     getPartnerJourneyLeadDealCounts(partnerJourneyRequest: PartnerJourneyRequest) {
         const url = this.URL + 'partner/journey/lead-to-deal/counts?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post( url, partnerJourneyRequest )

@@ -9,3 +9,16 @@
 .mh530{
 	min-height:530px;
 }
+
+@media (min-width: 200px) and (max-width: 767px)  { 
+	.ml15m {
+		margin-left: 0px !important;
+		padding: 0px;
+	}
+  }
+
+  .tableHeightScroll{   
+    height: 399px !important;
+   overflow-y: auto;
+   margin-bottom: 6px;
+}

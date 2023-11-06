@@ -52,7 +52,7 @@ export class UserwiseTrackCountsComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.lmsType = this.type;
-    this.pagination.maxResults = 6;
+    this.pagination.maxResults = 8;
     if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
       this.pagination.teamMemberId = this.teamMemberId;
     }    

@@ -112,5 +112,19 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
     this.referenseService.goToTop(); 
   }
-
+  getClassForStatus(status: string) {
+    if (status === 'SUBMITTED') {
+      return 'submitted-class';
+    } else if (status === 'VIEWED') {
+      return 'viewed-class';
+    } else if (status === 'NOT OPENED') {
+      return 'notOpened-class';
+    } else if (status === 'OPENED') {
+      return 'opened-class';
+    } else if (status === 'DOWNLOADED') {
+      return 'downloaded-class';
+    } else {
+      return 'default-class';
+    }
+  }
 }
