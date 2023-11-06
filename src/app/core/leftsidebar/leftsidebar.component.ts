@@ -267,8 +267,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		/****XNFR-326****/
 		module.emailNotificationSettings = data.emailNotificationSettings;
 		module.showWorkFlow = data.createWorkflow;
-		alert(data.createWorkflow);
-
 	}
 
 	setContentMenu(data: any, module: any) {
