@@ -3120,7 +3120,7 @@ button.spaceTopBottom{
   span.PipelinesNameTextCu {
     font-size: 8px;
   }
-  td.thisTabletdTextCu h5, h6, a {
+  td.thisTabletdTextCu h5, h6 {
     font-size: 11px;
   }
   .exclusionNoRecordsFound {margin-top: 140px;}

@@ -330,7 +330,7 @@
                                                                     <ng-container *ngFor="let radioButton of selectedColumn.radioButtonChoices;let index=index">
                                                                         <br>
                                                                         <input type="{{selectedColumn.labelType}}" name="{{selectedColumn.labelId}}">
-                                                                        <input type="text" class="form-control" [(ngModel)]="radioButton.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(radioButton)" maxlength="1000">
+                                                                        <input type="text" class="form-control responsiveWidthCu" [(ngModel)]="radioButton.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(radioButton)" maxlength="1000">
                                                                         <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
                                                                             <span
                                                                                 class="glyphicon glyphicon-plus"></span>
@@ -348,7 +348,7 @@
                                                                     <ng-container *ngFor="let choice of selectedColumn.choices;let index=index">
                                                                         <br>
                                                                         <input type="{{selectedColumn.labelType.split('_')[1]}}" name="{{selectedColumn.labelId}}" disabled="true">
-                                                                        <input type="text" class="form-control" [(ngModel)]="choice.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(choice)" maxlength="1000">
+                                                                        <input type="text" class="form-control responsiveWidthCu1" [(ngModel)]="choice.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(choice)" maxlength="1000">
                                                                         <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
                                                                             <span
                                                                                 class="glyphicon glyphicon-plus"></span>
@@ -371,7 +371,7 @@
                                                                     <ng-container *ngFor="let checkBox of selectedColumn.checkBoxChoices;let index=index">
                                                                         <br>
                                                                         <input type="{{selectedColumn.labelType}}" name="{{selectedColumn.labelId}}">
-                                                                        <input type="text" class="form-control" [(ngModel)]="checkBox.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(checkBox)" maxlength="1000">
+                                                                        <input type="text" class="form-control responsiveWidthCu2" [(ngModel)]="checkBox.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(checkBox)" maxlength="1000">
                                                                         <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
                                                                             <span
                                                                                 class="glyphicon glyphicon-plus"></span>

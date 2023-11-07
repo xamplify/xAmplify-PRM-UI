@@ -147,4 +147,18 @@
     padding: 6px 5px !important;  
   }
 }
- 
+
+
+@media only screen and (min-width:1208px) and (max-width:1242px) { 
+  .grid-box-team.responsiveHeight{
+    height: 299px !important;
+    min-height: 299px !important;
+  }
+}
+@media only screen and (min-width:992px) and (max-width:1016px) { 
+  .grid-box-team.responsiveHeight{
+    height: 299px !important;
+    min-height: 299px !important;
+  }
+}
+
