@@ -585,7 +585,6 @@ a > span.glyphicon.glyphicon-remove {
   border-bottom: 1px solid #eee;
 }
 
-  
 .setting-icon-cu {
   cursor: pointer;
   /* border: 1px solid #5bb2f5;
@@ -599,37 +598,37 @@ a > span.glyphicon.glyphicon-remove {
   margin-right: 4px;
   padding: 1px 8px !important;
 }
-.excel-icon-size{
- font-size: 13px;
+.excel-icon-size {
+  font-size: 13px;
 }
-.move-position-left{
+.move-position-left {
   position: relative;
   left: 38px;
 }
-.delbtn{
+.delbtn {
   position: relative;
-  top:3px;
+  top: 3px;
 }
 /* 16-08-2023 */
 th.leftAlignTableth {
   text-align: left !important;
 }
-@media only screen and (min-width: 1252px) and (max-width: 1356px) { 
+@media only screen and (min-width: 1252px) and (max-width: 1356px) {
   .camp-desc {
     font-size: 10px;
   }
 }
-@media only screen and (min-width: 1149px) and (max-width: 1251px) { 
+@media only screen and (min-width: 1149px) and (max-width: 1251px) {
   .camp-desc {
     font-size: 8px;
   }
 }
-@media only screen and (min-width: 1000px) and (max-width: 1148px) { 
+@media only screen and (min-width: 1000px) and (max-width: 1148px) {
   .camp-desc {
     font-size: 7px;
   }
 }
-@media only screen and (min-width: 992px) and (max-width: 1100px) { 
+@media only screen and (min-width: 992px) and (max-width: 1100px) {
   .emails-info button {
     min-height: 92px;
     display: -ms-flexbox;
@@ -643,14 +642,13 @@ th.leftAlignTableth {
   }
 }
 
-
-@media only screen and (min-width: 1049px) and (max-width: 1200px) { 
+@media only screen and (min-width: 1049px) and (max-width: 1200px) {
   .move-position-left {
     position: relative;
     left: 25px;
   }
 }
-@media only screen and (min-width: 992px) and (max-width: 1049px) { 
+@media only screen and (min-width: 992px) and (max-width: 1049px) {
   .move-position-left {
     position: relative;
     left: 13px;
@@ -662,54 +660,52 @@ th.leftAlignTableth {
   font-size: 19px !important;
 }
 
+/* XNFR-319 */
+@media only screen and (min-width: 1171px) and (max-width: 1200px) {
+  .percentage-circle > .percentage-value {
+    margin: -75px 0px 0px 12px !important;
+  }
+  .percentage-circle > .percentage-text {
+    margin: 0 0px 0px 9px !important;
+  }
+  h5.percentageBelowHeading {
+    margin-left: 13px !important;
+  }
+}
 
-  /* XNFR-319 */
-  @media only screen and (min-width:1171px) and (max-width:1200px) { 
-    .percentage-circle > .percentage-value {
-      margin: -75px 0px 0px 12px !important;
-    }
-    .percentage-circle > .percentage-text {
-      margin: 0 0px 0px 9px !important;
-    }
-    h5.percentageBelowHeading {
-      margin-left: 13px  !important;
-    }
+@media only screen and (min-width: 1092px) and (max-width: 1171px) {
+  .percentage-circle > .percentage-value {
+    margin: -75px 0px 0px 22px !important;
   }
-  
-  
-  @media only screen and (min-width:1092px) and (max-width:1171px) { 
-    .percentage-circle > .percentage-value {
-      margin: -75px 0px 0px 22px !important;
-    }
-    .percentage-circle > .percentage-text {
-      margin: 0 0px 0px 17px  !important;
-    }
-    h5.percentageBelowHeading {
-      margin-left: 25px  !important;
-    }
+  .percentage-circle > .percentage-text {
+    margin: 0 0px 0px 17px !important;
   }
-  @media only screen and (min-width:1025px) and (max-width:1092px) { 
-    .percentage-circle > .percentage-value {
-      margin: -75px 0px 0px 37px  !important
-    }
-    .percentage-circle > .percentage-text {
-      margin: 0 0px 0px 33px  !important;
-    }
-    h5.percentageBelowHeading {
-      margin-left: 37px  !important;
-    } 
+  h5.percentageBelowHeading {
+    margin-left: 25px !important;
   }
-  @media only screen and (min-width:992px) and (max-width:1024px) { 
-    .percentage-circle > .percentage-value {
-      margin: -75px 0px 0px 33px  !important
-    }
-    .percentage-circle > .percentage-text {
-      margin: 0 0px 0px 23px  !important;
-    }
-    h5.percentageBelowHeading {
-      margin-left: 0px  !important;
-    } 
-    section.percentage-circle {
-      margin-left: -14px  !important;
-    }
+}
+@media only screen and (min-width: 1025px) and (max-width: 1092px) {
+  .percentage-circle > .percentage-value {
+    margin: -75px 0px 0px 37px !important;
   }
+  .percentage-circle > .percentage-text {
+    margin: 0 0px 0px 33px !important;
+  }
+  h5.percentageBelowHeading {
+    margin-left: 37px !important;
+  }
+}
+@media only screen and (min-width: 992px) and (max-width: 1024px) {
+  .percentage-circle > .percentage-value {
+    margin: -75px 0px 0px 33px !important;
+  }
+  .percentage-circle > .percentage-text {
+    margin: 0 0px 0px 23px !important;
+  }
+  h5.percentageBelowHeading {
+    margin-left: 0px !important;
+  }
+  section.percentage-circle {
+    margin-left: -14px !important;
+  }
+}

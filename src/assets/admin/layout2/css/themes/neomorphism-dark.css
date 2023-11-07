@@ -109,7 +109,7 @@ a.dashboard-stat.dashboard-stat-lighter.yellow-gold.min-h.default-cursor.tiles_b
 .copyright-css,
 .video,
 .hash-table-color {
-  background-color: #2b3c46 !important;
+  background-color: #2e3033 !important;
 }
 .page-bar .page-breadcrumb > li > a,
 .page-bar .page-breadcrumb > li > span {
@@ -270,7 +270,7 @@ ul.alt-row-style1 li:hover,
 .campaign-email-template-filter-icon,
 .list__item.list__item--selected > .flex-row,
 .btn.btn-secondary {
-  background-color: #22313a !important;
+  background-color: #2e3033 !important;
   border: 1px solid #2f4857 !important;
   color: white !important;
 }
@@ -974,7 +974,7 @@ input#copy-link {
 .comment.user-comment p,
 .comment.author-comment p,
 .author-comment p:after {
-  background-color: #2b3c46 !important;
+  background-color: #2e3033 !important;
   border: 2px solid #2f4857 !important;
 }
 .salesforce-btn {
@@ -1155,7 +1155,7 @@ input#copy-link {
 }
 .thumbnail-wrapper {
   border: 1px solid #2f4857 !important;
-  background-color: #22313a !important;
+  background-color: #2c2f33 !important;
   border-radius: 5px;
 }
 .img-track-list,
@@ -2068,7 +2068,10 @@ tbody {
 .col-xs-6.col-sm-2.col-lg-2.mt5.pr2.pr15.tiles_hover_effect.col-sm-4ths:hover,
 .col-xs-6.col-sm-2.col-lg-2.mt5.pr.pr15.tiles_hover_effect.col-sm-4ths:hover,
 .col-sm-4.col-xs-8.col-lg-4.col-md-4.pr0.mtop.mWidth:hover,
-.col-sm-4.col-xs-8.col-lg-4.col-md-4.pr0.mWidth.tiles_hover_effect:hover {
+.col-sm-4.col-xs-8.col-lg-4.col-md-4.pr0.mWidth.tiles_hover_effect:hover,
+.pl10.pr10.col-xs-12.col-sm-3.tiles_hover_effect:hover,
+.pl10.pr10.col-xs-12.col-sm-3.tiles_hover_effect:hover,
+.pl10.pr10.col-xs-12.blur.col-sm-3.tiles_hover_effect:hover {
   transform: scale(1.05);
   transition: all 0.3s ease;
 }
