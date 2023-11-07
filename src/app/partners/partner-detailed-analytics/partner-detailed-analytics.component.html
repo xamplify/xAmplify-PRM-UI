@@ -121,7 +121,7 @@
   <!--******************Redistributed Camapign Details*******************-->
   <div class="row rowPaddingCustomization1">
   <app-redistributed-campaign-details [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId" *ngIf="authenticationService.module?.isCampaign"></app-redistributed-campaign-details>
+    [teamMemberId]="teamMemberId" [isDetailedAnalytics]="true" *ngIf="authenticationService.module?.isCampaign"></app-redistributed-campaign-details>
 </div>
   <!--******************Lead Details*******************-->
   <div class="row rowPaddingCustomization1">

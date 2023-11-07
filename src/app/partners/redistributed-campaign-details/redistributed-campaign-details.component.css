@@ -10,3 +10,13 @@
 		padding-right: 0px !important;
 	}
 }
+
+/* table header bgcolor */
+.panel-bgMain > .panel-bg{
+    background-color: #ffffff;
+    border-color: #eee;
+}
+.panel-bgMain {
+	border-color: #eee;
+}
+/* table header bgcolor end */

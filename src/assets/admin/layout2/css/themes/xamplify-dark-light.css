@@ -2304,3 +2304,21 @@ i.IconodownloadedCount:hover {
   color: #ffffff !important;
 }
 
+/* table header bgcolor */
+.panel-bgMain > .panel-bg{
+  background-color: #22313a !important;
+  border-color: #2f4857 !important;
+}
+.panel-bgMain {
+  border-color: #2f4857 !important;
+}
+/* table header bgcolor end */
+
+#queryBuilderCu .q-invalid-ruleset{
+  border: 1px solid rgb(34 49 58) !important;
+  background: rgb(34 49 58 / 45%) !important;
+}
+
+#queryBuilderCu .q-empty-warning {
+  color: #fff !important;
+}

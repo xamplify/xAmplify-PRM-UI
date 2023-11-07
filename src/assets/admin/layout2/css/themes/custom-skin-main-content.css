@@ -2279,3 +2279,22 @@ i.IconodownloadedCount:hover {
 .hrCustimization {
   border-top: 1px solid var(--border-color) !important;
 }
+
+/* table header bgcolor */
+.panel-bgMain > .panel-bg{
+  background-color: var(--page-content) !important;
+  border-color: var(--border-color) !important;
+}
+.panel-bgMain {
+  border-color: var(--border-color) !important;
+}
+/* table header bgcolor end */
+
+#queryBuilderCu .q-invalid-ruleset{
+  background-color: var(--left-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+#queryBuilderCu .q-empty-warning {
+  color: var(--title-heading--text) !important;
+}

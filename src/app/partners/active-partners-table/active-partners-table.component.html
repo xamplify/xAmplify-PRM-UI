@@ -61,9 +61,13 @@
                   </td>
                   <td>
                     <h4 class="ellipsis" style="font-size: 14px;" title="{{item?.partnerCompanyName}}">
-                      {{item?.partnerCompanyName | slice:0:25}}
+                      {{item?.companyName | slice:0:25}}
                       <span *ngIf="item?.partnerCompanyName?.length>25">...</span>
                     </h4>
+                    <div class="ellipsis" style="font-size: 14px;" title="{{item?.partnerCompanyName}}">
+                      aka {{item?.partnerCompanyName | slice:0:25}}
+                      <span *ngIf="item?.partnerCompanyName?.length>25">...</span>
+                    </div>
                   </td>
                   <td>
                     <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="item">

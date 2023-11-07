@@ -758,7 +758,7 @@
   </div>
   <!--******************Redistributed Camapign Details*******************-->
   <div class="row rowPaddingCustomization2">
-  <app-redistributed-campaign-details [partnerCompanyId]="'0'"
+  <app-redistributed-campaign-details [partnerCompanyId]="'0'" [isDetailedAnalytics]="false"
     (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
     *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService.module?.isCampaign"></app-redistributed-campaign-details>
   </div>

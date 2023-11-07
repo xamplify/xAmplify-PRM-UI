@@ -51,3 +51,14 @@ i.IconodownloadedCount:hover {
   background: #e87e04;
   color: #fff;
 }
+
+/* table header bgcolor */
+.panel-bgMain > .panel-bg{
+  background-color: #ffffff;
+  border-color: #eee;
+}
+.panel-bgMain {
+border-color: #eee;
+}
+/* table header bgcolor end */
+

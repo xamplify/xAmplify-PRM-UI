@@ -110,5 +110,6 @@ export class Pagination {
 	selectedEmailTempalteId = 0;
 	selectedVideoId = 0;
 	partnerJourneyFilter = false;
+	detailedAnalytics = false;
 
 }
