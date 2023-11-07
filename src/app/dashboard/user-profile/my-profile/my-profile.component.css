@@ -3124,5 +3124,9 @@ button.spaceTopBottom{
     font-size: 11px;
   }
   .exclusionNoRecordsFound {margin-top: 140px;}
+  .TotalSearchBoxWidth {width: 200px !important;}
+  
 } 
+
+
 
