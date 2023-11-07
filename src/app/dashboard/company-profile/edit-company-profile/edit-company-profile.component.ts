@@ -370,7 +370,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             if (this.authenticationService.user.hasCompany) {
                 this.companyProfile.isAdd = false;
                 this.profileCompleted = 100;
+            }else{
+				if(this.authenticationService.isPartner()){
+            			this.getPartnerDetails();
+            	}
             }
+            
             if (this.authenticationService.vanityURLEnabled && this.authenticationService.checkSamlSettingsUserRoles()) {
                 this.setVendorLogoTooltipText();
             }
@@ -1847,6 +1852,21 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     setMaxAdmins(){
         let maxAdmins =  $('#maxAdmins option:selected').val();
         this.campaignAccess.maxAdmins = maxAdmins;
+    }
+    
+    getPartnerDetails(){
+            this.companyProfileService.getPartnerDetails().subscribe(
+                (result: any) => {
+                          this.companyProfile.companyName  = result.companyName;
+   						  this.companyProfile.street = result.street;
+    					  this.companyProfile.city = result.city;
+    					  this.companyProfile.state = result.state;
+    					  this.companyProfile.country = result.country;
+    					  this.companyProfile.zip = result.zip;
+                }, (error: any) => {
+                  console.log(error);
+                }
+            );
     }
     
 
