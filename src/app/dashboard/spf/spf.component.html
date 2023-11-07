@@ -202,6 +202,7 @@
     <h4>List of records in your Domain: <b>{{domainName}}</b></h4>
     <ng-template [ngTemplateOutlet]="tableView"></ng-template>
     <ng-template #tableView>
+      <div class="table-responsive">
     <table class="table tgrid dcBorderNone table-bordered">
       <thead>
         <tr>
@@ -223,6 +224,7 @@
         </tr>
       <tbody>
     </table>
+  </div>
     
     <div *ngIf="godaddyDtos?.length === 0" class="alert alert-danger alert-su">
       <strong>No Records Found.</strong>
@@ -429,7 +431,7 @@
        </tr>
    
    </table>
-   <div class="col-ms-12">
+   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
     <h4>Record in your Domain:</h4>
     <ng-template [ngTemplateOutlet]="tableView"></ng-template>
    </div>

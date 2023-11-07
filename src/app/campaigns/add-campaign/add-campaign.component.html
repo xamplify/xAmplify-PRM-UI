@@ -28,13 +28,13 @@
                     <div class="col-block width" [attr.class]="campaignDetailsTabClass"   style="width: 50%;" (click)="showCampaignDetailsTab()">
                         <div  class="cenetered-block colorbox-1">
                             <img  alt="No Image Found" class="newicons" src="assets/images/campaignnew-icon/campaignDetails.svg">
-                            <h5  class="hidden-xs text-clr">{{campaignDetailsTabText}}</h5>
+                            <h5  class="text-clr">{{campaignDetailsTabText}}</h5>
                         </div>
                     </div>
                     <div  class="col-block" [attr.class]="launchTabClass"  style="width: 50%;" (click)="showLaunchTab()">
                         <div  class="cenetered-block colorbox-2">
                             <img  alt="No Image Found" class="newicons" src="assets/images/campaignnew-icon/Partner.svg">
-                            <h5 class="hidden-xs text-clr">{{launchTabText}}</h5>
+                            <h5 class="text-clr">{{launchTabText}}</h5>
                         </div>
                     </div>
                 </div>
@@ -965,10 +965,10 @@
                                                 <div *ngFor="let reply of replies;let i=index">
                                                     <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
                                                         <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}">
-                                                            <div class="col-xs-6">
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                                 <h4 class="text-left">Add an Auto-response to your e-mail-{{i+1}}</h4>
                                                             </div>
-                                                            <div class="col-xs-6">
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                                 <div class="pull-right">
                                                                     <label class="switch-choose" translate>Choose Template</label>
                                                                     <switch class="switch-choose" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -1139,10 +1139,10 @@
                                                 <div *ngFor="let url of urls;let i=index">
                                                     <div class="portlet light dashboard-stat2" id="{{url?.divId}}">
                                                         <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}">
-                                                            <div class="col-xs-6">
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                                 <h4 class="text-left responsive-screen-fontzise-dec">Add an Auto-response to a website visit - {{i+1}}</h4>
                                                             </div>
-                                                            <div class="col-xs-6">
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                                 <div class="pull-right">
                                                                     <label class="switch-choose" translate>Choose Template
                                                                         </label>
