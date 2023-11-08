@@ -66,7 +66,7 @@
 
             <!--Redistributed Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="redistributedCampaignsCountLoader"></app-box-loader>
-            <div *ngIf="!redistributedCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths">
+            <div *ngIf="!redistributedCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
                 (click)="goToReDistributedPartnersDiv()">
                 <div class="visual">
@@ -91,7 +91,7 @@
 
             <!--Through Partner Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="throughPartnerCampaignsCountLoader"></app-box-loader>
-            <div *ngIf="!throughPartnerCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths">
+            <div *ngIf="!throughPartnerCampaignsCountLoader" class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
               <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex"
                 (click)="goToThroughPartnersDiv()">
                 <div class="visual">
@@ -116,7 +116,7 @@
 
             <!--InActive Partner Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="inActivePartnersCountLoader"></app-box-loader>
-            <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths"
+            <div *ngIf="!inActivePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2  pr0 col-sm-5ths CardCustomeWidth"
               (click)="goToInActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
                 <div class="visual">
@@ -142,7 +142,7 @@
 
             <!--Active Partner Campaigns Count-->
             <app-box-loader [countLoader]=5 *ngIf="approvePartnersCountLoader"></app-box-loader>
-            <div *ngIf="!approvePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths"
+            <div *ngIf="!approvePartnersCountLoader" class="col-xs-6 col-sm-2 col-lg-2 pr0 col-sm-5ths CardCustomeWidth"
               (click)="goToApprovePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter red-soft" [class.greay]="5!=selectedTabIndex">
                 <div class="visual">
