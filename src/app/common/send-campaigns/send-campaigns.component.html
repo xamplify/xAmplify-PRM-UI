@@ -1,5 +1,5 @@
 <div class="modal fade right" id="sendCampaignsPopup" tabindex="-1" role="dialog" aria-labelledby="sendCampaignsPopup" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog w85-per" role="document">
        <div class="modal-content">
           <div class="modal-header">
              <button type="button" class="close-circle" (click)="closePopup()">
@@ -25,29 +25,40 @@
                    <div class="row">
                       <div>
                          <div class="col-xs-12">
-                            <div class="page-toolbar">
-                               <div class="btn-group pull-right">
-                                  <div class="inputs float-right" style="display: inline-flex;">
-                                     <div>
-                                        <select class="form-control" [(ngModel)]="sortOption.selectedShareCampaignDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                                        <option
-                                        *ngFor="let option of sortOption.shareCampaignSortDropDownOptions"
-                                        [ngValue]="option">
-                                        {{option.name}}</option>
-                                        </select>
-                                     </div>
-                                     <div class="portlet-input input-inline" id="search-div">
-                                        <div class="input-icon right" id="icon">
-                                           <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
-                                           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
-                                           <button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
-                                           <i class="fa fa-search" aria-hidden="true"></i>
-                                           </button>
-                                        </div>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
+                           <div class="col-xs-6">
+                             <ul class="mix-filter">
+                                 <li (click)="filterData(0)" [class.mix-filter-li-selected]="0 == selectedIndex">Campaigns</li>
+                                 <li (click)="filterData(1)" [class.mix-filter-li-selected]="1 == selectedIndex">Assets</li>
+                                 <li (click)="filterData(2)" [class.mix-filter-li-selected]="2 == selectedIndex">Tracks</li>
+                                 <li (click)="filterData(3)" [class.mix-filter-li-selected]="3 == selectedIndex">Play Books</li>
+                             </ul>
+                           </div>
+                           <!--Search & Sort---->
+                           <div class="col-xs-6">
+                              <div class="page-toolbar">
+                                 <div class="btn-group pull-right">
+                                    <div class="inputs float-right" style="display: inline-flex;">
+                                       <div>
+                                          <select class="form-control" [(ngModel)]="sortOption.selectedShareCampaignDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                                          <option
+                                          *ngFor="let option of sortOption.shareCampaignSortDropDownOptions"
+                                          [ngValue]="option">
+                                          {{option.name}}</option>
+                                          </select>
+                                       </div>
+                                       <div class="portlet-input input-inline" id="search-div">
+                                          <div class="input-icon right" id="icon">
+                                             <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                                             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
+                                             <button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
+                                             <i class="fa fa-search" aria-hidden="true"></i>
+                                             </button>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
                          </div>
                       </div>
                    </div>

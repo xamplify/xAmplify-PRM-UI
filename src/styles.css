@@ -2466,4 +2466,22 @@ div#bubble-chart {
 .ml15{
   margin-left: 15px !important;
 }
+.w85-per{
+  width: 85% !important;
+}
+
+.mix-filter {
+  margin: 5px;
+}
+.mix-filter li {
+  font-size: 12px;
+}
+
+.mix-filter li:hover {
+  background: #6dcff6;
+}
+.mix-filter-li-selected {
+  background-color: #6dcff6 !important;
+} 
+
 
