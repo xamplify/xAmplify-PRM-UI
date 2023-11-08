@@ -185,3 +185,11 @@ a.disabled {
 .portlet {
   border-radius: 5px !important;
 }
+@media screen and (max-width:578px){
+  :host /deep/ .video-js .vjs-big-play-button {
+    position: absolute;
+    top: 50%!important;
+    left: 50%!important;
+    transform: translate(-50%, -50%)!important;
+}
+}

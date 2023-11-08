@@ -1740,3 +1740,9 @@ div.switch5 > input.switch:focus ~ label:before {
     width: calc(100% - 70px) !important;
   }
 }
+
+@media (min-width: 992px) and (max-width: 1066px) {
+  input.form-control.responsiveWidthCu {
+    width: 90% !important;
+  }
+}

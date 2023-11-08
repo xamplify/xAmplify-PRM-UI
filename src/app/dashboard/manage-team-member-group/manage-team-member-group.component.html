@@ -126,7 +126,7 @@
 <!--ng-template-outlet-->
 <ng-template #groupGridView let-group="groupInfo" let-isPreview="showPreviewIcon">
   <div class="col-md-6 col-sm-6 col-xs-12 col-lg-4">
-    <div class="grid-box-team">
+    <div class="grid-box-team responsiveHeight">
       <h4 class="ellipsis mt5 mb5 f-w-600 left-align plfpx" title="{{group?.name}}">
         {{group?.name | slice:0:15}}
         <span *ngIf="group?.name?.length>15">..</span>
