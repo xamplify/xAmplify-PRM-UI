@@ -2078,3 +2078,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .bg_color {
   background-color: #22313a !important;
 }
+/* sudha sri (8-11-2023) */
+.border-padding {
+  border-top: solid 1px #2f4857 !important;
+}

@@ -402,7 +402,7 @@ export class HomeComponent implements OnInit {
               this.authenticationService.isDarkForCharts = true;
               require("style-loader!../../../assets/admin/layout2/css/themes/xamplify-dark-light.css");
           } else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
-            && activeThemeDto.name === "Neumorphism Dark" && !this.router.url.includes('home/help')){
+            && activeThemeDto.name === "Neumorphism Dark(Beta)" && !this.router.url.includes('home/help')){
               this.authenticationService.isDarkForCharts = true;
               require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-dark.css");
           }

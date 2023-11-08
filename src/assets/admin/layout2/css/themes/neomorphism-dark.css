@@ -146,7 +146,7 @@ h6 {
 #vendor-details-tile,
 .xamplify-dropdown-content,
 .header {
-  background-color: #2b3c46 !important;
+  background-color: #2c2f33 !important;
   border: 1px solid #2f4857 !important;
 }
 .bar,
@@ -581,7 +581,7 @@ tr {
   color: white !important;
 }
 .comment-color {
-  background: #2b3c46 !important;
+  background: #2e3033 !important;
 }
 .search-bgcolor {
   background-color: #2b3c46 !important;
@@ -720,7 +720,7 @@ select {
 .btn-default > i,
 .btn-default {
   color: white !important;
-  background-color: #2b3c46 !important;
+  background-color: #2e3033 !important;
   border-color: #2f4857 !important;
 }
 .input-group .btn-default {
@@ -1206,7 +1206,7 @@ input#copy-link {
 }
 
 div#box-dark-defalut-clr {
-  background: #253d46 !important;
+  background: #2c2f33 !important;
 }
 
 .border-cls,
@@ -2150,6 +2150,7 @@ i.fa.fa-expand.fa-fa-consistency.IconCustomization {
 .grid-box {
   background-color: #2c2f33 !important;
   border: 1px solid #2f4857 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 .pricing-head h4#image-style {
   background-color: #2c2f33 !important;
@@ -2178,6 +2179,12 @@ span.select-check-box {
 }
 .width20 {
   width: unset !important;
+}
+.border-padding {
+  border-top: solid 1px #2f4857 !important;
+}
+.portlet.light.shared-feeds-border.borderNone {
+  box-shadow: none !important;
 }
 /** Tharak (17-10-2023) **/
 a.UserguideBtnCustomization {
