@@ -2298,3 +2298,12 @@ i.IconodownloadedCount:hover {
 #queryBuilderCu .q-empty-warning {
   color: var(--title-heading--text) !important;
 }
+
+.pjCardTitlebg  {
+  background-color: var(--page-content) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+.portlet.light > .portlet-title > .pjCardTitleCenterAlignment1 {
+  background-color: var(--page-content) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}

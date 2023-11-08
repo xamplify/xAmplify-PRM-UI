@@ -99,13 +99,17 @@
 
 /* table header bgcolor */
 .panel-bgMain > .panel-bg{
-    background-color: #ffffff;
-    border-color: #eee;
+    background-color: #d9edf7b0;
+    border-bottom: 1px solid #ddd;
 }
 .panel-bgMain {
-	border-color: #eee;
+	border-color: #ddd;
 }
 /* table header bgcolor end */
+.panel-heading {
+    padding: 11px 15px !important;
+}
+
 
 
 

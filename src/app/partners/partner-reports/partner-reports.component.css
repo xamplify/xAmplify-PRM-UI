@@ -198,3 +198,10 @@ img.brand-logo-custom {
 
 
 }
+
+.pjCardTitlebg{    
+  background-color: #d9edf7b0;
+  border-bottom: 1px solid #ddd;
+  padding: 13px 16px 0px 16px !important;
+  margin: -7px -7px 0px -7px;
+}

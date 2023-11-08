@@ -24,3 +24,12 @@
 .portlet.light > .portlet-title > .caption > .caption-subject {
   font-weight: 600 !important;
 }
+.pjCardTitlebg{    
+  margin: -10px -7px 0px -7px;
+}
+.portlet.light > .portlet-title > .pjCardTitleCenterAlignment1{
+  background-color: #d9edf7b0;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 16px 9px 16px !important;
+  width: 100%;
+}
