@@ -88,7 +88,7 @@
                       <td class="hidden-xs text-center">
                         <app-display-date-and-time [dateAndTimeUTCString]="emailTemplate?.createdDate"></app-display-date-and-time>
                       </td>
-                      <td style="width: 14%" class="mActionAlign">
+                      <td style="width: 14%" class="mActionAlign width20">
                           <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition':'actions-block override-actions actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition'">
                               <div class="mActionDiv whitespace_nowrap">
                               <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">

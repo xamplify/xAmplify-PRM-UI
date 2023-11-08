@@ -882,12 +882,12 @@
                               <tr>
                                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                     <th class="text-center" align="center" *ngIf="contactsByType.selectedCategory == 'all'">
-                                       <input type="checkbox"
+                                       <input type="checkbox" class="checkBox_shadow"
                                        name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"
                                        id="checkAllExistingContacts" />
                                     </th>
                                     <th  class="text-center" align="center" *ngIf="contactsByType.selectedCategory == 'invalid'">
-                                       <input type="checkbox" name="all" [(ngModel)]="isInvalidHeaderCheckBoxChecked"
+                                       <input type="checkbox" class="checkBox_shadow" name="all" [(ngModel)]="isInvalidHeaderCheckBoxChecked"
                                        (change)="checkAllInvalidContacts($event)" id="checkAllExistingInvalidContacts" />
                                     </th>
                                  </ng-container>
@@ -928,14 +928,14 @@
                                     <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                        <td align="center" *ngIf="contactsByType.selectedCategory == 'all'">
                                           <input type="checkbox"
-                                          [checked]="selectedContactListIds.indexOf(contact.id)>-1" class="chk"
+                                          [checked]="selectedContactListIds.indexOf(contact.id)>-1" class="chk checkBox_shadow"
                                           [class.contact-list-selected]="selectedContactListIds.indexOf(contact.id)>-1"
                                           lang="{{contact.name}}" name="campaignContact[]" value="{{contact.id}}"
                                           id="{{contact.id}}" (click)="highlightRow(contact.id,contact,$event)" />
                                        </td>
                                        <td align="center" *ngIf="contactsByType.selectedCategory == 'invalid'">
                                           <input type="checkbox" [checked]="selectedInvalidContactIds.indexOf(contact.id)>-1"
-                                          class="chk"
+                                          class="chk checkBox_shadow"
                                           [class.contact-list-selected]="selectedInvalidContactIds.indexOf(contact.id)>-1"
                                           lang="{{contact.name}}" name="invalidContact[]" value="{{contact.id}}"
                                           id="{{contact.id}}"

@@ -15,7 +15,7 @@
                   <div>
                       <div class="col-xs-12 col-sm-4 col-md-4" *ngFor="let option of options">
                           <label class="form-check-label">
-                            <input class="form-check-input" type="radio" name="option" [value]="option" [checked]="item==selectedOption"
+                            <input class="form-check-input radioButton_shadow" type="radio" name="option" [value]="option" [checked]="item==selectedOption"
                               (change)="selectOption(item)"> {{option}}
                           </label>
                       </div>

@@ -219,7 +219,7 @@
             <h1 style="word-break: break-all;" [hidden]="unsubscribePageContent?.unsubscribePageDetails?.hideHeaderText" innerHtml="{{unsubscribePageContent?.unsubscribePageDetails?.headerText}}"></h1>
             <form style="line-height: 25px; font-size: 15px;">
               <ng-container *ngFor="let reason of unsubscribePageContent?.unsubscribeReasons;let i = index">
-                <input type="radio" name="reason" value="{{reason?.reason}}" (click)="addReason(reason)"> {{reason?.reason}}<br>
+                <input class="radioButton_shadow" type="radio" name="reason" value="{{reason?.reason}}" (click)="addReason(reason)"> {{reason?.reason}}<br>
               </ng-container>
               <div *ngIf="isOtherReason || unsubscribePageContent?.unsubscribeReasons?.length==0" style="width: 50%;">
                 <label for="comment">Reason:</label>

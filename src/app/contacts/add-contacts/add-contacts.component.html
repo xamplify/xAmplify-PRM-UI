@@ -655,7 +655,7 @@
 							   <table class="table tgrid" id="google-contacts-table">
 								  <thead>
 									 <tr>
-										<th align="center" class="text-center"><input type="checkbox" name="all"
+										<th align="center" class="text-center"><input type="checkbox" class="checkBox_shadow" name="all"
 										   [(ngModel)]="isHeaderCheckBoxChecked"
 										   (change)="checkAll($event)" class=""
 										   id="checkAllExistingContacts" />
@@ -675,7 +675,7 @@
 											  *ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10 && selectedAddContactsOption != 11"><input
 											  type="checkbox"
 											  [checked]="selectedContactListIds.indexOf(user.id)>-1"
-											  class="chk"
+											  class="chk checkBox_shadow"
 											  [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
 											  lang="{{user.name}}" name="campaignContact[]"
 											  value="{{user.id}}" id="{{user.id}}"
@@ -685,7 +685,7 @@
 											  *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11"><input
 											  type="checkbox"
 											  [checked]="selectedContactListIds.indexOf(user.id)>-1"
-											  class="chk"
+											  class="chk checkBox_shadow"
 											  [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
 											  lang="{{user.name}}" name="campaignContact[]"
 											  value="{{user.id}}" id="{{user.id}}"
@@ -1108,7 +1108,7 @@
 				   </h4>
 				   <h4 style="margin-left: 20px;" translate *ngIf="!assignLeads">
 					  <span class="glyphicon glyphicon-triangle-right"></span>Would you
-					  like to delete associated contact lists?<input type="checkbox"
+					  like to delete associated contact lists?<input class="checkBox_shadow" type="checkbox"
 					  [(ngModel)]="isUnLinkSocialNetwork"
 					  [ngModelOptions]="{standalone: true}">
 				   </h4>
@@ -1339,7 +1339,7 @@
 				</h4>
 			 </div>
 			 <div class="form-group" style="margin-top: 15px;">
-				<input type="checkbox" [(ngModel)]="isCheckTC"
+				<input class="checkBox_shadow" type="checkbox" [(ngModel)]="isCheckTC"
 				[ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc"
 				checked translate>
 				<!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->

@@ -97,13 +97,17 @@ a.dashboard-stat.dashboard-stat-lighter.yellow-gold.min-h.default-cursor.tiles_b
 .header-description-css {
   color: white !important;
 }
-
 .portlet > .portlet-title,
 .header-text-css,
 .black-blue-c:hover,
 .lineplayercontrol,
 .row-space {
   border-bottom: 1px solid #2f4857 !important;
+}
+.portlet > .portlet-title,
+.header-text-css,
+.marginSpacing:hover {
+  border-bottom: unset !important;
 }
 .portlet.box > .portlet-body,
 .copyright-css,
@@ -283,7 +287,7 @@ ul.alt-row-style1 li:hover,
 .table tbody tr.active:hover td,
 .table tbody tr.active:hover th,
 .boxes .portlet-title {
-  background-color: #22313a !important;
+  background-color: #2e3033 !important;
 }
 .camp-card-bg {
   background-color: #2b3c46 !important;
@@ -401,7 +405,7 @@ tr {
 /**** Model PopUp ****/
 .bar-background,
 .div.table-color {
-  background-color: #2b3c46 !important;
+  background-color: #2c2f33 !important;
   color: white !important;
 }
 .modal-content {
@@ -1952,7 +1956,8 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
   background-color: #22313a !important;
 }
-.checkBox_shadow {
+.checkBox_shadow,
+.radioButton_shadow {
   box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 }
 .full_popup {
@@ -2167,6 +2172,12 @@ button.btn.btn-white {
 }
 .actions-block i.fa.fa-files-o {
   line-height: 34px !important;
+}
+span.select-check-box {
+  background: none !important;
+}
+.width20 {
+  width: unset !important;
 }
 /** Tharak (17-10-2023) **/
 a.UserguideBtnCustomization {

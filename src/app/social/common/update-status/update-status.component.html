@@ -580,7 +580,7 @@
                                 <thead>
                                     <tr>
                                         <th scope="row" class="text-center">
-                                            <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingSocialContacts" />
+                                            <input type="checkbox" class="checkBox_shadow" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingSocialContacts" />
                                         </th>
                                         <th class="hidden-xs" *ngIf="showExpandButton" scope="col"></th>
                                         <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
@@ -601,7 +601,7 @@
                                          [class.contact-list-selected]="(socialCampaign?.userListIds.indexOf(contactList.id)>-1 && contactList.count>0)"
                                         (mouseover)='showContactsAlert(contactList.count)'>
                                         <td class='m0 text-center'>
-                                            <input type="checkbox" class="chk" lang="{{contactList?.name}}" id="{{contactList?.id}}" [checked]="socialCampaign?.userListIds.indexOf(contactList.id)>-1" 
+                                            <input type="checkbox" class="chk  checkBox_shadow" lang="{{contactList?.name}}" id="{{contactList?.id}}" [checked]="socialCampaign?.userListIds.indexOf(contactList.id)>-1" 
                                                  name="social-campaignContact[]" value="{{contactList.id}}" (click)="highlightRow(contactList,$event)"
                                                     [disabled]="(contactList?.name==properties.activeMasterPartnerList  || contactList?.name==properties.inActiveMasterPartnerList) && contactList.count==0">
                                          </td>   

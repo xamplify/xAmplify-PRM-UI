@@ -151,7 +151,7 @@
                                 (click)="updateSelectedTags(tag,$event.target.checked)">
                                 <div class="col-sm-2 col-sm-offset-2">
                                   <label class="form-check-label inline">
-                                    <input type="checkbox" class="form-check-input "
+                                    <input type="checkbox" class="form-check-input checkBox_shadow"
                                       [checked]="tracksPlayBook.tagIds != undefined && tracksPlayBook.tagIds.length > 0 && tracksPlayBook.tagIds.indexOf(tag.id)>-1">
                                   </label>
                                 </div>
@@ -166,7 +166,7 @@
                                 <div class="col-sm-2 col-sm-offset-2">
                                   <label class="form-check-label inline">
                                     <input *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
-                                      type="checkbox" class="form-check-input "
+                                      type="checkbox" class="form-check-input checkBox_shadow"
                                       [checked]="tracksPlayBook.tagIds != undefined && tracksPlayBook.tagIds.length > 0 && tracksPlayBook.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
                                   </label>
                                 </div>
@@ -337,7 +337,7 @@
                   <div class="flex-row pointer mContentHeight custom-height">
                     <div class="item__select-box-wrapper">
                       <span class="select-box-asset"> <label>
-                          <input type="checkbox" (click)="$event.stopPropagation();">
+                          <input class="checkBox_shadow" type="checkbox" (click)="$event.stopPropagation();">
                         </label>
                       </span> <span class="ng-scope"> <a style="cursor: default;border-radius:5px;"
                           class="item__preview item__preview--image img-container custom" target="_BLANK">
@@ -597,7 +597,7 @@
                   <tbody>
                     <tr *ngFor="let form of formPagination.pagedItems ;let i =index" (click)="updateDescription(form)">
                       <td>
-                        <input type="radio">
+                        <input class="radioButton_shadow" type="radio">
                       </td>
                       <td>
                         <h4 class="ellipsis mt5 mb5 f-w-600 mFormName" data-toggle="tooltip" data-placement="bottom"  title="{{form.name}}">
@@ -671,7 +671,7 @@
               <ng-container *ngIf="type == undefined || type == 'TRACK'">
                 <label style="margin-right: 10px; margin-top: 4px;">Follow Sequence </label>
                 <div class="switch">
-                  <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round-flat"
+                  <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round-flat checkBox_shadow"
                     [(ngModel)]="tracksPlayBook.followAssetSequence" type="checkbox">
                   <label for="cmn-toggle-1"></label>
                 </div>
@@ -830,7 +830,7 @@
                   <tbody>
                     <tr *ngFor="let form of quizFormPagination.pagedItems ;let i =index" (click)="selectedQuiz(form); validateAssets(); validateAllSteps()">
                       <td>
-                        <input type="checkbox" [checked]="form.selected">
+                        <input class="checkBox_shadow" type="checkbox" [checked]="form.selected">
                       </td>
                       <td>
                         <h4 class="ellipsis mt5 mb5 f-w-600 mFormName" data-toggle="tooltip" data-placement="bottom"  title="{{form.name}}">
@@ -1098,7 +1098,7 @@
                     <tr *ngFor="let asset of assetPagination.pagedItems ;let i =index"
                       (click)="addMediaToDescription(asset)">
                       <td>
-                        <input type="radio"
+                        <input class="radioButton_shadow" type="radio"
                           [checked]="selectedAssetForMedia != undefined && selectedAssetForMedia != null && asset.id == selectedAssetForMedia.id">
                       </td>
                       <td class="text-cente" style="width: 10%;">

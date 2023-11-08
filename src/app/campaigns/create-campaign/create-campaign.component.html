@@ -717,7 +717,7 @@
                                                                 <!-- --------------Thumbnail--------------------------- -->
                                                                 <td style="text-align: center;">
                                                                     <input
-                                                                    class="radio-button-css" type="radio"
+                                                                    class="radio-button-css radioButton_shadow" type="radio"
                                                                     [checked]="selectedRow==savedVideoFile.id"
                                                                     (click)="setClickedRow(savedVideoFile,'my-videos')"
                                                                     name="videoFileId" [value]="savedVideoFile.id"
@@ -755,7 +755,7 @@
                                                                 <!-- --------------Title--------------------------- -->
                                                                 <td *ngIf="videoFile.id!==videoId">
                                                                     <input
-                                                                    class="radio-button-css"
+                                                                    class="radio-button-css radioButton_shadow"
                                                                     *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId && videoFile?.processed"
                                                                     type="radio" name="videoFileId" [value]="videoFile.id"
                                                                     (click)="setClickedRow(videoFile,'my-videos')"
@@ -763,7 +763,7 @@
                                                                     [checked]="videoFile.id == selectedRow"> 
 
                                                                     <input
-                                                                    class="radio-button-css"
+                                                                    class="radio-button-css radioButton_shadow"
                                                                     *ngIf="(videoFile.viewBy=='DRAFT' || !videoFile?.processed)&& videoFile.id!==videoId"
                                                                     type="radio" name="videoFileId" [value]="videoFile.id"
                                                                     disabled="disabled" data-toggle="tooltip" data-placement="bottom"
@@ -886,7 +886,7 @@
                                                                 id="selectedVideoRow"
                                                                 (click)="setClickedRow(savedVideoFile,'partner-videos')">
                                                                 <td class="text-center"><input
-                                                                    class="radio-button-css" type="radio"
+                                                                    class="radio-button-css radioButton_shadow" type="radio"
                                                                     [checked]="selectedRow==savedVideoFile.id"
                                                                     (click)="setClickedRow(savedVideoFile,'partner-videos')"
                                                                     name="videoFileId" [value]="savedVideoFile.id"
@@ -918,13 +918,13 @@
                                                                 <!-- --------------Thumbnail--------------------------- -->
                                                                 <td class="text-center"
                                                                     *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId && videoFile?.processed">
-                                                                    <input class="radio-button-css" type="radio"
+                                                                    <input class="radio-button-css radioButton_shadow" type="radio"
                                                                     name="videoFileId" [value]="videoFile.id"
                                                                     (click)="setClickedRow(videoFile,'partner-videos')"
                                                                     id="campaign_video_id_{{videoFile.id}}"
                                                                     [checked]="videoFile.id == selectedRow"> <input
                                                                     *ngIf="(videoFile.viewBy=='DRAFT' || !videoFile?.processed)  && videoFile.id!==videoId"
-                                                                    class="radio-button-css" type="radio"
+                                                                    class="radio-button-css radioButton_shadow" type="radio"
                                                                     name="videoFileId" [value]="videoFile.id"
                                                                     disabled="disabled" data-toggle="tooltip" data-placement="bottom"
                                                                     title="Video is in draft mode, please update the publish options to Library or Viewers.">
@@ -935,7 +935,7 @@
                                                                 </td>
                                                                 <td class="text-center"
                                                                     *ngIf="(videoFile?.viewBy=='DRAFT' || !videoFile?.processed)  && videoFile.id!==videoId">
-                                                                    <input type="radio" name="videoFileId"
+                                                                    <input class="radioButton_shadow" type="radio" name="videoFileId"
                                                                     [value]="videoFile.id" disabled="disabled" data-toggle="tooltip" data-placement="bottom"
                                                                     title="Video is in draft mode, please update the publish options to Library or Viewers.">
                                                                     <app-video-thumbnail
@@ -1051,7 +1051,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th scope="row" class="text-center">
-                                                                <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
+                                                                <input type="checkbox" class="checkBox_shadow" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
                                                             </th>
                                                             <th class="hidden-xs" *ngIf="showExpandButton" scope="col"></th>
                                                             <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
@@ -1073,7 +1073,7 @@
                                                             <tr role="row" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.count,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)"
                                                                 >
                                                                 <td class="text-center">
-                                                                    <div class="form-group">
+                                                                    <div class="form-group checkBox_shadow">
                                                                         <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" 
                                                                         name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)"
                                                                          [disabled]="(contacts.name==properties.activeMasterPartnerList  || contacts.name==properties.inActiveMasterPartnerList) && contacts.count==0">
@@ -1230,7 +1230,7 @@
                                                                                                         <span class="select-check-box" [class.hide]="emailTemplate.draft">
                                                                                                             <label>
                                                                                                                 <input 
-                                                                                                                type="radio" class="radio-custimization" [checked]="emailTemplateId === selectedEmailTemplateRow"  >
+                                                                                                                type="radio" class="radio-custimization radioButton_shadow" [checked]="emailTemplateId === selectedEmailTemplateRow"  >
                                                                                                             </label>
                                                                                                     </span>                                                    
                                                                                                         <img 
@@ -1314,7 +1314,7 @@
                                                                                                         <span class="select-check-box" [class.hide]="emailTemplate.draft">
                                                                                                             <label>
                                                                                                                 <input 
-                                                                                                                type="radio" class="radio-custimization" [checked]="emailTemplate.id === selectedEmailTemplateRow"  >
+                                                                                                                type="radio" class="radio-custimization radioButton_shadow" [checked]="emailTemplate.id === selectedEmailTemplateRow"  >
                                                                                                             </label>
                                                                                                     </span>
                                                                                                 
@@ -1451,7 +1451,7 @@
                                                                                                         <span class="select-check-box" [class.hide]="emailTemplate.draft">
                                                                                                             <label>
                                                                                                                 <input 
-                                                                                                                type="radio" class="radio-custimization" 
+                                                                                                                type="radio" class="radio-custimization radioButton_shadow" 
                                                                                                                 [checked]="landingPageId === selectedLandingPageRow"  >
                                                                                                             </label>
                                                                                                     </span>
@@ -1529,7 +1529,7 @@
                                                                                                 <span class="select-check-box" [class.hide]="emailTemplate.draft">
                                                                                                     <label>
                                                                                                         <input 
-                                                                                                        type="radio" class="radio-custimization" 
+                                                                                                        type="radio" class="radio-custimization radioButton_shadow" 
                                                                                                         [checked]="landingPage.id === selectedLandingPageRow"  >
                                                                                                     </label>
                                                                                             </span>
@@ -1945,14 +1945,14 @@
                                                                                                                                                         name="reply-email-template"
                                                                                                                                                         [value]="reply.emailTemplate.id"
                                                                                                                                                         id="reply-{{i}}-{{reply.emailTemplate.id}}"
-                                                                                                                                                        type="radio" class="radio-custimization" 
+                                                                                                                                                        type="radio" class="radio-custimization radioButton_shadow" 
                                                                                                                                                     
                                                                                                                                                         >
                                                                                                                 
                                                                                                                                                          <input *ngIf="reply.emailTemplate.id== reply.selectedEmailTemplateId"  
                                                                                                                                                          [value]="reply.emailTemplate.id" 
                                                                                                                                                          id="reply-{{i}}-{{reply.emailTemplate.id}}"
-                                                                                                                                                          type="radio" class="radio-custimization" 
+                                                                                                                                                          type="radio" class="radio-custimization radioButton_shadow" 
                                                                                                                                                           [checked]="reply.emailTemplate.id==reply.selectedEmailTemplateId"
                                                                                                                                                          name="reply-email-template">
                                                                                                                                                     </label>
@@ -2030,7 +2030,7 @@
                                                                                                                                                     <span class="select-check-box" [class.hide]="emailTemplate.draft">
                                                                                                                                                         <label>
                                                                                                                                                             <input 
-                                                                                                                                                            type="radio" class="radio-custimization" 
+                                                                                                                                                            type="radio" class="radio-custimization radioButton_shadow" 
                                                                                                                                                             [checked]="emailTemplate.id==reply.selectedEmailTemplateId"  >
                                                                                                                                                         </label>
                                                                                                                                                 </span>
@@ -2287,12 +2287,12 @@
                                                                                                                                                             *ngIf="url.emailTemplate.id!== url.selectedEmailTemplateId"
                                                                                                                                                             [value]="url.emailTemplate.id"
                                                                                                                                                             id="url-{{i}}-{{url.emailTemplate.id}}"
-                                                                                                                                                            type="radio" class="radio-custimization" 
+                                                                                                                                                            type="radio" class="radio-custimization radioButton_shadow" 
                                                                                                                                                             >
                                                                                                                     
                                                                                                                                                              <input *ngIf="url.emailTemplate.id== url.selectedEmailTemplateId"  
                                                                                                                                                              [value]="url.emailTemplate.id" 
-                                                                                                                                                             id="url-{{i}}-{{url.emailTemplate.id}}" type="radio" class="radio-custimization" 
+                                                                                                                                                             id="url-{{i}}-{{url.emailTemplate.id}}" type="radio" class="radio-custimization radioButton_shadow" 
                                                                                                                                                              [checked]="url.emailTemplate.id==url.selectedEmailTemplateId"
                                                                                                                                                             
                                                                                                                                                              >
@@ -2382,7 +2382,7 @@
                                                                                                                                                         <span class="select-check-box" [class.hide]="emailTemplate.draft">
                                                                                                                                                             <label>
                                                                                                                                                                 <input 
-                                                                                                                                                                type="radio" class="radio-custimization" 
+                                                                                                                                                                type="radio" class="radio-custimization radioButton_shadow" 
                                                                                                                                                                 [checked]="emailTemplate.id==url.selectedEmailTemplateId"  >
                                                                                                                                                             </label>
                                                                                                                                                     </span>
@@ -2503,17 +2503,17 @@
                                    <div class="btn-group btn-group-justified width_unset">
                                         <ng-container>
                                             <label  class="btn btn-primary button-border">
-                                                <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+                                                <input type="radio" class="text-center mLabelAlign radioButton_shadow" name="scheduleCampaign"
                                                     [value]="sheduleCampaignValues[0]" formControlName="scheduleCampaign"
                                                     ngDefaultControl style=" margin-right:10px; " /><span class="text-algn">Now</span>
                                             </label>
                                             <label  class="btn btn-warning button-border Sch-class" >
-                                                <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+                                                <input type="radio" class="text-center mLabelAlign radioButton_shadow" name="scheduleCampaign"
                                                     [value]="sheduleCampaignValues[1]" formControlName="scheduleCampaign"
                                                     ngDefaultControl style="margin-right:10px " /><span class="text-algn">Schedule</span>
                                             </label>
                                             <label class="btn green mBtnAlign button-border">
-                                                <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+                                                <input type="radio" class="text-center mLabelAlign radioButton_shadow" name="scheduleCampaign"
                                                     [value]="sheduleCampaignValues[2]" formControlName="scheduleCampaign"
                                                     ngDefaultControl style="margin-right:10px" /><span class="text-algn">Save</span>
                                             </label>
@@ -2586,7 +2586,7 @@
                     <app-preview-popup #previewPopUpComponent *ngIf="showEditTemplatePopup && campaignType=='landingPage'"></app-preview-popup>
                     <app-merge-tags *ngIf="showEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
                     <button  class="new-tab-button" *ngIf="showEditTemplatePopup && campaignType=='landingPage'">
-                        Open Links In New Tab <input type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
+                        Open Links In New Tab <input class="checkBox_shadow" type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
                       </button>
                     </div>
                 </div>

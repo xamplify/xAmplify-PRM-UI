@@ -65,7 +65,7 @@
 						<tr>
 							<th style="width: 20%;" scope="row">DNS Configuration</th>
 							<th scope="row">
-								<input type="checkbox" [(ngModel)]="dnsConfigured"
+								<input class="checkBox_shadow" type="checkbox" [(ngModel)]="dnsConfigured"
 								[ngModelOptions]="{standalone: true}"></th>
 								<th scope="row">
 									<button class="btn btn-primary" (click)="updateDnsConfiguration()">Update</button>
@@ -85,7 +85,7 @@
 						<tr>
 							<th style="width: 20%;" scope="row">SPF</th>
 							<th scope="row">
-								<input type="checkbox" [(ngModel)]="spfConfigured"
+								<input class="checkBox_shadow" type="checkbox" [(ngModel)]="spfConfigured"
 								[ngModelOptions]="{standalone: true}"></th>
 								<th scope="row">
 									<button class="btn btn-primary" (click)="updateSpf()">Update</button>
@@ -143,57 +143,57 @@
 							<ng-container *ngIf="roleId!=20">
 								<tr>
 									<th scope="row">Sales Enablement (View In Browser In Create Campaign)</th>
-									<td><input  type="checkbox"
+									<td><input class="checkBox_shadow" type="checkbox"
 											[(ngModel)]="campaignAccess.salesEnablement"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 								<tr>
 									<th scope="row">Data Share</th>
-									<td><input  type="checkbox"
+									<td><input class="checkBox_shadow" type="checkbox"
 											[(ngModel)]="campaignAccess.dataShare"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 								<tr>
 								<th scope="row">Email Campaign</th>
-								<td><input  type="checkbox"
+								<td><input class="checkBox_shadow" type="checkbox"
 										[(ngModel)]="campaignAccess.emailCampaign"
 										[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 								<tr>
 									<th scope="row">Video Campaign</th>
-									<td><input type="checkbox"
+									<td><input class="checkBox_shadow" type="checkbox"
 											[(ngModel)]="campaignAccess.videoCampaign"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 								<tr>
 									<th scope="row">Social Campaign</th>
-									<td><input type="checkbox"
+									<td><input class="checkBox_shadow" type="checkbox"
 											[(ngModel)]="campaignAccess.socialCampaign"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 								<tr>
 									<th scope="row">Event Campaign</th>
-									<td><input type="checkbox" [(ngModel)]="campaignAccess.eventCampaign"
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.eventCampaign"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 								<tr>
 									<th scope="row">Survey Campaign</th>
-									<td><input type="checkbox" [(ngModel)]="campaignAccess.survey"
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.survey"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 								<tr>
 									<th scope="row">Form Builder</th>
-									<td><input type="checkbox" [(ngModel)]="campaignAccess.formBuilder"
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.formBuilder"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 								<tr>
 									<th scope="row">Page</th>
-									<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPage"
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.landingPage"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 								<tr>
 									<th scope="row">Page Campaign</th>
-									<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign"
+									<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign"
 											[ngModelOptions]="{standalone: true}"></td>
 								</tr>
 								
@@ -202,13 +202,13 @@
 									<th scope="row">One-Click Launch</th>
 									<td>
 										<ng-template [ngTemplateOutlet]="scheduleCampaignsInfo"></ng-template>
-										<input type="checkbox" id="one-click-launch-e" [(ngModel)]="campaignAccess.oneClickLaunch"
+										<input class="checkBox_shadow" type="checkbox" id="one-click-launch-e" [(ngModel)]="campaignAccess.oneClickLaunch"
 											[ngModelOptions]="{standalone: true}" (click)="findScheduledCampaignsCount()">
 									</td>
 								</tr>
 								<tr>
 									<th scope="col">Partner Template Opened Tracking Analytics</th>
-									<td><input type="checkbox"
+									<td><input class="checkBox_shadow" type="checkbox"
 										[(ngModel)]="campaignAccess.campaignPartnerTemplateOpenedAnalytics"
 										[ngModelOptions]="{standalone: true}"></td>
 								</tr>
@@ -217,25 +217,25 @@
 								<th scope="row">Share Leads</th>
 								<td>
 								<ng-template *ngIf="showOneClickLaunchErrorMessage" [ngTemplateOutlet]="scheduleCampaignsInfo"></ng-template>
-								<input type="checkbox" id="share-leads-e" [(ngModel)]="campaignAccess.shareLeads"
+								<input class="checkBox_shadow" type="checkbox" id="share-leads-e" [(ngModel)]="campaignAccess.shareLeads"
 									[ngModelOptions]="{standalone: true}" (click)="updateOneClickLaunchOption()">
 								</td>
 							</tr>
 							<!--Leads (Opportunities)-->
 							<tr>
 								<th scope="row">Leads (Opportunities)</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.leads"
+								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.leads"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 							<!--Login As Team Member-->
 							<tr>
 								<th scope="row">Login As Team Member</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.loginAsTeamMember"
+								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.loginAsTeamMember"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 							<tr>
 								<th scope="row">Vanity URL</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.vanityUrlDomain"
+								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.vanityUrlDomain"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 							<tr>
@@ -249,13 +249,13 @@
 										<i class="fa fa-close" aria-hidden="true"></i> &nbsp; <strong>{{companyAndUserDetails?.message}}</strong>
 									</p>
 
-									<input type="checkbox" [(ngModel)]="campaignAccess.mdf"
+									<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.mdf"
 										[ngModelOptions]="{standalone: true}">
 								</td>
 							</tr>
 							<tr>
 								<th scope="row">Social Feeds</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
+								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 							<tr>
@@ -271,18 +271,18 @@
 							<tr>
 								<th scope="row">DAM</th>
 								<td>
-								<input type="checkbox" [(ngModel)]="campaignAccess.dam" id="damCheckBox"
+								<input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.dam" id="damCheckBox"
 										[ngModelOptions]="{standalone: true}" (click)="updateLmsAndPlaybooks()"></td>
 							</tr>
 							<ng-container *ngIf="campaignAccess?.dam">
 							<tr>
 								<th scope="row">LMS</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.lms"
+								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.lms"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 							<tr>
 								<th scope="row">PlayBooks</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.playbooks"
+								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.playbooks"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 							</ng-container>
@@ -293,32 +293,32 @@
 							</tr>
 							<tr>
 								<th scope="row">Chat Support</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.chatSupport"
+								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.chatSupport"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 							<!--XNFR-134-->
 							<tr>
 								<th scope="row">Custom Skin Settings</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.customSkinSettings"
+								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.customSkinSettings"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 							<!-- XNFR-224 -->
 							<tr *ngIf="!marketing">
 								<th scope="row">Login As Partner</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.loginAsPartner"
+								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.loginAsPartner"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 							<!-- XNFR-256 -->
 							<tr>
 								<th scope="row">Microsoft SSO</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.microsoftSSO"
+								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.microsoftSSO"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 					
 							<!-- XNFR-255 -->
 							<tr *ngIf="!marketing">
 								<th scope="row">Share White Labeled Content</th>
-								<td><input type="checkbox" [(ngModel)]="campaignAccess.shareWhiteLabeledContent"
+								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.shareWhiteLabeledContent"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 							

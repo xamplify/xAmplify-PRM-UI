@@ -52,7 +52,7 @@
         <table class='table tgrid'>
           <thead>
             <tr>
-              <th class="text-center"><input type="checkbox" value="sfcfSelectAll" id="sfcfSelectAll" name="sfcfSelectAll"
+              <th class="text-center"><input type="checkbox" class="checkBox_shadow" value="sfcfSelectAll" id="sfcfSelectAll" name="sfcfSelectAll"
                   [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"  class="pointer" /></th>
               <th>Field Name</th>
               <th>Data Type</th>
@@ -63,7 +63,7 @@
           <tbody>
             <ng-container *ngFor="let sfCustomField of sfcfPagedItems ">
               <tr>    
-                <td class="text-center"><input type="checkbox" value="{{sfCustomField.name}}"
+                <td class="text-center"><input type="checkbox" lass="checkBox_shadow" value="{{sfCustomField.name}}"
                   (click)="selectCf(sfCustomField)" id="{{sfCustomField.name}}" name="sfcf[]"
                   [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required"
                   [disabled]="!sfCustomField.canUnselect" class="pointer" /></td>
@@ -73,7 +73,7 @@
                   <span *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE')">Required
                     <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="Your partner must fill in this custom field if you toggle on this option."></span>
                       <label class="toggleOnOff" [ngClass]="!sfCustomField?.canUnselect ? 'disabled-opacity':''">
-                        <input  type="checkbox" [disabled]="!sfCustomField.canUnselect" [(ngModel)]="sfCustomField.required" [ngModelOptions]="{standalone: true}">
+                        <input class="checkBox_shadow" type="checkbox" [disabled]="!sfCustomField.canUnselect" [(ngModel)]="sfCustomField.required" [ngModelOptions]="{standalone: true}">
                         <span class="sliderOnOff"></span>
                         <span class="labels" data-on="ON" data-off="OFF"></span>
                       </label>

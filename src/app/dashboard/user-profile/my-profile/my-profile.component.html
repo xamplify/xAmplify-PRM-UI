@@ -813,7 +813,7 @@
 															<thead>
 															<tr>
 																
-																<th class="text-center"><input type="checkbox" value="sfcfSelectAll"
+																<th class="text-center"><input type="checkbox" class="checkBox_shadow" value="sfcfSelectAll"
 																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"/></th>
 																		
 																<th>Field Name</th>
@@ -825,7 +825,7 @@
 																	*ngFor="let sfCustomField of sfcfPagedItems ">
 																<tr>
 																	
-																	<td align="center"><input type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
+																	<td align="center"><input class="checkBox_shadow" type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
 																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required" [disabled] ="sfCustomField.required"/></td>
 																	<td><span>{{sfCustomField.label}}</span></td>
 																	<td><span>{{sfCustomField.type}}</span></td>
@@ -897,7 +897,7 @@
                                                             <table class='table tgrid'>
                                                                 <thead>
                                                                 <tr>
-                                                                    <th class="text-center"><input type="checkbox" value="sfcfSelectAll"
+                                                                    <th class="text-center"><input type="checkbox" class="checkBox_shadow" value="sfcfSelectAll"
                                                                             id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"/></th>
                                                                             
                                                                     <th>Field Name</th>
@@ -909,7 +909,7 @@
                                                                         *ngFor="let sfCustomField of sfcfPagedItems ">
                                                                     <tr>
                                                                        
-                                                                        <td align="center"><input type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
+                                                                        <td align="center"><input class="checkBox_shadow" type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
                                                                             id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required" [disabled] ="sfCustomField.required"/></td>
                                                                         <td><span>{{sfCustomField.label}}</span></td>
                                                                         <td><span>{{sfCustomField.type}}</span></td>
@@ -1113,24 +1113,24 @@
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'settings'}">
                                        <div class="">
                                             <label class="container-checkbox-xamplify" translate>List View
-                                                <input type="radio"  name="moduleDisplayType"  
+                                                <input class="radioButton_shadow" type="radio"  name="moduleDisplayType"  
                                                  value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.LIST]}}" 
                                                  [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.LIST]">
                                                 <span class="checkmark"></span>
                                               </label>
                                               <label class="container-checkbox-xamplify" translate>Grid View
-                                                <input type="radio"  name="moduleDisplayType" 
+                                                <input class="radioButton_shadow" type="radio"  name="moduleDisplayType" 
                                                 value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.GRID]}}" 
                                                 [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.GRID]">
                                                 <span class="checkmark"></span>
                                               </label>
                                               <label class="container-checkbox-xamplify" translate>Folder Grid View
-                                                <input type="radio"  name="moduleDisplayType" 
+                                                <input class="radioButton_shadow" type="radio"  name="moduleDisplayType" 
                                                  value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_GRID]}}" [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_GRID]">
                                                 <span class="checkmark"></span>
                                               </label>
                                               <label class="container-checkbox-xamplify" translate>Folder List View
-                                                <input type="radio"  name="moduleDisplayType" 
+                                                <input class="radioButton_shadow" type="radio"  name="moduleDisplayType" 
                                                 value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_LIST]}}"
                                                  [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_LIST]"> 
                                                 <span class="checkmark"></span>
@@ -1168,7 +1168,7 @@
                                                                         <a rel="noopener noreferrer" class="link" href="{{properties.cookiesPolicyUrl}}" target="_blank" translate>Cookies & tracking</a> &nbsp;
                                                                     </h5>
                                                                     <h5 id="text-color-my-profile">
-                                                                        <input type="checkbox" class="pointer" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
+                                                                        <input type="checkbox" class="pointer checkBox_shadow" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
                                                                     </h5>
                                                                 </div>
                                                                 <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
@@ -2104,7 +2104,7 @@
                        
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" [disabled]="pipelinePreview || !pipeline.enablePrivateCheckBox" [(ngModel)]="pipeline.private" name="private" class="alignEqualtoText" > Private <span class="fa fa-info-circle" data-toggle="tooltip"
+                        <input class="checkBox_shadow" type="checkbox" [disabled]="pipelinePreview || !pipeline.enablePrivateCheckBox" [(ngModel)]="pipeline.private" name="private" class="alignEqualtoText" > Private <span class="fa fa-info-circle" data-toggle="tooltip"
                         data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span>
                         <div *ngIf="pipeline.showSinglePublicPipelineMessage" class="red">You can't mark this pipeline as private as this is the only public {{pipeline.integrationType}} pipeline available in your account</div>
                     </div>
@@ -2127,7 +2127,7 @@
                                         </span>
                                         <span class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
                                             <div class="mb_mt7 alignEqualtoFields">
-                                                <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex"
+                                                <input class="radioButton_shadow" type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex"
                                                     id="defaultStage{{x}}" name="defaultStage" class="alignEqualtoText" (change)="defaultStageChange(pipelineStage)">
                                                 <span>Default</span>&nbsp;&nbsp;
                                                 <select  class="formSelectCustomization" [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE')" (change)="handleMarkAsChange(x)">
@@ -2143,13 +2143,13 @@
 
                                                         <span class="pdLeftforspace" *ngIf="(!pipeline.private)">Private <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="This pipeline stage will not be accesible by your partners if you check this option."></span>
                                                           <label class="toggleOnOff">
-                                                            <input type="checkbox" [(ngModel)]="pipelineStage.private" name="private" [disabled]="shouldDisableCheckbox(x) || pipelinePreview">
+                                                            <input class="checkBox_shadow" type="checkbox" [(ngModel)]="pipelineStage.private" name="private" [disabled]="shouldDisableCheckbox(x) || pipelinePreview">
                                                             <span class="sliderOnOff"></span>
                                                             <span class="labels" data-on="ON" data-off="OFF"></span>
                                                           </label>
                                                         </span>                 
                                                         <div *ngIf="(!pipelineStage.private && !pipeline.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines')">
-                                                            <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
+                                                            <input class="checkBox_shadow" type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
                                                                 name="nonInteractive" class="alignEqualtoText"> Non Interactive <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="Your partners will only be able to select the stage once and will not be able to update further for the non-interactive stage."></span>
                                                         </div>                                                 
                                             </div>

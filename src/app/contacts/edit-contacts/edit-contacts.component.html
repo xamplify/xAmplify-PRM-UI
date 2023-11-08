@@ -580,7 +580,7 @@
 					  <table class='table tgrid' *ngIf="(contacts?.length > 0) && isShowUsers && !httpRequestLoader.isLoading || (isValidClipBoardData)" aria-describedby="" style="padding-top: 9px;">
 						 <thead>
 							<tr>
-							   <th class='text-center' scope="col"><input type="checkbox"
+							   <th class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow"
 								  name="all" [(ngModel)]="isHeaderCheckBoxChecked"
 								  (change)="checkAll($event, contacts)"
 								  id="checkAllExistingContacts"/>
@@ -603,7 +603,7 @@
 							   <ng-container
 								  *ngFor="let newContact of users; let i = index">
 								  <tr class='row_{{i}}' style="background-color: #73c5be;">
-									 <td align="center"><input type="checkbox" checked="newContact.checked"></td>
+									 <td align="center" class="checkBox_shadow"><input type="checkbox" checked="newContact.checked"></td>
 									 <td *ngIf="isPartner">
 										<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="newContact"></app-user-info>
 									 </td>
@@ -637,7 +637,7 @@
 									 *ngIf="!isCampaignDraftContactList "><input
 									 type="checkbox" (change)="saveAsSelectedContacts($event, contact)"
 									 [checked]="selectedContactListIds.indexOf(contact.id)>-1"
-									 class="chk"
+									 class="chk  checkBox_shadow"
 									 [class.contact-list-selected]="selectedContactListIds.indexOf(contact.id)>-1"
 									 lang="{{contact.name}}" name="campaignContact[]"
 									 value="{{contact.id}}" id="{{contact.id}}"
@@ -895,7 +895,7 @@
 				<tr>
 				   <th style="text-align: center;"
 					  *ngIf="contactsByType.selectedCategory == 'invalid'" scope="col"><input
-					  type="checkbox" name="all"
+					  type="checkbox" name="all" class="checkBox_shadow"
 					  [(ngModel)]="isInvalidHeaderCheckBoxChecked"
 					  (change)="checkAllInvalidContacts($event)" class=""
 					  id="checkAllExistingInvalidContacts" />
@@ -925,7 +925,7 @@
 					  <td *ngIf="contactsByType.selectedCategory == 'invalid'"
 						 align="center"><input type="checkbox"
 						 [checked]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
-						 class="chk"
+						 class="chk checkBox_shadow"
 						 [class.invalid-contacts-selected]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
 						 lang="{{allcontacts.id}}" name="invalidContact[]"
 						 value="{{allcontacts.id}}" id="{{allcontacts.id}}"
@@ -1154,12 +1154,12 @@
 				<h4 class="modal-title f-w-600" translate>You are agreeing to xAmplify's Terms and Conditions.</h4>
 			 </div>
 			 <div class="form-group" style="margin-top: 15px;" *ngIf="isPartner">
-				<input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked> <!-- I Agree <a (click)="navigateToTermsAndConditions()">T&C </a>-->
+				<input class="checkBox_shadow" type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked> <!-- I Agree <a (click)="navigateToTermsAndConditions()">T&C </a>-->
 				By onboarding a {{authenticationService?.partnerModule?.customName}} you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()" translate>xAmplify Terms of Use</a> and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
 				<br>
 			 </div>
 			 <div class="form-group" style="margin-top: 15px;" *ngIf="!isPartner">
-				<input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked><!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->
+				<input class="checkBox_shadow" type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked><!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->
 				By adding a contact you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a> and agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
 				<br>
 			 </div>

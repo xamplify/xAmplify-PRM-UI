@@ -293,7 +293,7 @@
  <div class="col-sm-12 text-danger"
 	*ngIf="((!eventError.eventStartTimeError && eventError.eventSameDateError) || endDatePassError) && !isPreviewEvent">{{endDatePassedError}}</div>
  <div class="col-sm-12">
- <input type="checkbox" id="allDay" class="form-check-input mt10"
+ <input type="checkbox" id="allDay" class="form-check-input mt10 checkBox_shadow"
  [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
  [checked]="eventCampaign.campaignEventTimes[0].allDay"
  (change)="changeAllDay()" (input)="resetTabClass();validateUpdateButton()">
@@ -657,7 +657,7 @@
 	style="margin-top: 17px; cursor: pointer"> <input
  style="cursor: pointer;"
  [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
- type="radio" value="eventCampaign.publicEventCampaign"
+ type="radio" value="eventCampaign.publicEventCampaign" class="radioButton_shadow"
  [checked]="eventCampaign.publicEventCampaign"
  (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
  </label> <label class="col-md-2 p0"><img
@@ -674,7 +674,7 @@
 	style="margin-top: 17px; cursor: pointer;"> <input
  style="cursor: pointer;"
  [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
- type="radio" value="!eventCampaign.publicEventCampaign"
+ type="radio" value="!eventCampaign.publicEventCampaign" class="radioButton_shadow"
  [checked]="!eventCampaign.publicEventCampaign"
  (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
  </label> <label class="col-md-2 p0 "><img
@@ -755,7 +755,7 @@
 							<thead>
 							   <tr>
 								  <th scope="row" class="text-center">
-									 <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+									 <input type="checkbox" class="checkBox_shadow" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
 									 (change)="checkAllForPartners($event)"
 									 id="checkAllExistingContacts" />
 								  </th>
@@ -978,7 +978,7 @@
 									 <span class="select-check-box" >
 									 <label>
 									 <input 
-										type="radio" class="radio-custimization" 
+										type="radio" class="radio-custimization radioButton_shadow" 
 										[checked]="eventCampaign.emailTemplate.id === eventCampaign.selectedEditEmailTemplate.id"  >
 									 </label>
 									 </span>
@@ -1047,7 +1047,7 @@
 	   <span class="select-check-box">
 	   <label>
 	   <input 
-		  type="radio" class="radio-custimization" 
+		  type="radio" class="radio-custimization radioButton_shadow" 
 		  [checked]="eventCampaign?.emailTemplate?.id === emailTemplate?.id"  >
 	   </label>
 	   </span>
@@ -1364,12 +1364,12 @@
  name="reply-email-template"
  [value]="reply.emailTemplate.id"
  id="reply-{{i}}-{{reply.emailTemplate.id}}"
- type="radio" class="radio-custimization" 
+ type="radio" class="radio-custimization radioButton_shadow" 
  >
  <input *ngIf="reply.emailTemplate.id== reply.selectedEmailTemplateId"  
  [value]="reply.emailTemplate.id" 
  id="reply-{{i}}-{{reply.emailTemplate.id}}"
- type="radio" class="radio-custimization" 
+ type="radio" class="radio-custimization radioButton_shadow" 
  [checked]="reply.emailTemplate.id==reply.selectedEmailTemplateId"
  name="reply-email-template">
  </label>
@@ -1444,9 +1444,9 @@
  <input *ngIf="!emailTemplate?.draft"
  name="reply-email-template" [value]="emailTemplate.id" 
  id="reply-{{i}}-{{emailTemplate.id}}"
- type="radio" class="radio-custimization" 
+ type="radio" class="radio-custimization radioButton_shadow" 
  [checked]="emailTemplate.id == reply.selectedEmailTemplateId"  >
- <input *ngIf="emailTemplate?.draft" title="draft template cannot be selected" disabled="disabled"  type="radio" class="radio-custimization" 
+ <input *ngIf="emailTemplate?.draft" title="draft template cannot be selected" disabled="disabled"  type="radio" class="radio-custimization radioButton_shadow" 
 	name="reply-email-template">
  </label>
  </span>
@@ -1541,17 +1541,17 @@
 	<div class="btn-group btn-group-justified  width_unset" [class.disabled]="eventError.eventExpiredError">
 	   <ng-container>
 		  <label  class="btn btn-primary button-border">
-		  <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+		  <input type="radio" class="text-center mLabelAlign radioButton_shadow" name="scheduleCampaign"
 		  [value]="launchOptions[0]"   (click)="setLaunchOptions(launchOptions[0])"
 		  ngDefaultControl style=" margin-right:10px; " /><span class="text-algn">Now</span>
 		  </label>
 		  <label  class="btn btn-warning button-border Sch-class" >
-		  <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+		  <input type="radio" class="text-center mLabelAlign radioButton_shadow" name="scheduleCampaign"
 		  [value]="launchOptions[1]" (click)="setLaunchOptions(launchOptions[1])"
 		  ngDefaultControl style="margin-right:10px " /><span class="text-algn">Schedule</span>
 		  </label>
 		  <label class="btn green mBtnAlign button-border">
-		  <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+		  <input type="radio" class="text-center mLabelAlign radioButton_shadow" name="scheduleCampaign"
 		  [value]="launchOptions[2]" (click)="setLaunchOptions(launchOptions[2])"
 		  ngDefaultControl style="margin-right:10px" /><span class="text-algn">Save</span>
 		  </label>
