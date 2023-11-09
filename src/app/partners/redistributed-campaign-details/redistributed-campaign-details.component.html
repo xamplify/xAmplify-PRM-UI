@@ -1,9 +1,9 @@
 <div class="col-sm-12 col-md-12 col-lg-12 ml15m">
   <div class="panel panel-info">
-    <div class="panel-heading panel-heading-custom">
+    <div class="panel-heading panel-heading-custom" id="pj-redistributed-campaigns-div">
       <h3 class="panel-title mt7">Redistributed Campaign Details</h3>
-      <span class="pull-right mt25m">
-        <div class="input-icon right" style="position: relative;width: 178px;">
+      <span class="pull-right mt25m mobilesearchdisplay">
+        <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
             [ngModelOptions]="{standalone: true}" placeholder="Search"
             (keypress)="searchKeyPress($event.keyCode)">
@@ -15,11 +15,12 @@
       </span>
     </div>
     <div class="panel-body">    
-      <div class="scroll">
+      <div class="scroll table-responsive">
         <table class="table">
           <thead>
             <tr>
-              <th scope="col">Team Member</th>
+              <th scope="col" *ngIf="isDetailedAnalytics">Team Member</th>
+              <th scope="col" *ngIf="!isDetailedAnalytics">Company Name</th>
               <th scope="col">Campaign Name</th>
               <th scope="col">Campaign Type</th>
               <th scope="col">Schedule Type</th>
@@ -28,7 +29,8 @@
           </thead>
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
+              <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
+              <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">{{item?.companyName}}</a></td>
               <td>{{item?.campaignName}}</td>
               <td>{{item?.campaignType}}</td>
               <td>{{item?.campaignScheduleType}}</td>
@@ -44,7 +46,7 @@
         <strong>No Data Found.</strong>
       </div>
       <!--Pagination-->
-      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin" [hidden]="httpRequestLoader.isLoading">
         <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
           (notifyParentDropDown)="getRedistributedCampaignDetails($event)">
         </app-pagination>

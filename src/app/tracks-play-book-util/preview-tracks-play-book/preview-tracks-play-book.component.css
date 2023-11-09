@@ -590,4 +590,34 @@ button:hover {
     padding-right: 15px!important;
     padding-left: 15px;
   }
+  .fit-preview-asset{
+    height: 100%;
+    margin-left: 0px!important;
+  }
+  .mb-close{
+   top: 0px !important;
+  }
+}
+@media only screen and (min-width:380px) and (max-width: 578px) {
+  .previewContent{
+    top: 17%!important;
+  }
+  .mb-imgContent{
+    margin-top: 42px!important;
+  }
+}
+@media screen and (max-width:378px){
+  .previewContent{
+    top: 20%!important;
+  }
+  .mb-imgContent{
+    margin-top: 42px!important;
+  }
+}
+@media only screen and (min-width:768px) and (max-width: 991px) {
+  .fit-preview-asset{
+    margin-left: 0px!important; 
+    height: 100%;
+  }
+
 }

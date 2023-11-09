@@ -3163,7 +3163,7 @@ export class ReferenceService {
   }
 
   getCkEditorPlainDescription(description:string){
-    description = $(description).text(); // html to text        
+    description = $(description).text(); // html to text
     description = description.replace(/\r?\n|\r/gm," "); // remove line breaks   
     description = description.replace(/\s\s+/g, " ").trim(); // remove double spaces
     return description;
@@ -3270,6 +3270,17 @@ export class ReferenceService {
   }
   goToUpdateEmailTemplateByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
     this.router.navigate(["/home/emailtemplates/update/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  getBadRequestErrorMessage(error: any){
+    this.scrollSmoothToTop();
+    let jsonError = error['error'];
+    let statusCode = jsonError['statusCode'];
+    let message = this.properties.serverErrorMessage;
+    if (statusCode == 409 || statusCode == 400) {
+      message = jsonError['message'];
+    }
+    return message;
   }
   
   

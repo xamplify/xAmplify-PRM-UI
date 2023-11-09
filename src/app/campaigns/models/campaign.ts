@@ -108,4 +108,6 @@ export class Campaign {
     campaignEmailNotificationStatusInString = "";
     whiteLabeled = false;
     description = "";
+    /***XNFR-387****/
+    notifyChannelCampaignWorkflows = false;
 }

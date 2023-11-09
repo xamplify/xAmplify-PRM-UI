@@ -42,8 +42,8 @@
           <div class="top-menu">
              <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;padding-right: 6px;">
                 <!---XNFR-222-->
-                <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css">
-                   <div class="alert alert-info" style="position: relative;bottom: 5px;">
+                <li *ngIf="isLoggedInAsPartner || isLoggedInAsTeamMember" class="topnav-button-css LogedAsBoxTop">
+                   <div class="alert alert-info LogedAsBox" style="position: relative;bottom: 5px;">
                       <strong>
                       <span title="{{vendorAdminCompanyUserEmailId}}">You</span> are logged in as
                       <strong title="{{loggedInAsUserEmailId}}">{{loggedInAsUserEmailId | slice:0:25 }}
@@ -63,8 +63,8 @@
                 <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                    &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
                    <div class="btn-group refer-vendor-button btnVendor">
-                      <button class="btnND" [ngClass]="authenticationService?.isTop?'customskin':''" (click)="openRequestAsVendorModal()" style="border-radius: 5px 0px 0px 5px;" translate>Refer a vendor</button>
-                      <button class="btnND" [ngClass]="authenticationService?.isTop?'customskin':''" [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 5px 5px 0px;">
+                      <button [ngClass]="authenticationService?.isTop?'customskin':''" (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>{{properties?.inviteAVendor}}</button>
+                      <button [ngClass]="authenticationService?.isTop?'customskin':''" [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
                       <i class="fa fa-line-chart" [ngClass]="authenticationService?.isTop?'customskin-icon':''"  data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
                    </div>
                 </li>
@@ -121,13 +121,14 @@
                             || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
                             <a (click)="goToRouter('/home/social/manage/all')"  translate> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
                          </li>
+                         
                          <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
                             <ng-container *ngFor="let dashboardType of dashboardTypes">
                                <li (click)="navigateToDashboardType(dashboardType)">
                                   <a>
                                      <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
                                      <ng-container *ngIf="dashboardType=='Welcome'">
-                                        Help (Welcome)
+                                        Welcome
                                      </ng-container>
                                      <ng-container *ngIf="dashboardType!='Welcome'">
                                         {{dashboardType}}
@@ -136,6 +137,13 @@
                                </li>
                             </ng-container>
                          </ng-container>
+                          <!-- Guides Help Icon-->
+                          <li>
+                           <a href="{{guideHomeUrl}}" target="_blank">
+                              <i class="fa fa-question-circle-o" style="font-size: 15px;" aria-hidden="true"></i>&nbsp;Help
+                           </a>
+                         </li>
+                         <!-- Guides Help Icon-->
                          <li *ngIf="myVendorsLoader &&authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
                            <a><img src="assets/images/loading.gif">Loading My Vendors...</a>
                          </li>
@@ -160,7 +168,8 @@
                                </a>
                             </li>
                          </ng-container>
-                      <li class="divider"></li>
+                      <!-- <li class="divider"></li> -->
+                      <li class="divider-bottom"></li>
                       <li id="logoutButton" (click)="logout()">
                          <a translate> <i class="icon-key" aria-hidden="true"></i> Log Out
                          </a>
@@ -202,7 +211,7 @@
           <div class="modal-content">
              <div class="modal-header">
                 <a class="close-circle" (click)="closeInvitationModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
-                <h4 class="modal-title left" id="myModalLabel">Ask a vendor to join xAmplify</h4>
+                <h4 class="modal-title left" id="myModalLabel">{{properties?.inviteAVendorToJoinxAmplify}}</h4>
              </div>
              <div class="modal-body">
                 <div *ngIf="!isValidationMessage">

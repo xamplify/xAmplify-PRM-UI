@@ -44,13 +44,13 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
 
 
   navigateUsers(event:any){
+    this.referenceService.scrollToModalBodyTopByClass();
     this.pagination.pageIndex = event.page;
     this.findUsersByUserListId(this.pagination);
   }
 
   findUsersByUserListId(pagination:Pagination){
     this.customResponse = new CustomResponse();
-    this.referenceService.scrollToModalBodyTopByClass();
     this.referenceService.startLoader(this.httpRequestLoader);
     pagination.userListId = this.userListId;
     this.contactService.findUsersByUserListId(pagination).subscribe(

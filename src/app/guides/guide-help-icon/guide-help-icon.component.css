@@ -43,9 +43,14 @@ input.form-control {
 }
 
 
-@media (min-width: 300px) and (max-width: 768px)  {
+@media only screen and (min-width: 300px) and (max-width: 768px)  {
     .bg-img {
         background-size: cover;
         background-position: 100% 50%;
     }
+}
+@media screen and (max-width:578px){
+    .mb_content{
+    position: absolute;
+       }
 }

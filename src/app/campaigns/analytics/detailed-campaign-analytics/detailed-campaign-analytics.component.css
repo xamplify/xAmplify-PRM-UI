@@ -563,7 +563,11 @@ fieldset {
 }
 #email-icons {
   margin-top: 10px;
-  width: 125px;
+  /* width: 125px; */
+  width: 105px;
+}
+strong.StongTextdc {
+  font-size: 11px;
 }
 h1,
 h2,
@@ -627,6 +631,9 @@ th.leftAlignTableth {
   .camp-desc {
     font-size: 7px;
   }
+  strong.StongTextdc {
+    font-size: 10px;
+}
 }
 @media only screen and (min-width: 992px) and (max-width: 1100px) {
   .emails-info button {

@@ -1,19 +1,28 @@
 .helpcircle-cu {
-    font-size: 22px !important;
+    font-size: 20px !important;
     position: relative;
     top: 3px;
     left: -2px;
+    font-weight: normal;
 }
 .help-iconbgadd {
     float: right;
-    margin: 4px 12px;
+    margin: 4px 4px;
     border-radius: 50%;
     height: 32px;
-    width: 32px;
+    /* width: 32px; */
     padding: 5px 5px 5px 8px;
     font-size: 12px;
     border: 1px solid #cccccc;
 }
-.help-iconbgadd:hover {
+/* .help-iconbgadd:hover {
     background: #e8eaed;
-}
+} */
+.selectRecord{
+    background-color: #1091d9 !important;
+    color: #fff !important;
+    fill: #0B2533 !important;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 15px;
+  }

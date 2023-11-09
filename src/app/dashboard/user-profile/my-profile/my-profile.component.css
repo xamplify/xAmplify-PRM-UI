@@ -694,6 +694,23 @@ input:checked + .slider-new:before {
     cursor: not-allowed;
     position: relative;
   }
+  .mb-star{
+    left:0px !important;
+    top: 0px !important;
+  }
+  .width75{
+   width:75%;
+  }
+}
+@media screen and(max-width:378px){
+  .width75{
+    width:75%;
+   }
+}
+@media only screen and (min-width: 380px) and (max-width: 578px) { 
+  .width75{
+    width:81%;
+   }
 }
 @media screen and (min-width: 601px) {
   .accounts-modal {
@@ -2861,6 +2878,16 @@ th.border-top {
 .tab_mt_20 {
   margin-top: 20px;
 }
+@media only screen and (min-width: 992px) and (max-width: 1200px) {
+  .tab_mt_20 {
+    margin-top: 0px;
+  }
+  .pricing .card:hover {
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
+}
+
 @media only screen and (min-width: 300px) and (max-width: 767px) {
   .container-checkbox-xamplify {
     display: block;
@@ -3063,3 +3090,43 @@ button.deleteBntAligment {
   position: relative;
   top: 7px;
 }
+
+button.spaceTopBottom{
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1080px) {  
+  .tableIconWidthCu {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+} 
+
+.PipelinesTablet-thWidth{width:40%;}
+.PipelinesTablet-thWidth1{width:20%;}
+.PipelinesTablet-thWidth2{width:20%;}
+.PipelinesTablet-thWidth3{text-align:right;width:20%;}
+.exclusionNoRecordsFound {margin-top: 100px;}
+@media only screen and (min-width: 1080px) and (max-width: 1260px) {  
+  span.PipelinesNameTextCu {
+    font-size: 10px;
+  }
+} 
+@media only screen and (min-width: 992px) and (max-width: 1086px) {  
+  span.PipelinesNameTextCu {
+    font-size: 8px;
+  }
+  td.thisTabletdTextCu h5, h6 {
+    font-size: 11px;
+  }
+  .exclusionNoRecordsFound {margin-top: 140px;}
+  .TotalSearchBoxWidth {width: 200px !important;}
+  
+} 
+
+
+

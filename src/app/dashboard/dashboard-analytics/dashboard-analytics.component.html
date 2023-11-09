@@ -43,12 +43,12 @@
             </div>
             <div class="page-bar p0" [hidden]="ngxLoading">
                 <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
-                <div [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-lg-7 col-md-7 col-xs-12 col-sm-6':'col-md-5 col-xs-5 col-sm-5'">
+                <div [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-lg-6 col-md-4 col-xs-6 col-sm-6':'col-md-5 col-xs-5 col-sm-5'">
                     <h4 title="{{logedInCustomerCompanyName}}"  class="welcome-header text-overflow">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
                 </div>
-                <div class="col-lg-5 col-md-5 col-xs-12 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
-                    <div class="df-mt5">
-                    <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
+                <div class="col-lg-5 col-md-5 col-xs-5 col-sm-5" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
+                    <div class="df-mt5 dashboardfloatRight">
+                    <h4 class="defaultScreenText" style="margin: 0.3em">Do you want to set this as your default screen?</h4>
                     <div>
                         <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"
                         size="small" (change)="setDashboardAsDefaultPage($event)"></ui-switch>
@@ -397,8 +397,8 @@
                                         <div class="portlet-body scrollbar launchedCampaignsMaster"
                                             [dragula]='"bag-items"'>
                                             <div class="gu-block" *ngFor="let item of launchedCampaignsMaster">
-                                                <h6 class="gu-block-content" [id]="item.id">{{item.campaign |
-                                                    slice:0:27}}<span *ngIf="item.campaign?.length>27">...</span></h6>
+                                                <h6 data-placement="bottom" data-toggle="tooltip" title="{{item.campaign}}" class="gu-block-content" [id]="item.id">{{item.campaign |
+                                                    slice:0:19}}<span *ngIf="item.campaign?.length>19">...</span></h6>
                                             </div>
                                         </div>
                                     </div>

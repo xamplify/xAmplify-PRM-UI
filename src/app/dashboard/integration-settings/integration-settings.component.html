@@ -5,7 +5,7 @@
 <div>
   <ul class="nav nav-tabs hideBorder" style="margin-bottom:0px;">
     <li class="active"><a data-toggle="tab" href="#home">User Info</a></li>
-    <li *ngIf="!isOnlyPartner"><a data-toggle="tab" href="#menu1">Custom fields</a></li>
+    <li *ngIf="!(isOnlyPartner || isPartnerTeamMember)"><a data-toggle="tab" href="#menu1">Custom fields</a></li>
     <li class="closebtn"><button type="button" class="btn btn-warning" (click)="closeSfSettings()">Close</button></li>
   </ul>  
 </div>
@@ -23,7 +23,7 @@
       </div>
       <div class="btn-group active-btns mb_right0" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-primary activate-btn" *ngIf="!(integrationDetails?.activeCRM)" (click)="activateCRM()">Activate</button>
-        <button type="button" class="btn btn-primary activated-btn" *ngIf="integrationDetails?.activeCRM"><i class="fa fa-star"
+        <button type="button" class="btn btn-primary activated-btn ActivatedBtn" *ngIf="integrationDetails?.activeCRM"><i class="fa fa-star"
             style="font-size: 15px !important;"></i>Activated</button>
         <button type="button" class="btn btn-secondary unlink-btn disable-btn-text-color" (click)="unlinkCRM()" [disabled]="!(integrationDetails?.enableUnlink)">Unlink</button>
       </div>
@@ -36,7 +36,7 @@
     <app-list-loader *ngIf="customFieldsDtosLoader || ngxloading"></app-list-loader>
     <ng-container *ngIf="!customFieldsDtosLoader && !ngxloading">
       <div class="row m0">
-        <div class="col-md-8">
+        <div class="col-md-12">
           <div style="margin-bottom:20px">
             <h3>{{ integrationType }} custom fields
               <span class="reload-btn">

@@ -33,7 +33,9 @@ export class DonutPieChartComponent implements OnInit {
   @Output() notifySelectSlice = new EventEmitter();
   @Output() notifyUnSelectSlice = new EventEmitter();
   headerText: string;
-
+  chartColors: string[];
+  colClass:string;
+  portletLightClass:string;
   constructor(
     public authenticationService: AuthenticationService,
     public properties: Properties,
@@ -60,18 +62,27 @@ export class DonutPieChartComponent implements OnInit {
     this.vanityLoginDto.applyFilter = this.applyFilter;
     this.findDonutChart();
   }
-
+ 
   findDonutChart() {
     this.loader = true;
     if (this.chartId == "interactedAndNotInteractedTracksDonut") {
       this.headerText = 'Interacted & Not Interacted Tracks';
+      this.chartColors = ['#5C9BD1', '#E87E04', '#2bc2b5', '#90ed7d'];
+      this.colClass = "col-sm-5 col-lg-5";
+      this.portletLightClass = "portlet light active-donut-pie-chart";
       this.loadDonutChartForInteractedAndNotInteractedTracks();
     } else if (this.chartId == "typewiseTrackContentDonut") {
       this.headerText = 'Status Wise Track Assets';
+      this.chartColors = ['#3598dc', '#3480b5', '#8e5fa2', '#e87e04', '#26a69a'];
+      this.colClass = "col-sm-5 col-lg-5";
+      this.portletLightClass = "portlet light active-donut-pie-chart";
       this.loadDonutChartForTypewiseTrackContents();
     } else {
       this.headerText = "";
       this.chartId = 'activeInActivePartnersDonut';
+      this.chartColors = ['#e87e04','#8a8282c4'];
+      this.colClass = "col-sm-12 col-lg-12";
+      this.portletLightClass = "";
       this.loadDonutChartForActiveAndInActivePartners();
     }
   }
@@ -197,7 +208,7 @@ export class DonutPieChartComponent implements OnInit {
       credits: {
         enabled: false,
       },
-      colors: ["#5C9BD1", "#E87E04", "#2bc2b5", "#90ed7d"],
+      colors: this.chartColors,
       series: [
         {
           name: "Count",

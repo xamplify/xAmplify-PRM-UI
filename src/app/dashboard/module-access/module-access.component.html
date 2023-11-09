@@ -321,6 +321,12 @@
 								<td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.shareWhiteLabeledContent"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
+							<!--XNFR-381-->
+							<tr *ngIf="!marketing">
+								<th scope="row">Create Workflow (Partner Journey)</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.createWorkflow"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
 							
 						</tbody>
 					</table>

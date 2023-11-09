@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterViewInit, HostListener} from '@angular/core';
 
+declare var $;
 @Component({
   selector: 'app-maintenance',
   templateUrl: './maintenance.component.html',
@@ -7,9 +8,70 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MaintenanceComponent implements OnInit {
 
-  constructor() { }
+  route:string;
+  constructor(private el: ElementRef) {}
 
-  ngOnInit() {
+  ngOnInit(): void {  $('#underMaintenanceSite').hide(); }
+
+  // number countdown start
+  ngAfterViewInit(): void {
+    this.animateCount();
+    this.animateCount1();
+  }
+  animateCount() {
+    const element = this.el.nativeElement.querySelector('.count');
+    const finalValue = parseInt(element.innerText, 10);
+    let currentValue = 0;
+
+    const animationInterval = setInterval(() => {
+      if (currentValue < finalValue) {
+        currentValue++;
+        element.innerText = currentValue.toString();
+      } else {
+        clearInterval(animationInterval);
+      }
+    }, 40);
   }
 
+  animateCount1() {
+    const element = this.el.nativeElement.querySelector('.count1');
+    const finalValue = parseInt(element.innerText, 10);
+    let currentValue = 0;
+
+    const animationInterval = setInterval(() => {
+      if (currentValue < finalValue) {
+        currentValue++;
+        element.innerText = currentValue.toString();
+      } else {
+        clearInterval(animationInterval);
+      }
+    }, 40); // Adjust the interval for the desired animation speed
+  }
+   // number countdown end
+
+  // header navbar start
+  isNavbarBackgroundVisible: boolean = false;
+  isMaintenance:boolean = false;
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll() {
+    const scrollY = window.scrollY;
+    if(scrollY>0){
+   this.isMaintenance = false;
+    } else {
+      this.isMaintenance = true;
+    }
+    this.isNavbarBackgroundVisible = scrollY > 50;
+  }
+    // header navbar end
+
+ alertClick(){
+    $('#underMaintenanceSite').show(); 
+}
+hideAlert(){
+  $('#underMaintenanceSite').hide(); 
+}
+homeRouter(){
+  window.location.reload();
+}
 }

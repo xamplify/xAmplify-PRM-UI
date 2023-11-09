@@ -7,7 +7,7 @@ a.disabled {
   position: absolute;
   background-color: rgb(52, 73, 90);
   height: 100% !important;
-  z-index: 500;
+  z-index: 9000;
 }
 
 @media only screen and (min-width: 360px) and (max-width: 991px) { 

@@ -40,6 +40,8 @@ export class Module {
 	playbookAccess = false;
 	playbookAccessAsPartner = false;
 
+    hasShareLeadAccess = false;
+
 	isPrm = false;
 	isPrmTeamMember = false;
 	isPrmAndPartner = false;

@@ -4,7 +4,7 @@
   <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 sidePaddingsAbjustment" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
       <div class="grid-box">
           <img class="email-template-preview" *ngIf="emailTemplate.imagePath" src="{{emailTemplate.imagePath}}" alt="Image Not Found">
-          <h4 class="ellipsis mt5 mb5 f-w-600 fontDecinModes" data-toggle="tooltip" data-placement="bottom" title="{{emailTemplate.name}}">
+          <h4 class="ellipsis mt5 mb5 f-w-600 fontDecinModes" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.name}}">
               {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
           </h4>
           <div class="bar gridIconCustomization">

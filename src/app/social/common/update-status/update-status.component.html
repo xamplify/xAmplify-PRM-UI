@@ -632,7 +632,7 @@
                                                 <span translate> Created By <strong>{{contactList?.creatorName}}</strong></span>
                                             </h6>
                                             <ng-container *ngIf="!contactList?.partnerList">
-                                                <div style="display: inline-flex;">
+                                                <div class="displayinline-flex">
                                                     <h6 class="view-banner" translate>
                                                         <span *ngIf="contactList?.publicList" data-toggle="tooltip" data-placement="top"
                                                             title="{{actionsDescription?.contact_list_public}}" translate>Public
@@ -854,7 +854,7 @@
                           <div *ngIf="socialConnection.profileName;then profileName else fullName"></div>
                           <br>
                           <ng-template #profileName>
-                            <h5 class="caption-subject ellipsis text-center" style="margin: 0 5px;" title="{{socialConnection.profileName}}">{{socialConnection.profileName}}</h5>
+                            <h5 class="caption-subject ellipsis text-center" style="margin: 0 5px;" data-placement="top" data-toggle="tooltip" title="{{socialConnection.profileName}}">{{socialConnection.profileName | slice:0:34 }}<span *ngIf="socialConnection.profileName?.length>34">...</span></h5>
                           </ng-template>
                           <ng-template #fullName>
                             <h5 class="caption-subject ellipsis text-center" style="margin: 0 5px;" title="{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</h5>

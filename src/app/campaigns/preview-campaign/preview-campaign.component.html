@@ -95,6 +95,33 @@
                         </div>
                      </div>
                   </div>
+                 
+                   <!--Notify Partner / Notify Workflows-->
+                   <ng-container *ngIf="(campaign?.campaignTypeInString=='REGULAR' || campaign?.campaignTypeInString=='SURVEY' || campaign?.campaignTypeInString=='VIDEO' )  && campaign?.channelCampaign">
+                     <div class="media col-xs-12">
+                        <!--Notify Partner-->
+                        <div class="col-xs-6 col-sm-6">
+                           <div class="ml10">
+                              <h5>Notify {{authenticationService?.partnerModule?.customName}} ?</h5>
+                           </div>
+                           <div class="media-body pt5">
+                              <switch class="ml10" [disabled]="true" [status]="campaign?.emailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize">
+                              </switch>
+                           </div>
+                        </div>
+                        <!--Notify Workflows-->
+                        <div class="col-xs-6 col-sm-6" >
+                           <div class="ml10">
+                              <h5>Notify Workflows</h5>
+                           </div>
+                           <div class="media-body pt5">
+                              <switch class="ml10" [disabled]="true" [status]="campaign?.notifyChannelCampaignWorkflows" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize">
+                              </switch>
+                           </div>
+                        </div>
+                     </div>
+                   </ng-container>
+
                   <!--XNFR-118-->
                   <ng-container *ngIf="campaign?.emailNotification && !campaign?.oneClickLaunchChannelCampaign && campaign?.campaignTypeInString!='LANDINGPAGE'">
                      <div class="media col-xs-12">
@@ -124,7 +151,7 @@
                               <h5>Allow {{authenticationService?.partnerModule?.customName}} To Edit The Post</h5>
                            </div>
                            <div class="media-body pt5">
-                              <switch class="ml10" [disabled]="true" [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize">
+                              <switch class="ml10" [disabled]="true" [status]="campaign.allowPartnerToEditThePost" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize">
                               </switch>
                            </div>
                         </div>
@@ -158,6 +185,7 @@
                         <textarea class="ml25 disabled-background-color" rows="5" disabled>{{campaign?.description}}</textarea>
                      </div>
                   </ng-container>
+
                </fieldset>
                <fieldset class="scheduler-border" *ngIf="previewCampaignType === 'SOCIAL'">
                   <legend class="scheduler-border">Social Accounts</legend>
@@ -216,8 +244,8 @@
                                  <div class="item__content">
                                     <div class="flex-row">
                                        <span class="item__name" [title]="campaign.emailTemplate.name">
-                                       <strong>{{campaign.emailTemplate.name |slice:0:15}}</strong>
-                                       <strong *ngIf="campaign.emailTemplate?.name?.length>15">...</strong>
+                                       <strong>{{campaign.emailTemplate.name |slice:0:10}}</strong>
+                                       <strong *ngIf="campaign.emailTemplate?.name?.length>10">...</strong>
                                        </span>
                                        <span lass="item__name" title="created on" style="float:left">
                                        <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign?.emailTemplate?.createdDate"></app-timestamp></span>
@@ -468,9 +496,9 @@
                                                          <div class="col-xs-8 p0">
                                                             <img alt="" (click)="showEmailTemplate(campaign,reply.emailTemplate)" title="preview" data-toggle="tooltip" data-placement="top" class="thumb ng-scope pointer" style="width: auto; height: 64px;float: left;" src="{{reply.emailTemplate.subject}}">
                                                             <div class="col-xs-4">
-                                                               <span class="item__name" [title]="reply.emailTemplate.name" data-toggle="tooltip" data-placement="top">
-                                                               <strong>{{reply.emailTemplate.name |slice:0:35}}</strong>
-                                                               <strong *ngIf="reply.emailTemplate?.name?.length>35">...</strong>
+                                                               <span class="item__name" [title]="reply.emailTemplate.name" data-toggle="tooltip" data-placement="top" style="display: flex;">
+                                                               <strong>{{reply.emailTemplate.name |slice:0:10}}</strong>
+                                                               <strong *ngIf="reply.emailTemplate?.name?.length>10">...</strong>
                                                                </span>
                                                                <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="reply.emailTemplate.createdDate">
                                                                </app-timestamp>

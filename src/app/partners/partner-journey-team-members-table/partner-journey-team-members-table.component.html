@@ -1,8 +1,8 @@
 <div class="panel panel-info">
   <div class="panel-heading panel-heading-custom">
     <h3 class="panel-title mt7">Team Member Details</h3>
-    <span class="pull-right mt25m">
-      <div class="input-icon right" style="position: relative;width: 178px;">
+    <span class="pull-right mt25m mobilesearchdisplay">
+      <div class="input-icon right serachvoxwidth mobilesearchdisplayTop" >
         <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
           [ngModelOptions]="{standalone: true}" placeholder="Search"
           (keypress)="searchKeyPress($event.keyCode)">
@@ -12,7 +12,7 @@
           <i class="fa fa-search" aria-hidden="true"></i></button>
       </div>
     </span>
-    <span class="pull-right mt25m">
+    <span class="pull-right mt25m mobilesearchdisplay">
       <select class="form-control" [(ngModel)]="teamMemberId" [ngModelOptions]="{standalone: true}" placeholder="teamMemberId"
         id="teamMemberId" (ngModelChange)="onChangeTeamMember()">
         <option [value]="0">Select a Member</option>
@@ -22,7 +22,7 @@
     </span>
   </div>
   <div class="panel-body">
-    <div class="scroll">
+    <div class="scroll table-responsive">
       <table class="table">
         <thead>
           <tr>
@@ -44,7 +44,7 @@
                     {{teamMember?.teamMemberGroupName | slice:0:15}}</span>
                   <span *ngIf="teamMember?.teamMemberGroupName?.length>15">...</span>
                 </button>
-                <button class="tm-group-preview-css btn-primary" (click)="previewModules(teamMember.teamMemberGroupId)">
+                <button class="tm-group-preview-css btn-primary mobileBtnLeftnone" (click)="previewModules(teamMember.teamMemberGroupId)">
                 <i  data-toggle="tooltip" data-placement="bottom" title="Preview" class="fa fa-eye" aria-hidden="true"></i>
                 </button>
               </div>

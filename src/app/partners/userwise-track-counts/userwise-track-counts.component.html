@@ -1,7 +1,7 @@
-<div class="col-sm-6 col-md-6 col-lg-6 ml15m">
+<div class="col-sm-6 col-md-6 col-lg-6 col-xs-12 ml15m">
   <div class="panel panel-info mh530">
-    <div class="panel-heading panel-heading-custom">
-      <h3 class="panel-title mt7">Track Counts</h3>
+    <div class="panel-heading panel-heading-custom" id="pj-track-playbook-details-div">
+      <h3 class="panel-title mt7">{{type | titlecase }} Counts</h3>
       <span class="pull-right mt25m">
         <div class="input-icon right" style="position: relative;width: 178px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
@@ -15,18 +15,26 @@
       </span>
     </div>
     <div class="panel-body">    
-      <div class="scroll">
+      <div class="scroll table-responsive tableHeightScroll">
         <table class="table">
           <thead>
             <tr>              
-              <th scope="col">Team Member</th>
-              <th scope="col">Track Count</th>
+              <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"> Team Member </i></th>
+              <th scope="col" *ngIf="!isDetailedAnalytics"><i class="fa fa-building" aria-hidden="true"> Partner Company Name </i></th>
+              <th scope="col"><i class="fa fa-sort-numeric-desc" aria-hidden="true"> {{type | titlecase }} Count</i></th>
             </tr>
           </thead>
-          <tbody>          
-            <tr *ngFor="let item of pagination.pagedItems;let i  = index">              
-              <td> <app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
-              <td>{{item.trackCount}}</td>
+          <tbody>
+            <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+              <td *ngIf="isDetailedAnalytics"> <app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
+              <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button"
+                  (click)="viewAnalytics(item.companyId)">{{item.companyName}}</a></td>
+              <!-- <td>{{item.trackCount}}</td> -->
+              <td>
+                <i class="circled-number IconCustomization fontStyleNormal">
+                  <strong>{{item.trackCount}}</strong>
+                </i>
+              </td>
             </tr>
           </tbody>
         </table>

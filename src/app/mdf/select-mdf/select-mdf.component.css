@@ -110,3 +110,16 @@ p {
     font-size: 10px;
   }
 }
+@media only screen and (min-width:1162px) and (max-width:1300px) { 
+  .mltp {margin-left: 10% !important;}
+  .design-name {font-size: 12px;}
+}
+@media only screen and (min-width:1133px) and (max-width:1162px) { 
+  .mltp {margin-left: 8% !important;}
+  .design-name {font-size: 12px;}
+}
+@media only screen and (min-width:992px) and (max-width:1133px) { 
+  .mltp {margin-left: 8% !important;}
+  .design-name {font-size: 10px;}
+}
+

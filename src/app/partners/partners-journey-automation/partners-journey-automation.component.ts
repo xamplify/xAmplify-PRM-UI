@@ -56,7 +56,9 @@ export class PartnersJourneyAutomationComponent implements OnInit,OnDestroy {
     this.customResponse = new CustomResponse("SUCCESS", message, true);
   }
 
-  goToWorkflow(){this.router.navigate(["/home/partners/partner-workflow"]);}
+  goToWorkflow(){
+    this.referenceService.goToRouter("/home/partners/partner-workflow");
+  }
 
   findWorkflows(pagination:Pagination) {
     this.referenceService.loading(this.httpRequestLoader, true);
@@ -145,7 +147,8 @@ export class PartnersJourneyAutomationComponent implements OnInit,OnDestroy {
   }
 
   editWorkflow(workflowId:number){
-    this.referenceService.showSweetAlertInfoMessage();
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.referenceService.goToRouter("/home/partners/partner-workflow/"+workflowId);
   }
 
   ngOnDestroy(): void {

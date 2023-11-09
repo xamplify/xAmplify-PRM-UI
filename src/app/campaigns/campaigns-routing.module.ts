@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { ManagePublishComponent } from "./manage-publish/manage-publish.component";
 import { SelectCampaignTypeComponent } from "./select-campaign-type/select-campaign-type.component";
-import { CreateCampaignComponent } from "./create-campaign/create-campaign.component";
 import { SocialCampaignComponent } from "./social-campaign/social-campaign.component";
 import { AnalyticsComponent } from "./analytics/analytics.component";
 import { PartnerCampaignsComponent } from "./partner-campaigns/partner-campaigns.component";
@@ -29,7 +28,6 @@ export const campaignRoutes: Routes = [
   { path: "edit/:campaignType", component: AddCampaignComponent,canDeactivate: [PendingChangesGuard] },
   { path: "social", component: SocialCampaignComponent },
   { path: "social/:alias", component: SocialCampaignComponent },
-  { path: "edit", component: CreateCampaignComponent },
   { path: "manage", component: ManagePublishComponent },
   { path: "manage/:categoryId", component: ManagePublishComponent },
   { path: "manage/tm/:teamMemberId", component: ManagePublishComponent },

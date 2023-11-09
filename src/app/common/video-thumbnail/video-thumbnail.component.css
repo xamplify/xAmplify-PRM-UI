@@ -93,3 +93,9 @@
   border-radius: 3px;
   line-height: 1;
 }
+
+@media only screen and (min-width:992px) and (max-width:1300px) {
+  h4.VideoTitlesDec {
+    font-size: 12px;
+  }
+}
