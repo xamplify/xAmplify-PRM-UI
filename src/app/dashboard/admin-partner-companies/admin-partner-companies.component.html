@@ -102,7 +102,7 @@
               <tr>
                 <th style="width: 20%;" scope="row">DNS Configuration</th>
                 <th scope="row">
-                  <input type="checkbox" [(ngModel)]="dnsConfigured"
+                  <input class="checkBox_shadow" type="checkbox" [(ngModel)]="dnsConfigured"
                   [ngModelOptions]="{standalone: true}"></th>
                   <th scope="row">
                     <button class="btn btn-primary" (click)="updateDnsConfiguration(selectedPartnerCompany.companyId)">Update</button>
@@ -122,12 +122,12 @@
               <tbody>
                 <tr>
                   <th scope="row">Login As Team Member</th>
-                  <td><input type="checkbox" [(ngModel)]="campaignAccess.loginAsTeamMember"
+                  <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.loginAsTeamMember"
                       [ngModelOptions]="{standalone: true}"></td>
                 </tr>
                 <tr>
                   <th scope="row">Exclude Users/Domains</th>
-                  <td><input type="checkbox" [(ngModel)]="campaignAccess.excludeUsersOrDomains"
+                  <td><input class="checkBox_shadow" type="checkbox" [(ngModel)]="campaignAccess.excludeUsersOrDomains"
                       [ngModelOptions]="{standalone: true}"></td>
                 </tr>
                 <tr>

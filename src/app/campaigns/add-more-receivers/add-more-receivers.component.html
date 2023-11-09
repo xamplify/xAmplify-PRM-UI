@@ -47,7 +47,7 @@
                                      <table class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactsPagination.totalRecords > 0">
                                         <thead>
                                            <tr>
-                                              <td align="center" id="border-bottom-padding">
+                                              <td align="center checkBox_shadow" id="border-bottom-padding">
                                                  <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
                                               </td>
                                               <th class="hidden-xs" *ngIf="showExpandButton"></th>
@@ -66,10 +66,10 @@
                                               <tr role="row" id="campaignContactListTable_{{contacts.id}}" (click)="highlightContactRow(contacts,$event,contacts.noOfContacts,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)"
                                               (mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage">
                                               <td class="text-center">
-                                                 <div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
+                                                 <div class="form-group checkBox_shadow" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
                                                     <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)">
                                                  </div>
-                                                 <div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
+                                                 <div class="form-group checkBox_shadow" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
                                                     <input type="checkbox" disabled="disabled" data-toggle="tooltip" data-placement="bottom" title="Contacts are in progress">
                                                  </div>
                                               </td>

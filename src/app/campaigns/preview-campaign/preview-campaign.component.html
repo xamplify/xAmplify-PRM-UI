@@ -234,7 +234,7 @@
                            <li class="list__item mb_mr0" style="width:auto !important;float:none;margin-right: -29px;margin-top: -13px;" [class.list__item--selected]="true">
                               <div class="flex-row">
                                  <div class="item__select-box-wrapper">
-                                    <span class="select-box"> <label> <input type="checkbox" checked="checked"></label></span>
+                                    <span class="select-box"> <label> <input class="checkBox_shadow" type="checkbox" checked="checked"></label></span>
                                     <span class="ng-scope">
                                     <a class="item__preview item__preview--image img-container custom" target="_BLANK">
                                     <img alt="" class="thumb ng-scope" style="width:98px !important" src="{{campaign.emailTemplate.subject}}">
@@ -290,7 +290,7 @@
                            <li class="list__item mb_mr0" style="width:auto !important;float:none;margin-right: -29px;margin-top: -13px;" [class.list__item--selected]="true">
                               <div class="flex-row">
                                  <div class="item__select-box-wrapper">
-                                    <span class="select-box"> <label> <input type="checkbox" checked="checked"></label></span>
+                                    <span class="select-box"> <label> <input class="checkBox_shadow" type="checkbox" checked="checked"></label></span>
                                     <span class="ng-scope">
                                     <a class="item__preview item__preview--image img-container custom" target="_BLANK">
                                     <img alt="" class="thumb ng-scope" style="width:98px !important" src="{{campaign.landingPage.thumbnailPath}}">
@@ -750,7 +750,7 @@
                   <tbody>
                      <tr *ngFor="let userList of userLists">
                         <th scope="row">
-                           <input type="checkbox" [disabled]="!userList.emailValidationInd" id='{{userList.id}}'>
+                           <input class="checkBox_shadow" type="checkbox" [disabled]="!userList.emailValidationInd" id='{{userList.id}}'>
                         </th>
                         <td>{{userList.name}}</td>
                         <td>{{userList.uploadedBy}}

@@ -104,23 +104,28 @@
 						 <div class="portlet-body">
 							<div class="row">
 							   <div class="col-xs-12 col-sm-4 col-md-4 SideParddings1">
-								  <button class="btn-primary btn-block SidePaddings" id="addContacts"
+								<div class="card_effect_bg_color">
+								  <button class="btn-primary btn-block SidePaddings card_effect" id="addContacts"
 								  (click)="addContactModalOpen()"
 								  [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
 								  <i class="fa fa-user-plus IconTopMargin"></i>													
 								  <span translate>One at a Time</span>
 								  </button>
+								  </div>
 							   </div>
 							   <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs SideParddings2">
-								  <button class="Btn-Green btn-block SidePaddings" id="copyFromClipBoard"
+								<div class="card_effect_bg_color">
+								  <button class="Btn-Green btn-block SidePaddings card_effect" id="copyFromClipBoard"
 								  (click)="copyFromClipboard()"
 								  [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
 								  <i class="fa fa-users IconTopMargin"></i> <span translate>Copy list
 								  from clipboard</span>
 								  </button>
+								</div>
 							   </div>
 							   <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs SideParddings3">
-								  <button class="btn-primary fileinput-button btn-block SidePaddings"
+								<div class="card_effect_bg_color">
+								  <button class="btn-primary fileinput-button btn-block SidePaddings card_effect"
 									 id="uploadCSV"
 									 [class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
 								  <i
@@ -132,6 +137,7 @@
 								  (change)="fileChange(input)" accept=".csv" #input
 								  [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality" />
 								  </button>
+								</div>
 								  <div style="margin-top: 5px;">
 									 <a (click)="downloadEmptyCsv()"> <i
 										class="fa fa-download" aria-hidden="true"
@@ -159,7 +165,7 @@
 						 </div>
 						 <div class="portlet-body">
 							<div class="row">
-							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
 								  style="margin-top: 10px;">
 								  <a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal"
 								  style="background-color: white"
@@ -195,7 +201,7 @@
 									 </a>
 								  </div>
 							   </div>
-							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
 								  style="margin-top: 10px;">
 								  <a *ngIf="googleImageBlur" id="googleContact_button"
 								  style="background-color: white" (click)="googleContacts()"
@@ -228,7 +234,7 @@
 									 </a>
 								  </div>
 							   </div>
-							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
 								  style="margin-top: 10px;">
 								  <a *ngIf="zohoImageBlur" id="zohoContact_button"
 								  style="background-color: white"
@@ -263,7 +269,7 @@
 									 </a>
 								  </div>
 							   </div>
-							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
 								  style="margin-top: 10px;">
 								  <a *ngIf="marketoImageBlur" id="marketoContact_button"
 								  style="background-color: white"
@@ -292,7 +298,7 @@
 									 height="86" width="90">
 								  </a>												
 							   </div>
-							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
 								  style="margin-top: 10px;">
 								  <a *ngIf="hubspotImageBlur" id="hubspotContact_button"
 								  style="background-color: white"
@@ -321,7 +327,7 @@
 									 height="86" width="90">
 								  </a>
 							   </div>
-							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+							   <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
 								  style="margin-top: 10px;">
 								  <a *ngIf="microsoftDynamicsImageBlur"
 								  id="MicrosoftContact_button" style="background-color: white"
@@ -352,7 +358,7 @@
 							   </div>
 							   <!-- XNFR-230 -->
 							   <div id="showCRM" class="collapse">
-								  <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8"
+								  <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
 									 style="margin-top: 10px;">
 									 <a *ngIf="pipedriveImageBlur"
 									 id="pipedriveContact_button" style="background-color: white"
@@ -649,7 +655,7 @@
 							   <table class="table tgrid" id="google-contacts-table">
 								  <thead>
 									 <tr>
-										<th align="center" class="text-center"><input type="checkbox" name="all"
+										<th align="center" class="text-center"><input type="checkbox" class="checkBox_shadow" name="all"
 										   [(ngModel)]="isHeaderCheckBoxChecked"
 										   (change)="checkAll($event)" class=""
 										   id="checkAllExistingContacts" />
@@ -669,7 +675,7 @@
 											  *ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10 && selectedAddContactsOption != 11"><input
 											  type="checkbox"
 											  [checked]="selectedContactListIds.indexOf(user.id)>-1"
-											  class="chk"
+											  class="chk checkBox_shadow"
 											  [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
 											  lang="{{user.name}}" name="campaignContact[]"
 											  value="{{user.id}}" id="{{user.id}}"
@@ -679,7 +685,7 @@
 											  *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11"><input
 											  type="checkbox"
 											  [checked]="selectedContactListIds.indexOf(user.id)>-1"
-											  class="chk"
+											  class="chk checkBox_shadow"
 											  [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
 											  lang="{{user.name}}" name="campaignContact[]"
 											  value="{{user.id}}" id="{{user.id}}"
@@ -907,7 +913,7 @@
 				   </div>
 				</div>
 				<!-- END PAGE CONTENT -->
-				<div class="panel panel-success mt10">
+				<div class="panel panel-success mt10 notes_box">
 				   <div class="panel-heading">
 					  <h3 class="panel-title" translate>**Notes</h3>
 				   </div>
@@ -1102,7 +1108,7 @@
 				   </h4>
 				   <h4 style="margin-left: 20px;" translate *ngIf="!assignLeads">
 					  <span class="glyphicon glyphicon-triangle-right"></span>Would you
-					  like to delete associated contact lists?<input type="checkbox"
+					  like to delete associated contact lists?<input class="checkBox_shadow" type="checkbox"
 					  [(ngModel)]="isUnLinkSocialNetwork"
 					  [ngModelOptions]="{standalone: true}">
 				   </h4>
@@ -1333,7 +1339,7 @@
 				</h4>
 			 </div>
 			 <div class="form-group" style="margin-top: 15px;">
-				<input type="checkbox" [(ngModel)]="isCheckTC"
+				<input class="checkBox_shadow" type="checkbox" [(ngModel)]="isCheckTC"
 				[ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc"
 				checked translate>
 				<!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->

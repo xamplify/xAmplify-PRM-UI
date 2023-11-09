@@ -470,7 +470,7 @@
                                                             <!-- --------------Title--------------------------- -->
                                                             <td>
                                                                 <input
-                                                                class="radio-button-css"
+                                                                class="radio-button-css radioButton_shadow"
                                                                 *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId && videoFile?.processed"
                                                                 type="radio" name="videoFileId" [value]="videoFile.id"
                                                                 (click)="highlightSelectedVideo(videoFile)"
@@ -478,7 +478,7 @@
                                                                 [checked]="videoFile.id == selectedVideoId"> 
 
                                                                 <input
-                                                                class="radio-button-css"
+                                                                class="radio-button-css radioButton_shadow"
                                                                 *ngIf="(videoFile.viewBy=='DRAFT' || !videoFile?.processed)&& videoFile.id!==videoId"
                                                                 type="radio" name="videoFileId" [value]="videoFile.id"
                                                                 disabled="disabled" data-toggle="tooltip" data-placement="bottom"
@@ -579,7 +579,7 @@
                                                         <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === selectedEmailTemplateRow ? 'template-selected-border' :'' " (click)="selectEmailTemplate(emailTemplate)">
                                                             <span class="select-check-box" [class.hide]="emailTemplate?.draft">
                                                                 <label>
-                                                                    <input  type="radio" class="radio-custimization pointer" [checked]="emailTemplate?.id === selectedEmailTemplateRow">
+                                                                    <input  type="radio" class="radio-custimization pointer radioButton_shadow" [checked]="emailTemplate?.id === selectedEmailTemplateRow">
                                                                 </label>
                                                             </span>
                                                             <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
@@ -680,7 +680,7 @@
                                                         <div class="grid-box imgage-paddings"  [ngClass]="page?.id === selectedPageId ? 'template-selected-border' :'' " (click)="selectPage(page)">
                                                             <span class="select-check-box">
                                                                 <label>
-                                                                    <input  type="radio" class="radio-custimization pointer" [checked]="page?.id === selectedPageId">
+                                                                    <input  type="radio" class="radio-custimization pointer radioButton_shadow" [checked]="page?.id === selectedPageId">
                                                                 </label>
                                                             </span>
                                                             <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="page?.thumbnailPath" alt="No Preview Found" />
@@ -804,7 +804,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th scope="row" class="text-center">
-                                                                <input class="pointer" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
+                                                                <input class="pointer checkBox_shadow" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
                                                             </th>
                                                             <th class="hidden-xs" *ngIf="showRecipientsSearchResultExpandButton" scope="col"></th>
                                                             <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
@@ -827,7 +827,7 @@
                                                                 [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)" >
                                                                 <td class="text-center pointer">
                                                                     <div class="form-group">
-                                                                        <input type="checkbox" class="chk pointer" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" 
+                                                                        <input type="checkbox" class="chk pointer checkBox_shadow" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" 
                                                                         name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)"
                                                                         [disabled]="(contacts.name==properties.activeMasterPartnerList  || contacts.name==properties.inActiveMasterPartnerList) && contacts.count==0">
                                                                     </div>
@@ -1064,7 +1064,7 @@
                                                                                                             <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === reply?.selectedEmailTemplateId ? 'template-selected-border' :'' " (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)">
                                                                                                                 <span class="select-check-box" [class.hide]="emailTemplate?.draft">
                                                                                                                     <label>
-                                                                                                                        <input  type="radio" class="radio-custimization" [checked]="emailTemplate?.id === reply?.selectedEmailTemplateId">
+                                                                                                                        <input  type="radio" class="radio-custimization radioButton_shadow" [checked]="emailTemplate?.id === reply?.selectedEmailTemplateId">
                                                                                                                     </label>
                                                                                                                 </span>
                                                                                                                 <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
@@ -1242,7 +1242,7 @@
                                                                                                         <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === url?.selectedEmailTemplateId ? 'template-selected-border' :'' " (click)="setWebsiteLinkEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)">
                                                                                                             <span class="select-check-box" [class.hide]="emailTemplate?.draft">
                                                                                                                 <label>
-                                                                                                                    <input  type="radio" class="radio-custimization" [checked]="emailTemplate?.id === url?.selectedEmailTemplateId">
+                                                                                                                    <input  type="radio" class="radio-custimization radioButton_shadow" [checked]="emailTemplate?.id === url?.selectedEmailTemplateId">
                                                                                                                 </label>
                                                                                                             </span>
                                                                                                             <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
@@ -1332,7 +1332,7 @@
                                     <div class="btn-group btn-group-justified">
                                         <ng-container *ngFor="let launchOption of launchOptions;let i = index">
                                             <label [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn Btn-Green mBtnAlign button-border'">
-                                                <input type="radio" id="launch-option-{{i}}" class="text-center mLabelAlign mr10 pointer" name="scheduleCampaign"
+                                                <input type="radio" id="launch-option-{{i}}" class="text-center mLabelAlign mr10 pointer radioButton_shadow" name="scheduleCampaign"
                                                     [value]="launchOption.value" [checked]="selectedLaunchOption==launchOption.value" (click)="selectLaunchOption();buttonName=launchOption.key" />
                                                 <span class="text-algn" *ngIf="launchOption?.key=='Launch'">Now</span>
                                                 <span class="text-algn" *ngIf="launchOption?.key!='Launch'">{{launchOption.key}}</span>
@@ -1408,7 +1408,7 @@
                 <app-preview-popup #previewPopUpComponent *ngIf="isShowEditTemplatePopup && campaignType=='page'"></app-preview-popup>
                 <app-merge-tags *ngIf="isShowEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
                 <button (click)="toggleOpenLinksInNewTab()" class="btn-primary olint" *ngIf="isShowEditTemplatePopup && campaignType=='page'">
-                    Open Links In New Tab <input class="pointer" type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
+                    Open Links In New Tab <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
                   </button>
                 </div>
             </div>

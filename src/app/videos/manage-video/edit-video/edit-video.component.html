@@ -211,7 +211,7 @@
 									</div>
 									<div class="form-group">
 										<label class="col-xs-12 col-sm-3 col-md-3 control-label" style="margin-left: -4px;cursor:pointer" translate>Thumbnail :
-											<input name="options" type="radio" (click)="changeImageThumbnailOption();uploader.clearQueue();"
+											<input class="radioButton_shadow" name="options" type="radio" (click)="changeImageThumbnailOption();uploader.clearQueue();"
 											 [checked]="thumbnailRadioOpen">
 										</label>
 										<div class="col-xs-12 col-sm-9 col-md-12 col-lg-9" style="padding:0;" *ngIf="thumbnailRadioOpen">
@@ -669,7 +669,7 @@
 											<label translate>
 												<div style="float: left;margin-right: 10px;cursor:pointer">
 													<span>
-														<input id="names" type="checkbox" formControlName="name" (change)="callToActionNames()">
+														<input class="checkBox_shadow" id="names" type="checkbox" formControlName="name" (change)="callToActionNames()">
 													</span>
 												</div> Ask for First and Last name
 											</label>
@@ -683,7 +683,7 @@
 											<label translate>
 												<div style="float: left;margin-right: 10px; cursor:pointer">
 													<span>
-														<input id="isSkiped" type="checkbox" formControlName="skip" (change)="allowViewersToSkipped()" #isSkip>
+														<input class=checkBox_shadowid="isSkiped" type="checkbox" formControlName="skip" (change)="allowViewersToSkipped()" #isSkip>
 													</span>
 												</div> Allow viewers to skip
 											</label>

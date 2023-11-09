@@ -80,7 +80,7 @@
                      The event has been cancelled.
                   </div>
                   <!-- ****************campaign info**************** -->
-                  <div class="pl10 pr10 col-xs-12" [ngClass]="{
+                  <div class="pl10 pr10 col-xs-12 tiles_hover_effect" [ngClass]="{
               'col-sm-3': campaignType === 'VIDEO',
               'col-sm-4':
               campaignType === 'REGULAR' ||
@@ -146,7 +146,7 @@
                      </a>
                   </div>
                   <!-- ****************video info**************** -->
-                  <div class="pl10 pr10 col-xs-12" [ngClass]="{
+                  <div class="pl10 pr10 col-xs-12 tiles_hover_effect" [ngClass]="{
            'col-sm-3': campaignType === 'VIDEO',
            forbidden: !isDataShare ? true : null
            }" *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId > 0">
@@ -171,7 +171,7 @@
                      </a>
                   </div>
                   <!-- ****************video not found info**************** -->
-                  <div class="pl10 pr10 col-xs-12 blur" [ngClass]="{ 'col-sm-4': campaignType === 'VIDEO' }"
+                  <div class="pl10 pr10 col-xs-12 blur tiles_hover_effect" [ngClass]="{ 'col-sm-4': campaignType === 'VIDEO' }"
                      *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId == 0">
                      <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter purple-soft blur" style="display: flex">
                         <div class="visual">
@@ -189,7 +189,7 @@
                      </a>
                   </div>
                   <!-- ****************Event campaign info**************** -->
-                  <div class="pl10 pr10 col-xs-12" *ngIf="campaignType === 'EVENT'"
+                  <div class="pl10 pr10 col-xs-12 tiles_hover_effect" *ngIf="campaignType === 'EVENT'"
                      [ngClass]="{ 'col-sm-4': campaignType === 'EVENT' }">
                      <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter red-soft forbidden" style="display: flex">
                         <div class="visual">
@@ -210,7 +210,7 @@
                      </a>
                   </div>
                   <!-- ****************Email template info**************** -->
-                  <div class="pl10 pr10 col-xs-12" [ngClass]="{
+                  <div class="pl10 pr10 col-xs-12 tiles_hover_effect" [ngClass]="{
   'col-sm-3': campaignType === 'VIDEO',
   'col-sm-4':
   campaignType === 'REGULAR' ||
@@ -257,7 +257,7 @@
                      </a>
                   </div>
                   <!-- ****************Page info**************** -->
-                  <div class="pl10 pr10 col-xs-12" [ngClass]="{
+                  <div class="pl10 pr10 col-xs-12 tiles_hover_effect" [ngClass]="{
   'col-sm-4': campaignType === 'LANDINGPAGE',
   forbidden: !isPartnerEnabledAnalyticsAccess ? true : null
   }" *ngIf="
@@ -314,7 +314,7 @@
                   <!-- ****************Email template not found info**************** -->
                   <div [hidden]="
   campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE'
-  " class="pl10 pr10 col-xs-12 col-sm-4 blur" *ngIf="campaign.selectedEmailTemplateId == 0">
+  " class="pl10 pr10 col-xs-12 col-sm-4 blur tiles_hover_effect" *ngIf="campaign.selectedEmailTemplateId == 0">
                      <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" style="cursor: default; display: flex">
                         <div class="visual">
                            <i class="fa fa-envelope-open" aria-hidden="true"></i>
@@ -331,7 +331,7 @@
                      </a>
                   </div>
                   <!-- ****************contact list info**************** -->
-                  <div class="pl10 pr10 col-xs-12" [ngClass]="{
+                  <div class="pl10 pr10 col-xs-12 tiles_hover_effect" [ngClass]="{
      'col-sm-3': campaignType === 'VIDEO',
      'col-sm-4':
      campaignType === 'REGULAR' ||
@@ -2056,10 +2056,10 @@
                            {{ campaignReport.selectedPartnerFirstName | slice : 0 : 20 }}
                            <span *ngIf="campaignReport.selectedPartnerFirstName?.length > 20">...</span>
                         </h4>
-                        <!-- <h4 class="m0" title="{{campaignReport.selectedPartnerLastName}}">{{campaignReport.selectedPartnerLastName | slice:0:20}} <span *ngIf="campaignReport.selectedPartnerLastName?.length>20">...</span></h4> -->
-                        <h4 class="m0" data-toggle="tooltip" data-placement="bottom" title="{{ campaignReport.selectedPartnerEmailId }}">
-                           {{ campaignReport.selectedPartnerEmailId | slice : 0 : 24 }}
-                           <span *ngIf="campaignReport.selectedPartnerEmailId?.length > 24">...</span>
+                        <h4 class="m0">
+                           <a data-toggle="tooltip" data-placement="bottom" title="{{ campaignReport.selectedPartnerEmailId }}">{{ campaignReport.selectedPartnerEmailId | slice : 0 : 24 }}
+                              <span *ngIf="campaignReport.selectedPartnerEmailId?.length > 24">...</span>
+                           </a>
                         </h4>
                         <h5 class="text-info" style="margin-bottom: 0">
                            {{ campaign.launchTime | date : "fullDate" }}

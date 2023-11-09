@@ -202,7 +202,7 @@
                                             placeholder="YYYY-MM-DD" id="toDateFilter">
                                          </div>
                                          <div class="form-group col-sm-4">
-                                            <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
+                                            <button type="button" class="btn Btn-Green" [disabled]="" (click)="validateDateFilters()"
                                             translate>Filter</button>
                                          </div>
                                       </div>
@@ -486,7 +486,7 @@
                                          </div>
                                          <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 p0"
                                             *ngIf="campaign.campaignType.indexOf('REGULAR')>-1 ||campaign.campaignType.indexOf('VIDEO')>-1 || campaign.campaignType.indexOf('LANDINGPAGE')>-1 ">
-                                            <button class="btn btn-default btn-xs re-distributed-high-level black-blue-c TableDataBtn">
+                                            <button class="btn btn-default btn-xs re-distributed-high-level black-blue-c TableDataBtn marginSpacing">
                                                <div class="portlet-body text-center">
                                                   <h6 class="custom-font-size">
                                                      <strong class="custom-font-weight">{{campaign?.emailClicked}}</strong>
@@ -1338,8 +1338,8 @@
            </div>
         </div>
         <div class="modal-footer">
-           <button type="button" class="btn green" translate>Submit</button>
-           <button type="button" class="btn green" data-dismiss="modal" translate>Cancel</button>
+           <button type="button" class="btn Btn-Green" translate>Submit</button>
+           <button type="button" class="btn Btn-Green" data-dismiss="modal" translate>Cancel</button>
         </div>
      </div>
   </div>
@@ -1392,7 +1392,7 @@
                              [ngModelOptions]="{standalone: true}">
                           </div>
                           <div class="col-sm-12">
-                             <input type="checkbox" id="allDay" class="form-check-input mt10" [attr.disabled]="true"
+                             <input type="checkbox" id="allDay" class="form-check-input mt10 checkBox_shadow" [attr.disabled]="true"
                              [checked]="eventCampaign.campaignEventTimes[0].allDay">
                              <label class="form-check-label" for="allDay" style="float:none" translate> All Day</label>
                           </div>

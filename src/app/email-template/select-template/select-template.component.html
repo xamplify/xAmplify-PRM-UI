@@ -66,7 +66,7 @@
                             <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
                         </div>
                         <div *ngIf="(selectedTemplateTypeIndex == 11 || selectedTemplateTypeIndex == 12) && filteredEmailTemplates?.length > 0" style="width: 100%;padding-left: 15px;" class="row">
-                            <label class="select-all-filter filter_btn" style="float:right;"> <input type="checkbox" value="" 
+                            <label class="select-all-filter filter_btn" style="float:right;"> <input class="checkBox_shadow" type="checkbox" value="" 
 									[(ngModel)]="selectAllTemplates" (ngModelChange)="selectAll(selectAllTemplates)" >
 									<span style="font-weight: 600;font-size: 12px;" translate>Select All</span> </label>
                             <div *ngIf="isSaveMarketoTemplatesButtonState" style="float:right;margin-right: 10px">
@@ -82,11 +82,11 @@
                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 mrg_10" *ngFor="let beeRegularTemplate of filteredEmailTemplates | selectEmailTemplatesFilter: templateFilter:filteredCount;let i=index">
                             <div class="grid-box mb_hgh_grid">
                                 <div *ngIf="beeRegularTemplate.marketoTemplate" style="width: 100%;padding-left: 15px;">
-                                    <label class="checkbox-inline" style="float:left;"><input type="checkbox" value="" style="width: 20px;height: 20px;"
+                                    <label class="checkbox-inline" style="float:left;"><input class="checkBox_shadow" type="checkbox" value="" style="width: 20px;height: 20px;"
 										[(ngModel)]="beeRegularTemplate.isSelectedMarketoTemplate" (ngModelChange)="setSelectedTemplates(beeRegularTemplate)"></label>
                                 </div>
                                 <div *ngIf="beeRegularTemplate.hubSpotTemplate" style="width: 100%;padding-left: 15px;">
-                                    <label class="checkbox-inline" style="float:left;"><input type="checkbox" value="" style="width: 20px;height: 20px;"
+                                    <label class="checkbox-inline" style="float:left;"><input class="checkBox_shadow" type="checkbox" value="" style="width: 20px;height: 20px;"
 										[(ngModel)]="beeRegularTemplate.isSelectedHubSpotTemplate" (ngModelChange)="selectedHubSpotTemplate(beeRegularTemplate)"></label>
                                 </div>
                                 <img class="img-responsive center-block" *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate" src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
