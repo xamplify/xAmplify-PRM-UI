@@ -286,7 +286,7 @@
                                             <thead>
                                                <tr>
                                                   <td class="text-center" [hidden]="campaign?.oneClickLaunch">
-                                                     <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" [ngModelOptions]="{standalone: true}" />
+                                                     <input clas="checkBox_shadow" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" [ngModelOptions]="{standalone: true}" />
                                                   </td>
                                                   <th *ngIf="showExpandButton"></th>
                                                   <th class="text-center">
@@ -308,12 +308,12 @@
                                                   [class.contact-list-selected]="(selectedUserlistIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)">
                                                   <td class="text-center" [hidden]="campaign?.oneClickLaunch">
                                                      <div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
-                                                        <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}"
+                                                        <input class="checkBox_shadow" type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}"
                                                         [checked]="selectedUserlistIds.indexOf(contacts.id)>-1" name="campaignContact[]" value="{{contacts.id}}"
                                                         (click)="highlightRow(contacts.id,$event)">
                                                      </div>
                                                      <div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
-                                                        <input type="checkbox" disabled="disabled" title="Contacts are in progress">
+                                                        <input class="checkBox_shadow" type="checkbox" disabled="disabled" title="Contacts are in progress">
                                                      </div>
                                                   </td>
                                                   <td class="cw" *ngIf="showExpandButton">
@@ -480,7 +480,7 @@
                                                                  <div class="item__select-box-wrapper">
                                                                     <span class="select-box"> 
                                                                     <label> 
-                                                                    <input type="checkbox"
+                                                                    <input type="checkbox" class="checkBox_shadow"
                                                                        [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}" checked="checked">
                                                                     </label>
                                                                     </span>
@@ -627,7 +627,7 @@
                                                         <li class="list__item" [class.list__item--selected]="url.emailTemplate.id==url.selectedEmailTemplateId" id="rcaretw">
                                                            <div class="flex-row">
                                                               <div class="item__select-box-wrapper">
-                                                                 <span class="select-box"> <label> <input type="checkbox"
+                                                                 <span class="select-box"> <label> <input type="checkbox" class="checkBox_shadow"
                                                                     [value]="url.emailTemplate.id" id="reply-{{i}}-{{url.emailTemplate.id}}" checked="checked">
                                                                  </label>
                                                                  </span>
@@ -707,17 +707,17 @@
                        <div class="btn-group btn-group-justified width_unset">
                           <ng-container>
                              <label  class="btn btn-primary button-border">
-                             <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+                             <input type="radio" class="text-center mLabelAlign radioButton_shadow" name="scheduleCampaign"
                                 [value]="campaignLaunchOptions[0]" formControlName="scheduleCampaign"
                                 ngDefaultControl style=" margin-right:10px; " /><span class="text-algn">Now</span>
                              </label>
                              <label  class="btn btn-warning button-border Sch-class" >
-                             <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+                             <input type="radio" class="text-center mLabelAlign radioButton_shadow" name="scheduleCampaign"
                                 [value]="campaignLaunchOptions[1]" formControlName="scheduleCampaign"
                                 ngDefaultControl style="margin-right:10px " /><span class="text-algn">Schedule</span>
                              </label>
                              <label class="btn Btn-Green mBtnAlign button-border">
-                             <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+                             <input type="radio" class="text-center mLabelAlign radioButton_shadow" name="scheduleCampaign"
                                 [value]="campaignLaunchOptions[2]" formControlName="scheduleCampaign"
                                 ngDefaultControl style="margin-right:10px" /><span class="text-algn">Save</span>
                              </label>
@@ -847,7 +847,7 @@
                  <tbody>
                     <tr *ngFor="let userList of userLists">
                        <th scope="row">
-                          <input type="checkbox" [disabled]="!userList.emailValidationInd" id='{{userList.id}}' (click)="highlightRow(userList.id)">
+                          <input class="checkBox_shadow" type="checkbox" [disabled]="!userList.emailValidationInd" id='{{userList.id}}' (click)="highlightRow(userList.id)">
                        </th>
                        <td>{{userList.name}}</td>
                        <td>{{userList.uploadedBy}}

@@ -5,7 +5,7 @@
         <div *ngFor="let dto of detailReportsForTotalUsers" style="padding:  1em 1em 0 1em;padding-right: 17px;"
         [title]="dto.hasAccess? 'Click to see details':'You do not have permission to see details'" 
         [className]="dto.hasAccess?(authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrm
-      || authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationService?.module?.isPrmTeamMember)? 'col-sm-6 col-xs-6 col-lg-4 col-md-4': 'col-sm-6 col-xs-12 col-lg-6 col-md-6' : 
+      || authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationService?.module?.isPrmTeamMember)? 'col-sm-6 col-xs-6 col-lg-4 col-md-4': 'col-sm-6 col-xs-12 col-lg-6 col-md-6 tiles_hover_effect' : 
       (authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrm
       || authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationService?.module?.isPrmTeamMember)?
       'col-sm-6 col-xs-6 col-lg-4 col-md-4 dashboard-access-denied' :'col-sm-6 col-xs-12 col-lg-6 col-md-6 dashboard-access-denied'" (click)="goToManage(dto)">

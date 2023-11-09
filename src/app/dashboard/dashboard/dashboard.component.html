@@ -152,7 +152,7 @@
                         <div>
                             <div class="col-xs-12 col-sm-4 col-md-4" *ngFor="let item of campaignReportOptions">
                                 <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="campaignReportType" [value]="item" [checked]="item === userCampaignReport.campaignReportOption"
+                    <input class="form-check-input radioButton_shadow" type="radio" name="campaignReportType" [value]="item" [checked]="item === userCampaignReport.campaignReportOption"
                      (change)="onSelectionChangeCampaignReportOption(item)"> {{item}}
                   </label>
                             </div>

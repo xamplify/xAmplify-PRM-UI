@@ -33,7 +33,7 @@
             <thead>
                 <tr>
                     <th scope="row" class="text-center">
-                     <input type="checkbox"  [(ngModel)]="currentPartner.isTeamMemberHeaderCheckBoxChecked" id="{{partnerGroupTeamMemberheaderCheckBoxId}}-{{currentPartner?.index}}"
+                     <input type="checkbox"  class="checkBox_shadow" [(ngModel)]="currentPartner.isTeamMemberHeaderCheckBoxChecked" id="{{partnerGroupTeamMemberheaderCheckBoxId}}-{{currentPartner?.index}}"
                       (change)="selectOrUnselectAllTeamMembersOfTheCurrentPage($event,currentPartner)">
                    </th>
                     <th scope="row">Entity Info</th>
@@ -43,7 +43,7 @@
                 <tr *ngFor="let teamMember of teamMembersPagination.pagedItems;let i=index" id="partner-module-teamMember-tr-{{i}}" [class.row-selected]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.id)>-1"
                     (click)="highlightTeamMemberOnRowClick(teamMember.id,$event,currentPartner)">
                     <td class="text-center">
-                        <input type="checkbox" id="{{teamMember.id}}" [checked]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.id)>-1"
+                        <input type="checkbox" class="checkBox_shadow" id="{{teamMember.id}}" [checked]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.id)>-1"
                             name="{{partnerModuleTeamMemberCheckBoxName}}-{{currentPartner?.index}}[]" value="{{teamMember.id}}"
                             (click)="$event.stopPropagation();highlightTeamMemberRowOnCheckBoxClick(teamMember.id,$event,currentPartner);">
                         </td>

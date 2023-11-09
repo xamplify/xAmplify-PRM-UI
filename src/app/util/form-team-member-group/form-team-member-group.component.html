@@ -114,7 +114,7 @@
                                     [class.row-selected]="selectedTeamMemberIds != undefined && selectedTeamMemberIds.indexOf(teamMember.id)>-1"
                                     (click)="highlightSelectedTeamMemberRowOnRowClick(teamMember.id,group.id,$event)">
                                     <td class="text-center">
-                                      <input type="checkbox" id="{{teamMember.id}}"
+                                      <input type="checkbox" id="{{teamMember.id}}" class="checkBox_shadow"
                                         [checked]="selectedTeamMemberIds != undefined && selectedTeamMemberIds.indexOf(teamMember.id)>-1"
                                         name="teamMemberCheckBox[]" value="{{teamMember.id}}"
                                         (click)="highlightTeamMemberRowOnCheckBoxClick(teamMember.id,group.id,$event)">

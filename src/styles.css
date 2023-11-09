@@ -165,7 +165,7 @@ nav a.active {
   margin: -81px 0 0 0;
   font-weight: 600;
   color: #54a7e9;
-  
+
   font-size: 21px;
 }
 
@@ -525,7 +525,6 @@ tr.highlight {
   display: flex;
 }
 
-
 .white {
   color: #fff;
 }
@@ -789,7 +788,7 @@ legend {
 }
 
 .btn-primary:hover {
-  background-color: #4db1e2 !important;
+  background-color: #4db1e2;
 }
 
 .text-primary {
@@ -2039,11 +2038,11 @@ button.glyphicon.glyphicon-remove.search-box-item-clear:before {
   line-height: 25px !important;
 }
 .actions-block i.fa.fa-files-o {
-  line-height: 24px !important;
+  line-height: 28px !important;
   font-size: 13px !important;
 }
 .actions-block i.fa.fa-trash-o {
-  line-height: 26px !important;
+  line-height: 27px !important;
 }
 .actions-block i.fa.fa-edit {
   line-height: 27px !important;
@@ -2200,10 +2199,10 @@ h5.view-banner {
   margin-left: 5px;
 }
 
- /* 29-08-2023 */
- #queryBuilderCu .q-switch-label  {
+/* 29-08-2023 */
+#queryBuilderCu .q-switch-label {
   padding: 6px 8px !important;
-  line-height: 1 !important;;
+  line-height: 1 !important;
   border-radius: 4px !important;
 }
 #queryBuilderCu label.q-switch-label {
@@ -2214,7 +2213,8 @@ h5.view-banner {
   padding: 7px 8px !important;
   border-radius: 4px;
 }
-#queryBuilderCu .q-switch-label, .q-button {
+#queryBuilderCu .q-switch-label,
+.q-button {
   line-height: 1 !important;
   margin-bottom: 5px !important;
 }
@@ -2226,8 +2226,8 @@ h5.view-banner {
   font-family: FontAwesome !important;
   content: "\f068" !important;
 }
-.full-width{
-  width: 100%  !important;
+.full-width {
+  width: 100% !important;
 }
 
 /* 28-6-2023 table btns,lables and tags*/
@@ -2386,59 +2386,133 @@ button.table-scbscribe-btn:hover {
 #responseMessage br {
   display: none !important;
 }
-.video-js.vjs-http-source-selector{display:block}
+.video-js.vjs-http-source-selector {
+  display: block;
+}
 
 /* Sort By box paddings */
 select.form-control.SeclectBoxPaddingsAbj {
   padding: 6px 4px;
 }
 
-
 /* 23-8-2023 */
-i.fontStyleNormal{font-style: normal;}
-.campaignViewIcon {font-size: 14px !important;width: 27px;height: 27px;border-radius: 50%;line-height: 25px !important;}
+i.fontStyleNormal {
+  font-style: normal;
+}
+.campaignViewIcon {
+  font-size: 14px !important;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  line-height: 25px !important;
+}
 
 /* Table icon Customization  START*/
 /* List View icon Customization start*/
-i.IconCustomization { border: 1px solid #5bb2f5;color: #5bb2f5;}
-i.IconCustomization:hover {border: 1px solid #5bb2f5;background: #5bb2f5;color: #fff;}
+i.IconCustomization {
+  border: 1px solid #5bb2f5;
+  color: #5bb2f5;
+}
+i.IconCustomization:hover {
+  border: 1px solid #5bb2f5;
+  background: #5bb2f5;
+  color: #fff;
+}
 
-.IconCustomizationcondition a i {border: 1px solid #5bb2f5;color: #5bb2f5;}
-.IconCustomizationcondition a i:hover {border: 1px solid #5bb2f5;background: #5bb2f5;color: #fff;}
+.IconCustomizationcondition a i {
+  border: 1px solid #5bb2f5;
+  color: #5bb2f5;
+}
+.IconCustomizationcondition a i:hover {
+  border: 1px solid #5bb2f5;
+  background: #5bb2f5;
+  color: #fff;
+}
 
-#download-template {border: 1px solid #5ab2f5;color: #5ab2f5;}
-#download-template:hover {border: 1px solid #5ab2f5;background: #5bb2f5;color: #fff;}
+#download-template {
+  border: 1px solid #5ab2f5;
+  color: #5ab2f5;
+}
+#download-template:hover {
+  border: 1px solid #5ab2f5;
+  background: #5bb2f5;
+  color: #fff;
+}
 
-button.btn.TableDataBtn {border-color: #00a6e8;}
-button.btn.TableDataBtn .sky-blue {color: #00a6e8;}
+button.btn.TableDataBtn {
+  border-color: #00a6e8;
+}
+button.btn.TableDataBtn .sky-blue {
+  color: #00a6e8;
+}
 
-.custome-dropdown-changs li a {border: 1px solid #54a7e9;}
-.custome-dropdown-changs li a i {color: #00a6e8;}
+.custome-dropdown-changs li a {
+  border: 1px solid #54a7e9;
+}
+.custome-dropdown-changs li a i {
+  color: #00a6e8;
+}
 
-.setting-icon-cu {border: 1px solid #5bb2f5;color: #5bb2f5;}
-.setting-icon-cu .gearDropdownMenu {color: #5bb2f5;}
+.setting-icon-cu {
+  border: 1px solid #5bb2f5;
+  color: #5bb2f5;
+}
+.setting-icon-cu .gearDropdownMenu {
+  color: #5bb2f5;
+}
 
-i.singleIconCustomization {color: #0085d5;}
+i.singleIconCustomization {
+  color: #0085d5;
+}
 
-i.fa.fa-trash-o.trashIconCustomization{border: 1px solid #cb5a5e;color: #cb5a5e;}
-i.fa.fa-trash-o.trashIconCustomization:hover{border: 1px solid #cb5a5e;background: #cb5a5e;color: #fff;}
+i.fa.fa-trash-o.trashIconCustomization {
+  border: 1px solid #cb5a5e;
+  color: #cb5a5e;
+}
+i.fa.fa-trash-o.trashIconCustomization:hover {
+  border: 1px solid #cb5a5e;
+  background: #cb5a5e;
+  color: #fff;
+}
 /* List View icon Customization End*/
 
 /* Grid View icon Customization start*/
-.gridIconCustomization a {border: 1px solid #fff;color: #fff;}
-.gridIconCustomization a.Iconhover:hover{border: 1px solid #fff;background:#fff; color: #5bb2f5;}
+.gridIconCustomization a {
+  border: 1px solid #fff;
+  color: #fff;
+}
+.gridIconCustomization a.Iconhover:hover {
+  border: 1px solid #fff;
+  background: #fff;
+  color: #5bb2f5;
+}
 
-#download-template-grid {border: 1px solid #fff;color: #fff;}
-#download-template-grid:hover {border: 1px solid #fff;background: #fff;color: #5ab2f5;}
+#download-template-grid {
+  border: 1px solid #fff;
+  color: #fff;
+}
+#download-template-grid:hover {
+  border: 1px solid #fff;
+  background: #fff;
+  color: #5ab2f5;
+}
 
-.gridIconCustomization a.delete {border: 1px solid #cb5a5e;background: transparent;color: #cb5a5e;}
-.gridIconCustomization a.delete:hover {border: 1px solid #cb5a5e;background: #cb5a5e;color: #fff;}
+.gridIconCustomization a.delete {
+  border: 1px solid #cb5a5e;
+  background: transparent;
+  color: #cb5a5e;
+}
+.gridIconCustomization a.delete:hover {
+  border: 1px solid #cb5a5e;
+  background: #cb5a5e;
+  color: #fff;
+}
 /* Grid View icon Customization End*/
 /* Table icon Customization END*/
 
 .card-align {
-    margin-top: -4px;
-    padding: 0px 5px !important;
+  margin-top: -4px;
+  padding: 0px 5px !important;
 }
 label.floatLeftText {
   text-align: left !important;
@@ -2457,6 +2531,13 @@ button.unlink-button {
   top: 1px;
   left: 1px;
 }
+
+/* sudha sri (8-11-2023) */
+.border-padding {
+  border-top: solid 1px #ccc;
+  padding: 10px 5px;
+}
+
 div#bubble-chart {
   z-index: 0 !important;
 }
@@ -2466,4 +2547,21 @@ div#bubble-chart {
 .ml15{
   margin-left: 15px !important;
 }
+.w85-per{
+  width: 85% !important;
+}
+
+.mix-filter {
+  margin: 5px;
+}
+.mix-filter li {
+  font-size: 12px;
+}
+
+.mix-filter li:hover {
+  background: #6dcff6;
+}
+.mix-filter-li-selected {
+  background-color: #6dcff6 !important;
+} 
 

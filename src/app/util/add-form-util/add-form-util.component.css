@@ -1581,7 +1581,6 @@ div.switch5 > input.switch:focus ~ label:before {
     width: 100%;
     margin-left: 0px;
   }
- 
 }
 
 .icon-margin {
@@ -1723,15 +1722,15 @@ div.switch5 > input.switch:focus ~ label:before {
 .hide-scrollbar {
   overflow: hidden;
 }
-@media only screen and (max-width:1024px){
-  .vertical-center{
-    margin:10px 30px 0px 30px!important;
+@media only screen and (max-width: 1024px) {
+  .vertical-center {
+    margin: 10px 30px 0px 30px !important;
   }
 }
-@media only screen and (max-width:578px){
+@media only screen and (max-width: 578px) {
   .modal.left.fade.in .modal-dialog,
   .modal.right.fade.in .mb-wth {
-    width: 85%!important;
+    width: 85% !important;
   }
 }
 
@@ -1746,3 +1745,4 @@ div.switch5 > input.switch:focus ~ label:before {
     width: 90% !important;
   }
 }
+

@@ -45,6 +45,7 @@ export class SendCampaignsComponent implements OnInit {
   /******When a new partner is added in list******* */
   newlyAddedPartners:any[] = [];
   isPartnersRouter = false;
+  selectedIndex = 0;
   constructor(private campaignService: CampaignService,private xtremandLogger: XtremandLogger,
     public pagination: Pagination, private pagerService: PagerService, public authenticationService: AuthenticationService, 
     public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public contactService: ContactService,

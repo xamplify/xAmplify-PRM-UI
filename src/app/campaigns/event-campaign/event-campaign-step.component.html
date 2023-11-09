@@ -88,7 +88,7 @@
 				</label>
 				<div class="col-sm-9">
 				   <input type="text" class="form-control" id="eventTitle"
-				   maxlength="250" autocomplete="off"
+				   maxlength="250"
 				   placeholder="Event Title" [(ngModel)]="eventCampaign.campaign"
 				   [ngModelOptions]="{standalone: true}"
 				   [ngClass]="{'has-error': eventError.eventTitleError}"
@@ -125,7 +125,7 @@
 				   [(ngModel)]="eventCampaign.fromName"
 				   [ngModelOptions]="{standalone: true}"
 				   [ngClass]="{'has-error': eventError.eventHostByError}"
-				   (input)="eventHostByError(); resetTabClass()" (blur)="eventHostByError()" autocomplete="off">
+				   (input)="eventHostByError(); resetTabClass()" (blur)="eventHostByError()">
 				   <div class="text-danger" *ngIf="eventError.eventHostByError" translate>Hosted By is required
 				   </div>
 				</div>
@@ -145,7 +145,7 @@
 			 </div>
 			 <div class="form-group">
 				<label class="col-sm-3 col-xs-12 labal-css color-css" translate>Subject Line
-				<span class="required"><strong>*</strong></span>
+				<font style="color: red"> <strong>*</strong></font>
 				</label>
 				<div class="col-sm-9">
 				   <div [className]="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate? 'input-group merge-tag-input-border':''">
@@ -155,7 +155,7 @@
 					  name="subjectLine"
 					  (input)="eventSubjectLineError()"
 					  [ngClass]="{'has-error': eventError.eventSubjectLineError}"
-					  maxlength="1000" autocomplete="off" />
+					  maxlength="1000" />
 					  <span *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" class="input-group-btn">
 					  <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="bottom"  title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
 					  <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
@@ -293,7 +293,7 @@
  <div class="col-sm-12 text-danger"
 	*ngIf="((!eventError.eventStartTimeError && eventError.eventSameDateError) || endDatePassError) && !isPreviewEvent">{{endDatePassedError}}</div>
  <div class="col-sm-12">
- <input type="checkbox" id="allDay" class="form-check-input mt10"
+ <input type="checkbox" id="allDay" class="form-check-input mt10 checkBox_shadow"
  [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
  [checked]="eventCampaign.campaignEventTimes[0].allDay"
  (change)="changeAllDay()" (input)="resetTabClass();validateUpdateButton()">
@@ -657,7 +657,7 @@
 	style="margin-top: 17px; cursor: pointer"> <input
  style="cursor: pointer;"
  [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
- type="radio" value="eventCampaign.publicEventCampaign"
+ type="radio" value="eventCampaign.publicEventCampaign" class="radioButton_shadow"
  [checked]="eventCampaign.publicEventCampaign"
  (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
  </label> <label class="col-md-2 p0"><img
@@ -674,7 +674,7 @@
 	style="margin-top: 17px; cursor: pointer;"> <input
  style="cursor: pointer;"
  [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
- type="radio" value="!eventCampaign.publicEventCampaign"
+ type="radio" value="!eventCampaign.publicEventCampaign" class="radioButton_shadow"
  [checked]="!eventCampaign.publicEventCampaign"
  (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
  </label> <label class="col-md-2 p0 "><img
@@ -755,7 +755,7 @@
 							<thead>
 							   <tr>
 								  <th scope="row" class="text-center">
-									 <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+									 <input type="checkbox" class="checkBox_shadow" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
 									 (change)="checkAllForPartners($event)"
 									 id="checkAllExistingContacts" />
 								  </th>
@@ -978,7 +978,7 @@
 									 <span class="select-check-box" >
 									 <label>
 									 <input 
-										type="radio" class="radio-custimization" 
+										type="radio" class="radio-custimization radioButton_shadow" 
 										[checked]="eventCampaign.emailTemplate.id === eventCampaign.selectedEditEmailTemplate.id"  >
 									 </label>
 									 </span>
@@ -1047,7 +1047,7 @@
 	   <span class="select-check-box">
 	   <label>
 	   <input 
-		  type="radio" class="radio-custimization" 
+		  type="radio" class="radio-custimization radioButton_shadow" 
 		  [checked]="eventCampaign?.emailTemplate?.id === emailTemplate?.id"  >
 	   </label>
 	   </span>
@@ -1244,284 +1244,290 @@
 		  <div class="col-xs-3"></div>
 	</div>
  </div>
-	<div *ngFor="let reply of eventCampaign.campaignReplies;let i=index">
-		<div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;" [class.disabled]="reply.body && reDistributeEvent && reDistributeEventManage && reply.id">
-			<div class="portlet-title custom-change-css mEventLaunchHeight" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}"  style="display:block">
-			<div class="col-xs-12 col-sm-6">
-			<h4 class="text-left" style="color:#fff">Add an Auto-response to your e-mail-{{i+1}}</h4>
-			</div>
-			<div class="col-xs-12 col-sm-6 mEventLaunchWidth">
-			<div class="pull-right">
-			<label class="switch-choose" style="color:#fff" *ngIf="!reDistributeEvent && !reDistributeEventManage && !eventCampaign.nurtureCampaign">Choose Template</label>
-			<switch class="switch-choose" [hidden]="reDistributeEvent || reDistributeEventManage || eventCampaign.nurtureCampaign" [disabled]="isPreviewEvent" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-			[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-			(statusChange)="selectReplyEmailBody($event,i,reply)">
-			</switch>
-			<button type="button"  [disabled]="isPreviewEvent" class="btn btn-danger button-blue" (click)="remove(reply.divId,'replies')">
-			<span class="glyphicon glyphicon-trash"></span>
-			</button>
-			<button type="button" [disabled]="isPreviewEvent"  class="btn btn-primary button-blue"  (click)="addReplyRows()">
-			<span class="glyphicon glyphicon-plus"></span>
-			</button>
-			</div>
-			</div>
-			</div>
-			<div class="row">
-				<form class="role add-reply" id="form-{{reply.divId}}">
-				<div class="col-xs-12 p0">
-					<div class="col-xs-12 p0">
-					<div class="col-xs-12 col-sm-5" style="margin-bottom: 6px;">
-					<label style="cursor: default;" for="reason">Reason</label>
-					<select class="form-control" name="actionId" [(ngModel)]="reply.actionId" [attr.disabled]="isPreviewEvent? '' : null">
-					<option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
-					<option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
-					<option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
-					<option [value]="33" [selected]="reply.actionId ==33">Send follow-up email</option>
-					<option [value]="24" [selected]="reply.actionId ==24" [hidden]="reDistributeEvent || reDistributeEventManage || authenticationService.isOnlyPartner()">If event is not shared by {{authenticationService?.partnerModule?.customName}}</option>
-					<option [value]="29" [selected]="reply.actionId ==29" *ngIf="!eventCampaign.publicEventCampaign">Send reminder if no response</option>
-					<option [value]="30" [selected]="reply.actionId ==30">Send reminder if responded YES</option>
-					<option [value]="25" [selected]="reply.actionId ==25"> Send email if RSVP Yes</option>
-					<option [value]="26" [selected]="reply.actionId ==26" *ngIf="!eventCampaign.publicEventCampaign">Send email If RSVP No</option>
-					<option [value]="27" [selected]="reply.actionId ==27" *ngIf="!eventCampaign.publicEventCampaign">Send email If RSVP Maybe</option>
-					<option [value]="28" [selected]="reply.actionId ==28">Send after event</option>
-					</select>
-					</div>
-					<div *ngIf="reply.actionId == 0 || reply.actionId == 13 || reply.actionId == 24 || reply.actionId == 29 || reply.actionId == 30 || reply.actionId==33" [class.disabled]="isPreviewEvent">
-					<div class="col-xs-12 col-sm-2">
-					<label style="cursor: default;" for="days" *ngIf="reply.actionId == 0 || reply.actionId == 13 || reply.actionId == 24  || reply.actionId==22 || reply.actionId==23 || reply.actionId==33 " id="reply-days-{{reply.divId}}">Reply In X Days
-						<strong class="required">*</strong>
-					</label>
-					<label style="cursor: default;" for="days" *ngIf="reply.actionId ==29 || reply.actionId==30" id="reply-days-{{reply.divId}}">
-						<span *ngIf="reply.actionId == 29 || reply.actionId == 30">Send Before X Days<strong class="required">*</strong></span>
-					</label>
-					<input *ngIf="reply.actionId == 29 || reply.actionId == 30" [attr.disabled]="isPreviewEvent? '' : null" type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="1" max="{{beforeDaysLength}}" oninput="validity.valid||(value='');">
-					<input *ngIf="reply.actionId !=29 && reply.actionId != 30" [attr.disabled]="isPreviewEvent? '' : null" type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="1" oninput="validity.valid||(value='');">
-						<span>(Minimum 1 Day)</span>
-					</div>
-					</div>
-					<div class="col-xs-12 col-sm-5">
-					<label style="cursor: default;" for="time" id="reply-subject-{{reply.divId}}">Subject<strong class="required">*</strong></label>
-					<div  [className]="!isPreviewEvent ? 'input-group merge-tag-input-border':''">
-					<input [attr.disabled]="isPreviewEvent? '' : null" type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
-					<span *ngIf="!isPreviewEvent" class="input-group-btn">
-					<button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags" (click)="openMergeTagsPopup('event-auto-response',reply)">
-					<i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
-					</button>
-					</span>
-					</div>
-					</div>
-					</div>
-					<div class="col-xs-12">
-					<div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
-					<div  style="margin-left: 1px;">
-					<label style="cursor: default;" for="days" id="reply-message-{{reply.divId}}">Message<strong class="required">*</strong>
-					</label>
-					</div>
-					<div [class.disabled]="isPreviewEvent? '' : null">
-					<ckeditor [attr.disabled]="isPreviewEvent? '' : null" [(ngModel)]="reply.body" name="body"></ckeditor>
-					</div>
-					</div>
-					<div id="reply-email-template-{{i}}" *ngIf="reply.defaultTemplate && !reDistributeEvent && !reDistributeEventManage">
-					<div >
-					<label for="days" id="email-template-{{reply.divId}}">Select Email Template
-					<strong class="required">*</strong></label>
-					</div>
-					<div [hidden]="eventCampaign.nurtureCampaign || isPreviewEvent">
-					<div class="input-icon pull-right col-xs-3" style="padding-right: 0px;" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
-					<input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-					placeholder="Search" (keypress)="eventReplyHandler($event, reply)">
-					<button type="button" class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="reply.emailTemplateSearchInput" (click)="removeSearchInput(reply)"></button>                         
-					<button type="submit" class="search-box-item-click" (click)="searchReplyEmailTemplate(reply)"><i class="fa fa-search" aria-hidden="true"></i></button>
-					</div>
-					</div>
-					</div>
-					</div>
-					<div *ngIf="reply.defaultTemplate" class="col-xs-12" style="margin-top:16px !important" [class.disabled]="eventError.eventExpiredError">
-				<app-list-loader [rowsCount]="3" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-list-loader>
-				<app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
-				<div class="row" *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
-				<div>
-				<ng-container *ngIf="(!isAdd && reply.emailTemplatesPagination.totalRecords>0 && reply.emailTemplatesPagination.pageIndex==1 && reply.selectedEmailTemplateIdForEdit>0 && reply.showSelectedEmailTemplate) || reDistributeEvent || reDistributeEventManage || eventCampaign.nurtureCampaign">
-				<!-- edit in event camapign launch  -->
-				<ul class="content__list">
-				<li>
-				<div class="flex-row mHeight" >
-				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row" >                         
-				<div  class="row">	
-				<div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
-				<div class="grid-box imgage-paddings"  
-				[ngClass]="reply.emailTemplate.id==reply.selectedEmailTemplateId ? 'template-selected-border' :''"   
-				(click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" >                 
-				<span class="select-check-box">
-				<label>
-				<input   *ngIf="reply.emailTemplate.id!== reply.selectedEmailTemplateId"
-				name="reply-email-template"
-				[value]="reply.emailTemplate.id"
-				id="reply-{{i}}-{{reply.emailTemplate.id}}"
-				type="radio" class="radio-custimization" 
-				>
-				<input *ngIf="reply.emailTemplate.id== reply.selectedEmailTemplateId"  
-				[value]="reply.emailTemplate.id" 
-				id="reply-{{i}}-{{reply.emailTemplate.id}}"
-				type="radio" class="radio-custimization" 
-				[checked]="reply.emailTemplate.id==reply.selectedEmailTemplateId"
-				name="reply-email-template">
-				</label>
-				</span>
-				<img 
-					class="img-grid-track "
-					src="{{reply?.emailTemplate.subject}}"
-					alt="" >
-				<span class="icon-alignments"> 
-				<a data-toggle="tooltip" data-placement="top" title=""
-					(click)="$event.stopPropagation();getTemplateById(reply.emailTemplate)"
-					data-original-title="Preview">
-				<i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
-				</span>
-				<!-- hover Content --> 
-				<div  class="bar hover-bar custometheme-bar" >
-				<a  data-placement="top"  class="border-none-dark">
-				<div class="row">
-				<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
-				<div class="content-hover-align fontsize-cls">
-				<span class="item__name cardDetails-mar"  [title]="reply.emailTemplate.name">
-				<strong>{{reply?.emailTemplate?.name |slice:0:15}}</strong>
-				<strong *ngIf="reply?.emailTemplate?.name?.length>13">..</strong>
-				</span>
-				<br>
-				<span class="item__name cardDetails-mar" title="created on" style="float:left">
-				<span>
-				<app-timestamp
-				[isOnlyDate]="true"
-				[dateAndTime]="reply.emailTemplate.createdTime">
-				</app-timestamp>
-				</span>
-				</span>
-				<ng-container *ngIf="reply.emailTemplate.createdBy?.length>10">
-				<span style="float:left" title="{{reply?.emailTemplate?.createdBy}}">
-				<strong translate>By:</strong>
-				<span>{{reply.emailTemplate.createdBy|slice:0:11}}<span
-					*ngIf="reply?.emailTemplate?.createdBy?.length>11">..</span></span>
-				</span>
-				</ng-container>
-				<span *ngIf="reply?.emailTemplate?.category?.length>0" class="campaign-email-template-category  cardDetails-mar" title="{{reply?.emailTemplate?.category}}">
-				<strong antranslate>Folder:</strong><span>{{reply.emailTemplate.category|slice:0:5}}</span>
-				<span *ngIf="reply?.emailTemplate?.category?.length>5">..</span>
-				</span>
-				</div> 
-				<span class="label-color-custmization"   (click)="$event.stopPropagation();editTemplate(reply.emailTemplate)" >Edit</span>
-				</div>       																			
-				</div>
-				</a>
-				</div>
-				</div>
-				</div>
-				</div>
-				</div>
-				</div>
-				</li>
-				</ul>
-				</ng-container>
-				<!-- event campaign launch creation  -->
-				<ul [hidden]="reDistributeEvent || reDistributeEventManage || isPreviewEvent" 
-				class="content__list" *ngFor="let emailTemplate of  reply.emailTemplatesPagination.pagedItems ;let e =index">
-				<li   *ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id">
-				<div class="flex-row mHeight" >
-				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row" >                         
-				<div  class="row">
-				<div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
-				<div class="grid-box imgage-paddings"  
-				[ngClass]="emailTemplate.id==reply.selectedEmailTemplateId ? 'template-selected-border' :''"   
-				(click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate?.draft)" >                 
-				<span class="select-check-box" [class.hide]="emailTemplate.draft">
-				<label>
-				<input *ngIf="!emailTemplate?.draft"
-				name="reply-email-template" [value]="emailTemplate.id" 
-				id="reply-{{i}}-{{emailTemplate.id}}"
-				type="radio" class="radio-custimization" 
-				[checked]="emailTemplate.id == reply.selectedEmailTemplateId"  >
-				<input *ngIf="emailTemplate?.draft" title="draft template cannot be selected" disabled="disabled"  type="radio" class="radio-custimization" 
-					name="reply-email-template">
-				</label>
-				</span>
-				<img 
-					class="img-grid-track "
-					src="{{emailTemplate.subject}}"
-					alt="" >
-				<span class="icon-alignments"> 
-				<a data-toggle="tooltip" data-placement="top" title=""
-					(click)="$event.stopPropagation(); getTemplateById(emailTemplate)"
-					data-original-title="Preview">
-				<i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
-				</span>
-				<!-- hover Content --> 
-				<div  class="bar hover-bar custometheme-bar" >
-				<a  data-placement="top"  class="border-none-dark">
-				<div class="row">
-				<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
-				<div class="content-hover-align fontsize-cls">
-				<span class="item__name cardDetails-mar"  [title]="emailTemplate.name">
-				<strong>{{emailTemplate?.name |slice:0:15}}</strong>
-				<strong *ngIf="emailTemplate?.name?.length>13">..</strong>
-				</span>
-				<br>
-				<span class="item__name  cardDetails-mar"  [title]="emailTemplate.createdBy">
-				<span>By: </span>{{emailTemplate.createdBy | slice:0:12}}
-				<span *ngIf="emailTemplate.createdBy?.length>12">...</span>
-				</span>
-				<span class="item__name" title="created on" style="float:left; margin: 3px;">
-				<span>
-				<app-timestamp
-				[isOnlyDate]="true"
-				[dateAndTime]="emailTemplate.createdDate">
-				</app-timestamp>
-				</span>
-				</span>                                               
-				</div> 
-				<span class="label-color-custmization"  (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
-				</div>       																		
-				</div>
-				</a>
-				</div>
-				</div>
-				</div>
-				</div>
-				</div>
-				</div>
-				</li>
-				</ul>
-				</div>
-				</div>
-				<div class="col-xs-12" style="margin-left: -12px;" [hidden]="reDistributeEvent || reDistributeEventManage || isPreviewEvent">
-				<div *ngIf="reply.emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
-				<ul *ngIf="reply.emailTemplatesPagination.pager.pages && reply.emailTemplatesPagination.pager.pages.length" class="pagination">
-				<li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">
-				<a (click)="paginateEmailTemplateRows(1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1">First</a>
-				</li>
-				<li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">
-				<a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage - 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1">Previous</a>
-				</li>
-				<li *ngFor="let page of reply.emailTemplatesPagination.pager.pages" [ngClass]="{active:reply.emailTemplatesPagination.pager.currentPage === page}">
-				<a (click)="paginateEmailTemplateRows(page,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === page">{{page}}</a>
-				</li>
-				<li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages}">
-				<a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage + 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages">Next</a>
-				</li>
-				<li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages}">
-				<a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.totalPages,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages">Last</a>
-				</li>
-				</ul>
-				</div>
-				</div>
-				<div  [hidden]="reDistributeEvent || reDistributeEventManage" *ngIf="reply.emailTemplatesPagination.totalRecords==0" class="col-xs-12 alert alert-info">
-				<strong>No templates found</strong>
-				</div>
-					</div>
-				</div>
-				</form>
-			</div>
-		</div>
-	</div>
+ <div *ngFor="let reply of eventCampaign.campaignReplies;let i=index">
+ <div class="portlet light dashboard-stat2" id="{{reply.divId}}" style="min-height: 320px;" [class.disabled]="reply.body && reDistributeEvent && reDistributeEventManage && reply.id">
+ <div class="portlet-title custom-change-css mEventLaunchHeight" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}"  style="display:block">
+ <div class="col-xs-12 col-sm-6">
+ <h4 class="text-left" style="color:#fff">Add an Auto-response to your e-mail-{{i+1}}</h4>
+ </div>
+ <div class="col-xs-12 col-sm-6 mEventLaunchWidth">
+ <div class="pull-right">
+ <label class="switch-choose" style="color:#fff" *ngIf="!reDistributeEvent && !reDistributeEventManage && !eventCampaign.nurtureCampaign">Choose Template</label>
+ <switch class="switch-choose" [hidden]="reDistributeEvent || reDistributeEventManage || eventCampaign.nurtureCampaign" [disabled]="isPreviewEvent" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+ [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+ (statusChange)="selectReplyEmailBody($event,i,reply)">
+ </switch>
+ <button type="button"  [disabled]="isPreviewEvent" class="btn btn-danger button-blue" (click)="remove(reply.divId,'replies')">
+ <span class="glyphicon glyphicon-trash"></span>
+ </button>
+ <button type="button" [disabled]="isPreviewEvent"  class="btn btn-primary button-blue"  (click)="addReplyRows()">
+ <span class="glyphicon glyphicon-plus"></span>
+ </button>
+ </div>
+ </div>
+ </div>
+ <div class="row">
+ <form class="role add-reply" id="form-{{reply.divId}}">
+ <div class="col-xs-12 p0">
+ <div class="col-xs-12 p0">
+ <div class="col-xs-12 col-sm-6" style="margin-bottom: 6px;">
+ <label style="cursor: default;" for="reason">Reason</label>
+ <select class="form-control" name="actionId" [(ngModel)]="reply.actionId" [attr.disabled]="isPreviewEvent? '' : null">
+ <option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
+ <option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
+ <option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
+ <option [value]="33" [selected]="reply.actionId ==33">Send follow-up email</option>
+ <option [value]="24" [selected]="reply.actionId ==24" [hidden]="reDistributeEvent || reDistributeEventManage || authenticationService.isOnlyPartner()">If event is not shared by {{authenticationService?.partnerModule?.customName}}</option>
+ <option [value]="29" [selected]="reply.actionId ==29" *ngIf="!eventCampaign.publicEventCampaign">Send reminder if no response</option>
+ <option [value]="30" [selected]="reply.actionId ==30">Send reminder if responded YES</option>
+ <option [value]="25" [selected]="reply.actionId ==25"> Send email if RSVP Yes</option>
+ <option [value]="26" [selected]="reply.actionId ==26" *ngIf="!eventCampaign.publicEventCampaign">Send email If RSVP No</option>
+ <option [value]="27" [selected]="reply.actionId ==27" *ngIf="!eventCampaign.publicEventCampaign">Send email If RSVP Maybe</option>
+ <option [value]="28" [selected]="reply.actionId ==28">Send after event</option>
+ </select>
+ </div>
+ <div *ngIf="reply.actionId == 0 || reply.actionId == 13 || reply.actionId == 24 || reply.actionId == 29 || reply.actionId == 30 || reply.actionId==33" [class.disabled]="isPreviewEvent">
+ <div class="col-xs-12 col-sm-2">
+ <label style="cursor: default;" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 || reply.actionId==33 " id="reply-days-{{reply.divId}}">Reply In X Days
+ <b style="color: red">*</b>
+ <font><b>(Minimum 1 Day)</b></font>
+ </label>
+ <label style="cursor: default;" for="days" *ngIf="reply.actionId ==29 || reply.actionId!=22 && reply.actionId!=23 && reply.actionId!=33" id="reply-days-{{reply.divId}}">
+ <span *ngIf="reply.actionId !=29 && reply.actionId != 30">Reply In X Days</span>
+ <span *ngIf="reply.actionId == 29 || reply.actionId == 30">Send Before X Days</span>
+ <b style="color: red">*</b>
+ </label>
+ <input *ngIf="reply.actionId == 29 || reply.actionId == 30" [attr.disabled]="isPreviewEvent? '' : null" type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" max="{{beforeDaysLength}}" oninput="validity.valid||(value='');">
+ <input *ngIf="reply.actionId !=29 && reply.actionId != 30" [attr.disabled]="isPreviewEvent? '' : null" type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
+ </div>
+ <div class="col-xs-12 col-sm-3 time-col"  style="padding-left: 0;" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
+ <div class="col-xs-2 responsive-screen-zeropadding" style="cursor: default;"><span for="time" id="send-time-{{reply.divId}}" class="time-picker-css">At<b style="color: red">*</b></span></div>
+ <div class="col-xs-10 mEventDaysHeight" style="height: 66px;"><timepicker [attr.disabled]="isPreviewEvent" [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker></div>
+ </div>
+ </div>
+ <div class="col-xs-12 col-sm-6">
+ <label style="cursor: default;" for="time" id="reply-subject-{{reply.divId}}">Subject<strong style="color: red">*</strong></label>
+ <div  [className]="!isPreviewEvent ? 'input-group merge-tag-input-border':''">
+ <input [attr.disabled]="isPreviewEvent? '' : null" type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
+ <span *ngIf="!isPreviewEvent" class="input-group-btn">
+ <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags" (click)="openMergeTagsPopup('event-auto-response',reply)">
+ <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
+ </button>
+ </span>
+ </div>
+ </div>
+ </div>
+ <div class="col-xs-12">
+ <div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
+ <div  style="margin-left: 1px;">
+ <label style="cursor: default;" for="days" id="reply-message-{{reply.divId}}">Message <strong style="color: red">*</strong>
+ </label>
+ </div>
+ <div [class.disabled]="isPreviewEvent? '' : null">
+ <ckeditor [attr.disabled]="isPreviewEvent? '' : null" [(ngModel)]="reply.body" name="body"></ckeditor>
+ </div>
+ </div>
+ <div id="reply-email-template-{{i}}" *ngIf="reply.defaultTemplate && !reDistributeEvent && !reDistributeEventManage">
+ <div >
+ <label for="days" id="email-template-{{reply.divId}}">Select Email Template
+ <strong style="color: red">*</strong></label>
+ </div>
+ <div [hidden]="eventCampaign.nurtureCampaign || isPreviewEvent">
+ <div class="input-icon pull-right col-xs-3" style="padding-right: 0px;" [class.disabled]="isPreviewEvent || eventError.eventExpiredError">
+ <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
+ placeholder="Search" (keypress)="eventReplyHandler($event, reply)">
+ <button type="button" class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="reply.emailTemplateSearchInput" (click)="removeSearchInput(reply)"></button>                         
+ <button type="submit" class="search-box-item-click" (click)="searchReplyEmailTemplate(reply)"><i class="fa fa-search" aria-hidden="true"></i></button>
+ </div>
+ </div>
+ </div>
+ </div>
+ <div *ngIf="reply.defaultTemplate" class="col-xs-12" style="margin-top:16px !important" [class.disabled]="eventError.eventExpiredError">
+ <app-list-loader [rowsCount]="3" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-list-loader>
+ <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages>
+ <div class="row" *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
+ <div>
+ <ng-container *ngIf="(!isAdd && reply.emailTemplatesPagination.totalRecords>0 && reply.emailTemplatesPagination.pageIndex==1 && reply.selectedEmailTemplateIdForEdit>0 && reply.showSelectedEmailTemplate) || reDistributeEvent || reDistributeEventManage || eventCampaign.nurtureCampaign">
+ <!-- edit in event camapign launch  -->
+ <ul class="content__list">
+ <li>
+ <div class="flex-row mHeight" >
+ <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row" >                         
+ <div  class="row">	
+ <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
+ <div class="grid-box imgage-paddings"  
+ [ngClass]="reply.emailTemplate.id==reply.selectedEmailTemplateId ? 'template-selected-border' :''"   
+ (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" >                 
+ <span class="select-check-box">
+ <label>
+ <input   *ngIf="reply.emailTemplate.id!== reply.selectedEmailTemplateId"
+ name="reply-email-template"
+ [value]="reply.emailTemplate.id"
+ id="reply-{{i}}-{{reply.emailTemplate.id}}"
+ type="radio" class="radio-custimization radioButton_shadow" 
+ >
+ <input *ngIf="reply.emailTemplate.id== reply.selectedEmailTemplateId"  
+ [value]="reply.emailTemplate.id" 
+ id="reply-{{i}}-{{reply.emailTemplate.id}}"
+ type="radio" class="radio-custimization radioButton_shadow" 
+ [checked]="reply.emailTemplate.id==reply.selectedEmailTemplateId"
+ name="reply-email-template">
+ </label>
+ </span>
+ <img 
+	class="img-grid-track "
+	src="{{reply?.emailTemplate.subject}}"
+	alt="" >
+ <span class="icon-alignments"> 
+ <a data-toggle="tooltip" data-placement="top" title=""
+	(click)="$event.stopPropagation();getTemplateById(reply.emailTemplate)"
+	data-original-title="Preview">
+ <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
+ </span>
+ <!-- hover Content --> 
+ <div  class="bar hover-bar custometheme-bar" >
+ <a  data-placement="top"  class="border-none-dark">
+ <div class="row">
+ <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+ <div class="content-hover-align fontsize-cls">
+ <span class="item__name cardDetails-mar"  [title]="reply.emailTemplate.name">
+ <strong>{{reply?.emailTemplate?.name |slice:0:15}}</strong>
+ <strong *ngIf="reply?.emailTemplate?.name?.length>13">..</strong>
+ </span>
+ <br>
+ <span class="item__name cardDetails-mar" title="created on" style="float:left">
+ <span>
+ <app-timestamp
+ [isOnlyDate]="true"
+ [dateAndTime]="reply.emailTemplate.createdTime">
+ </app-timestamp>
+ </span>
+ </span>
+ <ng-container *ngIf="reply.emailTemplate.createdBy?.length>10">
+ <span style="float:left" title="{{reply?.emailTemplate?.createdBy}}">
+ <strong translate>By:</strong>
+ <span>{{reply.emailTemplate.createdBy|slice:0:11}}<span
+	*ngIf="reply?.emailTemplate?.createdBy?.length>11">..</span></span>
+ </span>
+ </ng-container>
+ <span *ngIf="reply?.emailTemplate?.category?.length>0" class="campaign-email-template-category  cardDetails-mar" title="{{reply?.emailTemplate?.category}}">
+ <strong antranslate>Folder:</strong><span>{{reply.emailTemplate.category|slice:0:5}}</span>
+ <span *ngIf="reply?.emailTemplate?.category?.length>5">..</span>
+ </span>
+ </div> 
+ <span class="label-color-custmization"   (click)="$event.stopPropagation();editTemplate(reply.emailTemplate)" >Edit</span>
+ </div>       																			
+ </div>
+ </a>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </li>
+ </ul>
+ </ng-container>
+ <!-- event campaign launch creation  -->
+ <ul [hidden]="reDistributeEvent || reDistributeEventManage || isPreviewEvent" 
+ class="content__list" *ngFor="let emailTemplate of  reply.emailTemplatesPagination.pagedItems ;let e =index">
+ <li   *ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id">
+ <div class="flex-row mHeight" >
+ <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row" >                         
+ <div  class="row">
+ <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12" > 
+ <div class="grid-box imgage-paddings"  
+ [ngClass]="emailTemplate.id==reply.selectedEmailTemplateId ? 'template-selected-border' :''"   
+ (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate?.draft)" >                 
+ <span class="select-check-box" [class.hide]="emailTemplate.draft">
+ <label>
+ <input *ngIf="!emailTemplate?.draft"
+ name="reply-email-template" [value]="emailTemplate.id" 
+ id="reply-{{i}}-{{emailTemplate.id}}"
+ type="radio" class="radio-custimization radioButton_shadow" 
+ [checked]="emailTemplate.id == reply.selectedEmailTemplateId"  >
+ <input *ngIf="emailTemplate?.draft" title="draft template cannot be selected" disabled="disabled"  type="radio" class="radio-custimization radioButton_shadow" 
+	name="reply-email-template">
+ </label>
+ </span>
+ <img 
+	class="img-grid-track "
+	src="{{emailTemplate.subject}}"
+	alt="" >
+ <span class="icon-alignments"> 
+ <a data-toggle="tooltip" data-placement="top" title=""
+	(click)="$event.stopPropagation(); getTemplateById(emailTemplate)"
+	data-original-title="Preview">
+ <i class="fa fa-external-link-square preview-edit-color tooltip-cls" aria-hidden="true"></i> </a> 
+ </span>
+ <!-- hover Content --> 
+ <div  class="bar hover-bar custometheme-bar" >
+ <a  data-placement="top"  class="border-none-dark">
+ <div class="row">
+ <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 emailtemp-content">
+ <div class="content-hover-align fontsize-cls">
+ <span class="item__name cardDetails-mar"  [title]="emailTemplate.name">
+ <strong>{{emailTemplate?.name |slice:0:15}}</strong>
+ <strong *ngIf="emailTemplate?.name?.length>13">..</strong>
+ </span>
+ <br>
+ <span class="item__name  cardDetails-mar"  [title]="emailTemplate.createdBy">
+ <span>By: </span>{{emailTemplate.createdBy | slice:0:12}}
+ <span *ngIf="emailTemplate.createdBy?.length>12">...</span>
+ </span>
+ <span class="item__name" title="created on" style="float:left; margin: 3px;">
+ <span>
+ <app-timestamp
+ [isOnlyDate]="true"
+ [dateAndTime]="emailTemplate.createdDate">
+ </app-timestamp>
+ </span>
+ </span>                                               
+ </div> 
+ <span class="label-color-custmization"  (click)="$event.stopPropagation();editTemplate(emailTemplate)" >Edit</span>
+ </div>       																		
+ </div>
+ </a>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </li>
+ </ul>
+ </div>
+ </div>
+ <div class="col-xs-12" style="margin-left: -12px;" [hidden]="reDistributeEvent || reDistributeEventManage || isPreviewEvent">
+ <div *ngIf="reply.emailTemplatesPagination.totalRecords>0 && !campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
+ <ul *ngIf="reply.emailTemplatesPagination.pager.pages && reply.emailTemplatesPagination.pager.pages.length" class="pagination">
+ <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">
+ <a (click)="paginateEmailTemplateRows(1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1">First</a>
+ </li>
+ <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">
+ <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage - 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1">Previous</a>
+ </li>
+ <li *ngFor="let page of reply.emailTemplatesPagination.pager.pages" [ngClass]="{active:reply.emailTemplatesPagination.pager.currentPage === page}">
+ <a (click)="paginateEmailTemplateRows(page,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === page">{{page}}</a>
+ </li>
+ <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages}">
+ <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage + 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages">Next</a>
+ </li>
+ <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages}">
+ <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.totalPages,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages">Last</a>
+ </li>
+ </ul>
+ </div>
+ </div>
+ <div  [hidden]="reDistributeEvent || reDistributeEventManage" *ngIf="reply.emailTemplatesPagination.totalRecords==0" class="col-xs-12 alert alert-info">
+ <strong>No templates found</strong>
+ </div>
+ </div>
+ </div>
+ </form>
+ </div>
+ </div>
+ </div>
  </fieldset>
  <div class="col-xs-12" style="text-align: center;" *ngIf="isEventUpdate">
 	<div class="btn-group" [class.disabled]="eventError.eventExpiredError || !isEnableUpdateButton" (click)="createEventCampaign(eventCampaign, 'NOW')">
@@ -1535,17 +1541,17 @@
 	<div class="btn-group btn-group-justified  width_unset" [class.disabled]="eventError.eventExpiredError">
 	   <ng-container>
 		  <label  class="btn btn-primary button-border">
-		  <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+		  <input type="radio" class="text-center mLabelAlign radioButton_shadow" name="scheduleCampaign"
 		  [value]="launchOptions[0]"   (click)="setLaunchOptions(launchOptions[0])"
 		  ngDefaultControl style=" margin-right:10px; " /><span class="text-algn">Now</span>
 		  </label>
 		  <label  class="btn btn-warning button-border Sch-class" >
-		  <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+		  <input type="radio" class="text-center mLabelAlign radioButton_shadow" name="scheduleCampaign"
 		  [value]="launchOptions[1]" (click)="setLaunchOptions(launchOptions[1])"
 		  ngDefaultControl style="margin-right:10px " /><span class="text-algn">Schedule</span>
 		  </label>
 		  <label class="btn green mBtnAlign button-border">
-		  <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
+		  <input type="radio" class="text-center mLabelAlign radioButton_shadow" name="scheduleCampaign"
 		  [value]="launchOptions[2]" (click)="setLaunchOptions(launchOptions[2])"
 		  ngDefaultControl style="margin-right:10px" /><span class="text-algn">Save</span>
 		  </label>

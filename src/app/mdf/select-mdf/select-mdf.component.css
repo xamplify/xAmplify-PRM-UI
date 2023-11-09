@@ -51,7 +51,7 @@ h5 {
 }
 
 .cpad {
-  padding: 0px !important;
+  padding: 2px 0px !important;
 }
 
 .mauto {
@@ -99,7 +99,6 @@ p {
   margin: 0px;
 }
 
-
 @media (min-width: 1133px) and (max-width: 1261px) {
   .header-description-css {
     font-size: 12px;
@@ -111,7 +110,6 @@ p {
     font-size: 10px;
   }
 }
-
 @media only screen and (min-width:1162px) and (max-width:1300px) { 
   .mltp {margin-left: 10% !important;}
   .design-name {font-size: 12px;}

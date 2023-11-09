@@ -1995,6 +1995,11 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .list__item .item__actions.abjustPosition {
   border-top: none !important;
 }
+
+.border-padding {
+  border-top: 1px solid var(--border-color) !important;
+}
+
 /* sudha sri (10-10-2023) */
 .bg_color {
   background-color: var(--page-content) !important;
@@ -2279,3 +2284,4 @@ i.IconodownloadedCount:hover {
 .hrCustimization {
   border-top: 1px solid var(--border-color) !important;
 }
+

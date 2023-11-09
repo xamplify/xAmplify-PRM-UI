@@ -1055,14 +1055,28 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       let self = this;
       htmlToImage.toBlob(document.getElementById('create-from-div'))
           .then(function (blob) {
-              self.thumbnailFileObj = self.utilService.blobToFile(blob);
               self.form.saveAs = self.isSaveAs;
+              console.log(blob);
               if (self.isAdd || self.isSaveAs) {
                   self.save(self.form);
               } else {
                  self.update(self.form);
               }
           });
+
+    // const content = document.getElementById('create-from-div');
+    // htmlToImage.toCanvas(content)
+    // .then(function (canvas) {
+    //     const ctx = canvas.getContext('2d');
+    //     ctx.fillStyle = 'white'; 
+    //     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    //     ctx.drawImage(canvas, 0, 0);
+    //     canvas.toBlob(function(blob) {
+    //     }, 'image/jpeg');
+    // })
+    // .catch(function (error) {
+    //     console.error('Error:', error);
+    //   });
   }
 
   save(form: Form) {
