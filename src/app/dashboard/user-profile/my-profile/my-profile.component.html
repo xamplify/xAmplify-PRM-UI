@@ -343,7 +343,7 @@
                                                                             _ngcontent-c69="" aria-hidden="true"
                                                                             class="fa fa-power-off IconCustomization"></i></a>
                                                                     <a  data-toggle="tooltip" data-placement="bottom" class="mMobileDisable" title="Copy"
-                                                                        (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
+                                                                        (click)="goToCustomThemes();showDto(dto);saveTheme();" *ngIf="dto?.id != 4"><i
                                                                             aria-hidden="true"
                                                                             class="fa fa-files-o mDisableColor IconCustomization"></i></a>
                                                                 </div>
