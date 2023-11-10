@@ -2307,7 +2307,8 @@ h5.view-banner {
   text-align: center;
   font-size: 10px !important;
   border-radius: 3px !important;
-  width: 85px !important;
+  margin-top: 5px;
+  /* width: 85px !important; */
 }
 .white-labeled-cu1 {
   background-color: #68b4f1;
@@ -2541,13 +2542,13 @@ button.unlink-button {
 div#bubble-chart {
   z-index: 0 !important;
 }
-.w75-per{
+.w75-per {
   width: 75% !important;
 }
-.ml15{
+.ml15 {
   margin-left: 15px !important;
 }
-.w85-per{
+.w85-per {
   width: 85% !important;
 }
 
@@ -2563,5 +2564,11 @@ div#bubble-chart {
 }
 .mix-filter-li-selected {
   background-color: #6dcff6 !important;
-} 
-
+}
+.portlet.light.cpad.hover-effect.pointer.card-radius {
+  padding: 0px !important;
+}
+.portlet.light.cpad.hover-effect.pointer {
+  padding: 0px 0px !important;
+  border-radius: 10px;
+}

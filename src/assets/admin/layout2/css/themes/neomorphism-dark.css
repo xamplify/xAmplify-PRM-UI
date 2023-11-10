@@ -135,7 +135,7 @@ h6 {
 }
 .grid-box-team,
 .gu-transit {
-  background-color: #2b3c46 !important;
+  background-color: #2c2f33 !important;
 }
 .gu-block:hover {
   background-color: #22313a !important;
@@ -327,7 +327,6 @@ ul.alt-row-style1 li:hover,
 }
 /*** table ***/
 .tgrid,
-fieldset,
 .table-bordered > tbody > tr > td,
 .table-bordered > tbody > tr > th,
 .table-bordered > tfoot > tr > td,
@@ -2019,7 +2018,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
 .mix-filter li.emailtemplate-selected {
-  background: #2e3033 !important;
+  background: #22313a !important;
   box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 }
 thead > tr {
@@ -2272,7 +2271,7 @@ a.UserguideBtnCustomization:hover {
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 input {
-  color: #000;
+  color: #fff;
 }
 .shadow-inset {
   /* box-shadow: 3px 3px 3px #000, -3px -3px 3px #3b4451; */
@@ -2353,4 +2352,24 @@ input {
 }
 .panel-success > .panel-heading {
   background-color: #2c2f33 !important;
+}
+/* sudha sri (9-11-2023) */
+.mix-filter-li-selected {
+  background-color: #22313a !important;
+}
+.portlet.light.cpad.hover-effect.pointer.card-radius,
+.portlet.light.cpad.hover-effect.pointer {
+  padding: 2px 0px !important;
+}
+.portlet-title.tabbable-line.bt-zero-px.mh-zero-px {
+  border-bottom: 1px solid #2f4857 !important;
+}
+.unsubscribingPopup {
+  background-color: #22313a !important;
+}
+fieldset {
+  border: 1px solid #2f4857 !important;
+}
+select.form-control.ng-untouched.ng-pristine.ng-valid {
+  box-shadow: -4px -4px 5px #3e4247, -10px 10px 19px #1d1f23 !important;
 }
