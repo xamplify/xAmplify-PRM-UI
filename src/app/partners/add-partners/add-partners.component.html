@@ -962,9 +962,9 @@
                                                             <ng-container
                                                                 *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)">
                                                             <a data-toggle="tooltip" data-placement="bottom"
-                                                                title="{{actionsDescription.send_campaigns}}"
+                                                                title="{{actionsDescription.shareUnPublishedContent}}"
                                                                 (click)="addCampaigns(contact)"> <i
-                                                                class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i>
+                                                                class="fa fa-forward IconCustomization" aria-hidden="true"></i>
                                                             </a> </ng-container>
                                                             <a
                                                                 *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember"
@@ -1552,7 +1552,7 @@
     <app-send-campaigns #sendCampaignComponent 
     [hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
      [hasDamAccess]="authenticationService?.module?.damAccess"
-     [hasLmsAccess]="authenticationService?.lmsAcess"
+     [hasLmsAccess]="authenticationService?.module?.lmsAcess"
      [hasPlaybookAccess]="authenticationService?.module?.playbookAccess"
      ></app-send-campaigns>
     
