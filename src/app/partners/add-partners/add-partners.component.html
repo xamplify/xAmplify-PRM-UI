@@ -1549,7 +1549,12 @@
     
     
     <!--Open Pop up-->
-    <app-send-campaigns #sendCampaignComponent></app-send-campaigns>
+    <app-send-campaigns #sendCampaignComponent 
+    [hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
+     [hasDamAccess]="authenticationService?.module?.damAccess"
+     [hasLmsAccess]="authenticationService?.lmsAcess"
+     [hasPlaybookAccess]="authenticationService?.module?.playbookAccess"
+     ></app-send-campaigns>
     
     
     <!-- Cloud Partner Saving Modal Popup -->
