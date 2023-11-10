@@ -28,7 +28,7 @@
                       <div>
                          <div class="col-xs-12">
                            <div class="col-xs-6">
-                             <ul class="mix-filter" && *ngIf="showFilterOptions">
+                             <ul class="mix-filter"  *ngIf="showFilterOptions">
                                  <li *ngIf="hasCampaignAccess" (click)="filterData(0)" [class.mix-filter-li-selected]="0 == selectedIndex">Campaigns</li>
                                  <li *ngIf="hasDamAccess" (click)="filterData(1)" [class.mix-filter-li-selected]="1 == selectedIndex">Assets</li>
                                  <li *ngIf="hasLmsAccess" (click)="filterData(2)" [class.mix-filter-li-selected]="2 == selectedIndex">Tracks</li>
