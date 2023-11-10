@@ -2688,8 +2688,11 @@ export class ReferenceService {
   }
 
   filterArrayList(array: Array<any>, itemToRemove: any) {
-    return array.filter((item) => item !== itemToRemove);
+    return array.filter((item) => item!=undefined &&  item !== itemToRemove);
   }
+
+  
+
 
   /*******CheckBox Code**********/
   highlightRowOnRowCick(trId: string,tableId: string,checkBoxName: string,selectedCheckBoxIds: any,parnterGroupsHeaderCheckBox: string,
