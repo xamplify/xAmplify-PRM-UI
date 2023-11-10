@@ -2006,14 +2006,15 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 
 /*edit-company-profile*/
-.panel-account{
+.panel-account {
   background-color: var(--page-content) !important;
   opacity: 0.8;
 }
-.edit_account{
+.edit_account {
   border: 1px solid var(--border-color) !important;
 }
-.dropdown-menu li > a > [class^="icon-"], .dropdown-menu li > a > [class*=" icon-"] {
+.dropdown-menu li > a > [class^="icon-"],
+.dropdown-menu li > a > [class*=" icon-"] {
   color: var(---text-color) !important;
 }
 /* myprofile dropdown border */
@@ -2024,7 +2025,7 @@ li.divider-bottom {
 .unsubscribingPopup span {
   color: var(---text-color) !important;
 }
-.unsubscribingPopup{  
+.unsubscribingPopup {
   background-color: var(--page-content) !important;
 }
 /* XNFR-376 End*/
@@ -2284,4 +2285,10 @@ i.IconodownloadedCount:hover {
 .hrCustimization {
   border-top: 1px solid var(--border-color) !important;
 }
-
+.portlet.light.cpad.hover-effect.pointer.card-radius {
+  padding: 0px !important;
+}
+.portlet.light.cpad.hover-effect.pointer {
+  padding: 0px 0px !important;
+  border-radius: 10px;
+}
