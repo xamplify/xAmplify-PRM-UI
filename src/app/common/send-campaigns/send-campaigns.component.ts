@@ -77,7 +77,6 @@ export class SendCampaignsComponent implements OnInit {
     accessList.push(this.hasDamAccess);
     accessList.push(this.hasLmsAccess);
     accessList.push(this.hasPlaybookAccess);
-    console.log(accessList);
     let filteredArrayList = this.referenceService.filterArrayList(accessList,false);
     this.showFilterOptions = filteredArrayList!=undefined && filteredArrayList.length>1;
 
@@ -86,7 +85,6 @@ export class SendCampaignsComponent implements OnInit {
       this.pagination.vanityUrlFilter = true;
     }
       $('#sendCampaignsPopup').modal('show');
-      if(this.hasCampaignAccess){
         this.pagination.partnerOrContactEmailId = contact.emailId;
         this.pagination.partnerId = contact.id;
         this.firstName = contact.firstName;
@@ -96,7 +94,6 @@ export class SendCampaignsComponent implements OnInit {
         this.type = type;
         this.newEmailIdsAreAdded = false;
         this.listCampaigns(this.pagination);
-      }
       
   }
 

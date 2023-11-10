@@ -60,6 +60,7 @@ export class ActionsDescription {
 
     /***Send Test Email*****/
     sendTestEmail = "Send Test Email";
+    shareUnPublishedContent = "Share UnPublished Content";
 
 
 
