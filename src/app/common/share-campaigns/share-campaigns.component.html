@@ -1,16 +1,16 @@
-
-<!--Search & Sort-->
-<div class="col-xs-12">
-  <div class="page-toolbar">
+<app-list-loader *ngIf="httpRequestLoader?.isLoading" [rowsCount]="3"></app-list-loader>
+<!--Campaigns-->
+<div *ngIf="!httpRequestLoader?.isLoading">
+  <!--Search & Sort-->
+  <div class="col-xs-12">
     <div class="btn-group pull-right">
       <div class="inputs float-right inline-flex">
         <!--Search-->
         <div>
             <select class="form-control" [(ngModel)]="sortOption.selectedShareCampaignDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-            <option
-            *ngFor="let option of sortOption.shareCampaignSortDropDownOptions"
-            [ngValue]="option">
-            {{option.name}}</option>
+              <option  *ngFor="let option of sortOption.shareCampaignSortDropDownOptions" [ngValue]="option">
+                  {{option.name}}
+                </option>
             </select>
         </div>
         <!--Sort-->
@@ -24,9 +24,13 @@
           </div>
         </div>
       </div>
-     </div> 
-   </div> 
+    </div> 
+  </div>
+
+    <!--List-->
+    <div class="table-responsive">
+
+    </div>
 
 </div>
 
-<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>

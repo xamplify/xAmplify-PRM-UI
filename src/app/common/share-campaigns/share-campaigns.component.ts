@@ -87,7 +87,7 @@ export class ShareCampaignsComponent implements OnInit {
             } else {
                 this.isHeaderCheckBoxChecked = false;
             }
-            this.referenceService.stopLoader(this.httpRequestLoader);
+           this.referenceService.stopLoader(this.httpRequestLoader);
         },
         (_error: any) => {
             this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);

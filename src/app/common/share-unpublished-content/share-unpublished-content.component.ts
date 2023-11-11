@@ -48,6 +48,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.type = type;
     this.selectedPartnerListId = partnerListId;
     this.referenceService.openModalPopup(this.modalPopUpId);
+    this.applyFilter(0,firstFilterOption);
 
   }
 
@@ -76,6 +77,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
   }
 
   closePopup(){
+    this.resetValues();
     this.referenceService.closeModalPopup(this.modalPopUpId);
   }
 
