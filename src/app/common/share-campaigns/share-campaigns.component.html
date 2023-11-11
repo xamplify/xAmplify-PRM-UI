@@ -1,3 +1,32 @@
-<p>
-  share-campaigns works!
-</p>
+
+<!--Search & Sort-->
+<div class="col-xs-12">
+  <div class="page-toolbar">
+    <div class="btn-group pull-right">
+      <div class="inputs float-right inline-flex">
+        <!--Search-->
+        <div>
+            <select class="form-control" [(ngModel)]="sortOption.selectedShareCampaignDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+            <option
+            *ngFor="let option of sortOption.shareCampaignSortDropDownOptions"
+            [ngValue]="option">
+            {{option.name}}</option>
+            </select>
+        </div>
+        <!--Sort-->
+        <div class="portlet-input input-inline">
+          <div class="input-icon right" id="icon">
+            <input type="text" id="sort-text" autocomplete="off" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="findCampaignsOnKeyPress($event.keyCode)">
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
+            <button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+     </div> 
+   </div> 
+
+</div>
+
+<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>

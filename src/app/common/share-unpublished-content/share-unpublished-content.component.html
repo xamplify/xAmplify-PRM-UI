@@ -9,14 +9,16 @@
           <h4 class="modal-title text-center">{{modalHeaderText}}</h4>
        </div>
        <div class="modal-body">
-          <p>This is Modal Popup</p>
+         <!--Filter Option---->
           <div class="col-xs-12" *ngIf="showFilterOptions">
               <ul class="mix-filter" >
                 <ng-container *ngFor="let filterOption of filterOptions;let i = index">
-                  <li (click)="applyFilter(i)" [class.mix-filter-li-selected]="i == selectedIndex">{{filterOption}}</li>
+                  <li (click)="applyFilter(i,filterOption)" [class.mix-filter-li-selected]="i == selectedIndex">{{filterOption}}</li>
                 </ng-container>
               </ul>
-       </div>
+          </div>
+          <!--Campaigns/Assets/Tracks/Playbooks-->
+          <app-share-campaigns *ngIf="hasCampaignAccess" #shareCampaignsComponent (shareCampaignsEventEmitter)="shareCampaignsEventReceiver($event)"></app-share-campaigns>
       </div>
     </div>
 </div>    
