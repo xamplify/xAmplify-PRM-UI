@@ -74,9 +74,6 @@ export class ShareCampaignsComponent implements OnInit {
             pagination.totalRecords = data.totalRecords;
             this.sortOption.totalRecords = data.totalRecords;
             let campaigns = data.campaigns;
-            $.each(campaigns, function(_index: number, campaign: any) {
-                campaign.displayTime = new Date(campaign.launchTimeInString);
-            });
             pagination = this.pagerService.getPagedItems(pagination, campaigns);
             /*******Header checkbox will be chcked when navigating through page numbers*****/
             var campaignIds = pagination.pagedItems.map(function(a) { return a.id; });

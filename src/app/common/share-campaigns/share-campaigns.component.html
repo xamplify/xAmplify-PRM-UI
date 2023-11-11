@@ -55,9 +55,7 @@
               <span>{{campaign.createdBy}}</span>
            </td>
            <td class="text-center">
-              <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
-              </app-timestamp>
-              <span *ngIf="referenceService.isSafariBrowser()">{{campaign.displayTime}}</span>
+              <app-display-date-and-time [dateAndTimeUTCString]="campaign?.launchTimeInString"></app-display-date-and-time>
            </td>
            </tr>
         </tbody>
