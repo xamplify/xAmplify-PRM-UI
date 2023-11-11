@@ -164,7 +164,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
         );
     }else{
       this.referenceService.goToTop();
-      this.customResponse = new CustomResponse('ERROR','Please select atleast one campaign',true);
+      this.customResponse = new CustomResponse('ERROR','Please select atleast one row',true);
     }
   }
 
