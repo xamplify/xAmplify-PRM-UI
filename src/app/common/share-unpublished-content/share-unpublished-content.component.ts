@@ -1,4 +1,5 @@
 import { Component, OnInit,Input,ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { Properties } from '../models/properties';
@@ -27,9 +28,14 @@ export class ShareUnpublishedContentComponent implements OnInit {
   selectedPartnerListId = 0;
   contact:any;
   type  = "";
-  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties) { }
+  isChildComponentCalled = false;
+  isPartnersRouter = false;
+  selectedIds =[];
+  selectedModule = "";
+  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,private router: Router) { }
 
   ngOnInit() {
+    this.isPartnersRouter =  this.router.url.includes("/partners/");
   }
 
   openPopUp(partnerListId: number, contact:any,type:string){
@@ -42,13 +48,13 @@ export class ShareUnpublishedContentComponent implements OnInit {
     let filteredArrayList = this.referenceService.filterArrayList(accessList,false);
     this.showFilterOptions = filteredArrayList!=undefined && filteredArrayList.length>1;
     this.addFilterOptions();
-    let firstFilterOption = this.filterOptions[0];
-    this.modalHeaderText = "Please Select "+firstFilterOption;
+    this.selectedModule = this.filterOptions[0];
+    this.modalHeaderText = "Please Select "+this.selectedModule;
     this.contact = contact;
     this.type = type;
     this.selectedPartnerListId = partnerListId;
     this.referenceService.openModalPopup(this.modalPopUpId);
-    this.applyFilter(0,firstFilterOption);
+    this.applyFilter(0,this.selectedModule);
 
   }
 
@@ -74,6 +80,8 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.selectedPartnerListId = 0;
     this.contact = {};
     this.type = "";
+    this.isChildComponentCalled = false;
+    this.selectedModule = "";
   }
 
   closePopup(){
@@ -83,17 +91,17 @@ export class ShareUnpublishedContentComponent implements OnInit {
 
   applyFilter(index:number,filterOption:string){
     this.selectedIndex = index;
+    this.isChildComponentCalled = false;
     this.modalHeaderText = "Please Select "+filterOption;
-    if(filterOption==this.properties.campaignsHeaderText){
-      this.shareCampaignsComponent.loadCampaigns(this.selectedPartnerListId,this.contact,this.type);
-    }else if(filterOption==this.properties.assetsHeaderText){
-    }else if(filterOption==this.properties.tracksHeaderText){
-    }else if(filterOption==this.properties.playBooksHeaderText){
-    }
+    this.isChildComponentCalled = true;
     
   }
 
   shareCampaignsEventReceiver(event:any){
+  }
+
+  share(){
+    
   }
 
 }

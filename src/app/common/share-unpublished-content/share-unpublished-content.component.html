@@ -10,16 +10,31 @@
        </div>
        <div class="modal-body">
          <!--Filter Option---->
-          <div class="col-xs-12" *ngIf="showFilterOptions">
+          <div  *ngIf="showFilterOptions">
               <ul class="mix-filter" >
                 <ng-container *ngFor="let filterOption of filterOptions;let i = index">
                   <li (click)="applyFilter(i,filterOption)" [class.mix-filter-li-selected]="i == selectedIndex">{{filterOption}}</li>
                 </ng-container>
               </ul>
           </div>
+          <div class="alert alert-info">
+            <strong>
+                **Please be noted that you will only see a list of unshared {{selectedModule}}. <br/>
+                **{{selectedModule}} that have been chosen will be shared with the
+                <span *ngIf="isPartnersRouter">{{authenticationService?.partnerModule?.customName}}</span>
+                <span *ngIf="!isPartnersRouter">contact</span>. 
+                It will take some time to process everything. There is no need to reshare it.
+            </strong>
+          </div>
           <!--Campaigns/Assets/Tracks/Playbooks-->
-          <app-share-campaigns *ngIf="hasCampaignAccess" #shareCampaignsComponent (shareCampaignsEventEmitter)="shareCampaignsEventReceiver($event)"></app-share-campaigns>
+          <app-share-campaigns *ngIf="hasCampaignAccess && isChildComponentCalled" 
+          [selectedPartnerListId]="selectedPartnerListId" [contact]="contact" [type]="type"  (shareCampaignsEventEmitter)="shareCampaignsEventReceiver($event)"></app-share-campaigns>
       </div>
+      <!--Footer--->
+      <div class="modal-footer">
+        <button type="submit" class="btn Btn-Green" [disabled]="selectedIds?.length==0" (click)="share()">Share</button>
+        <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
+     </div>
     </div>
 </div>    
 

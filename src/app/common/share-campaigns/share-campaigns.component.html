@@ -1,8 +1,8 @@
-<app-list-loader *ngIf="httpRequestLoader?.isLoading" [rowsCount]="3"></app-list-loader>
+<app-list-loader *ngIf="httpRequestLoader.isLoading" [rowsCount]="3"></app-list-loader>
 <!--Campaigns-->
-<div *ngIf="!httpRequestLoader?.isLoading">
+<div *ngIf="!httpRequestLoader.isLoading" class="table-responsive">
   <!--Search & Sort-->
-  <div class="col-xs-12">
+  <div class="col-xs-12 pb10">
     <div class="btn-group pull-right">
       <div class="inputs float-right inline-flex">
         <!--Search-->
@@ -26,11 +26,53 @@
       </div>
     </div> 
   </div>
-
-    <!--List-->
-    <div class="table-responsive">
-
+    <!--List Of Campaigns-->
+    <div>
+      <table class='table tgrid table-hover table-sm' *ngIf="pagination?.pagedItems?.length>0" id="campaign-list-table">
+        <thead>
+           <tr>
+              <th class="text-center">
+                 <input class="pointer checkBox_shadow" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllCampaigns">
+              </th>
+              <th class="text-center">Campaign Name</th>
+              <th class="text-center">Type</th>
+              <th class="text-center">Created By</th>
+              <th class="text-center">Launched On</th>
+           </tr>
+        </thead>
+        <tbody>
+           <tr class="pointer" *ngFor="let campaign of pagination.pagedItems ;let i =index" id="campaignTr_{{campaign.id}}" [class.row-selected]="selectedCampaignIds.indexOf(campaign.id)>-1" (click)="highlightSelectedCampaignRow(campaign,$event)">
+           <td class="text-center">
+              <input type="checkbox" class="pointer checkBox_shadow" lang="{{campaign.campaign}}" id="{{campaign.id}}" [checked]="selectedCampaignIds.indexOf(campaign.id)>-1" name="campaignCheckBoxName[]" value="{{campaign.id}}" (click)="highlightRowByCheckBox(campaign,$event)">
+           </td>
+           <td class="text-center" title="{{campaign.campaign}}">
+              {{campaign.campaign | slice:0:25}} <span *ngIf="campaign.campaign?.length>25">...</span>
+           </td>
+           <td class="text-center">
+              <span>{{campaign.campaignTypeInString}}</span>
+           </td>
+           <td class="text-center">
+              <span>{{campaign.createdBy}}</span>
+           </td>
+           <td class="text-center">
+              <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
+              </app-timestamp>
+              <span *ngIf="referenceService.isSafariBrowser()">{{campaign.displayTime}}</span>
+           </td>
+           </tr>
+        </tbody>
+     </table>
     </div>
+    <!--Pagination-->
+    <div *ngIf="pagination?.totalRecords==0" class="alert alert-info">
+      <strong>No Campaigns Found.</strong>
+    </div>
+
+    <div *ngIf="pagination?.totalRecords>0">
+      <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findCampaigns($event)">
+      </app-pagination>
+    </div>
+
 
 </div>
 

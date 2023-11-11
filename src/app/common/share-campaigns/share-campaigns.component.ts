@@ -1,4 +1,4 @@
-import { Component, OnInit,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit,Output,EventEmitter,Input } from '@angular/core';
 import { Pagination } from 'app/core/models/pagination';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { PagerService } from 'app/core/services/pager.service';
@@ -25,11 +25,13 @@ declare var $:any;
 export class ShareCampaignsComponent implements OnInit {
 
   @Output() shareCampaignsEventEmitter = new EventEmitter();
+  @Input() selectedPartnerListId = 0;
+  @Input() type = "";
+  @Input() contact:any;
   pagination:Pagination = new Pagination();
   firstName = "";
   lastName = "";
   companyName = "";
-  type = "";
   newEmailIdsAreAdded = false;
   customResponse:CustomResponse = new CustomResponse();
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
@@ -42,30 +44,29 @@ export class ShareCampaignsComponent implements OnInit {
     private campaignService:CampaignService,public utilService:UtilService) { }
 
   ngOnInit() {
-    
-  }
-
-  loadCampaigns(selectedPartnerListId:number,contact:any,type:string){
+    this.referenceService.startLoader(this.httpRequestLoader);
+    let contact = this.contact;
     this.pagination.partnerOrContactEmailId = contact.emailId;
     this.pagination.partnerId = contact.id;
     this.firstName = contact.firstName;
     this.lastName = contact.lastName;
     this.companyName = contact.contactCompany;
-    this.pagination.userListId = selectedPartnerListId;
-    this.type = type;
+    this.pagination.userListId = this.selectedPartnerListId;
+    this.type = this.type;
     this.newEmailIdsAreAdded = false;
-    if(type=="Contact" && this.vanityUrlService.isVanityURLEnabled()){
+    if(this.type=="Contact" && this.vanityUrlService.isVanityURLEnabled()){
       this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.pagination.vanityUrlFilter = true;
     }
     this.findCampaigns(this.pagination);
-
+    
   }
 
 
   findCampaigns(pagination: Pagination) {
     this.customResponse = new CustomResponse();
     this.referenceService.startLoader(this.httpRequestLoader);
+    this.referenceService.scrollToModalBodyTopByClass();
     this.campaignService.listCampaignsByUserListIdAndUserId(pagination, this.type)
         .subscribe(
         response => {
@@ -78,7 +79,7 @@ export class ShareCampaignsComponent implements OnInit {
             });
             pagination = this.pagerService.getPagedItems(pagination, campaigns);
             /*******Header checkbox will be chcked when navigating through page numbers*****/
-            var campaignIds = this.pagination.pagedItems.map(function(a) { return a.id; });
+            var campaignIds = pagination.pagedItems.map(function(a) { return a.id; });
             var items = $.grep(this.selectedCampaignIds, function(element: any) {
                 return $.inArray(element, campaignIds) !== -1;
             });
