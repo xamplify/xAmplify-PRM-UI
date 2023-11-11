@@ -28,7 +28,7 @@
           </div>
           <!--Campaigns/Assets/Tracks/Playbooks-->
           <app-share-campaigns *ngIf="isCampaignChildComponentCalled" 
-            [selectedPartnerListId]="selectedPartnerListId" [contact]="contact" [type]="type"  
+            [selectedUserListId]="selectedUserListId" [contact]="contact" [type]="type"  
             (shareCampaignsEventEmitter)="shareCampaignsEventReceiver($event)">
           </app-share-campaigns>
 

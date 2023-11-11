@@ -1,6 +1,8 @@
 <app-list-loader *ngIf="httpRequestLoader.isLoading" [rowsCount]="3"></app-list-loader>
+<app-response-message class="pg8" [showCloseIcon]="false" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+</app-response-message>
 <!--Campaigns-->
-<div *ngIf="!httpRequestLoader.isLoading" class="table-responsive">
+<div *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader?.isServerError" class="table-responsive">
   <!--Search & Sort-->
   <div class="col-xs-12 pb10">
     <div class="btn-group pull-right">
@@ -70,7 +72,7 @@
    <strong>No Campaigns Found.</strong>
  </div>
 
- <div *ngIf="pagination?.totalRecords>0" [hidden]="httpRequestLoader.isLoading">
+ <div *ngIf="pagination?.totalRecords>0" [hidden]="httpRequestLoader.isLoading || httpRequestLoader?.isServerError">
    <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findCampaigns($event)">
    </app-pagination>
  </div>

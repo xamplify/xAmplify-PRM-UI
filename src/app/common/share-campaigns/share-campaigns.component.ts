@@ -25,7 +25,7 @@ declare var $:any;
 export class ShareCampaignsComponent implements OnInit {
 
   @Output() shareCampaignsEventEmitter = new EventEmitter();
-  @Input() selectedPartnerListId = 0;
+  @Input() selectedUserListId = 0;
   @Input() type = "";
   @Input() contact:any;
   pagination:Pagination = new Pagination();
@@ -51,7 +51,7 @@ export class ShareCampaignsComponent implements OnInit {
     this.firstName = contact.firstName;
     this.lastName = contact.lastName;
     this.companyName = contact.contactCompany;
-    this.pagination.userListId = this.selectedPartnerListId;
+    this.pagination.userListId = this.selectedUserListId;
     this.type = this.type;
     this.newEmailIdsAreAdded = false;
     if(this.type=="Contact" && this.vanityUrlService.isVanityURLEnabled()){
