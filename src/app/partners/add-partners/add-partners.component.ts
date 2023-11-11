@@ -3602,8 +3602,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	/************Add Campaigns Pop up****************************** */
 	addCampaigns(contact: any) {
-		//this.sendCampaignComponent.openPopUp(this.partnerListId, contact, "Partner");
-		this.shareUnPublishedComponent.openPopUp();
+		this.sendCampaignComponent.openPopUp(this.partnerListId, contact, "Partner");
 	}
 
 
@@ -4398,6 +4397,11 @@ unsubscribeUser(selectedUserForUnsubscribed : any){
  this.selectedUser = null ;
  this.loadPartnerList(this.pagination);
  this.customResponse = new CustomResponse('SUCCESS', event, true);
+ }
+
+ /******XNFR-342***/
+ openUnPublishedContentModalPopUp(contact:any){
+	this.shareUnPublishedComponent.openPopUp(this.partnerListId, contact, "Partner");
  }
 
 
