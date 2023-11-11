@@ -4,7 +4,8 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ReferenceService } from 'app/core/services/reference.service';
 import { Properties } from '../models/properties';
 import { ShareCampaignsComponent } from '../share-campaigns/share-campaigns.component';
-import { filter } from 'rxjs/operator/filter';
+import { CustomResponse } from '../../common/models/custom-response';
+import { CampaignService } from 'app/campaigns/services/campaign.service';
 
 @Component({
   selector: 'app-share-unpublished-content',
@@ -26,7 +27,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
   modalHeaderText = "";
   filterOptions:Array<string> = new Array<string>();
   @ViewChild('shareCampaignsComponent') shareCampaignsComponent: ShareCampaignsComponent;
-  selectedPartnerListId = 0;
+  selectedUserListId = 0;
   contact:any;
   type  = "";
   isCampaignChildComponentCalled = false;
@@ -35,8 +36,16 @@ export class ShareUnpublishedContentComponent implements OnInit {
   isPlayBookChildComponentCalled = false;
   isPartnersRouter = false;
   selectedIds =[];
+  user:any;
   selectedModule = "";
-  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties,private router: Router) { }
+  ngxLoading = false;
+  customResponse:CustomResponse = new CustomResponse();
+  isPublishedSuccessfully = false;
+  statusCode = 0;
+  responseMessage = "";
+  isPartnerInfoRequried = false;
+  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
+    public properties:Properties,private router: Router,private campaignService:CampaignService) { }
 
   ngOnInit() {
     this.isPartnersRouter =  this.router.url.includes("/partners/");
@@ -56,7 +65,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.modalHeaderText = "Please Select "+this.selectedModule;
     this.contact = contact;
     this.type = type;
-    this.selectedPartnerListId = partnerListId;
+    this.selectedUserListId = partnerListId;
     this.referenceService.openModalPopup(this.modalPopUpId);
     this.isCampaignChildComponentCalled = this.hasCampaignAccess && this.selectedModule==this.properties.campaignsHeaderText;
     this.applyFilter(0,this.selectedModule);
@@ -82,7 +91,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.filterOptions = [];
     this.modalHeaderText = "";
     this.showFilterOptions = false;
-    this.selectedPartnerListId = 0;
+    this.selectedUserListId = 0;
     this.contact = {};
     this.type = "";
     this.selectedModule = "";
@@ -110,10 +119,53 @@ export class ShareUnpublishedContentComponent implements OnInit {
   }
 
   shareCampaignsEventReceiver(event:any){
+    this.selectedIds = event['selectedRowIds'];
+    this.user = event['partnerDetails'];
+    this.isPartnerInfoRequried = event['isPartnerInfoRequried'];
   }
 
   share(){
-    
+    if(this.selectedIds!=undefined && this.selectedIds.length>0){
+      this.ngxLoading = true;
+      let users = [];
+      if(this.isPartnerInfoRequried){
+        users.push(this.user);
+      }
+      let campaignDetails = {
+        "campaignIds": this.selectedIds,
+        "partnersOrContactDtos": users,
+        "userListId": this.selectedUserListId,
+        "loggedInUserId":this.authenticationService.getUserId(),
+        "type":this.type
+      }
+      this.campaignService.shareOrSendCampaigns(campaignDetails)
+        .subscribe(
+          data => {
+            this.ngxLoading = false;
+              if (data.access) {
+                  this.isPublishedSuccessfully = true;
+                  this.statusCode = data.statusCode;
+                  if (data.statusCode == 200) {
+                    this.responseMessage = data.message;
+                  } else {
+                      this.responseMessage = data.message;
+                  }
+                  this.resetValues();
+              } else {
+                  this.authenticationService.forceToLogout();
+              }
+          },
+          _error => {
+            this.ngxLoading = false;
+            this.isPublishedSuccessfully = false;
+            this.customResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
+          }, () => {
+          }
+        );
+    }else{
+      this.referenceService.goToTop();
+      this.customResponse = new CustomResponse('ERROR','Please select atleast one campaign',true);
+    }
   }
 
 }

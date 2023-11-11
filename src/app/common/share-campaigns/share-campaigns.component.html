@@ -28,11 +28,12 @@
   </div>
     <!--List Of Campaigns-->
     <div>
-      <table class='table tgrid table-hover table-sm' *ngIf="pagination?.pagedItems?.length>0" id="campaign-list-table">
+      <table class='table tgrid table-hover table-sm' *ngIf="pagination?.pagedItems?.length>0" id="unPublishedCampaignsTable">
         <thead>
            <tr>
               <th class="text-center">
-                 <input class="pointer checkBox_shadow" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllCampaigns">
+                 <input class="pointer checkBox_shadow" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+                  (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)" id="unPublished-campaigns-header-checkbox-id">
               </th>
               <th class="text-center">Campaign Name</th>
               <th class="text-center">Type</th>
@@ -41,9 +42,10 @@
            </tr>
         </thead>
         <tbody>
-           <tr class="pointer" *ngFor="let campaign of pagination.pagedItems ;let i =index" id="campaignTr_{{campaign.id}}" [class.row-selected]="selectedCampaignIds.indexOf(campaign.id)>-1" (click)="highlightSelectedCampaignRow(campaign,$event)">
+           <tr class="pointer" *ngFor="let campaign of pagination.pagedItems ;let i =index" id="unPublished-campaigns-tr-{{campaign.id}}" [class.row-selected]="selectedCampaignIds.indexOf(campaign.id)>-1" (click)="highlightSelectedCampaignOnRowClick(campaign.id,$event)">
            <td class="text-center">
-              <input type="checkbox" class="pointer checkBox_shadow" lang="{{campaign.campaign}}" id="{{campaign.id}}" [checked]="selectedCampaignIds.indexOf(campaign.id)>-1" name="campaignCheckBoxName[]" value="{{campaign.id}}" (click)="highlightRowByCheckBox(campaign,$event)">
+              <input type="checkbox" class="pointer checkBox_shadow"  id="{{campaign.id}}" [checked]="selectedCampaignIds.indexOf(campaign.id)>-1"
+               name="unPublishedCampaignsCheckBox[]" value="{{campaign.id}}" (click)="$event.stopPropagation();highlightCampaignRowOnCheckBoxClick(campaign.id,$event)">
            </td>
            <td class="text-center" title="{{campaign.campaign}}">
               {{campaign.campaign | slice:0:25}} <span *ngIf="campaign.campaign?.length>25">...</span>

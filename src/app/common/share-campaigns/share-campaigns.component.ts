@@ -127,5 +127,38 @@ export class ShareCampaignsComponent implements OnInit {
   }
   findCampaignsOnKeyPress(keyCode: any) { if (keyCode === 13) { this.searchCampaigns(); } }
 
+  /*****CheckBox Code******/
+  highlightSelectedCampaignOnRowClick(selectedCampaignId: any, event: any) {
+    this.referenceService.highlightRowOnRowCick('unPublished-campaigns-tr', 'unPublishedCampaignsTable', 'unPublishedCampaignsCheckBox', this.selectedCampaignIds, 'unPublished-campaigns-header-checkbox-id', selectedCampaignId, event);
+    this.sendEmitterValues();
+  }
+
+  highlightCampaignRowOnCheckBoxClick(selectedCampaignId: any, event: any) {
+    this.referenceService.highlightRowByCheckBox('unPublished-campaigns-tr', 'unPublishedCampaignsTable', 'unPublishedCampaignsCheckBox', this.selectedCampaignIds, 'unPublished-campaigns-header-checkbox-id', selectedCampaignId, event);
+    this.sendEmitterValues();
+  }
+
+  selectOrUnselectAllRowsOfTheCurrentPage(event: any) {
+    this.selectedCampaignIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('unPublished-campaigns-tr', 'unPublishedCampaignsTable', 'unPublishedCampaignsCheckBox', this.selectedCampaignIds, this.pagination, event);
+		this.sendEmitterValues();
+  }
+
+  sendEmitterValues(){
+		let emitterObject = {};
+		emitterObject['selectedRowIds'] = this.selectedCampaignIds;
+    emitterObject['isPartnerInfoRequried'] = false;
+    if(this.pagination.partnerId>0){
+      let partnerDetails = { 
+        'emailId': this.pagination.partnerOrContactEmailId,
+        'firstName':this.firstName,
+        'lastName':this.lastName,
+        'companyName':this.companyName 
+      };
+      emitterObject['partnerDetails'] = partnerDetails;
+      emitterObject['isPartnerInfoRequried'] = true;
+    }
+		this.shareCampaignsEventEmitter.emit(emitterObject);
+	}
+
 
 }
