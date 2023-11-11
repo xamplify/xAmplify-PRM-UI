@@ -34,6 +34,7 @@ import { IntegrationService } from 'app/core/services/integration.service';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 import { UtilService } from 'app/core/services/util.service';
 import { UserGuide } from 'app/guides/models/user-guide';
+import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
 declare var $:any, Papa:any, swal:any;
 
 @Component({
@@ -236,7 +237,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     /*** XNFR-224***/
 	isLoggedInAsPartner = false;
 
-//XNFR-230.
+	//XNFR-230.
    //pipedrive
 
    pipedriveImageBlur: boolean = false;
@@ -257,6 +258,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    /****** User guide ******/
    searchWithModuleName:any;
    selectedUser: User = null;
+	/*****XNFR-342*****/
+   @ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
 	constructor(private fileUtil: FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
 		public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
 		public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -3599,7 +3602,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	/************Add Campaigns Pop up****************************** */
 	addCampaigns(contact: any) {
-		this.sendCampaignComponent.openPopUp(this.partnerListId, contact, "Partner");
+		//this.sendCampaignComponent.openPopUp(this.partnerListId, contact, "Partner");
+		this.shareUnPublishedComponent.openPopUp();
 	}
 
 

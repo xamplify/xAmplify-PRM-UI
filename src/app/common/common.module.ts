@@ -142,6 +142,7 @@ import { ShareCampaignsComponent } from './share-campaigns/share-campaigns.compo
 import { ShareAssetsComponent } from './share-assets/share-assets.component';
 import { ShareTracksComponent } from './share-tracks/share-tracks.component';
 import { SharePlaybooksComponent } from './share-playbooks/share-playbooks.component';
+import { ShareUnpublishedContentComponent } from './share-unpublished-content/share-unpublished-content.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -169,8 +170,9 @@ import { SharePlaybooksComponent } from './share-playbooks/share-playbooks.compo
 		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,
-		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,
-		SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent, ShareCampaignsComponent, ShareAssetsComponent, ShareTracksComponent, SharePlaybooksComponent],
+		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,SelectEmailTemplateComponent,CustomUiSwitchComponent,
+		EditTemplateOrPageModalPopupComponent, ShareCampaignsComponent, ShareAssetsComponent, ShareTracksComponent, SharePlaybooksComponent,
+		 ShareUnpublishedContentComponent],
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
@@ -195,7 +197,9 @@ import { SharePlaybooksComponent } from './share-playbooks/share-playbooks.compo
 		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent,
-		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent]
+		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent,
+		ShareCampaignsComponent, ShareAssetsComponent, ShareTracksComponent, SharePlaybooksComponent,
+		ShareUnpublishedContentComponent]
 
 
 

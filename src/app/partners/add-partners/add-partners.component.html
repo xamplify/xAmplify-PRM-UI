@@ -1549,12 +1549,19 @@
     
     
     <!--Open Pop up-->
-    <app-send-campaigns #sendCampaignComponent 
+    <!-- <app-send-campaigns #sendCampaignComponent 
     [hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
      [hasDamAccess]="authenticationService?.module?.damAccess"
      [hasLmsAccess]="authenticationService?.module?.lmsAccess"
      [hasPlaybookAccess]="authenticationService?.module?.playbookAccess"
-     ></app-send-campaigns>
+     ></app-send-campaigns> -->
+
+     <app-share-unpublished-content #shareUnPublishedComponent
+        [hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
+         [hasDamAccess]="authenticationService?.module?.damAccess"
+         [hasLmsAccess]="authenticationService?.module?.lmsAccess"
+        [hasPlaybookAccess]="authenticationService?.module?.playbookAccess">
+     </app-share-unpublished-content>
     
     
     <!-- Cloud Partner Saving Modal Popup -->
