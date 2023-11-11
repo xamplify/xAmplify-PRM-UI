@@ -10,6 +10,7 @@ export class ShareAssetsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    alert("Share Assets");
   }
 
 }

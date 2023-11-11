@@ -4,6 +4,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 import { ReferenceService } from 'app/core/services/reference.service';
 import { Properties } from '../models/properties';
 import { ShareCampaignsComponent } from '../share-campaigns/share-campaigns.component';
+import { filter } from 'rxjs/operator/filter';
 
 @Component({
   selector: 'app-share-unpublished-content',
@@ -28,7 +29,10 @@ export class ShareUnpublishedContentComponent implements OnInit {
   selectedPartnerListId = 0;
   contact:any;
   type  = "";
-  isChildComponentCalled = false;
+  isCampaignChildComponentCalled = false;
+  isAssetChildComponentCalled = false;
+  isTrackChildComponentCalled = false;
+  isPlayBookChildComponentCalled = false;
   isPartnersRouter = false;
   selectedIds =[];
   selectedModule = "";
@@ -54,6 +58,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.type = type;
     this.selectedPartnerListId = partnerListId;
     this.referenceService.openModalPopup(this.modalPopUpId);
+    this.isCampaignChildComponentCalled = this.hasCampaignAccess && this.selectedModule==this.properties.campaignsHeaderText;
     this.applyFilter(0,this.selectedModule);
 
   }
@@ -80,8 +85,9 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.selectedPartnerListId = 0;
     this.contact = {};
     this.type = "";
-    this.isChildComponentCalled = false;
     this.selectedModule = "";
+    this.isCampaignChildComponentCalled = false;
+
   }
 
   closePopup(){
@@ -91,10 +97,16 @@ export class ShareUnpublishedContentComponent implements OnInit {
 
   applyFilter(index:number,filterOption:string){
     this.selectedIndex = index;
-    this.isChildComponentCalled = false;
     this.modalHeaderText = "Please Select "+filterOption;
-    this.isChildComponentCalled = true;
-    
+    this.selectedModule = filterOption;
+    this.isCampaignChildComponentCalled = false;
+    this.isAssetChildComponentCalled = false;
+    this.isTrackChildComponentCalled = false;
+    this.isPlayBookChildComponentCalled = false;
+    this.isCampaignChildComponentCalled = this.hasCampaignAccess && filterOption==this.properties.campaignsHeaderText;
+    this.isAssetChildComponentCalled = this.hasDamAccess && filterOption==this.properties.assetsHeaderText;
+    this.isTrackChildComponentCalled = this.hasLmsAccess && filterOption==this.properties.tracksHeaderText;
+    this.isPlayBookChildComponentCalled = this.hasPlaybookAccess && filterOption==this.properties.playBooksHeaderText;
   }
 
   shareCampaignsEventReceiver(event:any){

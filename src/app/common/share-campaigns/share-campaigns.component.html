@@ -63,16 +63,15 @@
         </tbody>
      </table>
     </div>
-    <!--Pagination-->
-    <div *ngIf="pagination?.totalRecords==0" class="alert alert-info">
-      <strong>No Campaigns Found.</strong>
-    </div>
-
-    <div *ngIf="pagination?.totalRecords>0">
-      <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findCampaigns($event)">
-      </app-pagination>
-    </div>
-
-
 </div>
+
+ <!--Pagination-->
+ <div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+   <strong>No Campaigns Found.</strong>
+ </div>
+
+ <div *ngIf="pagination?.totalRecords>0" [hidden]="httpRequestLoader.isLoading">
+   <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findCampaigns($event)">
+   </app-pagination>
+ </div>
 

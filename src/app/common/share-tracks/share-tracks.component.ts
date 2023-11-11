@@ -10,6 +10,7 @@ export class ShareTracksComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    alert("Share Tracks");
   }
 
 }

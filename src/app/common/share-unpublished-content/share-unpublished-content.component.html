@@ -27,8 +27,29 @@
             </strong>
           </div>
           <!--Campaigns/Assets/Tracks/Playbooks-->
-          <app-share-campaigns *ngIf="hasCampaignAccess && isChildComponentCalled" 
-          [selectedPartnerListId]="selectedPartnerListId" [contact]="contact" [type]="type"  (shareCampaignsEventEmitter)="shareCampaignsEventReceiver($event)"></app-share-campaigns>
+          <app-share-campaigns *ngIf="isCampaignChildComponentCalled" 
+            [selectedPartnerListId]="selectedPartnerListId" [contact]="contact" [type]="type"  
+            (shareCampaignsEventEmitter)="shareCampaignsEventReceiver($event)">
+          </app-share-campaigns>
+
+          <!--Assets-->
+          <app-share-assets *ngIf="isAssetChildComponentCalled" >
+
+          </app-share-assets>
+
+          <!--Tracks-->
+          <app-share-tracks *ngIf="isTrackChildComponentCalled" >
+
+          </app-share-tracks>
+
+          <!--PlayBooks-->
+          <app-share-playbooks *ngIf="isPlayBookChildComponentCalled" >
+
+          </app-share-playbooks>
+
+
+
+
       </div>
       <!--Footer--->
       <div class="modal-footer">
