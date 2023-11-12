@@ -96,6 +96,8 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.type = "";
     this.selectedModule = "";
     this.isCampaignChildComponentCalled = false;
+    this.selectedIds = [];
+    this.isPublishedSuccessfully = false;
 
   }
 
@@ -127,45 +129,52 @@ export class ShareUnpublishedContentComponent implements OnInit {
   share(){
     if(this.selectedIds!=undefined && this.selectedIds.length>0){
       this.ngxLoading = true;
-      let users = [];
-      if(this.isPartnerInfoRequried){
-        users.push(this.user);
+      if(this.selectedModule==this.properties.campaignsHeaderText){
+        this.shareCampaigns();
+      }else{
+  
       }
-      let campaignDetails = {
-        "campaignIds": this.selectedIds,
-        "partnersOrContactDtos": users,
-        "userListId": this.selectedUserListId,
-        "loggedInUserId":this.authenticationService.getUserId(),
-        "type":this.type
-      }
-      this.campaignService.shareOrSendCampaigns(campaignDetails)
-        .subscribe(
-          data => {
-            this.ngxLoading = false;
-              if (data.access) {
-                  this.isPublishedSuccessfully = true;
-                  this.statusCode = data.statusCode;
-                  if (data.statusCode == 200) {
-                    this.responseMessage = data.message;
-                  } else {
-                      this.responseMessage = data.message;
-                  }
-                  this.resetValues();
-              } else {
-                  this.authenticationService.forceToLogout();
-              }
-          },
-          _error => {
-            this.ngxLoading = false;
-            this.isPublishedSuccessfully = false;
-            this.customResponse = new CustomResponse("ERROR",this.properties.serverErrorMessage,true);
-          }, () => {
-          }
-        );
     }else{
       this.referenceService.goToTop();
       this.customResponse = new CustomResponse('ERROR','Please select atleast one row',true);
     }
   }
 
+
+  private shareCampaigns() {
+    let users = [];
+    if (this.isPartnerInfoRequried) {
+      users.push(this.user);
+    }
+    let campaignDetails = {
+      "campaignIds": this.selectedIds,
+      "partnersOrContactDtos": users,
+      "userListId": this.selectedUserListId,
+      "loggedInUserId": this.authenticationService.getUserId(),
+      "type": this.type
+    };
+    this.campaignService.shareOrSendCampaigns(campaignDetails)
+      .subscribe(
+        data => {
+          this.ngxLoading = false;
+          if (data.access) {
+            this.isPublishedSuccessfully = true;
+            this.statusCode = data.statusCode;
+            if (data.statusCode == 200) {
+              this.responseMessage = data.message;
+            } else {
+              this.responseMessage = data.message;
+            }
+          } else {
+            this.authenticationService.forceToLogout();
+          }
+        },
+        _error => {
+          this.ngxLoading = false;
+          this.isPublishedSuccessfully = false;
+          this.customResponse = new CustomResponse("ERROR", this.properties.serverErrorMessage, true);
+        }, () => {
+        }
+      );
+  }
 }

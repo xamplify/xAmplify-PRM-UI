@@ -9,52 +9,63 @@
           <h4 class="modal-title text-center">{{modalHeaderText}}</h4>
        </div>
        <div class="modal-body">
-         <!--Filter Option---->
-          <div  *ngIf="showFilterOptions">
-              <ul class="mix-filter" >
-                <ng-container *ngFor="let filterOption of filterOptions;let i = index">
-                  <li (click)="applyFilter(i,filterOption)" [class.mix-filter-li-selected]="i == selectedIndex">{{filterOption}}</li>
-                </ng-container>
-              </ul>
+          <div *ngIf="!isPublishedSuccessfully">
+            <!--Filter Option---->
+            <div  *ngIf="showFilterOptions">
+                <ul class="mix-filter" >
+                  <ng-container *ngFor="let filterOption of filterOptions;let i = index">
+                    <li (click)="applyFilter(i,filterOption)" [class.mix-filter-li-selected]="i == selectedIndex">{{filterOption}}</li>
+                  </ng-container>
+                </ul>
+            </div>
+            <div class="alert alert-info">
+              <strong>
+                  **Please be noted that you will only see a list of unshared {{selectedModule}}. <br/>
+                  **{{selectedModule}} that have been chosen will be shared with the
+                  <span *ngIf="isPartnersRouter">{{authenticationService?.partnerModule?.customName}}</span>
+                  <span *ngIf="!isPartnersRouter">contact</span>. 
+                  It will take some time to process everything. There is no need to reshare it.
+              </strong>
+            </div>
+            <!--Campaigns/Assets/Tracks/Playbooks-->
+            <app-share-campaigns *ngIf="isCampaignChildComponentCalled" 
+              [selectedUserListId]="selectedUserListId" [contact]="contact" [type]="type"  
+              (shareCampaignsEventEmitter)="shareCampaignsEventReceiver($event)">
+            </app-share-campaigns>
+
+            <!--Assets-->
+            <app-share-assets *ngIf="isAssetChildComponentCalled" >
+
+            </app-share-assets>
+
+            <!--Tracks-->
+            <app-share-tracks *ngIf="isTrackChildComponentCalled" >
+
+            </app-share-tracks>
+
+            <!--PlayBooks-->
+            <app-share-playbooks *ngIf="isPlayBookChildComponentCalled" >
+
+            </app-share-playbooks>
           </div>
-          <div class="alert alert-info">
-            <strong>
-                **Please be noted that you will only see a list of unshared {{selectedModule}}. <br/>
-                **{{selectedModule}} that have been chosen will be shared with the
-                <span *ngIf="isPartnersRouter">{{authenticationService?.partnerModule?.customName}}</span>
-                <span *ngIf="!isPartnersRouter">contact</span>. 
-                It will take some time to process everything. There is no need to reshare it.
-            </strong>
-          </div>
-          <!--Campaigns/Assets/Tracks/Playbooks-->
-          <app-share-campaigns *ngIf="isCampaignChildComponentCalled" 
-            [selectedUserListId]="selectedUserListId" [contact]="contact" [type]="type"  
-            (shareCampaignsEventEmitter)="shareCampaignsEventReceiver($event)">
-          </app-share-campaigns>
 
-          <!--Assets-->
-          <app-share-assets *ngIf="isAssetChildComponentCalled" >
-
-          </app-share-assets>
-
-          <!--Tracks-->
-          <app-share-tracks *ngIf="isTrackChildComponentCalled" >
-
-          </app-share-tracks>
-
-          <!--PlayBooks-->
-          <app-share-playbooks *ngIf="isPlayBookChildComponentCalled" >
-
-          </app-share-playbooks>
-
-
-
+          <!--Sucess Message-->
+          <div class="thank-you-pop" *ngIf="isPublishedSuccessfully">
+            <ng-container *ngIf="statusCode==200">
+               <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
+               <h4 class="event-success">{{responseMessage}}</h4>
+            </ng-container>
+            <ng-container *ngIf="statusCode!=200">
+               <i class="fa fa-times-circle" id="font-size-error" aria-hidden="true"></i>
+               <h4 class="event-error">{{responseMessage}}</h4>
+            </ng-container>
+         </div>
 
       </div>
       <!--Footer--->
       <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="modal-footer">
-        <button type="submit" class="btn Btn-Green" [disabled]="selectedIds?.length==0" (click)="share()">Share</button>
+        <button *ngIf="!isPublishedSuccessfully" type="submit" class="btn Btn-Green" [disabled]="selectedIds?.length==0" (click)="share()">Share</button>
         <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
      </div>
     </div>
