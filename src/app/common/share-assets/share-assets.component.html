@@ -1,3 +1,79 @@
-<p>
-  share-assets works!
-</p>
+<app-list-loader *ngIf="httpRequestLoader.isLoading" [rowsCount]="3"></app-list-loader>
+<app-response-message class="pg8" [showCloseIcon]="false" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+</app-response-message>
+<!--Assets-->
+<div *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader?.isServerError" class="table-responsive">
+  <!--Search & Sort-->
+  <div class="col-xs-12 pb10">
+    <div class="btn-group pull-right">
+      <div class="inputs float-right inline-flex">
+        <!--Search-->
+        <div>
+            <select class="form-control" [(ngModel)]="sortOption.damSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+              <option  *ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">
+                  {{option.name}}
+                </option>
+            </select>
+        </div>
+        <!--Sort-->
+        <div class="portlet-input input-inline">
+          <div class="input-icon right" id="icon">
+            <input type="text" id="sort-text" autocomplete="off" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="findUnPublishedAssetsOnKeyPress($event.keyCode)">
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchAssets();"></button>
+            <button type="submit" class="search-box-item-click" (click)="searchAssets()">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div>
+    <!--List Of Assets-->
+    <div>
+      <table class='table tgrid table-hover table-sm' *ngIf="pagination?.pagedItems?.length>0" id="unPublishedAssetsTable">
+        <thead>
+           <tr>
+              <th class="text-center">
+                 <input class="pointer checkBox_shadow" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+                  (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)" id="unPublished-assets-header-checkbox-id">
+              </th>
+              <th class="text-center">Asset Name</th>
+              <th class="text-center">Type</th>
+              <th class="text-center">Created By</th>
+              <th class="text-center">Created On</th>
+           </tr>
+        </thead>
+        <tbody>
+           <tr class="pointer" *ngFor="let asset of pagination.pagedItems ;let i =index" id="unPublished-assets-tr-{{asset.id}}" [class.row-selected]="selectedAssetIds.indexOf(asset.id)>-1" (click)="highlightSelectedAssetOnRowClick(asset.id,$event)">
+           <td class="text-center">
+              <input type="checkbox" class="pointer checkBox_shadow"  id="{{asset.id}}" [checked]="selectedAssetIds.indexOf(asset.id)>-1"
+               name="unPublishedAssetsCheckBox[]" value="{{asset.id}}" (click)="$event.stopPropagation();highlightAssetRowOnCheckBoxClick(asset.id,$event)">
+           </td>
+           <td class="text-center" title="{{asset?.assetName}}">
+              {{asset?.assetName | slice:0:25}} <span *ngIf="asset?.assetName?.length>25">...</span>
+           </td>
+           <td class="text-center">
+              <span>{{asset?.assetType}}</span>
+           </td>
+           <td class="text-center">
+              <span>{{asset?.createdBy}}</span>
+           </td>
+           <td class="text-center">
+              <app-display-date-and-time [dateAndTimeUTCString]="asset?.createdTimeInString"></app-display-date-and-time>
+           </td>
+           </tr>
+        </tbody>
+     </table>
+    </div>
+</div>
+
+ <!--Pagination-->
+ <div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+   <strong>No Assets Found.</strong>
+ </div>
+
+ <div *ngIf="pagination?.totalRecords>0" [hidden]="httpRequestLoader.isLoading || httpRequestLoader?.isServerError">
+   <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findUnPublishedAssets($event)">
+   </app-pagination>
+ </div>
+
