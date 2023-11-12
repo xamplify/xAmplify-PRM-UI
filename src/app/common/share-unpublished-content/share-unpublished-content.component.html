@@ -65,7 +65,7 @@
       <!--Footer--->
       <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <div class="modal-footer">
-        <button *ngIf="!isPublishedSuccessfully" type="submit" class="btn Btn-Green" [disabled]="selectedIds?.length==0" (click)="share()">Share</button>
+        <button *ngIf="!isPublishedSuccessfully" type="submit" class="btn Btn-Green" [disabled]="selectedIds?.length==0 || isShareButtonClicked" (click)="share();isShareButtonClicked=true">Share</button>
         <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
      </div>
     </div>

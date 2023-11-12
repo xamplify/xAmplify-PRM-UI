@@ -44,6 +44,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
   statusCode = 0;
   responseMessage = "";
   isPartnerInfoRequried = false;
+  isShareButtonClicked = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,private router: Router,private campaignService:CampaignService) { }
 
@@ -98,6 +99,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.isCampaignChildComponentCalled = false;
     this.selectedIds = [];
     this.isPublishedSuccessfully = false;
+    this.isShareButtonClicked = false;
 
   }
 
