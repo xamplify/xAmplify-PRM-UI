@@ -6,6 +6,7 @@ import { Properties } from '../models/properties';
 import { ShareCampaignsComponent } from '../share-campaigns/share-campaigns.component';
 import { CustomResponse } from '../../common/models/custom-response';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
+import { setTimeout } from 'timers';
 
 @Component({
   selector: 'app-share-unpublished-content',
@@ -109,24 +110,32 @@ export class ShareUnpublishedContentComponent implements OnInit {
   }
 
   applyFilter(index:number,filterOption:string){
+    this.ngxLoading =true;
     this.selectedIndex = index;
+    this.selectedIds = [];
     this.modalHeaderText = "Please Select "+filterOption;
     this.selectedModule = filterOption;
     this.isCampaignChildComponentCalled = false;
     this.isAssetChildComponentCalled = false;
     this.isTrackChildComponentCalled = false;
     this.isPlayBookChildComponentCalled = false;
-    this.isCampaignChildComponentCalled = this.hasCampaignAccess && filterOption==this.properties.campaignsHeaderText;
-    this.isAssetChildComponentCalled = this.hasDamAccess && filterOption==this.properties.assetsHeaderText;
-    this.isTrackChildComponentCalled = this.hasLmsAccess && filterOption==this.properties.tracksHeaderText;
-    this.isPlayBookChildComponentCalled = this.hasPlaybookAccess && filterOption==this.properties.playBooksHeaderText;
+    setTimeout(() => {
+      this.isCampaignChildComponentCalled = this.hasCampaignAccess && filterOption==this.properties.campaignsHeaderText;
+      this.isAssetChildComponentCalled = this.hasDamAccess && filterOption==this.properties.assetsHeaderText;
+      this.isTrackChildComponentCalled = this.hasLmsAccess && filterOption==this.properties.tracksHeaderText;
+      this.isPlayBookChildComponentCalled = this.hasPlaybookAccess && filterOption==this.properties.playBooksHeaderText;
+      this.ngxLoading = false;
+    }, 500);
+   
   }
 
-  shareCampaignsEventReceiver(event:any){
+  shareUnPublishedContentEventReceiver(event:any){
     this.selectedIds = event['selectedRowIds'];
     this.user = event['partnerDetails'];
     this.isPartnerInfoRequried = event['isPartnerInfoRequried'];
   }
+
+  
 
   share(){
     if(this.selectedIds!=undefined && this.selectedIds.length>0){

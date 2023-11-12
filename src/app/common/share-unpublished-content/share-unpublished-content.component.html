@@ -9,7 +9,10 @@
           <h4 class="modal-title text-center">{{modalHeaderText}}</h4>
        </div>
        <div class="modal-body">
-          <div *ngIf="!isPublishedSuccessfully">
+        <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+        <app-list-loader *ngIf="ngxLoading"></app-list-loader>
+        <!--Campaigns/Assets/Tracks/Play Books-->
+          <div *ngIf="!isPublishedSuccessfully && !ngxLoading">
             <!--Filter Option---->
             <div  *ngIf="showFilterOptions">
                 <ul class="mix-filter" >
@@ -30,11 +33,13 @@
             <!--Campaigns/Assets/Tracks/Playbooks-->
             <app-share-campaigns *ngIf="isCampaignChildComponentCalled" 
               [selectedUserListId]="selectedUserListId" [contact]="contact" [type]="type"  
-              (shareCampaignsEventEmitter)="shareCampaignsEventReceiver($event)">
+              (shareCampaignsEventEmitter)="shareUnPublishedContentEventReceiver($event)">
             </app-share-campaigns>
 
             <!--Assets-->
-            <app-share-assets *ngIf="isAssetChildComponentCalled" >
+            <app-share-assets *ngIf="isAssetChildComponentCalled"
+            [selectedUserListId]="selectedUserListId" [contact]="contact"
+            (shareAssetsEventEmitter)="shareUnPublishedContentEventReceiver($event)" >
 
             </app-share-assets>
 
@@ -49,7 +54,7 @@
             </app-share-playbooks>
           </div>
 
-          <!--Sucess Message-->
+          <!--Published Message-->
           <div class="thank-you-pop" *ngIf="isPublishedSuccessfully">
             <ng-container *ngIf="statusCode==200">
                <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
@@ -63,9 +68,9 @@
 
       </div>
       <!--Footer--->
-      <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      
       <div class="modal-footer">
-        <button *ngIf="!isPublishedSuccessfully" type="submit" class="btn Btn-Green" [disabled]="selectedIds?.length==0 || isShareButtonClicked" (click)="share();isShareButtonClicked=true">Share</button>
+        <button *ngIf="!isPublishedSuccessfully" type="submit" class="btn Btn-Green" [disabled]="selectedIds?.length==0 || isShareButtonClicked" (click)="share();isShareButtonClicked=true">Share {{selectedModule}}</button>
         <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
      </div>
     </div>

@@ -25,6 +25,7 @@ export class ShareAssetsComponent implements OnInit {
   customResponse:CustomResponse = new CustomResponse();
   @Output() shareAssetsEventEmitter = new EventEmitter();
   @Input() selectedUserListId = 0;
+  @Input() contact:any;
   selectedAssetIds = [];
   isHeaderCheckBoxChecked = false;
   firstName = "";
@@ -38,6 +39,12 @@ export class ShareAssetsComponent implements OnInit {
   ngOnInit() {
     this.referenceService.startLoader(this.httpRequestLoader);
     this.pagination.userListId = this.selectedUserListId;
+    let contact = this.contact;
+    this.pagination.partnerOrContactEmailId = contact.emailId;
+    this.pagination.partnerId = contact.id;
+    this.firstName = contact.firstName;
+    this.lastName = contact.lastName;
+    this.companyName = contact.contactCompany;
     this.findUnPublishedAssets(this.pagination);
   }
 
@@ -123,7 +130,7 @@ export class ShareAssetsComponent implements OnInit {
 		let emitterObject = {};
 		emitterObject['selectedRowIds'] = this.selectedAssetIds;
     emitterObject['isPartnerInfoRequried'] = false;
-    if(this.pagination.partnerId>0){
+    if(this.pagination.partnerId!=undefined && this.pagination.partnerId>0){
       let partnerDetails = { 
         'emailId': this.pagination.partnerOrContactEmailId,
         'firstName':this.firstName,
