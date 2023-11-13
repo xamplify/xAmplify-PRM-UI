@@ -959,12 +959,19 @@
                                                                 class="fa fa-trash-o trashIconCustomization" 
                                                                 aria-hidden="true"></i>
                                                             </a>
+                                                            <ng-container *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)">
+                                                                <a data-toggle="tooltip" data-placement="bottom"
+                                                                    title="{{actionsDescription.send_campaigns}}"
+                                                                    (click)="addCampaigns(contact)"> <i
+                                                                    class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i>
+                                                                </a> 
+                                                            </ng-container>
                                                             <!--XNFR-342-->
-                                                            <a data-toggle="tooltip" data-placement="bottom"
+                                                            <!-- <a data-toggle="tooltip" data-placement="bottom"
                                                                 title="{{actionsDescription?.shareUnPublishedContent}}"
                                                                 (click)="openUnPublishedContentModalPopUp(contact)">
                                                                 <i class="fa fa-forward IconCustomization" aria-hidden="true"></i>
-                                                            </a>
+                                                            </a> -->
                                                             <!--XNFR-342-->
                                                             <a
                                                                 *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember"
@@ -1547,13 +1554,16 @@
     </div>
     
 
-        <!---XNFR-342---->
+    <!---XNFR-342---->
      <app-share-unpublished-content #shareUnPublishedComponent
         [hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
          [hasDamAccess]="authenticationService?.module?.damAccess"
          [hasLmsAccess]="authenticationService?.module?.lmsAccess"
         [hasPlaybookAccess]="authenticationService?.module?.playbookAccess">
     </app-share-unpublished-content>
+
+     <!--Open Pop up-->
+     <app-send-campaigns #sendCampaignComponent></app-send-campaigns>
     
     
     <!-- Cloud Partner Saving Modal Popup -->
