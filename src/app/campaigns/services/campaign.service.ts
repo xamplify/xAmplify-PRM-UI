@@ -1059,6 +1059,7 @@ export class CampaignService {
 
  	 listCampaignsByUserListIdAndUserId(pagination: Pagination,type:string) {
         let url = "";
+        pagination.userId = this.authenticationService.getUserId();
         if("Partner"==type){
             url = this.URL + "campaign/listLaunchedCampaignsByUserListIdForPartners?access_token=" + this.authenticationService.access_token;
         }else{

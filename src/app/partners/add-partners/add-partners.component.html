@@ -959,13 +959,13 @@
                                                                 class="fa fa-trash-o trashIconCustomization" 
                                                                 aria-hidden="true"></i>
                                                             </a>
-                                                            <ng-container
-                                                                *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)">
+                                                            <!--XNFR-342-->
                                                             <a data-toggle="tooltip" data-placement="bottom"
-                                                                title="{{actionsDescription.shareUnPublishedContent}}"
-                                                                (click)="addCampaigns(contact)"> <i
-                                                                class="fa fa-forward IconCustomization" aria-hidden="true"></i>
-                                                            </a> </ng-container>
+                                                                title="{{actionsDescription?.shareUnPublishedContent}}"
+                                                                (click)="openUnPublishedContentModalPopUp(contact)">
+                                                                <i class="fa fa-forward IconCustomization" aria-hidden="true"></i>
+                                                            </a>
+                                                            <!--XNFR-342-->
                                                             <a
                                                                 *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember"
                                                                 data-toggle="tooltip" data-placement="bottom"
@@ -1546,15 +1546,14 @@
         </div>
     </div>
     
-    
-    
-    <!--Open Pop up-->
-    <app-send-campaigns #sendCampaignComponent 
-    [hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
-     [hasDamAccess]="authenticationService?.module?.damAccess"
-     [hasLmsAccess]="authenticationService?.module?.lmsAccess"
-     [hasPlaybookAccess]="authenticationService?.module?.playbookAccess"
-     ></app-send-campaigns>
+
+        <!---XNFR-342---->
+     <app-share-unpublished-content #shareUnPublishedComponent
+        [hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
+         [hasDamAccess]="authenticationService?.module?.damAccess"
+         [hasLmsAccess]="authenticationService?.module?.lmsAccess"
+        [hasPlaybookAccess]="authenticationService?.module?.playbookAccess">
+    </app-share-unpublished-content>
     
     
     <!-- Cloud Partner Saving Modal Popup -->

@@ -138,6 +138,11 @@ import { HomeGuideComponent } from 'app/guides/home-guide/home-guide.component';
 import { EmailTemplatesListAndGridViewComponent } from 'app/util/email-templates/email-templates-list-and-grid-view/email-templates-list-and-grid-view.component';
 import { CustomUiSwitchComponent } from 'app/util/custom-ui-switch/custom-ui-switch.component';
 import { EditTemplateOrPageModalPopupComponent } from 'app/util/edit-template-or-page-modal-popup/edit-template-or-page-modal-popup.component';
+import { ShareCampaignsComponent } from './share-campaigns/share-campaigns.component';
+import { ShareAssetsComponent } from './share-assets/share-assets.component';
+import { ShareTracksComponent } from './share-tracks/share-tracks.component';
+import { SharePlaybooksComponent } from './share-playbooks/share-playbooks.component';
+import { ShareUnpublishedContentComponent } from './share-unpublished-content/share-unpublished-content.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -165,8 +170,9 @@ import { EditTemplateOrPageModalPopupComponent } from 'app/util/edit-template-or
 		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,
-		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,
-		SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent],
+		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,SelectEmailTemplateComponent,CustomUiSwitchComponent,
+		EditTemplateOrPageModalPopupComponent, ShareCampaignsComponent, ShareAssetsComponent, ShareTracksComponent, SharePlaybooksComponent,
+		 ShareUnpublishedContentComponent],
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
@@ -191,7 +197,9 @@ import { EditTemplateOrPageModalPopupComponent } from 'app/util/edit-template-or
 		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent,
-		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent]
+		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent,
+		ShareCampaignsComponent, ShareAssetsComponent, ShareTracksComponent, SharePlaybooksComponent,
+		ShareUnpublishedContentComponent]
 
 
 

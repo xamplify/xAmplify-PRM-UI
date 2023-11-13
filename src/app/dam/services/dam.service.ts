@@ -11,15 +11,19 @@ import { DamAnalyticsPostDto } from '../models/dam-analytics-post-dto';
 import { HttpClient, HttpRequest } from "@angular/common/http";
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { UtilService } from 'app/core/services/util.service';
+import { ReferenceService } from 'app/core/services/reference.service';
 
 
 @Injectable()
 export class DamService {
   URL = this.authenticationService.REST_URL + "dam/";
-  playbooksUrl = this.authenticationService.REST_URL+"playbooks/"
+  playbooksUrl = this.authenticationService.REST_URL+"playbooks/";
+  ACCESS_TOKEN_SUFFIX_URL = "?access_token=";
+  DAM_PREFIX_URL = this.authenticationService.REST_URL + "dam";
+  DAM_URL = this.DAM_PREFIX_URL+this.ACCESS_TOKEN_SUFFIX_URL;
   ispreviousAssetIsProcessing = false;
   constructor(private http: HttpClient, private authenticationService: AuthenticationService, 
-    private logger: XtremandLogger,private utilService:UtilService) { }
+    private logger: XtremandLogger,private utilService:UtilService,private referenceService:ReferenceService) { }
 
   list(pagination: Pagination) {
     return this.utilPostListMethod("list", pagination);
@@ -289,5 +293,16 @@ export class DamService {
       .map(this.extractData)
       .catch(this.handleError);
   }
+
+  /********XNFR-342****/
+  findUnPublishedAssets(pagination:Pagination){
+    let userId = this.authenticationService.getUserId();
+    let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+    let findAllUrl = this.DAM_PREFIX_URL+'/findAllUnPublishedAssets/'+userId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+    return this.authenticationService.callGetMethod(findAllUrl);
+  }
+  
+
+
 
 }
