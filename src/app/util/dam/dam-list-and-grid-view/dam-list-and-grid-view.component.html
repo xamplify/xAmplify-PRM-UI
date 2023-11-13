@@ -66,8 +66,7 @@
 													*ngIf="!isPartnerView && asset?.beeTemplate">
 													<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
 												</h6>
-												<h6 class="moreipsis" *ngIf="isPartnerView"
-												>
+												<h6 class="moreipsis" *ngIf="isPartnerView">
 													<span data-toggle="tooltip" data-placement="bottom" title="{{asset?.vendorCompanyName}}" translate> From <strong>{{asset?.vendorCompanyName
 															| slice:0:20}}</strong> <strong
 														*ngIf="asset?.vendorCompanyName?.length>20">..</strong>
@@ -238,6 +237,27 @@
 																	Processing
 																</h6>
 																<!---XNFR-255-->
+																 <!---XBI-1993-->
+																<h6 *ngIf="asset.tagNames?.length > 0">
+																	<ng-container *ngIf="asset.tagNames?.length > 0">
+																		<div class="tag tablegray-tag" title="{{asset.tagNames[0]}}">
+																			<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} <span
+																				*ngIf="asset.tagNames[0]?.length>20">..</span>
+																			</ng-container>
+																			<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}} <span
+																					*ngIf="asset.tagNames[0]?.length>10">..</span>
+																			</ng-container>
+																		</div>
+																		<ng-container *ngIf="asset.tagNames.length > 1">
+																			<div class="tag tablegray-tag" title="{{asset.tagNames[1]}}">
+																				{{asset.tagNames[1] | slice:0:10}} <span *ngIf="asset.tagNames[1]?.length>10">..</span>
+																			</div>
+																		</ng-container>
+																		<span *ngIf="asset.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
+																			title="{{asset.toolTipTagNames}}">...</span>
+																	</ng-container>
+																</h6>
+																<!---XBI-1993-->
 															</td>
 															<td class="text-center">
 																<span class="assettype-bgcolor">{{asset?.assetType}} </span>
