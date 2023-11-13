@@ -665,6 +665,7 @@ select {
 .edit-field-prefix {
   background-color: #2b3c46 !important;
   color: white !important;
+  box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 }
 .asset-name-class {
   background-color: #2b3c46 !important;
