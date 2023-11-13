@@ -301,7 +301,8 @@ export class DamService {
     let findAllUrl = this.DAM_PREFIX_URL+'/findAllUnPublishedAssets/'+userId+'/'+pagination.userListId+'/'+pagination.partnerId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
     return this.authenticationService.callGetMethod(findAllUrl);
   }
-  
+
+ 
 
 
 
