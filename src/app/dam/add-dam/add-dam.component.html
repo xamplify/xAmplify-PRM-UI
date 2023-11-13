@@ -162,7 +162,7 @@
                                           (click)="updateSelectedTags(tag,$event.target.checked)">
                                           <div class="col-sm-2 col-sm-offset-2">
                                              <label class="form-check-label inline">
-                                             <input type="checkbox" class="form-check-input "
+                                             <input type="checkbox" class="form-check-input checkBox_shadow "
                                                 [checked]="damPostDto.tagIds != undefined && damPostDto.tagIds.length > 0 && damPostDto.tagIds.indexOf(tag.id)>-1">
                                              </label>
                                           </div>
@@ -177,7 +177,7 @@
                                           <div class="col-sm-2 col-sm-offset-2">
                                              <label class="form-check-label inline">
                                              <input *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]" type="checkbox"
-                                             class="form-check-input "
+                                             class="form-check-input checkBox_shadow"
                                              [checked]="damPostDto.tagIds != undefined && damPostDto.tagIds.length > 0 && damPostDto.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
                                              </label>
                                           </div>
