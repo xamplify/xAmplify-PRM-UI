@@ -184,7 +184,7 @@
 													aria-describedby="asset-history" id="asset-history">
 													<thead>
 														<tr>
-															<th colspan="2" style="width: 35%" id="border-bottom">
+															<th colspan="2" style="width: 37%" id="border-bottom">
 																<span class="gridHeader" translate>Asset Details</span>
 															</th>
 															<th class="text-center" scope="row" translate>Type</th>
@@ -201,7 +201,7 @@
 															*ngFor="let asset of historyPagination.pagedItems ;let i =index"
 															id="history-tr">
 															<td style="width: 12%;">
-																<div class="thumbnail-wrapper">
+																<div class="thumbnail-wrapper" style="width: 180px;height: 100px;">
 																	<img class="custom-image-css"
 																		src="{{asset?.thumbnailPath}}" alt="Image Not Found" onerror="this.src='assets/images/no-preview.jpg';" style="width: 180px; height: 100px;border-radius:5px;"> 
 																</div>
@@ -244,7 +244,7 @@
 																</td>
 															<td class="text-center"><app-timestamp	[dateAndTime]="asset?.displayTime"></app-timestamp></td>
 															<!--Child Assets-->
-															<td id="actions-row">
+															<td id="actions-row" style="width: 32%;">
 																<div class="actions-block override-actions ActionAlign" *ngIf="!asset?.publishingOrWhiteLabelingInProgress">
 																	<!--XNFR-381-->
 																	<a class="mMobileDisable"  data-toggle="tooltip" data-placement="top"  title="Switch To Parent Template" (click)="changeAsParentPdf(asset.id)">
