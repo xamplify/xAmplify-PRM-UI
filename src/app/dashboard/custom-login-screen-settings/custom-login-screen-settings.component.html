@@ -1,53 +1,226 @@
 <!-- new UI Of select Login screen and Bg Image-->
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bg_color mb10">
-  <div class="col-sm-6 col-md-6 col-lg-8 pr0">
-    <div class="col-md-12 col-lg-12">
-      <div class="form-group">
-        <label class="control-label" translate>Select Login Screen Direction <span class="required">
-            <strong>*</strong></span></label>
-        <select [ngModelOptions]="{standalone: true}" [(ngModel)]="companyProfile.loginScreenDirection"
-          class="form-control">
-          <option [ngValue]="undefined" disabled selected> Select Login Screen Direction </option>
-          <option *ngFor="let direction of properties?.loginScreenDirectionOptions">{{direction}}</option>
-        </select>
-      </div>
-    </div>
-    <div class="col-md-12 col-lg-12">
-      <div class="form-group">
-        <label class="control-label" translate>Display My Logo <span class="requried"><strong>*</strong></span>
-          </label>
-        <div>
-          <app-custom-ui-switch [customSwitch]="companyProfile?.showVendorCompanyLogo" (customUiSwitchEventEmitter)="setVendorLogoOption($event)"></app-custom-ui-switch>
-        </div>
-        <div class="col-sm-12" style="padding: 0; margin-left: 100px;margin-top: -32px">
-          <span style="cursor: pointer;color: #54a7e9;">
-            <i class="fa fa-question-circle" data-html="true" data-toggle="tooltip" data-placement="right"
-              title="{{properties?.vendorLogoTooltipText}}" style="font-size: 20px;float: left;margin: 8px 0 0 15px;"
-              aria-hidden="true"></i>
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6 col-md-6 col-lg-4 pl0">
-    <div>
-      <label class="control-label">Upload Background Image</label>
-      <div class="profile-image-wrapper dotted-image-border upload-imgheight" (click)="bgImageClick()">
-        <span *ngIf="(squareDataForBgImage | json) == '{}'"> <img *ngIf="!companyBgImagePath"
-            src="assets/images/company-profile-logo.png" class="profile-image img-grid" alt="" style="width: 100%;height: 110px;border-radius: 3px;"></span>
+<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+<!-- <app-response-message [customResponse]="saveCustomResponse" *ngIf="saveCustomResponse.isVisible"></app-response-message> -->
 
-        <span *ngIf="croppedImageForBgImage; else showBgImage"> <img class="img-grid" style="width: 100%;height: 110px;border-radius: 3px;"
-            [src]="croppedImageForBgImage" alt="">
-        </span>
-        <ng-template #showBgImage> <img class="img-grid" *ngIf="companyBgImagePath" style="width: 100%;height: 110px;border-radius: 3px;"
-            [src]="authenticationService.MEDIA_URL + companyBgImagePath" (error)="errorHandler($event)"
-            alt=""> </ng-template>
-        <a class="btn btn-primary1 profile-pic" (click)="bgImageClick()" data-toggle="tooltip"
-          data-placement="top" title="upload 2:1 ratio logo !">
-          &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
-            style="font-size:25px;padding-top:10px;left: 5px !important;bottom: -60px !important;"></i></a>
+<div class="tabscard col-xs-12 p0">
+  <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 p0">
+    <ul class="nav nav-tabs dcTheme" role="tablist">
+      <li role="presentation" class="active" id="tabWidthCu">
+        <a href="#style1" class="tabColorTwo" (click)="showStyle1()" aria-controls="Domain" role="tab"
+          data-toggle="tab"><b>Login Style
+            1</b></a>
+      </li>
+      <li role="presentation" id="tabWidthCu">
+        <a href="#style2" class="tabColorOne" (click)="showStyle2()" aria-controls="Manual SPF" role="tab"
+          data-toggle="tab"><b>Login Style
+            2</b></a>
+      </li>
+
+    </ul>
+  </div>
+  <div role="presentation" id="tabWidthCu" class="pull-right">
+    <button type="submit" [disabled]="authenticationService.isSuperAdmin()" *ngIf="companyProfile.isAdd"
+      id="saveOrUpdateCompanyButton" (click)="updateCustomLogInScreenData()" class="btn Btn-Green" disabled="disabled"
+      translate>Save</button>
+    <button type="submit" [disabled]="authenticationService.isSuperAdmin()" *ngIf="!companyProfile.isAdd"
+      id="saveOrUpdateCompanyButton" (click)="updateCustomLogInScreenData()" class="btn Btn-Green"
+      translate>Update</button>
+  </div>
+
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="style1">
+      <!-- LogIn Style 1-->
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="padding-right: 10px;">
+          <div class="row custom-login">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-7 p0 mb_15">
+              <div class="col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label class="control-label" translate>Select Login Form Position <span class="required">
+                      <strong>*</strong></span></label>
+                  <select (ngModelChange)="onSelectChangeStyale1($event)"[(ngModel)]="styleOneDirection" 
+                    class="form-control">
+                    <option [ngValue]="undefined" disabled selected> Select Login Form Position </option>
+                    <option *ngFor="let direction1 of properties?.loginFormPosition">{{direction1}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label class="control-label" translate>Display My Logo <span
+                      class="requried"><strong>*</strong></span>
+                  </label>
+                  <div>
+                    <app-custom-ui-switch [customSwitch]="customLoginScreen?.showVendorCompanyLogo"
+                      (customUiSwitchEventEmitter)="setVendorLogoOption($event)"></app-custom-ui-switch>
+                  </div>
+                  <div class="col-sm-12" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                    <span style="cursor: pointer;color: #54a7e9;">
+                      <i class="fa fa-question-circle" data-html="true" data-toggle="tooltip" data-placement="right"
+                        title="{{properties?.vendorLogoTooltipText}}"
+                        style="font-size: 20px;float: left;margin: 8px 0 0 15px;" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-5 pl0">
+              <div style="text-align: center;">
+                <label class="control-label">Upload Background Image</label>
+                <div class="profile-image-wrapper dotted-image-border upload-imgheight width50"
+                  (click)="bgImageClickForStyle1()">
+                  <span *ngIf="(squareDataForBgImage | json) == '{}'"> <img *ngIf="!companyBgImagePath"
+                      src="assets/images/company-profile-logo.png" class="profile-image img-grid" alt=""
+                      style="width: 100%;height: 110px;border-radius: 3px;object-fit: cover;"></span>
+
+                  <span *ngIf="croppedImageForBgImage; else showBgImage"> <img class="img-grid"
+                      style="width: 100%;height: 110px;border-radius: 3px; object-fit: cover;"
+                      [src]="croppedImageForBgImage" alt="">
+                  </span>
+                  <ng-template #showBgImage> <img class="img-grid" *ngIf="companyBgImagePath"
+                      style="width: 100%;height: 110px;border-radius: 3px; object-fit: cover;"
+                      [src]="authenticationService.MEDIA_URL + companyBgImagePath" (error)="errorHandler($event)"
+                      alt="">
+                  </ng-template>
+                  <a class="btn btn-primary1 profile-pic" (click)="bgImageClickForStyle1()" data-toggle="tooltip"
+                    data-placement="top" title="upload 2:1 ratio logo!">
+                    &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
+                      style="font-size:25px;padding-top:10px;left: 5px !important;bottom: -60px !important;"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 preview_img mt_15">
+          <label>Preview</label>
+          <img src="assets/images/customloginscreens/style1-left.png"  *ngIf="styleOneDirection === 'Left'"  class="imgpreview">
+          <img src="assets/images/customloginscreens/style1-right.png"  *ngIf="styleOneDirection === 'Right'"class="imgpreview">
+        </div>
       </div>
+      <!-- Login Style 1-->
+    </div>
+    <div role="tabpanel" class="tab-pane" id="style2">
+      <!-- LogIn Style 2-->
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="padding-right: 10px;">
+          <div class="row custom-login">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-7 p0 mb_15">
+              <div class="col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label class="control-label" translate>Select Login Screen Direction <span class="required">
+                      <strong>*</strong></span></label>
+                  <select (ngModelChange)="onSelectChangeStyale2($event)" [(ngModel)]="styleTwoDirection"
+                    class="form-control">
+                    <option [ngValue]="undefined" disabled selected> Select Login Screen Direction </option>
+                    <option *ngFor="let direction of properties?.loginScreenDirectionOptions">{{direction}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-12 col-lg-12">
+                <div class="form-group">
+                  <label class="control-label" translate>Display My Logo <span
+                      class="requried"><strong>*</strong></span>
+                  </label>
+                  <div>
+                    <app-custom-ui-switch [customSwitch]="customLoginScreen?.showVendorCompanyLogo"
+                      (customUiSwitchEventEmitter)="setVendorLogoOption($event)"></app-custom-ui-switch>
+                  </div>
+                  <div class="col-sm-12" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                    <span style="cursor: pointer;color: #54a7e9;">
+                      <i class="fa fa-question-circle" data-html="true" data-toggle="tooltip" data-placement="right"
+                        title="{{properties?.vendorLogoTooltipText}}"
+                        style="font-size: 20px;float: left;margin: 8px 0 0 15px;" aria-hidden="true"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-5 pl0">
+              <div style="text-align: center;">
+                <label class="control-label">Upload Background Image</label>
+                <div class="profile-image-wrapper dotted-image-border upload-imgheight"
+                  (click)="bgImageClick()">
+                  <span *ngIf="(squareDataForBgImage | json) == '{}'"> <img *ngIf="!companyBgImagePath"
+                      src="assets/images/company-profile-logo.png" class="profile-image img-grid" alt=""
+                      style="width: 100%;height: 110px;border-radius: 3px;"></span>
+
+                  <span *ngIf="croppedImageForBgImage; else showBgImage"> <img class="img-grid"
+                      style="width: 100%;height: 110px;border-radius: 3px; object-fit: cover;"
+                      [src]="croppedImageForBgImage" alt="">
+                  </span>
+                  <ng-template #showBgImage> <img class="img-grid" *ngIf="companyBgImagePath"
+                      style="width: 100%;height: 110px;border-radius: 3px;"
+                      [src]="authenticationService.MEDIA_URL + companyBgImagePath" (error)="errorHandler($event)"
+                      alt="">
+                  </ng-template>
+                  <a class="btn btn-primary1 profile-pic" (click)="bgImageClick()" data-toggle="tooltip"
+                    data-placement="top" title="upload 2:1 ratio logo !">
+                    &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
+                      style="font-size:25px;padding-top:10px;left: 5px !important;bottom: -60px !important;"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 preview_img mt_15">
+          <label>Preview</label>
+          <img src="assets/images/customloginscreens/style2-left.png"  *ngIf="styleTwoDirection === 'Left'"  class="imgpreview">
+          <img src="assets/images/customloginscreens/style2-right.png"  *ngIf="styleTwoDirection === 'Right'"class="imgpreview">   
+          <img src="assets/images/customloginscreens/style2-center.PNG"  *ngIf="styleTwoDirection === 'Center'"  class="imgpreview">
+        </div>
+      </div>
+      <!-- Login Style 2-->
     </div>
   </div>
+  <app-image-upload-cropper [aspectRatio]="aspectRatio" *ngIf="isShowUploadScreen"
+    (bgImage)="backgroundImage($event)"></app-image-upload-cropper>
 </div>
-<!-- new UI Of select Login screen and Bg Image-->
+<!-- Start For Templates DIV -->
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bg_color" *ngIf="isStyle1" style="margin-top: 10px;">
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+  <a class="close-circle mr5 mt5" (click)="getCustomLoginTemplates(pagination)">
+    <i class="fa fa-refresh" aria-hidden="true"></i>
+    </a>
+  </div>
+    <div class="row fullRowCuPaddings">
+      <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 sidePaddingsAbjustment" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
+          <div class="grid-box" [ngClass]="emailTemplate?.id === selectedTemplate ? 'template-selected-border' :'' " (click)="selectedTemplateId(emailTemplate.id)">
+            <span class="select-check-box" *ngIf="emailTemplate.name != 'Create_Template'">
+              <label>
+                  <input  type="radio"  class="radio-custimization pointer"  [checked]="emailTemplate?.id === selectedTemplate">
+              </label>
+            </span>
+              <img class="email-template-preview"  *ngIf="emailTemplate.name === 'Create_Template'" src="assets/images/customloginscreens/emptyTemplate.png" alt="Image Not Found">
+              <img class="email-template-preview"  *ngIf="emailTemplate.name != 'Create_Template'" src="{{emailTemplate.imagePath}}" alt="Image Not Found">
+              <h4 class="ellipsis mt5 mb5 f-w-600 fontDecinModes" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.name}}">
+                  {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
+              </h4>
+              <div class="bar gridIconCustomization" *ngIf="emailTemplate.name != 'Create_Template'">
+                <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Edit" (click)="designTemplate(emailTemplate)">
+                    <i class="fa fa-edit" aria-hidden="true"></i>
+                </a>
+                <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewTemplate(emailTemplate)">
+                  <i class="fa fa-eye" aria-hidden="true"></i>
+              </a>
+              <a class="delete" data-toggle="tooltip" data-placement="top" title="delete" (click)="deleteTemplate(emailTemplate.id)">
+                <i class="fa fa-trash red" aria-hidden="true"></i>
+            </a>
+            </div>
+            <div class="bar gridIconCustomization" *ngIf="emailTemplate.name === 'Create_Template'">
+              <a class="Iconhover" (click)="designTemplate(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Create Template">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            </a>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div *ngIf="pagination.totalRecords == 0" class="alert alert-info">
+      <strong translate>No results found</strong>
+   </div>
+    <app-pagination *ngIf="pagination.totalRecords != 0" [pagination]="pagination" (notifyParentDropDown)="getCustomLoginTemplates($event)" (notifyParent)="setPage($event)"></app-pagination>
+
+</div>
+<!--End For Templates DIV-->
+<app-email-template-preview-util #emailTemplatePreviewPopupComponent></app-email-template-preview-util>

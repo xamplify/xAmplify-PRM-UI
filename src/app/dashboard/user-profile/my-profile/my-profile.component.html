@@ -29,7 +29,7 @@
     </div>
     <!-- END PAGE HEADER-->
     <!-- BEGIN PAGE CONTENT-->
-    <div class="row" *ngIf="!editXamplifyDefaultTemplate">
+    <div class="row" *ngIf="!editXamplifyDefaultTemplate && !editCustomLoginTemplate">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <!-- BEGIN PROFILE SIDEBAR -->
             <div class="profile-sidebar" style="width:250px;" *ngIf="userData">
@@ -117,9 +117,9 @@
                             </li>
                             <!--XNFR-386--->
                             <!--Custom Login Screen Settings-->
-                            <!-- <li  [ngClass]="{'active-tab': activeTabName == properties?.customLoginScreen}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="authenticationService?.vanityURLEnabled && authenticationService.module.isAnyAdminOrSupervisor">
+                            <li  [ngClass]="{'active-tab': activeTabName == properties?.customLoginScreen}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="authenticationService?.vanityURLEnabled && authenticationService.module.isAnyAdminOrSupervisor">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.customLoginScreen}" (click)="activateTab(properties?.customLoginScreen);clearCustomResponse()" translate>{{properties?.customLoginScreen}}</a>
-                            </li> -->
+                            </li>
                              <!--------------Lead/Deal Configuration----------------------->
                             <div class="my-profile-header-text" *ngIf="((hasAllAccess || 
                             hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
@@ -1898,7 +1898,7 @@
                                      <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption" class="tab-pane" [ngClass]="{'active': activeTabName == 'support'}"></app-enable-support-access-to-vendor>
                                      
                                      <!--XNFR-386-->
-                                     <app-custom-login-screen-settings *ngIf="isCustomLoginScreenSettingsOptionClicked"></app-custom-login-screen-settings>
+                                     <app-custom-login-screen-settings (editLoginTemplate)="openBeeEditorForLoginTemplate($event)" *ngIf="isCustomLoginScreenSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == properties?.customLoginScreen}" ></app-custom-login-screen-settings>
                                 </div>
                             </div>
                         </div>
@@ -1944,6 +1944,44 @@
         </div>
     </div>
 </div>
+<!-- Edit Custom Login Template -->
+<div *ngIf="editCustomLoginTemplate">
+    <div class="profile-content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet light">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption caption-md col-xs-12">
+                            <i class="icon-globe theme-font hide" aria-hidden="true"></i>
+                            <span class="caption-subject font-blue-madison bold">{{cutomLoginTemplate?.name}}</span>
+                            <a class="close-circle pull-right" (click)="goBackToMyprofileForCustomLogin()">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="form-group row" style="margin-left: -16px;">
+                            <label class="col-lg-2 col-md-3 col-sm-3 col-xs-5" style="margin-top: 6px;">Name 
+                                <span style="color: #f55d7a"><strong>*</strong></span></label>   
+                            <div class="col-lg-4 col-md-5 col-sm-5 col-xs-5" style="margin-left: -100px;">
+                                <input  type="text" class="form-control" name="name" placeholder="name" id="name" #name="ngModel"
+                              [(ngModel)]="cutomLoginTemplate.name" maxlength="255" required>
+                            </div>                                  
+                          </div>
+                    </div>
+                    <div class="portlet-body clearfix">
+                        <app-response-message class="pg8" [customResponse]="customLoginTemplateResponse"
+                        *ngIf="customLoginTemplateResponse.isVisible">
+                        </app-response-message>
+                        <ng-container *ngIf="jsonBody!=undefined && jsonBody?.length>0">
+                            <app-bee-template-util [beeContainerInput]="beeContainerInput"
+                              (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+                          </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Edit Custom Login Template -->
 </div>
     <app-scroll-top></app-scroll-top>
 </div>

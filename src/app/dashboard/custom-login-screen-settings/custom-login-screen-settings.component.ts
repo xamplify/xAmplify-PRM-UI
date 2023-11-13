@@ -1,43 +1,310 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
 import { Properties } from 'app/common/models/properties';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { CompanyProfile } from '../company-profile/models/company-profile';
-declare var $:any;
+import { CompanyProfileService } from '../company-profile/services/company-profile.service';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { UtilService } from 'app/core/services/util.service';
+import { CustomResponse } from 'app/common/models/custom-response';
+import { Processor } from 'app/core/models/processor';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { CustomLoginScreen } from 'app/vanity-url/models/custom-login-screen';
+import { Pagination } from 'app/core/models/pagination';
+import { PagerService } from 'app/core/services/pager.service';
+import { CustomLoginTemplate } from 'app/email-template/models/custom-login-template';
+import { EmailTemplatePreviewUtilComponent } from 'app/util/email-template-preview-util/email-template-preview-util.component';
+import { SocialPagerService } from 'app/contacts/services/social-pager.service';
+import { EnvService } from 'app/env.service';
+import { CompanyLoginTemplateActive } from 'app/email-template/models/company-login-template-active';
+
+declare var $, swal: any;
 @Component({
   selector: 'app-custom-login-screen-settings',
   templateUrl: './custom-login-screen-settings.component.html',
   styleUrls: ['./custom-login-screen-settings.component.css'],
-  providers:[Properties]
+  providers: [Properties, Processor]
 })
 export class CustomLoginScreenSettingsComponent implements OnInit {
 
+  @Output() editLoginTemplate = new EventEmitter();
+  @Input() saveCustomResponse: CustomResponse;
+  pagination: Pagination = new Pagination();
   companyProfile: CompanyProfile = new CompanyProfile();
-  favIconfile: File;
-  bgImageFile: File; 
-  companyFavIconPath = "";
+  customLoginScreen: CustomLoginScreen = new CustomLoginScreen();
+  customLoginScreenStyle1: CustomLoginScreen = new CustomLoginScreen();
+  loggedInUserId = 0;
+  bgImageFile: File;
   companyBgImagePath = "";
-  cropLogoImageText:string;
-  squareDataForBgImage:any;
+  cropLogoImageText: string;
+  squareDataForBgImage: any;
   croppedImageForBgImage: any = '';
   bgImageChangedEvent: any = '';
   cropRounded: boolean;
-
-  constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,public properties:Properties) { }
+  companyLogoImageUrlPath = "";
+  backGroundImage = "https://i.imgur.com/tgYLuLr.jpg";
+  customResponse: CustomResponse = new CustomResponse();
+  loadingcrop = false;
+  logoErrorMessage = "";
+  logoError = false;
+  errorUploadCropper = false;
+  showCropper = false;
+  message = "";
+  statusCode: number;
+  isShowUploadScreen = false;
+  @ViewChild("emailTemplatePreviewPopupComponent") emailTemplatePreviewUtilComponent: EmailTemplatePreviewUtilComponent;
+  loading: boolean;
+  customLoinTemplates: CustomLoginTemplate[] = [];
+  aspectRatio: any;
+  /**** PAginaton */
+  pager: any = {};
+  constructor(public envService:EnvService,public authenticationService: AuthenticationService, public referenceService: ReferenceService, public properties: Properties,
+    private companyProfileService: CompanyProfileService, private logger: XtremandLogger, public utilService: UtilService, public refService: ReferenceService, private vanityURLService: VanityURLService, private pagerService: PagerService, public socialPagerService: SocialPagerService) {
+    this.loggedInUserId = this.authenticationService.getUserId();
+  }
 
   ngOnInit() {
+    if (!this.companyBgImagePath) {
+      this.squareDataForBgImage = {};
+    }
+    if (this.authenticationService.user.hasCompany) {
+      this.companyProfile.isAdd = false;
+    }
+    this.getLogInScreenDetails();
+    this.getCustomLoginTemplates(this.pagination);
   }
-
-  setVendorLogoOption(event:any){
-    this.companyProfile.showVendorCompanyLogo = event;
-  }
-
-  bgImageClick(){
+ 
+  bgImageClickForStyle1() {
+    this.isShowUploadScreen = false;
     this.cropLogoImageText = "Choose the image to be used as your company background";
     this.cropRounded = false;
+    this.isShowUploadScreen = true;
     $('#cropBgImage').modal('show');
-   }
+    this.aspectRatio = (8 / 9);
+  }
 
-   errorHandler(event){ event.target.src ='assets/images/company-profile-logo.png'; }
+  setVendorLogoOption(event: any) {
+    this.customLoginScreen.showVendorCompanyLogo = event;
+  }
+
+  designTemplate(loginTempalte: CustomLoginTemplate) {
+    this.editLoginTemplate.emit(loginTempalte);
+  }
+
+  previewTemplate(emailTemplate: CustomLoginTemplate) {
+    this.emailTemplatePreviewUtilComponent.previewEmailTemplate(emailTemplate);
+  }
+
+  bgImageClick() {
+    this.isShowUploadScreen = false;
+    this.cropLogoImageText = "Choose the image to be used as your company background";
+    this.cropRounded = false;
+    this.isShowUploadScreen = true;
+    this.aspectRatio = (16 / 9);
+    $('#cropBgImage').modal('show');
+  }
+
+  errorHandler(event) { event.target.src = 'assets/images/company-profile-logo.png'; }
+
+  // getCompanyProfileByUserId(userId) {
+  //   if (userId != undefined) {
+  //     this.companyProfileService.getByUserId(userId)
+  //       .subscribe(
+  //         data => {
+  //           if (data.data != undefined) {
+  //             this.companyProfile = data.data;
+  //             this.authenticationService.loginScreenDirection = data.data.loginScreenDirection;
+  //             this.customLoginScreen.logInScreenDirection = data.data.loginScreenDirection;
+  //             this.setCompanyProfileViewData(data.data.companyName);
+  //           }
+  //         },
+  //         error => { this.logger.errorPage(error) },
+  //         () => { this.logger.info("Completed getCompanyProfileByUserId()") }
+  //       );
+  //   }
+  //}
+  // setCompanyProfileViewData(existingCompanyName: string) {
+  //   if ($.trim(this.companyProfile.companyLogoPath).length > 0) {
+  //     this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath;
+  //   }
+  //   if ($.trim(this.companyProfile.backgroundLogoPath).length > 0) {
+  //     this.backGroundImage = this.authenticationService.MEDIA_URL + this.companyProfile.backgroundLogoPath;
+  //     this.companyBgImagePath = this.companyProfile.backgroundLogoPath;
+  //   }
+  // }
+
+  backgroundImage(event: any) {
+    this.croppedImageForBgImage = event;
+    if (this.croppedImageForBgImage != "") {
+      this.loadingcrop = true;
+      let fileObj: any;
+      fileObj = this.utilService.convertBase64ToFileObject(this.croppedImageForBgImage);
+      fileObj = this.utilService.blobToFile(fileObj);
+      this.processBgImageFile(fileObj);
+    } else {
+      this.errorUploadCropper = false;
+      this.showCropper = false;
+    }
+  }
+  processBgImageFile(fileObj: File) {
+    this.companyProfileService.uploadBgImageFile(fileObj).subscribe(result => {
+      if (result.statusCode === 200) {
+        this.companyProfile.backgroundLogoPath = result.data;
+        this.companyBgImagePath = result.data;
+        this.authenticationService.v_companyBgImagePath = this.companyBgImagePath;
+        this.logoError = false;
+        this.logoErrorMessage = "";
+        $('#cropBgImage').modal('hide');
+      }
+    }, error => {
+      console.log(error);
+      $('#cropLogoImage').modal('hide');
+      this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true)
+    },
+      () => {
+        this.loadingcrop = false; if (this.companyProfile.website) {
+        }
+      });
+  }
+  updateCustomLogInScreenData() {
+    this.customLoginScreen.backGroundLogoPath = this.companyBgImagePath;
+    if (this.isStyle1) {
+      this.customLoginScreen.loginType = "STYLE_ONE";
+    } else {
+      this.customLoginScreen.loginType = "STYLE_TWO";
+    }
+    this.companyProfileService.updateCustomLogInScreenData(this.customLoginScreen)
+      .subscribe(
+        data => {
+          this.message = data.message;
+          if (data.statusCode != 200) {
+            this.message = "Missing Field";
+            this.customResponse = new CustomResponse('ERROR', this.message, true)
+          } else {
+            this.customResponse = new CustomResponse('SUCCESS', this.message, true)
+          }
+          this.statusCode = data.statusCode;
+        });
+        this.saveOrUpdateLoginTemplateActiveForCompany(this.selectedTemplate);
+  }
+  showVendorCompanyLogo:boolean;
+  getLogInScreenDetails() {
+    // this.companyProfileService.getLogInScreenDetails()
+    //   .subscribe(
+    //     data => {
+          //  this.customLoginScreen = data.data;
+          //  this.styleTwoDirection = data.data.logInScreenDirection;
+          // this.styleOneDirection = data.data.logInScreenDirection;
+          // this.refService.loginStyleType = this.customLoginScreen.loginType;
+          // if (this.styleOneDirection == 'Center') {
+          //   this.styleOneDirection = 'Right';
+        //   }
+        // })
+        this.styleOneDirection = this.authenticationService.loginScreenDirection;
+        this.styleTwoDirection = this.authenticationService.loginScreenDirection;
+        if (this.styleOneDirection == 'Center') {
+           this.styleOneDirection = 'Right';
+        }
+        this.customLoginScreen.logInScreenDirection = this.authenticationService.loginScreenDirection;
+        this.customLoginScreen.showVendorCompanyLogo = this.authenticationService.v_showCompanyLogo;
+        this.customLoginScreen.backGroundLogoPath = this.authenticationService.v_companyBgImagePath;
+  }
+  styleOneDirection:any;
+  styleTwoDirection:any
+  onSelectChangeStyale1(style1:any){
+    this.styleOneDirection = style1;
+    this.customLoginScreen.logInScreenDirection = this.styleOneDirection;
+  }
+  onSelectChangeStyale2(style2:any){
+    this.styleTwoDirection = style2;
+    this.customLoginScreen.logInScreenDirection = this.styleTwoDirection;
+
+  }
+
+  isStyle1: boolean = true;
+  showStyle1() {
+    this.isStyle1 = true;
+  }
+  showStyle2() {
+    this.isStyle1 = false;
+  }
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.getCustomLoginTemplates(this.pagination);
+  }
+ 
+  getCustomLoginTemplates(pagination: Pagination) {
+    this.loading = true;
+    pagination.userId = this.authenticationService.getUserId();
+    this.vanityURLService.getCustomLoginTemplates(pagination).subscribe(result => {
+      const data = result.data;
+      this.customLoinTemplates = result.data
+      if (result.statusCode === 200) {
+        this.loading = false;
+        this.selectedTemplate = this.authenticationService.lognTemplateId;
+        alert(this.selectedTemplate)
+        pagination.totalRecords = this.customLoinTemplates.length;
+        pagination = this.pagerService.getPagedItems(pagination, data);
+        this.pager = this.socialPagerService.getPager(this.customLoinTemplates.length, this.pagination.pageIndex, this.pagination.maxResults);
+        this.pagination.pagedItems = this.customLoinTemplates.slice(this.pager.startIndex, this.pager.endIndex + 1);
+        // this.referenceService.loading(this.httpRequestLoader, false);
+      } else {
+        this.loading = false;
+      }
+    }, error => {
+      this.loading = false;
+      this.customResponse = new CustomResponse('ERROR', "Error while deleting Email Template", true);
+    });
+  }
+  deleteTemplate(id: number) {
+    let self = this;
+    swal({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Yes, Delete it!'
+    }).then(function () {
+      self.deleteCustomLogInTempalte(id);
+    }, function (dismiss: any) {
+      console.log("you clicked showAlert cancel" + dismiss);
+    });
+  }
+  deleteCustomLogInTempalte(id: number) {
+    this.vanityURLService.deleteCustomLogInTemplateById(id).subscribe(result => {
+      if (result.statusCode === 200) {
+        this.customResponse = new CustomResponse('ERROR', result.message, true);
+        this.referenceService.goToTop();
+        this.getCustomLoginTemplates(this.pagination);
+      }
+    }, error => {
+      this.customResponse = new CustomResponse('ERROR', "Error while deleting Email Template", true);
+    });
+  }
+  companyLoginTemplateActive:CompanyLoginTemplateActive = new CompanyLoginTemplateActive();
+  saveOrUpdateLoginTemplateActiveForCompany(tId:number){
+		this.companyLoginTemplateActive.createdBy =this.loggedInUserId;
+    this.companyLoginTemplateActive.templateId = tId;
+		this.activateTemplate(this.companyLoginTemplateActive);
+	  }
+
+    activateTemplate(companyLoginTemplateActive:CompanyLoginTemplateActive){
+      this.companyProfileService.saveOrUpdateTemplateForCompany(companyLoginTemplateActive).subscribe(result => {
+        if(result.statusCode === 200){
+        //this.customLoginTemplateResponse = new CustomResponse('SUCCESS', "Template updated successfully", true);
+        } else {
+        //this.customLoginTemplateResponse = new CustomResponse('ERROR', result.data.errorMessages[0].message, true);
+        }
+      }, error => {
+        //this.customLoginTemplateResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT, true)
+      });
+    }
+    selectedTemplate:number;
+    selectedTemplateId(id:number){
+     this.selectedTemplate = id;
+     this.companyLoginTemplateActive.templateId = id;
+    }
 
 }

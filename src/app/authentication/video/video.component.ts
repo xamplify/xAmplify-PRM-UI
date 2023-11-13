@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { Properties } from '../../common/models/properties';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { EnvService } from 'app/env.service';
@@ -11,6 +11,8 @@ import { EnvService } from 'app/env.service';
 })
 export class VideoComponent implements OnInit {
 
+  @Input() vanityURLEnabled:boolean;
+  @Input() newLogin:boolean;
   constructor(public properties: Properties, public authService: AuthenticationService,public envService: EnvService) { }
 
   ngOnInit() {

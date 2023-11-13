@@ -12,6 +12,7 @@ import { Title, DOCUMENT } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { EnvService } from "app/env.service";
 import { SweetAlertParameterDto } from "app/common/models/sweet-alert-parameter-dto";
+import { CustomLoginTemplate } from "app/email-template/models/custom-login-template";
 @Injectable()
 export class VanityURLService {
 
@@ -92,8 +93,36 @@ export class VanityURLService {
     const url = this.authenticationService.REST_URL + "v_url/delete/emailTemplate/" + id + "?access_token=" + this.authenticationService.access_token;
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
-
-
+  //XNFR-233
+  getCustomLoginTemplates(pagination: Pagination) {
+    const url = this.authenticationService.REST_URL + "v_url/getLoginTemplates" + "?access_token=" + this.authenticationService.access_token;
+    return this.http.post(url, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+  saveCustomLoginTemplate(customLoginTemplate:CustomLoginTemplate){
+    const url = this.authenticationService.REST_URL + "v_url/saveOrUpdate/customLoginTemplate" + "?access_token=" + this.authenticationService.access_token;
+    return this.http.post(url, customLoginTemplate)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+  deleteCustomLogInTemplateById(id: number) {
+    const url = this.authenticationService.REST_URL + "v_url/delete/customLogInTemplate/" + id + "/loggedInUserId/"+this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token;
+    return this.http.delete(url).map(this.extractData).catch(this.handleError);
+  }
+  getLogInTemplateById(id:number,loggedInUserId:number) {
+      const url = this.authenticationService.REST_URL + "v_url/customLogInTemplateId/" + id +"/loggedInUserId/"+ loggedInUserId;
+      return this.http.get(url).map(this.extractData).catch(this.handleError);
+  }
+  // getLoginStyleByCompanyId(companyprofileName:any){
+  //   const url = this.authenticationService.REST_URL + "v_url/customLoginStyle/companyProfile/"+ companyprofileName;
+  //     return this.http.get(url).map(this.extractData).catch(this.handleError);
+  // }
+  getActiveLoginTemplate(companyProfileName:number){
+    const url = this.authenticationService.REST_URL + "v_url/active/loginTemplate/"+ companyProfileName;
+      return this.http.get(url).map(this.extractData).catch(this.handleError);
+  }
+//XNFR-2333
   isVanityURLEnabled() {
    let url = window.location.hostname;
     let isLocalHost = this.envService.SERVER_URL.indexOf('localhost')>-1 && 
