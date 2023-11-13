@@ -140,10 +140,13 @@ export class ShareUnpublishedContentComponent implements OnInit {
   share(){
     if(this.selectedIds!=undefined && this.selectedIds.length>0){
       this.ngxLoading = true;
+      let campaignDetails = this.addPartnerDtos();
       if(this.selectedModule==this.properties.campaignsHeaderText){
-        this.shareCampaigns();
+        campaignDetails["campaignIds"] = this.selectedIds;
+        campaignDetails["type"] = this.type;
+        this.shareCampaigns(campaignDetails);
       }else{
-  
+        this.shareAssets(campaignDetails);
       }
     }else{
       this.referenceService.goToTop();
@@ -152,40 +155,62 @@ export class ShareUnpublishedContentComponent implements OnInit {
   }
 
 
-  private shareCampaigns() {
+  private addPartnerDtos() {
+    let campaignDetails = {};
     let users = [];
     if (this.isPartnerInfoRequried) {
       users.push(this.user);
     }
-    let campaignDetails = {
-      "campaignIds": this.selectedIds,
-      "partnersOrContactDtos": users,
-      "userListId": this.selectedUserListId,
-      "loggedInUserId": this.authenticationService.getUserId(),
-      "type": this.type
-    };
+    campaignDetails['partnersOrContactDtos'] = users;
+    campaignDetails['userListId'] = this.selectedUserListId;
+    campaignDetails['loggedInUserId'] = this.authenticationService.getUserId();
+    return campaignDetails;
+  }
+
+  private shareCampaigns(campaignDetails:any) {
     this.campaignService.shareOrSendCampaigns(campaignDetails)
       .subscribe(
         data => {
-          this.ngxLoading = false;
-          if (data.access) {
-            this.isPublishedSuccessfully = true;
-            this.statusCode = data.statusCode;
-            if (data.statusCode == 200) {
-              this.responseMessage = data.message;
-            } else {
-              this.responseMessage = data.message;
-            }
-          } else {
-            this.authenticationService.forceToLogout();
-          }
+          this.showPublishedSuccessMessage(data);
         },
         _error => {
-          this.ngxLoading = false;
-          this.isPublishedSuccessfully = false;
-          this.customResponse = new CustomResponse("ERROR", this.properties.serverErrorMessage, true);
+          this.showPublishError();
         }, () => {
         }
       );
   }
+
+  private showPublishedSuccessMessage(data: any) {
+    this.ngxLoading = false;
+    if (data.access) {
+      this.isPublishedSuccessfully = true;
+      this.statusCode = data.statusCode;
+      if (data.statusCode == 200) {
+        this.responseMessage = data.message;
+      } else {
+        this.responseMessage = data.message;
+      }
+    } else {
+      this.authenticationService.forceToLogout();
+    }
+  }
+
+  private showPublishError() {
+    this.ngxLoading = false;
+    this.isPublishedSuccessfully = false;
+    this.customResponse = new CustomResponse("ERROR", this.properties.serverErrorMessage, true);
+  }
+
+  shareAssets(campaignDetails:any){
+    campaignDetails["damIds"] = this.selectedIds;
+    this.authenticationService.shareUnPublishedAssets(campaignDetails).
+    subscribe(
+      response=>{
+        this.showPublishedSuccessMessage(response);
+      },error=>{
+        this.showPublishError();
+      }
+    );
+  }
+
 }

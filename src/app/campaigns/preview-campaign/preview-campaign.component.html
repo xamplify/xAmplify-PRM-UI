@@ -462,10 +462,6 @@
                                                          </h5>
                                                          <h6><input style="width:50%;height: 22px;" type="text" disabled value="{{reply.replyInDays}}"></h6>
                                                       </div>
-                                                      <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-                                                         <h5>At</h5>
-                                                         <h6><input type="text" style="width:50%;height: 22px;" disabled value="{{reply.replyTime | date: 'shortTime'}}"></h6>
-                                                      </div>
                                                    </div>
                                                    <div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
                                                       <h5>Subject</h5>
@@ -560,10 +556,6 @@
                                                       <div class=" col-xs-3">
                                                          <h5>Wait X Days After Click *</h5>
                                                          <h6><input type="text" style="width:50%;height: 22px;" disabled value="{{url.replyInDays}}"></h6>
-                                                      </div>
-                                                      <div class="col-xs-3">
-                                                         <h5>At</h5>
-                                                         <h6><input type="text" style="width:50%;height: 22px;" disabled value="{{url.replyTime | date: 'shortTime'}}"></h6>
                                                       </div>
                                                    </div>
                                                    <div class="col-xs-6">
@@ -922,7 +914,7 @@
                                              <tr>
                                                 <th *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
                                                 <th *ngIf="campaignReport.emailActionType === 'click'">URL</th>
-                                                <th colspan="2" class="text-center">Opened At</th>
+                                                <th colspan="2" class="text-center">Opened "At"</th>
                                              </tr>
                                           </thead>
                                           <tbody>
