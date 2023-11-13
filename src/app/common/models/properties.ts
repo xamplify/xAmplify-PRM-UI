@@ -305,6 +305,13 @@ export class Properties {
 	InvitedVendorAnalytics = "Invited Vendor Analytics"; 
 	inviteAVendorToJoinxAmplify = "Invite a vendor to join xAmplify";
 
+	/****XNFR-342****/
+	campaignsHeaderText = "Campaigns";
+	assetsHeaderText = "Assets";
+	tracksHeaderText = "Tracks";
+	playBooksHeaderText = "Play Books";
+	/****XNFR-342****/
+
 
 
 

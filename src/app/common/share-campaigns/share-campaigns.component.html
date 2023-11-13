@@ -1,0 +1,79 @@
+<app-list-loader *ngIf="httpRequestLoader.isLoading" [rowsCount]="3"></app-list-loader>
+<app-response-message class="pg8" [showCloseIcon]="false" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+</app-response-message>
+<!--Campaigns-->
+<div *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader?.isServerError" class="table-responsive">
+  <!--Search & Sort-->
+  <div class="col-xs-12 pb10">
+    <div class="btn-group pull-right">
+      <div class="inputs float-right inline-flex">
+        <!--Search-->
+        <div>
+            <select class="form-control" [(ngModel)]="sortOption.selectedShareCampaignDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+              <option  *ngFor="let option of sortOption.shareCampaignSortDropDownOptions" [ngValue]="option">
+                  {{option.name}}
+                </option>
+            </select>
+        </div>
+        <!--Sort-->
+        <div class="portlet-input input-inline">
+          <div class="input-icon right" id="icon">
+            <input type="text" id="sort-text" autocomplete="off" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="findCampaignsOnKeyPress($event.keyCode)">
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
+            <button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div>
+    <!--List Of Campaigns-->
+    <div>
+      <table class='table tgrid table-hover table-sm' *ngIf="pagination?.pagedItems?.length>0" id="unPublishedCampaignsTable">
+        <thead>
+           <tr>
+              <th class="text-center">
+                 <input class="pointer checkBox_shadow" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
+                  (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)" id="unPublished-campaigns-header-checkbox-id">
+              </th>
+              <th class="text-center">Campaign Name</th>
+              <th class="text-center">Type</th>
+              <th class="text-center">Created By</th>
+              <th class="text-center">Launched On</th>
+           </tr>
+        </thead>
+        <tbody>
+           <tr class="pointer" *ngFor="let campaign of pagination.pagedItems ;let i =index" id="unPublished-campaigns-tr-{{campaign.id}}" [class.row-selected]="selectedCampaignIds.indexOf(campaign.id)>-1" (click)="highlightSelectedCampaignOnRowClick(campaign.id,$event)">
+           <td class="text-center">
+              <input type="checkbox" class="pointer checkBox_shadow"  id="{{campaign.id}}" [checked]="selectedCampaignIds.indexOf(campaign.id)>-1"
+               name="unPublishedCampaignsCheckBox[]" value="{{campaign.id}}" (click)="$event.stopPropagation();highlightCampaignRowOnCheckBoxClick(campaign.id,$event)">
+           </td>
+           <td class="text-center" title="{{campaign.campaign}}">
+              {{campaign.campaign | slice:0:25}} <span *ngIf="campaign.campaign?.length>25">...</span>
+           </td>
+           <td class="text-center">
+              <span>{{campaign.campaignTypeInString}}</span>
+           </td>
+           <td class="text-center">
+              <span>{{campaign.createdBy}}</span>
+           </td>
+           <td class="text-center">
+              <app-display-date-and-time [dateAndTimeUTCString]="campaign?.launchTimeInString"></app-display-date-and-time>
+           </td>
+           </tr>
+        </tbody>
+     </table>
+    </div>
+</div>
+
+ <!--Pagination-->
+ <div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+   <strong>No Campaigns Found.</strong>
+ </div>
+
+ <div *ngIf="pagination?.totalRecords>0" [hidden]="httpRequestLoader.isLoading || httpRequestLoader?.isServerError">
+   <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findCampaigns($event)">
+   </app-pagination>
+ </div>
+
