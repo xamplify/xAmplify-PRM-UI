@@ -2316,3 +2316,6 @@ i.IconodownloadedCount:hover {
   padding: 0px 0px !important;
   border-radius: 10px;
 }
+.input-group > .form-control:focus {
+  border-color: #2f4857 !important;
+}

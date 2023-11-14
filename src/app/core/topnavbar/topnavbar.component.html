@@ -107,10 +107,12 @@
                             <i class="icon-user"></i> 
                             My Profile
                             </a>
+                            <div class="border-bt"></div>
                          </li>
                          <li *ngIf="(!authenticationService.isOnlyUser() && !authenticationService.isSuperAdmin() && authenticationService.superiorRole != 'Partner') || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
                             <a (click)="navigateToCompanyProfile('/home/dashboard/edit-company-profile',authenticationService?.module?.companyProfileCreated)"  translate> <i class="fa fa-building-o"></i> Company Profile
                             </a>
+                            <div class="border-bt"></div>
                          </li>
                          <li *ngIf="(refService.hasAllAccess()
                             || authenticationService.module.hasSocialStatusRole
@@ -120,6 +122,7 @@
                             || authenticationService.module.isVendorTier
                             || authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
                             <a (click)="goToRouter('/home/social/manage/all')"  translate> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
+                            <div class="border-bt"></div>
                          </li>
                          
                          <ng-container *ngIf="!authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
@@ -134,6 +137,7 @@
                                         {{dashboardType}}
                                      </ng-container>
                                   </a>
+                                  <div class="border-bt"></div>
                                </li>
                             </ng-container>
                          </ng-container>
@@ -142,6 +146,7 @@
                            <a href="{{guideHomeUrl}}" target="_blank">
                               <i class="fa fa-question-circle-o" style="font-size: 15px;" aria-hidden="true"></i>&nbsp;Help
                            </a>
+                           <div class="border-bt"></div>
                          </li>
                          <!-- Guides Help Icon-->
                          <li *ngIf="myVendorsLoader &&authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
@@ -150,6 +155,7 @@
                          <li *ngIf="!myVendorsLoader && authenticationService.user.hasCompany && !authenticationService.module.loggedInThroughOwnVanityUrl && (authenticationService?.module?.isPartnerCompany ||  authenticationService?.module?.isOnlyPartnerCompany)">
                             <a (click)="goToRouter('/home/dashboard/vendors')" translate> 
                             <i class="fa fa-users" aria-hidden="true"></i>My Vendors ({{vendorCount}})</a>
+                            <div class="border-bt"></div>
                          </li>
                          <!--XBI-1917-->
                          <ng-container *ngIf="authenticationService?.module?.showAddLeadOrDealButtonInMyProfileSection && authenticationService?.user?.hasCompany">
@@ -159,6 +165,7 @@
                                <i class="fa fa-user-circle" aria-hidden="true"></i>
                                Add Leads
                                </a>
+                               <div class="border-bt"></div>
                             </li>
                             <!--Add Deals-->
                             <li>
@@ -166,6 +173,7 @@
                                <i class="fa fa-tags" aria-hidden="true"></i>
                                Add Deals
                                </a>
+                               <div class="border-bt"></div>
                             </li>
                          </ng-container>
                       <!-- <li class="divider"></li> -->
