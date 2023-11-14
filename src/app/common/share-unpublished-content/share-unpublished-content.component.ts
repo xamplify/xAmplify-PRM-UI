@@ -51,10 +51,12 @@ export class ShareUnpublishedContentComponent implements OnInit {
 
   ngOnInit() {
     this.isPartnersRouter =  this.router.url.includes("/partners/");
+    this.isPublishedSuccessfully = false;
   }
 
   openPopUp(partnerListId: number, contact:any,type:string){
     this.resetValues();
+    this.isPublishedSuccessfully = false;
     let accessList = [];
     accessList.push(this.hasCampaignAccess);
     accessList.push(this.hasDamAccess);
@@ -99,14 +101,15 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.selectedModule = "";
     this.isCampaignChildComponentCalled = false;
     this.selectedIds = [];
-    this.isPublishedSuccessfully = false;
     this.isShareButtonClicked = false;
+    this.customResponse = new CustomResponse();
 
   }
 
   closePopup(){
     this.resetValues();
     this.referenceService.closeModalPopup(this.modalPopUpId);
+
   }
 
   applyFilter(index:number,filterOption:string){
