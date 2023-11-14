@@ -967,11 +967,13 @@
                                                                 </a> 
                                                             </ng-container>
                                                             <!--XNFR-342-->
-                                                            <!-- <a data-toggle="tooltip" data-placement="bottom"
+                                                            <ng-container *ngIf="isLocalHost">
+                                                                <a data-toggle="tooltip" data-placement="bottom"
                                                                 title="{{actionsDescription?.shareUnPublishedContent}}"
                                                                 (click)="openUnPublishedContentModalPopUp(contact)">
                                                                 <i class="fa fa-forward IconCustomization" aria-hidden="true"></i>
-                                                            </a> -->
+                                                                </a>  
+                                                            </ng-container>
                                                             <!--XNFR-342-->
                                                             <a
                                                                 *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember"
@@ -981,7 +983,7 @@
                                                                 class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                                                             </a>
                                                             <app-login-as-partner [contact]="contact" [showLoginAsButton]="true"></app-login-as-partner>
-                                                            <!---XNFR-224--->
+                                                            
                                                         </div>
                                                     </td>
                                                     <ng-template #NA>N/A</ng-template>

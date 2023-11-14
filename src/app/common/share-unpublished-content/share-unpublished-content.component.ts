@@ -51,10 +51,12 @@ export class ShareUnpublishedContentComponent implements OnInit {
 
   ngOnInit() {
     this.isPartnersRouter =  this.router.url.includes("/partners/");
+    this.isPublishedSuccessfully = false;
   }
 
-  openPopUp(partnerListId: number, contact:any,type:string){
+  openPopUp(userListId: number, contact:any,type:string){
     this.resetValues();
+    this.isPublishedSuccessfully = false;
     let accessList = [];
     accessList.push(this.hasCampaignAccess);
     accessList.push(this.hasDamAccess);
@@ -67,12 +69,13 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.modalHeaderText = "Please Select "+this.selectedModule;
     this.contact = contact;
     this.type = type;
-    this.selectedUserListId = partnerListId;
+    this.selectedUserListId = userListId;
     this.referenceService.openModalPopup(this.modalPopUpId);
     this.isCampaignChildComponentCalled = this.hasCampaignAccess && this.selectedModule==this.properties.campaignsHeaderText;
     this.applyFilter(0,this.selectedModule);
-
   }
+
+  
 
   private addFilterOptions() {
     if(this.hasCampaignAccess) {
@@ -99,14 +102,15 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.selectedModule = "";
     this.isCampaignChildComponentCalled = false;
     this.selectedIds = [];
-    this.isPublishedSuccessfully = false;
     this.isShareButtonClicked = false;
+    this.customResponse = new CustomResponse();
 
   }
 
   closePopup(){
     this.resetValues();
     this.referenceService.closeModalPopup(this.modalPopUpId);
+
   }
 
   applyFilter(index:number,filterOption:string){
