@@ -967,11 +967,13 @@
                                                                 </a> 
                                                             </ng-container>
                                                             <!--XNFR-342-->
-                                                            <!-- <a data-toggle="tooltip" data-placement="bottom"
+                                                            <ng-container *ngIf="isLocalHost">
+                                                                <a data-toggle="tooltip" data-placement="bottom"
                                                                 title="{{actionsDescription?.shareUnPublishedContent}}"
                                                                 (click)="openUnPublishedContentModalPopUp(contact)">
                                                                 <i class="fa fa-forward IconCustomization" aria-hidden="true"></i>
-                                                            </a>  -->
+                                                                </a>  
+                                                            </ng-container>
                                                             <!--XNFR-342-->
                                                             <a
                                                                 *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember"

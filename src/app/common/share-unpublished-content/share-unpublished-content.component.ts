@@ -54,7 +54,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.isPublishedSuccessfully = false;
   }
 
-  openPopUp(partnerListId: number, contact:any,type:string){
+  openPopUp(userListId: number, contact:any,type:string){
     this.resetValues();
     this.isPublishedSuccessfully = false;
     let accessList = [];
@@ -69,12 +69,13 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.modalHeaderText = "Please Select "+this.selectedModule;
     this.contact = contact;
     this.type = type;
-    this.selectedUserListId = partnerListId;
+    this.selectedUserListId = userListId;
     this.referenceService.openModalPopup(this.modalPopUpId);
     this.isCampaignChildComponentCalled = this.hasCampaignAccess && this.selectedModule==this.properties.campaignsHeaderText;
     this.applyFilter(0,this.selectedModule);
-
   }
+
+  
 
   private addFilterOptions() {
     if(this.hasCampaignAccess) {

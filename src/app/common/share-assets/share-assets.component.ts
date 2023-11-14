@@ -40,11 +40,15 @@ export class ShareAssetsComponent implements OnInit {
     this.referenceService.startLoader(this.httpRequestLoader);
     this.pagination.userListId = this.selectedUserListId;
     let contact = this.contact;
-    this.pagination.partnerOrContactEmailId = contact.emailId;
-    this.pagination.partnerId = contact.id;
-    this.firstName = contact.firstName;
-    this.lastName = contact.lastName;
-    this.companyName = contact.contactCompany;
+    if(contact!=undefined){
+      this.pagination.partnerOrContactEmailId = contact.emailId;
+      this.pagination.partnerId = contact.id;
+      this.firstName = contact.firstName;
+      this.lastName = contact.lastName;
+      this.companyName = contact.contactCompany;
+    }else{
+      this.pagination.partnerId = 0;
+    }
     this.findUnPublishedAssets(this.pagination);
   }
 
