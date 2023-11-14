@@ -992,29 +992,29 @@
                                                         <table cellpadding="5" cellspacing="0" class="border"
                                                             style="border:none !important;">
                                                             <tbody>
-                                                                <tr class="hidden-sm hidden-md hidden-lg">
-                                                                    <td class='pt10 pb10 bold' translate>Vertical:</td>
+                                                                <tr class="hidden-sm hidden-md hidden-lg bg-unset">
+                                                                    <td class='pt10 pb10 bold mr_10' translate>Vertical:</td>
                                                                     <td>{{contact.vertical}}</td>
                                                                 </tr>
-                                                                <tr class="hidden-sm hidden-md hidden-lg">
-                                                                    <td class='pt10 pb10 bold' translate>Region:</td>
+                                                                <tr class="hidden-sm hidden-md hidden-lg bg-unset">
+                                                                    <td class='pt10 pb10 bold mr_10' translate>Region:</td>
                                                                     <td>{{contact.region}}</td>
                                                                 </tr>
-                                                                <tr class="hidden-sm hidden-md hidden-lg">
-                                                                    <td class='pt10 pb10 bold' translate>Type:</td>
+                                                                <tr class="hidden-sm hidden-md hidden-lg bg-unset">
+                                                                    <td class='pt10 pb10 bold mr_10' translate>Type:</td>
                                                                     <td>{{contact.partnerType}}</td>
                                                                 </tr>
-                                                                <tr class="hidden-sm hidden-md hidden-lg">
-                                                                    <td class='pt10 pb10 bold' translate>Category:</td>
+                                                                <tr class="hidden-sm hidden-md hidden-lg bg-unset">
+                                                                    <td class='pt10 pb10 bold mr_10' translate>Category:</td>
                                                                     <td>{{contact.category}}</td>
                                                                 </tr>
-                                                                <tr *ngIf="gdprStatus">
-                                                                    <td class='pt10 pb10 bold' translate>Legal Basis :</td>
+                                                                <tr class="bg-unset" *ngIf="gdprStatus">
+                                                                    <td class='pt10 pb10 bold mr_10' translate>Legal Basis :</td>
                                                                     <td align="center" class="pt10 pb10">
                                                                         {{contact.legalBasisString}}</td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td class='pt10 pb10 bold' translate>Address:</td>
+                                                                <tr class="bg-unset">
+                                                                    <td class='pt10 pb10 bold mr_10' translate>Address:</td>
                                                                     <td align="center">
                                                                         <h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
                                                                         <h5 class='m0'>
@@ -1028,8 +1028,8 @@
                                                                         </h5>
                                                                     </td>
                                                                 </tr>
-                                                                <tr *ngIf="authenticationService.contactsCount">
-                                                                    <td class='pt10 pb10 bold' translate>Contacts
+                                                                <tr class="bg-unset" *ngIf="authenticationService.contactsCount">
+                                                                    <td class='pt10 pb10 bold mr_10' translate>Contacts
                                                                         Limit:</td>
                                                                     <td align="center" class="pt10 pb10">
                                                                         {{contact.contactsLimit}}</td>
