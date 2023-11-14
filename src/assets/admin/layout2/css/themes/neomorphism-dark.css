@@ -2374,3 +2374,33 @@ fieldset {
 select.form-control.ng-untouched.ng-pristine.ng-valid {
   box-shadow: -4px -4px 5px #3e4247, -10px 10px 19px #1d1f23 !important;
 }
+/* 13-11-2023 */
+.bg-unset{
+  padding: 0px 10px;
+  display: flex;
+ }
+ .mr_10{
+   margin-right: 10px;
+ }
+ .pt_12{
+   padding-top: 12px;
+ }
+ .table > tbody > tr >.bg-colorunset{
+ background-color: unset!important;
+ } 
+ .field-width{
+  width: 41.66666667%!important;
+  margin-right: 0px!important;
+  margin-left: 0px!important;
+}
+.mrg0{
+  margin-right: 0px!important;
+  margin-left: 0px!important;
+}
+.px_0{
+ padding: 0px 15px!important;
+ width: 83.33333333%!important;
+}
+.mrg-unset{
+  margin-bottom:unset;
+}
