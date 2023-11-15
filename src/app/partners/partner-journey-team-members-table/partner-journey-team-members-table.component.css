@@ -25,3 +25,7 @@
 	.mobileBtnLeftnone{float:none !important;}
 	.serachvoxwidth{width:100%}
   }
+
+  .panel-heading {
+    padding: 11px 15px !important;
+  }

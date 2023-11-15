@@ -183,3 +183,29 @@ img.brand-logo-custom {
   .rowMarginCustomization{margin-right:0px !important;}
   .responsivepaddding1{margin-right: -5px;}
 }
+
+.CardCustomeWidth {
+  padding-left: 7px;
+}
+
+@media (min-width: 992px) and (max-width: 1160px)  { 
+  .dashboard-stat .details .desc {
+    font-size: 10px !important;
+  }
+  .dashboard-stat .details {
+    padding-right: 7px;
+  }
+
+
+}
+
+.pjCardTitlebg{    
+  background-color: #d9edf7b0;
+  border-bottom: 1px solid #ddd;
+  padding: 13px 16px 0px 16px !important;
+  margin: -7px -7px 0px -7px;
+}
+.row.rowPaddingCustomization4 {
+  margin-right: -25px !important;
+  margin-left: -15px;
+}
