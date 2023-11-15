@@ -142,7 +142,7 @@
         <ng-container *ngIf="pagination.totalRecords>0">
         <tbody>
           <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}" class="list-team-member-class">
-            <td>
+            <td class="pdl-15">
               <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
               <span *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany 
               && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl && !teamMember?.primaryAdmin" 

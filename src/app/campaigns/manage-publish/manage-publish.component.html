@@ -244,37 +244,37 @@
                                 <td style="width: 10%;">
                                    <ng-container *ngIf="!campaign?.campaignProcessing">
                                       <ng-container *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
-                                         <img class="imageClass image-padding-size"
+                                         <img class="imageClass image-padding-size image_effect"
                                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
                                             src="assets/images/video-email.svg" alt="Video Campaign">
                                       </ng-container>
                                       <ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
-                                         <img class="imageClass image-padding-size"
+                                         <img class="imageClass image-padding-size image_effect"
                                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
                                             src="assets/images/regular-email.svg" alt="Regular Campaign">
                                       </ng-container>
                                       <ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
-                                         <img class="imageClass image-padding-size"
+                                         <img class="imageClass image-padding-size image_effect"
                                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
                                             src="assets/images/social-campaign.svg" alt="Social Campaign">
                                       </ng-container>
                                       <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
-                                         <img class="imageClass image-padding-size"
+                                         <img class="imageClass image-padding-size image_effect"
                                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
                                             src="assets/images/event-campaign.svg" alt="Event Campaign">
                                       </ng-container>
                                       <ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
-                                         <img class="imageClass image-padding-size"
+                                         <img class="imageClass image-padding-size image_effect"
                                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
                                             src="assets/images/landing-page.svg" alt="Page Campaign">
                                       </ng-container>
                                       <ng-container *ngIf="campaign.campaignType.indexOf('SMS') > -1">
-                                         <img class="imageClass image-padding-size"
+                                         <img class="imageClass image-padding-size image_effect"
                                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
                                             src="assets/images/sms.svg" alt="SMS Campaign">
                                       </ng-container>
                                       <ng-container *ngIf="campaign.campaignType.indexOf('SURVEY') > -1">
-                                         <img class="imageClass image-padding-size"
+                                         <img class="imageClass image-padding-size image_effect"
                                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
                                             src="assets/images/survey.svg" alt="Survey Campaign">
                                       </ng-container>
@@ -788,27 +788,27 @@
                                 <tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
                                    <td class="hidden-xs" style="width: 10%;">
                                       <ng-container *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
-                                         <img class="imageClass image-padding-size"
+                                         <img class="imageClass image-padding-size image_effect"
                                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
                                             src="assets/images/video-email.svg" alt="Video Campaign">
                                       </ng-container>
                                       <ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
-                                         <img class="imageClass image-padding-size"
+                                         <img class="imageClass image-padding-size image_effect"
                                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
                                             src="assets/images/regular-email.svg" alt="Regular Campaign">
                                       </ng-container>
                                       <ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
-                                         <img class="imageClass image-padding-size"
+                                         <img class="imageClass image-padding-size image_effect"
                                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
                                             src="assets/images/social-campaign.svg" alt="Social Campaign">
                                       </ng-container>
                                       <ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
-                                         <img class="imageClass image-padding-size"
+                                         <img class="imageClass image-padding-size image_effect"
                                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
                                             src="assets/images/landing-page.svg" alt="Page Campaign">
                                       </ng-container>
                                       <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
-                                         <img class="imageClass image-padding-size"
+                                         <img class="imageClass image-padding-size image_effect"
                                             [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}"
                                             src="assets/images/event-campaign.svg" alt="Event Campaign">
                                       </ng-container>
