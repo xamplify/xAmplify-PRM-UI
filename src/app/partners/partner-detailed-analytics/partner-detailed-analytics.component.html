@@ -23,7 +23,7 @@
 
   </div>
 
-  <!--******************Company Info*******************--> 
+  <!--******************Company Info*******************-->
   <div class="row customeRow">
     <app-partner-journey-company-info [partnerCompanyId]="partnerCompanyId"></app-partner-journey-company-info>
   </div>
@@ -34,15 +34,15 @@
   </div>
   <!--******************All Counts - Tiles*******************-->
   <div class="row customeRow">
-  <app-partner-journey-count-tiles [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId"></app-partner-journey-count-tiles>
-    </div>
+    <app-partner-journey-count-tiles [partnerCompanyId]="partnerCompanyId"
+      [teamMemberId]="teamMemberId"></app-partner-journey-count-tiles>
+  </div>
   <!--******************Team Member Details*******************-->
   <div class="row customeRow">
-  <app-partner-journey-team-members-table [partnerCompanyId]="partnerCompanyId"
-    (notifyTeamMemberSelection)="applyTeamMemberSelection($event)">
-  </app-partner-journey-team-members-table>
-</div>
+    <app-partner-journey-team-members-table [partnerCompanyId]="partnerCompanyId"
+      (notifyTeamMemberSelection)="applyTeamMemberSelection($event)">
+    </app-partner-journey-team-members-table>
+  </div>
 
   <!--******************Lead To Deal Conversion Chart & User wise Track Counts*******************-->
   <div class="row rowPaddingCustomization mobilerowPadding">
@@ -74,7 +74,7 @@
       </div>
 
       <!--******************Interacted & Not Interacted Track Details*******************-->
-      <app-interacted-not-interacted-track-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+      <app-interacted-not-interacted-track-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId" [isDetailedAnalytics]="true"
         [trackType]="selectedTrackType"></app-interacted-not-interacted-track-details>
     </div>
   </div>
@@ -91,48 +91,50 @@
       </div>
 
       <!--******************Type wise Track Content Details*******************-->
-      <app-typewise-track-content-details [partnerCompanyId]="partnerCompanyId" [trackType]="selectedTrackType"
+      <app-typewise-track-content-details [partnerCompanyId]="partnerCompanyId" [trackType]="selectedTrackType" [isDetailedAnalytics]="true"
         [assetType]="selectedAssetType" [teamMemberId]="teamMemberId"></app-typewise-track-content-details>
     </div>
   </div>
 
   <!--******************Track Assets Detailed Report*******************-->
   <div class="row rowPaddingCustomization1">
-  <app-userwise-track-details [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId" *ngIf="authenticationService?.lmsAccess"></app-userwise-track-details>
+    <app-userwise-track-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId" [isDetailedAnalytics]="true"
+      *ngIf="authenticationService?.lmsAccess"></app-userwise-track-details>
   </div>
   <!--******************Track & Playbook Asset Details*******************-->
   <div class="row rowPaddingCustomization mobilerowPadding">
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--******************Track Asset Details*******************-->
-      <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
-        [type]="'TRACK'" *ngIf="authenticationService?.lmsAccess"></app-track-asset-details>
+      <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId" [isDetailedAnalytics]="true" [type]="'TRACK'"
+        *ngIf="authenticationService?.lmsAccess"></app-track-asset-details>
 
       <!--******************Playbook Asset Details*******************-->
-      <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
-        [type]="'PLAYBOOK'" *ngIf="authenticationService.module?.playbookAccess"></app-track-asset-details>
+      <app-track-asset-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId" [isDetailedAnalytics]="true" [type]="'PLAYBOOK'"
+        *ngIf="authenticationService.module?.playbookAccess"></app-track-asset-details>
     </div>
   </div>
 
   <!--******************Share Lead Details*******************-->
   <div class="row rowPaddingCustomization1">
-    <app-share-lead-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId" *ngIf="authenticationService.module?.hasShareLeadAccess"></app-share-lead-details>
+    <app-share-lead-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
+      [teamMemberId]="teamMemberId" *ngIf="authenticationService.module?.hasShareLeadAccess"></app-share-lead-details>
   </div>
   <!--******************Redistributed Camapign Details*******************-->
   <div class="row rowPaddingCustomization1">
-  <app-redistributed-campaign-details [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId" [isDetailedAnalytics]="true" *ngIf="authenticationService.module?.isCampaign"></app-redistributed-campaign-details>
-</div>
+    <app-redistributed-campaign-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
+      [isDetailedAnalytics]="true"
+      *ngIf="authenticationService.module?.isCampaign"></app-redistributed-campaign-details>
+  </div>
   <!--******************Lead Details*******************-->
   <div class="row rowPaddingCustomization1">
-  <app-partner-journey-lead-details [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId" *ngIf="authenticationService?.enableLeads"></app-partner-journey-lead-details>
-</div>
+    <app-partner-journey-lead-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
+      [teamMemberId]="teamMemberId" *ngIf="authenticationService?.enableLeads"></app-partner-journey-lead-details>
+  </div>
   <!--******************Deal Details*******************-->
   <div class="row rowPaddingCustomization1">
-  <app-partner-journey-deal-details [partnerCompanyId]="partnerCompanyId"
-    [teamMemberId]="teamMemberId" *ngIf="authenticationService?.enableLeads"></app-partner-journey-deal-details>
-</div>
+    <app-partner-journey-deal-details [partnerCompanyId]="partnerCompanyId" [isDetailedAnalytics]="true"
+      [teamMemberId]="teamMemberId" *ngIf="authenticationService?.enableLeads"></app-partner-journey-deal-details>
+  </div>
   <!--******************Contact Details*******************-->
   <!-- This is commented for GDPR Compliance
     <app-partner-journey-contact-details [partnerCompanyId]="partnerCompanyId"

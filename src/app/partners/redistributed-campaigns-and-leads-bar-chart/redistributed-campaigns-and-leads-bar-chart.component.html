@@ -14,6 +14,13 @@
               <option value="l">Top 10 Leads</option>
             </select>
           </div>
+          <div *ngIf="chartId=='allRedistributeCampaignsAndLeadsCountBarChart'">
+            <select class="form-control" id="redistributeCampaignsAndLeadsCountBarChartDropDown"
+              (change)="filterRedistributeCampaignsAndLeadsCountBarChart()">
+              <option value="r"> Redistributed Campaigns</option>
+              <option value="l"> Leads</option>
+            </select>
+          </div>
           <div *ngIf="chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'">
             <select class="form-control" id="redistributeCampaignsAndLeadsCountBarChartQuarterlyDropDown"
               (change)="filterRedistributeCampaignsAndLeadsCountBarChartQuarterly()">
@@ -26,6 +33,13 @@
               (change)="filterTop10LeadsAndDealsBarChartDropDown()">
               <option value="l">Top 10 Leads</option>
               <option value="d">Top 10 Deals</option>
+            </select>
+          </div>
+          <div *ngIf="chartId=='allLeadsAndDealsBarChart'">
+            <select class="form-control" id="allLeadsAndDealsBarChartDropDown"
+              (change)="filterAllLeadsAndDealsBarChartDropDown()">
+              <option value="l">Leads</option>
+              <option value="d">Deals</option>
             </select>
           </div>
           <div *ngIf="chartId=='partnerJourneyLeadsAndDealsBarChart'">

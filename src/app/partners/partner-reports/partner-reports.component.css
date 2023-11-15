@@ -205,3 +205,7 @@ img.brand-logo-custom {
   padding: 13px 16px 0px 16px !important;
   margin: -7px -7px 0px -7px;
 }
+.row.rowPaddingCustomization4 {
+  margin-right: -25px !important;
+  margin-left: -15px;
+}

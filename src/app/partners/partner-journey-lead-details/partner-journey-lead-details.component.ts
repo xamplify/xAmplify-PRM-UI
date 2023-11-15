@@ -19,13 +19,14 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
   @Input() partnerCompanyId: any;
   @Input() teamMemberId: any;
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
+  @Input() isDetailedAnalytics: boolean;
+  @Input() selectedPartnerCompanyIds: any = [];
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
   pagination: Pagination = new Pagination();
-  isDetailedAnalytics: boolean = false;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -39,11 +40,11 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
 
   ngOnChanges() {    
     this.pagination.pageIndex = 1;
-    if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
-      this.isDetailedAnalytics = true;
-    } else {
-      this.isDetailedAnalytics = false;
-    }
+    // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
+    //   this.isDetailedAnalytics = true;
+    // } else {
+    //   this.isDetailedAnalytics = false;
+    // }
     this.getLeadDetails(this.pagination);
   }
 
@@ -51,7 +52,9 @@ export class PartnerJourneyLeadDetailsComponent implements OnInit {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
+    this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.pagination.maxResults = 6;
+    this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
       this.pagination.teamMemberId = this.teamMemberId;
     }

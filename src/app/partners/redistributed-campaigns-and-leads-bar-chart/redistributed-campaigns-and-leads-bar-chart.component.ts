@@ -46,13 +46,13 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
       this.authenticationService.getModuleAccessByLoggedInUserId().subscribe(
         response=>{
             this.hasLeadsAndDealsAccess = response.enableLeads;
-            if(this.chartId=='redistributeCampaignsAndLeadsCountBarChart'){
+            if(this.chartId=='redistributeCampaignsAndLeadsCountBarChart' || this.chartId=='allRedistributeCampaignsAndLeadsCountBarChart'){
                 this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads':'Redistributed Campaigns';
             }else if(this.chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'){
                 this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Previous Quarter Leads':'Redistributed Campaigns For Previous Quarter';
             }
             //XNFR-316
-            else if(this.chartId=='top10LeadsAndDealsBarChart' || this.chartId== 'partnerJourneyLeadsAndDealsBarChart'){
+            else if(this.chartId=='top10LeadsAndDealsBarChart' || this.chartId== 'partnerJourneyLeadsAndDealsBarChart' || this.chartId=='allLeadsAndDealsBarChart'){
                 if(this.hasLeadsAndDealsAccess){
                     this.hideLeadsAndDealsChart = false;
                 }else{
@@ -64,7 +64,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
             this.setErrorResponse(error);
         },()=>{
             //XNFR-316
-            if(this.chartId=='top10LeadsAndDealsBarChart' || this.chartId== 'partnerJourneyLeadsAndDealsBarChart'){
+            if(this.chartId=='top10LeadsAndDealsBarChart' || this.chartId== 'partnerJourneyLeadsAndDealsBarChart' || this.chartId=='allLeadsAndDealsBarChart'){
                 if(this.hasLeadsAndDealsAccess){
                     this.getDataForBarChart();
                 }
@@ -126,7 +126,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
     let secondaryAxisColor = "";
     let primaryYAxisText = "";
     let secondaryYAxisText = "";
-    if(chartId=="redistributeCampaignsAndLeadsCountBarChart"){
+    if(chartId=="redistributeCampaignsAndLeadsCountBarChart" || chartId=="allRedistributeCampaignsAndLeadsCountBarChart"){
         primayAxisColor = Highcharts.getOptions().colors[0];
         secondaryAxisColor = Highcharts.getOptions().colors[1];
         primaryYAxisText = "Leads";
@@ -138,7 +138,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
         secondaryYAxisText = "Redistributed Campaigns";
     }
     //XNFR-316
-    else if(chartId=="top10LeadsAndDealsBarChart" || chartId=="partnerJourneyLeadsAndDealsBarChart" ){
+    else if(chartId=="top10LeadsAndDealsBarChart" || chartId=="partnerJourneyLeadsAndDealsBarChart" || chartId=="allLeadsAndDealsBarChart"){
         primayAxisColor = Highcharts.getOptions().colors[0];
         secondaryAxisColor = Highcharts.getOptions().colors[2];
         primaryYAxisText = "Leads";
@@ -266,7 +266,9 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
   filterTop10LeadsAndDealsBarChartDropDown(){
     this.filterChart('top10LeadsAndDealsBarChartDropDown');
   }
- 
+  filterAllLeadsAndDealsBarChartDropDown(){
+    this.filterChart('allLeadsAndDealsBarChartDropDown')
+  }
 
   filterChart(dropDownId:string){
     this.chartLoader = true;

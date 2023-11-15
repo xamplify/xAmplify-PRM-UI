@@ -37,6 +37,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     videoCampaign: number;
     noOfCampaignsLaunchedByPartner = [];
     partnerUserInteraction = [];
+    selectedPartnerCompanyIds = [];
     campaignInteractionPagination: Pagination = new Pagination();
     activePartnersPagination: Pagination = new Pagination();
     inActivePartnersPagination: Pagination = new Pagination();
@@ -79,6 +80,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     showDetailedAnalytics = false;
     detailedAnalyticsPartnerCompany: any;
     selectedTrackType: any = "";
+    selectedCampaignType: any = "";
     selectedAssetType: any = "";
     
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
@@ -942,5 +944,16 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
           this.selectedAssetType = "";
         } 
       }
-    
+
+      getSelectedPartnerCompanyIds(partnerCompanyIds: any){
+        this.selectedPartnerCompanyIds = partnerCompanyIds;
+      }
+      redistributedCampaignDetailsPieChartSelected(type: any){
+        this.selectedCampaignType = type;
+      }
+      redistributedCampaignDetailsPieChartUnSelected(type: any){
+        if (this.selectedCampaignType == type) {
+            this.selectedCampaignType = "";
+          } 
+      }
 }
