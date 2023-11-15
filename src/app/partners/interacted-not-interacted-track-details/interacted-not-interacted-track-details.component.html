@@ -1,9 +1,9 @@
 <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 ml15m">
-  <div class="panel panel-info mh480">
-    <div class="panel-heading panel-heading-custom">
+  <div class="panel panel-info mh480 panel-bgMain">
+    <div class="panel-heading panel-heading-custom panel-bg">
       <h3 class="panel-title mt7 Responsivetitle">{{heading}}</h3>
       <span class="pull-right mt25m mobilesearchdisplay">
-        <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;">
+        <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;top: -1px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
             [ngModelOptions]="{standalone: true}" placeholder="Search"
             (keypress)="searchKeyPress($event.keyCode)">
@@ -19,10 +19,10 @@
         <table class="table">
           <thead>
             <tr>         
-              <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"> Team Member</i></th>
-              <th scope="col" *ngIf="!isDetailedAnalytics"><i class="fa fa-building" aria-hidden="true"> Company Name</i></th>
-              <th scope="col"><i class="fa fa-line-chart" aria-hidden="true"> Track</i></th>
-              <th scope="col"><i class="fa fa-tasks" aria-hidden="true"> Progress</i></th>
+              <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Team Member</th>
+              <th scope="col" *ngIf="!isDetailedAnalytics"><i class="fa fa-building" aria-hidden="true"></i> Company Name</th>
+              <th scope="col"><i class="fa fa-line-chart" aria-hidden="true"></i> Track</th>
+              <th scope="col"><i class="fa fa-tasks" aria-hidden="true"></i> Avg. Progress</th>
               <th></th>
             </tr>
           </thead>

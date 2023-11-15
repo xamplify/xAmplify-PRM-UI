@@ -2132,6 +2132,9 @@ p.pa-TextOne {
 .pa-CardOne:hover {
   background-color: #22313a !important;
 }
+.pa-CardOne {
+  background-color: #22313a42 !important;
+}
 .pa-CardOne:hover p {
   background-color: #22313a !important;
 }
@@ -2143,6 +2146,9 @@ p.pa-TextTwo {
 }
 .pa-CardTwo:hover {
   background-color: #22313a !important;
+}
+.pa-CardTwo {
+  background-color: #22313a42 !important;
 }
 .pa-CardTwo:hover p {
   background-color: #22313a !important;
@@ -2156,6 +2162,9 @@ p.pa-TextThree {
 .pa-CardThree:hover {
   background-color: #22313a !important;
 }
+.pa-CardThree {
+  background-color: #22313a42 !important;
+}
 .pa-CardThree:hover p {
   background-color: #22313a !important;
 }
@@ -2167,6 +2176,9 @@ p.pa-TextFour {
 }
 .pa-CardFour:hover {
   background-color: #22313a !important;
+}
+.pa-CardFour {
+  background-color: #22313a42 !important;
 }
 .pa-CardFour:hover p {
   background-color: #22313a !important;
@@ -2180,6 +2192,9 @@ p.pa-TextFive {
 .pa-CardFive:hover {
   background-color: #22313a !important;
 }
+.pa-CardFive {
+  background-color: #22313a42 !important;
+}
 .pa-CardFive:hover p {
   background-color: #22313a !important;
 }
@@ -2191,6 +2206,9 @@ p.pa-TextSix {
 }
 .pa-CardSix:hover {
   background-color: #22313a !important;
+}
+.pa-CardSix {
+  background-color: #22313a42 !important;
 }
 .pa-CardSix:hover p {
   background-color: #22313a !important;
@@ -2204,6 +2222,9 @@ p.pa-TextSeven {
 .pa-CardSeven:hover {
   background-color: #22313a !important;
 }
+.pa-CardSeven {
+  background-color: #22313a42 !important;
+}
 .pa-CardSeven:hover p {
   background-color: #22313a !important;
 }
@@ -2215,6 +2236,9 @@ p.pa-TextEight {
 }
 .pa-CardEight:hover {
   background-color: #22313a !important;
+}
+.pa-CardEight {
+  background-color: #22313a42 !important;
 }
 .pa-CardEight:hover p {
   background-color: #22313a !important;
@@ -2228,6 +2252,9 @@ p.pa-TextNine {
 .pa-CardNine:hover {
   background-color: #22313a !important;
 }
+.pa-CardNine {
+  background-color: #22313a42 !important;
+}
 .pa-CardNine:hover p {
   background-color: #22313a !important;
 }
@@ -2239,6 +2266,9 @@ p.pa-TextTen {
 }
 .pa-CardTen:hover {
   background-color: #22313a !important;
+}
+.pa-CardTen {
+  background-color: #22313a42 !important;
 }
 .pa-CardTen:hover p {
   background-color: #22313a !important;
@@ -2309,6 +2339,35 @@ i.IconodownloadedCount:hover {
   border: 1px solid #2f4857 !important;
   color: #ffffff !important;
 }
+
+
+/* table header bgcolor */
+.panel-bgMain > .panel-bg{
+  background-color: #22313a !important;
+  border-color: #2f4857 !important;
+}
+.panel-bgMain {
+  border-color: #2f4857 !important;
+}
+/* table header bgcolor end */
+
+#queryBuilderCu .q-invalid-ruleset{
+  border: 1px solid rgb(34 49 58) !important;
+  background: rgb(34 49 58 / 45%) !important;
+}
+
+#queryBuilderCu .q-empty-warning {
+  color: #fff !important;
+}
+.pjCardTitlebg  {
+  background-color: #22313a !important;
+  border-bottom: 1px solid #2f4857 !important;
+}
+.portlet.light > .portlet-title > .pjCardTitleCenterAlignment1 {
+  background-color:  #22313a !important;
+  border-bottom: 1px solid #2f4857 !important;
+}
+
 .portlet.light.cpad.hover-effect.pointer.card-radius {
   padding: 0px !important;
 }
@@ -2316,3 +2375,4 @@ i.IconodownloadedCount:hover {
   padding: 0px 0px !important;
   border-radius: 10px;
 }
+

@@ -1,9 +1,9 @@
-<div class="col-sm-12 col-md-12 col-lg-12 ml15m">
-  <div class="panel panel-info">
-    <div class="panel-heading panel-heading-custom" id="pj-redistributed-campaigns-div">
+<div class="{{colClass}}">
+  <div class="panel panel-info panel-bgMain">
+    <div class="panel-heading panel-heading-custom panel-bg" id="pj-redistributed-campaigns-div">
       <h3 class="panel-title mt7">Redistributed Campaign Details</h3>
       <span class="pull-right mt25m mobilesearchdisplay">
-        <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;">
+        <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;top: -1px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
             [ngModelOptions]="{standalone: true}" placeholder="Search"
             (keypress)="searchKeyPress($event.keyCode)">
@@ -15,7 +15,7 @@
       </span>
     </div>
     <div class="panel-body">    
-      <div class="scroll table-responsive">
+      <div class="scroll table-responsive {{scrollClass}}">
         <table class="table">
           <thead>
             <tr>

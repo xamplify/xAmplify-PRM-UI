@@ -10,3 +10,26 @@
 		padding-right: 0px !important;
 	}
 }
+
+/* table header bgcolor */
+.panel-bgMain > .panel-bg{
+    background-color: #d9edf7b0;
+    border-bottom: 1px solid #ddd;
+}
+.panel-bgMain {
+	border-color: #ddd;
+}
+/* table header bgcolor end */
+
+.panel-heading {
+    padding: 11px 15px !important;
+}
+.tableHeightScroll{
+    height: 309px !important;
+    overflow-y: auto;
+    margin-bottom: 6px;
+}
+/* width */
+::-webkit-scrollbar {
+	width: 7px;
+  }
