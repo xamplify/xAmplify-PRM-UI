@@ -64,7 +64,7 @@
                           <table class='table tgrid table-condensed table-bordered' *ngIf="pagination?.pagedItems?.length>0" id="copy-group-users-list-table">
                               <thead>
                                   <tr>
-                                      <th class="text-center pointer">
+                                      <th class="text-center pointer checkBox_shadow">
                                         <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked" id="copy-group-users-header-checkbox-id"
                                         (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)">
                                       </th>
@@ -79,7 +79,7 @@
                                     <tr class="pointer" id="copy-group-users-tr-{{group.id}}" [class.row-selected]="selectedPartnerGroupIds?.indexOf(group.id)>-1"
                                         (click)="highlightSelectedPartnerGroupOnRowClick(group.id,$event)">
                                         <td class="text-center">
-                                            <input class="pointer" type="checkbox" id="{{group.id}}" value="{{group.id}}" [checked]="selectedPartnerGroupIds.indexOf(group.id)>-1" name="copyGroupUsersCheckBoxName[]" 
+                                            <input class="pointer checkBox_shadow" type="checkbox" id="{{group.id}}" value="{{group.id}}" [checked]="selectedPartnerGroupIds.indexOf(group.id)>-1" name="copyGroupUsersCheckBoxName[]" 
                                              (click)="$event.stopPropagation();highlightSelectedPartnerGroupOnCheckBoxClick(group.id,$event)">
                                         </td>
                                         <td class="text-center" title="{{group?.groupName}}">

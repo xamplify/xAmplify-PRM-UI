@@ -1200,6 +1200,12 @@ isSpfConfiguredOrDomainConnected(companyId:number){
       .catch(this.handleError);
 }
 
+ /********XNFR-342****/
+ shareUnPublishedAssets(requestDto:any){
+  let url = this.REST_URL + "dam/shareUnPublishedAssets?access_token=" + this.access_token;
+  return this.callPutMethod(url,requestDto);
+}
+
 
   
 }

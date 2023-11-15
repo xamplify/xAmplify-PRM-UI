@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
@@ -13,6 +13,8 @@ import { UtilService } from 'app/core/services/util.service';
 import { ContactService } from '../../contacts/services/contact.service';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { CampaignService } from '../../campaigns/services/campaign.service';
+import { access } from 'fs';
+import flatpickr from 'flatpickr';
 
 declare var  $: any;
 @Component({
@@ -45,6 +47,11 @@ export class SendCampaignsComponent implements OnInit {
   /******When a new partner is added in list******* */
   newlyAddedPartners:any[] = [];
   isPartnersRouter = false;
+  /**XNFR-342****/
+  selectedIndex = 0;
+  headerText = "";
+  showFilterOptions = false;
+  /**XNFR-342****/
   constructor(private campaignService: CampaignService,private xtremandLogger: XtremandLogger,
     public pagination: Pagination, private pagerService: PagerService, public authenticationService: AuthenticationService, 
     public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public contactService: ContactService,
@@ -61,21 +68,21 @@ export class SendCampaignsComponent implements OnInit {
 
 
   openPopUp(partnerListId: number, contact:any,type:string) {
-    
     if(type=="Contact" &&this.isLoggedInThroughVanityUrl){
       this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.pagination.vanityUrlFilter = true;
     }
       $('#sendCampaignsPopup').modal('show');
-      this.pagination.partnerOrContactEmailId = contact.emailId;
-      this.pagination.partnerId = contact.id;
-      this.firstName = contact.firstName;
-      this.lastName = contact.lastName;
-      this.companyName = contact.contactCompany;
-      this.pagination.userListId = partnerListId;
-      this.type = type;
-      this.newEmailIdsAreAdded = false;
-      this.listCampaigns(this.pagination);
+        this.pagination.partnerOrContactEmailId = contact.emailId;
+        this.pagination.partnerId = contact.id;
+        this.firstName = contact.firstName;
+        this.lastName = contact.lastName;
+        this.companyName = contact.contactCompany;
+        this.pagination.userListId = partnerListId;
+        this.type = type;
+        this.newEmailIdsAreAdded = false;
+        this.listCampaigns(this.pagination);
+      
   }
 
   openPopUpForNewlyAddedPartnersOrContacts(partnerOrContactListId:number, type:string){
@@ -315,6 +322,14 @@ export class SendCampaignsComponent implements OnInit {
       this.customResponse = new CustomResponse('ERROR','Please select atleast one campaign',true);
     }
     
+  }
+
+  filterData(index:number){
+    if(0==index){
+      this.listCampaigns(this.pagination);
+    }else if(1==index){
+
+    }
   }
   
 }

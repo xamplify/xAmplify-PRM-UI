@@ -66,8 +66,7 @@
 													*ngIf="!isPartnerView && asset?.beeTemplate">
 													<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
 												</h6>
-												<h6 class="moreipsis" *ngIf="isPartnerView"
-												>
+												<h6 class="moreipsis" *ngIf="isPartnerView">
 													<span data-toggle="tooltip" data-placement="bottom" title="{{asset?.vendorCompanyName}}" translate> From <strong>{{asset?.vendorCompanyName
 															| slice:0:20}}</strong> <strong
 														*ngIf="asset?.vendorCompanyName?.length>20">..</strong>
@@ -184,7 +183,7 @@
 													aria-describedby="asset-history" id="asset-history">
 													<thead>
 														<tr>
-															<th colspan="2" style="width: 35%" id="border-bottom">
+															<th colspan="2" style="width: 37%" id="border-bottom">
 																<span class="gridHeader" translate>Asset Details</span>
 															</th>
 															<th class="text-center" scope="row" translate>Type</th>
@@ -201,7 +200,7 @@
 															*ngFor="let asset of historyPagination.pagedItems ;let i =index"
 															id="history-tr">
 															<td style="width: 12%;">
-																<div class="thumbnail-wrapper">
+																<div class="thumbnail-wrapper" style="width: 180px;height: 100px;">
 																	<img class="custom-image-css"
 																		src="{{asset?.thumbnailPath}}" alt="Image Not Found" onerror="this.src='assets/images/no-preview.jpg';" style="width: 180px; height: 100px;border-radius:5px;"> 
 																</div>
@@ -238,13 +237,34 @@
 																	Processing
 																</h6>
 																<!---XNFR-255-->
+																 <!---XBI-1993-->
+																<h6 *ngIf="asset.tagNames?.length > 0">
+																	<ng-container *ngIf="asset.tagNames?.length > 0">
+																		<div class="tag tablegray-tag" title="{{asset.tagNames[0]}}">
+																			<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} <span
+																				*ngIf="asset.tagNames[0]?.length>20">..</span>
+																			</ng-container>
+																			<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}} <span
+																					*ngIf="asset.tagNames[0]?.length>10">..</span>
+																			</ng-container>
+																		</div>
+																		<ng-container *ngIf="asset.tagNames.length > 1">
+																			<div class="tag tablegray-tag" title="{{asset.tagNames[1]}}">
+																				{{asset.tagNames[1] | slice:0:10}} <span *ngIf="asset.tagNames[1]?.length>10">..</span>
+																			</div>
+																		</ng-container>
+																		<span *ngIf="asset.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
+																			title="{{asset.toolTipTagNames}}">...</span>
+																	</ng-container>
+																</h6>
+																<!---XBI-1993-->
 															</td>
 															<td class="text-center">
 																<span class="assettype-bgcolor">{{asset?.assetType}} </span>
 																</td>
 															<td class="text-center"><app-timestamp	[dateAndTime]="asset?.displayTime"></app-timestamp></td>
 															<!--Child Assets-->
-															<td id="actions-row">
+															<td id="actions-row" style="width: 32%;">
 																<div class="actions-block override-actions ActionAlign" *ngIf="!asset?.publishingOrWhiteLabelingInProgress">
 																	<!--XNFR-381-->
 																	<a class="mMobileDisable"  data-toggle="tooltip" data-placement="top"  title="Switch To Parent Template" (click)="changeAsParentPdf(asset.id)">

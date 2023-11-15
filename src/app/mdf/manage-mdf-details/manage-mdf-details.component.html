@@ -26,14 +26,14 @@
                <app-box-loader [countLoader]=4 *ngIf="tilesLoader"></app-box-loader>
                <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
                   <div class="row">
-                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
-                        <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor">
+                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 tiles_hover_effect">
+                        <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor tiles_bradius">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
                               <div class="number NumberFontDecrease">
-                                 <span data-toggle="tooltip" data-placement="top" title="{{tileData?.totalPartners}}" >
+                                 <span data-toggle="tooltip" data-placement="left" title="{{tileData?.totalPartners}}" >
                                     {{tileData?.totalPartners}}
                                  </span></div>
                               <div class="desc">Total {{authenticationService?.partnerModule?.customName}}</div>
@@ -44,14 +44,14 @@
                         </span>
                         </a>
                      </div>
-                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
-                        <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
+                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3  tiles_hover_effect">
+                        <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor tiles_bradius">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
                               <div class="number NumberFontDecrease">
-                                 <span  data-toggle="tooltip" data-placement="top" title="$ {{tileData?.totalBalance}}" >
+                                 <span  data-toggle="tooltip" data-placement="left" title="$ {{tileData?.totalBalance}}" >
                                     {{tileData?.totalBalanceInString}}
                                  </span></div>
                               <div class="desc">Total MDF Balance</div>
@@ -62,14 +62,14 @@
                         </span>
                         </a>
                      </div>
-                     <div  class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt_8">
-                        <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
+                     <div  class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt_8 tiles_hover_effect">
+                        <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor tiles_bradius">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
                               <div class="number NumberFontDecrease">
-                                 <span data-toggle="tooltip" data-placement="top" title="$ {{tileData?.usedBalance}}" >
+                                 <span data-toggle="tooltip" data-placement="left" title="$ {{tileData?.usedBalance}}" >
                                     {{tileData?.usedBalanceInString}}
                                  </span>
                                 </div>
@@ -81,14 +81,14 @@
                         </span>
                         </a>
                      </div>
-                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt_8">
-                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor">
+                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt_8 tiles_hover_effect">
+                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor tiles_bradius">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
                               <div class="number NumberFontDecrease">
-                                 <span  data-toggle="tooltip" data-placement="top" title="$ {{tileData?.availableBalance}}">{{tileData?.availableBalanceInString}}</span></div>
+                                 <span  data-toggle="tooltip" data-placement="left" title="$ {{tileData?.availableBalance}}">{{tileData?.availableBalanceInString}}</span></div>
                               <div class="desc">Total Available Balance</div>
                            </div>
                            <span class="morePadding">

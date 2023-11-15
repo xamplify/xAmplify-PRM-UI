@@ -63,7 +63,7 @@
                <div class="col-xs-12 col-md-12 col-sm-12">
                   <!-- Start Tiles here-->
                   <div class="page-bar" style="padding-bottom:10px;padding-right: 12px;">
-                     <div class="col-xs-6 col-sm-2 col-lg-2  margin-top-10 pr0"  style="padding-left: 12px;" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+                     <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0 tiles_hover_effect"  style="padding-left: 12px;" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                         <button class="btn-block dashboard-stat blue"
                         [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
                         (click)="loadContactsByType('all')"
@@ -88,7 +88,7 @@
                         </span>
                         </button>
                      </div>
-                     <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0" *ngIf="isPartner"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+                     <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0 tiles_hover_effect" *ngIf="isPartner"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                      <button class="btn-block dashboard-stat green"
                      [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'active'"
                      (click)="loadContactsByType('active')"
@@ -114,7 +114,7 @@
                      </span>
                      </button>
                   </div>
-                  <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0" *ngIf="isPartner"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+                  <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0 tiles_hover_effect" *ngIf="isPartner"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                   <button class="btn-block dashboard-stat purple"
                   [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'non-active'"
                   (click)="loadContactsByType('non-active')"
@@ -139,7 +139,7 @@
                   </span>
                   </button>
                </div>
-               <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0"  *ngIf="!isPartner" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+               <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0 tiles_hover_effect"  *ngIf="!isPartner" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                <button class="btn-block dashboard-stat purple"
                [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'valid'"
                (click)="contactsByType.pagination.pageIndex = 1;listContactsByType('valid')"
@@ -163,7 +163,7 @@
                </span>
                </button>
             </div>
-            <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0 pl" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+            <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0 pl tiles_hover_effect" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                <button class="btn-block dashboard-stat yellow-gold"
                [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'invalid'"
                (click)="loadContactsByType('invalid')"
@@ -192,7 +192,7 @@
                </span>
                </button>
             </div>
-            <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+            <div class="col-xs-6 col-sm-2 col-lg-2 margin-top-10 pr0 tiles_hover_effect" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
                <button class="btn-block dashboard-stat red"
                [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
                (click)="loadContactsByType('unsubscribe')" 
@@ -531,12 +531,24 @@
                                        </a>
                                     </ng-container>
                                     <a *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads
-                                    && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
-                                    data-toggle="tooltip" data-placement="top"
-                                    (click)="openPopUpForNewlyAddedPartnersOrContacts(contactList)"
-                                    title="{{actionsDescription.send_campaigns}}"> <i class="fa fa-bullhorn IconCustomization"
-                                       aria-hidden="true"></i>
+                                       && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
+                                       data-toggle="tooltip" data-placement="top"
+                                       (click)="openPopUpForNewlyAddedPartnersOrContacts(contactList)"
+                                       title="{{actionsDescription.send_campaigns}}">
+                                       <i class="fa fa-bullhorn IconCustomization"
+                                          aria-hidden="true"></i>
                                     </a>
+                                    <!--XNFR-342---->
+                                    <ng-container *ngIf="isLocalHost">
+                                       <a *ngIf="!assignLeads && !sharedLeads  && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
+                                          data-toggle="tooltip" data-placement="top"
+                                        (click)="openUnPublishedContentModalPopUp(contactList)"
+                                           title="{{actionsDescription?.shareUnPublishedContent}}">
+                                        <i class="fa fa-forward IconCustomization" aria-hidden="true"></i>
+                                       </a> 
+                                    </ng-container> 
+                                     
+                                    <!--XNFR-342---->
                                  </div>
                                  <div class="actions-block override-actions"
                                     *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
@@ -882,12 +894,12 @@
                               <tr>
                                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                     <th class="text-center" align="center" *ngIf="contactsByType.selectedCategory == 'all'">
-                                       <input type="checkbox"
+                                       <input type="checkbox" class="checkBox_shadow"
                                        name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"
                                        id="checkAllExistingContacts" />
                                     </th>
                                     <th  class="text-center" align="center" *ngIf="contactsByType.selectedCategory == 'invalid'">
-                                       <input type="checkbox" name="all" [(ngModel)]="isInvalidHeaderCheckBoxChecked"
+                                       <input type="checkbox" class="checkBox_shadow" name="all" [(ngModel)]="isInvalidHeaderCheckBoxChecked"
                                        (change)="checkAllInvalidContacts($event)" id="checkAllExistingInvalidContacts" />
                                     </th>
                                  </ng-container>
@@ -928,14 +940,14 @@
                                     <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                                        <td align="center" *ngIf="contactsByType.selectedCategory == 'all'">
                                           <input type="checkbox"
-                                          [checked]="selectedContactListIds.indexOf(contact.id)>-1" class="chk"
+                                          [checked]="selectedContactListIds.indexOf(contact.id)>-1" class="chk checkBox_shadow"
                                           [class.contact-list-selected]="selectedContactListIds.indexOf(contact.id)>-1"
                                           lang="{{contact.name}}" name="campaignContact[]" value="{{contact.id}}"
                                           id="{{contact.id}}" (click)="highlightRow(contact.id,contact,$event)" />
                                        </td>
                                        <td align="center" *ngIf="contactsByType.selectedCategory == 'invalid'">
                                           <input type="checkbox" [checked]="selectedInvalidContactIds.indexOf(contact.id)>-1"
-                                          class="chk"
+                                          class="chk checkBox_shadow"
                                           [class.contact-list-selected]="selectedInvalidContactIds.indexOf(contact.id)>-1"
                                           lang="{{contact.name}}" name="invalidContact[]" value="{{contact.id}}"
                                           id="{{contact.id}}"
@@ -1375,5 +1387,14 @@
 	<app-resubscribe-contact-modal [selectedUser] = "selectedUser" (notifyParent)="resubscribeUserResult($event)">
 	</app-resubscribe-contact-modal>
  </div>
+
+
+ <!---XNFR-342---->
+ <app-share-unpublished-content #shareUnPublishedComponent
+ [hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
+  [hasDamAccess]="authenticationService?.module?.damAccess"
+  [hasLmsAccess]="authenticationService?.module?.lmsAccess"
+ [hasPlaybookAccess]="authenticationService?.module?.playbookAccess">
+</app-share-unpublished-content>
  
  

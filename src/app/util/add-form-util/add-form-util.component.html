@@ -330,7 +330,7 @@
                                                                     <ng-container *ngFor="let radioButton of selectedColumn.radioButtonChoices;let index=index">
                                                                         <br>
                                                                         <input type="{{selectedColumn.labelType}}" name="{{selectedColumn.labelId}}">
-                                                                        <input type="text" class="form-control" [(ngModel)]="radioButton.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(radioButton)" maxlength="1000">
+                                                                        <input type="text" class="form-control responsiveWidthCu" [(ngModel)]="radioButton.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(radioButton)" maxlength="1000">
                                                                         <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
                                                                             <span
                                                                                 class="glyphicon glyphicon-plus"></span>
@@ -348,7 +348,7 @@
                                                                     <ng-container *ngFor="let choice of selectedColumn.choices;let index=index">
                                                                         <br>
                                                                         <input type="{{selectedColumn.labelType.split('_')[1]}}" name="{{selectedColumn.labelId}}" disabled="true">
-                                                                        <input type="text" class="form-control" [(ngModel)]="choice.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(choice)" maxlength="1000">
+                                                                        <input type="text" class="form-control responsiveWidthCu1" [(ngModel)]="choice.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(choice)" maxlength="1000">
                                                                         <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
                                                                             <span
                                                                                 class="glyphicon glyphicon-plus"></span>
@@ -371,7 +371,7 @@
                                                                     <ng-container *ngFor="let checkBox of selectedColumn.checkBoxChoices;let index=index">
                                                                         <br>
                                                                         <input type="{{selectedColumn.labelType}}" name="{{selectedColumn.labelId}}">
-                                                                        <input type="text" class="form-control" [(ngModel)]="checkBox.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(checkBox)" maxlength="1000">
+                                                                        <input type="text" class="form-control responsiveWidthCu2" [(ngModel)]="checkBox.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(checkBox)" maxlength="1000">
                                                                         <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
                                                                             <span
                                                                                 class="glyphicon glyphicon-plus"></span>
@@ -476,7 +476,7 @@
                         <textarea class="form-control" placeholder="Description" [(ngModel)]="form.description" id="description" maxlength="1000"></textarea>
                     </div>
                     <div class="form-group col-lg-12 col-md-12" *ngIf="loggedInAsSuperAdmin">
-                        <input type="checkbox" [(ngModel)]="form.isSurvey">
+                        <input class="checkBox_shadow" type="checkbox" [(ngModel)]="form.isSurvey">
                         <label>Survey</label>
                     </div>
                     <!-- XNFR-108 -->
@@ -644,7 +644,7 @@
                                 <span *ngIf="!form.isValidFormSubmissionUrl" class="required">{{formSubmissionUrlErrorMessage}}</span>
                                 <br>
                                 <label>Open in new tab</label>
-                                <input [disabled]="form.quizForm" type="checkbox" [(ngModel)]="form.openLinkInNewTab">
+                                <input class="checkBox_shadow" [disabled]="form.quizForm" type="checkbox" [(ngModel)]="form.openLinkInNewTab">
                             </div>
                         </div>
                         <br>
@@ -737,7 +737,7 @@
                                         </div>
                                         <div class="col-md-6 col-lg-6 pl0">
                                             <div class="switch">
-                                                <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat" type="checkbox" [checked]="form.showCompanyLogo" (change)="showCompanyLogoChange()">
+                                                <input id="cmn-toggle-4" class="cmn-toggle cmn-toggle-round-flat checkBox_shadow" type="checkbox" [checked]="form.showCompanyLogo" (change)="showCompanyLogoChange()">
                                                 <label for="cmn-toggle-4"></label>
                                             </div>
                                         </div>
@@ -796,7 +796,7 @@
                                         </div>
                                         <div class="col-md-6 col-lg-6 pl0">
                                             <div class="switch">
-                                                <input id="cmn-toggle-5" class="cmn-toggle cmn-toggle-round-flat" [checked]="form.showFooter" type="checkbox" (change)="showFooterChange()">
+                                                <input id="cmn-toggle-5" class="cmn-toggle cmn-toggle-round-flat checkBox_shadow" [checked]="form.showFooter" type="checkbox" (change)="showFooterChange()">
                                                 <label for="cmn-toggle-5"></label>
                                             </div>
                                         </div>
@@ -822,7 +822,7 @@
                                         </div>
                                         <div class="col-md-9 col-lg-9 pl0">
                                             <div class="switch">
-                                                <input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round-flat" [checked]="form.showCaptcha" type="checkbox" (change)="showCaptchaChange()">
+                                                <input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round-flat checkBox_shadow" [checked]="form.showCaptcha" type="checkbox" (change)="showCaptchaChange()">
                                                 <label for="cmn-toggle-6"></label>
                                             </div>
                                         </div>
@@ -839,7 +839,7 @@
                                         </div>
                                         <div class="col-md-9 col-lg-9 pl0">
                                             <div class="switch">
-                                                <input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round-flat" [checked]="form.showTitleHeader" type="checkbox" (change)="showTitleHeaderChange()">
+                                                <input id="cmn-toggle-7" class="cmn-toggle cmn-toggle-round-flat checkBox_shadow" [checked]="form.showTitleHeader" type="checkbox" (change)="showTitleHeaderChange()">
                                                 <label for="cmn-toggle-7"></label>
                                             </div>
                                         </div>
@@ -987,7 +987,7 @@
                             <li class="list__item" [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}">
                                 <div class="flex-row pointer" (click)="setFileCheck(file.filePath)">
                                     <div class="item__select-box-wrapper">
-                                        <span class="select-box" (click)="setFileCheck(file.filePath)"> <label>
+                                        <span class="select-box checkBox_shadow" (click)="setFileCheck(file.filePath)"> <label>
                                                 <input type="checkbox">
                                             </label>
                                         </span> <span class="ng-scope"> <a style="cursor: default;"

@@ -35,9 +35,9 @@
             <div class="profile-sidebar" style="width:250px;" *ngIf="userData">
                 <!-- PORTLET MAIN -->
                 <div class="portlet light profile-sidebar-portlet">
-                    <div class="profile-image-wrapper-color">
+                    <div class="profile-image-wrapper-color shadow-inset">
                         <ng-container *ngIf="(circleData | json) != '{}'; else showImage">
-                            <img class="profile-image" alt="" *ngIf="!cropRounded && circleData?.image; else Other" [src]="circleData.image">
+                            <img class="profile-image shadow-inset" alt="" *ngIf="!cropRounded && circleData?.image; else Other" [src]="circleData.image">
                             <ng-template #Other><img alt="" class="profile-image" [src]="userProfileImage" [width]="circleCropperSettings.croppedWidth" [height]="circleCropperSettings.croppedHeight" (error)="errorHandler($event)">
                             </ng-template>
                         </ng-container>
@@ -68,7 +68,7 @@
                     <div class="profile-usermenu">
                         <!--------------Account Details----------------------->
                         <div class="my-profile-header-text">Account Details</div>
-                        <ul class="nav">
+                        <ul class="nav neumorphismDark">
                             <!---Personal Info--->
                             <li [ngClass]="{'active-tab': activeTabName == 'personalInfo'}">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'personalInfo'}" (click)="activateTab('personalInfo');clearCustomResponse()">
@@ -308,16 +308,17 @@
                                 <br><br>
                                 <div class="div thembgc">
                                     <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-6"
+                                        <div class="" [ngClass]="dto?.id == 3 ? '':'col-lg-6 col-md-6 col-sm-6'"
                                             *ngFor="let dto of defaultThemes">
-                                            <div *ngIf="dto?.id == 1 || dto?.id == 2">
+                                            <div *ngIf="dto?.id == 1 || dto?.id == 2 || dto?.id == 4">
                                             <div class="img_padding">
 
                                                 <img *ngIf="dto?.id == 1 " alt="" class="img-custome"
                                                     src="assets/images/theme/1/Webp/01.webp">
                                                  <img *ngIf="dto?.id == 2 " alt="" class="img-custome"
                                                     src="assets/images/theme/1/Webp/02.webp">
-
+                                                    <img *ngIf="dto?.id == 4 " alt="" class="img-custome img-height"
+                                                    src="assets/images/theme/1/Webp/04.webp">
                                             </div>
                                             <div class="card-bg topcard-padding">
                                                 <div class="card-body">
@@ -342,7 +343,7 @@
                                                                             _ngcontent-c69="" aria-hidden="true"
                                                                             class="fa fa-power-off IconCustomization"></i></a>
                                                                     <a  data-toggle="tooltip" data-placement="bottom" class="mMobileDisable" title="Copy"
-                                                                        (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
+                                                                        (click)="goToCustomThemes();showDto(dto);saveTheme();" *ngIf="dto?.id != 4"><i
                                                                             aria-hidden="true"
                                                                             class="fa fa-files-o mDisableColor IconCustomization"></i></a>
                                                                 </div>
@@ -424,7 +425,7 @@
                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                             <div class="form-group">
                                                 <label class="control-label" translate>First Name</label>
-                                                <span class="star"> *</span>
+                                                <span class="mb-star star"> *</span>
                                                 <input type="text" #first (keyup)="firstNameValue(first.value)" placeholder="First Name" class="form-control" formControlName="firstName" required />
                                                 <div *ngIf="formErrors.firstName" class="alert alert-danger">
                                                     {{ formErrors.firstName }}</div>
@@ -481,7 +482,7 @@
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"> 
                                             <div class="form-group">
                                                 <label class="control-label" translate>Select Preferred Language</label>                                                
-                                                <select formControlName="preferredLanguage" class="form-control">
+                                                <select formControlName="preferredLanguage" class="form-control depth-shadow">
                                                 <option [ngValue]="undefined" disabled selected> Select Preferred Language </option>                                                
                                                 <option [ngValue]="language.id" *ngFor="let language of authenticationService.allLanguagesList">{{language.name}}</option>
                                                 </select>
@@ -524,11 +525,11 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-12 p0">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
                                                 <div *ngFor="let question of questions;let i=index">
                                                     <div class="portlet light dashboard-stat2">
                                                         <div class="portlet-title custom-change-css" style="border-bottom: 0px">
-                                                            <div class="col-xs-10">
+                                                            <div class="col-lg-10 col-md-8 col-sm-6 col-xs-8">
                                                                 <div class="portlet-title custom-change-css" style="border-bottom: 0px">
                                                                     <form id="form-{{question.divId}}">
                                                                         <div class="col-xs-10" style="padding:0">
@@ -546,7 +547,7 @@
 
                                                                 </div>
                                                             </div>
-                                                            <div class="col-xs-2">
+                                                            <div class="col-lg-2 col-md-4 col-sm-6 col-xs-4">
                                                                 <div class="pull-right mb-flex" id="question-icons">
                                                                     <button type="button" class="btn-danger button-blue btn_add mr_4 spaceTopBottom" (click)="showAlert(i+1,question)">
                                                                         <span data-toggle="tooltip" data-placement="top" title="Delete" class="glyphicon glyphicon-trash"></span>
@@ -573,11 +574,11 @@
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-12 p0">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p0">
                                                 <div *ngFor="let dealType of dealtypes;let i=index">
                                                     <div class="portlet light dashboard-stat2">
                                                         <div class="portlet-title custom-change-css" style="border-bottom: 0px">
-                                                            <div class="col-xs-10">
+                                                            <div class="col-lg-10 col-md-8 col-sm-6 col-xs-8">
                                                                 <div class="portlet-title custom-change-css" style="border-bottom: 0px">
                                                                     <form id="form-{{dealType.divId}}">
                                                                         <div class="col-xs-10" style="padding:0">
@@ -595,7 +596,7 @@
 
                                                                 </div>
                                                             </div>
-                                                            <div class="col-xs-2">
+                                                            <div class="col-lg-2 col-md-4 col-sm-6 col-xs-4">
                                                                 <div class="pull-right mb-flex" id="question-icons">
                                                                     <button type="button" class="btn-danger button-blue btn_add mr_4 spaceTopBottom" (click)="deleteDealType(i+1,dealType)">
                                                                         <span data-toggle="tooltip" data-placement="top" title="Delete" class="glyphicon glyphicon-trash"></span>
@@ -817,7 +818,7 @@
 															<thead>
 															<tr>
 																
-																<th class="text-center"><input type="checkbox" value="sfcfSelectAll"
+																<th class="text-center"><input type="checkbox" class="checkBox_shadow" value="sfcfSelectAll"
 																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"/></th>
 																		
 																<th>Field Name</th>
@@ -829,7 +830,7 @@
 																	*ngFor="let sfCustomField of sfcfPagedItems ">
 																<tr>
 																	
-																	<td align="center"><input type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
+																	<td align="center"><input class="checkBox_shadow" type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
 																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required" [disabled] ="sfCustomField.required"/></td>
 																	<td><span>{{sfCustomField.label}}</span></td>
 																	<td><span>{{sfCustomField.type}}</span></td>
@@ -901,7 +902,7 @@
                                                             <table class='table tgrid'>
                                                                 <thead>
                                                                 <tr>
-                                                                    <th class="text-center"><input type="checkbox" value="sfcfSelectAll"
+                                                                    <th class="text-center"><input type="checkbox" class="checkBox_shadow" value="sfcfSelectAll"
                                                                             id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"/></th>
                                                                             
                                                                     <th>Field Name</th>
@@ -913,7 +914,7 @@
                                                                         *ngFor="let sfCustomField of sfcfPagedItems ">
                                                                     <tr>
                                                                        
-                                                                        <td align="center"><input type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
+                                                                        <td align="center"><input class="checkBox_shadow" type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
                                                                             id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required" [disabled] ="sfCustomField.required"/></td>
                                                                         <td><span>{{sfCustomField.label}}</span></td>
                                                                         <td><span>{{sfCustomField.type}}</span></td>
@@ -1014,7 +1015,7 @@
                                                                             <h6 class="view-banner" *ngIf="pipeline.crmPipeline" translate>{{pipeline.integrationType}}</h6>
                                                                         </td>                                                                        
                                                                         <td>
-                                                                            <h5 class='ellipsis' title="{{pipeline.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;padding: 0px;">{{pipeline.createdByName | slice:0:20}}
+                                                                            <h5 class='ellipsis mb-float' title="{{pipeline.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;padding: 0px;">{{pipeline.createdByName | slice:0:20}}
                                                                                 <span *ngIf="pipeline.createdByName?.length>20">...</span>
                                                                               </h5>
                                                                               <h6 class='m0' style="font-weight: 400;">
@@ -1117,24 +1118,24 @@
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'settings'}">
                                        <div class="">
                                             <label class="container-checkbox-xamplify" translate>List View
-                                                <input type="radio"  name="moduleDisplayType"  
+                                                <input class="radioButton_shadow" type="radio"  name="moduleDisplayType"  
                                                  value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.LIST]}}" 
                                                  [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.LIST]">
                                                 <span class="checkmark"></span>
                                               </label>
                                               <label class="container-checkbox-xamplify" translate>Grid View
-                                                <input type="radio"  name="moduleDisplayType" 
+                                                <input class="radioButton_shadow" type="radio"  name="moduleDisplayType" 
                                                 value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.GRID]}}" 
                                                 [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.GRID]">
                                                 <span class="checkmark"></span>
                                               </label>
                                               <label class="container-checkbox-xamplify" translate>Folder Grid View
-                                                <input type="radio"  name="moduleDisplayType" 
+                                                <input class="radioButton_shadow" type="radio"  name="moduleDisplayType" 
                                                  value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_GRID]}}" [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_GRID]">
                                                 <span class="checkmark"></span>
                                               </label>
                                               <label class="container-checkbox-xamplify" translate>Folder List View
-                                                <input type="radio"  name="moduleDisplayType" 
+                                                <input class="radioButton_shadow" type="radio"  name="moduleDisplayType" 
                                                 value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_LIST]}}"
                                                  [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_LIST]"> 
                                                 <span class="checkmark"></span>
@@ -1149,7 +1150,7 @@
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'customizeleftmenu'}">
                                       </div>
                                     <!-- GDPR SETTINGS TAB -->
-                                    <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
+                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'gdpr'}">
                                         <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
                                         </app-dashboard-loader>
                                         <app-response-message [customResponse]="gdprCustomResponse" *ngIf="gdprCustomResponse.isVisible"></app-response-message>
@@ -1172,7 +1173,7 @@
                                                                         <a rel="noopener noreferrer" class="link" href="{{properties.cookiesPolicyUrl}}" target="_blank" translate>Cookies & tracking</a> &nbsp;
                                                                     </h5>
                                                                     <h5 id="text-color-my-profile">
-                                                                        <input type="checkbox" class="pointer" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
+                                                                        <input type="checkbox" class="pointer checkBox_shadow" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
                                                                     </h5>
                                                                 </div>
                                                                 <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
@@ -1576,17 +1577,17 @@
                                     </div>
 
                                     <!--Exclude functionality code-->
-                                    <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'exclude'}">
+                                    <div class="tab-pane" [ngClass]="{'active': activeTabName == 'exclude'}">
                                         <app-dashboard-loader *ngIf="httpRequestLoader.isLoading">
                                         </app-dashboard-loader>
                                         <app-response-message [customResponse]="excludeUserCustomResponse"></app-response-message>
                                             <table class="table table-light" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
                                                 style="border: 0px !important; background-color: transparent !important">
                                                 <tbody>
-                                                    <fieldset class="fild-custome-borders-none">
+                                                    <fieldset class="fild-custome-borders-none width75">
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border"> 
                                                     <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A User</h4>
-                                                        <button (click)="downloadEmptyCSV('exclude-users')" type="button" class="btn Btn-Green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space" download style="float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
+                                                        <button (click)="downloadEmptyCSV('exclude-users')" type="button" class="btn Btn-Green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10" download style="float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
                                                             Download User CSV Template
                                                             <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
                                                         </button>
@@ -1595,13 +1596,13 @@
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                                         <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                            <button  class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" [disabled] ="csvExcludeUsersFilePreview"
+                                                            <button  class="col-sm-5 col-lg-4 col-md-4 btn Btn-Green btn-c-width" [disabled] ="csvExcludeUsersFilePreview"
                                                                 (click)="addContactModalOpen()" translate>
                                                                 One at a Time <i class="fa fa-plus"
                                                                     style="font-size: 12px; margin-left: 2px;"></i>
                                                             </button>
                                                             
-                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" translate>
+                                                            <button id="uploadCSV" class="col-sm-5 col-lg-4 col-md-4 btn Btn-Green btn-c-width" translate>
                                                                 <span style="text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
                                                     (click)="input.value = null" (change)="fileChange(input, 'exclude-users')" accept=".csv" #input />
                                                                 <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
@@ -1609,7 +1610,7 @@
                                                                 
                                                         </div>
 
-                                                        <div class="portlet-input input-inline search-class col-sm-6 col-lg-6 col-md-6" style="float:right;margin-top:10px;" *ngIf="!csvExcludeUsersFilePreview"
+                                                        <div class="portlet-input input-inline search-class col-sm-6 col-lg-6 col-md-6 TotalSearchBoxWidth" style="float:right;margin-top:10px;" *ngIf="!csvExcludeUsersFilePreview"
                                                             [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
                                                             <div class="input-icon right">
                                                                 <input type="text" id="sort-text" [(ngModel)]="searchExcludedUserKey" (keypress)="searchExcludeUsersDataEventHandler($event.keyCode)"
@@ -1741,8 +1742,8 @@
                                                 <tbody>
                                                     <fieldset class="fild-custome-borders-none">
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border">
-                                                    <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A Domain</h4>
-                                                            <button (click)="downloadEmptyCSV('exclude-domains')" type="button" class="btn Btn-Green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space" download style="float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
+                                                    <h4 class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="font-weight:600;font-size:21px;padding:0" >Exclude A Domain</h4>
+                                                            <button (click)="downloadEmptyCSV('exclude-domains')" type="button" class="btn Btn-Green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10" download style="float:right" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
                                             Download Domain CSV Template
                                             <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
                                         </button>
@@ -1753,13 +1754,13 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                                                         <div class="col-sm-6 col-lg-6 col-md-6 btn-group p0 btn-align" style = "margin-top:10px;" *ngIf= "(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                            <button id="add_domain" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" [disabled] ="csvExcludeDomainsFilePreview"
+                                                            <button id="add_domain" class="col-sm-5 col-lg-4 col-md-4 btn Btn-Green btn-c-width" [disabled] ="csvExcludeDomainsFilePreview"
                                                                 (click)="addDomainModalOpen()" translate>
                                                                 One at a Time <i class="fa fa-plus"
                                                                     style="font-size: 12px; margin-left: 2px;"></i>
                                                             </button>
                                                             
-                                                            <button id="uploadCSV" class="col-sm-4 col-lg-4 col-md-4 btn Btn-Green btn-c-width" translate>
+                                                            <button id="uploadCSV" class="col-sm-5 col-lg-4 col-md-4 btn Btn-Green btn-c-width" translate>
                                                                 <span style="text-align: center" translate>Upload CSV</span> <input class="upload-file" type="file" title=" "
                                                     (click)="input.value = null" (change)="fileChange(input, 'exclude-domains')" accept=".csv" #input />
                                                                 <i class="fa fa-upload" aria-hidden="true" style="font-size: 12px; margin-left: 5px;"></i>
@@ -1767,7 +1768,7 @@
                                                                 
                                                         </div>
 
-                                                        <div class="portlet-input input-inline search-class col-sm-6 col-lg-6 col-md-6" style="float:right;margin-top:10px;" *ngIf="!csvExcludeDomainsFilePreview"
+                                                        <div class="portlet-input input-inline search-class col-sm-6 col-lg-6 col-md-6 TotalSearchBoxWidth" style="float:right;margin-top:10px;" *ngIf="!csvExcludeDomainsFilePreview"
                                                             [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
                                                             <div class="input-icon right">
                                                                 <input type="text" [(ngModel)]="searchExcludedDomainKey" (keypress)="searchExcludeDomainsDataEventHandler($event.keyCode)"
@@ -2089,7 +2090,7 @@
 
 <!------------------------------Add/Edit Pipeline----------->
 <div class="modal fade right" id="addPipelineModalPopup" tabindex="-1" role="dialog" aria-labelledby="addPipelineModalPopup" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog pipelinePopupWidth" role="document">
+    <div class="mwidth90 modal-dialog pipelinePopupWidth" role="document">
         <!-- [ngClass]="isDeal?'pipelinePopupWidth':''" -->
         <div class="modal-content">
             <div class="modal-header">
@@ -2110,7 +2111,7 @@
                        
                     </div>
                     <div class="form-group">
-                        <input type="checkbox" [disabled]="pipelinePreview || !pipeline.enablePrivateCheckBox" [(ngModel)]="pipeline.private" name="private" class="alignEqualtoText" > Private <span class="fa fa-info-circle" data-toggle="tooltip"
+                        <input class="checkBox_shadow" type="checkbox" [disabled]="pipelinePreview || !pipeline.enablePrivateCheckBox" [(ngModel)]="pipeline.private" name="private" class="alignEqualtoText" > Private <span class="fa fa-info-circle" data-toggle="tooltip"
                         data-placement="right" title="This pipeline will not be accesible by your partners if you check this option."></span>
                         <div *ngIf="pipeline.showSinglePublicPipelineMessage" class="red">You can't mark this pipeline as private as this is the only public {{pipeline.integrationType}} pipeline available in your account</div>
                     </div>
@@ -2133,7 +2134,7 @@
                                         </span>
                                         <span class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
                                             <div class="mb_mt7 alignEqualtoFields">
-                                                <input type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex"
+                                                <input class="radioButton_shadow" type="radio" [disabled]="pipelinePreview || pipeline.crmPipeline" [value]="x" [(ngModel)]="defaultStageIndex"
                                                     id="defaultStage{{x}}" name="defaultStage" class="alignEqualtoText" (change)="defaultStageChange(pipelineStage)">
                                                 <span>Default</span>&nbsp;&nbsp;
                                                 <select  class="formSelectCustomization" [(ngModel)]="pipelineStage.markAs" [disabled]="pipelinePreview || (pipeline.crmPipeline && pipeline?.integrationType == 'PIPEDRIVE')" (change)="handleMarkAsChange(x)">
@@ -2149,13 +2150,13 @@
 
                                                         <span class="pdLeftforspace" *ngIf="(!pipeline.private)">Private <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="This pipeline stage will not be accesible by your partners if you check this option."></span>
                                                           <label class="toggleOnOff">
-                                                            <input type="checkbox" [(ngModel)]="pipelineStage.private" name="private" [disabled]="shouldDisableCheckbox(x) || pipelinePreview">
+                                                            <input class="checkBox_shadow" type="checkbox" [(ngModel)]="pipelineStage.private" name="private" [disabled]="shouldDisableCheckbox(x) || pipelinePreview">
                                                             <span class="sliderOnOff"></span>
                                                             <span class="labels" data-on="ON" data-off="OFF"></span>
                                                           </label>
                                                         </span>                 
                                                         <div *ngIf="(!pipelineStage.private && !pipeline.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines')">
-                                                            <input type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
+                                                            <input class="checkBox_shadow" type="checkbox" [disabled]="pipelinePreview" [(ngModel)]="pipelineStage.nonInteractive"
                                                                 name="nonInteractive" class="alignEqualtoText"> Non Interactive <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="Your partners will only be able to select the stage once and will not be able to update further for the non-interactive stage."></span>
                                                         </div>                                                 
                                             </div>
@@ -2204,7 +2205,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       <form class="form-horizontal" autocomplete="off">
       <div class="form-group">
             <label class="control-label col-xs-1 col-sm-1 required-mark-padding" for="email">
-                <span class="star">*</span>
+                <span class="mb-star star">*</span>
             </label>
            <div class="form-group col-xs-10 col-sm-10 domain-or-email-padding">
               <input type="email" style="border: none" class="form-control padding-mobile" id="email1"
@@ -2250,7 +2251,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       <form class="form-horizontal" autocomplete="off">
       <div class="form-group">
             <label class="control-label col-xs-1 col-sm-1 required-mark-padding" for="domain">
-                <span class="star">*</span>
+                <span class="mb-star star">*</span>
             </label>
            <div class="form-group col-xs-10 col-sm-10 domain-or-email-padding" >
               <input type="text" style="border: none" class="form-control padding-mobile" id="domain"   (input)="validateDomain(domain)"         

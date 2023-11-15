@@ -1,5 +1,5 @@
 <div class="modal fade right" id="sendCampaignsPopup" tabindex="-1" role="dialog" aria-labelledby="sendCampaignsPopup" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog w85-per" role="document">
        <div class="modal-content">
           <div class="modal-header">
              <button type="button" class="close-circle" (click)="closePopup()">
@@ -18,6 +18,8 @@
                    <h4 class="event-error">{{responseMessage}}</h4>
                 </ng-container>
              </div>
+
+
              <ng-container *ngIf="!sendSuccess">
                 <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
                 </app-response-message>
@@ -25,29 +27,40 @@
                    <div class="row">
                       <div>
                          <div class="col-xs-12">
-                            <div class="page-toolbar">
-                               <div class="btn-group pull-right">
-                                  <div class="inputs float-right" style="display: inline-flex;">
-                                     <div>
-                                        <select class="form-control" [(ngModel)]="sortOption.selectedShareCampaignDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                                        <option
-                                        *ngFor="let option of sortOption.shareCampaignSortDropDownOptions"
-                                        [ngValue]="option">
-                                        {{option.name}}</option>
-                                        </select>
-                                     </div>
-                                     <div class="portlet-input input-inline" id="search-div">
-                                        <div class="input-icon right" id="icon">
-                                           <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
-                                           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
-                                           <button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
-                                           <i class="fa fa-search" aria-hidden="true"></i>
-                                           </button>
-                                        </div>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
+                           <div class="col-xs-6">
+                             <ul class="mix-filter"  *ngIf="showFilterOptions">
+                                 <li *ngIf="hasCampaignAccess" (click)="filterData(0)" [class.mix-filter-li-selected]="0 == selectedIndex">Campaigns</li>
+                                 <li *ngIf="hasDamAccess" (click)="filterData(1)" [class.mix-filter-li-selected]="1 == selectedIndex">Assets</li>
+                                 <li *ngIf="hasLmsAccess" (click)="filterData(2)" [class.mix-filter-li-selected]="2 == selectedIndex">Tracks</li>
+                                 <li *ngIf="hasPlaybookAccess" (click)="filterData(3)" [class.mix-filter-li-selected]="3 == selectedIndex">Play Books</li>
+                             </ul>
+                           </div>
+                           <!--Search & Sort---->
+                           <div class="col-xs-6">
+                              <div class="page-toolbar">
+                                 <div class="btn-group pull-right">
+                                    <div class="inputs float-right" style="display: inline-flex;">
+                                       <div>
+                                          <select class="form-control" [(ngModel)]="sortOption.selectedShareCampaignDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                                          <option
+                                          *ngFor="let option of sortOption.shareCampaignSortDropDownOptions"
+                                          [ngValue]="option">
+                                          {{option.name}}</option>
+                                          </select>
+                                       </div>
+                                       <div class="portlet-input input-inline" id="search-div">
+                                          <div class="input-icon right" id="icon">
+                                             <input type="text" id="sort-text" autocomplete="off" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                                             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
+                                             <button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
+                                             <i class="fa fa-search" aria-hidden="true"></i>
+                                             </button>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
                          </div>
                       </div>
                    </div>
@@ -63,12 +76,13 @@
                          It will take some time to process everything. There is no need to reshare it.
                      </strong>
                  </div>
+            
                    <div class="table-responsive">
                       <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" id="campaign-list-table">
                          <thead>
                             <tr>
                                <th class="text-center">
-                                  <input class="pointer" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllCampaigns">
+                                  <input class="pointer checkBox_shadow" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllCampaigns">
                                </th>
                                <th class="text-center">Campaign Name</th>
                                <th class="text-center">Type</th>
@@ -79,7 +93,7 @@
                          <tbody>
                             <tr class="pointer" *ngFor="let campaign of pagination.pagedItems ;let i =index" id="campaignTr_{{campaign.id}}" [class.row-selected]="selectedCampaignIds.indexOf(campaign.id)>-1" (click)="highlightSelectedCampaignRow(campaign,$event)">
                             <td class="text-center">
-                               <input type="checkbox" class="pointer" lang="{{campaign.campaign}}" id="{{campaign.id}}" [checked]="selectedCampaignIds.indexOf(campaign.id)>-1" name="campaignCheckBoxName[]" value="{{campaign.id}}" (click)="highlightRowByCheckBox(campaign,$event)">
+                               <input type="checkbox" class="pointer checkBox_shadow" lang="{{campaign.campaign}}" id="{{campaign.id}}" [checked]="selectedCampaignIds.indexOf(campaign.id)>-1" name="campaignCheckBoxName[]" value="{{campaign.id}}" (click)="highlightRowByCheckBox(campaign,$event)">
                             </td>
                             <td class="text-center" title="{{campaign.campaign}}">
                                {{campaign.campaign | slice:0:25}} <span *ngIf="campaign.campaign?.length>25">...</span>
@@ -103,12 +117,17 @@
                    <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
                       <strong>No Campaigns Found.</strong>
                    </div>
+
+
                 </ng-container>
              </ng-container>
+             
              <div *ngIf="pagination.pagedItems.length !== 0" class="" [hidden]="httpRequestLoader.isLoading">
-             <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCampaigns($event)">
-             </app-pagination>
-          </div>
+               <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCampaigns($event)">
+               </app-pagination>
+            </div>
+
+
        </div>
        <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
        <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
