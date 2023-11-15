@@ -540,14 +540,14 @@
                                     </a>
                                     <!--XNFR-342---->
                                     <ng-container *ngIf="isLocalHost">
-                                       <a *ngIf="!assignLeads && !sharedLeads && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)
-                                          && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
+                                       <a *ngIf="!assignLeads && !sharedLeads  && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
                                           data-toggle="tooltip" data-placement="top"
                                         (click)="openUnPublishedContentModalPopUp(contactList)"
-                                        title="{{actionsDescription?.shareUnPublishedContent}}">
+                                           title="{{actionsDescription?.shareUnPublishedContent}}">
                                         <i class="fa fa-forward IconCustomization" aria-hidden="true"></i>
                                        </a> 
                                     </ng-container> 
+                                     
                                     <!--XNFR-342---->
                                  </div>
                                  <div class="actions-block override-actions"

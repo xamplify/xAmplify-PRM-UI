@@ -46,6 +46,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
   responseMessage = "";
   isPartnerInfoRequried = false;
   isShareButtonClicked = false;
+  isPublishingToPartnerList = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,private router: Router,private campaignService:CampaignService) { }
 
@@ -104,6 +105,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.selectedIds = [];
     this.isShareButtonClicked = false;
     this.customResponse = new CustomResponse();
+    this.isPublishingToPartnerList = false;
 
   }
 
@@ -137,6 +139,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.selectedIds = event['selectedRowIds'];
     this.user = event['partnerDetails'];
     this.isPartnerInfoRequried = event['isPartnerInfoRequried'];
+    this.isPublishingToPartnerList = event['isPublishingToPartnerList'];
   }
 
   
@@ -168,6 +171,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     campaignDetails['partnersOrContactDtos'] = users;
     campaignDetails['userListId'] = this.selectedUserListId;
     campaignDetails['loggedInUserId'] = this.authenticationService.getUserId();
+    campaignDetails['publishingToPartnerList'] = this.isPublishingToPartnerList;
     return campaignDetails;
   }
 
