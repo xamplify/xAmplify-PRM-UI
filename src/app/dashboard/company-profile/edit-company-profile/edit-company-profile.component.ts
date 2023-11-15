@@ -507,6 +507,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         //   this.enableOrDisableButton();
           $('#cropLogoImage').modal('hide');
           this.closeModal();
+         this.validateCompanyLogo(); 
         },
         (error) => { console.log(error);  $('#cropLogoImage').modal('hide'); this.customResponse = new CustomResponse('ERROR',this.properties.SOMTHING_WENT_WRONG,true); },
         ()=>{ this.loadingcrop = false; if(this.companyProfile.website) { this.saveVideoBrandLog(); }});

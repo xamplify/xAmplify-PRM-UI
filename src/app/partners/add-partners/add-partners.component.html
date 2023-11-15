@@ -936,10 +936,10 @@
                                                     </td>
                                                     <td class="white-space-transform">
                                                         <div class="actions-block override-actions" style="display: flex;">
-                                                        <a *ngIf= "!contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor" data-toggle="tooltip" data-placement="bottom" title="unsubscribe" (click)="unsubscribeUser(contact)">
+                                                        <a *ngIf= "!contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor" data-toggle="tooltip" data-placement="bottom" title="Unsubscribe" (click)="unsubscribeUser(contact)">
 										                  <i class="fa fa-bell-slash-o IconCustomization" aria-hidden="true"></i>
 														</a>
-													  	<a *ngIf= "contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor" data-toggle="tooltip" data-placement="bottom" title="subscribe" (click)="resubscribeUser(contact)">
+													  	<a *ngIf= "contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor" data-toggle="tooltip" data-placement="bottom" title="Subscribe" (click)="resubscribeUser(contact)">
 															<i class="fa fa-bell-o IconCustomization" aria-hidden="true"></i>
 														</a>
                                                             <a id="envolope_{{i}}" (click)="sendMail(contact.id)">

@@ -143,6 +143,9 @@ export class ShareAssetsComponent implements OnInit {
       };
       emitterObject['partnerDetails'] = partnerDetails;
       emitterObject['isPartnerInfoRequried'] = true;
+      emitterObject['isPublishingToPartnerList'] = false;
+    }else{
+      emitterObject['isPublishingToPartnerList'] = true;
     }
 		this.shareAssetsEventEmitter.emit(emitterObject);
 	}
