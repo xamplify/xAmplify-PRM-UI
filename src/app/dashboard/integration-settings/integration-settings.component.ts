@@ -51,7 +51,6 @@ export class IntegrationSettingsComponent implements OnInit {
 		public referenceService: ReferenceService, public authenticationService: AuthenticationService) {
 		this.pageNumber = this.paginationComponent.numberPerPage[0];
 		this.loggedInUserId = this.authenticationService.getUserId();
-		this.isOnlyPartner = this.authenticationService.isOnlyPartner();
 		this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
 	}
 	

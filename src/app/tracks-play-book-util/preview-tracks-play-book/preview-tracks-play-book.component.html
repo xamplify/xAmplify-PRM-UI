@@ -279,11 +279,11 @@
 
 <!-- Preview Assets -->
 <ng-container *ngIf="showFilePreview">
-    <div class="overlay page-content custimizaPageContent">
-        <button type="button" class="close-circle" style="position: relative; top: 32px; right: 26px;" data-dismiss="modal" (click)="closeAssetPreview()">
+    <div class="overlay page-content custimizaPageContent previewContent">
+        <button type="button" class="close-circle mb-close" style="position: relative; top: 32px; right: 26px;" data-dismiss="modal" (click)="closeAssetPreview()">
             <i style="padding-bottom: 3px;" class="fa fa-times" aria-hidden="true"></i>
         </button>
-        <div class="overlay-content">
+        <div class="overlay-content mb-imgContent">
             <ng-container *ngIf="isImage">
                 <img class="fit-preview-asset" [src]="filePath" alt="No Image Found"><br>
             </ng-container>

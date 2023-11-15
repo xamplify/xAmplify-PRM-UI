@@ -227,7 +227,7 @@ table tr:nth-child(even) td {
   height: 28px;
   border-radius: 50%;
   text-align: center;
-  line-height: 26px !important;
+  line-height: 26px;
   vertical-align: middle;
   margin-right: 7px;
 }

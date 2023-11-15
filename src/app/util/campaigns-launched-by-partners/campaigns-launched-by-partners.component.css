@@ -18,3 +18,14 @@
 .equal-spacein-allsides {
     padding-top: 0px !important;
 }
+@media (min-width: 992px) and (max-width: 1289px)  { 
+	.responsiveSearch{width: 140px !important;}
+}
+
+.pjCardTitlebg{    
+    background-color: #d9edf7b0;
+    border-bottom: 1px solid #ddd;
+    padding: 6px 16px 0px 16px !important;
+    margin: -10px -10px 0px -10px;
+  }
+  .portlet.light > .portlet-title > .pjCardTitleCenterAlignment{padding: 8px 0px !important;}

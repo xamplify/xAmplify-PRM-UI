@@ -349,13 +349,26 @@
   .mr_4{
     margin-right: 4px;
   }
-  /* .table-responsive {
+  .table-responsive {
     border: unset!important; 
-   } */
+   }
    .d-f-pb7px{
     display: unset!important;
     padding-bottom: 0px!important;
    }
+   .mb-float {
+  float: unset !important;
+}
+.modal.right.fade .mwidth90 {
+  width: 90% !important;
+}
+.mleads {
+  width: 100% !important;
+  margin-bottom: 7px;
+}
+.mb-btns {
+  font-size: 13px !important;
+}
 }
 @media only screen and (min-width: 300px) and (max-width: 580px) {  
   /* myprofile old dropdown */
@@ -633,5 +646,10 @@
   .LeftsidepaddingCu{
     padding-right: 12px !important;
   }
+}
+
+@media (min-width: 200px) and (max-width: 767px)  { 
+  .mobilesearchdisplay{display: contents;}
+  .mobilesearchdisplayTop{Margin-top:7px;}
 }
 

@@ -28,13 +28,13 @@
                     <div class="col-block width" [attr.class]="campaignDetailsTabClass"   style="width: 50%;" (click)="showCampaignDetailsTab()">
                         <div  class="cenetered-block colorbox-1">
                             <img  alt="No Image Found" class="newicons" src="assets/images/campaignnew-icon/campaignDetails.svg">
-                            <h5  class="hidden-xs text-clr">{{campaignDetailsTabText}}</h5>
+                            <h5  class="text-clr">{{campaignDetailsTabText}}</h5>
                         </div>
                     </div>
                     <div  class="col-block" [attr.class]="launchTabClass"  style="width: 50%;" (click)="showLaunchTab()">
                         <div  class="cenetered-block colorbox-2">
                             <img  alt="No Image Found" class="newicons" src="assets/images/campaignnew-icon/Partner.svg">
-                            <h5 class="hidden-xs text-clr">{{launchTabText}}</h5>
+                            <h5 class="text-clr">{{launchTabText}}</h5>
                         </div>
                     </div>
                 </div>
@@ -215,7 +215,7 @@
                                         </div>
 
                                          <!--Notify Workflow-->
-                                         <div class="form-group" *ngIf="campaign?.channelCampaign && !isPageCampaign">
+                                         <div class="form-group" *ngIf="campaign?.channelCampaign && !isPageCampaign && campaign.emailNotification ">
                                             <label class="control-label col-sm-4">Notify Workflows</label>
                                             <div class="col-sm-8">
                                                 <switch class="pull-left" [status]="campaign.notifyChannelCampaignWorkflows" [onText]="callActionSwitch.yesTextValue" 
@@ -470,7 +470,7 @@
                                                             <!-- --------------Title--------------------------- -->
                                                             <td>
                                                                 <input
-                                                                class="radio-button-css"
+                                                                class="radio-button-css radioButton_shadow"
                                                                 *ngIf="videoFile.viewBy!='DRAFT' && videoFile.id!==videoId && videoFile?.processed"
                                                                 type="radio" name="videoFileId" [value]="videoFile.id"
                                                                 (click)="highlightSelectedVideo(videoFile)"
@@ -478,7 +478,7 @@
                                                                 [checked]="videoFile.id == selectedVideoId"> 
 
                                                                 <input
-                                                                class="radio-button-css"
+                                                                class="radio-button-css radioButton_shadow"
                                                                 *ngIf="(videoFile.viewBy=='DRAFT' || !videoFile?.processed)&& videoFile.id!==videoId"
                                                                 type="radio" name="videoFileId" [value]="videoFile.id"
                                                                 disabled="disabled" data-toggle="tooltip" data-placement="bottom"
@@ -579,7 +579,7 @@
                                                         <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === selectedEmailTemplateRow ? 'template-selected-border' :'' " (click)="selectEmailTemplate(emailTemplate)">
                                                             <span class="select-check-box" [class.hide]="emailTemplate?.draft">
                                                                 <label>
-                                                                    <input  type="radio" class="radio-custimization pointer" [checked]="emailTemplate?.id === selectedEmailTemplateRow">
+                                                                    <input  type="radio" class="radio-custimization pointer radioButton_shadow" [checked]="emailTemplate?.id === selectedEmailTemplateRow">
                                                                 </label>
                                                             </span>
                                                             <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
@@ -680,7 +680,7 @@
                                                         <div class="grid-box imgage-paddings"  [ngClass]="page?.id === selectedPageId ? 'template-selected-border' :'' " (click)="selectPage(page)">
                                                             <span class="select-check-box">
                                                                 <label>
-                                                                    <input  type="radio" class="radio-custimization pointer" [checked]="page?.id === selectedPageId">
+                                                                    <input  type="radio" class="radio-custimization pointer radioButton_shadow" [checked]="page?.id === selectedPageId">
                                                                 </label>
                                                             </span>
                                                             <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="page?.thumbnailPath" alt="No Preview Found" />
@@ -804,7 +804,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th scope="row" class="text-center">
-                                                                <input class="pointer" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
+                                                                <input class="pointer checkBox_shadow" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" />
                                                             </th>
                                                             <th class="hidden-xs" *ngIf="showRecipientsSearchResultExpandButton" scope="col"></th>
                                                             <th class="hidden-xs" scope="row" colspan="2" style="width: 35%">
@@ -827,7 +827,7 @@
                                                                 [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.count>0)" >
                                                                 <td class="text-center pointer">
                                                                     <div class="form-group">
-                                                                        <input type="checkbox" class="chk pointer" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" 
+                                                                        <input type="checkbox" class="chk pointer checkBox_shadow" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1" 
                                                                         name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)"
                                                                         [disabled]="(contacts.name==properties.activeMasterPartnerList  || contacts.name==properties.inActiveMasterPartnerList) && contacts.count==0">
                                                                     </div>
@@ -965,10 +965,10 @@
                                                 <div *ngFor="let reply of replies;let i=index">
                                                     <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
                                                         <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}">
-                                                            <div class="col-xs-6">
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                                 <h4 class="text-left">Add an Auto-response to your e-mail-{{i+1}}</h4>
                                                             </div>
-                                                            <div class="col-xs-6">
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                                 <div class="pull-right">
                                                                     <label class="switch-choose" translate>Choose Template</label>
                                                                     <switch class="switch-choose" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -987,7 +987,7 @@
                                                             <form class="role add-reply" id="form-{{reply.divId}}">
                                                                 <div class="col-xs-12 p0">
                                                                     <!--Reason-->
-                                                                    <div class="col-xs-12 col-sm-6" style="margin-bottom: 6px;">
+                                                                    <div class="col-xs-12 col-sm-5" style="margin-bottom: 6px;">
                                                                         <label style="cursor: default;" for="reason">Reason</label>
                                                                         <select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
                                                                             <option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
@@ -1008,34 +1008,20 @@
                                                                     <!--Reply In X Days-->
                                                                     <div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
                                                                         <div class="col-xs-12 col-sm-2">
-                                                                            <label class="default" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 || reply.actionId==33 " id="reply-days-{{reply.divId}}" translate>
-                                                                                Reply In X Days
-                                                                                <strong class="required">*</strong>
-                                                                                <span><strong translate>(Minimum 1 Day)</strong></span>
-                                                                            </label>
-                                                                            <label class="default" for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23 && reply.actionId!=33" id="reply-days-{{reply.divId}}" translate>Reply In X Days
+                                                                            <label class="default" for="days" id="reply-days-{{reply.divId}}" translate>Reply In X Days
                                                                                 <strong class="required">*</strong>
                                                                             </label>
-                                                                            <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
-                                                                        </div>
-
-                                                                        <div class="col-xs-12 col-sm-3 time-col padding-left-0" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-                                                                            <div class="col-xs-4 col-sm-3 default">
-                                                                                <span for="time" id="send-time-{{reply.divId}}" class="time-picker-css" translate>At
-                                                                                    <strong class="required">*</strong></span>
-                                                                            </div>
-                                                                            <div class="col-xs-8 col-sm-9 height-66px">
-                                                                                <timepicker [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
-                                                                            </div>
+                                                                            <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="1" oninput="validity.valid||(value='');">
+                                                                            <span><strong>(Minimum 1 Day)</strong></span>
                                                                         </div>
                                                                     </div>
                                                                     <!---Subject-->
-                                                                    <div class="col-xs-12 col-sm-6">
+                                                                    <div class="col-xs-12 col-sm-5">
                                                                         <label class="default" for="time" id="reply-subject-{{reply.divId}}" translate>Subject
                                                                             <strong class="required">*</strong>
                                                                         </label>
                                                                         <div class="input-group merge-tag-input-border">
-                                                                            <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
+                                                                            <input type="text" autocomplete="off" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
                                                                             <span class="input-group-btn">
                                                                                 <button class="btn btn-default" type="button"  data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags" (click)="openMergeTagsPopup('campaign-reply',reply)">
                                                                                     <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
@@ -1078,7 +1064,7 @@
                                                                                                             <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === reply?.selectedEmailTemplateId ? 'template-selected-border' :'' " (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)">
                                                                                                                 <span class="select-check-box" [class.hide]="emailTemplate?.draft">
                                                                                                                     <label>
-                                                                                                                        <input  type="radio" class="radio-custimization" [checked]="emailTemplate?.id === reply?.selectedEmailTemplateId">
+                                                                                                                        <input  type="radio" class="radio-custimization radioButton_shadow" [checked]="emailTemplate?.id === reply?.selectedEmailTemplateId">
                                                                                                                     </label>
                                                                                                                 </span>
                                                                                                                 <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
@@ -1153,10 +1139,10 @@
                                                 <div *ngFor="let url of urls;let i=index">
                                                     <div class="portlet light dashboard-stat2" id="{{url?.divId}}">
                                                         <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue ':isEven(i+1), 'colorRed':!isEven(i+1)}">
-                                                            <div class="col-xs-6">
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                                 <h4 class="text-left responsive-screen-fontzise-dec">Add an Auto-response to a website visit - {{i+1}}</h4>
                                                             </div>
-                                                            <div class="col-xs-6">
+                                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                                                 <div class="pull-right">
                                                                     <label class="switch-choose" translate>Choose Template
                                                                         </label>
@@ -1176,33 +1162,12 @@
                                                             <form class="role" id="form-{{url.divId}}" class="add-click">
                                                                 <div class="col-xs-12 p0">
                                                                     <div class="col-xs-12 col-sm-6">
-                                                                        <label class="default" for="reason" translate>When To Send Email</label>
+                                                                        <label class="default" for="reason">When To Send Email</label>
                                                                         <select class="form-control pointer" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
-                                                                            <option [value]="19" [selected]="url.actionId ==19" translate>Send if not clicked</option>
-                                                                            <option [value]="20" [selected]="url.actionId ==20" translate>Send immediately after clicked</option>
-                                                                            <option [value]="21" [selected]="url.actionId ==21" translate>Schedule</option>
+                                                                            <option [value]="19" [selected]="url.actionId ==19">Send if not clicked</option>
+                                                                            <option [value]="20" [selected]="url.actionId ==20">Send immediately after clicked</option>
+                                                                            <option [value]="21" [selected]="url.actionId ==21">Schedule (Wait X Days After Click)</option>
                                                                         </select>
-                                                                    </div>
-                                                                    <div *ngIf="url?.actionId==21" class="col-xs-6 p0">
-                                                                         <!--Wait X Days After Click-->
-                                                                        <div class="col-xs-4" style="padding:0">
-                                                                            <label for="days" id="click-days-{{url.divId}}" style="cursor: default;" translate>
-                                                                                Wait X Days After Click
-                                                                                <strong class="required">*</strong>
-                                                                            </label>
-                                                                            <input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
-                                                                        </div>
-                                                                         <!-- At -->
-                                                                        <div class="col-xs-8 time-col">
-                                                                            <div class="col-xs-3 default">
-                                                                                <label for="time" id="send-time-{{url.divId}}" class="time-picker-css" translate>At
-                                                                                    <strong class="required">*</strong>
-                                                                                </label>
-                                                                            </div>
-                                                                            <div class="col-xs-9" style="height:66px">
-                                                                                <timepicker [(ngModel)]="url.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
-                                                                            </div>
-                                                                        </div>
                                                                     </div>
                                                                     <!--Subject-->
                                                                     <div class="col-xs-12 col-sm-6">
@@ -1231,6 +1196,17 @@
                                                                             </option>
                                                                         </select>
                                                                     </div>
+                                                                    <div *ngIf="url?.actionId==21" class="col-xs-6">
+                                                                        <!--Wait X Days After Click-->
+                                                                       <div class="col-xs-6" style="padding:0">
+                                                                           <label for="days" id="click-days-{{url.divId}}" style="cursor: default;">
+                                                                               Wait X Days After Click
+                                                                               <strong class="required">*</strong>
+                                                                           </label>
+                                                                           <input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="1" oninput="validity.valid||(value='');">
+                                                                           <span><strong>(Minimum 1 Day)</strong></span>
+                                                                        </div>
+                                                                   </div>
                                                                 </div>
 
                                                                 <!-- Message--->
@@ -1266,7 +1242,7 @@
                                                                                                         <div class="grid-box imgage-paddings"  [ngClass]="emailTemplate?.id === url?.selectedEmailTemplateId ? 'template-selected-border' :'' " (click)="setWebsiteLinkEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)">
                                                                                                             <span class="select-check-box" [class.hide]="emailTemplate?.draft">
                                                                                                                 <label>
-                                                                                                                    <input  type="radio" class="radio-custimization" [checked]="emailTemplate?.id === url?.selectedEmailTemplateId">
+                                                                                                                    <input  type="radio" class="radio-custimization radioButton_shadow" [checked]="emailTemplate?.id === url?.selectedEmailTemplateId">
                                                                                                                 </label>
                                                                                                             </span>
                                                                                                             <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
@@ -1356,7 +1332,7 @@
                                     <div class="btn-group btn-group-justified">
                                         <ng-container *ngFor="let launchOption of launchOptions;let i = index">
                                             <label [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn Btn-Green mBtnAlign button-border'">
-                                                <input type="radio" id="launch-option-{{i}}" class="text-center mLabelAlign mr10 pointer" name="scheduleCampaign"
+                                                <input type="radio" id="launch-option-{{i}}" class="text-center mLabelAlign mr10 pointer radioButton_shadow" name="scheduleCampaign"
                                                     [value]="launchOption.value" [checked]="selectedLaunchOption==launchOption.value" (click)="selectLaunchOption();buttonName=launchOption.key" />
                                                 <span class="text-algn" *ngIf="launchOption?.key=='Launch'">Now</span>
                                                 <span class="text-algn" *ngIf="launchOption?.key!='Launch'">{{launchOption.key}}</span>
@@ -1432,7 +1408,7 @@
                 <app-preview-popup #previewPopUpComponent *ngIf="isShowEditTemplatePopup && campaignType=='page'"></app-preview-popup>
                 <app-merge-tags *ngIf="isShowEditTemplatePopup"  [input]="editTemplateMergeTagsInput"></app-merge-tags>
                 <button (click)="toggleOpenLinksInNewTab()" class="btn-primary olint" *ngIf="isShowEditTemplatePopup && campaignType=='page'">
-                    Open Links In New Tab <input class="pointer" type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
+                    Open Links In New Tab <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="beeContainerInput.openLinksInNewTab">
                   </button>
                 </div>
             </div>

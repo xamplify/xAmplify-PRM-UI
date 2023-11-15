@@ -231,6 +231,8 @@ export class ModuleAccessComponent implements OnInit {
       this.campaignAccess.dataShare = false;
     }else if(this.roleId==18){
       this.campaignAccess.loginAsPartner = false;
+      this.campaignAccess.shareWhiteLabeledContent = false;
+      this.campaignAccess.createWorkflow = false;
     }
     else{
      this.getModuleAccessByCompanyId();

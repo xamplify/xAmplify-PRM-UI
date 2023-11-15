@@ -49,7 +49,7 @@
 	   </div>
 	   <div class="form-group">
 	   <label class="check">
-	   <input formControlName="agree" type="checkbox" required /> I agree to the <a href="{{properties?.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&<a href="{{properties?.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
+	   <input formControlName="agree" class="checkBox_shadow" type="checkbox" required /> I agree to the <a href="{{properties?.termsOfServiceUrl}}" target="_blank">Terms of Service </a>&<a href="{{properties?.privacyPolicyUrl}}" target="_blank"> Privacy Policy </a>
 	   </label>
 	   <div *ngIf="formErrors.agree" class="alert alert-danger">{{ formErrors.agree }}</div>
 	   <div id="register_tnc_error"></div>

@@ -1,9 +1,9 @@
-<div class="col-lg-7 ml15m">
-  <div class="panel panel-info mh480">
-    <div class="panel-heading panel-heading-custom">
-      <h3 class="panel-title mt7">{{heading}}</h3>
-      <span class="pull-right mt25m">
-        <div class="input-icon right" style="position: relative;width: 178px;">
+<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 ml15m">
+  <div class="panel panel-info mh480 panel-bgMain">
+    <div class="panel-heading panel-heading-custom panel-bg">
+      <h3 class="panel-title mt7 Responsivetitle">{{heading}}</h3>
+      <span class="pull-right mt25m mobilesearchdisplay">
+        <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;top: -1px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
             [ngModelOptions]="{standalone: true}" placeholder="Search"
             (keypress)="searchKeyPress($event.keyCode)">
@@ -15,14 +15,14 @@
       </span>
     </div>
     <div class="panel-body">    
-      <div class="scroll"  *ngIf="!httpRequestLoader.isLoading">
+      <div class="scroll table-responsive tableHeightScroll"  *ngIf="!httpRequestLoader.isLoading">
         <table class="table">
           <thead>
             <tr>         
-              <th scope="col" *ngIf="isDetailedAnalytics">Team Member</th>
-              <th scope="col" *ngIf="!isDetailedAnalytics">Company Name</th>
-              <th scope="col">Track</th>
-              <th scope="col">Progress</th>
+              <th scope="col" *ngIf="isDetailedAnalytics"><i class="fa fa-user-circle" aria-hidden="true"></i> Team Member</th>
+              <th scope="col" *ngIf="!isDetailedAnalytics"><i class="fa fa-building" aria-hidden="true"></i> Company Name</th>
+              <th scope="col"><i class="fa fa-line-chart" aria-hidden="true"></i> Track</th>
+              <th scope="col"><i class="fa fa-tasks" aria-hidden="true"></i> Avg. Progress</th>
               <th></th>
             </tr>
           </thead>
@@ -31,7 +31,18 @@
               <td *ngIf="isDetailedAnalytics"> <app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
               <td *ngIf="!isDetailedAnalytics"><a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">{{item?.companyName}}</a></td> 
               <td>{{item?.title}}</td>              
-              <td>{{item.progress}}%</td>
+              <!-- <td>{{item.progress}}%</td> -->
+              <td>
+               
+                  <div class="progress heightabjustment">
+                      <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{item.progress}}%" [ngStyle]="{'width': item.progress + '%'}" style="border-radius:1px;" role="progressbar">
+                      </div>
+                  </div>
+                  <span *ngIf="item.progress != undefined">{{item.progress}}%</span>
+                  <span *ngIf="item.progress == undefined">0%</span>
+              
+
+              </td>
             </tr>
           </tbody>
         </table>

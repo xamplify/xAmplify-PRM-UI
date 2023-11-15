@@ -41,7 +41,7 @@
                   <tbody>
                      <ng-container >
                         <tr *ngFor="let partner of partners">
-                           <td> <input type="radio" id="partnerid" name="partnerName" value="selectedpartner" (click)="selectPartner(partner)"></td>
+                           <td> <input class="radioButton_shadow" type="radio" id="partnerid" name="partnerName" value="selectedpartner" (click)="selectPartner(partner)"></td>
                            <td>
                               <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="partner"> </app-user-info>
                            </td>

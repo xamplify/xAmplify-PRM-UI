@@ -18,13 +18,12 @@ export class TimestampComponent implements OnInit {
 
   ngOnInit() {
     try{
-      if(this.referenceService.isSafariBrowser()){
-      if((this.dateAndTime.includes(' '))) {
-        console.log(this.dateAndTime);
-        this.isSpacethere = true;
-        // this.dateAndTime = this.dateAndTime.replace(/ /g,"T");
-        // this.dateAndTime = Date.parse(this.dateAndTime);
-      }else {
+      if(this.dateAndTime!=undefined && this.dateAndTime!='Invalid Date'){
+        if(this.referenceService.isSafariBrowser()){
+          if((this.dateAndTime.includes(' '))) {
+            this.isSpacethere = true;
+          }else {
+          }
       }
     }
     }catch(error){ console.log(error);}

@@ -1,0 +1,71 @@
+.table tr.row-selected td {
+    background-color: #00a6e8;
+    color: #333;
+  }
+  /*--thank you pop starts here--*/
+  .thank-you-pop {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+  }
+  .thank-you-pop img {
+    width: 76px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 25px;
+  }
+  .thank-you-pop h1 {
+    font-size: 42px;
+    margin-bottom: 25px;
+    color: #5c5c5c;
+  }
+  .thank-you-pop p {
+    font-size: 20px;
+    margin-bottom: 27px;
+    color: #5c5c5c;
+  }
+  .thank-you-pop h3.cupon-pop {
+    font-size: 25px;
+    margin-bottom: 40px;
+    color: #222;
+    display: inline-block;
+    text-align: center;
+    padding: 10px 20px;
+    border: 2px dashed #222;
+    clear: both;
+    font-weight: normal;
+  }
+  .thank-you-pop h3.cupon-pop span {
+    color: #03a9f4;
+  }
+  .thank-you-pop a {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 9px 20px;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 14px;
+    background-color: #8bc34a;
+    border-radius: 17px;
+  }
+  .thank-you-pop a i {
+    margin-right: 5px;
+    color: #fff;
+  }
+  /*--thank you pop ends here--*/
+  .event-success {
+    color: green;
+  }
+  .event-error {
+    color: red;
+  }
+  #font-size-success {
+    font-size: 30px;
+    color: green;
+  }
+  #font-size-error {
+    font-size: 30px;
+    color: red;
+  }
+  

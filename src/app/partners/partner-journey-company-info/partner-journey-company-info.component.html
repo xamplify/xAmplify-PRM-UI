@@ -20,7 +20,7 @@
           <!-- <p title="{{deal.createdByEmail}}">{{deal.createdByEmail | slice:0:30}}</p>
           <span *ngIf="deal.createdByEmail?.length>30">...</span> -->
           <!-- <p><i class="fa fa-building" aria-hidden="true"></i> {{companyInfo?.companyName}}</p> -->
-          <p><i class="fa fa-calendar" aria-hidden="true"></i> Onboarded On :
+          <p><i class="fa fa-calendar" aria-hidden="true"></i> <b> Onboarded On :</b>
             <app-timestamp [isOnlyDate]="false" [dateAndTime]="companyInfo?.partnerAddedDateStr">
             </app-timestamp>
           </p>
@@ -28,13 +28,13 @@
       </div>
       <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="EqualPaddings">
-          <p> <i class="fa fa-user" aria-hidden="true"></i> <b>{{authenticationService.partnerModule.customName}} Manager:</b> {{companyInfo?.partnerName}}</p>
+          <p> <i class="fa fa-user" aria-hidden="true"></i> <b> {{authenticationService.partnerModule.customName}} Manager:</b> {{companyInfo?.partnerName}}</p>
           <p><i class="fa fa-briefcase" aria-hidden="true"></i> <b>Job Title:</b> {{companyInfo?.partnerJobTitle}}</p>
         </div>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <div class="EqualPaddings">
-          <p><i class="fa fa-phone" aria-hidden="true"></i>{{companyInfo?.partnerMobileNumber}}</p>
+          <p><i class="fa fa-phone" aria-hidden="true"></i> {{companyInfo?.partnerMobileNumber}}</p>
           <p><i class="fa fa-envelope" aria-hidden="true"></i> {{companyInfo?.partnerEmail}}</p>
         </div>
       </div>

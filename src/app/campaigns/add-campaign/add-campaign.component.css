@@ -415,7 +415,7 @@ fieldset {
   font-size: 14px;
 }
 .portlet.light.dashboard-stat2.border-error {
-  border-color: red;
+  border-color: red  !important;
 }
 .blur {
   -webkit-filter: blur(1px);
@@ -476,6 +476,28 @@ fieldset {
   }
   .mbgrid {
     display: grid;
+  }
+  .white-labeled-custom-css{
+    bottom: 0px!important;
+  }
+  .custom-change-css{
+       top: 0px; 
+       right:0px;
+       width: 100%;
+  }
+  .switch-choose{
+    top: 0px !important;
+    left:0px;
+  }
+  .button-blue{
+    top:0px;
+    margin-bottom: 10px;
+  }
+  .ht125{
+    position: relative;
+    display: inline-block;
+    top: 10px;
+    width: 100%;
   }
 }
 #download-drop {
@@ -754,7 +776,7 @@ span.text-algn {
 
 .white-labeled-custom-css {
   height: 125px !important;
-  bottom: 125px !important;
+  bottom: 125px;
 }
 @media screen and (max-width: 1024px) {
   .pt_10 {

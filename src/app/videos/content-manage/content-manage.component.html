@@ -126,7 +126,7 @@
 											[ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}">
 											<div class="flex-row pointer" (click)="setFileCheck(file,file.id, $event)">
 												<div class="item__select-box-wrapper">
-													<span class="select-box" (click)="setFileCheck(file,file.id, $event)"> <label> <input
+													<span class="select-box checkBox_shadow" (click)="setFileCheck(file,file.id, $event)"> <label> <input
 															(click)="getSelectedFiles(file,file.id, $event)"
 															type="checkbox"
 															[checked]="selectedFileIds.indexOf(file.id)>-1"

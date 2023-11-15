@@ -7,7 +7,6 @@ import { ErrorPagesModule } from "../error-pages/error-pages.module";
 
 import { ManagePublishComponent } from "./manage-publish/manage-publish.component";
 import { SelectCampaignTypeComponent } from "./select-campaign-type/select-campaign-type.component";
-import { CreateCampaignComponent } from "./create-campaign/create-campaign.component";
 
 import { ContactService } from "../contacts/services/contact.service";
 import { VideoFileService } from "../videos/services/video-file.service";
@@ -62,7 +61,6 @@ import { PendingChangesGuard } from "app/component-can-deactivate";
   declarations: [
     ManagePublishComponent,
     SelectCampaignTypeComponent,
-    CreateCampaignComponent,
     CreateSmsCampaignComponent,
     AnalyticsComponent,
     HeatMapComponent,

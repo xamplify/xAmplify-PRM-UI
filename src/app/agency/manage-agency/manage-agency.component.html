@@ -322,10 +322,10 @@
                           <tbody>
                              <tr *ngFor="let module of agencyDto.modules;let moduleIndex = index;" id="agency-module-{{i}}"  >
                                 <td class="text-center" *ngIf="module.moduleName=='All'">
-                                   <input type="checkbox" [checked]="agencyDto.moduleIds.indexOf(module.roleId)>-1" value="{{module.roleId}}" (click)="selectOrUnSelectAllModules(agencyDto,$event,i)" id="agency-all-module-{{module.roleId}}-{{i}}" >
+                                   <input type="checkbox" class="checkBox_shadow" [checked]="agencyDto.moduleIds.indexOf(module.roleId)>-1" value="{{module.roleId}}" (click)="selectOrUnSelectAllModules(agencyDto,$event,i)" id="agency-all-module-{{module.roleId}}-{{i}}" >
                                 </td>
                                 <td class="text-center" *ngIf="module.moduleName!='All'">
-                                   <input type="checkbox" [checked]="agencyDto.moduleIds.indexOf(module.roleId)>-1" name="agencyModuleCheckBox-{{i}}" value="{{module.roleId}}" (click)="selectOrUnselectModule(module.roleId,i,agencyDto,$event)" id="agency-module-{{module.roleId}}-{{i}}">
+                                   <input type="checkbox" class="checkBox_shadow" [checked]="agencyDto.moduleIds.indexOf(module.roleId)>-1" name="agencyModuleCheckBox-{{i}}" value="{{module.roleId}}" (click)="selectOrUnselectModule(module.roleId,i,agencyDto,$event)" id="agency-module-{{module.roleId}}-{{i}}">
                                 </td>
                                 <td>
                                    <i class="{{module?.moduleIcon}} mrfpx" aria-hidden="true"></i>

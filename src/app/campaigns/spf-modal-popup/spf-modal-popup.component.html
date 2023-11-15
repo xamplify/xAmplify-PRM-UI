@@ -18,7 +18,7 @@
         </div>
         <div class="modal-footer">
            <div class="form-group left">
-              <input type="checkbox" [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" name="spf" value="spf" checked translate>
+              <input class="checkBox_shadow" type="checkbox" [(ngModel)]="isChecked" [ngModelOptions]="{standalone: true}" name="spf" value="spf" checked translate>
               <span class="{{spfErrorOrSuccessClass}}">You confirm that SPF configuration is done.</span>
            </div>
            <button type="button" class="btn btn-primary" (click)="saveSpf()" translate>Submit</button>

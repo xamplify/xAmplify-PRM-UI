@@ -2,3 +2,12 @@
     margin-top: 17px;
     margin-right: 5px;
   }
+
+  @media (min-width: 1018px) and (max-width: 1018px)  { 
+    i.fa.fa-power-off {
+      font-size: 10px;
+    }
+
+    
+  
+  }

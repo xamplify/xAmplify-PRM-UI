@@ -89,7 +89,7 @@
                        </div>
                        <div class="col-sm-12 text-danger" *ngIf="(!eventError.eventStartTimeError && eventError.eventSameDateError) || endDatePassError">{{endDatePassedError}}</div>
                        <div class="col-sm-12">
-                          <input type="checkbox" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" [checked]="eventCampaign.campaignEventTimes[0].allDay" (change)="changeAllDay()"> All Day
+                          <input class="checkBox_shadow" type="checkbox" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" [checked]="eventCampaign.campaignEventTimes[0].allDay" (change)="changeAllDay()"> All Day
                        </div>
                     </div>
                  </div>
@@ -191,7 +191,7 @@
                     <ul>
                        <li style="border-bottom:1px solid #CCC; margin-bottom:10px;">
                           <label class="col-md-1 p0" style="margin-top: 17px;cursor:pointer">
-                          <input style="cursor: pointer;" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
+                          <input class="radioButton_shadow" style="cursor: pointer;" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" type="radio" value="eventCampaign.publicEventCampaign" [checked]="eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
                           </label>
                           <label class="col-md-2 p0"><img src="assets/images/public-event.png"></label>
                           <div class="col-md-9 p0" >
@@ -202,7 +202,7 @@
                        </li>
                        <li>
                           <label  class="col-md-1 p0" style="margin-top: 17px;cursor: pointer;">
-                          <input style="cursor: pointer;" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
+                          <input class="radioButton_shadow" style="cursor: pointer;" [attr.disabled]="(isPreviewEvent || reDistributeEvent)? '' : null" type="radio" value="!eventCampaign.publicEventCampaign" [checked]="!eventCampaign.publicEventCampaign" (change)="eventCampaign.publicEventCampaign = !eventCampaign.publicEventCampaign">
                           </label>
                           <label class="col-md-2 p0 "><img src="assets/images/private-event.png"></label>
                           <div class="col-md-9 p0">
@@ -336,7 +336,7 @@
                     <div class="flex-row">
                        <div class="item__select-box-wrapper">
                           <span class="select-box"> <label> <input
-                             (click)="eventCampaign.emailTemplate = emailTemplate;" class=""
+                             (click)="eventCampaign.emailTemplate = emailTemplate;" class="checkBox_shadow"
                              type="checkbox">
                           </label>
                           </span>											
@@ -472,7 +472,7 @@
                                          <ng-container *ngIf="!isAdd && reply.emailTemplatesPagination.totalRecords>0 && reply.emailTemplatesPagination.pageIndex==1 && reply.selectedEmailTemplateIdForEdit>0 && reply.showSelectedEmailTemplate ">
                                             <tr (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [class.active]="reply.emailTemplate.id==reply.selectedEmailTemplateId">
                                             <td class="custom-center">
-                                               <input [attr.disabled]="isPreviewEvent? '' : null" type="radio" name="reply-email-template" [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}"
+                                               <input class="radioButton_shadow" [attr.disabled]="isPreviewEvent? '' : null" type="radio" name="reply-email-template" [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}"
                                                (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [checked]="reply.emailTemplate.id == reply.selectedEmailTemplateId">
                                             </td>
                                             <td class="custom-center" *ngIf="reply.emailTemplate.name?.length>25" title="{{reply.emailTemplate.name}}">{{reply.emailTemplate.name|slice:0:25}}....</td>
@@ -486,9 +486,9 @@
                                             <tr (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [class.active]="emailTemplate.id==reply.selectedEmailTemplateId"
                                             *ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id">
                                             <td class="custom-center">
-                                               <input [attr.disabled]="isPreviewEvent? '' : null" *ngIf="!emailTemplate.draft" type="radio" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}"
+                                               <input class="radioButton_shadow" [attr.disabled]="isPreviewEvent? '' : null" *ngIf="!emailTemplate.draft" type="radio" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}"
                                                (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [checked]="emailTemplate.id == reply.selectedEmailTemplateId">
-                                               <input [class.disabled]="isPreviewEvent" *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="radio" name="reply-email-template">
+                                               <input class="radioButton_shadow" [class.disabled]="isPreviewEvent" *ngIf="emailTemplate.draft" title="draft template cannot be selected" disabled="disabled" type="radio" name="reply-email-template">
                                             </td>
                                             <td class="custom-center" *ngIf="emailTemplate.name?.length>25" title="{{emailTemplate.name}}">{{emailTemplate.name|slice:0:25}}....</td>
                                             <td class="custom-center" *ngIf="emailTemplate.name?.length<=25" title="{{emailTemplate.name}}">{{emailTemplate.name}}</td>
@@ -521,7 +521,7 @@
         <div class="btn-group btn-group-justified">
            <ng-container *ngFor="let options of launchOptions">
               <label class="btn btn-primary" style="border: 1px solid #fff;" [class.disabled]="isPreviewEvent" >
-              <input type="radio" class="text-center"  name="scheduleCampaign" [value]="options" (click)="setLaunchOptions(options)" ngDefaultControl
+              <input type="radio" class="text-center radioButton_shadow"  name="scheduleCampaign" [value]="options" (click)="setLaunchOptions(options)" ngDefaultControl
               style=" margin-right:1.5em; " />{{options}}
               </label>
            </ng-container>

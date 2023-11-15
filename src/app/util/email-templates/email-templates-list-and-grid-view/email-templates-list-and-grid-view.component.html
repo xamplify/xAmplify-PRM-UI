@@ -88,7 +88,7 @@
                       <td class="hidden-xs text-center">
                         <app-display-date-and-time [dateAndTimeUTCString]="emailTemplate?.createdDate"></app-display-date-and-time>
                       </td>
-                      <td style="width: 14%" class="mActionAlign">
+                      <td style="width: 14%" class="mActionAlign width20">
                           <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition':'actions-block override-actions actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition'">
                               <div class="mActionDiv whitespace_nowrap">
                               <a *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
@@ -288,16 +288,16 @@
               <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
             </span>
             <div class="inputs mDamTop alignline-m-flex" style="float: right">
-              <a class="close-circle ref-mar" id="alignline-m-ref-mar" (click)="refreshList()" data-toggle="tooltip" data-placement="bottom" title="Refresh">
+              <a class="close-circle ref-mar refresh-icon" id="alignline-m-ref-mar" (click)="refreshList()" data-toggle="tooltip" data-placement="bottom" title="Refresh">
                 <i class="fa fa-refresh" aria-hidden="true"></i>
               </a>
-              <div class="pb3 float-left">
+              <div class="pb3 float-left search_sort_shadows">
                   <select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width" [(ngModel)]="sortOption.eventSelectedCampaignRecipientsDropDownOption"	(ngModelChange)="sortEmailTemplates($event)"style="position: relative; right: -3px;">
                     <option	*ngFor="let option of sortOption.eventCampaignRecipientsDropDownOptions" [ngValue]="option">{{option.name}}</option>
                   </select> 
               </div>
               <div class="portlet-input input-inline input-small tab_srch_w" id="alignline-m-margin"	style="margin-right: 10px;">
-                <div class="input-icon right mDamSearch rSearch" id="alignline-m-serch" style="position: relative; right: -6px;">
+                <div class="input-icon right mDamSearch rSearch search_sort_shadows" id="alignline-m-serch" style="position: relative; right: -6px;">
                   <input type="text" style="height: 34px;" class="form-control"	[(ngModel)]="sortOption.searchKey"	[ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
                   <button	class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchEmailTemplates();"></button>
                   <button type="submit" class="search-box-item-click"	(click)="searchEmailTemplates()">

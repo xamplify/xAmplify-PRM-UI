@@ -1,20 +1,50 @@
-<div class="col-sm-6 col-md-6 col-lg-6 ml15m">
-  <div class="panel panel-info mh530">
-    <div class="panel-heading panel-heading-custom" id="pj-mdf-details-div">
-      <h3 class="panel-title mt7">MDF Details</h3>
+<div class="col-sm-6 col-md-6 col-lg-6 col-xs-12 ml15m">
+  <div class="panel panel-info mdfBoxHeight panel-bgMain">
+    <div class="panel-heading panel-heading-custom panel-bg" id="pj-mdf-details-div">
+      <h3 class="panel-title mt7">MDF Details
+        <span class="pull-right mt25m">
+          <div class="input-icon right" style="position: relative;width: 178px;bottom: 8px;">
+            <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
+              [ngModelOptions]="{standalone: true}" placeholder="Search"
+              (keypress)="searchKeyPress($event.keyCode)">
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+              (click)="sortOption.searchKey='';search()"></button>
+            <button type="submit" class="search-box-item-click" (click)="search()">
+              <i class="fa fa-search" aria-hidden="true"></i></button>
+          </div>
+        </span>
+      </h3>
     </div>
-    <div class="panel-body">
-      <div class="scroll">
+    <div class="panel-body">    
+      <div class="scroll table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Company Name</th>
+              <th scope="col">Total Balance</th>              
+              <th scope="col">Used Balance</th>
+              <th scope="col">Available Balance</th>
+            </tr>
+          </thead>
+          <tbody>          
+            <tr *ngFor="let item of pagination.pagedItems;let i  = index">
+              <td><a data-rel="fancybox-button" (click)="viewAnalytics(item?.companyId)">{{item?.companyName}}</a></td>
+              <td>{{item?.totalBalanceInString}}</td>
+              <td>{{item?.usedBalanceInString}}</td>              
+              <td>{{item?.availableBalanceInString}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="alert alert-info">
+      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
         <strong>No Data Found.</strong>
       </div>
       <!--Pagination-->
-      <!-- <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin" [hidden]="httpRequestLoader.isLoading">
         <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
-          (notifyParentDropDown)="getUserWiseTrackCounts($event)">
+          (notifyParentDropDown)="getMdfDetails($event)">
         </app-pagination>
-      </div> -->
+      </div>
     </div>
   </div>
 </div>

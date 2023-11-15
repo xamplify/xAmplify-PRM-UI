@@ -370,7 +370,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             if (this.authenticationService.user.hasCompany) {
                 this.companyProfile.isAdd = false;
                 this.profileCompleted = 100;
+            }else{
+				if(this.authenticationService.isPartner()){
+            			this.getPartnerDetails();
+            	}
             }
+            
             if (this.authenticationService.vanityURLEnabled && this.authenticationService.checkSamlSettingsUserRoles()) {
                 this.setVendorLogoTooltipText();
             }
@@ -502,6 +507,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         //   this.enableOrDisableButton();
           $('#cropLogoImage').modal('hide');
           this.closeModal();
+         this.validateCompanyLogo(); 
         },
         (error) => { console.log(error);  $('#cropLogoImage').modal('hide'); this.customResponse = new CustomResponse('ERROR',this.properties.SOMTHING_WENT_WRONG,true); },
         ()=>{ this.loadingcrop = false; if(this.companyProfile.website) { this.saveVideoBrandLog(); }});
@@ -1807,6 +1813,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
               this.campaignAccess.shareLeads = false;
           }else if(this.marketing){
               this.campaignAccess.loginAsPartner = false;
+              this.campaignAccess.shareWhiteLabeledContent = false;
+              this.campaignAccess.createWorkflow = false;
           }
       }
 
@@ -1845,6 +1853,21 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     setMaxAdmins(){
         let maxAdmins =  $('#maxAdmins option:selected').val();
         this.campaignAccess.maxAdmins = maxAdmins;
+    }
+    
+    getPartnerDetails(){
+            this.companyProfileService.getPartnerDetails().subscribe(
+                (result: any) => {
+                          this.companyProfile.companyName  = result.companyName;
+   						  this.companyProfile.street = result.street;
+    					  this.companyProfile.city = result.city;
+    					  this.companyProfile.state = result.state;
+    					  this.companyProfile.country = result.country;
+    					  this.companyProfile.zip = result.zip;
+                }, (error: any) => {
+                  console.log(error);
+                }
+            );
     }
     
 

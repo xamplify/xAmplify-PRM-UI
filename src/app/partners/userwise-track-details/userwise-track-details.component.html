@@ -1,9 +1,9 @@
 <div class="col-sm-12 col-md-12 col-lg-12 ml15m">
-  <div class="panel panel-info">
-    <div class="panel-heading panel-heading-custom">
+  <div class="panel panel-info panel-bgMain">
+    <div class="panel-heading panel-heading-custom panel-bg">
       <h3 class="panel-title mt7">Track Assets Detailed Report</h3>
-      <span class="pull-right mt25m">
-        <div class="input-icon right" style="position: relative;width: 178px;">
+      <span class="pull-right mt25m mobilesearchdisplay">
+        <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;top: -1px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
             [ngModelOptions]="{standalone: true}" placeholder="Search"
             (keypress)="searchKeyPress($event.keyCode)">
@@ -15,7 +15,7 @@
       </span>
     </div>
     <div class="panel-body">    
-      <div class="scroll">
+      <div class="scroll table-responsive">
         <table class="table">
           <thead>
             <tr>
@@ -27,7 +27,7 @@
               <th scope="col">Opened</th>
               <th scope="col">Viewed</th>
               <th scope="col">Downloaded</th>              
-              <th scope="col">Progress</th>
+              <th scope="col">Avg. Progress</th>
               <th scope="col">Quiz</th>
               <th scope="col">Score</th>
             </tr>
@@ -35,17 +35,43 @@
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
               <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
-              <td *ngIf="!isDetailedAnalytics"><a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">{{item?.companyName}}</a></td>
-              <td>{{item?.title}}</td>
-              <td>{{item?.assetCount}}</td>
+              <td *ngIf="!isDetailedAnalytics">
+                <a class="detailstext" ata-toggle="tooltip" data-placement="top" title="{{item?.companyName}}" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">
+                {{item?.companyName | slice:0:15}}
+                <span *ngIf="item.companyName?.length>15">...</span>
+              </a>
+              </td>
+              <td>
+                <span ata-toggle="tooltip" data-placement="top" title="{{item?.title}}"> {{item?.title | slice:0:15}}
+                  <span *ngIf="item.title?.length>15">...</span>
+                </span>
+                </td>
+              <td>
+              <i class="circled-number IconCustomization fontStyleNormal"> <strong >{{item?.assetCount}}</strong></i>
+              </td>
               <td>
                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOnInUTC">
                 </app-timestamp>
               </td>
-              <td>{{item?.openedCount}}</td>
-              <td>{{item?.viewedCount}}</td>
-              <td>{{item?.downloadedCount}}</td>              
-              <td>{{item?.progress}}%</td>
+              <td>
+                <i class="circled-number IconopenedCount fontStyleNormal"> <strong >{{item?.openedCount}}</strong></i>
+              </td>
+              <td>
+                <i class="circled-number IconviewedCount fontStyleNormal"> <strong >{{item?.viewedCount}}</strong></i>
+              </td> 
+              <td>
+                <i class="circled-number IconodownloadedCount fontStyleNormal"> <strong >{{item?.downloadedCount}}</strong></i>
+              </td> 
+                   
+              <!-- <td>{{item?.progress}}%</td> -->
+              <td>
+                <div class="progress heightabjustment">
+                    <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{item.progress}}%" [ngStyle]="{'width': item.progress + '%'}" style="border-radius:1px;" role="progressbar">
+                    </div>
+                </div>
+                <span *ngIf="item.progress != undefined">{{item.progress}}%</span>
+                <span *ngIf="item.progress == undefined">0%</span>
+              </td>
               <td>{{item?.quizCount}}</td>
               <td>{{item?.score}}</td>
             </tr>
@@ -56,7 +82,7 @@
         <strong>No Data Found.</strong>
       </div>
       <!--Pagination-->
-      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin" [hidden]="httpRequestLoader.isLoading">
         <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
           (notifyParentDropDown)="getUserWiseTrackDetails($event)">
         </app-pagination>
