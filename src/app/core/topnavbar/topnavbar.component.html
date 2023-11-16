@@ -63,13 +63,13 @@
                 <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled &&!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember 
                    &&!authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner && userId!=1">
                    <div class="btn-group refer-vendor-button btnVendor">
-                      <button [ngClass]="authenticationService?.isTop?'customskin':''" (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>{{properties?.inviteAVendor}}</button>
-                      <button [ngClass]="authenticationService?.isTop?'customskin':''" [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
+                      <button [ngClass]="authenticationService?.isTop?'customskin':''" (click)="openRequestAsVendorModal()" class="invite_vendor_radius" style="border-radius: 3px 0px 0px 3px;" translate>{{properties?.inviteAVendor}}</button>
+                      <button [ngClass]="authenticationService?.isTop?'customskin':''" [routerLink]="['/home/dashboard/vendor-request']" class="analytics_icon_radius" style="border-radius: 0px 3px 3px 0px;">
                       <i class="fa fa-line-chart" [ngClass]="authenticationService?.isTop?'customskin-icon':''"  data-toggle="tooltip" data-original-title="" title="" aria-hidden="true"></i></button>
                    </div>
                 </li>
                 <li class="btnShare"  class="topnav-button-css" *ngIf="authenticationService?.module?.hasSocialStatusRole  && !authenticationService?.module?.isOnlyPartnerCompany">
-                   <button class="btn btn custom"  [ngClass]="authenticationService?.isTop?'customskin':''" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
+                   <button class="btn btn custom"  [ngClass]="authenticationService?.isTop?'customskin':''" [routerLink]="['/home/social/update-status']" class="update_status_radius" style="border-radius: 3px;">
                    <span class="hidden-xs"  translate>Update Status</span>
                    <i class="fa fa-share" [ngClass]="authenticationService?.isTop?'customskin-icon':''"  button data-toggle="tooltip" aria-hidden="true"></i>
                    </button>
