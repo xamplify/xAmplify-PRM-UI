@@ -425,10 +425,11 @@
                                     <span data-toggle="tooltip" data-placement="top" title="{{contactList.partnerCompanyName}}" *ngIf="contactList.partnerCompanyName?.length>7">...</span>
                                  </h6>
                                  <h5>
-                                    <a  *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner"
+                                    <a class="custom-icon" *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner"
                                     data-toggle="tooltip" data-placement="top"
                                      title="Preview" (click)="selectedContactListId=contactList.id ; showListSharedDetails()"> 
                                     <i class="fa fa-eye table-eye-circle IconCustomization" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                     </a>
                                  </h5>
                               </td>
@@ -474,77 +475,88 @@
                               <td *ngIf="!authenticationService.isSuperAdmin()">
                                  <div class="actions-block override-actions" style="float:none !important;"
                                     *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
-                                    <a *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner()
+                                    <a class="custom-icon" *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner()
                                     || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                                     && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner)"
                                     data-toggle="tooltip" data-placement="top"
                                     (click)="storeListDetails(contactList);openShareListPopup(contactList)"
-                                    title="{{actionsDescription.leads_list_share}}"> <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
-                                    </a> <a [class.disabled]="contactList.noOfContacts == 0 "
+                                    title="{{actionsDescription.leads_list_share}}"> 
+                                    <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
+                                    </a> 
+                                    <a class="custom-icon" [class.disabled]="contactList.noOfContacts == 0 "
                                     *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (authenticationService.module.isPartner && loggedInUserId==contactList.uploadedUserId) || authenticationService.isPartner() ||
                                     (hasPartnersRole && loggedInUserId==contactList.uploadedUserId) || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
                                     (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList);setListType(contactList.publicList)"
                                     data-toggle="tooltip" data-placement="top"
                                     title="{{actionsDescription.contact_list_edit}}">
                                     <i  class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                     </a> 
                                     <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                                       <a
+                                       <a class="custom-icon"
                                        *ngIf="!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember  || authenticationService.module.isVendorTier ||
                                        contactList.synchronisedList || ((sharedLeads)  || (assignLeads && contactList.assignedToPartner))"
                                        (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
                                        data-toggle="tooltip" data-placement="top"
                                        title="{{actionsDescription.contact_list_info}}"> <i class="fa fa-info IconCustomization" aria-hidden="true"></i>
-                                       </a> 
+                                       <div class="clickicons"></div>
+                                    </a> 
                                     </ng-container>
-                                    <a [class.disabled]="contactList.noOfContacts == 0 " data-toggle="tooltip"  data-placement="top"
+                                    <a class="custom-icon" [class.disabled]="contactList.noOfContacts == 0 " data-toggle="tooltip"  data-placement="top"
                                     *ngIf="(assignLeads || !sharedLeads) && !authenticationService?.module?.deletedPartner"
                                     title="{{actionsDescription.contact_list_saveAs}}"
                                     (click)="saveAsNewList(contactList)">
                                     <i class="fa fa-files-o IconCustomization" aria-hidden="true"></i>
-                                    </a> 
-                                    <a [class.disabled]="contactList.noOfContacts == 0 " *ngIf="assignLeads || showDownloadOptionForSharedLeads"
+                                    <div class="clickicons"></div>
+                                 </a> 
+                                    <a class="custom-icon" [class.disabled]="contactList.noOfContacts == 0 " *ngIf="assignLeads || showDownloadOptionForSharedLeads"
                                     (click)="hasDownLoadAccess(contactList.id, contactList.name)" data-toggle="tooltip"
                                     data-placement="top" title="{{actionsDescription.contact_list_download}}"
                                     data-rel="fancybox-button"> 
                                     <i class="fa fa-download IconCustomization" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                     </a> 
                                     <span
                                        *ngIf="((contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.moduleName!='SHARE LEADS'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true) && !authenticationService?.module?.deletedPartner">
-                                    <a data-toggle="tooltip" data-placement="top"
+                                    <a class="custom-icon" data-toggle="tooltip" data-placement="top"
                                     title="{{actionsDescription.contact_list_synchronize}}" 
                                     [class.disabled]= "(!contactList.emailValidationInd) || ((contactList.socialNetwork=='GOOGLE' || contactList.socialNetwork=='SALESFORCE' || contactList.socialNetwork=='ZOHO' )&& (loggedInUserId != contactList.uploadedUserId))"                      
                                     *ngIf="hasAllAccess || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember  || authenticationService.module.isVendorTier || authenticationService.vanityURLEnabled == true  || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || contactList.synchronisedList"
                                     (click)="synchronizeContactList(contactList)">
                                     <i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                     </a>
                                     </span> 
                                     <!---XNFR-81----->
                                     <ng-container *ngIf="contactList.name!=properties?.activeMasterPartnerList && contactList.name!=properties?.inActiveMasterPartnerList  && !contactList?.teamMemberPartnerList">
-                                       <a 
+                                       <a class="custom-icon" 
                                        *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
                                        || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                                        && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
                                        (click)="showAlert(contactList.id)" data-toggle="tooltip" data-placement="top"
                                        title="{{actionsDescription.contact_list_delete}}">
                                        <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                                       <div class="clickicons"></div>
                                        </a>
                                     </ng-container>
-                                    <a *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads
+                                    <a class="custom-icon" *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads
                                     && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
                                     data-toggle="tooltip" data-placement="top"
                                     (click)="openPopUpForNewlyAddedPartnersOrContacts(contactList)"
                                     title="{{actionsDescription.send_campaigns}}"> <i class="fa fa-bullhorn IconCustomization"
                                        aria-hidden="true"></i>
+                                       <div class="clickicons"></div>
                                     </a>
                                  </div>
                                  <div class="actions-block override-actions"
                                     *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
                                     ||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
                                     || (!contactList.synchronisedList  && !contactList.emailValidationInd))" >
-                                    <a data-toggle="tooltip" data-placement="top" title="Force process the list"
+                                    <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Force process the list"
                                        (click)="forceProcessList(contactList.id)">
                                     <i class="fa fa-repeat IconCustomization" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                     </a>
                                  </div>
                                  <div class="actions-block actions-msg" *ngIf="contactList.uploadInProgress">Uploading...</div>
@@ -1016,14 +1028,16 @@
                                        </button>
                                        <div class="actions-block no-float" *ngIf="isPartner && (contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' || contactsByType.selectedCategory == 'all')">
                                           <ng-container *ngIf="contact?.validEmail">
-                                             <a  (click)="sendMail(contact.id)">
+                                             <a class="custom-icon" (click)="sendMail(contact.id)">
                                              <i class="fa fa-envelope IconCustomization"  aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Send Email Notification"></i>
-                                             </a>
+                                             <div class="clickicons"></div>
+                                          </a>
                                           </ng-container>
                                           <ng-container *ngIf="!contact?.validEmail">
-                                             <a>
+                                             <a class="custom-icon">
                                              <i class="fa fa-envelope gray IconCustomization"  aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Email can't be sent for invalid email Id"></i>
                                              </a>
+                                             <div class="clickicons"></div>
                                           </ng-container>
                                        </div>
                                     </td>
@@ -1080,9 +1094,10 @@
                                           </div>
                                        </td>
                                        <td class="text-center">
-                                          <div class="actions-block no-float">
+                                          <div class="actions-block no-float custom-icon">
                                              <a data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="showCampaigns(contact.id)">
                                              <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                                             <div class="clickicons"></div>
                                              </a>
                                           </div>
                                        </td>
@@ -1092,8 +1107,9 @@
                                        || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminSuperVisor)"
                                        class="text-center">
                                        <div class="actions-block no-float">
-                                          <a data-toggle="tooltip" data-placement="bottom" title="Delete" (click)="confirmDeleteContact(contact)">
+                                          <a class="custom-icon" data-toggle="tooltip" data-placement="bottom" title="Delete" (click)="confirmDeleteContact(contact)">
                                           <i class="fa fa-trash-o trashIconCustomizatio" aria-hidden="true"></i>
+                                          <div class="clickicons"></div>
                                           </a>
                                        </div>
                                     </td>

@@ -75,10 +75,12 @@
                    </button>
                 </li>
                 <li class="dropdown dropdown-extended dropdown-notification"  id="header_notification_bar" *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && userId!=1">
-                   <a class="dropdown-toggle circlebg-color-bell-v" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                   <a class="dropdown-toggle circlebg-color-bell-v bell_icon" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                    <i  class="icon-bell"  aria-hidden="true"></i>
-                   <span *ngIf="userService.unreadNotificationsCount>0" class="badge badge-default" style="background-color: #ed1c24 !important;">{{userService.unreadNotificationsCount}}</span>
+                   <div class="clickicons"></div>
+                   
                    </a>
+                   <span *ngIf="userService.unreadNotificationsCount>0" class="badge badge-default notify_count" style="background-color: #ed1c24 !important;">{{userService.unreadNotificationsCount}}</span>
                    <ul class="dropdown-menu">
                       <li class="external">
                          <h3><span class="bold">{{userService.unreadNotificationsCount}} pending</span> notifications</h3>

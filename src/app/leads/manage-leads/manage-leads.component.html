@@ -2,7 +2,7 @@
   <div id="deals-page-content-div">
     <div>
       <div class="page-bar">
-        <div class="col-xs-12 col-sm-12 col-lg-12" >
+        <div class="col-xs-12 col-sm-12 col-lg-12">
           <div class="col-xs-12 col-sm-5 col-lg-6">
             <ul class="page-breadcrumb pbc-m3">
               <li *ngIf="!authenticationService.isSuperAdmin()">
@@ -22,12 +22,12 @@
             						margin-top: 5px;" translate>
                 {{authenticationService?.partnerModule?.customName}} View </li>
               <li *ngIf="authenticationService?.enableLeads" class="filter" (click)="showVendor()"
-                 [class.campaign-type-selected]="isVendorVersion" style="float: right;
+                [class.campaign-type-selected]="isVendorVersion" style="float: right;
             						margin-top: 5px;" translate>Vendor View</li>
               <p class="filter" style="float: right;
-            						margin: 10px;" translate>Opportunities as:   </p>
+            						margin: 10px;" translate>Opportunities as: </p>
             </ul>
-            <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+            <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
           </div>
         </div>
       </div>
@@ -35,12 +35,13 @@
         <div class="col-xs-12  p5">
           <app-list-loader *ngIf="countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
           </app-list-loader>
-          <div class="page-bar" style="padding: 15px 0px 15px 15px;" *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
+          <div class="page-bar" style="padding: 15px 0px 15px 15px;"
+            *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
             <!-- -------Total Leads------- -->
-            <div class="col-xs-6 col-sm-3 col-md-3 tiles_hover_effect" style="padding-left: 0px!important;" *ngIf="!countsLoader"
-              [style.pointer-events]="counts.totalLeads != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important;" [class.greay]="1!=selectedTabIndex"
-                (click)="showLeads()">
+            <div class="col-xs-6 col-sm-3 col-md-3 tiles_hover_effect" style="padding-left: 0px!important;"
+              *ngIf="!countsLoader" [style.pointer-events]="counts.totalLeads != 0 ? 'auto' : 'none' ">
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important;"
+                [class.greay]="1!=selectedTabIndex" (click)="showLeads()">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
                     [ngStyle]="{'color': 1==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 1==selectedTabIndex"
@@ -59,10 +60,10 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-3 col-md-3 tiles_hover_effect" style="padding-left: 0px!important;" *ngIf="!countsLoader"
-              [style.pointer-events]="counts.wonLeads != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important" [class.greay]="2!=selectedTabIndex"
-                (click)="showWonLeads()">
+            <div class="col-xs-6 col-sm-3 col-md-3 tiles_hover_effect" style="padding-left: 0px!important;"
+              *ngIf="!countsLoader" [style.pointer-events]="counts.wonLeads != 0 ? 'auto' : 'none' ">
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important"
+                [class.greay]="2!=selectedTabIndex" (click)="showWonLeads()">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
                     [ngStyle]="{'color': 2==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 2==selectedTabIndex"
@@ -80,10 +81,10 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-3 col-md-3 pt15 tiles_hover_effect" style="padding-left: 0px!important;" *ngIf="!countsLoader"
-              [style.pointer-events]="counts.lostLeads != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important" [class.greay]="3!=selectedTabIndex"
-                (click)="showLostLeads()">
+            <div class="col-xs-6 col-sm-3 col-md-3 pt15 tiles_hover_effect" style="padding-left: 0px!important;"
+              *ngIf="!countsLoader" [style.pointer-events]="counts.lostLeads != 0 ? 'auto' : 'none' ">
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom:0px !important"
+                [class.greay]="3!=selectedTabIndex" (click)="showLostLeads()">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
                     [ngStyle]="{'color': 3==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 3==selectedTabIndex"
@@ -101,10 +102,10 @@
               </a>
             </div>
 
-            <div class="col-xs-6 col-sm-3 col-md-3 mr0 pt15 tiles_hover_effect" style="padding-left: 0px!important;" *ngIf="!countsLoader"
-              [style.pointer-events]="counts.convertedLeads != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom: 0px !important;" [class.greay]="4!=selectedTabIndex"
-                (click)="showConvertedLeads()">
+            <div class="col-xs-6 col-sm-3 col-md-3 mr0 pt15 tiles_hover_effect" style="padding-left: 0px!important;"
+              *ngIf="!countsLoader" [style.pointer-events]="counts.convertedLeads != 0 ? 'auto' : 'none' ">
+              <a class="dashboard-stat dashboard-stat-lighter purple-soft" style="margin-bottom: 0px !important;"
+                [class.greay]="4!=selectedTabIndex" (click)="showConvertedLeads()">
                 <div class="visual">
                   <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
                     [ngStyle]="{'color': 4==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 4==selectedTabIndex"
@@ -140,7 +141,8 @@
                   <!-- <h4 class="text-primary pull-left" style="margin-top: 3px;">{{titleHeading}} Leads</h4> -->
                   <div class="col-xs-6 col-sm-6 col-lg-5 p0 mleads">
                     <h4 class="text-primary pull-left" style="margin: 8px 6px 0px 0px;">{{titleHeading}} Leads</h4>
-                    <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex" *ngIf="isVendorVersion && !authenticationService?.module?.isMarketingCompany"
+                    <app-team-member-filter-option [customSelectedIndex]="selectedFilterIndex"
+                      *ngIf="isVendorVersion && !authenticationService?.module?.isMarketingCompany"
                       (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                   </div>
                   <div class="page-toolbar col-xs-6 col-sm-6 col-lg-5 p0 pull-right m_mb8">
@@ -151,18 +153,19 @@
                           <i aria-hidden="true" class="fa fa-th-list p10"></i>
                         </span>
                         <span *ngIf="authenticationService?.module?.isCampaign" data-placement="bottom"
-                          class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Campaign View" style="margin-left: 3px !important;"
-                          [class.disabled]="!listView" (click)="setCampaignView()">
+                          class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Campaign View"
+                          style="margin-left: 3px !important;" [class.disabled]="!listView" (click)="setCampaignView()">
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                         </span>
                       </ng-container>
-                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" style="margin-left: 3px !important;"
-                        title="Download" [class.disabled]="leadsSortOption.totalRecords == 0" *ngIf="listView"
-                        (click)="downloadLeads()">
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                        style="margin-left: 3px !important;" title="Download"
+                        [class.disabled]="leadsSortOption.totalRecords == 0" *ngIf="listView" (click)="downloadLeads()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                       </span>
 
-                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner" (click)="addLead()" style="padding-left: 4px;">
+                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
+                        (click)="addLead()" style="padding-left: 4px;">
                         <button class="btn btn-primary padding align mb-btns" translate>
                           <i class="fa fa-plus  mb-btns" aria-hidden="true"></i> Add a Lead
                         </button>
@@ -170,9 +173,9 @@
 
                       <!-- XNFR-215 -->
                       <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT'"
-                        (click)="syncLeadsWithActiveCRM()">                      
-                        <button class="btn btn-white padding mt button salesforce-btn mb-btns" style="margin-left: 3px;" data-toggle="tooltip"
-                          data-placement="bottom" title="Synchronize" translate>
+                        (click)="syncLeadsWithActiveCRM()">
+                        <button class="btn btn-white padding mt button salesforce-btn mb-btns" style="margin-left: 3px;"
+                          data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
 
                           <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
                         </button>
@@ -194,19 +197,24 @@
 
                       <div class="inputs display" align="right">
                         <div class="portlet-input input-inline" style="display: table-cell;">
-                          <div [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'r20' : 'mr-pd'"  class="input-icon right r5" style="position: relative;right: -3px;">
+                          <div
+                            [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'r20' : 'mr-pd'"
+                            class="input-icon right r5" style="position: relative;right: -3px;">
                             <input type="text" class="form-control pr-pl ml" [(ngModel)]="leadsSortOption.searchKey"
                               [ngModelOptions]="{standalone: true}" placeholder="Search"
                               (keypress)="leadEventHandler($event.keyCode)">
                             <button class="glyphicon glyphicon-remove search-box-item-clear"
                               *ngIf="leadsSortOption.searchKey" (click)="clearSearch()"></button>
-                            <button type="submit" [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'top' : 'top2'" class="search-box-item-click top mb_v_search" (click)="searchLeads()">
+                            <button type="submit"
+                              [ngClass]="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.activeCRM != 'MARKETO' ? 'top' : 'top2'"
+                              class="search-box-item-click top mb_v_search" (click)="searchLeads()">
                               <i class="fa fa-search" aria-hidden="true"></i>
                             </button>
                           </div>
                         </div>
-                        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" style="margin-left: 5px !important;"
-                          title="Filter" *ngIf="listView" (click)="toggleFilterOption()">
+                        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                          style="margin-left: 5px !important;" title="Filter" *ngIf="listView"
+                          (click)="toggleFilterOption()">
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                         </span>
                       </div>
@@ -221,11 +229,13 @@
                     <div class="portlet light m10">
                       <div class="portlet-title">
                         <div class="caption" translate>Apply Filters</div>
-                        <button type="button" class="close-circle" style="margin-left: 10px;" (click)="closeFilterOption()">
+                        <button type="button" class="close-circle" style="margin-left: 10px;"
+                          (click)="closeFilterOption()">
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                         <div class="form-group" style="text-align: -webkit-right;">
-                          <button  class="btn Btn-Green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
+                          <button class="btn Btn-Green" translate="" type="button" ng-reflect-translate="" [disabled]=""
+                            (click)="validateDateFilters()">Filter</button>
                         </div>
                       </div>
                       <div class="portlet box">
@@ -247,11 +257,12 @@
                                 <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
-                              
+
                               <div class="row">
-                                <div class="form-group col-sm-6 ml0-mr0" style="margin-top: 13px;padding-left: 54px;;display: flex;">
+                                <div class="form-group col-sm-6 ml0-mr0"
+                                  style="margin-top: 13px;padding-left: 54px;;display: flex;">
                                   <label class="control-label" style="padding-right: 5px;">Status &nbsp; </label>
-                                  <select class="form-control select-width"  [(ngModel)]="statusFilter"
+                                  <select class="form-control select-width" [(ngModel)]="statusFilter"
                                     [ngModelOptions]="{standalone: true}">
                                     <option value="">---Select Status---</option>
                                     <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
@@ -259,8 +270,8 @@
                                   </select>
                                 </div>
                               </div>
+                            </div>
                           </div>
-                        </div>
                         </form>
                       </div>
                     </div>
@@ -318,16 +329,18 @@
 
                             </td>
                             <td>
-                              <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByCompanyName}}">{{lead.createdByCompanyName | slice:0:30}}
+                              <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom"
+                                title="{{lead.createdByCompanyName}}">{{lead.createdByCompanyName | slice:0:30}}
                                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
                               </h5>
-                              <h5 class='ellipsis m_t_view' data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByName}}"
-                                style="margin: 7px 0 2px 0;font-weight: 400;">
+                              <h5 class='ellipsis m_t_view' data-toggle="tooltip" data-placement="bottom"
+                                title="{{lead.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
                                 {{lead.createdByName | slice:0:20}}
                                 <span *ngIf="lead.createdByName?.length>20">...</span>
                               </h5>
                               <h6 class='m0' style="font-weight: 400;">
-                                <a data-toggle="tooltip" data-placement="bottom" title="{{lead.createdByEmail}}">{{lead.createdByEmail | slice:0:30}}</a>
+                                <a data-toggle="tooltip" data-placement="bottom"
+                                  title="{{lead.createdByEmail}}">{{lead.createdByEmail | slice:0:30}}</a>
                                 <span *ngIf="lead.createdByEmail?.length>30">...</span>
                               </h6>
                               <h5 style="font-weight: 600; color: #676767;">
@@ -343,7 +356,8 @@
                                 Deal
                               </div>
 
-                              <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner" class="register_deal">
+                              <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner"
+                                class="register_deal">
                                 <a style="padding: 3px;" (click)="showDealRegistrationForm(lead)" translate>
                                   Register Deal</a>
                               </div>
@@ -351,29 +365,34 @@
                             </td>
                             <td>
                               <div class="actions-block override-actions tb_view_actions">
-                                  <a data-rel="fancybox-button" (click)="viewLead(lead)"  data-toggle="tooltip" data-placement="bottom"
-                                   title="View Lead" id="lead">
-                                    <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
-                                  </a>
-                                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                                    <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="editLead(lead)"
-                                    data-toggle="tooltip" data-placement="bottom"
+                                <a class="custom-icon" data-rel="fancybox-button" (click)="viewLead(lead)"
+                                  data-toggle="tooltip" data-placement="bottom" title="View Lead" id="lead">
+                                  <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
+                                  <div class="clickicons"></div>
+                                </a>
+                                <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                                  <a class="custom-icon" data-rel="fancybox-button" *ngIf="lead.canUpdate"
+                                    (click)="editLead(lead)" data-toggle="tooltip" data-placement="bottom"
                                     title="Edit Lead" id="lead">
-                                      <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
-                                    </a>
-                                    <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="confirmDeleteLead(lead)"
-                                    data-toggle="tooltip" data-placement="bottom"
-                                      title="Delete Lead" id="lead">
-                                      <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
-                                    </a>
-                                  </ng-container>
-                                    <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)"
-                                    data-toggle="tooltip" data-placement="bottom"
-                                      title="Comments" style="margin-top: 10px">
-                                      <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px"> </i>
-                                      <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"
-                                        style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
-                                    </a>
+                                    <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
+                                  </a>
+                                  <a class="custom-icon" data-rel="fancybox-button" *ngIf="lead.canUpdate"
+                                    (click)="confirmDeleteLead(lead)" data-toggle="tooltip" data-placement="bottom"
+                                    title="Delete Lead" id="lead">
+                                    <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
+                                  </a>
+                                </ng-container>
+                                <a class="custom-icon" *ngIf="true" data-rel="fancybox-button"
+                                  (click)="showComments(lead)" data-toggle="tooltip" data-placement="bottom"
+                                  title="Comments" style="margin-top: 10px">
+                                  <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
+                                  </i>
+                                  <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"
+                                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
+                                  <div class="clickicons"></div>
+                                </a>
                               </div>
                             </td>
                           </tr>
@@ -422,23 +441,24 @@
                         <ng-container *ngFor='let campaign of campaignPagination.pagedItems; let i=index'>
                           <tr>
                             <td style="width: 10%;" class="hidden-xs">
-                              <img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1"
+                              <img class="image_effect" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1"
                                 src="assets/images/video-email.svg" style="height: 35px;"
                                 alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1"
+                              <img class="image_effect" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1"
                                 src="assets/images/regular-email.svg" style="height: 35px;"
                                 alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 "
+                              <img class="image_effect" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 "
                                 src="assets/images/social-campaign.svg" style="height: 35px;"
                                 alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 "
+                              <img class="image_effect" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 "
                                 src="assets/images/event-campaign.svg" style="height: 35px;"
                                 alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 "
+                              <img class="image_effect" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 "
                                 src="assets/images/landing-page.svg" style="height: 35px;"
                                 alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 " src="assets/images/survey.svg"
-                                style="height: 35px;" alt="{{campaign.campaignType}} Campaign">
+                              <img class="image_effect" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 "
+                                src="assets/images/survey.svg" style="height: 35px;"
+                                alt="{{campaign.campaignType}} Campaign">
                             </td>
                             <td>
                               <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;"
@@ -460,22 +480,26 @@
                               </span>
                             </td>
                             <td>
-                              <a data-toggle="tooltip" data-placement="top" title="Number of Leads"
+                              <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Number of Leads"
                                 style="cursor: default">
-                                <i class="circled-number IconCustomization fontStyleNormal"><strong>{{campaign.leadsCount}}</strong></i>
+                                <i
+                                  class="circled-number IconCustomization fontStyleNormal"><strong>{{campaign.leadsCount}}</strong></i>
+                                <div class="clickicons"></div>
                               </a>
 
-                              <a *ngIf="campaign.channelCampaign" (click)="showPartners(campaign)" data-toggle="tooltip"
-                                data-placement="top" title="View leads for this campaign">
-                              
-                                  <i class="circled-number fa IconCustomization" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"
-                                    aria-hidden="true"></i>
-                                
-                              </a>
-
-                              <a *ngIf="!campaign.channelCampaign" (click)="showPartners(campaign)"
+                              <a class="custom-icon" *ngIf="campaign.channelCampaign" (click)="showPartners(campaign)"
                                 data-toggle="tooltip" data-placement="top" title="View leads for this campaign">
-                                  <i class="circled-number fa fa-users IconCustomization" aria-hidden="true"></i>
+
+                                <i class="circled-number fa IconCustomization"
+                                  [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"
+                                  aria-hidden="true"></i>
+                                <div class="clickicons"></div>
+                              </a>
+
+                              <a class="custom-icon" *ngIf="!campaign.channelCampaign" (click)="showPartners(campaign)"
+                                data-toggle="tooltip" data-placement="top" title="View leads for this campaign">
+                                <i class="circled-number fa fa-users IconCustomization" aria-hidden="true"></i>
+                                <div class="clickicons"></div>
                               </a>
 
                             </td>
@@ -535,9 +559,11 @@
                                                     [isPartnerInfo]="true"></app-user-info>
                                                 </td>
                                                 <td>
-                                                  <a (click)="showCampaignLeadsByPartner(item)" data-toggle="tooltip"
-                                                    data-placement="top" title="Number Of Leads">
-                                                    <i class="circled-number IconCustomization fontStyleNormal"><b>{{item.leadsCount}}</b></i>
+                                                  <a class="custom-icon" (click)="showCampaignLeadsByPartner(item)"
+                                                    data-toggle="tooltip" data-placement="top" title="Number Of Leads">
+                                                    <i
+                                                      class="circled-number IconCustomization fontStyleNormal"><b>{{item.leadsCount}}</b></i>
+                                                    <div class="clickicons"></div>
                                                   </a>
                                                 </td>
                                               </tr>
@@ -605,8 +631,7 @@
 
                 </div>
 
-                <a (click)="closeCampaignLeads()" class="pull-right close-circle"
-                  style="margin: 0px 14px;">
+                <a (click)="closeCampaignLeads()" class="pull-right close-circle" style="margin: 0px 14px;">
                   <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
                     aria-hidden="true"></span></a>
                 <app-manage-campaign-leads [partnerCompanyId]="selectedPartnerCompanyId"
@@ -641,7 +666,8 @@
   <div class="page-content">
     <a (click)="closeDealForm()" class="pull-right close-circle"
       style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
-      <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;padding-top:6px;" aria-hidden="true"></span></a>
+      <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;padding-top:6px;"
+        aria-hidden="true"></span></a>
     <app-add-deal [leadId]="leadId" [actionType]="actionType" (notifySubmitSuccess)="showSubmitDealSuccess()">
     </app-add-deal>
   </div>

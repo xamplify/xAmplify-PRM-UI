@@ -936,34 +936,42 @@
                                                     </td>
                                                     <td class="white-space-transform">
                                                         <div class="actions-block override-actions" style="display: flex;">
-                                                        <a *ngIf= "!contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor" data-toggle="tooltip" data-placement="bottom" title="unsubscribe" (click)="unsubscribeUser(contact)">
+                                                        <a class="custom-icon" *ngIf= "!contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor" data-toggle="tooltip" data-placement="bottom" title="unsubscribe" (click)="unsubscribeUser(contact)">
 										                  <i class="fa fa-bell-slash-o IconCustomization" aria-hidden="true"></i>
+                                                          <div class="clickicons"></div>
 														</a>
-													  	<a *ngIf= "contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor" data-toggle="tooltip" data-placement="bottom" title="subscribe" (click)="resubscribeUser(contact)">
+													  	<a class="custom-icon" *ngIf= "contact.unsubscribed && authenticationService?.module?.adminOrSuperVisor" data-toggle="tooltip" data-placement="bottom" title="subscribe" (click)="resubscribeUser(contact)">
 															<i class="fa fa-bell-o IconCustomization" aria-hidden="true"></i>
+                                                            <div class="clickicons"></div>
 														</a>
-                                                            <a id="envolope_{{i}}" (click)="sendMail(contact.id)">
+                                                            <a class="custom-icon" id="envolope_{{i}}" (click)="sendMail(contact.id)">
                                                                 <i class="fa fa-envelope IconCustomization" aria-hidden="true"
                                                                 data-toggle="tooltip" data-placement="bottom"
                                                                 title="Send Email Notification"></i>
+                                                                <div class="clickicons"></div>
                                                             </a>
-                                                             <a id="edit_{{i}}" data-toggle="tooltip"
+                                                             <a class="custom-icon" id="edit_{{i}}" data-toggle="tooltip"
                                                                 data-placement="bottom"
                                                                 title="Edit {{authenticationService?.partnerModule?.customName}}"
                                                                 (click)="editUserDetails(contact)"> <i
                                                                 class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
-                                                            </a> <a id="delete_{{i}}" data-toggle="tooltip"
+                                                                <div class="clickicons"></div>
+                                                            </a> 
+                                                            <a class="custom-icon" id="delete_{{i}}" data-toggle="tooltip"
                                                                 data-placement="bottom"
                                                                 title="Delete {{authenticationService?.partnerModule?.customName}}"
-                                                                (click)="deleteUserShowAlert(contact.id)"> <i
+                                                                (click)="deleteUserShowAlert(contact.id)"> 
+                                                                <i
                                                                 class="fa fa-trash-o trashIconCustomization" 
                                                                 aria-hidden="true"></i>
+                                                                <div class="clickicons"></div>
                                                             </a>
                                                             <ng-container *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)">
-                                                                <a data-toggle="tooltip" data-placement="bottom"
+                                                                <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
                                                                     title="{{actionsDescription.send_campaigns}}"
                                                                     (click)="addCampaigns(contact)"> <i
                                                                     class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i>
+                                                                    <div class="clickicons"></div>
                                                                 </a> 
                                                             </ng-container>
                                                             <!--XNFR-342-->
@@ -973,12 +981,13 @@
                                                                 <i class="fa fa-forward IconCustomization" aria-hidden="true"></i>
                                                             </a> -->
                                                             <!--XNFR-342-->
-                                                            <a
+                                                            <a class="custom-icon"
                                                                 *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember"
                                                                 data-toggle="tooltip" data-placement="bottom"
                                                                 title="Campaign Analytics"
                                                                 (click)="goToCampaigns(contact)"> <i
                                                                 class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                                                                <div class="clickicons"></div>
                                                             </a>
                                                             <app-login-as-partner [contact]="contact" [showLoginAsButton]="true"></app-login-as-partner>
                                                             <!---XNFR-224--->

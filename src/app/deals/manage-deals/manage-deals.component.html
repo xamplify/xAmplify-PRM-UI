@@ -16,15 +16,17 @@
             </ul>
           </div>
           <div class="col-xs-12 col-sm-7 col-lg-6 p0">
-            <ul class="mix-filter p0 m0" style="float: right" *ngIf="!authenticationService.vanityURLEnabled && authenticationService?.module?.isAdminAndPartnerCompany">
+            <ul class="mix-filter p0 m0" style="float: right"
+              *ngIf="!authenticationService.vanityURLEnabled && authenticationService?.module?.isAdminAndPartnerCompany">
               <li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
             						margin-top: 5px;" translate>{{authenticationService?.partnerModule?.customName}} View </li>
-              <li *ngIf="authenticationService?.enableLeads" class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
+              <li *ngIf="authenticationService?.enableLeads" class="filter" (click)="showVendor()"
+                [class.campaign-type-selected]="isVendorVersion" style="float: right;
             						margin-top: 5px;" translate>Vendor View</li>
               <p class="filter" style="float: right;
             						margin: 10px;" translate>Opportunities as: </p>
             </ul>
-            <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+            <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
           </div>
         </div>
       </div>
@@ -34,83 +36,90 @@
           </app-list-loader>
           <div class="row" *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
             <!--  Start Tiles-->
-           <div class="col-xs-12 col-md-12 col-sm-12">
-            <div class="page-bar" style="padding: 15px 15px 15px 0px">
-            <!-- -------Total Deals------- -->
-            <div class="col-xs-12 col-sm-4 col-md-4 pr0 pb15 tiles_hover_effect" *ngIf="!countsLoader"
-              [style.pointer-events]="counts.totalDeals != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="1!=selectedTabIndex"
-                (click)="showDeals()">
-                <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
-                    [ngStyle]="{'color': 1==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 1==selectedTabIndex"
-                    aria-hidden="true"></i>
+            <div class="col-xs-12 col-md-12 col-sm-12">
+              <div class="page-bar" style="padding: 15px 15px 15px 0px">
+                <!-- -------Total Deals------- -->
+                <div class="col-xs-12 col-sm-4 col-md-4 pr0 pb15 tiles_hover_effect" *ngIf="!countsLoader"
+                  [style.pointer-events]="counts.totalDeals != 0 ? 'auto' : 'none' ">
+                  <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="1!=selectedTabIndex"
+                    (click)="showDeals()">
+                    <div class="visual">
+                      <i class="fa fa-check-circle"
+                        style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
+                        [ngStyle]="{'color': 1==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 1==selectedTabIndex"
+                        aria-hidden="true"></i>
+                    </div>
+                    <div class="details">
+                      <div class="number">
+                        <span>{{counts.totalDeals}}</span>
+                      </div>
+                      <div class="desc" style="font-weight:500" translate>Total Deals</div>
+                    </div>
+                    <span id="permhref" class="morePadding ">
+                      <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"
+                          aria-hidden="true"></i></a>
+                    </span>
+                  </a>
                 </div>
-                <div class="details">
-                  <div class="number">
-                    <span>{{counts.totalDeals}}</span>
-                  </div>
-                  <div class="desc" style="font-weight:500" translate>Total Deals</div>
-                </div>
-                <span id="permhref" class="morePadding ">
-                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-                </span>
-              </a>
-            </div>
 
-            <!-- -------Won Deals------- -->
-            <div class="col-xs-12 col-sm-4 col-md-4 pr0 pb15 tiles_hover_effect" *ngIf="!countsLoader"
-              [style.pointer-events]="counts.wonDeals != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
-                (click)="showWonDeals()">
-                <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
-                    [ngStyle]="{'color': 2==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 2==selectedTabIndex"
-                    aria-hidden="true"></i>
+                <!-- -------Won Deals------- -->
+                <div class="col-xs-12 col-sm-4 col-md-4 pr0 pb15 tiles_hover_effect" *ngIf="!countsLoader"
+                  [style.pointer-events]="counts.wonDeals != 0 ? 'auto' : 'none' ">
+                  <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
+                    (click)="showWonDeals()">
+                    <div class="visual">
+                      <i class="fa fa-check-circle"
+                        style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
+                        [ngStyle]="{'color': 2==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 2==selectedTabIndex"
+                        aria-hidden="true"></i>
+                    </div>
+                    <div class="details">
+                      <div class="number">
+                        <span>{{counts.wonDeals}}</span>
+                      </div>
+                      <div class="desc" style="font-weight:500" translate>Won Deals</div>
+                    </div>
+                    <span id="permhref" class="morePadding ">
+                      <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"
+                          aria-hidden="true"></i></a>
+                    </span>
+                  </a>
                 </div>
-                <div class="details">
-                  <div class="number">
-                    <span>{{counts.wonDeals}}</span>
-                  </div>
-                  <div class="desc" style="font-weight:500" translate>Won Deals</div>
-                </div>
-                <span id="permhref" class="morePadding ">
-                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-                </span>
-              </a>
-            </div>
 
-            <!-- -------Lost Deals------- -->
-            <div class="col-xs-12 col-sm-4 col-md-4 pr0 tiles_hover_effect" *ngIf="!countsLoader"
-              [style.pointer-events]="counts.lostDeals != 0 ? 'auto' : 'none' ">
-              <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="3!=selectedTabIndex"
-                (click)="showLostDeals()">
-                <div class="visual">
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
-                    [ngStyle]="{'color': 3==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 3==selectedTabIndex"
-                    aria-hidden="true"></i>
+                <!-- -------Lost Deals------- -->
+                <div class="col-xs-12 col-sm-4 col-md-4 pr0 tiles_hover_effect" *ngIf="!countsLoader"
+                  [style.pointer-events]="counts.lostDeals != 0 ? 'auto' : 'none' ">
+                  <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="3!=selectedTabIndex"
+                    (click)="showLostDeals()">
+                    <div class="visual">
+                      <i class="fa fa-check-circle"
+                        style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"
+                        [ngStyle]="{'color': 3==selectedTabIndex ? '#white' : '#ccc' }" *ngIf=" 3==selectedTabIndex"
+                        aria-hidden="true"></i>
+                    </div>
+                    <div class="details">
+                      <div class="number">
+                        <span>{{counts.lostDeals}}</span>
+                      </div>
+                      <div class="desc" style="font-weight:500" translate>Lost Deals</div>
+                    </div>
+                    <span id="permhref" class="morePadding ">
+                      <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"
+                          aria-hidden="true"></i></a>
+                    </span>
+                  </a>
                 </div>
-                <div class="details">
-                  <div class="number">
-                    <span>{{counts.lostDeals}}</span>
-                  </div>
-                  <div class="desc" style="font-weight:500" translate>Lost Deals</div>
-                </div>
-                <span id="permhref" class="morePadding ">
-                  <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
-                </span>
-              </a>
+              </div>
             </div>
-            </div>
-           </div>
-           <!-- End Tiles-->
+            <!-- End Tiles-->
           </div>
         </div>
 
-        
+
       </div>
 
-      <app-response-message class="pg8" [customResponse]="dealsResponse" *ngIf="dealsResponse.isVisible"></app-response-message>
+      <app-response-message class="pg8" [customResponse]="dealsResponse"
+        *ngIf="dealsResponse.isVisible"></app-response-message>
       <!-- -----------------------------Deals List-------------------------------------- -->
       <div class="row">
         <div class="col-md-12">
@@ -121,8 +130,10 @@
                 <div class="" *ngIf="!httpRequestLoader.isLoading">
                   <h4 class="text-primary pull-left">{{titleHeading}} Deals</h4>
                   <div class="col-xs-12 col-sm-5 col-lg-5" *ngIf="isVendorVersion">
-                    <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
-                  </div>                
+                    <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany"
+                      [customSelectedIndex]="selectedFilterIndex"
+                      (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                  </div>
                   <div class="page-toolbar col-xs-12 col-sm-5 col-lg-6 pull-right" style="padding: 0px 4px 10px 0px;">
                     <div class="btn-group pull-right width">
                       <ng-container class='m10' *ngIf="!prm || !isVendorVersion">
@@ -130,34 +141,40 @@
                           data-toggle="tooltip" [class.disabled]="listView" title="List View">
                           <i aria-hidden="true" class="fa fa-th-list p10"></i>
                         </span>
-                        <span *ngIf="authenticationService?.module?.isCampaign" [ngClass]="authenticationService?.module?.isCampaign ? 'margin-right' : 'mr0'" data-placement="bottom" style="margin-left: 4px !important;" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
-                          title="Campaign View" [class.disabled]="!listView" (click)="setCampaignView()">
+                        <span *ngIf="authenticationService?.module?.isCampaign"
+                          [ngClass]="authenticationService?.module?.isCampaign ? 'margin-right' : 'mr0'"
+                          data-placement="bottom" style="margin-left: 4px !important;"
+                          class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Campaign View"
+                          [class.disabled]="!listView" (click)="setCampaignView()">
                           <i _ngcontent-c17="" aria-hidden="true" class="fa fa-folder-open p10"></i>
                         </span>
-                       
+
                       </ng-container>
-                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" style="margin-right: 4px;" data-toggle="tooltip" title="Download"
-                        [class.disabled]="dealsSortOption.totalRecords == 0" *ngIf="listView" (click)="downloadDeals()">
+                      <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" style="margin-right: 4px;"
+                        data-toggle="tooltip" title="Download" [class.disabled]="dealsSortOption.totalRecords == 0"
+                        *ngIf="listView" (click)="downloadDeals()">
                         <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
                       </span>
-                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner" (click)="addDeal()" style="padding-left: 11px;">
+                      <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
+                        (click)="addDeal()" style="padding-left: 11px;">
                         <button class="btn btn-primary" translate>
                           <i class="fa fa-plus" aria-hidden="true"></i> Add a Deal
                         </button>
                       </a>
 
 
-                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO'" (click)="syncLeadsWithActiveCRM()">
+                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO'"
+                        (click)="syncLeadsWithActiveCRM()">
 
-                        <button class="btn btn-white button salesforce-btn" style="margin-right: -6px;" data-toggle="tooltip" data-placement="bottom"
-                          title="Synchronize" translate>
+                        <button class="btn btn-white button salesforce-btn" style="margin-right: -6px;"
+                          data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
                           <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
                         </button>
                       </a>
 
                       <a *ngIf="isVendorVersion && syncMicrosoft" (click)="syncLeadsWithMicrosoft()">
-                        <button class="btn btn-white" style="margin-right: -7px;" data-toggle="tooltip" data-placement="bottom"
-                          title="Synchronize with Microsoft Dynamics" translate>
+                        <button class="btn btn-white" style="margin-right: -7px;" data-toggle="tooltip"
+                          data-placement="bottom" title="Synchronize with Microsoft Dynamics" translate>
                           <i class="fa fa-refresh" aria-hidden="true"></i> Microsoft Dynamics
                         </button>
                       </a>
@@ -175,79 +192,87 @@
                             </button>
                           </div>
                         </div>
-                        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" title="Filter"
-                            *ngIf="listView" (click)="toggleFilterOption()">
-                            <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+                        <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                          title="Filter" *ngIf="listView" (click)="toggleFilterOption()">
+                          <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
                         </span>
                       </div>
                     </div>
                   </div>
-                </div>              
-                <div class="row" *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                </div>
+                <div class="row"
+                  *ngIf="showFilterOption && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                   <div class="col-xs-12 col-sm-12">
                     <div class="portlet light m10">
                       <div class="portlet-title">
                         <div class="caption" translate>Apply Filter</div>
-                        <button type="button" class="close-circle" style="margin-left: 10px;" (click)="closeFilterOption()">
+                        <button type="button" class="close-circle" style="margin-left: 10px;"
+                          (click)="closeFilterOption()">
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                         <div class="form-group" style="text-align: -webkit-right;">
-                          <button  class="btn Btn-Green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
-                        </div> 
-                      </div>                                       
+                          <button class="btn Btn-Green" translate="" type="button" ng-reflect-translate="" [disabled]=""
+                            (click)="validateDateFilters()">Filter</button>
+                        </div>
+                      </div>
                       <div class="portlet box">
-                        <app-response-message class="pg8" [customResponse]="filterResponse" *ngIf="filterResponse.isVisible">
-                        </app-response-message> 
+                        <app-response-message class="pg8" [customResponse]="filterResponse"
+                          *ngIf="filterResponse.isVisible">
+                        </app-response-message>
                         <form role="form" class="form-horizontal form-bordered form-label-stripped">
                           <div class="form-group">
                             <div class="form-inline col-sm-12 ">
                               <div class="form-group col-lg-5 col-md-5 col-sm-6 col-xs-12">
-                                <label class="control-label">From Date &nbsp;                              
+                                <label class="control-label">From Date &nbsp;
                                 </label>
                                 <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
                               <div class="form-group col-lg-5 col-md-5 col-sm-6 col-xs-12 form-group-mr">
-                                <label class="control-label">To Date &nbsp;                              
+                                <label class="control-label">To Date &nbsp;
                                 </label>
                                 <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
                                 </app-date-picker>
                               </div>
                               <div class="row" *ngIf="isPartnerVersion && !vanityLoginDto?.vanityUrlFilter">
-                                <div class="form-group col-lg-5 col-md-5 col-sm-6 col-xs-12 ml0-mr0" style="margin-top: 13px;padding-left: 30px;display: flex;">
+                                <div class="form-group col-lg-5 col-md-5 col-sm-6 col-xs-12 ml0-mr0"
+                                  style="margin-top: 13px;padding-left: 30px;display: flex;">
                                   <label class="control-label" style="padding-right: 5px;">Added For &nbsp;</label>
-                                  <select class="form-control select-width FilerFormWidth"  [(ngModel)]="vendorCompanyIdFilter"
-                                    (ngModelChange)="onChangeVendorCompany()" [ngModelOptions]="{standalone: true}">
+                                  <select class="form-control select-width FilerFormWidth"
+                                    [(ngModel)]="vendorCompanyIdFilter" (ngModelChange)="onChangeVendorCompany()"
+                                    [ngModelOptions]="{standalone: true}">
                                     <option value="">---Select Company---</option>
-                                    <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">{{vendor.companyName}}
+                                    <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">
+                                      {{vendor.companyName}}
                                     </option>
                                   </select>
                                 </div>
                               </div>
 
                               <div class="row">
-                                <div class="form-group col-lg-5 col-md-5 col-sm-6 col-xs-12 ml0-mr0" style="margin-top: 13px;padding-left: 54px;;display: flex;">
+                                <div class="form-group col-lg-5 col-md-5 col-sm-6 col-xs-12 ml0-mr0"
+                                  style="margin-top: 13px;padding-left: 54px;;display: flex;">
                                   <label class="control-label" style="padding-right: 5px;">Status &nbsp; </label>
                                   <select class="form-control select-width FilerFormWidth" [(ngModel)]="statusFilter"
-                                  [ngModelOptions]="{standalone: true}">
-                                      <option value="">---Select Status---</option>  
+                                    [ngModelOptions]="{standalone: true}">
+                                    <option value="">---Select Status---</option>
                                     <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
                                     </option>
                                   </select>
                                 </div>
-                              </div>                                          
+                              </div>
+                            </div>
+                          </div>
+                        </form>
                       </div>
                     </div>
-                    </form>
-                      </div>
-                    </div>                                    
-                  </div>               
+                  </div>
                 </div>
                 <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                 </app-list-loader>
                 <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0'
                   [hidden]="!listView || dealsSortOption.totalRecords == 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
-                
+
                   <div class="table-responsive" [hidden]="httpRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="dealTable">
                       <thead>
@@ -257,9 +282,9 @@
                           <th class="center" translate>Status</th>
                           <th style="width: 18%; text-align:right" translate>Actions</th>
                         </tr>
-                
+
                       </thead>
-                
+
                       <tbody>
                         <ng-container *ngFor='let deal of dealsPagination.pagedItems; let i=index'>
                           <tr>
@@ -286,18 +311,21 @@
                                   </span>
                                 </h5>
                               </div>
-                
+
                             </td>
                             <td style="width: 20%;">
-                              <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom"  title="{{deal.createdByCompanyName}}">{{deal.createdByCompanyName | slice:0:30}}
+                              <h5 *ngIf="!isPartnerVersion" data-toggle="tooltip" data-placement="bottom"
+                                title="{{deal.createdByCompanyName}}">{{deal.createdByCompanyName | slice:0:30}}
                                 <span *ngIf="deal.createdByCompanyName?.length>30">...</span>
                               </h5>
-                              <h5 class='ellipsis m_t_view' data-toggle="tooltip" data-placement="bottom" title="{{deal.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
+                              <h5 class='ellipsis m_t_view' data-toggle="tooltip" data-placement="bottom"
+                                title="{{deal.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
                                 {{deal.createdByName | slice:0:20}}
                                 <span *ngIf="deal.createdByName?.length>20">...</span>
                               </h5>
                               <h6 class='m0' style="font-weight: 400;">
-                                <a data-toggle="tooltip" data-placement="bottom" title="{{deal.createdByEmail}}">{{deal.createdByEmail | slice:0:30}}</a>
+                                <a data-toggle="tooltip" data-placement="bottom"
+                                  title="{{deal.createdByEmail}}">{{deal.createdByEmail | slice:0:30}}</a>
                                 <span *ngIf="deal.createdByEmail?.length>30">...</span>
                               </h6>
                               <h5 style="font-weight: 600; color: #676767;">
@@ -310,39 +338,52 @@
                                 <select
                                   [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage)"
                                   class="form-control" [(ngModel)]="deal.pipelineStageId"
-                                  (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)" style="width: 115px">
-                                  <option *ngIf="isPartnerVersion && deal.currentStagePrivate" [ngValue]="deal.currentStageId">{{deal.currentStageName}}</option>
-                                  <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
+                                  (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)"
+                                  style="width: 115px">
+                                  <option *ngIf="isPartnerVersion && deal.currentStagePrivate"
+                                    [ngValue]="deal.currentStageId">{{deal.currentStageName}}</option>
+                                  <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">
+                                    {{stage.stageName}}</option>
                                 </select>
                                 <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
                                   *ngIf="isPartnerVersion && deal?.onNonInteractiveStage"
-                                  title="You can not edit this deal as it is on a non interactive deal stage."></span>                              
+                                  title="You can not edit this deal as it is on a non interactive deal stage."></span>
                               </span>
                             </td>
                             <td style="width: 20%;">
                               <div class="actions-block override-actions actionbtn">
-                                  <a data-rel="fancybox-button" (click)="viewDeal(deal)" data-toggle="tooltip" data-placement="bottom" title="View Deal" id="deal">
-                                    <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
-                                    <span *ngIf="deal.unReadPropertyChatCount > 0" class="badge badge-default"
-                                      style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
+                                <a class="custom-icon" data-rel="fancybox-button" (click)="viewDeal(deal)"
+                                  data-toggle="tooltip" data-placement="bottom" title="View Deal" id="deal">
+                                  <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
+                                  <span *ngIf="deal.unReadPropertyChatCount > 0" class="badge badge-default"
+                                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadPropertyChatCount}}</span>
+                                  <div class="clickicons"></div>
+                                </a>
+                                <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                                  <a class="custom-icon" data-rel="fancybox-button"
+                                    *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
+                                    (click)="editDeal(deal)" data-toggle="tooltip" data-placement="bottom"
+                                    title="Edit Deal" id="deal">
+                                    <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                   </a>
-                                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="editDeal(deal)" 
-                                    data-toggle="tooltip" data-placement="bottom" title="Edit Deal"
-                                      id="deal">
-                                      <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
-                                    </a>
-                                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="confirmDeleteDeal(deal)"
-                                    data-toggle="tooltip" data-placement="bottom" title="Delete Deal" id="deal">
-                                      <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
-                                    </a>
-                                  </ng-container>
-                                    <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" 
-                                    data-toggle="tooltip" data-placement="bottom" title="Comments" style="margin-top: 10px">                            
-                                      <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px"> </i>
-                                      <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
-                                        style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
-                                    </a>
+                                  <a class="custom-icon" data-rel="fancybox-button"
+                                    *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
+                                    (click)="confirmDeleteDeal(deal)" data-toggle="tooltip" data-placement="bottom"
+                                    title="Delete Deal" id="deal">
+                                    <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
+                                  </a>
+                                </ng-container>
+                                <a class="custom-icon" *ngIf="true" data-rel="fancybox-button"
+                                  (click)="showComments(deal)" data-toggle="tooltip" data-placement="bottom"
+                                  title="Comments" style="margin-top: 10px">
+                                  <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
+                                  </i>
+                                  <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
+                                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
+                                  <div class="clickicons"></div>
+                                </a>
                               </div>
                             </td>
                           </tr>
@@ -350,27 +391,29 @@
                       </tbody>
                     </table>
                   </div>
-                
+
                   <!-- --------------------Pagination0-------------------- -->
                   <div *ngIf="!httpRequestLoader.isLoading" class="pg8">
                     <app-pagination [pagination]="dealsPagination" (notifyParent)="setDealsPage($event)"
                       (notifyParentDropDown)="listDeals($event)"></app-pagination>
                   </div>
                   <!-- End of 24 -->
-                  <div *ngIf="!httpRequestLoader.isLoading && dealsPagination.totalRecords==0 && !httpRequestLoader.isLoading"
+                  <div
+                    *ngIf="!httpRequestLoader.isLoading && dealsPagination.totalRecords==0 && !httpRequestLoader.isLoading"
                     class="alert alert-info">
                     <strong translate>No Deals Found.</strong>
                   </div>
-  
+
                 </section>
-                <div *ngIf="listView && !httpRequestLoader.isLoading && dealsSortOption.totalRecords==0" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-info">
+                <div *ngIf="listView && !httpRequestLoader.isLoading && dealsSortOption.totalRecords==0"
+                  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-info">
                   <strong translate>No Deals Found.</strong>
                 </div>
-                
+
                 <!-- -------------------- Campaign Level View -------------------- -->
                 <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0'
                   [hidden]="listView || campaignSortOption.totalRecords == 0 || campaignRequestLoader.isLoading || campaignRequestLoader.isServerError">
-        
+
                   <div class="table-responsive" [hidden]="campaignRequestLoader.isLoading">
                     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
                       <thead>
@@ -379,28 +422,35 @@
                           <th class="center" translate>Campaign Name</th>
                           <th class="center" translate>Launched On</th>
                           <th class="center">Count</th>
-                        </tr>      
-                      </thead>      
+                        </tr>
+                      </thead>
                       <tbody>
                         <ng-container *ngFor='let campaign of campaignPagination.pagedItems; let i=index'>
                           <tr>
                             <td style="width: 10%;" class="hidden-xs">
-                              <img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" src="assets/images/video-email.svg"
-                                style="height: 35px;" alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" src="assets/images/regular-email.svg"
-                                style="height: 35px;" alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 " src="assets/images/social-campaign.svg"
-                                style="height: 35px;" alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 " src="assets/images/event-campaign.svg"
-                                style="height: 35px;" alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 " src="assets/images/landing-page.svg"
-                               style="height: 35px;" alt="{{campaign.campaignType}} Campaign">
-                              <img *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 " src="assets/images/survey.svg" 
-                                style="height: 35px;" alt="{{campaign.campaignType}} Campaign">
+                              <img class="image_effect" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1"
+                                src="assets/images/video-email.svg" style="height: 35px;"
+                                alt="{{campaign.campaignType}} Campaign">
+                              <img class="image_effect" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1"
+                                src="assets/images/regular-email.svg" style="height: 35px;"
+                                alt="{{campaign.campaignType}} Campaign">
+                              <img class="image_effect" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 "
+                                src="assets/images/social-campaign.svg" style="height: 35px;"
+                                alt="{{campaign.campaignType}} Campaign">
+                              <img class="image_effect" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 "
+                                src="assets/images/event-campaign.svg" style="height: 35px;"
+                                alt="{{campaign.campaignType}} Campaign">
+                              <img class="image_effect" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 "
+                                src="assets/images/landing-page.svg" style="height: 35px;"
+                                alt="{{campaign.campaignType}} Campaign">
+                              <img class="image_effect" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 "
+                                src="assets/images/survey.svg" style="height: 35px;"
+                                alt="{{campaign.campaignType}} Campaign">
                             </td>
                             <td>
-                              <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" >
-                                <span data-toggle="tooltip" data-placement="bottom" title="{{campaign.campaign}}">{{campaign.campaign|
+                              <h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;">
+                                <span data-toggle="tooltip" data-placement="bottom"
+                                  title="{{campaign.campaign}}">{{campaign.campaign|
                                   slice:0:25}}</span>
                                 <span *ngIf="campaign.campaign?.length>25">...</span>
                               </h4>
@@ -417,24 +467,30 @@
                               </span>
                             </td>
                             <td>
-                              <a data-toggle="tooltip" data-placement="top" title="Number of Deals" style="cursor: default">
-                                <i class="circled-number IconCustomization fontStyleNormal"><strong>{{campaign.leadsCount}}</strong></i>
+                              <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Number of Deals"
+                                style="cursor: default">
+                                <i
+                                  class="circled-number IconCustomization fontStyleNormal"><strong>{{campaign.leadsCount}}</strong></i>
+                                <div class="clickicons"></div>
                               </a>
-        
-                              <a *ngIf="campaign.channelCampaign" (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top"
-                                title="View deals for this campaign">
-                                  <i class="circled-number fa IconCustomization" [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"
-                                    aria-hidden="true"></i>
+
+                              <a class="custom-icon" *ngIf="campaign.channelCampaign" (click)="showPartners(campaign)"
+                                data-toggle="tooltip" data-placement="top" title="View deals for this campaign">
+                                <i class="circled-number fa IconCustomization"
+                                  [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"
+                                  aria-hidden="true"></i>
+                                <div class="clickicons"></div>
                               </a>
-  
-                              <a *ngIf="!campaign.channelCampaign" (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top" 
-                                title="View deals for this campaign">
-                                  <i class="circled-number fa fa-users IconCustomization" aria-hidden="true"></i>
+
+                              <a class="custom-icon" *ngIf="!campaign.channelCampaign" (click)="showPartners(campaign)"
+                                data-toggle="tooltip" data-placement="top" title="View deals for this campaign">
+                                <i class="circled-number fa fa-users IconCustomization" aria-hidden="true"></i>
+                                <div class="clickicons"></div>
                               </a>
-        
+
                             </td>
                           </tr>
-        
+
                           <!-- -------------------- Partners List -------------------- -->
                           <tr [ngClass]="{'hidden': !campaign.expand}">
                             <td colspan="8" style="padding-right: 0px !important;">
@@ -443,20 +499,23 @@
                                   <div class="portlet light">
                                     <div class="portlet-title" style="border-bottom: none">
                                       <div class="caption">
-                                        <span class="caption-subject font-red-sunglo uppercase">{{authenticationService?.partnerModule?.customName}}</span>
+                                        <span
+                                          class="caption-subject font-red-sunglo uppercase">{{authenticationService?.partnerModule?.customName}}</span>
                                       </div>
-                                      <div class="inputs" align="right" style="float: right; display: flex;">                                      
-                                        <div class="portlet-input input-inline input-medium" style="margin-right: 10px;">
+                                      <div class="inputs" align="right" style="float: right; display: flex;">
+                                        <div class="portlet-input input-inline input-medium"
+                                          style="margin-right: 10px;">
                                           <div class="input-icon right" style="position: relative;right: -11px;">
                                             <input type="text" style="height:34px;" class="form-control"
-                                              [(ngModel)]="partnerSortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                                              [(ngModel)]="partnerSortOption.searchKey"
+                                              [ngModelOptions]="{standalone: true}"
                                               placeholder="Search for a {{authenticationService?.partnerModule?.customName}}"
                                               (keypress)="searchPartnersKeyPress($event.keyCode)">
                                             <button class="glyphicon glyphicon-remove search-box-item-clear"
                                               *ngIf="partnerSortOption.searchKey"
                                               (click)="clearPartnerSearch()"></button>
-                                            <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i
-                                                class="fa fa-search"></i></button>
+                                            <button type="submit" class="search-box-item-click"
+                                              (click)="searchPartners()"><i class="fa fa-search"></i></button>
                                           </div>
                                         </div>
                                       </div>
@@ -464,15 +523,17 @@
                                     <div class="row" id="box" *ngIf="partnerRequestLoader.isServerError">
                                       Please contact admin for "Campaings"
                                     </div>
-                                    <app-list-loader *ngIf="partnerRequestLoader.isLoading && !partnerRequestLoader.isServerError">
+                                    <app-list-loader
+                                      *ngIf="partnerRequestLoader.isLoading && !partnerRequestLoader.isServerError">
                                     </app-list-loader>
                                     <div class="portlet-body table-responsive" style="overflow: hidden;"
-                                    [hidden]="partnerRequestLoader.isLoading || partnerRequestLoader.isServerError||partnerSortOption.totalRecords == 0">
-                                      <div class="table-responsive"[hidden]="partnerRequestLoader.isLoading" >
+                                      [hidden]="partnerRequestLoader.isLoading || partnerRequestLoader.isServerError||partnerSortOption.totalRecords == 0">
+                                      <div class="table-responsive" [hidden]="partnerRequestLoader.isLoading">
                                         <table class="table tgrid">
                                           <thead>
                                             <tr>
-                                              <th class="center-aligned">{{authenticationService?.partnerModule?.customName}}</th>
+                                              <th class="center-aligned">
+                                                {{authenticationService?.partnerModule?.customName}}</th>
                                               <th class="center">#Deals Count</th>
                                             </tr>
                                           </thead>
@@ -486,7 +547,8 @@
                                                 <td>
                                                   <a (click)="showCampaignDealsByPartner(item)" data-toggle="tooltip"
                                                     data-placement="top" title="Number Of Deals">
-                                                    <i class="circled-number IconCustomization fontStyleNormal"><b>{{item.dealsCount}}</b></i>
+                                                    <i
+                                                      class="circled-number IconCustomization fontStyleNormal"><b>{{item.dealsCount}}</b></i>
                                                   </a>
                                                 </td>
                                               </tr>
@@ -502,67 +564,78 @@
                                       <!-- End of 24 -->
                                       <div *ngIf="!partnerRequestLoader.isLoading && campaignPagination.totalRecords==0"
                                         class="alert alert-info">
-                                        <strong translate>No {{authenticationService?.partnerModule?.customName}} Found.</strong>
+                                        <strong translate>No {{authenticationService?.partnerModule?.customName}}
+                                          Found.</strong>
                                       </div>
                                     </div>
-                                    <div *ngIf="!partnerRequestLoader.isLoading && partnerSortOption.totalRecords==0" class="alert alert-info">
-                                      <strong translate>No {{authenticationService?.partnerModule?.customName}} Found.</strong>
+                                    <div *ngIf="!partnerRequestLoader.isLoading && partnerSortOption.totalRecords==0"
+                                      class="alert alert-info">
+                                      <strong translate>No {{authenticationService?.partnerModule?.customName}}
+                                        Found.</strong>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </td>
                           </tr>
-        
+
                         </ng-container>
                       </tbody>
-        
+
                     </table>
                   </div>
-        
+
                   <div *ngIf="!campaignRequestLoader.isLoading" class="pg8">
                     <app-pagination [pagination]="campaignPagination" (notifyParent)="setCampaignsPage($event)"
                       (notifyParentDropDown)="listCampaigns($event)"></app-pagination>
                   </div>
                   <!-- End of 24 -->
-                  <div *ngIf="!campaignRequestLoader.isLoading && campaignPagination.totalRecords==0" class="alert alert-info">
+                  <div *ngIf="!campaignRequestLoader.isLoading && campaignPagination.totalRecords==0"
+                    class="alert alert-info">
                     <strong translate>No Campaigns Found.</strong>
                   </div>
                 </section>
-                <div *ngIf="!listView && !campaignRequestLoader.isLoading && campaignSortOption.totalRecords==0" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-info">
+                <div *ngIf="!listView && !campaignRequestLoader.isLoading && campaignSortOption.totalRecords==0"
+                  class="col-xs-12 col-sm-12 col-md-12 col-lg-12 alert alert-info">
                   <strong translate>No Campaigns Found.</strong>
                 </div>
-  
+
               </div>
             </div>
             <div class="portlet-body">
-            <!-- <div class="tab-content">
+              <!-- <div class="tab-content">
             </div> -->
-            <!-- -----------------------------Campaign View - Deals List-------------------------------------- -->
-            <div class="tab-content" *ngIf="showCampaignDeals">
-              <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible">
-              </app-response-message>
-              <div class="caption col-xs-10 col-md-10" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px
+              <!-- -----------------------------Campaign View - Deals List-------------------------------------- -->
+              <div class="tab-content" *ngIf="showCampaignDeals">
+                <app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible">
+                </app-response-message>
+                <div class="caption col-xs-10 col-md-10" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px
                 ;font-size: 18px;font-weight: 600">
-                Campaign: <span class="caption-subject font-red-sunglo uppercase" style="padding-left: 5px; padding-right: 15px;"
-                  translate>{{selectedCampaignName}}</span>
-                  <span *ngIf="selectedPartnerCompanyName !== ''"> {{authenticationService?.partnerModule?.customName}}: <span class="caption-subject font-red-sunglo uppercase" style="padding-left: 5px; padding-right: 15px;"
-                    translate>{{selectedPartnerCompanyName}}</span></span>
-               
+                  Campaign: <span class="caption-subject font-red-sunglo uppercase"
+                    style="padding-left: 5px; padding-right: 15px;" translate>{{selectedCampaignName}}</span>
+                  <span *ngIf="selectedPartnerCompanyName !== ''"> {{authenticationService?.partnerModule?.customName}}:
+                    <span class="caption-subject font-red-sunglo uppercase"
+                      style="padding-left: 5px; padding-right: 15px;"
+                      translate>{{selectedPartnerCompanyName}}</span></span>
+
+                </div>
+
+                <a (click)="closeCampaignDeals()" class="pull-right close-circle"
+                  style="margin: -1px 14px;padding-top: 3px;padding-left: 5px;">
+                  <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
+                    aria-hidden="true"></span></a>
+                <app-manage-campaign-deals [partnerCompanyId]="selectedPartnerCompanyId"
+                  [campaignId]="selectedCampaignId" [isPartnerVersion]="isPartnerVersion"
+                  [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey"
+                  (viewCampaignDealForm)="viewCampaignDealForm($event)"
+                  (editCampaignDealForm)="editCampaignDealForm($event)" (refreshCounts)="refreshCounts()"
+                  (showCommentsPopUp)="showComments($event)">
+                </app-manage-campaign-deals>
               </div>
-      
-              <a (click)="closeCampaignDeals()" class="pull-right close-circle"
-                style="margin: -1px 14px;padding-top: 3px;padding-left: 5px;">
-                <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-              <app-manage-campaign-deals [partnerCompanyId]="selectedPartnerCompanyId" [campaignId]="selectedCampaignId"
-              [isPartnerVersion]="isPartnerVersion" [isVendorVersion]="isVendorVersion" [filterKey]="campaignPagination.filterKey"
-              (viewCampaignDealForm)="viewCampaignDealForm($event)" (editCampaignDealForm)="editCampaignDealForm($event)" 
-              (refreshCounts)="refreshCounts()" (showCommentsPopUp)="showComments($event)">
-              </app-manage-campaign-deals>
-            </div>
-            <div class="row" id="box" style="padding-left: 28px !important;" *ngIf="httpRequestLoader.isServerError" translate>
-              Please contact admin for 'Deals'
-            </div>
+              <div class="row" id="box" style="padding-left: 28px !important;" *ngIf="httpRequestLoader.isServerError"
+                translate>
+                Please contact admin for 'Deals'
+              </div>
             </div>
           </div>
         </div>
@@ -573,13 +646,14 @@
 </div>
 
 <section *ngIf="showDealForm">
-	<div class="page-content">
-		<a (click)="closeDealForm()" class="pull-right close-circle" style="margin: 14px 20px;padding-top: 3px;padding-left: 5px;">
-			<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-      <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion" [isOrgAdmin]="isOrgAdmin" 
-      (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
+  <div class="page-content">
+    <a (click)="closeDealForm()" class="pull-right close-circle"
+      style="margin: 14px 20px;padding-top: 3px;padding-left: 5px;">
+      <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+    <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
+      [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
   </div>
 </section>
 
-<app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
-
+<app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal"
+  (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>

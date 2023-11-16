@@ -101,9 +101,10 @@
                   </td>
                     <td id="actions-row" class="text-center">
                       <div class="actions-block override-actions custom-width-icon" [ngClass]="{'no-float' : type != undefined && type == 'PLAYBOOK'}" >
-                        <a data-toggle="tooltip" data-placement="top" title="View Analytics"
+                        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics"
                           (click)="viewAnalytics(partner,i)">
                           <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                          <div class="clickicons"></div>
                         </a>
                       </div>
                     </td>
