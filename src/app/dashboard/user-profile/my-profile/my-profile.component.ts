@@ -304,6 +304,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showSpfConfigurationDiv: boolean;
 	/***XNFR-386***/
 	isCustomLoginScreenSettingsOptionClicked = false;
+
+	// XNFR-403
+	connectwiseRibbonText: string;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -1690,7 +1694,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.checkHubspotIntegration();
 		this.checkSalesforceIntegration();
 		this.checkMicrosoftIntegration();
-		this.checkPipedriveIntegration();		
+		this.checkPipedriveIntegration();
+		this.checkConnectWiseIntegration();		
 		this.getActiveCRMDetails();
 	}
 	checkMicrosoftIntegration() {
@@ -2619,6 +2624,15 @@ configSalesforce() {
 		this.sfcfMasterCBClicked = false;
 		this.customFieldsResponse.isVisible = false;
 		this.integrationType = 'PIPEDRIVE';
+		this.integrationTabIndex = 5;		
+	}
+
+	// xnfr-215
+	connectwiseSettings() {
+		this.sfcfPagedItems = [];
+		this.sfcfMasterCBClicked = false;
+		this.customFieldsResponse.isVisible = false;
+		this.integrationType = 'CONNECTWISE';
 		this.integrationTabIndex = 5;		
 	}
 
@@ -4197,6 +4211,30 @@ configSalesforce() {
 	}
   }
   /************* XNFR-338 *********************/
+
+	// XNFR-403
+	checkConnectWiseIntegration() {
+		this.referenceService.loading(this.httpRequestLoader, true);
+		this.integrationService.checkConfigurationByType("connectwise").subscribe(data => {
+			this.referenceService.loading(this.httpRequestLoader, false);
+			let response = data;
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.connectwiseRibbonText = "configured";
+			}
+			else {
+				this.connectwiseRibbonText = "configure";
+			}
+		}, error => {
+			this.referenceService.loading(this.httpRequestLoader, false);
+			this.sfRibbonText = "configure";
+			this.logger.error(error, "Error in checkConnectWiseIntegration() for ConnectWise");
+		}, () => this.logger.log("ConnectWise Integration Configuration Checking done"));
+	}
+
+	configureConnectWise() {
+		this.integrationTabIndex = 7;	
+	}
+	// XNFR-403
 
 
 }
