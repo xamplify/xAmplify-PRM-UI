@@ -147,6 +147,8 @@ export class AuthenticationService {
   /***** XNFR-238*********** */
   /********  XNFR-233*****/
   lognTemplateId:number;
+  loginType:string;
+  v_companyBgImagePath2;
   /**** XNFR-233 */
   formBackground="";
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {

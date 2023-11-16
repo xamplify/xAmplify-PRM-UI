@@ -3,25 +3,25 @@ import { Dimensions, ImageCroppedEvent } from '../image-cropper/interfaces';
 import { ImageTransform } from '../image-cropper-v2/interfaces';
 import { UtilService } from 'app/core/services/util.service';
 
-declare var $:any;
+declare var $: any;
 @Component({
   selector: 'app-image-upload-cropper',
   templateUrl: './image-upload-cropper.component.html',
   styleUrls: ['./image-upload-cropper.component.css']
 })
 export class ImageUploadCropperComponent implements OnInit {
-  @Input() aspectRatio:any;
+  @Input() aspectRatio: any;
   @Output() bgImage = new EventEmitter<any>();
-  loading:boolean = false;
+  loading: boolean = false;
   cropRounded = false;
-  squareData:any;
+  squareData: any;
   imageChangedEvent: any = '';
   croppedImage: any = '';
   squareDataForBgImage: any;
   croppedImageForBgImage: any = '';
   bgImageChangedEvent: any = '';
   companyBgImagePath = "";
-  cropLogoImageText:string;
+  cropLogoImageText: string;
 
   errorUploadCropper = false;
   showCropper = false;
@@ -32,8 +32,8 @@ export class ImageUploadCropperComponent implements OnInit {
   rotation = 0;
 
   loadingcrop = false;
-  constructor(public utilService:UtilService) { }
- 
+  constructor(public utilService: UtilService) { }
+
   ngOnInit() {
 
   }
@@ -51,14 +51,14 @@ export class ImageUploadCropperComponent implements OnInit {
     this.fileChangeEvent();
   }
   fileChangeEvent() { this.cropRounded = false; $('#cropLogoImage').modal('show'); }
-  uploadfileBgImageChangeEvent(event){
-    const image:any = new Image();
-    const file:File = event.target.files[0];
+  uploadfileBgImageChangeEvent(event) {
+    const image: any = new Image();
+    const file: File = event.target.files[0];
     const isSupportfile = file.type;
     if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
-        this.errorUploadCropper = false;
-        this.bgImageChangedEvent = event;
-        this.showCropper = false
+      this.errorUploadCropper = false;
+      this.bgImageChangedEvent = event;
+      this.showCropper = false
     } else {
       this.errorUploadCropper = true;
       this.showCropper = false;
@@ -66,102 +66,103 @@ export class ImageUploadCropperComponent implements OnInit {
   }
 
   toggleContainWithinAspectRatio() {
-    if(this.croppedImage!=''){
-        this.containWithinAspectRatio = !this.containWithinAspectRatio;
-}else{
-    this.showCropper = false;
+    if (this.croppedImage != '') {
+      this.containWithinAspectRatio = !this.containWithinAspectRatio;
+    } else {
+      this.showCropper = false;
     }
-}
-toggleContainWithinAspectRatioBgImage() {
-    if(this.croppedImageForBgImage!=''){
-        this.containWithinAspectRatio = !this.containWithinAspectRatio;
-}else{
-    this.showCropper = false;
+  }
+  toggleContainWithinAspectRatioBgImage() {
+    if (this.croppedImageForBgImage != '') {
+      this.containWithinAspectRatio = !this.containWithinAspectRatio;
+    } else {
+      this.showCropper = false;
     }
-}
+  }
 
-zoomOut() {
-    if(this.croppedImage!=""){
-  this.scale -= .1;
-  this.transform = {
-    ...this.transform,
-    scale: this.scale       
-  };
-}else{
-  this.showCropper = false; 
-}
-}
-zoomOutBgImage() {
-    if(this.croppedImageForBgImage!=""){
-  this.scale -= .1;
-  this.transform = {
-    ...this.transform,
-    scale: this.scale       
-  };
-}else{
-  this.showCropper = false; 
-}
-}
-zoomIn() {
-    if(this.croppedImage!=''){
-        this.scale += .1;
-        this.transform = {
-            ...this.transform,
-            scale: this.scale
-        };
-  
-}else{
-    this.showCropper = false;
+  zoomOut() {
+    if (this.croppedImage != "") {
+      this.scale -= .1;
+      this.transform = {
+        ...this.transform,
+        scale: this.scale
+      };
+    } else {
+      this.showCropper = false;
     }
-}
-zoomInBgImage() {
-    if(this.croppedImageForBgImage!=''){
-        this.scale += .1;
-        this.transform = {
-            ...this.transform,
-            scale: this.scale
-        };
-  
-}else{
-    this.showCropper = false;
+  }
+  zoomOutBgImage() {
+    if (this.croppedImageForBgImage != "") {
+      this.scale -= .1;
+      this.transform = {
+        ...this.transform,
+        scale: this.scale
+      };
+    } else {
+      this.showCropper = false;
     }
-}
-resetImage() {
-    if(this.croppedImage!=''){
-        this.scale = 1;
-        this.rotation = 0;
-        this.canvasRotation = 0;
-        this.transform = {};
-}else{
-    this.showCropper = false;
-}
-}
-resetImageBgImage() {
-    if(this.croppedImageForBgImage!=''){
-        this.scale = 1;
-        this.rotation = 0;
-        this.canvasRotation = 0;
-        this.transform = {};
-}else{
-    this.showCropper = false;
-}
-}
-bgImageCroppedMethod(event: ImageCroppedEvent) {
-  this.croppedImageForBgImage = event.base64;
-  this.squareDataForBgImage=event.base64;
-  console.log(event);
-}
-uploadBgImage(){
-  this.bgImage.emit(this.croppedImageForBgImage);
-}
-imageLoaded() {
-  this.showCropper = true;
-  console.log('Image loaded')
-}
-cropperReady(sourceImageDimensions: Dimensions) {
-  console.log('Cropper ready', sourceImageDimensions);
-}
-loadImageFailed () {
-  console.log('Load failed');
-}
+  }
+  zoomIn() {
+    if (this.croppedImage != '') {
+      this.scale += .1;
+      this.transform = {
+        ...this.transform,
+        scale: this.scale
+      };
+
+    } else {
+      this.showCropper = false;
+    }
+  }
+  zoomInBgImage() {
+    if (this.croppedImageForBgImage != '') {
+      this.scale += .1;
+      this.transform = {
+        ...this.transform,
+        scale: this.scale
+      };
+
+    } else {
+      this.showCropper = false;
+    }
+  }
+  resetImage() {
+    if (this.croppedImage != '') {
+      this.scale = 1;
+      this.rotation = 0;
+      this.canvasRotation = 0;
+      this.transform = {};
+    } else {
+      this.showCropper = false;
+    }
+  }
+  resetImageBgImage() {
+    if (this.croppedImageForBgImage != '') {
+      this.scale = 1;
+      this.rotation = 0;
+      this.canvasRotation = 0;
+      this.transform = {};
+    } else {
+      this.showCropper = false;
+    }
+  }
+  bgImageCroppedMethod(event: ImageCroppedEvent) {
+    this.croppedImageForBgImage = event.base64;
+    this.squareDataForBgImage = event.base64;
+    console.log(event);
+  }
+  uploadBgImage() {
+    this.bgImage.emit(this.croppedImageForBgImage);
+    this.closeModal();
+  }
+  imageLoaded() {
+    this.showCropper = true;
+    console.log('Image loaded')
+  }
+  cropperReady(sourceImageDimensions: Dimensions) {
+    console.log('Cropper ready', sourceImageDimensions);
+  }
+  loadImageFailed() {
+    console.log('Load failed');
+  }
 }

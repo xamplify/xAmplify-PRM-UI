@@ -139,7 +139,6 @@ import { EmailTemplatesListAndGridViewComponent } from 'app/util/email-templates
 import { CustomUiSwitchComponent } from 'app/util/custom-ui-switch/custom-ui-switch.component';
 import { EditTemplateOrPageModalPopupComponent } from 'app/util/edit-template-or-page-modal-popup/edit-template-or-page-modal-popup.component';
 import { ImageUploadCropperComponent } from './image-upload-cropper/image-upload-cropper.component';
-import { LoginUiTemplateComponent } from './login-ui-template/login-ui-template.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -168,7 +167,7 @@ import { LoginUiTemplateComponent } from './login-ui-template/login-ui-template.
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,
 		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,
-		SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent, ImageUploadCropperComponent, LoginUiTemplateComponent],
+		SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent, ImageUploadCropperComponent],
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
@@ -193,7 +192,7 @@ import { LoginUiTemplateComponent } from './login-ui-template/login-ui-template.
 		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent,
-		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent, ImageUploadCropperComponent, LoginUiTemplateComponent]
+		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent, ImageUploadCropperComponent]
 
 
 

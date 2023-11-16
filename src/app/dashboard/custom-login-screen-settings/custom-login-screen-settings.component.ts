@@ -36,6 +36,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   loggedInUserId = 0;
   bgImageFile: File;
   companyBgImagePath = "";
+  companyBgImagePath2 = "";
   cropLogoImageText: string;
   squareDataForBgImage: any;
   croppedImageForBgImage: any = '';
@@ -43,6 +44,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   cropRounded: boolean;
   companyLogoImageUrlPath = "";
   backGroundImage = "https://i.imgur.com/tgYLuLr.jpg";
+  backGroundImage2 = "https://i.imgur.com/tgYLuLr.jpg";
   customResponse: CustomResponse = new CustomResponse();
   loadingcrop = false;
   logoErrorMessage = "";
@@ -58,7 +60,13 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   aspectRatio: any;
   /**** PAginaton */
   pager: any = {};
-  constructor(public envService:EnvService,public authenticationService: AuthenticationService, public referenceService: ReferenceService, public properties: Properties,
+  isShowFinalDiv: boolean;
+  isStyle1: boolean = false;
+  isStyle2: boolean = false;
+  loginType: string;
+  templateName: string;
+  formPosition:string;
+  constructor(public envService: EnvService, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public properties: Properties,
     private companyProfileService: CompanyProfileService, private logger: XtremandLogger, public utilService: UtilService, public refService: ReferenceService, private vanityURLService: VanityURLService, private pagerService: PagerService, public socialPagerService: SocialPagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -67,13 +75,34 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     if (!this.companyBgImagePath) {
       this.squareDataForBgImage = {};
     }
-    if (this.authenticationService.user.hasCompany) {
-      this.companyProfile.isAdd = false;
+    if(!this.companyBgImagePath2) {
+      this.squareDataForBgImage = {};
     }
+    this.getCompanyProfileByUserId(this.loggedInUserId)
     this.getLogInScreenDetails();
     this.getCustomLoginTemplates(this.pagination);
+    this.getFinalScreenTableView();
+    this.isShowFinalDiv = true;
+    $('#alertDiv').show();
+    $('#styleDivOne').hide()
+    $('#styleDivTwo').hide()
+    $('#updateDiv').hide();
   }
- 
+  showLoginStylesDiv() {
+    this.isShowFinalDiv = false;
+    this.setCompanyProfileViewData()
+    if (this.loginType == "STYLE_ONE") {
+      $('#styleDivOne').show();
+      this.styleOneBackgroundImagePath = this.authenticationService.MEDIA_URL + this.backGroundImage;
+    } else {
+      $('#styleDivTwo').show();
+      this.styleTwoBackgroundImagePath = this.authenticationService.MEDIA_URL + this.backGroundImage2;
+    }
+    // $('#alertDiv1').hide();
+    $('#alertDiv').hide();
+    $('#updateDiv').show();
+
+  }
   bgImageClickForStyle1() {
     this.isShowUploadScreen = false;
     this.cropLogoImageText = "Choose the image to be used as your company background";
@@ -106,35 +135,42 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
 
   errorHandler(event) { event.target.src = 'assets/images/company-profile-logo.png'; }
 
-  // getCompanyProfileByUserId(userId) {
-  //   if (userId != undefined) {
-  //     this.companyProfileService.getByUserId(userId)
-  //       .subscribe(
-  //         data => {
-  //           if (data.data != undefined) {
-  //             this.companyProfile = data.data;
-  //             this.authenticationService.loginScreenDirection = data.data.loginScreenDirection;
-  //             this.customLoginScreen.logInScreenDirection = data.data.loginScreenDirection;
-  //             this.setCompanyProfileViewData(data.data.companyName);
-  //           }
-  //         },
-  //         error => { this.logger.errorPage(error) },
-  //         () => { this.logger.info("Completed getCompanyProfileByUserId()") }
-  //       );
-  //   }
-  //}
-  // setCompanyProfileViewData(existingCompanyName: string) {
-  //   if ($.trim(this.companyProfile.companyLogoPath).length > 0) {
-  //     this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath;
-  //   }
-  //   if ($.trim(this.companyProfile.backgroundLogoPath).length > 0) {
-  //     this.backGroundImage = this.authenticationService.MEDIA_URL + this.companyProfile.backgroundLogoPath;
-  //     this.companyBgImagePath = this.companyProfile.backgroundLogoPath;
-  //   }
-  // }
-
+  getCompanyProfileByUserId(userId) {
+    if (userId != undefined) {
+      this.companyProfileService.getByUserId(userId)
+        .subscribe(
+          data => {
+            if (data.data != undefined) {
+              this.companyProfile = data.data;
+              this.formPosition = data.data.loginScreenDirection;
+              this.setCompanyProfileViewData()
+            }
+          },
+          error => { this.logger.errorPage(error) },
+          () => { this.logger.info("Completed getCompanyProfileByUserId()") }
+        );
+    }
+  }
+  setCompanyProfileViewData() {
+    if ($.trim(this.companyProfile.backgroundLogoPath).length > 0) {
+      this.backGroundImage = this.authenticationService.MEDIA_URL + this.companyProfile.backgroundLogoPath;
+      this.companyBgImagePath = this.companyProfile.backgroundLogoPath;
+      this.styleOneBackgroundImagePath = this.backGroundImage;
+    }
+    if($.trim(this.companyProfile.backgroundLogoStyle2).length > 0) {
+      this.backGroundImage2 = this.authenticationService.MEDIA_URL + this.companyProfile.backgroundLogoStyle2;
+      this.companyBgImagePath2 = this.companyProfile.backgroundLogoStyle2;
+      this.styleTwoBackgroundImagePath = this.backGroundImage2;
+    }
+  }
+  croppedImageForBgImage2:string = "";
   backgroundImage(event: any) {
     this.croppedImageForBgImage = event;
+    if(this.isStyle1) {
+      this.styleOneBackgroundImagePath = event;
+    } else {
+      this.styleTwoBackgroundImagePath = event;
+    }
     if (this.croppedImageForBgImage != "") {
       this.loadingcrop = true;
       let fileObj: any;
@@ -149,9 +185,15 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   processBgImageFile(fileObj: File) {
     this.companyProfileService.uploadBgImageFile(fileObj).subscribe(result => {
       if (result.statusCode === 200) {
+        if(this.isStyle1) {
         this.companyProfile.backgroundLogoPath = result.data;
         this.companyBgImagePath = result.data;
         this.authenticationService.v_companyBgImagePath = this.companyBgImagePath;
+        } else {
+          this.companyProfile.backgroundLogoStyle2 = result.data;
+          this.companyBgImagePath2 = result.data;
+          this.authenticationService.v_companyBgImagePath2 = this.companyBgImagePath2;
+        }
         this.logoError = false;
         this.logoErrorMessage = "";
         $('#cropBgImage').modal('hide');
@@ -168,11 +210,14 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   }
   updateCustomLogInScreenData() {
     this.customLoginScreen.backGroundLogoPath = this.companyBgImagePath;
+    this.customLoginScreen.backgroundLogoStyle2 = this.companyBgImagePath2;
     if (this.isStyle1) {
       this.customLoginScreen.loginType = "STYLE_ONE";
     } else {
       this.customLoginScreen.loginType = "STYLE_TWO";
     }
+    this.loginType = this.customLoginScreen.loginType;
+    this.formPosition = this.customLoginScreen.logInScreenDirection;
     this.companyProfileService.updateCustomLogInScreenData(this.customLoginScreen)
       .subscribe(
         data => {
@@ -185,54 +230,75 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
           }
           this.statusCode = data.statusCode;
         });
-        this.saveOrUpdateLoginTemplateActiveForCompany(this.selectedTemplate);
+    this.saveOrUpdateLoginTemplateActiveForCompany(this.selectedTemplate);
+    this.isShowFinalDiv = true;
+    $('#alertDiv').show();
+    // $('#alertDiv1').show()
+    $('#styleDivOne').hide()
+    $('#styleDivTwo').hide()
+    $('#updateDiv').hide();
   }
-  showVendorCompanyLogo:boolean;
+  showVendorCompanyLogo: boolean;
   getLogInScreenDetails() {
-    // this.companyProfileService.getLogInScreenDetails()
-    //   .subscribe(
-    //     data => {
-          //  this.customLoginScreen = data.data;
-          //  this.styleTwoDirection = data.data.logInScreenDirection;
-          // this.styleOneDirection = data.data.logInScreenDirection;
-          // this.refService.loginStyleType = this.customLoginScreen.loginType;
-          // if (this.styleOneDirection == 'Center') {
-          //   this.styleOneDirection = 'Right';
-        //   }
-        // })
-        this.styleOneDirection = this.authenticationService.loginScreenDirection;
-        this.styleTwoDirection = this.authenticationService.loginScreenDirection;
-        if (this.styleOneDirection == 'Center') {
-           this.styleOneDirection = 'Right';
-        }
-        this.customLoginScreen.logInScreenDirection = this.authenticationService.loginScreenDirection;
-        this.customLoginScreen.showVendorCompanyLogo = this.authenticationService.v_showCompanyLogo;
-        this.customLoginScreen.backGroundLogoPath = this.authenticationService.v_companyBgImagePath;
+    this.styleOneDirection = this.authenticationService.loginScreenDirection;
+    this.styleTwoDirection = this.authenticationService.loginScreenDirection;
+    if (this.styleOneDirection == 'Center') {
+      this.styleOneDirection = 'Right';
+    }
+    this.customLoginScreen.logInScreenDirection = this.authenticationService.loginScreenDirection;
+    this.customLoginScreen.showVendorCompanyLogo = this.authenticationService.v_showCompanyLogo;
+    this.customLoginScreen.backGroundLogoPath = this.authenticationService.v_companyBgImagePath;
+    this.customLoginScreen.backgroundLogoStyle2 = this.authenticationService.v_companyBgImagePath2;
+    // this.companyBgImagePath = this.authenticationService.v_companyBgImagePath;
+    // this.companyBgImagePath2 = this.authenticationService.v_companyBgImagePath2;
   }
-  styleOneDirection:any;
-  styleTwoDirection:any
-  onSelectChangeStyale1(style1:any){
+  styleOneDirection: any;
+  styleTwoDirection: any
+  onSelectChangeStyale1(style1: any) {
     this.styleOneDirection = style1;
     this.customLoginScreen.logInScreenDirection = this.styleOneDirection;
   }
-  onSelectChangeStyale2(style2:any){
+  onSelectChangeStyale2(style2: any) {
     this.styleTwoDirection = style2;
     this.customLoginScreen.logInScreenDirection = this.styleTwoDirection;
 
   }
-
-  isStyle1: boolean = true;
+  styleOneBackgroundImagePath = "";
+  styleTwoBackgroundImagePath = "";
   showStyle1() {
-    this.isStyle1 = true;
+    if (!this.isShowFinalDiv) {
+      this.isStyle1 = true;
+      this.styleTwoBackgroundImagePath = this.authenticationService.MEDIA_URL + this.companyBgImagePath;
+      $('#styleDivOne').show();
+      $('#styleDivTwo').hide();
+    } else {
+      $('#alertDiv').show();
+      $('#styleDivOne').hide()
+      $('#styleDivTwo').hide()
+      $('#updateDiv').hide();
+      this.isShowFinalDiv = true;
+    }
   }
   showStyle2() {
-    this.isStyle1 = false;
+    if (!this.isShowFinalDiv) {
+      this.isStyle1 = false;
+      this.styleTwoBackgroundImagePath = this.authenticationService.MEDIA_URL + this.companyBgImagePath2;
+      $('#styleDivOne').hide();
+      $('#styleDivTwo').show();
+      $('#alertDiv').hide();
+    } else {
+      $('#alertDiv').show();
+      $('#styleDivOne').hide()
+      $('#styleDivTwo').hide()
+      $('#updateDiv').hide();
+      this.isShowFinalDiv = true;
+    }
   }
   setPage(event: any) {
     this.pagination.pageIndex = event.page;
     this.getCustomLoginTemplates(this.pagination);
   }
- 
+
   getCustomLoginTemplates(pagination: Pagination) {
     this.loading = true;
     pagination.userId = this.authenticationService.getUserId();
@@ -242,7 +308,6 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       if (result.statusCode === 200) {
         this.loading = false;
         this.selectedTemplate = this.authenticationService.lognTemplateId;
-        alert(this.selectedTemplate)
         pagination.totalRecords = this.customLoinTemplates.length;
         pagination = this.pagerService.getPagedItems(pagination, data);
         this.pager = this.socialPagerService.getPager(this.customLoinTemplates.length, this.pagination.pageIndex, this.pagination.maxResults);
@@ -283,28 +348,50 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       this.customResponse = new CustomResponse('ERROR', "Error while deleting Email Template", true);
     });
   }
-  companyLoginTemplateActive:CompanyLoginTemplateActive = new CompanyLoginTemplateActive();
-  saveOrUpdateLoginTemplateActiveForCompany(tId:number){
-		this.companyLoginTemplateActive.createdBy =this.loggedInUserId;
+  companyLoginTemplateActive: CompanyLoginTemplateActive = new CompanyLoginTemplateActive();
+  saveOrUpdateLoginTemplateActiveForCompany(tId: number) {
+    this.companyLoginTemplateActive.createdBy = this.loggedInUserId;
     this.companyLoginTemplateActive.templateId = tId;
-		this.activateTemplate(this.companyLoginTemplateActive);
-	  }
+    this.activateTemplate(this.companyLoginTemplateActive);
+  }
 
-    activateTemplate(companyLoginTemplateActive:CompanyLoginTemplateActive){
-      this.companyProfileService.saveOrUpdateTemplateForCompany(companyLoginTemplateActive).subscribe(result => {
-        if(result.statusCode === 200){
-        //this.customLoginTemplateResponse = new CustomResponse('SUCCESS', "Template updated successfully", true);
-        } else {
+  activateTemplate(companyLoginTemplateActive: CompanyLoginTemplateActive) {
+    this.companyProfileService.saveOrUpdateTemplateForCompany(companyLoginTemplateActive).subscribe(result => {
+      if (result.statusCode === 200) {
+        this.selectedTemplate = result.data;
+        // this.customResponse = new CustomResponse('SUCCESS', result.data, true);
+      } else {
         //this.customLoginTemplateResponse = new CustomResponse('ERROR', result.data.errorMessages[0].message, true);
-        }
-      }, error => {
-        //this.customLoginTemplateResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT, true)
-      });
-    }
-    selectedTemplate:number;
-    selectedTemplateId(id:number){
-     this.selectedTemplate = id;
-     this.companyLoginTemplateActive.templateId = id;
-    }
+      }
+    }, error => {
+      //this.customLoginTemplateResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT, true)
+    });
+  }
+  selectedTemplate: number;
+  selectedTemplateId(id: number) {
+    this.selectedTemplate = id;
+    //  this.companyLoginTemplateActive.templateId = id;
+  }
+  //   getActiveLoginTemplate(companyProfileName:any){
+  //     this.vanityURLService.getActiveLoginTemplate(companyProfileName)
+  //     .subscribe(
+  //       data => {
+  //        this.loginStyleId = data.data.templateId
+  //        this.authenticationService.lognTemplateId = this.loginStyleId;
+  //        this.createdUserId = data.data.createdBy;
+  //        this.previewTemplate(this.loginStyleId,this.createdUserId)
+  //       })  
+  //       this.previewTemplate(this.loginStyleId,this.createdUserId)
 
+  // }
+
+  getFinalScreenTableView() {
+    this.vanityURLService.getFinalScreenTableView()
+      .subscribe(
+        data => {
+          this.loginType = data.data.loginType
+          this.templateName = data.data.templateName
+          this.selectedTemplate = data.data.templateId;
+        })
+  }
 }

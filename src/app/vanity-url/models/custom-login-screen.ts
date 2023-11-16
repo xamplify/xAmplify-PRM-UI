@@ -6,4 +6,6 @@ export class CustomLoginScreen {
     logInScreenDirection:string = "";
 
     loginType:string;
+
+    backgroundLogoStyle2:string = "";
 }

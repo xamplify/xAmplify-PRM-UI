@@ -122,6 +122,10 @@ export class VanityURLService {
     const url = this.authenticationService.REST_URL + "v_url/active/loginTemplate/"+ companyProfileName;
       return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
+  getFinalScreenTableView(){
+    const url = this.authenticationService.REST_URL + "v_url/active/loginTemplate/table/show/"+this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token;
+    return this.http.get(url).map(this.extractData).catch(this.handleError);
+  }
 //XNFR-2333
   isVanityURLEnabled() {
    let url = window.location.hostname;

@@ -3,7 +3,7 @@
 	<img alt="logo" class="logo-default" style="height: 54px" src="assets/images/xamplify-logo.png">
  </div>
  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
- <div *ngIf="!isStyleOne ">
+ <div *ngIf="!isStyleOne">
  <div class="content" style="background-color: rgba(0,0,0,.0);" [ngClass] = "{'login-content-left':authenticationService.loginScreenDirection==='Left','login-content-right':authenticationService.loginScreenDirection==='Right'}">
 	<div style="background-color: rgba(0,0,0,.0);">
 	   <app-video [newLogin]="false" *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
@@ -97,7 +97,7 @@
  <app-copyright *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
  <app-copyright *ngIf="vanityURLEnabled"></app-copyright>
 </div>
-<div *ngIf="isStyleOne ">
+<div *ngIf="isStyleOne">
 	<div class="row" style="display: content;margin-right: 0px !;margin: 0px !important;" *ngIf="vanityURLEnabled">
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 bg_image" [ngStyle]="{'float':authenticationService?.loginScreenDirection}" [style.backgroundImage]="'url('+authenticationService.v_companyBgImagePath+')'">
 			<div class="content" style="background-color: rgba(0,0,0,.0);">

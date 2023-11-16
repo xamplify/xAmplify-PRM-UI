@@ -276,6 +276,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.authenticationService.vendorCompanyId = result.companyId;     
             this.authenticationService.v_companyName = result.companyName;
             this.authenticationService.vanityURLink = result.vanityURLink;
+            this.authenticationService.loginType = result.loginType;
             if(result.loginType === "STYLE_ONE"){
               this.isStyleOne = true;
             } else {
@@ -287,9 +288,14 @@ export class LoginComponent implements OnInit, OnDestroy {
             }
             this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
             this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
-            if (result.companyBgImagePath) {
+            if (result.companyBgImagePath && result.backgroundLogoStyle2) {
+              this.authenticationService.v_companyBgImagePath2 = this.authenticationService.MEDIA_URL + result.backgroundLogoStyle2;
               this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
-            } else {
+            } else if(result.companyBgImagePath){
+              this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
+            } else if(result.backgroundLogoStyle2) {
+              this.authenticationService.v_companyBgImagePath2 = this.authenticationService.MEDIA_URL + result.backgroundLogoStyle2;
+            }else {
               this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
             }
             this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
@@ -460,6 +466,7 @@ export class LoginComponent implements OnInit, OnDestroy {
          this.createdUserId = data.data.createdBy;
          this.previewTemplate(this.loginStyleId,this.createdUserId)
         })  
+        //this.previewTemplate(this.loginStyleId,this.createdUserId)
   }
   htmlContent:any;
   previewTemplate(id: number,createdBy:number) {

@@ -2587,14 +2587,14 @@ configSalesforce() {
 	beeContainerInput= {};
 	editCustomLoginTemplate:boolean = false;
 	cutomLoginTemplate:CustomLoginTemplate;
-	openBeeEditorForLoginTemplate(event:any){
+	openBeeEditorForLoginTemplate(event: any) {
 		this.cutomLoginTemplate = event;
 		this.editCustomLoginTemplate = true;
-	 this.jsonBody = this.cutomLoginTemplate.jsonBody;
-	 this.beeContainerInput["module"] = "configuration";
-	 this.beeContainerInput["jsonBody"] = this.jsonBody;
-	 this.beeContainerInput["customLognTemplate"] = this.cutomLoginTemplate;
-     this.editXamplifyDefaultTemplate = false;
+		this.jsonBody = this.cutomLoginTemplate.jsonBody;
+		this.beeContainerInput["module"] = "configuration";
+		this.beeContainerInput["jsonBody"] = this.jsonBody;
+		this.beeContainerInput["customLognTemplate"] = this.cutomLoginTemplate;
+		this.editXamplifyDefaultTemplate = false;
 	}
 	saveOrUpdateCustomLogInTempalte(cutomLoginTemplate:CustomLoginTemplate){
 		this.vanityUrlService.saveCustomLoginTemplate(cutomLoginTemplate).subscribe(result => {
