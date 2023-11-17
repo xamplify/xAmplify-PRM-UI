@@ -2611,6 +2611,7 @@ i.IconCustomization:hover {
 ul.nav.neumorphismDark {
   margin: 0px 10px;
 }
+/* end */
 .inactive-status {
   color: #bb1a1a !important;
 }
@@ -2620,13 +2621,8 @@ ul.nav.neumorphismDark {
 .analytics_icon_radius {
   border-radius: 0px 7px 7px 0px !important;
 }
-.update_status_radius {
+button.btn.custom {
   border-radius: 7px !important;
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
-  padding: 6px 14px;
-}
-button.update_status_radius {
-  background-color: #2c2f33 !important;
 }
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu {
   border-radius: 10px !important;
