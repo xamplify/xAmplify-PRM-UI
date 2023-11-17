@@ -18,9 +18,9 @@
         <!--Sort-->
         <div class="portlet-input input-inline">
           <div class="input-icon right" id="icon">
-            <input type="text" id="sort-text" autocomplete="off" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="findUnPublishedAssetsOnKeyPress($event.keyCode)">
-            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchAssets();"></button>
-            <button type="submit" class="search-box-item-click" (click)="searchAssets()">
+            <input type="text" id="sort-text" autocomplete="off" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="findUnPublishedTracksOnKeyPress($event.keyCode)">
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchTracks();"></button>
+            <button type="submit" class="search-box-item-click" (click)="searchTracks()">
             <i class="fa fa-search" aria-hidden="true"></i>
             </button>
           </div>
@@ -30,7 +30,7 @@
   </div>
     <!--List Of Tracks-->
     <div>
-      <table class='table tgrid table-hover table-sm' *ngIf="pagination?.pagedItems?.length>0" id="unPublishedAssetsTable">
+      <table class='table tgrid table-hover table-sm' *ngIf="pagination?.pagedItems?.length>0" id="unPublishedTracksTable">
         <thead>
            <tr>
               <th class="text-center">

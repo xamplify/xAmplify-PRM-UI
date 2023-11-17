@@ -44,12 +44,15 @@
             </app-share-assets>
 
             <!--Tracks-->
-            <app-share-tracks *ngIf="isTrackChildComponentCalled" >
+            <app-share-tracks *ngIf="isTrackChildComponentCalled"
+            [selectedUserListId]="selectedUserListId" [contact]="contact"
+            (shareAssetsEventEmitter)="shareUnPublishedContentEventReceiver($event)" >
 
             </app-share-tracks>
 
             <!--PlayBooks-->
-            <app-share-playbooks *ngIf="isPlayBookChildComponentCalled" >
+            <app-share-playbooks *ngIf="isPlayBookChildComponentCalled"
+             >
 
             </app-share-playbooks>
           </div>
