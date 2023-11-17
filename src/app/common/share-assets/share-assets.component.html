@@ -73,7 +73,7 @@
  </div>
 
  <div *ngIf="pagination?.totalRecords>0" [hidden]="httpRequestLoader.isLoading || httpRequestLoader?.isServerError">
-   <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findUnPublishedAssets($event)">
+   <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findAssets($event)">
    </app-pagination>
  </div>
 

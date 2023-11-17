@@ -12,8 +12,6 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { UtilService } from 'app/core/services/util.service';
 
-
-
 declare var $:any;
 
 @Component({

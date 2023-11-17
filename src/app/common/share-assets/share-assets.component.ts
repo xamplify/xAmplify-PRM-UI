@@ -49,15 +49,15 @@ export class ShareAssetsComponent implements OnInit {
     }else{
       this.pagination.partnerId = 0;
     }
-    this.findUnPublishedAssets(this.pagination);
+    this.findAssets(this.pagination);
   }
 
 
-  private findUnPublishedAssets(pagination:Pagination) {
+  private findAssets(pagination:Pagination) {
     this.customResponse = new CustomResponse();
     this.referenceService.startLoader(this.httpRequestLoader);
     this.referenceService.scrollToModalBodyTopByClass();
-    this.damService.findUnPublishedAssets(this.pagination).subscribe(
+    this.damService.findAssetsToShare(this.pagination).subscribe(
       response => {
         const data = response.data;
         pagination.totalRecords = data.totalRecords;
@@ -101,7 +101,7 @@ export class ShareAssetsComponent implements OnInit {
   setPage(event: any) {
     this.customResponse = new CustomResponse();
     this.pagination.pageIndex = event.page;
-    this.findUnPublishedAssets(this.pagination);
+    this.findAssets(this.pagination);
   }
   
 
@@ -110,7 +110,7 @@ export class ShareAssetsComponent implements OnInit {
     pagination.pageIndex = 1;
     pagination.searchKey = this.sortOption.searchKey;
     pagination = this.utilService.sortOptionValues(this.sortOption.damSortOption, pagination);
-    this.findUnPublishedAssets(pagination);
+    this.findAssets(pagination);
   }
   findUnPublishedAssetsOnKeyPress(keyCode: any) { if (keyCode === 13) { this.searchAssets(); } }
 
