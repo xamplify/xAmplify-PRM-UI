@@ -152,13 +152,26 @@ export class ShareUnpublishedContentComponent implements OnInit {
         campaignDetails["campaignIds"] = this.selectedIds;
         campaignDetails["type"] = this.type;
         this.shareCampaigns(campaignDetails);
-      }else{
+      }else if(this.selectedModule==this.properties.assetsHeaderText){
         this.shareAssets(campaignDetails);
+      }else if(this.selectedModule==this.properties.tracksHeaderText){
+        this.shareTracks(campaignDetails);
       }
     }else{
       this.referenceService.goToTop();
       this.customResponse = new CustomResponse('ERROR','Please select atleast one row',true);
     }
+  }
+  shareTracks(campaignDetails: {}) {
+    campaignDetails["trackIds"] = this.selectedIds;
+    this.authenticationService.shareSelectedAssets(campaignDetails).
+    subscribe(
+      response=>{
+        this.showPublishedSuccessMessage(response);
+      },error=>{
+        this.showPublishError();
+      }
+    );
   }
 
 
@@ -211,7 +224,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
 
   shareAssets(campaignDetails:any){
     campaignDetails["damIds"] = this.selectedIds;
-    this.authenticationService.shareUnPublishedAssets(campaignDetails).
+    this.authenticationService.shareSelectedAssets(campaignDetails).
     subscribe(
       response=>{
         this.showPublishedSuccessMessage(response);

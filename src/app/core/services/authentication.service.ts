@@ -1201,10 +1201,16 @@ isSpfConfiguredOrDomainConnected(companyId:number){
 }
 
  /********XNFR-342****/
- shareUnPublishedAssets(requestDto:any){
-  let url = this.REST_URL + "dam/shareSelectedAssets?access_token=" + this.access_token;
+ shareSelectedAssets(requestDto:any){
+    let url = this.REST_URL + "dam/shareSelectedAssets?access_token=" + this.access_token;
+    return this.callPutMethod(url,requestDto);
+  } 
+
+/********XNFR-342****/
+shareSelectedTracks(requestDto:any){
+  let url = this.REST_URL + "lms/shareSelectedTracks?access_token=" + this.access_token;
   return this.callPutMethod(url,requestDto);
-}
+} 
 
 
   
