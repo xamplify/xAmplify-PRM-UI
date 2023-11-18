@@ -164,7 +164,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
   }
   shareTracks(campaignDetails: {}) {
     campaignDetails["trackIds"] = this.selectedIds;
-    this.authenticationService.shareSelectedAssets(campaignDetails).
+    this.authenticationService.shareSelectedTracks(campaignDetails).
     subscribe(
       response=>{
         this.showPublishedSuccessMessage(response);
