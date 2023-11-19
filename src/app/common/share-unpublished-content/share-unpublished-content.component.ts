@@ -176,6 +176,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
       this.shareTracks(campaignDetails);
     }else{
       this.isTrackOrPlayBooksSweetAlertComponentCalled = false;
+      this.isShareButtonClicked = false;
     }
   }
 
