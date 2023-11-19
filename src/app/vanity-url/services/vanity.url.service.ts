@@ -166,10 +166,16 @@ export class VanityURLService {
         }     
         this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
         this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
+        this.authenticationService.v_companyBgImagePath2 = this.authenticationService.MEDIA_URL + result.backgroundLogoStyle2;
         if (result.companyBgImagePath) {
           this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
         } else {
           this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
+        }
+        if(result.backgroundLogoStyle2){
+          this.authenticationService.v_companyBgImagePath2 = this.authenticationService.MEDIA_URL + result.backgroundLogoStyle2
+        } else {
+          this.authenticationService.v_companyBgImagePath2 = "assets/images/stratapps.jpeg";
         }
         this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
         this.authenticationService.loginScreenDirection = result.loginScreenDirection;

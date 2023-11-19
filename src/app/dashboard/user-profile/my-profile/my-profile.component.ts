@@ -2631,9 +2631,11 @@ configSalesforce() {
 		}
 		return imagePath;
 	}
+	isTemplatesListDiv = false;
     goBackToMyprofileForCustomLogin(){
 		this.editCustomLoginTemplate = false;
 		this.editXamplifyDefaultTemplate = false;
+		this.isTemplatesListDiv = true;
 		this.cutomLoginTemplate = new CustomLoginTemplate();
 		this.referenceService.goToTop();
 	}

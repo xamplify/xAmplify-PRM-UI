@@ -117,7 +117,7 @@
                             </li>
                             <!--XNFR-386--->
                             <!--Custom Login Screen Settings-->
-                            <li  [ngClass]="{'active-tab': activeTabName == properties?.customLoginScreen}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="authenticationService?.vanityURLEnabled && authenticationService.module.isAnyAdminOrSupervisor">
+                            <li  [ngClass]="{'active-tab': activeTabName == properties?.customLoginScreen}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="authenticationService?.vanityURLEnabled && authenticationService.module.isAnyAdminOrSupervisor && roleNames !='Partner'">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == properties?.customLoginScreen}" (click)="activateTab(properties?.customLoginScreen);clearCustomResponse()" translate>{{properties?.customLoginScreen}}</a>
                             </li>
                              <!--------------Lead/Deal Configuration----------------------->
@@ -1898,7 +1898,7 @@
                                      <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption" class="tab-pane" [ngClass]="{'active': activeTabName == 'support'}"></app-enable-support-access-to-vendor>
                                      
                                      <!--XNFR-386-->
-                                     <app-custom-login-screen-settings (editLoginTemplate)="openBeeEditorForLoginTemplate($event)" *ngIf="isCustomLoginScreenSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == properties?.customLoginScreen}" ></app-custom-login-screen-settings>
+                                     <app-custom-login-screen-settings [isTemplatesListDiv]="isTemplatesListDiv" (editLoginTemplate)="openBeeEditorForLoginTemplate($event)" *ngIf="isCustomLoginScreenSettingsOptionClicked" class="tab-pane" [ngClass]="{'active': activeTabName == properties?.customLoginScreen}" ></app-custom-login-screen-settings>
                                 </div>
                             </div>
                         </div>

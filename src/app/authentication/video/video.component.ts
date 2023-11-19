@@ -22,9 +22,9 @@ export class VideoComponent implements OnInit {
     }else{
       let hostUrl = this.envService.CLIENT_URL;
       if("https://xamplify.co/"==hostUrl){
-        this.authService.v_companyBgImagePath = "assets/images/xAmplify-sandbox.png";
+        this.authService.v_companyBgImagePath2 = "assets/images/xAmplify-sandbox.png";
       }else{
-        this.authService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
+        this.authService.v_companyBgImagePath2 = "assets/images/stratapps.jpeg";
       }
     }
   }

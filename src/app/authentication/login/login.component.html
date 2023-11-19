@@ -94,8 +94,8 @@
 	   </div>
 	</div>
  </div>
- <app-copyright *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
- <app-copyright *ngIf="vanityURLEnabled"></app-copyright>
+ <app-copyright [styleOne]="flase" *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
+ <app-copyright [styleOne]="flase" *ngIf="vanityURLEnabled"></app-copyright>
 </div>
 <div *ngIf="isStyleOne">
 	<div class="row" style="display: content;margin-right: 0px !;margin: 0px !important;" *ngIf="vanityURLEnabled">
@@ -203,8 +203,8 @@
 					</div>
 				</div>
 			</div>
-			<app-copyright *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
-	        <app-copyright *ngIf="vanityURLEnabled"></app-copyright>
+			<app-copyright [styleOne]="true" *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
+	        <app-copyright [styleOne]="true" *ngIf="vanityURLEnabled"></app-copyright>
 		</div>
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 rightcontent p0">
 			<div [innerHTML]="htmlContent"></div>

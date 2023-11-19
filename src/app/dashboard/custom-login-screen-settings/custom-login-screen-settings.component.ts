@@ -29,6 +29,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
 
   @Output() editLoginTemplate = new EventEmitter();
   @Input() saveCustomResponse: CustomResponse;
+  @Input() isTemplatesListDiv;
   pagination: Pagination = new Pagination();
   companyProfile: CompanyProfile = new CompanyProfile();
   customLoginScreen: CustomLoginScreen = new CustomLoginScreen();
@@ -65,7 +66,9 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   isStyle2: boolean = false;
   loginType: string;
   templateName: string;
-  formPosition:string;
+  formPosition: string;
+  styleOneBackgroundImagePath = "";
+  styleTwoBackgroundImagePath = "";
   constructor(public envService: EnvService, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public properties: Properties,
     private companyProfileService: CompanyProfileService, private logger: XtremandLogger, public utilService: UtilService, public refService: ReferenceService, private vanityURLService: VanityURLService, private pagerService: PagerService, public socialPagerService: SocialPagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -75,28 +78,30 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     if (!this.companyBgImagePath) {
       this.squareDataForBgImage = {};
     }
-    if(!this.companyBgImagePath2) {
+    if (!this.companyBgImagePath2) {
       this.squareDataForBgImage = {};
     }
+    // if (this.isTemplatesListDiv) {
+    //   this.styleOneBackgroundImagePath = this.authenticationService.v_companyBgImagePath2;
+    //   this.showStyle1();
+    //   this.isShowFinalDiv = false;
+    //   $('#alertDiv').hide();
+    // } else {
     this.getCompanyProfileByUserId(this.loggedInUserId)
     this.getLogInScreenDetails();
     this.getCustomLoginTemplates(this.pagination);
     this.getFinalScreenTableView();
-    this.isShowFinalDiv = true;
-    $('#alertDiv').show();
-    $('#styleDivOne').hide()
-    $('#styleDivTwo').hide()
-    $('#updateDiv').hide();
   }
   showLoginStylesDiv() {
     this.isShowFinalDiv = false;
-    this.setCompanyProfileViewData()
     if (this.loginType == "STYLE_ONE") {
-      $('#styleDivOne').show();
       this.styleOneBackgroundImagePath = this.authenticationService.MEDIA_URL + this.backGroundImage;
+      this.showStyle1();
+      $('#styleDivOne').show();
     } else {
-      $('#styleDivTwo').show();
       this.styleTwoBackgroundImagePath = this.authenticationService.MEDIA_URL + this.backGroundImage2;
+      this.showStyle2();
+      $('#styleDivTwo').show();
     }
     // $('#alertDiv1').hide();
     $('#alertDiv').hide();
@@ -143,6 +148,19 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
             if (data.data != undefined) {
               this.companyProfile = data.data;
               this.formPosition = data.data.loginScreenDirection;
+             // this.authenticationService.v_companyBgImagePath2 = this.companyProfile.backgroundLogoStyle2;
+              this.loginType = data.data.loginType;
+              // if ($.trim(this.companyProfile.backgroundLogoPath).length > 0) {
+              //   this.backGroundImage = this.authenticationService.MEDIA_URL + this.companyProfile.backgroundLogoPath;
+              //   this.companyBgImagePath = this.companyProfile.backgroundLogoPath;
+              //   this.styleOneBackgroundImagePath = this.backGroundImage;
+              // }
+              // if ($.trim(this.companyProfile.backgroundLogoStyle2).length > 0) {
+              //   this.backGroundImage2 = this.authenticationService.MEDIA_URL + this.companyProfile.backgroundLogoStyle2;
+              //   this.companyBgImagePath2 = this.companyProfile.backgroundLogoStyle2;
+              //   this.styleTwoBackgroundImagePath = this.backGroundImage2;
+              // }
+              
               this.setCompanyProfileViewData()
             }
           },
@@ -157,16 +175,26 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       this.companyBgImagePath = this.companyProfile.backgroundLogoPath;
       this.styleOneBackgroundImagePath = this.backGroundImage;
     }
-    if($.trim(this.companyProfile.backgroundLogoStyle2).length > 0) {
+    if ($.trim(this.companyProfile.backgroundLogoStyle2).length > 0) {
       this.backGroundImage2 = this.authenticationService.MEDIA_URL + this.companyProfile.backgroundLogoStyle2;
       this.companyBgImagePath2 = this.companyProfile.backgroundLogoStyle2;
       this.styleTwoBackgroundImagePath = this.backGroundImage2;
     }
+    if(this.isTemplatesListDiv) {
+      this.isShowFinalDiv = false;
+      this.showStyle1();
+    } else {
+    this.isShowFinalDiv = true;
+    $('#alertDiv').show();
+    $('#styleDivOne').hide()
+    $('#styleDivTwo').hide()
+    $('#updateDiv').hide();
+    }
   }
-  croppedImageForBgImage2:string = "";
+  croppedImageForBgImage2: string = "";
   backgroundImage(event: any) {
     this.croppedImageForBgImage = event;
-    if(this.isStyle1) {
+    if (this.isStyle1) {
       this.styleOneBackgroundImagePath = event;
     } else {
       this.styleTwoBackgroundImagePath = event;
@@ -185,10 +213,10 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   processBgImageFile(fileObj: File) {
     this.companyProfileService.uploadBgImageFile(fileObj).subscribe(result => {
       if (result.statusCode === 200) {
-        if(this.isStyle1) {
-        this.companyProfile.backgroundLogoPath = result.data;
-        this.companyBgImagePath = result.data;
-        this.authenticationService.v_companyBgImagePath = this.companyBgImagePath;
+        if (this.isStyle1) {
+          this.companyProfile.backgroundLogoPath = result.data;
+          this.companyBgImagePath = result.data;
+          this.authenticationService.v_companyBgImagePath = this.companyBgImagePath;
         } else {
           this.companyProfile.backgroundLogoStyle2 = result.data;
           this.companyBgImagePath2 = result.data;
@@ -249,8 +277,6 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     this.customLoginScreen.showVendorCompanyLogo = this.authenticationService.v_showCompanyLogo;
     this.customLoginScreen.backGroundLogoPath = this.authenticationService.v_companyBgImagePath;
     this.customLoginScreen.backgroundLogoStyle2 = this.authenticationService.v_companyBgImagePath2;
-    // this.companyBgImagePath = this.authenticationService.v_companyBgImagePath;
-    // this.companyBgImagePath2 = this.authenticationService.v_companyBgImagePath2;
   }
   styleOneDirection: any;
   styleTwoDirection: any
@@ -263,14 +289,14 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     this.customLoginScreen.logInScreenDirection = this.styleTwoDirection;
 
   }
-  styleOneBackgroundImagePath = "";
-  styleTwoBackgroundImagePath = "";
+
   showStyle1() {
+    this.styleTwoBackgroundImagePath = this.authenticationService.MEDIA_URL + this.companyBgImagePath;
     if (!this.isShowFinalDiv) {
       this.isStyle1 = true;
-      this.styleTwoBackgroundImagePath = this.authenticationService.MEDIA_URL + this.companyBgImagePath;
       $('#styleDivOne').show();
       $('#styleDivTwo').hide();
+      $('#alertDiv').hide();
     } else {
       $('#alertDiv').show();
       $('#styleDivOne').hide()
@@ -280,9 +306,9 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     }
   }
   showStyle2() {
+    this.styleTwoBackgroundImagePath = this.authenticationService.MEDIA_URL + this.companyBgImagePath2;
     if (!this.isShowFinalDiv) {
       this.isStyle1 = false;
-      this.styleTwoBackgroundImagePath = this.authenticationService.MEDIA_URL + this.companyBgImagePath2;
       $('#styleDivOne').hide();
       $('#styleDivTwo').show();
       $('#alertDiv').hide();
@@ -312,7 +338,6 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
         pagination = this.pagerService.getPagedItems(pagination, data);
         this.pager = this.socialPagerService.getPager(this.customLoinTemplates.length, this.pagination.pageIndex, this.pagination.maxResults);
         this.pagination.pagedItems = this.customLoinTemplates.slice(this.pager.startIndex, this.pager.endIndex + 1);
-        // this.referenceService.loading(this.httpRequestLoader, false);
       } else {
         this.loading = false;
       }
@@ -361,7 +386,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
         this.selectedTemplate = result.data;
         // this.customResponse = new CustomResponse('SUCCESS', result.data, true);
       } else {
-        //this.customLoginTemplateResponse = new CustomResponse('ERROR', result.data.errorMessages[0].message, true);
+        this.customResponse = new CustomResponse('ERROR', result.errorMessages.message, true);
       }
     }, error => {
       //this.customLoginTemplateResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT, true)
@@ -370,20 +395,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   selectedTemplate: number;
   selectedTemplateId(id: number) {
     this.selectedTemplate = id;
-    //  this.companyLoginTemplateActive.templateId = id;
   }
-  //   getActiveLoginTemplate(companyProfileName:any){
-  //     this.vanityURLService.getActiveLoginTemplate(companyProfileName)
-  //     .subscribe(
-  //       data => {
-  //        this.loginStyleId = data.data.templateId
-  //        this.authenticationService.lognTemplateId = this.loginStyleId;
-  //        this.createdUserId = data.data.createdBy;
-  //        this.previewTemplate(this.loginStyleId,this.createdUserId)
-  //       })  
-  //       this.previewTemplate(this.loginStyleId,this.createdUserId)
-
-  // }
 
   getFinalScreenTableView() {
     this.vanityURLService.getFinalScreenTableView()
