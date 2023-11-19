@@ -132,10 +132,10 @@ export class LmsService {
   }
 
    /********XNFR-342****/
-   findTracksToShare(pagination:Pagination){
+   findUnPublishedTracks(pagination:Pagination){
     let userId = this.authenticationService.getUserId();
     let pageableUrl = this.referenceService.getPagebleUrl(pagination);
-    let findAllUrl = this.URL+'/findAllUnPublishedAndFilteredPublishedTracks/'+userId+'/'+pagination.userListId+'/'+pagination.partnerId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+    let findAllUrl = this.URL+'/findAllUnPublishedTracks/'+userId+'/'+pagination.userListId+'/'+pagination.partnerId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
     return this.authenticationService.callGetMethod(findAllUrl);
   }
 }

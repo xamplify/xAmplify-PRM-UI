@@ -61,7 +61,7 @@ export class ShareTracksComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.referenceService.startLoader(this.httpRequestLoader);
     this.referenceService.scrollToModalBodyTopByClass();
-    this.lmsService.findTracksToShare(this.pagination).subscribe(
+    this.lmsService.findUnPublishedTracks(this.pagination).subscribe(
       response => {
         const data = response.data;
         pagination.totalRecords = data.totalRecords;
