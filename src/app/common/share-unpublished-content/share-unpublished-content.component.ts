@@ -7,6 +7,7 @@ import { ShareCampaignsComponent } from '../share-campaigns/share-campaigns.comp
 import { CustomResponse } from '../../common/models/custom-response';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { setTimeout } from 'timers';
+import { SweetAlertParameterDto } from '../models/sweet-alert-parameter-dto';
 
 @Component({
   selector: 'app-share-unpublished-content',
@@ -47,6 +48,8 @@ export class ShareUnpublishedContentComponent implements OnInit {
   isPartnerInfoRequried = false;
   isShareButtonClicked = false;
   isPublishingToPartnerList = false;
+  trackOrPlayBooksSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+  isTrackOrPlayBooksSweetAlertComponentCalled = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,private router: Router,private campaignService:CampaignService) { }
 
@@ -146,22 +149,37 @@ export class ShareUnpublishedContentComponent implements OnInit {
 
   share(){
     if(this.selectedIds!=undefined && this.selectedIds.length>0){
-      this.ngxLoading = true;
       let campaignDetails = this.addPartnerDtos();
       if(this.selectedModule==this.properties.campaignsHeaderText){
+        this.ngxLoading = true;
         campaignDetails["campaignIds"] = this.selectedIds;
         campaignDetails["type"] = this.type;
         this.shareCampaigns(campaignDetails);
       }else if(this.selectedModule==this.properties.assetsHeaderText){
+        this.ngxLoading = true;
         this.shareAssets(campaignDetails);
       }else if(this.selectedModule==this.properties.tracksHeaderText){
-        this.shareTracks(campaignDetails);
+        this.trackOrPlayBooksSweetAlertParameterDto.text = 'Selected track(s) will be shared with all the partners.Would you like to continue?';
+	  	  this.trackOrPlayBooksSweetAlertParameterDto.confirmButtonText = "Yes,share";
+        this.isTrackOrPlayBooksSweetAlertComponentCalled = true;
       }
     }else{
       this.referenceService.goToTop();
       this.customResponse = new CustomResponse('ERROR','Please select atleast one row',true);
     }
   }
+
+  trackOrPlayBooksSweetAlertEventReceiver(event:boolean){
+    if(event){
+      this.ngxLoading = true;
+      let campaignDetails = this.addPartnerDtos();
+      this.shareTracks(campaignDetails);
+    }else{
+      this.isTrackOrPlayBooksSweetAlertComponentCalled = false;
+    }
+  }
+
+
   shareTracks(campaignDetails: {}) {
     campaignDetails["trackIds"] = this.selectedIds;
     this.authenticationService.shareSelectedTracks(campaignDetails).

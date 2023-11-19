@@ -78,4 +78,7 @@
      </div>
     </div>
 </div>    
+<app-confirm-sweet-alert-util *ngIf="isTrackOrPlayBooksSweetAlertComponentCalled" [parameterDto]="trackOrPlayBooksSweetAlertParameterDto"
+   (notifyComponent)="trackOrPlayBooksSweetAlertEventReceiver($event)"></app-confirm-sweet-alert-util>
+
 
