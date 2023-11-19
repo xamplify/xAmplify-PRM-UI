@@ -121,6 +121,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
   applyFilter(index:number,filterOption:string){
     this.ngxLoading =true;
     this.selectedIndex = index;
+    this.isShareButtonClicked = false; 
     this.selectedIds = [];
     this.modalHeaderText = "Please Select "+filterOption;
     this.selectedModule = filterOption;
@@ -158,15 +159,16 @@ export class ShareUnpublishedContentComponent implements OnInit {
       }else if(this.selectedModule==this.properties.assetsHeaderText){
         this.ngxLoading = true;
         this.shareAssets(campaignDetails);
-      }else if(this.selectedModule==this.properties.tracksHeaderText){
-        if(this.isPublishingToPartnerList){
-          this.addLoaderAndShareTracks();
-        }else{
-          this.trackOrPlayBooksSweetAlertParameterDto.text = 'Selected track(s) will be shared with all the partners.Would you like to continue?';
-          this.trackOrPlayBooksSweetAlertParameterDto.confirmButtonText = "Yes,share";
-          this.isTrackOrPlayBooksSweetAlertComponentCalled = true;
-        }
-      
+      }else if(this.selectedModule==this.properties.tracksHeaderText
+         || this.selectedModule==this.properties.playBooksHeaderText){
+          if(this.isPublishingToPartnerList){
+            this.addLoaderAndShareTracksOrPlayBooks();
+          }else{
+            let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
+            this.trackOrPlayBooksSweetAlertParameterDto.text = 'Selected '+this.selectedModule+'(s) will be shared with all '+partnerModuleCustomName+'.Would you like to continue?';
+            this.trackOrPlayBooksSweetAlertParameterDto.confirmButtonText = "Yes,share";
+            this.isTrackOrPlayBooksSweetAlertComponentCalled = true;
+          }
       }
     }else{
       this.referenceService.goToTop();
@@ -176,7 +178,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
 
   trackOrPlayBooksSweetAlertEventReceiver(event:boolean){
     if(event){
-      this.addLoaderAndShareTracks();
+      this.addLoaderAndShareTracksOrPlayBooks();
     }else{
       this.isTrackOrPlayBooksSweetAlertComponentCalled = false;
       this.isShareButtonClicked = false;
@@ -184,15 +186,15 @@ export class ShareUnpublishedContentComponent implements OnInit {
   }
 
 
-  private addLoaderAndShareTracks() {
+  private addLoaderAndShareTracksOrPlayBooks() {
     this.ngxLoading = true;
     let campaignDetails = this.addPartnerDtos();
-    this.shareTracks(campaignDetails);
+    this.shareTracksOrPlayBooks(campaignDetails);
   }
 
-  shareTracks(campaignDetails: {}) {
+  shareTracksOrPlayBooks(campaignDetails: {}) {
     campaignDetails["trackIds"] = this.selectedIds;
-    this.authenticationService.shareSelectedTracks(campaignDetails).
+    this.authenticationService.shareSelectedTracksOrPlayBooks(campaignDetails,this.selectedModule).
     subscribe(
       response=>{
         this.showPublishedSuccessMessage(response);

@@ -1207,8 +1207,9 @@ isSpfConfiguredOrDomainConnected(companyId:number){
   } 
 
 /********XNFR-342****/
-shareSelectedTracks(requestDto:any){
-  let url = this.REST_URL + "lms/shareSelectedTracks?access_token=" + this.access_token;
+shareSelectedTracksOrPlayBooks(requestDto:any,module:string){
+  let urlPrefix = module=="Tracks" ? 'shareSelectedTracks':'shareSelectedPlayBooks';
+  let url = this.REST_URL + "lms/"+urlPrefix+"?access_token=" + this.access_token;
   return this.callPutMethod(url,requestDto);
 } 
 
