@@ -40,21 +40,16 @@
             <app-share-assets *ngIf="isAssetChildComponentCalled"
             [selectedUserListId]="selectedUserListId" [contact]="contact"
             (shareAssetsEventEmitter)="shareUnPublishedContentEventReceiver($event)" >
-
             </app-share-assets>
 
-            <!--Tracks-->
-            <app-share-tracks *ngIf="isTrackChildComponentCalled"
-            [selectedUserListId]="selectedUserListId" [contact]="contact"
-            (shareTracksEventEmitter)="shareUnPublishedContentEventReceiver($event)" >
-
-            </app-share-tracks>
-
-            <!--PlayBooks-->
-            <app-share-playbooks *ngIf="isPlayBookChildComponentCalled"
-             >
-
-            </app-share-playbooks>
+            <!--Tracks/PlayBooks-->
+            <app-share-tracks-or-playbooks
+              *ngIf="isTrackChildComponentCalled || isPlayBookChildComponentCalled"
+              [selectedUserListId]="selectedUserListId" [contact]="contact"
+              [type]="selectedModule"
+              (shareTracksOrPlayBooksEventEmitter)="shareUnPublishedContentEventReceiver($event)"
+            ></app-share-tracks-or-playbooks>
+           
           </div>
 
           <!--Published Message-->

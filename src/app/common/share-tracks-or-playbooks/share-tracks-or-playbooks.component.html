@@ -18,9 +18,9 @@
         <!--Sort-->
         <div class="portlet-input input-inline">
           <div class="input-icon right" id="icon">
-            <input type="text" id="sort-text" autocomplete="off" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="findUnPublishedTracksOnKeyPress($event.keyCode)">
+            <input type="text" id="sort-text" autocomplete="off" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="findUnPublishedTracksOrPlayBooksOnKeyPress($event.keyCode)">
             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchTracks();"></button>
-            <button type="submit" class="search-box-item-click" (click)="searchTracks()">
+            <button type="submit" class="search-box-item-click" (click)="searchTracksOrPlayBooks()">
             <i class="fa fa-search" aria-hidden="true"></i>
             </button>
           </div>
@@ -28,34 +28,34 @@
       </div>
     </div> 
   </div>
-    <!--List Of Tracks-->
+    <!--List Of Tracks/PlayBooks-->
     <div>
-      <table class='table tgrid table-hover table-sm' *ngIf="pagination?.pagedItems?.length>0" id="unPublishedTracksTable">
+      <table class='table tgrid table-hover table-sm' *ngIf="pagination?.pagedItems?.length>0" id="unPublishedTracksOrPlayBooksTable">
         <thead>
            <tr>
               <th class="text-center">
                  <input class="pointer checkBox_shadow" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-                  (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)" id="unPublished-tracks-header-checkbox-id">
+                  (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)" id="unPublished-tracks-or-playbooks-header-checkbox-id">
               </th>
-              <th class="text-center">Track Title</th>
+              <th class="text-center">Name</th>
               <th class="text-center">Created By</th>
               <th class="text-center">Created On</th>
            </tr>
         </thead>
         <tbody>
-           <tr class="pointer" *ngFor="let track of pagination.pagedItems ;let i =index" id="unPublished-tracks-tr-{{track.id}}" [class.row-selected]="selectedTrackIds.indexOf(track.id)>-1" (click)="highlightSelectedAssetOnRowClick(track.id,$event)">
+           <tr class="pointer" *ngFor="let item of pagination.pagedItems ;let i =index" id="unPublished-tracks-or-playbooks-tr-{{item.id}}" [class.row-selected]="selectedTrackOrPlayBookIds.indexOf(item.id)>-1" (click)="highlightSelectedRowOnRowClick(item.id,$event)">
            <td class="text-center">
-              <input type="checkbox" class="pointer checkBox_shadow"  id="{{track.id}}" [checked]="selectedTrackIds.indexOf(track.id)>-1"
-               name="unPublishedTracksCheckBox[]" value="{{track.id}}" (click)="$event.stopPropagation();highlightAssetRowOnCheckBoxClick(track.id,$event)">
+              <input type="checkbox" class="pointer checkBox_shadow"  id="{{item.id}}" [checked]="selectedTrackOrPlayBookIds.indexOf(item.id)>-1"
+               name="unPublishedTracksOrPlayBooksCheckBox[]" value="{{item.id}}" (click)="$event.stopPropagation();highlightRowOnCheckBoxClick(item.id,$event)">
            </td>
-           <td class="text-center" title="{{track?.title}}">
-              {{track?.title | slice:0:25}} <span *ngIf="track?.title?.length>25">...</span>
-           </td>
-           <td class="text-center">
-              <span>{{track?.createdBy}}</span>
+           <td class="text-center" title="{{item?.title}}">
+              {{item?.title | slice:0:25}} <span *ngIf="item?.title?.length>25">...</span>
            </td>
            <td class="text-center">
-              <app-display-date-and-time [dateAndTimeUTCString]="track?.createdTimeInString"></app-display-date-and-time>
+              <span>{{item?.createdBy}}</span>
+           </td>
+           <td class="text-center">
+              <app-display-date-and-time [dateAndTimeUTCString]="item?.createdTimeInString"></app-display-date-and-time>
            </td>
            </tr>
         </tbody>
@@ -65,11 +65,11 @@
 
  <!--Pagination-->
  <div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-   <strong>No Tracks Found.</strong>
+   <strong>No {{type}} Found.</strong>
  </div>
 
  <div *ngIf="pagination?.totalRecords>0" [hidden]="httpRequestLoader.isLoading || httpRequestLoader?.isServerError">
-   <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findTracks($event)">
+   <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="findTracksOrPlayBooks($event)">
    </app-pagination>
  </div>
 

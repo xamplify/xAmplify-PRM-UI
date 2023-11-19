@@ -15,21 +15,22 @@ import { LmsService } from 'app/lms/services/lms.service';
 declare var $:any;
 
 @Component({
-  selector: 'app-share-tracks',
-  templateUrl: './share-tracks.component.html',
-  styleUrls: ['./share-tracks.component.css'],
+  selector: 'app-share-tracks-or-playbooks',
+  templateUrl: './share-tracks-or-playbooks.component.html',
+  styleUrls: ['./share-tracks-or-playbooks.component.css'],
   providers: [Pagination, HttpRequestLoader, Properties, SortOption,LmsService]
 })
-export class ShareTracksComponent implements OnInit {
+export class ShareTracksOrPlaybooksComponent implements OnInit {
 
-
+ 
   pagination:Pagination = new Pagination();
   sortOption:SortOption = new SortOption();
   customResponse:CustomResponse = new CustomResponse();
-  @Output() shareTracksEventEmitter = new EventEmitter();
+  @Output() shareTracksOrPlayBooksEventEmitter = new EventEmitter();
   @Input() selectedUserListId = 0;
   @Input() contact:any;
-  selectedTrackIds = [];
+  @Input() type: string;
+  selectedTrackOrPlayBookIds = [];
   isHeaderCheckBoxChecked = false;
   firstName = "";
   lastName = "";
@@ -53,15 +54,15 @@ export class ShareTracksComponent implements OnInit {
     }else{
       this.pagination.partnerId = 0;
     }
-    this.findTracks(this.pagination);
+    this.findTracksOrPlayBooks(this.pagination);
   }
 
 
-  private findTracks(pagination:Pagination) {
+  private findTracksOrPlayBooks(pagination:Pagination) {
     this.customResponse = new CustomResponse();
     this.referenceService.startLoader(this.httpRequestLoader);
     this.referenceService.scrollToModalBodyTopByClass();
-    this.lmsService.findUnPublishedTracks(this.pagination).subscribe(
+    this.lmsService.findUnPublishedTracksOrPlayBooks(this.pagination,this.type).subscribe(
       response => {
         const data = response.data;
         pagination.totalRecords = data.totalRecords;
@@ -69,7 +70,7 @@ export class ShareTracksComponent implements OnInit {
         pagination = this.pagerService.getPagedItems(pagination, data.list);
         /*******Header checkbox will be chcked when navigating through page numbers*****/
         var assetIds = pagination.pagedItems.map(function(a) { return a.id; });
-        var items = $.grep(this.selectedTrackIds, function(element: any) {
+        var items = $.grep(this.selectedTrackOrPlayBookIds, function(element: any) {
             return $.inArray(element, assetIds) !== -1;
         });
         if (items.length == assetIds.length) {
@@ -93,7 +94,7 @@ export class ShareTracksComponent implements OnInit {
 
 
   /*************************Search********************** */
-  searchTracks() {
+  searchTracksOrPlayBooks() {
     this.getAllFilteredResults(this.pagination);
   }
 
@@ -105,7 +106,7 @@ export class ShareTracksComponent implements OnInit {
   setPage(event: any) {
     this.customResponse = new CustomResponse();
     this.pagination.pageIndex = event.page;
-    this.findTracks(this.pagination);
+    this.findTracksOrPlayBooks(this.pagination);
   }
   
 
@@ -114,29 +115,29 @@ export class ShareTracksComponent implements OnInit {
     pagination.pageIndex = 1;
     pagination.searchKey = this.sortOption.searchKey;
     pagination = this.utilService.sortOptionValues(this.sortOption.damSortOption, pagination);
-    this.findTracks(pagination);
+    this.findTracksOrPlayBooks(pagination);
   }
-  findUnPublishedTracksOnKeyPress(keyCode: any) { if (keyCode === 13) { this.searchTracks(); } }
+  findUnPublishedTracksOrPlayBook(keyCode: any) { if (keyCode === 13) { this.searchTracksOrPlayBooks(); } }
 
   /*****CheckBox Code******/
-  highlightSelectedAssetOnRowClick(selectedAssetId: any, event: any) {
-    this.referenceService.highlightRowOnRowCick('unPublished-tracks-tr', 'unPublishedTracksTable', 'unPublishedTracksCheckBox', this.selectedTrackIds, 'unPublished-tracks-header-checkbox-id', selectedAssetId, event);
+  highlightSelectedRowOnRowClick(selectedAssetId: any, event: any) {
+    this.referenceService.highlightRowOnRowCick('unPublished-tracks-or-playbooks-tr', 'unPublishedTracksOrPlayBooksTable', 'unPublishedTracksOrPlayBooksCheckBox', this.selectedTrackOrPlayBookIds, 'unPublished-tracks-or-playbooks-header-checkbox-id', selectedAssetId, event);
     this.sendEmitterValues();
   }
 
-  highlightAssetRowOnCheckBoxClick(selectedAssetId: any, event: any) {
-    this.referenceService.highlightRowByCheckBox('unPublished-tracks-tr', 'unPublishedTracksTable', 'unPublishedTracksCheckBox', this.selectedTrackIds, 'unPublished-tracks-header-checkbox-id', selectedAssetId, event);
+  highlightRowOnCheckBoxClick(selectedAssetId: any, event: any) {
+    this.referenceService.highlightRowByCheckBox('unPublished-tracks-or-playbooks-tr', 'unPublishedTracksOrPlayBooksTable', 'unPublishedTracksOrPlayBooksCheckBox', this.selectedTrackOrPlayBookIds, 'unPublished-tracks-or-playbooks-header-checkbox-id', selectedAssetId, event);
     this.sendEmitterValues();
   }
 
   selectOrUnselectAllRowsOfTheCurrentPage(event: any) {
-    this.selectedTrackIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('unPublished-tracks-tr', 'unPublishedTracksTable', 'unPublishedTracksCheckBox', this.selectedTrackIds, this.pagination, event);
+    this.selectedTrackOrPlayBookIds = this.referenceService.selectOrUnselectAllOfTheCurrentPage('unPublished-tracks-or-playbooks-tr', 'unPublishedTracksOrPlayBooksTable', 'unPublishedTracksOrPlayBooksCheckBox', this.selectedTrackOrPlayBookIds, this.pagination, event);
 		this.sendEmitterValues();
   }
 
   sendEmitterValues(){
 		let emitterObject = {};
-		emitterObject['selectedRowIds'] = this.selectedTrackIds;
+		emitterObject['selectedRowIds'] = this.selectedTrackOrPlayBookIds;
     emitterObject['isPartnerInfoRequried'] = false;
     if(this.pagination.partnerId!=undefined && this.pagination.partnerId>0){
       let partnerDetails = { 
@@ -151,6 +152,6 @@ export class ShareTracksComponent implements OnInit {
     }else{
       emitterObject['isPublishingToPartnerList'] = true;
     }
-		this.shareTracksEventEmitter.emit(emitterObject);
+		this.shareTracksOrPlayBooksEventEmitter.emit(emitterObject);
 	}
 }

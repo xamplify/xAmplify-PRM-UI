@@ -159,9 +159,14 @@ export class ShareUnpublishedContentComponent implements OnInit {
         this.ngxLoading = true;
         this.shareAssets(campaignDetails);
       }else if(this.selectedModule==this.properties.tracksHeaderText){
-        this.trackOrPlayBooksSweetAlertParameterDto.text = 'Selected track(s) will be shared with all the partners.Would you like to continue?';
-	  	  this.trackOrPlayBooksSweetAlertParameterDto.confirmButtonText = "Yes,share";
-        this.isTrackOrPlayBooksSweetAlertComponentCalled = true;
+        if(this.isPublishingToPartnerList){
+          this.addLoaderAndShareTracks();
+        }else{
+          this.trackOrPlayBooksSweetAlertParameterDto.text = 'Selected track(s) will be shared with all the partners.Would you like to continue?';
+          this.trackOrPlayBooksSweetAlertParameterDto.confirmButtonText = "Yes,share";
+          this.isTrackOrPlayBooksSweetAlertComponentCalled = true;
+        }
+      
       }
     }else{
       this.referenceService.goToTop();
@@ -171,15 +176,19 @@ export class ShareUnpublishedContentComponent implements OnInit {
 
   trackOrPlayBooksSweetAlertEventReceiver(event:boolean){
     if(event){
-      this.ngxLoading = true;
-      let campaignDetails = this.addPartnerDtos();
-      this.shareTracks(campaignDetails);
+      this.addLoaderAndShareTracks();
     }else{
       this.isTrackOrPlayBooksSweetAlertComponentCalled = false;
       this.isShareButtonClicked = false;
     }
   }
 
+
+  private addLoaderAndShareTracks() {
+    this.ngxLoading = true;
+    let campaignDetails = this.addPartnerDtos();
+    this.shareTracks(campaignDetails);
+  }
 
   shareTracks(campaignDetails: {}) {
     campaignDetails["trackIds"] = this.selectedIds;
