@@ -2683,3 +2683,48 @@ button.btn.custom {
   color: #fff !important;
   z-index: 999;
 }
+/* sudhas sri (19-11-2023) */
+.title-div > a{
+  color : #fff !important
+}
+.custom-grid-icon {
+  display: inline-block !important;
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 24px !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  border-radius: 50%;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  cursor: pointer;
+  margin-right: 8px;
+}
+.custom-grid-icon:hover .clickicons {
+  top: 0%;
+}
+/* sudha sri (20-11-2023) */
+.custom-folder-icon {
+  display: inline-block !important;
+  width: 28px !important;
+  height: 28px !important;
+  line-height: 24px !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  border-radius: 50%;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  cursor: pointer;
+  margin-right: 8px;
+}
+.custom-folder-icon:hover .clickicons {
+  top: 0%;
+}
