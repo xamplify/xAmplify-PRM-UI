@@ -116,6 +116,10 @@ export class ParterService {
             urlSuffix = 'getRedistributedCampaignsAndLeadsCountPreviousQuarterForBarChartDualAxes';
         }else if(chartId=="top10LeadsAndDealsBarChart"){
             urlSuffix = 'getLeadsAndDealsCount';
+        }else if(chartId=="allRedistributeCampaignsAndLeadsCountBarChart"){
+            urlSuffix = 'getAllRedistributedCampaignsAndLeadsCountForBarChartDualAxes';
+        }else if(chartId=="allLeadsAndDealsBarChart"){
+            urlSuffix = 'getAllLeadsAndDealsCount';
         }
         const url = this.URL + 'partner/'+urlSuffix+'/'+this.authenticationService.getUserId()+'/'+filterType+'/'+applyTeamMemberFilter+'?access_token=' + this.authenticationService.access_token
         return this.httpClient.get( url )
@@ -335,6 +339,16 @@ export class ParterService {
     getPartnerJourneyTypewiseTrackCounts(partnerJourneyRequest: PartnerJourneyRequest) {
         const url = this.URL + 'partner/journey/track/typewise/counts?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post( url, partnerJourneyRequest )
+            .catch( this.handleError );
+    } 
+    redistributedCampaignDetailsPieChart(partnerJourneyRequest: PartnerJourneyRequest) {
+        const url = this.URL + 'partner/journey/redistributed/campaign/details/count/pie/chart?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, partnerJourneyRequest )
+            .catch( this.handleError );
+    }
+    getPartnerJourneyCompanyDetailsForFilter(loggedInUserId: number) {
+        const url = this.URL + 'partner/journey/company/details/filter'+loggedInUserId+'?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.get( url )
             .catch( this.handleError );
     }
 

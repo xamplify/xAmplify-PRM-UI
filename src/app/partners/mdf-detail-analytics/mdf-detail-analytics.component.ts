@@ -18,6 +18,8 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 export class MdfDetailAnalyticsComponent implements OnInit {
 
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
+  @Input()  isDetailedAnalytics: boolean;
+  @Input() selectedPartnerCompanyIds: any = [];
   
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -30,14 +32,19 @@ export class MdfDetailAnalyticsComponent implements OnInit {
     this.loggedInUserId = this.authenticationService.getUserId();
     }
   ngOnInit() {
+
+  } 
+   ngOnChanges(){
     this.pagination.pageIndex = 1;
     this.getMdfDetails(this.pagination);
-  }
+   }
 
   getMdfDetails(pagination : Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.maxResults = 4;
+    this.pagination.detailedAnalytics = this.isDetailedAnalytics;
+    this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.parterService.getMdfDetails(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);

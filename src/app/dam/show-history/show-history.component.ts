@@ -232,7 +232,7 @@ export class ShowHistoryComponent implements OnInit {
 		this.referenceService.loading(this.listLoader, false);
 		this.asset = {};
 		this.pagination.pageIndex = 1;
-		this.listAssets(this.pagination);
+		this.listAssetsHistory(this.pagination);
 		this.callFolderListViewEmitter();
 		}else if(response.statusCode==401){
 			this.customResponse = new CustomResponse('ERROR', response.message, true);

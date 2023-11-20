@@ -166,7 +166,7 @@
 
 .pa-Card {
   cursor: default;
-  border-radius: 3px !important;
+  border-radius: 10px !important;
   text-align: center;
   padding: 10px 10px;
   box-sizing: border-box;
@@ -182,7 +182,7 @@
 }
 
 .pa-fafaIconCustomization {
-  font-size: 40px !important;
+  font-size: 32px !important;
   padding: 12px !important;
   margin: 0px !important;
   margin-bottom: 5px !important;
@@ -199,55 +199,61 @@ p.pa-text {
 p.pa-TextOne {
   color: #00a6e8;
 }
-
-.pa-CardOne {
-  color: #00a6e8;
-}
-
 .pa-CardOne:hover {
   background: #00a6e8;
   color: #fff;
   border: 1px solid #00a6e8;
 }
-
+.pa-CardOne {
+  color: #00a6e8;
+  border: 1px solid #00a6e8;
+}
+.pa-CardOne {
+  color: #00a6e8;
+}
 .pa-CardOne:hover p {
   background: #00a6e8;
   color: #fff;
 }
 
+
+
 p.pa-TextTwo {
   color: #10ad39;
 }
-
 .pa-CardTwo {
   color: #10ad39;
 }
-
 .pa-CardTwo:hover {
   background: #10ad39;
   color: #fff;
   border: 1px solid #10ad39;
 }
-
+.pa-CardTwo {
+  color: #10ad39;
+  border: 1px solid #10ad39;
+}
 .pa-CardTwo:hover p {
   background: #10ad39;
   color: #fff;
 }
 
+
 p.pa-TextThree {
   color: #3564b9;
 }
-
 .pa-CardThree {
   color: #3564b9;
 }
-
 .pa-CardThree:hover {
   background: #3564b9;
   color: #fff;
   border: 1px solid #3564b9;
 }
-
+.pa-CardThree {
+  color: #3564b9;
+  border: 1px solid #3564b9;
+}
 .pa-CardThree:hover p {
   background: #3564b9;
   color: #fff;
@@ -256,17 +262,18 @@ p.pa-TextThree {
 p.pa-TextFour {
   color: #2bc2b5;
 }
-
 .pa-CardFour {
   color: #2bc2b5;
 }
-
 .pa-CardFour:hover {
   background: #2bc2b5;
   color: #fff;
   border: 1px solid #2bc2b5;
 }
-
+.pa-CardFour {
+  color: #2bc2b5;
+  border: 1px solid #2bc2b5;
+}
 .pa-CardFour:hover p {
   background: #2bc2b5;
   color: #fff;
@@ -275,52 +282,58 @@ p.pa-TextFour {
 p.pa-TextFive {
   color: #57517d;
 }
-
 .pa-CardFive {
   color: #57517d;
 }
-
 .pa-CardFive:hover {
   background: #57517d;
   color: #fff;
   border: 1px solid #57517d;
 }
-
+.pa-CardFive {
+  color: #57517d;
+  border: 1px solid #57517d;
+}
 .pa-CardFive:hover p {
   background: #57517d;
   color: #fff;
 }
 
+
 p.pa-TextSix {
   color: #7f2ca3;
 }
-
 .pa-CardSix {
   color: #7f2ca3;
 }
-
 .pa-CardSix:hover {
   background: #7f2ca3;
   color: #fff;
   border: 1px solid #7f2ca3;
 }
-
+.pa-CardSix {
+  color: #7f2ca3;
+  border: 1px solid #7f2ca3;
+}
 .pa-CardSix:hover p {
   background: #7f2ca3;
   color: #fff;
 }
 
+
 p.pa-TextSeven {
   color: #827500;
 }
-
 .pa-CardSeven {
   color: #827500;
 }
-
 .pa-CardSeven:hover {
   background: #827500;
   color: #fff;
+  border: 1px solid #827500;
+}
+.pa-CardSeven {
+  color: #827500;
   border: 1px solid #827500;
 }
 
@@ -332,17 +345,18 @@ p.pa-TextSeven {
 p.pa-TextEight {
   color: #2b005c;
 }
-
 .pa-CardEight {
   color: #2b005c;
 }
-
 .pa-CardEight:hover {
   background: #2b005c;
   color: #fff;
   border: 1px solid #2b005c;
 }
-
+.pa-CardEight {
+  color: #2b005c;
+  border: 1px solid #2b005c;
+}
 .pa-CardEight:hover p {
   background: #2b005c;
   color: #fff;
@@ -351,17 +365,18 @@ p.pa-TextEight {
 p.pa-TextNine {
   color: #c72828;
 }
-
 .pa-CardNine {
   color: #c72828;
 }
-
 .pa-CardNine:hover {
   background: #c72828;
   color: #fff;
   border: 1px solid #c72828;
 }
-
+.pa-CardNine {
+  color: #c72828;
+  border: 1px solid #c72828;
+}
 .pa-CardNine:hover p {
   background: #c72828;
   color: #fff;
@@ -370,17 +385,18 @@ p.pa-TextNine {
 p.pa-TextTen {
   color: #660000;
 }
-
 .pa-CardTen {
   color: #660000;
 }
-
 .pa-CardTen:hover {
   background: #660000;
   color: #fff;
   border: 1px solid #660000;
 }
-
+.pa-CardTen {
+  color: #660000;
+  border: 1px solid #660000;
+}
 .pa-CardTen:hover p {
   background: #660000;
   color: #fff;

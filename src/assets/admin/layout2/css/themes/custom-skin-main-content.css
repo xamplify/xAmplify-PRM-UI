@@ -2285,6 +2285,36 @@ i.IconodownloadedCount:hover {
 .hrCustimization {
   border-top: 1px solid var(--border-color) !important;
 }
+
+
+/* table header bgcolor */
+.panel-bgMain > .panel-bg{
+  background-color: var(--page-content) !important;
+  border-color: var(--border-color) !important;
+}
+.panel-bgMain {
+  border-color: var(--border-color) !important;
+}
+/* table header bgcolor end */
+
+#queryBuilderCu .q-invalid-ruleset{
+  background-color: var(--left-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+#queryBuilderCu .q-empty-warning {
+  color: var(--title-heading--text) !important;
+}
+
+.pjCardTitlebg  {
+  background-color: var(--page-content) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+.portlet.light > .portlet-title > .pjCardTitleCenterAlignment1 {
+  background-color: var(--page-content) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
 .portlet.light.cpad.hover-effect.pointer.card-radius {
   padding: 0px !important;
 }
@@ -2292,6 +2322,7 @@ i.IconodownloadedCount:hover {
   padding: 0px 0px !important;
   border-radius: 10px;
 }
+
 .notify_count {
   font-family: "Gantari", "Open Sans", sans-serif;
   position: absolute;
@@ -2308,3 +2339,4 @@ i.IconodownloadedCount:hover {
   display: flex !important;
   justify-content: center !important;
 }
+

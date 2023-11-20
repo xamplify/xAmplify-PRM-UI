@@ -50,10 +50,6 @@ export class SendCampaignsComponent implements OnInit {
   /**XNFR-342****/
   selectedIndex = 0;
   headerText = "";
-  @Input() hasCampaignAccess = false;
-  @Input() hasDamAccess = false;
-  @Input() hasLmsAccess =false;
-  @Input() hasPlaybookAccess = false;
   showFilterOptions = false;
   /**XNFR-342****/
   constructor(private campaignService: CampaignService,private xtremandLogger: XtremandLogger,
@@ -72,14 +68,6 @@ export class SendCampaignsComponent implements OnInit {
 
 
   openPopUp(partnerListId: number, contact:any,type:string) {
-    let accessList = [];
-    accessList.push(this.hasCampaignAccess);
-    accessList.push(this.hasDamAccess);
-    accessList.push(this.hasLmsAccess);
-    accessList.push(this.hasPlaybookAccess);
-    let filteredArrayList = this.referenceService.filterArrayList(accessList,false);
-    this.showFilterOptions = filteredArrayList!=undefined && filteredArrayList.length>1;
-
     if(type=="Contact" &&this.isLoggedInThroughVanityUrl){
       this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.pagination.vanityUrlFilter = true;

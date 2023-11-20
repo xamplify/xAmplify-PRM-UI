@@ -198,12 +198,14 @@
                                                 </a>
                                             </div>
                                             <!--XNFR-327-->
-                                            <ng-container *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress">
-                                                <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listLearningTracks(pagination)"> 
+
+
+                                            <div *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress" class="actions-block override-actions custom-width-icon mb_whitespace">
+                                                <a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listLearningTracks(pagination)"> 
                                                     <i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
                                                     <div class="clickicons"></div>
                                                 </a> 
-                                            </ng-container>
+                                            </div>
 											<!--XNFR-327-->
                                         </td>
                                     </tr>
@@ -288,6 +290,14 @@
                                 </a>
                             </div>
                             </div>
+                            <!--Refresh Icon-->
+                            <!--XNFR-327-->
+                            <div *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress" class="actions-block override-actions custom-width-icon mb_whitespace">
+                                <a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listLearningTracks(pagination)"> 
+                                    <i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
+                                </a> 
+                            </div>
+                            <!--XNFR-327-->
                         </div>
                     </div>
                 </div>
