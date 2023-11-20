@@ -142,8 +142,8 @@
                               <ng-container *ngFor="let campaignAnalytics of pagination.pagedItems;let i=index">
                                 <tr>
                                   <td>
-                                     <img *ngIf="campaignAnalytics?.campaignType=='REGULAR'" class="imageClass active image-padding" src="assets/images/regular-email.svg" alt="Regular Campaign Logo Not Found">
-                                     <img *ngIf="campaignAnalytics?.campaignType=='VIDEO'" class="imageClass active image-padding" src="assets/images/video-email.svg" alt="Video Campaign Logo Not Found">
+                                     <img *ngIf="campaignAnalytics?.campaignType=='REGULAR'" class="imageClass active image-padding image_effect" src="assets/images/regular-email.svg" alt="Regular Campaign Logo Not Found">
+                                     <img *ngIf="campaignAnalytics?.campaignType=='VIDEO'" class="imageClass active image-padding image_effect" src="assets/images/video-email.svg" alt="Video Campaign Logo Not Found">
                                      <a class="campaign-name-padding"  data-toggle="tooltip" data-placement="bottom"  title="{{campaignAnalytics?.campaignName}}" (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId)">
                                        {{campaignAnalytics?.campaignName | slice:0:15}}
                                        <span *ngIf="campaignAnalytics?.campaignName?.length>15">...</span> 
@@ -168,23 +168,33 @@
                                   </td>
                                   <td class="center-align">
                                     <div (click)="$event.stopPropagation()">
-                                       <i class="circled-number IconCustomization fontStyleNormal" *ngIf="campaignAnalytics?.autoResponsesCount==0"
+                                       <a class="custom-icon" *ngIf="campaignAnalytics?.autoResponsesCount==0">
+                                       <i class="circled-number IconCustomization fontStyleNormal"
                                          style="margin-right: 50px;cursor: not-allowed">{{campaignAnalytics?.autoResponsesCount}}</i>
-                                       <i class="circled-number IconCustomization fontStyleNormal" *ngIf="campaignAnalytics?.autoResponsesCount>0">
+                                         <div class="clickicons"></div>
+                                       </a>
+                                       <a class="custom-icon" *ngIf="campaignAnalytics?.autoResponsesCount>0">
+                                       <i class="circled-number IconCustomization fontStyleNormal">
                                          {{campaignAnalytics?.autoResponsesCount}}</i>
-                                       <a *ngIf="campaignAnalytics?.autoResponsesCount>0"
+                                         <div class="clickicons"></div>
+                                       </a>
+                                       <a class="custom-icon" *ngIf="campaignAnalytics?.autoResponsesCount>0"
                                          (click)="$event.stopPropagation();showAutoResponseAnalytics(campaignAnalytics,i)"
                                          data-toggle="tooltip" data-placement="bottom" 
                                          title="View Auto Response Analytics">
                                          <i class="fa IconCustomization circled-number"
                                            [ngClass]="{'fa-plus': !campaignAnalytics?.expanded, 'fa-minus': campaignAnalytics?.expanded}" aria-hidden="true"></i>
+                                           <div class="clickicons"></div>
                                        </a>
                                        
                                      </div>
                                   </td>
                                   <td class="center-align">
-                                    <div  (click)="viewTimeLine(campaignAnalytics)" >
+                                    <div  (click)="viewTimeLine(campaignAnalytics)">
+                                       <a class="custom-icon">
                                           <i class="circled-number fa fa-history action-btn IconCustomization pointer" aria-hidden="true"  data-toggle="tooltip" data-placement="bottom"  title="View History"></i>
+                                          <div class="clickicons"></div>
+                                       </a>
                                        </div>
                                   </td>
                                </tr>

@@ -44,7 +44,7 @@
         && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"   [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
       </div>
     </div>
-    <div class="page-bar page-bar-shadow" style="border-radius: 5px !important;box-shadow: none !important;">
+    <div class="page-bar page-bar-shadow shadow-radius">
       <app-response-message class="pg8" [customResponse]="dealResponse" *ngIf="dealResponse.isVisible"></app-response-message>
       <app-box-loader [countLoader]=4 *ngIf="ngxLoading"></app-box-loader>
       <app-module-analytics *ngIf="!ngxLoading" (notifyShowDealForm)="showDealForm=true" [applyFilter]="applyFilter"></app-module-analytics>
