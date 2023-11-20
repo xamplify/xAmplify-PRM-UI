@@ -2261,7 +2261,8 @@ left-menu-color ul li a,
   > li.external {
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
-.custom {
+.custom,
+.barview {
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 .table tbody tr:hover {
@@ -2727,4 +2728,10 @@ button.btn.custom {
 }
 .custom-folder-icon:hover .clickicons {
   top: 0%;
+}
+a.Iconhover.custom-icon {
+  line-height: 28px !important;
+}
+hr.swal2-spacer {
+  border-top: none !important;
 }

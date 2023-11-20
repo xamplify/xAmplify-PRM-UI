@@ -259,37 +259,44 @@
                                     <!---XNFR-255-->
                                 </div>
                                 <div class="bar gridIconCustomization">
-                                    <a class="Iconhover" *ngIf="loggedInAsSuperAdmin"
+                                    <a class="Iconhover custom-grid-icon" *ngIf="loggedInAsSuperAdmin"
                                         (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip"
                                         data-placement="top" title="Save As Default Template">
                                         <i class="fa fa-plus" aria-hidden="true"></i>
+                                        <div class="clickicons"></div>
                                     </a>
-                                    <a class="Iconhover" (click)="spamCheck(emailTemplate)" data-toggle="tooltip"
-                                        data-placement="top" title="{{actionsDescription.template_spam_check}}">
+                                    <a class="Iconhover custom-grid-icon" (click)="spamCheck(emailTemplate)"
+                                        data-toggle="tooltip" data-placement="top"
+                                        title="{{actionsDescription.template_spam_check}}">
                                         <i class="fa fa-inbox" aria-hidden="true"></i>
+                                        <div class="clickicons"></div>
                                     </a>
-                                    <a class="Iconhover" (click)="edit(emailTemplate.id)" data-toggle="tooltip"
-                                        data-placement="top" title="{{actionsDescription.template_edit}}"
+                                    <a class="Iconhover custom-grid-icon" (click)="edit(emailTemplate.id)"
+                                        data-toggle="tooltip" data-placement="top"
+                                        title="{{actionsDescription.template_edit}}"
                                         *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor  ||
                                authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER'">
                                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        <div class="clickicons"></div>
                                     </a>
-                                    <a class="Iconhover" *ngIf="!emailTemplate.draft"
+                                    <a class="Iconhover custom-grid-icon" *ngIf="!emailTemplate.draft"
                                         (click)="getTemplateById(emailTemplate)" data-toggle="tooltip"
                                         data-placement="top" title="{{actionsDescription.template_preview}}"> <i
                                             class="fa fa-eye" aria-hidden="true"></i>
+                                        <div class="clickicons"></div>
                                     </a>
                                     <!--XNFR-317-->
                                     <ng-template [ngTemplateOutlet]="sendTestEmailIcon"
                                         [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                     <!--XNFR-317-->
-                                    <a class="delete"
+                                    <a class="delete custom-grid-icon"
                                         (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)"
                                         data-toggle="tooltip" data-placement="top"
                                         title="{{actionsDescription.template_delete}}"
                                         *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)||authenticationService.module.isVendor || 
                            authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        <div class="clickicons"></div>
                                     </a>
                                 </div>
                             </div>
@@ -499,8 +506,9 @@
 
 <!--XNFR-317-->
 <ng-template #sendTestEmailIcon let-emailTemplate="emailTemplate">
-    <a class="Iconhover custom-icon" *ngIf="!emailTemplate?.draft" (click)="openSendTestEmailModalPopup(emailTemplate)"
-        data-toggle="tooltip" data-placement="top" title="{{actionsDescription?.sendTestEmail}}">
+    <a class="Iconhover custom-grid-icon" *ngIf="!emailTemplate?.draft"
+        (click)="openSendTestEmailModalPopup(emailTemplate)" data-toggle="tooltip" data-placement="top"
+        title="{{actionsDescription?.sendTestEmail}}">
         <i class="fa fa-envelope-o" aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>

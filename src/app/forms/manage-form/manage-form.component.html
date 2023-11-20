@@ -371,40 +371,47 @@
                                 <span *ngIf="form.formSubType === 'SURVEY'" translate>Survey</span>
                             </div>
                             <div class="bar gridIconCustomization">
-                                <a class="mMobileDisable Iconhover"
+                                <a class="mMobileDisable Iconhover custom-grid-icon"
                                     *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)"
                                     data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">
                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                 </a>
-                                <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview"
-                                    (click)="preview(form.id)">
+                                <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top"
+                                    title="Preview" (click)="preview(form.id)">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                 </a>
-                                <a class="Iconhover"
+                                <a class="Iconhover custom-grid-icon"
                                     *ngIf="!pagination.campaignForm  && !pagination.landingPageForm && !pagination.landingPageCampaignForm&& !pagination.surveyCampaignForm && !pagination?.partnerLandingPageForm "
                                     data-toggle="tooltip" data-placement="top" title="Copy / Embed Link"
                                     (click)="showFormUrl(form)">
                                     <i class="fa fa-clipboard"></i>
+                                    <div class="clickicons"></div>
 
                                 </a>
                                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
-                                    <a class="cursor Iconhover">
+                                    <a class="cursor Iconhover custom-grid-icon">
                                         <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                        <div class="clickicons"></div>
                                     </a>
                                     <span class="badge" id="notification-list">{{form.count}}</span>
                                 </ng-container>
                                 <ng-container
                                     *ngIf="(form.campaignForm&&form.dataShare) || !form.campaignForm || form.landingPageForm">
                                     <ng-container *ngIf="form.count==0">
-                                        <a class="cursor Iconhover" style="margin-top:5px;">
+                                        <a class="cursor Iconhover custom-grid-icon" style="margin-top:5px;">
                                             <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                            <div class="clickicons"></div>
                                         </a>
                                         <span class="badge" id="notification-list">{{form.count}}</span>
                                     </ng-container>
                                     <ng-container *ngIf="form.count>0">
-                                        <a class="Iconhover" data-rel="fancybox-button" (click)="goToAnalytics(form)"
-                                            title="Form Analytics" data-toggle="tooltip" data-placement="top">
+                                        <a class="Iconhover custom-grid-icon" data-rel="fancybox-button"
+                                            (click)="goToAnalytics(form)" title="Form Analytics" data-toggle="tooltip"
+                                            data-placement="top">
                                             <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                            <div class="clickicons"></div>
                                         </a>
                                         <span class="badge" id="notification-list">{{form.count}}</span>
                                     </ng-container>
