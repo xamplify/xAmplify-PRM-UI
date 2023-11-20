@@ -47,7 +47,7 @@
                                </div>
                                <div class="inputs mDamTop align_mflex" style="float: right">
                                 <a class="close-circle ref-mar" (click)="refreshPage()"	title="Refresh" data-toggle="tooltip" data-placement="bottom">
-                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                    <i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
                                 </a>
                                 <div class="pb3 float-left">
                                     <select	class="form-control mDamSort SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortTracks($event)" style="position: relative; right: -3px;">
@@ -201,7 +201,6 @@
                                             <div *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress" class="actions-block override-actions custom-width-icon mb_whitespace">
                                                 <a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listLearningTracks(pagination)"> 
                                                     <i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
-                                                    <div class="clickicons"></div>
                                                 </a> 
                                             </div>
 											<!--XNFR-327-->
@@ -290,7 +289,7 @@
                             </div>
                             <!--Refresh Icon-->
                             <!--XNFR-327-->
-                            <div *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress" class="actions-block override-actions custom-width-icon mb_whitespace">
+                            <div *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress" class="bar gridIconCustomization p0-p10">
                                 <a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listLearningTracks(pagination)"> 
                                     <i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
                                 </a> 
