@@ -47,7 +47,7 @@
                                </div>
                                <div class="inputs mDamTop align_mflex" style="float: right">
                                 <a class="close-circle ref-mar" (click)="refreshPage()"	title="Refresh" data-toggle="tooltip" data-placement="bottom">
-                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                    <i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
                                 </a>
                                 <div class="pb3 float-left">
                                     <select	class="form-control mDamSort SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortTracks($event)" style="position: relative; right: -3px;">
@@ -167,36 +167,42 @@
                                         <td  id="actions-row" class="text-center mActionAlign">
                                             <div *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress" class="actions-block override-actions custom-width-icon mb_whitespace" [ngClass]="{actionAlignment : !isPartnerView}">
                                                 <div>
-                                                <a class="mMobileDisable" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
+                                                <a class="mMobileDisable custom-icon" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                                     <i class="fa fa-pencil-square-o mDisableColor IconCustomization" aria-hidden="true"></i>
+                                                    <div class="clickicons"></div>
                                                 </a>
-                                                <a *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)=" UnpublishedModalPopUp(learningTrack.id, false, learningTrack)">
+                                                <a class="custom-icon" *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)=" UnpublishedModalPopUp(learningTrack.id, false, learningTrack)">
                                                     <i class="fa fa-reply IconCustomization" aria-hidden="true"></i>
+                                                    <div class="clickicons"></div>
                                                 </a>
                                                 </div>
                                                 <div>
-                                                <a *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
+                                                <a class="custom-icon" *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
                                                     <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
+                                                    <div class="clickicons"></div>
                                                 </a>
-                                                <a data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
+                                                <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
                                                     <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                                                    <div class="clickicons"></div>
                                                 </a>
                                                 </div>
                                                 <div>
-                                                <a *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(learningTrack)">
+                                                <a class="custom-icon" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="viewAnalytics(learningTrack)">
                                                     <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                                                    <div class="clickicons"></div>
                                                 </a>
                                                 </div>
-                                                <a *ngIf="learningTrack.canDelete && !isPartnerView" id="template-delete" data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(learningTrack.id)">
+                                                <a class="custom-icon" *ngIf="learningTrack.canDelete && !isPartnerView" id="template-delete" data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(learningTrack.id)">
                                                     <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                                                    <div class="clickicons"></div>
                                                 </a>
                                             </div>
                                             <!--XNFR-327-->
-                                            <ng-container *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress">
+                                            <div *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress" class="actions-block override-actions custom-width-icon mb_whitespace">
                                                 <a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listLearningTracks(pagination)"> 
                                                     <i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
                                                 </a> 
-                                            </ng-container>
+                                            </div>
 											<!--XNFR-327-->
                                         </td>
                                     </tr>
@@ -281,6 +287,14 @@
                                 </a>
                             </div>
                             </div>
+                            <!--Refresh Icon-->
+                            <!--XNFR-327-->
+                            <div *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress" class="bar gridIconCustomization p0-p10">
+                                <a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listLearningTracks(pagination)"> 
+                                    <i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
+                                </a> 
+                            </div>
+                            <!--XNFR-327-->
                         </div>
                     </div>
                 </div>

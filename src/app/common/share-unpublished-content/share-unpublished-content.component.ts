@@ -7,6 +7,7 @@ import { ShareCampaignsComponent } from '../share-campaigns/share-campaigns.comp
 import { CustomResponse } from '../../common/models/custom-response';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { setTimeout } from 'timers';
+import { SweetAlertParameterDto } from '../models/sweet-alert-parameter-dto';
 
 @Component({
   selector: 'app-share-unpublished-content',
@@ -47,6 +48,8 @@ export class ShareUnpublishedContentComponent implements OnInit {
   isPartnerInfoRequried = false;
   isShareButtonClicked = false;
   isPublishingToPartnerList = false;
+  trackOrPlayBooksSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+  isTrackOrPlayBooksSweetAlertComponentCalled = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,private router: Router,private campaignService:CampaignService) { }
 
@@ -118,6 +121,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
   applyFilter(index:number,filterOption:string){
     this.ngxLoading =true;
     this.selectedIndex = index;
+    this.isShareButtonClicked = false; 
     this.selectedIds = [];
     this.modalHeaderText = "Please Select "+filterOption;
     this.selectedModule = filterOption;
@@ -146,19 +150,58 @@ export class ShareUnpublishedContentComponent implements OnInit {
 
   share(){
     if(this.selectedIds!=undefined && this.selectedIds.length>0){
-      this.ngxLoading = true;
       let campaignDetails = this.addPartnerDtos();
       if(this.selectedModule==this.properties.campaignsHeaderText){
+        this.ngxLoading = true;
         campaignDetails["campaignIds"] = this.selectedIds;
         campaignDetails["type"] = this.type;
         this.shareCampaigns(campaignDetails);
-      }else{
+      }else if(this.selectedModule==this.properties.assetsHeaderText){
+        this.ngxLoading = true;
         this.shareAssets(campaignDetails);
+      }else if(this.selectedModule==this.properties.tracksHeaderText
+         || this.selectedModule==this.properties.playBooksHeaderText){
+          if(this.isPublishingToPartnerList){
+            this.addLoaderAndShareTracksOrPlayBooks();
+          }else{
+            let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
+            this.trackOrPlayBooksSweetAlertParameterDto.text = 'Selected '+this.selectedModule+' will be shared with all '+partnerModuleCustomName+'. Would you like to continue?';
+            this.trackOrPlayBooksSweetAlertParameterDto.confirmButtonText = "Yes,share";
+            this.isTrackOrPlayBooksSweetAlertComponentCalled = true;
+          }
       }
     }else{
       this.referenceService.goToTop();
       this.customResponse = new CustomResponse('ERROR','Please select atleast one row',true);
     }
+  }
+
+  trackOrPlayBooksSweetAlertEventReceiver(event:boolean){
+    if(event){
+      this.addLoaderAndShareTracksOrPlayBooks();
+    }else{
+      this.isTrackOrPlayBooksSweetAlertComponentCalled = false;
+      this.isShareButtonClicked = false;
+    }
+  }
+
+
+  private addLoaderAndShareTracksOrPlayBooks() {
+    this.ngxLoading = true;
+    let campaignDetails = this.addPartnerDtos();
+    this.shareTracksOrPlayBooks(campaignDetails);
+  }
+
+  shareTracksOrPlayBooks(campaignDetails: {}) {
+    campaignDetails["trackIds"] = this.selectedIds;
+    this.authenticationService.shareSelectedTracksOrPlayBooks(campaignDetails,this.selectedModule).
+    subscribe(
+      response=>{
+        this.showPublishedSuccessMessage(response);
+      },error=>{
+        this.showPublishError();
+      }
+    );
   }
 
 
@@ -211,7 +254,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
 
   shareAssets(campaignDetails:any){
     campaignDetails["damIds"] = this.selectedIds;
-    this.authenticationService.shareUnPublishedAssets(campaignDetails).
+    this.authenticationService.shareSelectedAssets(campaignDetails).
     subscribe(
       response=>{
         this.showPublishedSuccessMessage(response);

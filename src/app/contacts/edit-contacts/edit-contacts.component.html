@@ -714,30 +714,36 @@
 								  <td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || 
 								  authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !clickBoard  && (!assignLeads || (assignLeads && !isSynchronizationList))">
 									 <div class="actions-block override-actions white-space-transform" style="width:170px;" >
-										<a *ngIf= "!contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)" 
+										<a class="custom-icon" *ngIf= "!contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)" 
 										data-toggle="tooltip" data-placement="bottom" title="unsubscribe" (click)="unsubscribeUser(contact)">
 										<i class="fa fa-bell-slash-o IconCustomization" aria-hidden="true"></i>
+										<div class="clickicons"></div>
 										</a>
-										<a *ngIf= "contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)" 
+										<a class="custom-icon" *ngIf= "contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)" 
 										data-toggle="tooltip" data-placement="bottom" title="subscribe" (click)="resubscribeUser(contact)">
 										<i class="fa fa-bell-o IconCustomization" aria-hidden="true"></i>
+										<div class="clickicons"></div>
 										</a>
-										<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_edit}}" (click)="editUserDetails(contact)" *ngIf= "((!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)) && !isSynchronizationList">
+										<a class="custom-icon" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_edit}}" (click)="editUserDetails(contact)" *ngIf= "((!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)) && !isSynchronizationList">
 										<i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
+										<div class="clickicons"></div>
 										</a>
-										<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_delete}}" (click)="deleteUserShowAlert(contact.id)"
+										<a class="custom-icon" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_delete}}" (click)="deleteUserShowAlert(contact.id)"
 										*ngIf= "selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 										&& ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))
 										&& !isTeamMemberPartnerList && !sharedLeads && !isSynchronizationList">
 										<i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+										<div class="clickicons"></div>
 										</a>
 										<ng-container *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads
 										   && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && !isSynchronizationList">
-										   <a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)" *ngIf= "(!sharedLeads)">
-										   <i class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i></a>
+										   <a class="custom-icon"  data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)" *ngIf= "(!sharedLeads)">
+										   <i class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i>
+										   <div class="clickicons"></div></a>
 										</ng-container>
-										<a *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads && (!sharedLeads) && !isSynchronizationList"   data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
-										<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i></a>
+										<a class="custom-icon" *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads && (!sharedLeads) && !isSynchronizationList"   data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
+										<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+										<div class="clickicons"></div></a>
 									 </div>
 								  </td>
 								  <ng-template #NA>N/A</ng-template>
@@ -748,14 +754,14 @@
 									 <table cellpadding="5" cellspacing="0" class="border"
 										style="border:none !important;">
 										<tbody>
-										   <tr *ngIf="gdprStatus">
-											  <td class='pt10 pb10 bold' translate>Legal Basis : </td>
+										   <tr *ngIf="gdprStatus" class="bg-unset">
+											  <td class='pt10 pb10 bold mr_10' translate>Legal Basis : </td>
 											  <td align="center" class="pt10 pb10">
 												 {{contact.legalBasisString}}
 											  </td>
 										   </tr>
-										   <tr *ngIf="isPartner && authenticationService.contactsCount">
-											  <td class='pt10 pb10 bold' translate>Contacts Limit : </td>
+										   <tr *ngIf="isPartner && authenticationService.contactsCount" class="bg-unset">
+											  <td class='pt10 pb10 bold mr_10' translate>Contacts Limit : </td>
 											  <td align="center" class="pt10 pb10">
 												 {{contact.contactsLimit}}
 										   </tr>
@@ -1033,14 +1039,16 @@
 						 </button>
 						 <div class="actions-block no-float" *ngIf="isPartner && (contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' || contactsByType.selectedCategory == 'all')">
 							<ng-container *ngIf="allcontacts?.validEmail">
-							   <a  (click)="sendMail(allcontacts.id)">
+							   <a class="custom-icon" (click)="sendMail(allcontacts.id)">
 							   <i class="fa fa-envelope IconCustomization"   aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Send Email Notification"></i>
-							   </a>
+							   <div class="clickicons"></div>   
+							</a>
 							</ng-container>
 							<ng-container *ngIf="!allcontacts?.validEmail">
-							   <a>
+							   <a class="custom-icon">
 							   <i class="fa fa-envelope gray IconCustomization"  aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Email can't be sent for invalid email Id"></i>
-							   </a>
+							   <div class="clickicons"></div>   
+							</a>
 							</ng-container>
 						 </div>
 					  </td>
