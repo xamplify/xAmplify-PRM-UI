@@ -636,7 +636,7 @@
                                                    </ng-container>
                                                    <a class="custom-icon"
                                                       *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads
-                                    && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
+                                                         && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
                                                       data-toggle="tooltip" data-placement="top"
                                                       (click)="openPopUpForNewlyAddedPartnersOrContacts(contactList)"
                                                       title="{{actionsDescription.send_campaigns}}"> <i
@@ -644,10 +644,20 @@
                                                          aria-hidden="true"></i>
                                                       <div class="clickicons"></div>
                                                    </a>
+                                                   <!--XNFR-342---->
+                                                   <ng-container *ngIf="isLocalHost">
+                                                      <a *ngIf="!assignLeads && !sharedLeads  && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
+                                                         data-toggle="tooltip" data-placement="top"
+                                                      (click)="openUnPublishedContentModalPopUp(contactList)"
+                                                         title="{{actionsDescription?.shareUnPublishedContent}}">
+                                                      <i class="fa fa-forward IconCustomization" aria-hidden="true"></i>
+                                                      </a> 
+                                                   </ng-container> 
+                                                <!--XNFR-342---->
                                                 </div>
                                                 <div class="actions-block override-actions" *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
-                                    ||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
-                                    || (!contactList.synchronisedList  && !contactList.emailValidationInd))">
+                                                      ||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
+                                                      || (!contactList.synchronisedList  && !contactList.emailValidationInd))">
                                                    <a class="custom-icon" data-toggle="tooltip" data-placement="top"
                                                       title="Force process the list"
                                                       (click)="forceProcessList(contactList.id)">
@@ -1649,3 +1659,10 @@
    <app-resubscribe-contact-modal [selectedUser]="selectedUser" (notifyParent)="resubscribeUserResult($event)">
    </app-resubscribe-contact-modal>
 </div>
+ <!---XNFR-342---->
+ <app-share-unpublished-content #shareUnPublishedComponent
+ [hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
+  [hasDamAccess]="authenticationService?.module?.damAccess"
+  [hasLmsAccess]="authenticationService?.module?.lmsAccess"
+ [hasPlaybookAccess]="authenticationService?.module?.playbookAccess">
+</app-share-unpublished-content>

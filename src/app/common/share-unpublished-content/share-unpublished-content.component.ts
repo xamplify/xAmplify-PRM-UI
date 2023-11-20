@@ -165,7 +165,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
             this.addLoaderAndShareTracksOrPlayBooks();
           }else{
             let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
-            this.trackOrPlayBooksSweetAlertParameterDto.text = 'Selected '+this.selectedModule+'(s) will be shared with all '+partnerModuleCustomName+'.Would you like to continue?';
+            this.trackOrPlayBooksSweetAlertParameterDto.text = 'Selected '+this.selectedModule+' will be shared with all '+partnerModuleCustomName+'. Would you like to continue?';
             this.trackOrPlayBooksSweetAlertParameterDto.confirmButtonText = "Yes,share";
             this.isTrackOrPlayBooksSweetAlertComponentCalled = true;
           }
