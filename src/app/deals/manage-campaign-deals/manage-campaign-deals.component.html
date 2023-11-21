@@ -2,17 +2,19 @@
   <app-response-message class="pg8" [customResponse]="dealsResponse" *ngIf="dealsResponse.isVisible">
   </app-response-message>
   <div class="col-xs-12 col-sm-5 col-lg-5" *ngIf="fromAnalytics && showTeamMemberFilter">
-    <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+    <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany"
+      [customSelectedIndex]="selectedFilterIndex"
+      (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
   </div>
-  <div class="page-toolbar col-xs-10 col-sm-6 col-lg-6 mSearchAlign pull-right" style="padding:10px;margin-top: -11px;padding-right: 0px;padding-right: 0px;">
+  <div class="page-toolbar col-xs-10 col-sm-6 col-lg-6 mSearchAlign pull-right"
+    style="padding:10px;margin-top: -11px;padding-right: 0px;padding-right: 0px;">
     <div class="btn-group pull-right">
 
       <div class="inputs" align="right" style="float: right; display: inline-flex;">
         <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
           <div class="input-icon right" style="position: relative;right: -11px;">
             <input type="text" class="form-control" [(ngModel)]="dealsSortOption.searchKey"
-              [ngModelOptions]="{standalone: true}" placeholder="Search"
-              (keypress)="dealEventHandler($event.keyCode)">
+              [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="dealEventHandler($event.keyCode)">
             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="dealsSortOption.searchKey"
               (click)="clearSearch()"></button>
             <button type="submit" class="search-box-item-click" (click)="searchDeals()">
@@ -48,23 +50,24 @@
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
         <div class="form-group" style="text-align: -webkit-right;">
-          <button  class="btn Btn-Green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
+          <button class="btn Btn-Green" translate="" type="button" ng-reflect-translate="" [disabled]=""
+            (click)="validateDateFilters()">Filter</button>
         </div>
-      </div>                                       
+      </div>
       <div class="portlet box">
         <app-response-message class="pg8" [customResponse]="filterResponse" *ngIf="filterResponse.isVisible">
-        </app-response-message> 
+        </app-response-message>
         <form role="form" class="form-horizontal form-bordered form-label-stripped">
-          <div class="form-group">                         
+          <div class="form-group">
             <div class="form-inline col-sm-12">
               <div class="form-group col-sm-4">
-                <label class="control-label">From Date  &nbsp;
+                <label class="control-label">From Date &nbsp;
                 </label>
                 <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                 </app-date-picker>
               </div>
               <div class="form-group col-sm-4 form-group-mr">
-                <label class="control-label">To Date  &nbsp;
+                <label class="control-label">To Date &nbsp;
                 </label>
                 <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
                 </app-date-picker>
@@ -74,8 +77,8 @@
                   <label class="control-label" style="padding-right: 5px;">Status &nbsp; </label>
 
                   <select class="form-control select-width" [(ngModel)]="statusFilter"
-                  [ngModelOptions]="{standalone: true}">
-                      <option value="">---Select Status---</option>  
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="">---Select Status---</option>
                     <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
                     </option>
                   </select>
@@ -87,8 +90,8 @@
           </div>
         </form>
       </div>
-    </div>                                    
-  </div>                
+    </div>
+  </div>
 </div>
 <section class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0"
   *ngIf="dealsSortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
@@ -137,13 +140,14 @@
               <h5 *ngIf="!isPartnerVersion">{{deal.createdByCompanyName | slice:0:30}}
                 <span *ngIf="deal.createdByCompanyName?.length>30">...</span>
               </h5>
-              <h5 class='ellipsis m_t_view'  style="margin: 7px 0 2px 0;font-weight: 400;">
-                <span data-toggle="tooltip" data-placement="bottom"
-                title="{{deal.createdByName}}"> {{deal.createdByName | slice:0:20}}</span> 
+              <h5 class='ellipsis m_t_view' style="margin: 7px 0 2px 0;font-weight: 400;">
+                <span data-toggle="tooltip" data-placement="bottom" title="{{deal.createdByName}}"> {{deal.createdByName
+                  | slice:0:20}}</span>
                 <span *ngIf="deal.createdByName?.length>20">...</span>
               </h5>
               <h6 class='m0' style="font-weight: 400;">
-                <a data-toggle="tooltip" data-placement="bottom" title="{{deal.createdByEmail}}">{{deal.createdByEmail | slice:0:30}}</a>
+                <a data-toggle="tooltip" data-placement="bottom" title="{{deal.createdByEmail}}">{{deal.createdByEmail |
+                  slice:0:30}}</a>
                 <span *ngIf="deal.createdByEmail?.length>30">...</span>
               </h6>
               <h5 style="font-weight: 600; color: #676767;">
@@ -156,8 +160,10 @@
                 <select
                   [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage && !isDataShare)"
                   class="form-control" [(ngModel)]="deal.pipelineStageId"
-                  (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)" style="width: 135px">
-                  <option *ngIf="isPartnerVersion && deal.currentStagePrivate" [ngValue]="deal.currentStageId">{{deal.currentStageName}}</option>
+                  (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)"
+                  style="width: 135px">
+                  <option *ngIf="isPartnerVersion && deal.currentStagePrivate" [ngValue]="deal.currentStageId">
+                    {{deal.currentStageName}}</option>
                   <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">{{stage.stageName}}</option>
                 </select>
                 <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
@@ -167,23 +173,32 @@
             </td>
             <td style="width: 30%;">
               <div class="actions-block override-actions">
-                  <a data-rel="fancybox-button" (click)="viewDeal(deal)" data-toggle="tooltip" data-placement="bottom" 
-                  title="View Deal" id="deal">
-                    <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
+                <a class="custom-icon" data-rel="fancybox-button" (click)="viewDeal(deal)" data-toggle="tooltip"
+                  data-placement="bottom" title="View Deal" id="deal">
+                  <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
+                  <div class="clickicons"></div>
+                </a>
+                <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                  <a class="custom-icon" data-rel="fancybox-button"
+                    *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
+                    (click)="editDeal(deal)" data-toggle="tooltip" data-placement="bottom" title="Edit Deal" id="deal">
+                    <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+                    <div class="clickicons"></div>
                   </a>
-                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="editDeal(deal)"
-                    data-toggle="tooltip" data-placement="bottom" title="Edit Deal" id="deal">
-                      <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
-                    </a>
-                    <a data-rel="fancybox-button" *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)" (click)="confirmDeleteDeal(deal)"
-                    data-toggle="tooltip" data-placement="bottom"  title="Delete Deal" id="deal">
-                      <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
-                    </a>
+                  <a class="custom-icon" data-rel="fancybox-button"
+                    *ngIf="deal.canUpdate && !(isPartnerVersion && deal?.onNonInteractiveStage)"
+                    (click)="confirmDeleteDeal(deal)" data-toggle="tooltip" data-placement="bottom" title="Delete Deal"
+                    id="deal">
+                    <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                    <div class="del-icon"></div>
+                  </a>
                 </ng-container>
-                <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)" data-toggle="tooltip" data-placement="bottom" title="Comments" style="margin-top: 10px">                            
+                <a class="custom-icon" *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)"
+                  data-toggle="tooltip" data-placement="bottom" title="Comments" style="margin-top: 10px">
                   <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px"></i>
-                  <span class="badge badge-default" style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">0</span>
+                  <span class="badge badge-default"
+                    style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">0</span>
+                  <div class="clickicons"></div>
                 </a>
               </div>
             </td>
@@ -200,8 +215,7 @@
       (notifyParentDropDown)="listCampaignDeals($event)"></app-pagination>
   </div>
   <!-- End of 24 -->
-  <div *ngIf="!httpRequestLoader.isLoading && dealsPagination.totalRecords==0 && !httpRequestLoader.isLoading"
-    class="col-xs-12
+  <div *ngIf="!httpRequestLoader.isLoading && dealsPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="col-xs-12
     alert alert-info">
     <strong translate>No Deals Found.</strong>
   </div>
@@ -210,4 +224,3 @@
 <div *ngIf="!httpRequestLoader.isLoading && dealsSortOption.totalRecords==0" class="col-xs-12 alert alert-info">
   <strong translate>No Deals Found.</strong>
 </div>
-

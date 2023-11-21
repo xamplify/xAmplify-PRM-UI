@@ -427,14 +427,18 @@
 													translate>Cancelled</div>
 											</div>
 											<div class="bar gridIconCustomization">
-												<a class="Iconhover" *ngIf="campaign.campaignType !== 'SOCIAL'"
+												<a class="Iconhover custom-grid-icon"
+													*ngIf="campaign.campaignType !== 'SOCIAL'"
 													(click)="showCampaignPreview(campaign)" data-toggle="tooltip"
 													data-placement="bottom" title="Preview campaign"> <i
 														class="fa fa-eye mr4"></i>
-												</a> <a class="Iconhover" *ngIf="campaign.campaignType == 'SOCIAL'"
+													<div class="clickicons"></div>
+												</a> <a class="Iconhover custom-grid-icon"
+													*ngIf="campaign.campaignType == 'SOCIAL'"
 													(click)="showSocialCampaignPreview(campaign)" data-toggle="tooltip"
 													data-placement="bottom" title="Preview Campaign"> <i
 														class="fa fa-eye" aria-hidden="true"></i>
+													<div class="clickicons"></div>
 												</a>
 												<ng-container *ngIf="campaign.allowRedistribution">
 													<!----XNFR-125----> <ng-template
@@ -461,17 +465,20 @@
 															data-toggle="tooltip" data-placement="bottom"
 															title="Download"></span>
 														<ul class="dropdown-menu pull-right custome-dropdown-changs">
-															<li><a (click)="downloadFile(campaign,'html')"
+															<li><a class="custom-grid-icon"
+																	(click)="downloadFile(campaign,'html')"
 																	data-toggle="tooltip" data-placement="bottom"
 																	title="Download Html" data-rel="fancybox-button"
 																	target="_blank" translate>
 																	<i class="fa fa-file" style="width: 30px;"></i>
 																	Download
 																	Html
+																	<div class="clickicons"></div>
 																</a>
 															</li>
 															<li class="Iconhover"
 																*ngIf="campaign.campaignType != 'EVENT'"><a
+																	class="custom-grid-icon"
 																	(click)="downloadFile(campaign,'pdf')"
 																	data-toggle="tooltip" data-placement="bottom"
 																	title="Download Pdf" data-rel="fancybox-button"
@@ -479,21 +486,25 @@
 																	<i class="fa fa-file-pdf-o"
 																		style="width: 30px;"></i>
 																	Download Pdf
+																	<div class="clickicons"></div>
 																</a>
 															</li>
 														</ul>
 													</div>
-													<a class="Iconhover" *ngIf="!campaign.allowDownload"
-														data-toggle="tooltip" data-placement="bottom"
+													<a class="Iconhover custom-grid-icon"
+														*ngIf="!campaign.allowDownload" data-toggle="tooltip"
+														data-placement="bottom"
 														title="Please turn on GDPR settings to download"
 														data-rel="fancybox-button"> <i
 															class="fa fa-download cancelled-event"
 															aria-hidden="true"></i>
-													</a> <a class="Iconhover" data-toggle="tooltip"
+														<div class="clickicons"></div>
+													</a> <a class="Iconhover custom-grid-icon" data-toggle="tooltip"
 														data-placement="bottom"
 														(click)="viewDownloadedHistory(campaign)"
 														title="View Download History" data-rel="fancybox-button">
 														<i class="fa fa-history" aria-hidden="true"></i>
+														<div class="clickicons"></div>
 													</a>
 												</ng-container>
 											</div>
