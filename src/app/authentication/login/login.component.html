@@ -99,7 +99,7 @@
 </div>
 <div *ngIf="isStyleOne">
 	<div class="row" style="display: content;margin-right: 0px !;margin: 0px !important;" *ngIf="vanityURLEnabled">
-		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 bg_image" [ngStyle]="{'float':authenticationService?.loginScreenDirection}" [style.backgroundImage]="'url('+authenticationService.v_companyBgImagePath+')'">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 bg_image" [ngStyle]="{'float':authenticationService?.loginScreenDirection}" [style.backgroundImage]="'url('+bgIMage2+')'">
 			<div class="content" style="background-color: rgba(0,0,0,.0);">
 				<div style="background-color: rgba(0,0,0,.0);">
 					<app-video [newLogin]="true" *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
