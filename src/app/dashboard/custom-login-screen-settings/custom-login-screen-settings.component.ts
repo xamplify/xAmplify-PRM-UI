@@ -256,7 +256,11 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
           if (data.statusCode === 200) {
             // this.message = "Missing Field";
             // this.customResponse = new CustomResponse('ERROR', this.message, true)
+            if(this.isStyle1) {
             this.saveOrUpdateLoginTemplateActiveForCompany(this.selectedTemplate);
+            } else {
+               this.customResponse = new CustomResponse('SUCCESS', this.message, true)
+            }
           } else {
             this.customResponse = new CustomResponse('SUCCESS', this.message, true)
           }
