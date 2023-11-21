@@ -1201,10 +1201,17 @@ isSpfConfiguredOrDomainConnected(companyId:number){
 }
 
  /********XNFR-342****/
- shareUnPublishedAssets(requestDto:any){
-  let url = this.REST_URL + "dam/shareUnPublishedAssets?access_token=" + this.access_token;
+ shareSelectedAssets(requestDto:any){
+    let url = this.REST_URL + "dam/shareSelectedAssets?access_token=" + this.access_token;
+    return this.callPutMethod(url,requestDto);
+  } 
+
+/********XNFR-342****/
+shareSelectedTracksOrPlayBooks(requestDto:any,module:string){
+  let urlPrefix = module=="Tracks" ? 'shareSelectedTracks':'shareSelectedPlayBooks';
+  let url = this.REST_URL + "lms/"+urlPrefix+"?access_token=" + this.access_token;
   return this.callPutMethod(url,requestDto);
-}
+} 
 
 
   

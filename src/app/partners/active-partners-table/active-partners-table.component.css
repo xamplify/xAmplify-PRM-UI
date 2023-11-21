@@ -4,15 +4,22 @@
     }
   }
 
-  .Shortbyfield{position: relative;right: -3px;}
-  .SotybyBoxPosition{position: relative;right: 19px;}
+  .Shortbyfield{position: relative;right: 0px;}
+  .SotybyBoxPosition{position: relative;right: 0px;left: 33px;}
   .Fullboxmargin{float: right; margin-bottom:-22px;}
-  .SearchBoxCu{margin-right: 12px; width:170px}
+  .SearchBoxCu{margin-right: 100px; width:175px}
   .mainSearchBoxCu{position: relative;width: 178px; right: 21px;}
   .arrowpositinon{float: right; position: relative; bottom: 25px; font-size: 18px !important}
-  .portletCardCu {font-size: 16px; padding-top: 4px;margin-bottom: 0px;border-bottom: none;}
+  .portletCardCu {font-size: 16px; padding-top: 4px !important;margin-bottom: 0px;border-bottom: none;}
   .TitlePaddingTop{padding-top: 6px;}
-
+  .FliterAlignment {position: absolute;top: 0px;right: 30px;}
+  span.btn-aligmntCu {
+    display: flex;
+    justify-content: flex-end;
+}
+i.arrowpositinon.collapseIn {
+  bottom: 15px;
+}
 @media (min-width: 200px) and (max-width: 767px) {
   .Shortbyfield {
     right: 0px;

@@ -1,15 +1,15 @@
 >>> .input-group > .form-control {
-    border: none;
-    height: 36px !important;
-    padding-left: 12px !important;
+  border: none;
+  height: 36px !important;
+  padding-left: 12px !important;
 }
 >>> .input-group > .form-control:focus {
-    border-color: white !important;
+  border-color: white;
 }
 >>> .input-group > .input-group-addon {
-    background: white;
-    position: relative !important;
-    left: 10px !important;
+  background: white;
+  position: relative !important;
+  left: 10px !important;
 }
 /* >>> .input-group-addon {
   border: none !important;

@@ -31,7 +31,9 @@ export class ConfirmSweetAlertUtilComponent implements OnInit {
 				showCancelButton: true,
 				swalConfirmButtonColor: '#54a7e9',
 				swalCancelButtonColor: '#999',
-				confirmButtonText: self.parameterDto.confirmButtonText
+				confirmButtonText: self.parameterDto.confirmButtonText,
+        allowOutsideClick: false,
+        allowEscapeKey: false
 			}).then(function () {
         clicked = true;
         self.notifyComponent.emit(clicked);

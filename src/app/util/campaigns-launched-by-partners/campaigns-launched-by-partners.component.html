@@ -30,10 +30,11 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of activePartnersPagination.pagedItems">
-              <td title="{{item?.partnerCompanyName}}">
-                <strong>{{item?.partnerCompanyName | slice:0:20}}</strong>
-                <span *ngIf="item?.partnerCompanyName.length>20">...</span>
-              </td>
+              <!-- <td> -->
+                <!-- <strong>{{item?.partnerCompanyName | slice:0:20}}</strong>
+                <span *ngIf="item?.partnerCompanyName.length>20">...</span> -->
+                <td><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <!-- </td> -->
               <td class="text-center">
               <div>
                 <button class="btn btn-default btn-xs re-distributed-high-level TableDataBtn">
