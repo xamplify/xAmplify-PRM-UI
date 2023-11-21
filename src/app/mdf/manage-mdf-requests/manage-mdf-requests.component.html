@@ -236,16 +236,18 @@
                                           </td>
                                           <td class="center-align">
                                              <div class="override-actions">
-                                                <a (click)="goToAddRequest(vendor.companyId)" data-toggle="tooltip"
-                                                   data-placement="bottom" title="Add Request">
+                                                <a class="custom-icon" (click)="goToAddRequest(vendor.companyId)"
+                                                   data-toggle="tooltip" data-placement="bottom" title="Add Request">
                                                    <i class="fa fa-user-plus fa-fa-consistency IconCustomization"
                                                       aria-hidden="true"></i>
+                                                   <div class="clickicons"></div>
                                                 </a>
                                                 <!----See Request Analytics-->
-                                                <a (click)="viewRequests(vendor)" data-toggle="tooltip"
-                                                   data-placement="bottom" title="View Requests">
+                                                <a class="custom-icon" (click)="viewRequests(vendor)"
+                                                   data-toggle="tooltip" data-placement="bottom" title="View Requests">
                                                    <i class="fa fa-expand fa-fa-consistency IconCustomization"
                                                       aria-hidden="true"></i>
+                                                   <div class="clickicons"></div>
                                                 </a>
                                              </div>
                                           </td>

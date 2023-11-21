@@ -631,7 +631,7 @@
                                                          title="{{actionsDescription.contact_list_delete}}">
                                                          <i class="fa fa-trash-o trashIconCustomization"
                                                             aria-hidden="true"></i>
-                                                         <div class="clickicons"></div>
+                                                         <div class="del-icon"></div>
                                                       </a>
                                                    </ng-container>
                                                    <a class="custom-icon"
@@ -646,16 +646,19 @@
                                                    </a>
                                                    <!--XNFR-342---->
                                                    <ng-container *ngIf="isLocalHost">
-                                                      <a *ngIf="!assignLeads && !sharedLeads  && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
+                                                      <a class="custom-icon"
+                                                         *ngIf="!assignLeads && !sharedLeads  && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
                                                          data-toggle="tooltip" data-placement="top"
-                                                      (click)="openUnPublishedContentModalPopUp(contactList)"
+                                                         (click)="openUnPublishedContentModalPopUp(contactList)"
                                                          title="{{actionsDescription?.shareUnPublishedContent}}">
-                                                      <i class="fa fa-forward IconCustomization" aria-hidden="true"></i>
-                                                      </a> 
-                                                   </ng-container> 
-                                                <!--XNFR-342---->
+                                                        <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
+                                                         <div class="clickicons"></div>
+                                                      </a>
+                                                   </ng-container>
+                                                   <!--XNFR-342---->
                                                 </div>
-                                                <div class="actions-block override-actions" *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
+                                                <div class="actions-block override-actions"
+                                                   *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
                                                       ||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
                                                       || (!contactList.synchronisedList  && !contactList.emailValidationInd))">
                                                    <a class="custom-icon" data-toggle="tooltip" data-placement="top"
@@ -798,7 +801,7 @@
                                     <!--  -->
                                     <div class="bar gridIconCustomization"
                                        *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && !authenticationService.isSuperAdmin() && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
-                                       <a class="Iconhover"
+                                       <a class="Iconhover custom-grid-icon"
                                           *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (hasContactRole) || authenticationService.isOnlyPartner()
                      || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                      && !contactList.defaultPartnerList && !contactList.marketoMasterList && (contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner)"
@@ -806,8 +809,9 @@
                                           (click)="storeListDetails(contactList);openShareListPopup(contactList)"
                                           title="{{actionsDescription.leads_list_share}}"> <i class="fa fa-share"
                                              aria-hidden="true"></i>
+                                          <div class="clickicons"></div>
                                        </a>
-                                       <a class="Iconhover"
+                                       <a class="Iconhover custom-grid-icon"
                                           [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
                                           *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || (authenticationService.module.isPartner && loggedInUserId==contactList.uploadedUserId) || authenticationService.isPartner() ||
                      (hasPartnersRole && loggedInUserId==contactList.uploadedUserId) || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId) || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList && ((assignLeads && !contactList.assignedToPartner) || (!sharedLeads && contactList.moduleName!='SHARE LEADS'))"
@@ -815,43 +819,49 @@
                                           data-toggle="tooltip" data-placement="top"
                                           title="{{actionsDescription.contact_list_edit}}" data-rel="fancybox-button">
                                           <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                          <div class="clickicons"></div>
                                        </a>
                                        <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                                          <a class="Iconhover" [class.disabled]="!contactList.emailValidationInd"
-                                             style="" *ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) || contactList.synchronisedList
+                                          <a class="Iconhover custom-grid-icon"
+                                             [class.disabled]="!contactList.emailValidationInd" style="" *ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier) || contactList.synchronisedList
                         || ((sharedLeads)  || (assignLeads && contactList.assignedToPartner))"
                                              (click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList, contactList.formList,contactList.teamMemberPartnerList);setListType(contactList.publicList,contactList?.contactType, contactList?.assignedToPartner);"
                                              data-toggle="tooltip" data-placement="top"
                                              title="{{actionsDescription.contact_list_info}}"
                                              data-rel="fancybox-button">
                                              <i class="fa fa-info" aria-hidden="true"></i>
+                                             <div class="clickicons"></div>
                                              <!-- style="color: white;" -->
                                           </a>
                                        </ng-container>
-                                       <a class="Iconhover" data-toggle="tooltip" data-placement="top"
+                                       <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top"
                                           *ngIf="(assignLeads || !sharedLeads) && !authenticationService?.module?.deletedPartner"
                                           title="{{actionsDescription.contact_list_saveAs}}"
                                           (click)="saveAsNewList(contactList)"
                                           [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
                                           data-rel="fancybox-button" style="left: 60%;"> <i class="fa fa-files-o"
                                              aria-hidden="true"></i>
-                                       </a> <a class="Iconhover"
+                                          <div class="clickicons"></div>
+                                       </a> <a class="Iconhover custom-grid-icon"
                                           [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
                                           (click)="hasDownLoadAccess(contactList.id, contactList.name)"
                                           *ngIf="assignLeads || showDownloadOptionForSharedLeads" data-toggle="tooltip"
                                           data-placement="top" title="{{actionsDescription.contact_list_download}}"
                                           data-rel="fancybox-button">
                                           <i class="fa fa-download" aria-hidden="true"></i>
+                                          <div class="clickicons"></div>
                                        </a>
                                        <ng-container
                                           *ngIf="((contactList.moduleName=='SHARE LEADS' && assignLeads && !contactList.assignedToPartner&&contactList.synchronisedList) ||(contactList.moduleName!='SHARE LEADS'&&contactList.synchronisedList == true) || contactList.marketoMasterList == true) && !authenticationService?.module?.deletedPartner">
-                                          <a class="Iconhover" data-toggle="tooltip" data-placement="top"
+                                          <a class="Iconhover custom-grid-icon" data-toggle="tooltip"
+                                             data-placement="top"
                                              title="{{actionsDescription.contact_list_synchronize}}"
                                              [class.disabled]="(!contactList.emailValidationInd) || ((contactList.socialNetwork=='GOOGLE' || contactList.socialNetwork=='SALESFORCE' || contactList.socialNetwork=='ZOHO' )&& (loggedInUserId != contactList.uploadedUserId))"
                                              *ngIf="hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || contactList.synchronisedList"
                                              (click)="synchronizeContactList(contactList)" data-rel="fancybox-button"
                                              style="left: 18%; top: -20px;">
                                              <i class="fa fa-refresh" aria-hidden="true"></i>
+                                             <div class="clickicons"></div>
                                           </a>
                                        </ng-container>
                                        <!---XNFR-81----->
@@ -869,28 +879,31 @@
                                                 class="fa fa-trash-o" aria-hidden="true"></i>
                                           </a>
                                        </ng-container>
-                                       <a class="Iconhover"
+                                       <a class="Iconhover custom-grid-icon"
                                           *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads 
                      && !sharedLeads && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
                                           data-toggle="tooltip" data-placement="top" style=""
                                           (click)="openPopUpForNewlyAddedPartnersOrContacts(contactList)"
                                           title="{{actionsDescription.send_campaigns}}"> <i class="fa fa-bullhorn"
                                              aria-hidden="true"></i>
+                                          <div class="clickicons"></div>
                                        </a>
-                                       <a class="Iconhover"
+                                       <a class="Iconhover custom-grid-icon"
                                           *ngIf="assignLeads && contactList?.assignedLeadsList && contactList.assignedToPartner"
                                           data-toggle="tooltip" data-placement="top" title="Preview"
                                           (click)="selectedContactListId=contactList.id ; showListSharedDetails()">
                                           <i class="fa fa-eye" aria-hidden="true"></i>
+                                          <div class="clickicons"></div>
                                        </a>
                                     </div>
                                     <div class="bar gridIconCustomization" *ngIf="!contactList.uploadInProgress && !contactList.validationInProgress && ((contactList.socialNetwork=='MARKETO' && contactList.synchronisedList && contactList.marketoSyncComplete && !contactList.emailValidationInd)
                      ||  (contactList.socialNetwork!='MARKETO' && contactList.synchronisedList  && !contactList.emailValidationInd)
                      || (!contactList.synchronisedList  && !contactList.emailValidationInd))">
-                                       <a class="Iconhover" data-toggle="tooltip" data-placement="top"
+                                       <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top"
                                           title="Force process the list" data-rel="fancybox-button"
                                           (click)="forceProcessList(contactList.id)">
                                           <i class="fa fa-repeat" aria-hidden="true"></i>
+                                          <div class="clickicons"></div>
                                        </a>
                                     </div>
                                     <div class="bar" *ngIf="contactList.uploadInProgress">Uploading...</div>
@@ -1349,9 +1362,9 @@
                                                 <div class="actions-block no-float">
                                                    <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
                                                       title="Delete" (click)="confirmDeleteContact(contact)">
-                                                      <i class="fa fa-trash-o trashIconCustomizatio"
+                                                      <i class="fa fa-trash-o trashIconCustomization"
                                                          aria-hidden="true"></i>
-                                                      <div class="clickicons"></div>
+                                                      <div class="del-icon"></div>
                                                    </a>
                                                 </div>
                                              </td>
@@ -1659,10 +1672,9 @@
    <app-resubscribe-contact-modal [selectedUser]="selectedUser" (notifyParent)="resubscribeUserResult($event)">
    </app-resubscribe-contact-modal>
 </div>
- <!---XNFR-342---->
- <app-share-unpublished-content #shareUnPublishedComponent
- [hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
-  [hasDamAccess]="authenticationService?.module?.damAccess"
-  [hasLmsAccess]="authenticationService?.module?.lmsAccess"
- [hasPlaybookAccess]="authenticationService?.module?.playbookAccess">
+<!---XNFR-342---->
+<app-share-unpublished-content #shareUnPublishedComponent
+   [hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
+   [hasDamAccess]="authenticationService?.module?.damAccess" [hasLmsAccess]="authenticationService?.module?.lmsAccess"
+   [hasPlaybookAccess]="authenticationService?.module?.playbookAccess">
 </app-share-unpublished-content>

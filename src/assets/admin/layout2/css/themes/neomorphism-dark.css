@@ -2034,6 +2034,10 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   border: 1px solid #191b1e !important;
   -webkit-box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
   box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  /* background-color: #2c2f33 !important;
+  border:unset !important;
+  color: white !important;
+  box-shadow: 3px 3px 10px rgba(0,0,0,1), -1px -1px 6px rgba(255, 255, 255, 0.4)!important; */
 }
 .close-circle {
   background-color: #2c2f33 !important ;
@@ -2261,7 +2265,8 @@ left-menu-color ul li a,
   > li.external {
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
-.custom {
+.custom,
+.barview {
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 .table tbody tr:hover {
@@ -2311,6 +2316,11 @@ a.UserguideBtnCustomization:hover {
   filter: none;
   text-shadow: none;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  /* outline: none !important;
+  background-image: none !important;
+  filter: none;
+  text-shadow: none;
+  box-shadow: 3px 3px 10px rgba(0,0,0,1), -1px -1px 6px rgba(255, 255, 255, 0.4); */
 }
 input {
   color: #fff;
@@ -2574,7 +2584,6 @@ hr {
 .clickicons {
   color: #3f68c5;
   line-height: unset !important ;
-  background: #2c2f33 !important;
   transform: rotate(360deg);
   transition: all 1s ease;
   animation: wave1 13s linear infinite;
@@ -2607,6 +2616,9 @@ i.IconCustomization:hover {
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
   border: 1px solid #252525 !important;
   outline: none !important;
+  /* box-shadow: 3px 2px 10px rgba(0,0,0,1), -1px -1px 6px rgba(255, 255, 255, 0.4), inset 3px 2px 10px rgba(0,0,0,1), inset -1px -2px 6px rgba(255, 255, 255, 0.4)!important;
+  font-weight: 600;
+  outline: none !important; */
 }
 ul.nav.neumorphismDark {
   margin: 0px 10px;
@@ -2727,4 +2739,129 @@ button.btn.custom {
 }
 .custom-folder-icon:hover .clickicons {
   top: 0%;
+}
+a.Iconhover.custom-icon {
+  line-height: 28px !important;
+}
+hr.swal2-spacer {
+  border-top: none !important;
+}
+/* me */
+/* a.UserguideBtnCustomization:hover {
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  color: #fff !important;
+  text-decoration: none;
+  background-position: 100% 100%, 0% 0%!important;
+  border-color: transparent;
+  background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%)!important;
+}
+
+a.UserguideBtnCustomization {
+  background: #2c2f33 !important;
+  background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%)!important;
+  background-position: 0% 0%, 100% 100%!important;
+  background-size: 200% 200%!important;
+  background-clip: padding-box, border-box!important;
+  background-origin: padding-box, border-box!important;
+  transition: 0.5s ease-in-out;
+  box-shadow: 6.223021507263184px 6.223021507263184px 18.669065475463867px 0px
+      #000,
+    -6.223021507263184px -6.223021507263184px 18.669065475463867px 0px #3b4451 !important;
+  border: 0px solid #2f4857 !important;
+}
+.btn-primary:hover {
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  color: #fff !important;
+  text-decoration: none;
+  background-position: 100% 100%, 0% 0%!important;
+  border-color: transparent;
+  background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%)!important;
+  
+}
+
+.btn-primary {
+  background: #2c2f33 !important;
+  background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%)!important;
+  background-position: 0% 0%, 100% 100%!important;
+  background-size: 200% 200%!important;
+  background-clip: padding-box, border-box!important;
+  background-origin: padding-box, border-box!important;
+  transition: 0.5s ease-in-out;
+  box-shadow: 6.223021507263184px 6.223021507263184px 18.669065475463867px 0px
+      #000,
+    -6.223021507263184px -6.223021507263184px 18.669065475463867px 0px #3b4451 !important;
+  border: 0px solid #2f4857 !important;
+} */
+.pre-lang:hover{
+ position: relative;
+ z-index: 999;
+}
+/* .Btn-Green {
+  background: #2c2f33 !important;
+  background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%)!important;
+  background-position: 0% 0%, 100% 100%!important;
+  background-size: 200% 200%!important;
+  background-clip: padding-box, border-box!important;
+  background-origin: padding-box, border-box!important;
+  transition: 0.5s ease-in-out;
+  box-shadow: 6.223021507263184px 6.223021507263184px 18.669065475463867px 0px
+      #000,
+    -6.223021507263184px -6.223021507263184px 18.669065475463867px 0px #3b4451 !important;
+  border: 0px solid #2f4857 !important;
+}
+.Btn-Green:hover{
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  color: #fff !important;
+  text-decoration: none;
+  background-position: 100% 100%, 0% 0%!important;
+  border-color: transparent;
+  background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%)!important; 
+} */
+.portlet.light.hover-effect.pointer.card-radius:hover {
+  -webkit-transition: all 1s ease;
+  transition: all 1s ease!important;
+  transform: scale(1.05);
+}
+.card-template:hover{
+  background-color:inherit!important; 
+  transition-duration: unset !important;
+  background-position: unset!important;
+}
+.img-templates{
+  transform-style: preserve-3d;
+  animation: spin1 1.2s ease-out;
+}
+.img-templates:hover{
+  transform-style: preserve-3d;
+  animation: spin1 1.8s linear infinite;
+}
+@keyframes spin1{
+  0% {transform: rotateY(0deg);}
+  100% {transform: rotateY(360deg);}
+}
+.del-icon{
+  color: #3f68c5;
+  line-height: unset !important ;
+  transform: rotate(360deg);
+  transition: all 1s ease;
+  animation: wave1 13s linear infinite;
+  background-color: #cb5a5e!important;
+  position: absolute;
+  top: 110%;
+  height: 100% !important;
+  width: 100% !important;
+  border-radius: 32% !important;
+  left: 0;
+}
+.custom-icon:hover .del-icon{
+  top: 0%;
+}
+i.fa.fa-trash-o.trashIconCustomization:hover {
+  background-color: unset !important;
+  z-index: 999;
+  position: relative;
+  color: #ffffff!important;
+}
+.actions_width{
+width:inherit!important;
 }

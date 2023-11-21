@@ -105,8 +105,8 @@
                                        <td *ngIf="columns?.length>3">
                                           <div class="request-form-actions-div">
                                              <!--View More Columns-->
-                                             <a (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
-                                                data-placement="bottom" title="View More Columns"
+                                             <a class="custom-icon" (click)="expandColumns(formDataRow,rowIndex)"
+                                                data-toggle="tooltip" data-placement="bottom" title="View More Columns"
                                                 *ngIf="columns.length>4">
                                                 <i *ngIf="!formDataRow.expanded"
                                                    class="fa fa-plus fa-fa-consistency IconCustomization"
@@ -114,24 +114,29 @@
                                                 <i *ngIf="formDataRow.expanded"
                                                    class="fa fa-minus fa-fa-consistency IconCustomization"
                                                    aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                              <!---Change Request-->
-                                             <a data-toggle="tooltip" data-placement="bottom" title="Change Request"
-                                                *ngIf="!partnerView">
+                                             <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
+                                                title="Change Request" *ngIf="!partnerView">
                                                 <i (click)="changeRequest(formDataRow.values[0])"
                                                    class="fa fa-pencil-square-o fa-fa-consistency IconCustomization"
                                                    aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                              <!----Timeline History-->
-                                             <a data-toggle="tooltip" data-placement="bottom" title="View History"
-                                                (click)="goToTimeLine(formDataRow.values[0])">
+                                             <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
+                                                title="View History" (click)="goToTimeLine(formDataRow.values[0])">
                                                 <i class="fa fa-history fa-fa-consistency IconCustomization"
                                                    aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
-                                             <a data-toggle="tooltip" data-placement="bottom" title="Comments"
+                                             <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
+                                                title="Comments"
                                                 (click)="showRequestCommentPopup(formDataRow.values[0])">
                                                 <i class="fa fa-comment fa-fa-consistency IconCustomization"
                                                    aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                           </div>
                                        </td>

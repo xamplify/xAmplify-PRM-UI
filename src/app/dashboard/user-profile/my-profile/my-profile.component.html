@@ -776,6 +776,35 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
+                                                    <div [className]="activeCRMDetails?.type === 'x'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
+                                                        <div class="card-body" style="padding:10px;">    
+                                                            <span *ngIf="connectwiseRibbonText == 'configured'" 
+                                                            class="integration-cards">
+                                                                    <a (click)="connectwiseSettings()" data-toggle="tooltip"
+                                                            data-placement="top" title="ConnectWise Settings"><i class="fa fa-cog"
+                                                                    style="font-size: 20px !important;"></i></a>
+                                                                </span>                                                       
+                                                            <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">ConnectWise</h5>
+
+                                                            <div class="ribbon draft config" style="left:10px" *ngIf="connectwiseRibbonText == 'configured'">
+                                                                <span [style.background-color]="'green'">{{connectwiseRibbonText}}</span>
+                                                            </div>
+                                                            <div class="ribbon draft" style="left:10px" *ngIf="connectwiseRibbonText != 'configured'">
+                                                                <span [style.background-color]="'yello'">{{connectwiseRibbonText}}</span>
+                                                            </div>
+                                                            <div style="height: 120px;">
+                                                                <div>
+                                                                    <img src="assets/images/crm/connectwise-xamplify.png" style="margin-top:20px; text-align: center;width:100%">
+                                                                </div>
+                                                            </div>
+
+                                                            <a (click)="configureConnectWise()" class="btn btn-block btn-primary text-uppercase" *ngIf="connectwiseRibbonText == 'configure'" translate>configure</a>
+                                                            <a (click)="configureConnectWise()" class="btn btn-block btn-primary text-uppercase" *ngIf="connectwiseRibbonText == 'configured'" translate>re configure</a>
+                                                                
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             
 	
@@ -958,6 +987,12 @@
                                         <div *ngIf="integrationTabIndex == 6">
                                             <app-pipedrive-authentication [loggedInUserId]="loggedInUserId" (closeEvent)="refreshIntegrationSettings($event)">
                                             </app-pipedrive-authentication>
+                                        </div>
+
+                                        <!-- XNFR-215 -->
+                                        <div *ngIf="integrationTabIndex == 7">
+                                            <app-connectwise-authentication [loggedInUserId]="loggedInUserId" (closeEvent)="refreshIntegrationSettings($event)">
+                                            </app-connectwise-authentication>
                                         </div>
                                     </div>
                                     <!---Lead Pipe Lines-->

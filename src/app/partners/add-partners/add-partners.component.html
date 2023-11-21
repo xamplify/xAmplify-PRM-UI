@@ -930,7 +930,7 @@
                                                                 (click)="deleteUserShowAlert(contact.id)">
                                                                 <i class="fa fa-trash-o trashIconCustomization"
                                                                     aria-hidden="true"></i>
-                                                                <div class="clickicons"></div>
+                                                                <div class="del-icon"></div>
                                                             </a>
                                                             <ng-container
                                                                 *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)">
@@ -948,7 +948,7 @@
                                                                 <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
                                                                 title="{{actionsDescription?.shareUnPublishedContent}}"
                                                                 (click)="openUnPublishedContentModalPopUp(contact)">
-                                                                <i class="fa fa-forward IconCustomization" aria-hidden="true"></i>
+                                                                <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
                                                                 <div class="clickicons"></div>
                                                                 </a>  
                                                             </ng-container>
