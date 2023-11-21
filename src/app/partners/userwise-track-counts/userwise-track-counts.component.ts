@@ -19,13 +19,15 @@ export class UserwiseTrackCountsComponent implements OnInit {
   @Input() partnerCompanyId: any;
   @Input() teamMemberId: any;
   @Input() type: any;
+  @Input() applyFilter: boolean;
+  @Input()  isDetailedAnalytics: boolean;
+  @Input() selectedPartnerCompanyIds: any = [];
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
-  isDetailedAnalytics: boolean = false;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -39,11 +41,6 @@ export class UserwiseTrackCountsComponent implements OnInit {
 
   ngOnChanges() { 
     this.pagination.pageIndex = 1;
-    if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
-      this.isDetailedAnalytics = true;
-    } else {
-      this.isDetailedAnalytics = false;
-    }
     this.getUserWiseTrackCounts(this.pagination);
   }
 
@@ -52,7 +49,10 @@ export class UserwiseTrackCountsComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.lmsType = this.type;
-    this.pagination.maxResults = 6;
+    this.pagination.maxResults = 8;
+    this.pagination.detailedAnalytics = this.isDetailedAnalytics;
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
+    this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
       this.pagination.teamMemberId = this.teamMemberId;
     }    
@@ -105,7 +105,8 @@ export class UserwiseTrackCountsComponent implements OnInit {
   } 
   
   viewAnalytics(partnerCompanyId: any) {
-    this.notifyShowDetailedAnalytics.emit(partnerCompanyId); 
+    this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
+    this.referenseService.goToTop(); 
   }
 
 }

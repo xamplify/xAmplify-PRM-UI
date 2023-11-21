@@ -1208,6 +1208,19 @@ isSpfConfiguredOrDomainConnected(companyId:number){
       .catch(this.handleError);
 }
 
+ /********XNFR-342****/
+ shareSelectedAssets(requestDto:any){
+    let url = this.REST_URL + "dam/shareSelectedAssets?access_token=" + this.access_token;
+    return this.callPutMethod(url,requestDto);
+  } 
+
+/********XNFR-342****/
+shareSelectedTracksOrPlayBooks(requestDto:any,module:string){
+  let urlPrefix = module=="Tracks" ? 'shareSelectedTracks':'shareSelectedPlayBooks';
+  let url = this.REST_URL + "lms/"+urlPrefix+"?access_token=" + this.access_token;
+  return this.callPutMethod(url,requestDto);
+} 
+
 
   
 }

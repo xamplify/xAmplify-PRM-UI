@@ -2078,16 +2078,22 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .bg_color {
   background-color: #22313a !important;
 }
+
+/* sudha sri (8-11-2023) */
+.border-padding {
+  border-top: solid 1px #2f4857 !important;
+}
+
 /*edit-company-profile*/
-.panel-account{
+.panel-account {
   background-color: #22313a !important;
 }
-.edit_account{
+.edit_account {
   border: 1px solid #2f4857 !important;
 }
 /* myprofile dropdown border */
 li.divider-bottom {
-  border-bottom: 1px solid #2f4857!important
+  border-bottom: 1px solid #2f4857 !important;
 }
 .BgForCard {
   background-color: #2b3c46 !important;
@@ -2102,7 +2108,291 @@ li.divider-bottom {
 .unsubscribingPopup span {
   color: #ffffff;
 }
-.unsubscribingPopup{  
+.unsubscribingPopup {
   background-color: #22313a !important;
 }
 /* XNFR-376 End*/
+.pa-CardOne[_ngcontent-c83] {
+  color: #00a6e8;
+}
+
+/* XNFR-316 start*/
+.pa-Card {
+  border: 1px solid #2f4857 !important;
+}
+
+/* XNFR-316 End*/
+/* partner analytics  */
+.pa-CardOne {
+  color: #ffffff !important;
+}
+p.pa-TextOne {
+  color: #ffffff !important;
+}
+.pa-CardOne:hover {
+  background-color: #22313a !important;
+}
+.pa-CardOne {
+  background-color: #22313a42 !important;
+}
+.pa-CardOne:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardTwo {
+  color: #ffffff !important;
+}
+p.pa-TextTwo {
+  color: #ffffff !important;
+}
+.pa-CardTwo:hover {
+  background-color: #22313a !important;
+}
+.pa-CardTwo {
+  background-color: #22313a42 !important;
+}
+.pa-CardTwo:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardThree {
+  color: #ffffff !important;
+}
+p.pa-TextThree {
+  color: #ffffff !important;
+}
+.pa-CardThree:hover {
+  background-color: #22313a !important;
+}
+.pa-CardThree {
+  background-color: #22313a42 !important;
+}
+.pa-CardThree:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardFour {
+  color: #ffffff !important;
+}
+p.pa-TextFour {
+  color: #ffffff !important;
+}
+.pa-CardFour:hover {
+  background-color: #22313a !important;
+}
+.pa-CardFour {
+  background-color: #22313a42 !important;
+}
+.pa-CardFour:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardFive {
+  color: #ffffff !important;
+}
+p.pa-TextFive {
+  color: #ffffff !important;
+}
+.pa-CardFive:hover {
+  background-color: #22313a !important;
+}
+.pa-CardFive {
+  background-color: #22313a42 !important;
+}
+.pa-CardFive:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardSix {
+  color: #ffffff !important;
+}
+p.pa-TextSix {
+  color: #ffffff !important;
+}
+.pa-CardSix:hover {
+  background-color: #22313a !important;
+}
+.pa-CardSix {
+  background-color: #22313a42 !important;
+}
+.pa-CardSix:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardSeven {
+  color: #ffffff !important;
+}
+p.pa-TextSeven {
+  color: #ffffff !important;
+}
+.pa-CardSeven:hover {
+  background-color: #22313a !important;
+}
+.pa-CardSeven {
+  background-color: #22313a42 !important;
+}
+.pa-CardSeven:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardEight {
+  color: #ffffff !important;
+}
+p.pa-TextEight {
+  color: #ffffff !important;
+}
+.pa-CardEight:hover {
+  background-color: #22313a !important;
+}
+.pa-CardEight {
+  background-color: #22313a42 !important;
+}
+.pa-CardEight:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardNine {
+  color: #ffffff !important;
+}
+p.pa-TextNine {
+  color: #ffffff !important;
+}
+.pa-CardNine:hover {
+  background-color: #22313a !important;
+}
+.pa-CardNine {
+  background-color: #22313a42 !important;
+}
+.pa-CardNine:hover p {
+  background-color: #22313a !important;
+}
+.pa-CardTen {
+  color: #ffffff !important;
+}
+p.pa-TextTen {
+  color: #ffffff !important;
+}
+.pa-CardTen:hover {
+  background-color: #22313a !important;
+}
+.pa-CardTen {
+  background-color: #22313a42 !important;
+}
+.pa-CardTen:hover p {
+  background-color: #22313a !important;
+}
+i.IconopenedCount {
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+i.IconopenedCount:hover {
+  border: 1px solid #fff !important;
+  background: #fff !important;
+  color: #22313a !important;
+}
+i.IconviewedCount {
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+i.IconviewedCount:hover {
+  border: 1px solid #fff !important;
+  background: #fff !important;
+  color: #22313a !important;
+}
+i.IconodownloadedCount {
+  border: 1px solid #fff !important;
+  color: #fff !important;
+}
+i.IconodownloadedCount:hover {
+  border: 1px solid #fff !important;
+  background: #fff !important;
+  color: #22313a !important;
+}
+.BgForCard {
+  background-color: #1c313a !important;
+  border: 1px solid #2f4857 !important;
+}
+.hrCustimization {
+  border-top: 1px solid #2f4857 !important;
+}
+#queryBuilderCu label.q-switch-label {
+  color: white !important;
+  background-color: #22313a !important;
+  border: 1px solid #2f4857 !important;
+}
+#queryBuilderCu .q-button {
+  color: white !important;
+  background-color: #22313a !important;
+  border: 1px solid #2f4857 !important;
+}
+.q-add-icon {
+  color: white !important;
+}
+.q-rule {
+  background-color: #22313a !important;
+  border: 1px solid #2f4857 !important;
+}
+.q-field-control {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+  color: #ffffff !important;
+}
+.q-operator-control {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+  color: #ffffff !important;
+}
+.q-input-control {
+  background-color: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+  color: #ffffff !important;
+}
+
+
+/* table header bgcolor */
+.panel-bgMain > .panel-bg{
+  background-color: #22313a !important;
+  border-color: #2f4857 !important;
+}
+.panel-bgMain {
+  border-color: #2f4857 !important;
+}
+/* table header bgcolor end */
+
+#queryBuilderCu .q-invalid-ruleset{
+  border: 1px solid rgb(34 49 58) !important;
+  background: rgb(34 49 58 / 45%) !important;
+}
+
+#queryBuilderCu .q-empty-warning {
+  color: #fff !important;
+}
+.pjCardTitlebg  {
+  background-color: #22313a !important;
+  border-bottom: 1px solid #2f4857 !important;
+}
+.portlet.light > .portlet-title > .pjCardTitleCenterAlignment1 {
+  background-color:  #22313a !important;
+  border-bottom: 1px solid #2f4857 !important;
+}
+
+.portlet.light.cpad.hover-effect.pointer.card-radius {
+  padding: 0px !important;
+}
+.portlet.light.cpad.hover-effect.pointer {
+  padding: 0px 0px !important;
+  border-radius: 10px;
+}
+
+.input-group > .form-control:focus {
+  border-color: #2f4857 !important;
+}
+.notify_count {
+  font-family: "Gantari", "Open Sans", sans-serif;
+  position: absolute;
+  top: 11px;
+  left: 24px;
+  right: 0px;
+  font-weight: 300;
+  padding: 6px 3px !important;
+  height: 21px !important;
+  width: 21px;
+  font-size: 10px !important;
+}
+.override-actions {
+  display: flex !important;
+  justify-content: center !important;
+}
+

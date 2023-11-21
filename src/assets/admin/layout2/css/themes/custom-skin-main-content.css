@@ -1995,20 +1995,26 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .list__item .item__actions.abjustPosition {
   border-top: none !important;
 }
+
+.border-padding {
+  border-top: 1px solid var(--border-color) !important;
+}
+
 /* sudha sri (10-10-2023) */
 .bg_color {
   background-color: var(--page-content) !important;
 }
 
 /*edit-company-profile*/
-.panel-account{
+.panel-account {
   background-color: var(--page-content) !important;
   opacity: 0.8;
 }
-.edit_account{
+.edit_account {
   border: 1px solid var(--border-color) !important;
 }
-.dropdown-menu li > a > [class^="icon-"], .dropdown-menu li > a > [class*=" icon-"] {
+.dropdown-menu li > a > [class^="icon-"],
+.dropdown-menu li > a > [class*=" icon-"] {
   color: var(---text-color) !important;
 }
 /* myprofile dropdown border */
@@ -2019,7 +2025,318 @@ li.divider-bottom {
 .unsubscribingPopup span {
   color: var(---text-color) !important;
 }
-.unsubscribingPopup{  
+.unsubscribingPopup {
   background-color: var(--page-content) !important;
 }
 /* XNFR-376 End*/
+/* partner analytics */
+.pa-Card {
+  border: 1px solid var(--border-color) !important;
+}
+
+.pa-CardOne {
+  color: var(--border-color) !important;
+}
+
+.pa-CardOne:hover {
+  border: 1px solid var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+  background: var(--border-color) !important;
+}
+
+.pa-CardOne:hover p {
+  background: var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+}
+
+p.pa-TextOne {
+  color: var(--border-color) !important;
+}
+
+.pa-CardTwo {
+  color: var(--border-color) !important;
+}
+
+p.pa-TextTwo {
+  color: var(--border-color) !important;
+}
+
+.pa-CardTwo:hover {
+  border: 1px solid var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+  background: var(--border-color) !important;
+}
+
+.pa-CardTwo:hover p {
+  background: var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+}
+
+.pa-CardThree {
+  color: var(--border-color) !important;
+}
+
+p.pa-TextThree {
+  color: var(--border-color) !important;
+}
+
+.pa-CardThree:hover {
+  border: 1px solid var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+  background: var(--border-color) !important;
+}
+
+.pa-CardThree:hover p {
+  background: var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+}
+
+.pa-CardFour {
+  color: var(--border-color) !important;
+}
+
+p.pa-TextFour {
+  color: var(--border-color) !important;
+}
+
+.pa-CardFour:hover {
+  border: 1px solid var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+  background: var(--border-color) !important;
+}
+
+.pa-CardFour:hover p {
+  background: var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+}
+
+.pa-CardFive {
+  color: var(--border-color) !important;
+}
+
+p.pa-TextFive {
+  color: var(--border-color) !important;
+}
+
+.pa-CardFive:hover {
+  border: 1px solid var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+  background: var(--border-color) !important;
+}
+
+.pa-CardFive:hover p {
+  background: var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+}
+
+.pa-CardSix {
+  color: var(--border-color) !important;
+}
+
+p.pa-TextSix {
+  color: var(--border-color) !important;
+}
+
+.pa-CardSix:hover {
+  border: 1px solid var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+  background: var(--border-color) !important;
+}
+
+.pa-CardSix:hover p {
+  background: var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+}
+
+.pa-CardSeven {
+  color: var(--border-color) !important;
+}
+
+p.pa-TextSeven {
+  color: var(--border-color) !important;
+}
+
+.pa-CardSeven:hover {
+  border: 1px solid var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+  background: var(--border-color) !important;
+}
+
+.pa-CardSeven:hover p {
+  background: var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+}
+
+.pa-CardEight {
+  color: var(--border-color) !important;
+}
+
+p.pa-TextEight {
+  color: var(--border-color) !important;
+}
+
+.pa-CardEight:hover {
+  border: 1px solid var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+  background: var(--border-color) !important;
+}
+
+.pa-CardEight:hover p {
+  background: var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+}
+
+.pa-CardNine {
+  color: var(--border-color) !important;
+}
+
+p.pa-TextNine {
+  color: var(--border-color) !important;
+}
+
+.pa-CardNine:hover {
+  border: 1px solid var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+  background: var(--border-color) !important;
+}
+.pa-CardNine:hover p {
+  background: var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+}
+.pa-CardTen {
+  color: var(--border-color) !important;
+}
+p.pa-TextTen {
+  color: var(--border-color) !important;
+}
+.pa-CardTen:hover {
+  border: 1px solid var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+  background: var(--border-color) !important;
+}
+.pa-CardTen:hover p {
+  background: var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+}
+.detailstext {
+  color: var(--title-heading--text) !important;
+  font-weight: 600;
+}
+i.IconopenedCount {
+  border: 1px solid var(--border-color) !important;
+  color: var(--border-color) !important;
+}
+i.IconopenedCount:hover {
+  border: 1px solid var(--border-color) !important;
+  background: var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+}
+i.IconviewedCount {
+  border: 1px solid var(--border-color) !important;
+  color: var(--border-color) !important;
+}
+i.IconviewedCount:hover {
+  border: 1px solid var(--border-color) !important;
+  background: var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+}
+i.IconodownloadedCount {
+  border: 1px solid var(--border-color) !important;
+  color: var(--border-color) !important;
+}
+i.IconodownloadedCount:hover {
+  border: 1px solid var(--border-color) !important;
+  background: var(--border-color) !important;
+  color: var(--div-bg-color) !important;
+}
+.BgForCard {
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+  opacity: 0.9;
+}
+
+#queryBuilderCu label.q-switch-label {
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+#queryBuilderCu .q-button {
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.q-add-icon {
+  color: var(--title-heading--text) !important;
+}
+.q-connector {
+  background-color: var(--page-content) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.q-field-control {
+  color: var(--title-heading--text) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.q-operator-control {
+  color: var(--title-heading--text) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.q-input-control {
+  color: var(--title-heading--text) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.hrCustimization {
+  border-top: 1px solid var(--border-color) !important;
+}
+
+
+/* table header bgcolor */
+.panel-bgMain > .panel-bg{
+  background-color: var(--page-content) !important;
+  border-color: var(--border-color) !important;
+}
+.panel-bgMain {
+  border-color: var(--border-color) !important;
+}
+/* table header bgcolor end */
+
+#queryBuilderCu .q-invalid-ruleset{
+  background-color: var(--left-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+#queryBuilderCu .q-empty-warning {
+  color: var(--title-heading--text) !important;
+}
+
+.pjCardTitlebg  {
+  background-color: var(--page-content) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+.portlet.light > .portlet-title > .pjCardTitleCenterAlignment1 {
+  background-color: var(--page-content) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+.portlet.light.cpad.hover-effect.pointer.card-radius {
+  padding: 0px !important;
+}
+.portlet.light.cpad.hover-effect.pointer {
+  padding: 0px 0px !important;
+  border-radius: 10px;
+}
+
+.notify_count {
+  font-family: "Gantari", "Open Sans", sans-serif;
+  position: absolute;
+  top: 11px;
+  left: 24px;
+  right: 0px;
+  font-weight: 300;
+  padding: 6px 3px !important;
+  height: 21px !important;
+  width: 21px;
+  font-size: 10px !important;
+}
+.override-actions {
+  display: flex !important;
+  justify-content: center !important;
+}
+

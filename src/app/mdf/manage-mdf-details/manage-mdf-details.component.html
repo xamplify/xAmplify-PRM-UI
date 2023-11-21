@@ -2,8 +2,8 @@
 <div class="page-content">
    <div class="page-bar">
       <ul class="page-breadcrumb">
-         <li><i class="fa fa-home" aria-hidden="true"></i> 
-         <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
+         <li><i class="fa fa-home" aria-hidden="true"></i>
+            <a [routerLink]="referenceService.homeRouter" translate>Home</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
          <li>
@@ -15,8 +15,9 @@
          </li>
       </ul>
       <div class="edit-mdf-form-margin">
-         <button class="btn-primary" id="right" style="padding: 5px 10px !important;" (click)="editMdfForm()" translate>Edit MDF Form</button>
-     </div>
+         <button class="btn-primary" id="right" style="padding: 5px 10px !important;" (click)="editMdfForm()"
+            translate>Edit MDF Form</button>
+      </div>
    </div>
    <!---Tiles----->
    <div class="row">
@@ -26,75 +27,79 @@
                <app-box-loader [countLoader]=4 *ngIf="tilesLoader"></app-box-loader>
                <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
                   <div class="row">
-                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
-                        <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor">
+                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 tiles_hover_effect">
+                        <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor tiles_bradius">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
                               <div class="number NumberFontDecrease">
-                                 <span data-toggle="tooltip" data-placement="top" title="{{tileData?.totalPartners}}" >
+                                 <span data-toggle="tooltip" data-placement="left" title="{{tileData?.totalPartners}}">
                                     {{tileData?.totalPartners}}
-                                 </span></div>
+                                 </span>
+                              </div>
                               <div class="desc">Total {{authenticationService?.partnerModule?.customName}}</div>
                            </div>
                            <span class="morePadding">
-                        <a  translate="" ng-reflect-translate="" class="more hidden"> Detailed view 
-                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                        </span>
+                              <a translate="" ng-reflect-translate="" class="more hidden"> Detailed view
+                                 <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                           </span>
                         </a>
                      </div>
-                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
-                        <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
+                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3  tiles_hover_effect">
+                        <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor tiles_bradius">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
                               <div class="number NumberFontDecrease">
-                                 <span  data-toggle="tooltip" data-placement="top" title="$ {{tileData?.totalBalance}}" >
+                                 <span data-toggle="tooltip" data-placement="left" title="$ {{tileData?.totalBalance}}">
                                     {{tileData?.totalBalanceInString}}
-                                 </span></div>
+                                 </span>
+                              </div>
                               <div class="desc">Total MDF Balance</div>
                            </div>
                            <span class="morePadding">
-                        <a  translate="" ng-reflect-translate="" class="more hidden"> Detailed view 
-                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                        </span>
+                              <a translate="" ng-reflect-translate="" class="more hidden"> Detailed view
+                                 <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                           </span>
                         </a>
                      </div>
-                     <div  class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt_8">
-                        <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
+                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt_8 tiles_hover_effect">
+                        <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor tiles_bradius">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
                               <div class="number NumberFontDecrease">
-                                 <span data-toggle="tooltip" data-placement="top" title="$ {{tileData?.usedBalance}}" >
+                                 <span data-toggle="tooltip" data-placement="left" title="$ {{tileData?.usedBalance}}">
                                     {{tileData?.usedBalanceInString}}
                                  </span>
-                                </div>
+                              </div>
                               <div class="desc">Total Used Balance</div>
                            </div>
                            <span class="morePadding">
-                        <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
-                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                        </span>
+                              <a translate="" ng-reflect-translate="" class="more hidden">Detailed view
+                                 <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                           </span>
                         </a>
                      </div>
-                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt_8">
-                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor">
+                     <div class="col-sm-3 col-xs-6 col-lg-3 col-md-3 pt_8 tiles_hover_effect">
+                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor tiles_bradius">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
                               <div class="number NumberFontDecrease">
-                                 <span  data-toggle="tooltip" data-placement="top" title="$ {{tileData?.availableBalance}}">{{tileData?.availableBalanceInString}}</span></div>
+                                 <span data-toggle="tooltip" data-placement="left"
+                                    title="$ {{tileData?.availableBalance}}">{{tileData?.availableBalanceInString}}</span>
+                              </div>
                               <div class="desc">Total Available Balance</div>
                            </div>
                            <span class="morePadding">
-                        <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view
-                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                        </span>
+                              <a translate="" ng-reflect-translate="" class="more hidden">Detailed view
+                                 <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                           </span>
                         </a>
                      </div>
                   </div>
@@ -115,19 +120,25 @@
                         <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
                         Manage MDF Details
                      </div>
-                     <div class="inputs d_flex"  style="float: right; padding: 4px">
+                     <div class="inputs d_flex" style="float: right; padding: 4px">
                         <div style="float: left; margin: 0 10px;">
-                          <select class="form-control" [(ngModel)]="sortOption.mdfPartnersSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                            <option *ngFor="let option of sortOption.mdfPartnersSortDropDownOptions"
-                                [ngValue]="option" translate>
-                                {{option.name}}</option>
-                        </select>
+                           <select class="form-control" [(ngModel)]="sortOption.mdfPartnersSortOption"
+                              (ngModelChange)="sortBy($event)" id="select-dropdown">
+                              <option *ngFor="let option of sortOption.mdfPartnersSortDropDownOptions"
+                                 [ngValue]="option" translate>
+                                 {{option.name}}</option>
+                           </select>
                         </div>
                         <div class="portlet-input input-inline pt-pl pt_0">
                            <div class="input-icon right" style="margin-bottom: 8px;">
-                              <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)" style="height: 34px !important;">
-                              <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>
-                              <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                              <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+                                 [ngModelOptions]="{standalone: true}" placeholder="Search"
+                                 (keypress)="eventHandler($event.keyCode)" style="height: 34px !important;">
+                              <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                 *ngIf="sortOption.searchKey"
+                                 (click)="sortOption.searchKey='';searchPartners();"></button>
+                              <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i
+                                    class="fa fa-search" aria-hidden="true"></i></button>
                            </div>
                         </div>
                      </div>
@@ -135,14 +146,16 @@
                   <div class="portlet-body table-responsive" style="overflow: hidden;">
                      <app-list-loader [hidden]="!partnerListLoader.isLoading"></app-list-loader>
                      <div class="clearfix" [hidden]="partnerListLoader.isLoading">
-                       <!---Filter (XNFR-85)-->
-                       <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany"  (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                        <!---Filter (XNFR-85)-->
+                        <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany"
+                           (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                         <div class="col-xs-12" style="padding: 0px 0;">
                            <div class="table-responsive">
                               <table class="table tgrid" aria-describedby="manage-mdf-fund-table">
                                  <thead>
                                     <tr>
-                                       <th translate scope="col">{{authenticationService?.partnerModule?.customName}} Info</th>
+                                       <th translate scope="col">{{authenticationService?.partnerModule?.customName}}
+                                          Info</th>
                                        <th translate scope="col">MDF Account Balance</th>
                                        <th translate scope="col">Used Balance</th>
                                        <th translate scope="col">Available Balance</th>
@@ -150,47 +163,56 @@
                                     </tr>
                                  </thead>
                                  <tbody>
-                                  <ng-container *ngFor="let partner of pagination.pagedItems;let i=index">
-                                    <tr>
-                                      <td>
-                                        <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="partner">
-                                        </app-user-info>
-                                    </td>
-                                      <td>
-                                         <span>${{partner?.totalBalance | number:'1.0':'en-US'}}</span>
-                                      </td>
-                                      <td>
-                                         <span>${{partner?.usedBalance | number:'1.0':'en-US'}}</span>
-                                      </td>
-                                      <td>
-                                         <span>${{partner?.availableBalance | number:'1.0':'en-US'}}</span>
-                                      </td>
-                                      <td style="text-align: center;">
-                                         <div class="actions-block override-actions action_inline float-left">
-                                            <a (click)="openMdfAmountPopup(partner)"  data-toggle="tooltip" data-placement="bottom" title="Add/Remove MDF Amount">
-                                            <i class="fa fa-pencil-square-o p0 IconCustomization" aria-hidden="true"></i>
-                                            </a>
-                                            <!----Timeline History-->
-                                            <a (click)="viewMdfAmountHistory(partner)"  data-toggle="tooltip" data-placement="bottom" title="View History">
-                                             <i class="fa fa-history p0 IconCustomization" aria-hidden="true"></i>
-                                             </a> 
-                                             <!-- action-btn  -->
-                                         </div>
-                                      </td>
-                                   </tr>
+                                    <ng-container *ngFor="let partner of pagination.pagedItems;let i=index">
+                                       <tr>
+                                          <td>
+                                             <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true"
+                                                [userInfo]="partner">
+                                             </app-user-info>
+                                          </td>
+                                          <td>
+                                             <span>${{partner?.totalBalance | number:'1.0':'en-US'}}</span>
+                                          </td>
+                                          <td>
+                                             <span>${{partner?.usedBalance | number:'1.0':'en-US'}}</span>
+                                          </td>
+                                          <td>
+                                             <span>${{partner?.availableBalance | number:'1.0':'en-US'}}</span>
+                                          </td>
+                                          <td style="text-align: center;">
+                                             <div class="actions-block override-actions action_inline float-left">
+                                                <a class="custom-icon" (click)="openMdfAmountPopup(partner)"
+                                                   data-toggle="tooltip" data-placement="bottom"
+                                                   title="Add/Remove MDF Amount">
+                                                   <i class="fa fa-pencil-square-o p0 IconCustomization"
+                                                      aria-hidden="true"></i>
+                                                   <div class="clickicons"></div>
+                                                </a>
+                                                <!----Timeline History-->
+                                                <a class="custom-icon" (click)="viewMdfAmountHistory(partner)"
+                                                   data-toggle="tooltip" data-placement="bottom" title="View History">
+                                                   <i class="fa fa-history p0 IconCustomization" aria-hidden="true"></i>
+                                                   <div class="clickicons"></div>
+                                                </a>
+                                                <!-- action-btn  -->
+                                             </div>
+                                          </td>
+                                       </tr>
                                     </ng-container>
                                  </tbody>
                               </table>
-                              <div *ngIf="pagination.totalRecords==0 && !partnerListLoader.isLoading" class="alert alert-info">
-                                <strong>No Data Found.</strong>
+                              <div *ngIf="pagination.totalRecords==0 && !partnerListLoader.isLoading"
+                                 class="alert alert-info">
+                                 <strong>No Data Found.</strong>
                               </div>
                            </div>
                         </div>
                      </div>
                      <div *ngIf="pagination.pagedItems.length !== 0 && !partnerListLoader.isLoading">
-                        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listPartners($event)">
+                        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+                           (notifyParentDropDown)="listPartners($event)">
                         </app-pagination>
-                    </div>
+                     </div>
                   </div>
                </div>
                <!-- END EXAMPLE TABLE PORTLET-->
@@ -199,5 +221,5 @@
       </div>
    </div>
 </div>
-<app-add-mdf-funds-modal-popup *ngIf="showMdfAmountPopup" [partnershipId]="partnershipId" (notifyParentComponent)="resetValues()" (updateList)="updateListAfterAddingAmount()"></app-add-mdf-funds-modal-popup>
-
+<app-add-mdf-funds-modal-popup *ngIf="showMdfAmountPopup" [partnershipId]="partnershipId"
+   (notifyParentComponent)="resetValues()" (updateList)="updateListAfterAddingAmount()"></app-add-mdf-funds-modal-popup>

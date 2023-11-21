@@ -32,6 +32,8 @@ export class DonutPieChartComponent implements OnInit {
   @Input() trackType: any = "";
   @Output() notifySelectSlice = new EventEmitter();
   @Output() notifyUnSelectSlice = new EventEmitter();
+  @Input()  isDetailedAnalytics: boolean;
+  @Input() selectedPartnerCompanyIds: any = [];
   headerText: string;
   chartColors: string[];
   colClass:string;
@@ -73,7 +75,7 @@ export class DonutPieChartComponent implements OnInit {
       this.loadDonutChartForInteractedAndNotInteractedTracks();
     } else if (this.chartId == "typewiseTrackContentDonut") {
       this.headerText = 'Status Wise Track Assets';
-      this.chartColors = ['#5C9BD1', '#E87E04', '#2bc2b5', '#90ed7d'];
+      this.chartColors = ['#3598dc', '#3480b5', '#8e5fa2', '#e87e04', '#26a69a'];
       this.colClass = "col-sm-5 col-lg-5";
       this.portletLightClass = "portlet light active-donut-pie-chart";
       this.loadDonutChartForTypewiseTrackContents();
@@ -93,6 +95,9 @@ export class DonutPieChartComponent implements OnInit {
     partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
     partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
     partnerJourneyRequest.trackTypeFilter = this.trackType;
+    partnerJourneyRequest.detailedAnalytics = this.isDetailedAnalytics;
+    partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+    partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
     this.partnerService.getPartnerJourneyTypewiseTrackCounts(partnerJourneyRequest).subscribe(
       response => {
         this.processResponse(response);
@@ -120,6 +125,9 @@ export class DonutPieChartComponent implements OnInit {
     partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
     partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
     partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
+    partnerJourneyRequest.detailedAnalytics = this.isDetailedAnalytics;
+    partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+    partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
     this.partnerService.getPartnerJourneyInteractedAndNotInteractedCounts(partnerJourneyRequest).subscribe(
       response => {
         this.processResponse(response);

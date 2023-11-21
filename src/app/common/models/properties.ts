@@ -300,6 +300,20 @@ export class Properties {
 	/**** XNFR-233 **** */
 	loginFormPosition = ["Left","Right"]
 
+	/***Refer A Vendor ****/
+	inviteAVendor = "Invite A vendor";
+	inviteVendorToJoinxAmplify = "Invite a vendor to join xAmplify";
+	vendorInvites = "Vendor Invites";
+	InvitedVendorAnalytics = "Invited Vendor Analytics"; 
+	inviteAVendorToJoinxAmplify = "Invite a vendor to join xAmplify";
+
+	/****XNFR-342****/
+	campaignsHeaderText = "Campaigns";
+	assetsHeaderText = "Assets";
+	tracksHeaderText = "Tracks";
+	playBooksHeaderText = "Play Books";
+	/****XNFR-342****/
+
 
 
 

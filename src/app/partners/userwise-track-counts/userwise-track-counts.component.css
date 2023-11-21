@@ -9,3 +9,33 @@
 .mh530{
 	min-height:530px;
 }
+
+@media (min-width: 200px) and (max-width: 767px)  { 
+	.ml15m {
+		margin-left: 0px !important;
+		padding: 0px;
+	}
+  }
+
+  .tableHeightScroll{   
+    height: 399px !important;
+   overflow-y: auto;
+   margin-bottom: 6px;
+}
+/* width */
+::-webkit-scrollbar {
+	width: 7px;
+  }
+
+/* table header bgcolor */
+.panel-bgMain > .panel-bg{
+  background-color: #d9edf7b0;
+  border-bottom: 1px solid #ddd;
+}
+.panel-bgMain {
+border-color: #ddd;
+}
+/* table header bgcolor end */
+.panel-heading {
+  padding: 11px 15px !important;
+}

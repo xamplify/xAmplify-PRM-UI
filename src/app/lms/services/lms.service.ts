@@ -10,13 +10,17 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { LearningTrack } from '../models/learningTrack';
 import { HttpClient } from "@angular/common/http";
+import { ReferenceService } from 'app/core/services/reference.service';
 
 @Injectable()
 export class LmsService {
 
   URL = this.authenticationService.REST_URL + "lms";
+  ACCESS_TOKEN_SUFFIX_URL = "?access_token=";
+  LMS_URL = URL+this.ACCESS_TOKEN_SUFFIX_URL;
 
-  constructor(private http: HttpClient,private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
+  constructor(private http: HttpClient,private authenticationService: AuthenticationService,
+     private logger: XtremandLogger,private referenceService:ReferenceService) { }
 
   saveOrUpdate(formData: FormData, learningTrack: LearningTrack) {
     let url = this.URL;
@@ -125,5 +129,14 @@ export class LmsService {
 
   private handleError(error: any) {
     return Observable.throw(error);
+  }
+
+   /********XNFR-342****/
+   findUnPublishedTracksOrPlayBooks(pagination:Pagination,type:string){
+    let userId = this.authenticationService.getUserId();
+    let pageableUrl = this.referenceService.getPagebleUrl(pagination);
+    let urlPrefix = type=='Tracks' ? 'findAllUnPublishedTracks':'findAllUnPublishedPlayBooks';
+    let findAllUrl = this.URL+'/'+urlPrefix+'/'+userId+'/'+pagination.userListId+'/'+pagination.partnerId+this.ACCESS_TOKEN_SUFFIX_URL+this.authenticationService.access_token+pageableUrl;
+    return this.authenticationService.callGetMethod(findAllUrl);
   }
 }

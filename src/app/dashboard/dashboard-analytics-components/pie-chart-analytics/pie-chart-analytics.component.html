@@ -18,17 +18,17 @@
 
                   <div *ngIf="!statisticsLoader"  class="row" style="display: flex">
                     <div  class="col-xs-12 col-sm-4 col-md-4 p10 white-co" *ngFor="let request of stastisticsOfPieChart; let  i = index">
-                      <div class="portlet light" *ngIf="request.nameOfPie === 'Contact to Lead Ratio' || request.nameOfPie === 'Opportunity Amount' ">
+                      <div class="portlet light cards_btns_shadows" *ngIf="request.nameOfPie === 'Contact to Lead Ratio' || request.nameOfPie === 'Opportunity Amount' ">
                         <b>{{request.nameOfPie}}</b>
                         <br>
                         {{request.weightOfPie}}
                       </div>
-                        <div class="portlet light" *ngIf="request.nameOfPie === 'Lead to Deal Ratio' ">
+                        <div class="portlet light cards_btns_shadows" *ngIf="request.nameOfPie === 'Lead to Deal Ratio' ">
                           <b>{{request.nameOfPie}}</b>
                           <br>
                           {{request.weightOfPie}}
                         </div>
-                        <div class="portlet light"   *ngIf="request.nameOfPie === 'Updated Lead Time' || request.nameOfPie === 'Updated Deal Time' ">
+                        <div class="portlet light cards_btns_shadows"   *ngIf="request.nameOfPie === 'Updated Lead Time' || request.nameOfPie === 'Updated Deal Time' ">
                             <b>{{request.nameOfPie}}</b>
                             <br>
                             <div *ngIf="request.weightOfPie != '-'"> 

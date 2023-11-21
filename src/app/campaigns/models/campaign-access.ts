@@ -41,5 +41,6 @@ export class CampaignAccess {
   microsoftSSO = false;
   /**** XNFR-255 *****/
   shareWhiteLabeledContent = false;
+  createWorkflow = false;
 
 }

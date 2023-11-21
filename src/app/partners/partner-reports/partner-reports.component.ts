@@ -15,6 +15,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
 import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { VendorInvitation } from '../../dashboard/models/vendor-invitation';
+import { PartnerJourneyRequest } from '../models/partner-journey-request';
 
 declare var $, swal, Highcharts, CKEDITOR: any;
 
@@ -37,6 +38,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     videoCampaign: number;
     noOfCampaignsLaunchedByPartner = [];
     partnerUserInteraction = [];
+    selectedPartnerCompanyIds = [];
     campaignInteractionPagination: Pagination = new Pagination();
     activePartnersPagination: Pagination = new Pagination();
     inActivePartnersPagination: Pagination = new Pagination();
@@ -79,6 +81,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     showDetailedAnalytics = false;
     detailedAnalyticsPartnerCompany: any;
     selectedTrackType: any = "";
+    selectedCampaignType: any = "";
     selectedAssetType: any = "";
     
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
@@ -138,9 +141,30 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         });
         this.barChartLoader = false;
     }
-    partnerReportData() {
+    // partnerReportData() {
+    //     this.barChartLoader = true;
+    //     this.parterService.partnerReports(this.loggedInUserId, this.applyFilter).subscribe(
+    //         (data: any) => {
+    //             const campaignData = [];
+    //             campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
+    //             campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
+    //             campaignData.push(data.partnersLaunchedCampaignsByCampaignType.REGULAR);
+    //             campaignData.push(data.partnersLaunchedCampaignsByCampaignType.EVENT);
+    //             campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SURVEY);
+    //             this.campaignTypeChart(campaignData);
+    //         },
+    //         (error: any) => {
+    //             this.xtremandLogger.error(error);
+    //             this.barChartLoader = false;
+    //         });
+    // }
+    getPartnersRedistributedCampaignsData() {
         this.barChartLoader = true;
-        this.parterService.partnerReports(this.loggedInUserId, this.applyFilter).subscribe(
+        let partnerJourneyRequest = new PartnerJourneyRequest();
+    partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
+    partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+    partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
+        this.parterService.partnersRedistributedCampaignsData(partnerJourneyRequest).subscribe(
             (data: any) => {
                 const campaignData = [];
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
@@ -269,7 +293,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.getActivePartnerReports();
         this.loadCountryData();
         setTimeout(() => {
-             this.partnerReportData();
+             this.getPartnersRedistributedCampaignsData();
              this.reloadWithFilter = true;
              this.loadAllCharts = false;
         }, 500);
@@ -705,7 +729,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 }
             }else{
                 this.loadCountryData();
-                this.partnerReportData();
+                this.getPartnersRedistributedCampaignsData();
                 this.goToActivePartnersDiv();
             }
             if (localStorage != undefined) {
@@ -720,6 +744,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.isShowCKeditor = false;
         $('#approve-decline-modal').modal('hide');
+    }
+
+    ngOnChanges(){
+        this.goToActivePartnersDiv();
     }
 
     getModuleAccess() {
@@ -803,6 +831,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.inActivePartnersCountLoader = true;
         this.approvePartnersCountLoader = true;
         this.throughPartnerCampaignsCountLoader = true;
+        this.selectedPartnerCompanyIds = [];
         if(this.selectedTabIndex==0){
             this.loadAllCharts = true;
             this.reloadWithFilter = false;
@@ -817,7 +846,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         self.findApprovePartnersCount();
         if(self.selectedTabIndex==0){
             self.reloadWithFilter = true;
-            self.partnerReportData();
+            self.getPartnersRedistributedCampaignsData();
             self.loadAllCharts = false;
         }else if(self.selectedTabIndex==2){
             self.reloadRedistributeCampaigns = true;
@@ -919,10 +948,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     closeDetailedAnalytics() {
         this.showDetailedAnalytics = false;
+        this.goToActivePartnersDiv();
     }
 
     interactionTracksDonutSliceSelected(type: any) {
         this.selectedTrackType = type;
+        this.selectedAssetType = "";
       }
     
       interactionTracksDonutSliceUnSelected(type: any) {
@@ -941,5 +972,16 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
           this.selectedAssetType = "";
         } 
       }
-    
+
+      getSelectedPartnerCompanyIds(partnerCompanyIds: any){
+        this.selectedPartnerCompanyIds = partnerCompanyIds;
+      }
+      redistributedCampaignDetailsPieChartSelected(type: any){
+        this.selectedCampaignType = type;
+      }
+      redistributedCampaignDetailsPieChartUnSelected(type: any){
+        if (this.selectedCampaignType == type) {
+            this.selectedCampaignType = "";
+          } 
+      }
 }

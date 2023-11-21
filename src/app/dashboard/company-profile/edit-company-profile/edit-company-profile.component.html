@@ -416,10 +416,13 @@
 										<!-- XNFR-255 -->
 										<tr *ngIf="!marketing">
 											<th scope="row">Share White Labeled Content</th>
-											<td>
-                        <input type="checkbox" [(ngModel)]="campaignAccess.shareWhiteLabeledContent"
-													[ngModelOptions]="{standalone: true}">
-                      </td>
+											<td><input type="checkbox" [(ngModel)]="campaignAccess.shareWhiteLabeledContent" [ngModelOptions]="{standalone: true}"></td>
+										</tr>
+										<!--XNFR-381-->
+										<tr *ngIf="!marketing">
+											<th scope="row">Create Workflow (Partner Journey)</th>
+											<td><input type="checkbox" [(ngModel)]="campaignAccess.createWorkflow"
+													[ngModelOptions]="{standalone: true}"></td>
 										</tr>
 										
 										</table>

@@ -16,7 +16,7 @@
 <tr>
 <ng-container *ngFor="let name of names;let i=index;">
 <ng-container *ngIf="i<=4">
-<th scope="col">
+<th class="bg-colorunset" scope="col">
       <div [style.background]="name.color" class="td-css"></div>
   </th>
   <td>
@@ -31,7 +31,7 @@
 <tr>
 <ng-container *ngFor="let name of names;let i=index;">
 <ng-container *ngIf="i>4">
-<th scope="col">
+<th class="bg-colorunset" scope="col">
       <div [style.background]="name.color" class="td-css"></div>
   </th>
   <td>

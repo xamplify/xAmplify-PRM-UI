@@ -137,3 +137,6 @@
 	(deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"  (deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
 	</app-delete-assets>
  </ng-container>
+
+ <!---XNFR-381-->
+<app-confirm-sweet-alert-util *ngIf="isChangeAsParentPdfIconClicked" [parameterDto]="changeAsParentPdfSweetAlertParameterDto" (notifyComponent)="changeAsParentPdfEmitter($event)"></app-confirm-sweet-alert-util>

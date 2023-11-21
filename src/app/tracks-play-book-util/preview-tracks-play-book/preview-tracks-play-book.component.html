@@ -27,14 +27,9 @@
                                 <div class="row">
                                     <div class="col-md-6 col-lg-6 track-title text-color content-bg">
                                         <div class="title-class">Title:</div>
-                                        <a class="title padding_bottom text-color content-bg"
-                                        data-toggle="tooltip" data-placement="right"
-                                        title="{{tracksPlayBook.title}}"
-                                            style="font-size: 15px; padding-top: 10px;font-weight: 600;">{{tracksPlayBook.title}}</a>
-            
-                                          
-                                    
-                                        </div>
+                                        <a class="title padding_bottom text-color content-bg m0" data-toggle="tooltip" data-placement="bottom" title="{{tracksPlayBook.title}}"
+                                        style="font-size: 15px; padding-top: 10px;font-weight: 600;">{{tracksPlayBook.title}}</a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding_bottom">
@@ -249,10 +244,11 @@
                                                 </ng-container>
                                                 <td id="actions-row" class="text-center">
                                                     <div class="actions-block override-actions custom-width-icon no-float">
-                                                        <a [ngClass]="{'isDisabled' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
+                                                        <a class="custom-icon" [ngClass]="{'isDisabled' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
                                                             data-toggle="tooltip" data-placement="bottom" title="View"
                                                             (click)="$event.stopPropagation();viewContent(content, i)">
                                                             <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                                                            <div class="clickicons"></div>
                                                         </a>
                                                     </div>
                                                 </td>
@@ -279,11 +275,11 @@
 
 <!-- Preview Assets -->
 <ng-container *ngIf="showFilePreview">
-    <div class="overlay page-content custimizaPageContent">
-        <button type="button" class="close-circle" style="position: relative; top: 32px; right: 26px;" data-dismiss="modal" (click)="closeAssetPreview()">
+    <div class="overlay page-content custimizaPageContent previewContent">
+        <button type="button" class="close-circle mb-close" style="position: relative; top: 32px; right: 26px;" data-dismiss="modal" (click)="closeAssetPreview()">
             <i style="padding-bottom: 3px;" class="fa fa-times" aria-hidden="true"></i>
         </button>
-        <div class="overlay-content">
+        <div class="overlay-content mb-imgContent">
             <ng-container *ngIf="isImage">
                 <img class="fit-preview-asset" [src]="filePath" alt="No Image Found"><br>
             </ng-container>

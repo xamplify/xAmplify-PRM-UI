@@ -218,4 +218,12 @@ i.eyeCu {
     padding-bottom: 5px;
   }
 }
+@media screen and (max-width:578px){
+  .page-bar-padding-cu-thispageonly{
+    padding: 20px!important;
+  }
+  .user_card{
+  padding:6px!important;
+  }
+}
 

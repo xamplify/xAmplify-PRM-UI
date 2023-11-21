@@ -20,14 +20,16 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   @Input() teamMemberId: any;
   @Input() trackType: any = "";
   @Input() assetType: any = "";
+  @Input() applyFilter: boolean;
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
+  @Input()  isDetailedAnalytics: boolean;
+  @Input() selectedPartnerCompanyIds: any = [];
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
-  isDetailedAnalytics: boolean = false;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -42,11 +44,6 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
 
   ngOnChanges() {   
     this.pagination.pageIndex = 1;   
-    if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
-      this.isDetailedAnalytics = true;
-    } else {
-      this.isDetailedAnalytics = false;
-    }
     this.getTypeWiseTrackContentDetails(this.pagination);
   }
 
@@ -54,6 +51,9 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
+    this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+    this.pagination.detailedAnalytics = this.isDetailedAnalytics;
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.trackTypeFilter = this.trackType;
     this.pagination.assetTypeFilter = this.assetType;
     this.pagination.maxResults = 6;
@@ -109,7 +109,22 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   }
 
   viewAnalytics(partnerCompanyId: any) {
-    this.notifyShowDetailedAnalytics.emit(partnerCompanyId); 
+    this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
+    this.referenseService.goToTop(); 
   }
-
+  getClassForStatus(status: string) {
+    if (status === 'SUBMITTED') {
+      return 'submitted-class';
+    } else if (status === 'VIEWED') {
+      return 'viewed-class';
+    } else if (status === 'NOT OPENED') {
+      return 'notOpened-class';
+    } else if (status === 'OPENED') {
+      return 'opened-class';
+    } else if (status === 'DOWNLOADED') {
+      return 'downloaded-class';
+    } else {
+      return 'default-class';
+    }
+  }
 }

@@ -16,7 +16,10 @@ export class RedistributedCampaignsAndLeadsBarChartComponent implements OnInit {
 chartLoader = false;
 statusCode=200;
 @Input() chartId:any;
+@Input() barChartId:any;
 @Input() applyTeamMemberFilter:boolean;
+@Input() selectedPartnerCompanyIds: any = [];
+@Input() applyFilter: boolean;
 
 //XNFR-316
 @Input() partnerCompanyId:any;
@@ -26,12 +29,14 @@ hasLeadsAndDealsAccess = false;
 headerText = "";
 filterValue = 'r';
 hideLeadsAndDealsChart = false;
+barChartLoader = false;
 constructor(public authenticationService:AuthenticationService,public partnerService:ParterService,public xtremandLogger:XtremandLogger,public properties:Properties) { }
   ngOnInit() {      
   }
 
   ngOnChanges() { 
     this.refreshChart();
+    this.getPartnersRedistributedCampaignsData();
   }
   refreshChart(){
     this.chartLoader = true;
@@ -46,13 +51,13 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
       this.authenticationService.getModuleAccessByLoggedInUserId().subscribe(
         response=>{
             this.hasLeadsAndDealsAccess = response.enableLeads;
-            if(this.chartId=='redistributeCampaignsAndLeadsCountBarChart'){
+            if(this.chartId=='redistributeCampaignsAndLeadsCountBarChart' || this.chartId=='allRedistributeCampaignsAndLeadsCountBarChart'){
                 this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Leads':'Redistributed Campaigns';
             }else if(this.chartId=='redistributeCampaignsAndLeadsCountBarChartQuarterly'){
                 this.headerText = this.hasLeadsAndDealsAccess ? 'Redistributed Campaigns & Previous Quarter Leads':'Redistributed Campaigns For Previous Quarter';
             }
             //XNFR-316
-            else if(this.chartId=='top10LeadsAndDealsBarChart' || this.chartId== 'partnerJourneyLeadsAndDealsBarChart'){
+            else if(this.chartId=='top10LeadsAndDealsBarChart' || this.chartId== 'partnerJourneyLeadsAndDealsBarChart' || this.chartId=='allLeadsAndDealsBarChart'){
                 if(this.hasLeadsAndDealsAccess){
                     this.hideLeadsAndDealsChart = false;
                 }else{
@@ -64,7 +69,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
             this.setErrorResponse(error);
         },()=>{
             //XNFR-316
-            if(this.chartId=='top10LeadsAndDealsBarChart' || this.chartId== 'partnerJourneyLeadsAndDealsBarChart'){
+            if(this.chartId=='top10LeadsAndDealsBarChart' || this.chartId== 'partnerJourneyLeadsAndDealsBarChart' || this.chartId=='allLeadsAndDealsBarChart'){
                 if(this.hasLeadsAndDealsAccess){
                     this.getDataForBarChart();
                 }
@@ -126,7 +131,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
     let secondaryAxisColor = "";
     let primaryYAxisText = "";
     let secondaryYAxisText = "";
-    if(chartId=="redistributeCampaignsAndLeadsCountBarChart"){
+    if(chartId=="redistributeCampaignsAndLeadsCountBarChart" || chartId=="allRedistributeCampaignsAndLeadsCountBarChart"){
         primayAxisColor = Highcharts.getOptions().colors[0];
         secondaryAxisColor = Highcharts.getOptions().colors[1];
         primaryYAxisText = "Leads";
@@ -138,7 +143,7 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
         secondaryYAxisText = "Redistributed Campaigns";
     }
     //XNFR-316
-    else if(chartId=="top10LeadsAndDealsBarChart" || chartId=="partnerJourneyLeadsAndDealsBarChart" ){
+    else if(chartId=="top10LeadsAndDealsBarChart" || chartId=="partnerJourneyLeadsAndDealsBarChart" || chartId=="allLeadsAndDealsBarChart"){
         primayAxisColor = Highcharts.getOptions().colors[0];
         secondaryAxisColor = Highcharts.getOptions().colors[2];
         primaryYAxisText = "Leads";
@@ -254,6 +259,73 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
       return data;
   }
 
+  getPartnersRedistributedCampaignsData() {
+    this.barChartLoader = true;
+    let partnerJourneyRequest = new PartnerJourneyRequest();
+partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
+partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
+    this.partnerService.partnersRedistributedCampaignsData(partnerJourneyRequest).subscribe(
+        (data: any) => {
+            const campaignData = [];
+            campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
+            campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
+            campaignData.push(data.partnersLaunchedCampaignsByCampaignType.REGULAR);
+            campaignData.push(data.partnersLaunchedCampaignsByCampaignType.EVENT);
+            campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SURVEY);
+            this.campaignTypeChart(campaignData);
+        },
+        (error: any) => {
+            this.xtremandLogger.error(error);
+            this.barChartLoader = false;
+        });
+}
+
+campaignTypeChart(data: any) {
+    let barChartId = this.barChartId;
+    Highcharts.chart(barChartId, {
+        chart: { type: 'bar',backgroundColor: this.authenticationService.isDarkForCharts ? "#2b3c46" : "#fff" },
+        xAxis: {
+            categories: ['VIDEO CAMPAIGN', 'SOCIAL CAMPAIGN', 'EMAIL CAMPAIGN', 'EVENT CAMPAIGN','SURVEY CAMPAIGN'],
+            lineWidth: 0,
+            minorTickLength: 0,
+            tickLength: 0,
+            labels:{
+                style:{
+                    color: this.authenticationService.isDarkForCharts ? "#fff" : "#666666"
+                }
+            }
+        },
+        title: { text: '' },
+        yAxis: {
+            min: 0,
+            visible: false,
+            gridLineWidth: 0,
+        },
+        colors: ['#ffb600', '#be72d3', '#ff3879', '#357ebd','#00ffc8'],
+        tooltip: {
+            formatter: function () {
+                return 'Campaign Type: <b>' + this.point.category + '</b><br>Campaigns Count: <b>' + this.point.y;
+            },
+            backgroundColor: 'black', 
+            style: {
+              color: '#fff' 
+            }
+        },
+        plotOptions: { bar: { minPointLength: 3, dataLabels: { enabled: true }, colorByPoint: true } },
+        exporting: { enabled: false },
+        credits: { enabled: false },
+        series: [{ showInLegend: false, data: data,
+            dataLabels:{
+                style:{
+                    color: this.authenticationService.isDarkForCharts ? "#fff" : "#000000",
+                }
+        } }]
+    });
+    this.barChartLoader = false;
+}
+
+
   filterRedistributeCampaignsAndLeadsCountBarChart(){
       this.filterChart('redistributeCampaignsAndLeadsCountBarChartDropDown');
   }
@@ -266,7 +338,9 @@ constructor(public authenticationService:AuthenticationService,public partnerSer
   filterTop10LeadsAndDealsBarChartDropDown(){
     this.filterChart('top10LeadsAndDealsBarChartDropDown');
   }
- 
+  filterAllLeadsAndDealsBarChartDropDown(){
+    this.filterChart('allLeadsAndDealsBarChartDropDown')
+  }
 
   filterChart(dropDownId:string){
     this.chartLoader = true;

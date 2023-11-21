@@ -216,7 +216,7 @@
 						 *ngIf="contactsPagination.totalRecords > 0">
 						 <thead>
 							<tr>
-							   <td align="center">
+							   <td align="center" class="checkBox_shadow">
 								  <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts"/>
 							   </td>
 							   <th style="text-align: center;">List Name</th>
@@ -230,11 +230,11 @@
 							(click)="highlightContactRow(contacts,$event,contacts.noOfContacts,contacts.emailValidationInd)" [class.contact-list-selected]="(selectedContactListIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)"
 							(mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage">
 							<td>
-							   <div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
+							   <div class="form-group checkBox_shadow" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
 								  <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}" [checked]="selectedContactListIds.indexOf(contacts.id)>-1"
 								  name="campaignContact[]" value="{{contacts.id}}" (click)="highlightRow(contacts,$event)">
 							   </div>
-							   <div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
+							   <div class="form-group checkBox_shadow" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
 								  <input type="checkbox" disabled="disabled" data-toggle="tooltip" data-placement="bottom" title="Contacts are in progress">
 							   </div>
 							</td>
@@ -326,8 +326,8 @@
 												 <div class="flex-row" (click)="setEmailTemplate(campaign.emailTemplate)">
 													<div class="item__select-box-wrapper">
 													   <span class="select-box"> <label>
-													   <input (click)="setEmailTemplate(emailTemplate)"  type="checkbox" *ngIf="emailTemplateId!=selectedEmailTemplateRow" (click)="setEmailTemplate(campaign.emailTemplate)">
-													   <input type="checkbox" checked="checked" *ngIf="emailTemplateId==selectedEmailTemplateRow">
+													   <input class="checkBox_shadow" (click)="setEmailTemplate(emailTemplate)"  type="checkbox" *ngIf="emailTemplateId!=selectedEmailTemplateRow" (click)="setEmailTemplate(campaign.emailTemplate)">
+													   <input class="checkBox_shadow" type="checkbox" checked="checked" *ngIf="emailTemplateId==selectedEmailTemplateRow">
 													   </label>
 													   </span>
 													   <span class="ng-scope"> <a
@@ -380,7 +380,7 @@
 										<div class="flex-row" (click)="setEmailTemplate(emailTemplate)">
 										   <div class="item__select-box-wrapper">
 											  <span class="select-box" [class.hide]="emailTemplate.draft"> <label>
-											  <input (click)="setEmailTemplate(emailTemplate)"  type="checkbox">
+											  <input (click)="setEmailTemplate(emailTemplate)" class="checkBox_shadow"  type="checkbox">
 											  </label>
 											  </span>
 											  <span class="ng-scope"> <a
@@ -729,7 +729,7 @@
 												 <li class="list__item" [class.list__item--selected]="reply.emailTemplate.id==reply.selectedEmailTemplateId">
 													<div class="flex-row" (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" >
 													   <div class="item__select-box-wrapper">
-														  <span class="select-box"> <label> <input type="checkbox"
+														  <span class="select-box"> <label> <input class="checkBox_shadow" type="checkbox"
 														  [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}"
 														  (click)="setReplyEmailTemplate(reply.emailTemplate.id,reply,i)" [checked]="reply.emailTemplate.id == reply.selectedEmailTemplateId">
 														  </label>
@@ -775,10 +775,10 @@
 												 <div class="item__select-box-wrapper">
 													<span class="select-box" [class.hide]="emailTemplate.draft">
 													<label>
-													<input *ngIf="!emailTemplate.draft" type="checkbox" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}"
+													<input *ngIf="!emailTemplate.draft" class="checkBox_shadow" type="checkbox" name="reply-email-template" [value]="emailTemplate.id" id="reply-{{i}}-{{emailTemplate.id}}"
 													(click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)"
 													[checked]="emailTemplate.id == reply.selectedEmailTemplateId">
-													<input *ngIf="emailTemplate.draft" data-toggle="tooltip" data-placement="bottom" title="draft template cannot be selected" disabled="disabled" type="checkbox" name="reply-email-template">
+													<input *ngIf="emailTemplate.draft" data-toggle="tooltip" data-placement="bottom" title="draft template cannot be selected" disabled="disabled" class="checkBox_shadow" type="checkbox" name="reply-email-template">
 													</label>
 													</span>
 													<span class="ng-scope">
@@ -951,7 +951,7 @@
 												 <li class="list__item" [class.list__item--selected]="url.emailTemplate.id==url.selectedEmailTemplateId" >
 													<div class="flex-row" (click)="setClickEmailTemplate(url.emailTemplate.id,url,i)" >
 													   <div class="item__select-box-wrapper">
-														  <span class="select-box"> <label> <input type="checkbox"
+														  <span class="select-box"> <label> <input type="checkbox" class="checkBox_shadow"
 														  [value]="url.emailTemplate.id" id="url-{{i}}-{{url.emailTemplate.id}}"
 														  (click)="setClickEmailTemplate(url.emailTemplate.id,url,i)" [checked]="url.emailTemplate.id == url.selectedEmailTemplateId">
 														  </label>
@@ -996,10 +996,10 @@
 												 <div class="item__select-box-wrapper">
 													<span class="select-box">
 													<label>
-													<input *ngIf="!emailTemplate.draft" type="checkbox" name="url-email-template" [value]="emailTemplate.id" id="url-{{i}}-{{emailTemplate.id}}"
+													<input *ngIf="!emailTemplate.draft" class="checkBox_shadow" type="checkbox" name="url-email-template" [value]="emailTemplate.id" id="url-{{i}}-{{emailTemplate.id}}"
 													(click)="setClickEmailTemplate(emailTemplate.id,url,i,emailTemplate.draft)"
 													[checked]="emailTemplate.id == url.selectedEmailTemplateId">
-													<input *ngIf="emailTemplate.draft" data-toggle="tooltip" data-placement="bottom" title="draft template cannot be selected" disabled="disabled" type="checkbox" name="url-email-template">
+													<input *ngIf="emailTemplate.draft" data-toggle="tooltip" data-placement="bottom" title="draft template cannot be selected" disabled="disabled" class="checkBox_shadow" type="checkbox" name="url-email-template">
 													</label>
 													</span>
 													<span class="ng-scope"> <a class="item__preview item__preview--image img-container custom"
@@ -1078,7 +1078,7 @@
 			 <div class="btn-group btn-group-justified">
 				<ng-container *ngFor="let schedule of sheduleCampaignValues">
 				   <label class="btn btn-primary" style="border: 1px solid #fff;">
-				   <input type="radio" class="text-center"  name="scheduleCampaign" [value]="schedule" formControlName="scheduleCampaign" ngDefaultControl
+				   <input type="radio" class="text-center radioButton_shadow"  name="scheduleCampaign" [value]="schedule" formControlName="scheduleCampaign" ngDefaultControl
 					  style=" margin-right:1.5em; " />{{schedule}}
 				   </label>
 				</ng-container>

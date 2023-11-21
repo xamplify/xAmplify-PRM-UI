@@ -142,7 +142,7 @@ span.ui-column-resizer {
 }
 
 .xamplify-cursor-pointer {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 
 .actions-block i,

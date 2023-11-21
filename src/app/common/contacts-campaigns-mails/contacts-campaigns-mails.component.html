@@ -15,7 +15,7 @@
 					<thead>
 						<tr>						
 								<th class='text-center' style="width:10%"><input
-									 type="checkbox" name="all"
+									 type="checkbox" name="all" class="checkBox_shadow"
 									 [(ngModel)]="isHeaderCheckBoxChecked"
 									 (change)="checkAll($event)" id="checkAllExistingLists" /></th>
 							<th class='text-center'
@@ -32,7 +32,7 @@
 						<ng-container>
 						<tr class='row_{{i}}'
 							*ngFor="let campaign of contactsByType.contactListAssociatedCampaigns;let i = index">
-							<td align="center"><input type="checkbox"
+							<td align="center"><input type="checkbox" class="checkBox_shadow"
 								id="{{campaign.campaignId}}"
 								lang="{{campaign.campaignId}}" name="associatedContactList[]"
 								value="{{campaign.campaignId}}"
