@@ -140,6 +140,7 @@ export class ActivePartnersTableComponent implements OnInit {
   findCompanyNames() {
     if (this.showFilterOption) {
       this.filterCategoryLoader = true;
+      this.selectedCompanyIds = this.selectedPartnerCompanyIds;
       this.companyInfoFields = { text: 'companyName', value: 'companyId' };
       this.parterService.getPartnerJourneyCompanyDetailsForFilter(this.pagination).
       subscribe(response => {

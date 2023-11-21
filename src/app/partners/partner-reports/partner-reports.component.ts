@@ -831,6 +831,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.inActivePartnersCountLoader = true;
         this.approvePartnersCountLoader = true;
         this.throughPartnerCampaignsCountLoader = true;
+        this.selectedPartnerCompanyIds = [];
         if(this.selectedTabIndex==0){
             this.loadAllCharts = true;
             this.reloadWithFilter = false;

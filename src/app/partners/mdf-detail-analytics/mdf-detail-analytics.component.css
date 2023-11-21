@@ -18,3 +18,13 @@
     padding: 11px 15px !important;
 }
 
+
+.tableHeightScroll{
+    height: 200px !important;
+    overflow-y: auto;
+    margin-bottom: 6px;
+}
+/* width */
+::-webkit-scrollbar {
+	width: 7px;
+  }
