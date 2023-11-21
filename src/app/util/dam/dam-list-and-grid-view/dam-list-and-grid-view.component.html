@@ -41,7 +41,7 @@
 									<tr>
 									<td *ngIf="(!isPartnerView && asset.videoId)">
 										<app-video-thumbnail class="pull-left" [damId]="asset.id" [asset]="asset" [videoFile]="asset.videoFileDTO" 
-											[published]="asset?.published" [assetStatus]="asset?.status" [categoryName]="asset.categoryName" [processing]="asset?.publishingOrWhiteLabelingInProgress"></app-video-thumbnail>
+											[published]="asset?.published" [assetStatus]="asset?.status" [categoryName]="asset.categoryName" [processing]="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList"></app-video-thumbnail>
 									</td>
 									<td  *ngIf="!asset.videoId || isPartnerView" >
 										<div class="thumbnail-wrapper image_effect" style="width: 180px; height: 100px; border:1px solid #ccc;">
@@ -73,8 +73,8 @@
 													</span>
 												</h6>
 												<!---XNFR-255-->
-												<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress" class="view-banner published">Published</h6>
-												<h6 *ngIf="asset?.publishingOrWhiteLabelingInProgress" class="view-banner">
+												<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress &&!asset?.publishingToPartnerList" class="view-banner published">Published</h6>
+												<h6 *ngIf="asset?.publishingOrWhiteLabelingInProgress ||  asset?.publishingToPartnerList" class="view-banner">
 													<span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
 													Processing
 												</h6>
@@ -114,7 +114,7 @@
 												[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
 										<td class="mAlignView" >
 											<div class="actions-block override-actions ActionAlign action_inline" >
-												<ng-container *ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress">
+												<ng-container *ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList">
 													<div class="mActionAlign ActionButtonPad">	
 														<a class="custom-icon" *ngIf="asset?.history &&!isPartnerView  && asset?.edit"  data-toggle="tooltip" data-placement="top" title="History"	(click)="expandHistory(asset,i)"> 
 															<i class="fa IconCustomization"	[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
@@ -176,7 +176,7 @@
 													</div>
 												</ng-container>
 												<!--Added On 02/08/2023-->
-												<ng-container *ngIf="asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress">
+												<ng-container *ngIf="asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">
 													<a  class="custom-icon" data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="refreshList()"> 
 														<i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
 														<div class="clickicons"></div>
@@ -243,9 +243,9 @@
 																	<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
 																</h6>
 																<!---XNFR-255-->
-																<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress" class="view-banner published"
+																<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList" class="view-banner published"
 																	translate>Published</h6>
-																<h6 *ngIf="asset?.publishingOrWhiteLabelingInProgress " class="view-banner">
+																<h6 *ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList " class="view-banner">
 																	<span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
 																	Processing
 																</h6>
@@ -278,7 +278,7 @@
 															<td class="text-center"><app-timestamp	[dateAndTime]="asset?.displayTime"></app-timestamp></td>
 															<!--Child Assets-->
 															<td id="actions-row" style="width: 32%;">
-																<div class="actions-block override-actions ActionAlign" *ngIf="!asset?.publishingOrWhiteLabelingInProgress">
+																<div class="actions-block override-actions ActionAlign" *ngIf="!asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList">
 																	<!--XNFR-381-->
 																	<a class="mMobileDisable custom-icon"  data-toggle="tooltip" data-placement="top"  title="Switch To Parent Template" (click)="changeAsParentPdf(asset.id)">
 																		<i class="fa fa-exchange mDisableColor IconCustomization" aria-hidden="true"></i>
@@ -313,7 +313,7 @@
 																	</a>
 																</div>
 																<!--Added On 02/08/2023----->
-																<div class="actions-block override-actions ActionAlign" *ngIf="asset?.publishingOrWhiteLabelingInProgress">
+																<div class="actions-block override-actions ActionAlign" *ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">
 																	<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listAssetsHistory(historyPagination)"> 
 																		<i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
 																		<div class="clickicons"></div>
@@ -391,7 +391,7 @@
 									<!--XNFR-255-->
 									<div class="ribbon tab-ribbon">
 										<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
-										<span *ngIf="asset?.publishingOrWhiteLabelingInProgress">Processing</span>
+										<span *ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">Processing</span>
 									</div>
 									<!--XNFR-255-->
 									<div class="bar auto-height gridIconCustomization">
