@@ -936,8 +936,13 @@
                                                              <ng-container *ngIf="authenticationService?.module?.isCampaign || authenticationService?.module?.isPrmCompany">
                                                                 <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
                                                                     title="{{actionsDescription?.shareUnPublishedContent}}"
+                                                                    [title]="(authenticationService?.module?.isCampaign && !authenticationService?.module?.damAccess 
+                                                                        && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess)
+                                                                         ?  actionsDescription?.send_campaigns:actionsDescription?.shareUnPublishedContent"
                                                                     (click)="openUnPublishedContentModalPopUp(contact)">
-                                                                    <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
+                                                                    <i [ngClass]="(authenticationService?.module?.isCampaign && !authenticationService?.module?.damAccess 
+                                                                        && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) 
+                                                                         ? 'fa fa-bullhorn IconCustomization':'fa fa-share IconCustomization'" aria-hidden="true"></i>
                                                                     <div class="clickicons"></div>
                                                                 </a>  
                                                             </ng-container>

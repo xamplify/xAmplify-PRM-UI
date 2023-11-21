@@ -640,8 +640,11 @@
                                                           && (authenticationService.module.isPrmCompany || authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
                                                          data-toggle="tooltip" data-placement="top"
                                                          (click)="openUnPublishedContentModalPopUp(contactList)"
-                                                         [title]="module=='contacts' ?  actionsDescription?.send_campaigns:actionsDescription?.shareUnPublishedContent">
-                                                         <i [ngClass]="module=='contacts' ? 'fa fa-bullhorn IconCustomization':'fa fa-share IconCustomization'" aria-hidden="true"></i>
+                                                         [title]="(((authenticationService?.module?.isCampaign || authenticationService.module.isReDistribution) && !authenticationService?.module?.damAccess 
+                                                                     && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || module=='contacts')
+                                                                      ?  actionsDescription?.send_campaigns:actionsDescription?.shareUnPublishedContent">
+                                                         <i [ngClass]="((authenticationService?.module?.isCampaign && !authenticationService?.module?.damAccess 
+                                                                  && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || module=='contacts') ? 'fa fa-bullhorn IconCustomization':'fa fa-share IconCustomization'" aria-hidden="true"></i>
                                                          <div class="clickicons"></div>
                                                       </a>
                                                    <!--XNFR-342---->
