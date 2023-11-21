@@ -19,6 +19,7 @@ export class TrackAssetDetailsComponent implements OnInit {
   @Input() teamMemberId: any;
   @Input() type: any;
   @Input()  isDetailedAnalytics: boolean;
+  @Input() applyFilter: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -47,6 +48,7 @@ export class TrackAssetDetailsComponent implements OnInit {
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.maxResults = 6;
     this.pagination.lmsType = this.type;
     if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {

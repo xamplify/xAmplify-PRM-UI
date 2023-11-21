@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
 import { Pagination } from '../../core/models/pagination';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -16,6 +16,8 @@ import { ListLoaderValue } from '../../common/models/list-loader-value';
 })
 export class CampaignsLaunchedByPartnersComponent implements OnInit {
 	@Input() applyFilter:boolean;
+	@Input() selectedPartnerCompanyIds: any = [];
+	@Output() notifyShowDetailedAnalytics = new EventEmitter();
 	activePartnersSearchKey: string = "";
 	activePartnersPagination: Pagination = new Pagination();
 	activeParnterHttpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -26,6 +28,10 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 	}
 	ngOnInit() {
 		this.activePartnersPagination.partnerTeamMemberGroupFilter = this.applyFilter;
+		this.getActivePartnerReports();
+	}
+
+	ngOnChanges(){
 		this.getActivePartnerReports();
 	}
 
@@ -44,6 +50,7 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 			this.activePartnersPagination.userId = this.authenticationService.checkLoggedInUserId(this.activePartnersPagination.userId);
 		}
 		this.activePartnersPagination.maxResults = 3;
+		this.activePartnersPagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
 		this.parterService.getActivePartnersAnalytics(this.activePartnersPagination).subscribe(
 			(response: any) => {
 				for (var i in response.activePartnesList) {
@@ -62,6 +69,10 @@ export class CampaignsLaunchedByPartnersComponent implements OnInit {
 		this.activePartnersPagination.pageIndex = event.page;
 		this.getActivePartnerReports();
 	}
-
+	viewAnalytics(partnerCompanyId: any) {
+		this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
+		this.referenseService.goToTop(); 
+	  }
+	
 
 }

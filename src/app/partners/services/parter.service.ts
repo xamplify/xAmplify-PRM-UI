@@ -252,6 +252,12 @@ export class ParterService {
             .catch( this.handleError );
     }
 
+    partnersRedistributedCampaignsData(partnerJourneyRequest: PartnerJourneyRequest) {
+        const url = this.URL + 'partner/journey/redistributed/campaign/bar/graph?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, partnerJourneyRequest )
+            .catch( this.handleError );
+    }
+
     getPartnerJourneyTrackDetailsByInteraction(pagination:Pagination){
         const url = this.URL + 'partner/journey/track/interaction?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post( url, pagination )
@@ -324,6 +330,12 @@ export class ParterService {
             .catch( this.handleError );
     }
 
+    getPartnerJourneyCompanyDetailsForFilter(pagination:Pagination) {
+        const url = this.URL + 'partner/journey/company/details/filter?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+
     getPartnerJourneyLeadDealCounts(partnerJourneyRequest: PartnerJourneyRequest) {
         const url = this.URL + 'partner/journey/lead-to-deal/counts?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post( url, partnerJourneyRequest )
@@ -344,11 +356,6 @@ export class ParterService {
     redistributedCampaignDetailsPieChart(partnerJourneyRequest: PartnerJourneyRequest) {
         const url = this.URL + 'partner/journey/redistributed/campaign/details/count/pie/chart?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post( url, partnerJourneyRequest )
-            .catch( this.handleError );
-    }
-    getPartnerJourneyCompanyDetailsForFilter(loggedInUserId: number) {
-        const url = this.URL + 'partner/journey/company/details/filter'+loggedInUserId+'?access_token=' + this.authenticationService.access_token;
-        return this.httpClient.get( url )
             .catch( this.handleError );
     }
 

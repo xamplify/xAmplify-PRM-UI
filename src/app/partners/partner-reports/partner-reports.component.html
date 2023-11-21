@@ -177,12 +177,13 @@
   <div class="row" style="padding-right: 12px;padding-bottom: 10px;">
     <ng-container *ngIf="reloadWithFilter && !loadAllCharts && selectedTabIndex == 0">
       <app-active-partners-table [applyFilter]="applyFilter"
-        (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+        (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
         (notifySelectedPartnerCompanyIds)="getSelectedPartnerCompanyIds($event)"></app-active-partners-table>
     </ng-container>
   </div>
   <!--******************All Counts - Tiles*******************-->
-  <app-partner-journey-count-tiles [partnerCompanyId]="'0'"
+  <app-partner-journey-count-tiles [partnerCompanyId]="'0'" [applyFilter]="applyFilter" [isDetailedAnalytics]="false"
+    [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
     *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-count-tiles>
 
   <!-- --------------------Active Partners Analytics-------- -->
@@ -215,15 +216,17 @@
             </div>
           </div>
           <!---Bar Chart-->
+
           <div class="portlet light mAlignGraph" style="margin-bottom: 15px;">
             <div class="portlet-body" style="padding-top: 0;">
-              <div id="campaign-type-chart" class="campaign-type mGraphwidth" style="margin: -5px;"></div>
+              <!-- <div id="campaign-type-chart" class="campaign-type mGraphwidth" style="margin: -5px;"></div> -->
+                <app-redistributed-campaigns-and-leads-bar-chart *ngIf="!loadAllCharts && selectedTabIndex == 0" [applyFilter]="applyFilter"  [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [barChartId]="'campaign-type-chart'"></app-redistributed-campaigns-and-leads-bar-chart>            
             </div>
           </div>
           <!-- END PORTLET-->
         </div>
       </div>
-      <app-campaigns-launched-by-partners [applyFilter]="applyFilter"
+      <app-campaigns-launched-by-partners (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [applyFilter]="applyFilter"  [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
         *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-campaigns-launched-by-partners>
     </div>
   </div>
@@ -682,15 +685,16 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
       <!--******************Interacted & Not Interacted Donut Chart******************-->
       <div class="ml15m">
-        <app-donut-pie-chart [chartId]="'interactedAndNotInteractedTracksDonut'"
-          (notifySelectSlice)="interactionTracksDonutSliceSelected($event)"
+        <app-donut-pie-chart [chartId]="'interactedAndNotInteractedTracksDonut'" [isDetailedAnalytics]="false"
+          [applyFilter]="applyFilter" (notifySelectSlice)="interactionTracksDonutSliceSelected($event)"
+          [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
           (notifyUnSelectSlice)="interactionTracksDonutSliceUnSelected($event)"></app-donut-pie-chart>
 
       </div>
 
       <!--******************Interacted & Not Interacted Track Details*******************-->
       <app-interacted-not-interacted-track-details [trackType]="selectedTrackType" [isDetailedAnalytics]="false"
-        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-interacted-not-interacted-track-details>
     </div>
   </div>
@@ -702,13 +706,16 @@
       <!--******************Type wise Track Assets Donut Chart******************-->
       <div class="ml15m">
         <app-donut-pie-chart [trackType]="selectedTrackType" [chartId]="'typewiseTrackContentDonut'"
+          [isDetailedAnalytics]="false" [applyFilter]="applyFilter"
           (notifySelectSlice)="typeWiseTrackAssetsDonutSliceSelected($event)"
+          [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
           (notifyUnSelectSlice)="typeWiseTrackAssetsDonutSliceUnSelected($event)"></app-donut-pie-chart>
       </div>
 
       <!--******************Type wise Track Content Details*******************-->
       <app-typewise-track-content-details [trackType]="selectedTrackType" [assetType]="selectedAssetType"
         [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+        [applyFilter]="applyFilter"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-typewise-track-content-details>
     </div>
   </div>
@@ -718,18 +725,20 @@
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--******************Company wise Track Counts******************-->
       <app-userwise-track-counts [type]="'TRACK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
-        *ngIf="authenticationService?.lmsAccess"></app-userwise-track-counts>
+        [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+        [applyFilter]="applyFilter" *ngIf="authenticationService?.lmsAccess"></app-userwise-track-counts>
 
       <!--******************Company wise Playbook Counts******************-->
       <app-userwise-track-counts [type]="'PLAYBOOK'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
-        *ngIf="authenticationService.module?.playbookAccess"></app-userwise-track-counts>
+        [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+        [applyFilter]="applyFilter" *ngIf="authenticationService.module?.playbookAccess"></app-userwise-track-counts>
     </div>
   </div>
 
   <!--******************Track Assets Detailed Report*******************-->
   <div class="row rowPaddingCustomization2">
     <app-userwise-track-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
-      [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+      [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService?.lmsAccess"></app-userwise-track-details>
   </div>
 
@@ -738,12 +747,12 @@
     <div class="col-sm-12 col-md-12 col-lg-12">
       <!--******************Track Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="'0'" [type]="'TRACK'" [isDetailedAnalytics]="false"
-        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
         *ngIf="authenticationService?.lmsAccess"></app-track-asset-details>
 
       <!--******************Playbook Asset Details*******************-->
       <app-track-asset-details [partnerCompanyId]="'0'" [type]="'PLAYBOOK'" [isDetailedAnalytics]="false"
-        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
         *ngIf="authenticationService.module?.playbookAccess"></app-track-asset-details>
     </div>
   </div>
@@ -751,7 +760,7 @@
   <!--******************Share Lead Details*******************-->
   <div class="row rowPaddingCustomization2">
     <app-share-lead-details [partnerCompanyId]="'0'" (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
-      [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+      [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService.module?.hasShareLeadAccess"></app-share-lead-details>
   </div>
 
@@ -761,7 +770,7 @@
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
       [chartId]="'allRedistributeCampaignsAndLeadsCountBarChart'"
       *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaigns-and-leads-bar-chart>
-      <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
+    <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
       [chartId]="'allLeadsAndDealsBarChart'"
       *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaigns-and-leads-bar-chart>
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
@@ -779,13 +788,15 @@
   <div class="row rowPaddingCustomization4">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 cardPaddingCustomization">
       <div>
-        <app-pie-chart [chartId]="'redistributedCampaignDetailsPieChart'" (notifySelectSlice)="redistributedCampaignDetailsPieChartSelected($event)"
-        (notifyUnSelectSlice)="redistributedCampaignDetailsPieChartUnSelected($event)"
+        <app-pie-chart [chartId]="'redistributedCampaignDetailsPieChart'"
+          (notifySelectSlice)="redistributedCampaignDetailsPieChartSelected($event)"
+          (notifyUnSelectSlice)="redistributedCampaignDetailsPieChartUnSelected($event)" [isDetailedAnalytics]="false"
+          [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
           *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-pie-chart>
       </div>
-      <app-redistributed-campaign-details [partnerCompanyId]="'0'" [trackType]="selectedCampaignType" [isDetailedAnalytics]="false"
-        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
-        (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+      <app-redistributed-campaign-details [partnerCompanyId]="'0'" [campaignTypeFilter]="selectedCampaignType"
+        [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+        (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [applyFilter]="applyFilter"
         *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService.module?.isCampaign"></app-redistributed-campaign-details>
     </div>
   </div>
@@ -793,14 +804,14 @@
   <!--******************Lead Details*******************-->
   <div class="row rowPaddingCustomization2">
     <app-partner-journey-lead-details [partnerCompanyId]="'0'" [isDetailedAnalytics]="false"
-      [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+      [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
       *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService?.enableLeads"></app-partner-journey-lead-details>
   </div>
   <!--******************Deal Details*******************-->
   <div class="row rowPaddingCustomization2">
     <app-partner-journey-deal-details [partnerCompanyId]="'0'" [isDetailedAnalytics]="false"
-      [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+      [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
       *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService?.enableLeads"></app-partner-journey-deal-details>
   </div>
@@ -810,7 +821,7 @@
     <!--******************MDF Details*******************-->
 
     <app-mdf-detail-analytics *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService?.mdf"
-      [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+      [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"></app-mdf-detail-analytics>
   </div>
   <app-scroll-top></app-scroll-top>

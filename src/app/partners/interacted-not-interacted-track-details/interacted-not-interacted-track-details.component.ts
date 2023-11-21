@@ -21,6 +21,7 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
   @Input() trackType: any = "";
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Input()  isDetailedAnalytics: boolean;
+  @Input() applyFilter: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
 
 
@@ -71,6 +72,7 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.trackTypeFilter = this.trackType;
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.maxResults = 6;
     if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
       this.pagination.teamMemberId = this.teamMemberId;

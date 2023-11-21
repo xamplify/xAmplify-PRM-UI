@@ -20,6 +20,7 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   @Input() teamMemberId: any;
   @Input() trackType: any = "";
   @Input() assetType: any = "";
+  @Input() applyFilter: boolean;
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Input()  isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
@@ -52,6 +53,7 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.trackTypeFilter = this.trackType;
     this.pagination.assetTypeFilter = this.assetType;
     this.pagination.maxResults = 6;
