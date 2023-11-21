@@ -1,42 +1,37 @@
 <div class="page-content" style="padding: 15px 15px 15px 15px!important;"
 	[class.ml0]="!authenticationService.user.hasCompany || authenticationService.isSuperAdmin()">
-	<ngx-loading [show]="isLoading"
-		[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	<ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="page-bar" style="margin-bottom:0px!important">
 		<ul class="page-breadcrumb">
 			<li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i><a
-				[routerLink]="['/home/dashboard/admin-report']">Admin Report</a></li>
-			<li  *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i> <a
-				routerLink="/home/dashboard/default" (click)="update()">Home</a><i
-				class="fa fa-angle-right" aria-hidden="true"></i></li>
+					[routerLink]="['/home/dashboard/admin-report']">Admin Report</a></li>
+			<li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i> <a
+					routerLink="/home/dashboard/default" (click)="update()">Home</a><i class="fa fa-angle-right"
+					aria-hidden="true"></i></li>
 			<li><i class="fa fa-building-o" aria-hidden="true"></i>Company Profile</li>
 		</ul>
 	</div>
 
 	<div class="" id="company-profile-div">
-		<div class="alert alert-danger" id="company-profile-error-div"
-			style="display: none;">
-			<a (click)="refService.hideDiv('company-profile-error-div')"
-				class="close" aria-label="close">x</a> <strong>Please
+		<div class="alert alert-danger" id="company-profile-error-div" style="display: none;">
+			<a (click)="refService.hideDiv('company-profile-error-div')" class="close" aria-label="close">x</a>
+			<strong>Please
 				complete the required (*) fields. </strong>
 		</div>
-		<app-response-message [customResponse]="customResponse"
-			*ngIf="customResponse.isVisible"></app-response-message>
+		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 		<div class="alert alert-info" *ngIf="upgradeToVendor">
 			<h4>
-				Do you want to upgrade this account to Vendor? <a
-					class="btn btn-primary btn-sm" (click)="addVendorRole()">Upgrade
+				Do you want to upgrade this account to Vendor? <a class="btn btn-primary btn-sm"
+					(click)="addVendorRole()">Upgrade
 					To Vendor</a>
 			</h4>
 		</div>
 		<br>
 		<div class="portlet-body clearfix">
-			<div class="alert alert-success" id="edit-sucess"
-				style="display: none;">
-				<a (click)="refService.hideDiv('edit-sucess')" class="close"
-					aria-label="close">x</a>
+			<div class="alert alert-success" id="edit-sucess" style="display: none;">
+				<a (click)="refService.hideDiv('edit-sucess')" class="close" aria-label="close">x</a>
 				<ng-container *ngIf="companyProfile.isAdd"> <strong>{{message}}.
-					Please wait.</strong> </ng-container>
+						Please wait.</strong> </ng-container>
 				<ng-container *ngIf="!companyProfile.isAdd"> <strong>{{message}}.</strong></ng-container>
 			</div>
 			<div [hidden]="!processor.isProcessing">
@@ -44,7 +39,7 @@
 					<div id="process-loader"></div>
 				</div>
 			</div>
-			
+
 			<div [hidden]="processor.isProcessing">
 				<form role="form" id="company-profile-form">
 					<div class="row">
@@ -53,76 +48,75 @@
 								<div class="portlet light border-radius-0 shadow image-border">
 									<div class="portlet-body clearfix partlet-cardbody">
 										<section class="percentage-circle"
-										style="display: grid;    margin: 0px 0 10px 0px;">
-										<svg width="120" height="100" viewBox="0 0 120 120"
-											style="transform: rotate(-90deg)">
-											<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
-												stroke-width="5" />
-											<circle cx="60" cy="60" r="54" fill="none" stroke-width="5"
-												stroke="#00a6e8" stroke-dasharray="339.292006588"
-												[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - profileCompleted/100)}" />
-										</svg>
-										<h2 class="percentage-value" style="margin: -67px 0 0 0;">{{profileCompleted}}%</h2>
-									</section>
-									<h5
-										style="margin-top: -55px; font-weight: 400; margin-bottom: 3em;">complete</h5>
+											style="display: grid;    margin: 0px 0 10px 0px;">
+											<svg width="120" height="100" viewBox="0 0 120 120"
+												style="transform: rotate(-90deg)">
+												<circle cx="60" cy="60" r="54" fill="none" stroke="#e6e6e6"
+													stroke-width="5" />
+												<circle cx="60" cy="60" r="54" fill="none" stroke-width="5"
+													stroke="#00a6e8" stroke-dasharray="339.292006588"
+													[ngStyle]="{'stroke-dashoffset': 339.292 * (1 - profileCompleted/100)}" />
+											</svg>
+											<h2 class="percentage-value" style="margin: -67px 0 0 0;">
+												{{profileCompleted}}%</h2>
+										</section>
+										<h5 style="margin-top: -55px; font-weight: 400; margin-bottom: 3em;">complete
+										</h5>
 										<ng-container *ngIf="!isFromAdminPanel">
-											<h4
-												[title]="authenticationService.user.firstName+authenticationService.user.lastName"
+											<h4 [title]="authenticationService.user.firstName+authenticationService.user.lastName"
 												class="control-label">
 												{{authenticationService.user.firstName | slice:0:15}}<span
 													*ngIf="authenticationService.user.firstName?.length>15">...</span>&nbsp;{{authenticationService.user.lastName
 												| slice:0:10}}<span
 													*ngIf="authenticationService.user.lastName?.length>10">..</span>
 											</h4>
-											<h5 class="responsive-screen-wordwrap">{{authenticationService.user.emailId}}</h5>
-											</ng-container>
-											<!-- modal pop up-->
-	
-											<ng-container *ngIf="isFromAdminPanel">
+											<h5 class="responsive-screen-wordwrap">
+												{{authenticationService.user.emailId}}</h5>
+										</ng-container>
+										<!-- modal pop up-->
+
+										<ng-container *ngIf="isFromAdminPanel">
 											<h4 [title]="companyProfile.firstName+companyProfile.lastName"
 												class="control-label">
 												{{companyProfile.firstName | slice:0:15}}<span
 													*ngIf="companyProfile.firstName?.length>15">...</span>&nbsp;{{companyProfile.lastName
-												| slice:0:10}}<span
-													*ngIf="companyProfile.lastName?.length>10">..</span>
+												| slice:0:10}}<span *ngIf="companyProfile.lastName?.length>10">..</span>
 											</h4>
 											<h5 class="responsive-screen-wordwrap">{{companyProfile.userEmailId}}</h5>
-											</ng-container>
-											<hr class="divider" />
+										</ng-container>
+										<hr class="divider" />
 										<label class="control-label">Upload Logo</label>
-										<div class="profile-image-wrapper dotted-image-border"
-											(click)="imageClick()">
+										<div class="profile-image-wrapper dotted-image-border" (click)="imageClick()">
 											<span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
 											<span *ngIf="!croppedImage">
-											 <h5
-												*ngIf="!companyLogoImageUrlPath" style="color: #f55d7a !important;">*
+												<h5 *ngIf="!companyLogoImageUrlPath" style="color: #f55d7a !important;">
+													*
 													Please upload your company logo</h5>
 											</span>
 
-													<span
-												*ngIf="(squareData | json) == '{}'"> <img
-												*ngIf="!companyLogoImageUrlPath"
-												src="assets/images/company-profile-logo.png"
-												class="profile-image img-grid" alt=""></span>
+											<span *ngIf="(squareData | json) == '{}'"> <img
+													*ngIf="!companyLogoImageUrlPath"
+													src="assets/images/company-profile-logo.png"
+													class="profile-image img-grid" alt=""></span>
 
-												 <span
-												*ngIf="croppedImage; else showImage"> <img class="img-grid"
-												[src]="croppedImage">
+											<span *ngIf="croppedImage; else showImage"> <img class="img-grid"
+													[src]="croppedImage">
 											</span>
 											<ng-template #showImage> <img class="img-grid"
-												*ngIf="companyLogoImageUrlPath"
-												[src]="authenticationService.MEDIA_URL + companyLogoImageUrlPath"
-												(error)="errorHandler($event)"> </ng-template>
-												 <a class="btn btn-primary1 profile-pic" (click)="fileChangeEvent()"
-												  data-toggle="tooltip" data-placement="top" title="upload 2:1 ratio logo !">
-												   &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true" style="font-size:25px;padding-top:10px"></i></a>
-										
+													*ngIf="companyLogoImageUrlPath"
+													[src]="authenticationService.MEDIA_URL + companyLogoImageUrlPath"
+													(error)="errorHandler($event)"> </ng-template>
+											<a class="btn btn-primary1 profile-pic" (click)="fileChangeEvent()"
+												data-toggle="tooltip" data-placement="top"
+												title="upload 2:1 ratio logo !">
+												&nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
+													style="font-size:25px;padding-top:10px"></i></a>
+
 										</div>
 										<div class="col-md-12" style="text-align: center;padding-top:16px;">
-                                <p style="color:#949090;"> upload 2:1 ratio logo only</p>
-                            </div>
-                            <!-- <hr class="divider" /> -->
+											<p style="color:#949090;"> upload 2:1 ratio logo only</p>
+										</div>
+										<!-- <hr class="divider" /> -->
 										<div class="clearfix"></div>
 										<!-- <section class="percentage-circle"
 											style="display: grid;    margin: 0px 0 10px 0px;">
@@ -161,34 +155,38 @@
 										</h4>
 										<h5 class="responsive-screen-wordwrap">{{companyProfile.userEmailId}}</h5>
 										</ng-container> -->
-										
 
 
-									<!-- Fav Icon -->
-									<!-- *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" removed this condition-->
-									<div *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
-									<hr class="divider" />
-									<label class="control-label">Upload Fav Icon</label>
-									<div class="profile-image-wrapper dotted-image-border fav-icon-image-profile-wrapper" (click)="openFavIconFileId()">
-									<input id="favIconId" style="display: none;" type="file" accept="image/x-icon" (change)="processFavIconFile($event)">
-									<span *ngIf="!companyFavIconPath; else showFavIconImage">
-										<img
-										*ngIf="!companyFavIconPath"
-										src="assets/images/company-profile-logo.png"
-										class="profile-image fav-img-grid" alt=""></span>
 
-									<ng-template #showFavIconImage> <img class="fav-img-grid fav-icon-responsive"
-										*ngIf="companyFavIconPath"
-										[src]="authenticationService.MEDIA_URL + companyFavIconPath"
-										(error)="errorHandler($event)" alt=""> </ng-template>
-										<a class="btn btn-primary1 profile-pic margin-61"
-										data-toggle="tooltip" data-placement="top">
-										&nbsp;&nbsp;
-										<i class="fa fa-camera icon" style="font-size:25px;padding-top:10px" aria-hidden="true"></i></a>
-									</div>
-								</div>
+										<!-- Fav Icon -->
+										<!-- *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" removed this condition-->
+										<div
+											*ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
+											<hr class="divider" />
+											<label class="control-label">Upload Fav Icon</label>
+											<div class="profile-image-wrapper dotted-image-border fav-icon-image-profile-wrapper"
+												(click)="openFavIconFileId()">
+												<input id="favIconId" style="display: none;" type="file"
+													accept="image/x-icon" (change)="processFavIconFile($event)">
+												<span *ngIf="!companyFavIconPath; else showFavIconImage">
+													<img *ngIf="!companyFavIconPath"
+														src="assets/images/company-profile-logo.png"
+														class="profile-image fav-img-grid" alt=""></span>
+
+												<ng-template #showFavIconImage> <img
+														class="fav-img-grid fav-icon-responsive"
+														*ngIf="companyFavIconPath"
+														[src]="authenticationService.MEDIA_URL + companyFavIconPath"
+														(error)="errorHandler($event)" alt=""> </ng-template>
+												<a class="btn btn-primary1 profile-pic margin-61" data-toggle="tooltip"
+													data-placement="top">
+													&nbsp;&nbsp;
+													<i class="fa fa-camera icon" style="font-size:25px;padding-top:10px"
+														aria-hidden="true"></i></a>
+											</div>
+										</div>
 										<!-- Bg Image -->
-									<!-- <div *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
+										<!-- <div *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
 									<hr class="divider" />
 									<label class="control-label">Upload Background Image</label>
 									<div class="profile-image-wrapper dotted-image-border bg-image-responsive"
@@ -215,390 +213,414 @@
 
 									</div>
 								</div>
-								
+
 							</div>
 							<!-- ---------------Module Access ---------->
-							<div class="portlet light"  *ngIf="isFromAdminPanel" style="border-radius: 4px!important;border: 1px solid #eaeaea!important;">
-							<div class="module-access blur-content"
-								id="module-access-blur-content-div">
-								<div class="portlet-body clearfix">
-									<div class="portlet-title">
-										<div class="caption">
-											<strong>Assign Modules</strong>
+							<div class="portlet light" *ngIf="isFromAdminPanel"
+								style="border-radius: 4px!important;border: 1px solid #eaeaea!important;">
+								<div class="module-access blur-content" id="module-access-blur-content-div">
+									<div class="portlet-body clearfix">
+										<div class="portlet-title">
+											<div class="caption">
+												<strong>Assign Modules</strong>
+											</div>
 										</div>
-									</div>
-									<br>
-									<div class="table-responsive" style="overflow-x: inherit">
-										<table class="table table-striped  table-hover"	style="width: 100%" aria-describedby="table" >
-											<tr>
-												<th scope="col">Select Role</th>
-												<td style="width: 50%;">
-													<select class="form-control" id="selectedRole" (change)="setModulesByRole()">
-														<option value="13">Vendor</option>
-														<option value="18">Marketing</option>
-														<option value="2">Org Admin</option>
-														<option value="20">PRM</option>
-													</select>
-											</tr>
-											<!-- XNFR-139 -->
-											<tr>
-												<th scope="col">Maximum Admins</th>
-												<td style="width: 50%;">
-													<select class="form-control" id="maxAdmins" (change)="setMaxAdmins()">
-														<option value="2">2</option>
-														<option value="3">3</option>
-														<option value="4">4</option>
-														<option value="5">5</option>
-													</select>
-												</td>
-											</tr>
-											<ng-container *ngIf="!prm">
+										<br>
+										<div class="table-responsive" style="overflow-x: inherit">
+											<table class="table table-striped  table-hover" style="width: 100%"
+												aria-describedby="table">
 												<tr>
-													<th scope="col">Sales Enablement (View In Browser In Create Campaign)</th>
-													<td><input type="checkbox"
-														[(ngModel)]="campaignAccess.salesEnablement"
-														[ngModelOptions]="{standalone: true}"></td>
+													<th scope="col">Select Role</th>
+													<td style="width: 50%;">
+														<select class="form-control" id="selectedRole"
+															(change)="setModulesByRole()">
+															<option value="13">Vendor</option>
+															<option value="18">Marketing</option>
+															<option value="2">Org Admin</option>
+															<option value="20">PRM</option>
+														</select>
 												</tr>
+												<!-- XNFR-139 -->
 												<tr>
-													<th scope="col">Data Share</th>
-													<td><input type="checkbox"
-														[(ngModel)]="campaignAccess.dataShare"
-														[ngModelOptions]="{standalone: true}"></td>
+													<th scope="col">Maximum Admins</th>
+													<td style="width: 50%;">
+														<select class="form-control" id="maxAdmins"
+															(change)="setMaxAdmins()">
+															<option value="2">2</option>
+															<option value="3">3</option>
+															<option value="4">4</option>
+															<option value="5">5</option>
+														</select>
+													</td>
 												</tr>
+												<ng-container *ngIf="!prm">
+													<tr>
+														<th scope="col">Sales Enablement (View In Browser In Create
+															Campaign)</th>
+														<td><input type="checkbox"
+																[(ngModel)]="campaignAccess.salesEnablement"
+																[ngModelOptions]="{standalone: true}"></td>
+													</tr>
+													<tr>
+														<th scope="col">Data Share</th>
+														<td><input type="checkbox"
+																[(ngModel)]="campaignAccess.dataShare"
+																[ngModelOptions]="{standalone: true}"></td>
+													</tr>
+													<tr>
+														<th scope="col">Email Campaign</th>
+														<td><input type="checkbox"
+																[(ngModel)]="campaignAccess.emailCampaign"
+																[ngModelOptions]="{standalone: true}"></td>
+													</tr>
+													<tr>
+														<th scope="col">Video Campaign</th>
+														<td><input type="checkbox"
+																[(ngModel)]="campaignAccess.videoCampaign"
+																[ngModelOptions]="{standalone: true}"></td>
+													</tr>
+													<tr>
+														<th scope="col">Social Campaign</th>
+														<td><input type="checkbox"
+																[(ngModel)]="campaignAccess.socialCampaign"
+																[ngModelOptions]="{standalone: true}"></td>
+													</tr>
+													<tr>
+														<th scope="col">Event Campaign</th>
+														<td><input type="checkbox"
+																[(ngModel)]="campaignAccess.eventCampaign"
+																[ngModelOptions]="{standalone: true}"></td>
+													</tr>
+													<tr>
+														<th scope="col">Survey Campaign</th>
+														<td><input type="checkbox" [(ngModel)]="campaignAccess.survey"
+																[ngModelOptions]="{standalone: true}"></td>
+													</tr>
+													<tr>
+														<th scope="col">Form Builder</th>
+														<td><input type="checkbox"
+																[(ngModel)]="campaignAccess.formBuilder"
+																[ngModelOptions]="{standalone: true}"></td>
+													</tr>
+													<tr>
+														<th scope="col">Page</th>
+														<td><input type="checkbox"
+																[(ngModel)]="campaignAccess.landingPage"
+																[ngModelOptions]="{standalone: true}"></td>
+													</tr>
+													<tr>
+														<th scope="col">Page Campaign</th>
+														<td><input type="checkbox"
+																[(ngModel)]="campaignAccess.landingPageCampaign"
+																[ngModelOptions]="{standalone: true}"></td>
+													</tr>
+
+													<tr *ngIf="campaignAccess?.shareLeads">
+														<th scope="col">One-Click Launch</th>
+														<td>
+															<input type="checkbox"
+																[(ngModel)]="campaignAccess.oneClickLaunch"
+																[ngModelOptions]="{standalone: true}">
+														</td>
+													</tr>
+													<tr>
+														<th scope="col">Partner Template Opened Tracking Analytics</th>
+														<td><input type="checkbox"
+																[(ngModel)]="campaignAccess.campaignPartnerTemplateOpenedAnalytics"
+																[ngModelOptions]="{standalone: true}"></td>
+													</tr>
+												</ng-container>
 												<tr>
-													<th scope="col">Email Campaign</th>
-													<td><input  type="checkbox"
-														[(ngModel)]="campaignAccess.emailCampaign"
-														[ngModelOptions]="{standalone: true}"></td>
-												</tr>
-												<tr>
-													<th scope="col">Video Campaign</th>
-													<td><input  type="checkbox"
-														[(ngModel)]="campaignAccess.videoCampaign"
-														[ngModelOptions]="{standalone: true}"></td>
-												</tr>
-												<tr>
-													<th scope="col">Social Campaign</th>
-													<td><input  type="checkbox"
-														[(ngModel)]="campaignAccess.socialCampaign"
-														[ngModelOptions]="{standalone: true}"></td>
-												</tr>
-												<tr>
-													<th scope="col">Event Campaign</th>
-													<td><input type="checkbox"
-														[(ngModel)]="campaignAccess.eventCampaign"
-														[ngModelOptions]="{standalone: true}"></td>
-												</tr>
-												<tr>
-													<th scope="col">Survey Campaign</th>
-													<td><input type="checkbox"
-														[(ngModel)]="campaignAccess.survey"
-														[ngModelOptions]="{standalone: true}"></td>
-												</tr>
-												<tr>
-													<th scope="col">Form Builder</th>
-													<td><input type="checkbox"
-														[(ngModel)]="campaignAccess.formBuilder"
-														[ngModelOptions]="{standalone: true}"></td>
-												</tr>
-												<tr>
-													<th scope="col">Page</th>
-													<td><input type="checkbox"
-														[(ngModel)]="campaignAccess.landingPage"
-														[ngModelOptions]="{standalone: true}"></td>
-												</tr>
-												<tr>
-													<th scope="col">Page Campaign</th>
-													<td><input type="checkbox"
-														[(ngModel)]="campaignAccess.landingPageCampaign"
-														[ngModelOptions]="{standalone: true}"></td>
-												</tr>
-												
-												<tr *ngIf="campaignAccess?.shareLeads">
-													<th scope="col">One-Click Launch</th>
+													<th scope="col">Share Leads</th>
 													<td>
-														<input type="checkbox" [(ngModel)]="campaignAccess.oneClickLaunch"	[ngModelOptions]="{standalone: true}">
+														<input type="checkbox" id="share-leads-c"
+															[(ngModel)]="campaignAccess.shareLeads"
+															[ngModelOptions]="{standalone: true}"
+															(click)="updateOneClickLaunchOption()">
 													</td>
 												</tr>
 												<tr>
-													<th scope="col">Partner Template Opened Tracking Analytics</th>
-													<td><input type="checkbox"
-														[(ngModel)]="campaignAccess.campaignPartnerTemplateOpenedAnalytics"
-														[ngModelOptions]="{standalone: true}"></td>
+													<th scope="col">Leads (Opportunities)</th>
+													<td><input type="checkbox" [(ngModel)]="campaignAccess.leads"
+															[ngModelOptions]="{standalone: true}"></td>
 												</tr>
-											</ng-container>
-											<tr>
-												<th scope="col">Share Leads</th>
-												<td>
-													<input type="checkbox" id="share-leads-c" [(ngModel)]="campaignAccess.shareLeads"	[ngModelOptions]="{standalone: true}" (click)="updateOneClickLaunchOption()">
-												</td>
-											</tr>
-											<tr>
-												<th scope="col">Leads (Opportunities)</th>
-												<td><input type="checkbox"
-													[(ngModel)]="campaignAccess.leads"
-													[ngModelOptions]="{standalone: true}"></td>
-											</tr>
-											<tr>
-												<th scope="row">Login As Team Member</th>
-												<td><input type="checkbox" [(ngModel)]="campaignAccess.loginAsTeamMember"
-														[ngModelOptions]="{standalone: true}"></td>
-											</tr>
-											<tr>
-												<th scope="col">Vanity URL</th>
-												<td><input type="checkbox"
-													[(ngModel)]="campaignAccess.vanityUrlDomain"
-													[ngModelOptions]="{standalone: true}"></td>
-											</tr>
+												<tr>
+													<th scope="row">Login As Team Member</th>
+													<td><input type="checkbox"
+															[(ngModel)]="campaignAccess.loginAsTeamMember"
+															[ngModelOptions]="{standalone: true}"></td>
+												</tr>
+												<tr>
+													<th scope="col">Vanity URL</th>
+													<td><input type="checkbox"
+															[(ngModel)]="campaignAccess.vanityUrlDomain"
+															[ngModelOptions]="{standalone: true}"></td>
+												</tr>
 
-											<tr>
-												<th scope="col">MDF</th>
-												<td><input type="checkbox"
-													[(ngModel)]="campaignAccess.mdf"
-													[ngModelOptions]="{standalone: true}"></td>
-											</tr>
-											<tr>
-												<th scope="row">Social Feeds</th>
-												<td><input type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
-														[ngModelOptions]="{standalone: true}"></td>
-											</tr>
+												<tr>
+													<th scope="col">MDF</th>
+													<td><input type="checkbox" [(ngModel)]="campaignAccess.mdf"
+															[ngModelOptions]="{standalone: true}"></td>
+												</tr>
+												<tr>
+													<th scope="row">Social Feeds</th>
+													<td><input type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
+															[ngModelOptions]="{standalone: true}"></td>
+												</tr>
 
-											<tr>
-												<th scope="col">DAM</th>
-												<td><input type="checkbox"
-													[(ngModel)]="campaignAccess.dam" id="damCheckBoxC"
-													[ngModelOptions]="{standalone: true}" (click)="updateLmsAndPlayBooks()"></td>
-											</tr>
-											<ng-container *ngIf="campaignAccess.dam">
-											<tr>
-												<th scope="col">LMS</th>
-												<td><input type="checkbox"
-													[(ngModel)]="campaignAccess.lms"
-													[ngModelOptions]="{standalone: true}"></td>
-											</tr>
-											<tr>
-												<th scope="col">PlayBooks</th>
-												<td><input type="checkbox"
-													[(ngModel)]="campaignAccess.playbooks"
-													[ngModelOptions]="{standalone: true}"></td>
-											</tr>
-										</ng-container>
-										<tr>
-											<th scope="row">Exclude Users/Domains</th>
-											<td><input type="checkbox" [(ngModel)]="campaignAccess.excludeUsersOrDomains"
-													[ngModelOptions]="{standalone: true}"></td>
-										</tr>
-										<tr>
-											<th scope="row">Chat Support</th>
-											<td><input type="checkbox" [(ngModel)]="campaignAccess.chatSupport"
-													[ngModelOptions]="{standalone: true}"></td>
-										</tr>
-										<!-- XNFR-134 -->
-										<tr>
-											<th scope="row">Custom Skin Settings</th>
-											<td><input type="checkbox" [(ngModel)]="campaignAccess.customSkinSettings"
-													[ngModelOptions]="{standalone: true}"></td>
-										</tr>
-										<!-- XNFR-224 -->
-										<tr *ngIf="!marketing">
-											<th scope="row">Login As Partner</th>
-											<td><input type="checkbox" [(ngModel)]="campaignAccess.loginAsPartner"
-													[ngModelOptions]="{standalone: true}"></td>
-										</tr>
+												<tr>
+													<th scope="col">DAM</th>
+													<td><input type="checkbox" [(ngModel)]="campaignAccess.dam"
+															id="damCheckBoxC" [ngModelOptions]="{standalone: true}"
+															(click)="updateLmsAndPlayBooks()"></td>
+												</tr>
+												<ng-container *ngIf="campaignAccess.dam">
+													<tr>
+														<th scope="col">LMS</th>
+														<td><input type="checkbox" [(ngModel)]="campaignAccess.lms"
+																[ngModelOptions]="{standalone: true}"></td>
+													</tr>
+													<tr>
+														<th scope="col">PlayBooks</th>
+														<td><input type="checkbox"
+																[(ngModel)]="campaignAccess.playbooks"
+																[ngModelOptions]="{standalone: true}"></td>
+													</tr>
+												</ng-container>
+												<tr>
+													<th scope="row">Exclude Users/Domains</th>
+													<td><input type="checkbox"
+															[(ngModel)]="campaignAccess.excludeUsersOrDomains"
+															[ngModelOptions]="{standalone: true}"></td>
+												</tr>
+												<tr>
+													<th scope="row">Chat Support</th>
+													<td><input type="checkbox" [(ngModel)]="campaignAccess.chatSupport"
+															[ngModelOptions]="{standalone: true}"></td>
+												</tr>
+												<!-- XNFR-134 -->
+												<tr>
+													<th scope="row">Custom Skin Settings</th>
+													<td><input type="checkbox"
+															[(ngModel)]="campaignAccess.customSkinSettings"
+															[ngModelOptions]="{standalone: true}"></td>
+												</tr>
+												<!-- XNFR-224 -->
+												<tr *ngIf="!marketing">
+													<th scope="row">Login As Partner</th>
+													<td><input type="checkbox"
+															[(ngModel)]="campaignAccess.loginAsPartner"
+															[ngModelOptions]="{standalone: true}"></td>
+												</tr>
 
-										<!-- XNFR-256 -->
-										<tr>
-											<th scope="row">Microsoft SSO</th>
-											<td>
-                        <input type="checkbox" [(ngModel)]="campaignAccess.microsoftSSO" [ngModelOptions]="{standalone: true}">
-                      </td> 
+												<!-- XNFR-256 -->
+												<tr>
+													<th scope="row">Microsoft SSO</th>
+													<td>
+														<input type="checkbox" [(ngModel)]="campaignAccess.microsoftSSO"
+															[ngModelOptions]="{standalone: true}">
+													</td>
 
-										<!-- XNFR-255 -->
-										<tr *ngIf="!marketing">
-											<th scope="row">Share White Labeled Content</th>
-											<td><input type="checkbox" [(ngModel)]="campaignAccess.shareWhiteLabeledContent" [ngModelOptions]="{standalone: true}"></td>
-										</tr>
-										<!--XNFR-381-->
-										<tr *ngIf="!marketing">
-											<th scope="row">Create Workflow (Partner Journey)</th>
-											<td><input type="checkbox" [(ngModel)]="campaignAccess.createWorkflow"
-													[ngModelOptions]="{standalone: true}"></td>
-										</tr>
-										
-										</table>
-									</div>
-									<div class="modal-footer">
-										<button type="button" id="module-access-button" (click)="updateAccess()" disabled="disabled" class="btn Btn-Green"
-											translate>Save</button>
+													<!-- XNFR-255 -->
+												<tr *ngIf="!marketing">
+													<th scope="row">Share White Labeled Content</th>
+													<td><input type="checkbox"
+															[(ngModel)]="campaignAccess.shareWhiteLabeledContent"
+															[ngModelOptions]="{standalone: true}"></td>
+												</tr>
+												<!--XNFR-381-->
+												<tr *ngIf="!marketing">
+													<th scope="row">Create Workflow (Partner Journey)</th>
+													<td><input type="checkbox"
+															[(ngModel)]="campaignAccess.createWorkflow"
+															[ngModelOptions]="{standalone: true}"></td>
+												</tr>
+
+											</table>
+										</div>
+										<div class="modal-footer">
+											<button type="button" id="module-access-button" (click)="updateAccess()"
+												disabled="disabled" class="btn Btn-Green" translate>Save</button>
+										</div>
 									</div>
 								</div>
-							</div>
 							</div>
 						</div>
 						<div class="col-sm-9 col-xs-12 mPad2" style="padding-left: 2px;">
 							<!-- ---Start Of Admin Panel -->
 							<div class="portlet light company-details-border">
-							<div class="row" *ngIf="isFromAdminPanel">
-								<div class="col-xs-12 col-md-12 col-lg-12">
-									<div class="form-group" [attr.class]="userEmailIdDivClass">
-										<label class="control-label">Email/Username<font
-											style="color: #f55d7a"><b>*</b></font></label> <input type="text"
-											id="userEmailId" name="userEmailId"
-											placeholder="Email/Username" maxlength="240"
-											class="form-control" [(ngModel)]="companyProfile.userEmailId"
-											(input)="validatePattern('userEmailId')"
-											(blur)="validatePattern('userEmailId')"
-											(keydown)="this.fetchResult.next($event)" /> <span
-											*ngIf="userEmailIdError" style="color: #f55d7a">{{userEmailIdErrorMessage}}</span>
+								<div class="row" *ngIf="isFromAdminPanel">
+									<div class="col-xs-12 col-md-12 col-lg-12">
+										<div class="form-group" [attr.class]="userEmailIdDivClass">
+											<label class="control-label">Email/Username<font style="color: #f55d7a">
+													<b>*</b></font></label> <input type="text" id="userEmailId"
+												name="userEmailId" placeholder="Email/Username" maxlength="240"
+												class="form-control" [(ngModel)]="companyProfile.userEmailId"
+												(input)="validatePattern('userEmailId')"
+												(blur)="validatePattern('userEmailId')"
+												(keydown)="this.fetchResult.next($event)" /> <span
+												*ngIf="userEmailIdError"
+												style="color: #f55d7a">{{userEmailIdErrorMessage}}</span>
+										</div>
+									</div>
+									<div class="col-xs-2" id="check-user">
+										<button *ngIf="isFromAdminPanel" class="btn Btn-Green" id="right"
+											(click)="checkUser()"
+											[disabled]="userEmailIdError || companyProfile.userEmailId?.length==0">Validate</button>
 									</div>
 								</div>
-								<div class="col-xs-2" id="check-user">
-									<button *ngIf="isFromAdminPanel" class="btn Btn-Green"
-										id="right" (click)="checkUser()"
-										[disabled]="userEmailIdError || companyProfile.userEmailId?.length==0">Validate</button>
-								</div>
-							</div>
-							<div class="admin blur-content" id="blur-content-div">
-							<div class="row">
-						        <div class="col-md-6 col-lg-6">
-						          <div class="form-group" [attr.class]="firstNameDivClass"
-									*ngIf="isFromAdminPanel">
-									<label class="control-label">First Name</label>
-									
-									<input type="text" class="form-control" id="firstName"
-										name="firstName" placeholder="First Name" maxlength="240"
-										maxlength="240" [(ngModel)]="companyProfile.firstName" />
-								</div>
-						        </div>
-						        <div class="col-md-6 col-lg-6">
-								<div class="form-group" [attr.class]="lastNameDivClass"
-									*ngIf="isFromAdminPanel">
-									<label class="control-label">Last Name</label>
-									
-									<input type="text" class="form-control" id="lastName"
-										name="lastName" placeholder="Last Name" maxlength="240"
-										maxlength="240" [(ngModel)]="companyProfile.lastName" />
-								</div>
-								</div>
-								<!-- ---End Of Admin Panel -->
-								<div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
-								<div class="col-md-6 col-lg-6">
-								<div class="form-group" [attr.class]="companyNameDivClass">
-									<label class="control-label" translate>Company Name <font
-										style="color: #f55d7a"><b>*</b></font></label> <input type="text"
-										id="companyName" name="companyName" placeholder="Company Name"
-										maxlength="240" class="form-control"
-										[(ngModel)]="companyProfile.companyName"
-										(input)="validateEmptySpace('companyName')"
-										(blur)="validateNames(companyProfile.companyName)" /> <span
-										*ngIf="companyNameError" style="color: #f55d7a">{{companyNameErrorMessage}}</span>
-								</div>
-								</div>
-                                <div class="col-md-6 col-lg-6 mPadCompanyProfile" style="padding-left: 0px;">
-								<div class="form-group"
-									[attr.class]="companyProfileNameDivClass">
-									<label class="control-label" translate>Company Profile Name <font
-										style="color: #f55d7a"><b>*</b></font></label>
-									<ng-container *ngIf="companyProfile.isAdd"> <input
-										type="text" id="companyProfileName"
-										placeholder="Company Profile Name" maxlength="15"
-										class="form-control" name="companyProfileName"
-										[(ngModel)]="companyProfile.companyProfileName"
-										(input)="validateEmptySpace('companyProfileName')"
-										(blur)="validateProfileNames(companyProfile.companyProfileName)" />
-									<span *ngIf="companyProfileNameError" style="color: #f55d7a">{{companyProfileNameErrorMessage}}</span>
-									</ng-container>
-									<ng-container *ngIf="!companyProfile.isAdd"> <input
-										type="text" id="companyProfileName" disabled="disabled"
-										placeholder="Company Profile Name" class="form-control"
-										name="companyProfileName"
-										[(ngModel)]="companyProfile.companyProfileName" /> </ng-container>
-								</div>
-								</div>
-								</div>
-								<div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
-								<div class="col-md-6 col-lg-6">
-									<div class="form-group" [attr.class]="emailIdDivClass">
-										<label class="control-label" translate> Company Email</label> <input
-											type="email" id="emailId" name="emailId"
-											placeholder="Email Id" class="form-control" maxlength="240"
-											[(ngModel)]="companyProfile.emailId"
-											(input)="validatePattern('emailId')"
-											(blur)="validatePattern('emailId')" /> <span
-											*ngIf="emailIdError" style="color: #f55d7a">{{emailIdErrorMessage}}</span>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-6 mPadCompanyProfile"style="padding-left: 0px;">
-								<div class="form-group" [attr.class]="tagLineDivClass">
-									<label class="control-label" translate>Tag Line</label> <input
-										type="text" id="tagLine" name="tagLine" placeholder="Tag Line"
-										class="form-control" maxlength="240"
-										[(ngModel)]="companyProfile.tagLine" /> <span
-										*ngIf="tagLineError" style="color: #f55d7a">{{tagLineErrorMessage}}</span>
-								</div>
-								</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-								<div class="form-group" [attr.class]="phoneDivClass">
-									<label class="control-label" translate>Phone Number <font
-										style="color: #f55d7a"><b>*</b></font></label>
-									
-									<input type="text" maxlength="20" class="form-control" [(ngModel)]="companyProfile.phone" [ngModelOptions]="{standalone: true}" (input)="validatePattern('phone')"
-									(blur)="validatePattern('phone')" >
-									<span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
-								</div>
-								</div>
-								<div class="col-md-6 col-lg-6 mPadCompanyProfile"style="padding-left: 0px;">
-								<div class="form-group" [attr.class]="websiteDivClass">
-									<label class="control-label" translate>Company URL <font
-										style="color: #f55d7a"><b>*</b></font></label> <input type="text"
-										id="website" name="website" placeholder="WebSite"
-										maxlength="240" class="form-control"
-										[(ngModel)]="companyProfile.website"
-										(input)="validatePattern('website')"
-										(blur)="validatePattern('website')" /> <span
-										*ngIf="websiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
-								</div>
-								</div>
-								<div class="col-md-6 col-lg-6">
-								<div class="form-group"
-									*ngIf="!companyProfile.isAdd && publicVideos?.length>0">
-									<label class="control-label">Select Video</label> <select
-										class="form-control" name="companyProfile.videoId"
-										[(ngModel)]="companyProfile.videoId">
-										<option [ngValue]="null">---Please Select Video---</option>
-										<option *ngFor="let videoFile of publicVideos"
-											[ngValue]="videoFile.id">{{videoFile.title}}</option>
-									</select>
-								</div>
-								</div>
-								<div class="col-md-12 col-lg-12">
-								<div class="form-group" [attr.class]="aboutUsDivClass">
-									<label class="control-label" translate>About Us <font
-										style="color: #f55d7a"><b>*</b></font></label>
-									<textarea class="form-control" rows="3" cols="5"
-										maxlength="1000" placeholder="About Us" name="aboutUs"
-										id="aboutUs" style="resize: none"
-										[(ngModel)]="companyProfile.aboutUs"
-										(input)="validateEmptySpace('aboutUs')"
-										(blur)="validateEmptySpace('aboutUs')"></textarea>
-									<span *ngIf="aboutUsError" style="color: #f55d7a">{{aboutUsErrorMessage}}</span>
-								</div>
-								</div>
-								<div class="col-md-12 col-lg-12">
-									<div class="form-group">
-										<label class="control-label" translate>Privacy Policy</label>
-										<textarea class="form-control" rows="3" cols="5"
-											maxlength="1000" placeholder="Privacy Policy" name="privacyPolicy"
-											id="privacyPolicy" style="resize: none"
-											[(ngModel)]="companyProfile.privacyPolicy"></textarea>
-									</div>
-									</div>
-									<div class="col-md-12 col-lg-12">
-									  <ng-template [ngTemplateOutlet]="companyAdreddAndSocialAccounts"></ng-template>
-								    </div>
+								<div class="admin blur-content" id="blur-content-div">
+									<div class="row">
+										<div class="col-md-6 col-lg-6">
+											<div class="form-group" [attr.class]="firstNameDivClass"
+												*ngIf="isFromAdminPanel">
+												<label class="control-label">First Name</label>
 
-								<!-- <div class="col-md-6 col-lg-6" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
+												<input type="text" class="form-control" id="firstName" name="firstName"
+													placeholder="First Name" maxlength="240" maxlength="240"
+													[(ngModel)]="companyProfile.firstName" />
+											</div>
+										</div>
+										<div class="col-md-6 col-lg-6">
+											<div class="form-group" [attr.class]="lastNameDivClass"
+												*ngIf="isFromAdminPanel">
+												<label class="control-label">Last Name</label>
+
+												<input type="text" class="form-control" id="lastName" name="lastName"
+													placeholder="Last Name" maxlength="240" maxlength="240"
+													[(ngModel)]="companyProfile.lastName" />
+											</div>
+										</div>
+										<!-- ---End Of Admin Panel -->
+										<div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
+											<div class="col-md-6 col-lg-6">
+												<div class="form-group" [attr.class]="companyNameDivClass">
+													<label class="control-label" translate>Company Name <font
+															style="color: #f55d7a"><b>*</b></font></label> <input
+														type="text" id="companyName" name="companyName"
+														placeholder="Company Name" maxlength="240" class="form-control"
+														[(ngModel)]="companyProfile.companyName"
+														(input)="validateEmptySpace('companyName')"
+														(blur)="validateNames(companyProfile.companyName)" /> <span
+														*ngIf="companyNameError"
+														style="color: #f55d7a">{{companyNameErrorMessage}}</span>
+												</div>
+											</div>
+											<div class="col-md-6 col-lg-6 mPadCompanyProfile"
+												style="padding-left: 0px;">
+												<div class="form-group" [attr.class]="companyProfileNameDivClass">
+													<label class="control-label" translate>Company Profile Name <font
+															style="color: #f55d7a"><b>*</b></font></label>
+													<ng-container *ngIf="companyProfile.isAdd"> <input type="text"
+															id="companyProfileName" placeholder="Company Profile Name"
+															maxlength="15" class="form-control"
+															name="companyProfileName"
+															[(ngModel)]="companyProfile.companyProfileName"
+															(input)="validateEmptySpace('companyProfileName')"
+															(blur)="validateProfileNames(companyProfile.companyProfileName)" />
+														<span *ngIf="companyProfileNameError"
+															style="color: #f55d7a">{{companyProfileNameErrorMessage}}</span>
+													</ng-container>
+													<ng-container *ngIf="!companyProfile.isAdd"> <input type="text"
+															id="companyProfileName" disabled="disabled"
+															placeholder="Company Profile Name" class="form-control"
+															name="companyProfileName"
+															[(ngModel)]="companyProfile.companyProfileName" />
+													</ng-container>
+												</div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
+											<div class="col-md-6 col-lg-6">
+												<div class="form-group" [attr.class]="emailIdDivClass">
+													<label class="control-label" translate> Company Email</label> <input
+														type="email" id="emailId" name="emailId" placeholder="Email Id"
+														class="form-control" maxlength="240"
+														[(ngModel)]="companyProfile.emailId"
+														(input)="validatePattern('emailId')"
+														(blur)="validatePattern('emailId')" /> <span
+														*ngIf="emailIdError"
+														style="color: #f55d7a">{{emailIdErrorMessage}}</span>
+												</div>
+											</div>
+											<div class="col-md-6 col-lg-6 mPadCompanyProfile"
+												style="padding-left: 0px;">
+												<div class="form-group" [attr.class]="tagLineDivClass">
+													<label class="control-label" translate>Tag Line</label> <input
+														type="text" id="tagLine" name="tagLine" placeholder="Tag Line"
+														class="form-control" maxlength="240"
+														[(ngModel)]="companyProfile.tagLine" /> <span
+														*ngIf="tagLineError"
+														style="color: #f55d7a">{{tagLineErrorMessage}}</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6 col-lg-6">
+											<div class="form-group" [attr.class]="phoneDivClass">
+												<label class="control-label" translate>Phone Number <font
+														style="color: #f55d7a"><b>*</b></font></label>
+
+												<input type="text" maxlength="20" class="form-control"
+													[(ngModel)]="companyProfile.phone"
+													[ngModelOptions]="{standalone: true}"
+													(input)="validatePattern('phone')"
+													(blur)="validatePattern('phone')">
+												<span *ngIf="phoneError"
+													style="color: #f55d7a">{{phoneErrorMessage}}</span>
+											</div>
+										</div>
+										<div class="col-md-6 col-lg-6 mPadCompanyProfile" style="padding-left: 0px;">
+											<div class="form-group" [attr.class]="websiteDivClass">
+												<label class="control-label" translate>Company URL <font
+														style="color: #f55d7a"><b>*</b></font></label> <input
+													type="text" id="website" name="website" placeholder="WebSite"
+													maxlength="240" class="form-control"
+													[(ngModel)]="companyProfile.website"
+													(input)="validatePattern('website')"
+													(blur)="validatePattern('website')" /> <span *ngIf="websiteError"
+													style="color: #f55d7a">{{websiteErrorMessage}}</span>
+											</div>
+										</div>
+										<div class="col-md-6 col-lg-6">
+											<div class="form-group"
+												*ngIf="!companyProfile.isAdd && publicVideos?.length>0">
+												<label class="control-label">Select Video</label> <select
+													class="form-control" name="companyProfile.videoId"
+													[(ngModel)]="companyProfile.videoId">
+													<option [ngValue]="null">---Please Select Video---</option>
+													<option *ngFor="let videoFile of publicVideos"
+														[ngValue]="videoFile.id">{{videoFile.title}}</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-12 col-lg-12">
+											<div class="form-group" [attr.class]="aboutUsDivClass">
+												<label class="control-label" translate>About Us <font
+														style="color: #f55d7a"><b>*</b></font></label>
+												<textarea class="form-control" rows="3" cols="5" maxlength="1000"
+													placeholder="About Us" name="aboutUs" id="aboutUs"
+													style="resize: none" [(ngModel)]="companyProfile.aboutUs"
+													(input)="validateEmptySpace('aboutUs')"
+													(blur)="validateEmptySpace('aboutUs')"></textarea>
+												<span *ngIf="aboutUsError"
+													style="color: #f55d7a">{{aboutUsErrorMessage}}</span>
+											</div>
+										</div>
+										<div class="col-md-12 col-lg-12">
+											<div class="form-group">
+												<label class="control-label" translate>Privacy Policy</label>
+												<textarea class="form-control" rows="3" cols="5" maxlength="1000"
+													placeholder="Privacy Policy" name="privacyPolicy" id="privacyPolicy"
+													style="resize: none"
+													[(ngModel)]="companyProfile.privacyPolicy"></textarea>
+											</div>
+										</div>
+										<div class="col-md-12 col-lg-12">
+											<ng-template
+												[ngTemplateOutlet]="companyAdreddAndSocialAccounts"></ng-template>
+										</div>
+
+										<!-- <div class="col-md-6 col-lg-6" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
 									<div class="form-group">
 										<label class="control-label" translate>Select Login Screen Direction <font
 											style="color: #f55d7a"><b>*</b></font></label>
@@ -625,205 +647,237 @@
 									</div>
 								</div> -->
 
-								<!-- new UI Of select Login screen and Bg Image-->
-								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bg_color mb10" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
-									<div class="col-sm-6 col-md-6 col-lg-8 pr0">
-										<div class="col-md-12 col-lg-12">
-											<div class="form-group">
-												<label class="control-label" translate>Select Login Screen Direction <font style="color: #f55d7a">
-														<b>*</b></font></label>
-												<select [ngModelOptions]="{standalone: true}" [(ngModel)]="companyProfile.loginScreenDirection"
-													class="form-control">
-													<option [ngValue]="undefined" disabled selected> Select Login Screen Direction </option>
-													<option *ngFor="let direction of allLoginScreenDirectionsList">{{direction}}</option>
-												</select>
+										<!-- new UI Of select Login screen and Bg Image-->
+										<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bg_color mb10"
+											*ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
+											<div class="col-sm-6 col-md-6 col-lg-8 pr0">
+												<div class="col-md-12 col-lg-12">
+													<div class="form-group">
+														<label class="control-label" translate>Select Login Screen
+															Direction <font style="color: #f55d7a">
+																<b>*</b>
+															</font></label>
+														<select [ngModelOptions]="{standalone: true}"
+															[(ngModel)]="companyProfile.loginScreenDirection"
+															class="form-control">
+															<option [ngValue]="undefined" disabled selected> Select
+																Login Screen Direction </option>
+															<option
+																*ngFor="let direction of allLoginScreenDirectionsList">
+																{{direction}}</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-md-12 col-lg-12">
+													<div class="form-group">
+														<label class="control-label" translate>Display My Logo <font
+																style="color: #f55d7a"><b>*</b></font>
+														</label>
+														<div>
+															<switch [status]="companyProfile.showVendorCompanyLogo"
+																[onText]="callActionSwitch.onTextValue"
+																[offText]="callActionSwitch.offTextValue"
+																[onColor]="callActionSwitch.onGreenColorSwitch"
+																[offColor]="callActionSwitch.onGreenColorSwitch"
+																[size]="callActionSwitch.size"
+																(statusChange)="setVendorLogoEnabled($event)">
+															</switch>
+														</div>
+														<div class="col-sm-12"
+															style="padding: 0; margin-left: 100px;margin-top: -32px">
+															<span style="cursor: pointer;color: #54a7e9;">
+																<i class="fa fa-question-circle" data-html="true"
+																	data-toggle="tooltip" data-placement="right"
+																	title="{{vendorLogoTooltipText}}"
+																	style="font-size: 20px;float: left;margin: 8px 0 0 15px;"
+																	aria-hidden="true"></i>
+															</span>
+														</div>
+													</div>
+												</div>
 											</div>
-										</div>
-										<div class="col-md-12 col-lg-12">
-											<div class="form-group">
-												<label class="control-label" translate>Display My Logo <font style="color: #f55d7a"><b>*</b></font>
-													</label>
+											<div class="col-sm-6 col-md-6 col-lg-4 pl0">
 												<div>
-													<switch [status]="companyProfile.showVendorCompanyLogo" [onText]="callActionSwitch.onTextValue"
-														[offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-														[offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
-														(statusChange)="setVendorLogoEnabled($event)">
-													</switch>
+													<label class="control-label">Upload Background Image</label>
+													<div class="profile-image-wrapper dotted-image-border upload-imgheight"
+														(click)="bgImageClick()">
+														<span *ngIf="(squareDataForBgImage | json) == '{}'"> <img
+																*ngIf="!companyBgImagePath"
+																src="assets/images/company-profile-logo.png"
+																class="profile-image img-grid" alt=""
+																style="width: 100%;height: 110px;border-radius: 3px;"></span>
+
+														<span *ngIf="croppedImageForBgImage; else showBgImage"> <img
+																class="img-grid"
+																style="width: 100%;height: 110px;border-radius: 3px;"
+																[src]="croppedImageForBgImage" alt="">
+														</span>
+														<ng-template #showBgImage> <img class="img-grid"
+																*ngIf="companyBgImagePath"
+																style="width: 100%;height: 110px;border-radius: 3px;"
+																[src]="authenticationService.MEDIA_URL + companyBgImagePath"
+																(error)="errorHandler($event)" alt=""> </ng-template>
+														<a class="btn btn-primary1 profile-pic" (click)="bgImageClick()"
+															data-toggle="tooltip" data-placement="top"
+															title="upload 2:1 ratio logo !">
+															&nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
+																style="font-size:25px;padding-top:10px;left: 5px !important;bottom: -60px !important;"></i></a>
+													</div>
 												</div>
-												<div class="col-sm-12" style="padding: 0; margin-left: 100px;margin-top: -32px">
-													<span style="cursor: pointer;color: #54a7e9;">
-														<i class="fa fa-question-circle" data-html="true" data-toggle="tooltip" data-placement="right"
-															title="{{vendorLogoTooltipText}}" style="font-size: 20px;float: left;margin: 8px 0 0 15px;"
+											</div>
+										</div>
+										<!-- new UI Of select Login screen and Bg Image-->
+
+
+
+
+									</div>
+									<ng-template #companyAdreddAndSocialAccounts>
+										<div class="panel-group edit_account">
+											<div class="panel panel-default" style="border-style: none !important;">
+												<div class="panel-heading panel-header" data-toggle="collapse"
+													href="#collapse1" (click)="refService.scrollSmoothToBottom()">
+													<h4 class="panel-title f-w-500" translate>
+														Company Address <i class="fa fa-caret-down pull-right"
 															aria-hidden="true"></i>
-													</span>
+													</h4>
+												</div>
+												<div id="collapse1" class="panel-collapse collapse panel-account">
+													<div class="form-group">
+														<label class="control-label" translate>Street</label> <input
+															type="text" id="street" [(ngModel)]="companyProfile.street"
+															name="street" placeholder="Street" maxlength="240"
+															class="form-control" />
+													</div>
+													<div class="form-group" [attr.class]="cityDivClass">
+														<label class="control-label" translate>City</label> <input
+															type="text" id="city" name="city" placeholder="City"
+															class="form-control" maxlength="240"
+															[(ngModel)]="companyProfile.city"
+															(input)="validatePattern('city')"
+															(blur)="validatePattern('city')" /> <span *ngIf="cityError"
+															style="color: #f55d7a">{{cityErrorMessage}}</span>
+													</div>
+													<div class="form-group" [attr.class]="stateDivClass">
+														<label class="control-label" translate>State</label> <input
+															type="text" id="state" name="state" placeholder="State"
+															class="form-control" maxlength="240"
+															[(ngModel)]="companyProfile.state"
+															(input)="validatePattern('state')"
+															(blur)="validatePattern('state')" /> <span
+															*ngIf="stateError"
+															style="color: #f55d7a">{{stateErrorMessage}}</span>
+													</div>
+													<div class="form-group" [attr.class]="zipDivClass">
+														<label class="control-label" translate>Zip</label> <input
+															type="text" id="zip" name="zip" maxlength="10"
+															placeholder="Zip"
+															onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+															class="form-control" [(ngModel)]="companyProfile.zip" />
+														<span *ngIf="zipError"
+															style="color: #f55d7a">{{zipErrorMessage}}</span>
+													</div>
+													<div class="form-group" [attr.class]="countryDivClass">
+														<label class="control-label" translate>Country</label> <select
+															class="form-control" name="companyProfile.country"
+															[(ngModel)]="companyProfile.country" style="width: 100%">
+															<option *ngFor="let country of countryNames.countries"
+																[ngValue]="country">{{country}}</option>
+														</select>
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="col-sm-6 col-md-6 col-lg-4 pl0">
-										<div>
-											<label class="control-label">Upload Background Image</label>
-											<div class="profile-image-wrapper dotted-image-border upload-imgheight" (click)="bgImageClick()">
-												<span *ngIf="(squareDataForBgImage | json) == '{}'"> <img *ngIf="!companyBgImagePath"
-														src="assets/images/company-profile-logo.png" class="profile-image img-grid" alt="" style="width: 100%;height: 110px;border-radius: 3px;"></span>
-								
-												<span *ngIf="croppedImageForBgImage; else showBgImage"> <img class="img-grid" style="width: 100%;height: 110px;border-radius: 3px;"
-														[src]="croppedImageForBgImage" alt="">
-												</span>
-												<ng-template #showBgImage> <img class="img-grid" *ngIf="companyBgImagePath" style="width: 100%;height: 110px;border-radius: 3px;"
-														[src]="authenticationService.MEDIA_URL + companyBgImagePath" (error)="errorHandler($event)"
-														alt=""> </ng-template>
-												<a class="btn btn-primary1 profile-pic" (click)="bgImageClick()" data-toggle="tooltip"
-													data-placement="top" title="upload 2:1 ratio logo !">
-													&nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
-														style="font-size:25px;padding-top:10px;left: 5px !important;bottom: -60px !important;"></i></a>
+										<div class="panel-group edit_account">
+											<div class="panel panel-default" style="border-style: none !important;">
+												<div class="panel-heading  panel-header" data-toggle="collapse"
+													href="#collapse2" (click)="refService.scrollSmoothToBottom()">
+													<h4 class="panel-title f-w-500" translate>
+														Social Accounts <i class="fa fa-caret-down pull-right"
+															aria-hidden="true"></i>
+													</h4>
+												</div>
+												<div id="collapse2" class="panel-collapse collapse panel-account">
+													<div class="form-group" [attr.class]="facebookDivClass">
+														<label class="control-label" translate>Facebook</label> <input
+															type="text" id="facebook" name="facebook"
+															placeholder="Facebook" class="form-control"
+															[(ngModel)]="companyProfile.facebookLink"
+															(input)="validatePattern('facebook')"
+															(blur)="validatePattern('facebook')" /> <span
+															*ngIf="facebookLinkError"
+															style="color: #f55d7a">{{facebookLinkErrorMessage}}</span>
+													</div>
+													<div class="form-group" [attr.class]="googlePlusDivClass">
+														<label class="control-label" translate>Google</label> <input
+															type="text" id="googlePlusLink" name="googlePlusLink"
+															placeholder="Google" class="form-control"
+															[(ngModel)]="companyProfile.googlePlusLink"
+															(input)="validatePattern('googlePlusLink')"
+															(blur)="validatePattern('googlePlusLink')" /> <span
+															*ngIf="googlePlusLinkError"
+															style="color: #f55d7a">{{googlePlusLinkErrorMessage}}</span>
+													</div>
+													<div class="form-group" [attr.class]="linkedInDivClass">
+														<label class="control-label" translate>LinkedIn</label> <input
+															type="text" id="linkedInLink" name="linkedInLink"
+															placeholder="LinkedIn" class="form-control"
+															[(ngModel)]="companyProfile.linkedInLink"
+															(input)="validatePattern('linkedInLink')"
+															(blur)="validatePattern('linkedInLink')" /> <span
+															*ngIf="linkedinLinkError"
+															style="color: #f55d7a">{{linkedinLinkErrorMessage}}</span>
+													</div>
+													<!-----****XNFR-281****------>
+													<div class="form-group" [attr.class]="instagramDivClass">
+														<label class="control-label" translate>Instagram</label> <input
+															type="text" id="instagramLink" name="instagramLink"
+															placeholder="Instagram" class="form-control"
+															[(ngModel)]="companyProfile.instagramLink"
+															(input)="validatePattern('instagramLink')"
+															(blur)="validatePattern('instagramLink')" /> <span
+															*ngIf="instagramLinkError"
+															style="color: #f55d7a">{{instagramLinkErrorMessage}}</span>
+													</div>
+
+													<div class="form-group" [attr.class]="twitterDivClass">
+														<label class="control-label" translate>Twitter</label> <input
+															type="text" id="twitterLink" name="twitterLink"
+															placeholder="Twitter" class="form-control"
+															[(ngModel)]="companyProfile.twitterLink"
+															(input)="validatePattern('twitterLink')"
+															(blur)="validatePattern('twitterLink')" /> <span
+															*ngIf="twitterLinkError"
+															style="color: #f55d7a">{{twitterLinkErrorMessage}}</span>
+													</div>
+													<!-----****XNFR-281****------>
+													<div class="form-group" [attr.class]="eventUrlDivClass">
+														<label class="control-label" translate>Event Url</label> <input
+															type="text" id="eventUrl" name="eventUrl"
+															placeholder="Event Url" class="form-control"
+															[(ngModel)]="companyProfile.eventUrl"
+															(input)="validatePattern('eventUrl')"
+															(blur)="validatePattern('eventUrl')" /> <span
+															*ngIf="eventUrlError"
+															style="color: #f55d7a">{{eventUrlErrorMessage}}</span>
+													</div>
+												</div>
 											</div>
 										</div>
+									</ng-template>
+									<div class="pull-right" *ngIf="!isFromAdminPanel">
+										<button type="submit" [disabled]="authenticationService.isSuperAdmin()"
+											*ngIf="companyProfile.isAdd" id="saveOrUpdateCompanyButton" (click)="save()"
+											class="btn Btn-Green" disabled="disabled" translate>Save</button>
+										<button type="submit" [disabled]="authenticationService.isSuperAdmin()"
+											*ngIf="!companyProfile.isAdd" id="saveOrUpdateCompanyButton"
+											(click)="update()" class="btn Btn-Green" translate>Update</button>
 									</div>
 								</div>
-								<!-- new UI Of select Login screen and Bg Image-->
-
-
-
-								
+								<!-- -End Of Panel -->
 							</div>
-							<ng-template #companyAdreddAndSocialAccounts>
-								<div class="panel-group edit_account">
-									<div class="panel panel-default" style="border-style: none !important;">
-										<div class="panel-heading panel-header" data-toggle="collapse"
-											href="#collapse1" (click)="refService.scrollSmoothToBottom()">
-											<h4 class="panel-title f-w-500" translate>
-												Company Address <i class="fa fa-caret-down pull-right" aria-hidden="true"></i>
-											</h4>
-										</div>
-										<div id="collapse1" class="panel-collapse collapse panel-account">
-											<div class="form-group">
-												<label class="control-label" translate>Street</label> <input
-													type="text" id="street" [(ngModel)]="companyProfile.street"
-													name="street" placeholder="Street" maxlength="240"
-													class="form-control" />
-											</div>
-											<div class="form-group" [attr.class]="cityDivClass">
-												<label class="control-label" translate>City</label> <input type="text"
-													id="city" name="city" placeholder="City"
-													class="form-control" maxlength="240"
-													[(ngModel)]="companyProfile.city"
-													(input)="validatePattern('city')"
-													(blur)="validatePattern('city')" /> <span
-													*ngIf="cityError" style="color: #f55d7a">{{cityErrorMessage}}</span>
-											</div>
-											<div class="form-group" [attr.class]="stateDivClass">
-												<label class="control-label" translate>State</label> <input
-													type="text" id="state" name="state" placeholder="State"
-													class="form-control" maxlength="240"
-													[(ngModel)]="companyProfile.state"
-													(input)="validatePattern('state')"
-													(blur)="validatePattern('state')" /> <span
-													*ngIf="stateError" style="color: #f55d7a">{{stateErrorMessage}}</span>
-											</div>
-											<div class="form-group" [attr.class]="zipDivClass">
-												<label class="control-label" translate>Zip</label> <input type="text"
-													id="zip" name="zip" maxlength="10" placeholder="Zip"
-													onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-													class="form-control" [(ngModel)]="companyProfile.zip" />
-												<span *ngIf="zipError" style="color: #f55d7a">{{zipErrorMessage}}</span>
-											</div>
-											<div class="form-group" [attr.class]="countryDivClass">
-												<label class="control-label" translate>Country</label> <select
-													class="form-control" name="companyProfile.country"
-													[(ngModel)]="companyProfile.country" style="width: 100%">
-													<option *ngFor="let country of countryNames.countries"
-														[ngValue]="country">{{country}}</option>
-												</select>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="panel-group edit_account">
-									<div class="panel panel-default" style="border-style: none !important;">
-										<div class="panel-heading  panel-header" data-toggle="collapse"
-											href="#collapse2" (click)="refService.scrollSmoothToBottom()">
-											<h4 class="panel-title f-w-500" translate>
-												Social Accounts <i class="fa fa-caret-down pull-right" aria-hidden="true"></i>
-											</h4>
-										</div>
-										<div id="collapse2" class="panel-collapse collapse panel-account">
-											<div class="form-group" [attr.class]="facebookDivClass">
-												<label class="control-label" translate>Facebook</label> <input
-													type="text" id="facebook" name="facebook"
-													placeholder="Facebook" class="form-control"
-													[(ngModel)]="companyProfile.facebookLink"
-													(input)="validatePattern('facebook')"
-													(blur)="validatePattern('facebook')" /> <span
-													*ngIf="facebookLinkError" style="color: #f55d7a">{{facebookLinkErrorMessage}}</span>
-											</div>
-											<div class="form-group" [attr.class]="googlePlusDivClass">
-												<label class="control-label" translate>Google</label> <input
-													type="text" id="googlePlusLink" name="googlePlusLink"
-													placeholder="Google" class="form-control"
-													[(ngModel)]="companyProfile.googlePlusLink"
-													(input)="validatePattern('googlePlusLink')"
-													(blur)="validatePattern('googlePlusLink')" /> <span
-													*ngIf="googlePlusLinkError" style="color: #f55d7a">{{googlePlusLinkErrorMessage}}</span>
-											</div>
-											<div class="form-group" [attr.class]="linkedInDivClass">
-												<label class="control-label" translate>LinkedIn</label> <input
-													type="text" id="linkedInLink" name="linkedInLink"
-													placeholder="LinkedIn" class="form-control"
-													[(ngModel)]="companyProfile.linkedInLink"
-													(input)="validatePattern('linkedInLink')"
-													(blur)="validatePattern('linkedInLink')" /> <span
-													*ngIf="linkedinLinkError" style="color: #f55d7a">{{linkedinLinkErrorMessage}}</span>
-											</div>
-											<!-----****XNFR-281****------>
-											<div class="form-group" [attr.class]="instagramDivClass">
-												<label class="control-label" translate>Instagram</label> <input
-													type="text" id="instagramLink" name="instagramLink"
-													placeholder="Instagram" class="form-control"
-													[(ngModel)]="companyProfile.instagramLink"
-													(input)="validatePattern('instagramLink')"
-													(blur)="validatePattern('instagramLink')" /> <span
-													*ngIf="instagramLinkError" style="color: #f55d7a">{{instagramLinkErrorMessage}}</span>
-											</div>
+						</div>
 
-											<div class="form-group" [attr.class]="twitterDivClass">
-												<label class="control-label" translate>Twitter</label> <input
-													type="text" id="twitterLink" name="twitterLink"
-													placeholder="Twitter" class="form-control"
-													[(ngModel)]="companyProfile.twitterLink"
-													(input)="validatePattern('twitterLink')"
-													(blur)="validatePattern('twitterLink')" /> <span
-													*ngIf="twitterLinkError" style="color: #f55d7a">{{twitterLinkErrorMessage}}</span>
-											</div>
-											<!-----****XNFR-281****------>
-											<div class="form-group" [attr.class]="eventUrlDivClass">
-												<label class="control-label" translate>Event Url</label> <input
-													type="text" id="eventUrl" name="eventUrl"
-													placeholder="Event Url" class="form-control"
-													[(ngModel)]="companyProfile.eventUrl"
-													(input)="validatePattern('eventUrl')"
-													(blur)="validatePattern('eventUrl')" /> <span
-													*ngIf="eventUrlError" style="color: #f55d7a">{{eventUrlErrorMessage}}</span>
-											</div>
-										</div>
-									</div>
-								</div>
-							</ng-template>
-								<div class="pull-right" *ngIf="!isFromAdminPanel">
-						<button type="submit"
-							[disabled]="authenticationService.isSuperAdmin()"
-							*ngIf="companyProfile.isAdd" id="saveOrUpdateCompanyButton"
-							(click)="save()" class="btn Btn-Green" disabled="disabled" translate>Save</button>
-						<button type="submit"
-							[disabled]="authenticationService.isSuperAdmin()"
-							*ngIf="!companyProfile.isAdd" id="saveOrUpdateCompanyButton"
-							(click)="update()" class="btn Btn-Green" translate>Update</button>
-					</div>
-							</div>
-							<!-- -End Of Panel -->
-						</div>
-						</div>
-						
 					</div>
 
 				</form>
@@ -833,85 +887,75 @@
 </div>
 
 
-<div class="modal right fade" id="cropLogoImage" tabindex="-1"
-	role="dialog" aria-labelledby="cropLogoImage" data-keyboard="false"
-	data-backdrop="static">
+<div class="modal right fade" id="cropLogoImage" tabindex="-1" role="dialog" aria-labelledby="cropLogoImage"
+	data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog imgCrop-modal" role="document">
 		<div class="modal-content rounded-0">
 			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i
-					class="fa fa-times" aria-hidden="true"></i></a>
+				<a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i class="fa fa-times"
+						aria-hidden="true"></i></a>
 				<h4 class="modal-title" id="cropLogoImage">{{cropLogoImageText}}</h4>
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
-				<div style="position: relative; top: -8px; width: 118px;"
-					class="btn green fileinput-button-css" *ngIf="!imageChangedEvent; else uploadButton">
-					<span>Upload image</span> <input style="height: 36px;" title=" "
-						id="custom-input" type="file"
+				<div style="position: relative; top: -8px; width: 118px;" class="btn green fileinput-button-css"
+					*ngIf="!imageChangedEvent; else uploadButton">
+					<span>Upload image</span> <input style="height: 36px;" title=" " id="custom-input" type="file"
 						(change)="fileBgImageChangeEvent($event)">
 				</div>
-				<ng-template #uploadButton> 
-					<div style="position: relative; top: -5px; width: 118px;"
-					class="btn green fileinput-button-css">
-					<span>Upload image</span> <input style="height: 36px;" title=" "
-						id="custom-input" type="file"
-						(change)="fileBgImageChangeEvent($event)">
-				</div>
-			</ng-template>
-				<div style="position: relative; top: -5px;" 
-					*ngIf="errorUploadCropper" style="color:red">*Please Upload
+				<ng-template #uploadButton>
+					<div style="position: relative; top: -5px; width: 118px;" class="btn green fileinput-button-css">
+						<span>Upload image</span> <input style="height: 36px;" title=" " id="custom-input" type="file"
+							(change)="fileBgImageChangeEvent($event)">
+					</div>
+				</ng-template>
+				<div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload
 					only images</div>
 				<div>
 					<ngx-loading [show]="loadingcrop"
 						[config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
-					
+
 					<div [hidden]="!imageChangedEvent">
-						
-							<app-img-croppr-v2
-							[imageChangedEvent]="imageChangedEvent"
-							[maintainAspectRatio]="true"
-							[containWithinAspectRatio]="containWithinAspectRatio"
-							[aspectRatio]="3 / 1"
-							[resizeToWidth]="800"
-							[cropperMinWidth]="500"
-							[onlyScaleDown]="true"
-							[roundCropper]="false"
-							[alignImage]="'left'"
-							[style.display]="showCropper ? null : 'none'"
-							format="png"
-							[transform]="transform"
-							(imageCropped)="imageCroppedMethod($event)"
-							(imageLoaded)="imageLoaded()"
-							(cropperReady)="cropperReady($event)"
+
+						<app-img-croppr-v2 [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
+							[containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="3 / 1"
+							[resizeToWidth]="800" [cropperMinWidth]="500" [onlyScaleDown]="true" [roundCropper]="false"
+							[alignImage]="'left'" [style.display]="showCropper ? null : 'none'" format="png"
+							[transform]="transform" (imageCropped)="imageCroppedMethod($event)"
+							(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady($event)"
 							(loadImageFailed)="loadImageFailed()">
-							</app-img-croppr-v2>
+						</app-img-croppr-v2>
 					</div>
 					<div *ngIf="!imageChangedEvent">
-						<fieldset
-							style="background: #cacaca; height: 227px; margin-bottom: 5px;margin-top:1px;">
+						<fieldset style="background: #cacaca; height: 227px; margin-bottom: 5px;margin-top:1px;">
 						</fieldset>
 					</div>
-					
+
 
 				</div>
 				<div class="d-flex justify-content-between">
 					<div class="button-group" style="position: relative;text-align:left">
 						<button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
-							
+
 							{{
-							  containWithinAspectRatio
-								? 'Fill Aspect Ratio'
-								: 'Contain Within Aspect Ratio'
+							containWithinAspectRatio
+							? 'Fill Aspect Ratio'
+							: 'Contain Within Aspect Ratio'
 							}}
-						  </button>
-						<button class="btn-info" (click)="zoomOut()" [disabled]="!showCropper"><i class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
-						<button class="btn-info" (click)="zoomIn()" [disabled]="!showCropper"><i class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
-						<button class="btn-info" (click)="resetImage()" [disabled]="!showCropper"> <i class="fa fa-refresh" title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>	
+						</button>
+						<button class="btn-info" (click)="zoomOut()" [disabled]="!showCropper"><i
+								class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i>
+						</button>
+						<button class="btn-info" (click)="zoomIn()" [disabled]="!showCropper"><i
+								class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i>
+						</button>
+						<button class="btn-info" (click)="resetImage()" [disabled]="!showCropper"> <i
+								class="fa fa-refresh" title="reset" data-toggle="tooltip"
+								aria-hidden="true"></i></button>
 					</div>
-				<div>
-					<button class="btn btn-primary" [disabled]="!showCropper"
-						(click)="uploadLogo()">Save Changes</button>
-				</div>
+					<div>
+						<button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadLogo()">Save
+							Changes</button>
+					</div>
 				</div>
 				<div>
 					<ul style="padding: 0 15px;">
@@ -919,102 +963,93 @@
 							white rectangle.</li>
 						<li>If you would like to use a different logo in an email
 							template, you can change it during the template design process.</li>
-							<li>
-								Please Upload .jpg, .jpeg, .png, .webp files only.
-							</li>
+						<li>
+							Please Upload .jpg, .jpeg, .png, .webp files only.
+						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
 	<svg id="svg-filter">
-        <filter id="svg-blur">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
-        </filter>
-    </svg>
+		<filter id="svg-blur">
+			<feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
+		</filter>
+	</svg>
 </div>
 
 
 
 <!-- Bg Image Modal -->
-<div class="modal right fade" id="cropBgImage" tabindex="-1"
-	role="dialog" aria-labelledby="cropBgImage" data-keyboard="false"
-	data-backdrop="static">
+<div class="modal right fade" id="cropBgImage" tabindex="-1" role="dialog" aria-labelledby="cropBgImage"
+	data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog imgCrop-modal" role="document">
 		<div class="modal-content rounded-0">
 			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i
-					class="fa fa-times" aria-hidden="true"></i></a>
+				<a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i class="fa fa-times"
+						aria-hidden="true"></i></a>
 				<h4 class="modal-title" id="cropBgImage">{{cropLogoImageText}}</h4>
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
-				<div style="position: relative; top: -5px; width: 118px;"
-					class="btn green fileinput-button-css" *ngIf="!bgImageChangedEvent; else changeButton">
-					<span>Upload image</span> <input style="height: 36px;" title=" "
-						id="custom-input" type="file"
+				<div style="position: relative; top: -5px; width: 118px;" class="btn green fileinput-button-css"
+					*ngIf="!bgImageChangedEvent; else changeButton">
+					<span>Upload image</span> <input style="height: 36px;" title=" " id="custom-input" type="file"
 						(change)="uploadfileBgImageChangeEvent($event)">
 				</div>
-				<ng-template #changeButton> 
-					<div style="position: relative; top: -5px; width: 118px;"
-					class="btn green fileinput-button-css">
-					<span>Upload image</span> <input style="height: 36px;" title=" "
-						id="custom-input" type="file"
-						(change)="uploadfileBgImageChangeEvent($event)">
-				</div>
-			</ng-template>
-				<div style="position: relative; top: -5px;"
-					*ngIf="errorUploadCropper" style="color:red">*Please Upload
+				<ng-template #changeButton>
+					<div style="position: relative; top: -5px; width: 118px;" class="btn green fileinput-button-css">
+						<span>Upload image</span> <input style="height: 36px;" title=" " id="custom-input" type="file"
+							(change)="uploadfileBgImageChangeEvent($event)">
+					</div>
+				</ng-template>
+				<div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload
 					only images</div>
 				<div>
 					<ngx-loading [show]="loadingcrop"
 						[config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
 					<div [hidden]="!bgImageChangedEvent">
-						
-					<app-img-croppr-v2
-							[imageChangedEvent]="bgImageChangedEvent"
-							[maintainAspectRatio]="true"
-							[containWithinAspectRatio]="containWithinAspectRatio"
-							[aspectRatio]="16 / 9"
-							[resizeToWidth]="800"
-							[cropperMinWidth]="500"
-							[onlyScaleDown]="true"
-							[roundCropper]="false"
-							[alignImage]="'left'"
-							[style.display]="showCropper ? null : 'none'"
-							format="png"
-							[transform]="transform"
-							(imageCropped)="bgImageCroppedMethod($event)"
-							(imageLoaded)="imageLoaded()"
-							(cropperReady)="cropperReady($event)"
+
+						<app-img-croppr-v2 [imageChangedEvent]="bgImageChangedEvent" [maintainAspectRatio]="true"
+							[containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="16 / 9"
+							[resizeToWidth]="800" [cropperMinWidth]="500" [onlyScaleDown]="true" [roundCropper]="false"
+							[alignImage]="'left'" [style.display]="showCropper ? null : 'none'" format="png"
+							[transform]="transform" (imageCropped)="bgImageCroppedMethod($event)"
+							(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady($event)"
 							(loadImageFailed)="loadImageFailed()">
-							</app-img-croppr-v2>
-						</div>
+						</app-img-croppr-v2>
+					</div>
 					<div *ngIf="!bgImageChangedEvent">
-						<fieldset
-							style="background: #cacaca; height: 227px; margin-bottom: 5px;">
+						<fieldset style="background: #cacaca; height: 227px; margin-bottom: 5px;">
 						</fieldset>
 					</div>
-					
+
 
 				</div>
 
 				<div class="d-flex justify-content-between">
 					<div class="button-group" style="position: relative;text-align:left">
-						<button class="btn-info" (click)="toggleContainWithinAspectRatioBgImage()" [disabled]="!showCropper">
-							
+						<button class="btn-info" (click)="toggleContainWithinAspectRatioBgImage()"
+							[disabled]="!showCropper">
+
 							{{
-							  containWithinAspectRatio
-								? 'Fill Aspect Ratio'
-								: 'Contain Within Aspect Ratio'
+							containWithinAspectRatio
+							? 'Fill Aspect Ratio'
+							: 'Contain Within Aspect Ratio'
 							}}
-						  </button>
-						<button class="btn-info" (click)="zoomOutBgImage()" [disabled]="!showCropper"><i class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
-						<button class="btn-info" (click)="zoomInBgImage()" [disabled]="!showCropper"><i class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
-						<button class="btn-info" (click)="resetImageBgImage()" [disabled]="!showCropper"> <i class="fa fa-refresh" title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>	
+						</button>
+						<button class="btn-info" (click)="zoomOutBgImage()" [disabled]="!showCropper"><i
+								class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i>
+						</button>
+						<button class="btn-info" (click)="zoomInBgImage()" [disabled]="!showCropper"><i
+								class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i>
+						</button>
+						<button class="btn-info" (click)="resetImageBgImage()" [disabled]="!showCropper"> <i
+								class="fa fa-refresh" title="reset" data-toggle="tooltip"
+								aria-hidden="true"></i></button>
 					</div>
 					<div>
-						<button class="btn btn-primary" [disabled]="!showCropper"
-							(click)="uploadBgImage()">Save Changes</button>
+						<button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadBgImage()">Save
+							Changes</button>
 					</div>
 				</div>
 				<div>
@@ -1033,8 +1068,8 @@
 		</div>
 	</div>
 	<svg id="svg-filter">
-        <filter id="svg-blur">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
-        </filter>
-    </svg>
+		<filter id="svg-blur">
+			<feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
+		</filter>
+	</svg>
 </div>

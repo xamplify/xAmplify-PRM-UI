@@ -278,7 +278,8 @@
 							<div class="form-group" *ngIf="eventCampaign.configurePipelines"
 								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 								<label class="control-label col-sm-3">Lead Pipeline<font style="color: #f55d7a">
-										<b>*</b></font></label>
+										<b>*</b>
+									</font></label>
 								<div class="col-sm-9">
 									<select class="form-control" [(ngModel)]="eventCampaign.leadPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="leadPipelineId"
@@ -292,7 +293,8 @@
 							<div class="form-group" *ngIf="eventCampaign.configurePipelines"
 								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 								<label class="control-label col-sm-3">Deal Pipeline<font style="color: #f55d7a">
-										<b>*</b></font></label>
+										<b>*</b>
+									</font></label>
 								<div class="col-sm-9">
 									<select class="form-control" [(ngModel)]="eventCampaign.dealPipelineId"
 										[ngModelOptions]="{standalone: true}" placeholder="dealPipelineId"
@@ -925,28 +927,31 @@
 																	class="hidden-xs">
 																	<img *ngIf="contactList?.socialNetwork=='ZOHO'"
 																		src="{{properties?.zohoImage}}" alt="Zoho"
-																		class="img-class-list">
+																		class="img-class-list image_effect">
 																	<img *ngIf="contactList?.socialNetwork=='GOOGLE'"
 																		src="{{properties?.googleImage}}" alt="Google"
-																		class="img-class-list">
+																		class="img-class-list image_effect">
 																	<img *ngIf="contactList?.socialNetwork=='SALESFORCE'"
 																		src="{{properties?.salesforceImage}}"
-																		alt="Salesforce" class="img-class-list">
+																		alt="Salesforce"
+																		class="img-class-list image_effect">
 																	<img *ngIf="contactList?.socialNetwork=='MANUAL'"
 																		src="{{properties?.manualImage}}" alt="Manual"
-																		class="img-class-list">
+																		class="img-class-list image_effect">
 																	<img *ngIf="contactList?.socialNetwork=='HUBSPOT'"
 																		src="{{properties?.hubspotImage}}" alt="Hubspot"
-																		class="img-class-list">
+																		class="img-class-list image_effect">
 																	<img *ngIf="contactList?.socialNetwork=='MARKETO'"
 																		src="{{properties?.marketoImage}}" alt="Marketo"
-																		class="img-class-list">
+																		class="img-class-list image_effect">
 																	<img *ngIf="contactList?.socialNetwork=='MICROSOFT'"
 																		src="{{properties?.microsoftImage}}"
-																		alt="microsoft" class="img-class-list">
+																		alt="microsoft"
+																		class="img-class-list image_effect">
 																	<img *ngIf="contactList?.socialNetwork=='PIPEDRIVE'"
 																		src="{{properties?.pipedriveImage}}"
-																		alt="pipedrive" class="img-class-list">
+																		alt="pipedrive"
+																		class="img-class-list image_effect">
 																</td>
 																<td style="text-align: left;"
 																	*ngIf="!reDistributeEvent && !reDistributeEventManage">
@@ -1331,7 +1336,7 @@
 															*ngIf="eventCampaign.campaign?.length>30">...</span></h4>
 													<h4><img style="margin: 20px auto;height: 85px;"
 															alt="Regular E-mail Campaign"
-															class="pricing-head-img img-responsive"
+															class="pricing-head-img img-responsive image_effect"
 															src="assets/images/event-campaign.svg"></h4>
 												</div>
 											</div>
