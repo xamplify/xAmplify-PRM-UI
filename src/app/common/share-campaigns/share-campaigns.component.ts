@@ -12,8 +12,6 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { UtilService } from 'app/core/services/util.service';
 
-
-
 declare var $:any;
 
 @Component({
@@ -46,14 +44,20 @@ export class ShareCampaignsComponent implements OnInit {
   ngOnInit() {
     this.referenceService.startLoader(this.httpRequestLoader);
     let contact = this.contact;
-    this.pagination.partnerOrContactEmailId = contact.emailId;
-    this.pagination.partnerId = contact.id;
-    this.firstName = contact.firstName;
-    this.lastName = contact.lastName;
-    this.companyName = contact.contactCompany;
+    if(contact!=undefined){
+      this.pagination.partnerOrContactEmailId = contact.emailId;
+      this.pagination.partnerId = contact.id;
+      this.firstName = contact.firstName;
+      this.lastName = contact.lastName;
+      this.companyName = contact.contactCompany;
+      this.newEmailIdsAreAdded = false;
+    }else{
+      this.pagination.partnerId = 0;
+      this.newEmailIdsAreAdded = true;
+    }
     this.pagination.userListId = this.selectedUserListId;
     this.type = this.type;
-    this.newEmailIdsAreAdded = false;
+   
     if(this.type=="Contact" && this.vanityUrlService.isVanityURLEnabled()){
       this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.pagination.vanityUrlFilter = true;

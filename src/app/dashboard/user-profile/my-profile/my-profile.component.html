@@ -367,8 +367,8 @@
                                             <th class="text-center">Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody *ngFor="let dto of themeDtoList">
-                                        <tr id="themeListDiv_{{dto.id}}">
+                                    <tbody>
+                                        <tr *ngFor="let dto of themeDtoList" id="themeListDiv_{{dto.id}}">
                                             <td> <img src="assets/images/theme/1/Webp/theam_custom.webp" alt=""
                                                     class="img-customization"> </td>
                                             <td class="text-center">{{dto.name}}
@@ -1333,7 +1333,7 @@
                                                                 <div class="actions-block override-actions cwotpx mb_whitespace">
                                                                     <ng-container *ngIf="category.defaultCategory">
                                                                         <a data-placement="top" class="disabled-event" title="Default Folder Can't Be Edited">
-                                                                            <i class="fa fa-pencil-square-o disabled-event IconCustomization" aria-hidden="true"></i>
+                                                                            <i class="fa fa-pencil-square-o disabled-event IconCustomization gray" aria-hidden="true"></i>
                                                                         </a>
                                                                         <a id="template-delete" class="disabled-event" data-placement="top" title="Default Folder Can't Be Deleted">
                                                                             <i class="fa fa-trash-o disabled-event trashIconCustomization" aria-hidden="true"></i>

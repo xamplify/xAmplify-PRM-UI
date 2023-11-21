@@ -190,3 +190,6 @@ p.warning-red-textcolor {
     justify-content: center;
   }
 }
+.p0-p10{
+  padding: 0px 10px Im !important;
+}

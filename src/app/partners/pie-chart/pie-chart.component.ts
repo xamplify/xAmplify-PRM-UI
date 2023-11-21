@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ParterService } from '../services/parter.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { PartnerJourneyRequest } from '../models/partner-journey-request';
 
 declare var Highcharts: any;
 @Component({
@@ -12,10 +13,24 @@ declare var Highcharts: any;
 
 export class PieChartComponent implements OnInit {
   @Input() partnerCompanyId: number;
+  @Input() chartId: any;
+  @Input() teamMemberId: any;
+  @Output() notifySelectSlice = new EventEmitter();
+  @Output() notifyUnSelectSlice = new EventEmitter();
+  headerText: string;
+  loader = false;
+  statusCode = 200;
+  pieChartData: Array<any> = [];
   constructor(public parterService: ParterService, public authenticationService:AuthenticationService,public xtremandLogger:XtremandLogger) { }
 
   constructPieChart(pieChartData: any){
-   Highcharts.chart('pie'+this.partnerCompanyId, {
+    if(this.chartId == "redistributedCampaignDetailsPieChart"){
+    var chartId = this.chartId;
+    } else {
+      chartId = 'pie'+this.partnerCompanyId;
+    }
+    let self = this;
+   Highcharts.chart(chartId, {
        chart: {
            plotBackgroundColor: null,
            plotBorderWidth: null,
@@ -27,7 +42,6 @@ export class PieChartComponent implements OnInit {
            text: ''
        },
        tooltip: {
-           pointFormat: '{series.name}: <b>{point.percentage:.0f}%</b>',
            backgroundColor: 'black', 
            style: {
              color: '#fff' 
@@ -38,10 +52,36 @@ export class PieChartComponent implements OnInit {
                allowPointSelect: true,
                cursor: 'pointer',
                dataLabels: {
-                   enabled: false
+                enabled: this.chartId === 'redistributedCampaignDetailsPieChart' ? true : false,
+                style: {
+                    color: this.chartId === 'redistributedCampaignDetailsPieChart' 
+                        ? (this.authenticationService.isDarkForCharts ? "#fff" : "#696666")
+                        : undefined 
+                }
                },
                showInLegend: false
-           }
+           }, series: {
+            allowPointSelect: true,
+            marker: {
+              states: {
+                select: {
+                  radius: 1,
+                  fillColor: '#666'
+                }
+              }
+            },
+            point:{
+              events:{
+                  select: function (event) {
+                    self.notifySelectSlice.emit(this.name);                   
+                  },
+  
+                  unselect: function (event) {
+                    self.notifyUnSelectSlice.emit(this.name);                   
+                  }
+              }
+            } 
+          }
        },
        exporting: {enabled: false},
        credits: {enabled: false},
@@ -69,7 +109,47 @@ export class PieChartComponent implements OnInit {
     }
   
   ngOnInit() {
-      this.launchedCampaignsCountGroupByCampaignType();
+   
+  }
+  foundPieChart(){
+    if(this.chartId == "redistributedCampaignDetailsPieChart"){
+          this.redistributedCampaignDetailsPieChart();
+          this.headerText = 'Redistributed Campaigns';
+        } else {
+         this.launchedCampaignsCountGroupByCampaignType();
+        }
+  }
+
+  ngOnChanges(){
+    this.foundPieChart();
+  }
+
+  redistributedCampaignDetailsPieChart() {
+    let partnerJourneyRequest = new PartnerJourneyRequest();
+    partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
+    partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
+    partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
+    this.parterService.redistributedCampaignDetailsPieChart(partnerJourneyRequest).subscribe(
+      response => {
+        this.processResponse(response);
+      }, error => {
+        this.setErrorResponse(error);
+      }
+    );
+  } 
+  setErrorResponse(error: any) {
+    this.xtremandLogger.error(error);
+    this.loader = false;
+    this.statusCode = 500;
+  }
+
+  processResponse(response: any) {
+    this.statusCode = response.statusCode;
+    this.pieChartData = response.data;
+    if (this.statusCode == 200) {
+      this.constructPieChart(this.pieChartData);
+    }
+    this.loader = false;
   }
 
 }

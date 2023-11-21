@@ -60,6 +60,7 @@ export class Pagination {
 	categoryIds:number[] = [];
 	categoryFilter = false;
 	partnerCompanyId:number = 0;
+	selectedPartnerCompanyIds: any[] = [];
 	previewAccess = false;
 	partnerView = false;
 	selectedPartnerLeads = false;
@@ -101,6 +102,7 @@ export class Pagination {
 	//XNFR-316
 	trackTypeFilter: any = "";
 	assetTypeFilter: any = "";
+	campaignTypeFilter: any = "";
 	/** user guides ***/
 	moduleName:string = "";
 	slug:string = "";
@@ -110,5 +112,6 @@ export class Pagination {
 	selectedEmailTempalteId = 0;
 	selectedVideoId = 0;
 	partnerJourneyFilter = false;
+	detailedAnalytics = false;
 
 }

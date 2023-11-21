@@ -2572,3 +2572,19 @@ div#bubble-chart {
   padding: 0px 0px !important;
   border-radius: 10px;
 }
+.notify_count {
+  font-family: "Gantari", "Open Sans", sans-serif;
+  position: absolute;
+  top: 11px;
+  left: 24px;
+  right: 0px;
+  font-weight: 300;
+  padding: 6px 3px !important;
+  height: 21px !important;
+  width: 21px;
+  font-size: 10px !important;
+}
+.override-actions {
+  display: flex !important;
+  justify-content: center !important;
+}
