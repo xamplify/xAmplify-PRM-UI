@@ -381,16 +381,13 @@
                                         <div class="row">
                                             <div class="" [ngClass]="dto?.id == 3 ? '':'col-lg-6 col-md-6 col-sm-6'"
                                                 *ngFor="let dto of defaultThemes">
-                                                <div
-                                                    *ngIf="dto?.id == 1 || dto?.id == 2 || dto?.id == 3 || dto?.id == 4">
+                                                <div *ngIf="dto?.id == 1 || dto?.id == 2 || dto?.id == 4">
                                                     <div class="img_padding">
 
                                                         <img *ngIf="dto?.id == 1 " alt="" class="img-custome"
                                                             src="assets/images/theme/1/Webp/01.webp">
                                                         <img *ngIf="dto?.id == 2 " alt="" class="img-custome"
                                                             src="assets/images/theme/1/Webp/02.webp">
-                                                        <img *ngIf="dto?.id == 3 " alt="" class="img-custome img-height"
-                                                            src="assets/images/theme/1/Webp/04.webp">
                                                         <img *ngIf="dto?.id == 4 " alt="" class="img-custome img-height"
                                                             src="assets/images/theme/1/Webp/04.webp">
                                                     </div>
@@ -1334,8 +1331,7 @@
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="PipelinesTablet-thWidth">
-                                                                                <span>Name</span>
-                                                                            </th>
+                                                                                <span>Name</span></th>
                                                                             <th class="PipelinesTablet-thWidth1">Created
                                                                                 By</th>
                                                                             <th class="PipelinesTablet-thWidth2">Stages

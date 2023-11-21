@@ -43,7 +43,8 @@
 											<td *ngIf="!asset.videoId || isPartnerView">
 												<div class="thumbnail-wrapper image_effect"
 													style="width: 180px; height: 100px; border:1px solid #ccc;">
-													<img class="custom-image-css" src="{{asset?.thumbnailPath}}"
+													<img class="custom-image-css image_effect"
+														src="{{asset?.thumbnailPath}}"
 														onerror="this.src='assets/images/no-preview.jpg';"
 														alt="Image Not Found"
 														style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
@@ -293,7 +294,7 @@
 																	<td style="width: 12%;">
 																		<div class="thumbnail-wrapper image_effect"
 																			style="width: 180px;height: 100px;">
-																			<img class="custom-image-css"
+																			<img class="custom-image-css image_effect"
 																				src="{{asset?.thumbnailPath}}"
 																				alt="Image Not Found"
 																				onerror="this.src='assets/images/no-preview.jpg';"
@@ -503,9 +504,11 @@
 							<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tb_view_10"
 								*ngFor="let asset of pagination.pagedItems ;let i =index" id="assetList_{{asset.id}}">
 								<div class="grid-box min-h default-cursor mHeight">
-									<img *ngIf="!asset?.videoId" class="img-class mxv" src="{{asset?.thumbnailPath}}"
+									<img *ngIf="!asset?.videoId" class="img-class mxv image_effect"
+										src="{{asset?.thumbnailPath}}"
 										onerror="this.src='assets/images/no-preview.jpg';" alt="Image Not Found">
-									<img *ngIf="asset?.videoId>0" class="img-class mxv" src="{{asset?.thumbnailPath}}"
+									<img *ngIf="asset?.videoId>0" class="img-class mxv image_effect"
+										src="{{asset?.thumbnailPath}}"
 										onerror="this.src='assets/images/default-image.jpg';" alt="Image Not Found">
 									<h4 class="overflow-hidden mt5 mb5 f-w-600" data-toggle="tooltip"
 										data-placement="bottom" title="{{asset?.assetName}}">
