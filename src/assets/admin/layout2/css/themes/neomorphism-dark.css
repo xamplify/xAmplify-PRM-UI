@@ -2349,7 +2349,8 @@ input {
   background: #2c2f33 !important;
 }
 .page-sidebar .page-sidebar-menu > li.active > a,
-.page-sidebar .page-sidebar-menu > li.hover > a {
+.page-sidebar .page-sidebar-menu > li.hover > a,
+.dotted-image-border {
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 .camp_card_effect:hover {
@@ -2746,7 +2747,7 @@ a.Iconhover.custom-icon {
 hr.swal2-spacer {
   border-top: none !important;
 }
-/* me */
+/* manikanta */
 /* a.UserguideBtnCustomization:hover {
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
   color: #fff !important;
@@ -2856,7 +2857,10 @@ a.UserguideBtnCustomization {
 .custom-icon:hover .del-icon{
   top: 0%;
 }
-i.fa.fa-trash-o.trashIconCustomization:hover {
+i.fa.fa-trash-o:hover,
+i.fa.fa-pencil-square-o:hover,
+i.fa.fa-files-o:hover,
+i.fa.fa-bullhorn:hover{
   background-color: unset !important;
   z-index: 999;
   position: relative;
@@ -2864,4 +2868,12 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .actions_width{
 width:inherit!important;
+}
+/* sudha sri(21-11-2023) */
+div#collapse1,
+.panel-heading.panel-header {
+  border: none !important;
+}
+a.delete.custom-icon {
+  line-height: 25px !important;
 }
