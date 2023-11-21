@@ -11,6 +11,7 @@ declare var $: any;
 })
 export class ImageUploadCropperComponent implements OnInit {
   @Input() aspectRatio: any;
+  @Input() resizeToWidth:any;
   @Output() bgImage = new EventEmitter<any>();
   loading: boolean = false;
   cropRounded = false;

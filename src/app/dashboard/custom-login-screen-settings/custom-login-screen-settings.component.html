@@ -300,7 +300,7 @@
         <!-- Login Style 2-->
       </div>
     </div>
-    <app-image-upload-cropper [aspectRatio]="aspectRatio" *ngIf="isShowUploadScreen"
+    <app-image-upload-cropper [aspectRatio]="aspectRatio" [resizeToWidth]="resizeToWidth" *ngIf="isShowUploadScreen"
       (bgImage)="backgroundImage($event)"></app-image-upload-cropper>
 
   </div>

@@ -108,6 +108,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     $('#updateDiv').show();
 
   }
+  resizeToWidth:any;
   bgImageClickForStyle1() {
     this.isShowUploadScreen = false;
     this.cropLogoImageText = "Choose the image to be used as your company background";
@@ -115,6 +116,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     this.isShowUploadScreen = true;
     $('#cropBgImage').modal('show');
     this.aspectRatio = (8 / 9);
+    this.resizeToWidth = 640;
   }
 
   setVendorLogoOption(event: any) {
@@ -135,6 +137,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     this.cropRounded = false;
     this.isShowUploadScreen = true;
     this.aspectRatio = (16 / 9);
+    this.resizeToWidth = 1280;
     $('#cropBgImage').modal('show');
   }
 
