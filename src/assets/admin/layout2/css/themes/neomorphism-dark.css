@@ -154,7 +154,7 @@ h6 {
 .bar,
 .tile,
 .progress {
-  background-color: #2c2f33 !important;
+  background-color: #191b1e !important;
 }
 .heading-top {
   background-color: #2e3033 !important;
@@ -1086,7 +1086,7 @@ input#copy-link {
     .e-warning
   ):not(.e-error)
   .e-input-in-wrap {
-  border-color: #2f4857 !important;
+  border-color: #191b1e !important;
 }
 .message-auto {
   border: 1px solid #2f4857 !important;
@@ -1689,24 +1689,24 @@ p.layoutcontent {
   background: #22313a !important;
 }
 .bg-color-for-footercard1 {
-  border: 1px solid #2f4857 !important;
-  background: #22313a !important;
+  border: 1px solid #191b1e !important;
+  background: #2c2f33 !important;
 }
 .bg-color-for-secondcard {
-  border: 1px solid #2f4857 !important;
-  background: #22313a !important;
+  border: 1px solid #191b1e !important;
+  background: #2c2f33 !important;
 }
 .bg-color-for-secondcard1 {
-  border: 1px solid #2f4857 !important;
-  background: #22313a !important;
+  border: 1px solid #191b1e !important;
+  background: #2c2f33 !important;
 }
 .bg-color-for-thirdcard {
-  border: 1px solid #2f4857 !important;
-  background: #22313a !important;
+  border: 1px solid #191b1e !important;
+  background: #2c2f33 !important;
 }
 .bg-color-for-thirdcard1 {
-  border: 1px solid #2f4857 !important;
-  background: #22313a !important;
+  border: 1px solid #191b1e !important;
+  background: #2c2f33 !important;
 }
 .portlet-light-fields.custom-header-img-color,
 .portlet-light-fields.custom-left-img-color.left-left.box-center,
@@ -1746,7 +1746,7 @@ p.addhrtosvg {
 }
 .bg-color-for-footercard2 {
   border: 1px solid #2f4857 !important;
-  background: #22313a !important;
+  background: #2c2f33 !important;
 }
 .cardfotter-toggleon {
   border: 1px solid #2f4857 !important;
@@ -2266,7 +2266,8 @@ left-menu-color ul li a,
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 .custom,
-.barview {
+.barview,
+.gridIconCustomization {
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 .table tbody tr:hover {
@@ -2349,7 +2350,8 @@ input {
   background: #2c2f33 !important;
 }
 .page-sidebar .page-sidebar-menu > li.active > a,
-.page-sidebar .page-sidebar-menu > li.hover > a {
+.page-sidebar .page-sidebar-menu > li.hover > a,
+.dotted-image-border {
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 .camp_card_effect:hover {
@@ -2594,6 +2596,7 @@ hr {
   width: 100% !important;
   border-radius: 32% !important;
   left: 0;
+  z-index: -1;
 }
 i.IconCustomization:hover {
   background-color: unset !important;
@@ -2746,7 +2749,7 @@ a.Iconhover.custom-icon {
 hr.swal2-spacer {
   border-top: none !important;
 }
-/* me */
+/* manikanta */
 /* a.UserguideBtnCustomization:hover {
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
   color: #fff !important;
@@ -2852,11 +2855,25 @@ a.UserguideBtnCustomization {
   width: 100% !important;
   border-radius: 32% !important;
   left: 0;
+  z-index: -1;
 }
 .custom-icon:hover .del-icon{
   top: 0%;
 }
-i.fa.fa-trash-o.trashIconCustomization:hover {
+i.fa.fa-trash-o:hover,
+i.fa.fa-pencil-square-o:hover,
+i.fa.fa-files-o:hover,
+i.fa.fa-bullhorn:hover,
+i.fa.fa-edit:hover,
+i.fa.fa-download:hover,
+i.fa.fa-line-chart:hover,
+i.fa.fa-eye:hover,
+i.fa.fa-history:hover,
+i.fa.fa-paint-brush:hover,
+i.fa.fa-reply:hover,
+i.fa.fa-inbox:hover,
+i.fa.fa-envelope-o:hover,
+i.fa.fa-rocket:hover{
   background-color: unset !important;
   z-index: 999;
   position: relative;
@@ -2864,4 +2881,16 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .actions_width{
 width:inherit!important;
+}
+/* sudha sri(21-11-2023) */
+div#collapse1,
+.panel-heading.panel-header {
+  border: none !important;
+}
+a.delete.custom-icon {
+  line-height: 25px !important;
+}
+.page-bar.m10.tab-border-none,
+.page-bar.m10 {
+  box-shadow: none !important;
 }

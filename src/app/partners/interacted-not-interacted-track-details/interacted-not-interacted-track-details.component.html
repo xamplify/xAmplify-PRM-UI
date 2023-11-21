@@ -15,7 +15,7 @@
       </span>
     </div>
     <div class="panel-body">    
-      <div class="scroll table-responsive tableHeightScroll"  *ngIf="!httpRequestLoader.isLoading">
+      <div class="scroll table-responsive {{scrollClass}}"  *ngIf="!httpRequestLoader.isLoading">
         <table class="table">
           <thead>
             <tr>         

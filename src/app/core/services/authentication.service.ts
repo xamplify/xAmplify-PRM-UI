@@ -145,8 +145,12 @@ export class AuthenticationService {
  activateThemeId:number;
  vanityLoginDtoForTheme:VanityLoginDto = new VanityLoginDto();
   /***** XNFR-238*********** */
+  /********  XNFR-233*****/
+  lognTemplateId:number;
+  loginType:string;
+  v_companyBgImagePath2;
+  /**** XNFR-233 */
   formBackground="";
-  
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;

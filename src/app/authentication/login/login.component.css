@@ -122,3 +122,20 @@ a.forget-password:hover {
 .field-icon {
 	color: #333 !important;
 }
+
+
+.bg_image {
+	background-image: url("https://xamplify.io/assets/images/stratapps.jpeg");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	position: sticky;
+	top:0;
+	min-height: 100vh;
+}
+
+.rightcontent {
+	background-color: #0b1c2f;
+	overflow: auto;
+	/* padding: 40px 100px; */
+}

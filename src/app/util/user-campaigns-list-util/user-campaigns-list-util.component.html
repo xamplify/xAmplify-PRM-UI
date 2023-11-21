@@ -1,289 +1,335 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content">
-  <div class="page-bar">
-    <ul class="page-breadcrumb">
-       <li><i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
-          <i class="fa fa-angle-right" aria-hidden="true"></i>
-       </li>
-       <li><a translate>Campaigns</a></li>
-    </ul>
-    <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
-      <i class="fa fa-times" aria-hidden="true"></i>
-  </a>
-  <a *ngIf="!tilesLoader" class="close-circle refresh-margin" (click)="getActiveAndTotalCampaignsCount()" aria-hidden="true">
-   <i class="fa fa-refresh" aria-hidden="true"></i>
-</a>
- </div>
- <div class="row">
-   <div class="col-md-12 col-lg-12">
-      <div class="portlet light mheight">
-         <!-- <a *ngIf="!tilesLoader" class="close-circle refresh-margin" (click)="getActiveAndTotalCampaignsCount()" aria-hidden="true">
+   <div class="page-bar">
+      <ul class="page-breadcrumb">
+         <li><i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter"
+               translate>Home</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+         </li>
+         <li><a translate>Campaigns</a></li>
+      </ul>
+      <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
+         <i class="fa fa-times" aria-hidden="true"></i>
+      </a>
+      <a *ngIf="!tilesLoader" class="close-circle refresh-margin" (click)="getActiveAndTotalCampaignsCount()"
+         aria-hidden="true">
+         <i class="fa fa-refresh" aria-hidden="true"></i>
+      </a>
+   </div>
+   <div class="row">
+      <div class="col-md-12 col-lg-12">
+         <div class="portlet light mheight">
+            <!-- <a *ngIf="!tilesLoader" class="close-circle refresh-margin" (click)="getActiveAndTotalCampaignsCount()" aria-hidden="true">
             <i class="fa fa-refresh" aria-hidden="true"></i>
         </a> -->
-         <div class="row" style="margin-left: -9px;">
-            <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
-            <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12 mleft" style="padding-left: 24px;padding-right: 30px;">
-               <div class="row">
-                  <div  id="vendor-details-tile" class="{{tileClass}} mBottom mWidth vendor_list" style="padding-left: 19px;border-radius: 5px !important;">
-                     <div class="row">
-                         <div class="flex margin-flex">
-                             <span class='profile'>
+            <div class="row" style="margin-left: -9px;">
+               <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
+               <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12 mleft"
+                  style="padding-left: 24px;padding-right: 30px;">
+                  <div class="row">
+                     <div id="vendor-details-tile" class="{{tileClass}} mBottom mWidth vendor_list"
+                        style="padding-left: 19px;border-radius: 5px !important;">
+                        <div class="row">
+                           <div class="flex margin-flex card-template">
+                              <span class='profile img-templates'>
                                  <span class='uppercase'>{{circleAlphabet}}</span>
-                                 </span>
-                                 <span class="margin-left" style="margin-left: 20px;">
-                                     <h6 class='m0 user-email' *ngIf="userDetails?.companyName?.length>0">
-                                         <p class="user-company"  data-toggle="tooltip" data-placement="bottom"  title="{{userDetails?.companyName}}">
-                                             <span>{{userDetails?.companyName |slice:0:50}}</span>
-                                             <span *ngIf="userDetails?.companyName?.length>50">..</span>
-                                         </p>
-                                       </h6>
-                                       <br>
-                                       <h5 *ngIf="userDetails?.fullName?.length>0" class='ellipsis user-name'  data-toggle="tooltip" data-placement="bottom"  title="{{userDetails?.fullName}}">
-                                           {{userDetails?.fullName | slice:0:50}}
-                                         <span *ngIf="userDetails?.fullName?.length>50">..</span>
-                                        </h5>
-                                        <a style="display: table;"  data-toggle="tooltip" data-placement="bottom"  title="{{userDetails?.emailId}}">
-                                         {{userDetails?.emailId | slice:0:50}}<span *ngIf="userDetails?.emailId?.length>50">...</span></a>
-                                 </span>
-                             </div>
+                              </span>
+                              <span class="margin-left" style="margin-left: 20px;">
+                                 <h6 class='m0 user-email' *ngIf="userDetails?.companyName?.length>0">
+                                    <p class="user-company" data-toggle="tooltip" data-placement="bottom"
+                                       title="{{userDetails?.companyName}}">
+                                       <span>{{userDetails?.companyName |slice:0:50}}</span>
+                                       <span *ngIf="userDetails?.companyName?.length>50">..</span>
+                                    </p>
+                                 </h6>
+                                 <br>
+                                 <h5 *ngIf="userDetails?.fullName?.length>0" class='ellipsis user-name'
+                                    data-toggle="tooltip" data-placement="bottom" title="{{userDetails?.fullName}}">
+                                    {{userDetails?.fullName | slice:0:50}}
+                                    <span *ngIf="userDetails?.fullName?.length>50">..</span>
+                                 </h5>
+                                 <a style="display: table;" data-toggle="tooltip" data-placement="bottom"
+                                    title="{{userDetails?.emailId}}">
+                                    {{userDetails?.emailId | slice:0:50}}<span
+                                       *ngIf="userDetails?.emailId?.length>50">...</span></a>
+                              </span>
+                           </div>
+                        </div>
                      </div>
-                  </div>
-                  <div    class="{{tileClass}} pr0 mtop mWidth tiles_hover_effect">
-                     <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
-                        <div class="visual" >
-                           <i aria-hidden="true" class=""></i>
-                        </div>
-                        <div class="details">
-                           
-                           <div data-toggle="tooltip" data-placement="bottom" title="{{totalCampaignsCount}}" class="number">{{totalCampaignsCount}}</div>
-                           <div class="desc">Total Campaigns</div>
-                        </div>
-                        <span class="morePadding">
-                     <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
-                     <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                     </span>
-                     </a>
-                  </div>
-                  <div   class="{{tileClass}} pr0 mWidth tiles_hover_effect">
-                     <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
-                        <div class="visual">
-                           <i aria-hidden="true" class=""></i>
-                        </div>
-                        <div class="details">
-                           <div data-toggle="tooltip" data-placement="bottom"  title="{{activeCampaignsCount}}" class="number">{{activeCampaignsCount}}</div>
-                           <div class="desc">Active Campaigns</div>
-                        </div>
-                        <span class="morePadding">
-                     <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
-                     <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                     </span>
-                     </a>
+                     <div class="{{tileClass}} pr0 mtop mWidth tiles_hover_effect">
+                        <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+
+                              <div data-toggle="tooltip" data-placement="bottom" title="{{totalCampaignsCount}}"
+                                 class="number">{{totalCampaignsCount}}</div>
+                              <div class="desc">Total Campaigns</div>
+                           </div>
+                           <span class="morePadding">
+                              <a translate="" ng-reflect-translate="" class="more hidden">Detailed view
+                                 <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                           </span>
+                        </a>
+                     </div>
+                     <div class="{{tileClass}} pr0 mWidth tiles_hover_effect">
+                        <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div data-toggle="tooltip" data-placement="bottom" title="{{activeCampaignsCount}}"
+                                 class="number">{{activeCampaignsCount}}</div>
+                              <div class="desc">Active Campaigns</div>
+                           </div>
+                           <span class="morePadding">
+                              <a translate="" ng-reflect-translate="" class="more hidden">Detailed view
+                                 <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                           </span>
+                        </a>
+                     </div>
                   </div>
                </div>
             </div>
          </div>
       </div>
    </div>
-</div>
 
- <div class="row" style="padding-top: 10px;">
-  <div class="portlet box">
-     <div class="clearfix">
-        <div class="col-xs-12">
-           <!-- BEGIN EXAMPLE TABLE PORTLET-->
-           <div class="portlet light">
-              <div class="portlet-title pt0" style="border-bottom: none;padding-top: 6px;">
-                 <div class="caption" translate style="padding-left: 3px !important;padding-top: 12px !important;">
-                    <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
-                    Campaigns
-                 </div>
-                 <div class="inputs w100 display"  style="float: right;display: flex!important;">
-                  <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 campaign-filter-option" style="margin-right: -6px !important;">
-                     <li class="filter padding p4 p3" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
-                     <li class="filter p4 p3 " (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" translate>Email</li>
-                     <li class="filter p4 p3" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == selectedCampaignTypeIndex" translate>Video</li>
-                 </ul> 
-                    <div class="mMargin" style="float: left; margin: 1px 10px!important;">
-                      <select class="form-control" [(ngModel)]="sortOption.userLevelCampaignAnalyticsSortOption" (ngModelChange)="sortBy($event)" style="padding-left: 5px;height: 34px;">
-                        <option *ngFor="let option of sortOption.userLevelCampaignAnalyticsSortDropDownOptions"
-                            [ngValue]="option" translate>
-                            {{option.name}}</option>
-                    </select>
-                    </div>
-                    <div class="portlet-input input-inline">
-                       <div class="input-icon right p-top">
-                          <input style="height: 35px !important;" type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
-                          <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
-                          <button type="submit" class="search-box-item-click align" style="height: 33px;" (click)="searchCampaigns()"><i class="fa fa-search" style="" aria-hidden="true"></i></button>
-                       </div>
-                    </div>
-                 </div>
-                
-              </div>
-              
-              <div class="portlet-body table-responsive" style="overflow: hidden;padding-top: 0px !important;">
-              <app-list-loader *ngIf="listLoader.isLoading"></app-list-loader>
-                 <div class="clearfix"  *ngIf="!listLoader.isLoading">
-                    <div class="col-xs-12" style="padding: 0px 0;">
-                       <div class="table-responsive">
-                          <table class='table tgrid' aria-describedby="user-campaigns-list-table">
-                             <thead>
-                                <tr>
-                                   <th scope="row" translate>Campaign</th>
-                                   <th scope="row"  translate>Launched On</th>
-                                   <th scope="row"  translate>Latest View</th>
-                                   <th scope="row" translate>Email Opened</th>
-                                   <th scope="row" translate>Clicked URLs</th>
-                                   <th scope="row" translate>Auto Responses</th>
-                                   <th scope="row" translate>History</th>
-                                </tr>
-                             </thead>
-                             <tbody>
-                              <ng-container *ngFor="let campaignAnalytics of pagination.pagedItems;let i=index">
-                                <tr>
-                                  <td>
-                                     <img *ngIf="campaignAnalytics?.campaignType=='REGULAR'" class="imageClass active image-padding image_effect" src="assets/images/regular-email.svg" alt="Regular Campaign Logo Not Found">
-                                     <img *ngIf="campaignAnalytics?.campaignType=='VIDEO'" class="imageClass active image-padding image_effect" src="assets/images/video-email.svg" alt="Video Campaign Logo Not Found">
-                                     <a class="campaign-name-padding"  data-toggle="tooltip" data-placement="bottom"  title="{{campaignAnalytics?.campaignName}}" (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId)">
-                                       {{campaignAnalytics?.campaignName | slice:0:15}}
-                                       <span *ngIf="campaignAnalytics?.campaignName?.length>15">...</span> 
-                                    </a>
-                                </td>
-                                <td>
-                                 <app-timestamp [campaignView]="true" [dateAndTime]="campaignAnalytics?.launchedDisplayTime"></app-timestamp>
-                              </td>
-                                  <td>
-                                     <ng-container *ngIf="campaignAnalytics?.latestViewDisplayTime!='-'">
-                                       <app-timestamp [campaignView]="true" [dateAndTime]="campaignAnalytics?.latestViewDisplayTime"> </app-timestamp>
-                                     </ng-container>
-                                     <ng-container *ngIf="campaignAnalytics?.latestViewDisplayTime=='-'">
-                                       <span>-</span>
-                                    </ng-container>
-                                  </td>
-                                  <td class="center-align">
-                                    {{campaignAnalytics?.emailOpenedCount}}
-                                  </td>
-                                  <td class="center-align">
-                                    {{campaignAnalytics?.clickedUrlsCount}}
-                                  </td>
-                                  <td class="center-align">
-                                    <div (click)="$event.stopPropagation()">
-                                       <a class="custom-icon" *ngIf="campaignAnalytics?.autoResponsesCount==0">
-                                       <i class="circled-number IconCustomization fontStyleNormal"
-                                         style="margin-right: 50px;cursor: not-allowed">{{campaignAnalytics?.autoResponsesCount}}</i>
-                                         <div class="clickicons"></div>
-                                       </a>
-                                       <a class="custom-icon" *ngIf="campaignAnalytics?.autoResponsesCount>0">
-                                       <i class="circled-number IconCustomization fontStyleNormal">
-                                         {{campaignAnalytics?.autoResponsesCount}}</i>
-                                         <div class="clickicons"></div>
-                                       </a>
-                                       <a class="custom-icon" *ngIf="campaignAnalytics?.autoResponsesCount>0"
-                                         (click)="$event.stopPropagation();showAutoResponseAnalytics(campaignAnalytics,i)"
-                                         data-toggle="tooltip" data-placement="bottom" 
-                                         title="View Auto Response Analytics">
-                                         <i class="fa IconCustomization circled-number"
-                                           [ngClass]="{'fa-plus': !campaignAnalytics?.expanded, 'fa-minus': campaignAnalytics?.expanded}" aria-hidden="true"></i>
-                                           <div class="clickicons"></div>
-                                       </a>
-                                       
-                                     </div>
-                                  </td>
-                                  <td class="center-align">
-                                    <div  (click)="viewTimeLine(campaignAnalytics)">
-                                       <a class="custom-icon">
-                                          <i class="circled-number fa fa-history action-btn IconCustomization pointer" aria-hidden="true"  data-toggle="tooltip" data-placement="bottom"  title="View History"></i>
-                                          <div class="clickicons"></div>
-                                       </a>
-                                       </div>
-                                  </td>
-                               </tr>
-                               <tr [ngClass]="{'hidden': !campaignAnalytics.expanded}" id="autoresponse-tr">
-                                 <td [attr.colspan]="colspanValue">
-                                   <div class="table-responsive">
-                                   <table class="table tgrid table-condensed" id="autoresponse-analytics">
-                                     <thead>
-                                       <tr>
-                                         <th class="center-aligned">Auto Response Type</th>
-                                         <th class="center-aligned">Subject</th>
-                                         <th class="center-aligned">Reply In X Days</th>
-                                         <th class="center-aligned">Reply Time</th>
-                                         <th class="center-aligned">Sent Time</th>
-                                         <th class="center-aligned">Opened Time</th>
-                                         <th class="center-aligned">URLS CLICKED COUNT</th>
-                                         <th class="center-aligned">CLICKED URLS</th>
-                                       </tr>
-                                     </thead>
-                                     <tbody>
-                                       <app-auto-response-loader *ngIf="autoResponeAnalyticsLoader.isLoading">
-                                       </app-auto-response-loader>
-                                       <ng-container *ngIf="!autoResponeAnalyticsLoader.isLoading">
-                                         <tr
-                                           *ngFor="let autoResponseAnalytics of autoResponseAnalyticsPagination.pagedItems;let i=index">
-                                           <td class="center-aligned">{{autoResponseAnalytics.autoResponseType}}</td>
-                                           <td class="center-aligned">{{autoResponseAnalytics.subject}}</td>
-                                           <td class="center-aligned">{{autoResponseAnalytics.replyInDays}}</td>
-                                           <td class="center-aligned">{{autoResponseAnalytics.replyTimeString}}</td>
-                                           <td class="center-aligned">
-                                             <app-timestamp *ngIf="!referenceService.isSafariBrowser()"
-                                               [isOnlyDate]="false" [dateAndTime]="autoResponseAnalytics.displayTime">
-                                             </app-timestamp>
-                                             <span
-                                               *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.displayTime}}</span>
-                                           </td>
-                                           <td class="center-aligned"
-                                             *ngIf="autoResponseAnalytics.openedTimeUtcString!='-'">
-                                             <app-timestamp *ngIf="!referenceService.isSafariBrowser()"
-                                               [isOnlyDate]="false" [dateAndTime]="autoResponseAnalytics.openedTime">
-                                             </app-timestamp>
-                                             <span
-                                               *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.openedTime}}</span>
-                                           </td>
-                                           <td class="center-aligned"
-                                             *ngIf="autoResponseAnalytics.openedTimeUtcString=='-'">
-                                             -
-                                           </td>
-                                           <td class="center-aligned">{{autoResponseAnalytics.urlClickCount}}</td>
-                                           <td class="center-aligned">
-                                             <table>
-                                               <tr *ngFor="let clickedUrls of autoResponseAnalytics.clickedUrls?.split(',')">
-                                                 <td style="padding:5px">{{clickedUrls}}</td>
-                                               </tr>
-                                             </table>
-                                           </td>
-                                         </tr>
-                                       </ng-container>
-                                     </tbody>
-                                   </table>
-                                 </div>
-                                   <div *ngIf="autoResponseAnalyticsPagination.pagedItems.length !== 0">
-                                     <app-pagination [pagination]="autoResponseAnalyticsPagination"
-                                       (notifyParent)="setAutoResponsesPage($event,campaignAnalytics)"
-                                       (notifyParentDropDown)="listAutoResponseAnalytics($event,campaignAnalytics)"
-                                       [hidden]="autoResponeAnalyticsLoader.isLoading"></app-pagination>
-                                   </div>
-                                 </td>
-                               </tr>
-
-                                </ng-container>
-                             </tbody>
-                          </table>
-                        <div *ngIf="pagination.totalRecords==0 && !listLoader.isLoading" class="alert alert-info">
-                            <strong>No Data Found.</strong>
+   <div class="row" style="padding-top: 10px;">
+      <div class="portlet box">
+         <div class="clearfix">
+            <div class="col-xs-12">
+               <!-- BEGIN EXAMPLE TABLE PORTLET-->
+               <div class="portlet light">
+                  <div class="portlet-title pt0" style="border-bottom: none;padding-top: 6px;">
+                     <div class="caption" translate style="padding-left: 3px !important;padding-top: 12px !important;">
+                        <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
+                        Campaigns
+                     </div>
+                     <div class="inputs w100 display" style="float: right;display: flex!important;">
+                        <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0 campaign-filter-option"
+                           style="margin-right: -6px !important;">
+                           <li class="filter padding p4 p3" (click)="filterCampaigns('NONE',0)"
+                              [class.campaign-type-selected]="0 == selectedCampaignTypeIndex" translate>All</li>
+                           <li class="filter p4 p3 " (click)="filterCampaigns('REGULAR',1)"
+                              [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" translate>Email</li>
+                           <li class="filter p4 p3" (click)="filterCampaigns('VIDEO',2)"
+                              [class.campaign-type-selected]="2 == selectedCampaignTypeIndex" translate>Video</li>
+                        </ul>
+                        <div class="mMargin" style="float: left; margin: 1px 10px!important;">
+                           <select class="form-control" [(ngModel)]="sortOption.userLevelCampaignAnalyticsSortOption"
+                              (ngModelChange)="sortBy($event)" style="padding-left: 5px;height: 34px;">
+                              <option *ngFor="let option of sortOption.userLevelCampaignAnalyticsSortDropDownOptions"
+                                 [ngValue]="option" translate>
+                                 {{option.name}}</option>
+                           </select>
                         </div>
-                       </div>
-                    </div>
-                 </div>
-                 <div *ngIf="pagination.pagedItems.length !== 0" [hidden]="listLoader.isLoading">
-                  <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCampaignAnalytics($event)" [hidden]="listLoader.isLoading">
-                  </app-pagination>
-              </div>
-              </div>
-           </div>
-           <!-- END EXAMPLE TABLE PORTLET-->
-        </div>
-     </div>
-  </div>
-</div>
+                        <div class="portlet-input input-inline">
+                           <div class="input-icon right p-top">
+                              <input style="height: 35px !important;" type="text" id="sort-text" class="form-control"
+                                 [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                                 placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+                              <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                 *ngIf="sortOption.searchKey"
+                                 (click)="sortOption.searchKey='';searchCampaigns();"></button>
+                              <button type="submit" class="search-box-item-click align" style="height: 33px;"
+                                 (click)="searchCampaigns()"><i class="fa fa-search" style=""
+                                    aria-hidden="true"></i></button>
+                           </div>
+                        </div>
+                     </div>
+
+                  </div>
+
+                  <div class="portlet-body table-responsive" style="overflow: hidden;padding-top: 0px !important;">
+                     <app-list-loader *ngIf="listLoader.isLoading"></app-list-loader>
+                     <div class="clearfix" *ngIf="!listLoader.isLoading">
+                        <div class="col-xs-12" style="padding: 0px 0;">
+                           <div class="table-responsive">
+                              <table class='table tgrid' aria-describedby="user-campaigns-list-table">
+                                 <thead>
+                                    <tr>
+                                       <th scope="row" translate>Campaign</th>
+                                       <th scope="row" translate>Launched On</th>
+                                       <th scope="row" translate>Latest View</th>
+                                       <th scope="row" translate>Email Opened</th>
+                                       <th scope="row" translate>Clicked URLs</th>
+                                       <th scope="row" translate>Auto Responses</th>
+                                       <th scope="row" translate>History</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <ng-container *ngFor="let campaignAnalytics of pagination.pagedItems;let i=index">
+                                       <tr>
+                                          <td>
+                                             <img *ngIf="campaignAnalytics?.campaignType=='REGULAR'"
+                                                class="imageClass active image-padding image_effect"
+                                                src="assets/images/regular-email.svg"
+                                                alt="Regular Campaign Logo Not Found">
+                                             <img *ngIf="campaignAnalytics?.campaignType=='VIDEO'"
+                                                class="imageClass active image-padding image_effect"
+                                                src="assets/images/video-email.svg" alt="Video Campaign Logo Not Found">
+                                             <a class="campaign-name-padding" data-toggle="tooltip"
+                                                data-placement="bottom" title="{{campaignAnalytics?.campaignName}}"
+                                                (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId)">
+                                                {{campaignAnalytics?.campaignName | slice:0:15}}
+                                                <span *ngIf="campaignAnalytics?.campaignName?.length>15">...</span>
+                                             </a>
+                                          </td>
+                                          <td>
+                                             <app-timestamp [campaignView]="true"
+                                                [dateAndTime]="campaignAnalytics?.launchedDisplayTime"></app-timestamp>
+                                          </td>
+                                          <td>
+                                             <ng-container *ngIf="campaignAnalytics?.latestViewDisplayTime!='-'">
+                                                <app-timestamp [campaignView]="true"
+                                                   [dateAndTime]="campaignAnalytics?.latestViewDisplayTime">
+                                                </app-timestamp>
+                                             </ng-container>
+                                             <ng-container *ngIf="campaignAnalytics?.latestViewDisplayTime=='-'">
+                                                <span>-</span>
+                                             </ng-container>
+                                          </td>
+                                          <td class="center-align">
+                                             {{campaignAnalytics?.emailOpenedCount}}
+                                          </td>
+                                          <td class="center-align">
+                                             {{campaignAnalytics?.clickedUrlsCount}}
+                                          </td>
+                                          <td class="center-align">
+                                             <div (click)="$event.stopPropagation()">
+                                                <a class="custom-icon" *ngIf="campaignAnalytics?.autoResponsesCount==0">
+                                                   <i class="circled-number IconCustomization fontStyleNormal"
+                                                      style="margin-right: 50px;cursor: not-allowed">{{campaignAnalytics?.autoResponsesCount}}</i>
+                                                   <div class="clickicons"></div>
+                                                </a>
+                                                <a class="custom-icon" *ngIf="campaignAnalytics?.autoResponsesCount>0">
+                                                   <i class="circled-number IconCustomization fontStyleNormal">
+                                                      {{campaignAnalytics?.autoResponsesCount}}</i>
+                                                   <div class="clickicons"></div>
+                                                </a>
+                                                <a class="custom-icon" *ngIf="campaignAnalytics?.autoResponsesCount>0"
+                                                   (click)="$event.stopPropagation();showAutoResponseAnalytics(campaignAnalytics,i)"
+                                                   data-toggle="tooltip" data-placement="bottom"
+                                                   title="View Auto Response Analytics">
+                                                   <i class="fa IconCustomization circled-number"
+                                                      [ngClass]="{'fa-plus': !campaignAnalytics?.expanded, 'fa-minus': campaignAnalytics?.expanded}"
+                                                      aria-hidden="true"></i>
+                                                   <div class="clickicons"></div>
+                                                </a>
+
+                                             </div>
+                                          </td>
+                                          <td class="center-align">
+                                             <div (click)="viewTimeLine(campaignAnalytics)">
+                                                <a class="custom-icon">
+                                                   <i class="circled-number fa fa-history action-btn IconCustomization pointer"
+                                                      aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
+                                                      title="View History"></i>
+                                                   <div class="clickicons"></div>
+                                                </a>
+                                             </div>
+                                          </td>
+                                       </tr>
+                                       <tr [ngClass]="{'hidden': !campaignAnalytics.expanded}" id="autoresponse-tr">
+                                          <td [attr.colspan]="colspanValue">
+                                             <div class="table-responsive">
+                                                <table class="table tgrid table-condensed" id="autoresponse-analytics">
+                                                   <thead>
+                                                      <tr>
+                                                         <th class="center-aligned">Auto Response Type</th>
+                                                         <th class="center-aligned">Subject</th>
+                                                         <th class="center-aligned">Reply In X Days</th>
+                                                         <th class="center-aligned">Reply Time</th>
+                                                         <th class="center-aligned">Sent Time</th>
+                                                         <th class="center-aligned">Opened Time</th>
+                                                         <th class="center-aligned">URLS CLICKED COUNT</th>
+                                                         <th class="center-aligned">CLICKED URLS</th>
+                                                      </tr>
+                                                   </thead>
+                                                   <tbody>
+                                                      <app-auto-response-loader
+                                                         *ngIf="autoResponeAnalyticsLoader.isLoading">
+                                                      </app-auto-response-loader>
+                                                      <ng-container *ngIf="!autoResponeAnalyticsLoader.isLoading">
+                                                         <tr
+                                                            *ngFor="let autoResponseAnalytics of autoResponseAnalyticsPagination.pagedItems;let i=index">
+                                                            <td class="center-aligned">
+                                                               {{autoResponseAnalytics.autoResponseType}}</td>
+                                                            <td class="center-aligned">{{autoResponseAnalytics.subject}}
+                                                            </td>
+                                                            <td class="center-aligned">
+                                                               {{autoResponseAnalytics.replyInDays}}</td>
+                                                            <td class="center-aligned">
+                                                               {{autoResponseAnalytics.replyTimeString}}</td>
+                                                            <td class="center-aligned">
+                                                               <app-timestamp
+                                                                  *ngIf="!referenceService.isSafariBrowser()"
+                                                                  [isOnlyDate]="false"
+                                                                  [dateAndTime]="autoResponseAnalytics.displayTime">
+                                                               </app-timestamp>
+                                                               <span
+                                                                  *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.displayTime}}</span>
+                                                            </td>
+                                                            <td class="center-aligned"
+                                                               *ngIf="autoResponseAnalytics.openedTimeUtcString!='-'">
+                                                               <app-timestamp
+                                                                  *ngIf="!referenceService.isSafariBrowser()"
+                                                                  [isOnlyDate]="false"
+                                                                  [dateAndTime]="autoResponseAnalytics.openedTime">
+                                                               </app-timestamp>
+                                                               <span
+                                                                  *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.openedTime}}</span>
+                                                            </td>
+                                                            <td class="center-aligned"
+                                                               *ngIf="autoResponseAnalytics.openedTimeUtcString=='-'">
+                                                               -
+                                                            </td>
+                                                            <td class="center-aligned">
+                                                               {{autoResponseAnalytics.urlClickCount}}</td>
+                                                            <td class="center-aligned">
+                                                               <table>
+                                                                  <tr
+                                                                     *ngFor="let clickedUrls of autoResponseAnalytics.clickedUrls?.split(',')">
+                                                                     <td style="padding:5px">{{clickedUrls}}</td>
+                                                                  </tr>
+                                                               </table>
+                                                            </td>
+                                                         </tr>
+                                                      </ng-container>
+                                                   </tbody>
+                                                </table>
+                                             </div>
+                                             <div *ngIf="autoResponseAnalyticsPagination.pagedItems.length !== 0">
+                                                <app-pagination [pagination]="autoResponseAnalyticsPagination"
+                                                   (notifyParent)="setAutoResponsesPage($event,campaignAnalytics)"
+                                                   (notifyParentDropDown)="listAutoResponseAnalytics($event,campaignAnalytics)"
+                                                   [hidden]="autoResponeAnalyticsLoader.isLoading"></app-pagination>
+                                             </div>
+                                          </td>
+                                       </tr>
+
+                                    </ng-container>
+                                 </tbody>
+                              </table>
+                              <div *ngIf="pagination.totalRecords==0 && !listLoader.isLoading" class="alert alert-info">
+                                 <strong>No Data Found.</strong>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div *ngIf="pagination.pagedItems.length !== 0" [hidden]="listLoader.isLoading">
+                        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+                           (notifyParentDropDown)="listCampaignAnalytics($event)" [hidden]="listLoader.isLoading">
+                        </app-pagination>
+                     </div>
+                  </div>
+               </div>
+               <!-- END EXAMPLE TABLE PORTLET-->
+            </div>
+         </div>
+      </div>
+   </div>
 
 </div>

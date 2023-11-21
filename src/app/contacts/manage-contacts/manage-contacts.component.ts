@@ -239,12 +239,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
   selectedUser: User = null;
   /*****XNFR-342*****/
   @ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
-  isLocalHost = false;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
 		public route: ActivatedRoute) {
-		this.isLocalHost = this.authenticationService.isLocalHost();
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		  this.loggedInUserId = this.authenticationService.getUserId();
 	        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
