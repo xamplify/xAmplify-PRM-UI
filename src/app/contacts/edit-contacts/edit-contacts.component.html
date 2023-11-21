@@ -713,7 +713,7 @@
 								  </td>
 								  <td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || 
 								  authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !clickBoard  && (!assignLeads || (assignLeads && !isSynchronizationList))">
-									 <div class="actions-block override-actions white-space-transform" style="width:170px;" >
+									 <div class="actions-block override-actions white-space-transform  actions_width" style="width:170px;" >
 										<a class="custom-icon" *ngIf= "!contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)" 
 										data-toggle="tooltip" data-placement="bottom" title="unsubscribe" (click)="unsubscribeUser(contact)">
 										<i class="fa fa-bell-slash-o IconCustomization" aria-hidden="true"></i>
@@ -733,7 +733,7 @@
 										&& ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))
 										&& !isTeamMemberPartnerList && !sharedLeads && !isSynchronizationList">
 										<i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
-										<div class="clickicons"></div>
+										<div class="del-icon"></div>
 										</a>
 										<ng-container *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads
 										   && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && !isSynchronizationList">
