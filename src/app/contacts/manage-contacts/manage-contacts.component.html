@@ -646,12 +646,14 @@
                                                    </a>
                                                    <!--XNFR-342---->
                                                    <ng-container *ngIf="isLocalHost">
-                                                      <a *ngIf="!assignLeads && !sharedLeads  && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
+                                                      <a class="custom-icon"
+                                                         *ngIf="!assignLeads && !sharedLeads  && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
                                                          data-toggle="tooltip" data-placement="top"
                                                          (click)="openUnPublishedContentModalPopUp(contactList)"
                                                          title="{{actionsDescription?.shareUnPublishedContent}}">
                                                          <i class="fa fa-forward IconCustomization"
                                                             aria-hidden="true"></i>
+                                                         <div class="clickicons"></div>
                                                       </a>
                                                    </ng-container>
                                                    <!--XNFR-342---->
