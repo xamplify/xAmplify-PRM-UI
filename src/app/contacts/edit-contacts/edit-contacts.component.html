@@ -746,9 +746,8 @@
 										<ng-container *ngIf="!assignLeads && !sharedLeads && !isSynchronizationList">
 											<a class="custom-icon"  data-toggle="tooltip" data-placement="top"
 											   (click)="openUnPublishedContentModalPopUp(contact)"
-											   title="{{actionsDescription?.shareUnPublishedContent}}">
-											  <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
-											   <div class="clickicons"></div>
+											   [title]="checkingContactTypeName=='Contact' ?  actionsDescription?.send_campaigns:actionsDescription?.shareUnPublishedContent">
+											   <i [ngClass]="checkingContactTypeName=='Contact' ? 'fa fa-bullhorn IconCustomization':'fa fa-share IconCustomization'" aria-hidden="true"></i>											   <div class="clickicons"></div>
 											</a>
 										 </ng-container>
 										 <!--XNFR-342---->
@@ -1344,10 +1343,11 @@
  </div>
 
  <!---XNFR-342---->
-<app-share-unpublished-content #shareUnPublishedComponent
-[hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
-[hasDamAccess]="authenticationService?.module?.damAccess" [hasLmsAccess]="authenticationService?.module?.lmsAccess"
-[hasPlaybookAccess]="authenticationService?.module?.playbookAccess">
+ <app-share-unpublished-content #shareUnPublishedComponent
+ [hasCampaignAccess]="(authenticationService?.module?.isCampaign || authenticationService?.module?.isReDistribution)"
+ [hasDamAccess]="authenticationService?.module?.damAccess && checkingContactTypeName!='Contact'"
+  [hasLmsAccess]="authenticationService?.module?.lmsAccess && checkingContactTypeName!='Contact'"
+ [hasPlaybookAccess]="authenticationService?.module?.playbookAccess && checkingContactTypeName!='Contact'">
 </app-share-unpublished-content>
  
  
