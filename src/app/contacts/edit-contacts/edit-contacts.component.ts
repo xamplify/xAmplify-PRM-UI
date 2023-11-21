@@ -33,6 +33,7 @@ import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { Subject } from 'rxjs';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
+import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -245,9 +246,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	 mergeOptionClicked = false;
 	 selectedUserIdsForMerging: any[];
 	  /****XNFR-278****/
-	  
 	 @Input() showEdit: boolean;
-	  
+	  /*****XNFR-342*****/
+  	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -3645,7 +3646,12 @@ copyGroupUsersModalPopupEventReceiver(){
   this.contactsCount(this.selectedContactListId);
   this.customResponse = new CustomResponse('SUCCESS', event, true);
  }
- 
+
+ /****XNFR-342*****/
+ /***********XNFR-342*********/
+ openUnPublishedContentModalPopUp(contact:any){
+	this.shareUnPublishedComponent.openPopUp(this.selectedContactListId, contact, this.checkingContactTypeName);
+ }
 
 
     

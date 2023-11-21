@@ -2,7 +2,7 @@
 <div class="page-bar">
 	<ul class="page-breadcrumb">
 	   <li><i class="fa fa-home" aria-hidden="true"></i>
-		  <a [routerLink]="refService.homeRouter" translate>Home</a>
+		  <a [routerLink]="refService?.homeRouter" translate>Home</a>
 		  <i	class="fa fa-angle-right" aria-hidden="true"></i>
 	   </li>
 	   <li>
@@ -741,6 +741,17 @@
 										   <i class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i>
 										   <div class="clickicons"></div></a>
 										</ng-container>
+
+										<!--XNFR-342---->
+										<ng-container *ngIf="!assignLeads && !sharedLeads && !isSynchronizationList">
+											<a class="custom-icon"  data-toggle="tooltip" data-placement="top"
+											   (click)="openUnPublishedContentModalPopUp(contact)"
+											   title="{{actionsDescription?.shareUnPublishedContent}}">
+											  <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
+											   <div class="clickicons"></div>
+											</a>
+										 </ng-container>
+										 <!--XNFR-342---->
 										<a class="custom-icon" *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads && (!sharedLeads) && !isSynchronizationList"   data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
 										<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
 										<div class="clickicons"></div></a>
@@ -1331,6 +1342,13 @@
 	<app-resubscribe-contact-modal [selectedUser] = "selectedUser" (notifyParent)="resubscribeUserResult($event)">
 	</app-resubscribe-contact-modal>
  </div>
+
+ <!---XNFR-342---->
+<app-share-unpublished-content #shareUnPublishedComponent
+[hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
+[hasDamAccess]="authenticationService?.module?.damAccess" [hasLmsAccess]="authenticationService?.module?.lmsAccess"
+[hasPlaybookAccess]="authenticationService?.module?.playbookAccess">
+</app-share-unpublished-content>
  
  
  
