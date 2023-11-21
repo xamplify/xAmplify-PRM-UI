@@ -418,8 +418,9 @@
                                 </ng-container>
                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)"
                                     (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top"
-                                    title="Delete" class="delete">
+                                    title="Delete" class="delete custom-icon">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    <div class="del-icon"></div>
                                 </a>
                             </div>
                         </div>

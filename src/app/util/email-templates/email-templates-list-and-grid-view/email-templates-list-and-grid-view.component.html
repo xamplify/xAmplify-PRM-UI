@@ -43,10 +43,10 @@
                             <tbody>
                                 <tr *ngFor="let emailTemplate of pagination.pagedItems ;let i =index">
                                     <td class="hidden-xs custom-icon-width">
-                                        <img class="email-template-preview" *ngIf="emailTemplate.subject"
+                                        <img class="email-template-preview image_effect" *ngIf="emailTemplate.subject"
                                             src="{{emailTemplate.subject}}" alt="Image Not Found"
                                             style="border: 1px solid #e0e0e0;">
-                                        <img class="email-template-preview" *ngIf="!emailTemplate.subject"
+                                        <img class="email-template-preview image_effect" *ngIf="!emailTemplate.subject"
                                             src="assets/images/bee-template/rich-simple.jpg" alt=""
                                             style="border: 1px solid #e0e0e0;">
                                     </td>
@@ -188,9 +188,9 @@
                                     <span
                                         *ngIf="emailTemplate.emailTemplateType !='Regular Co-Branding'">{{emailTemplate.emailTemplateType}}</span>
                                 </span>
-                                <img class="email-template-preview email-image-temp-custimize"
+                                <img class="email-template-preview email-image-temp-custimize image_effect"
                                     *ngIf="emailTemplate.subject" src="{{emailTemplate.subject}}" alt="Image Not Found">
-                                <img alt="" class="email-template-preview email-image-temp-custimize"
+                                <img alt="" class="email-template-preview email-image-temp-custimize image_effect"
                                     *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg">
                                 <h4 class="ellipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="top"
                                     title="{{emailTemplate.name}}">

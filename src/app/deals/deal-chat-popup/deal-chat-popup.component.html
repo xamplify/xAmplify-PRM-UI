@@ -1,62 +1,64 @@
-<div id="chatModelPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="chatModelPopup" data-backdrop="static" data-keyboard="false">
+<div id="chatModelPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="chatModelPopup"
+  data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-css" role="document">
-     <!-- Modal content-->
-     <div class="modal-content"  style="overflow-x: hidden;">
-        <div class="modal-header">
-          <a title="Close" class="close-circle" (click)="addCommentModalClose()">
-            <i class="fa fa-times" aria-hidden="true"></i>
-          </a>
-          <h4 class="modal-title" style="font-weight: 600;" translate>Add Comments</h4>
-        </div>
-        <div class="modal-body">                     
-           <ng-container>
-              <div class="deal-details">
-                 <div class="row mix-grid p10 bg-color">
-                    <div class="col-md-3 col-lg-2" >
-                       <div class="frame">
-                          <img style="height: 80px;width: 80px;" class="img-circle" src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
-                       </div>
-                    </div>
-                    <div class="col-md-9 col-lg-10" style="text-align: left;">
-                      <div *ngIf="campaignName != null && campaignName != undefined">
-                        <h5 class="mt10 mb0" title="{{campaignName}}">
-                          <span><strong>Campaign name </strong></span>: {{campaignName | slice:0:25}}
-                          <span *ngIf="campaignName?.length>25">..</span>
-                        </h5>
-                      </div>
-                      <div *ngIf="dealTitle != null && dealTitle != undefined">
-                        <h5 class="mt10 mb0" title="{{dealTitle}}">
-                          <span><strong>Deal Title </strong></span>: {{dealTitle | slice:0:25}}
-                          <span *ngIf="dealTitle?.length>25">..</span>
-                        </h5>
-                      </div>                     
-                      <h5 class="mt10 mb0" *ngIf="createdByName " [title]="createdByName">
-                        <span><strong>Name</strong></span>: {{createdByName | slice:0:25}} 
-                        <span *ngIf="createdByName.length>25">..</span>
-                      </h5>
-                      <h5 class="mt10 mb0" *ngIf="createdByEmail" [title]="createdByEmail">
-                        <span><strong>Email</strong></span>: {{createdByEmail | slice:0:25}}
-                        <span *ngIf="createdByEmail.length>25">..</span>
-                      </h5>
-                      <h5 class="mt10 mb0">
-                        <span><strong>Created On </strong></span>
-                        <span title="Upload date">: <app-timestamp [isOnlyDate]="true" [dateAndTime]="createdTime"></app-timestamp></span>                        
-                        
-                      </h5>
-                      <div *ngIf="lead">
-                        <h5 class="mt10 mb0">
-                          <span><strong>Lead Details </strong></span>:
-                          <div style="padding:5px"><app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info></div>                          
-                        </h5>                                                  
-                      </div>
-                    </div>
-                 </div>
-              </div> 
-              <app-chat [dealId]="deal?.id" [leadId]="lead?.id" [moduleType]="moduleType" [enableWrite]="true"></app-chat>              
-           </ng-container>
-        </div>
-     </div>
+    <!-- Modal content-->
+    <div class="modal-content" style="overflow-x: hidden;">
+      <div class="modal-header">
+        <a title="Close" class="close-circle" (click)="addCommentModalClose()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+        <h4 class="modal-title" style="font-weight: 600;" translate>Add Comments</h4>
+      </div>
+      <div class="modal-body">
+        <ng-container>
+          <div class="deal-details">
+            <div class="row mix-grid p10 bg-color">
+              <div class="col-md-3 col-lg-2">
+                <div class="frame card-template">
+                  <img style="height: 80px;width: 80px;" class="img-circle img-templates"
+                    src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
+                </div>
+              </div>
+              <div class="col-md-9 col-lg-10" style="text-align: left;">
+                <div *ngIf="campaignName != null && campaignName != undefined">
+                  <h5 class="mt10 mb0" title="{{campaignName}}">
+                    <span><strong>Campaign name </strong></span>: {{campaignName | slice:0:25}}
+                    <span *ngIf="campaignName?.length>25">..</span>
+                  </h5>
+                </div>
+                <div *ngIf="dealTitle != null && dealTitle != undefined">
+                  <h5 class="mt10 mb0" title="{{dealTitle}}">
+                    <span><strong>Deal Title </strong></span>: {{dealTitle | slice:0:25}}
+                    <span *ngIf="dealTitle?.length>25">..</span>
+                  </h5>
+                </div>
+                <h5 class="mt10 mb0" *ngIf="createdByName " [title]="createdByName">
+                  <span><strong>Name</strong></span>: {{createdByName | slice:0:25}}
+                  <span *ngIf="createdByName.length>25">..</span>
+                </h5>
+                <h5 class="mt10 mb0" *ngIf="createdByEmail" [title]="createdByEmail">
+                  <span><strong>Email</strong></span>: {{createdByEmail | slice:0:25}}
+                  <span *ngIf="createdByEmail.length>25">..</span>
+                </h5>
+                <h5 class="mt10 mb0">
+                  <span><strong>Created On </strong></span>
+                  <span title="Upload date">: <app-timestamp [isOnlyDate]="true"
+                      [dateAndTime]="createdTime"></app-timestamp></span>
+
+                </h5>
+                <div *ngIf="lead">
+                  <h5 class="mt10 mb0">
+                    <span><strong>Lead Details </strong></span>:
+                    <div style="padding:5px"><app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info></div>
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <app-chat [dealId]="deal?.id" [leadId]="lead?.id" [moduleType]="moduleType" [enableWrite]="true"></app-chat>
+        </ng-container>
+      </div>
+    </div>
   </div>
 </div>
 <!-- END CONTENT -->
-

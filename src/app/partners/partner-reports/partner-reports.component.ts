@@ -141,29 +141,13 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         });
         this.barChartLoader = false;
     }
-    // partnerReportData() {
-    //     this.barChartLoader = true;
-    //     this.parterService.partnerReports(this.loggedInUserId, this.applyFilter).subscribe(
-    //         (data: any) => {
-    //             const campaignData = [];
-    //             campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
-    //             campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
-    //             campaignData.push(data.partnersLaunchedCampaignsByCampaignType.REGULAR);
-    //             campaignData.push(data.partnersLaunchedCampaignsByCampaignType.EVENT);
-    //             campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SURVEY);
-    //             this.campaignTypeChart(campaignData);
-    //         },
-    //         (error: any) => {
-    //             this.xtremandLogger.error(error);
-    //             this.barChartLoader = false;
-    //         });
-    // }
+    
     getPartnersRedistributedCampaignsData() {
         this.barChartLoader = true;
         let partnerJourneyRequest = new PartnerJourneyRequest();
-    partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
-    partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
-    partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
+        partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
+        partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+        partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
         this.parterService.partnersRedistributedCampaignsData(partnerJourneyRequest).subscribe(
             (data: any) => {
                 const campaignData = [];
@@ -975,6 +959,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
       getSelectedPartnerCompanyIds(partnerCompanyIds: any){
         this.selectedPartnerCompanyIds = partnerCompanyIds;
+        this.getPartnersRedistributedCampaignsData();
       }
       redistributedCampaignDetailsPieChartSelected(type: any){
         this.selectedCampaignType = type;

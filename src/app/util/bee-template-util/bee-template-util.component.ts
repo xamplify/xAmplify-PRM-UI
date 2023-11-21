@@ -4,6 +4,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { Router } from '@angular/router';
+import { CustomLoginTemplate } from 'app/email-template/models/custom-login-template';
 
 declare var BeePlugin: any, swal:any;
 
@@ -34,6 +35,9 @@ export class BeeTemplateUtilComponent implements OnInit {
 	isCoBrandingTemplate = false;
 	isVideoTemplate = false;
 	/****XBI-1685******/
+	/***********  XNFR-233 *********/
+	customLoginTemplate:CustomLoginTemplate = new CustomLoginTemplate()
+	/***********  XNFR-233 *********/
 	constructor(private referenceService: ReferenceService, private authenticationService: AuthenticationService, private router: Router, private xtremandLogger: XtremandLogger) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -138,8 +142,14 @@ export class BeeTemplateUtilComponent implements OnInit {
 					}
 					/****XBI-1685******/
 					self.updateJsonAndHtmlContentAndSendDataBack(jsonContent,htmlContent);
+				} else if(self.module == "configuration") {
+					self.customLoginTemplate = self.beeContainerInput["customLognTemplate"];
+                    self.saveOrUpdateCustomLoginTemplate(jsonContent, htmlContent)
+					this.loading = false;
 				}
 			};
+
+
 
 			let mergeTags = [];
 			if(this.module=="pages"){
@@ -230,7 +240,15 @@ export class BeeTemplateUtilComponent implements OnInit {
 		return body;
 	}
 
-
+    saveOrUpdateCustomLoginTemplate(jsonContent: string, htmlContent: string){
+		let input = {};
+		let updatedJsonContent = jsonContent.replace(this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+		let updatedHtmlContent = htmlContent.replace(this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+		input['jsonContent'] = updatedJsonContent;
+		input['htmlContent'] = updatedHtmlContent;
+		this.notifyParentComponent.emit(input);
+		this.loading = false;
+	}
 	saveContentForDam(jsonContent: string, htmlContent: string) {
 		let input = {};
 		if (this.isPartnerView) {

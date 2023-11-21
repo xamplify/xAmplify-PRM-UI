@@ -907,7 +907,7 @@ Boby #2a3f54;
 ****/
 body {
   background-color: #f1f3fa;
-  background-image: url(../../../../images/loading.gif);
+  /* background-image: url(../../../../images/loading.gif); */
   background-repeat: no-repeat;
   background-position: center;
 }

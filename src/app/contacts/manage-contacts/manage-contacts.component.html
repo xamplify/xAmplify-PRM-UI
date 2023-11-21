@@ -624,8 +624,8 @@
                                                       *ngIf="contactList.name!=properties?.activeMasterPartnerList && contactList.name!=properties?.inActiveMasterPartnerList  && !contactList?.teamMemberPartnerList">
                                                       <a class="custom-icon"
                                                          *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
-                                       || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
-                                       && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
+                                                         || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
+                                                          && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
                                                          (click)="showAlert(contactList.id)" data-toggle="tooltip"
                                                          data-placement="top"
                                                          title="{{actionsDescription.contact_list_delete}}">
@@ -634,27 +634,21 @@
                                                          <div class="del-icon"></div>
                                                       </a>
                                                    </ng-container>
-                                                   <a class="custom-icon"
-                                                      *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads
-                                                         && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
-                                                      data-toggle="tooltip" data-placement="top"
-                                                      (click)="openPopUpForNewlyAddedPartnersOrContacts(contactList)"
-                                                      title="{{actionsDescription.send_campaigns}}"> <i
-                                                         class="fa fa-bullhorn IconCustomization"
-                                                         aria-hidden="true"></i>
-                                                      <div class="clickicons"></div>
-                                                   </a>
                                                    <!--XNFR-342---->
-                                                   <ng-container *ngIf="isLocalHost">
-                                                      <a class="custom-icon"
-                                                         *ngIf="!assignLeads && !sharedLeads  && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
+                                                   <a class="custom-icon"
+                                                         *ngIf="!assignLeads && !sharedLeads && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner
+                                                          && (authenticationService.module.isPrmCompany || authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
                                                          data-toggle="tooltip" data-placement="top"
                                                          (click)="openUnPublishedContentModalPopUp(contactList)"
-                                                         title="{{actionsDescription?.shareUnPublishedContent}}">
-                                                        <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
+
+                                                         [title]="(((authenticationService?.module?.isCampaign || authenticationService.module.isReDistribution) && !authenticationService?.module?.damAccess 
+                                                                     && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || module=='contacts')
+                                                                      ?  actionsDescription?.send_campaigns:actionsDescription?.shareUnPublishedContent">
+                                                         <i [ngClass]="((authenticationService?.module?.isCampaign && !authenticationService?.module?.damAccess 
+                                                                  && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || module=='contacts') ? 'fa fa-bullhorn IconCustomization':'fa fa-share IconCustomization'" aria-hidden="true"></i>
+
                                                          <div class="clickicons"></div>
                                                       </a>
-                                                   </ng-container>
                                                    <!--XNFR-342---->
                                                 </div>
                                                 <div class="actions-block override-actions"
@@ -694,28 +688,28 @@
                                  class="col-xs-12 col-sm-4 col-lg-3">
                                  <div class="grid-box mp-pt-carrdtop media-querryfor-small-dev"
                                     id="contactListDiv_{{contactList.id}}">
-                                    <img alt="" class="imageClassCss"
+                                    <img alt="" class="imageClassCss image_effect"
                                        *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList"
                                        src="{{properties?.manualImage}}">
-                                    <img alt="" class="imageClassCss"
+                                    <img alt="" class="imageClassCss image_effect"
                                        *ngIf="contactList.socialNetwork=='ZOHO' && contactList.synchronisedList"
                                        src="{{properties?.zohoImage}}">
-                                    <img alt="" class="imageClassCss"
+                                    <img alt="" class="imageClassCss image_effect"
                                        *ngIf="contactList.socialNetwork=='GOOGLE' && contactList.synchronisedList"
                                        src="{{properties?.googleImage}}">
-                                    <img class="imageClassCss" alt=""
+                                    <img class="imageClassCss image_effect" alt=""
                                        *ngIf="contactList.socialNetwork=='SALESFORCE' && contactList.synchronisedList"
                                        src="{{properties?.salesforceImage}}">
-                                    <img alt="" class="imageClassCss"
+                                    <img alt="" class="imageClassCss image_effect"
                                        *ngIf="contactList.socialNetwork=='HUBSPOT' && contactList.synchronisedList"
                                        src="{{properties?.hubspotImage}}">
-                                    <img alt="" class="imageClassCss"
+                                    <img alt="" class="imageClassCss image_effect"
                                        *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList"
                                        src="{{properties?.microsoftImage}}">
-                                    <img alt="" class="imageClassCss"
+                                    <img alt="" class="imageClassCss image_effect"
                                        *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList"
                                        src="{{properties?.pipedriveImage}}">
-                                    <img class="imageClassCss"
+                                    <img class="imageClassCss image_effect"
                                        *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"
                                        src="{{properties?.marketoImage}}" alt="manual" style="height: 60px;">
                                     <div id="container"
@@ -873,10 +867,11 @@
                         || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
                         && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
                                              (click)="showAlert(contactList.id)" data-toggle="tooltip"
-                                             data-placement="top" class="delete"
+                                             data-placement="top" class="delete custom-icon"
                                              title="{{actionsDescription.contact_list_delete}}"
                                              data-rel="fancybox-button" lang="{{contactList.id}}"> <i
                                                 class="fa fa-trash-o" aria-hidden="true"></i>
+                                             <div class="del-icon"></div>
                                           </a>
                                        </ng-container>
                                        <a class="Iconhover custom-grid-icon"
@@ -1674,7 +1669,8 @@
 </div>
 <!---XNFR-342---->
 <app-share-unpublished-content #shareUnPublishedComponent
-   [hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
-   [hasDamAccess]="authenticationService?.module?.damAccess" [hasLmsAccess]="authenticationService?.module?.lmsAccess"
-   [hasPlaybookAccess]="authenticationService?.module?.playbookAccess">
+   [hasCampaignAccess]="(authenticationService?.module?.isCampaign || authenticationService?.module?.isReDistribution)"
+   [hasDamAccess]="authenticationService?.module?.damAccess && module!='contacts'"
+    [hasLmsAccess]="authenticationService?.module?.lmsAccess && module!='contacts'"
+   [hasPlaybookAccess]="authenticationService?.module?.playbookAccess && module!='contacts'">
 </app-share-unpublished-content>
