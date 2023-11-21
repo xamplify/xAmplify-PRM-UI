@@ -932,24 +932,13 @@
                                                                     aria-hidden="true"></i>
                                                                 <div class="del-icon"></div>
                                                             </a>
-                                                            <ng-container
-                                                                *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)">
-                                                                <a class="custom-icon" data-toggle="tooltip"
-                                                                    data-placement="bottom"
-                                                                    title="{{actionsDescription.send_campaigns}}"
-                                                                    (click)="addCampaigns(contact)"> <i
-                                                                        class="fa fa-bullhorn IconCustomization"
-                                                                        aria-hidden="true"></i>
-                                                                    <div class="clickicons"></div>
-                                                                </a>
-                                                            </ng-container>
                                                              <!--XNFR-342-->
-                                                             <ng-container *ngIf="isLocalHost">
+                                                             <ng-container *ngIf="authenticationService?.module?.isCampaign || authenticationService?.module?.isPrmCompany">
                                                                 <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
-                                                                title="{{actionsDescription?.shareUnPublishedContent}}"
-                                                                (click)="openUnPublishedContentModalPopUp(contact)">
-                                                                <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
-                                                                <div class="clickicons"></div>
+                                                                    title="{{actionsDescription?.shareUnPublishedContent}}"
+                                                                    (click)="openUnPublishedContentModalPopUp(contact)">
+                                                                    <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
+                                                                    <div class="clickicons"></div>
                                                                 </a>  
                                                             </ng-container>
                                                             <!--XNFR-342-->
@@ -1499,7 +1488,7 @@
 
     <!---XNFR-342---->
     <app-share-unpublished-content #shareUnPublishedComponent
-    [hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
+    [hasCampaignAccess]="authenticationService?.module?.isCampaign"
      [hasDamAccess]="authenticationService?.module?.damAccess"
      [hasLmsAccess]="authenticationService?.module?.lmsAccess"
     [hasPlaybookAccess]="authenticationService?.module?.playbookAccess">
