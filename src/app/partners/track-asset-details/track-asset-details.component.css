@@ -14,6 +14,9 @@
 	overflow-y: auto;
    margin-bottom: 6px;
 }
+.noData{
+    height: 0px;
+}
 /* width */
 ::-webkit-scrollbar {
 	width: 7px;

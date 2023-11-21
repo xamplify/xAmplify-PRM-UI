@@ -31,6 +31,7 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
   heading:any = "Interacted & Not Interacted Track Details";
+  scrollClass: any;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -83,6 +84,11 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
         if (response.statusCode == 200) {          
           this.sortOption.totalRecords = response.data.totalRecords;
 				  this.pagination.totalRecords = response.data.totalRecords;
+          if(pagination.totalRecords == 0){
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
 				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
         }        	
 			},
