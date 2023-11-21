@@ -259,7 +259,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authenticationService.isOrgAdminAndPartnerTeamMember = false;
     module.allBoundSamlSettings = false;
   }
-
+bgIMage2:any;
   ngOnInit() {
     try {
       this.mainLoader = true;
@@ -281,6 +281,11 @@ export class LoginComponent implements OnInit, OnDestroy {
               this.isStyleOne = true;
             } else {
               this.isStyleOne = false;
+            }
+            if(result.companyBgImagePath) {
+              this.bgIMage2 = this.authenticationService.MEDIA_URL+ result.companyBgImagePath;
+            } else {
+              this.bgIMage2 = 'https://xamplify.io/assets/images/stratapps.jpeg';
             }
             if(!this.vanityURLEnabled){
               this.router.navigate( ['/vanity-domain-error'] );

@@ -9,7 +9,7 @@
 </style>
 <div *ngIf = "authService.v_companyBgImagePath2 && !newLogin" class="xamplify-background-image" [style.backgroundImage]="'url('+authService.v_companyBgImagePath2+')'">
 </div>
-<div *ngIf = "authService.v_companyBgImagePath && newLogin" class="xamplify-background-image">
+<div *ngIf = "authService.v_companyBgImagePath2 && newLogin" class="xamplify-background-image">
 </div>
 <div class="logo">
   <a [href]="properties.xamplify_router">

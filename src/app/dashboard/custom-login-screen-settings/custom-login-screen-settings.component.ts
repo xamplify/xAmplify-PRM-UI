@@ -151,7 +151,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
             if (data.data != undefined) {
               this.companyProfile = data.data;
               this.formPosition = data.data.loginScreenDirection;
-             // this.authenticationService.v_companyBgImagePath2 = this.companyProfile.backgroundLogoStyle2;
+              //this.authenticationService.v_companyBgImagePath2 = this.companyProfile.backgroundLogoStyle2;
               this.loginType = data.data.loginType;
               // if ($.trim(this.companyProfile.backgroundLogoPath).length > 0) {
               //   this.backGroundImage = this.authenticationService.MEDIA_URL + this.companyProfile.backgroundLogoPath;
@@ -176,11 +176,13 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     if ($.trim(this.companyProfile.backgroundLogoPath).length > 0) {
       this.backGroundImage = this.authenticationService.MEDIA_URL + this.companyProfile.backgroundLogoPath;
       this.companyBgImagePath = this.companyProfile.backgroundLogoPath;
+      //this.authenticationService.v_companyBgImagePath = this.companyBgImagePath;
       this.styleOneBackgroundImagePath = this.backGroundImage;
     }
     if ($.trim(this.companyProfile.backgroundLogoStyle2).length > 0) {
       this.backGroundImage2 = this.authenticationService.MEDIA_URL + this.companyProfile.backgroundLogoStyle2;
       this.companyBgImagePath2 = this.companyProfile.backgroundLogoStyle2;
+     // this.authenticationService.v_companyBgImagePath2 = this.companyBgImagePath2;
       this.styleTwoBackgroundImagePath = this.backGroundImage2;
     }
     if(this.isTemplatesListDiv) {
@@ -260,6 +262,12 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
             this.saveOrUpdateLoginTemplateActiveForCompany(this.selectedTemplate);
             } else {
                this.customResponse = new CustomResponse('SUCCESS', this.message, true)
+                this.isShowFinalDiv = true;
+                this.showStyle2();
+              //  $('#alertDiv').show();
+              //  $('#styleDivOne').hide()
+              //  $('#styleDivTwo').hide()
+              //  $('#updateDiv').hide();
             }
           } else {
             this.customResponse = new CustomResponse('SUCCESS', this.message, true)
@@ -395,11 +403,12 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
         // this.customResponse = new CustomResponse('SUCCESS', result.data, true);
         this.customResponse = new CustomResponse('SUCCESS', this.message, true)
         this.isShowFinalDiv = true;
-        $('#alertDiv').show();
-        // $('#alertDiv1').show()
-        $('#styleDivOne').hide()
-        $('#styleDivTwo').hide()
-        $('#updateDiv').hide();
+        // $('#alertDiv').show();
+        // // $('#alertDiv1').show()
+        // $('#styleDivOne').hide()
+        // $('#styleDivTwo').hide()
+        // $('#updateDiv').hide();
+        this.showStyle1();
       } else {
         this.customResponse = new CustomResponse('ERROR', result.data.errorMessages[0].message, true);
       }
