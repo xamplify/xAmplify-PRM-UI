@@ -177,7 +177,7 @@
               *ngFor="let emailTemplate of pagination.pagedItems ;let i =index"
               id="emailTemplateListDiv_{{emailTemplate.id}}">
               <div class="grid-box" [ngClass]="emailTemplate?.id === selectedTemplate ? 'template-selected-border' :'' "
-                (click)="selectedTemplateId(emailTemplate.id)">
+                (click)="selectedTemplateId(emailTemplate.id);selectTemplateName(emailTemplate.name)">
                 <span class="select-check-box" *ngIf="emailTemplate.name != 'Create_Template'">
                   <label>
                     <input type="radio" class="radio-custimization pointer"

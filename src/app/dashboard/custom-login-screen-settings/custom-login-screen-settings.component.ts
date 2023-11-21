@@ -250,21 +250,22 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       .subscribe(
         data => {
           this.message = data.message;
-          if (data.statusCode != 200) {
-            this.message = "Missing Field";
-            this.customResponse = new CustomResponse('ERROR', this.message, true)
+          if (data.statusCode === 200) {
+            // this.message = "Missing Field";
+            // this.customResponse = new CustomResponse('ERROR', this.message, true)
+            this.saveOrUpdateLoginTemplateActiveForCompany(this.selectedTemplate);
           } else {
             this.customResponse = new CustomResponse('SUCCESS', this.message, true)
           }
           this.statusCode = data.statusCode;
         });
-    this.saveOrUpdateLoginTemplateActiveForCompany(this.selectedTemplate);
-    this.isShowFinalDiv = true;
-    $('#alertDiv').show();
-    // $('#alertDiv1').show()
-    $('#styleDivOne').hide()
-    $('#styleDivTwo').hide()
-    $('#updateDiv').hide();
+    // this.saveOrUpdateLoginTemplateActiveForCompany(this.selectedTemplate);
+    // this.isShowFinalDiv = true;
+    // $('#alertDiv').show();
+    // // $('#alertDiv1').show()
+    // $('#styleDivOne').hide()
+    // $('#styleDivTwo').hide()
+    // $('#updateDiv').hide();
   }
   showVendorCompanyLogo: boolean;
   getLogInScreenDetails() {
@@ -385,8 +386,15 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       if (result.statusCode === 200) {
         this.selectedTemplate = result.data;
         // this.customResponse = new CustomResponse('SUCCESS', result.data, true);
+        this.customResponse = new CustomResponse('SUCCESS', this.message, true)
+        this.isShowFinalDiv = true;
+        $('#alertDiv').show();
+        // $('#alertDiv1').show()
+        $('#styleDivOne').hide()
+        $('#styleDivTwo').hide()
+        $('#updateDiv').hide();
       } else {
-        this.customResponse = new CustomResponse('ERROR', result.errorMessages.message, true);
+        this.customResponse = new CustomResponse('ERROR', result.data.errorMessages[0].message, true);
       }
     }, error => {
       //this.customLoginTemplateResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT, true)
@@ -394,7 +402,14 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   }
   selectedTemplate: number;
   selectedTemplateId(id: number) {
+    if(id != 1) {
     this.selectedTemplate = id;
+    } 
+  }
+  selectTemplateName(name:any){
+    if(name != 'Create_Template') {
+      this.templateName = name;
+      } 
   }
 
   getFinalScreenTableView() {
