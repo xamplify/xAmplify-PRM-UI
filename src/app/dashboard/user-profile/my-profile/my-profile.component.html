@@ -776,7 +776,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
+
+                                                <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16" *ngIf="!httpRequestLoader.isLoading && isLocalHost">
                                                     <div [className]="activeCRMDetails?.type === 'x'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
                                                         <div class="card-body" style="padding:10px;">    
                                                             <span *ngIf="connectwiseRibbonText == 'configured'" 
