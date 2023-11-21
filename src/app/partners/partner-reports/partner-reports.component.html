@@ -226,7 +226,7 @@
           <!-- END PORTLET-->
         </div>
       </div>
-      <app-campaigns-launched-by-partners [applyFilter]="applyFilter"  [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+      <app-campaigns-launched-by-partners (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [applyFilter]="applyFilter"  [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
         *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-campaigns-launched-by-partners>
     </div>
   </div>
