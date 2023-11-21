@@ -388,9 +388,10 @@
 
                                 <div class="btnAlignPad edit_icons mbtnAlignPad">
                                     <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip"
-                                        data-placement="top" title="Delete" class="delete"
+                                        data-placement="top" title="Delete" class="delete custom-icon"
                                         (click)="confirmDelete(learningTrack.id)">
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        <div class="del-icon"></div>
                                     </a>
                                 </div>
                             </div>

@@ -2266,7 +2266,8 @@ left-menu-color ul li a,
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 .custom,
-.barview {
+.barview,
+.gridIconCustomization {
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 .table tbody tr:hover {
@@ -2595,6 +2596,7 @@ hr {
   width: 100% !important;
   border-radius: 32% !important;
   left: 0;
+  z-index: -1;
 }
 i.IconCustomization:hover {
   background-color: unset !important;
@@ -2853,6 +2855,7 @@ a.UserguideBtnCustomization {
   width: 100% !important;
   border-radius: 32% !important;
   left: 0;
+  z-index: -1;
 }
 .custom-icon:hover .del-icon{
   top: 0%;
@@ -2860,7 +2863,16 @@ a.UserguideBtnCustomization {
 i.fa.fa-trash-o:hover,
 i.fa.fa-pencil-square-o:hover,
 i.fa.fa-files-o:hover,
-i.fa.fa-bullhorn:hover{
+i.fa.fa-bullhorn:hover,
+i.fa.fa-edit:hover,
+i.fa.fa-download:hover,
+i.fa.fa-line-chart:hover,
+i.fa.fa-eye:hover,
+i.fa.fa-history:hover,
+i.fa.fa-paint-brush:hover,
+i.fa.fa-reply:hover,
+i.fa.fa-inbox:hover,
+i.fa.fa-envelope-o:hover{
   background-color: unset !important;
   z-index: 999;
   position: relative;

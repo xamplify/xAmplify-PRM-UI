@@ -39,8 +39,10 @@
 	</a> <a class="Iconhover custom-grid-icon" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top"
 		title="View Details" (click)="viewDetails(asset)"> <i class="fa fa-eye" aria-hidden="true"></i>
 		<div class="clickicons"></div>
-	</a> <a *ngIf="!isPartnerView && asset?.delete" class="delete" data-toggle="tooltip" data-placement="top"
-		title="Delete" (click)="confirmDelete(asset)"> <i class="fa fa-trash-o" aria-hidden="true"></i>
+	</a> <a *ngIf="!isPartnerView && asset?.delete" class="delete custom-icon" data-toggle="tooltip"
+		data-placement="top" title="Delete" (click)="confirmDelete(asset)"> <i class="fa fa-trash-o"
+			aria-hidden="true"></i>
+		<div class="del-icon"></div>
 	</a>
 	<ng-container
 		*ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
