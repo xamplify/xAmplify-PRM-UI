@@ -290,7 +290,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/**** XNFR-238*** */
 	customSkinDto :CustomSkin = new CustomSkin();
 	selectedThemeIndex:number= 0;
-   themeResponse:CustomResponse = new CustomResponse();
+    themeResponse:CustomResponse = new CustomResponse();
 	themeDto: ThemeDto= new ThemeDto();
 	themeData : ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
 	themeNames : string = '';
@@ -313,6 +313,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	customLoginTemplateResponse: CustomResponse = new CustomResponse();
 	// XNFR-403
 	connectwiseRibbonText: string;
+	isLocalHost = false;
 
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
@@ -322,6 +323,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
 		PagerService,public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http,private companyProfileService: CompanyProfileService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
+		this.isLocalHost = this.authenticationService.isLocalHost();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		this.referenceService.renderer = this.renderer;
 		this.isUser = this.authenticationService.isOnlyUser();
