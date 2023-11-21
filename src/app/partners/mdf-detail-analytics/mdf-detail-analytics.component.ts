@@ -19,6 +19,7 @@ export class MdfDetailAnalyticsComponent implements OnInit {
 
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Input()  isDetailedAnalytics: boolean;
+  @Input() applyFilter: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
   
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -44,6 +45,7 @@ export class MdfDetailAnalyticsComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.maxResults = 4;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.parterService.getMdfDetails(this.pagination).subscribe(
 			(response: any) => {	
