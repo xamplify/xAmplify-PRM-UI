@@ -4,4 +4,7 @@ export class PartnerJourneyRequest {
     teamMemberUserId: number;  
     trackTypeFilter: any;
     assetTypeFilter: any;
+    detailedAnalytics = false;
+    selectedPartnerCompanyIds: any[] = [];
+    partnerTeamMemberGroupFilter = false;
 }

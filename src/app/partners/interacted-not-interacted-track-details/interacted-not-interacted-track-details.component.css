@@ -35,6 +35,9 @@
    overflow-y: auto;
    margin-bottom: 6px;
 }
+.noData{
+    height: 0px;
+}
 
 /* table header bgcolor */
 .panel-bgMain > .panel-bg{

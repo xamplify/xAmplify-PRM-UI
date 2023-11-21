@@ -20,6 +20,7 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   @Input() teamMemberId: any;
   @Input() trackType: any = "";
   @Input() assetType: any = "";
+  @Input() applyFilter: boolean;
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Input()  isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
@@ -29,6 +30,7 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
   loggedInUserId: number = 0;
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
+  scrollClass: any;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -52,6 +54,7 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.trackTypeFilter = this.trackType;
     this.pagination.assetTypeFilter = this.assetType;
     this.pagination.maxResults = 6;
@@ -64,6 +67,11 @@ export class TypewiseTrackContentDetailsComponent implements OnInit {
         if (response.statusCode == 200) {          
           this.sortOption.totalRecords = response.data.totalRecords;
 				  this.pagination.totalRecords = response.data.totalRecords;
+          if(pagination.totalRecords == 0){
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
 				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
         }        	
 			},

@@ -32,6 +32,8 @@ export class DonutPieChartComponent implements OnInit {
   @Input() trackType: any = "";
   @Output() notifySelectSlice = new EventEmitter();
   @Output() notifyUnSelectSlice = new EventEmitter();
+  @Input()  isDetailedAnalytics: boolean;
+  @Input() selectedPartnerCompanyIds: any = [];
   headerText: string;
   chartColors: string[];
   colClass:string;
@@ -93,6 +95,9 @@ export class DonutPieChartComponent implements OnInit {
     partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
     partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
     partnerJourneyRequest.trackTypeFilter = this.trackType;
+    partnerJourneyRequest.detailedAnalytics = this.isDetailedAnalytics;
+    partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+    partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
     this.partnerService.getPartnerJourneyTypewiseTrackCounts(partnerJourneyRequest).subscribe(
       response => {
         this.processResponse(response);
@@ -120,6 +125,9 @@ export class DonutPieChartComponent implements OnInit {
     partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
     partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
     partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
+    partnerJourneyRequest.detailedAnalytics = this.isDetailedAnalytics;
+    partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+    partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
     this.partnerService.getPartnerJourneyInteractedAndNotInteractedCounts(partnerJourneyRequest).subscribe(
       response => {
         this.processResponse(response);

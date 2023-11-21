@@ -16,7 +16,7 @@
       </h3>
     </div>
     <div class="panel-body">    
-      <div class="scroll table-responsive">
+      <div class="scroll table-responsive tableHeightScroll">
         <table class="table">
           <thead>
             <tr>
@@ -28,7 +28,8 @@
           </thead>
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
-              <td><a data-rel="fancybox-button" (click)="viewAnalytics(item?.companyId)">{{item?.companyName}}</a></td>
+              <!-- <td><a data-rel="fancybox-button" (click)="viewAnalytics(item?.companyId)">{{item?.companyName}}</a></td> -->
+              <td><a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
               <td>{{item?.totalBalanceInString}}</td>
               <td>{{item?.usedBalanceInString}}</td>              
               <td>{{item?.availableBalanceInString}}</td>

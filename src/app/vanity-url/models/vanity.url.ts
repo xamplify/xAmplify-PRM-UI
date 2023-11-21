@@ -8,5 +8,9 @@ export class VanityURL{
     loginScreenDirection:string;
     enableVanityURL:boolean;
     companyId:number = 0;
-    showMicrosoftSSO:boolean = false;    
+    showMicrosoftSSO:boolean = false;   
+    /***** XNFR-233*****/ 
+    loginType: string;
+    backgroundLogoStyle2:string;
+    /***** XNFR-233*****/
 }

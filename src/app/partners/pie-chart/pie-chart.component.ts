@@ -15,6 +15,9 @@ export class PieChartComponent implements OnInit {
   @Input() partnerCompanyId: number;
   @Input() chartId: any;
   @Input() teamMemberId: any;
+  @Input() applyFilter: boolean;
+  @Input()  isDetailedAnalytics: boolean;
+  @Input() selectedPartnerCompanyIds: any = [];
   @Output() notifySelectSlice = new EventEmitter();
   @Output() notifyUnSelectSlice = new EventEmitter();
   headerText: string;
@@ -129,6 +132,9 @@ export class PieChartComponent implements OnInit {
     partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
     partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
     partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
+    partnerJourneyRequest.detailedAnalytics = this.isDetailedAnalytics;
+    partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+    partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
     this.parterService.redistributedCampaignDetailsPieChart(partnerJourneyRequest).subscribe(
       response => {
         this.processResponse(response);

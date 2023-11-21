@@ -1,5 +1,5 @@
 <div class="bar auto-height gridIconCustomization iconAligntCu"
-	*ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress">
+	*ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList">
 	<a class="Iconhover custom-grid-icon" *ngIf="asset?.history && !isPartnerView && asset?.edit " data-toggle="tooltip"
 		data-placement="top" title="History" (click)="viewGirdHistory(asset)">
 		<i class="fa" [ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
@@ -66,7 +66,7 @@
 </div>
 
 <!--Added On 02/08/2023-->
-<div *ngIf="asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress">
+<div *ngIf="asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">
 	<a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top" title="Refresh"
 		(click)="refreshListEmitter()">
 		<i class="fa fa-refresh" aria-hidden="true"></i>
