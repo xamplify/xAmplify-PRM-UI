@@ -145,8 +145,12 @@ export class AuthenticationService {
  activateThemeId:number;
  vanityLoginDtoForTheme:VanityLoginDto = new VanityLoginDto();
   /***** XNFR-238*********** */
+  /********  XNFR-233*****/
+  lognTemplateId:number;
+  loginType:string;
+  v_companyBgImagePath2;
+  /**** XNFR-233 */
   formBackground="";
-  
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -179,10 +183,14 @@ export class AuthenticationService {
       this.beePageClientSecret = this.envService.beePageReleaseClientSecret;
     }else{
       console.log("dev keys are used");
-      this.clientId = this.envService.beeTemplateDevClientId;
-      this.clientSecret = this.envService.beeTemplateDevClientSecret;
-      this.beePageClientId = this.envService.beePageDevClientId;
-      this.beePageClientSecret = this.envService.beePageDevClientSecret;
+      // this.clientId = this.envService.beeTemplateDevClientId;
+      // this.clientSecret = this.envService.beeTemplateDevClientSecret;
+      // this.beePageClientId = this.envService.beePageDevClientId;
+      // this.beePageClientSecret = this.envService.beePageDevClientSecret;
+      this.clientId = this.envService.beeTemplateQAClientId;
+      this.clientSecret = this.envService.beeTemplateQAClientSecret;
+      this.beePageClientId = this.envService.beePageQAClientId;
+      this.beePageClientSecret = this.envService.beePageQAClientSecret;
     }
     
     this.beeHostApi = this.envService.beeHostApi;
