@@ -2381,6 +2381,29 @@ i.fa.fa-refresh.IconCustomization.remove_border:hover {
   background: none !important;
 }
 
+
 i.fa.fa-refresh.IconCustomization.remove_border {
   border: 0px solid var(--icon-border-color) !important;
 }
+
+
+/* PJ */
+i.collapseIconColorCu {
+  color: var(---text-color) !important;
+}
+.portlet-title > .pjCardTitleCenterAlignment1 {
+  border-bottom: 1px solid var(--border-color) !important;
+  background: var(--page-content) !important;
+}
+.pjCardTitlebg  {
+  border: 1px solid var(--border-color) !important;
+}
+.highchartsColorCu{
+  background-color: var(--div-bg-color) !important;
+  border-left: 1px solid var(--border-color) !important;
+  border-right: 1px solid var(--border-color) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+.borderNone{border: none !important;}
+/* PJ End*/
+

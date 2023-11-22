@@ -21,7 +21,9 @@
 }
 
 @media (min-width: 768px) and (max-width: 991px)  { 
-    .Responsivetitle{font-size: 11px;}
+    .Responsivetitle{   
+         font-size: 13px;
+        width: 160px;}
 }
 
 @media (min-width: 200px) and (max-width: 767px)  { 
@@ -31,13 +33,18 @@
  
 }
 .tableHeightScroll{   
-    height: 348px !important;
-   overflow-y: auto;
-   margin-bottom: 6px;
+    height: 332px !important;
+    overflow-y: auto;
+    margin-bottom: 20px;
 }
 .noData{
     height: 0px;
 }
+/* width */
+::-webkit-scrollbar {
+	width: 7px;
+    height:7px;
+  }
 
 /* table header bgcolor */
 .panel-bgMain > .panel-bg{
@@ -50,4 +57,8 @@
 /* table header bgcolor end */
 .panel-heading {
     padding: 11px 15px !important;
+}
+
+.table>tbody>tr>td {
+    vertical-align: middle !important;
 }

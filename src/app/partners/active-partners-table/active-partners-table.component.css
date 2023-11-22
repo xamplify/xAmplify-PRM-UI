@@ -42,3 +42,8 @@ i.arrowpositinon.collapseIn {
   }
 
 }
+
+@media (min-width: 992px) and (max-width: 1041px) {
+  .Shortbyfield{right: 10px;
+}
+}

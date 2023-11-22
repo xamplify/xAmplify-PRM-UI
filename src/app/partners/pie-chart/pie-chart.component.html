@@ -1,5 +1,5 @@
 <div *ngIf="chartId !== 'redistributedCampaignDetailsPieChart'" id="pie{{partnerCompanyId}}" style="min-width: 100px; height: 75px; max-width: 100px;"></div>
-<div *ngIf="chartId === 'redistributedCampaignDetailsPieChart'" class="col-xs-12 col-sm-6 col-lg-6">
+<div *ngIf="chartId === 'redistributedCampaignDetailsPieChart'" class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
     <div class="col-xs-12 pl0 pr0 pr0responsive">
       <!-- <div class="overflow-x-auto"> -->
         <div> 
@@ -20,7 +20,7 @@
               <strong>No Data Found</strong>
             </div>
           </div>
-          <figure [hidden]="loader" class="highcharts-figure" style="background: #fff !important;border-left: 1px solid #ddd;border-right: 1px solid #ddd;border-bottom: 1px solid #ddd;">        
+          <figure [hidden]="loader" class="highcharts-figure highchartsColorCu">        
             <div id="{{chartId}}">          
             </div>
           </figure>
