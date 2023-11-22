@@ -1781,23 +1781,23 @@ ul.nav.nav-tabs.hideBorder {
 /* Table icon Customization  START*/
 /* List View icon Customization start*/
 i.IconCustomization {
-  border: 1px solid var(--border-color) !important;
-  color: var(--border-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  color: var(--icon-color) !important;
 }
 i.IconCustomization:hover {
-  border: 1px solid var(--border-color) !important;
-  background: var(--border-color) !important;
-  color: var(--div-bg-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  background: var(--icon-hover-color) !important;
+  color: var(--icon-color) !important;
 }
 
 .IconCustomizationcondition a i {
-  border: 1px solid var(--border-color) !important;
-  color: var(--border-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  color: var(--icon-color) !important;
 }
 .IconCustomizationcondition a i:hover {
-  border: 1px solid var(--border-color) !important;
-  background: var(--border-color) !important;
-  color: var(--div-bg-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  background: var(--icon-border-color) !important;
+  color: var(--icon-color) !important;
 }
 
 #download-template {
@@ -1825,11 +1825,11 @@ button.btn.TableDataBtn .sky-blue {
 }
 
 .setting-icon-cu {
-  border: 1px solid var(--border-color) !important;
-  color: var(--border-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  color: var(--icon-color) !important;
 }
 .setting-icon-cu .gearDropdownMenu {
-  color: var(--border-color) !important;
+  color: var(--icon-color) !important;
 }
 
 i.singleIconCustomization {
@@ -2375,4 +2375,12 @@ justify-content: center!important;
 }
 .display-inlineflex{
 display: inline-flex;
+}
+/* sudha sri(22-11-2023) */
+i.fa.fa-refresh.IconCustomization.remove_border:hover {
+  background: none !important;
+}
+
+i.fa.fa-refresh.IconCustomization.remove_border {
+  border: 0px solid var(--icon-border-color) !important;
 }
