@@ -21,21 +21,44 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
   @Input()userListName:string;
   @Input() userListId:number;
   @Input() customWidth:boolean;
+  @Input() moduleName:string = "";
+  @Input() inputId:number = 0;
   @Output() notifyParentComponent = new EventEmitter();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   pagination:Pagination = new Pagination();
   customResponse:CustomResponse = new CustomResponse();
-  constructor(public referenceService:ReferenceService,public contactService:ContactService,public properties:Properties,public pagerService:PagerService) { }
+  publishedPartnerIds:Array<Number> = new Array<Number>();
+  constructor(public referenceService:ReferenceService,public contactService:ContactService,public properties:Properties,
+    public pagerService:PagerService,private authenticationService:AuthenticationService) { }
 
   ngOnInit() {
     $('#userListUsersPreviewPopup').modal('show');
     if(this.userListId!=undefined && this.userListId>0){
-      this.findUsersByUserListId(this.pagination);
+      if(this.moduleName=="dam" && this.inputId!=undefined && this.inputId>0){
+        this.findPublishedPartnerIdsByUserListIdAndDamId();
+      }else{
+        this.findUsersByUserListId(this.pagination);
+      }
+      
     }else{
       this.referenceService.showSweetAlertErrorMessage('Invalid UserListId');
       this.closePopup();
     }
     
+  }
+
+  findPublishedPartnerIdsByUserListIdAndDamId(){
+    this.referenceService.startLoader(this.httpRequestLoader);
+    this.authenticationService.findPublishedPartnerIdsByUserListIdAndDamId(this.userListId,this.inputId)
+    .subscribe(
+      response=>{
+        this.publishedPartnerIds = response.data;
+      },error=>{
+        this.findUsersByUserListId(this.pagination);
+      },()=>{
+        this.findUsersByUserListId(this.pagination);
+      }
+      );
   }
 
   ngOnDestroy(): void {
