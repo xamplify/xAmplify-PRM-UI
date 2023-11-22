@@ -19,12 +19,20 @@
 }
 
 
-.tableHeightScroll{
-    height: 200px !important;
-    overflow-y: auto;
-    margin-bottom: 6px;
+.tableHeightScroll{   
+	height: 175px !important;
+	overflow-y: auto;
+   margin-bottom: 20px;
+}
+.noData{
+    height: 0px;
 }
 /* width */
 ::-webkit-scrollbar {
 	width: 7px;
+	height:7px;
   }
+
+  .table>tbody>tr>td {
+	vertical-align: middle !important;
+}

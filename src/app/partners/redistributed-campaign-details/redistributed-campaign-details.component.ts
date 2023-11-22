@@ -47,7 +47,7 @@ export class RedistributedCampaignDetailsComponent implements OnInit {
       this.colClass = "col-sm-12 col-md-12 col-lg-12 ml15m";
       this.scrollClass = "";
     } else {
-      this.colClass = "col-sm-6 col-md-6 col-lg-6 ml15m"
+      this.colClass = "col-sm-12 col-md-8 col-lg-8 ml15m"
       this.scrollClass = "tableHeightScroll";
     }
     this.getRedistributedCampaignDetails(this.pagination);

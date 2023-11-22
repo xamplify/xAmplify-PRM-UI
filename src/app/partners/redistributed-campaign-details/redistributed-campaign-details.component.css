@@ -25,11 +25,15 @@
     padding: 11px 15px !important;
 }
 .tableHeightScroll{
-    height: 309px !important;
+    height: 295px !important;
     overflow-y: auto;
-    margin-bottom: 6px;
+    margin-bottom: 20px;
 }
 /* width */
 ::-webkit-scrollbar {
 	width: 7px;
+    height: 7px;  
   }
+  .table>tbody>tr>td {
+	vertical-align: middle !important;
+}

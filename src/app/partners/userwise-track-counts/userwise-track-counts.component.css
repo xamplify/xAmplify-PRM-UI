@@ -18,9 +18,9 @@
   }
 
   .tableHeightScroll{   
-    height: 399px !important;
+    height: 390px !important;
    overflow-y: auto;
-   margin-bottom: 6px;
+   margin-bottom: 20px;
 }
 .noData{
   height: 0px;
@@ -29,6 +29,7 @@
 /* width */
 ::-webkit-scrollbar {
 	width: 7px;
+  height:7px;
   }
 
 /* table header bgcolor */
@@ -42,4 +43,7 @@ border-color: #ddd;
 /* table header bgcolor end */
 .panel-heading {
   padding: 11px 15px !important;
+}
+.table>tbody>tr>td {
+  vertical-align: middle !important;
 }
