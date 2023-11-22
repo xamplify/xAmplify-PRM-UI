@@ -386,7 +386,7 @@
                                 </ng-container>
                                 <a class="custom-icon" *ngIf="true" data-rel="fancybox-button"
                                   (click)="showComments(lead)" data-toggle="tooltip" data-placement="bottom"
-                                  title="Comments" style="margin-top: 10px">
+                                  title="Comments">
                                   <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
                                   </i>
                                   <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"
@@ -480,14 +480,14 @@
                               </span>
                             </td>
                             <td>
-                              <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Number of Leads"
+                              <a class="custom-icon display-inlineblock" data-toggle="tooltip" data-placement="top" title="Number of Leads"
                                 style="cursor: default">
                                 <i
                                   class="circled-number IconCustomization fontStyleNormal"><strong>{{campaign.leadsCount}}</strong></i>
                                 <div class="clickicons"></div>
                               </a>
 
-                              <a class="custom-icon" *ngIf="campaign.channelCampaign" (click)="showPartners(campaign)"
+                              <a class="custom-icon display-inlineblock" *ngIf="campaign.channelCampaign" (click)="showPartners(campaign)"
                                 data-toggle="tooltip" data-placement="top" title="View leads for this campaign">
 
                                 <i class="circled-number fa IconCustomization"

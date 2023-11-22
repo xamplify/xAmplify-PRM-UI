@@ -165,33 +165,33 @@
                                                 <div class="clickicons"></div>
                                             </a>
                                             <ng-container *ngIf="form.campaignForm&&!form.dataShare">
-                                                <a class="cursor custom-icon">
+                                                <a class="cursor custom-icon mrg-right5">
                                                     <i class="fa fa-line-chart IconCustomization"
                                                         aria-hidden="true"></i>
-                                                    <span class="badge" id="notification">{{form.count}}</span>
                                                     <div class="clickicons"></div>
                                                 </a>
+                                                <span class="badge" id="notification">{{form.count}}</span>
                                             </ng-container>
                                             <ng-container
                                                 *ngIf="(form.campaignForm&&form.dataShare)|| !form.campaignForm || form.landingPageForm">
                                                 <!-------------Disable onclick if count==0   ----->
                                                 <ng-container *ngIf="form.count==0">
-                                                    <a class="cursor custom-icon">
+                                                    <a class="cursor custom-icon mrg-right5">
                                                         <i class="fa fa-line-chart IconCustomization"
                                                             aria-hidden="true"></i>
-                                                        <span class="badge" id="notification">{{form.count}}</span>
                                                         <div class="clickicons"></div>
                                                     </a>
+                                                    <span class="badge" id="notification">{{form.count}}</span>
                                                 </ng-container>
                                                 <ng-container *ngIf="form.count>0">
-                                                    <a class="custom-icon" data-rel="fancybox-button"
+                                                    <a class="custom-icon mrg-right5" data-rel="fancybox-button"
                                                         (click)="goToAnalytics(form)" data-toggle="tooltip"
                                                         data-placement="top" title="Form Analytics">
                                                         <i class="fa fa-line-chart IconCustomization"
                                                             aria-hidden="true"></i>
-                                                        <span class="badge" id="notification">{{form.count}}</span>
                                                         <div class="clickicons"></div>
                                                     </a>
+                                                    <span class="badge" id="notification">{{form.count}}</span>
                                                 </ng-container>
                                             </ng-container>
                                             <a class="custom-icon"
@@ -271,7 +271,7 @@
                                 <div class="clickicons"></div>
                             </a>
                             <ng-container *ngIf="form.campaignForm&&!form.dataShare">
-                                <a class="cursor Iconhover custom-grid-icon">
+                                <a class="cursor Iconhover custom-grid-icon mrg-right5">
                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                                     <div class="clickicons"></div>
                                 </a>
@@ -280,14 +280,14 @@
                             <ng-container
                                 *ngIf="(form.campaignForm&&form.dataShare) || !form.campaignForm || form.landingPageForm">
                                 <ng-container *ngIf="form.count==0">
-                                    <a class="cursor Iconhover custom-grid-icon">
+                                    <a class="cursor Iconhover custom-grid-icon mrg-right">
                                         <i class="fa fa-line-chart" aria-hidden="true"></i>
                                         <div class="clickicons"></div>
                                     </a>
                                     <span class="badge" id="notification-list">{{form.count}}</span>
                                 </ng-container>
                                 <ng-container *ngIf="form.count>0">
-                                    <a class="Iconhover custom-grid-icon" data-rel="fancybox-button"
+                                    <a class="Iconhover custom-grid-icon mrg-right5" data-rel="fancybox-button"
                                         (click)="goToAnalytics(form)" title="Form Analytics" data-toggle="tooltip"
                                         data-placement="top">
                                         <i class="fa fa-line-chart" aria-hidden="true"></i>

@@ -120,7 +120,7 @@ h6 {
 #asset-preview-content {
   color: var(---text-color) !important;
 }
-#notification,
+#notifications,
 #notification-list {
   background-color: var(--page-content) !important ;
   /* border: 1px solid var(--border-color) !important; */
@@ -1781,23 +1781,23 @@ ul.nav.nav-tabs.hideBorder {
 /* Table icon Customization  START*/
 /* List View icon Customization start*/
 i.IconCustomization {
-  border: 1px solid var(--border-color) !important;
-  color: var(--border-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  color: var(--icon-color) !important;
 }
 i.IconCustomization:hover {
-  border: 1px solid var(--border-color) !important;
-  background: var(--border-color) !important;
-  color: var(--div-bg-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  background: var(--icon-hover-color) !important;
+  color: var(--icon-color) !important;
 }
 
 .IconCustomizationcondition a i {
-  border: 1px solid var(--border-color) !important;
-  color: var(--border-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  color: var(--icon-color) !important;
 }
 .IconCustomizationcondition a i:hover {
-  border: 1px solid var(--border-color) !important;
-  background: var(--border-color) !important;
-  color: var(--div-bg-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  background: var(--icon-border-color) !important;
+  color: var(--icon-color) !important;
 }
 
 #download-template {
@@ -1825,11 +1825,11 @@ button.btn.TableDataBtn .sky-blue {
 }
 
 .setting-icon-cu {
-  border: 1px solid var(--border-color) !important;
-  color: var(--border-color) !important;
+  border: 1px solid var(--icon-border-color) !important;
+  color: var(--icon-color) !important;
 }
 .setting-icon-cu .gearDropdownMenu {
-  color: var(--border-color) !important;
+  color: var(--icon-color) !important;
 }
 
 i.singleIconCustomization {
@@ -2339,6 +2339,52 @@ i.IconodownloadedCount:hover {
   display: flex !important;
   justify-content: center !important;
 }
+/* 21/11/2023 */
+a.delete.custom-icon:hover {
+  color: #ffff!important;
+  z-index: 99;
+  position: relative;
+}
+#notification{
+  position: relative!important;
+  background-color: #ed1c24 !important;
+  border: none!important;
+  top: -3px!important;
+  left: 2px!important;
+  z-index: 99;
+}
+.actionicons{
+display: flex!important;
+justify-content: center!important;
+}
+.mrgt-unset{
+ margin-top:unset!important;
+ margin-right: 12px;
+}
+#notification-list{
+  position: relative!important;
+  background-color: #ed1c24 !important;
+  border: none!important;
+  top: -3px!important;
+  left: 2px!important;
+  margin-top:0px!important;
+  z-index: 99;
+}
+.display-inlineblock{
+  display: inline-block;
+}
+.display-inlineflex{
+display: inline-flex;
+}
+/* sudha sri(22-11-2023) */
+i.fa.fa-refresh.IconCustomization.remove_border:hover {
+  background: none !important;
+}
+
+
+i.fa.fa-refresh.IconCustomization.remove_border {
+  border: 0px solid var(--icon-border-color) !important;
+}
 
 
 /* PJ */
@@ -2360,3 +2406,4 @@ i.collapseIconColorCu {
 }
 .borderNone{border: none !important;}
 /* PJ End*/
+
