@@ -2588,3 +2588,42 @@ div#bubble-chart {
   display: flex !important;
   justify-content: center !important;
 }
+a.delete.custom-icon:hover {
+  color: #ffff!important;
+  z-index: 99;
+  position: relative;
+}
+#notification{
+  position: relative!important;
+  background-color: #ed1c24 !important;
+  border: none!important;
+  top: -3px!important;
+  left: 2px!important;
+  z-index: 99;
+}
+.actionicons{
+display: flex!important;
+justify-content: center!important;
+}
+.mrgt-unset{
+ margin-top:unset!important;
+ margin-right: 12px;
+}
+#notification-list{
+  position: relative!important;
+  background-color: #ed1c24 !important;
+  border: none!important;
+  top: -4px!important;
+  left: 1px!important;
+  margin-top:0px!important;
+  z-index: 99;
+}
+.mrg-right5{
+  margin-right: 5px;
+  }
+.display-inlineblock{
+    display: inline-block;
+}
+.display-inlineflex{
+display: inline-flex;
+}

@@ -29,3 +29,10 @@
     padding: 10px 16px 0px 16px !important;
     margin: -10px -10px 0px -10px;
   }
+
+.portlet .dashboard-stat:last-child {
+    margin-bottom: 12px !important;
+}
+.portlet.light .portlet-body {
+    padding-top: 25px;
+}

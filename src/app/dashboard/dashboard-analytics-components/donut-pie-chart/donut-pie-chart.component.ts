@@ -70,13 +70,14 @@ export class DonutPieChartComponent implements OnInit {
     if (this.chartId == "interactedAndNotInteractedTracksDonut") {
       this.headerText = 'Interacted & Not Interacted Tracks';
       this.chartColors = ['#5C9BD1', '#E87E04', '#2bc2b5', '#90ed7d'];
-      this.colClass = "col-sm-5 col-lg-5";
+      // this.colClass = "col-sm-5 col-lg-5";
+      this.colClass = "col-sm-6 col-md-5 col-xs-12 col-lg-5";
       this.portletLightClass = "portlet light active-donut-pie-chart";
       this.loadDonutChartForInteractedAndNotInteractedTracks();
     } else if (this.chartId == "typewiseTrackContentDonut") {
       this.headerText = 'Status Wise Track Assets';
       this.chartColors = ['#3598dc', '#3480b5', '#8e5fa2', '#e87e04', '#26a69a'];
-      this.colClass = "col-sm-5 col-lg-5";
+      this.colClass = "col-sm-6 col-md-5 col-xs-12 col-lg-4";
       this.portletLightClass = "portlet light active-donut-pie-chart";
       this.loadDonutChartForTypewiseTrackContents();
     } else {

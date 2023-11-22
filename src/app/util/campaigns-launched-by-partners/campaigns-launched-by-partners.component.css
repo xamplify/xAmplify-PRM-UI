@@ -29,3 +29,9 @@
     margin: -10px -10px 0px -10px;
   }
   .portlet.light > .portlet-title > .pjCardTitleCenterAlignment{padding: 8px 0px !important;}
+
+  /* width */
+::-webkit-scrollbar {
+	width: 7px;
+	height:7px;
+  }
