@@ -120,7 +120,7 @@ h6 {
 #asset-preview-content {
   color: var(---text-color) !important;
 }
-#notification,
+#notifications,
 #notification-list {
   background-color: var(--page-content) !important ;
   /* border: 1px solid var(--border-color) !important; */
@@ -2339,4 +2339,40 @@ i.IconodownloadedCount:hover {
   display: flex !important;
   justify-content: center !important;
 }
-
+/* 21/11/2023 */
+a.delete.custom-icon:hover {
+  color: #ffff!important;
+  z-index: 99;
+  position: relative;
+}
+#notification{
+  position: relative!important;
+  background-color: #ed1c24 !important;
+  border: none!important;
+  top: -3px!important;
+  left: 2px!important;
+  z-index: 99;
+}
+.actionicons{
+display: flex!important;
+justify-content: center!important;
+}
+.mrgt-unset{
+ margin-top:unset!important;
+ margin-right: 12px;
+}
+#notification-list{
+  position: relative!important;
+  background-color: #ed1c24 !important;
+  border: none!important;
+  top: -3px!important;
+  left: 2px!important;
+  margin-top:0px!important;
+  z-index: 99;
+}
+.display-inlineblock{
+  display: inline-block;
+}
+.display-inlineflex{
+display: inline-flex;
+}

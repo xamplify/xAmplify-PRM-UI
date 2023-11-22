@@ -193,7 +193,7 @@ h6 {
 #asset-preview-content {
   color: white !important;
 }
-#notification {
+#notifications{
   background-color: #22313a !important ;
   border: 1px solid #191b1e !important;
 }
@@ -1153,7 +1153,7 @@ input#copy-link {
 .feature-img {
   background: #2c2f33 !important;
   box-shadow: 6.223021507263184px 6.223021507263184px 15.669065px 0 #000,
-    10.776978px 10.776978px 20.669065px 0 #181b20 !important;
+    10.776978px 10.776978px 20.669065px 0 #181b20;
 }
 .btn-primary {
   background: #2c2f33 !important;
@@ -2894,3 +2894,51 @@ a.delete.custom-icon {
 .page-bar.m10 {
   box-shadow: none !important;
 }
+/* me */
+a.delete.custom-icon:hover {
+  color: #ffff!important;
+  z-index: 99;
+  position: relative;
+}
+#notification{
+  position: relative!important;
+  background-color: #ed1c24 !important;
+  border: none!important;
+  top: -3px;
+  left: 2px;
+  z-index: 99;
+}
+.actionicons{
+display: flex!important;
+justify-content: center!important;
+}
+.mrgt-unset{
+ margin-top:unset!important;
+ margin-right: 12px;
+}
+#notification-list{
+  position: relative!important;
+  background-color: #ed1c24 !important;
+  border: none!important;
+  top: -3px!important;
+  left: 2px!important;
+  z-index: 99;
+  margin-top:0px!important;
+}
+.mrg-right5{
+  margin-right: 12px;
+  }
+  .card-shadow{
+    box-shadow: 6.223021507263184px 6.223021507263184px 15.669065px 0 #000, 10.776978px 10.776978px 20.669065px 0 #181b20 !important;
+    border-radius: 10px!important;
+  }
+  .box-shadow-unset{
+ box-shadow: unset!important;
+  }
+  .fa-fa-consistency{
+    width: 32px !important;
+    height: 32px!important;
+  }
+  .request-form-actions-div{
+ display: flex;
+  }

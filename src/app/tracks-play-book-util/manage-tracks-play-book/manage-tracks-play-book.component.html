@@ -65,7 +65,7 @@
                                 <div class="inputs mDamTop align_mflex" style="float: right">
                                     <a class="close-circle ref-mar" (click)="refreshPage()" title="Refresh"
                                         data-toggle="tooltip" data-placement="bottom">
-                                        <i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
+                                        <i class="fa fa-refresh" aria-hidden="true"></i>
                                     </a>
                                     <div class="pb3 float-left">
                                         <select class="form-control mDamSort SeclectBoxPaddingsAbj"
@@ -219,7 +219,6 @@
                                             <div *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress"
                                                 class="actions-block override-actions custom-width-icon mb_whitespace"
                                                 [ngClass]="{actionAlignment : !isPartnerView}">
-                                                <div>
                                                     <a class="mMobileDisable custom-icon"
                                                         *ngIf="learningTrack.canUpdate && !isPartnerView"
                                                         data-toggle="tooltip" data-placement="top"
@@ -235,8 +234,6 @@
                                                         <i class="fa fa-reply IconCustomization" aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
                                                     </a>
-                                                </div>
-                                                <div>
                                                     <a class="custom-icon"
                                                         *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish"
                                                         data-toggle="tooltip" data-placement="top" title="Publish"
@@ -249,8 +246,6 @@
                                                         <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
                                                     </a>
-                                                </div>
-                                                <div>
                                                     <a class="custom-icon" *ngIf="!isPartnerView" data-toggle="tooltip"
                                                         data-placement="top" title="View Analytics"
                                                         (click)="viewAnalytics(learningTrack)">
@@ -258,7 +253,6 @@
                                                             aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
                                                     </a>
-                                                </div>
                                                 <a class="custom-icon" *ngIf="learningTrack.canDelete && !isPartnerView"
                                                     id="template-delete" data-toggle="tooltip" data-placement="top"
                                                     title="Delete" (click)="confirmDelete(learningTrack.id)">
