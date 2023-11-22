@@ -193,6 +193,9 @@ img.brand-logo-custom {
   .responsivepaddding1 {
     margin-right: -5px;
   }
+  .row.rowPaddingCustomization4 {
+    margin-right: -11px !important;
+  }
 }
 
  
@@ -219,7 +222,14 @@ img.brand-logo-custom {
   margin: -7px -7px 0px -7px;
 }
 .row.rowPaddingCustomization4 {
-  margin-right: -25px !important;
+  margin-right: -25px;
   margin-left: -15px;
 }
+
+.dashboard-stat .visual > i {
+  font-size: 26px !important;
+  line-height: 1px !important;
+}
+
+ 
 

@@ -21,7 +21,9 @@
 }
 
 @media (min-width: 768px) and (max-width: 991px)  { 
-    .Responsivetitle{font-size: 11px;}
+    .Responsivetitle{   
+         font-size: 13px;
+        width: 160px;}
 }
 
 @media (min-width: 200px) and (max-width: 767px)  { 

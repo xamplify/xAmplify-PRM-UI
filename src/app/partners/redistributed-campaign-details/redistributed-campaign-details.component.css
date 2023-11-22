@@ -6,9 +6,10 @@
 	margin-left: -15px !important;
 }
 @media (min-width: 200px) and (max-width: 767px)  { 
-	.ml15m {
+	/* .ml15m {
 		padding-right: 0px !important;
-	}
+	} */
+    .responsiveMargins{margin:0px !important;}
 }
 
 /* table header bgcolor */
@@ -36,4 +37,10 @@
   }
   .table>tbody>tr>td {
 	vertical-align: middle !important;
+}
+
+@media (min-width: 768px) and (max-width: 991px)  { 
+    .Responsivetitle{   
+         font-size: 13px;
+        width: 160px;}
 }

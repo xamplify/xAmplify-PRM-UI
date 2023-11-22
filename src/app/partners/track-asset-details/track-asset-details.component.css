@@ -31,6 +31,14 @@
 	}
   }
 
+
+  @media (min-width: 768px) and (max-width: 991px)  { 
+    .Responsivetitle{   
+         font-size: 13px;
+        width: 160px;}
+}
+
+
   i.IconopenedCount {
 	border: 1px solid #3598dc;
 	color: #3598dc;

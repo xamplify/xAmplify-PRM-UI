@@ -68,3 +68,8 @@ border-color: #ddd;
 .table>tbody>tr>td {
   vertical-align: middle !important;
 }
+/* width */
+::-webkit-scrollbar {
+	width: 7px;
+    height: 7px;  
+  }

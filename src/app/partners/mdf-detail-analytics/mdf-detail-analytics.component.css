@@ -36,3 +36,16 @@
   .table>tbody>tr>td {
 	vertical-align: middle !important;
 }
+
+@media (min-width: 992px) and (max-width: 1221px)  { 
+	.tableHeightScroll {
+		height: 150px !important;
+	}
+}
+
+
+@media (min-width: 767px) and (max-width: 820px)  { 
+	.tableHeightScroll {
+		height: 140px !important;
+	}
+}
