@@ -237,7 +237,7 @@
                                         </td>
                                         <td id="actions-row">
                                             <div
-                                                class="actions-block custom-width-icon ActionAlign mActionAlign mb-dflex">
+                                                class="actions-block custom-width-icon ActionAlign mActionAlign mb-dflex actionicons">
                                                 <div class="mMobileAlignAction2 ActionAlign mActionTop mrg_top0">
                                                     <a class="mMobileDisable custom-icon"
                                                         *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)"
@@ -262,12 +262,12 @@
                                                         <div class="clickicons"></div>
                                                     </a>
                                                     <ng-container *ngIf="form.campaignForm&&!form.dataShare">
-                                                        <a class="cursor custom-icon">
+                                                        <a class="cursor custom-icon mrgt-unset">
                                                             <i class="fa fa-line-chart IconCustomization"
                                                                 aria-hidden="true"></i>
-                                                            <span class="badge" id="notification">{{form.count}}</span>
                                                             <div class="clickicons"></div>
                                                         </a>
+                                                        <span class="badge" id="notification">{{form.count}}</span>
                                                     </ng-container>
 
                                                     <!-- <ng-container *ngIf="pagination.surveyCampaignForm">
@@ -287,25 +287,25 @@
                                                         *ngIf="(form.campaignForm&&form.dataShare)|| !form.campaignForm || form.landingPageForm">
                                                         <!-------------Disable onclick if count==0   ----->
                                                         <ng-container *ngIf="form.count==0">
-                                                            <a class="cursor custom-icon">
+                                                            <a class="cursor custom-icon mrgt-unset">
                                                                 <i class="fa fa-line-chart IconCustomization"
                                                                     aria-hidden="true"></i>
-                                                                <span class="badge"
-                                                                    id="notification">{{form.count}}</span>
                                                                 <div class="clickicons"></div>
                                                             </a>
+                                                            <span class="badge"
+                                                            id="notification">{{form.count}}</span>
                                                         </ng-container>
                                                         <ng-container *ngIf="form.count>0">
-                                                            <a class="custom-icon" data-rel="fancybox-button"
+                                                            <a class="custom-icon  mrgt-unset" data-rel="fancybox-button"
                                                                 (click)="goToAnalytics(form)" data-toggle="tooltip"
                                                                 data-placement="top" title="Form Analytics"
                                                                 style="margin-top: -5px;">
                                                                 <i class="fa fa-line-chart IconCustomization"
                                                                     aria-hidden="true"></i>
-                                                                <span class="badge"
-                                                                    id="notification">{{form.count}}</span>
                                                                 <div class="clickicons"></div>
                                                             </a>
+                                                            <span class="badge"
+                                                            id="notification">{{form.count}}</span>
                                                         </ng-container>
                                                     </ng-container>
                                                 </div>
@@ -391,7 +391,7 @@
 
                                 </a>
                                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
-                                    <a class="cursor Iconhover custom-grid-icon">
+                                    <a class="cursor Iconhover custom-grid-icon mrgt-unset">
                                         <i class="fa fa-line-chart" aria-hidden="true"></i>
                                         <div class="clickicons"></div>
                                     </a>
