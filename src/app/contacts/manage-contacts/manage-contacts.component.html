@@ -640,7 +640,6 @@
                                                           && (authenticationService.module.isPrmCompany || authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
                                                          data-toggle="tooltip" data-placement="top"
                                                          (click)="openUnPublishedContentModalPopUp(contactList)"
-
                                                          [title]="(((authenticationService?.module?.isCampaign || authenticationService.module.isReDistribution) && !authenticationService?.module?.damAccess 
                                                                      && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || module=='contacts')
                                                                       ?  actionsDescription?.send_campaigns:actionsDescription?.shareUnPublishedContent">
@@ -874,15 +873,23 @@
                                              <div class="del-icon"></div>
                                           </a>
                                        </ng-container>
+
+                                       <!--XNFR-342-->
                                        <a class="Iconhover custom-grid-icon"
-                                          *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads 
-                     && !sharedLeads && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner"
-                                          data-toggle="tooltip" data-placement="top" style=""
-                                          (click)="openPopUpForNewlyAddedPartnersOrContacts(contactList)"
-                                          title="{{actionsDescription.send_campaigns}}"> <i class="fa fa-bullhorn"
-                                             aria-hidden="true"></i>
+                                          *ngIf="!assignLeads && !sharedLeads && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner
+                                          && (authenticationService.module.isPrmCompany || authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
+                                          data-toggle="tooltip" data-placement="top"
+                                          (click)="openUnPublishedContentModalPopUp(contactList)"
+                                          [title]="(((authenticationService?.module?.isCampaign || authenticationService.module.isReDistribution) && !authenticationService?.module?.damAccess 
+                                                      && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || module=='contacts')
+                                                      ?  actionsDescription?.send_campaigns:actionsDescription?.shareUnPublishedContent">
+                                          <i [ngClass]="((authenticationService?.module?.isCampaign && !authenticationService?.module?.damAccess 
+                                                   && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || module=='contacts') ? 'fa fa-bullhorn IconCustomization':'fa fa-share IconCustomization'" aria-hidden="true"></i>
                                           <div class="clickicons"></div>
                                        </a>
+                                       <!--XNFR-342-->
+
+                                 
                                        <a class="Iconhover custom-grid-icon"
                                           *ngIf="assignLeads && contactList?.assignedLeadsList && contactList.assignedToPartner"
                                           data-toggle="tooltip" data-placement="top" title="Preview"
