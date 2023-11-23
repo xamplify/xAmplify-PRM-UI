@@ -20,6 +20,9 @@
 i.arrowpositinon.collapseIn {
   bottom: 15px;
 }
+.btn-group.open .dropdown-toggle {
+  box-shadow: none;
+}
 @media (min-width: 200px) and (max-width: 767px) {
   .Shortbyfield {
     right: 0px;
@@ -42,7 +45,15 @@ i.arrowpositinon.collapseIn {
   }
 
 }
-
+span.filterActiveBg {
+  background-color: #10ad39;
+}
+span.filterActiveBg i {
+  color: #fff;
+}
+.defaultFilterACtiveBg{
+  background-color: #f1f3fa;
+}
 @media (min-width: 992px) and (max-width: 1041px) {
   .Shortbyfield{right: 10px;
 }
