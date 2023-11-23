@@ -36,7 +36,7 @@ export class ImageUploadCropperComponent implements OnInit {
   constructor(public utilService: UtilService) { }
 
   ngOnInit() {
-
+   this.showCropper = false;
   }
   closeModal() {
     this.cropRounded = !this.cropRounded;
@@ -46,6 +46,7 @@ export class ImageUploadCropperComponent implements OnInit {
     this.croppedImageForBgImage = '';
     this.squareDataForBgImage = {};
     this.bgImageChangedEvent = null;
+    this.showCropper = false;
   }
   imageClick() {
     this.cropLogoImageText = "Choose the image to be used as your company logo";
