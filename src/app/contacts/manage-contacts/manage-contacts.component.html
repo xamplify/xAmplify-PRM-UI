@@ -636,18 +636,19 @@
                                                    </ng-container>
                                                    <!--XNFR-342---->
                                                    <a class="custom-icon"
-                                                         *ngIf="!assignLeads && !sharedLeads && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner
+                                                      *ngIf="!assignLeads && !sharedLeads && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner
                                                           && (authenticationService.module.isPrmCompany || authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
-                                                         data-toggle="tooltip" data-placement="top"
-                                                         (click)="openUnPublishedContentModalPopUp(contactList)"
-                                                         [title]="(((authenticationService?.module?.isCampaign || authenticationService.module.isReDistribution) && !authenticationService?.module?.damAccess 
+                                                      data-toggle="tooltip" data-placement="top"
+                                                      (click)="openUnPublishedContentModalPopUp(contactList)"
+                                                      [title]="(((authenticationService?.module?.isCampaign || authenticationService.module.isReDistribution) && !authenticationService?.module?.damAccess 
                                                                      && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || module=='contacts')
                                                                       ?  actionsDescription?.send_campaigns:actionsDescription?.shareUnPublishedContent">
-                                                         <i [ngClass]="((authenticationService?.module?.isCampaign && !authenticationService?.module?.damAccess 
-                                                                  && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || module=='contacts') ? 'fa fa-bullhorn IconCustomization':'fa fa-share IconCustomization'" aria-hidden="true"></i>
+                                                      <i [ngClass]="((authenticationService?.module?.isCampaign && !authenticationService?.module?.damAccess 
+                                                                  && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || module=='contacts') ? 'fa fa-bullhorn IconCustomization':'fa fa-share IconCustomization'"
+                                                         aria-hidden="true"></i>
 
-                                                         <div class="clickicons"></div>
-                                                      </a>
+                                                      <div class="clickicons"></div>
+                                                   </a>
                                                    <!--XNFR-342---->
                                                 </div>
                                                 <div class="actions-block override-actions"
@@ -884,12 +885,13 @@
                                                       && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || module=='contacts')
                                                       ?  actionsDescription?.send_campaigns:actionsDescription?.shareUnPublishedContent">
                                           <i [ngClass]="((authenticationService?.module?.isCampaign && !authenticationService?.module?.damAccess 
-                                                   && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || module=='contacts') ? 'fa fa-bullhorn IconCustomization':'fa fa-share IconCustomization'" aria-hidden="true"></i>
+                                                   && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || module=='contacts') ? 'fa fa-bullhorn':'fa fa-share'"
+                                             aria-hidden="true"></i>
                                           <div class="clickicons"></div>
                                        </a>
                                        <!--XNFR-342-->
 
-                                 
+
                                        <a class="Iconhover custom-grid-icon"
                                           *ngIf="assignLeads && contactList?.assignedLeadsList && contactList.assignedToPartner"
                                           data-toggle="tooltip" data-placement="top" title="Preview"
@@ -1678,6 +1680,6 @@
 <app-share-unpublished-content #shareUnPublishedComponent
    [hasCampaignAccess]="(authenticationService?.module?.isCampaign || authenticationService?.module?.isReDistribution)"
    [hasDamAccess]="authenticationService?.module?.damAccess && module!='contacts'"
-    [hasLmsAccess]="authenticationService?.module?.lmsAccess && module!='contacts'"
+   [hasLmsAccess]="authenticationService?.module?.lmsAccess && module!='contacts'"
    [hasPlaybookAccess]="authenticationService?.module?.playbookAccess && module!='contacts'">
 </app-share-unpublished-content>
