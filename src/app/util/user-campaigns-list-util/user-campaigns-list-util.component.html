@@ -198,7 +198,7 @@
                                              {{campaignAnalytics?.clickedUrlsCount}}
                                           </td>
                                           <td class="center-align">
-                                             <div (click)="$event.stopPropagation()">
+                                             <div  class ="display-inlineflex" (click)="$event.stopPropagation()">
                                                 <a class="custom-icon" *ngIf="campaignAnalytics?.autoResponsesCount==0">
                                                    <i class="circled-number IconCustomization fontStyleNormal"
                                                       style="margin-right: 50px;cursor: not-allowed">{{campaignAnalytics?.autoResponsesCount}}</i>
