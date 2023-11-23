@@ -52,15 +52,15 @@
         <app-modal-popup-loader [height]="460" [hidden]="!chartLoader"></app-modal-popup-loader>
         <figure [hidden]="chartLoader" class="highcharts-figure mBarChartWidth">
           <div id="{{chartId}}">
-            <div class="alert alert-info center-align " *ngIf="statusCode==404">
+            <div class="alert alert-info" *ngIf="statusCode==404">
               <strong>No Data Found</strong>
             </div>
-            <div class="alert alert-danger center-align" *ngIf="statusCode==500">
+            <div class="alert alert-danger" *ngIf="statusCode==500">
               <strong>{{properties?.serverErrorMessage}}</strong>
             </div>
           </div>
         </figure>
-        <div class="alert alert-info center-align " *ngIf="statusCode==404">
+        <div class="alert alert-info " *ngIf="statusCode==404">
           <strong>No Data Found</strong>
         </div>
 
