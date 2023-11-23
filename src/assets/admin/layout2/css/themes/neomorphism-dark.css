@@ -154,7 +154,8 @@ h6 {
 .bar,
 .tile,
 .progress {
-  background-color: #191b1e !important;
+  /* background-color: #191b1e !important; */
+  background: #222528;
 }
 .heading-top {
   background-color: #2e3033 !important;
@@ -2268,7 +2269,8 @@ left-menu-color ul li a,
 .custom,
 .barview,
 .gridIconCustomization {
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  /* box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important; */
+  box-shadow: inset 1px 2px 11px #000, inset -3px -1px 7px #3b4451 !important;
 }
 .table tbody tr:hover {
   background-color: #23272c !important;
