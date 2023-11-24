@@ -783,7 +783,7 @@
                                                             *ngIf="!campaign.vendorCampaignDeleted && !authenticationService?.module?.deletedPartner">
                                                             <a class="custom-icon"
                                                                 (click)="showCampaignPreview(campaign)">
-                                                                <i class="fa fa-eye mr5 IconCustomization"
+                                                                <i class="fa fa-eye IconCustomization"
                                                                     style="width: 30px;"></i>
                                                                 Preview Campaign
                                                                 <div class="clickicons"></div>
@@ -793,7 +793,7 @@
                                                             *ngIf="!archived && campaign.canArchive && !authenticationService?.module?.deletedPartner">
                                                             <a class="custom-icon" (click)="archiveCampaign(campaign)"
                                                                 translate>
-                                                                <i class="fa fa-archive mr5 IconCustomization"
+                                                                <i class="fa fa-archive IconCustomization"
                                                                     style="width: 30px;" aria-hidden="true"></i> Archive
                                                                 Campaign
                                                                 <div class="clickicons"></div>
@@ -803,7 +803,7 @@
                                                             *ngIf="archived && campaign.canArchive && !authenticationService?.module?.deletedPartner">
                                                             <a class="custom-icon" (click)="unarchiveCampaign(campaign)"
                                                                 translate>
-                                                                <i class="fa fa-archive mr5 IconCustomization"
+                                                                <i class="fa fa-archive IconCustomization"
                                                                     style="width: 30px;" aria-hidden="true"></i>
                                                                 Unarchive Campaign
                                                                 <div class="clickicons"></div>
@@ -1373,13 +1373,13 @@
                                             *ngIf="!archived && campaign.canArchive && !authenticationService?.module?.deletedPartner"
                                             (click)="archiveCampaign(campaign)" data-toggle="tooltip"
                                             data-placement="top" title="Archive">
-                                            <i class="fa fa-archive mr5" aria-hidden="true"></i>
+                                            <i class="fa fa-archive" aria-hidden="true"></i>
                                         </a>
                                         <a class="Iconhover"
                                             *ngIf="archived && campaign.canArchive && !authenticationService?.module?.deletedPartner"
                                             (click)="unarchiveCampaign(campaign)" data-toggle="tooltip"
                                             data-placement="top" title="Unarchive">
-                                            <i class="fa fa-archive mr5" aria-hidden="true"></i>
+                                            <i class="fa fa-archive" aria-hidden="true"></i>
                                         </a>
                                         <a class="Iconhover" *ngIf="campaign.canEditEndDate"
                                             (click)="showEndDateModal(campaign)" data-toggle="tooltip"
@@ -1394,7 +1394,7 @@
                                         *ngIf="!campaign.vendorCampaignDeleted && !authenticationService?.module?.deletedPartner"
                                         (click)="showCampaignPreview(campaign)" data-toggle="tooltip"
                                         data-placement="top" title="Preview">
-                                        <i class="fa fa-eye mr5" aria-hidden="true"></i>
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
                                     </a>
                                     <a class="delete"
                                         *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor  || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted"
