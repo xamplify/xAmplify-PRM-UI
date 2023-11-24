@@ -1,5 +1,4 @@
-<div *ngIf="barChartId=='campaign-type-chart'" id="{{barChartId}}"></div>
-<div class="col-xs-12 col-sm-6 col-lg-6" style="padding: 0" *ngIf="!hideLeadsAndDealsChart && barChartId!='campaign-type-chart'">
+<div class="col-xs-12 col-sm-6 col-lg-6" style="padding: 0" *ngIf="!hideLeadsAndDealsChart">
   <div class="col-xs-12" [ngClass]="chartId=='redistributeCampaignsAndLeadsCountBarChart' ? 'pr5': 'pr5'">
     <div class="portlet light overflow-x-auto" style="min-height: 530px;"
       [ngStyle]="{'margin-bottom':chartId=='redistributeCampaignsAndLeadsCountBarChart'?'15px':'20px'}">
@@ -52,15 +51,15 @@
         <app-modal-popup-loader [height]="460" [hidden]="!chartLoader"></app-modal-popup-loader>
         <figure [hidden]="chartLoader" class="highcharts-figure mBarChartWidth">
           <div id="{{chartId}}">
-            <div class="alert alert-info center-align " *ngIf="statusCode==404">
+            <div class="alert alert-info" *ngIf="statusCode==404">
               <strong>No Data Found</strong>
             </div>
-            <div class="alert alert-danger center-align" *ngIf="statusCode==500">
+            <div class="alert alert-danger" *ngIf="statusCode==500">
               <strong>{{properties?.serverErrorMessage}}</strong>
             </div>
           </div>
         </figure>
-        <div class="alert alert-info center-align " *ngIf="statusCode==404">
+        <div class="alert alert-info " *ngIf="statusCode==404">
           <strong>No Data Found</strong>
         </div>
 

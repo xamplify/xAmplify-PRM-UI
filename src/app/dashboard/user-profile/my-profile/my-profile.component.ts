@@ -2606,7 +2606,7 @@ configSalesforce() {
 		this.vanityUrlService.saveCustomLoginTemplate(cutomLoginTemplate).subscribe(result => {
 		  if(result.statusCode === 200){
 			// this.goBackToMyprofileForCustomLogin();
-			this.customLoginTemplateResponse = new CustomResponse('SUCCESS', "Template updated successfully", true);
+			this.customLoginTemplateResponse = new CustomResponse('SUCCESS', result.message, true);
 		  } else {
 			this.customLoginTemplateResponse = new CustomResponse('ERROR', result.data.errorMessages[0].message, true);
 		  }
