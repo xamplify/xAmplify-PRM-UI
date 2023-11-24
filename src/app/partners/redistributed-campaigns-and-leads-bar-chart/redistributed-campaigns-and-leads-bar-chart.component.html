@@ -1,5 +1,4 @@
-<div *ngIf="barChartId=='campaign-type-chart'" id="{{barChartId}}"></div>
-<div class="col-xs-12 col-sm-6 col-lg-6" style="padding: 0" *ngIf="!hideLeadsAndDealsChart && barChartId!='campaign-type-chart'">
+<div class="col-xs-12 col-sm-6 col-lg-6" style="padding: 0" *ngIf="!hideLeadsAndDealsChart">
   <div class="col-xs-12" [ngClass]="chartId=='redistributeCampaignsAndLeadsCountBarChart' ? 'pr5': 'pr5'">
     <div class="portlet light overflow-x-auto" style="min-height: 530px;"
       [ngStyle]="{'margin-bottom':chartId=='redistributeCampaignsAndLeadsCountBarChart'?'15px':'20px'}">
