@@ -825,7 +825,7 @@
                                                             title="Copy Public Event Url" translate>
                                                             <i class="fa fa-link IconCustomization" style="width: 30px;"
                                                                aria-hidden="true"></i> Copy Url
-                                                            <div class="clickicons"></div>
+                                                            <div class=""></div>
                                                          </a>
                                                          <a class=""
                                                             *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier)  && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign && !campaign.eventStarted"
@@ -853,8 +853,7 @@
                                                    </ng-container>
                                                    <li
                                                       *ngIf="!campaign.vendorCampaignDeleted && !authenticationService?.module?.deletedPartner">
-                                                      <a class="" (click)="showCampaignPreview(campaign)"
-                                                         translate>
+                                                      <a class="" (click)="showCampaignPreview(campaign)" translate>
                                                          <i class="fa fa-eye IconCustomization" style="width: 30px;"
                                                             aria-hidden="true"></i> Preview
                                                          Campaign
@@ -863,8 +862,7 @@
                                                    </li>
                                                    <li
                                                       *ngIf="!archived && campaign.canArchive && !authenticationService?.module?.deletedPartner">
-                                                      <a class="" (click)="archiveCampaign(campaign)"
-                                                         translate>
+                                                      <a class="" (click)="archiveCampaign(campaign)" translate>
                                                          <i class="fa fa-archive IconCustomization" style="width: 30px;"
                                                             aria-hidden="true"></i> Archive
                                                          Campaign
@@ -873,8 +871,7 @@
                                                    </li>
                                                    <li
                                                       *ngIf="archived && campaign.canArchive && !authenticationService?.module?.deletedPartner">
-                                                      <a class="" (click)="unarchiveCampaign(campaign)"
-                                                         translate>
+                                                      <a class="" (click)="unarchiveCampaign(campaign)" translate>
                                                          <i class="fa fa-archive IconCustomization" style="width: 30px;"
                                                             aria-hidden="true"></i> Unarchive
                                                          Campaign
@@ -915,9 +912,8 @@
                                                       <li
                                                          *ngIf="(authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
                                                      || authenticationService.isVendorTeamMember || authenticationService.isVendorAndPartnerTeamMember || authenticationService.isOrgAdminTeamMember || authenticationService.isOrgAdminAndPartnerTeamMember || authenticationService.isVendorSuperVisor || authenticationService.isOrgAdminSuperVisor || authenticationService?.module?.isMarketingCompany) && !campaign.nurtureCampaign">
-                                                         <a class="" title="Update Event"
-                                                            data-rel="fancybox-button" (click)="updateEvent(campaign)"
-                                                            translate>
+                                                         <a class="" title="Update Event" data-rel="fancybox-button"
+                                                            (click)="updateEvent(campaign)" translate>
                                                             <i class="fa fa-pencil IconCustomization"
                                                                style="width: 30px;" aria-hidden="true"></i> Update event
                                                             <div class=""></div>

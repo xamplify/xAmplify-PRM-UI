@@ -794,9 +794,10 @@
 					<div class="col-xs-12">
 						<button
 							*ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate"
-							type="button" style="float: right" class=" btn Btn-Green" (click)="resetTabs('recipients')"
+							type="button" style="float: right" class="button" (click)="resetTabs('recipients')"
 							title="Please Fill Campaign Details"
-							[disabled]="recipientsTabClass === 'disableRecipientsTab'">Next</button>
+							[disabled]="recipientsTabClass === 'disableRecipientsTab'"><span
+								class="btn Btn-Green transition">Next</span></button>
 					</div>
 				</fieldset>
 				<!--  End Step one -->
@@ -1081,9 +1082,10 @@
 								type="button" style="float:left;" class="btn Btn-Gray"
 								(click)="resetTabs('details')">Previous</button>
 							<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage"
-								type="button" style="float: right;" class="btn btn Btn-Green"
+								type="button" style="float: right;" class="button"
 								[disabled]="emailTemplatesTabClass === 'disableTemplateTab'"
-								(click)="resetTabs('templates')" title="">Next</button>
+								(click)="resetTabs('templates')" title=""><span
+									class="btn Btn-Green transition">Next</span></button>
 						</div>
 					</div>
 				</div>
@@ -1316,8 +1318,9 @@
 					<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button"
 						style="float:left;" class="btn Btn-Gray" (click)="resetTabs('recipients')">Previous</button>
 					<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button"
-						style="float: right;" class="btn btn Btn-Green" (click)="resetTabs('launch')"
-						[class.disabled]="launchTabClass === 'disableLaunchTab'" title="">Next</button>
+						style="float: right;" class="button" (click)="resetTabs('launch')"
+						[class.disabled]="launchTabClass === 'disableLaunchTab'" title=""><span
+							class="btn Btn-Green transition">Next</span></button>
 				</div>
 				<!--    End Step three templates -->
 				<!-- 	Step four launch campaigns    -->

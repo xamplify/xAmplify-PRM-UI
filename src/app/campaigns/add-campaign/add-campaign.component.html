@@ -2033,16 +2033,20 @@
                                 <div class="text-center">
                                     <button type="button" class="btn Btn-Gray mBtnAlign f-w-600 w-10em"
                                         (click)="showCampaignDetailsTab()">Previous</button>
-                                    <button *ngIf="!isPageCampaign" type="button" class="btn Btn-Green mBtnAlign w-10em"
+                                    <button *ngIf="!isPageCampaign" type="button" class="button mBtnAlign w-10em"
                                         title="Send Test Email" data-toggle="tooltip" data-placement="top"
                                         (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
-                                        <i class="fa fa-envelope-o mr5"></i>{{properties?.sendTestEmail}}
+                                        <span class="btn Btn-Green transition pl_4">{{properties?.sendTestEmail}}<i
+                                                class="fa fa-envelope-o mr5"></i></span>
                                     </button>
-                                    <button type="submit" class="btn Btn-Green mBtnAlign w-10em"
+                                    <button type="submit" class="button mBtnAlign w-10em mar-lft-11"
                                         [disabled]="!isContactList"
-                                        (click)="isContactList && validateAndLaunchCampaign()">{{buttonName}}</button>
-                                    <button *ngIf="!isPageCampaign" type="button" class="btn Btn-Green mBtnAlign w-10em"
-                                        (click)="spamCheck()">Spam Check</button>
+                                        (click)="isContactList && validateAndLaunchCampaign()"><span
+                                            class="btn Btn-Green transition">{{buttonName}}</span></button>
+                                    <button *ngIf="!isPageCampaign" type="button"
+                                        class="button mBtnAlign w-10em mar-lft-40" (click)="spamCheck()"><span
+                                            class="btn Btn-Green transition">Spam
+                                            Check</span></button>
                                 </div>
                             </div>
                         </fieldset>
@@ -2134,8 +2138,9 @@
 
 <ng-template #nextButton>
     <div>
-        <button type="button" class="btn Btn-Green pull-right mBtnAlign f-w-600 w-10em" [disabled]="!isValidFirstTab"
-            (click)="isValidFirstTab && showLaunchTab()">Next</button>
+        <button type="button" class="button pull-right mBtnAlign f-w-600 w-10em mar-rgt-40"
+            [disabled]="!isValidFirstTab" (click)="isValidFirstTab && showLaunchTab()"><span
+                class="btn Btn-Green transition">Next</span></button>
     </div>
 </ng-template>
 <ng-template #filter>
