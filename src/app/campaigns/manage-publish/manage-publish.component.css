@@ -168,7 +168,7 @@ td h5 {
 }
 .custom-font-weight {
   font-weight: 600 !important;
-  white-space: pre-wrap;
+  /* white-space: pre-wrap; */
 }
 .custom-font-size {
   font-size: 16px !important;

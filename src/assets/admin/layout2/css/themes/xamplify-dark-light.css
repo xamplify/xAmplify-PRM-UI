@@ -2456,3 +2456,7 @@ i.collapseIconColorCu {
 }
 /* PJ End*/
 
+  /****** XNFR-233 *****/
+  .preview_img {
+    background-color: #22313a !important;
+  }

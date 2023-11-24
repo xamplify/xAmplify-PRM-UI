@@ -25,24 +25,39 @@ i.arrowpositinon.collapseIn {
 }
 @media (min-width: 200px) and (max-width: 767px) {
   .Shortbyfield {
-    right: 0px;
+    right: 35px;
   }
   .SotybyBoxPosition {
     right: 0px;
+    top: 10px;
   }
   .mainSearchBoxCu  {
     position: relative;
     width: 170px;
     right: 0px;
+    top: 10px;
   }
   .Fullboxmargin {
-    margin-bottom: -10px;
+    margin-bottom: -14px;
   }
-  .portletCardCu {padding-top: 0px;}
+  .portletCardCu {padding-top: 0px; margin-bottom: -17px;}
   .TitlePaddingTop{padding-top: 0px;}
   .arrowpositinon  {
     bottom: 56px;
   }
+  i.arrowpositinon.collapseIn{
+    bottom: 42px;
+ }
+ .FliterAlignment{
+  top: -26px;
+  height: 28px !important;
+}
+
+span.FliterAlignment i.fa.fa-filter.p10 {
+  padding: 6px !important;
+}
+
+.filtermobileTop{margin-top: 40px !important;}
 
 }
 span.filterActiveBg {
@@ -55,6 +70,20 @@ span.filterActiveBg i {
   background-color: #f1f3fa;
 }
 @media (min-width: 992px) and (max-width: 1041px) {
-  .Shortbyfield{right: 10px;
+  .Shortbyfield{right: 10px;}
 }
+
+
+@media (min-width: 768px) and (max-width: 991px) {
+
+  .mainSearchBoxCu  {
+    right: 70px;
+  }
+  .Shortbyfield {
+    right: 100px;
+  }
+  .Fullboxmargin {
+    margin-bottom: -4px;
+  }
+ 
 }
