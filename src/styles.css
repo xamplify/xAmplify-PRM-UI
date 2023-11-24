@@ -2627,3 +2627,6 @@ justify-content: center!important;
 .display-inlineflex{
 display: inline-flex;
 }
+.custom-icon{
+  display: inline-flex;
+}
