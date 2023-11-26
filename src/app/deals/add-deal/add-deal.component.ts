@@ -927,10 +927,11 @@ getActiveCRMDetails() {
   this.integrationService.getActiveCRMDetails(this.deal.createdForCompanyId, this.loggedInUserId)
     .subscribe(
       response => {
-        if (response.statusCode == 200) {          
+        if (response.statusCode == 200) {
           this.activeCRMDetails = response.data;
           if (this.activeCRMDetails.activeCRM
-            && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type || "PIPEDRIVE" === this.activeCRMDetails.type)) {
+            && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
+              || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type)) {
             this.showCustomForm = true;
           }
         } 
