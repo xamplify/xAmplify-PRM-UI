@@ -208,6 +208,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     campaignDetails['userListId'] = this.selectedUserListId;
     campaignDetails['loggedInUserId'] = this.authenticationService.getUserId();
     campaignDetails['publishingToPartnerList'] = this.isPublishingToPartnerList;
+    campaignDetails['partnershipId'] = this.contact.partnershipId;
     return campaignDetails;
   }
 
