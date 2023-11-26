@@ -161,14 +161,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
         this.shareAssets(campaignDetails);
       }else if(this.selectedModule==this.properties.tracksHeaderText
          || this.selectedModule==this.properties.playBooksHeaderText){
-          if(this.isPublishingToPartnerList){
-            this.addLoaderAndShareTracksOrPlayBooks();
-          }else{
-            let partnerModuleCustomName = localStorage.getItem("partnerModuleCustomName");
-            this.trackOrPlayBooksSweetAlertParameterDto.text = 'Selected '+this.selectedModule+' will be shared with all '+partnerModuleCustomName+'. Would you like to continue?';
-            this.trackOrPlayBooksSweetAlertParameterDto.confirmButtonText = "Yes,share";
-            this.isTrackOrPlayBooksSweetAlertComponentCalled = true;
-          }
+          this.addLoaderAndShareTracksOrPlayBooks();
       }
     }else{
       this.referenceService.goToTop();
@@ -215,6 +208,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     campaignDetails['userListId'] = this.selectedUserListId;
     campaignDetails['loggedInUserId'] = this.authenticationService.getUserId();
     campaignDetails['publishingToPartnerList'] = this.isPublishingToPartnerList;
+    campaignDetails['partnershipId'] = this.contact.partnershipId;
     return campaignDetails;
   }
 
