@@ -187,7 +187,7 @@
     *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-count-tiles>
 
   <!-- --------------------Active Partners Analytics-------- -->
-  <div id="active-partner-div" *ngIf="!loadAllCharts && selectedTabIndex == 0" style="padding-right: 12px;">
+  <div id="active-partner-div" *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm" style="padding-right: 12px;">
     <div class="row">
       <div class="">
         <!---XNFR-220----->
@@ -768,13 +768,13 @@
     <!-- <ng-container *ngIf="reloadWithFilter"> -->
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
       [chartId]="'allRedistributeCampaignsAndLeadsCountBarChart'"
-      *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaigns-and-leads-bar-chart>
+      *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm"></app-redistributed-campaigns-and-leads-bar-chart>
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
       [chartId]="'allLeadsAndDealsBarChart'"
-      *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaigns-and-leads-bar-chart>
+      *ngIf="!loadAllCharts && selectedTabIndex == 0 "></app-redistributed-campaigns-and-leads-bar-chart>
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
       [chartId]="'redistributeCampaignsAndLeadsCountBarChart'"
-      *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaigns-and-leads-bar-chart>
+      *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm"></app-redistributed-campaigns-and-leads-bar-chart>
     <!-- <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
         [chartId]="'redistributeCampaignsAndLeadsCountBarChartQuarterly'"></app-redistributed-campaigns-and-leads-bar-chart> -->
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
@@ -791,12 +791,12 @@
           (notifySelectSlice)="redistributedCampaignDetailsPieChartSelected($event)"
           (notifyUnSelectSlice)="redistributedCampaignDetailsPieChartUnSelected($event)" [isDetailedAnalytics]="false"
           [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
-          *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-pie-chart>
+          *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm"></app-pie-chart>
       </div>
       <app-redistributed-campaign-details [partnerCompanyId]="'0'" [campaignTypeFilter]="selectedCampaignType"
         [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [applyFilter]="applyFilter"
-        *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService.module?.isCampaign"></app-redistributed-campaign-details>
+        *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService.module?.isCampaign && !authenticationService.module?.isPrm"></app-redistributed-campaign-details>
     </div>
   </div>
 
