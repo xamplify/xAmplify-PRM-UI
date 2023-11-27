@@ -3042,6 +3042,9 @@ padding-left: 0px!important;
   width: 32px!important;
   height: 32px!important;
 }
+button.unlink-button {
+  color: #f3f2f2;
+}
 /* .bar{
   height: 50px!important;
 } */

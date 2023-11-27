@@ -214,10 +214,10 @@ td h6 {
 }
 
 .bar a {
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 28px;
   padding: 2px 0px 0px 0px !important;
-  /* margin: 4px 2px 0px 0px !important; */
+  line-height: 21px;
 }
 
 #landing-page-title {

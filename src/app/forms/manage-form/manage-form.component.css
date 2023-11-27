@@ -125,10 +125,11 @@ cursor: default;
 	background: #cb5a5e;
 }
 .bar a {
-	width: 25px;
-	height: 25px;
+	width: 28px;
+	height: 28px;
 	padding: 2px !important;
-	margin: 4px 4px !important;
+	margin: 4px 3px !important;
+  line-height: 21px;
 }
 .custom-width-icon{
 	min-width: 130px;
