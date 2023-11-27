@@ -839,6 +839,7 @@ select {
 /* remved ,button:disabled */
 .btn-hvr-text {
   color: black !important;
+  background-color: #ddd;
 }
 .table tr.row-selected td {
   background-color: var(--div-bg-color) !important;
@@ -2406,4 +2407,15 @@ i.collapseIconColorCu {
 }
 .borderNone{border: none !important;}
 /* PJ End*/
-
+/* Button Transitions */
+/* sudha sri(23-11-2023) */
+.button:hover,button {
+  background: none;
+}
+.marg-lft{
+  margin-left: -20px !important;
+}
+.mar-rgt_mar-lft{
+  margin-right: -20px !important;
+  padding-left: 2px !important;
+}

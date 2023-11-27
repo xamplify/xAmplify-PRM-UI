@@ -812,12 +812,13 @@ setSfFormFieldValues() {
           }
           let sfCustomFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === true);
           let sfCfDataList = [];
+          this.deal.amount = 0;
           for (let formLabel of sfCustomFields) {
-            if (formLabel.labelId === "dealname" || formLabel.labelId === "title") {
+            if (formLabel.labelId === "dealname" || formLabel.labelId === "title" || formLabel.labelId === "name") {
               this.deal.title = formLabel.value;
             } else if (formLabel.labelId === "amount" || formLabel.labelId === "value") {
               this.deal.amount = formLabel.value;
-            }  else if (formLabel.labelId === "closedate" || formLabel.labelId === "expected_close_date") {
+            } else if (formLabel.labelId === "closedate" || formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate") {
               this.deal.closeDateString = formLabel.value;
             }
               let sfCfData = new SfCustomFieldsDataDTO();
@@ -927,10 +928,11 @@ getActiveCRMDetails() {
   this.integrationService.getActiveCRMDetails(this.deal.createdForCompanyId, this.loggedInUserId)
     .subscribe(
       response => {
-        if (response.statusCode == 200) {          
+        if (response.statusCode == 200) {
           this.activeCRMDetails = response.data;
           if (this.activeCRMDetails.activeCRM
-            && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type || "PIPEDRIVE" === this.activeCRMDetails.type)) {
+            && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
+              || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type)) {
             this.showCustomForm = true;
           }
         } 

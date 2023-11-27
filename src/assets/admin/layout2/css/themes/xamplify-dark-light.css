@@ -941,6 +941,7 @@ span.ui-column-resize {
 /* remved ,button:disabled */
 .btn-hvr-text {
   color: black !important;
+  background-color: #ddd;
 }
 .table tr.row-selected td {
   background-color: #2b3c46 !important;
@@ -2460,3 +2461,27 @@ i.collapseIconColorCu {
   .preview_img {
     background-color: #22313a !important;
   }
+/* Button Transitions */
+/* sudha sri(23-11-2023) */
+.button:hover,button {
+  background: none;
+}
+.mar-rgt_mar-lft{
+  margin-right: -20px !important;
+  padding-left: 2px !important;
+}
+.marg-lft{
+  margin-left: -20px !important;
+}
+.mar-lft-40{
+  margin-left: -40px !important;
+}
+.mar-rgt-40{
+  margin-right: -40px !important;
+}
+.mar-lft-11{
+  margin-left: -11px !important;
+}
+.mar-rgt-9{
+  margin-right: -9px !important;
+}
