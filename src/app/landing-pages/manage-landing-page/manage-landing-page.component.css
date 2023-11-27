@@ -205,7 +205,7 @@ td h6 {
   font-size: 12px !important;
 }
 .bar {
-  height: 45px;
+  height: auto;
 }
 
 .grid-box h6 {
@@ -214,8 +214,8 @@ td h6 {
 }
 
 .bar a {
-  width: 25px !important;
-  height: 25px !important;
+  width: 25px;
+  height: 25px;
   padding: 2px 0px 0px 0px !important;
   /* margin: 4px 2px 0px 0px !important; */
 }

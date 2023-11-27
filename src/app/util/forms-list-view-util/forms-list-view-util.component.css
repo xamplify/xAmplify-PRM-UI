@@ -109,8 +109,8 @@ cursor: default;
 	background: #cb5a5e;
 }
 .bar a {
-	width: 25px !important;
-	height: 25px !important;
+	width: 25px;
+	height: 25px ;
 	padding: 2px !important;
 	margin: 4px 4px !important;
 }

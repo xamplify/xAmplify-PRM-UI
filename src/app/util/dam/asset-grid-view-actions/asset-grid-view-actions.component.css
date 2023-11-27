@@ -35,17 +35,16 @@
  .bar a {
      text-shadow: none;
      /* color: #5b9bd1; */
-     width: 30px;
-     height: 30px;
      /* border: 1px solid #fff; */
      padding: 5px;
      border-radius: 100%;
      margin: 10px 5px;
      display: inline-block;
-     width: 24px !important;
-     height: 25px !important;
+     width: 28px;
+     height: 28px;
      padding: 2px !important;
-     margin: 10px 4px !important;
+     margin: 10px 2px !important;
+     line-height: 22px;
  }
 
  @media screen and (max-width:600px){
