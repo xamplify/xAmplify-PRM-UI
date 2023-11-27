@@ -1217,8 +1217,8 @@ shareSelectedTracksOrPlayBooks(requestDto:any,module:string){
   return this.callPutMethod(url,requestDto);
 } 
 
-findPublishedPartnerIdsByUserListIdAndDamId(userListId:number,damId:number){
-  let url = this.REST_URL + "dam/findPublishedPartnerIds/"+userListId+"/"+damId+"?access_token=" + this.access_token;
+findPublishedPartnerIdsByUserListIdAndDamId(userListId:number,id:number,moduleName:string){
+  let url = this.REST_URL + moduleName+"/findPublishedPartnerIds/"+userListId+"/"+id+"?access_token=" + this.access_token;
   return this.callGetMethod(url);
 }
 

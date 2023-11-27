@@ -18,8 +18,9 @@
       </div>
       <div class="pl10 pt10 user-info">
         <h4 class="media-heading"><b>{{integrationDetails?.externalDisplayName}}</b></h4>
-        <h5>{{integrationDetails?.externalEmail}}</h5>
-        <span>Username: {{integrationDetails?.externalUserName}}</span>
+        <h5>Email: {{integrationDetails?.externalEmail}}</h5>
+        <span>Username: {{integrationDetails?.externalUserName}}</span><br>
+        <span>Organization: {{integrationDetails?.externalOrganizationName}}</span>
       </div>
       <div class="btn-group active-btns mb_right0" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-primary activate-btn" *ngIf="!(integrationDetails?.activeCRM)" (click)="activateCRM()">Activate</button>
@@ -56,8 +57,8 @@
                   [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"  class="pointer" /></th>
               <th>Field Name</th>
               <th>Data Type</th>
-              <th *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE'">Required</th>
-              <th *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE'">Place Holder</th>
+              <th *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Required</th>
+              <th *ngIf="integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">Place Holder</th>
             </tr>
           </thead>
           <tbody>
@@ -68,9 +69,9 @@
                   [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1) || sfCustomField.required"
                   [disabled]="!sfCustomField.canUnselect" class="pointer" /></td>
                 <td><span>{{sfCustomField.label}}</span></td>
-                <td><span>{{sfCustomField.type}}</span></td>
+                <td><span>{{sfCustomField.type}}</span><span *ngIf="sfCustomField.entryType">-{{sfCustomField.entryType}}</span></td>
                 <td>
-                  <span *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE')">Required
+                  <span *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE')">Required
                     <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="Your partner must fill in this custom field if you toggle on this option."></span>
                       <label class="toggleOnOff" [ngClass]="!sfCustomField?.canUnselect ? 'disabled-opacity':''">
                         <input class="checkBox_shadow" type="checkbox" [disabled]="!sfCustomField.canUnselect" [(ngModel)]="sfCustomField.required" [ngModelOptions]="{standalone: true}">
@@ -80,7 +81,7 @@
                     </span>   
                 </td>
               <td>
-                <input *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE')" type="text" class="form-control"  placeholder="PlaceHolder"
+                <input *ngIf="sfCustomField.selected && (integrationType === 'HUBSPOT' || integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE')" type="text" class="form-control"  placeholder="PlaceHolder"
                  [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
                 </td>
               </tr>
