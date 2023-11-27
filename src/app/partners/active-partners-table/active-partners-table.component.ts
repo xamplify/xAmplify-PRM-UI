@@ -55,6 +55,7 @@ export class ActivePartnersTableComponent implements OnInit {
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;   
     this.getActivePartners(this.pagination);
     this.findCompanyNames();
+    this.setFilterColor();
   }
 
   getActivePartners(pagination: Pagination) {
@@ -128,18 +129,19 @@ export class ActivePartnersTableComponent implements OnInit {
   clickFilter() {
     if(!this.filterApplied) {
       this.showFilterOption = !this.showFilterOption;
-    } else {
+    } else {      
       if (this.showFilterOption) {
         this.showFilterOption = false;
-      } 
-      this.showFilterDropDown = true;
+      } else {
+        this.showFilterDropDown = true;
+      }     
     }
     
   }
 
   viewDropDownFilter(){
-    this.showFilterDropDown = false;
     this.showFilterOption = true;
+    this.showFilterDropDown = false;
   }
 
 
@@ -163,7 +165,13 @@ export class ActivePartnersTableComponent implements OnInit {
     this.showFilterOption = false;
     this.filterActiveBg = 'filterActiveBg';
   }
-
+  setFilterColor(){
+    if(this.selectedCompanyIds != null && this.selectedCompanyIds.length >0 && this.selectedCompanyIds != undefined){
+      this.filterActiveBg = 'filterActiveBg';
+      this.isCollapsed = false;
+      this.filterApplied = true;
+    }
+  }
   
   findCompanyNames() {
     this.filterCategoryLoader = true;
