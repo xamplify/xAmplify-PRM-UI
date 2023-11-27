@@ -34,9 +34,9 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
   ngOnInit() {
     $('#userListUsersPreviewPopup').modal('show');
     if(this.userListId!=undefined && this.userListId>0){
-      if(this.moduleName=="dam" && this.inputId!=undefined && this.inputId>0){
-        this.findPublishedPartnerIdsByUserListIdAndDamId();
-      }else{
+      if((this.moduleName=="dam" || this.moduleName=="lms") && this.inputId!=undefined && this.inputId>0){
+        this.findPublishedPartnerIdsByUserListIdAndId();
+      } else{
         this.findUsersByUserListId(this.pagination);
       }
       
@@ -47,9 +47,9 @@ export class PreviewUserListComponent implements OnInit,OnDestroy {
     
   }
 
-  findPublishedPartnerIdsByUserListIdAndDamId(){
+  findPublishedPartnerIdsByUserListIdAndId(){
     this.referenceService.startLoader(this.httpRequestLoader);
-    this.authenticationService.findPublishedPartnerIdsByUserListIdAndDamId(this.userListId,this.inputId)
+    this.authenticationService.findPublishedPartnerIdsByUserListIdAndDamId(this.userListId,this.inputId,this.moduleName)
     .subscribe(
       response=>{
         this.publishedPartnerIds = response.data;
