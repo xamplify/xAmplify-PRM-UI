@@ -24,3 +24,6 @@
 .panel-heading {
     padding: 11px 15px !important;
 }
+.table>tbody>tr>td {
+	vertical-align: middle !important;
+}

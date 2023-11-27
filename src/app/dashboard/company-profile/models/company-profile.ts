@@ -39,5 +39,8 @@ export class CompanyProfile {
     roleId:number = 0;
     /****XNFR-281****/
     instagramLink: "";
+    /**** XNFR-233 */
+    backgroundLogoStyle2 = "";
+    /*** XNFR-233 */
     
 }

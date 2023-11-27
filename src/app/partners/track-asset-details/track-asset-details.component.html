@@ -1,7 +1,7 @@
 <div class="col-sm-6 col-md-6 col-lg-6 ml15m">
   <div class="panel panel-info mh530 panel-bgMain">
     <div class="panel-heading panel-heading-custom panel-bg">
-      <h3 class="panel-title mt7">{{type | titlecase }} Asset Details</h3>
+      <h3 class="panel-title mt7 Responsivetitle">{{type | titlecase }} Asset Details</h3>
       <span class="pull-right mt25m mobilesearchdisplay">
         <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;top: -1px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
@@ -15,7 +15,7 @@
       </span>
     </div>
     <div class="panel-body">    
-      <div class="scroll tableHeightScroll">
+      <div class="scroll table-responsive {{scrollClass}}">
         <div class="table-responsive">
         <table class="table">
           <thead>

@@ -49,9 +49,10 @@
         </ul>
         <div id="download-partners-csv" class="hidden-xs" style="padding-right: 3px;padding-top:1px;">
             <a (click)="downloadEmptyCsv()">
-                <button type="button" class="btn Btn-Green " download
+                <button type="button" class="button" download
                     [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
-                    Download CSV Template<i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
+                    <span class="btn Btn-Green transition">Download CSV Template <i class="fa fa-download"
+                            aria-hidden="true" style="margin-left: 5px"></i></span>
                 </button>
             </a>
         </div>
@@ -445,8 +446,8 @@
         </div>
         <ng-template #saveCancel>
             <div class="pull-right">
-                <button class="btn Btn-Green" id="save_button" *ngIf="selectedAddPartnerOption != 5"
-                    (click)="saveContacts()" translate>Save</button>
+                <button class="button" id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()"
+                    translate><span class="btn Btn-Green transition">Save</span></button>
                 <button class="btn Btn-Gray" id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard"
                     (click)="cancelPartners()" translate>Cancel</button>
             </div>
@@ -610,8 +611,8 @@
                                 </select>
                             </div>
                             <div class="col-xs-6" style="margin-bottom: 10px">
-                                <button class="btn Btn-Green" type="button" (click)="clipboardShowPreview()"
-                                    translate>Verify Data</button>
+                                <button class="button" type="button" (click)="clipboardShowPreview()" translate><span
+                                        class="btn Btn-Green transition">Verify Data</span></button>
                             </div>
                             <div class="col-xs-12">
                                 <textarea id="copyFromclipTextArea" class="textareaNumber" title="Calendar View"
@@ -932,25 +933,22 @@
                                                                     aria-hidden="true"></i>
                                                                 <div class="del-icon"></div>
                                                             </a>
+                                                            <!--XNFR-342-->
                                                             <ng-container
-                                                                *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution)">
+                                                                *ngIf="authenticationService?.module?.isCampaign || authenticationService?.module?.isPrmCompany">
                                                                 <a class="custom-icon" data-toggle="tooltip"
                                                                     data-placement="bottom"
-                                                                    title="{{actionsDescription.send_campaigns}}"
-                                                                    (click)="addCampaigns(contact)"> <i
-                                                                        class="fa fa-bullhorn IconCustomization"
+                                                                    title="{{actionsDescription?.shareUnPublishedContent}}"
+                                                                    [title]="(authenticationService?.module?.isCampaign && !authenticationService?.module?.damAccess 
+                                                                        && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess)
+                                                                         ?  actionsDescription?.send_campaigns:actionsDescription?.shareUnPublishedContent"
+                                                                    (click)="openUnPublishedContentModalPopUp(contact)">
+                                                                    <i [ngClass]="(authenticationService?.module?.isCampaign && !authenticationService?.module?.damAccess 
+                                                                        && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) 
+                                                                         ? 'fa fa-bullhorn IconCustomization':'fa fa-share IconCustomization'"
                                                                         aria-hidden="true"></i>
                                                                     <div class="clickicons"></div>
                                                                 </a>
-                                                            </ng-container>
-                                                             <!--XNFR-342-->
-                                                             <ng-container *ngIf="isLocalHost">
-                                                                <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
-                                                                title="{{actionsDescription?.shareUnPublishedContent}}"
-                                                                (click)="openUnPublishedContentModalPopUp(contact)">
-                                                                <i class="fa fa-share IconCustomization" aria-hidden="true"></i>
-                                                                <div class="clickicons"></div>
-                                                                </a>  
                                                             </ng-container>
                                                             <!--XNFR-342-->
                                                             <a class="custom-icon"
@@ -1497,11 +1495,10 @@
 </div>
 
 
-    <!---XNFR-342---->
-    <app-share-unpublished-content #shareUnPublishedComponent
-    [hasCampaignAccess]="authenticationService?.module?.showCampaignOptionInManageVideos"
-     [hasDamAccess]="authenticationService?.module?.damAccess"
-     [hasLmsAccess]="authenticationService?.module?.lmsAccess"
+<!---XNFR-342---->
+<app-share-unpublished-content #shareUnPublishedComponent
+    [hasCampaignAccess]="authenticationService?.module?.isCampaign"
+    [hasDamAccess]="authenticationService?.module?.damAccess" [hasLmsAccess]="authenticationService?.module?.lmsAccess"
     [hasPlaybookAccess]="authenticationService?.module?.playbookAccess">
 </app-share-unpublished-content>
 
@@ -1659,7 +1656,8 @@
             <ngx-loading [show]="processingPartnersLoader || previewLoader"
                 [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-footer">
-                <button type="submit" class="btn Btn-Green" (click)="validatePartners()" translate>Continue</button>
+                <button type="submit" class="button" (click)="validatePartners()" translate><span
+                        class="btn Btn-Green transition">Continue</span></button>
                 <button type="submit" class="btn Btn-Gray" (click)="closeAssignContactAndMdfAmountPopup()"
                     translate>Close</button>
             </div>

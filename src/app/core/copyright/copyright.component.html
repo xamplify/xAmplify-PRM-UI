@@ -1,1 +1,1 @@
-<div [ngClass]="(authService.loginScreenDirection === 'Center')?'copyright-css': (authService.loginScreenDirection === 'Left')?'copyright-css-left':'copyright-css-right'" [innerHtml]="properties.BOTTOM_MESSAGE"></div>
+<div [ngClass]="(authService.loginScreenDirection === 'Center')?'copyright-css': (authService.loginScreenDirection === 'Left')? styleOne?'copyright-css-right-styleone':'copyright-css-left':(styleOne)? 'copyright-css-right-styleone':'copyright-css-right'" [innerHtml]="properties.BOTTOM_MESSAGE"></div>

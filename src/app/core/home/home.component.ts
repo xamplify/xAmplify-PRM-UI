@@ -322,7 +322,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
- 
+
   /*********** XNFR-238********** */
   activeThemeDetails: CompanyThemeActivate = new CompanyThemeActivate();
   getActiveThemeData(vanityLoginDto) {
@@ -359,10 +359,10 @@ export class HomeComponent implements OnInit {
         this.authenticationService.themeDto = this.activeThemeDto;
         this.getDefaultSkin(this.activeThemeDto);
         /******** For Charts *******/
-        if(id == 2){
+        if (id == 2) {
           this.authenticationService.isDarkForCharts = true;
         }
-        if(id == 4){
+        if (id == 4) {
           this.authenticationService.isDarkForCharts = true;
         }
       }, error => {
@@ -370,14 +370,14 @@ export class HomeComponent implements OnInit {
         this.xtremandLogger.log(error);
       });
   }
-  getDefaultSkin(activeThemeDto:ThemeDto) {
+  getDefaultSkin(activeThemeDto: ThemeDto) {
     //this.ngxloading = true;
     this.loader = true;
     this.dashBoardService.getPropertiesById(activeThemeDto.id)
       .subscribe(
         (response) => {
           //this.ngxloading = false;
-           this.loader = false;
+          this.loader = false;
           let skinMap = response.data;
 
           // this.authenticationService.customMap = data.data;
@@ -386,7 +386,7 @@ export class HomeComponent implements OnInit {
           this.footerCustom = skinMap.FOOTER;
           this.footerSkin = skinMap.FOOTER;
           this.maincontentCustom = skinMap.MAIN_CONTENT;
-          this.authenticationService.isLeft = !activeThemeDto.defaultTheme ;
+          this.authenticationService.isLeft = !activeThemeDto.defaultTheme;
           this.authenticationService.isTop = !activeThemeDto.defaultTheme;
           this.authenticationService.isFoter = !activeThemeDto.defaultTheme;
           this.authenticationService.isMain = !activeThemeDto.defaultTheme;
@@ -398,15 +398,15 @@ export class HomeComponent implements OnInit {
             && activeThemeDto.name === "Light") {
             require("style-loader!../../../assets/admin/layout2/css/layout.css");
           } else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
-            && activeThemeDto.name === "Dark" && !this.router.url.includes('home/help')){
-              this.authenticationService.isDarkForCharts = true;
-              require("style-loader!../../../assets/admin/layout2/css/themes/xamplify-dark-light.css");
+            && activeThemeDto.name === "Dark" && !this.router.url.includes('home/help')) {
+            this.authenticationService.isDarkForCharts = true;
+            require("style-loader!../../../assets/admin/layout2/css/themes/xamplify-dark-light.css");
           } else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
-            && activeThemeDto.name === "Neumorphism Dark(Beta)" && !this.router.url.includes('home/help')){
-              this.authenticationService.isDarkForCharts = true;
-              require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-dark.css");
+            && activeThemeDto.name === "Neumorphism Dark(Beta)" && !this.router.url.includes('home/help')) {
+            this.authenticationService.isDarkForCharts = true;
+            require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-dark.css");
           }
-          else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && !this.router.url.includes('home/help') ) {
+          else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && !this.router.url.includes('home/help')) {
             document.documentElement.style.setProperty('--top-bg-color', this.topCustom.backgroundColor);
             document.documentElement.style.setProperty('--top-buton-color', this.topCustom.buttonColor);
             document.documentElement.style.setProperty('--top-button-border-color', this.topCustom.buttonBorderColor);
@@ -440,22 +440,25 @@ export class HomeComponent implements OnInit {
             document.documentElement.style.setProperty('--button-secondary-bg-color', this.maincontentCustom.buttonSecondaryColor);
             document.documentElement.style.setProperty('--button-secondary-border-color', this.maincontentCustom.buttonSecondaryBorderColor);
             document.documentElement.style.setProperty('--button-secondary-text-color', this.maincontentCustom.buttonSecondaryTextColor);
+            document.documentElement.style.setProperty('--icon-color', this.maincontentCustom.iconColor);
+            document.documentElement.style.setProperty('--icon-border-color', this.maincontentCustom.iconBorderColor);
+            document.documentElement.style.setProperty('--icon-hover-color', this.maincontentCustom.iconHoverColor);
             require("style-loader!../../../assets/admin/layout2/css/themes/custom-skin-main-content.css");
 
           }
 
 
-      
+
 
         }, error => {
-            this.loader = false;
+          this.loader = false;
         });
   }
   /************* XNFR-238 *********************/
 
   /******** user guide *******/
- showLeftMenu:boolean;
+  showLeftMenu: boolean;
   showLeftSideMenu() {
-  this.showLeftMenu = this.referenceService.hideLeftSideMenu();
+    this.showLeftMenu = this.referenceService.hideLeftSideMenu();
   }
 }

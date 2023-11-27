@@ -479,6 +479,9 @@ i.filterColorCu1 {
   margin: 6px 8px;
 }
 
+.disabled-event-pj {
+  cursor: not-allowed !important;
+}
 p.paNumberCu {
   margin: 2px 0px !important;
 }

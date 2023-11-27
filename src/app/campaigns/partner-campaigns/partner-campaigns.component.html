@@ -372,7 +372,8 @@
 									<div *ngFor="let campaign of pagination.pagedItems; let i= index"
 										class="col-xs-12 col-sm-4 col-lg-3 tab_grid">
 										<div class="grid-box h220">
-											<img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"
+											<img class="image_effect"
+												src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"
 												alt="">
 											<h4 class="ellipsis" title="{{campaign.campaignName}}">
 												{{campaign.campaignName | slice:0:25}} <span
@@ -644,7 +645,7 @@
 		</a>
 	</ng-container>
 </ng-template>
-<ng-template #redistributeIcon let-campaign="campaign"> <a class="Iconhover custom-icon"
+<ng-template #redistributeIcon let-campaign="campaign"> <a class="Iconhover custom-icon display-inlineblock"
 		*ngIf="campaign.campaignType != 'EVENT'  && !campaign.ended && campaign?.shareLeadsListExists "
 		(click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top"
 		title="Redistribute Campaign" data-rel="fancybox-button"> <i class="fa fa-rocket" aria-hidden="true"></i>

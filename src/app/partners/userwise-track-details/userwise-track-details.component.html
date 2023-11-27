@@ -35,12 +35,13 @@
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
               <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
-              <td *ngIf="!isDetailedAnalytics">
+              <!-- <td *ngIf="!isDetailedAnalytics">
                 <a class="detailstext" ata-toggle="tooltip" data-placement="top" title="{{item?.companyName}}" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">
                 {{item?.companyName | slice:0:15}}
                 <span *ngIf="item.companyName?.length>15">...</span>
               </a>
-              </td>
+              </td> -->
+              <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
               <td>
                 <span ata-toggle="tooltip" data-placement="top" title="{{item?.title}}"> {{item?.title | slice:0:15}}
                   <span *ngIf="item.title?.length>15">...</span>

@@ -16,7 +16,7 @@
           </app-response-message>
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <ng-container *ngIf="!httpRequestLoader.isLoading && !customResponse.isVisible">
-          <div class="table-responsive">
+          <div>
             <table class='table tgrid table-condensed table-bordered' *ngIf="pagination.pagedItems?.length>0" id="user-list-users"
               aria-describedby="userListUsersTableDescription">
               <thead>
@@ -34,7 +34,11 @@
                   </td>
                   <td [ngClass]="[ user?.validEmail ? 'valid' : 'invalid']">
                     <span  data-toggle="tooltip" data-placement="bottom"
-                    [title]="user?.validEmail ? 'This is a valid email address':'This is an invalid email address'">{{user.emailId}}</span>
+                    [title]="user?.validEmail ? 'This is a valid email address':'This is an invalid email address'">{{user.emailId}}
+                  </span>
+                  <span *ngIf="publishedPartnerIds!=undefined && publishedPartnerIds?.length>0 && publishedPartnerIds.indexOf(user.userId)>-1" class="success pointer" title="Published"  data-toggle="tooltip" data-placement="bottom" >
+                    <i class="fa fa-check-circle-o"></i>
+                  </span>
                   </td>
                   <td>
                     {{user?.firstName}}
@@ -54,6 +58,9 @@
             <app-pagination [pagination]="pagination" (notifyParent)="navigateUsers($event)" (notifyParentDropDown)="findUsersByUserListId($event)">
             </app-pagination>
          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
         </div>
     </div>
     </div>

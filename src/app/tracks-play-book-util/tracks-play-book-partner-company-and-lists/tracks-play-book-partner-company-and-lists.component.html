@@ -316,6 +316,7 @@
 
 <ng-container *ngIf="showUsersPreview">
   <app-preview-user-list [userListName]="selectedPartnerGroupName" [userListId]="selectedPartnerGroupId"
+  [moduleName]="'lms'" [inputId]="inputId"
     (notifyParentComponent)="resetValues()"></app-preview-user-list>
 </ng-container>
 

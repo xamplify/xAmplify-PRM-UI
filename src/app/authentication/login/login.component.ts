@@ -13,6 +13,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { EnvService } from 'app/env.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 declare const $: any;
 
@@ -47,12 +48,16 @@ export class LoginComponent implements OnInit, OnDestroy {
   SERVER_URL: any;
   APP_URL: any;
   vanitySocialProviders = [];
+  isStyleOne:boolean = false;
+  loginStyleId:number;
 
   constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
-    public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService,) {
+    public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService, public sanitizer: DomSanitizer) {
       this.SERVER_URL = this.envService.SERVER_URL;
       this.APP_URL = this.envService.CLIENT_URL;
       this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
+      this.loginStyleId = 53;
+      //this.logInStyle = this.envService.loginStyleType;
     if (this.referenceService.userProviderMessage !== "") {
       this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
     }
@@ -254,7 +259,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authenticationService.isOrgAdminAndPartnerTeamMember = false;
     module.allBoundSamlSettings = false;
   }
-
+bgIMage2:any;
   ngOnInit() {
     try {
       this.mainLoader = true;
@@ -263,20 +268,39 @@ export class LoginComponent implements OnInit, OnDestroy {
         location.reload();
       }else{
         if (this.vanityURLService.isVanityURLEnabled()) {
+          //  this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
+          this.getActiveLoginTemplate(this.authenticationService.companyProfileName);
+
           this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {         
             this.vanityURLEnabled = result.enableVanityURL;  
-            this.authenticationService.vendorCompanyId = result.companyId;       
+            this.authenticationService.vendorCompanyId = result.companyId;     
             this.authenticationService.v_companyName = result.companyName;
             this.authenticationService.vanityURLink = result.vanityURLink;
+            this.authenticationService.loginType = result.loginType;
+            if(result.loginType === "STYLE_ONE"){
+              this.isStyleOne = true;
+            } else {
+              this.isStyleOne = false;
+            }
+            if(result.companyBgImagePath) {
+              this.bgIMage2 = this.authenticationService.MEDIA_URL+ result.companyBgImagePath;
+            } else {
+              this.bgIMage2 = 'https://xamplify.io/assets/images/stratapps.jpeg';
+            }
             if(!this.vanityURLEnabled){
               this.router.navigate( ['/vanity-domain-error'] );
               return;
             }
             this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
             this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
-            if (result.companyBgImagePath) {
+            if (result.companyBgImagePath && result.backgroundLogoStyle2) {
+              this.authenticationService.v_companyBgImagePath2 = this.authenticationService.MEDIA_URL + result.backgroundLogoStyle2;
               this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
-            } else {
+            } else if(result.companyBgImagePath){
+              this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
+            } else if(result.backgroundLogoStyle2) {
+              this.authenticationService.v_companyBgImagePath2 = this.authenticationService.MEDIA_URL + result.backgroundLogoStyle2;
+            }else {
               this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
             }
             this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
@@ -423,4 +447,44 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.resendActiveMail = false;
   }
 
+  /****** XNFR-233 ************/
+  // isLoginTypeOne(companyprofileName:any) {
+  //   this.vanityURLService.getActiveLoginTemplate(companyprofileName)
+  //   .subscribe(
+  //     data => {
+  //       alert(data.data)
+  //       if(data.data === "STYLE_ONE"){
+  //         this.isStyleOne = true;
+  //       } else {
+  //         this.isStyleOne = false;
+  //       }
+  //     })  
+  // }
+  
+  createdUserId:any;
+  getActiveLoginTemplate(companyProfileName:any){
+      this.vanityURLService.getActiveLoginTemplate(companyProfileName)
+      .subscribe(
+        data => {
+         this.loginStyleId = data.data.templateId
+         this.authenticationService.lognTemplateId = this.loginStyleId;
+         this.createdUserId = data.data.createdBy;
+         this.previewTemplate(this.loginStyleId,this.createdUserId)
+        })  
+        //this.previewTemplate(this.loginStyleId,this.createdUserId)
+  }
+  htmlContent:any;
+  previewTemplate(id: number,createdBy:number) {
+    $(this.htmlContent).empty();
+    this.vanityURLService.getLogInTemplateById(id, createdBy).subscribe(
+      response => {
+        if (response.statusCode == 200) {
+          this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(response.data.htmlBody);
+        } else {
+          this.customResponse = new CustomResponse('ERROR', response.message, true)
+        }
+      }
+    )
+  }
+  /****** XNFR-233 ************/
 }

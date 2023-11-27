@@ -32,7 +32,8 @@
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
               <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [isCreatedByUser]="true" [userInfo]="item"></app-user-info></td>
-              <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.createdByCompanyId)">{{item?.createdByCompanyName}}</a></td>
+              <!-- <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.createdByCompanyId)">{{item?.createdByCompanyName}}</a></td> -->
+              <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.createdByCompanyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
               <td>{{item?.fullName}}</td>
               <td>{{item?.email}}</td>              
               <td>{{item?.company}}</td>

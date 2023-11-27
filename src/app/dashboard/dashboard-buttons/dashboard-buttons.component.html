@@ -10,19 +10,19 @@
       <div class="form-group col-md-6">
         <label>Title</label>        
         <input type="text" class="form-control" name="buttonTitle" placeholder="Title"
-          [(ngModel)]="dashboardButton.buttonTitle" maxlength="20" required>
+          [(ngModel)]="dashboardButton.buttonTitle" maxlength="20" autocomplete="off" required>
       </div>
       <div class="form-group col-md-6">
         <label>Subtitle</label>
         <input type="text" class="form-control" name="buttonSubTitle" placeholder="Subtitle"
-          [(ngModel)]="dashboardButton.buttonSubTitle" maxlength="40">
+          [(ngModel)]="dashboardButton.buttonSubTitle" maxlength="40" autocomplete="off">
       </div>
     </div>
     <div class="form-row">
       <div class="form-group col-md-6">
         <label>Link</label>
         <input type="text" class="form-control" name="buttonLink" placeholder="Link"
-          [(ngModel)]="dashboardButton.buttonLink" maxlength="2083" required>
+          [(ngModel)]="dashboardButton.buttonLink" autocomplete="off" maxlength="2083" required>
       </div>
       <div class="form-group col-md-5">
         <label>Icon</label>
@@ -84,10 +84,10 @@
           <td>{{item.buttonLink}}</td>
           <td>
             <div class="actions-block override-actions">
-              <a (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="edit"> <i
+              <a (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="Edit"> <i
                   class="fa fa-pencil-square-o"></i>
               </a>
-              <a (click)="showAlert(item.id)" data-toggle="tooltip" data-placement="top" title="delete">
+              <a (click)="showAlert(item.id)" data-toggle="tooltip" data-placement="top" title="Delete">
                 <i class="fa fa-trash-o"></i>
               </a>
             </div>

@@ -505,10 +505,10 @@
                                     </ng-container>
                                     <a class="custom-grid-icon"
                                         *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)"
-                                        data-toggle="tooltip" class="delete" data-placement="top" title="Delete"
-                                        (click)="confirmDelete(landingPage)">
+                                        data-toggle="tooltip" class="delete custom-icon" data-placement="top"
+                                        title="Delete" (click)="confirmDelete(landingPage)">
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                        <div class="clickicons"></div>
+                                        <div class="del-icon"></div>
                                     </a>
                                 </div>
                             </div>

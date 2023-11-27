@@ -2588,3 +2588,75 @@ div#bubble-chart {
   display: flex !important;
   justify-content: center !important;
 }
+a.delete.custom-icon:hover {
+  color: #ffff!important;
+  z-index: 99;
+  position: relative;
+}
+#notification{
+  position: relative!important;
+  background-color: #ed1c24 !important;
+  border: none!important;
+  top: -3px!important;
+  left: 2px!important;
+  z-index: 99;
+}
+.actionicons{
+display: flex!important;
+justify-content: center!important;
+}
+.mrgt-unset{
+ margin-top:unset!important;
+ margin-right: 12px;
+}
+#notification-list{
+  position: relative!important;
+  background-color: #ed1c24 !important;
+  border: none!important;
+  top: -4px!important;
+  left: 1px!important;
+  margin-top:0px!important;
+  z-index: 99;
+}
+.mrg-right5{
+  margin-right: 5px;
+  }
+.display-inlineblock{
+    display: inline-block;
+}
+.display-inlineflex{
+display: inline-flex;
+}
+.custom-icon{
+  display: inline-flex;
+}
+/* Button Transitions */
+/* sudha sri(23-11-2023) */
+.button:hover,button {
+  background: none;
+}
+.marg-lft{
+  margin-left: -20px !important;
+}
+.mar-rgt_mar-lft{
+  margin-right: -20px !important;
+  padding-left: 2px !important;
+}
+.marg-lft{
+  margin-left: -20px !important;
+}
+.mar-lft-40{
+  margin-left: -40px !important;
+}
+.mar-rgt-40{
+  margin-right: -40px !important;
+}
+.mar-lft-11{
+  margin-left: -11px !important;
+}
+.mar-rgt-9{
+  margin-right: -9px !important;
+}
+.btn-hvr-text{
+  background-color: #ddd;
+}

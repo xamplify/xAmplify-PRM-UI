@@ -15,6 +15,9 @@ import { PartnerJourneyRequest } from '../models/partner-journey-request';
 export class PartnerJourneyCountTilesComponent implements OnInit {
   @Input() partnerCompanyId: any;
   @Input() teamMemberId: any;
+  @Input()  isDetailedAnalytics: boolean;
+  @Input() selectedPartnerCompanyIds: any = [];
+  @Input() applyFilter: boolean;
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
@@ -39,6 +42,9 @@ export class PartnerJourneyCountTilesComponent implements OnInit {
     partnerJourneyRequest.loggedInUserId = this.loggedInUserId;
     partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
     partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
+    partnerJourneyRequest.detailedAnalytics = this.isDetailedAnalytics;
+    partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+    partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
     this.parterService.getPartnerJourneyCounts(partnerJourneyRequest).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);

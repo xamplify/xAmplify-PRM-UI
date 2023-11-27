@@ -1,16 +1,16 @@
 <div class="col-xs-12 pr0">
   <div class="portlet light">
-    <div class="portlet-title portletCardCu">
-      <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
+    <div class="portlet-title portletCardCu" style="border: none !important;">
+      <div class="col-xs-12 col-md-5 col-lg-6 col-sm-6 p0">
         <div class="caption TitlePaddingTop">
           <span class="caption-subject font-red-sunglo uppercase">Active
             {{authenticationService?.partnerModule?.customName}} Journey</span>
         </div>
       </div>
-      <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
+      <div class="col-xs-12 col-md-7 col-lg-6 col-sm-6 p0">
         <div class="inputs Fullboxmargin">
           <div class="col-xs-6 col-sm-6 col-lg-6 p0 SotybyBoxPosition">
-            <div style="float: left;">
+            <div style="float: left;" *ngIf="!isCollapsed">
               <select class="form-control Shortbyfield" [(ngModel)]="sortOption.selectedSortedOption"
                 (ngModelChange)="getSortedResults($event)">
                 <option *ngFor="let option of sortOption.sortByDropDown" [ngValue]="option">{{option.name}}</option>
@@ -19,7 +19,7 @@
           </div>
           <div class="col-xs-6 col-sm-6 col-lg-6 p0">
             <div class="portlet-input input-inline mSearch SearchBoxCu">
-              <div class="input-icon right mainSearchBoxCu">
+              <div class="input-icon right mainSearchBoxCu" *ngIf="!isCollapsed">
                 <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
                   [ngModelOptions]="{standalone: true}" placeholder="Search"
                   (keypress)="searchKeyPress($event.keyCode)">
@@ -29,38 +29,61 @@
                   <i class="fa fa-search" aria-hidden="true"></i></button>
               </div>
             </div>
-            <!-- <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view FliterAlignment" data-toggle="tooltip"
-            title="Filter" (click)="toggleFilterOption();findCompanyNames()">
-            <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
-          </span> -->
+
+            <span class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}}" 
+              title="Filter">
+              <div class="btn-group">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                  aria-expanded="false" (click)="clickFilter()">
+                  <i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
+                </a>
+                <ul *ngIf="showFilterDropDown" class="dropdown-menu pull-right">
+                  <li><a (click)="viewDropDownFilter()">View Filter</a></li>
+                  <li><a (click)="clearFilter()">Clear Filter</a></li>
+                </ul>
+              </div>
+
+
+            </span>
             <!-- <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" href="#activePartnerTable"
             style="float: right; position: relative; bottom: 30px;"></a> -->
-            <a href="#activePartnerTable" data-toggle="collapse" style="float: right;"> <i
-              class="fa fa-chevron-down arrowpositinon" aria-hidden="true"></i></a>
+            <a href="activePartnerTable" (click)="toggleCollapse($event)" style="float: right;"> <i
+                [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed, 'fa-chevron-down collapseIn': isCollapsed}" class="arrowpositinon fa collapseIconColorCu"
+                aria-hidden="true"></i></a>
           </div>
         </div>
       </div>
     </div>
     <ng-template [ngTemplateOutlet]="filter"></ng-template>
     <ng-template #filter>
-      <div class="portlet light ht125" *ngIf="showFilterOption">
-          <h4  translate>Apply Filter</h4>
-          <button type="button" class="close-circle" style="margin-left: 10px;" (click)="closeFilterOption()">
-            <i class="fa fa-times" aria-hidden="true"></i>
-          </button>
-          <ejs-multiselect [(ngModel)]='selectedCompanyIds' [ngModelOptions]="{standalone: true}"
-          [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
-          [dataSource]='companyNameFilters' [fields]='companyInfoFields'
-          [placeholder]='companyInfoFilterPlaceHolder'>
-          </ejs-multiselect>
-          <span class="btn-aligmntCu"> 
+
+      <div class="portlet light ht125 mt10" *ngIf="showFilterOption && !showFilterDropDown">
+
+
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-8">
+            <h4 translate>Apply Filter</h4>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4">
+            <button type="button" class="close-circle closeIconCu" (click)="closeFilterOption()">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <ejs-multiselect [(ngModel)]='selectedCompanyIds' [ngModelOptions]="{standalone: true}"
+              [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement' [dataSource]='companyNameFilters'
+              [fields]='companyInfoFields' [placeholder]='companyInfoFilterPlaceHolder'>
+            </ejs-multiselect>
+            <span class="btn-aligmntCu">
               <button class="btn btn-danger" (click)="clearFilter()">Clear</button>
               <button class="btn btn-info" (click)="applyFilters()">Apply</button>
-           </span>  
+            </span>
+          </div>
+        </div>
       </div>
-  </ng-template>
+    </ng-template>
     <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-    <div id="activePartnerTable" class="collapse">
+    <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="activePartnerTable">
       <div class="portlet-body table-responsive" style="overflow: hidden;" [hidden]="httpRequestLoader.isLoading">
         <div class="table-responsive">
           <table class="table tgrid" aria-describedby="active-partners-table">
@@ -100,7 +123,7 @@
                       <a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)" data-toggle="tooltip"
                         data-placement="bottom" title="View Partner Journey" id="pj">
                         <!-- <i class="fa fa-line-chart" aria-hidden="true"></i> -->
-                        <i class="fas fa-route"></i>
+                        <i class="fas fa-route IconCustomization"></i>
                       </a>
                     </div>
                   </td>
@@ -331,10 +354,11 @@
                   </td>
 
                   <td>
-                    <div class="actions-block override-actions">
+                    <div class="actions-block override-actions" style="float: left;">
                       <a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)" data-toggle="tooltip"
                         data-placement="bottom" title="View Detailed Analytics" id="pj">
-                        <i class="fa fa-line-chart" aria-hidden="true"></i>
+                          <!-- <i class="fa fa-line-chart" aria-hidden="true"></i> -->
+                        <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                       </a>
                     </div>
                   </td>

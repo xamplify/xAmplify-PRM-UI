@@ -18,3 +18,34 @@
     padding: 11px 15px !important;
 }
 
+
+.tableHeightScroll{   
+	height: 175px !important;
+	overflow-y: auto;
+   margin-bottom: 20px;
+}
+.noData{
+    height: 0px;
+}
+/* width */
+::-webkit-scrollbar {
+	width: 7px;
+	height:7px;
+  }
+
+  .table>tbody>tr>td {
+	vertical-align: middle !important;
+}
+
+@media (min-width: 992px) and (max-width: 1221px)  { 
+	.tableHeightScroll {
+		height: 150px !important;
+	}
+}
+
+
+@media (min-width: 767px) and (max-width: 820px)  { 
+	.tableHeightScroll {
+		height: 140px !important;
+	}
+}
