@@ -1481,12 +1481,12 @@
                                                 <i class="fa fa-eye" aria-hidden="true"></i>
                                                 <div class="clickicons"></div>
                                              </a>
-                                             <a class="delete custom-grid-icon"
+                                             <a class="delete custom-icon"
                                                 *ngIf="!campaign.showCancelButton && hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrmAndPartner || authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || campaign.vendorCampaignDeleted"
                                                 (click)="confirmDeleteCampaign(campaign.campaignId, i, campaign.campaignName)"
                                                 data-toggle="tooltip" data-placement="top" title="Delete Campaign">
                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                                <div class="clickicons"></div>
+                                                <div class="del-icon"></div>
                                              </a>
                                           </span>
                                           <span [class.disablednew]="!campaign.hasAccess"
