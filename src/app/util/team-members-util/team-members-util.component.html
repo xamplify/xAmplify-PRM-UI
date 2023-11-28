@@ -343,11 +343,22 @@
                 <!---First Name--->
                 <div class="col-md-12 col-lg-12">
                   <div class="form-group">
-                    <label class="control-label col-sm-3">First Name</label>
+                    <label class="control-label col-sm-3">First Name<span class="required">*</span></label>
                     <div class="col-sm-8">
                       <input type="text" autocomplete="off" id="firstName" placeholder="First Name" class="form-control"
+                      (input)="validateAddTeamMemberForm('firstName')"
                         [(ngModel)]="team.firstName" [ngModelOptions]="{standalone: true}" name="firstName"
                         maxlength="255">
+
+                        <span class="required"
+                        *ngIf="team?.lastNameErrorMessage?.length>0">{{team?.lastNameErrorMessage}}</span>
+
+            
+
+
+
+
+
                     </div>
                   </div>
                 </div>
@@ -360,6 +371,9 @@
                       <input type="text" autocomplete="off" id="lastName" placeholder="Last Name" class="form-control"
                         [(ngModel)]="team.lastName" [ngModelOptions]="{standalone: true}" name="lastName"
                         maxlength="255">
+
+
+                    
                     </div>
                   </div>
                 </div>
