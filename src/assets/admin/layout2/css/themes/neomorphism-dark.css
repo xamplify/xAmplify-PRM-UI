@@ -3027,7 +3027,7 @@ justify-content: center!important;
 top: 6px !important;
 }
 .bar a{
-  width: 32px !important;
+  width: 32px;
 }
 .folder-bar{
 height:45px!important;
@@ -3048,3 +3048,71 @@ button.unlink-button {
 /* .bar{
   height: 50px!important;
 } */
+.col-xs-6.col-sm-2.col-lg-2.pr0.col-sm-5ths:hover {
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+}
+.tiles-card{
+  color: #ffffff!important;
+  border: 1px solid #191b1e !important;
+ box-shadow: inset 1px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.tiles-card:hover{
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  color: #fff !important;
+  background:#2b2f33!important;
+  transform: scale(1.04);
+  transition: all 0.3s ease;
+}
+p.pa-text{
+  color: #ffffff!important;
+}
+.tiles-card:hover p{
+  color: #ffffff!important;
+  background-color:#2b2f33!important;
+}
+.pjCardTitlebg {
+  background-color: #2c2f33 !important;
+  box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #111214fa !important;
+  border-radius: 10px 10px 0px 0px !important;
+}
+.panel-bgMain > .panel-bg{
+  background-color: #2c2f33 !important;
+  box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #111214fa !important;
+  border-radius: 10px 10px 0px 0px !important;
+}
+/* .panel-info >.panel-custom{
+padding: 16px 15px!important;
+} */
+.br-10{
+  border-radius: 10px!important;
+}
+/* .overflow-x-auto >.panel-customs{
+  padding: 7px 15px!important;
+} */
+.panel-card{
+  box-shadow: 6.223021507263184px 6.223021507263184px 15.669065px 0 #000, 10.776978px 10.776978px 20.669065px 0 #181b20!important;
+  border-radius: 10px;
+}
+.pjCardTitlebg >.panel-bg{
+  background-color: #2c2f33 !important;
+  box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #111214fa !important;
+  border-radius: 10px 10px 0px 0px !important;
+  border-bottom: 1px solid #191b1e !important;
+}
+.panel-bg{
+  background-color: #2c2f33 !important;
+  box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #111214fa !important;
+  border-radius: 10px 10px 0px 0px !important;
+}
+.highchartsColorCu{
+  background-color: #2c2f33 !important;
+  border:0px!important;
+}
+.br-none{
+border:0px!important;
+}
+.BgForCard{
+  border: 1px solid #16191c!important;
+  background: #2b2f33!important;
+}
