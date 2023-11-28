@@ -1272,6 +1272,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                     data = data;
                     this.loading = false;
                     if (data.statusCode === 401) {
+						this.disableSave = false;
                     	this.saveAsError = data.message;
                         //this.customResponse = new CustomResponse('ERROR', data.message, true);
                     } else if (data.statusCode === 402) {
@@ -1933,6 +1934,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.saveAsListName = '';
 			this.selectedLegalBasisOptions = [];
 			this.saveAsError = '';
+			this.disableSave=false;
 			$('#saveAsModal').modal('show');
 		} catch (error) {
 			this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsAlert()");
@@ -1965,6 +1967,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	validateLegalBasisOptions() {
 		if (this.gdprStatus && this.selectedLegalBasisOptions.length == 0 && this.saveAsTypeList === 'manage-all-contacts') {
 			this.isValidLegalOptions = false;
+			this.disableSave = false;
 		} else {
 			this.isValidLegalOptions = true;
 		}
@@ -2060,7 +2063,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         this.saveSelectedUsers(name, this.selectedLegalBasisOptions, this.model.isPublic);
                     }
                 }
-            } else if (name == "") { this.saveAsError = 'List Name is Required.'; }
+            } else if (name == "") { 
+				this.disableSave = false;
+				this.saveAsError = 'List Name is Required.'; 
+			}
              else { this.saveAsError = 'You have exceeded 250 characters!'; }
         } catch (error) {
             this.xtremandLogger.error(error, "ManageContactsComponent", "saveAs()");
