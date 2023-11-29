@@ -172,9 +172,11 @@
 
             </div>
             <div class="modal-footer">
-                <a data-dismiss="modal" style="float: right"><span class="btn Btn-Gray"
-                        *ngIf="!authenticationService.isShowForms">Close</span><span class="btn Btn-Green"
-                        *ngIf="authenticationService.isShowForms">Submit</span></a>
+                <button data-dismiss="modal" style="float: right"><span class="btn Btn-Gray"
+                        *ngIf="!authenticationService.isShowForms">Close</span></button>
+                <button class="button" data-dismiss="modal" style="float: right">
+                    <span class="btn Btn-Green transition"
+                        *ngIf="authenticationService.isShowForms">Submit</span></button>
             </div>
         </div>
     </div>
