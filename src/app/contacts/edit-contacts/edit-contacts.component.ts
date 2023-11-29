@@ -3705,15 +3705,9 @@ copyGroupUsersModalPopupEventReceiver(){
 		}
 	}
  
- 
-
-
- /****XNFR-342*****/
  /***********XNFR-342*********/
  openUnPublishedContentModalPopUp(contact:any){
 	this.shareUnPublishedComponent.openPopUp(this.selectedContactListId, contact, this.checkingContactTypeName);
-
-
-
+ }
     
 }
