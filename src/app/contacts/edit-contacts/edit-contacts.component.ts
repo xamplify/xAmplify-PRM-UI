@@ -1706,7 +1706,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		if (this.isValidLegalOptions) {
 			if (this.isPartner) {
 				this.loading = true;
-				this.getContactsLimit();
+				if(this.selectedAddContactsOption == 0){
+				  this.getContactsLimit();
+				}else{
+				  this.validatePartnersCompany();
+				}
 			} else {
 				this.saveData();
 			}
@@ -3647,11 +3651,68 @@ copyGroupUsersModalPopupEventReceiver(){
   this.customResponse = new CustomResponse('SUCCESS', event, true);
  }
 
+ 
+ validatePartnersCompany(){
+    try {
+    this.contactService.validatePartnersCompany(this.users, this.contactListId)
+    .subscribe(
+					(data: any) => {
+						if(data.statusCode == 200){
+				                
+				                this.getContactsLimit();
+							
+						}else{
+						this.loading = false;
+						let emailIds = "";
+					$.each(data.data, function (index: number, emailId: string) {
+						emailIds += (index + 1) + "." + emailId + "\n";
+					});
+					let updatedMessage = data.message + "<br/>" + emailIds;
+					this.customResponse = new CustomResponse('ERROR', updatedMessage, true);
+					}
+					},
+					error => this.xtremandLogger.error(error),
+						() => console.log('validatePartnersCompany() finished')
+				);
+		} catch (error) {
+			this.xtremandLogger.error(error, "AddPartnersComponent", "validating Partners");
+		}
+	}
+	
+	saveAssignContactAndMdfPopupData(){
+		this.processingPartnersLoader = true;
+		$(".modal-body").animate({ scrollTop: 0 }, 'slow');
+		let errorCount = 0;
+		$.each(this.users, function(index: number, partner: any) {
+			let contactsLimit = partner.contactsLimit;
+			if(this.applyForAllClicked){
+				partner.teamMemberGroupId = this.selectAllTeamMemberGroupId;
+				partner.selectedTeamMemberIds = this.selectAllTeamMemberIds;
+			  }
+			 if(contactsLimit < 1){
+				partner.contactsLimit = 1;
+			 }
+		});
+		if (errorCount > 0) {
+			this.processingPartnersLoader = false;
+			this.resetApplyFilter();
+		} else {
+			$('#assignContactAndMdfPopup').modal('hide');
+					this.processingPartnersLoader = false;
+					this.showNotifyPartnerOption = false;
+					this.resetApplyFilter();
+					this.saveData();
+		}
+	}
+ 
+ 
+
+
  /****XNFR-342*****/
  /***********XNFR-342*********/
  openUnPublishedContentModalPopUp(contact:any){
 	this.shareUnPublishedComponent.openPopUp(this.selectedContactListId, contact, this.checkingContactTypeName);
- }
+
 
 
     
