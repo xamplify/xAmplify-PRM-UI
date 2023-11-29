@@ -9,6 +9,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { CustomResponse } from '../../common/models/custom-response';
 
 declare var $: any;
 
@@ -54,6 +55,11 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     showTeamMembers = false;
     /****XNFR-98******/
     @Input() isTeamMemberPartnerList:boolean;
+    @Input() partnerListId : number;
+    validationResponse : CustomResponse = new CustomResponse();
+    partners: User[] = [];
+    
+    
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
         this.notifyParent = new EventEmitter();
@@ -140,15 +146,49 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         if(this.gdprStatus){
             if(this.addContactuser.legalBasis.length>0){
                 this.isValidLegalOptions = true;
-               this.closeAndEmitData();
+                if(this.isPartner){
+                  this.validatePartners();
+                }else{
+                  this.closeAndEmitData();
+               }
             }else{
                 this.isValidLegalOptions = false;
             }
         }else{
-            this.closeAndEmitData();
+            if(this.isPartner){
+                  this.validatePartners();
+                }else{
+                  this.closeAndEmitData();
+               }
         }
 
     }
+    validatePartners(){
+    try {
+    this.partners.push(this.addContactuser);
+    this.contactService.validatePartnersCompany(this.partners, this.partnerListId)
+    .subscribe(
+					(data: any) => {
+						if(data.statusCode == 200){
+						   this.closeAndEmitData();
+						}else{
+						this.partners = [];
+						let emailIds = "";
+					$.each(data.data, function (index: number, emailId: string) {
+						emailIds += (index + 1) + "." + emailId + "\n";
+					});
+					let updatedMessage = data.message + "\n" + emailIds;
+					this.validationResponse = new CustomResponse('ERROR', updatedMessage, true);
+					}
+					},
+					error => this.logger.error(error),
+						() => console.log('validatePartners() finished')
+				);
+		} catch (error) {
+			this.logger.error(error, "AddContactModalComponent", "validating Partners");
+		}
+	}
+    
     closeAndEmitData(){
         this.addContactModalClose();
         this.notifyParent.emit( this.addContactuser );

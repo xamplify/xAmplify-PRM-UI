@@ -1049,6 +1049,7 @@
             <app-add-contact-modal [mdfAccess]="mdfAccess"
                 [gdprInput]="parentInput" [totalUsers]="contactService.allPartners"
                 [isContactTypeEdit]="true" [isUpdateUser]="updatePartnerUser"
+                [partnerListId] = "partnerListId"
                 (notifyParent)="addRow($event)"></app-add-contact-modal>
         </div>
     
@@ -1057,6 +1058,7 @@
                 [gdprInput]="parentInput" [totalUsers]="contactService.allPartners"
                 [contactDetails]="partnerAllDetails"
                 [isUpdateUser]="updatePartnerUser"
+                [partnerListId] = "partnerListId"
                 (notifyParent)="updatePartnerListUser($event)"></app-add-contact-modal>
         </div>
     
@@ -1706,7 +1708,7 @@
                     [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                 <div class="modal-footer">
                     <button type="submit" class="btn Btn-Green"
-                        (click)="validatePartners()" translate>Continue</button>
+                        (click)="saveAssignContactAndMdfPopupData()" translate>Continue</button>
                     <button type="submit" class="btn Btn-Gray"
                         (click)="closeAssignContactAndMdfAmountPopup()" translate>Close</button>
                 </div>

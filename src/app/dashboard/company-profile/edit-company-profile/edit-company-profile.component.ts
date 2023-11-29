@@ -370,6 +370,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             if (this.authenticationService.user.hasCompany) {
                 this.companyProfile.isAdd = false;
                 this.profileCompleted = 100;
+            }else{
+				if(this.authenticationService.isPartner()){
+            			this.getPartnerDetails();
+            	}
             }
             if (this.authenticationService.vanityURLEnabled && this.authenticationService.checkSamlSettingsUserRoles()) {
                 this.setVendorLogoTooltipText();
@@ -385,7 +389,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.squareDataForBgImage = {};
         }
     }
-    
     
     uploadFileConfiguration(){
         this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings,130,196,130,false);
@@ -631,7 +634,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             self.saveVideoBrandLog();
                             const currentUser = localStorage.getItem('currentUser');
                             let companyName = JSON.parse(currentUser)['companyName'];
-                            if(companyName==undefined || companyName==""){
+                            if(companyName==null || companyName==undefined || companyName==""){
                                 companyName = self.companyProfile.companyName;
                             }
                             const userToken = {
@@ -880,7 +883,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             value = $.trim(value).toLowerCase().replace(/\s/g, '');
             if (this.companyNames.indexOf(value) > -1) {
                 if (this.companyProfile.isAdd) {
-                    this.setCompanyNameError("Company Name Already Exists");
+                if(this.authenticationService.isPartner() && !this.authenticationService.user.hasCompany){
+                   if ($.trim(this.existingCompanyName).toLowerCase().replace(/\s/g, '') != value) {
+                      this.setCompanyNameError("Company Name Already Exists");
+                   }
+                }else{
+                  this.setCompanyNameError("Company Name Already Exists");
+                }
                 } else {
                     if ($.trim(this.existingCompanyName).toLowerCase().replace(/\s/g, '') != value) {
                         this.setCompanyNameError("Company Name Already Exists");
@@ -1847,5 +1856,23 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.campaignAccess.maxAdmins = maxAdmins;
     }
     
+    getPartnerDetails(){
+            this.companyProfileService.getPartnerDetails().subscribe(
+                (result: any) => {
+                          this.companyProfile.isAdd = true;
+                          this.companyProfile.id = result.id;
+                          this.companyProfile.companyName  = result.companyName;
+   						  this.companyProfile.street = result.street;
+    					  this.companyProfile.city = result.city;
+    					  this.companyProfile.state = result.state;
+    					  this.companyProfile.country = result.country;
+    					  this.companyProfile.zip = result.zip;
+    					  this.companyProfile.companyNameStatus = result.companyNameStatus;
+    					  this.existingCompanyName = result.companyName;
+                }, (error: any) => {
+                  console.log(error);
+                }
+            );
+    }
 
 }

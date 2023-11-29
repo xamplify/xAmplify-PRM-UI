@@ -1090,7 +1090,8 @@
  </div>
  <!-- modals -->
  <div *ngIf="contactService.isContactModalPopup && !updateContactUser">
-	<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess" [gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser] = "false"  (notifyParent)="addRow($event)" ></app-add-contact-modal>
+	<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess" [gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser] = "false" 
+	[partnerListId] = "contactListId" (notifyParent)="addRow($event)" ></app-add-contact-modal>
  </div>
  <div *ngIf="contactService.isContactModalPopup && updateContactUser">
 	<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"  [gdprInput]="parentInput" [totalUsers]="contacts"  [contactDetails]="contactAllDetails" [isUpdateUser] = "isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
@@ -1299,7 +1300,7 @@
 		  </div>
 		  <ngx-loading [show]="processingPartnersLoader || previewLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 		  <div class="modal-footer">
-			 <button type="submit" class="btn Btn-Green"  (click)="validatePartners()" translate>Continue</button>
+			 <button type="submit" class="btn Btn-Green"  (click)="saveAssignContactAndMdfPopupData()" translate>Continue</button>
 			 <button type="submit" class="btn btn-default" (click)="closeAssignContactAndMdfAmountPopup()" translate>Close</button>
 		  </div>
 	   </div>

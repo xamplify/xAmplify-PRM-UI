@@ -10,6 +10,12 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       <h4 class="modal-title size-font" *ngIf="isUpdateUser" translate>Edit {{checkingContactTypeName}}</h4>
     </div>
     <div class="modal-body border-bottom-1px">
+    
+    <div class="alert alert-danger"
+                        *ngIf="validationResponse.isVisible">
+                        <strong class="pre-wrap-next-line">{{validationResponse?.responseMessage}}</strong>
+                    </div>
+    
       <div class="hide-scrollbar">
       <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
       <form class="form-horizontal" autocomplete="off">
