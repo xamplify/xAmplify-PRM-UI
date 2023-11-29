@@ -2,9 +2,10 @@
    <div class="row" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
       <!-- card one  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showRedistributedCampaignCount">
-         <div class="pa-Card pa-CardOne">
-            <i class="fa fa-user pa-fafaIconCustomization" aria-hidden="true"></i>
+         *ngIf="partnerJourneyAnalytics?.showRedistributedCampaignCount" 
+         [scrollTo]="partnerJourneyAnalytics?.redistributedCampaignCount > 0 ? '#pj-redistributed-campaigns-div' : ''" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div [className]="partnerJourneyAnalytics?.redistributedCampaignCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardOne' : 'disabled-event-pj pa-Card pa-CardOne'">
+            <i class="fa fa-bullhorn pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextOne">{{partnerJourneyAnalytics?.redistributedCampaignCount}}</p>
             <p class="pa-text pa-TextOne">Redistributed Campaigns</p>
          </div>
@@ -12,8 +13,8 @@
       <!-- card two  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
          *ngIf="partnerJourneyAnalytics?.showTeamMemberCount">
-         <div class="pa-Card pa-CardTwo">
-            <i class="fa fa-envelope-o pa-fafaIconCustomization" aria-hidden="true"></i>
+         <div class="pa-Card pa-CardTwo disabled-event-pj ">
+            <i class="fa fa-users pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextTwo">{{partnerJourneyAnalytics?.teamMemberCount}}</p>
             <p class="pa-text pa-TextTwo">Team Members</p>
          </div>
@@ -21,71 +22,71 @@
       <!-- card three  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
          *ngIf="partnerJourneyAnalytics?.showContactCount">
-         <div class="pa-Card pa-CardThree">
-            <i class="fa fa-envelope pa-fafaIconCustomization" aria-hidden="true"></i>
+         <div class="pa-Card pa-CardThree disabled-event-pj ">
+            <i class="fa fa-id-card pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextThree">{{partnerJourneyAnalytics?.contactCount}}</p>
             <p class="pa-text pa-TextThree">Contacts</p>
          </div>
       </div>
       <!-- card four  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showShareLeadCount">
-         <div class="pa-Card pa-CardFour">
-            <i class="fa fa-user-circle-o pa-fafaIconCustomization" aria-hidden="true"></i>
+         *ngIf="partnerJourneyAnalytics?.showShareLeadCount" [scrollTo]="partnerJourneyAnalytics?.shareLeadCount > 0 ? '#pj-share-lead-details-div' : ''" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div [className]="partnerJourneyAnalytics?.shareLeadCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardFour' : 'disabled-event-pj pa-Card pa-CardFour'">
+            <i class="fa fa-id-badge pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextFour">{{partnerJourneyAnalytics?.shareLeadCount}}</p>
             <p class="pa-text pa-TextFour">Share Leads</p>
          </div>
       </div>
       <!-- card five  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showLeadCount">
-         <div class="pa-Card pa-CardFive">
-            <i class="fa fa-envelope-open-o pa-fafaIconCustomization" aria-hidden="true"></i>
+         *ngIf="partnerJourneyAnalytics?.showLeadCount" [scrollTo]="partnerJourneyAnalytics?.leadCount > 0 ? '#pj-lead-details-div' : ''" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div [className]="partnerJourneyAnalytics?.leadCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardFive' : 'disabled-event-pj pa-Card pa-CardFive'">
+            <i class="fa fa-user-plus pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextFive">{{partnerJourneyAnalytics?.leadCount}}</p>
             <p class="pa-text pa-TextFive">Leads</p>
          </div>
       </div>
       <!-- card six  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showDealCount">
-         <div class="pa-Card pa-CardSix">
-            <i class="fa fa-globe pa-fafaIconCustomization" aria-hidden="true"></i>
+         *ngIf="partnerJourneyAnalytics?.showDealCount" [scrollTo]="partnerJourneyAnalytics?.dealCount > 0 ? '#pj-deal-details-div' : ''" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div [className]="partnerJourneyAnalytics?.dealCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardSix' : 'disabled-event-pj pa-Card pa-CardSix'">
+            <i class="fa fa-handshake pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextSix">{{partnerJourneyAnalytics?.dealCount}}</p>
             <p class="pa-text pa-TextSix">Deals</p>
          </div>
       </div>
       <!-- card seven  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showMDFAmount">
-         <div class="pa-Card pa-CardSeven">
-            <i class="fa fa-envelope-open pa-fafaIconCustomization" aria-hidden="true"></i>
+         *ngIf="partnerJourneyAnalytics?.showMDFAmount" [scrollTo]="partnerJourneyAnalytics?.mdfAmount > 0 ? '#pj-mdf-details-div' : ''" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div [className]="partnerJourneyAnalytics?.mdfAmount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardSeven' : 'disabled-event-pj pa-Card pa-CardSeven'">
+            <i class="fa fa-dollar pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextSeven">{{partnerJourneyAnalytics?.mdfAmount}}</p>
             <p class="pa-text pa-TextSeven">MDF Amount</p>
          </div>
       </div>
       <!-- card eight  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showAssetCount">
-         <div class="pa-Card pa-CardEight">
-            <i class="fa fa-eye pa-fafaIconCustomization" aria-hidden="true"></i>
+         *ngIf="partnerJourneyAnalytics?.showAssetCount" [scrollTo]="partnerJourneyAnalytics?.assetCount > 0 ? '#pj-asset-details-div': ''" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div [className]="partnerJourneyAnalytics?.assetCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardEight' : 'disabled-event-pj pa-Card pa-CardEight'">
+            <i class="fa fa-cogs pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextEight">{{partnerJourneyAnalytics?.assetCount}}</p>
             <p class="pa-text pa-TextEight">Assets</p>
          </div>
       </div>
       <!-- card nine  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showTrackCount">
-         <div class="pa-Card pa-CardNine">
-            <i class="fa fa-ban pa-fafaIconCustomization" aria-hidden="true"></i>
+         *ngIf="partnerJourneyAnalytics?.showTrackCount" [scrollTo]="partnerJourneyAnalytics?.trackCount > 0 ? '#pj-track-playbook-details-div' : ''" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div [className]="partnerJourneyAnalytics?.trackCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardNine' : 'disabled-event-pj pa-Card pa-CardNine'">
+            <i class="fa fa-line-chart pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextNine">{{partnerJourneyAnalytics?.trackCount}}</p>
             <p class="pa-text pa-TextNine">Tracks</p>
          </div>
       </div>
       <!-- card ten  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showPlaybookCount">
-         <div class="pa-Card pa-CardTen">
-            <i class="fa fa-trash-o pa-fafaIconCustomization" aria-hidden="true"></i>
+         *ngIf="partnerJourneyAnalytics?.showPlaybookCount" [scrollTo]="partnerJourneyAnalytics?.playbookCount > 0 ? '#pj-track-playbook-details-div' : ''" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div [className]="partnerJourneyAnalytics?.playbookCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardTen' : 'disabled-event-pj pa-Card pa-CardTen'">
+            <i class="fa fa-book pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextTen">{{partnerJourneyAnalytics?.playbookCount}}</p>
             <p class="pa-text pa-TextTen">Playbooks</p>
          </div>

@@ -1,9 +1,9 @@
 <div class="col-sm-12 col-md-12 col-lg-12 ml15m">
-  <div class="panel panel-info">
-    <div class="panel-heading panel-heading-custom">
+  <div class="panel panel-info panel-bgMain">
+    <div class="panel-heading panel-heading-custom panel-bg" id="pj-deal-details-div">
       <h3 class="panel-title mt7">Deal Details</h3>
       <span class="pull-right mt25m">
-        <div class="input-icon right" style="position: relative;width: 178px;">
+        <div class="input-icon right" style="position: relative;width: 178px;top: -1px;">
           <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey"
             [ngModelOptions]="{standalone: true}" placeholder="Search"
             (keypress)="searchKeyPress($event.keyCode)">
@@ -15,7 +15,7 @@
       </span>
     </div>
     <div class="panel-body">    
-      <div class="scroll">
+      <div class="scroll table-responsive">
         <table class="table">
           <thead>
             <tr>
@@ -23,17 +23,20 @@
               <th scope="col" *ngIf="!isDetailedAnalytics">Company Name</th>
               <th scope="col">Deal Title</th>
               <th scope="col">Deal Type</th>
-              <th scope="col">amount</th>
+              <th scope="col">Amount</th>
               <th scope="col">Created On</th>              
             </tr>
           </thead>
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
               <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [isCreatedByUser]="true" [userInfo]="item"></app-user-info></td>
-              <td *ngIf="!isDetailedAnalytics"><a data-rel="fancybox-button" (click)="viewAnalytics(item.createdByCompanyId)">{{item?.createdByCompanyName}}</a></td>
+              <!-- <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.createdByCompanyId)">{{item?.createdByCompanyName}}</a></td> -->
+              <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.createdByCompanyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
               <td>{{item?.title}}</td>
               <td>{{item?.dealType}}</td>
-              <td>{{item?.amount}}</td>
+              <td>
+                <i class="fa fa-usd" aria-hidden="true">&nbsp;{{item?.amount}}</i>
+              </td>
               <td>
                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.createdDateInUTC">
                 </app-timestamp>
@@ -47,7 +50,7 @@
         <strong>No Data Found.</strong>
       </div>
       <!--Pagination-->
-      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+      <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin" [hidden]="httpRequestLoader.isLoading">
         <app-pagination [pagination]="pagination" [isDropdown]="'false'" (notifyParent)="setPage($event)"
           (notifyParentDropDown)="getDealDetails($event)">
         </app-pagination>

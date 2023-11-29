@@ -1,891 +1,1105 @@
-<div  class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
-  <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-  <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
-  <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
-  <div [hidden]="httpRequestLoader.isLoading">
-     <div class="page-bar">
-        <ul class="page-breadcrumb">
-           <li>
-              <i class="fa fa-home" aria-hidden="true"></i>
-              <a [routerLink]="referenceService.homeRouter">Home</a>
-              <i class="fa fa-angle-right" aria-hidden="true"></i>
-           </li>
-           <li *ngIf="nurtureCampaign">
-              <a (click)="goToManageCampaigns()">Manage Campaigns</a>
-           </li>
-           <li *ngIf="!nurtureCampaign">
-              <a (click)="goToRedistributeCampaigns()"> Campaigns shared by Vendors</a>
-           </li>
-           <li>
-              <i class="fa fa-angle-right" aria-hidden="true"></i>
-              <a> Redistribute Campaign</a>
-           </li>
-        </ul>
-        <div id="folder-margin-xamp">
-           <button class="btn-primary" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
-        </div>
-     </div>
-     <div class="folder-custom-response">
-        <app-response-message  [customResponse]="oneClickLaunchCampaignRedistributedMessage" *ngIf="oneClickLaunchCampaignRedistributedMessage.isVisible">
-        </app-response-message>
-     </div>
-     <div class="folder-custom-response">
-        <app-response-message  [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
-        </app-response-message>
-     </div>
-     <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-     <div [hidden]="isEditPartnerTemplate || isEditAutoResponseTemplate">
-        <div class="portlet light shadow">
-           <div class="portlet-title">
-              <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Redistribute a Campaign</h4>
-              <a class="close-circle pull-right" data-dismiss="modal" (click)="goToCampaigns()">
-              <i class="fa fa-times" aria-hidden="true"></i>
-              </a>
-           </div>
-           <div class="portlet-body clearfix">
-              <div class="alert alert-danger" id="contact-list-error" style="display: none;">
-                 <strong>Please select a list</strong>
-              </div>
-              <div class="alert alert-danger error-div" *ngIf="invalidScheduleTime" id="invalidScheduleTimeDiv">
-                 <strong>{{invalidScheduleTimeError}}</strong>
-              </div>
-              <form role="form" [formGroup]="campaignLaunchForm" (ngSubmit)="launchCampaign();">
-              <!-- ----------Campaign details---------- -->
-              <div class="col-xs-12">
-                 <fieldset class="scheduler-border">
-                    <legend class="scheduler-border">Campaign details</legend>
-                    <form>
-                       <div class="col-xs-6">
-                          <div class="form-group" [attr.class]="campaignNameDivClass">
-                             <label for="exampleInputEmail1">Campaign name (save as)</label>
-                             <span style="color: red"><strong> * </strong></span>
-                             <span *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
-                             <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200"
-                             />
-                          </div>
-                          <div class="form-group" [attr.class]="campaignDescriptionDivClass">
-                           <label>Descripton</label>
-                           <div>
-                              <textarea class="form-control" maxlength="1000" rows="5" [(ngModel)]="campaign.description" name="description" (input)="changeDescriptionClassName(campaign.description)" placeholder="Description"></textarea>
+<div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
+   <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+   <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+   <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
+   <div [hidden]="httpRequestLoader.isLoading">
+      <div class="page-bar">
+         <ul class="page-breadcrumb">
+            <li>
+               <i class="fa fa-home" aria-hidden="true"></i>
+               <a [routerLink]="referenceService.homeRouter">Home</a>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li *ngIf="nurtureCampaign">
+               <a (click)="goToManageCampaigns()">Manage Campaigns</a>
+            </li>
+            <li *ngIf="!nurtureCampaign">
+               <a (click)="goToRedistributeCampaigns()"> Campaigns shared by Vendors</a>
+            </li>
+            <li>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+               <a> Redistribute Campaign</a>
+            </li>
+         </ul>
+         <div id="folder-margin-xamp">
+            <button class="btn-primary" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
+         </div>
+      </div>
+      <div class="folder-custom-response">
+         <app-response-message [customResponse]="oneClickLaunchCampaignRedistributedMessage"
+            *ngIf="oneClickLaunchCampaignRedistributedMessage.isVisible">
+         </app-response-message>
+      </div>
+      <div class="folder-custom-response">
+         <app-response-message [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
+         </app-response-message>
+      </div>
+      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+      <div [hidden]="isEditPartnerTemplate || isEditAutoResponseTemplate">
+         <div class="portlet light shadow">
+            <div class="portlet-title">
+               <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Redistribute a Campaign</h4>
+               <a class="close-circle pull-right" data-dismiss="modal" (click)="goToCampaigns()">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+               </a>
+            </div>
+            <div class="portlet-body clearfix">
+               <div class="alert alert-danger" id="contact-list-error" style="display: none;">
+                  <strong>Please select a list</strong>
+               </div>
+               <div class="alert alert-danger error-div" *ngIf="invalidScheduleTime" id="invalidScheduleTimeDiv">
+                  <strong>{{invalidScheduleTimeError}}</strong>
+               </div>
+               <form role="form" [formGroup]="campaignLaunchForm" (ngSubmit)="launchCampaign();">
+                  <!-- ----------Campaign details---------- -->
+                  <div class="col-xs-12">
+                     <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Campaign details</legend>
+                        <form>
+                           <div class="col-xs-6">
+                              <div class="form-group" [attr.class]="campaignNameDivClass">
+                                 <label for="exampleInputEmail1">Campaign name (save as)</label>
+                                 <span class="required"><strong> * </strong></span>
+                                 <span *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0"
+                                    class="required">Already Exists</span>
+                                 <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control"
+                                    [(ngModel)]="campaign.campaignName" name="campaignName"
+                                    (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');"
+                                    maxlength="200" />
+                              </div>
+                              <div class="form-group" [attr.class]="campaignDescriptionDivClass">
+                                 <label>Descripton</label>
+                                 <div>
+                                    <textarea class="form-control" maxlength="1000" rows="5"
+                                       [(ngModel)]="campaign.description" name="description"
+                                       (input)="changeDescriptionClassName(campaign.description)"
+                                       placeholder="Description"></textarea>
+                                 </div>
+                              </div>
+
+                              <div class="form-group" [attr.class]="subjectLineDivClass">
+                                 <label for="exampleInputPassword1">Subject line</label>
+                                 <span class="required"><strong> * </strong></span>
+                                 <div class="input-group merge-tag-input-border">
+                                    <input type="text" id="subjectLine" placeholder="{merge tag} + Subject line"
+                                       class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine"
+                                       (input)="validateForm();validateField('subjectLine');" maxlength="1000" />
+                                    <span class="input-group-btn">
+                                       <button class="btn btn-default" type="button" data-toggle="tooltip"
+                                          data-placement="right" title="Insert Merge Tags"
+                                          (click)="openMergeTagsPopup('campaignSubjectLine',0)">
+                                          <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
+                                       </button>
+                                    </span>
+                                 </div>
+                              </div>
+                              <div class="form-group col-xs-6 p0" [attr.class]="fromNameDivClass">
+                                 <label for="exampleInputPassword1">From name</label>
+                                 <span class="required"><strong> * </strong></span>
+                                 <input type="text" id="fromName" placeholder="From Name" class="form-control"
+                                    [(ngModel)]="campaign.fromName" name="fromName"
+                                    (input)="validateForm();validateField('fromName');" maxlength="200" />
+                              </div>
+                              <div class="form-group col-xs-6 pr0" [attr.class]="fromEmaiDivClass">
+                                 <label for="exampleInputPassword1">From email</label>
+                                 <span class="required"><strong> * </strong></span>
+                                 <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email"
+                                    (change)="setFromName()">
+                                    <option *ngFor="let teamMember of teamMemberEmailIds"
+                                       [ngValue]="teamMember.emailId">
+                                       {{teamMember.emailId}}
+                                    </option>
+                                 </select>
+                              </div>
+                           </div>
+                           <div class="col-xs-6">
+                              <div class="form-group" [attr.class]="fromEmaiDivClass">
+                                 <label class="control-label">Folder
+                                    <span class="required"><strong> * </strong></span>
+                                 </label>
+                                 <select class="form-control" name="campaign.categoryId"
+                                    [(ngModel)]="campaign.categoryId" style="width: 100%">
+                                    <option *ngFor="let category of categoryNames" [ngValue]="category.id">
+                                       {{category.name}}
+                                    </option>
+                                 </select>
+                              </div>
+                              <div class="form-group" [attr.class]="preHeaderDivClass">
+                                 <label for="exampleInputPassword1">Pre header</label>
+                                 <span class="required"><strong> * </strong></span>
+                                 <input type="text" id="preHeader" placeholder="Preheader" class="form-control"
+                                    [(ngModel)]="campaign.preHeader" name="preHeader"
+                                    (input)="validateForm();validateField('preHeader');" maxlength="200" />
+                              </div>
+                              <!--Data Share--->
+                              <ng-container *ngIf="dataShare && !campaign?.oneClickLaunch">
+                                 <div class="form-group">
+                                    <label class="control-label col-sm-4 p0">Data Share</label>
+                                    <div class="col-sm-8">
+                                       <switch [status]="campaign?.dataShare" [onText]="callActionSwitch.onTextValue"
+                                          [offText]="callActionSwitch.offTextValue"
+                                          [onColor]="callActionSwitch.onGreenColorSwitch"
+                                          [offColor]="callActionSwitch.onDefaultColorSwitch"
+                                          [size]="callActionSwitch.size" (statusChange)="setDataShare($event)">
+                                       </switch>
+                                    </div>
+                                 </div>
+                                 <br><br>
+                                 <div class="form-group" *ngIf="campaign?.dataShare">
+                                    <label class="control-label col-sm-4 p0">Detailed Analytics</label>
+                                    <div class="col-sm-8">
+                                       <switch [status]="campaign?.detailedAnalyticsShared"
+                                          [onText]="callActionSwitch.onTextValue"
+                                          [offText]="callActionSwitch.offTextValue"
+                                          [onColor]="callActionSwitch.onGreenColorSwitch"
+                                          [offColor]="callActionSwitch.onDefaultColorSwitch"
+                                          [size]="callActionSwitch.size" (statusChange)="shareAnalytics($event)">
+                                       </switch>
+                                    </div>
+                                 </div>
+                                 <br><br>
+                              </ng-container>
+                              <!--Email Opened-->
+                              <div class="form-group">
+                                 <label class="control-label col-sm-4 p0">Notify Me When</label>
+                                 <div class="col-sm-8 mb10">
+                                    <strong id="download-drop">Email Opened</strong>
+                                    <switch class="pull-left" [status]="campaign.emailOpened"
+                                       [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                                       [onColor]="callActionSwitch.onGreenColorSwitch"
+                                       [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                       (statusChange)="setEmailOpened($event)">
+                                    </switch>
+                                 </div>
+                              </div>
+                              <br>
+                              <br *ngIf="!dataShare || campaign?.oneClickLaunch">
+                              <!--Link Opened-->
+                              <div class="form-group">
+                                 <label class="control-label col-sm-4 p0"></label>
+                                 <div class="col-sm-8 mb10">
+                                    <strong id="download-drop">Link Opened</strong>
+                                    <switch class="pull-left" [status]="campaign.linkOpened"
+                                       [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                                       [onColor]="callActionSwitch.onGreenColorSwitch"
+                                       [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                       (statusChange)="setLinkOpened($event)">
+                                    </switch>
+                                 </div>
+                              </div>
+                              <br><br *ngIf="!dataShare">
+                              <!--Video Played-->
+                              <div class="form-group" *ngIf="campaignType=='VIDEO'">
+                                 <label class="control-label col-sm-4 p0"></label>
+                                 <div class="col-sm-8 mb10">
+                                    <strong id="download-drop">Video Played</strong>
+                                    <switch class="pull-left" [status]="campaign.videoPlayed"
+                                       [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                                       [onColor]="callActionSwitch.onGreenColorSwitch"
+                                       [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                       (statusChange)="setVideoPlayed($event)">
+                                    </switch>
+                                 </div>
+                              </div>
+                              <br><br *ngIf="!dataShare">
+                           </div>
+                        </form>
+                     </fieldset>
+                  </div>
+                  <div class="col-xs-12 col-sm-6" *ngIf="campaignType=='VIDEO'">
+                     <fieldset class="scheduler-border height160 scheduler_height">
+                        <legend class="scheduler-border">Selected video</legend>
+                        <app-video-thumbnail [videoFile]="campaign.campaignVideoFile"
+                           (notifyParent)="previewVideo($event)"></app-video-thumbnail>
+                     </fieldset>
+                  </div>
+                  <div class="col-xs-12 col-sm-6">
+                     <!-- ----------Email Template -->
+                     <fieldset class="scheduler-border height160 scheduler_height" *ngIf="campaignType!='LANDINGPAGE'">
+                        <legend class="scheduler-border">
+                           Selected email template
+                        </legend>
+                        <div class="row m0" style="cursor: pointer;">
+                           <div class="col-xs-3">
+                              <img src="{{campaign.emailTemplate.subject}}" class="Selected-email-template-imgcu"
+                                 alt="">
+                           </div>
+                           <div class="col-xs-8">
+                              <a>
+                                 <h4 class="ellipsis mt5 mb5 mb_wrap"
+                                    style="color: #777676;font-weight: 500 !important;"
+                                    title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name | slice:0:25}}
+                                    <span *ngIf="campaign.emailTemplate.name?.length>25">...</span>
+                                 </h4>
+                                 <h5 style="color: #656565;" class="m0"
+                                    *ngIf="campaign.emailTemplate?.type?.toLocaleString() ==='PARTNER'"
+                                    title="{{campaign.emailTemplate.vendorName}}">
+                                    Shared By {{campaign.emailTemplate.vendorName | slice:0:15}}
+                                    <span *ngIf="campaign.emailTemplate.vendorName?.length>15">...</span>
+                                 </h5>
+                                 <h5 style="color: #656565;" class="m0"
+                                    *ngIf="campaign.emailTemplate?.type?.toLocaleString()!=='PARTNER'"
+                                    title="{{campaign.emailTemplate.createdBy}}">
+                                    Created By {{campaign.emailTemplate.createdBy | slice:0:15}}
+                                    <span *ngIf="campaign.emailTemplate.createdBy?.length>15">...</span>
+                                 </h5>
+                              </a>
+                              <br>
+                              <div class="d-flex">
+                                 <a class="pull-right btn btn-primary btn-sm"
+                                    (click)="previewEmailTemplate(campaign.emailTemplate)"> <i class="fa fa-eye"></i>
+                                    Preview </a>
+                                 <a *ngIf="campaign?.emailTemplate?.editPartnerTemplate"
+                                    class="pull-right btn btn-primary btn-sm" style="margin-right: 6px"
+                                    (click)="editPartnerTemplate()"> <i class="fa fa-edit"></i> Edit </a>
+                              </div>
                            </div>
                         </div>
-
-                          <div class="form-group" [attr.class]="subjectLineDivClass">
-                             <label for="exampleInputPassword1">Subject line</label>
-                             <span style="color: red"><strong> * </strong></span>
-                             <div class="input-group merge-tag-input-border">
-                                <input type="text" id="subjectLine" placeholder="{merge tag} + Subject line" class="form-control" [(ngModel)]="campaign.subjectLine" name="subjectLine" (input)="validateForm();validateField('subjectLine');" maxlength="1000" />
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="right"
-                                 title="Insert Merge Tags" (click)="openMergeTagsPopup('campaignSubjectLine',0)">
-                                <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
-                                </button>
-                                </span>
-                             </div>
-                          </div>
-                          <div class="form-group col-xs-6 p0" [attr.class]="fromNameDivClass">
-                             <label for="exampleInputPassword1">From name</label>
-                             <span style="color: red"><strong> * </strong></span>
-                             <input type="text" id="fromName" placeholder="From Name" class="form-control" [(ngModel)]="campaign.fromName" name="fromName" (input)="validateForm();validateField('fromName');" maxlength="200" />
-                          </div>
-                          <div class="form-group col-xs-6 pr0" [attr.class]="fromEmaiDivClass">
-                             <label for="exampleInputPassword1">From email</label>
-                             <span style="color: red"><strong> * </strong></span>
-                             <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()">
-                             <option *ngFor="let teamMember of teamMemberEmailIds" [ngValue]="teamMember.emailId" >
-                             {{teamMember.emailId}}
-                             </option>
-                             </select>
-                          </div>
-                       </div>
-                       <div class="col-xs-6">
-                          <div class="form-group" [attr.class]="fromEmaiDivClass">
-                             <label class="control-label">Folder
-                             <span style="color: red"><strong> * </strong></span>             
-                             </label>
-                             <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId" style="width: 100%">
-                             <option *ngFor="let category of categoryNames"
-                             [ngValue]="category.id">
-                             {{category.name}}
-                             </option>
-                             </select>
-                          </div>
-                          <div class="form-group" [attr.class]="preHeaderDivClass">
-                             <label for="exampleInputPassword1">Pre header</label>
-                             <span style="color: red"><strong> * </strong></span>  
-                             <input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200" />
-                          </div>
-                          <!--Data Share--->
-                          <ng-container *ngIf="dataShare && !campaign?.oneClickLaunch">
-                             <div class="form-group" >
-                                <label class="control-label col-sm-4 p0">Data Share</label>
-                                <div class="col-sm-8">
-                                   <switch   [status]="campaign?.dataShare" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                   (statusChange)="setDataShare($event)">
-                                   </switch>
-                                </div>
-                             </div>
-                             <br><br>
-                             <div class="form-group" *ngIf="campaign?.dataShare">
-                                <label class="control-label col-sm-4 p0">Detailed Analytics</label>
-                                <div class="col-sm-8">
-                                   <switch   [status]="campaign?.detailedAnalyticsShared" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                   (statusChange)="shareAnalytics($event)">
-                                   </switch>
-                                </div>
-                             </div>
-                             <br><br>
-                          </ng-container>
-                          <!--Email Opened-->
-                          <div class="form-group">
-                             <label class="control-label col-sm-4 p0">Notify Me When</label>
-                             <div class="col-sm-8 mb10">
-                                <strong id="download-drop">Email Opened</strong>
-                                <switch class="pull-left"  [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                (statusChange)="setEmailOpened($event)">
-                                </switch>
-                             </div>
-                          </div>
-                          <br>
-                          <br *ngIf="!dataShare || campaign?.oneClickLaunch">
-                          <!--Link Opened-->
-                          <div class="form-group">
-                             <label class="control-label col-sm-4 p0"></label>
-                             <div class="col-sm-8 mb10">
-                                <strong id="download-drop">Link Opened</strong>
-                                <switch class="pull-left"  [status]="campaign.linkOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                (statusChange)="setLinkOpened($event)">
-                                </switch>
-                             </div>
-                          </div>
-                          <br><br *ngIf="!dataShare">
-                          <!--Video Played-->
-                          <div class="form-group" *ngIf="campaignType=='VIDEO'">
-                             <label class="control-label col-sm-4 p0"></label>
-                             <div class="col-sm-8 mb10">
-                                <strong id="download-drop">Video Played</strong>
-                                <switch class="pull-left"  [status]="campaign.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                                (statusChange)="setVideoPlayed($event)">
-                                </switch>
-                             </div>
-                          </div>
-                          <br><br *ngIf="!dataShare">
-                       </div>
-                    </form>
-                 </fieldset>
-              </div>
-              <div class="col-xs-12 col-sm-6" *ngIf="campaignType=='VIDEO'">
-                 <fieldset class="scheduler-border height160 scheduler_height">
-                    <legend class="scheduler-border">Selected video</legend>
-                    <app-video-thumbnail [videoFile]="campaign.campaignVideoFile" (notifyParent)="previewVideo($event)"></app-video-thumbnail>
-                 </fieldset>
-              </div>
-              <div class="col-xs-12 col-sm-6">
-                 <!-- ----------Email Template -->
-                 <fieldset class="scheduler-border height160 scheduler_height"  *ngIf="campaignType!='LANDINGPAGE'">
-                    <legend class="scheduler-border">
-                       Selected email template
-                    </legend>
-                    <div class="row m0"  style="cursor: pointer;">
-                       <div class="col-xs-3">
-                          <img src="{{campaign.emailTemplate.subject}}" class="Selected-email-template-imgcu" alt="">
-                       </div>
-                       <div class="col-xs-8">
-                          <a>
-                             <h4 class="ellipsis mt5 mb5 mb_wrap" style="color: #777676;font-weight: 500 !important;" title="{{campaign.emailTemplate.name}}">{{campaign.emailTemplate.name | slice:0:25}}
-                                <span *ngIf="campaign.emailTemplate.name?.length>25">...</span>
-                             </h4>
-                             <h5 style="color: #656565;" class="m0" *ngIf="campaign.emailTemplate?.type?.toLocaleString() ==='PARTNER'" title="{{campaign.emailTemplate.vendorName}}">
-                                Shared By {{campaign.emailTemplate.vendorName | slice:0:15}}
-                                <span *ngIf="campaign.emailTemplate.vendorName?.length>15">...</span>
-                             </h5>
-                             <h5 style="color: #656565;" class="m0" *ngIf="campaign.emailTemplate?.type?.toLocaleString()!=='PARTNER'" title="{{campaign.emailTemplate.createdBy}}">
-                                Created By {{campaign.emailTemplate.createdBy | slice:0:15}}
-                                <span *ngIf="campaign.emailTemplate.createdBy?.length>15">...</span>
-                             </h5>
-                          </a>
-                          <br>
-                          <div class="d-flex">
-                          <a class="pull-right btn btn-primary btn-sm" (click)="previewEmailTemplate(campaign.emailTemplate)">  <i class="fa fa-eye"></i> Preview </a>
-                          <a *ngIf="campaign?.emailTemplate?.editPartnerTemplate"  class="pull-right btn btn-primary btn-sm" style="margin-right: 6px" (click)="editPartnerTemplate()"> <i class="fa fa-edit"></i> Edit </a>
-                          </div>
+                     </fieldset>
+                     <!-- ----------Landing Page---------- -->
+                     <fieldset class="scheduler-border" *ngIf="campaignType=='LANDINGPAGE'">
+                        <legend>Selected page</legend>
+                        <div class="row m0" (click)="previewCampaignLandingPage(campaign)" style="cursor: pointer;">
+                           <div class="col-xs-3">
+                              <img src="assets/images/Landing-Pages/{{campaign.landingPage.imageName}}" height="100"
+                                 alt="">
+                           </div>
+                           <div class="col-xs-9">
+                              <a>
+                                 <h4 class="ellipsis mt5 mb5" style="color: #777676;font-weight: 500 !important;"
+                                    title="{{campaign.landingPage.name}}">{{campaign.landingPage.name | slice:0:25}}
+                                    <span *ngIf="campaign.landingPage.name?.length>25">...</span>
+                                 </h4>
+                                 <h5 style="color: #656565;" class="m0" title="{{campaign.landingPage.createdUser}}">
+                                    Shared By {{campaign.landingPage.createdUser | slice:0:15}}
+                                    <span *ngIf="campaign.landingPage.createdUser?.length>15">...</span>
+                                 </h5>
+                              </a>
+                           </div>
                         </div>
-                    </div>
-                 </fieldset>
-                 <!-- ----------Landing Page---------- -->
-                 <fieldset class="scheduler-border" *ngIf="campaignType=='LANDINGPAGE'">
-                    <legend>Selected page</legend>
-                    <div class="row m0" (click)="previewCampaignLandingPage(campaign)" style="cursor: pointer;">
-                       <div class="col-xs-3">
-                          <img src="assets/images/Landing-Pages/{{campaign.landingPage.imageName}}" height="100" alt="">
-                       </div>
-                       <div class="col-xs-9">
-                          <a>
-                             <h4 class="ellipsis mt5 mb5" style="color: #777676;font-weight: 500 !important;" title="{{campaign.landingPage.name}}">{{campaign.landingPage.name | slice:0:25}}
-                                <span *ngIf="campaign.landingPage.name?.length>25">...</span>
-                             </h4>
-                             <h5 style="color: #656565;" class="m0" title="{{campaign.landingPage.createdUser}}">
-                                Shared By {{campaign.landingPage.createdUser | slice:0:15}}
-                                <span *ngIf="campaign.landingPage.createdUser?.length>15">...</span>
-                             </h5>
-                          </a>
-                       </div>
-                    </div>
-                 </fieldset>
-              </div>
-              <!-- ----------Contact Lists---------- -->
-              <div class="col-xs-12">
-                 <div class="table-responsive">
-                    <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
-                       <legend class="scheduler-border">Selected {{campaign?.oneClickLaunch ? 'Lead(s)':'Contact(s)'}} list</legend>
-                       <div class="row m0">
-                          <div class="col-xs-4 p0">
-                             <i class="fa fa-users" [ngClass]="{'disabled': selectedUserlistIds.length < 1}" aria-hidden="true"></i>
-                          </div>
-                          <div class="col-xs-8 p0" style="margin-top: 16px;">
-                             <h4 class="pull-left" *ngIf="selectedUserlistIds.length==0">No list is selected</h4>
-                             <h4 class="pull-left" *ngIf="selectedUserlistIds.length==1">{{selectedUserlistIds.length}} list is selected
-                             </h4>
-                             <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">{{selectedUserlistIds.length}} lists are selected
-                             </h4>
-                             <a class="pull-right btn btn-primary btn-sm" style="margin-top: 6px" (click)="showContacts()">{{previewText}}</a>
-                             <br>                      
-                          </div>
-                          <span *ngIf="selectedUserlistIds.length>0"
-                             style="color: cornflowerblue;font-weight: 600;float: left;margin-bottom: 10px;">This email will be sent to
-                          {{validUsersCount}}({{allUsersCount}}) users.</span>
-                       </div>
-                       <div id="campaign-contact-list" style="display: none;">
-                          <div>
-                             <div class="row pb10" id="user_list_table_view">
-                                <app-loader [model]="campaignContact.httpRequestLoader.isHorizontalCss" *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader>
-                                <app-error-pages *ngIf="campaignContact.httpRequestLoader.isServerError"></app-error-pages>
-                                <ng-container *ngIf="!campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
-                                   <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
-                                      <div class="inputs" align="right" style="float:right;padding: 5px 5px 12px 0px;">
-                                         <div class="portlet-input input-inline input-large" style="position: relative;top: -6px;right: -5px;">
-                                            <div class="input-icon right">
-                                               <input type="text" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a list" (keypress)="contactSearchInputKey($event.keyCode)">
-                                               <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="contactSearchInput" (click)="contactSearchInput='';searchContactList()"></button>
-                                               <button type="submit" class="search-box-item-click" (click)="searchContactList()"><i class="fa fa-search"></i></button>
-                                            </div>
-                                         </div>
-                                      </div>
-                                      <div class="row-fluid">
-                                         <table class="table table-filter" *ngIf="contactListPagination.totalRecords==0">
-                                            <tr>
-                                               <td colspan="5">
-                                                  <div class="alert alert-info text-center">
-                                                     <strong>No Data found</strong>
-                                                  </div>
-                                               </td>
-                                            </tr>
-                                         </table>
-                                         <table  class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactListPagination.totalRecords > 0">
-                                            <thead>
-                                               <tr>
-                                                  <td class="text-center" [hidden]="campaign?.oneClickLaunch">
-                                                     <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" [ngModelOptions]="{standalone: true}" />
-                                                  </td>
-                                                  <th *ngIf="showExpandButton"></th>
-                                                  <th class="text-center">
-                                                     <span class="ui-column-resize"	(mousedown)="referenceService.onMouseDown($event,'user_list_tb',1)"> </span>
-                                                     <span class="gridHeader">List Name</span>
-                                                  </th>
-                                                  <ng-container *ngIf="!campaign?.oneClickLaunch">
-                                                     <th scope="row" class="text-center inc-width">Type </th>
-                                                     <th scope="row" class="text-center">Date Uploaded </th>
-                                                  </ng-container>
-                                                  <th scope="row" class="text-center">Preview</th>
-                                               </tr>
-                                            </thead>
-                                            <tbody>
-                                               <ng-container *ngFor="let contacts of contactListPagination.pagedItems;let i = index">
-                                                  <tr role="row" id="campaignContactListTable_{{contacts.id}}"
-                                                  (click)="highlightContactRow(contacts.id,$event,contacts.noOfContacts,contacts.emailValidationInd)"
-                                                  (mouseover)='showContactsAlert(contacts.noOfContacts)' [attr.title]="emptyContactsMessage"
-                                                  [class.contact-list-selected]="(selectedUserlistIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)">
-                                                  <td class="text-center" [hidden]="campaign?.oneClickLaunch">
-                                                     <div class="form-group" *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
-                                                        <input type="checkbox" class="chk" lang="{{contacts.name}}" id="{{contacts.id}}"
-                                                        [checked]="selectedUserlistIds.indexOf(contacts.id)>-1" name="campaignContact[]" value="{{contacts.id}}"
-                                                        (click)="highlightRow(contacts.id,$event)">
-                                                     </div>
-                                                     <div class="form-group" *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
-                                                        <input type="checkbox" disabled="disabled" title="Contacts are in progress">
-                                                     </div>
-                                                  </td>
-                                                  <td class="cw" *ngIf="showExpandButton">
-                                                     <div [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block left-float'">
-                                                        <a (click)="$event.stopPropagation();viewMatchedContacts(contacts)" title="Matched Results">
-                                                        <i class="fa" [ngClass]="{'fa-angle-right': !contacts.expand, 'fa-angle-down': contacts.expand}"
-                                                           aria-hidden="true"></i>
-                                                        </a>
-                                                     </div>
-                                                  </td>
-                                                  <td class="text-center moreipsis" title="{{contacts.name}}">
-                                                     <span>{{contacts.name}}</span>
-                                                  </td>
-                                                  <ng-container *ngIf="!campaign?.oneClickLaunch">
-                                                     <td class="text-center moreipsis">
-                                                        <span>
-                                                           {{contacts.type}}
-                                                           <ng-template [ngIf]="contacts?.formList">, Form Contact List</ng-template>
-                                                        </span>
-                                                     </td>
-                                                     <td class="text-center sorting_1">
-                                                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
-                                                     </td>
-                                                  </ng-container>
-                                                  <td class="text-center">
-                                                     <div [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block float-none'">
-                                                        <a title="Preview" (click)="$event.stopPropagation();previewUsers(contacts)">
-                                                        <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
-                                                        </a>
-                                                     </div>
-                                                  </td>
-                                                  </tr>
-                                                  <tr role="row" *ngIf="contacts?.expand">
-                                                     <td colspan="12">
-                                                        <app-userlist-users [searchKey]="contactListPagination.searchKey" [userListId]="contacts.id"></app-userlist-users>
-                                                     </td>
-                                                  </tr>
-                                               </ng-container>
-                                            </tbody>
-                                         </table>
-                                      </div>
-                                   </div>
-                                </ng-container>
-                                <div *ngIf="contactListPagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                                   <div *ngIf="contactListPagination.pagedItems.length !== 0">
-                                      <app-pagination [pagination]="contactListPagination" [type]="'contacts'" (notifyParent)="setContactPage($event)" (notifyParentDropDown)="loadContactList($event)"></app-pagination>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                    </fieldset>
-                 </div>
-              </div>
-              <div class="col-xs-12" id="campaign-options-div">
-                 <div>
-                    <div class="row">
-                       <div class="col-xs-6"></div>
-                       <div class="col-xs-6 text-right pb10" style="margin-top: 10px;">
-                          <h5 class="control-label font-purple-intense pr10" style="display: inline-block;">Enable work flow</h5>
-                          <switch [status]="enableWorkFlow" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="enableWorkFlow = !enableWorkFlow">
-                          </switch>
-                       </div>
-                       <div [hidden]="!enableWorkFlow">
-                          <div class="col-xs-6">
-                             <a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur" style="background-color: #f76c1a;" title="No Urls found">
-                             <i class="fa fa-ban p0" style="margin: 0 5px;" aria-hidden="true"></i>{{properties.ADD_AUTO_RESPONSE_WEBSITE}}
-                             </a>
-                             <a *ngIf="emailTemplateHrefLinks?.length>0" class="dashboard-stat yellow-gold" style="background-color: #f76c1a;" (click)="addClickRows()">
-                             <i class="fa fa-plus-square p0" style="margin: 0 5px;" aria-hidden="true"></i>{{properties.ADD_AUTO_RESPONSE_WEBSITE}}
-                             </a>
-                          </div>
-                          <div class="col-xs-6">
-                             <a class="dashboard-stat yellow-gold" style="background-color: #f4555c;" (click)="addReplyRows()">
-                             <i class="fa fa-plus-square p0" style="margin: 0 5px;" aria-hidden="true"></i>{{properties.ADD_AUTO_RESPONSE_EMAIL}}
-                             </a>
-                          </div>
-                          <!-- -------------------------------------Add Reply----------------------------- -->
-                          <div class="col-xs-12" id="reply-onclick-div" style="position: relative; bottom: -7px;">
-                             <div class="alert alert-danger" *ngIf="dataError && contactListBorderColor!=='red'">
-                                <strong>Please complete the * required fields</strong>
-                             </div>
-                             <!-- Content Should Come here ------------ -->
-                             <fieldset class="scheduler-border" *ngIf="replies?.length>0">
-                                <legend class="scheduler-border" style="padding: 15px 10px;">{{properties.ADD_AUTO_RESPONSE_EMAIL}}</legend>
-                                <div *ngFor="let reply of replies;let i=index">
-                                   <ng-container *ngIf="reply?.actionId!=22 && reply?.actionId!=23">
-                                      <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
-                                         <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
-                                            <div class="col-xs-7 ">
-                                               <h4 class="text-left" style="color:#fff">
-                                                  Add an Auto-response to your e-mail-{{i+1}}
-                                               </h4>
-                                            </div>
-                                            <div class="col-xs-5 mb-flex" style="text-align:right">
-                                               <button type="button" class="btn btn-danger button-blue" (click)="remove(reply.divId,'replies')">
-                                               <span class="glyphicon glyphicon-trash"></span>
-                                               </button>
-                                               <button type="button" class="btn btn-primary button-blue" (click)="addReplyRows()">
-                                               <span class="glyphicon glyphicon-plus"></span>
-                                               </button>
-                                            </div>
-                                         </div>
-                                         <div class="row">
-                                            <form class="role add-reply" id="form-{{reply.divId}}">
-                                               <div class="col-xs-12" style="padding:0">
-                                                  <div class="col-xs-12" style="padding:0">
-                                                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-4">
-                                                        <label for="reason" style="cursor:default" class="lableTitleDec">Reason</label>
-                                                        <select class="form-control" name="actionId" [(ngModel)]="reply.actionId" style="cursor:pointer">
-                                                        <option [value]="0" [selected]="reply.actionId ==0">Email is not opened</option>
-                                                        <option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
-                                                        <option [value]="16" [selected]="reply.actionId ==16">Send immediately after email
-                                                        is opened</option>
-                                                        <option [value]="33" [selected]="reply.actionId ==33">Send follow-up email</option>
-                                                        <ng-container *ngIf="campaignType=='VIDEO' ">
-                                                           <option [value]="1" [selected]="reply.actionId==1"> Video is played</option>
-                                                           <option [value]="17" [selected]="reply.actionId==17"> Send immediately after video
-                                                           is played</option>
-                                                           <option [value]="18" [selected]="reply.actionId==18">Video is not played</option>
-                                                        </ng-container>
-                                                        </select>
-                                                     </div>
-                                                     <div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
-                                                        <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2 pl0">
-                                                           <label class="lableTitleDec" style="cursor:default" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 || reply.actionId==33 " id="reply-days-{{reply.divId}}">Reply
-                                                           In X Days
-                                                           <strong style="color: red">*</strong>
-                                                           <span>
-                                                           <strong>(Minimum 1 Day)</strong>
-                                                           </span>
-                                                           </label>
-                                                           <label class="lableTitleDec" style="cursor:default" for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23 && reply.actionId!=33" id="reply-days-{{reply.divId}}">Reply
-                                                           In X Days
-                                                           <strong style="color: red">*</strong>
-                                                           </label>
-                                                           <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
-                                                        </div>
-                                                        <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 time-col p0" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-                                                           <div class="col-xs-2" style="position: relative;top: 28px; cursor: default;">
-                                                              <label for="time" id="send-time-{{reply.divId}}" class="lableTitleDec">At<strong style="color: red" >*</strong>
-                                                              </label>
-                                                           </div>
-                                                           <div>
-                                                              <timepicker [(ngModel)]="reply.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
-                                                           </div>
-                                                        </div>
-                                                     </div>
-                                                     <div class="col-xs-8 col-sm-3 col-md-3 col-lg-3 tab_sub" style="margin-left: -16px;">
-                                                        <label for="time" style="cursor:default" id="reply-subject-{{reply.divId}}" class="lableTitleDec">Subject
-                                                        <strong style="color: red">*</strong>
-                                                        </label>
-                                                        <div class="input-group merge-tag-input-border">
-                                                           <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
-                                                           <span class="input-group-btn">
-                                                           <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags" (click)="openMergeTagsPopup('nurture-campaign-reply',reply)">
-                                                           <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
-                                                           </button>
-                                                           </span>
-                                                        </div>
-                                                     </div>
-                                                  </div>
-                                                  <div class="col-xs-12">
-                                                     <div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
-                                                        <div>
-                                                           <label style="cursor:default" for="days" id="reply-message-{{reply.divId}}">Message
-                                                           <strong style="color: red">*</strong>
-                                                           </label>
-                                                        </div>
-                                                        <div>
-                                                           <ckeditor [(ngModel)]="reply.body" name="body"></ckeditor>
-                                                        </div>
-                                                     </div>
-                                                     <ul class="content__list" *ngIf="reply.defaultTemplate">
-                                                        <fieldset class="scheduler-border">
-                                                           <legend  class="scheduler-border">Selected email template</legend>
-                                                           <li class="list__item" [class.list__item--selected]="reply.emailTemplate.id==reply.selectedEmailTemplateId" id="rcaretw">
-                                                              <div class="flex-row">
-                                                                 <div class="item__select-box-wrapper">
-                                                                    <span class="select-box"> 
-                                                                    <label> 
-                                                                    <input type="checkbox"
-                                                                       [value]="reply.emailTemplate.id" id="reply-{{i}}-{{reply.emailTemplate.id}}" checked="checked">
-                                                                    </label>
-                                                                    </span>
-                                                                    <span class="ng-scope">
-                                                                    <a   class="item__preview item__preview--image img-container custom" target="_BLANK">
-                                                                    <img class="thumb ng-scope" style="width:98px !important" src="{{reply.emailTemplate.subject}}" alt="">
-                                                                    </a> 
-                                                                    <a href="javascript:;"> </a>
-                                                                    </span>
-                                                                 </div>
-                                                                 <div class="item__content" style="text-align: left;">
-                                                                    <div class="flex-row">
-                                                                       <span class="item__name" [title]="reply.emailTemplate.name"><strong>{{reply?.emailTemplate?.name |slice:0:12}}</strong>
-                                                                       <strong *ngIf="reply?.emailTemplate?.name?.length>12">...</strong>
-                                                                       </span>
-                                                                       <br>
-                                                                       <br>
-                                                                       <span class="item__name" title="created on" style="float:left">
-                                                                       <span>
-                                                                       <app-timestamp
-                                                                       [isOnlyDate]="true"
-                                                                       [dateAndTime]="reply?.emailTemplate?.createdTime">
-                                                                       </app-timestamp>
-                                                                       </span>
-                                                                       </span>
-                                                                       <br>
-                                                                       <span style="float:left" title="{{reply.emailTemplate.createdBy}}">
-                                                                       <span>{{reply?.emailTemplate?.createdBy|slice:0:15}}<span *ngIf="reply?.emailTemplate?.createdBy?.length>15">...</span>
-                                                                       </span>
-                                                                       </span>
-                                                                       <br>
-                                                                       <div class="item__actions">
-                                                                          <span> 
-                                                                           <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
-                                                                             data-toggle="tooltip" data-placement="top"
-                                                                             title="Preview"  (click)="$event.stopPropagation();previewEmailTemplate(reply.emailTemplate)">
-                                                                              <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
-                                                                          </a>
-                                                                          <!--XNFR-330---->
-                                                                          <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
-                                                                             data-toggle="tooltip" data-placement="top"
-                                                                             title="Edit"  (click)="$event.stopPropagation();editAutoResponseTemplate(reply,'reply')">
-                                                                              <i class="fa fa-pencil-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
-                                                                          </a>
-                                                                           <!--XNFR-330---->
-                                                                          </span>
-                                                                       </div>
-                                                                    </div>
-                                                                 </div>
-                                                                 <div class="clearfix"></div>
-                                                              </div>
-                                                           </li>
-                                                        </fieldset>
-                                                     </ul>
-                                                  </div>
-                                               </div>
-                                            </form>
-                                         </div>
-                                      </div>
-                                   </ng-container>
-                                </div>
-                             </fieldset>
-                             <!-- ------------ADD ON CLICK------------------------ -->
-                             <fieldset class="scheduler-border" *ngIf="urls?.length>0">
-                                <legend class="scheduler-border" style="padding: 15px 10px;">{{properties.ADD_AUTO_RESPONSE_WEBSITE}}</legend>
-                                <div *ngFor="let url of urls;let i=index">
-                                   <div class="portlet light dashboard-stat2" id="{{url.divId}}">
-                                      <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
-                                         <div class="col-xs-7">
-                                            <h4 class="text-left" style="color:#fff">
-                                               Add an Auto-response to a website visit - {{i+1}}
-                                            </h4>
-                                         </div>
-                                         <div class="col-xs-5 mb-flex" style="text-align:right">
-                                            <button type="button" class="btn btn-danger button-blue" (click)="remove(url.divId,'url')">
-                                            <span class="glyphicon glyphicon-trash"></span>
-                                            </button>
-                                            <button type="button" class="btn btn-primary button-blue" (click)="addClickRows()">
-                                            <span class="glyphicon glyphicon-plus"></span>
-                                            </button>
-                                         </div>
-                                      </div>
-                                      <div class="row">
-                                         <form class="role" id="form-{{url.divId}}" class="add-click">
-                                            <div class="col-xs-12" style="padding:0">
-                                               <div class="col-xs-12" style="padding:0">
-                                                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                                     <label for="reason" style="cursor:default">When To Send Email</label>
-                                                     <select style="cursor:pointer" class="form-control" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
-                                                     <option [value]="19" [selected]="url.actionId ==19">Send if not clicked</option>
-                                                     <option [value]="20" [selected]="url.actionId ==20">Send immediately after clicked</option>
-                                                     <option [value]="21" [selected]="url.actionId ==21">Schedule</option>
-                                                     </select>
-                                                  </div>
-                                                  <div *ngIf="url.actionId==21">
-                                                     <div class="col-xs-3">
-                                                        <label style="cursor:default" for="days" id="click-days-{{url.divId}}">Wait X Days
-                                                        After Click
-                                                        <strong style="color: red">*</strong>
-                                                        </label>
-                                                        <input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
-                                                     </div>
-                                                     <div class="col-xs-3 time-col p0">
-                                                        <div class="col-xs-3" style="position: relative;top: 28px; cursor: default;">
-                                                           <label for="time" id="send-time-{{url.divId}}">At <strong style="color: red">*</strong></label>
-                                                        </div>
-                                                        <div class="col-xs-9 p0" style="height: 66px;">
-                                                           <timepicker [(ngModel)]="url.replyTime" name="time" [hourStep]="1" [minuteStep]="1"></timepicker>
-                                                        </div>
-                                                     </div>
-                                                  </div>
-                                                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                                     <label style="cursor:default" for="time" id="click-subject-{{url.divId}}">Subject
-                                                     <strong style="color: red" aria-hidden="true">*</strong>
-                                                     </label>
-                                                     <div class="input-group merge-tag-input-border">
-                                                        <input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
-                                                        <span class="input-group-btn">
-                                                        <button class="btn btn-default" type="button" data-toggle="tooltip" data-placement="bottom" title="Insert Merge Tags" (click)="openMergeTagsPopup('nurture-web-site',url)">
-                                                        <i class="fa fa-plus-circle npcfs" aria-hidden="true"></i>
-                                                        </button>
-                                                        </span>
-                                                     </div>
-                                                  </div>
-                                                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                                                     <label style="cursor:default" for="reason">Available URLs</label>
-                                                     <select style="cursor:pointer" class="form-control" name="url" [(ngModel)]="url.url" style="width: 100%">
-                                                     <option *ngFor="let hrefLink of emailTemplateHrefLinks;" [ngValue]="hrefLink" [selected]="hrefLink==url.url">
-                                                     {{hrefLink}}
-                                                     </option>
-                                                     </select>
-                                                  </div>
-                                               </div>
-                                               <div class="col-xs-12">
-                                                  <div id="ck-editor-{{i}}" *ngIf="!url.defaultTemplate">
-                                                     <label for="days" id="click-message-{{url.divId}}">Message
-                                                     <strong style="color: red">*</strong>
-                                                     </label>
-                                                     <div>
-                                                        <ckeditor [(ngModel)]="url.body" name="body"></ckeditor>
-                                                     </div>
-                                                  </div>
-                                                  <ul class="content__list" *ngIf="url.defaultTemplate">
-                                                     <fieldset class="scheduler-border">
-                                                        <legend  class="scheduler-border">Selected email template</legend>
-                                                        <li class="list__item" [class.list__item--selected]="url.emailTemplate.id==url.selectedEmailTemplateId" id="rcaretw">
-                                                           <div class="flex-row">
-                                                              <div class="item__select-box-wrapper">
-                                                                 <span class="select-box"> <label> <input type="checkbox"
-                                                                    [value]="url.emailTemplate.id" id="reply-{{i}}-{{url.emailTemplate.id}}" checked="checked">
-                                                                 </label>
-                                                                 </span>
-                                                                 <span class="ng-scope">
-                                                                 <a class="item__preview item__preview--image img-container custom"
-                                                                    target="_BLANK"> <img
-                                                                    class="thumb ng-scope" style="width:98px !important" src="{{url.emailTemplate.subject}}" alt="">
-                                                                 </a> <a href="javascript:;"> </a>
-                                                                 </span>
-                                                              </div>
-                                                              <div class="item__content" style="text-align: left;">
-                                                                 <div class="flex-row">
-                                                                    <span class="item__name" [title]="url.emailTemplate.name">
-                                                                    <strong>{{url.emailTemplate.name |slice:0:12}}</strong>
-                                                                    <strong *ngIf="url.emailTemplate?.name?.length>12">...</strong>
-                                                                    </span>
-                                                                    <br>
-                                                                    <br>
-                                                                    <span class="item__name" title="created on" style="float:left">
-                                                                    <span>
-                                                                    <app-timestamp
-                                                                    [isOnlyDate]="true"
-                                                                    [dateAndTime]="url?.emailTemplate?.createdTime">
-                                                                    </app-timestamp>
-                                                                    </span>
-                                                                    </span>
-                                                                    <br>
-                                                                    <span style="float:left" data-toggle="tooltip" data-placement="bottom" title="{{url.emailTemplate.createdBy}}">
-                                                                    <span>{{url.emailTemplate.createdBy|slice:0:12}}<span *ngIf="url.emailTemplate.createdBy?.length>12">...</span></span>
-                                                                    </span>
-                                                                    <br>
-                                                                    <span *ngIf="url?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{url?.emailTemplate?.category}}">
-                                                                    <strong translate>Folder:</strong><span>{{url?.emailTemplate?.category|slice:0:10}}</span>
-                                                                    <span *ngIf="url?.emailTemplate?.category?.length>10">..</span>
-                                                                    </span>
-                                                                    <br>
-                                                                    <div class="item__actions">
-                                                                       <span>
-                                                                         <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
-                                                                          data-toggle="tooltip" data-placement="top"
-                                                                          title="Preview"  (click)="$event.stopPropagation();previewEmailTemplate(url.emailTemplate)">
-                                                                           <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
-                                                                        </a>
-                                                                       <!--XNFR-330---->
-                                                                       <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
-                                                                        data-toggle="tooltip" data-placement="top"
-                                                                        title="Edit"  (click)="$event.stopPropagation();editAutoResponseTemplate(url,'url')">
-                                                                           <i class="fa fa-pencil-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
-                                                                        </a>
-                                                                        <!--XNFR-330---->
-                                                                       </span>
-                                                                    </div>
-                                                                 </div>
-                                                              </div>
-                                                              <div class="clearfix"></div>
-                                                           </div>
-                                                        </li>
-                                                     </fieldset>
-                                                  </ul>
-                                               </div>
-                                            </div>
-                                         </form>
-                                      </div>
-                                   </div>
-                                </div>
-                             </fieldset>
-                             <!-- Add on Click end -->
-                          </div>
-                       </div>
-                    </div>
-                 </div>
-              </div>
-              <div class="col-xs-12 mb_p0" style="margin-top: 8px;">
-                 <fieldset class="scheduler-border">
-                    <legend class="scheduler-border">Launch Option</legend>
-                    <div>
-                       <div class="btn-group btn-group-justified width_unset">
-                          <ng-container>
-                             <label  class="btn btn-primary button-border">
-                             <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
-                                [value]="campaignLaunchOptions[0]" formControlName="scheduleCampaign"
-                                ngDefaultControl style=" margin-right:10px; " /><span class="text-algn">Now</span>
-                             </label>
-                             <label  class="btn btn-warning button-border Sch-class" >
-                             <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
-                                [value]="campaignLaunchOptions[1]" formControlName="scheduleCampaign"
-                                ngDefaultControl style="margin-right:10px " /><span class="text-algn">Schedule</span>
-                             </label>
-                             <label class="btn Btn-Green mBtnAlign button-border">
-                             <input type="radio" class="text-center mLabelAlign" name="scheduleCampaign"
-                                [value]="campaignLaunchOptions[2]" formControlName="scheduleCampaign"
-                                ngDefaultControl style="margin-right:10px" /><span class="text-algn">Save</span>
-                             </label>
-                          </ng-container>
-                       </div>
-                       <div class="col-md-12" style="margin-left: -17px;margin-top: 12px;" [hidden]="buttonName!='Schedule'">
-                          <div class="col-md-4">
-                             <label style="float: left;">Date</label>
-                             <br>
-                             <input type="text" class="form-control flatpickr square-box" placeholder="Select" formControlName="launchTime" />
-                             <span style="color: red" *ngIf="campaignLaunchForm.hasError('invalidSchedule')">Date Required</span>
-                          </div>
-                          <div class="col-md-4">
-                             <label style="float: left;">Country</label>
-                             <br>
-                             <select class="form-control" style="width: 100%" formControlName="countryId" (change)="onSelect($event.target.value)" id="countryName">
-                             <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
-                             </select>
-                          </div>
-                          <div class="col-md-4">
-                             <label style="float: left;">TimeZone </label>
-                             <br>
-                             <select class="form-control" style="width: 100%" formControlName="timeZoneId" id="timezoneId">
-                                <ng-container *ngIf="timezones?.length==1">
-                                   <option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId" [selected]="campaign.countryId==timeZone.countryId">
-                                   {{timeZone.cityName}}
-                                   </option>
-                                </ng-container>
-                                <ng-container *ngIf="timezones?.length>1">
-                                   <option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId">
-                                   {{timeZone.cityName}}
-                                   </option>
-                                </ng-container>
-                             </select>
-                          </div>
-                       </div>
-                    </div>
-                    <div class="portlet-title border-none">
-                       <div class="col-xs-12 center-block pt20 text-center">
-                        <div class="mb_flex">
-                          <button type="button" class="btn Btn-Green" [disabled]="!isCampaignDetailsFormValid" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)" style="width:10em">Send Test Email</button>
-                          <button type="submit" class="btn Btn-Green" [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid" style="width:10em">{{buttonName}}</button>
-                       </div>
+                     </fieldset>
+                  </div>
+                  <!-- ----------Contact Lists---------- -->
+                  <div class="col-xs-12">
+                     <div class="table-responsive">
+                        <fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
+                           <legend class="scheduler-border">Selected {{campaign?.oneClickLaunch ?
+                              'Lead(s)':'Contact(s)'}} list</legend>
+                           <div class="row m0">
+                              <div class="col-xs-4 p0">
+                                 <i class="fa fa-users" [ngClass]="{'disabled': selectedUserlistIds.length < 1}"
+                                    aria-hidden="true"></i>
+                              </div>
+                              <div class="col-xs-8 p0" style="margin-top: 16px;">
+                                 <h4 class="pull-left" *ngIf="selectedUserlistIds.length==0">No list is selected</h4>
+                                 <h4 class="pull-left" *ngIf="selectedUserlistIds.length==1">
+                                    {{selectedUserlistIds.length}} list is selected
+                                 </h4>
+                                 <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">
+                                    {{selectedUserlistIds.length}} lists are selected
+                                 </h4>
+                                 <a class="pull-right btn btn-primary btn-sm" style="margin-top: 6px"
+                                    (click)="showContacts()">{{previewText}}</a>
+                                 <br>
+                              </div>
+                              <span *ngIf="selectedUserlistIds.length>0"
+                                 style="color: cornflowerblue;font-weight: 600;float: left;margin-bottom: 10px;">This
+                                 email will be sent to
+                                 {{validUsersCount}}({{allUsersCount}}) users.</span>
+                           </div>
+                           <div id="campaign-contact-list" style="display: none;">
+                              <div>
+                                 <div class="row pb10" id="user_list_table_view">
+                                    <app-loader [model]="campaignContact.httpRequestLoader.isHorizontalCss"
+                                       *ngIf="campaignContact.httpRequestLoader.isLoading"></app-loader>
+                                    <app-error-pages
+                                       *ngIf="campaignContact.httpRequestLoader.isServerError"></app-error-pages>
+                                    <ng-container
+                                       *ngIf="!campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
+                                       <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer">
+                                          <div class="inputs" align="right"
+                                             style="float:right;padding: 5px 5px 12px 0px;">
+                                             <div class="portlet-input input-inline input-large"
+                                                style="position: relative;top: -6px;right: -5px;">
+                                                <div class="input-icon right">
+                                                   <input type="text" [(ngModel)]="contactSearchInput"
+                                                      [ngModelOptions]="{standalone: true}" class="form-control"
+                                                      placeholder="Search for a list"
+                                                      (keypress)="contactSearchInputKey($event.keyCode)">
+                                                   <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                                      *ngIf="contactSearchInput"
+                                                      (click)="contactSearchInput='';searchContactList()"></button>
+                                                   <button type="submit" class="search-box-item-click"
+                                                      (click)="searchContactList()"><i
+                                                         class="fa fa-search"></i></button>
+                                                </div>
+                                             </div>
+                                          </div>
+                                          <div class="row-fluid">
+                                             <table class="table table-filter"
+                                                *ngIf="contactListPagination.totalRecords==0">
+                                                <tr>
+                                                   <td colspan="5">
+                                                      <div class="alert alert-info text-center">
+                                                         <strong>No Data found</strong>
+                                                      </div>
+                                                   </td>
+                                                </tr>
+                                             </table>
+                                             <table class="table table-bordered no-more-tables dataTable no-footer"
+                                                id="user_list_tb" role="grid" aria-describedby="user_list_tb_info"
+                                                *ngIf="contactListPagination.totalRecords > 0">
+                                                <thead>
+                                                   <tr>
+                                                      <td class="text-center" [hidden]="campaign?.oneClickLaunch">
+                                                         <input clas="checkBox_shadow" type="checkbox" name="all"
+                                                            [(ngModel)]="isHeaderCheckBoxChecked"
+                                                            (change)="checkAll($event)" id="checkAllExistingContacts"
+                                                            [ngModelOptions]="{standalone: true}" />
+                                                      </td>
+                                                      <th *ngIf="showExpandButton"></th>
+                                                      <th class="text-center">
+                                                         <span class="ui-column-resize"
+                                                            (mousedown)="referenceService.onMouseDown($event,'user_list_tb',1)">
+                                                         </span>
+                                                         <span class="gridHeader">List Name</span>
+                                                      </th>
+                                                      <ng-container *ngIf="!campaign?.oneClickLaunch">
+                                                         <th scope="row" class="text-center inc-width">Type </th>
+                                                         <th scope="row" class="text-center">Date Uploaded </th>
+                                                      </ng-container>
+                                                      <th scope="row" class="text-center">Preview</th>
+                                                   </tr>
+                                                </thead>
+                                                <tbody>
+                                                   <ng-container
+                                                      *ngFor="let contacts of contactListPagination.pagedItems;let i = index">
+                                                      <tr role="row" id="campaignContactListTable_{{contacts.id}}"
+                                                         (click)="highlightContactRow(contacts.id,$event,contacts.noOfContacts,contacts.emailValidationInd)"
+                                                         (mouseover)='showContactsAlert(contacts.noOfContacts)'
+                                                         [attr.title]="emptyContactsMessage"
+                                                         [class.contact-list-selected]="(selectedUserlistIds.indexOf(contacts.id)>-1 && contacts.noOfContacts>0)">
+                                                         <td class="text-center" [hidden]="campaign?.oneClickLaunch">
+                                                            <div class="form-group"
+                                                               *ngIf="contacts.noOfContacts>0 && contacts.emailValidationInd">
+                                                               <input class="checkBox_shadow" type="checkbox"
+                                                                  class="chk" lang="{{contacts.name}}"
+                                                                  id="{{contacts.id}}"
+                                                                  [checked]="selectedUserlistIds.indexOf(contacts.id)>-1"
+                                                                  name="campaignContact[]" value="{{contacts.id}}"
+                                                                  (click)="highlightRow(contacts.id,$event)">
+                                                            </div>
+                                                            <div class="form-group"
+                                                               *ngIf="contacts.noOfContacts==0 || !contacts.emailValidationInd">
+                                                               <input class="checkBox_shadow" type="checkbox"
+                                                                  disabled="disabled" title="Contacts are in progress">
+                                                            </div>
+                                                         </td>
+                                                         <td class="cw" *ngIf="showExpandButton">
+                                                            <div
+                                                               [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block left-float'">
+                                                               <a (click)="$event.stopPropagation();viewMatchedContacts(contacts)"
+                                                                  title="Matched Results">
+                                                                  <i class="fa"
+                                                                     [ngClass]="{'fa-angle-right': !contacts.expand, 'fa-angle-down': contacts.expand}"
+                                                                     aria-hidden="true"></i>
+                                                               </a>
+                                                            </div>
+                                                         </td>
+                                                         <td class="text-center moreipsis" title="{{contacts.name}}">
+                                                            <span>{{contacts.name}}</span>
+                                                         </td>
+                                                         <ng-container *ngIf="!campaign?.oneClickLaunch">
+                                                            <td class="text-center moreipsis">
+                                                               <span>
+                                                                  {{contacts.type}}
+                                                                  <ng-template [ngIf]="contacts?.formList">, Form
+                                                                     Contact List</ng-template>
+                                                               </span>
+                                                            </td>
+                                                            <td class="text-center sorting_1">
+                                                               <app-timestamp [isOnlyDate]="true"
+                                                                  [dateAndTime]="contacts.createdDate"> </app-timestamp>
+                                                            </td>
+                                                         </ng-container>
+                                                         <td class="text-center">
+                                                            <div
+                                                               [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block float-none'">
+                                                               <a title="Preview"
+                                                                  (click)="$event.stopPropagation();previewUsers(contacts)">
+                                                                  <i class="fa fa-eye IconCustomization"
+                                                                     aria-hidden="true"></i>
+                                                               </a>
+                                                            </div>
+                                                         </td>
+                                                      </tr>
+                                                      <tr role="row" *ngIf="contacts?.expand">
+                                                         <td colspan="12">
+                                                            <app-userlist-users
+                                                               [searchKey]="contactListPagination.searchKey"
+                                                               [userListId]="contacts.id"></app-userlist-users>
+                                                         </td>
+                                                      </tr>
+                                                   </ng-container>
+                                                </tbody>
+                                             </table>
+                                          </div>
+                                       </div>
+                                    </ng-container>
+                                    <div
+                                       *ngIf="contactListPagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                                       <div *ngIf="contactListPagination.pagedItems.length !== 0">
+                                          <app-pagination [pagination]="contactListPagination" [type]="'contacts'"
+                                             (notifyParent)="setContactPage($event)"
+                                             (notifyParentDropDown)="loadContactList($event)"></app-pagination>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </fieldset>
                      </div>
-                    </div>
-                 </fieldset>
-              </div>
-              </form>
-           </div>
-        </div>
-     </div>
-     <div [hidden]="!isEditPartnerTemplate">
-        <ngx-loading [show]="partnerTemplateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-        <div class="portlet light shadow">
-           <div class="portlet-title">
-              <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Edit Template</h4>
-              <a class="close-circle pull-right" data-dismiss="modal" (click)="isEditPartnerTemplate=false">
-              <i class="fa fa-times" aria-hidden="true"></i>
-              </a>
-           </div>
-           <div class="portlet-body clearfix" *ngIf="isEditPartnerTemplate" style="padding-top: 0px;">
-              <app-create-bee-template [partnerEmailTemplate]="campaign.emailTemplate"></app-create-bee-template>
-           </div>
-        </div>
-     </div>
-     <!---XNFR-330-->
-     <div [hidden]="!isEditAutoResponseTemplate">
-        <ngx-loading [show]="partnerTemplateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-        <div class="portlet light shadow">
-           <div class="portlet-title">
-              <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Edit Template</h4>
-              <a class="close-circle pull-right" data-dismiss="modal" (click)="resetAutoResponseEmailTemplate()">
-              <i class="fa fa-times" aria-hidden="true"></i>
-              </a>
-           </div>
-           <div class="portlet-body clearfix" *ngIf="isEditAutoResponseTemplate">
-              <app-create-bee-template [partnerEmailTemplate]="selectedAutoResponseEmailTemplate" [isAutoResponseEmailTemplate]="true" 
-              [autoResponseId]="selectedAutoResponseId" [selectedAutoResponseCustomEmailTemplateId]="selectedAutoResponseCustomEmailTemplateId"
-              (eventEmitter)="getUpdatedTemplateBodyAndJsonBody($event)"></app-create-bee-template>
-           </div>
-        </div>
-     </div>
-  </div>
-  <app-scroll-top></app-scroll-top>
+                  </div>
+                  <div class="col-xs-12" id="campaign-options-div">
+                     <div>
+                        <div class="row">
+                           <div class="col-xs-6"></div>
+                           <div class="col-xs-6 text-right pb10" style="margin-top: 10px;">
+                              <h5 class="control-label font-purple-intense pr10" style="display: inline-block;">Enable
+                                 work flow</h5>
+                              <switch [status]="enableWorkFlow" [onText]="callActionSwitch.onTextValue"
+                                 [offText]="callActionSwitch.offTextValue"
+                                 [onColor]="callActionSwitch.onGreenColorSwitch"
+                                 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                 (statusChange)="enableWorkFlow = !enableWorkFlow">
+                              </switch>
+                           </div>
+                           <div [hidden]="!enableWorkFlow">
+                              <div class="col-xs-6">
+                                 <a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur"
+                                    style="background-color: #f76c1a;" title="No Urls found">
+                                    <i class="fa fa-ban p0" style="margin: 0 5px;"
+                                       aria-hidden="true"></i>{{properties.ADD_AUTO_RESPONSE_WEBSITE}}
+                                 </a>
+                                 <a *ngIf="emailTemplateHrefLinks?.length>0" class="dashboard-stat yellow-gold"
+                                    style="background-color: #f76c1a;" (click)="addClickRows()">
+                                    <i class="fa fa-plus-square p0" style="margin: 0 5px;"
+                                       aria-hidden="true"></i>{{properties.ADD_AUTO_RESPONSE_WEBSITE}}
+                                 </a>
+                              </div>
+                              <div class="col-xs-6">
+                                 <a class="dashboard-stat yellow-gold" style="background-color: #f4555c;"
+                                    (click)="addReplyRows()">
+                                    <i class="fa fa-plus-square p0" style="margin: 0 5px;"
+                                       aria-hidden="true"></i>{{properties.ADD_AUTO_RESPONSE_EMAIL}}
+                                 </a>
+                              </div>
+                              <!-- -------------------------------------Add Reply----------------------------- -->
+                              <div class="col-xs-12" id="reply-onclick-div" style="position: relative; bottom: -7px;">
+                                 <div class="alert alert-danger" *ngIf="dataError && contactListBorderColor!=='red'">
+                                    <strong>Please complete the * required fields</strong>
+                                 </div>
+                                 <!-- Content Should Come here ------------ -->
+                                 <fieldset class="scheduler-border" *ngIf="replies?.length>0">
+                                    <legend class="scheduler-border" style="padding: 15px 10px;">
+                                       {{properties.ADD_AUTO_RESPONSE_EMAIL}}</legend>
+                                    <div *ngFor="let reply of replies;let i=index">
+                                       <ng-container *ngIf="reply?.actionId!=22 && reply?.actionId!=23">
+                                          <div class="portlet light dashboard-stat2" id="{{reply.divId}}">
+                                             <div class="portlet-title custom-change-css"
+                                                [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
+                                                <div class="col-xs-7 ">
+                                                   <h4 class="text-left" style="color:#fff">
+                                                      Add an Auto-response to your e-mail-{{i+1}}
+                                                   </h4>
+                                                </div>
+                                                <div class="col-xs-5 mb-flex" style="text-align:right">
+                                                   <button type="button" class="btn btn-danger button-blue"
+                                                      (click)="remove(reply.divId,'replies')">
+                                                      <span class="glyphicon glyphicon-trash"></span>
+                                                   </button>
+                                                   <button type="button" class="btn btn-primary button-blue"
+                                                      (click)="addReplyRows()">
+                                                      <span class="glyphicon glyphicon-plus"></span>
+                                                   </button>
+                                                </div>
+                                             </div>
+                                             <div class="row">
+                                                <form class="role add-reply" id="form-{{reply.divId}}">
+                                                   <div class="col-xs-12" style="padding:0">
+                                                      <div class="col-xs-12" style="padding:0">
+                                                         <div class="col-xs-6 col-sm-5 col-md-5 col-lg-5">
+                                                            <label for="reason" style="cursor:default"
+                                                               class="lableTitleDec">Reason</label>
+                                                            <select class="form-control" name="actionId"
+                                                               [(ngModel)]="reply.actionId" style="cursor:pointer">
+                                                               <option [value]="0" [selected]="reply.actionId ==0">Email
+                                                                  is not opened</option>
+                                                               <option [value]="13" [selected]="reply.actionId==13">
+                                                                  Email is opened</option>
+                                                               <option [value]="16" [selected]="reply.actionId ==16">
+                                                                  Send immediately after email
+                                                                  is opened</option>
+                                                               <option [value]="33" [selected]="reply.actionId ==33">
+                                                                  Send follow-up email</option>
+                                                               <ng-container *ngIf="campaignType=='VIDEO' ">
+                                                                  <option [value]="1" [selected]="reply.actionId==1">
+                                                                     Video is played</option>
+                                                                  <option [value]="17" [selected]="reply.actionId==17">
+                                                                     Send immediately after video
+                                                                     is played</option>
+                                                                  <option [value]="18" [selected]="reply.actionId==18">
+                                                                     Video is not played</option>
+                                                               </ng-container>
+                                                            </select>
+                                                         </div>
+                                                         <div
+                                                            *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
+                                                            <div class="col-xs-6 col-sm-3 col-md-2 col-lg-2 pl0">
+                                                               <label class="lableTitleDec" style="cursor:default"
+                                                                  for="days"
+                                                                  *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18 "
+                                                                  id="reply-days-{{reply.divId}}">Reply
+                                                                  In X Days
+                                                                  <strong class="required">*</strong>
+                                                               </label>
+                                                               <input type="number" class="form-control" name="days"
+                                                                  placeholder="Days" [(ngModel)]="reply.replyInDays"
+                                                                  min="1" oninput="validity.valid||(value='');">
+                                                               <span><strong>(Minimum 1 Day)</strong></span>
+                                                            </div>
+                                                         </div>
+                                                         <div class="col-xs-8 col-sm-5 col-md-5 col-lg-5 tab_sub">
+                                                            <label for="time" style="cursor:default"
+                                                               id="reply-subject-{{reply.divId}}"
+                                                               class="lableTitleDec">Subject
+                                                               <strong class="required">*</strong>
+                                                            </label>
+                                                            <div class="input-group merge-tag-input-border">
+                                                               <input type="text" class="form-control" name="subject"
+                                                                  [(ngModel)]="reply.subject"
+                                                                  placeholder="{merge tag} + Subject line"
+                                                                  maxlength="1000">
+                                                               <span class="input-group-btn">
+                                                                  <button class="btn btn-default" type="button"
+                                                                     data-toggle="tooltip" data-placement="bottom"
+                                                                     title="Insert Merge Tags"
+                                                                     (click)="openMergeTagsPopup('nurture-campaign-reply',reply)">
+                                                                     <i class="fa fa-plus-circle npcfs"
+                                                                        aria-hidden="true"></i>
+                                                                  </button>
+                                                               </span>
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                      <div class="col-xs-12">
+                                                         <div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
+                                                            <div>
+                                                               <label style="cursor:default" for="days"
+                                                                  id="reply-message-{{reply.divId}}">Message
+                                                                  <strong class="required">*</strong>
+                                                               </label>
+                                                            </div>
+                                                            <div>
+                                                               <ckeditor [(ngModel)]="reply.body" name="body">
+                                                               </ckeditor>
+                                                            </div>
+                                                         </div>
+                                                         <ul class="content__list" *ngIf="reply.defaultTemplate">
+                                                            <fieldset class="scheduler-border">
+                                                               <legend class="scheduler-border">Selected email template
+                                                               </legend>
+                                                               <li class="list__item"
+                                                                  [class.list__item--selected]="reply.emailTemplate.id==reply.selectedEmailTemplateId"
+                                                                  id="rcaretw">
+                                                                  <div class="flex-row">
+                                                                     <div class="item__select-box-wrapper">
+                                                                        <span class="select-box">
+                                                                           <label>
+                                                                              <input type="checkbox"
+                                                                                 class="checkBox_shadow"
+                                                                                 [value]="reply.emailTemplate.id"
+                                                                                 id="reply-{{i}}-{{reply.emailTemplate.id}}"
+                                                                                 checked="checked">
+                                                                           </label>
+                                                                        </span>
+                                                                        <span class="ng-scope">
+                                                                           <a class="item__preview item__preview--image img-container custom"
+                                                                              target="_BLANK">
+                                                                              <img class="thumb ng-scope"
+                                                                                 style="width:98px !important"
+                                                                                 src="{{reply.emailTemplate.subject}}"
+                                                                                 alt="">
+                                                                           </a>
+                                                                           <a href="javascript:;"> </a>
+                                                                        </span>
+                                                                     </div>
+                                                                     <div class="item__content"
+                                                                        style="text-align: left;">
+                                                                        <div class="flex-row">
+                                                                           <span class="item__name"
+                                                                              [title]="reply.emailTemplate.name"><strong>{{reply?.emailTemplate?.name
+                                                                                 |slice:0:12}}</strong>
+                                                                              <strong
+                                                                                 *ngIf="reply?.emailTemplate?.name?.length>12">...</strong>
+                                                                           </span>
+                                                                           <br>
+                                                                           <br>
+                                                                           <span class="item__name" title="created on"
+                                                                              style="float:left">
+                                                                              <span>
+                                                                                 <app-timestamp [isOnlyDate]="true"
+                                                                                    [dateAndTime]="reply?.emailTemplate?.createdTime">
+                                                                                 </app-timestamp>
+                                                                              </span>
+                                                                           </span>
+                                                                           <br>
+                                                                           <span style="float:left"
+                                                                              title="{{reply.emailTemplate.createdBy}}">
+                                                                              <span>{{reply?.emailTemplate?.createdBy|slice:0:15}}<span
+                                                                                    *ngIf="reply?.emailTemplate?.createdBy?.length>15">...</span>
+                                                                              </span>
+                                                                           </span>
+                                                                           <br>
+                                                                           <div class="item__actions">
+                                                                              <span>
+                                                                                 <a style="float:left; right: -6px;"
+                                                                                    class="fm external-link"
+                                                                                    target="_BLANK"
+                                                                                    data-toggle="tooltip"
+                                                                                    data-placement="top" title="Preview"
+                                                                                    (click)="$event.stopPropagation();previewEmailTemplate(reply.emailTemplate)">
+                                                                                    <i class="fa fa-external-link-square"
+                                                                                       aria-hidden="true"
+                                                                                       style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                                 </a>
+                                                                                 <!--XNFR-330---->
+                                                                                 <a style="float:left; right: -6px;"
+                                                                                    class="fm external-link"
+                                                                                    target="_BLANK"
+                                                                                    data-toggle="tooltip"
+                                                                                    data-placement="top" title="Edit"
+                                                                                    (click)="$event.stopPropagation();editAutoResponseTemplate(reply,'reply')">
+                                                                                    <i class="fa fa-pencil-square"
+                                                                                       aria-hidden="true"
+                                                                                       style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                                 </a>
+                                                                                 <!--XNFR-330---->
+                                                                              </span>
+                                                                           </div>
+                                                                        </div>
+                                                                     </div>
+                                                                     <div class="clearfix"></div>
+                                                                  </div>
+                                                               </li>
+                                                            </fieldset>
+                                                         </ul>
+                                                      </div>
+                                                   </div>
+                                                </form>
+                                             </div>
+                                          </div>
+                                       </ng-container>
+                                    </div>
+                                 </fieldset>
+                                 <!-- ------------ADD ON CLICK------------------------ -->
+                                 <fieldset class="scheduler-border" *ngIf="urls?.length>0">
+                                    <legend class="scheduler-border" style="padding: 15px 10px;">
+                                       {{properties.ADD_AUTO_RESPONSE_WEBSITE}}</legend>
+                                    <div *ngFor="let url of urls;let i=index">
+                                       <div class="portlet light dashboard-stat2" id="{{url.divId}}">
+                                          <div class="portlet-title custom-change-css"
+                                             [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
+                                             <div class="col-xs-7">
+                                                <h4 class="text-left" style="color:#fff">
+                                                   Add an Auto-response to a website visit - {{i+1}}
+                                                </h4>
+                                             </div>
+                                             <div class="col-xs-5 mb-flex" style="text-align:right">
+                                                <button type="button" class="btn btn-danger button-blue"
+                                                   (click)="remove(url.divId,'url')">
+                                                   <span class="glyphicon glyphicon-trash"></span>
+                                                </button>
+                                                <button type="button" class="btn btn-primary button-blue"
+                                                   (click)="addClickRows()">
+                                                   <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                             </div>
+                                          </div>
+                                          <div class="row">
+                                             <form class="role" id="form-{{url.divId}}" class="add-click">
+                                                <div class="col-xs-12 p0">
+                                                   <!--When To Send Email-->
+                                                   <div class="col-xs-12 col-sm-6">
+                                                      <label class="default" for="reason">When To Send Email</label>
+                                                      <select class="form-control pointer" id="url-schedule-type"
+                                                         name="scheduleEmail" [(ngModel)]="url.actionId"
+                                                         (change)="setUrlScheduleType($event,url)">
+                                                         <option [value]="19" [selected]="url.actionId ==19">Send if not
+                                                            clicked</option>
+                                                         <option [value]="20" [selected]="url.actionId ==20">Send
+                                                            immediately after clicked</option>
+                                                         <option [value]="21" [selected]="url.actionId ==21">Schedule
+                                                            (Wait X Days After Click)</option>
+                                                      </select>
+                                                   </div>
+                                                   <!--Subject-->
+                                                   <div class="col-xs-12 col-sm-6">
+                                                      <label class="default" for="time"
+                                                         id="click-subject-{{url.divId}}">Subject
+                                                         <strong class="required" aria-hidden="true">*</strong>
+                                                      </label>
+                                                      <div class="input-group merge-tag-input-border">
+                                                         <input type="text" class="form-control" name="subject"
+                                                            [(ngModel)]="url.subject"
+                                                            placeholder="{merge tag} + Subject line" maxlength="1000">
+                                                         <span class="input-group-btn">
+                                                            <button class="btn btn-default" type="button"
+                                                               data-toggle="tooltip" data-placement="bottom"
+                                                               title="Insert Merge Tags"
+                                                               (click)="openMergeTagsPopup('nurture-web-site',url)">
+                                                               <i class="fa fa-plus-circle npcfs"
+                                                                  aria-hidden="true"></i>
+                                                            </button>
+                                                         </span>
+                                                      </div>
+                                                   </div>
+                                                   <!--Available URLS-->
+                                                   <div class="col-xs-12 col-sm-6">
+                                                      <label for="reason" style="cursor: default;" translate>Available
+                                                         URLs
+                                                      </label>
+                                                      <select style="cursor:pointer" class="form-control" name="url"
+                                                         [(ngModel)]="url.url" style="width: 100%">
+                                                         <option *ngFor="let hrefLink of emailTemplateHrefLinks;"
+                                                            [ngValue]="hrefLink" [selected]="hrefLink==url.url">
+                                                            {{hrefLink}}
+                                                         </option>
+                                                      </select>
+                                                   </div>
+
+                                                   <!--Wait X Days After Click-->
+                                                   <div *ngIf="url.actionId==21" class="col-xs-6">
+                                                      <div class="col-xs-6">
+                                                         <label style="cursor:default" for="days"
+                                                            id="click-days-{{url.divId}}">Wait X Days
+                                                            After Click
+                                                            <strong class="required">*</strong>
+                                                         </label>
+                                                         <input type="number" class="form-control" name="days"
+                                                            [(ngModel)]="url.replyInDays" placeholder="Days" min="1"
+                                                            oninput="validity.valid||(value='');">
+                                                         <span><strong>(Minimum 1 Day)</strong></span>
+                                                      </div>
+                                                   </div>
+                                                   <!---Message-->
+                                                   <div class="col-xs-12">
+                                                      <div id="ck-editor-{{i}}" *ngIf="!url.defaultTemplate">
+                                                         <label for="days" id="click-message-{{url.divId}}">Message
+                                                            <strong class="required">*</strong>
+                                                         </label>
+                                                         <div>
+                                                            <ckeditor [(ngModel)]="url.body" name="body"></ckeditor>
+                                                         </div>
+                                                      </div>
+                                                      <ul class="content__list" *ngIf="url.defaultTemplate">
+                                                         <fieldset class="scheduler-border">
+                                                            <legend class="scheduler-border">Selected email template
+                                                            </legend>
+                                                            <li class="list__item"
+                                                               [class.list__item--selected]="url.emailTemplate.id==url.selectedEmailTemplateId"
+                                                               id="rcaretw">
+                                                               <div class="flex-row">
+                                                                  <div class="item__select-box-wrapper">
+                                                                     <span class="select-box"> <label> <input
+                                                                              type="checkbox" class="checkBox_shadow"
+                                                                              [value]="url.emailTemplate.id"
+                                                                              id="reply-{{i}}-{{url.emailTemplate.id}}"
+                                                                              checked="checked">
+                                                                        </label>
+                                                                     </span>
+                                                                     <span class="ng-scope">
+                                                                        <a class="item__preview item__preview--image img-container custom"
+                                                                           target="_BLANK"> <img class="thumb ng-scope"
+                                                                              style="width:98px !important"
+                                                                              src="{{url.emailTemplate.subject}}"
+                                                                              alt="">
+                                                                        </a> <a href="javascript:;"> </a>
+                                                                     </span>
+                                                                  </div>
+                                                                  <div class="item__content" style="text-align: left;">
+                                                                     <div class="flex-row">
+                                                                        <span class="item__name"
+                                                                           [title]="url.emailTemplate.name">
+                                                                           <strong>{{url.emailTemplate.name
+                                                                              |slice:0:12}}</strong>
+                                                                           <strong
+                                                                              *ngIf="url.emailTemplate?.name?.length>12">...</strong>
+                                                                        </span>
+                                                                        <br>
+                                                                        <br>
+                                                                        <span class="item__name" title="created on"
+                                                                           style="float:left">
+                                                                           <span>
+                                                                              <app-timestamp [isOnlyDate]="true"
+                                                                                 [dateAndTime]="url?.emailTemplate?.createdTime">
+                                                                              </app-timestamp>
+                                                                           </span>
+                                                                        </span>
+                                                                        <br>
+                                                                        <span style="float:left" data-toggle="tooltip"
+                                                                           data-placement="bottom"
+                                                                           title="{{url.emailTemplate.createdBy}}">
+                                                                           <span>{{url.emailTemplate.createdBy|slice:0:12}}<span
+                                                                                 *ngIf="url.emailTemplate.createdBy?.length>12">...</span></span>
+                                                                        </span>
+                                                                        <br>
+                                                                        <span
+                                                                           *ngIf="url?.emailTemplate?.category?.length>0"
+                                                                           class="campaign-email-template-category"
+                                                                           title="{{url?.emailTemplate?.category}}">
+                                                                           <strong
+                                                                              translate>Folder:</strong><span>{{url?.emailTemplate?.category|slice:0:10}}</span>
+                                                                           <span
+                                                                              *ngIf="url?.emailTemplate?.category?.length>10">..</span>
+                                                                        </span>
+                                                                        <br>
+                                                                        <div class="item__actions">
+                                                                           <span>
+                                                                              <a style="float:left; right: -6px;"
+                                                                                 class="fm external-link"
+                                                                                 target="_BLANK" data-toggle="tooltip"
+                                                                                 data-placement="top" title="Preview"
+                                                                                 (click)="$event.stopPropagation();previewEmailTemplate(url.emailTemplate)">
+                                                                                 <i class="fa fa-external-link-square"
+                                                                                    aria-hidden="true"
+                                                                                    style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                              </a>
+                                                                              <!--XNFR-330---->
+                                                                              <a style="float:left; right: -6px;"
+                                                                                 class="fm external-link"
+                                                                                 target="_BLANK" data-toggle="tooltip"
+                                                                                 data-placement="top" title="Edit"
+                                                                                 (click)="$event.stopPropagation();editAutoResponseTemplate(url,'url')">
+                                                                                 <i class="fa fa-pencil-square"
+                                                                                    aria-hidden="true"
+                                                                                    style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                              </a>
+                                                                              <!--XNFR-330---->
+                                                                           </span>
+                                                                        </div>
+                                                                     </div>
+                                                                  </div>
+                                                                  <div class="clearfix"></div>
+                                                               </div>
+                                                            </li>
+                                                         </fieldset>
+                                                      </ul>
+                                                   </div>
+                                                </div>
+                                             </form>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </fieldset>
+                                 <!-- Add on Click end -->
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-xs-12 mb_p0" style="margin-top: 8px;">
+                     <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Launch Option</legend>
+                        <div>
+                           <div class="btn-group btn-group-justified width_unset">
+                              <ng-container>
+                                 <label class="btn btn-primary button-border">
+                                    <input type="radio" class="text-center mLabelAlign radioButton_shadow"
+                                       name="scheduleCampaign" [value]="campaignLaunchOptions[0]"
+                                       formControlName="scheduleCampaign" ngDefaultControl
+                                       style=" margin-right:10px; " /><span class="text-algn">Now</span>
+                                 </label>
+                                 <label class="btn btn-warning button-border Sch-class">
+                                    <input type="radio" class="text-center mLabelAlign radioButton_shadow"
+                                       name="scheduleCampaign" [value]="campaignLaunchOptions[1]"
+                                       formControlName="scheduleCampaign" ngDefaultControl
+                                       style="margin-right:10px " /><span class="text-algn">Schedule</span>
+                                 </label>
+                                 <label class="btn Btn-Green mBtnAlign button-border">
+                                    <input type="radio" class="text-center mLabelAlign radioButton_shadow"
+                                       name="scheduleCampaign" [value]="campaignLaunchOptions[2]"
+                                       formControlName="scheduleCampaign" ngDefaultControl
+                                       style="margin-right:10px" /><span class="text-algn">Save</span>
+                                 </label>
+                              </ng-container>
+                           </div>
+                           <div class="col-md-12" style="margin-left: -17px;margin-top: 12px;"
+                              [hidden]="buttonName!='Schedule'">
+                              <div class="col-md-4">
+                                 <label style="float: left;">Date</label>
+                                 <br>
+                                 <input type="text" class="form-control flatpickr square-box" placeholder="Select"
+                                    formControlName="launchTime" />
+                                 <span class="required" *ngIf="campaignLaunchForm.hasError('invalidSchedule')">Date
+                                    Required</span>
+                              </div>
+                              <div class="col-md-4">
+                                 <label style="float: left;">Country</label>
+                                 <br>
+                                 <select class="form-control" style="width: 100%" formControlName="countryId"
+                                    (change)="onSelect($event.target.value)" id="countryName">
+                                    <option *ngFor="let country of countries" [value]="country.id">{{country.name}}
+                                    </option>
+                                 </select>
+                              </div>
+                              <div class="col-md-4">
+                                 <label style="float: left;">TimeZone </label>
+                                 <br>
+                                 <select class="form-control" style="width: 100%" formControlName="timeZoneId"
+                                    id="timezoneId">
+                                    <ng-container *ngIf="timezones?.length==1">
+                                       <option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId"
+                                          [selected]="campaign.countryId==timeZone.countryId">
+                                          {{timeZone.cityName}}
+                                       </option>
+                                    </ng-container>
+                                    <ng-container *ngIf="timezones?.length>1">
+                                       <option *ngFor="let timeZone of timezones" [value]="timeZone.timezoneId">
+                                          {{timeZone.cityName}}
+                                       </option>
+                                    </ng-container>
+                                 </select>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="portlet-title border-none">
+                           <div class="col-xs-12 center-block pt20 text-center">
+                              <div class="mb_flex">
+                                 <button type="button" class="button" [disabled]="!isCampaignDetailsFormValid"
+                                    (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)"
+                                    style="width:10em"><span class="btn Btn-Green transition">Send Test
+                                       Email</span></button>
+                                 <button type="submit" class="button mar-lft-40"
+                                    [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid"
+                                    style="width:10em"><span
+                                       class="btn Btn-Green transition">{{buttonName}}</span></button>
+                              </div>
+                           </div>
+                        </div>
+                     </fieldset>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+      <div [hidden]="!isEditPartnerTemplate">
+         <ngx-loading [show]="partnerTemplateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+         <div class="portlet light shadow">
+            <div class="portlet-title">
+               <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Edit Template</h4>
+               <a class="close-circle pull-right" data-dismiss="modal" (click)="isEditPartnerTemplate=false">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+               </a>
+            </div>
+            <div class="portlet-body clearfix" *ngIf="isEditPartnerTemplate" style="padding-top: 0px;">
+               <app-create-bee-template [partnerEmailTemplate]="campaign.emailTemplate"></app-create-bee-template>
+            </div>
+         </div>
+      </div>
+      <!---XNFR-330-->
+      <div [hidden]="!isEditAutoResponseTemplate">
+         <ngx-loading [show]="partnerTemplateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+         <div class="portlet light shadow">
+            <div class="portlet-title">
+               <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Edit Template</h4>
+               <a class="close-circle pull-right" data-dismiss="modal" (click)="resetAutoResponseEmailTemplate()">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+               </a>
+            </div>
+            <div class="portlet-body clearfix" *ngIf="isEditAutoResponseTemplate">
+               <app-create-bee-template [partnerEmailTemplate]="selectedAutoResponseEmailTemplate"
+                  [isAutoResponseEmailTemplate]="true" [autoResponseId]="selectedAutoResponseId"
+                  [selectedAutoResponseCustomEmailTemplateId]="selectedAutoResponseCustomEmailTemplateId"
+                  (eventEmitter)="getUpdatedTemplateBodyAndJsonBody($event)"></app-create-bee-template>
+            </div>
+         </div>
+      </div>
+   </div>
+   <app-scroll-top></app-scroll-top>
 </div>
-<app-preview-video *ngIf="videoFile" [videoFile]="videoFile" (notifyParent)="closePreviewVideoModal($event)"></app-preview-video>
+<app-preview-video *ngIf="videoFile" [videoFile]="videoFile"
+   (notifyParent)="closePreviewVideoModal($event)"></app-preview-video>
 <!--email template preview-->
 <div class="modal right" id="email_template_preivew">
-  <div class="modal-dialog modal-lg modal-template" style="right:0">
-     <div class="modal-content">
-        <div class="modal-header">
-           <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
-           <i class="fa fa-times" aria-hidden="true"></i>
-           </button>
-           <h4 class="modal-title" id="email-template-title"></h4>
-        </div>
-        <div class="modal-body">
-           <div id="email-template-content"></div>
-        </div>
-        <div class="modal-footer">
-           <a href="javascript:void(0)" data-dismiss="modal" class="btn Btn-Gray" style="float: right">Close</a>
-        </div>
-     </div>
-  </div>
+   <div class="modal-dialog modal-lg modal-template" style="right:0">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+               <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+            <h4 class="modal-title" id="email-template-title"></h4>
+         </div>
+         <div class="modal-body">
+            <div id="email-template-content"></div>
+         </div>
+         <div class="modal-footer">
+            <a href="javascript:void(0)" data-dismiss="modal" class="btn Btn-Gray" style="float: right">Close</a>
+         </div>
+      </div>
+   </div>
 </div>
 <!--contact list preview-->
 <div class="modal right fade" id="contactlist-preivew">
-  <div class="modal-dialog modal-lg modal-css" style="right:0">
-     <div class="modal-content">
-        <div class="modal-header">
-           <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
-           <i class="fa fa-times" aria-hidden="true"></i>
-           </button>
-           <h4 class="modal-title" id="contactlist-title">select contact list</h4>
-        </div>
-        <div class="modal-body">
-           <div id="contactlist-body">
-              <table class="table table-bordered">
-                 <thead>
-                    <tr>
-                       <th>#</th>
-                       <th>User list</th>
-                       <th>Uploaded by</th>
-                       <th>Created date</th>
-                    </tr>
-                 </thead>
-                 <tbody>
-                    <tr *ngFor="let userList of userLists">
-                       <th scope="row">
-                          <input type="checkbox" [disabled]="!userList.emailValidationInd" id='{{userList.id}}' (click)="highlightRow(userList.id)">
-                       </th>
-                       <td>{{userList.name}}</td>
-                       <td>{{userList.uploadedBy}}
-                          <br>{{userList.companyName}}
-                       </td>
-                       <td>{{userList.createdDate | date: 'longDate'}}</td>
-                    </tr>
-                 </tbody>
-              </table>
-           </div>
-        </div>
-        <div class="modal-footer">
-           <a href="javascript:void(0)" data-dismiss="modal" class="btn Btn-Gray" style="float: right">Close</a>
-        </div>
-     </div>
-  </div>
+   <div class="modal-dialog modal-lg modal-css" style="right:0">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+               <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+            <h4 class="modal-title" id="contactlist-title">select contact list</h4>
+         </div>
+         <div class="modal-body">
+            <div id="contactlist-body">
+               <table class="table table-bordered">
+                  <thead>
+                     <tr>
+                        <th>#</th>
+                        <th>User list</th>
+                        <th>Uploaded by</th>
+                        <th>Created date</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr *ngFor="let userList of userLists">
+                        <th scope="row">
+                           <input class="checkBox_shadow" type="checkbox" [disabled]="!userList.emailValidationInd"
+                              id='{{userList.id}}' (click)="highlightRow(userList.id)">
+                        </th>
+                        <td>{{userList.name}}</td>
+                        <td>{{userList.uploadedBy}}
+                           <br>{{userList.companyName}}
+                        </td>
+                        <td>{{userList.createdDate | date: 'longDate'}}</td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <a href="javascript:void(0)" data-dismiss="modal" class="btn Btn-Gray" style="float: right">Close</a>
+         </div>
+      </div>
+   </div>
 </div>
 <!-- ----------------------------------Contact Lists--------------------------------- -->
 <ng-container *ngIf="showUsersPreview">
-  <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
+   <app-preview-user-list [userListName]="selectedListName" [userListId]="selectedListId"
+      (notifyParentComponent)="resetValues()"></app-preview-user-list>
 </ng-container>
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
-<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
-<app-merge-tags *ngIf="mergeTagsInput.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()" (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>
+<app-add-folder-modal-popup #addFolderModalPopupComponent
+   (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
+<app-merge-tags *ngIf="mergeTagsInput.hideButton" [input]="mergeTagsInput" (notifyComponent)="clearHiddenClick()"
+   (passValueAndNotifyComponent)="appendValueToSubjectLine($event)"></app-merge-tags>

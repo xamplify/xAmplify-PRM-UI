@@ -144,6 +144,9 @@ export class ReferenceService {
   /*** XNFR-user-guides */
   mergeTagName:any;
   hideLeftMenu : boolean = false;
+
+  loginStyleType:any;
+  loginTemplateId = 53;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -2688,8 +2691,11 @@ export class ReferenceService {
   }
 
   filterArrayList(array: Array<any>, itemToRemove: any) {
-    return array.filter((item) => item !== itemToRemove);
+    return array.filter((item) => item!=undefined &&  item !== itemToRemove);
   }
+
+  
+
 
   /*******CheckBox Code**********/
   highlightRowOnRowCick(trId: string,tableId: string,checkBoxName: string,selectedCheckBoxIds: any,parnterGroupsHeaderCheckBox: string,
@@ -3270,6 +3276,17 @@ export class ReferenceService {
   }
   goToUpdateEmailTemplateByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
     this.router.navigate(["/home/emailtemplates/update/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  getBadRequestErrorMessage(error: any){
+    this.scrollSmoothToTop();
+    let jsonError = error['error'];
+    let statusCode = jsonError['statusCode'];
+    let message = this.properties.serverErrorMessage;
+    if (statusCode == 409 || statusCode == 400) {
+      message = jsonError['message'];
+    }
+    return message;
   }
   
   

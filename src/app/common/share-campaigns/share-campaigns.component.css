@@ -1,0 +1,17 @@
+#search-div {
+    margin-right: 10px;
+}
+
+#icon {
+    position: relative;
+    right: -11px;
+}
+
+#sort-text {
+    height: 34px;
+}
+
+#select-dropdown {
+    position: relative;
+    right: -3px;
+}

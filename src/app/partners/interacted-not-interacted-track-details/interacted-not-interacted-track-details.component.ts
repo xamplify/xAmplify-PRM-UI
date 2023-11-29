@@ -20,6 +20,10 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
   @Input() teamMemberId: any;
   @Input() trackType: any = "";
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
+  @Input()  isDetailedAnalytics: boolean;
+  @Input() applyFilter: boolean;
+  @Input() selectedPartnerCompanyIds: any = [];
+
 
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -27,7 +31,7 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
   heading:any = "Interacted & Not Interacted Track Details";
-  isDetailedAnalytics: boolean = false;
+  scrollClass: any;
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -55,18 +59,21 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
       this.heading = "Interacted & Not Interacted Track Details"
     } 
 
-    if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
-      this.isDetailedAnalytics = true;
-    } else {
-      this.isDetailedAnalytics = false;
-    }
+    // if (this.partnerCompanyId != null && this.partnerCompanyId != undefined && this.partnerCompanyId > 0) {
+    //   this.isDetailedAnalytics = true;
+    // } else {
+    //   this.isDetailedAnalytics = false;
+    // }
   }
 
   getInteractedNotInteractedTrackDetails(pagination : Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
     this.pagination.partnerCompanyId = this.partnerCompanyId;
+    this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+    this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.trackTypeFilter = this.trackType;
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.maxResults = 6;
     if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
       this.pagination.teamMemberId = this.teamMemberId;
@@ -77,6 +84,11 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
         if (response.statusCode == 200) {          
           this.sortOption.totalRecords = response.data.totalRecords;
 				  this.pagination.totalRecords = response.data.totalRecords;
+          if(pagination.totalRecords == 0){
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
 				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
         }        	
 			},
@@ -120,7 +132,8 @@ export class InteractedNotInteractedTrackDetailsComponent implements OnInit {
   } 
    
   viewAnalytics(partnerCompanyId: any) {
-    this.notifyShowDetailedAnalytics.emit(partnerCompanyId); 
+    this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
+    this.referenseService.goToTop();
   }
 
 }

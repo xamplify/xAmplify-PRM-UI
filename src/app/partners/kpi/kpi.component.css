@@ -23,3 +23,16 @@
 .portlet.light > .portlet-title > .caption > .caption-subject {
 	font-weight: 600 !important;
 }
+.pjCardTitlebg{    
+    background-color: #d9edf7b0;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 16px 0px 16px !important;
+    margin: -10px -10px 0px -10px;
+  }
+
+.portlet .dashboard-stat:last-child {
+    margin-bottom: 12px !important;
+}
+.portlet.light .portlet-body {
+    padding-top: 25px;
+}

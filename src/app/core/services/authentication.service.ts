@@ -145,8 +145,12 @@ export class AuthenticationService {
  activateThemeId:number;
  vanityLoginDtoForTheme:VanityLoginDto = new VanityLoginDto();
   /***** XNFR-238*********** */
+  /********  XNFR-233*****/
+  lognTemplateId:number;
+  loginType:string;
+  v_companyBgImagePath2;
+  /**** XNFR-233 */
   formBackground="";
-  
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -1198,6 +1202,24 @@ isSpfConfiguredOrDomainConnected(companyId:number){
   return this.http.get(this.REST_URL + `admin/isSpfConfiguredOrDomainConnected/${companyId}?access_token=${this.access_token}`)
       .map(this.extractData)
       .catch(this.handleError);
+}
+
+ /********XNFR-342****/
+ shareSelectedAssets(requestDto:any){
+    let url = this.REST_URL + "dam/shareSelectedAssets?access_token=" + this.access_token;
+    return this.callPutMethod(url,requestDto);
+  } 
+
+/********XNFR-342****/
+shareSelectedTracksOrPlayBooks(requestDto:any,module:string){
+  let urlPrefix = module=="Tracks" ? 'shareSelectedTracks':'shareSelectedPlayBooks';
+  let url = this.REST_URL + "lms/"+urlPrefix+"?access_token=" + this.access_token;
+  return this.callPutMethod(url,requestDto);
+} 
+
+findPublishedPartnerIdsByUserListIdAndDamId(userListId:number,id:number,moduleName:string){
+  let url = this.REST_URL + moduleName+"/findPublishedPartnerIds/"+userListId+"/"+id+"?access_token=" + this.access_token;
+  return this.callGetMethod(url);
 }
 
 

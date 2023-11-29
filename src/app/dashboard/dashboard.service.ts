@@ -1252,4 +1252,18 @@ getDefaultThemes(){
         .catch(this.handleError);
     }
     /*** XNFR-335 ****/
+
+    /*** ConnectWise - XNFR-403 ****/
+    saveAuthCredentialsForConnectWise(request: any) {
+        return this.http.post(this.authenticationService.REST_URL + `connectwise/saveAuth?access_token=${this.authenticationService.access_token}`, request)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getAuthCredentialsForConnectWise(userId: any) {
+        return this.http.get(this.authenticationService.REST_URL + `connectwise/getAuth/${userId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    /*** ConnectWise - XNFR-403 ****/
 }

@@ -13,18 +13,23 @@
                   <div class="inputs" style="float: right; padding: 4px">
                      <div class="portlet-input input-inline">
                         <div class="input-icon right">
-                           <input type="text" id="sort-text" class="form-control" style="height: 34px;" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
-                           <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="searchKey" (click)="searchKey='';search();"></button>
-                           <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                           <input type="text" id="sort-text" class="form-control" style="height: 34px;"
+                              [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search"
+                              (keypress)="eventHandler($event.keyCode)">
+                           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+                              (click)="searchKey='';search();"></button>
+                           <button type="submit" class="search-box-item-click" (click)="search()"><i
+                                 class="fa fa-search" aria-hidden="true"></i></button>
                         </div>
                      </div>
                   </div>
                </div>
-               <div class="portlet-body table-responsive" style="overflow: hidden;" >
-                 <app-list-loader [hidden]="!httpRequestLoader.isLoading"></app-list-loader>
+               <div class="portlet-body table-responsive" style="overflow: hidden;">
+                  <app-list-loader [hidden]="!httpRequestLoader.isLoading"></app-list-loader>
                   <div class="clearfix" [hidden]="httpRequestLoader.isLoading">
-                      <!---Filter (XNFR-85)-->
-                      <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                     <!---Filter (XNFR-85)-->
+                     <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany"
+                        (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                      <div class="col-xs-12" style="padding: 0px 0;">
                         <div class="table-responsive">
                            <table class="table tgrid" aria-describedby="form-analytics-table">
@@ -32,7 +37,8 @@
                                  <tr>
                                     <ng-container *ngFor="let column of columns;let i  = index">
                                        <ng-container *ngIf="i<=3">
-                                          <th id="th-width">{{column.labelName}}<span class="required" *ngIf="column.required">*</span></th>
+                                          <th id="th-width">{{column.labelName}}<span class="required"
+                                                *ngIf="column.required">*</span></th>
                                        </ng-container>
                                     </ng-container>
                                     <th class="center-align alignItamsleft" id="th-width">
@@ -43,7 +49,8 @@
                               <tbody>
                                  <ng-container *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
                                     <tr id="form-data-row-{{rowIndex}}" class="form-data-row">
-                                       <ng-container *ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
+                                       <ng-container
+                                          *ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
                                           <td *ngIf="columnIndex==0" class="request-details-td">
                                              <div class="col-md-12 col-lg-12" *ngIf="columnValue?.values?.length>0">
                                                 <div class="row">
@@ -51,28 +58,34 @@
                                                       <img class="img-circle" src="{{columnValue?.values[0]}}" alt="">
                                                    </div>
                                                    <div class="col-md-10 col-lg-10">
-                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[1]}}">
-                                                      {{columnValue?.values[1] | slice:0:30}}
-                                                      <span *ngIf="columnValue?.values[1].length>30">..</span>
+                                                      <label data-toggle="tooltip" data-placement="bottom"
+                                                         title="{{columnValue?.values[1]}}">
+                                                         {{columnValue?.values[1] | slice:0:30}}
+                                                         <span *ngIf="columnValue?.values[1].length>30">..</span>
                                                       </label><br>
                                                       <ng-container *ngIf="columnValue?.values[6].length>0">
-                                                         <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[6]}}">
+                                                         <label data-toggle="tooltip" data-placement="bottom"
+                                                            title="{{columnValue?.values[6]}}">
                                                             {{columnValue?.values[6] | slice:0:30}}
                                                             <span *ngIf="columnValue?.values[6].length>30">..</span>
                                                          </label><br>
                                                       </ng-container>
-                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[2]}}">
-                                                      {{columnValue?.values[2] | slice:0:30}}
-                                                      <span *ngIf="columnValue?.values[2].length>30">..</span>
+                                                      <label data-toggle="tooltip" data-placement="bottom"
+                                                         title="{{columnValue?.values[2]}}">
+                                                         {{columnValue?.values[2] | slice:0:30}}
+                                                         <span *ngIf="columnValue?.values[2].length>30">..</span>
                                                       </label><br>
                                                       <label><strong>Request Created On:</strong></label>
-                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[3]}}">
-                                                      {{columnValue?.values[3]}}
+                                                      <label data-toggle="tooltip" data-placement="bottom"
+                                                         title="{{columnValue?.values[3]}}">
+                                                         {{columnValue?.values[3]}}
                                                       </label>
                                                       <br>
                                                       <label><strong>Status:</strong></label>
-                                                      <label data-toggle="tooltip" data-placement="bottom" title="{{columnValue?.values[4]}}">
-                                                      <span class="label label-warning">{{columnValue?.values[4]}}</span>
+                                                      <label data-toggle="tooltip" data-placement="bottom"
+                                                         title="{{columnValue?.values[4]}}">
+                                                         <span
+                                                            class="label label-warning">{{columnValue?.values[4]}}</span>
                                                       </label><br>
                                                    </div>
                                                 </div>
@@ -81,7 +94,7 @@
                                           <td *ngIf="columnIndex>0 && columnIndex<=3">
                                              <ng-container *ngIf="columnValue.downloadable">
                                                 <a href="{{columnValue.downloadLink}}">
-                                                {{columnValue.value}}
+                                                   {{columnValue.value}}
                                                 </a>
                                              </ng-container>
                                              <ng-container *ngIf="!columnValue.downloadable">
@@ -92,35 +105,55 @@
                                        <td *ngIf="columns?.length>3">
                                           <div class="request-form-actions-div">
                                              <!--View More Columns-->
-                                             <a (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip" data-placement="bottom" title="View More Columns" *ngIf="columns.length>4">
-                                             <i *ngIf="!formDataRow.expanded" class="fa fa-plus fa-fa-consistency IconCustomization"aria-hidden="true"></i>
-                                             <i *ngIf="formDataRow.expanded" class="fa fa-minus fa-fa-consistency IconCustomization"aria-hidden="true"></i>
+                                             <a class="custom-icon display-inlineblock" (click)="expandColumns(formDataRow,rowIndex)"
+                                                data-toggle="tooltip" data-placement="bottom" title="View More Columns"
+                                                *ngIf="columns.length>4">
+                                                <i *ngIf="!formDataRow.expanded"
+                                                   class="fa fa-plus fa-fa-consistency IconCustomization"
+                                                   aria-hidden="true"></i>
+                                                <i *ngIf="formDataRow.expanded"
+                                                   class="fa fa-minus fa-fa-consistency IconCustomization"
+                                                   aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                              <!---Change Request-->
-                                             <a data-toggle="tooltip" data-placement="bottom" title="Change Request" *ngIf="!partnerView">
-                                             <i (click)="changeRequest(formDataRow.values[0])" class="fa fa-pencil-square-o fa-fa-consistency IconCustomization" aria-hidden="true"></i>
+                                             <a class="custom-icon display-inlineblock" data-toggle="tooltip" data-placement="bottom"
+                                                title="Change Request" *ngIf="!partnerView">
+                                                <i (click)="changeRequest(formDataRow.values[0])"
+                                                   class="fa fa-pencil-square-o fa-fa-consistency IconCustomization"
+                                                   aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                              <!----Timeline History-->
-                                             <a data-toggle="tooltip" data-placement="bottom" title="View History" (click)="goToTimeLine(formDataRow.values[0])">
-                                             <i class="fa fa-history fa-fa-consistency IconCustomization" aria-hidden="true"></i>
+                                             <a class="custom-icon display-inlineblock" data-toggle="tooltip" data-placement="bottom"
+                                                title="View History" (click)="goToTimeLine(formDataRow.values[0])">
+                                                <i class="fa fa-history fa-fa-consistency IconCustomization"
+                                                   aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
-                                             <a data-toggle="tooltip" data-placement="bottom" title="Comments" (click)="showRequestCommentPopup(formDataRow.values[0])">
-                                             <i class="fa fa-comment fa-fa-consistency IconCustomization" aria-hidden="true"></i>
+                                             <a class="custom-icon display-inlineblock" data-toggle="tooltip" data-placement="bottom"
+                                                title="Comments"
+                                                (click)="showRequestCommentPopup(formDataRow.values[0])">
+                                                <i class="fa fa-comment fa-fa-consistency IconCustomization"
+                                                   aria-hidden="true"></i>
+                                                <div class="clickicons"></div>
                                              </a>
                                           </div>
                                        </td>
                                     </tr>
                                     <tr [ngClass]="{'hidden': !formDataRow.expanded}" id="child-table">
                                        <td colspan="5">
-                                          <table id="expanded-table" class="table tgrid table-bordered" aria-describedby="form-analytics-table">
+                                          <table id="expanded-table" class="table tgrid table-bordered"
+                                             aria-describedby="form-analytics-table">
                                              <tr *ngFor="let column of columns;let i  = index;">
                                                 <th *ngIf="i>=4" scope="row">
-                                                   {{column.labelName}}<span class="required" *ngIf="column.required">*</span>
+                                                   {{column.labelName}}<span class="required"
+                                                      *ngIf="column.required">*</span>
                                                 </th>
                                                 <td *ngIf="i>=4">
                                                    <ng-container *ngIf="formDataRow.values[i].downloadable">
                                                       <a href="{{formDataRow.values[i].downloadLink}}">
-                                                      {{formDataRow.values[i].value}}
+                                                         {{formDataRow.values[i].value}}
                                                       </a>
                                                    </ng-container>
                                                    <ng-container *ngIf="!formDataRow.values[i].downloadable">
@@ -134,9 +167,10 @@
                                  </ng-container>
                               </tbody>
                            </table>
-                           
+
                            <!-- End of 24 -->
-                           <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                           <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading"
+                              class="alert alert-info">
                               <strong>No Data Found.</strong>
                            </div>
                         </div>
@@ -144,7 +178,7 @@
                   </div>
                   <div *ngIf="pagination.pagedItems.length !== 0 && !httpRequestLoader.isLoading" class="pg8">
                      <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-                              (notifyParentDropDown)="listSubmittedData($event)"></app-pagination>
+                        (notifyParentDropDown)="listSubmittedData($event)"></app-pagination>
                   </div>
                </div>
             </div>
@@ -158,60 +192,64 @@
    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
 <!--Add/Remove Amount Modal Pop Up------->
-<div id="requestCommentModalPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+<div id="requestCommentModalPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+   data-backdrop="static" data-keyboard="false">
    <div class="modal-dialog modal-css" role="document">
       <!-- Modal content-->
-      <div class="modal-content"  style="overflow-x: hidden;">
+      <div class="modal-content" style="overflow-x: hidden;">
          <ngx-loading [show]="requestCommentModalPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
          <div class="modal-header">
             <a title="Close" class="close-circle" (click)="hideRequestCommentModalPopup()">
-				<i class="fa fa-times" aria-hidden="true"></i>
-			</a>
-			<a title="Refresh" class="close-circle" (click)="listComments()">
-				<i class="fa fa-refresh" aria-hidden="true"></i>
-			</a>
+               <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+            <a title="Refresh" class="close-circle" (click)="listComments()">
+               <i class="fa fa-refresh" aria-hidden="true"></i>
+            </a>
             <h4 class="modal-title" style="font-weight: 600;" translate>Add Comments</h4>
          </div>
          <div class="modal-body" style="max-height: 100%;">
-            <app-response-message class="pg8" [customResponse]="commentsCustomResponse" *ngIf="commentsCustomResponse.isVisible">
+            <app-response-message class="pg8" [customResponse]="commentsCustomResponse"
+               *ngIf="commentsCustomResponse.isVisible">
             </app-response-message>
             <app-modal-popup-loader *ngIf="requestCommentModalPopupLoader"></app-modal-popup-loader>
             <ng-container *ngIf="!requestCommentModalPopupLoader && !commentsCustomResponse.isVisible">
                <div class="request-comment-details">
                   <div class="row mix-grid p10 comment-color" style=" background: #f1f1f1; ">
-                     <div class="col-md-2" >
+                     <div class="col-md-2">
                         <div class="frame">
-                           <img style="height: 80px;width: 80px;" class="img-circle" src="{{selectedRequestDetails[0]}}" alt="">
+                           <img style="height: 80px;width: 80px;" class="img-circle" src="{{selectedRequestDetails[0]}}"
+                              alt="">
                         </div>
                      </div>
                      <div class="col-md-10" style="text-align: left;">
                         <div>
-                           <h5 class="mt10 mb0"  title="{{selectedRequestDetails[1]}}">
+                           <h5 class="mt10 mb0" title="{{selectedRequestDetails[1]}}">
                               <span><strong>Company Name </strong></span>: {{selectedRequestDetails[1] | slice:0:30}}
                               <span *ngIf="selectedRequestDetails[1]?.length>30">..</span>
                            </h5>
                         </div>
                         <div *ngIf="selectedRequestDetails[6]?.length>0">
-                           <h5 class="mt10 mb0"  title="{{selectedRequestDetails[6]}}">
+                           <h5 class="mt10 mb0" title="{{selectedRequestDetails[6]}}">
                               <span><strong>Name </strong></span>: {{selectedRequestDetails[6] | slice:0:30}}
                               <span *ngIf="selectedRequestDetails[6]?.length>30">..</span>
                            </h5>
                         </div>
                         <div>
-                           <h5 class="mt10 mb0"  title="{{selectedRequestDetails[2]}}">
+                           <h5 class="mt10 mb0" title="{{selectedRequestDetails[2]}}">
                               <span><strong>Email Id </strong></span>: {{selectedRequestDetails[2] | slice:0:30}}
                               <span *ngIf="selectedRequestDetails[2]?.length>30">..</span>
                            </h5>
                         </div>
                         <div>
-                           <h5 class="mt10 mb0"  title="{{selectedRequestDetails[3]}}">
+                           <h5 class="mt10 mb0" title="{{selectedRequestDetails[3]}}">
                               <span><strong>Created On </strong></span>: {{selectedRequestDetails[3] | slice:0:30}}
                               <span *ngIf="selectedRequestDetails[3]?.length>30">..</span>
                            </h5>
                         </div>
                         <div>
-                           <h5 class="mt10 mb0"  title="{{selectedRequestDetails[4]}}">
-                              <span><strong>Status</strong></span>: <span class="label label-warning"><strong>{{selectedRequestDetails[4]}}</strong></span> 
+                           <h5 class="mt10 mb0" title="{{selectedRequestDetails[4]}}">
+                              <span><strong>Status</strong></span>: <span
+                                 class="label label-warning"><strong>{{selectedRequestDetails[4]}}</strong></span>
                            </h5>
                         </div>
                      </div>
@@ -219,24 +257,30 @@
                </div>
                <div class="comment-area request-comment-div" id="comments-div">
                   <ul class="comment-section" *ngFor="let c of comments" style="margin: 0px">
-                     <li [attr.class]="c.companyId!=loggedInUserCompanyId ? 'comment author-comment':'comment user-comment'" style="width: 135%;">
+                     <li [attr.class]="c.companyId!=loggedInUserCompanyId ? 'comment author-comment':'comment user-comment'"
+                        style="width: 135%;">
                         <div class="info">
-                           <a data-placement="top" data-toggle="tooltip" title="{{c?.displayName}}">{{c?.displayName| slice:0:30}}<span *ngIf="c?.displayName?.length>30">...</span></a>
+                           <a data-placement="top" data-toggle="tooltip" title="{{c?.displayName}}">{{c?.displayName|
+                              slice:0:30}}<span *ngIf="c?.displayName?.length>30">...</span></a>
                            <span *ngIf="c?.createdTime">
                               <app-timestamp-new [dateAndTime]="c.createdTime"> </app-timestamp-new>
                            </span>
                         </div>
                         <a class="avatar none">
-                        <img src="{{c?.profilePicturePath}}" width="35" alt="Profile Avatar" />
+                           <img src="{{c?.profilePicturePath}}" width="35" alt="Profile Avatar" />
                         </a>
                         <p>{{c?.comment}}</p>
                      </li>
                   </ul>
                </div>
                <div class="write-new request-comment-text-area">
-                  <textarea placeholder="Write your comment here"  [(ngModel)]="mdfRequestCommentDto.comment" [ngModelOptions]="{standalone: true}" maxlength="1000" (input)="validateComment(mdfRequestCommentDto)"></textarea>
+                  <textarea placeholder="Write your comment here" [(ngModel)]="mdfRequestCommentDto.comment"
+                     [ngModelOptions]="{standalone: true}" maxlength="1000"
+                     (input)="validateComment(mdfRequestCommentDto)"></textarea>
                   <div>
-                     <button (click)="saveComment()" [disabled]="invalidComment" [style.pointer-events]="invalidComment ? 'none' : 'auto' "  class="btn btn-primary request-comment">Submit</button>
+                     <button (click)="saveComment()" [disabled]="invalidComment"
+                        [style.pointer-events]="invalidComment ? 'none' : 'auto' "
+                        class="btn btn-primary request-comment">Submit</button>
                   </div>
                </div>
             </ng-container>

@@ -309,3 +309,29 @@ a.dropdown-toggle.circlebg-none-v:hover {
 li.divider-bottom {
   border-bottom: 1px solid #eee;
 }
+
+@media (min-width: 1018px) and (max-width: 1082px)  { 
+  .topnav-button-css {
+    margin-right: 6px;
+  }
+  .LogedAsBox strong {
+    font-size: 12px;
+  }
+  .alert.alert-info.LogedAsBox {
+    padding: 5px 4px;
+  }
+  .LogedAsBoxTop{margin-top: 22px !important;}
+
+}
+
+
+
+@media (min-width: 990px) and (max-width: 1019px)  { 
+  .topnav-button-css {
+    margin-right: 3px;
+  }
+  .LogedAsBox strong {
+    font-size: 11px;
+  }
+  .LogedAsBoxTop{margin-top: 22px !important;}
+}

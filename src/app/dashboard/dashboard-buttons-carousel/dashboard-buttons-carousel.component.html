@@ -19,8 +19,9 @@
                     <div class="info">
                       <div class="row">
                         <div class="price col-md-12 text-right pr0">
-                          <h4 data-placement="top" data-toggle="tooltip" title="{{data.buttonTitle}}" class="h4-class"> {{data.buttonTitle  |
-                            slice:0:14}}<span *ngIf="item.campaign?.length>14">...</span></h4>
+                          <h4 class="h4-class"> 
+                            <span data-placement="bottom" data-toggle="tooltip" title="{{data.buttonTitle}}">{{data.buttonTitle}}</span> 
+                          </h4>
                         </div>
                       </div>
                       <div class="row">

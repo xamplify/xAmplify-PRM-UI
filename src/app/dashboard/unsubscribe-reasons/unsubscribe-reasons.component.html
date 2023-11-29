@@ -82,11 +82,13 @@
             </td>
             <td>
               <div class="actions-block override-actions">
-                <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="findById(unsubscribeReason.id)">
+                <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit" (click)="findById(unsubscribeReason.id)">
                 <i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
+                <div class="clickicons"></div>
                 </a>
-                <a id="template-delete" (click)="confirmDeleteAlert(unsubscribeReason)" data-toggle="tooltip" data-placement="top" title="Delete">
+                <a id="template-delete" class="custom-icon" (click)="confirmDeleteAlert(unsubscribeReason)" data-toggle="tooltip" data-placement="top" title="Delete">
                 <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                <div class="del-icon"></div>
                 </a>
               </div>
             </td>
@@ -219,7 +221,7 @@
             <h1 style="word-break: break-all;" [hidden]="unsubscribePageContent?.unsubscribePageDetails?.hideHeaderText" innerHtml="{{unsubscribePageContent?.unsubscribePageDetails?.headerText}}"></h1>
             <form style="line-height: 25px; font-size: 15px;">
               <ng-container *ngFor="let reason of unsubscribePageContent?.unsubscribeReasons;let i = index">
-                <input type="radio" name="reason" value="{{reason?.reason}}" (click)="addReason(reason)"> {{reason?.reason}}<br>
+                <input class="radioButton_shadow" type="radio" name="reason" value="{{reason?.reason}}" (click)="addReason(reason)"> {{reason?.reason}}<br>
               </ng-container>
               <div *ngIf="isOtherReason || unsubscribePageContent?.unsubscribeReasons?.length==0" style="width: 50%;">
                 <label for="comment">Reason:</label>

@@ -44,7 +44,7 @@
                         <thead>
                             <tr>
                                 <th scope="row" class="text-center">
-                                 <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked" id="team-member-partners-header-checkbox-id"
+                                 <input type="checkbox" class="checkBox_shadow" [(ngModel)]="isHeaderCheckBoxChecked" id="team-member-partners-header-checkbox-id"
                                   (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)">
                                </th>
                                 <th scope="row">Entity Info</th>
@@ -55,7 +55,7 @@
                                 <tr id="team-member-partners-tr-{{partner.id}}" [class.row-selected]="selectedPartnerTeamMemberGroupMappingIds?.indexOf(partner.id)>-1"
                                     (click)="highlightSelectedPartnerOnRowClick(partner.id,$event)">
                                     <td class="text-center">
-                                        <input type="checkbox" id="{{partner.id}}"  value="{{partner.id}}"
+                                        <input type="checkbox" class="checkBox_shadow" id="{{partner.id}}"  value="{{partner.id}}"
                                         [checked]="selectedPartnerTeamMemberGroupMappingIds?.indexOf(partner.id)>-1"
                                             name="teamMemberPartnersCheckBox[]" 
                                             (click)="$event.stopPropagation();highlightPartnerRowOnCheckBoxClick(partner.id,$event);">

@@ -5,7 +5,7 @@ import { ReferenceService } from "app/core/services/reference.service";
 import { ActionsDescription } from '../../../common/models/actions-description';
 import { ActivatedRoute } from '@angular/router';
 
-declare var $,swal;
+declare var $:any,swal:any;
 @Component({
   selector: 'app-asset-grid-view-actions',
   templateUrl: './asset-grid-view-actions.component.html',
@@ -28,7 +28,9 @@ export class AssetGridViewActionsComponent implements OnInit {
   categoryId: number;
   folderViewType: string;
   @Input() folderListView = false;
-  
+  /***XNFR-381***/
+  isChildTemplatesRouter = false;
+
   
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public xtremandLogger:XtremandLogger, public actionsDescription:ActionsDescription,private route: ActivatedRoute) {
@@ -37,6 +39,7 @@ export class AssetGridViewActionsComponent implements OnInit {
     this.viewType = this.route.snapshot.params['viewType'];
 		this.categoryId = this.route.snapshot.params['categoryId'];
 		this.folderViewType = this.route.snapshot.params['folderViewType'];
+    this.isChildTemplatesRouter = this.referenceService.getCurrentRouteUrl().indexOf("/history")>-1;
   }
 
   ngOnInit() {
@@ -86,6 +89,8 @@ export class AssetGridViewActionsComponent implements OnInit {
         input['analytics'] = true;
     }else if("shareAsWhiteLabeledContent"==type){
       input['shareAsWhiteLabeledContent'] = true;
+    }else if("changeAsParentPdf"==type){
+      input['changeAsParentPdf'] = true;
     }
     input['asset'] = asset;
     this.assetGridViewActionsEmitter.emit(input);
@@ -119,6 +124,11 @@ export class AssetGridViewActionsComponent implements OnInit {
 
   refreshListEmitter(){
     this.assetGridViewRefreshListEmitter.emit();
+  }
+
+  /***XNFR-381****/
+  changeAsParentPdf(asset:any){
+    this.setEventEmittersByType(asset,'changeAsParentPdf');
   }
 
  

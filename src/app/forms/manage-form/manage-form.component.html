@@ -2,18 +2,20 @@
     <div class="page-bar">
         <ul class="page-breadcrumb">
             <li *ngIf="!authenticationService.isSuperAdmin()">
-                <i class="fa fa-home" aria-hidden="true"></i> 
-                   <a [routerLink]="referenceService.homeRouter" translate>Home</a>
-                   <i class="fa fa-angle-right" aria-hidden="true"></i></li>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
             <li *ngIf="onlyForms">
-                <a [routerLink]="['/home/design/add']" translate>Create Design</a> 
+                <a [routerLink]="['/home/design/add']" translate>Create Design</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
 
             <li *ngIf="authenticationService.isSuperAdmin()">
                 <i class="fa fa-home" aria-hidden="true"></i>
                 <a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a>
-                <i class="fa fa-angle-right" aria-hidden="true"></i></li>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
             <ng-container *ngIf="pagination.campaignForm">
                 <li>
                     <a [routerLink]="['/home/campaigns/manage']" translate>Manage Campaigns</a>
@@ -22,16 +24,16 @@
 
             <ng-container *ngIf="pagination.landingPageCampaignForm || pagination.surveyCampaignForm">
                 <li>
-                    <a (click)="goToCampaignAnalytics()" translate >Campaign Analytics</a>
+                    <a (click)="goToCampaignAnalytics()" translate>Campaign Analytics</a>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
             </ng-container>
 
 
             <li *ngIf="!pagination.landingPageCampaignForm && !onlyForms && !pagination.surveyCampaignForm">
                 <a routerLink="{{landingPagesRouterLink}}" translate>Manage Pages</a><i class="fa fa-angle-right"></i>
-                <li class="breadcrumb-font-color" style="color: #808080" translate>Manage Forms</li>
+            <li class="breadcrumb-font-color" style="color: #808080" translate>Manage Forms</li>
         </ul>
-        <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+        <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     </div>
     <div style="position: relative; top: -10px">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -41,90 +43,107 @@
         <div class="col-md-12" *ngIf="!detailedResponse">
             <div class="portlet light clearfix">
                 <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
-                    <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
+                    <app-category-folder-view-util [moduleType]="exportObject"
+                        (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
                 <div class="" style="border-bottom: none;margin-bottom:0px !important">
                     <div class="row">
-                        <div class="page-toolbar" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
+                        <div class="page-toolbar"
+                            *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                             <div class="col-xs-12 col-lg-4 col-md-5 col-sm-4" style="margin-top: -2px;">
                                 <ul class="mix-filter" *ngIf="!pagination.surveyCampaignForm ">
-                                    <li class="filter" (click)="showAllForms('All',0)" [class.form-selected]="0 == selectedFormTypeIndex"
-                                        translate>All</li> 
+                                    <li class="filter" (click)="showAllForms('All',0)"
+                                        [class.form-selected]="0 == selectedFormTypeIndex" translate>All</li>
                                     <li class="filter" (click)="showAllForms('Regular',1)"
                                         [class.form-selected]="1 == selectedFormTypeIndex" translate>Regular</li>
-                                    <li class="filter" (click)="showAllForms('Quiz',2)" [class.form-selected]="2 == selectedFormTypeIndex"
-                                        translate>Quiz</li>
-                                    <li class="filter" (click)="showAllForms('Survey',3)" 
+                                    <li class="filter" (click)="showAllForms('Quiz',2)"
+                                        [class.form-selected]="2 == selectedFormTypeIndex" translate>Quiz</li>
+                                    <li class="filter" (click)="showAllForms('Survey',3)"
                                         [class.form-selected]="3 == selectedFormTypeIndex" translate>Survey</li>
-                                    <li *ngIf="loggedInAsSuperAdmin" class="filter" (click)="addDefaultForm()" class="btn btn-primary">Add
+                                    <li *ngIf="loggedInAsSuperAdmin" class="filter" (click)="addDefaultForm()"
+                                        class="btn btn-primary">Add
                                         Default Form</li>
                                 </ul>
                             </div>
                             <div class="col-xs-12 col-lg-8 col-md-7 col-sm-8 pull-right" style="margin-top: -1px;">
                                 <div class="btn-group pull-right" style="display: flex;">
                                     <div class="">
-                                    <div class="group-dropdown">
-                                        <button
-                                        [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs hidden-xs l-g-view':
+                                        <div class="group-dropdown">
+                                            <button
+                                                [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs hidden-xs l-g-view':
                                               modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
-                                        style="padding: 10px !important"></button>
-                                    <div class="group-dd-content">
-                                    <ng-container class='m10'>
-                                        <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
-                                            title="List View" [class.disabled]="modulesDisplayType.isListView"
-                                            (click)="setViewType('List')">
-                                            <i class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                                        <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" style="margin-right: -2px;"
-                                            data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView"
-                                            (click)="setViewType('Grid')">
-                                            <i class="fa fa-th-large p10" aria-hidden="true"></i>
-                                        </span>
-                                        <ng-container
-                                            *ngIf="(pagination.categoryId==0 || pagination.categoryId=='undefined') && showFolderView">
-                                            <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip"
-                                                data-placement="bottom" title="Folder Grid View"
-                                                [class.disabled]="modulesDisplayType.isFolderGridView" (click)="setViewType('Folder-Grid')">
-                                                <i class="fa fa-folder p10" aria-hidden="true"></i>
-                                            </span>
-                                            <span class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width"
-                                                data-toggle="tooltip" data-placement="bottom" title="Folder List View"
-                                                [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
-                                                <i class="fa fa-th p10" aria-hidden="true"></i>
-                                                <!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="" /> -->
-                                            </span>
-                                        </ng-container>
-                                    </ng-container>
+                                                style="padding: 10px !important"></button>
+                                            <div class="group-dd-content">
+                                                <ng-container class='m10'>
+                                                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                                                        data-placement="bottom" title="List View"
+                                                        [class.disabled]="modulesDisplayType.isListView"
+                                                        (click)="setViewType('List')">
+                                                        <i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+                                                    <span class="btn btn-xs hidden-xs l-g-view margin-space"
+                                                        data-toggle="tooltip" style="margin-right: -2px;"
+                                                        data-placement="bottom" title="Grid View"
+                                                        [class.disabled]="modulesDisplayType.isGridView"
+                                                        (click)="setViewType('Grid')">
+                                                        <i class="fa fa-th-large p10" aria-hidden="true"></i>
+                                                    </span>
+                                                    <ng-container
+                                                        *ngIf="(pagination.categoryId==0 || pagination.categoryId=='undefined') && showFolderView">
+                                                        <span class="btn btn-xs hidden-xs l-g-view margin-space"
+                                                            data-toggle="tooltip" data-placement="bottom"
+                                                            title="Folder Grid View"
+                                                            [class.disabled]="modulesDisplayType.isFolderGridView"
+                                                            (click)="setViewType('Folder-Grid')">
+                                                            <i class="fa fa-folder p10" aria-hidden="true"></i>
+                                                        </span>
+                                                        <span
+                                                            class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width"
+                                                            data-toggle="tooltip" data-placement="bottom"
+                                                            title="Folder List View"
+                                                            [class.disabled]="modulesDisplayType.isFolderListView"
+                                                            (click)="setViewType('Folder-List')">
+                                                            <i class="fa fa-th p10" aria-hidden="true"></i>
+                                                            <!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt="" /> -->
+                                                        </span>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </div>
+                                            <!-- close group-dd-content-->
+                                        </div>
+                                        <!-- close  group-dropdown-->
                                     </div>
-                                    <!-- close group-dd-content-->
-                                    </div>
-                                    <!-- close  group-dropdown-->
-                                    </div>
-                                    <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space"
-                                        data-toggle="tooltip" data-placement="bottom" title="Go back"
-                                        (click)="setViewType('Folder-Grid')">
+                                    <span *ngIf="pagination.categoryId>0"
+                                        class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip"
+                                        data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
                                         <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
                                     <div class="inputs mb-dflex" style="float: right">
                                         <div class="mPad" style="float: left;">
                                             <select class="form-control" [(ngModel)]="sortOption.formsSortOption"
-                                                (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
-                                                <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
+                                                (ngModelChange)="sortBy($event)"
+                                                style="position: relative;right: -3px;">
+                                                <option *ngFor="let option of sortOption.manageFormsSortOptions"
+                                                    [ngValue]="option">
                                                     {{option.name}}</option>
                                             </select>
                                         </div>
-                                        <div class="portlet-input input-inline input-small" style="margin-right: 10px;margin-left: -4px;">
+                                        <div class="portlet-input input-inline input-small"
+                                            style="margin-right: 10px;margin-left: -4px;">
                                             <div class="input-icon right" style="position: relative;right: -11px;">
                                                 <input type="text" style="height:34px;" class="form-control"
-                                                    [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                                                    placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                                                    [(ngModel)]="sortOption.searchKey"
+                                                    [ngModelOptions]="{standalone: true}" placeholder="search..."
+                                                    (keypress)="eventHandler($event.keyCode)">
                                                 <button class="glyphicon glyphicon-remove search-box-item-clear"
-                                                    *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchForms();"></button>
-                                                <button type="submit" class="search-box-item-click" (click)="searchForms()">
+                                                    *ngIf="sortOption.searchKey"
+                                                    (click)="sortOption.searchKey='';searchForms();"></button>
+                                                <button type="submit" class="search-box-item-click"
+                                                    (click)="searchForms()">
                                                     <i class="fa fa-search" aria-hidden="true"></i></button>
                                             </div>
                                         </div>
-                                        <a class="close-circle xamp-margin-left-icon" style="margin-top: 0px;" (click)="refreshPage()" aria-hidden="true"
-                                        data-toggle="tooltip" data-placement="top" title="Refresh"
-                                        >
+                                        <a class="close-circle xamp-margin-left-icon" style="margin-top: 0px;"
+                                            (click)="refreshPage()" aria-hidden="true" data-toggle="tooltip"
+                                            data-placement="top" title="Refresh">
                                             <i class="fa fa-refresh" aria-hidden="true"></i>
                                         </a>
                                     </div>
@@ -133,61 +152,77 @@
                         </div>
                     </div>
                 </div>
-                <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isGridView"></app-landing-page-loader>
-                <app-list-loader *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView "></app-list-loader>
-                <app-grid-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isFolderGridView"></app-grid-loader>
+                <app-landing-page-loader [maxBoxLength]=4
+                    *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isGridView"></app-landing-page-loader>
+                <app-list-loader
+                    *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView "></app-list-loader>
+                <app-grid-loader
+                    *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isFolderGridView"></app-grid-loader>
                 <section *ngIf="modulesDisplayType.isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
                         <div class="table-responsive">
-                            <table class='table tgrid table-hover table-sm' id="manage-form-list-table" *ngIf="pagination.pagedItems?.length>0" aria-describedby="">
+                            <table class='table tgrid table-hover table-sm' id="manage-form-list-table"
+                                *ngIf="pagination.pagedItems?.length>0" aria-describedby="">
                                 <thead>
                                     <tr>
                                         <th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
-                                            <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-form-list-table',2)">
+                                            <span class="ui-column-resizer gray"
+                                                (mousedown)="referenceService.onMouseDown($event,'manage-form-list-table',2)">
                                             </span>
                                             <span class="gridHeader" translate>Form</span>
                                         </th>
                                         <th class="visible-xs" colspan="1" style="width: 45%" id="border-bottom">
-                                            <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-form-list-table',1)">
+                                            <span class="ui-column-resizer gray"
+                                                (mousedown)="referenceService.onMouseDown($event,'manage-form-list-table',1)">
                                             </span>
                                             <span class="gridHeader" translate>Form</span>
                                         </th>
 
                                         <th scope="row" class="text-center" translate>Created On</th>
                                         <th scope="row" class="text-center" translate>Updated On</th>
-                                        <th *ngIf="!pagination.campaignForm" class="text-center" id="min-width" translate>Actions</th>
-                                        <th *ngIf="pagination.campaignForm" class="text-center" id="right-corner" translate>Actions</th>
+                                        <th *ngIf="!pagination.campaignForm" class="text-center" id="min-width"
+                                            translate>Actions</th>
+                                        <th *ngIf="pagination.campaignForm" class="text-center" id="right-corner"
+                                            translate>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let form of pagination.pagedItems ;let i =index">
                                         <td class="hidden-xs" style="width: 10%;">
                                             <div class="img-class-list" style="overflow: hidden;">
-                                                <img class="fit-image" [src]="form.thumbnailImage" onerror="this.src='assets/images/form.png';"
-                                                    alt="Image Not Found">
+                                                <img class="fit-image" [src]="form.thumbnailImage"
+                                                    onerror="this.src='assets/images/form.png';" alt="Image Not Found">
                                             </div>
                                         </td>
                                         <td>
                                             <h4 class="moreipsis mt5 mb5 f-w-600">
-                                                <span  data-toggle="tooltip" data-placement="bottom" title="{{form.name}}"><b>{{form.name}}</b></span>
+                                                <span data-toggle="tooltip" data-placement="bottom"
+                                                    title="{{form.name}}"><b>{{form.name}}</b></span>
                                             </h4>
                                             <h6 class="moreipsis">
-                                                <span translate  data-toggle="tooltip" data-placement="bottom" title="{{form.categoryName}}" > Folder <b>{{form.categoryName}}</b></span>
+                                                <span translate data-toggle="tooltip" data-placement="bottom"
+                                                    title="{{form.categoryName}}"> Folder
+                                                    <b>{{form.categoryName}}</b></span>
                                             </h6>
-                                            <h6 class="moreipsis" >
+                                            <h6 class="moreipsis">
                                                 <span translate> Created By <b>{{form.createdName}}</b></span>
                                             </h6>
                                             <!---XNFR-255-->
-                                            <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor && !partnerView">
-                                                <h6 class="moreipsis" >
-                                                    <span translate>Received From <strong>{{form?.whiteLabeledFormSharedByVendorCompanyName}}</strong></span>
+                                            <ng-container
+                                                *ngIf="form?.whiteLabeledFormReceivedFromVendor && !partnerView">
+                                                <h6 class="moreipsis">
+                                                    <span translate>Received From
+                                                        <strong>{{form?.whiteLabeledFormSharedByVendorCompanyName}}</strong></span>
                                                 </h6>
                                                 <h5 class="view-banner-white-labeled mb5">White-Labeled</h5>
                                             </ng-container>
-                                             <!---XNFR-255-->
-                                            <h6 class="view-banner" *ngIf="form.formSubType === 'REGULAR'" translate>Regular</h6>
-                                            <h6 class="view-banner" *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</h6>
-                                            <h6 class="view-banner" *ngIf="form.formSubType === 'SURVEY'" translate>Survey</h6>
+                                            <!---XNFR-255-->
+                                            <h6 class="view-banner" *ngIf="form.formSubType === 'REGULAR'" translate>
+                                                Regular</h6>
+                                            <h6 class="view-banner" *ngIf="form.formSubType === 'QUIZ'" translate>Quiz
+                                            </h6>
+                                            <h6 class="view-banner" *ngIf="form.formSubType === 'SURVEY'" translate>
+                                                Survey</h6>
                                         </td>
                                         <td class="text-center">
                                             <app-timestamp [isOnlyDate]="false" [dateAndTime]="form.createdDateString">
@@ -198,31 +233,44 @@
                                             </app-timestamp>
                                         </td>
                                         <td *ngIf="form?.updatedDateString?.length==0" class="text-center">
-                                           -
+                                            -
                                         </td>
                                         <td id="actions-row">
-                                            <div class="actions-block custom-width-icon ActionAlign mActionAlign mb-dflex">
+                                            <div
+                                                class="actions-block custom-width-icon ActionAlign mActionAlign mb-dflex actionicons">
                                                 <div class="mMobileAlignAction2 ActionAlign mActionTop mrg_top0">
-                                                <a class="mMobileDisable" *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit"
-                                                    (click)="edit(form.id)" >
-                                                    <i class="fa fa-pencil-square-o mDisableColor IconCustomization" aria-hidden="true"></i>
-                                                </a>
-                                                <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
-                                                    <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
-                                                </a>
+                                                    <a class="mMobileDisable custom-icon"
+                                                        *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)"
+                                                        data-toggle="tooltip" data-placement="top" title="Edit"
+                                                        (click)="edit(form.id)">
+                                                        <i class="fa fa-pencil-square-o mDisableColor IconCustomization"
+                                                            aria-hidden="true"></i>
+                                                        <div class="clickicons"></div>
+                                                    </a>
+                                                    <a class="custom-icon" data-toggle="tooltip" data-placement="top"
+                                                        title="Preview" (click)="preview(form.id)">
+                                                        <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                                                        <div class="clickicons"></div>
+                                                    </a>
                                                 </div>
                                                 <div class="mMobileAlignAction2 ActionAlign mActionTop mrg_top0">
-                                                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.surveyCampaignForm && !pagination?.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
-                                                    <i class="fa fa-clipboard IconCustomization"></i>
-                                                </a>
-                                                <ng-container *ngIf="form.campaignForm&&!form.dataShare">
-                                                    <a class="cursor">
-                                                        <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
-                                                        <span class="badge" id="notification">{{form.count}}</span>
+                                                    <a class="custom-icon"
+                                                        *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.surveyCampaignForm && !pagination?.partnerLandingPageForm"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Copy / Embed Link" (click)="showFormUrl(form)">
+                                                        <i class="fa fa-clipboard IconCustomization"></i>
+                                                        <div class="clickicons"></div>
                                                     </a>
-                                                </ng-container>
-                                                
-                                                <!-- <ng-container *ngIf="pagination.surveyCampaignForm">
+                                                    <ng-container *ngIf="form.campaignForm&&!form.dataShare">
+                                                        <a class="cursor custom-icon mrgt-unset">
+                                                            <i class="fa fa-line-chart IconCustomization"
+                                                                aria-hidden="true"></i>
+                                                            <div class="clickicons"></div>
+                                                        </a>
+                                                        <span class="badge" id="notification">{{form.count}}</span>
+                                                    </ng-container>
+
+                                                    <!-- <ng-container *ngIf="pagination.surveyCampaignForm">
                                                     <ng-container *ngIf="form.formSubmitId == undefined">
                                                         <a class="cursor" title="Survey not submitted" data-toggle="tooltip" data-placement="top">
                                                             <i class="fa fa-wpforms" aria-hidden="true"></i>
@@ -234,28 +282,42 @@
                                                         </a>
                                                     </ng-container>
                                                 </ng-container> -->
-                                                
-                                                <ng-container *ngIf="(form.campaignForm&&form.dataShare)|| !form.campaignForm || form.landingPageForm">
-                                                    <!-------------Disable onclick if count==0   ----->
-                                                    <ng-container *ngIf="form.count==0">
-                                                        <a class="cursor">
-                                                            <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
-                                                            <span class="badge" id="notification">{{form.count}}</span>
-                                                        </a>
+
+                                                    <ng-container
+                                                        *ngIf="(form.campaignForm&&form.dataShare)|| !form.campaignForm || form.landingPageForm">
+                                                        <!-------------Disable onclick if count==0   ----->
+                                                        <ng-container *ngIf="form.count==0">
+                                                            <a class="cursor custom-icon mrgt-unset">
+                                                                <i class="fa fa-line-chart IconCustomization"
+                                                                    aria-hidden="true"></i>
+                                                                <div class="clickicons"></div>
+                                                            </a>
+                                                            <span class="badge"
+                                                            id="notification">{{form.count}}</span>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="form.count>0">
+                                                            <a class="custom-icon  mrgt-unset" data-rel="fancybox-button"
+                                                                (click)="goToAnalytics(form)" data-toggle="tooltip"
+                                                                data-placement="top" title="Form Analytics"
+                                                                style="margin-top: -5px;">
+                                                                <i class="fa fa-line-chart IconCustomization"
+                                                                    aria-hidden="true"></i>
+                                                                <div class="clickicons"></div>
+                                                            </a>
+                                                            <span class="badge"
+                                                            id="notification">{{form.count}}</span>
+                                                        </ng-container>
                                                     </ng-container>
-                                                    <ng-container *ngIf="form.count>0">
-                                                        <a data-rel="fancybox-button" (click)="goToAnalytics(form)" data-toggle="tooltip" data-placement="top" title="Form Analytics" style="margin-top: -5px;">
-                                                            <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
-                                                            <span class="badge" id="notification">{{form.count}}</span>
-                                                        </a>
-                                                    </ng-container>
-                                                </ng-container>
                                                 </div>
                                                 <div class="mMobileAlignAction2">
-                                                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)" id="template-delete" (click)="confirmDelete(form)"
-                                                    data-toggle="tooltip" data-placement="top" title="Delete">
-                                                    <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
-                                                </a>
+                                                    <a class="custom-icon"
+                                                        *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)"
+                                                        id="template-delete" (click)="confirmDelete(form)"
+                                                        data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <i class="fa fa-trash-o trashIconCustomization"
+                                                            aria-hidden="true"></i>
+                                                        <div class="del-icon"></div>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </td>
@@ -266,23 +328,27 @@
                     </ng-container>
                 </section>
 
-                <div class="row tab_mt_grid" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_grid" *ngFor="let form of pagination.pagedItems ;let i =index" id="formListDiv_{{form.id}}">
+                <div class="row tab_mt_grid"
+                    *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_grid"
+                        *ngFor="let form of pagination.pagedItems ;let i =index" id="formListDiv_{{form.id}}">
                         <div class="grid-box" style="height: 250px !important;">
                             <div class="img-class tab_view_img">
-                                <img class="fit-image" style="margin: unset;" [src]=" form.thumbnailImage" onerror="this.src='assets/images/form.png';" alt="{{form.name}}">
+                                <img class="fit-image" style="margin: unset;" [src]=" form.thumbnailImage"
+                                    onerror="this.src='assets/images/form.png';" alt="{{form.name}}">
                             </div>
                             <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
                                 {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span><br><br>
                             </h4>
                             <!---XNFR-255-->
                             <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor">
-                                <h6 class="moreipsis"  title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
-                                    <span translate>Received From <strong>{{form?.whiteLabeledFormSharedByVendorCompanyName}}</strong></span>
+                                <h6 class="moreipsis" title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
+                                    <span translate>Received From
+                                        <strong>{{form?.whiteLabeledFormSharedByVendorCompanyName}}</strong></span>
                                 </h6>
                                 <span class="view-banner-white-labeled mb5">White-Labeled</span>
                             </ng-container>
-                             <!---XNFR-255-->
+                            <!---XNFR-255-->
                             <div>
                                 <h6 title="{{form.categoryName}}" translate>
                                     Folder <strong>{{form.categoryName | slice:0:17}}</strong>
@@ -290,8 +356,9 @@
                                 </h6>
                                 <h6 translate>
                                     Created On <strong>
-                                 <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString"> </app-timestamp>
-                                </strong>
+                                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString">
+                                        </app-timestamp>
+                                    </strong>
                                 </h6>
                                 <h6 title="{{form.createdName}}" translate>
                                     By <strong>{{form.createdName | slice:0:17}}</strong>
@@ -304,40 +371,56 @@
                                 <span *ngIf="form.formSubType === 'SURVEY'" translate>Survey</span>
                             </div>
                             <div class="bar gridIconCustomization">
-                                <a class="mMobileDisable Iconhover" *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit"
-                                    (click)="edit(form.id)" >
+                                <a class="mMobileDisable Iconhover custom-grid-icon"
+                                    *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)"
+                                    data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">
                                     <i class="fa fa-pencil-square-o mDisableColor" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                 </a>
-                                <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
+                                <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top"
+                                    title="Preview" (click)="preview(form.id)">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
                                 </a>
-                                <a class="Iconhover" *ngIf="!pagination.campaignForm  && !pagination.landingPageForm && !pagination.landingPageCampaignForm&& !pagination.surveyCampaignForm && !pagination?.partnerLandingPageForm " data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
+                                <a class="Iconhover custom-grid-icon"
+                                    *ngIf="!pagination.campaignForm  && !pagination.landingPageForm && !pagination.landingPageCampaignForm&& !pagination.surveyCampaignForm && !pagination?.partnerLandingPageForm "
+                                    data-toggle="tooltip" data-placement="top" title="Copy / Embed Link"
+                                    (click)="showFormUrl(form)">
                                     <i class="fa fa-clipboard"></i>
+                                    <div class="clickicons"></div>
 
                                 </a>
                                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
-                                    <a class="cursor Iconhover">
+                                    <a class="cursor Iconhover custom-grid-icon mrgt-unset">
                                         <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                        <div class="clickicons"></div>
                                     </a>
                                     <span class="badge" id="notification-list">{{form.count}}</span>
                                 </ng-container>
-                                <ng-container *ngIf="(form.campaignForm&&form.dataShare) || !form.campaignForm || form.landingPageForm">
+                                <ng-container
+                                    *ngIf="(form.campaignForm&&form.dataShare) || !form.campaignForm || form.landingPageForm">
                                     <ng-container *ngIf="form.count==0">
-                                        <a class="cursor Iconhover" style="margin-top:5px;">
+                                        <a class="cursor Iconhover custom-grid-icon" style="margin-top:5px;">
                                             <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                            <div class="clickicons"></div>
                                         </a>
                                         <span class="badge" id="notification-list">{{form.count}}</span>
                                     </ng-container>
                                     <ng-container *ngIf="form.count>0">
-                                        <a class="Iconhover" data-rel="fancybox-button" (click)="goToAnalytics(form)" title="Form Analytics" data-toggle="tooltip" data-placement="top">
+                                        <a class="Iconhover custom-grid-icon" data-rel="fancybox-button"
+                                            (click)="goToAnalytics(form)" title="Form Analytics" data-toggle="tooltip"
+                                            data-placement="top">
                                             <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                            <div class="clickicons"></div>
                                         </a>
                                         <span class="badge" id="notification-list">{{form.count}}</span>
                                     </ng-container>
                                 </ng-container>
-                                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)" (click)="confirmDelete(form)" data-toggle="tooltip"
-                                    data-placement="top" title="Delete" class="delete">
+                                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)"
+                                    (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top"
+                                    title="Delete" class="delete custom-icon">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    <div class="del-icon"></div>
                                 </a>
                             </div>
                         </div>
@@ -345,7 +428,9 @@
                 </div>
                 <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
                     <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-                        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listForms($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+                            (notifyParentDropDown)="listForms($event)"
+                            [hidden]="httpRequestLoader.isLoading"></app-pagination>
                     </div>
                     <!-- End of 24 -->
                     <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
@@ -356,7 +441,8 @@
             <!-- END PAGE CONTENT-->
         </div>
         <ng-container *ngIf="detailedResponse">
-            <app-form-detail-response [formSubmitId]="selectedFormSubmitId" (notifyClose)="detailedResponse=false"></app-form-detail-response>
+            <app-form-detail-response [formSubmitId]="selectedFormSubmitId"
+                (notifyClose)="detailedResponse=false"></app-form-detail-response>
         </ng-container>
     </div>
 
@@ -372,24 +458,29 @@
                     <h4 class="modal-title text-center" translate>COPY LINK / EMBED LINK</h4>
                 </div>
                 <div class="modal-body">
-                    <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
+                    <app-response-message [customResponse]="copiedLinkCustomResponse"
+                        *ngIf="copiedLinkCustomResponse.isVisible">
                     </app-response-message>
                     <br>
                     <div class="form-group">
                         <label class="control-label" translate>Copy Link</label>
-                        <input type="text" id="copy-link" class="form-control borderColorsCU" readonly="readonly" [ngModel]="formAliasUrl" #userinput>
+                        <input type="text" id="copy-link" class="form-control borderColorsCU" readonly="readonly"
+                            [ngModel]="formAliasUrl" #userinput>
                         <br>
                         <div style="padding-top: 8px;">
-                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Form link')" translate>Copy Link
+                            <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Form link')"
+                                translate>Copy Link
                             </a>
                         </div>
                         <br>
                     </div>
                     <div class="form-group">
                         <label class="control-label" translate>Copy Embed Link</label>
-                        <textarea class="text-color borderColorsCU" id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
+                        <textarea class="text-color borderColorsCU" id="text-area" rows="3" [ngModel]="iframeEmbedUrl"
+                            spellcheck="false" #iframeUrlInput></textarea>
                         <div style="padding-top: 10px;">
-                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed Link
+                            <a class="btn btn-primary" id="right"
+                                (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed Link
                             </a>
                         </div>
                     </div>
@@ -407,13 +498,11 @@
     <div class="col-xs-12 p5" *ngIf="statusCode==403">
         <div class="alert alert-danger">
             <strong>
-        <h4 translate>Access Denied</h4>
-      </strong>
+                <h4 translate>Access Denied</h4>
+            </strong>
         </div>
     </div>
 
-    
+
 
 </div>
-
-

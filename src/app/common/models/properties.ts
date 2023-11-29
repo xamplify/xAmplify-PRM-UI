@@ -297,6 +297,22 @@ export class Properties {
             + "<b> Off </b> - Each partner's logo will be displayed throughout the platform when they log into their account. <br/>" + "<b>*This setting does not affect co-branding.</b>";
 
 	/***XNFR-386****/
+	/**** XNFR-233 **** */
+	loginFormPosition = ["Left","Right"]
+
+	/***Refer A Vendor ****/
+	inviteAVendor = "Invite A vendor";
+	inviteVendorToJoinxAmplify = "Invite a vendor to join xAmplify";
+	vendorInvites = "Vendor Invites";
+	InvitedVendorAnalytics = "Invited Vendor Analytics"; 
+	inviteAVendorToJoinxAmplify = "Invite a vendor to join xAmplify";
+
+	/****XNFR-342****/
+	campaignsHeaderText = "Campaigns";
+	assetsHeaderText = "Assets";
+	tracksHeaderText = "Tracks";
+	playBooksHeaderText = "Play Books";
+	/****XNFR-342****/
 
 
 

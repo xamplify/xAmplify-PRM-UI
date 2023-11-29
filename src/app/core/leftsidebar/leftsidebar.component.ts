@@ -79,16 +79,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		}else{
 		  this.vanityLoginDto.vanityUrlFilter = false;
 		}
-		const currentUser = localStorage.getItem( 'currentUser' );
-		if (currentUser) {
-			const userName = JSON.parse( currentUser )['userName'];
-			if(this.referenceService.isQA() || this.referenceService.isProduction()){
-				this.authenticationService.module.showWorkFlow = "spai@mobinar.com"==userName;
-			}else{
-				this.authenticationService.module.showWorkFlow = true;
-			}
-			
-		}
 
 	}
 
@@ -125,6 +115,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 					this.setContentMenu(data, module);
 					this.menuItem.contacts = data.contacts;
 					this.menuItem.shareLeads = data.shareLeads;
+					this.authenticationService.module.hasShareLeadAccess = data.shareLeads;
 					this.menuItem.sharedLeads = data.sharedLeads;
 					this.menuItem.pagesAccessAsPartner = data.pagesAccessAsPartner;
 
@@ -276,6 +267,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 		module.isOrgAdminCompany = roleDisplayDto.orgAdmin || roleDisplayDto.orgAdminTeamMember || roleDisplayDto.orgAdminAndPartner || roleDisplayDto.orgAdminAndPartnerTeamMember;
 		/****XNFR-326****/
 		module.emailNotificationSettings = data.emailNotificationSettings;
+		module.showWorkFlow = data.createWorkflow;
 	}
 
 	setContentMenu(data: any, module: any) {

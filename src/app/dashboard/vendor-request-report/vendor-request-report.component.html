@@ -3,13 +3,13 @@
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i></li>
-			<li><a>Vendor request</a></li>
+			<li><a>{{properties?.vendorInvites}}</a></li>
 		</ul>
 	</div>
     <div class="row">
     
     
-     <div class="col-xs-3">
+     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
       <a class="dashboard-stat dashboard-stat blue" [class.disabled]="allVendorsCount == 0" (click)="listOfVendorRequestReports('ALL')"
       [class.grey]="statusType != 'ALL'">
         <div class="visual">
@@ -25,7 +25,7 @@
         </span>
       </a>
     </div>
-     <div class="col-xs-3">
+     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
       <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.disabled]="approvedVendorsCount == 0" (click)="listOfVendorRequestReports('APPROVED')"
       [class.grey]="statusType != 'APPROVED'">
         <div class="visual">
@@ -41,7 +41,7 @@
         </span>
       </a>
     </div>
-     <div class="col-xs-3">
+     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
       <a class="dashboard-stat dashboard-stat purple" [class.disabled]="invitedVendorsCount == 0" (click)="listOfVendorRequestReports('INVITED')"
       [class.grey]="statusType != 'INVITED'">
         <div class="visual">
@@ -57,7 +57,7 @@
         </span>
       </a>
     </div>
-     <div class="col-xs-3">
+     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
       <a class="dashboard-stat dashboard-stat yellow-gold" [class.disabled]="declinedVendorsCount == 0" (click)="listOfVendorRequestReports('DECLINED')"
        [class.grey]="statusType != 'DECLINED'">
         <div class="visual">
@@ -80,7 +80,7 @@
         <div class="portlet light">
           <div class="portlet-title">
             <div class="caption">
-              <span class="caption-subject font-red-sunglo uppercase">{{statusType}} requested vendors analytics</span>
+              <span class="caption-subject font-red-sunglo uppercase">{{tableHeader}}</span>
             </div>
           </div>
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>

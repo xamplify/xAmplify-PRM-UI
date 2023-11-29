@@ -52,7 +52,7 @@
               <img src="assets/admin/pages/media/works/icon.png" class="icon-alignmnt" alt="">
               <span class="textaligncenter">Prompt</span>
             </div>
-            <hr>
+            <hr class="hrCustimization">
             <!-- Partner forms row start -->
             <div class="row">
               <!--Title-->
@@ -169,7 +169,7 @@
                           <thead>
                             <tr>
                               <th scope="row" class="text-center">
-                                <input class="pointer" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="partnerJouneyPartnerListHeaderCheckBox" />
+                                <input class="pointer checkBox_shadow" type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="partnerJouneyPartnerListHeaderCheckBox" />
                               </th>
                               <th class="hidden-xs" *ngIf="showPartnerListSearchResultExpandButton" scope="col"></th>
                               <th class="hidden-xs" colspan="2" style="width: 35%">
@@ -190,7 +190,7 @@
                                   [class.contact-list-selected]="(selectedPartnerListIds.indexOf(partnerList.id)>-1 && partnerList.count>0)" >
                                   <td class="text-center pointer">
                                       <div class="form-group">
-                                          <input type="checkbox" class="chk pointer" lang="{{partnerList.name}}" id="{{partnerList.id}}" [checked]="selectedPartnerListIds.indexOf(partnerList.id)>-1" 
+                                          <input type="checkbox" class="chk pointer checkBox_shadow" lang="{{partnerList.name}}" id="{{partnerList.id}}" [checked]="selectedPartnerListIds.indexOf(partnerList.id)>-1" 
                                           name="partnerListCheckBoxName[]" value="{{partnerList.id}}" (click)="highlightRow(partnerList,$event)"
                                           [disabled]="(partnerList.name==properties.activeMasterPartnerList  || partnerList.name==properties.inActiveMasterPartnerList) && partnerList.count==0">
                                       </div>

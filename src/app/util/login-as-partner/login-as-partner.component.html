@@ -1,18 +1,19 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 
-<a *ngIf="(((authenticationService?.module?.loginAsPartner || contact?.loginAsPartner) && isPartner) || isLoggedInAsPartner || isLoggedInAsPartnerFromXamplify)
- && showLoginAsButton" 
-  data-toggle="tooltip" data-placement="bottom" title="{{title}}"
-   (click)="contact?.signedUp && contact?.companyId>0 &&
+<a class="custom-icon" *ngIf="(((authenticationService?.module?.loginAsPartner || contact?.loginAsPartner) && isPartner) || isLoggedInAsPartner || isLoggedInAsPartnerFromXamplify)
+ && showLoginAsButton" data-toggle="tooltip" data-placement="bottom" title="{{title}}" (click)="contact?.signedUp && contact?.companyId>0 &&
     contact?.loginAsPartnerOptionEnabledForVendor && !isLoggedInAsTeamMember && loginAsPartner()">
 
-  <i  class="fa fa-sign-in IconCustomization" [ngClass]="{'disabled gray': !contact?.signedUp || contact?.companyId==0 
+  <i class="fa fa-sign-in IconCustomization"
+    [ngClass]="{'disabled gray': !contact?.signedUp || contact?.companyId==0 
   || !contact?.loginAsPartnerOptionEnabledForVendor || isLoggedInAsTeamMember || isLoggedInAsPartnerFromXamplify,
    'active': contact?.signedUp && contact?.companyId>0 && contact?.loginAsPartnerOptionEnabledForVendor && !isLoggedInAsTeamMember && !isLoggedInAsPartnerFromXamplify }"
     aria-hidden="true"></i>
+  <div class="clickicons"></div>
 </a>
 
-<button *ngIf="(isLoggedInAsPartner || isLoggedInAsTeamMember) && showLogOutButton"  (click)="logoutAsPartnerOrTeamMember()"
-  class="btn btn-danger btn-xs margin-left-one-per" title="Logout" translate>
+<button *ngIf="(isLoggedInAsPartner || isLoggedInAsTeamMember) && showLogOutButton"
+  (click)="logoutAsPartnerOrTeamMember()" class="btn btn-danger btn-xs margin-left-one-per IconsidesCu" title="Logout"
+  translate>
   <i class="fa fa-power-off" aria-hidden="true"></i>
 </button>

@@ -11,3 +11,13 @@
     background-size: cover;
     transition: opacity 1s;
 }
+
+.bg_image {
+	background-image: url("https://xamplify.io/assets/images/stratapps.jpeg");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	position: sticky;
+	top:0;
+	min-height: 100vh;
+}

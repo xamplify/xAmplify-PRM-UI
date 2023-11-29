@@ -361,7 +361,7 @@ export class WorkflowFormComponent implements OnInit,ComponentCanDeactivate{
 
   addCustomDaysTextBox(){
     let conditionCheckWithText = "Custom-In the past custom days"==$.trim($('#time-phrase option:selected').text());
-    let conditionCheckWithId = this.workflowDto.timePhraseId==35;
+    let conditionCheckWithId = this.workflowDto.timePhraseId == 106;
     this.isCustomOptionSelected = conditionCheckWithText || conditionCheckWithId;
 
   }

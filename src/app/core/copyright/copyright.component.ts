@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { Properties } from "../../common/models/properties";
 import { AuthenticationService } from "../services/authentication.service";
 
@@ -9,7 +9,7 @@ import { AuthenticationService } from "../services/authentication.service";
   providers: [Properties]
 })
 export class CopyrightComponent implements OnInit {
-
+  @Input() styleOne:boolean;
   constructor(public properties: Properties, public authService: AuthenticationService) { }
 
   ngOnInit() {

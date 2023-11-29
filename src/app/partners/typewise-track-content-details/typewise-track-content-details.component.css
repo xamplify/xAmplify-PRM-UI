@@ -8,4 +8,115 @@
 
 .mh480 {
 	min-height:480px;
+	height:480px;
 }
+.tableHeightScroll{   
+    height: 343px !important;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+.noData{
+    height: 0px;
+}
+
+/* width */
+::-webkit-scrollbar {
+	width: 7px;
+    height:7px;
+  }
+@media (min-width: 992px) and (max-width: 1225px)  { 
+	.tableHeightScroll {
+		height: 330px !important;
+	}
+}
+@media (min-width: 200px) and (max-width: 767px)  { 
+    .ml15m {
+        margin-left: 0px !important;
+    }
+	.mh480 {
+		min-height: 521px;
+		height: 560px;
+	}
+}
+
+@media (min-width: 992px) and (max-width: 1187px)  { 
+    .notOpened-class{ font-size: 7px  !important;}
+    .submitted-class{ font-size: 7px !important;}
+    .viewed-class{font-size: 7px !important;}
+    .opened-class{font-size: 7px !important;}
+    .downloaded-class{font-size: 7px !important;}
+    .default-class{font-size: 7px !important;}
+}
+
+.notOpened-class{
+	background-color: #3480b5;
+    padding: 6px 10px;
+    border-radius: 3px;
+    color: #fff;
+    line-height: 7;
+    font-size: 12px;
+}
+
+.submitted-class{
+	background-color: #26a69a;
+	padding: 6px 10px;
+    border-radius: 3px;
+    color: #fff;
+    line-height: 7;
+    font-size: 12px;
+}
+
+.viewed-class{
+	background-color: #8e5fa2;
+	padding: 6px 10px;
+    border-radius: 3px;
+    color: #fff;
+    line-height: 7;
+    font-size: 12px;
+}
+
+.opened-class{
+	background-color: #3598dc;
+	padding: 6px 10px;
+    border-radius: 3px;
+    color: #fff;
+    line-height: 7;
+    font-size: 12px;
+}
+
+.downloaded-class{
+	background-color: #e87e04;
+	padding: 6px 10px;
+    border-radius: 3px;
+    color: #fff;
+    line-height: 7;
+    font-size: 12px;
+}
+
+.default-class{
+	background-color: #268c83;
+	padding: 6px 10px;
+    border-radius: 3px;
+    color: #fff;
+    line-height: 7;
+    font-size: 12px;
+}
+
+/* table header bgcolor */
+.panel-bgMain > .panel-bg{
+    background-color: #d9edf7b0;
+    border-bottom: 1px solid #ddd;
+}
+.panel-bgMain {
+	border-color: #ddd;
+}
+/* table header bgcolor end */
+.panel-heading {
+    padding: 11px 15px !important;
+}
+.table>tbody>tr>td {
+	vertical-align: middle !important;
+}
+
+
+

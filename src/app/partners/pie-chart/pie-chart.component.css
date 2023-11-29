@@ -1,0 +1,31 @@
+#donut-chart-container,
+#activeInActivePartnersDonut{
+    height: 250px;
+}
+.active-donut-pie-chart {
+    min-height: 480px;
+    margin-bottom:20px
+}
+/* @media (min-width:200px) and (max-width:767px){
+    .pr0responsive{padding-right: 0px !important;}
+} */
+
+.pjCardTitlebg{    
+    background-color: #d9edf7b0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  .portlet-title > .pjCardTitleCenterAlignment{padding: 8px 0px !important;}
+
+  .portlet-title > .pjCardTitleCenterAlignment1 {
+    background-color: #d9edf7b0;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 16px 9px 16px !important;
+    width: 100%;
+}
+.highchartsColorCu{
+     background: #fff;
+     border-left: 1px solid #ddd;
+     border-right: 1px solid #ddd;
+     border-bottom: 1px solid #ddd;
+}

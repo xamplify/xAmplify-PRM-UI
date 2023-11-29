@@ -22,6 +22,7 @@
                 <span class="title">{{menu.customName}}</span>
                 <span class="selected"></span>
               </a>
+              <div class="border-bt"></div>
             </li>
             <li *ngIf="menu.showSubMenu" [ngClass]="{'active': menu.mergeTag === mergeTag}">
               <a href="javascript:;" (click)="toggleSubMenu(menu.mergeTag)">
@@ -30,6 +31,7 @@
                 <span class="arrow"></span>
                 <span class="selected"></span>
               </a>
+              <div class="border-bt"></div>
               <ul class="sub-menu" *ngIf="menu.showSubMenu"
                 [ngStyle]="{'display': menu.mergeTag === clickedMergeTag? 'block': 'none' }">
                 <li *ngFor="let subMenu of menu.subModules">

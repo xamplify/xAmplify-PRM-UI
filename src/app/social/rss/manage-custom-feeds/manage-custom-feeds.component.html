@@ -116,7 +116,7 @@
                
                 <div *ngFor="let feed of pagination.pagedItems ;let i =index" >
                 	<div class="row mb10" style = "margin-bottom: -4px;">
-						<div class="page-bar page-bar-shadow pb-m">
+						<div class="page-bar page-bar-shadow pb-m card-shadow">
 							<div class="portlet light shared-feeds-border borderNone">
 								<div class="portlet-body pt0">
 									<div class="col-sm-12 col-xs-12 col-lg-12 mt10">
@@ -156,32 +156,37 @@
 													</div>
 													<div class="actions-block override-actions tab_nowrap"
 														style="margin-top: 20px">
-														<a *ngIf="selectedType!='p' && feed.canUpdate" data-toggle="tooltip"
+														<a class="custom-icon" *ngIf="selectedType!='p' && feed.canUpdate" data-toggle="tooltip"
 															data-placement="top" title="Edit"
 															(click)="editFeed(feed)"> <i
 															class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
-														</a> <a *ngIf="selectedType!='p' && feed.canUpdate" data-toggle="tooltip"
+														<div class="clickicons"></div>
+														</a> <a class="custom-icon" *ngIf="selectedType!='p' && feed.canUpdate" data-toggle="tooltip"
 															data-placement="top" title="Share"
 															(click)="publishFeed(feed)"> <i class="fa fa-upload IconCustomization"
 															aria-hidden="true"></i>
-														</a> <a data-toggle="tooltip" data-placement="top"
+															<div class="clickicons"></div>
+														</a> <a class="custom-icon" data-toggle="tooltip" data-placement="top"
 															title="Publish" (click)="shareFeed(feed)"> <i
 															class="fa fa-share IconCustomization" aria-hidden="true"></i>
+															<div class="clickicons"></div>
 														</a>
-														<a *ngIf="selectedType!='p'" data-toggle="tooltip" 
+														<a class="custom-icon" *ngIf="selectedType!='p'" data-toggle="tooltip" 
 															data-placement="top"
 															title="Analytics" (click)="showFeedAnalyticsPopUp(feed.id)"> <i
 															class="fa fa-bar-chart IconCustomization" aria-hidden="true"></i>
+															<div class="clickicons"></div>
 														</a>
-														 <a *ngIf="selectedType!='p' && feed.canDelete" data-toggle="tooltip"
+														 <a class="custom-icon" *ngIf="selectedType!='p' && feed.canDelete" data-toggle="tooltip"
 															data-placement="top" title="Delete"
 															(click)="confirmDeleteFeed(feed)"> <i
 															class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+															<div class="del-icon"></div>
 														</a>
 													</div>
 												</div>
 										</div>
-										<div class="row" style="border-top: solid 1px #ccc;padding: 10px 5px;">
+										<div class="row border-padding">
 											<div class="col-md-8 col-lg-8" style = "padding: 0px;">
 												<div>
 													<span *ngIf="feed.publishToPartners">

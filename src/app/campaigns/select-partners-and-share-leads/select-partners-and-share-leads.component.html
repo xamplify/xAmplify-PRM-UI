@@ -34,7 +34,7 @@
                    <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
                       <tr [class.xamp-tr-selected]="selectedPartnershipId==partner.partnershipId">
                          <td class="cw">
-                            <input class="form-control pointer" value="{{partner.partnershipId}}" id="one-launch-campaign-radio-{{partner.partnershipId}}" type="radio" name="one-launch-campaign-partner-company" 
+                            <input class="form-control pointer radioButton_shadow" value="{{partner.partnershipId}}" id="one-launch-campaign-radio-{{partner.partnershipId}}" type="radio" name="one-launch-campaign-partner-company" 
                             [checked]="selectedPartnershipId==partner.partnershipId" [disabled]="selectedPartnershipId==partner.partnershipId" (click)="selectPartnerCompanyAndExpandShareLeadsList(partner)">
                          </td>
                          <td class="wtpc" title="{{partner?.companyName}}">
@@ -92,11 +92,11 @@
                                         <thead>
                                            <tr>
                                               <th *ngIf="selectedPartnershipId==partner.partnershipId" scope="row" class="text-center pointer" [hidden]="shareLeadsPagination.totalRecords==0">
-                                              <input class="pointer" type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked" id="one-click-share-leads-header-checkbox-id"
+                                              <input class="pointer checkBox_shadow" type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked" id="one-click-share-leads-header-checkbox-id"
                                               (change)="selectOrUnselectAllRowsOfTheCurrentPage($event,partner.partnershipId)">
                                               </th>
                                               <th *ngIf="selectedPartnershipId!=partner.partnershipId" scope="row" class="text-center pointer" [hidden]="shareLeadsPagination.totalRecords==0">
-                                              <input type="checkbox" title="Please select the company" disabled>
+                                              <input class="checkBox_shadow" type="checkbox" title="Please select the company" disabled>
                                               </th>
                                               <th scope="row" [attr.colspan]="colspanValue">List Name</th>
                                               <th class="text-center" translate>Total Leads</th>
@@ -108,7 +108,7 @@
                                            <ng-container *ngFor="let shareLead of shareLeadsPagination.pagedItems;let i = index;">
                                               <tr class="pointer" id="one-click-share-leads-tr-{{shareLead.id}}" [class.xamp-tr-selected]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1 && selectedPartnershipId==partner.partnershipId" (click)="highlightSelectedShareListOnRowClick(shareLead.id,partner.partnershipId,$event)" >
                                               <td class="text-center pointer">
-                                                 <input class="pointer" type="checkbox" id="{{shareLead.id}}" [title]="selectedPartnershipId!=partner.partnershipId ? 'Please select company':''" [disabled]="selectedPartnershipId!=partner.partnershipId"  [checked]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1 && selectedPartnershipId==partner.partnershipId" name="oneClickShareLeadsCheckBox[]"   
+                                                 <input class="pointer checkBox_shadow" type="checkbox" id="{{shareLead.id}}" [title]="selectedPartnershipId!=partner.partnershipId ? 'Please select company':''" [disabled]="selectedPartnershipId!=partner.partnershipId"  [checked]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1 && selectedPartnershipId==partner.partnershipId" name="oneClickShareLeadsCheckBox[]"   
                                                  value="{{shareLead.id}}" (click)="$event.stopPropagation();highlightShareListRowOnCheckBoxClick(shareLead.id,partner.partnershipId,$event)">
                                               </td>
                                               <td class="cw" *ngIf="showExpandButton">

@@ -58,6 +58,11 @@ import { ThemeDto } from 'app/dashboard/models/theme-dto';
 import { CompanyThemeActivate } from 'app/dashboard/models/company-theme-activate';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { LeftsidenavbarCustomComponent } from 'app/dashboard/leftsidenavbar-custom/leftsidenavbar-custom.component';
+import { CustomLoginTemplate } from 'app/email-template/models/custom-login-template';
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/map'; 
+import { CompanyLoginTemplateActive } from 'app/email-template/models/company-login-template-active';
+import { CompanyProfileService } from 'app/dashboard/company-profile/services/company-profile.service';
 
 declare var swal, $, videojs: any, Papa: any;
 
@@ -205,6 +210,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	preferredLanguage: string;
 	editXamplifyDefaultTemplate = false;
 	xamplifyDefaultTemplate: VanityEmailTempalte;
+	customLoginTemplate: CustomLoginTemplate;
 	subjectLineTooltipText: string;
 	isMarketoProcess: boolean;
 
@@ -284,7 +290,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/**** XNFR-238*** */
 	customSkinDto :CustomSkin = new CustomSkin();
 	selectedThemeIndex:number= 0;
-   themeResponse:CustomResponse = new CustomResponse();
+    themeResponse:CustomResponse = new CustomResponse();
 	themeDto: ThemeDto= new ThemeDto();
 	themeData : ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
 	themeNames : string = '';
@@ -304,13 +310,20 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	showSpfConfigurationDiv: boolean;
 	/***XNFR-386***/
 	isCustomLoginScreenSettingsOptionClicked = false;
+	customLoginTemplateResponse: CustomResponse = new CustomResponse();
+	// XNFR-403
+	connectwiseRibbonText: string;
+	isLocalHost = false;
+
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
-		PagerService,public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil) {
+		PagerService,public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http,private companyProfileService: CompanyProfileService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
+		this.isLocalHost = this.authenticationService.isLocalHost();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
 		this.referenceService.renderer = this.renderer;
 		this.isUser = this.authenticationService.isOnlyUser();
@@ -1690,7 +1703,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.checkHubspotIntegration();
 		this.checkSalesforceIntegration();
 		this.checkMicrosoftIntegration();
-		this.checkPipedriveIntegration();		
+		this.checkPipedriveIntegration();
+		this.checkConnectWiseIntegration();		
 		this.getActiveCRMDetails();
 	}
 	checkMicrosoftIntegration() {
@@ -2569,14 +2583,72 @@ configSalesforce() {
 	selectedLanguage(event: any) {
 		//this.translateService.use(this.selectedLanguageCode);        
 	}
-
+/*********** XNFR-233 */
 	openBeeEditor(event: any) {
 		this.xamplifyDefaultTemplate = event;
 		this.editXamplifyDefaultTemplate = true;
+		this.editCustomLoginTemplate = false;
 	}
-
+	jsonBody:any;
+	beeContainerInput= {};
+	editCustomLoginTemplate:boolean = false;
+	cutomLoginTemplate:CustomLoginTemplate;
+	openBeeEditorForLoginTemplate(event: any) {
+		this.cutomLoginTemplate = event;
+		this.editCustomLoginTemplate = true;
+		this.jsonBody = this.cutomLoginTemplate.jsonBody;
+		this.beeContainerInput["module"] = "configuration";
+		this.beeContainerInput["jsonBody"] = this.jsonBody;
+		this.beeContainerInput["customLognTemplate"] = this.cutomLoginTemplate;
+		this.editXamplifyDefaultTemplate = false;
+	}
+	saveOrUpdateCustomLogInTempalte(cutomLoginTemplate:CustomLoginTemplate){
+		this.vanityUrlService.saveCustomLoginTemplate(cutomLoginTemplate).subscribe(result => {
+		  if(result.statusCode === 200){
+			// this.goBackToMyprofileForCustomLogin();
+			this.customLoginTemplateResponse = new CustomResponse('SUCCESS', result.message, true);
+		  } else {
+			this.customLoginTemplateResponse = new CustomResponse('ERROR', result.data.errorMessages[0].message, true);
+		  }
+		}, error => {
+		  this.customLoginTemplateResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT, true)
+		});
+		
+	  }
+	  
+	  readBeeTemplateData(event: any) {
+		this.ngxloading = true;
+		this.cutomLoginTemplate.jsonBody = event.jsonContent;
+		this.cutomLoginTemplate.htmlBody = event.htmlContent;
+		this.cutomLoginTemplate.loggedInUserId = this.authenticationService.getUserId();
+        this.getBeeTemplateImagePath(event.htmlContent); 
+		this.saveOrUpdateCustomLogInTempalte(this.cutomLoginTemplate);
+		this.ngxloading = false;
+	  }
+	  getBeeTemplateImagePath(htmlContent:any):string {
+		const imageUrls: string[] = [];
+		let imagePath:any;
+		const imgTagRegex = /<img [^>]*src="([^"]*)"[^>]*>/g;
+		let match;
+		while ((match = imgTagRegex.exec(htmlContent))) {
+			const imageUrl = match[1];
+			imagePath = imageUrl;
+			imageUrls.push(imageUrl);
+		}
+		return imagePath;
+	}
+	isTemplatesListDiv = false;
+    goBackToMyprofileForCustomLogin(){
+		this.editCustomLoginTemplate = false;
+		this.editXamplifyDefaultTemplate = false;
+		this.isTemplatesListDiv = true;
+		this.cutomLoginTemplate = new CustomLoginTemplate();
+		this.referenceService.goToTop();
+	}
+	/*** XNFR-233 ******/
 	goBackToMyProfile() {
 		this.editXamplifyDefaultTemplate = false;
+		this.editCustomLoginTemplate = false;
 		this.xamplifyDefaultTemplate = new VanityEmailTempalte();
 		this.referenceService.goToTop();
 	}
@@ -2619,6 +2691,15 @@ configSalesforce() {
 		this.sfcfMasterCBClicked = false;
 		this.customFieldsResponse.isVisible = false;
 		this.integrationType = 'PIPEDRIVE';
+		this.integrationTabIndex = 5;		
+	}
+
+	// xnfr-215
+	connectwiseSettings() {
+		this.sfcfPagedItems = [];
+		this.sfcfMasterCBClicked = false;
+		this.customFieldsResponse.isVisible = false;
+		this.integrationType = 'CONNECTWISE';
 		this.integrationTabIndex = 5;		
 	}
 
@@ -4197,6 +4278,30 @@ configSalesforce() {
 	}
   }
   /************* XNFR-338 *********************/
+
+	// XNFR-403
+	checkConnectWiseIntegration() {
+		this.referenceService.loading(this.httpRequestLoader, true);
+		this.integrationService.checkConfigurationByType("connectwise").subscribe(data => {
+			this.referenceService.loading(this.httpRequestLoader, false);
+			let response = data;
+			if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+				this.connectwiseRibbonText = "configured";
+			}
+			else {
+				this.connectwiseRibbonText = "configure";
+			}
+		}, error => {
+			this.referenceService.loading(this.httpRequestLoader, false);
+			this.sfRibbonText = "configure";
+			this.logger.error(error, "Error in checkConnectWiseIntegration() for ConnectWise");
+		}, () => this.logger.log("ConnectWise Integration Configuration Checking done"));
+	}
+
+	configureConnectWise() {
+		this.integrationTabIndex = 7;	
+	}
+	// XNFR-403
 
 
 }

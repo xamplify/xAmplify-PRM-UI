@@ -81,7 +81,7 @@
                         </div>
                       </td>
                       <td style="width: 10%; ">
-                        <div class="thumbnail-wrapper img" data-toggle="tooltip" data-placement="right"  title="{{partner?.companyName}}">
+                        <div class="thumbnail-wrapper img image_effect" data-toggle="tooltip" data-placement="right"  title="{{partner?.companyName}}">
                           <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';"
                             [src]="authenticationService.MEDIA_URL+partner.companyLogo">
                         </div>
@@ -129,7 +129,7 @@
                                 <thead>
                                   <tr>
                                     <th scope="row" class="text-center">
-                                      <input class="pointer" type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
+                                      <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
                                         (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId)">
                                     </th>
                                     <th scope="row">Entity Info</th>
@@ -141,7 +141,7 @@
                                     [class.row-selected]="selectedTeamMemberIds?.indexOf(adminAndTeamMember.userId)>-1"
                                     (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
                                     <td class="text-center">
-                                      <input class="pointer" type="checkbox" id="{{adminAndTeamMember.userId}}"
+                                      <input class="pointer checkBox_shadow" type="checkbox" id="{{adminAndTeamMember.userId}}"
                                         [checked]="selectedTeamMemberIds?.indexOf(adminAndTeamMember.userId)>-1"
                                         name="adminOrTeamMemberCheckBox[]" value="{{adminAndTeamMember.userId}}"
                                         (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
@@ -222,7 +222,7 @@
               <thead>
                 <tr>
                   <th scope="col" class="text-center">
-                    <input class="pointer" type="checkbox" [(ngModel)]="isParnterGroupHeaderCheckBoxChecked"
+                    <input class="pointer checkBox_shadow" type="checkbox" [(ngModel)]="isParnterGroupHeaderCheckBoxChecked"
                       id="parnterGroupsHeaderCheckBox"
                       (change)="selectOrUnselectAllPartnerGroupsOfTheCurrentPage($event)"></th>
                   <th *ngIf="showExpandButton"></th>
@@ -237,7 +237,7 @@
                   <tr class="pointer" id="partnerGroups-tr-{{partnerGroup.id}}" [class.row-selected]="selectedPartnerGroupIds?.indexOf(partnerGroup.id)>-1"
                     (click)="highlightSelectedPartnerGroupOnRowClick(partnerGroup.id,$event)">
                     <td class="text-center">
-                      <input class="pointer" type="checkbox" id="{{partnerGroup.id}}" [checked]="selectedPartnerGroupIds?.indexOf(partnerGroup.id)>-1"
+                      <input class="pointer checkBox_shadow" type="checkbox" id="{{partnerGroup.id}}" [checked]="selectedPartnerGroupIds?.indexOf(partnerGroup.id)>-1"
                         name="partnerGroupsCheckBox[]" value="{{partnerGroup.id}}"
                         (click)="$event.stopPropagation();highlightPartnerGroupRowOnCheckBoxClick(partnerGroup.id,$event);">
                     </td>
@@ -292,6 +292,7 @@
 
 <ng-container *ngIf="showUsersPreview">
   <app-preview-user-list [userListName]="selectedPartnerGroupName" [userListId]="selectedPartnerGroupId"
+  [moduleName]="moduleName" [inputId]="inputId"
     (notifyParentComponent)="resetValues()"></app-preview-user-list>
 </ng-container>
 

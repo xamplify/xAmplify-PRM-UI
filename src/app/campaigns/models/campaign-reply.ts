@@ -2,7 +2,7 @@ import { Pagination } from '../../core/models/pagination';
 import { EmailTemplate } from '../../email-template/models/email-template';
 export class Reply{
     id:number;
-    replyInDays:number=0;
+    replyInDays:number=1;
     replyTime:Date=new Date();
     subject:string;
     body:string = "";
@@ -10,7 +10,7 @@ export class Reply{
     divId:string;
     emailAction:any;
     scheduled:boolean;
-    replyInDaysSum:number=0;
+    replyInDaysSum:number=1;
     emailTemplatesPagination:Pagination = new Pagination();
     selectedEmailTemplateId:number = 0;
     selectedEmailTemplateIdForEdit:number = 0;

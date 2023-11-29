@@ -3,10 +3,11 @@
 	<img alt="logo" class="logo-default" style="height: 54px" src="assets/images/xamplify-logo.png">
  </div>
  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+ <div *ngIf="!isStyleOne">
  <div class="content" style="background-color: rgba(0,0,0,.0);" [ngClass] = "{'login-content-left':authenticationService.loginScreenDirection==='Left','login-content-right':authenticationService.loginScreenDirection==='Right'}">
 	<div style="background-color: rgba(0,0,0,.0);">
-	   <app-video *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
-	   <app-video *ngIf="vanityURLEnabled"></app-video>
+	   <app-video [newLogin]="false" *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
+	   <app-video [newLogin]="false" *ngIf="vanityURLEnabled"></app-video>
 	</div>
 	<div class="row">
 	   <!-- BEGIN LOGIN FORM -->
@@ -54,7 +55,7 @@
 		  </form>
 		  <div class="form-actions login-form" style="border-bottom: 0!important;display: contents;">
 			 <label class="rememberme check">
-			 <span hidden><input type="checkbox" name="remember" value="1" />&nbsp;Remember</span>
+			 <span hidden><input class="checkBox_shadow" type="checkbox" name="remember" value="1" />&nbsp;Remember</span>
 			 </label>
 			 <a id="forgetAnchor" routerLink="/forgot-password" class="forget-password text-white">Forgot Password?</a>
 		  </div>
@@ -93,5 +94,123 @@
 	   </div>
 	</div>
  </div>
- <app-copyright *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
- <app-copyright *ngIf="vanityURLEnabled"></app-copyright>
+ <app-copyright [styleOne]="flase" *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
+ <app-copyright [styleOne]="flase" *ngIf="vanityURLEnabled"></app-copyright>
+</div>
+<div *ngIf="isStyleOne">
+	<div class="row" style="display: content;margin-right: 0px !;margin: 0px !important;" *ngIf="vanityURLEnabled">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 bg_image" [ngStyle]="{'float':authenticationService?.loginScreenDirection}" [style.backgroundImage]="'url('+bgIMage2+')'">
+			<div class="content" style="background-color: rgba(0,0,0,.0);">
+				<div style="background-color: rgba(0,0,0,.0);">
+					<app-video [newLogin]="true" *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
+					<app-video [newLogin]="true" *ngIf="vanityURLEnabled"></app-video>
+				</div>
+				<div class="row">
+					<!-- BEGIN LOGIN FORM -->
+					<div class="row" *ngIf="model"
+						style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 8px;">
+						<!-- XNFR-334--->
+						<app-response-message [customResponse]="customResponse"
+							*ngIf="!resendActiveMail && customResponse.isVisible"></app-response-message>
+						<!-- XNFR-334--->
+						<div *ngIf="resendActiveMail" class="alert alert-dismissible m0 alert-danger" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<strong style="padding-top: 6px;">
+								<span class="text">{{properties.USER_ACCOUNT_ACTIVATION_ERROR}}<br>
+									<span style="position: relative;top: 4px;">Please
+										<a class="underlinetext success" (click)="resendActivation()"> click here </a>to get
+										the account activation email.</span>
+								</span>
+							</strong>
+						</div>
+						<form class="login-form" (ngSubmit)="login()">
+							<h3 class="form-title text-white">{{signInText}}</h3>
+							<div class="alert alert-danger display-hide">
+								<button class="close" data-close="alert"></button>
+								<label class="custom-label">Enter any Email and password.</label>
+							</div>
+							<div class="form-group">
+								<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+								<label class="control-label visible-ie8 visible-ie9">Email</label>
+								<input id="username" class="form-control form-control-solid placeholder-no-fix userNameTag"
+									name="username" [(ngModel)]="model.username" #username="ngModel" required type="text"
+									autocomplete="off" placeholder="Email" (input)="clearErrorMessage()" />
+							</div>
+							<div class="form-group has-feedback">
+								<label class="control-label visible-ie8 visible-ie9">Password</label>
+								<input id="password" class="form-control form-control-solid placeholder-no-fix passwordTag"
+									[(ngModel)]="model.password" #password="ngModel" required type="password"
+									autocomplete="off" placeholder="Password" name="password"
+									(keypress)="eventHandler($event.keyCode)" />
+								<span toggle="#password" title="Show Password"
+									class="fa fa-fw fa-eye field-icon toggle-password"
+									(click)="referenceService.showPassword('password')"
+									*ngIf="!referenceService.showInputPassword && model.password"></span>
+								<span toggle="#password" title="Hide Password"
+									class="fa fa-fw fa-eye-slash field-icon toggle-password"
+									(click)="referenceService.showPassword('password')"
+									*ngIf="referenceService.showInputPassword && model.password"></span>
+							</div>
+							<button id="submitBitton" type="submit"
+								class="btn btn-primary pull-left  signin">{{signInText}}</button>
+						</form>
+						<div class="form-actions login-form" style="border-bottom: 0!important;display: contents;">
+							<label class="rememberme check">
+								<span hidden><input type="checkbox" name="remember" value="1" />&nbsp;Remember</span>
+							</label>
+							<a id="forgetAnchor" routerLink="/forgot-password" class="forget-password text-white">Forgot
+								Password?</a>
+						</div>
+						<div class="row solid-wb" style="margin-top: 28px;"></div>
+						<div class="login-options login-form m5" *ngIf="!authenticationService.vanityURLEnabled">
+							<h4>Or login with</h4>
+							<ul class="social-icons">
+								<ng-container *ngFor="let socialProvider of socialProviders">
+									<li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
+										<a class="" title="{{socialProvider.name}}"
+											(click)="loginUsingSocialAccounts(socialProvider)">
+											<span class="img-child {{socialProvider.iconName}}"></span>
+										</a>
+									</li>
+								</ng-container>
+							</ul>
+						</div>
+						<div class="login-options login-form m5"
+							*ngIf="authenticationService?.vanityURLEnabled  && vanitySocialProviders?.length">
+							<h4>Or login with</h4>
+							<ul class="social-icons">
+								<ng-container *ngFor="let socialProvider of vanitySocialProviders">
+									<li *ngIf="socialProvider?.name!='google' && socialProvider?.name!='twitter'">
+										<a class="" title="{{socialProvider.name}}"
+											(click)="loginUsingSocialAccounts(socialProvider)">
+											<span class="img-child {{socialProvider.iconName}}"></span>
+										</a>
+									</li>
+								</ng-container>
+							</ul>
+						</div>
+						<!-- </div>  -->
+						<div class="text-center mt10">
+							<label class="check">
+								<a class="agree-link" href="{{properties.termsOfServiceUrl}}" target="_blank">Terms of
+									Service </a>&
+								<a class="agree-link" href="{{properties.privacyPolicyUrl}}" target="_blank"> Privacy Policy
+								</a>
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<app-copyright [styleOne]="true" *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
+	        <app-copyright [styleOne]="true" *ngIf="vanityURLEnabled"></app-copyright>
+		</div>
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 rightcontent p0">
+			<div [innerHTML]="htmlContent"></div>
+			<!-- <app-login-ui-template [loginStyleId]="loginStyleId" [createdUserId]="createdUserId"></app-login-ui-template> -->
+		</div>
+	</div>
+	<!-- <app-copyright *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
+	<app-copyright *ngIf="vanityURLEnabled"></app-copyright> -->
+</div>

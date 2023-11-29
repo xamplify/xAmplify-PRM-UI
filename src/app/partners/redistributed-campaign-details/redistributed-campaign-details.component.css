@@ -5,3 +5,48 @@
 .ml15m {
 	margin-left: -15px !important;
 }
+@media (min-width: 200px) and (max-width: 767px)  { 
+	/* .ml15m {
+		padding-right: 0px !important;
+	} */
+    .responsiveMargins{margin:0px !important;}
+}
+
+/* table header bgcolor */
+.panel-bgMain > .panel-bg{
+    background-color: #d9edf7b0;
+    border-bottom: 1px solid #ddd;
+}
+.panel-bgMain {
+	border-color: #ddd;
+}
+/* table header bgcolor end */
+
+.panel-heading {
+    padding: 11px 15px !important;
+}
+.tableHeightScroll{
+    height: 295px !important;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+.noData{
+    height: 0px;
+}
+/* width */
+::-webkit-scrollbar {
+	width: 7px;
+	height:7px;
+  }
+  .table>tbody>tr>td {
+	vertical-align: middle !important;
+}
+.redistributed-height {
+    height: 442px;
+}
+
+@media (min-width: 768px) and (max-width: 991px)  { 
+    .Responsivetitle{   
+         font-size: 13px;
+        width: 160px;}
+}

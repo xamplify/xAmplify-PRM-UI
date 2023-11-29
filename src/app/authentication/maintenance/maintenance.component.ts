@@ -51,10 +51,16 @@ export class MaintenanceComponent implements OnInit {
 
   // header navbar start
   isNavbarBackgroundVisible: boolean = false;
+  isMaintenance:boolean = false;
 
   @HostListener('window:scroll', ['$event'])
   onScroll() {
     const scrollY = window.scrollY;
+    if(scrollY>0){
+   this.isMaintenance = false;
+    } else {
+      this.isMaintenance = true;
+    }
     this.isNavbarBackgroundVisible = scrollY > 50;
   }
     // header navbar end

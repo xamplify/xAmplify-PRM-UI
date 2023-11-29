@@ -13,6 +13,7 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { SortOption } from '../../core/models/sort-option';
 import { VideoFileService } from 'app/videos/services/video-file.service';
 import { SaveVideoFile } from 'app/videos/models/save-video-file';
+import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
 
 declare var $: any;
 
@@ -47,7 +48,11 @@ export class ShowHistoryComponent implements OnInit {
 	@Output() updatedItemsCountEmitter = new EventEmitter();
 	exportObject = {};
 	showRefreshNotification: boolean;
-		
+	/****XNFR-381*****/
+	isChangeAsParentPdfIconClicked = false;
+	changeAsParentPdfSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+	childAssetId = 0;
+	/****XNFR-381*****/
 	constructor(public damService: DamService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,
 		public referenceService: ReferenceService, public utilService: UtilService, public pagerService: PagerService, private router: Router,
 		public activatedRoute: ActivatedRoute, public sortOption: SortOption, public videoFileService: VideoFileService, public listLoader: HttpRequestLoader) { }
@@ -170,6 +175,8 @@ export class ShowHistoryComponent implements OnInit {
 		let campaign = input['campaign'];
 		let edit = input['edit'];
 		let analytics = input['analytics'];
+		/***XNFR-381****/
+		let changeAsParentTemplate = input['changeAsParentPdf'];
 		this.asset = input['asset'];
 		if (preview) {
 			this.preview(this.asset);
@@ -182,7 +189,10 @@ export class ShowHistoryComponent implements OnInit {
             this.editDetails(this.asset.id, this.asset.assetType, this.asset.alias, this.asset.beeTemplate, this.asset.videoId);
         }else if(analytics){
             this.viewAnalytics(this.asset);
-        }
+        }else if(changeAsParentTemplate){
+			this.changeAsParentPdf(this.asset.id);
+		}
+
 
 	}
 	  
@@ -222,7 +232,7 @@ export class ShowHistoryComponent implements OnInit {
 		this.referenceService.loading(this.listLoader, false);
 		this.asset = {};
 		this.pagination.pageIndex = 1;
-		this.listAssets(this.pagination);
+		this.listAssetsHistory(this.pagination);
 		this.callFolderListViewEmitter();
 		}else if(response.statusCode==401){
 			this.customResponse = new CustomResponse('ERROR', response.message, true);
@@ -418,5 +428,42 @@ export class ShowHistoryComponent implements OnInit {
 	 
 	 startLoaders() {
 		this.referenceService.loading(this.listLoader, true);
+	}
+
+	/****XNFR-381*****/
+	changeAsParentPdf(assetId:number){
+		this.childAssetId = assetId;
+		this.changeAsParentPdfSweetAlertParameterDto.text = 'Are you sure you want to switch this child template as the parent template?';
+		this.changeAsParentPdfSweetAlertParameterDto.confirmButtonText = "Yes,swtich it";
+		this.isChangeAsParentPdfIconClicked = true;
+	}
+
+	/****XNFR-381*****/
+	changeAsParentPdfEmitter(event:boolean){
+		if(event){
+			this.customResponse = new CustomResponse();
+			this.loading = true;
+			this.referenceService.showSweetAlertProceesor('We are processing your request');
+			this.damService.changeAsParentAsset(this.childAssetId).subscribe(
+				response=>{
+					let assetId = this.childAssetId;
+					this.resetChangeAsParentPdfValues();
+					this.referenceService.showSweetAlertSuccessMessage("Template switched successfully");
+					this.referenceService.navigateToRouterByViewTypes("/home/dam/history/"+assetId,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+				},(error:any)=>{
+					this.resetChangeAsParentPdfValues();
+					this.loading = false;
+					this.referenceService.closeSweetAlert();
+					let errorMessage = this.referenceService.getBadRequestErrorMessage(error);
+					this.referenceService.showSweetAlertErrorMessage(errorMessage);
+				});
+		}else{
+			this.resetChangeAsParentPdfValues();
+		}
+	}
+	/****XNFR-381*****/
+	resetChangeAsParentPdfValues(){
+		this.childAssetId = 0;
+		this.isChangeAsParentPdfIconClicked = false;
 	}
 }
