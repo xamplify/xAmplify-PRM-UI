@@ -94,24 +94,33 @@
                                 <img class="img-responsive center-block" *ngIf="beeRegularTemplate.marketoTemplate || beeRegularTemplate.hubSpotTemplate" src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
                                 <h4 title="{{beeRegularTemplate.name}}">{{beeRegularTemplate.name|slice:0:23}}<span *ngIf="beeRegularTemplate.name?.length>23">....</span></h4>
                                 <div class="bar gridIconCustomization">
-                                    <a class="Iconhover"  data-toggle="tooltip" data-placement="top" title="Create template" (click)="showTemplateById(beeRegularTemplate)" *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
+                                    <a class="Iconhover custom-icon"  data-toggle="tooltip" data-placement="top" title="Create template" (click)="showTemplateById(beeRegularTemplate)" *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
                                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                   <div class="clickicons"></div>
                                     </a>
-                                    <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(beeRegularTemplate)" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
-                                        <i class="fa fa-eye" aria-hidden="true"></i></a>
-                                    <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showMarketoEmailtemplatePreview(beeRegularTemplate.id)" *ngIf="beeRegularTemplate.marketoTemplate">
-                                        <i class="fa fa-eye" aria-hidden="true"></i></a>
-                                    <a class="Iconhover" (click)="edit(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="Create Template" *ngIf="beeRegularTemplate.marketoTemplate">
-                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                    </a>
-                                    <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showHubSpotEmailtemplatePreview(beeRegularTemplate.id)" *ngIf="beeRegularTemplate.hubSpotTemplate">
+                                    <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(beeRegularTemplate)" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
+                                        <div class="clickicons"></div>
                                     </a>
-                                    <a class="Iconhover" (click)="createTemplate(beeRegularTemplate.id)" data-toggle="tooltip" data-placement="top" title="Create Template" *ngIf="beeRegularTemplate.hubSpotTemplate">
+                                    <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showMarketoEmailtemplatePreview(beeRegularTemplate.id)" *ngIf="beeRegularTemplate.marketoTemplate">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                        <div class="clickicons"></div>
+                                    </a>
+                                    <a class="Iconhover custom-icon" (click)="edit(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="Create Template" *ngIf="beeRegularTemplate.marketoTemplate">
                                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                        <div class="clickicons"></div>
                                     </a>
-                                    <a class="delete" (click)="confirmDeleteEmailTemplate(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="Delete Default Template" *ngIf="loggedInAsSuperAdmin && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
+                                    <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showHubSpotEmailtemplatePreview(beeRegularTemplate.id)" *ngIf="beeRegularTemplate.hubSpotTemplate">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                        <div class="clickicons"></div>
+                                    </a>
+                                    <a class="Iconhover custom-icon" (click)="createTemplate(beeRegularTemplate.id)" data-toggle="tooltip" data-placement="top" title="Create Template" *ngIf="beeRegularTemplate.hubSpotTemplate">
+                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                        <div class="clickicons"></div>
+                                    </a>
+                                    <a class="delete custom-icon" (click)="confirmDeleteEmailTemplate(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="Delete Default Template" *ngIf="loggedInAsSuperAdmin && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        <div class="del-icon"></div>
                                     </a>
                                 </div>
                             </div>
