@@ -1,39 +1,21 @@
 <div id="addContactModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-
-data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
-<div class="modal-dialog  accounts-modal" style="position: relative !important;">
-  <!-- Modal content-->
-  <div class="modal-content">
-    <div class="modal-header">
-      <button type="button" class="close-circle"  (click)="addContactModalClose()">
-      <i class="fa fa-times" aria-hidden="true" style="margin-top: 0px;"></i></button>
-      <h4 class="modal-title size-font" *ngIf="!isUpdateUser" translate>Add {{checkingContactTypeName}}</h4>
-      <h4 class="modal-title size-font" *ngIf="isUpdateUser" translate>Edit {{checkingContactTypeName}}</h4>
-    </div>
-    <div class="modal-body border-bottom-1px">
-    
-    <div class="alert alert-danger"
-                        *ngIf="validationResponse.isVisible">
-                        <strong class="pre-wrap-next-line">{{validationResponse?.responseMessage}}</strong>
-                    </div>
-    
-      <div class="hide-scrollbar">
-      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <form class="form-horizontal" autocomplete="off">
-       <div class="form-group" *ngIf="isPartner && !isAssignLeads">
-          <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
-            <span class="star"> *</span>
-          </label>
-          <div class="form-group col-xs-10 col-sm-10" id="major-field-width">
-            <input type="company" style="border: none !important" class="form-control padding-mobile placeholder-bg-color" id="company"
-              [(ngModel)]="addContactuser.contactCompany" (input)="contactCompanyChecking(addContactuser.contactCompany)"
-              [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
-            <div class="textCss"></div>
-          </div>
-        </div>
-
-      <div class="form-group">
-            <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: 11px !important">
+  data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
+  <div class="modal-dialog  accounts-modal" style="position: relative !important;">
+    <!-- Modal content-->
+    <div class="modal-content full_popup">
+      <div class="modal-header popup_header">
+        <button type="button" class="close-circle" (click)="addContactModalClose()">
+          <i class="fa fa-times" aria-hidden="true" style="margin-top: 0px;"></i></button>
+        <h4 class="modal-title size-font" *ngIf="!isUpdateUser" translate>Add {{checkingContactTypeName}}</h4>
+        <h4 class="modal-title size-font" *ngIf="isUpdateUser" translate>Edit {{checkingContactTypeName}}</h4>
+      </div>
+      <div class="modal-body border-bottom-1px popup_body">
+        <div class="hide-scrollbar">
+          <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+          <form class="form-horizontal" autocomplete="off">
+            <div class="form-group mrg0" *ngIf="isPartner && !isAssignLeads">
+              <label class="control-label col-xs-2 col-sm-2" for="company"
+                style="color: #00bcd4; right: 11px !important">
                 <span class="star"> *</span>
               </label>
               <div class="form-group col-xs-10 col-sm-10 mrg0" id="major-field-width">
