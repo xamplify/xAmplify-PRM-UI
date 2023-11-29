@@ -39,7 +39,7 @@
                     <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px"
                       *ngIf="(!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany))) && !(lead.campaignId > 0)">
                       <label class="control-label">Lead For<font style="color: #f55d7a"> <strong>*</strong></font>
-                        </label>
+                      </label>
                       <select class="form-control" [(ngModel)]="lead.createdForCompanyId"
                         [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId" id="createdForCompanyId"
                         [disabled]="preview || edit || vanityLoginDto?.vanityUrlFilter"
@@ -121,7 +121,8 @@
                         [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="pipelineStageId"
                         [disabled]="preview">
                         <option [value]="0">Select Stage</option>
-                        <option *ngIf="!isVendorVersion && lead.currentStagePrivate" [value]="lead.currentStageId">{{lead.currentStageName}}</option>
+                        <option *ngIf="!isVendorVersion && lead.currentStagePrivate" [value]="lead.currentStageId">
+                          {{lead.currentStageName}}</option>
                         <option *ngFor="let stage of stages" [value]="stage.id">{{stage.stageName}}</option>
                       </select>
                     </div>
@@ -164,7 +165,8 @@
         </div>
       </div>
       <div class="pull-right" style="margin: 15px" *ngIf="!preview">
-        <button type="submit" id="saveLead" (click)="validateAndSubmit()" class="btn btn-primary">Submit
+        <button type="submit" id="saveLead" (click)="validateAndSubmit()" class="button_blue"><span
+            class="btn btn-primary transition">Submit</span>
         </button>
       </div>
     </div>

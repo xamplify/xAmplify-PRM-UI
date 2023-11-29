@@ -9,47 +9,43 @@
             <div class="portlet light">
                <div class="portlet-title">
                   <div class="caption prt_caption">
-                     <span class="caption-subject font-red-sunglo uppercase">{{authenticationService?.partnerModule?.customName}}</span>
+                     <span
+                        class="caption-subject font-red-sunglo uppercase">{{authenticationService?.partnerModule?.customName}}</span>
                   </div>
                   <div class="inputs pt0 mb-display" style="float: right">
                      <div style="float: left;">
                         <select class="form-control"
-                        [(ngModel)]="sortOption.campaignPartnersRemoveAccessDefaultSortOption"
-                        (ngModelChange)="sortBy($event)"
-                        style="position: relative; right: -3px;">
-                        <option
-                        *ngFor="let option of sortOption.campaignPartnersRemoveAccessSortDropDown"
-                        [ngValue]="option">{{option.name}}</option>
+                           [(ngModel)]="sortOption.campaignPartnersRemoveAccessDefaultSortOption"
+                           (ngModelChange)="sortBy($event)" style="position: relative; right: -3px;">
+                           <option *ngFor="let option of sortOption.campaignPartnersRemoveAccessSortDropDown"
+                              [ngValue]="option">{{option.name}}</option>
                         </select>
                      </div>
-                     <div class="portlet-input input-inline input-small mb_v_srch"
-                        style="margin-right: 10px;">
-                        <div class="input-icon right"
-                           style="position: relative; right: -11px;">
+                     <div class="portlet-input input-inline input-small mb_v_srch" style="margin-right: 10px;">
+                        <div class="input-icon right" style="position: relative; right: -11px;">
                            <input type="text" style="height: 34px;" class="form-control"
-                           [(ngModel)]="sortOption.searchKey"
-                           [ngModelOptions]="{standalone: true}" placeholder="search..."
-                           (keypress)="searchOnKeyPress($event.keyCode)">
-                           <button class="glyphicon glyphicon-remove search-box-item-clear"
-                           *ngIf="sortOption.searchKey"
-                           (click)="sortOption.searchKey='';search();"></button>
-                           <button type="submit" class="search-box-item-click"
-                              (click)="search()">
-                           <i class="fa fa-search" aria-hidden="true"></i>
+                              [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                              placeholder="search..." (keypress)="searchOnKeyPress($event.keyCode)">
+                           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                              (click)="sortOption.searchKey='';search();"></button>
+                           <button type="submit" class="search-box-item-click" (click)="search()">
+                              <i class="fa fa-search" aria-hidden="true"></i>
                            </button>
                         </div>
                      </div>
                   </div>
                </div>
                <app-response-message [customResponse]="partnerActionResponse"
-               *ngIf="partnerActionResponse.isVisible"></app-response-message>
+                  *ngIf="partnerActionResponse.isVisible"></app-response-message>
                <app-list-loader *ngIf="campaignPartnerLoader.isLoading"></app-list-loader>
-               <div class="portlet-body"  [hidden]="campaignPartnerLoader.isLoading">
-                  <app-team-member-filter-option (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+               <div class="portlet-body" [hidden]="campaignPartnerLoader.isLoading">
+                  <app-team-member-filter-option
+                     (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
                   <table class="table tgrid" id="campaign-partner-table" aria-describedby="campaignPartnersTable">
                      <thead>
                         <tr>
-                           <th style="text-align: left" scope="row">Details Of {{authenticationService?.partnerModule?.customName}}</th>
+                           <th style="text-align: left" scope="row">Details Of
+                              {{authenticationService?.partnerModule?.customName}}</th>
                            <th *ngIf="viewType=='plc'" scope="row" id="right-align">Actions</th>
                            <th *ngIf="viewType=='tda'" scope="row" id="right-align">#Download</th>
                            <th *ngIf="viewType=='teoa'" scope="row" id="right-align">#Opened</th>
@@ -58,119 +54,136 @@
                      <tbody>
                         <ng-container *ngFor="let partner of partnersPagination.pagedItems;let i=index">
                            <tr>
-                              <td style="text-align: left"><app-user-info
-                                 [userInfo]="partner" [isPartnerEntityInfo]="true"
-                                 [isPartnerInfo]="true"> </app-user-info>
+                              <td style="text-align: left"><app-user-info [userInfo]="partner"
+                                    [isPartnerEntityInfo]="true" [isPartnerInfo]="true"> </app-user-info>
                               </td>
                               <td class="center-align">
                                  <div class="actions-block">
                                     <ng-container *ngIf="viewType=='tda'">
-                                       <span class="circled-number" title="Download Count">{{partner?.downloadCount}}</span>
+                                       <span class="circled-number"
+                                          title="Download Count">{{partner?.downloadCount}}</span>
                                        <!----Download History-->
-                                       <a title="View Download History" (click)="expandHistory(partner,i)"> 
-                                       <i class="fa IconCustomization"
-                                          [ngClass]="{'fa-plus': !partner?.expand, 'fa-minus': partner?.expand}" aria-hidden="true"></i>
+                                       <a title="View Download History" (click)="expandHistory(partner,i)">
+                                          <i class="fa IconCustomization"
+                                             [ngClass]="{'fa-plus': !partner?.expand, 'fa-minus': partner?.expand}"
+                                             aria-hidden="true"></i>
                                        </a>
                                     </ng-container>
                                     <ng-container *ngIf="viewType=='teoa'">
-                                       <span class="circled-number" title="Email Opened Count">{{partner?.emailOpenedCount}}</span>
+                                       <span class="circled-number"
+                                          title="Email Opened Count">{{partner?.emailOpenedCount}}</span>
                                        <!----Download History-->
-                                       <a title="View Email Opened History" (click)="expandHistory(partner,i)"> 
-                                       <i class="fa IconCustomization"
-                                          [ngClass]="{'fa-plus': !partner?.expand, 'fa-minus': partner?.expand}" aria-hidden="true"></i>
+                                       <a title="View Email Opened History" (click)="expandHistory(partner,i)">
+                                          <i class="fa IconCustomization"
+                                             [ngClass]="{'fa-plus': !partner?.expand, 'fa-minus': partner?.expand}"
+                                             aria-hidden="true"></i>
                                        </a>
                                     </ng-container>
                                     <!----Delete-->
-                                    <a *ngIf="viewType=='plc'" (click)="confirmDeletePartnerById(partner,i)"
-                                    data-toggle="tooltip" data-placement="bottom"
-                                    title="{{actionsDescription.campaign_delete_partner}}"> <i
-                                       class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                                    <a class="custom-icon" *ngIf="viewType=='plc'"
+                                       (click)="confirmDeletePartnerById(partner,i)" data-toggle="tooltip"
+                                       data-placement="bottom" title="{{actionsDescription.campaign_delete_partner}}">
+                                       <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                                       <div class="del-icon"></div>
                                     </a>
                                  </div>
                               </td>
                            </tr>
                            <tr [ngClass]="{'hidden': !partner?.expand}">
                               <td [attr.colspan]="colspanValue">
-                                 <app-response-message [customResponse]="historyResponse" *ngIf="historyResponse.isVisible"></app-response-message>
+                                 <app-response-message [customResponse]="historyResponse"
+                                    *ngIf="historyResponse.isVisible"></app-response-message>
                                  <div class="table-responsive" *ngIf="!historyResponse.isVisible">
-                                    <table class="table tgrid table-condensed" aria-describedby="asset-history" id="asset-history">
+                                    <table class="table tgrid table-condensed" aria-describedby="asset-history"
+                                       id="asset-history">
                                        <thead>
                                           <tr>
-                                             <th *ngIf="viewType=='tda'" class="text-center" scope="row" translate>Downloaded Type</th>
-                                             <th *ngIf="viewType=='tda'" class="text-center" id="min-width" translate>Downloaded Time</th>
-                                             <th *ngIf="viewType=='teoa'" class="text-center" id="min-width" translate>Opened Time</th>
+                                             <th *ngIf="viewType=='tda'" class="text-center" scope="row" translate>
+                                                Downloaded Type</th>
+                                             <th *ngIf="viewType=='tda'" class="text-center" id="min-width" translate>
+                                                Downloaded Time</th>
+                                             <th *ngIf="viewType=='teoa'" class="text-center" id="min-width" translate>
+                                                Opened Time</th>
                                           </tr>
                                        </thead>
                                        <tbody>
-                                          <app-auto-response-loader *ngIf="historyLoader.isLoading"> </app-auto-response-loader>
+                                          <app-auto-response-loader *ngIf="historyLoader.isLoading">
+                                          </app-auto-response-loader>
                                           <ng-container *ngIf="!historyLoader.isLoading">
                                              <tr *ngFor="let history of historyList ;let i =index" id="history-tr">
                                                 <td *ngIf="viewType=='tda'" class="text-center">
                                                    {{history?.downloadedType}}
                                                 </td>
-                                                <td  class="text-center">
-                                                   <app-timestamp  [dateAndTime]="history?.displayTime">
+                                                <td class="text-center">
+                                                   <app-timestamp [dateAndTime]="history?.displayTime">
                                                    </app-timestamp>
                                                 </td>
                                              </tr>
                                           </ng-container>
                                        </tbody>
                                     </table>
-                                    <div  *ngIf="historyPagination.pagedItems.length !== 0" [hidden]="historyLoader.isLoading">
-                                    <app-pagination [pagination]="historyPagination" (notifyParent)="setHistoryPage($event)" (notifyParentDropDown)="listDownloadHistory($event)">
-                                    </app-pagination>
+                                    <div *ngIf="historyPagination.pagedItems.length !== 0"
+                                       [hidden]="historyLoader.isLoading">
+                                       <app-pagination [pagination]="historyPagination"
+                                          (notifyParent)="setHistoryPage($event)"
+                                          (notifyParentDropDown)="listDownloadHistory($event)">
+                                       </app-pagination>
+                                    </div>
                                  </div>
+                              </td>
+                           </tr>
+                        </ng-container>
+                     </tbody>
+                  </table>
                </div>
-               </td>
-               </tr>
-               </ng-container>
-               </tbody>
-               </table>
-            </div>
-            <div  *ngIf="sortOption.totalRecords > 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError"
-               >
-               <app-pagination [pagination]="partnersPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listPartners($event)">
-               </app-pagination>
-            </div>
-            <div *ngIf="sortOption.totalRecords == 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError"
-               class="alert alert-info">
-               <strong>No Data Found.</strong>
+               <div
+                  *ngIf="sortOption.totalRecords > 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError">
+                  <app-pagination [pagination]="partnersPagination" (notifyParent)="setPage($event)"
+                     (notifyParentDropDown)="listPartners($event)">
+                  </app-pagination>
+               </div>
+               <div
+                  *ngIf="sortOption.totalRecords == 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError"
+                  class="alert alert-info">
+                  <strong>No Data Found.</strong>
+               </div>
             </div>
          </div>
       </div>
-</div>
-</ng-container>
-<!--One-Click Launch Campaign-->
-<ng-container *ngIf="!initLoader && oneClickLaunchCampaign">
-   <ng-template [ngTemplateOutlet]="header"></ng-template>
-   <div class="row">
-      <div class="col-xs-12 p5">
-         <div class="portlet light">
-            <div class="portlet-title">
-               <div class="caption">
-                  <span class="caption-subject font-red-sunglo uppercase">Selected {{authenticationService?.partnerModule?.customName}} Company</span>
+   </ng-container>
+   <!--One-Click Launch Campaign-->
+   <ng-container *ngIf="!initLoader && oneClickLaunchCampaign">
+      <ng-template [ngTemplateOutlet]="header"></ng-template>
+      <div class="row">
+         <div class="col-xs-12 p5">
+            <div class="portlet light">
+               <div class="portlet-title">
+                  <div class="caption">
+                     <span class="caption-subject font-red-sunglo uppercase">Selected
+                        {{authenticationService?.partnerModule?.customName}} Company</span>
+                  </div>
                </div>
-            </div>
-            <div class="portlet-body">
-               <app-one-click-launch-partner-preview [campaignId]="campaignId" [viewType]="viewType"></app-one-click-launch-partner-preview>
+               <div class="portlet-body">
+                  <app-one-click-launch-partner-preview [campaignId]="campaignId"
+                     [viewType]="viewType"></app-one-click-launch-partner-preview>
+               </div>
             </div>
          </div>
       </div>
-   </div>
-</ng-container>
-<ng-template #header>
-   <div class="page-bar">
-      <ul class="page-breadcrumb">
-         <li *ngIf="!authenticationService.isSuperAdmin()">
-            <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="refService.homeRouter">Home</a>
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li><a [routerLink]="['/home/campaigns/manage']">Manage
-            Campaigns</a><i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li><a>{{authenticationService?.partnerModule?.customName}}</a></li>
-      </ul>
-   </div>
-</ng-template>
-<app-scroll-top></app-scroll-top>
+   </ng-container>
+   <ng-template #header>
+      <div class="page-bar">
+         <ul class="page-breadcrumb">
+            <li *ngIf="!authenticationService.isSuperAdmin()">
+               <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="refService.homeRouter">Home</a>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li><a [routerLink]="['/home/campaigns/manage']">Manage
+                  Campaigns</a><i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li><a>{{authenticationService?.partnerModule?.customName}}</a></li>
+         </ul>
+      </div>
+   </ng-template>
+   <app-scroll-top></app-scroll-top>
 </div>

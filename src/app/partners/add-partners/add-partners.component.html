@@ -49,7 +49,7 @@
         </ul>
         <div id="download-partners-csv" class="hidden-xs" style="padding-right: 3px;padding-top:1px;">
             <a (click)="downloadEmptyCsv()">
-                <button type="button" class="button" download
+                <button type="button" class="button p-rgt_p-top" download
                     [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
                     <span class="btn Btn-Green transition">Download CSV Template <i class="fa fa-download"
                             aria-hidden="true" style="margin-left: 5px"></i></span>
@@ -910,11 +910,10 @@
                                                                 <div class="clickicons"></div>
                                                             </a>
                                                             <a class="custom-icon" id="envolope_{{i}}"
-                                                            aria-hidden="true" data-toggle="tooltip"
-                                                            data-placement="bottom"
-                                                            title="Send Email Notification" (click)="sendMail(contact.id)">
-                                                                <i class="fa fa-envelope IconCustomization"
-                                                                    ></i>
+                                                                aria-hidden="true" data-toggle="tooltip"
+                                                                data-placement="bottom" title="Send Email Notification"
+                                                                (click)="sendMail(contact.id)">
+                                                                <i class="fa fa-envelope IconCustomization"></i>
                                                                 <div class="clickicons"></div>
                                                             </a>
                                                             <a class="custom-icon" id="edit_{{i}}" data-toggle="tooltip"
@@ -1432,8 +1431,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal" (click)="cancelPartners()"
                     translate>Decline</button>
-                <button type="button" [disabled]="!isCheckTC" class="btn btn-primary"
-                    (click)="saveContactsWithPermission()" translate>Accept</button>
+                <button type="button" [disabled]="!isCheckTC" class="button_blue" (click)="saveContactsWithPermission()"
+                    translate><span class="btn btn-primary transition">Accept</span></button>
             </div>
         </div>
     </div>

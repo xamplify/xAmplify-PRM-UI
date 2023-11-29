@@ -1,16 +1,19 @@
 <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
 </app-response-message>
 <ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="portlet-title" style="border-bottom: 0px !important ;"  *ngIf="!showTracksPlayBook">
+<div class="portlet-title" style="border-bottom: 0px !important ;" *ngIf="!showTracksPlayBook">
     <div *ngIf="!showAsset" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 20px;">
         <a (click)="closeView()" class="pull-right close-circle" style="padding: 4px 5px; margin: 5px -8px 2px 0px;">
             <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;position: relative;
             top: 4px;" aria-hidden="true"></span></a>
         <div class="page-bar" style="padding: 3px;margin-bottom: 1px;margin-right: -15px;margin-left: -15px; ">
             <div class="col-md-6 col-lg-6 track-title">
-                <div class="title-class breadcrumb-font-color" style="color: #888;font-size: 13px;text-shadow: none;"> Title:</div>
-                <a class="title padding_bottom breadcrumb-font-color" style="color: #888;font-size: 13px;text-shadow: none; padding-top: 10px;" data-toggle="tooltip" data-placement="bottom" title="{{tracksPlayBook.title}}">{{tracksPlayBook.title}}</a>
-            </div>                    
+                <div class="title-class breadcrumb-font-color" style="color: #888;font-size: 13px;text-shadow: none;">
+                    Title:</div>
+                <a class="title padding_bottom breadcrumb-font-color"
+                    style="color: #888;font-size: 13px;text-shadow: none; padding-top: 10px;" data-toggle="tooltip"
+                    data-placement="bottom" title="{{tracksPlayBook.title}}">{{tracksPlayBook.title}}</a>
+            </div>
         </div>
     </div>
     <br>
@@ -18,122 +21,143 @@
 
 <div [ngClass]="{'blur-content' : showFilePreview}">
     <ng-container *ngIf="tracksPlayBook != undefined && !httpRequestLoader.isLoading">
-            <div class="row">
-                <section *ngIf="showTracksPlayBook">
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-padding" style="padding-right: 0px;">
-                        <div class="page-bar leftBar" style="padding: 0px;">
-                            <div class="col-md-12 col-lg-12 border-line" style="border:0px !important"
-                                >
-                                <div class="row">
-                                    <div class="col-md-6 col-lg-6 track-title text-color content-bg">
-                                        <div class="title-class">Title:</div>
-                                        <a class="title padding_bottom text-color content-bg m0" data-toggle="tooltip" data-placement="bottom" title="{{tracksPlayBook.title}}"
+        <div class="row">
+            <section *ngIf="showTracksPlayBook">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-padding" style="padding-right: 0px;">
+                    <div class="page-bar leftBar" style="padding: 0px;">
+                        <div class="col-md-12 col-lg-12 border-line" style="border:0px !important">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6 track-title text-color content-bg">
+                                    <div class="title-class">Title:</div>
+                                    <a class="title padding_bottom text-color content-bg m0" data-toggle="tooltip"
+                                        data-placement="bottom" title="{{tracksPlayBook.title}}"
                                         style="font-size: 15px; padding-top: 10px;font-weight: 600;">{{tracksPlayBook.title}}</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding_bottom">
-                                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 padding-none">
-                                    <img class="img-asset-class img_fit-content" [src]="tracksPlayBook.featuredImage" alt="" onerror="this.src='assets/images/content/image.png';" style="height: 123px;width: 100%;">
-                                </div>
-                                <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
-                                    <div class="center" style="padding-top: 10px;" 
-                                    data-toggle="tooltip" data-placement="bottom"
-                                    title="{{tracksPlayBook.createdByName}}"
-                                        translate>
-                                        Created By <strong>{{tracksPlayBook.createdByName}}</strong>
-                                    </div>
-                                    <div class="center" style="padding-top: 10px;">
-                                        Created On
-                                        <strong>
-                                            <app-timestamp [showInLine]="'true'" [dateAndTime]="tracksPlayBook.createdTime">
-                                            </app-timestamp>
-                                        </strong>
-                                    </div>
-                                    <div *ngIf="(type == undefined || type == 'TRACK') && isCreatedUser" class="center"
-                                        style="padding-top: 10px;">
-                                        <button style="border-radius: 5px;"
-                                            [className]="authenticationService.module.playbookAccess ? 'btn-primary':'inactive'"
-                                            data-toggle="tooltip" data-placement="bottom"
-                                            [title]="authenticationService.module.playbookAccess?'':'You do not have access'"
-                                            (click)="saveAsPlayBook(authenticationService.module.playbookAccess)" translate>
-                                            <i class="fa fa-plus" aria-hidden="true"></i>
-                                            Add To PlayBooks
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <div class="padding_bottom text-wrap-track-description img-desc-section-wrap">
-                                    <div [innerHTML]="tracksPlayBook.description"></div>
                                 </div>
                             </div>
                         </div>
-            
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 padding_bottom">
+                            <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5 padding-none">
+                                <img class="img-asset-class img_fit-content" [src]="tracksPlayBook.featuredImage" alt=""
+                                    onerror="this.src='assets/images/content/image.png';"
+                                    style="height: 123px;width: 100%;">
+                            </div>
+                            <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
+                                <div class="center" style="padding-top: 10px;" data-toggle="tooltip"
+                                    data-placement="bottom" title="{{tracksPlayBook.createdByName}}" translate>
+                                    Created By <strong>{{tracksPlayBook.createdByName}}</strong>
+                                </div>
+                                <div class="center" style="padding-top: 10px;">
+                                    Created On
+                                    <strong>
+                                        <app-timestamp [showInLine]="'true'" [dateAndTime]="tracksPlayBook.createdTime">
+                                        </app-timestamp>
+                                    </strong>
+                                </div>
+                                <div *ngIf="(type == undefined || type == 'TRACK') && isCreatedUser" class="center"
+                                    style="padding-top: 10px;">
+                                    <button style="border-radius: 5px;"
+                                        [className]="authenticationService.module.playbookAccess ? 'btn-primary':'inactive'"
+                                        data-toggle="tooltip" data-placement="bottom"
+                                        [title]="authenticationService.module.playbookAccess?'':'You do not have access'"
+                                        (click)="saveAsPlayBook(authenticationService.module.playbookAccess)" translate>
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                        Add To PlayBooks
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="padding_bottom text-wrap-track-description img-desc-section-wrap">
+                                <div [innerHTML]="tracksPlayBook.description"></div>
+                            </div>
+                        </div>
                     </div>
-                </section>
-                <section *ngIf="!showTracksPlayBook" style="margin:0 15px 0 15px; ">
-                    <div *ngIf="!showAsset" class="portlet light page-bar Form-BgImg" style="margin-top:45px;"
+
+                </div>
+            </section>
+            <section *ngIf="!showTracksPlayBook" style="margin:0 15px 0 15px; ">
+                <div *ngIf="!showAsset" class="portlet light page-bar Form-BgImg" style="margin-top:45px;"
                     [style.backgroundColor]="authenticationService.formBackground">
-                        <div class="portlet-body Form-BgImg">
+                    <div class="portlet-body Form-BgImg">
                         <div class="col-md-12 col-lg-12" style="padding-top: 30px;">
                             <app-form-preview *ngIf="!showAsset" [learningTrackId]="tracksPlayBook.id"
-                                [isTrackQuizSubmitted]="isCurrentQuizSubmitted" [partnerId]="loggedInUserId" (notifyParent)="closeView($event)">
+                                [isTrackQuizSubmitted]="isCurrentQuizSubmitted" [partnerId]="loggedInUserId"
+                                (notifyParent)="closeView($event)">
                             </app-form-preview>
                         </div>
                     </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <div>
-                            <div *ngIf="showAsset">
-                                <div>
-                                    <app-modal-popup-loader [hidden]="!assetViewLoader"></app-modal-popup-loader>
-                                    <div [hidden]="assetViewLoader">
-                                        <div style="margin-bottom: 10px!important;padding:0px 0px !important;">
-                                            <div class="row">
-                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-right: 0px;padding-left:0px;">
-                                                    <div class="portlet light cphdam page-bar">
-                                                        <div class="portlet-title">
-                                                            <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 breadcrumb-font-color" style="color: #888;padding-right:5px;">
-                                                                <a (click)="closeView();closeVideoPlayer()" class="pull-right close-circle" style="margin:5px 0px 4px 0px;">
-                                                                    <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-                                                                <h4 class="name-wrap" style="font-size: 15px;font-weight: bold;">
-                                                                    <div class="title-class"> Title:</div>
-                                                                    <a class="title padding_bottom breadcrumb-font-color" style="font-size: 15px; padding-top: 10px;color: #888;" data-toggle="tooltip" data-placement="top"
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div>
+                        <div *ngIf="showAsset">
+                            <div>
+                                <app-modal-popup-loader [hidden]="!assetViewLoader"></app-modal-popup-loader>
+                                <div [hidden]="assetViewLoader">
+                                    <div style="margin-bottom: 10px!important;padding:0px 0px !important;">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                                style="padding-right: 0px;padding-left:0px;">
+                                                <div class="portlet light cphdam page-bar">
+                                                    <div class="portlet-title">
+                                                        <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 breadcrumb-font-color"
+                                                            style="color: #888;padding-right:5px;">
+                                                            <a (click)="closeView();closeVideoPlayer()"
+                                                                class="pull-right close-circle"
+                                                                style="margin:5px 0px 4px 0px;">
+                                                                <span class="glyphicon glyphicon-remove"
+                                                                    style="z-index: 1;font-size: 13px;"
+                                                                    aria-hidden="true"></span></a>
+                                                            <h4 class="name-wrap"
+                                                                style="font-size: 15px;font-weight: bold;">
+                                                                <div class="title-class"> Title:</div>
+                                                                <a class="title padding_bottom breadcrumb-font-color"
+                                                                    style="font-size: 15px; padding-top: 10px;color: #888;"
+                                                                    data-toggle="tooltip" data-placement="top"
                                                                     title="{{tracksPlayBook.title}}">{{tracksPlayBook.title}}</a>
-                                                                </h4>
-                                                            </div>
-                                                            <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12 asset-name-class">
-                                                                <h4 class="name-wrap title-height" style="font-size: 15px;font-weight: bold;">
-                                                                    <div class="Asset-title-class">Asset Title:</div>
-                                                                    <strong  data-toggle="tooltip" data-placement="bottom"
+                                                            </h4>
+                                                        </div>
+                                                        <div
+                                                            class="col-sm-12 col-lg-12 col-md-12 col-xs-12 asset-name-class">
+                                                            <h4 class="name-wrap title-height"
+                                                                style="font-size: 15px;font-weight: bold;">
+                                                                <div class="Asset-title-class">Asset Title:</div>
+                                                                <strong data-toggle="tooltip" data-placement="bottom"
                                                                     title="{{assetDetails?.assetName}}">{{assetDetails?.assetName}}</strong>
-                                                                </h4>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="assetDetails?.assetType!='mp4'">
-                                                            <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 padding-none">
-                                                                <img class="img-class" src="{{assetDetails?.thumbnailPath}}"
-                                                                    alt="No Image Found">
-                                                            </div>
-                                                            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 mb_pr0">
-                                                                <div class="center title-height" style="padding: 10px;margin: 0 !important;font-size: 14px;" 
-                                                                
-                                                                    translate>
-                                                                    <strong data-toggle="tooltip" data-placement="top" title="{{assetDetails.assetType}}">Type: {{assetDetails.assetType}}</strong><br>
-                                                                </div>
-                                                                <a class="btn btn-primary" (click)="assetPreview(assetDetails)">View</a>
-                                                                <a *ngIf="assetDetails?.assetType!='mp4'" class="btn btn-primary" [ngClass]="{'isDisabled' : !assetDetails?.thumbnailPath}"
-                                                                    (click)="downloadAsset(assetDetails)">Download</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="isVideo">
-                                                            <app-xamplify-video-player [videoId]="selectedVideoId" (xamplifyVideoPlayerEmitter)="xamplifyVideoPlayerReceiver($event)"></app-xamplify-video-player>
-                                                        </div>
-                                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 6px 10px 10px 10px;">
-                                                            <div class="description-scroll padding_bottom img-desc-section-wrap" [innerHTML]="assetDetails?.description">
+                                                            </h4>
                                                         </div>
                                                     </div>
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                                        *ngIf="assetDetails?.assetType!='mp4'">
+                                                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 padding-none">
+                                                            <img class="img-class" src="{{assetDetails?.thumbnailPath}}"
+                                                                alt="No Image Found">
+                                                        </div>
+                                                        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 mb_pr0">
+                                                            <div class="center title-height"
+                                                                style="padding: 10px;margin: 0 !important;font-size: 14px;"
+                                                                translate>
+                                                                <strong data-toggle="tooltip" data-placement="top"
+                                                                    title="{{assetDetails.assetType}}">Type:
+                                                                    {{assetDetails.assetType}}</strong><br>
+                                                            </div>
+                                                            <a class="btn btn-primary"
+                                                                (click)="assetPreview(assetDetails)">View</a>
+                                                            <a *ngIf="assetDetails?.assetType!='mp4'"
+                                                                class="btn btn-primary"
+                                                                [ngClass]="{'isDisabled' : !assetDetails?.thumbnailPath}"
+                                                                (click)="downloadAsset(assetDetails)">Download</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                                        *ngIf="isVideo">
+                                                        <app-xamplify-video-player [videoId]="selectedVideoId"
+                                                            (xamplifyVideoPlayerEmitter)="xamplifyVideoPlayerReceiver($event)"></app-xamplify-video-player>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                                        style="padding: 6px 10px 10px 10px;">
+                                                        <div class="description-scroll padding_bottom img-desc-section-wrap"
+                                                            [innerHTML]="assetDetails?.description">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -143,130 +167,145 @@
                             </div>
                         </div>
                     </div>
-                </section> 
-                <section class="col-xs-12 col-sm-6 col-md-6 col-lg-6" *ngIf="showAsset || showTracksPlayBook">
-                    <div class=" col-md-12 col-lg-12 color-inline border-line">
-                        <div style="display: inline;position: absolute;margin-top:7px !important;margin-left:3px;">
-                            <a class="title padding_bottom text-color content-bg row-space" style="font-size: 15px; padding-top: 10px;padding-bottom: 9px;border-bottom:none !important">Content</a>
-                        </div>
+                </div>
+            </section>
+            <section class="col-xs-12 col-sm-6 col-md-6 col-lg-6" *ngIf="showAsset || showTracksPlayBook">
+                <div class=" col-md-12 col-lg-12 color-inline border-line">
+                    <div style="display: inline;position: absolute;margin-top:7px !important;margin-left:3px;">
+                        <a class="title padding_bottom text-color content-bg row-space"
+                            style="font-size: 15px; padding-top: 10px;padding-bottom: 9px;border-bottom:none !important">Content</a>
                     </div>
-                    <div class="page-bar">
-                        <app-list-loader *ngIf="trackViewLoader && modulesDisplayType.isListView">
-                        </app-list-loader>
-                        <!---List View----->
-                        <section *ngIf="modulesDisplayType.isListView && !trackViewLoader">
-                            <div class="table-responsive tab_float_unset" style="float: left;">
-                                <table class='table tgrid table-hover table-sm' id="manage-assets-table"
-                                    *ngIf="tracksPlayBook.contents?.length>0" aria-describedby="manageAssetTables">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="2" style="width: 70%" id="border-bottom">
-                                                <span class="gridHeader" translate>Asset
-                                                    Details </span>
-                                            </th>
-                                            <th class="text-center" scope="row" translate id="border-bottom">Type</th>
-                                            <th class="text-center" id="min-width" translate id="border-bottom">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <div></div>
-                                    <tbody>
-                                        <ng-container *ngFor="let content of tracksPlayBook.contents ;let i =index">
-                                            <tr
-                                                [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser, 'content-in-view' : (contentIndexInView == i)}" (click)="$event.stopPropagation();viewContent(content, i)">
-                                                <ng-container *ngIf="!content.typeQuizId">
-                                                    <td style="width: 10%;">
-                                                        <div class="list-image-container">
-                                                            <div class="thumbnail-wrapper">
-                                                                <img class="custom-image-css" src="{{content?.dam?.thumbnailPath}}"
-                                                                    alt="Image Not Found">
-                                                            </div>
-                                                            <div *ngIf="content?.dam?.assetType != undefined && (videoFormats.indexOf(content.dam.assetType?.toLowerCase())>-1)"
-                                                                class="overlay-icon">
-                                                                <button
-                                                                    [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
-                                                                    class="list-play-icon-wrap" data-toggle="tooltip" data-placement="top"  title="View"
-                                                                    (click)="$event.stopPropagation();viewContent(content, i)">
-                                                                    <i class="fa fa-play list-play-icon"></i>
-                                                                </button>
-                                                            </div>
-                                                            <div *ngIf="content?.dam?.assetType == undefined || !(videoFormats.indexOf(content.dam.assetType?.toLowerCase())>-1)"
-                                                                class="overlay-icon">
-                                                                <button
-                                                                    [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
-                                                                    class="list-play-icon-wrap" data-toggle="tooltip" data-placement="top" title="View"
-                                                                    (click)="$event.stopPropagation();viewContent(content, i)">
-                                                                    <i class="fa fa-file list-file-icon"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{content?.dam?.assetName}}">
-                                                            <span><strong>{{content?.dam?.assetName}}</strong></span>
-                                                        </h4>
-                                                        <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
-                                                            style="padding-top: 5px;">
-                                                            <h6 *ngIf="content.finished" style="background-color: #5cb85c;"
-                                                                class="banner" translate>
-                                                                Finished</h6>
-                                                            <h6 *ngIf="content.opened && !content.finished"
-                                                                style="background-color: #819081;" class="banner" translate>In
-                                                                Progress</h6>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-center">{{content?.dam?.assetType}}</td>
-                                                </ng-container>
-                                                <ng-container *ngIf="content.typeQuizId">
-                                                    <td style="width: 10%;">
+                </div>
+                <div class="page-bar">
+                    <app-list-loader *ngIf="trackViewLoader && modulesDisplayType.isListView">
+                    </app-list-loader>
+                    <!---List View----->
+                    <section *ngIf="modulesDisplayType.isListView && !trackViewLoader">
+                        <div class="table-responsive tab_float_unset" style="float: left;">
+                            <table class='table tgrid table-hover table-sm' id="manage-assets-table"
+                                *ngIf="tracksPlayBook.contents?.length>0" aria-describedby="manageAssetTables">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" style="width: 70%" id="border-bottom">
+                                            <span class="gridHeader" translate>Asset
+                                                Details </span>
+                                        </th>
+                                        <th class="text-center" scope="row" translate id="border-bottom">Type</th>
+                                        <th class="text-center" id="min-width" translate id="border-bottom">Actions</th>
+                                    </tr>
+                                </thead>
+                                <div></div>
+                                <tbody>
+                                    <ng-container *ngFor="let content of tracksPlayBook.contents ;let i =index">
+                                        <tr [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser, 'content-in-view' : (contentIndexInView == i)}"
+                                            (click)="$event.stopPropagation();viewContent(content, i)">
+                                            <ng-container *ngIf="!content.typeQuizId">
+                                                <td style="width: 10%;">
+                                                    <div class="list-image-container">
                                                         <div class="thumbnail-wrapper">
-                                                            <img class="custom-image-css" [src]="tracksPlayBook.featuredImage"
-                                                                onerror="this.src='assets/images/form.png';" alt="Image Not Found">
-                                                            <div class="ribbon">
-                                                                <span style="background-color: #5cb85c;" translate>Quiz</span>
-                                                            </div>
+                                                            <img class="custom-image-css"
+                                                                src="{{content?.dam?.thumbnailPath}}"
+                                                                alt="Image Not Found">
                                                         </div>
-                                                    </td>
-                                                    <td>
-                                                        <h4 class="mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{content.quiz.name}}">
-                                                            <span><strong>{{content.quiz.name}}</strong></span>
-                                                        </h4>
-                                                        <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
-                                                            style="padding-top: 5px;">
-                                                            <h6 *ngIf="content.finished" style="background-color: #5cb85c;"
-                                                                class="banner" translate>
-                                                                Finished</h6>
-                                                            <h6 *ngIf="content.opened && !content.quiz.finished"
-                                                                style="background-color: #819081;" class="banner" translate>In
-                                                                Progress</h6>
+                                                        <div *ngIf="content?.dam?.assetType != undefined && (videoFormats.indexOf(content.dam.assetType?.toLowerCase())>-1)"
+                                                            class="overlay-icon">
+                                                            <button
+                                                                [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
+                                                                class="list-play-icon-wrap" data-toggle="tooltip"
+                                                                data-placement="top" title="View"
+                                                                (click)="$event.stopPropagation();viewContent(content, i)">
+                                                                <i class="fa fa-play list-play-icon"></i>
+                                                            </button>
                                                         </div>
-                                                    </td>
-                                                    <td class="text-center">Form</td>
-                                                </ng-container>
-                                                <td id="actions-row" class="text-center">
-                                                    <div class="actions-block override-actions custom-width-icon no-float">
-                                                        <a class="custom-icon" [ngClass]="{'isDisabled' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
-                                                            data-toggle="tooltip" data-placement="bottom" title="View"
-                                                            (click)="$event.stopPropagation();viewContent(content, i)">
-                                                            <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
-                                                            <div class="clickicons"></div>
-                                                        </a>
+                                                        <div *ngIf="content?.dam?.assetType == undefined || !(videoFormats.indexOf(content.dam.assetType?.toLowerCase())>-1)"
+                                                            class="overlay-icon">
+                                                            <button
+                                                                [ngClass]="{'disable-click' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
+                                                                class="list-play-icon-wrap" data-toggle="tooltip"
+                                                                data-placement="top" title="View"
+                                                                (click)="$event.stopPropagation();viewContent(content, i)">
+                                                                <i class="fa fa-file list-file-icon"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </td>
-                                            </tr>
-                                        </ng-container>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-                        <div *ngIf="tracksPlayBook.contents?.length==0 && !trackViewLoader" class="alert alert-info text-center cus-nodatafound-alert" style="margin-left: 10px;margin-right: 10px;">
-                            <strong>No Data Found.</strong>
+                                                <td>
+                                                    <h4 class="moreipsis mt5 mb5 f-w-600" data-toggle="tooltip"
+                                                        data-placement="bottom" title="{{content?.dam?.assetName}}">
+                                                        <span><strong>{{content?.dam?.assetName}}</strong></span>
+                                                    </h4>
+                                                    <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
+                                                        style="padding-top: 5px;">
+                                                        <h6 *ngIf="content.finished" style="background-color: #5cb85c;"
+                                                            class="banner" translate>
+                                                            Finished</h6>
+                                                        <h6 *ngIf="content.opened && !content.finished"
+                                                            style="background-color: #819081;" class="banner" translate>
+                                                            In
+                                                            Progress</h6>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">{{content?.dam?.assetType}}</td>
+                                            </ng-container>
+                                            <ng-container *ngIf="content.typeQuizId">
+                                                <td style="width: 10%;">
+                                                    <div class="thumbnail-wrapper">
+                                                        <img class="custom-image-css"
+                                                            [src]="tracksPlayBook.featuredImage"
+                                                            onerror="this.src='assets/images/form.png';"
+                                                            alt="Image Not Found">
+                                                        <div class="ribbon">
+                                                            <span style="background-color: #5cb85c;"
+                                                                translate>Quiz</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <h4 class="mt5 mb5 f-w-600" data-toggle="tooltip"
+                                                        data-placement="bottom" title="{{content.quiz.name}}">
+                                                        <span><strong>{{content.quiz.name}}</strong></span>
+                                                    </h4>
+                                                    <div *ngIf="!isCreatedUser && (type == undefined || type == 'TRACK')"
+                                                        style="padding-top: 5px;">
+                                                        <h6 *ngIf="content.finished" style="background-color: #5cb85c;"
+                                                            class="banner" translate>
+                                                            Finished</h6>
+                                                        <h6 *ngIf="content.opened && !content.quiz.finished"
+                                                            style="background-color: #819081;" class="banner" translate>
+                                                            In
+                                                            Progress</h6>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">Form</td>
+                                            </ng-container>
+                                            <td id="actions-row" class="text-center">
+                                                <div class="actions-block override-actions custom-width-icon no-float">
+                                                    <a class="custom-icon"
+                                                        [ngClass]="{'isDisabled' : (type == undefined || type == 'TRACK') && i != 0 && tracksPlayBook.followAssetSequence && (!tracksPlayBook.contents[i-1].finished || !content.previousContentFinished)  && !isCreatedUser}"
+                                                        data-toggle="tooltip" data-placement="bottom" title="View"
+                                                        (click)="$event.stopPropagation();viewContent(content, i)">
+                                                        <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                                                        <div class="clickicons"></div>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
                         </div>
+                    </section>
+                    <div *ngIf="tracksPlayBook.contents?.length==0 && !trackViewLoader"
+                        class="alert alert-info text-center cus-nodatafound-alert"
+                        style="margin-left: 10px;margin-right: 10px;">
+                        <strong>No Data Found.</strong>
                     </div>
-                </section>
-            </div>
+                </div>
+            </section>
+        </div>
 
-            
-            
+
+
     </ng-container>
 </div>
 
@@ -276,7 +315,8 @@
 <!-- Preview Assets -->
 <ng-container *ngIf="showFilePreview">
     <div class="overlay page-content custimizaPageContent previewContent">
-        <button type="button" class="close-circle mb-close" style="position: relative; top: 32px; right: 26px;" data-dismiss="modal" (click)="closeAssetPreview()">
+        <button type="button" class="close-circle mb-close" style="position: relative; top: 32px; right: 26px;"
+            data-dismiss="modal" (click)="closeAssetPreview()">
             <i style="padding-bottom: 3px;" class="fa fa-times" aria-hidden="true"></i>
         </button>
         <div class="overlay-content mb-imgContent">
@@ -310,7 +350,7 @@
             </div>
             <div class="modal-body overflow-control">
                 <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
-                <div id="asset-preview-content"> 
+                <div id="asset-preview-content">
                 </div>
             </div>
             <div class="modal-footer">
@@ -321,4 +361,3 @@
 </div>
 
 <!--Load xAmplify Player-->
-

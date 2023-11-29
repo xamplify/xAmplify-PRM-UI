@@ -1,464 +1,812 @@
 <div class="text-center p10" style="margin: -4px -9px 45px 0px;">
-    <button class="btn btn-primary pull-right mb10" (click)="send()" translate>Spam Check</button>
+    <button class="button_blue pull-right mb10" (click)="send()" translate><span class="btn btn-primary transition">Spam
+            Check</span></button>
 </div>
 <div>
     <ngx-loading [show]="loading"></ngx-loading>
-<div class="wrapper center-block" *ngIf="results">
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-        <ng-container *ngFor="let result of results">
-            <div *ngIf="!result?.jsonResponse" class="p10">
-                <div class='text-input__loading--line thick w100'></div>
-                <div class='text-input__loading--line thin w75'></div>
-            </div>
-            <div class="panel panel-default" *ngIf="result?.jsonResponse?.status === false && result?.jsonResponse?.body === null" translate>
-                <h5 class="p10">The spam checker should automatically begin in just a moment. If it doesn't start after a few seconds please click <!-- {{result?.jsonResponse.title}} --> <a (click)="test(result)" class="btn btn-success btn-xs">Refresh</a> to try again.</h5>                
-            </div>
-            <div class="panel panel-default" *ngIf="result?.jsonResponse?.status">                
-                <div class="panel-heading" role="tab" id="headingOne" aria-controls="collapseOne">
-                    <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{result?.id}}" aria-expanded="false">
-                             <span class="more-less headerRowPlusImage plusSymbol"></span>
-                            <b style="font-size: 19px;color: #008fd5;" translate>{{result?.jsonResponse?.displayedMark}}</b> {{result?.jsonResponse?.title}}
-                        </a>
-                        <span style="float: right;font-size: 12px;color: #056898;" translate>{{result?.jsonResponse?.messageInfo?.dateReceivedDisplayed}}</span>
-                    </h4>                    
+    <div class="wrapper center-block" *ngIf="results">
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <ng-container *ngFor="let result of results">
+                <div *ngIf="!result?.jsonResponse" class="p10">
+                    <div class='text-input__loading--line thick w100'></div>
+                    <div class='text-input__loading--line thin w75'></div>
                 </div>
-                <div id="collapse{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                    <div class="panel-body">
-                        <div class="test-results">
-                        <div class="panel-group" id="accordion-test-results" role="tablist" aria-multiselectable="true">
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="links">
-                                    <h4 class="panel-title">
-                                        <a  class="mLabelSize" role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapseLinks-{{result?.id}}" aria-expanded="false" aria-controls="collapseLinks">
-                                            <span class="more-less childRowPlusImage plusSymbol" translate></span>
-                                            {{result?.jsonResponse?.links?.title}}
-                                            <span class="pull-right status {{result?.jsonResponse?.links?.statusClass}}" translate >{{result?.jsonResponse?.links?.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseLinks-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="links">
-                                    <div class="panel-body mSpamWid">
-                                        <h5 class="mt0 f-w-600" translate>{{result?.jsonResponse?.links?.description}}</h5>
-                                        <ng-container *ngFor="let url of result?.jsonResponse?.links?.urls">
-                                            <h6 style="white-space: nowrap;" *ngIf="url?.statusCode !== '200'">
-                                                <span [ngClass]="{'status-success': url?.statusCode === '200', 'status-failure': url?.statusCode !== '200'}">[ {{url?.statusCode}} - {{url?.httpStatus}} ]</span>
-                                                <span translate>{{url?.baseUrl}}</span>
-                                            </h6>
-                                        </ng-container>
+                <div class="panel panel-default"
+                    *ngIf="result?.jsonResponse?.status === false && result?.jsonResponse?.body === null" translate>
+                    <h5 class="p10">The spam checker should automatically begin in just a moment. If it doesn't start
+                        after a few seconds please click <!-- {{result?.jsonResponse.title}} --> <a
+                            (click)="test(result)" class="btn btn-success btn-xs">Refresh</a> to try again.</h5>
+                </div>
+                <div class="panel panel-default" *ngIf="result?.jsonResponse?.status">
+                    <div class="panel-heading" role="tab" id="headingOne" aria-controls="collapseOne">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion"
+                                href="#collapse{{result?.id}}" aria-expanded="false">
+                                <span class="more-less headerRowPlusImage plusSymbol"></span>
+                                <b style="font-size: 19px;color: #008fd5;"
+                                    translate>{{result?.jsonResponse?.displayedMark}}</b>
+                                {{result?.jsonResponse?.title}}
+                            </a>
+                            <span style="float: right;font-size: 12px;color: #056898;"
+                                translate>{{result?.jsonResponse?.messageInfo?.dateReceivedDisplayed}}</span>
+                        </h4>
+                    </div>
+                    <div id="collapse{{result?.id}}" class="panel-collapse collapse" role="tabpanel"
+                        aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            <div class="test-results">
+                                <div class="panel-group" id="accordion-test-results" role="tablist"
+                                    aria-multiselectable="true">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="links">
+                                            <h4 class="panel-title">
+                                                <a class="mLabelSize" role="button" data-toggle="collapse"
+                                                    data-parent="#accordion-test-results"
+                                                    href="#collapseLinks-{{result?.id}}" aria-expanded="false"
+                                                    aria-controls="collapseLinks">
+                                                    <span class="more-less childRowPlusImage plusSymbol"
+                                                        translate></span>
+                                                    {{result?.jsonResponse?.links?.title}}
+                                                    <span
+                                                        class="pull-right status {{result?.jsonResponse?.links?.statusClass}}"
+                                                        translate>{{result?.jsonResponse?.links?.displayedMark}}</span>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseLinks-{{result?.id}}" class="panel-collapse collapse"
+                                            role="tabpanel" aria-labelledby="links">
+                                            <div class="panel-body mSpamWid">
+                                                <h5 class="mt0 f-w-600" translate>
+                                                    {{result?.jsonResponse?.links?.description}}</h5>
+                                                <ng-container *ngFor="let url of result?.jsonResponse?.links?.urls">
+                                                    <h6 style="white-space: nowrap;" *ngIf="url?.statusCode !== '200'">
+                                                        <span
+                                                            [ngClass]="{'status-success': url?.statusCode === '200', 'status-failure': url?.statusCode !== '200'}">[
+                                                            {{url?.statusCode}} - {{url?.httpStatus}} ]</span>
+                                                        <span translate>{{url?.baseUrl}}</span>
+                                                    </h6>
+                                                </ng-container>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            
-                            
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="links">
-                                    <h4 class="panel-title">
-                                        <a class="mLabelSize" role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapseimprove-{{result?.id}}" aria-expanded="false" aria-controls="collapseimprove">
-                                        <span class="more-less childRowPlusImage plusSymbol" translate></span>
-                                            {{result?.jsonResponse?.spamAssassin?.title}}
-                                            <span class="pull-right status {{result?.jsonResponse?.spamAssassin?.statusClass}}" translate>{{result?.jsonResponse?.spamAssassin?.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseimprove-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="links">
-                                    <div class="panel-body mSpamWid">
-                                        <h5 class="mt0 f-w-600" [innerHTML]="result?.jsonResponse?.spamAssassin?.description"></h5>
-                                        <ng-container>
-                                        <table class="table tgrid">
-                                        <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.DKIM_ADSP_CUSTOM_MED">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_ADSP_CUSTOM_MED?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_ADSP_CUSTOM_MED?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_ADSP_CUSTOM_MED?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_ADSP_CUSTOM_MED?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_ADSP_CUSTOM_MED?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.DKIM_SIGNED">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_SIGNED?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_SIGNED?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_SIGNED?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_SIGNED?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_SIGNED?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID_EF">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID_EF?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID_EF?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID_EF?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID_EF?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID_EF?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.FORGED_GMAIL_RCVD">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.FORGED_GMAIL_RCVD?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.FORGED_GMAIL_RCVD?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.FORGED_GMAIL_RCVD?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.FORGED_GMAIL_RCVD?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.FORGED_GMAIL_RCVD?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FORGED_FROMDOMAIN">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FORGED_FROMDOMAIN?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FORGED_FROMDOMAIN?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FORGED_FROMDOMAIN?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FORGED_FROMDOMAIN?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FORGED_FROMDOMAIN?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FROM">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FROM?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FROM?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FROM?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FROM?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FROM?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.HEADER_FROM_DIFFERENT_DOMAINS">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.HEADER_FROM_DIFFERENT_DOMAINS?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.HEADER_FROM_DIFFERENT_DOMAINS?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.HEADER_FROM_DIFFERENT_DOMAINS?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.HEADER_FROM_DIFFERENT_DOMAINS?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.HEADER_FROM_DIFFERENT_DOMAINS?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.HTML_FONT_LOW_CONTRAST">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.HTML_FONT_LOW_CONTRAST?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.HTML_FONT_LOW_CONTRAST?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.HTML_FONT_LOW_CONTRAST?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.HTML_FONT_LOW_CONTRAST?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_FONT_LOW_CONTRAST?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.HTML_IMAGE_RATIO_02">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.HTML_IMAGE_RATIO_02?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.HTML_IMAGE_RATIO_02?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.HTML_IMAGE_RATIO_02?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.HTML_IMAGE_RATIO_02?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_IMAGE_RATIO_02?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.HTML_MESSAGE">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.HTML_MESSAGE?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.HTML_MESSAGE?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.HTML_MESSAGE?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.HTML_MESSAGE?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_MESSAGE?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.NML_ADSP_CUSTOM_MED">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.NML_ADSP_CUSTOM_MED?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.NML_ADSP_CUSTOM_MED?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.NML_ADSP_CUSTOM_MED?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.NML_ADSP_CUSTOM_MED?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.NML_ADSP_CUSTOM_MED?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.SPF_PASS">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.SPF_PASS?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.SPF_PASS?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.SPF_PASS?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.SPF_PASS?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.SPF_PASS?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.MIME_HTML_ONLY">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.MIME_HTML_ONLY?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.MIME_HTML_ONLY?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.MIME_HTML_ONLY?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.MIME_HTML_ONLY?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.MIME_HTML_ONLY?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.T_KAM_HTML_FONT_INVALID">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.T_KAM_HTML_FONT_INVALID?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.T_KAM_HTML_FONT_INVALID?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.T_KAM_HTML_FONT_INVALID?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.T_KAM_HTML_FONT_INVALID?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_KAM_HTML_FONT_INVALID?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.T_REMOTE_IMAGE">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.T_REMOTE_IMAGE?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.T_REMOTE_IMAGE?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.T_REMOTE_IMAGE?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.T_REMOTE_IMAGE?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_REMOTE_IMAGE?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.T_SPF_HELO_TEMPERROR">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.T_SPF_HELO_TEMPERROR?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.T_SPF_HELO_TEMPERROR?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.T_SPF_HELO_TEMPERROR?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.T_SPF_HELO_TEMPERROR?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_SPF_HELO_TEMPERROR?.solution}}
-                                                </td>
-                                            </tr>
-                                            <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.URIBL_BLOCKED">
-                                                <td class="{{result?.jsonResponse?.spamAssassin?.rules?.URIBL_BLOCKED?.status}}" translate>{{result?.jsonResponse?.spamAssassin?.rules?.URIBL_BLOCKED?.score}}</td>
-                                                <td class="text-blue" translate>{{result?.jsonResponse?.spamAssassin?.rules?.URIBL_BLOCKED?.code}}</td>
-                                                <td translate>{{result?.jsonResponse?.spamAssassin?.rules?.URIBL_BLOCKED?.description}}<br translate>
-                                                {{result?.jsonResponse?.spamAssassin?.rules?.URIBL_BLOCKED?.solution}}
-                                                </td>
-                                            </tr>
-                                            </table>
-                                        </ng-container>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="listNotAuthenticated">
-                                    <h4 class="panel-title">
-                                        <a class="mLabelSize" role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapselistNotAuthenticated-{{result?.id}}" aria-expanded="false" aria-controls="collapselistNotAuthenticated">
-                                            <span class="more-less childRowPlusImage plusSymbol" translate></span>
-                                            {{result?.jsonResponse?.signature?.title}}
-                                            <span class="pull-right status {{result?.jsonResponse?.signature?.statusClass}}" translate>
-                                            
-                                            {{result?.jsonResponse?.signature?.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapselistNotAuthenticated-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="listNotAuthenticated">
-                                    <div class="panel-body">
-                                        <h5 class="mt0 f-w-600" [innerHTML]="result?.jsonResponse?.signature?.description"></h5>
-                                        
-                        <div class="panel-group" id="listNotAuthenticated-SubTest" role="tablist" aria-multiselectable="true">                
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="spfAttributes">
-                                    <h4 class="panel-title">
-                                        <a class="mLabelSize" role="button" title="{{result?.jsonResponse?.signature?.subtests?.spf.title}}" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapsespfAttributes-{{result?.id}}" aria-expanded="false" aria-controls="collapsespfAttributes">
-                                            <span class="more-less childRowPlusImage childPlusSymbol" translate></span>
-                                            {{result?.jsonResponse?.signature?.subtests?.spf.title | slice:0:78}}
-                                            <span *ngIf="result?.jsonResponse?.signature?.subtests?.spf.title?.length>82">...</span>
-                                            <span class="pull-right status {{result?.jsonResponse?.signature?.subtests?.spf.statusClass}}" translate>{{result?.jsonResponse?.signature?.subtests?.spf.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapsespfAttributes-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="spfAttributes">
-                                    <div class="panel-body">
-                                        <h5 class="mt0 f-w-600" translate>{{result?.jsonResponse?.signature?.subtests?.spf.description}}</h5>
-                                        <h5 class="mt0 f-w-600"[innerHTML]="result?.jsonResponse?.signature?.subtests?.spf.messages"></h5>
 
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="dkimAttributes">
-                                    <h4 class="panel-title">
-                                        <a class="mLabelSize" role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapsedkimAttributes-{{result?.id}}" aria-expanded="false" aria-controls="collapsedkimAttributes">
-                                            <span class="more-less childRowPlusImage childPlusSymbol" translate></span>
-                                            {{result?.jsonResponse?.signature?.subtests?.dkim.title}}
-                                            <span class="pull-right status {{result?.jsonResponse?.signature?.subtests?.dkim.statusClass}}" translate>{{result?.jsonResponse?.signature?.subtests?.dkim.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapsedkimAttributes-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="dkimAttributes">
-                                    <div class="panel-body">
-                                        <h5 class="mt0 f-w-600" translate>{{result?.jsonResponse?.signature?.subtests?.dkim.description}}</h5>
-                                        <h5 class="mt0 f-w-600"[innerHTML]="result?.jsonResponse?.signature?.subtests?.dkim.messages"></h5>
 
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="links">
+                                            <h4 class="panel-title">
+                                                <a class="mLabelSize" role="button" data-toggle="collapse"
+                                                    data-parent="#accordion-test-results"
+                                                    href="#collapseimprove-{{result?.id}}" aria-expanded="false"
+                                                    aria-controls="collapseimprove">
+                                                    <span class="more-less childRowPlusImage plusSymbol"
+                                                        translate></span>
+                                                    {{result?.jsonResponse?.spamAssassin?.title}}
+                                                    <span
+                                                        class="pull-right status {{result?.jsonResponse?.spamAssassin?.statusClass}}"
+                                                        translate>{{result?.jsonResponse?.spamAssassin?.displayedMark}}</span>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseimprove-{{result?.id}}" class="panel-collapse collapse"
+                                            role="tabpanel" aria-labelledby="links">
+                                            <div class="panel-body mSpamWid">
+                                                <h5 class="mt0 f-w-600"
+                                                    [innerHTML]="result?.jsonResponse?.spamAssassin?.description"></h5>
+                                                <ng-container>
+                                                    <table class="table tgrid">
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.DKIM_ADSP_CUSTOM_MED">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_ADSP_CUSTOM_MED?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_ADSP_CUSTOM_MED?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_ADSP_CUSTOM_MED?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_ADSP_CUSTOM_MED?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_ADSP_CUSTOM_MED?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.DKIM_SIGNED">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_SIGNED?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_SIGNED?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_SIGNED?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_SIGNED?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_SIGNED?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID_EF">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID_EF?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID_EF?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID_EF?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID_EF?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.DKIM_VALID_EF?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.FORGED_GMAIL_RCVD">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.FORGED_GMAIL_RCVD?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.FORGED_GMAIL_RCVD?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.FORGED_GMAIL_RCVD?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.FORGED_GMAIL_RCVD?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.FORGED_GMAIL_RCVD?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FORGED_FROMDOMAIN">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FORGED_FROMDOMAIN?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FORGED_FROMDOMAIN?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FORGED_FROMDOMAIN?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FORGED_FROMDOMAIN?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FORGED_FROMDOMAIN?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FROM">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FROM?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FROM?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FROM?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FROM?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.FREEMAIL_FROM?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.HEADER_FROM_DIFFERENT_DOMAINS">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.HEADER_FROM_DIFFERENT_DOMAINS?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HEADER_FROM_DIFFERENT_DOMAINS?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HEADER_FROM_DIFFERENT_DOMAINS?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HEADER_FROM_DIFFERENT_DOMAINS?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HEADER_FROM_DIFFERENT_DOMAINS?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.HTML_FONT_LOW_CONTRAST">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.HTML_FONT_LOW_CONTRAST?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_FONT_LOW_CONTRAST?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_FONT_LOW_CONTRAST?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_FONT_LOW_CONTRAST?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_FONT_LOW_CONTRAST?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.HTML_IMAGE_RATIO_02">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.HTML_IMAGE_RATIO_02?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_IMAGE_RATIO_02?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_IMAGE_RATIO_02?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_IMAGE_RATIO_02?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_IMAGE_RATIO_02?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.HTML_MESSAGE">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.HTML_MESSAGE?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_MESSAGE?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_MESSAGE?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_MESSAGE?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.HTML_MESSAGE?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.NML_ADSP_CUSTOM_MED">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.NML_ADSP_CUSTOM_MED?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.NML_ADSP_CUSTOM_MED?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.NML_ADSP_CUSTOM_MED?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.NML_ADSP_CUSTOM_MED?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.NML_ADSP_CUSTOM_MED?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr *ngIf="result?.jsonResponse?.spamAssassin?.rules?.SPF_PASS">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.SPF_PASS?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.SPF_PASS?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.SPF_PASS?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.SPF_PASS?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.SPF_PASS?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.MIME_HTML_ONLY">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.MIME_HTML_ONLY?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.MIME_HTML_ONLY?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.MIME_HTML_ONLY?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.MIME_HTML_ONLY?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.MIME_HTML_ONLY?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.T_KAM_HTML_FONT_INVALID">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.T_KAM_HTML_FONT_INVALID?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_KAM_HTML_FONT_INVALID?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_KAM_HTML_FONT_INVALID?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_KAM_HTML_FONT_INVALID?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_KAM_HTML_FONT_INVALID?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.T_REMOTE_IMAGE">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.T_REMOTE_IMAGE?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_REMOTE_IMAGE?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_REMOTE_IMAGE?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_REMOTE_IMAGE?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_REMOTE_IMAGE?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.T_SPF_HELO_TEMPERROR">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.T_SPF_HELO_TEMPERROR?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_SPF_HELO_TEMPERROR?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_SPF_HELO_TEMPERROR?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_SPF_HELO_TEMPERROR?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.T_SPF_HELO_TEMPERROR?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                        <tr
+                                                            *ngIf="result?.jsonResponse?.spamAssassin?.rules?.URIBL_BLOCKED">
+                                                            <td class="{{result?.jsonResponse?.spamAssassin?.rules?.URIBL_BLOCKED?.status}}"
+                                                                translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.URIBL_BLOCKED?.score}}
+                                                            </td>
+                                                            <td class="text-blue" translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.URIBL_BLOCKED?.code}}
+                                                            </td>
+                                                            <td translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.URIBL_BLOCKED?.description}}<br
+                                                                    translate>
+                                                                {{result?.jsonResponse?.spamAssassin?.rules?.URIBL_BLOCKED?.solution}}
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </ng-container>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="dmarcAttributes">
-                                    <h4 class="panel-title">
-                                        <a class="mLabelSize" role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapsedmarcAttributes-{{result?.id}}" aria-expanded="false" aria-controls="collapsedmarcAttributes">
-                                            <span class="more-less childRowPlusImage childPlusSymbol" translate></span>
-                                            {{result?.jsonResponse?.signature?.subtests?.dmarc?.title}}
-                                            <span class="pull-right status {{result?.jsonResponse?.signature?.subtests?.dmarc?.statusClass}}" translate>{{result?.jsonResponse?.signature?.subtests?.dmarc?.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapsedmarcAttributes-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="dmarcAttributes">
-                                    <div class="panel-body">
-                                        <h5 class="mt0 f-w-600" translate>{{result?.jsonResponse?.signature?.subtests?.dmarc?.description}}</h5>
-                                        <h5 class="mt0 f-w-600"[innerHTML]="result?.jsonResponse?.signature?.subtests?.dmarc?.messages"></h5>
 
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="listNotAuthenticated">
+                                            <h4 class="panel-title">
+                                                <a class="mLabelSize" role="button" data-toggle="collapse"
+                                                    data-parent="#listNotAuthenticated-SubTest"
+                                                    href="#collapselistNotAuthenticated-{{result?.id}}"
+                                                    aria-expanded="false" aria-controls="collapselistNotAuthenticated">
+                                                    <span class="more-less childRowPlusImage plusSymbol"
+                                                        translate></span>
+                                                    {{result?.jsonResponse?.signature?.title}}
+                                                    <span
+                                                        class="pull-right status {{result?.jsonResponse?.signature?.statusClass}}"
+                                                        translate>
+
+                                                        {{result?.jsonResponse?.signature?.displayedMark}}</span>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapselistNotAuthenticated-{{result?.id}}"
+                                            class="panel-collapse collapse" role="tabpanel"
+                                            aria-labelledby="listNotAuthenticated">
+                                            <div class="panel-body">
+                                                <h5 class="mt0 f-w-600"
+                                                    [innerHTML]="result?.jsonResponse?.signature?.description"></h5>
+
+                                                <div class="panel-group" id="listNotAuthenticated-SubTest"
+                                                    role="tablist" aria-multiselectable="true">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="spfAttributes">
+                                                            <h4 class="panel-title">
+                                                                <a class="mLabelSize" role="button"
+                                                                    title="{{result?.jsonResponse?.signature?.subtests?.spf.title}}"
+                                                                    data-toggle="collapse"
+                                                                    data-parent="#listNotAuthenticated-SubTest"
+                                                                    href="#collapsespfAttributes-{{result?.id}}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapsespfAttributes">
+                                                                    <span
+                                                                        class="more-less childRowPlusImage childPlusSymbol"
+                                                                        translate></span>
+                                                                    {{result?.jsonResponse?.signature?.subtests?.spf.title
+                                                                    | slice:0:78}}
+                                                                    <span
+                                                                        *ngIf="result?.jsonResponse?.signature?.subtests?.spf.title?.length>82">...</span>
+                                                                    <span
+                                                                        class="pull-right status {{result?.jsonResponse?.signature?.subtests?.spf.statusClass}}"
+                                                                        translate>{{result?.jsonResponse?.signature?.subtests?.spf.displayedMark}}</span>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapsespfAttributes-{{result?.id}}"
+                                                            class="panel-collapse collapse" role="tabpanel"
+                                                            aria-labelledby="spfAttributes">
+                                                            <div class="panel-body">
+                                                                <h5 class="mt0 f-w-600" translate>
+                                                                    {{result?.jsonResponse?.signature?.subtests?.spf.description}}
+                                                                </h5>
+                                                                <h5 class="mt0 f-w-600"
+                                                                    [innerHTML]="result?.jsonResponse?.signature?.subtests?.spf.messages">
+                                                                </h5>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="dkimAttributes">
+                                                            <h4 class="panel-title">
+                                                                <a class="mLabelSize" role="button"
+                                                                    data-toggle="collapse"
+                                                                    data-parent="#listNotAuthenticated-SubTest"
+                                                                    href="#collapsedkimAttributes-{{result?.id}}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapsedkimAttributes">
+                                                                    <span
+                                                                        class="more-less childRowPlusImage childPlusSymbol"
+                                                                        translate></span>
+                                                                    {{result?.jsonResponse?.signature?.subtests?.dkim.title}}
+                                                                    <span
+                                                                        class="pull-right status {{result?.jsonResponse?.signature?.subtests?.dkim.statusClass}}"
+                                                                        translate>{{result?.jsonResponse?.signature?.subtests?.dkim.displayedMark}}</span>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapsedkimAttributes-{{result?.id}}"
+                                                            class="panel-collapse collapse" role="tabpanel"
+                                                            aria-labelledby="dkimAttributes">
+                                                            <div class="panel-body">
+                                                                <h5 class="mt0 f-w-600" translate>
+                                                                    {{result?.jsonResponse?.signature?.subtests?.dkim.description}}
+                                                                </h5>
+                                                                <h5 class="mt0 f-w-600"
+                                                                    [innerHTML]="result?.jsonResponse?.signature?.subtests?.dkim.messages">
+                                                                </h5>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="dmarcAttributes">
+                                                            <h4 class="panel-title">
+                                                                <a class="mLabelSize" role="button"
+                                                                    data-toggle="collapse"
+                                                                    data-parent="#listNotAuthenticated-SubTest"
+                                                                    href="#collapsedmarcAttributes-{{result?.id}}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapsedmarcAttributes">
+                                                                    <span
+                                                                        class="more-less childRowPlusImage childPlusSymbol"
+                                                                        translate></span>
+                                                                    {{result?.jsonResponse?.signature?.subtests?.dmarc?.title}}
+                                                                    <span
+                                                                        class="pull-right status {{result?.jsonResponse?.signature?.subtests?.dmarc?.statusClass}}"
+                                                                        translate>{{result?.jsonResponse?.signature?.subtests?.dmarc?.displayedMark}}</span>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapsedmarcAttributes-{{result?.id}}"
+                                                            class="panel-collapse collapse" role="tabpanel"
+                                                            aria-labelledby="dmarcAttributes">
+                                                            <div class="panel-body">
+                                                                <h5 class="mt0 f-w-600" translate>
+                                                                    {{result?.jsonResponse?.signature?.subtests?.dmarc?.description}}
+                                                                </h5>
+                                                                <h5 class="mt0 f-w-600"
+                                                                    [innerHTML]="result?.jsonResponse?.signature?.subtests?.dmarc?.messages">
+                                                                </h5>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="rDnsAttributes">
+                                                            <h4 class="panel-title">
+                                                                <a class="mLabelSize" role="button"
+                                                                    data-toggle="collapse"
+                                                                    data-parent="#listNotAuthenticated-SubTest"
+                                                                    href="#collapserDnsAttributes-{{result?.id}}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapserDnsAttributes">
+                                                                    <span
+                                                                        class="more-less childRowPlusImage childPlusSymbol"
+                                                                        translate></span>
+                                                                    {{result?.jsonResponse?.signature?.subtests?.rDns?.title}}
+                                                                    <span
+                                                                        class="pull-right status {{result?.jsonResponse?.signature?.subtests?.rDns?.statusClass}}"
+                                                                        translate>{{result?.jsonResponse?.signature?.subtests?.rDns?.displayedMark}}</span>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapserDnsAttributes-{{result?.id}}"
+                                                            class="panel-collapse collapse" role="tabpanel"
+                                                            aria-labelledby="rDnsAttributes">
+                                                            <div class="panel-body">
+                                                                <h5 class="mt0 f-w-600" translate>
+                                                                    {{result?.jsonResponse?.signature?.subtests?.rDns?.description}}
+                                                                </h5>
+                                                                <h5 class="mt0 f-w-600"
+                                                                    [innerHTML]="result?.jsonResponse?.signature?.subtests?.rDns?.tested">
+                                                                </h5>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="mxRecordAttributes">
+                                                            <h4 class="panel-title">
+                                                                <a class="mLabelSize" role="button"
+                                                                    data-toggle="collapse"
+                                                                    data-parent="#listNotAuthenticated-SubTest"
+                                                                    href="#collapsemxRecordAttributes-{{result?.id}}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapsemxRecordAttributes">
+                                                                    <span
+                                                                        class="more-less childRowPlusImage childPlusSymbol"></span>
+                                                                    <span
+                                                                        [innerHTML]="result?.jsonResponse?.signature?.subtests?.mxRecord?.title"></span>
+                                                                    <span
+                                                                        class="pull-right status {{result?.jsonResponse?.signature?.subtests?.mxRecord?.statusClass}}"
+                                                                        translate>{{result?.jsonResponse?.signature?.subtests?.mxRecord?.displayedMark}}</span>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapsemxRecordAttributes-{{result?.id}}"
+                                                            class="panel-collapse collapse" role="tabpanel"
+                                                            aria-labelledby="mxRecordAttributes">
+                                                            <div class="panel-body">
+                                                                <h5 class="mt0 f-w-600" translate>
+                                                                    {{result?.jsonResponse?.signature?.subtests?.mxRecord?.description}}
+                                                                </h5>
+                                                                <h5 class="mt0 f-w-600"
+                                                                    [innerHTML]="result?.jsonResponse?.signature?.subtests?.mxRecord?.tested">
+                                                                </h5>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="aRecordAttributes">
+                                                            <h4 class="panel-title">
+                                                                <a class="mLabelSize" role="button"
+                                                                    data-toggle="collapse"
+                                                                    data-parent="#listNotAuthenticated-SubTest"
+                                                                    href="#collapseaRecordAttributes-{{result?.id}}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapseaRecordAttributes">
+                                                                    <span
+                                                                        class="more-less childRowPlusImage childPlusSymbol"></span>
+                                                                    <span
+                                                                        [innerHTML]="result?.jsonResponse?.signature?.subtests?.aRecord?.title"></span>
+                                                                    <span
+                                                                        class="pull-right status {{result?.jsonResponse?.signature?.subtests?.aRecord?.statusClass}}"
+                                                                        translate>{{result?.jsonResponse?.signature?.subtests?.aRecord?.displayedMark}}</span>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseaRecordAttributes-{{result?.id}}"
+                                                            class="panel-collapse collapse" role="tabpanel"
+                                                            aria-labelledby="aRecordAttributes">
+                                                            <div class="panel-body">
+                                                                <h5 class="mt0 f-w-600" translate>
+                                                                    {{result?.jsonResponse?.signature?.subtests?.aRecord?.description}}
+                                                                </h5>
+                                                                <h5 class="mt0 f-w-600"
+                                                                    [innerHTML]="result?.jsonResponse?.signature?.subtests?.aRecord?.tested">
+                                                                </h5>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            
-                            
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="rDnsAttributes">
-                                    <h4 class="panel-title">
-                                        <a class="mLabelSize" role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapserDnsAttributes-{{result?.id}}" aria-expanded="false" aria-controls="collapserDnsAttributes">
-                                            <span class="more-less childRowPlusImage childPlusSymbol" translate></span>
-                                            {{result?.jsonResponse?.signature?.subtests?.rDns?.title}}
-                                            <span class="pull-right status {{result?.jsonResponse?.signature?.subtests?.rDns?.statusClass}}" translate>{{result?.jsonResponse?.signature?.subtests?.rDns?.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapserDnsAttributes-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="rDnsAttributes">
-                                    <div class="panel-body">
-                                        <h5 class="mt0 f-w-600" translate>{{result?.jsonResponse?.signature?.subtests?.rDns?.description}}</h5>
-                                        <h5 class="mt0 f-w-600"[innerHTML]="result?.jsonResponse?.signature?.subtests?.rDns?.tested"></h5>
 
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="blacklists">
+                                            <h4 class="panel-title">
+                                                <a class="mLabelSize" role="button" data-toggle="collapse"
+                                                    data-parent="#accordion-test-results"
+                                                    href="#collapseBlacklists-{{result?.id}}" aria-expanded="false"
+                                                    aria-controls="collapseBlacklists">
+                                                    <span class="more-less childRowPlusImage plusSymbol"
+                                                        translate></span>
+                                                    {{result?.jsonResponse?.blacklists?.title}}
+                                                    <span
+                                                        class="pull-right status {{result?.jsonResponse?.blacklists?.statusClass}}"
+                                                        translate>{{result?.jsonResponse?.blacklists?.displayedMark}}</span>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseBlacklists-{{result?.id}}" class="panel-collapse collapse"
+                                            role="tabpanel" aria-labelledby="links">
+                                            <div class="panel-body">
+                                                <h5 class="mt0 f-w-600"
+                                                    [innerHTML]="result?.jsonResponse?.blacklists?.description"></h5>
+                                                <span [innerHTML]="result?.jsonResponse?.blacklists?.messages"></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            
-                            
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="mxRecordAttributes">
-                                    <h4 class="panel-title">
-                                        <a class="mLabelSize" role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapsemxRecordAttributes-{{result?.id}}" aria-expanded="false" aria-controls="collapsemxRecordAttributes">
-                                        <span class="more-less childRowPlusImage childPlusSymbol"></span>
-                                            <span [innerHTML]="result?.jsonResponse?.signature?.subtests?.mxRecord?.title"></span>
-                                            <span class="pull-right status {{result?.jsonResponse?.signature?.subtests?.mxRecord?.statusClass}}" translate>{{result?.jsonResponse?.signature?.subtests?.mxRecord?.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapsemxRecordAttributes-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mxRecordAttributes">
-                                    <div class="panel-body">
-                                        <h5 class="mt0 f-w-600" translate>{{result?.jsonResponse?.signature?.subtests?.mxRecord?.description}}</h5>
-                                        <h5 class="mt0 f-w-600"[innerHTML]="result?.jsonResponse?.signature?.subtests?.mxRecord?.tested"></h5>
 
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="SubTest">
+                                            <h4 class="panel-title">
+                                                <a class="mLabelSize" role="button" data-toggle="collapse"
+                                                    data-parent="#accordion-test-results"
+                                                    href="#collapseSubTest-{{result?.id}}" aria-expanded="false"
+                                                    aria-controls="collapseSubTest">
+                                                    <span class="more-less childRowPlusImage plusSymbol"
+                                                        translate></span>
+                                                    {{result?.jsonResponse?.body?.title}}
+                                                    <span
+                                                        class="pull-right status {{result?.jsonResponse?.body?.statusClass}}"
+                                                        translate>{{result?.jsonResponse?.body?.displayedMark}}</span>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseSubTest-{{result?.id}}" class="panel-collapse collapse"
+                                            role="tabpanel" aria-labelledby="SubTest">
+                                            <div class="panel-body">
+                                                <h5 class="mt0 f-w-600" translate>
+                                                    {{result?.jsonResponse?.body?.description}}</h5>
+                                                <div [innerHTML]="result?.jsonResponse?.body?.messages"></div>
+
+                                                <div class="panel-group" id="accordion-SubTest" role="tablist"
+                                                    aria-multiselectable="true">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="altAttributes">
+                                                            <h4 class="panel-title">
+                                                                <a class="mLabelSizeSeal" role="button"
+                                                                    data-toggle="collapse"
+                                                                    data-parent="#accordion-SubTest"
+                                                                    href="#collapsealtAttributes-{{result?.id}}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapsealtAttributes">
+                                                                    <span
+                                                                        class="more-less childRowPlusImage childPlusSymbol"
+                                                                        translate></span>
+                                                                    {{result?.jsonResponse?.body?.subtests?.altAttributes?.title}}
+                                                                    <span
+                                                                        class="pull-right status {{result?.jsonResponse?.body?.subtests?.altAttributes?.statusClass}}"
+                                                                        translate>{{result?.jsonResponse?.body?.subtests?.altAttributes?.displayedMark}}</span>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapsealtAttributes-{{result?.id}}"
+                                                            class="panel-collapse collapse" role="tabpanel"
+                                                            aria-labelledby="altAttributes">
+                                                            <div class="panel-body">
+                                                                <h5 class="mt0 f-w-600"
+                                                                    [innerHTML]="result?.jsonResponse?.body?.subtests?.altAttributes?.description">
+                                                                    <!-- {{result?.jsonResponse.body.subtests.altAttributes.description}} -->
+                                                                </h5>
+                                                                <ul>
+                                                                    <ng-container
+                                                                        *ngFor="let item of result?.jsonResponse?.body?.subtests?.altAttributes?.imagesWithoutAlt">
+                                                                        <li [innerHTML]="item"></li>
+                                                                    </ng-container>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="forbiddenTags">
+                                                            <h4 class="panel-title">
+                                                                <a class="mLabelSize" role="button"
+                                                                    data-toggle="collapse"
+                                                                    data-parent="#accordion-SubTest"
+                                                                    href="#collapseforbiddenTags-{{result?.id}}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapseforbiddenTags">
+                                                                    <span
+                                                                        class="more-less childRowPlusImage childPlusSymbol"
+                                                                        translate></span>
+                                                                    {{result?.jsonResponse?.body?.subtests?.forbiddenTags?.title}}
+                                                                    <span
+                                                                        class="pull-right status {{result?.jsonResponse?.body?.subtests?.forbiddenTags?.statusClass}}"
+                                                                        translate>{{result?.jsonResponse?.body?.subtests?.forbiddenTags?.displayedMark}}</span>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseforbiddenTags-{{result?.id}}"
+                                                            class="panel-collapse collapse" role="tabpanel"
+                                                            aria-labelledby="forbiddenTags">
+                                                            <div class="panel-body">
+                                                                <h5 class="mt0 f-w-600" translate>
+                                                                    {{result?.jsonResponse?.body?.subtests?.forbiddenTags?.description}}
+                                                                </h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="shorturl">
+                                                            <h4 class="panel-title">
+                                                                <a class="mLabelSize" role="button"
+                                                                    data-toggle="collapse"
+                                                                    data-parent="#accordion-SubTest"
+                                                                    href="#collapseshorturl-{{result?.id}}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapseshorturl">
+                                                                    <span
+                                                                        class="more-less childRowPlusImage childPlusSymbol"
+                                                                        translate></span>
+                                                                    {{result?.jsonResponse?.body?.subtests?.shorturl?.title}}
+                                                                    <span
+                                                                        class="pull-right status {{result?.jsonResponse?.body?.subtests?.shorturl?.statusClass}}"
+                                                                        translate>{{result?.jsonResponse?.body?.subtests?.shorturl?.displayedMark}}</span>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseshorturl-{{result?.id}}"
+                                                            class="panel-collapse collapse" role="tabpanel"
+                                                            aria-labelledby="shorturl">
+                                                            <div class="panel-body">
+                                                                <h5 class="mt0 f-w-600" translate>
+                                                                    {{result?.jsonResponse?.body?.subtests?.shorturl?.description}}
+                                                                </h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading" role="tab" id="listUnsubscribe">
+                                                            <h4 class="panel-title">
+                                                                <a class="mLabelSize" role="button"
+                                                                    data-toggle="collapse"
+                                                                    data-parent="#accordion-SubTest"
+                                                                    href="#collapselistUnsubscribe-{{result?.id}}"
+                                                                    aria-expanded="false"
+                                                                    aria-controls="collapselistUnsubscribe">
+                                                                    <span
+                                                                        class="more-less childRowPlusImage childPlusSymbol"
+                                                                        translate></span>
+                                                                    {{result?.jsonResponse?.body?.subtests?.listUnsubscribe?.title}}
+                                                                    <span
+                                                                        class="pull-right status {{result?.jsonResponse?.body?.subtests?.listUnsubscribe?.statusClass}}"
+                                                                        translate>{{result?.jsonResponse?.body?.subtests?.listUnsubscribe?.displayedMark}}</span>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapselistUnsubscribe-{{result?.id}}"
+                                                            class="panel-collapse collapse" role="tabpanel"
+                                                            aria-labelledby="listUnsubscribe">
+                                                            <div class="panel-body">
+                                                                <h5 class="mt0 f-w-600" translate>
+                                                                    {{result?.jsonResponse?.body?.subtests?.listUnsubscribe?.description}}
+                                                                </h5>
+                                                                <h5 translate>
+                                                                    {{result?.jsonResponse?.body?.subtests?.listUnsubscribe?.messages}}
+                                                                </h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     </div>
+                                    <span class="pull-right" style="color: #056898; font-weight: 600;"
+                                        translate>{{result?.jsonResponse?.commentedMark}}</span>
                                 </div>
                             </div>
-                            
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="aRecordAttributes">
-                                    <h4 class="panel-title">
-                                        <a class="mLabelSize" role="button" data-toggle="collapse" data-parent="#listNotAuthenticated-SubTest" href="#collapseaRecordAttributes-{{result?.id}}" aria-expanded="false" aria-controls="collapseaRecordAttributes">
-                                            <span class="more-less childRowPlusImage childPlusSymbol"></span>
-                                            <span [innerHTML]="result?.jsonResponse?.signature?.subtests?.aRecord?.title"></span>
-                                            <span class="pull-right status {{result?.jsonResponse?.signature?.subtests?.aRecord?.statusClass}}" translate>{{result?.jsonResponse?.signature?.subtests?.aRecord?.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseaRecordAttributes-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="aRecordAttributes">
-                                    <div class="panel-body">
-                                        <h5 class="mt0 f-w-600" translate>{{result?.jsonResponse?.signature?.subtests?.aRecord?.description}}</h5>
-                                        <h5 class="mt0 f-w-600"[innerHTML]="result?.jsonResponse?.signature?.subtests?.aRecord?.tested"></h5>
-
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            </div>
-                                        
-                        </div>
-                        </div>
-                        </div>
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="blacklists">
-                                    <h4 class="panel-title">
-                                        <a class="mLabelSize" role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapseBlacklists-{{result?.id}}" aria-expanded="false" aria-controls="collapseBlacklists">
-                                            <span class="more-less childRowPlusImage plusSymbol" translate></span>
-                                            {{result?.jsonResponse?.blacklists?.title}}
-                                            <span class="pull-right status {{result?.jsonResponse?.blacklists?.statusClass}}" translate>{{result?.jsonResponse?.blacklists?.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseBlacklists-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="links">
-                                    <div class="panel-body">
-                                        <h5 class="mt0 f-w-600" [innerHTML]="result?.jsonResponse?.blacklists?.description"></h5>
-                                        <span [innerHTML]="result?.jsonResponse?.blacklists?.messages"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="SubTest">
-                                    <h4 class="panel-title">
-                                        <a class="mLabelSize" role="button" data-toggle="collapse" data-parent="#accordion-test-results" href="#collapseSubTest-{{result?.id}}" aria-expanded="false" aria-controls="collapseSubTest">
-                                            <span class="more-less childRowPlusImage plusSymbol" translate></span>
-                                            {{result?.jsonResponse?.body?.title}}
-                                            <span class="pull-right status {{result?.jsonResponse?.body?.statusClass}}" translate>{{result?.jsonResponse?.body?.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseSubTest-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="SubTest">
-                                    <div class="panel-body">
-                                        <h5 class="mt0 f-w-600" translate>{{result?.jsonResponse?.body?.description}}</h5>
-                                        <div [innerHTML]="result?.jsonResponse?.body?.messages"></div>
-
-                        <div class="panel-group" id="accordion-SubTest" role="tablist" aria-multiselectable="true">                
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="altAttributes">
-                                    <h4 class="panel-title">
-                                        <a class="mLabelSizeSeal" role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapsealtAttributes-{{result?.id}}" aria-expanded="false" aria-controls="collapsealtAttributes">
-                                            <span class="more-less childRowPlusImage childPlusSymbol" translate></span>
-                                            {{result?.jsonResponse?.body?.subtests?.altAttributes?.title}}
-                                            <span class="pull-right status {{result?.jsonResponse?.body?.subtests?.altAttributes?.statusClass}}" translate>{{result?.jsonResponse?.body?.subtests?.altAttributes?.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapsealtAttributes-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="altAttributes">
-                                    <div class="panel-body">
-                                        <h5 class="mt0 f-w-600" [innerHTML]="result?.jsonResponse?.body?.subtests?.altAttributes?.description"><!-- {{result?.jsonResponse.body.subtests.altAttributes.description}} --></h5>
-                                        <ul>
-                                            <ng-container *ngFor="let item of result?.jsonResponse?.body?.subtests?.altAttributes?.imagesWithoutAlt">
-                                                <li [innerHTML]="item"></li>
-                                            </ng-container>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="forbiddenTags">
-                                    <h4 class="panel-title">
-                                        <a class="mLabelSize" role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapseforbiddenTags-{{result?.id}}" aria-expanded="false" aria-controls="collapseforbiddenTags">
-                                            <span class="more-less childRowPlusImage childPlusSymbol" translate></span>
-                                            {{result?.jsonResponse?.body?.subtests?.forbiddenTags?.title}}
-                                            <span class="pull-right status {{result?.jsonResponse?.body?.subtests?.forbiddenTags?.statusClass}}" translate>{{result?.jsonResponse?.body?.subtests?.forbiddenTags?.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseforbiddenTags-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="forbiddenTags">
-                                    <div class="panel-body">
-                                        <h5 class="mt0 f-w-600" translate>{{result?.jsonResponse?.body?.subtests?.forbiddenTags?.description}}</h5>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="shorturl">
-                                    <h4 class="panel-title">
-                                        <a class="mLabelSize" role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapseshorturl-{{result?.id}}" aria-expanded="false" aria-controls="collapseshorturl">
-                                            <span class="more-less childRowPlusImage childPlusSymbol" translate></span>
-                                            {{result?.jsonResponse?.body?.subtests?.shorturl?.title}}
-                                            <span class="pull-right status {{result?.jsonResponse?.body?.subtests?.shorturl?.statusClass}}" translate>{{result?.jsonResponse?.body?.subtests?.shorturl?.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseshorturl-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="shorturl">
-                                    <div class="panel-body">
-                                        <h5 class="mt0 f-w-600" translate>{{result?.jsonResponse?.body?.subtests?.shorturl?.description}}</h5>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="listUnsubscribe">
-                                    <h4 class="panel-title">
-                                        <a class="mLabelSize" role="button" data-toggle="collapse" data-parent="#accordion-SubTest" href="#collapselistUnsubscribe-{{result?.id}}" aria-expanded="false" aria-controls="collapselistUnsubscribe">
-                                            <span class="more-less childRowPlusImage childPlusSymbol" translate></span>
-                                            {{result?.jsonResponse?.body?.subtests?.listUnsubscribe?.title}}
-                                            <span class="pull-right status {{result?.jsonResponse?.body?.subtests?.listUnsubscribe?.statusClass}}" translate>{{result?.jsonResponse?.body?.subtests?.listUnsubscribe?.displayedMark}}</span>
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapselistUnsubscribe-{{result?.id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="listUnsubscribe">
-                                    <div class="panel-body">
-                                        <h5 class="mt0 f-w-600" translate>{{result?.jsonResponse?.body?.subtests?.listUnsubscribe?.description}}</h5>
-                                        <h5 translate>{{result?.jsonResponse?.body?.subtests?.listUnsubscribe?.messages}}</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        <span class="pull-right" style="color: #056898; font-weight: 600;" translate>{{result?.jsonResponse?.commentedMark}}</span>
-                        </div>
                         </div>
                     </div>
+
                 </div>
-                
-            </div>
-        </ng-container>
+            </ng-container>
+        </div>
     </div>
-</div>
 </div>
