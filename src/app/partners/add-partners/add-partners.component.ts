@@ -617,7 +617,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			if (existedEmails.length === 0) {
 				if (this.isCompanyDetails) {
 					if (this.validCsvContacts) {
-						this.askForPermission();
+					 if (this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 4) {
+				                this.validatePartnersCompany(this.newPartnerUser, this.partnerListId);
+						}
+					if ( this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
+					     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11) {
+								this.askForPermission();
+					   }
+					   
 					} else {
 						this.customResponse = new CustomResponse('ERROR', "We Found Invalid emailId(s) Please remove " + this.invalidPatternEmails, true);
 						this.invalidPatternEmails = [];
@@ -2157,15 +2164,25 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	saveContacts() {
 		this.validateLegalBasisOptions();
 		if (this.isValidLegalOptions) {
-			if (this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 4) {
+			if (this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 4) {
 				this.savePartnerUsers();
 			}
-			if (this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 || this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11) {
-				this.openCloudPartnerPopUp();
+			
+			if ( this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
+			     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11) {
+				if (this.allselectedUsers.length != 0) {
+			        this.newPartnerUser = this.allselectedUsers;
+			   }else if (this.socialPartnerUsers.length > 0) {
+			        this.newPartnerUser = this.socialPartners.contacts;
+		        }
+		        for (let i = 0; i < this.newPartnerUser.length; i++) {
+						if (this.newPartnerUser[i].email) {
+							this.newPartnerUser[i].emailId = this.newPartnerUser[i].email;
+						}
+				}
+		       this.validatePartnersCompany(this.newPartnerUser, this.partnerListId) ;
 			}
-
 		}
-
 	}
 
 	openCloudPartnerPopUp() {
@@ -4399,6 +4416,64 @@ unsubscribeUser(selectedUserForUnsubscribed : any){
  this.loadPartnerList(this.pagination);
  this.customResponse = new CustomResponse('SUCCESS', event, true);
  }
+ 
+   validatePartnersCompany(newPartnerUser : any, partnerListId : number){
+    try {
+    this.contactService.validatePartnersCompany(newPartnerUser, partnerListId)
+    .subscribe(
+					(data: any) => {
+						if(data.statusCode == 200){
+		                   if (this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 4) {
+				                this.askForPermission();
+							}
+			
+							if ( this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
+							     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11) {
+								this.openCloudPartnerPopUp();
+							}
+						}else{
+						//this.newPartnerUser = [];
+						let emailIds = "";
+					$.each(data.data, function (index: number, emailId: string) {
+						emailIds += (index + 1) + "." + emailId + "\n";
+					});
+					let updatedMessage = data.message + "\n" + emailIds;
+					this.customResponse = new CustomResponse('ERROR', updatedMessage, true);
+					}
+					},
+					error => this.xtremandLogger.error(error),
+						() => console.log('validatePartnersCompany() finished')
+				);
+		} catch (error) {
+			this.xtremandLogger.error(error, "AddPartnersComponent", "validating Partners");
+		}
+	}
+	
+	saveAssignContactAndMdfPopupData(){
+		this.processingPartnersLoader = true;
+		$(".modal-body").animate({ scrollTop: 0 }, 'slow');
+		let errorCount = 0;
+		$.each(this.newPartnerUser, function (index: number, partner: any) {
+			let contactsLimit = partner.contactsLimit;
+			if(this.applyForAllClicked){
+				partner.teamMemberGroupId = this.selectAllTeamMemberGroupId;
+				partner.selectedTeamMemberIds = this.selectAllTeamMemberIds;
+			}
+			if (contactsLimit < 1) {
+				partner.contactsLimit = 1;
+			}
+		});
+		if (errorCount > 0) {
+			this.processingPartnersLoader = false;
+            this.resetApplyFilter();
+		} else if (errorCount == 0) {
+			$('#assignContactAndMdfPopup').modal('hide');
+					this.showNotifyPartnerOption = false;
+					this.processingPartnersLoader = false;
+                    this.resetApplyFilter();
+					this.savePartners();
+		}
+	}
 
  /******XNFR-342***/
  openUnPublishedContentModalPopUp(contact:any){
