@@ -4,25 +4,33 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-lg-12">
             <div class="col-xs-12 col-sm-5 col-lg-5 col-md-4 p0 mb_10">
-                <button class="btn-primary" (click)="addTag()" translate>Create a Tag</button>
+                <button class="button_blue" (click)="addTag()" translate><span class="btn btn-primary transition">Create
+                        a Tag</span></button>
             </div>
             <div class="col-xs-12 col-sm-7 col-lg-7 col-md-8 p0">
                 <div class="page-toolbar">
                     <div class="btn-group pull-right">
                         <div class="inputs float-right" style="display: inline-flex;">
                             <div id="left">
-                                <select class="form-control selectTagTextCu" [(ngModel)]="tagSortOption.selectedTagDropDownOption" (ngModelChange)="tagSortBy($event)">
-                  <option *ngFor="let option of tagSortOption.tagSortDropDownOptions" [ngValue]="option">
-                    {{option.name}}</option>
-                </select>
+                                <select class="form-control selectTagTextCu"
+                                    [(ngModel)]="tagSortOption.selectedTagDropDownOption"
+                                    (ngModelChange)="tagSortBy($event)">
+                                    <option *ngFor="let option of tagSortOption.tagSortDropDownOptions"
+                                        [ngValue]="option">
+                                        {{option.name}}</option>
+                                </select>
                             </div>
                             <div class="portlet-input input-inline" id="search-div" style="padding-left: 5px;">
                                 <div class="input-icon right" id="icon">
-                                    <input type="text" id="sort-text" class="form-control" [(ngModel)]="tagSortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="tagEventHandler($event.keyCode)">
-                                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="tagSortOption.searchKey" (click)="tagSortOption.searchKey='';searchTags();"></button>
+                                    <input type="text" id="sort-text" class="form-control"
+                                        [(ngModel)]="tagSortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                                        placeholder="search..." (keypress)="tagEventHandler($event.keyCode)">
+                                    <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                        *ngIf="tagSortOption.searchKey"
+                                        (click)="tagSortOption.searchKey='';searchTags();"></button>
                                     <button type="submit" class="search-box-item-click" (click)="searchTags()">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                  </button>
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -40,8 +48,9 @@
             <thead>
                 <tr>
                     <th class="text-center" style="width: 40%" id="border-bottom">
-                        <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'tag-list',2)">
-            </span>
+                        <span class="ui-column-resizer gray"
+                            (mousedown)="referenceService.onMouseDown($event,'tag-list',2)">
+                        </span>
                         <span class="gridHeader" translate>Name</span>
                     </th>
                     <th class="text-center" id="border-bottom" translate>Created On</th>
@@ -59,7 +68,8 @@
                         </h6>
                     </td>
                     <td class="text-center">
-                        <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="tag.displayTime">
+                        <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
+                            [dateAndTime]="tag.displayTime">
                         </app-timestamp>
                         <span *ngIf="referenceService.isSafariBrowser()">{{tag.displayTime}}</span>
                     </td>
@@ -69,7 +79,8 @@
                                 <i class="fa fa-pencil-square-o IconCustomization"></i>
                             </a>
                             <a id="template-delete" [ngClass]="{'disable-click' : (loggedInUserId !== tag.createdBy)}"
-                                (click)="confirmDeleteTag(tag)" data-toggle="tooltip" data-placement="top" title="Delete">
+                                (click)="confirmDeleteTag(tag)" data-toggle="tooltip" data-placement="top"
+                                title="Delete">
                                 <i class="fa fa-trash-o trashIconCustomization"></i>
                             </a>
                         </div>
@@ -80,7 +91,8 @@
     </div>
 </ng-container>
 <div *ngIf="tagPagination.pagedItems.length !== 0" class="pg8">
-    <app-pagination [pagination]="tagPagination" (notifyParent)="setTagPage($event)" (notifyParentDropDown)="listTags($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+    <app-pagination [pagination]="tagPagination" (notifyParent)="setTagPage($event)"
+        (notifyParentDropDown)="listTags($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
 </div>
 <!-- End of 24 -->
 <div *ngIf="tagPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
@@ -88,6 +100,6 @@
 </div>
 
 <div *ngIf="openAddTagPopup">
-    <app-add-tags-util [pagination]="tagPagination" [isAddTag]="isAddTag" [selectedTag]="selectedTag" (notifyParent)="resetTagValues($event)"></app-add-tags-util>
+    <app-add-tags-util [pagination]="tagPagination" [isAddTag]="isAddTag" [selectedTag]="selectedTag"
+        (notifyParent)="resetTagValues($event)"></app-add-tags-util>
 </div>
-
