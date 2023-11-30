@@ -30,7 +30,7 @@
 
   <!--******************Campaign Counts - Tiles*******************-->
   <div class="row customeRow">
-    <app-campaign-count-tiles *ngIf="!authenticationService.module?.isPrm" [partnerCompanyId]="partnerCompanyId"></app-campaign-count-tiles>
+    <app-campaign-count-tiles *ngIf="!authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember" [partnerCompanyId]="partnerCompanyId"></app-campaign-count-tiles>
   </div>
   <!--******************All Counts - Tiles*******************-->
   <div class="row customeRow">
@@ -123,7 +123,7 @@
   <div class="row rowPaddingCustomization1">
     <app-redistributed-campaign-details [partnerCompanyId]="partnerCompanyId" [teamMemberId]="teamMemberId"
       [isDetailedAnalytics]="true"
-      *ngIf="authenticationService.module?.isCampaign && !authenticationService.module?.isPrm"></app-redistributed-campaign-details>
+      *ngIf="authenticationService.module?.isCampaign && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-redistributed-campaign-details>
   </div>
   <!--******************Lead Details*******************-->
   <div class="row rowPaddingCustomization1">
