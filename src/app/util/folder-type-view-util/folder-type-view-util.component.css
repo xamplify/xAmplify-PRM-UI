@@ -190,10 +190,11 @@ h4.ellipsis.align-titletext {
     padding: 0px 5px;
 }
 .bar a {
-    width: 25px;
-    height: 25px;
-    margin: 6px 5px;
+    width: 28px;
+    height: 28px;
+    margin: 6px 2px;
     padding: 2px;
+    line-height: 23px;
 }
 .bar {
     height: 37px;

@@ -409,23 +409,26 @@
                                                                     class="actions-block override-actions ActionAlign mb_whitespace">
                                                                     <div
                                                                         class="mActionAlign ActionButtonPad iconmobile-align">
-                                                                        <a class="mMobileDisable" data-toggle="tooltip"
+                                                                        <a class="mMobileDisable custom-icon" data-toggle="tooltip"
                                                                             data-placement="bottom" title="View"
                                                                             (click)="viewTheme();showDto(dto);"><i
                                                                                 aria-hidden="true"
                                                                                 class="fa fa-eye mDisableColor IconCustomization"></i>
+                                                                                <div class="clickicons"></div>
                                                                         </a>
-                                                                        <a data-toggle="tooltip" data-placement="bottom"
+                                                                        <a  class="custom-icon" data-toggle="tooltip" data-placement="bottom"
                                                                             title="Activate"
                                                                             (click)="activateThemeForCompanyWithAlert(dto.id)"
                                                                             *ngIf="dto?.id != activeThemeDetails?.themeId"><i
                                                                                 _ngcontent-c69="" aria-hidden="true"
-                                                                                class="fa fa-power-off IconCustomization"></i></a>
+                                                                                class="fa fa-power-off IconCustomization"></i>
+                                                                            <div class="clickicons"></div> </a>
                                                                         <a data-toggle="tooltip" data-placement="bottom"
-                                                                            class="mMobileDisable" title="Copy"
+                                                                            class="mMobileDisable custom-icon" title="Copy"
                                                                             (click)="goToCustomThemes();showDto(dto);saveTheme();"
                                                                             *ngIf="dto?.id != 4"><i aria-hidden="true"
-                                                                                class="fa fa-files-o mDisableColor IconCustomization"></i></a>
+                                                                                class="fa fa-files-o mDisableColor IconCustomization"></i>
+                                                                            <div class="clickicons"></div></a>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -466,28 +469,32 @@
                                                         class="actions-block override-actions ActionAlign mb_whitespace">
                                                         <div
                                                             class="mActionAlign ActionButtonPad iconmobile-align tableIconWidth">
-                                                            <a class="mMobileDisable" data-toggle="tooltip"
+                                                            <a class="mMobileDisable custom-icon" data-toggle="tooltip"
                                                                 data-placement="bottom" title="Edit"
                                                                 (click)="goToCustomThemes();showDto(dto);updateTheme();"><i
                                                                     aria-hidden="true"
-                                                                    class="fa fa-edit mDisableColor IconCustomization"></i></a>
-                                                            <a data-toggle="tooltip" data-placement="bottom"
+                                                                    class="fa fa-edit mDisableColor IconCustomization"></i>
+                                                                <div class="clickicons"></div></a>
+                                                            <a class ="custom-icon" data-toggle="tooltip" data-placement="bottom"
                                                                 title="Activate"
                                                                 (click)="activateThemeForCompanyWithAlert(dto.id)"
                                                                 *ngIf="dto?.id != activeThemeDetails?.themeId"><i
                                                                     _ngcontent-c69="" aria-hidden="true"
-                                                                    class="fa fa-power-off IconCustomization"></i></a>
-                                                            <a class="mMobileDisable" data-toggle="tooltip"
+                                                                    class="fa fa-power-off IconCustomization"></i>
+                                                                <div class="clickicons"></div></a>
+                                                            <a class="mMobileDisable custom-icon" data-toggle="tooltip"
                                                                 data-placement="bottom" title="Copy"
                                                                 (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
                                                                     aria-hidden="true"
-                                                                    class="fa fa-files-o mDisableColor IconCustomization"></i></a>
-                                                            <a data-toggle="tooltip" data-placement="bottom"
+                                                                    class="fa fa-files-o mDisableColor IconCustomization"></i>
+                                                                <div class="clickicons"></div></a>
+                                                            <a  class="custom-icon" data-toggle="tooltip" data-placement="bottom"
                                                                 title="Delete"
                                                                 (click)="deleteByThemeIdWithAlert(dto.id)"
                                                                 *ngIf="dto?.id != activeThemeDetails?.themeId"> <i
                                                                     _ngcontent-c69="" aria-hidden="true"
-                                                                    class="fa fa-trash-o trashIconCustomization"></i></a>
+                                                                    class="fa fa-trash-o trashIconCustomization"></i>
+                                                                <div class="del-icon"></div></a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -1434,30 +1441,33 @@
                                                                                 <div
                                                                                     class="actions-block override-actions mb_whitespace tb_view_actions">
                                                                                     <ng-container>
-                                                                                        <a *ngIf="pipeline.canSync"
+                                                                                        <a class="custom-icon" *ngIf="pipeline.canSync"
                                                                                             data-toggle="tooltip"
                                                                                             data-placement="top"
                                                                                             title="Synchronize with {{pipeline.integrationType}}"
                                                                                             (click)="syncPipeline(pipeline)">
                                                                                             <i
                                                                                                 class="fa fa-refresh IconCustomization"></i>
+                                                                                                <div class="clickicons"></div>
                                                                                         </a>
-                                                                                        <a data-toggle="tooltip"
+                                                                                        <a  class="custom-icon" data-toggle="tooltip"
                                                                                             data-placement="top"
                                                                                             title="View"
                                                                                             (click)="viewPipeline(pipeline)">
                                                                                             <i
                                                                                                 class="fa fa-eye IconCustomization"></i>
+                                                                                                <div class="clickicons"></div>
                                                                                         </a>
-                                                                                        <a *ngIf="pipeline.canUpdate"
+                                                                                        <a class="custom-icon" *ngIf="pipeline.canUpdate"
                                                                                             data-toggle="tooltip"
                                                                                             data-placement="top"
                                                                                             title="Edit"
                                                                                             (click)="editPipeline(pipeline)">
                                                                                             <i
                                                                                                 class="fa fa-pencil-square-o IconCustomization"></i>
+                                                                                                <div class="clickicons"></div>
                                                                                         </a>
-                                                                                        <a *ngIf="pipeline.canDelete"
+                                                                                        <a  class="custom-icon" *ngIf="pipeline.canDelete"
                                                                                             id="template-delete"
                                                                                             (click)="confirmDeletePipeline(pipeline)"
                                                                                             data-toggle="tooltip"
@@ -1465,6 +1475,7 @@
                                                                                             title="Delete">
                                                                                             <i
                                                                                                 class="fa fa-trash-o trashIconCustomization"></i>
+                                                                                                <div class="del-icon"></div>
                                                                                         </a>
                                                                                     </ng-container>
                                                                                 </div>
@@ -1857,32 +1868,36 @@
                                                                             </ng-container>
                                                                             <ng-container
                                                                                 *ngIf="!category.defaultCategory">
-                                                                                <a data-toggle="tooltip"
+                                                                                <a class="custom-icon" data-toggle="tooltip"
                                                                                     data-placement="top" title="Edit"
                                                                                     (click)="getCategoryById(category)">
                                                                                     <i class="fa fa-pencil-square-o IconCustomization"
                                                                                         aria-hidden="true"></i>
+                                                                                        <div class="clickicons"></div>
                                                                                 </a>
-                                                                                <a id="template-delete"
+                                                                                <a class="custom-icon" id="template-delete"
                                                                                     (click)="confirmDeleteCategory(category)"
                                                                                     data-toggle="tooltip"
                                                                                     data-placement="top" title="Delete">
                                                                                     <i class="fa fa-trash-o trashIconCustomization"
                                                                                         aria-hidden="true"></i>
+                                                                                        <div class="del-icon"></div> 
                                                                                 </a>
                                                                             </ng-container>
                                                                             <ng-container *ngIf="category?.count>0">
-                                                                                <a *ngIf="categoryPagination.previewAccess"
+                                                                                <a class="custom-icon" *ngIf="categoryPagination.previewAccess"
                                                                                     data-toggle="tooltip"
                                                                                     data-placement="top" title="Preview"
                                                                                     (click)="previewItems(category)">
                                                                                     <i class="fa fa-eye IconCustomization"
                                                                                         aria-hidden="true"></i>
+                                                                                        <div class="clickicons"></div>
                                                                                 </a>
-                                                                                <a *ngIf="!categoryPagination.previewAccess"
+                                                                                <a class="custom-icon" *ngIf="!categoryPagination.previewAccess"
                                                                                     title="You do not have permission to preview">
                                                                                     <i class="fa fa-eye disabled-event IconCustomization"
                                                                                         aria-hidden="true"></i>
+                                                                                        <div class="clickicons"></div>
                                                                                 </a>
                                                                             </ng-container>
                                                                             <ng-container *ngIf="category?.count==0">
@@ -1945,7 +1960,7 @@
                                                                 </td>
                                                                 <td>
                                                                     <div class="override-actions">
-                                                                        <a [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'"
+                                                                        <a class="custom-icon" [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'"
                                                                             data-toggle="tooltip"
                                                                             data-placement="bottom">
                                                                             <i *ngIf="item.previewAccess"
@@ -1953,7 +1968,7 @@
                                                                                 (click)="goToFolder(categoryPreviewItem.categoryId,item)"><b>{{item.moduleItemsCount}}</b></i>
                                                                             <i *ngIf="!item.previewAccess"
                                                                                 class="circled-number fontStyleNormal IconCustomization xampify-cursor-not-allowed"><b>{{item.moduleItemsCount}}</b></i>
-                                                                        </a>
+                                                                      <div class="clickicons"></div>  </a>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -2516,12 +2531,13 @@
                                                                                             style="float:none;"
                                                                                             *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                                                            <a data-toggle="tooltip"
+                                                                                            <a class="custom-icon" data-toggle="tooltip"
                                                                                                 data-placement="top"
                                                                                                 title="delete"
                                                                                                 (click)="showDeleteExcludedUserAlert(user.userId)">
                                                                                                 <i class="fa fa-trash-o trashIconCustomization"
                                                                                                     aria-hidden="true"></i>
+                                                                                                    <div class="del-icon"></div>
                                                                                             </a>
                                                                                         </div>
                                                                                     </td>
@@ -2739,12 +2755,13 @@
                                                                                             style="float:none;"
                                                                                             *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                                                            <a data-toggle="tooltip"
+                                                                                            <a class="custom-icon" data-toggle="tooltip"
                                                                                                 data-placement="top"
                                                                                                 title="delete"
                                                                                                 (click)="showDeleteExcludedDomainAlert(obj.domainName)">
                                                                                                 <i class="fa fa-trash-o trashIconCustomization"
                                                                                                     aria-hidden="true"></i>
+                                                                                                    <div class="del-icon"></div>
                                                                                             </a>
                                                                                         </div>
                                                                                     </td>

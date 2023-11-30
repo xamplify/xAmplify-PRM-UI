@@ -833,5 +833,12 @@ export class ContactService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+    
+    validatePartnersCompany(partners : any, partnerListId:number){
+      return this._http.post(this.contactsUrl + "validate-partners"+  "/" + partnerListId + "?access_token=" + this.authenticationService.access_token, partners)
+        .map(this.extractData)
+        .catch(this.handleError);
+    
+    }
 
 }

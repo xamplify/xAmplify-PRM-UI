@@ -2726,9 +2726,9 @@ button.btn.custom {
 /* sudha sri (20-11-2023) */
 .custom-folder-icon {
   display: inline-block !important;
-  width: 28px !important;
-  height: 28px !important;
-  line-height: 24px !important;
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 30px !important;
   border: none !important;
   color: #fff !important;
   box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
@@ -2973,11 +2973,14 @@ justify-content: center!important;
     width: 100% !important;
     height: inherit !important;
     border-radius: inherit !important;
-    background: linear-gradient(
+    background-color: #26a69a;
+    border-color: #26a69a;
+    /* background: linear-gradient(
       82.3deg,
       rgba(150, 93, 233, 1) 10.8%,
       rgba(99, 88, 238, 1) 94.3%
-    ) !important;
+    ) !important; */
+
     transition: all 0.475s !important;
   }
   span.btn.Btn-Green.transition{
@@ -3009,3 +3012,39 @@ justify-content: center!important;
   background-color: #2c2f33 !important;
   border: 1px solid #191b1e !important;
 }
+/* me changes */
+.downloadicon{
+  position: relative;
+  /* top: -21px; */
+  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+}
+#download-template-grid{
+  border: none!important;
+  width: 32px!important;
+  height: 32px!important;
+}
+.downloadicon-align{
+top: 6px !important;
+}
+.bar a{
+  width: 32px !important;
+}
+.folder-bar{
+height:45px!important;
+}
+.actionTrashPad{
+padding-left: 0px!important;
+}
+.bar a{
+  vertical-align: middle;
+}
+.table-eye-circle{
+  width: 32px!important;
+  height: 32px!important;
+}
+button.unlink-button {
+  color: #f3f2f2;
+}
+/* .bar{
+  height: 50px!important;
+} */

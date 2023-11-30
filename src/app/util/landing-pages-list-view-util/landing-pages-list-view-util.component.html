@@ -272,12 +272,12 @@
                                                 <span class="badge"
                                                     id="notification-list">{{landingPage.analyticsCount}}</span>
                                             </ng-container>
-                                            <a class="custom-grid-icon"
+                                            <a class="custom-icon"
                                                 *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)"
                                                 data-toggle="tooltip" data-placement="top" title="Delete"
                                                 (click)="confirmDelete(landingPage)">
                                                 <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
-                                                <div class="clickicons"></div>
+                                                <div class="del-icon"></div>
                                             </a>
                                         </div>
                                     </td>
