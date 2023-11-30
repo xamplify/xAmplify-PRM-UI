@@ -2826,7 +2826,7 @@ a.UserguideBtnCustomization {
   transform: scale(1.05);
 }
 .card-template:hover{
-  background-color:inherit!important; 
+  background-color:#34495a!important; 
   transition-duration: unset !important;
   background-position: unset!important;
 }
@@ -3136,4 +3136,14 @@ border:0px!important;
 .BgForCard{
   border: 1px solid #16191c!important;
   background: #2b2f33!important;
+}
+/* manikanta */
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger, .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning {
+  color: #fff !important;
+  background: #2a2e32 !important;
+  box-shadow: inset 0.9em 0 0.9em #171717;
+}
+.bootstrap-switch, .bootstrap-switch .bootstrap-switch-container, .bootstrap-switch .bootstrap-switch-label {
+  border-color: #111111 !important;
+  background-color: #3c424a !important;
 }
