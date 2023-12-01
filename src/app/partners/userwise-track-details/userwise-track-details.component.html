@@ -1,5 +1,5 @@
 <div class="col-sm-12 col-md-12 col-lg-12 ml15m">
-  <div class="panel panel-info panel-bgMain">
+  <div class="panel panel-info panel-bgMain panel-card br-10">
     <div class="panel-heading panel-heading-custom panel-bg">
       <h3 class="panel-title mt7">Track Assets Detailed Report</h3>
       <span class="pull-right mt25m mobilesearchdisplay">
@@ -48,20 +48,32 @@
                 </span>
                 </td>
               <td>
+                <div class="custom-icon">
               <i class="circled-number IconCustomization fontStyleNormal"> <strong >{{item?.assetCount}}</strong></i>
+            <div class="clickicons"></div>
+            </div>
               </td>
               <td>
                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="item?.publishedOnInUTC">
                 </app-timestamp>
               </td>
               <td>
-                <i class="circled-number IconopenedCount fontStyleNormal"> <strong >{{item?.openedCount}}</strong></i>
+                <div class="custom-icon">
+                <i class="circled-number IconopenedCount fontStyleNormal IconCustomization"> <strong >{{item?.openedCount}}</strong></i>
+                <div class="clickicons"></div>
+                </div>
               </td>
               <td>
-                <i class="circled-number IconviewedCount fontStyleNormal"> <strong >{{item?.viewedCount}}</strong></i>
+                <div class="custom-icon">
+                <i class="circled-number IconviewedCount fontStyleNormal IconCustomization"> <strong >{{item?.viewedCount}}</strong></i>
+                <div class="clickicons"></div>
+                </div>
               </td> 
               <td>
-                <i class="circled-number IconodownloadedCount fontStyleNormal"> <strong >{{item?.downloadedCount}}</strong></i>
+                <div class="custom-icon">
+                <i class="circled-number IconodownloadedCount fontStyleNormal IconCustomization"> <strong >{{item?.downloadedCount}}</strong></i>
+                <div class="clickicons"></div>
+                </div>
               </td> 
                    
               <!-- <td>{{item?.progress}}%</td> -->

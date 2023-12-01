@@ -2632,9 +2632,10 @@ display: inline-flex;
 }
 /* Button Transitions */
 /* sudha sri(23-11-2023) */
-.button:hover,button {
+.button:hover,button,.button_blue:hover {
   background: none;
 }
+
 .marg-lft{
   margin-left: -20px !important;
 }
@@ -2659,4 +2660,11 @@ display: inline-flex;
 }
 .btn-hvr-text{
   background-color: #ddd;
+}
+.mar-rgt{
+  margin-right: 40px !important;
+}
+.p-rgt_p-top{
+  padding-right: 3px;
+  padding-top: 2px;
 }

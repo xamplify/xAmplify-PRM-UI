@@ -257,9 +257,11 @@
           <div class="input-icon right pull-right cebp" style="margin-right: -2px;
         padding-top: 5px;">
             <ul class="button-align inline">
-              <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getAssetsList()">Add
-                  Media</button></li>
-              <li style="margin-right: 5px;"><button class="btn btn-primary" (click)="getFormsList()">Add Forms</button>
+              <li style="margin-right: 5px;"><button class="button_blue" (click)="getAssetsList()"><span
+                    class="btn btn-primary transition">Add
+                    Media</span></button></li>
+              <li style="margin-right: 5px;"><button class="button_blue" (click)="getFormsList()"><span
+                    class="btn btn-primary transition">Add Forms</span></button>
               </li>
             </ul>
           </div>
@@ -297,12 +299,12 @@
             <div class="page-toolbar">
 
               <div class="inline mToolBarPad" style="margin-left: -3px;padding-top: 12px;">
-                <button *ngIf="type == undefined || type == 'TRACK'" class="btn btn-primary"
-                  (click)="openQuizPopup()">Select
-                  Quiz</button>
-                <button class="btn btn-primary" (click)="openOrderAssetsPopup()"><span
+                <button *ngIf="type == undefined || type == 'TRACK'" class="button_blue" (click)="openQuizPopup()"><span
+                    class="btn btn-primary transition">Select
+                    Quiz</span></button>
+                <button class="button_blue" (click)="openOrderAssetsPopup()"><span class="btn btn-primary transition"
                     *ngIf="type == undefined || type == 'TRACK'">Order Assets And Quiz</span><span
-                    *ngIf="type !== 'TRACK'">Order
+                    class="btn btn-primary transition" *ngIf="type !== 'TRACK'">Order
                     Assets</span></button>
 
               </div>
