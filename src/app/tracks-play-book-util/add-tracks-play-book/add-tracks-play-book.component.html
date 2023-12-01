@@ -201,7 +201,8 @@
                       <span class="caption-subject font-blue-madison bold uppercase ">Featured Image</span>
                     </div>
                     <div class="inline" style="float: right; padding-bottom: 5px;">
-                      <button type="button" class="btn btn-primary" (click)="clearImage()">Clear</button>
+                      <button type="button" class="button_blue" (click)="clearImage()"><span
+                          class="btn btn-primary transition">Clear</span></button>
                     </div>
                   </div>
                   <div class="feature-img-bg" style="cursor: pointer;text-align:center;color:#fff;"
@@ -452,10 +453,11 @@
       <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-3')"
         translate>Previous</button>
       <div class="pull-right">
-        <button class="btn btn-primary" type="submit" [disabled]="!tracksPlayBook.isValid"
-          (click)="save()">{{SubmitButtonValue}}</button>
-        <button class="btn btn-primary" type="submit" [disabled]="!tracksPlayBook.isValid"
-          *ngIf="!tracksPlayBook.published" (click)="saveAndPublish()">{{SubmitAndPublishButtonValue}}</button>
+        <button class="button_blue" type="submit" [disabled]="!tracksPlayBook.isValid" (click)="save()"><span
+            class="btn btn-primary transition">{{SubmitButtonValue}}</span></button>
+        <button class="button_blue" type="submit" [disabled]="!tracksPlayBook.isValid" *ngIf="!tracksPlayBook.published"
+          (click)="saveAndPublish()"><span
+            class="btn btn-primary transition">{{SubmitAndPublishButtonValue}}</span></button>
       </div>
     </div>
 
@@ -529,8 +531,9 @@
                 title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>
           </div>
           <div>
-            <button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadImage()">Save
-              Changes</button>
+            <button class="button_blue" [disabled]="!showCropper" (click)="uploadImage()"><span
+                class="btn btn-primary transition">Save
+                Changes</span></button>
           </div>
         </div>
         <div>
