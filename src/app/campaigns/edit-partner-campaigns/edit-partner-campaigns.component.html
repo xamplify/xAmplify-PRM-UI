@@ -23,7 +23,8 @@
             </li>
          </ul>
          <div id="folder-margin-xamp">
-            <button class="btn-primary" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
+            <button class="button_blue" id="right" (click)="openCreateFolderPopup()"><span
+                  class="btn btn-primary transition">Create a Folder</span></button>
          </div>
       </div>
       <div class="folder-custom-response">
@@ -247,12 +248,14 @@
                               </a>
                               <br>
                               <div class="d-flex">
-                                 <a class="pull-right btn btn-primary btn-sm"
-                                    (click)="previewEmailTemplate(campaign.emailTemplate)"> <i class="fa fa-eye"></i>
-                                    Preview </a>
+                                 <a class="pull-right btn-sm button_blue"
+                                    (click)="previewEmailTemplate(campaign.emailTemplate)"> <span
+                                       class="btn btn-primary transition"><i class="fa fa-eye"></i>
+                                       Preview</span> </a>
                                  <a *ngIf="campaign?.emailTemplate?.editPartnerTemplate"
-                                    class="pull-right btn btn-primary btn-sm" style="margin-right: 6px"
-                                    (click)="editPartnerTemplate()"> <i class="fa fa-edit"></i> Edit </a>
+                                    class="pull-right btn btn-sm button_blue" style="margin-right: 6px"
+                                    (click)="editPartnerTemplate()"> <span class="btn btn-primary transition"><i
+                                          class="fa fa-edit"></i> Edit </span></a>
                               </div>
                            </div>
                         </div>
@@ -299,8 +302,9 @@
                                  <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">
                                     {{selectedUserlistIds.length}} lists are selected
                                  </h4>
-                                 <a class="pull-right btn btn-primary btn-sm" style="margin-top: 6px"
-                                    (click)="showContacts()">{{previewText}}</a>
+                                 <button class="pull-right btn-sm button_blue" style="margin-top: 6px"
+                                    (click)="showContacts()"><span
+                                       class="btn btn-primary transition">{{previewText}}</span></button>
                                  <br>
                               </div>
                               <span *ngIf="selectedUserlistIds.length>0"

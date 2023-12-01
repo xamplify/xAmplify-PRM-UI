@@ -550,9 +550,9 @@
                             [ngModel]="landingPageAliasUrl" #userinput>
                         <br>
                         <div style="padding-top: 9px;">
-                            <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Page link')"
-                                translate>Copy
-                                Link</a>
+                            <a class="button_blue" id="right" (click)="copyInputMessage(userinput,'Page link')"
+                                translate><span class="btn btn-primary transition">Copy
+                                    Link</span></a>
                         </div>
                         <br>
                     </div>
@@ -561,9 +561,10 @@
                         <textarea class="text-color" id="text-area" rows="3" [ngModel]="iframeEmbedUrl"
                             spellcheck="false" #iframeUrlInput></textarea>
                         <div style="padding-top: 10px;">
-                            <a class="btn btn-primary" id="right"
-                                (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed
-                                Link</a>
+                            <button class="button_blue" id="right"
+                                (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate><span
+                                    class="btn btn-primary transition">Copy Embed
+                                    Link</span></button>
                         </div>
                     </div>
                 </div>

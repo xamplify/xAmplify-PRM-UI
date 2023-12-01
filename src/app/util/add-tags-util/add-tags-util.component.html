@@ -1,10 +1,12 @@
-<div class="modal fade right" id="addTagModalPopup" tabindex="-1" role="dialog" aria-labelledby="addTagModalPopup" data-backdrop="static" data-keyboard="false">
+<div class="modal fade right" id="addTagModalPopup" tabindex="-1" role="dialog" aria-labelledby="addTagModalPopup"
+    data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close-circle" *ngIf="(tag.isValid && tag.isTagNameValid) || isAddTag" (click)="closeTagModal()">
-        <i class="fa fa-times"></i>
-      </button>
+                <button type="button" class="close-circle" *ngIf="(tag.isValid && tag.isTagNameValid) || isAddTag"
+                    (click)="closeTagModal()">
+                    <i class="fa fa-times"></i>
+                </button>
                 <h4 class="modal-title text-center">{{tagModalTitle}}</h4>
             </div>
             <div class="modal-body">
@@ -14,17 +16,23 @@
                     <div class="form-group" id="tagNamesDiv">
                         <label>Name <span class="required">*</span></label>
                         <div *ngIf="isAddTag">
-                            <tag-input [(ngModel)]="tagNames" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'" [secondaryPlaceholder]="'Add a tag & press Enter'" [validators]="validatorsTag" 
-                            (keyup)="validateTagName($event)" (onRemove)="validateTagName($event)" required></tag-input>
+                            <tag-input [(ngModel)]="tagNames" [ngModelOptions]="{standalone: true}"
+                                [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'"
+                                [secondaryPlaceholder]="'Add a tag & press Enter'" [validators]="validatorsTag"
+                                (keyup)="validateTagName($event)" (onRemove)="validateTagName($event)"
+                                required></tag-input>
                         </div>
                         <div *ngIf="!isAddTag">
-                            <input class="form-control" type="text" [(ngModel)]="tag.tagName" (keyup)="validateTagName($event)">
+                            <input class="form-control" type="text" [(ngModel)]="tag.tagName"
+                                (keyup)="validateTagName($event)">
                         </div>
                     </div>
                 </ng-container>
             </div>
             <div class="modal-footer">
-                <button type="submit" [disabled]="!tag.isTagNameValid || addTagLoader.isLoading " class="btn Btn-Green" (click)="saveOrUpdateTag()">{{tagButtonSubmitText}}</button>
+                <button type="submit" [disabled]="!tag.isTagNameValid || addTagLoader.isLoading " class="button"
+                    (click)="saveOrUpdateTag()"><span
+                        class="btn Btn-Green transition">{{tagButtonSubmitText}}</span></button>
             </div>
         </div>
     </div>

@@ -2463,7 +2463,7 @@ i.collapseIconColorCu {
   }
 /* Button Transitions */
 /* sudha sri(23-11-2023) */
-.button:hover,button {
+.button:hover,button,.button_blue:hover {
   background: none;
 }
 .mar-rgt_mar-lft{
@@ -2484,4 +2484,23 @@ i.collapseIconColorCu {
 }
 .mar-rgt-9{
   margin-right: -9px !important;
+}
+.mar-rgt{
+  margin-right: 40px !important;
+}
+.p-top{
+  padding-top: 2px !important;
+}
+.p-top-0{
+  padding-top: 0px !important;
+}
+button.new-tab-button.m_mb8.button_blue:hover {
+  background-color: #286090;
+}
+button.btn.btn-white.salesforce-btn.button{
+  background-color: #2b3c46 !important;
+  border: 1px solid #2b3c46 !important;
+}
+.neg-mar-top{
+  margin-top: -10px;
 }

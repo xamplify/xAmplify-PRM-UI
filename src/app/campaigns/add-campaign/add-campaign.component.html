@@ -16,8 +16,9 @@
             </li>
         </ul>
         <div class="createFolderAlignment">
-            <button class="btn btn-primary  btn-bt-aln" id="right" (click)="openCreateFolderPopup()">Create a
-                Folder</button>
+            <button class="button_blue btn-bt-aln" id="right" (click)="openCreateFolderPopup()"><span
+                    class="btn btn-primary transition">Create a
+                    Folder</span></button>
         </div>
     </div>
     <div id="campaign-details-and-launch-tabs">
@@ -724,17 +725,17 @@
                                 </div>
 
                                 <div class="input-icon right pull-right pr-epx">
-                                    <button *ngIf="selectedEmailTemplateRow==0" class="btn btn-primary"
+                                    <button *ngIf="selectedEmailTemplateRow==0" class="button_blue"
                                         [disabled]="selectedEmailTemplateRow==0" data-toggle="tooltip"
                                         data-placement="top" title="{{sendTestEmailToolTip}}">
-                                        <i class="fa fa-envelope-o"></i>
-                                        {{properties?.sendTestEmail}}
+                                        <span class="btn btn-primary transition"><i class="fa fa-envelope-o"></i>
+                                            {{properties?.sendTestEmail}}</span>
                                     </button>
-                                    <button *ngIf="selectedEmailTemplateRow>0" class="btn btn-primary"
-                                        data-toggle="tooltip" data-placement="top" title="{{sendTestEmailToolTip}}"
+                                    <button *ngIf="selectedEmailTemplateRow>0" class="button_blue" data-toggle="tooltip"
+                                        data-placement="top" title="{{sendTestEmailToolTip}}"
                                         (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
-                                        <i class="fa fa-envelope-o"></i>
-                                        {{properties?.sendTestEmail}}
+                                        <span class="btn btn-primary transition"><i class="fa fa-envelope-o"></i>
+                                            {{properties?.sendTestEmail}}</span>
                                     </button>
                                 </div>
                                 <!--List Of Email Templates-->
