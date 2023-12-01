@@ -1044,19 +1044,24 @@
         <app-scroll-top></app-scroll-top>
     </div>
 
-    <!-- Modal -->
-    <div *ngIf="contactService.isContactModalPopup && !updatePartnerUser">
-        <app-add-contact-modal [mdfAccess]="mdfAccess" [gdprInput]="parentInput"
-            [totalUsers]="contactService.allPartners" [isContactTypeEdit]="true" [isUpdateUser]="updatePartnerUser"
-            (notifyParent)="addRow($event)"></app-add-contact-modal>
+   <!-- Modal -->
+   <div *ngIf="contactService.isContactModalPopup && !updatePartnerUser">
+    <app-add-contact-modal [mdfAccess]="mdfAccess"
+        [gdprInput]="parentInput" [totalUsers]="contactService.allPartners"
+        [isContactTypeEdit]="true" [isUpdateUser]="updatePartnerUser"
+        [partnerListId] = "partnerListId"
+        (notifyParent)="addRow($event)"></app-add-contact-modal>
     </div>
 
     <div *ngIf="contactService.isContactModalPopup && updatePartnerUser">
-        <app-add-contact-modal [mdfAccess]="mdfAccess" [gdprInput]="parentInput"
-            [totalUsers]="contactService.allPartners" [contactDetails]="partnerAllDetails"
-            [isUpdateUser]="updatePartnerUser" (notifyParent)="updatePartnerListUser($event)"></app-add-contact-modal>
+        <app-add-contact-modal [mdfAccess]="mdfAccess"
+            [gdprInput]="parentInput" [totalUsers]="contactService.allPartners"
+            [contactDetails]="partnerAllDetails"
+            [isUpdateUser]="updatePartnerUser"
+            [partnerListId] = "partnerListId"
+            (notifyParent)="updatePartnerListUser($event)"></app-add-contact-modal>
     </div>
-
+    
     <div id="zohoId">
         <div class="modal right" id="zohoShowLoginPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
             data-keyboard="false" data-backdrop="static">
