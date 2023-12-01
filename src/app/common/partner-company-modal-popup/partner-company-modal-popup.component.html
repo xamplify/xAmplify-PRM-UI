@@ -1,160 +1,210 @@
-<div class="modal fade right" id="partnerCompaniesPopup" tabindex="-1" role="dialog" aria-labelledby="partnerCompaniesPopup" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog" role="document">
-   <!-- <div class="modal-dialog full-width" role="document"> -->
-     <div class="modal-content">
-        <div class="modal-header">
-           <button *ngIf="!ngxLoading" type="button" class="close-circle" (click)="closePopup()">
-           <i class="fa fa-times" aria-hidden="true"></i>
-           </button>
-           <h4 class="modal-title text-center">Share List To {{authenticationService?.partnerModule?.customName}}</h4>
-        </div>
-        <div class="modal-body">
-         <div class="thank-you-pop" *ngIf="sendSuccess">
-            <ng-container *ngIf="statusCode==200">
-               <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
-               <h4 class="event-success">{{responseMessage}}</h4>
-            </ng-container>
-            <ng-container *ngIf="statusCode!=200">
-               <i class="fa fa-info-circle" id="font-size-info" aria-hidden="true"></i>
-               <h4 class="event-info">{{responseMessage}}</h4>
-            </ng-container>
+<div class="modal fade right" id="partnerCompaniesPopup" tabindex="-1" role="dialog"
+   aria-labelledby="partnerCompaniesPopup" data-backdrop="static" data-keyboard="false">
+   <div class="modal-dialog" role="document">
+      <!-- <div class="modal-dialog full-width" role="document"> -->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button *ngIf="!ngxLoading" type="button" class="close-circle" (click)="closePopup()">
+               <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+            <h4 class="modal-title text-center">Share List To {{authenticationService?.partnerModule?.customName}}</h4>
          </div>
-         <div class="col-md-12 col-lg-12 pl2 pr0" *ngIf="!sendSuccess">
-            <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-            </app-response-message>
-            <ng-container *ngIf="!sendSuccess">
-               <div [ngClass]="{'hide-scrollbar': isTableLoaded}">
-            <div class="page-toolbar">
-               <div class="btn-group pull-right search-position">
-                  <div class="inputs float-right" style="display: inline-flex;">
-                     <div class="portlet-input input-inline" id="search-div">
-                        <div class="input-icon right marg-top" id="icon">
-                           <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="partnersSearchOnKeyEvent($event.keyCode)">
-                           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>
-                           <button type="submit" class="search-box-item-click" (click)="searchPartners()">
-                           <i class="fa fa-search" aria-hidden="true"></i>
-                           </button>
+         <div class="modal-body">
+            <div class="thank-you-pop" *ngIf="sendSuccess">
+               <ng-container *ngIf="statusCode==200">
+                  <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
+                  <h4 class="event-success">{{responseMessage}}</h4>
+               </ng-container>
+               <ng-container *ngIf="statusCode!=200">
+                  <i class="fa fa-info-circle" id="font-size-info" aria-hidden="true"></i>
+                  <h4 class="event-info">{{responseMessage}}</h4>
+               </ng-container>
+            </div>
+            <div class="col-md-12 col-lg-12 pl2 pr0" *ngIf="!sendSuccess">
+               <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+               </app-response-message>
+               <ng-container *ngIf="!sendSuccess">
+                  <div [ngClass]="{'hide-scrollbar': isTableLoaded}">
+                     <div class="page-toolbar">
+                        <div class="btn-group pull-right search-position">
+                           <div class="inputs float-right" style="display: inline-flex;">
+                              <div class="portlet-input input-inline" id="search-div">
+                                 <div class="input-icon right marg-top" id="icon">
+                                    <input type="text" id="sort-text" class="form-control"
+                                       [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                                       placeholder="search..." (keypress)="partnersSearchOnKeyEvent($event.keyCode)">
+                                    <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                       *ngIf="sortOption.searchKey"
+                                       (click)="sortOption.searchKey='';searchPartners();"></button>
+                                    <button type="submit" class="search-box-item-click" (click)="searchPartners()">
+                                       <i class="fa fa-search" aria-hidden="true"></i>
+                                    </button>
+                                 </div>
+                              </div>
+                           </div>
                         </div>
                      </div>
-                  </div>
-               </div>
-            </div>
-               
-   <app-team-member-filter-option *ngIf="showFilter" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
-      <br/><br/>
-      <ng-container *ngIf="!sendSuccess">   
-         <div class="alert alert-success text-center" *ngIf="selectedPartnershipIds?.length>0">
-            <strong>Selected Companies : {{selectedPartnershipIds?.length}}</strong>
-         </div>
-               <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-               <ng-container *ngIf="!httpRequestLoader.isLoading">
-                  <div class="table-responsive">
-                     <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" id="parnter-companies" aria-describedby="damPartnersTableDescription">
-                        <thead>
-                           <tr>
-                              <th scope="col"></th>
-                              <th scope="col">Company Logo</th>
-                              <th scope="col" class="text-center">{{authenticationService?.partnerModule?.customName}} Company Name</th>
-                              <th scope="col">Created Time</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
-                           <tr [class.row-selected]="selectedPartnershipIds.indexOf(partner.partnershipId)>-1"  [class.disabled-div]="selectedPartnershipIds.length>0 && selectedPartnershipIds.indexOf(partner.partnershipId)<=-1">
-                           <td class="cw">
-                              <div class="actions-block left-float" [class.disabled-div]="selectedPartnershipIds.length>0 && selectedPartnershipIds.indexOf(partner.partnershipId)<=-1">
-                                 <a  (click)="viewTeamMembers(partner)">
-                                 <i class="fa" data-toggle="tooltip" data-placement="right" title="View/Hide Team Members" [ngClass]="{'fa-angle-right': !partner.expand, 'fa-angle-down': partner.expand}" aria-hidden="true"></i>
-                                 </a>
-                              </div>
-                           </td>
-                           <td style="width: 10%;">
-                              <div class="thumbnail-wrapper">
-                                 <img  data-toggle="tooltip" data-placement="bottom" title="{{partner?.companyName}}" alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';" [src]="authenticationService.MEDIA_URL+partner.companyLogo">
-                              </div>
-                           </td>
-                           <td  class="text-center">
-                              <span data-toggle="tooltip" data-placement="bottom" title="{{partner?.companyName}}">{{partner?.companyName | slice:0:20}}</span>
-                              <span *ngIf="partner?.companyName.length>20">...</span>
-                           </td>
-                           <td>
-                           <app-timestamp  [dateAndTime]="partner?.displayTime">
-                           </app-timestamp>
-                        </td>
-                           </tr>
-                           <tr *ngIf="partner?.expand">
-                           <td colspan="4">
-                              <div class="table-responsive x-hidden">
-                                 <div class="portlet-input input-inline float-right mb10p" id="search-div">
-                                    <div class="input-icon right" id="search-align">
-                                       <input type="text" autocomplete="off" id="sort-text" class="form-control" [(ngModel)]="teamMembersPagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="adminAndTeamMembersKeySearch($event.keyCode)">
-                                       <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="teamMembersPagination?.searchKey" (click)="teamMembersPagination.searchKey='';searchAdminsAndTeamMembers();"></button>
-                                       <button type="submit" class="search-box-item-click" (click)="searchAdminsAndTeamMembers()">
-                                       <i class="fa fa-search" aria-hidden="true"></i>
-                                       </button>
-                                    </div>
-                                 </div>
-                                 <ng-container *ngIf="!teamMembersLoader.isLoading && adminsAndTeamMembersErrorMessage.isVisible">
-                                    <div class="custom-response-padding">
-                                       <app-response-message [customResponse]="adminsAndTeamMembersErrorMessage"></app-response-message>
-                                    </div>
-                                 </ng-container>
-                              <div *ngIf="!adminsAndTeamMembersErrorMessage.isVisible">
-                              <app-auto-response-loader *ngIf="teamMembersLoader.isLoading"></app-auto-response-loader>
-                              <ng-container *ngIf="!teamMembersLoader.isLoading">
-                              <table  class="table tgrid table-condensed table-bordered child-table-xamp" aria-describedby="team-members-info" id="admin-and-team-members-{{partner?.partnershipId}}">
+
+                     <app-team-member-filter-option *ngIf="showFilter"
+                        (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+                     <br /><br />
+                     <ng-container *ngIf="!sendSuccess">
+                        <div class="alert alert-success text-center" *ngIf="selectedPartnershipIds?.length>0">
+                           <strong>Selected Companies : {{selectedPartnershipIds?.length}}</strong>
+                        </div>
+                        <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+                        <ng-container *ngIf="!httpRequestLoader.isLoading">
+                           <div class="table-responsive">
+                              <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0"
+                                 id="parnter-companies" aria-describedby="damPartnersTableDescription">
                                  <thead>
                                     <tr>
-                                       <th scope="row" class="text-center">
-                                       <input type="checkbox" class="pointer checkBox_shadow" [(ngModel)]="isHeaderCheckBoxChecked"  (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId)">
-                                    </th>
-                                       <th scope="row">Entity Info</th>
+                                       <th scope="col"></th>
+                                       <th scope="col">Company Logo</th>
+                                       <th scope="col" class="text-center">
+                                          {{authenticationService?.partnerModule?.customName}} Company Name</th>
+                                       <th scope="col">Created Time</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    <tr *ngFor="let adminAndTeamMember of teamMembersPagination.pagedItems;let i = index;" id="publishToPartners-{{adminAndTeamMember.userId}}" [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,$event)" >
-                                       <td class="text-center">
-                                          <input type="checkbox" class="pointer checkBox_shadow" id="{{adminAndTeamMember.userId}}"  [checked]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1" name="adminOrTeamMemberCheckBox[]"   value="{{adminAndTeamMember.userId}}" (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
-                                       </td>
-                                       <td>
-                                          <app-user-info [isPartnerEntityInfo]="false" [userInfo]="adminAndTeamMember">
-                                          </app-user-info>
-                                       </td>
-                                    </tr>
+                                    <ng-container *ngFor="let partner of pagination.pagedItems ;let i =index">
+                                       <tr [class.row-selected]="selectedPartnershipIds.indexOf(partner.partnershipId)>-1"
+                                          [class.disabled-div]="selectedPartnershipIds.length>0 && selectedPartnershipIds.indexOf(partner.partnershipId)<=-1">
+                                          <td class="cw">
+                                             <div class="actions-block left-float"
+                                                [class.disabled-div]="selectedPartnershipIds.length>0 && selectedPartnershipIds.indexOf(partner.partnershipId)<=-1">
+                                                <a (click)="viewTeamMembers(partner)">
+                                                   <i class="fa" data-toggle="tooltip" data-placement="right"
+                                                      title="View/Hide Team Members"
+                                                      [ngClass]="{'fa-angle-right': !partner.expand, 'fa-angle-down': partner.expand}"
+                                                      aria-hidden="true"></i>
+                                                </a>
+                                             </div>
+                                          </td>
+                                          <td style="width: 10%;">
+                                             <div class="thumbnail-wrapper">
+                                                <img data-toggle="tooltip" data-placement="bottom"
+                                                   title="{{partner?.companyName}}" alt="No image found"
+                                                   onerror="this.src='assets/images/company-profile-logo.png';"
+                                                   [src]="authenticationService.MEDIA_URL+partner.companyLogo">
+                                             </div>
+                                          </td>
+                                          <td class="text-center">
+                                             <span data-toggle="tooltip" data-placement="bottom"
+                                                title="{{partner?.companyName}}">{{partner?.companyName |
+                                                slice:0:20}}</span>
+                                             <span *ngIf="partner?.companyName.length>20">...</span>
+                                          </td>
+                                          <td>
+                                             <app-timestamp [dateAndTime]="partner?.displayTime">
+                                             </app-timestamp>
+                                          </td>
+                                       </tr>
+                                       <tr *ngIf="partner?.expand">
+                                          <td colspan="4">
+                                             <div class="table-responsive x-hidden">
+                                                <div class="portlet-input input-inline float-right mb10p"
+                                                   id="search-div">
+                                                   <div class="input-icon right" id="search-align">
+                                                      <input type="text" autocomplete="off" id="sort-text"
+                                                         class="form-control"
+                                                         [(ngModel)]="teamMembersPagination.searchKey"
+                                                         [ngModelOptions]="{standalone: true}" placeholder="search..."
+                                                         (keypress)="adminAndTeamMembersKeySearch($event.keyCode)">
+                                                      <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                                         *ngIf="teamMembersPagination?.searchKey"
+                                                         (click)="teamMembersPagination.searchKey='';searchAdminsAndTeamMembers();"></button>
+                                                      <button type="submit" class="search-box-item-click"
+                                                         (click)="searchAdminsAndTeamMembers()">
+                                                         <i class="fa fa-search" aria-hidden="true"></i>
+                                                      </button>
+                                                   </div>
+                                                </div>
+                                                <ng-container
+                                                   *ngIf="!teamMembersLoader.isLoading && adminsAndTeamMembersErrorMessage.isVisible">
+                                                   <div class="custom-response-padding">
+                                                      <app-response-message
+                                                         [customResponse]="adminsAndTeamMembersErrorMessage"></app-response-message>
+                                                   </div>
+                                                </ng-container>
+                                                <div *ngIf="!adminsAndTeamMembersErrorMessage.isVisible">
+                                                   <app-auto-response-loader
+                                                      *ngIf="teamMembersLoader.isLoading"></app-auto-response-loader>
+                                                   <ng-container *ngIf="!teamMembersLoader.isLoading">
+                                                      <table
+                                                         class="table tgrid table-condensed table-bordered child-table-xamp"
+                                                         aria-describedby="team-members-info"
+                                                         id="admin-and-team-members-{{partner?.partnershipId}}">
+                                                         <thead>
+                                                            <tr>
+                                                               <th scope="row" class="text-center">
+                                                                  <input type="checkbox" class="pointer checkBox_shadow"
+                                                                     [(ngModel)]="isHeaderCheckBoxChecked"
+                                                                     (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId)">
+                                                               </th>
+                                                               <th scope="row">Entity Info</th>
+                                                            </tr>
+                                                         </thead>
+                                                         <tbody>
+                                                            <tr *ngFor="let adminAndTeamMember of teamMembersPagination.pagedItems;let i = index;"
+                                                               id="publishToPartners-{{adminAndTeamMember.userId}}"
+                                                               [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1"
+                                                               (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
+                                                               <td class="text-center">
+                                                                  <input type="checkbox" class="pointer checkBox_shadow"
+                                                                     id="{{adminAndTeamMember.userId}}"
+                                                                     [checked]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1"
+                                                                     name="adminOrTeamMemberCheckBox[]"
+                                                                     value="{{adminAndTeamMember.userId}}"
+                                                                     (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
+                                                               </td>
+                                                               <td>
+                                                                  <app-user-info [isPartnerEntityInfo]="false"
+                                                                     [userInfo]="adminAndTeamMember">
+                                                                  </app-user-info>
+                                                               </td>
+                                                            </tr>
+                                                         </tbody>
+                                                      </table>
+                                                   </ng-container>
+                                                   <!---Pagination-->
+                                                   <div
+                                                      *ngIf="teamMembersPagination.totalRecords==0 && !teamMembersLoader.isLoading"
+                                                      class="alert alert-info">
+                                                      <strong>No Data Found.</strong>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </td>
+                                       </tr>
+                                    </ng-container>
                                  </tbody>
                               </table>
-                              </ng-container>
-                              <!---Pagination-->
-                              <div *ngIf="teamMembersPagination.totalRecords==0 && !teamMembersLoader.isLoading" class="alert alert-info">
-                                 <strong>No Data Found.</strong>
-                              </div>
                            </div>
+                           <!-- End of 24 -->
+                           <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading"
+                              class="alert alert-info">
+                              <strong>No Data Found.</strong>
                            </div>
-                           </td>
-                           </tr>
                         </ng-container>
-                        </tbody>
-                     </table>
-                  </div>
-                  <!-- End of 24 -->
-                  <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-                     <strong>No Data Found.</strong>
+                     </ng-container>
                   </div>
                </ng-container>
-            </ng-container>
-         </div>
-            </ng-container>
-            <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
-            <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="findPartnerCompanies($event)">
-            </app-pagination>
-         </div>
-         </div>
+               <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+                  <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)"
+                     (notifyParentDropDown)="findPartnerCompanies($event)">
+                  </app-pagination>
+               </div>
+            </div>
          </div>
          <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
-            <button class="btn btn-danger" *ngIf="(selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0) && !sendSuccess " (click)="clearAll()">Clear All</button>
-            <button type="submit" class="btn Btn-Green" [disabled]="(selectedTeamMemberIds?.length==0) && !isEdit" *ngIf="!sendSuccess" (click)="publish()">Submit</button>
+            <button class="btn btn-danger"
+               *ngIf="(selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0) && !sendSuccess "
+               (click)="clearAll()">Clear All</button>
+            <button type="submit" class="button" [disabled]="(selectedTeamMemberIds?.length==0) && !isEdit"
+               *ngIf="!sendSuccess" (click)="publish()"><span class="btn Btn-Green transition">Submit</span></button>
             <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
          </div>
-  </div>
-</div>
+      </div>
+   </div>
 </div>

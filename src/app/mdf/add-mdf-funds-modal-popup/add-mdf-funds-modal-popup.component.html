@@ -1,143 +1,160 @@
 <!--Add/Remove Amount Modal Pop Up------->
-<div id="addMdfAmountPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-   <div class="modal-dialog modal-css" role="document">
-     <!-- Modal content-->
-     <div class="modal-content">
+<div id="addMdfAmountPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-css" role="document">
+    <!-- Modal content-->
+    <div class="modal-content">
       <ngx-loading [show]="modalPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-         <div class="modal-header">
-             <a class="close-circle" (click)="hidePopup()">
-               <i class="fa fa-times" aria-hidden="true"></i></a>
-             <h4 class="modal-title" style="font-weight: 600;" translate>Add/Remove MDF</h4>
-         </div>
-         <div class="modal-body border-bottom-1px">
-            <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-            </app-response-message>
-            <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
-            <form role="form" class="form-horizontal form-bordered form-label-stripped" *ngIf="!modalPopupLoader">
-               <div class="portlet box">
-                   <div class="">
-                     <div class="col-md-12 col-lg-12 ">
-                        <div class="form-group">
-                            <label class="control-label col-sm-3 responsiveLabelFont" translate>{{authenticationService?.partnerModule?.customName}} Info
-                                </label>
-                            <div class="col-sm-8">
-                              <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="mdfPartnerDto">
-                              </app-user-info>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-12 ">
-                       <div class="form-group">
-                           <label class="control-label col-sm-3 responsiveLabelFont" translate>Select Option
-                                   <span class="required">*</span>
-                               </label>
-                           <div class="col-sm-8" *ngIf="!onlyAddMdfAmount">
-                                 <select class="form-control" name="mdfAmountType" (change)="updateFieldsStatus()" [(ngModel)]="mdfDetails.mdfAmountTypeInString" [ngModelOptions]="{standalone: true}">
-                                    <ng-container *ngFor="let type of MdfAmountType.values();">
-                                       <ng-container *ngIf="type=='FUND_ADDED'">
-                                          <option value="{{type}}" [selected]="mdfDetails.mdfAmountTypeInString=='FUND_ADDED'">Add Funds</option>
-                                       </ng-container>
-                                       <ng-container *ngIf="type=='FUND_REMOVED'">
-                                          <option value="{{type}}" [selected]="mdfDetails.mdfAmountTypeInString=='FUND_REMOVED'">Remove Funds</option>
-                                       </ng-container>
-                                    </ng-container>
-                                  </select>
-                           </div>
-                           <div class="col-sm-8" *ngIf="onlyAddMdfAmount">
-                            <select disabled="disabled" class="form-control" name="mdfAmountType"  [(ngModel)]="mdfDetails.mdfAmountTypeInString" [ngModelOptions]="{standalone: true}">
-                               <ng-container *ngFor="let type of MdfAmountType.values();">
-                                  <ng-container *ngIf="type=='FUND_ADDED'">
-                                     <option value="{{type}}" [selected]="mdfDetails.mdfAmountTypeInString=='FUND_ADDED'">Add Funds</option>
-                                  </ng-container>
-                               </ng-container>
-                             </select>
-                      </div>
-                       </div>
-                   </div>
-
-                 <div class="col-md-12 col-lg-12 ">
-                  <div class="form-group">
-                      <label class="control-label col-sm-3 responsiveLabelFont" translate>Current Available Balance </label>
-                      <div class="col-sm-8">
-                        <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
-                        [(ngModel)]="mdfPartnerDto.availableBalance"  [ngModelOptions]="{standalone: true}" 
-                        placeholder="Available Balance" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
-                      </div>
+      <div class="modal-header">
+        <a class="close-circle" (click)="hidePopup()">
+          <i class="fa fa-times" aria-hidden="true"></i></a>
+        <h4 class="modal-title" style="font-weight: 600;" translate>Add/Remove MDF</h4>
+      </div>
+      <div class="modal-body border-bottom-1px">
+        <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+        </app-response-message>
+        <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+        <form role="form" class="form-horizontal form-bordered form-label-stripped" *ngIf="!modalPopupLoader">
+          <div class="portlet box">
+            <div class="">
+              <div class="col-md-12 col-lg-12 ">
+                <div class="form-group">
+                  <label class="control-label col-sm-3 responsiveLabelFont"
+                    translate>{{authenticationService?.partnerModule?.customName}} Info
+                  </label>
+                  <div class="col-sm-8">
+                    <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="mdfPartnerDto">
+                    </app-user-info>
                   </div>
+                </div>
+              </div>
+              <div class="col-md-12 col-lg-12 ">
+                <div class="form-group">
+                  <label class="control-label col-sm-3 responsiveLabelFont" translate>Select Option
+                    <span class="required">*</span>
+                  </label>
+                  <div class="col-sm-8" *ngIf="!onlyAddMdfAmount">
+                    <select class="form-control" name="mdfAmountType" (change)="updateFieldsStatus()"
+                      [(ngModel)]="mdfDetails.mdfAmountTypeInString" [ngModelOptions]="{standalone: true}">
+                      <ng-container *ngFor="let type of MdfAmountType.values();">
+                        <ng-container *ngIf="type=='FUND_ADDED'">
+                          <option value="{{type}}" [selected]="mdfDetails.mdfAmountTypeInString=='FUND_ADDED'">Add Funds
+                          </option>
+                        </ng-container>
+                        <ng-container *ngIf="type=='FUND_REMOVED'">
+                          <option value="{{type}}" [selected]="mdfDetails.mdfAmountTypeInString=='FUND_REMOVED'">Remove
+                            Funds</option>
+                        </ng-container>
+                      </ng-container>
+                    </select>
+                  </div>
+                  <div class="col-sm-8" *ngIf="onlyAddMdfAmount">
+                    <select disabled="disabled" class="form-control" name="mdfAmountType"
+                      [(ngModel)]="mdfDetails.mdfAmountTypeInString" [ngModelOptions]="{standalone: true}">
+                      <ng-container *ngFor="let type of MdfAmountType.values();">
+                        <ng-container *ngIf="type=='FUND_ADDED'">
+                          <option value="{{type}}" [selected]="mdfDetails.mdfAmountTypeInString=='FUND_ADDED'">Add Funds
+                          </option>
+                        </ng-container>
+                      </ng-container>
+                    </select>
+                  </div>
+                </div>
               </div>
 
               <div class="col-md-12 col-lg-12 ">
-               <div class="form-group">
-                   <label class="control-label col-sm-3 responsiveLabelFont" translate>Calculated Available Balance </label>
-                   <div class="col-sm-8">
-                     <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
-                     [(ngModel)]="mdfDetails.calculatedAvailableBalance"  [ngModelOptions]="{standalone: true}" 
-                     placeholder="Calculated Available Balance" currencyMask [options]="{align :'left',allowNegative :true }">
-                   </div>
-               </div>
-           </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-3 responsiveLabelFont" translate>Current Available Balance </label>
+                  <div class="col-sm-8">
+                    <input type="name" [disabled]="true" class="form-control padding-mobile currency"
+                      [(ngModel)]="mdfPartnerDto.availableBalance" [ngModelOptions]="{standalone: true}"
+                      placeholder="Available Balance" min="0.00" currencyMask
+                      [options]="{align :'left',allowNegative :false }">
+                  </div>
+                </div>
+              </div>
 
               <div class="col-md-12 col-lg-12 ">
-               <div  [attr.class]="errorFieldNames.indexOf('mdfAmount')>-1 ? 'form-group has-error':'form-group'">
-                   <label class="control-label col-sm-3 responsiveLabelFont" translate>Enter Amount <span class="required">*</span></label>
-                   <div class="col-sm-8">
-                     <input type="text"  class="form-control padding-mobile currency" 
-                     [(ngModel)]="mdfDetails.mdfAmount"  [ngModelOptions]="{standalone: true}" 
-                     placeholder="Enter Amount" (ngModelChange)="calculateTotalAvailableBalance()" min="0.00" maxlength="20" autocomplete="off" currencyMask [options]="{align :'left',allowNegative :false }">
-                     <ng-container *ngFor="let errorResponse of errorResponses">
-                        <span class="required" *ngIf="errorResponse.field=='mdfAmount'">{{errorResponse.message}}</span>
-                     </ng-container>
+                <div class="form-group">
+                  <label class="control-label col-sm-3 responsiveLabelFont" translate>Calculated Available Balance
+                  </label>
+                  <div class="col-sm-8">
+                    <input type="name" [disabled]="true" class="form-control padding-mobile currency"
+                      [(ngModel)]="mdfDetails.calculatedAvailableBalance" [ngModelOptions]="{standalone: true}"
+                      placeholder="Calculated Available Balance" currencyMask
+                      [options]="{align :'left',allowNegative :true }">
                   </div>
-               </div>
-              
-           </div>
-           <div class="col-md-12 col-lg-12 ">
-            <div class="form-group">
-                <label class="control-label col-sm-3 responsiveLabelFont" translate>Description
-                    </label>
-                <div class="col-sm-8">
-                   <textarea class="form-control"  [(ngModel)]="mdfDetails.description"  [ngModelOptions]="{standalone: true}" 
-                   placeholder="Description" maxlength="1000"></textarea>
-                
                 </div>
-            </div>
-        </div>
-           <ng-container *ngIf="mdfDetails.mdfAmountTypeInString=='FUND_ADDED'">
-            <div class="col-md-12 col-lg-12 ">
-               <div [attr.class]="errorFieldNames.indexOf('allocationDateInString')>-1  ? 'form-group has-error':'form-group'">
-                   <label class="control-label col-sm-3 responsiveLabelFont" translate>Allocation Date</label>
-                   <div class="col-sm-8">
-                     <app-date-picker [(dataField)]="mdfDetails.allocationDateInString" [isFromMdfCredit]='true'>
-                     </app-date-picker>
-                     <ng-container *ngFor="let errorResponse of errorResponses">
-                        <span class="required" *ngIf="errorResponse.field=='allocationDateInString'">{{errorResponse.message}}</span>
-                     </ng-container>
-                   </div>
-               </div>
-           </div>
-   
-           <div class="col-md-12 col-lg-12">
-            <div  [attr.class]="errorFieldNames.indexOf('expirationDateInString')>-1  ? 'form-group has-error':'form-group'">
-                <label class="control-label col-sm-3 responsiveLabelFont" translate>Expiration Date</label>
-                <div class="col-sm-8">
-                  <app-date-picker [(dataField)]="mdfDetails.expirationDateInString" [isFromMdfCredit]='true'>
-                  </app-date-picker>
-                  <ng-container *ngFor="let errorResponse of errorResponses">
-                     <span class="required" *ngIf="errorResponse.field=='expirationDateInString' ">{{errorResponse.message}}</span>
-                  </ng-container>
-                </div>
-            </div>
-        </div>
-           </ng-container>
-             </div>
-               </div>
-           </form>
-         </div>
-         <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader">
-             <button class="btn Btn-Green" type="reset" (click)="hidePopup();" translate>Cancel</button>
-             <button type="button" class="btn btn-primary"  (click)="updateMdfAmount()" translate>Update</button>
-         </div>
-     </div>
- </div>
-</div>
+              </div>
 
+              <div class="col-md-12 col-lg-12 ">
+                <div [attr.class]="errorFieldNames.indexOf('mdfAmount')>-1 ? 'form-group has-error':'form-group'">
+                  <label class="control-label col-sm-3 responsiveLabelFont" translate>Enter Amount <span
+                      class="required">*</span></label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control padding-mobile currency" [(ngModel)]="mdfDetails.mdfAmount"
+                      [ngModelOptions]="{standalone: true}" placeholder="Enter Amount"
+                      (ngModelChange)="calculateTotalAvailableBalance()" min="0.00" maxlength="20" autocomplete="off"
+                      currencyMask [options]="{align :'left',allowNegative :false }">
+                    <ng-container *ngFor="let errorResponse of errorResponses">
+                      <span class="required" *ngIf="errorResponse.field=='mdfAmount'">{{errorResponse.message}}</span>
+                    </ng-container>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-12 col-lg-12 ">
+                <div class="form-group">
+                  <label class="control-label col-sm-3 responsiveLabelFont" translate>Description
+                  </label>
+                  <div class="col-sm-8">
+                    <textarea class="form-control" [(ngModel)]="mdfDetails.description"
+                      [ngModelOptions]="{standalone: true}" placeholder="Description" maxlength="1000"></textarea>
+
+                  </div>
+                </div>
+              </div>
+              <ng-container *ngIf="mdfDetails.mdfAmountTypeInString=='FUND_ADDED'">
+                <div class="col-md-12 col-lg-12 ">
+                  <div
+                    [attr.class]="errorFieldNames.indexOf('allocationDateInString')>-1  ? 'form-group has-error':'form-group'">
+                    <label class="control-label col-sm-3 responsiveLabelFont" translate>Allocation Date</label>
+                    <div class="col-sm-8">
+                      <app-date-picker [(dataField)]="mdfDetails.allocationDateInString" [isFromMdfCredit]='true'>
+                      </app-date-picker>
+                      <ng-container *ngFor="let errorResponse of errorResponses">
+                        <span class="required"
+                          *ngIf="errorResponse.field=='allocationDateInString'">{{errorResponse.message}}</span>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12 col-lg-12">
+                  <div
+                    [attr.class]="errorFieldNames.indexOf('expirationDateInString')>-1  ? 'form-group has-error':'form-group'">
+                    <label class="control-label col-sm-3 responsiveLabelFont" translate>Expiration Date</label>
+                    <div class="col-sm-8">
+                      <app-date-picker [(dataField)]="mdfDetails.expirationDateInString" [isFromMdfCredit]='true'>
+                      </app-date-picker>
+                      <ng-container *ngFor="let errorResponse of errorResponses">
+                        <span class="required"
+                          *ngIf="errorResponse.field=='expirationDateInString' ">{{errorResponse.message}}</span>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader">
+        <button class="button" type="reset" (click)="hidePopup();" translate><span
+            class="btn Btn-Green transition">Cancel</span></button>
+        <button type="button" class="button_blue" (click)="updateMdfAmount()" translate><span
+            class="btn btn-primary transition">Update</span></button>
+      </div>
+    </div>
+  </div>
+</div>

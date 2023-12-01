@@ -1,36 +1,44 @@
 <div style="padding-top:10px;margin-bottom: -5px;">
-<button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService.isShowForms)" class="show-forms-btn btn-primary" id="right" style="border-radius: 5px" (click)="showForms()">
-  {{buttonText}}
-</button>
+    <button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService.isShowForms)"
+        class="button_blue show-forms-btn" id="right" style="border-radius: 5px" (click)="showForms()">
+        <span class="btn btn-primary transition">{{buttonText}}</span>
+    </button>
 </div>
 <!-- ----------------------List Available Forms------------------- -->
-<div class="modal fade right" id="forms-list" tabindex="-1" role="dialog"  data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" [ngClass]="router.url.indexOf('/home/pages/add') > -1 && showCustomPopup ?'pages-custom-width85':'popup-custom-width'">
+<div class="modal fade right" id="forms-list" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog"
+        [ngClass]="router.url.indexOf('/home/pages/add') > -1 && showCustomPopup ?'pages-custom-width85':'popup-custom-width'">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" data-dismiss="modal">
-          <i class="fa fa-times" aria-hidden="true"></i>
-        </button>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
                 <h4 class="modal-title text-center">Forms</h4>
             </div>
-            
-            <div class="modal-body" >
+
+            <div class="modal-body">
                 <div class="row" *ngIf="!formsError">
                     <div class="col-xs-12 p5" style="margin-bottom: -10px;">
                         <div class="portlet light">
                             <div class="portlet-title">
                                 <div class="inputs mMargin tab_formsearch" id="right">
                                     <div id="left" class="mPadSort">
-                                        <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
-                                            <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
-                                            {{option.name}}
-                                        </option>
+                                        <select class="form-control" [(ngModel)]="sortOption.formsSortOption"
+                                            (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+                                            <option *ngFor="let option of sortOption.manageFormsSortOptions"
+                                                [ngValue]="option">
+                                                {{option.name}}
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="portlet-input input-inline input-small mPadSearch" id="search">
                                         <div class="input-icon right" id="search-icon">
-                                            <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
-                                            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchForms();"></button>
+                                            <input type="text" id="search-text" class="form-control"
+                                                [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                                                placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                                            <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                                *ngIf="sortOption.searchKey"
+                                                (click)="sortOption.searchKey='';searchForms();"></button>
                                             <button type="submit" class="search-box-item-click" (click)="searchForms()">
                                                 <i class="fa fa-search" aria-hidden="true"></i> </button>
                                         </div>
@@ -39,23 +47,29 @@
                             </div>
                             <app-list-loader *ngIf="formsLoader.isLoading"></app-list-loader>
                             <div class="table-responsive" *ngIf="!formsLoader.isLoading">
-                                <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" aria-describedby="describe">
+                                <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0"
+                                    aria-describedby="describe">
                                     <thead>
                                         <tr>
                                             <th scope="row" *ngIf="authenticationService.isShowForms">Select</th>
                                             <th scope="row">Form Details</th>
                                             <th scope="row" *ngIf="!authenticationService.isShowForms">Link</th>
-                                            <th scope="row" *ngIf="!authenticationService.isShowForms && showEmbedLink">Embed Link</th>
-                                            <th scope="row"class="text-center">Preview</th>
+                                            <th scope="row" *ngIf="!authenticationService.isShowForms && showEmbedLink">
+                                                Embed Link</th>
+                                            <th scope="row" class="text-center">Preview</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let form of pagination.pagedItems ;let i =index">
                                             <td *ngIf="authenticationService.isShowForms">
-                                                <input class="checkBox_shadow" type="checkbox" [checked]="selectedFormId === form.id" (click)="selectedForm(form, $event)"></td>
+                                                <input class="checkBox_shadow" type="checkbox"
+                                                    [checked]="selectedFormId === form.id"
+                                                    (click)="selectedForm(form, $event)">
+                                            </td>
                                             <td>
                                                 <h4 class="ellipsis mt5 mb5 f-w-600 mFloat" title="{{form?.name}}">
-                                                    {{form?.name | slice:0:25}} <span *ngIf="form?.name?.length>25">...</span>
+                                                    {{form?.name | slice:0:25}} <span
+                                                        *ngIf="form?.name?.length>25">...</span>
                                                 </h4>
                                                 <br>
                                                 <h6 *ngIf="!showDefaultForms">
@@ -63,55 +77,74 @@
                                                 </h6>
                                                 <!---XNFR-255-->
                                                 <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor">
-                                                    <h6 class="moreipsis"  title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
-                                                        <span translate>Received From <strong>{{form?.whiteLabeledFormSharedByVendorCompanyName}}</strong></span>
+                                                    <h6 class="moreipsis"
+                                                        title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
+                                                        <span translate>Received From
+                                                            <strong>{{form?.whiteLabeledFormSharedByVendorCompanyName}}</strong></span>
                                                     </h6>
-                                                    <h5 class="view-banner-white-labeled mb5 white-labeled-width">White-Labeled</h5>
+                                                    <h5 class="view-banner-white-labeled mb5 white-labeled-width">
+                                                        White-Labeled</h5>
                                                 </ng-container>
-                                             <!---XNFR-255-->
-                                                <h6 class="view-banner" *ngIf="form.formSubType === 'REGULAR'" translate>Regular</h6>
-                                                <h6 class="view-banner" *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</h6>
-                                                <h6 class="view-banner" *ngIf="form.formSubType === 'SURVEY'" translate>Survey</h6>
+                                                <!---XNFR-255-->
+                                                <h6 class="view-banner" *ngIf="form.formSubType === 'REGULAR'"
+                                                    translate>Regular</h6>
+                                                <h6 class="view-banner" *ngIf="form.formSubType === 'QUIZ'" translate>
+                                                    Quiz</h6>
+                                                <h6 class="view-banner" *ngIf="form.formSubType === 'SURVEY'" translate>
+                                                    Survey</h6>
                                             </td>
-                                            <td  [hidden]="authenticationService.isShowForms">
+                                            <td [hidden]="authenticationService.isShowForms">
                                                 <div style="display:flex; height:45px">
                                                     <span>
-                                                        <input type="text" id="copy-link" readonly="readonly" value="{{form.ailasUrl}}" #userinput><br>
-                                                    </span>                                                    
+                                                        <input type="text" id="copy-link" readonly="readonly"
+                                                            value="{{form.ailasUrl}}" #userinput><br>
+                                                    </span>
                                                     <span class="modal-icon ml10" id="custom-margin-{{i}}">
-                                                        <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy"
+                                                        <a [hidden]="authenticationService.isShowForms"
+                                                            data-toggle="tooltip" data-placement="top" title="Copy"
                                                             (click)="copyInputMessage(userinput,'Page Link',i)">
-                                                            <i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
+                                                            <i class="fa fa-copy IconCustomization campaignViewIcon"
+                                                                aria-hidden="true"></i>
                                                         </a>
                                                     </span>
-                                                </div>                                                
+                                                </div>
                                                 <div>
-                                                    <span class="success" id="copied-message-{{i}}" style="display: none;">
-                                                        <strong>Link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+                                                    <span class="success" id="copied-message-{{i}}"
+                                                        style="display: none;">
+                                                        <strong>Link copied successfully<i class="fa fa-check"
+                                                                aria-hidden="true"></i></strong>
                                                     </span>
-                                                </div>                                                
-                                            </td>                                            
+                                                </div>
+                                            </td>
                                             <td [hidden]="!showEmbedLink || authenticationService.isShowForms">
                                                 <div style="display:flex">
                                                     <span>
-                                                        <textarea id="text-area" class="video abjusttextarea-width" rows="1" cols="50" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
+                                                        <textarea id="text-area" class="video abjusttextarea-width"
+                                                            rows="1" cols="50" readonly="readonly" spellcheck="false"
+                                                            #iframeUrlInput>{{form.embedUrl}}</textarea>
                                                     </span>
                                                     <span class="modal-icon cmif ml10" id="cmif-{{i}}">
-                                                        <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" 
+                                                        <a [hidden]="authenticationService.isShowForms"
+                                                            data-toggle="tooltip" data-placement="top" title="Copy"
                                                             (click)="copyInputMessage(iframeUrlInput,'Embed Link',i)">
-                                                            <i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
+                                                            <i class="fa fa-copy IconCustomization campaignViewIcon"
+                                                                aria-hidden="true"></i>
                                                         </a>
                                                     </span>
-                                                </div>                                                
+                                                </div>
                                                 <div>
-                                                    <span class="success" id="embed-copied-message-{{i}}" style="display:none;">
-                                                        <strong>Embed link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+                                                    <span class="success" id="embed-copied-message-{{i}}"
+                                                        style="display:none;">
+                                                        <strong>Embed link copied successfully<i class="fa fa-check"
+                                                                aria-hidden="true"></i></strong>
                                                     </span>
                                                 </div>
-                                            </td>                                            
+                                            </td>
                                             <td id="actions-row" style="text-align: center;  vertical-align: middle;">
-                                                <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewForm(form.id)">
-                                                    <i class="fa fa-eye IconCustomization campaignViewIcon" aria-hidden="true"></i>
+                                                <a data-toggle="tooltip" data-placement="top" title="Preview"
+                                                    (click)="previewForm(form.id)">
+                                                    <i class="fa fa-eye IconCustomization campaignViewIcon"
+                                                        aria-hidden="true"></i>
                                                 </a>
                                             </td>
                                         </tr>
@@ -120,7 +153,9 @@
                             </div>
 
                             <div *ngIf="pagination.pagedItems.length !== 0" class="pg8 scroll-top-margin">
-                                <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listForms($event)" [hidden]="formsLoader.isLoading"></app-pagination>
+                                <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+                                    (notifyParentDropDown)="listForms($event)"
+                                    [hidden]="formsLoader.isLoading"></app-pagination>
                             </div>
                             <!-- End of 24 -->
                             <div *ngIf="pagination.totalRecords==0 && !formsLoader.isLoading" class="alert alert-info">
@@ -137,78 +172,96 @@
 
             </div>
             <div class="modal-footer">
-                <a data-dismiss="modal"  style="float: right"><span class="btn Btn-Gray"
-            *ngIf="!authenticationService.isShowForms">Close</span><span
-            class="btn Btn-Green"  *ngIf="authenticationService.isShowForms">Submit</span></a>
+                <button data-dismiss="modal" style="float: right"><span class="btn Btn-Gray"
+                        *ngIf="!authenticationService.isShowForms">Close</span></button>
+                <button class="button" data-dismiss="modal" style="float: right">
+                    <span class="btn Btn-Green transition"
+                        *ngIf="authenticationService.isShowForms">Submit</span></button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade right" id="form-preview-modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+<div class="modal fade right" id="form-preview-modal" tabindex="-1" role="dialog" data-backdrop="static"
+    data-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" data-dismiss="modal">
-          <i class="fa fa-times" aria-hidden="true"></i>
-        </button>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
                 <h4 class="modal-title text-center">Form Preview</h4>
             </div>
-            <div [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}" id="form-background-image" >
+            <div [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}"
+                id="form-background-image">
                 <div class="modal-body">
                     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
                     <div *ngIf="form.showCompanyLogo">
-                        <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')===0;" [src]="authenticationService.MEDIA_URL + form.companyLogo" alt="" />
-                        <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo" alt="" />
+                        <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')===0;"
+                            [src]="authenticationService.MEDIA_URL + form.companyLogo" alt="" />
+                        <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;"
+                            [src]="form.companyLogo" alt="" />
                     </div>
                     <div class="vertical-center">
-                        <div class="panel panel-info mWid"  id="form-panel-info" *ngIf="!formError">
+                        <div class="panel panel-info mWid" id="form-panel-info" *ngIf="!formError">
                             <div *ngIf="form.showTitleHeader" class="panel-heading" id="form-panel-heading">
                                 <div class="panel-title form-name-wrap" title="{{form.name}}">{{form.name}}</div>
                             </div>
                             <div class="panel-body d-p-bg-color-cust" *ngIf="!formError">
-                                <div class="form-name-wrap form-description" title="{{form.description}}">{{form.description}}</div>
+                                <div class="form-name-wrap form-description" title="{{form.description}}">
+                                    {{form.description}}</div>
                                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
                                     <div class="form-group form-custom form-placeholder label-box d-p-bg-color-cust">
                                         <label class="control-label"><span
                                                 *ngIf="learningTrackId !== undefined && learningTrackId > 0 && form.quizForm">{{i+1}}.
-                                            </span><span class="label-name" >{{columnInfo.labelName}}</span>
+                                            </span><span class="label-name">{{columnInfo.labelName}}</span>
                                             <span class="required" *ngIf="columnInfo.required">*</span>
                                         </label>
 
-                                        <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email' || columnInfo.labelType=='number'">
-                                            <input type="{{columnInfo.labelType}}" class="form-control form-placeholder" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000" disabled="disabled">
+                                        <ng-container
+                                            *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email' || columnInfo.labelType=='number'">
+                                            <input type="{{columnInfo.labelType}}" class="form-control form-placeholder"
+                                                placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}"
+                                                maxlength="1000" disabled="disabled">
                                         </ng-container>
 
                                         <ng-container *ngIf="columnInfo.labelType=='textarea'">
-                                            <textarea rows="4" cols="4" class="form-control form-placeholder" placeholder="{{columnInfo.placeHolder}}" maxlength="1000" disabled="disabled"></textarea>
+                                            <textarea rows="4" cols="4" class="form-control form-placeholder"
+                                                placeholder="{{columnInfo.placeHolder}}" maxlength="1000"
+                                                disabled="disabled"></textarea>
                                         </ng-container>
                                         <!-- ---------------------------Date----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='date'">
-                                            <app-date-picker class="form-placeholder" [class.disabled]='true' [isFromForm]='true'></app-date-picker>
+                                            <app-date-picker class="form-placeholder" [class.disabled]='true'
+                                                [isFromForm]='true'></app-date-picker>
                                         </ng-container>
                                         <!-- ---------------------------Price----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='price'">
                                             <div class="input-group prefix">
-                                                <span class="input-group-addon form-placeholder" style="pointer-events: none;">
-                        								{{columnInfo.priceSymbol}}
-                     							 </span>
-                                                <input type="number" min="0" class="form-control form-placeholder" disabled="disabled" placeholder="{{columnInfo.placeHolder}}">
+                                                <span class="input-group-addon form-placeholder"
+                                                    style="pointer-events: none;">
+                                                    {{columnInfo.priceSymbol}}
+                                                </span>
+                                                <input type="number" min="0" class="form-control form-placeholder"
+                                                    disabled="disabled" placeholder="{{columnInfo.placeHolder}}">
                                             </div>
                                         </ng-container>
                                         <!-- ---------------------------Upload----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='upload'">
-                                            <input type="file" class="form-control form-placeholder" disabled="disabled">
+                                            <input type="file" class="form-control form-placeholder"
+                                                disabled="disabled">
                                         </ng-container>
                                         <!-- ---------------------------Radio Button----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='radio'">
-                                            <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+                                            <ng-container
+                                                *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
                                                 <div class="form-check">
                                                     <label class="form-check-label" style="border: 0px !important;">
-                          <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
-                            disabled="disabled">
-                           <span class="label-name">{{radioButton.name}}</span>
-                        </label>
+                                                        <input type="{{columnInfo.labelType}}"
+                                                            name="{{columnInfo.labelId}}" class="form-check-input"
+                                                            disabled="disabled">
+                                                        <span class="label-name">{{radioButton.name}}</span>
+                                                    </label>
 
                                                     <!-- <label class="form-check-label">
                                                         <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
@@ -222,14 +275,16 @@
                                         </ng-container>
                                         <!-- ---------------------------Check Box----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='checkbox'">
-                                            <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
+                                            <ng-container
+                                                *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
                                                 <div class="form-check">
 
                                                     <label class="form-check-label" style="border: 0px !important;">
-                                                    <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
-                                                      disabled="disabled">
-                                                     <span class="label-name">{{checkBox.name}}</span>
-                                                  </label>
+                                                        <input type="{{columnInfo.labelType}}"
+                                                            name="{{columnInfo.labelId}}" class="form-check-input"
+                                                            disabled="disabled">
+                                                        <span class="label-name">{{checkBox.name}}</span>
+                                                    </label>
                                                 </div>
                                                 <!-- <br> -->
                                             </ng-container>
@@ -237,18 +292,19 @@
                                         <!-- ---------------------------DropDown Menu----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='select'">
                                             <select class="form-control form-placeholder">
-                                          <option *ngFor="let dropDownValue of columnInfo.dropDownChoices">
-                                            {{dropDownValue.name}}</option>
-                                        </select>
+                                                <option *ngFor="let dropDownValue of columnInfo.dropDownChoices">
+                                                    {{dropDownValue.name}}</option>
+                                            </select>
                                         </ng-container>
                                         <!-- ---------------------------Quiz Choices----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
                                             <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
                                                 <div class="form-check">
                                                     <label class="form-check-label" style="border: 0px !important;">
-                                                        <input type="{{columnInfo.labelType.split('_')[1]}}" name="{{columnInfo.labelId}}" class="form-check-input"
+                                                        <input type="{{columnInfo.labelType.split('_')[1]}}"
+                                                            name="{{columnInfo.labelId}}" class="form-check-input"
                                                             disabled="disabled">
-                                                            <span class="quiz_optionname label-name" > {{choice.name}}</span>
+                                                        <span class="quiz_optionname label-name"> {{choice.name}}</span>
 
                                                     </label>
                                                 </div>
@@ -262,16 +318,20 @@
                                 </div>
                                 <div *ngIf="form.buttonColor?.length>0;then show else dontShow"></div>
                                 <ng-template #show>
-                                    <button type="submit" disabled="disabled" class="button-padding" id="bottom-right" [style.backgroundColor]="form.buttonColor" [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                                    <button type="submit" disabled="disabled" class="button-padding" id="bottom-right"
+                                        [style.backgroundColor]="form.buttonColor"
+                                        [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
                                 </ng-template>
                                 <ng-template #dontShow>
-                                    <button type="submit" disabled="disabled" class="btn green-haze" id="bottom-right" [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                                    <button type="submit" disabled="disabled" class="btn green-haze" id="bottom-right"
+                                        [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
                                 </ng-template>
                             </div>
                         </div>
                         <!------Show Footer-------->
                         <footer>
-                            <div style="text-align: center;" *ngIf="form.showFooter && form.footer" [innerHTML]="sanitizer.bypassSecurityTrustHtml(form.footer)"></div>
+                            <div style="text-align: center;" *ngIf="form.showFooter && form.footer"
+                                [innerHTML]="sanitizer.bypassSecurityTrustHtml(form.footer)"></div>
                         </footer>
                     </div>
                     <div *ngIf="formError">

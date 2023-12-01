@@ -79,10 +79,10 @@
 		</ul>
 		<div align="right" style="margin-top: 3px;float: right;" class="hidden-xs" *ngIf="!assignLeads">
 			<a (click)="downloadEmptyCsv()">
-				<button type="button" class="button" download style="color: #ffffff;margin-right: 3px;"
+				<button type="button" class="button p-rgt_p-top" download style="color: #ffffff;margin-right: 3px;"
 					[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
-					<span class="btn Btn-Green transition">Download Contact CSV Template</span> <i
-						class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
+					<span class="btn Btn-Green transition">Download Contact CSV Template <i class="fa fa-download"
+							aria-hidden="true" style="margin-left: 5px"></i></span>
 				</button>
 			</a>
 		</div>
