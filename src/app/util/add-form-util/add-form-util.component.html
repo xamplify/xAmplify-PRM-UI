@@ -12,7 +12,7 @@
                         </h4>
                     </div>
                     <div class="col-xs-7 col-sm-3 col-md-2 col-lg-2" style="padding-top: 2px;">
-                        <button (click)="openFormFields()" class="button_blue" style="border-radius: 3px;">
+                        <button (click)="openFormFields()" class="button_blue bgcolor-unset" style="border-radius: 3px;">
                             <span class="btn btn-primary transition hidden-xs margin-right-design" translate>Add Fields
                                 <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i></span>
                         </button>
@@ -22,7 +22,7 @@
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
                         <div *ngIf="!isMdfForm" class="design-btn-group" style="float: right;">
-                            <button (click)="openFormDesignModal()" class="button_blue p-top"
+                            <button (click)="openFormDesignModal()" class="button_blue p-top bgcolor-unset"
                                 style="border-radius: 3px;">
                                 <span class="btn btn-primary transition hidden-xs margin-right-design" translate>Design
                                     <i class="fa fa-paint-brush" data-toggle="tooltip" aria-hidden="true"></i></span>
@@ -634,9 +634,9 @@
                         <!-- End Of Row---- -->
                         <div id="bottom-right">
                             <button [disabled]="!form.isValid || (!isAdd && form.associatedWithTrack)" type="submit"
-                                class="button mar-rgt-9" (click)="addOrUpdate()"><span
+                                class="button mar-rgt-9 bgcolor-unset" (click)="addOrUpdate()"><span
                                     class="btn Btn-Green transition">{{buttonName}}</span></button>
-                            <button *ngIf="!isAdd && !isMdfForm" [disabled]="!form.isValid" type="submit" class="button"
+                            <button *ngIf="!isAdd && !isMdfForm" [disabled]="!form.isValid" type="submit" class="button bgcolor-unset"
                                 (click)="saveAs()"><span class="btn Btn-Green transition">Save As</span></button>
                             <button type="button" class="btn Btn-Gray" (click)="navigateBack()"
                                 aria-hidden="true">Cancel</button>
@@ -706,7 +706,7 @@
                 <!-- XNFR-108 ENDS -->
             </div>
             <div class="modal-footer">
-                <button type="submit" [disabled]="!form.isValid" class="button col-lg-1 col-md-1 BtnWidthForPopup"
+                <button type="submit" [disabled]="!form.isValid" class="button col-lg-1 col-md-1 BtnWidthForPopup bgcolor-unset"
                     (click)="unBlurDiv()" id="full-screen"><span
                         class="btn Btn-Green transition">Continue</span></button>
             </div>
@@ -1169,7 +1169,7 @@
             <div class="modal-footer">
                 <button type="submit"
                     [disabled]="!form.isFormButtonValueValid || !form.isValidFormSubmissionUrl || !form.isValidColorCode"
-                    class="button" (click)="unBlurDiv()" id="full-screen"><span
+                    class="button bgcolor-unset" (click)="unBlurDiv()" id="full-screen"><span
                         class="btn Btn-Green transition">Continue</span></button>
             </div>
         </div>
@@ -1248,12 +1248,12 @@
                 </h4>
             </div>
             <div class="modal-body" style="overflow-y: unset !important;">
-                <button style="position: relative; top: -5px; width: 118px;" class="button fileinput-button-css"
+                <button style="position: relative; top: -5px; width: 118px;" class="button fileinput-button-css bgcolor-unset"
                     *ngIf="!imageChangedEvent">
                     <span class="btn Btn-Green transition">Select image</span> <input style="height: 36px;" title=" "
                         id="custom-input" type="file" (change)="filenewChangeEvent($event)">
                 </button>
-                <button style="position: relative; top: -5px; width: 118px;" class="button"
+                <button style="position: relative; top: -5px; width: 118px;" class="button bgcolor-unset"
                     (click)="chooseFileFromList()"><span class="btn Btn-Green transition">Your images</span></button>
                 <div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload
                     only images</div>
@@ -1277,7 +1277,7 @@
                     </div>
                 </div>
                 <div>
-                    <button class="button_blue" [disabled]="!showCropper" (click)="uploadBackgroundImage()"><span
+                    <button class="button_blue bgcolor-unset" [disabled]="!showCropper" (click)="uploadBackgroundImage()"><span
                             class="btn btn-primary transition">Save
                             Changes</span></button>
                 </div>

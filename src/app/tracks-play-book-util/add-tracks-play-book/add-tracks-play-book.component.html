@@ -201,7 +201,7 @@
                       <span class="caption-subject font-blue-madison bold uppercase ">Featured Image</span>
                     </div>
                     <div class="inline" style="float: right; padding-bottom: 5px;">
-                      <button type="button" class="button_blue" (click)="clearImage()"><span
+                      <button type="button" class="button_blue bgcolor-unset" (click)="clearImage()"><span
                           class="btn btn-primary transition">Clear</span></button>
                     </div>
                   </div>
@@ -233,7 +233,7 @@
                 </div>
               </div>
               <div class="col-sm-12 col-xs-12 row mNextPad" style="padding-right: 20px; padding-bottom: 10px;">
-                <button type="submit" class="button pull-right" (click)="changeActiveTab('step-2');"
+                <button type="submit" class="button pull-right bgcolor-unset" (click)="changeActiveTab('step-2');"
                   [disabled]="!isStepOneValid" translate><span class="btn Btn-Green transition">Next</span></button>
               </div>
             </div>
@@ -258,10 +258,10 @@
           <div class="input-icon right pull-right cebp" style="margin-right: -2px;
         padding-top: 5px;">
             <ul class="button-align inline">
-              <li style="margin-right: 5px;"><button class="button_blue" (click)="getAssetsList()"><span
+              <li style="margin-right: 5px;"><button class="button_blue bgcolor-unset" (click)="getAssetsList()"><span
                     class="btn btn-primary transition">Add
                     Media</span></button></li>
-              <li style="margin-right: 5px;"><button class="button_blue" (click)="getFormsList()"><span
+              <li style="margin-right: 5px;"><button class="button_blue bgcolor-unset" (click)="getFormsList()"><span
                     class="btn btn-primary transition">Add Forms</span></button>
               </li>
             </ul>
@@ -283,7 +283,7 @@
           <div class="row" style="margin: 10px 0px -18px;">
             <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-1')"
               translate>Previous</button>
-            <button type="submit" class="button pull-right" (click)="changeActiveTab('step-3');"
+            <button type="submit" class="button pull-right bgcolor-unset" (click)="changeActiveTab('step-3');"
               [disabled]="!isStepTwoValid" translate><span class="btn Btn-Green transition">Next</span></button>
           </div>
         </div>
@@ -300,10 +300,10 @@
             <div class="page-toolbar">
 
               <div class="inline mToolBarPad" style="margin-left: -3px;padding-top: 12px;">
-                <button *ngIf="type == undefined || type == 'TRACK'" class="button_blue" (click)="openQuizPopup()"><span
+                <button *ngIf="type == undefined || type == 'TRACK'" class="button_blue bgcolor-unset" (click)="openQuizPopup()"><span
                     class="btn btn-primary transition">Select
                     Quiz</span></button>
-                <button class="button_blue" (click)="openOrderAssetsPopup()"><span class="btn btn-primary transition"
+                <button class="button_blue bgcolor-unset" (click)="openOrderAssetsPopup()"><span class="btn btn-primary transition"
                     *ngIf="type == undefined || type == 'TRACK'">Order Assets And Quiz</span><span
                     class="btn btn-primary transition" *ngIf="type !== 'TRACK'">Order
                     Assets</span></button>
@@ -429,7 +429,7 @@
             <div style="padding: 0px 0px 15px 0px;">
               <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-2')"
                 translate>Previous</button>
-              <button type="submit" class="button pull-right" (click)="changeActiveTab('step-4');"
+              <button type="submit" class="button pull-right bgcolor-unset" (click)="changeActiveTab('step-4');"
                 [disabled]="!isStepThreeValid" translate><span class="btn Btn-Green transition">Next</span></button>
             </div>
           </div>
@@ -453,9 +453,9 @@
       <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-3')"
         translate>Previous</button>
       <div class="pull-right">
-        <button class="button_blue" type="submit" [disabled]="!tracksPlayBook.isValid" (click)="save()"><span
+        <button class="button_blue bgcolor-unset" type="submit" [disabled]="!tracksPlayBook.isValid" (click)="save()"><span
             class="btn btn-primary transition">{{SubmitButtonValue}}</span></button>
-        <button class="button_blue" type="submit" [disabled]="!tracksPlayBook.isValid" *ngIf="!tracksPlayBook.published"
+        <button class="button_blue bgcolor-unset" type="submit" [disabled]="!tracksPlayBook.isValid" *ngIf="!tracksPlayBook.published"
           (click)="saveAndPublish()"><span
             class="btn btn-primary transition">{{SubmitAndPublishButtonValue}}</span></button>
       </div>
@@ -531,7 +531,7 @@
                 title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>
           </div>
           <div>
-            <button class="button_blue" [disabled]="!showCropper" (click)="uploadImage()"><span
+            <button class="button_blue bgcolor-unset" [disabled]="!showCropper" (click)="uploadImage()"><span
                 class="btn btn-primary transition">Save
                 Changes</span></button>
           </div>

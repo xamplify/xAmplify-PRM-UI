@@ -715,8 +715,14 @@ span.text-algn {
 }
 
 .w-10em {
-  width: 10em;
+  width: auto;
+  padding: 3px;
+  margin: 5px 0px;
 }
+.w-10em1 {
+  width: 10em; 
+}
+
 .ml-17-mt12 {
   margin-left: -17px;
   margin-top: 12px;
@@ -792,4 +798,13 @@ span.text-algn {
 }
 .color-css {
   color: #111;
+}
+.d-justify-end{
+  justify-content: end;
+  display: flex;
+  margin: 5px 0px;
+  padding: 5px 0px;
+}
+button.btn.mBtnAlign.f-w-600.w-10em.prev-btn:hover {
+  background: none;
 }

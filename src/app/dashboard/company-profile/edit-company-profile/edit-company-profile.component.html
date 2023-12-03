@@ -440,7 +440,7 @@
 										</div>
 										<div class="modal-footer">
 											<button type="button" id="module-access-button" (click)="updateAccess()"
-												disabled="disabled" class="button" translate><span
+												disabled="disabled" class="button bgcolor-unset" translate><span
 													class="btn Btn-Green transition">Save</span></button>
 										</div>
 									</div>
@@ -870,11 +870,11 @@
 									<div class="pull-right" *ngIf="!isFromAdminPanel">
 										<button type="submit" [disabled]="authenticationService.isSuperAdmin()"
 											*ngIf="companyProfile.isAdd" id="saveOrUpdateCompanyButton" (click)="save()"
-											class="button" disabled="disabled" translate><span
+											class="button bgcolor-unset" disabled="disabled" translate><span
 												class="btn Btn-Green transition">Save</span></button>
 										<button type="submit" [disabled]="authenticationService.isSuperAdmin()"
 											*ngIf="!companyProfile.isAdd" id="saveOrUpdateCompanyButton"
-											(click)="update()" class="button" translate><span
+											(click)="update()" class="button bgcolor-unset" translate><span
 												class="btn Btn-Green transition">Update</span></button>
 									</div>
 								</div>

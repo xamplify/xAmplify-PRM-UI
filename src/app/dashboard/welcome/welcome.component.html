@@ -79,7 +79,7 @@
               </h1>
               <p class="left-side  mb_left0">{{welcome_text.contacts}}</p>
               <div class="text-left tab_Flex">
-                <button class="button_blue btn-xs" [routerLink]="['/home/partners/add']" translate><span
+                <button class="button_blue btn-xs bgcolor-unset" [routerLink]="['/home/partners/add']" translate><span
                     class="btn btn-primary transition">Add
                     {{authenticationService?.partnerModule?.customName}}</span></button>
                 <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal"
@@ -108,7 +108,7 @@
               <h1 style="text-align: left" translate>Content</h1>
               <p class="mb_left0" style="position: relative;left: -19px;">{{welcome_text.videos}}</p>
               <div class="tab_Flex" style="text-align: left">
-                <button class="button_blue btn-xs" [routerLink]="['/home/select-modules']" translate><span
+                <button class="button_blue btn-xs bgcolor-unset" [routerLink]="['/home/select-modules']" translate><span
                     class="btn btn-primary transition">Upload Content</span></button>
                 <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal"
                   (click)="goToUserGuidePage(4,true)" translate>
@@ -137,7 +137,7 @@
               <h1 style="text-align: left;" translate>Contacts</h1>
               <p class="mb_v_right0" style="position: relative;right: 19px;">{{welcome_text.contacts}}</p>
               <div class="tab_Flex" style="text-align: left;">
-                <button class="button_blue btn-xs"
+                <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/contacts/add')"
                   translate><span class="btn btn-primary transition">Add contacts</span></button>
                 <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal"
@@ -165,7 +165,7 @@
               <h1 class="text-left" translate>Templates</h1>
               <p class="left-side mb_left0">{{welcome_text.templates}}</p>
               <div class="text-left tab_Flex">
-                <button class="button_blue btn-xs"
+                <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/emailtemplates/select')"
                   translate><span class="btn btn-primary transition">Create templates</span></button>
                 <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal"
@@ -193,7 +193,7 @@
               <h1 class="text-left" translate>Campaigns</h1>
               <p class="left-side mb_left0">{{welcome_text.campaigns}}</p>
               <div class="text-left tab_Flex">
-                <button class="button_blue btn-xs"
+                <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/campaigns/select')"
                   translate><span class="btn btn-primary transition">Create campaigns</span></button>
                 <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal"
@@ -221,7 +221,7 @@
               <h1 class="text-left" translate>Team members</h1>
               <p class="left-side mb_left0">Add team members to make content and campaign management a group effort</p>
               <div class="text-left tab_Flex">
-                <button class="button_blue btn-xs"
+                <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/team/add-team')"
                   translate><span class="btn btn-primary transition">Add team member</span></button>
                 <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal"
@@ -249,7 +249,7 @@
               <h1 class="text-left" translate>Social Accounts</h1>
               <p class="left-side mb_left0">{{welcome_text.socialMedia}}</p>
               <div class="text-left tab_Flex">
-                <button class="button_blue btn-xs"
+                <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/social/manage/all')"
                   [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate><span
                     class="btn btn-primary transition">Connect</span></button>
@@ -277,7 +277,7 @@
               <h1 class="text-left" translate>Analytics</h1>
               <p class="left-side mb_left0">{{welcome_text.analytics}}</p>
               <div class="text-left tab_Flex">
-                <button class="button_blue btn-xs"
+                <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/dashboard')"
                   [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate><span
                     class="btn btn-primary transition">Analytics</span></button>

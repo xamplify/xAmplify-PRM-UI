@@ -2632,10 +2632,6 @@ display: inline-flex;
 }
 /* Button Transitions */
 /* sudha sri(23-11-2023) */
-.button:hover,button,.button_blue:hover {
-  background: none;
-}
-
 .marg-lft{
   margin-left: -20px !important;
 }
@@ -2647,17 +2643,17 @@ display: inline-flex;
   margin-left: -20px !important;
 }
 .mar-lft-40{
-  margin-left: -40px !important;
+  margin-left: -40px;
 }
 .mar-rgt-40{
-  margin-right: -40px !important;
+  margin-right: -40px;
 }
 .mar-lft-11{
-  margin-left: -11px !important;
+  margin-left: -11px;
 }
-.mar-rgt-9{
-  margin-right: -9px !important;
-}
+/* .mar-rgt-9{
+  margin-right: -9px;
+} */
 .btn-hvr-text{
   background-color: #ddd;
 }
@@ -2667,4 +2663,10 @@ display: inline-flex;
 .p-rgt_p-top{
   padding-right: 3px;
   padding-top: 2px;
+}
+.bgcolor-unset{
+  background-color: unset;
+}
+.bgcolor-unset:hover{
+  background-color: unset!important;
 }

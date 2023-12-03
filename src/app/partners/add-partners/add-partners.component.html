@@ -49,7 +49,7 @@
         </ul>
         <div id="download-partners-csv" class="hidden-xs" style="padding-right: 3px;padding-top:1px;">
             <a (click)="downloadEmptyCsv()">
-                <button type="button" class="button p-rgt_p-top" download
+                <button type="button" class="button p-rgt_p-top bgcolor-unset" download
                     [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
                     <span class="btn Btn-Green transition">Download CSV Template <i class="fa fa-download"
                             aria-hidden="true" style="margin-left: 5px"></i></span>
@@ -446,7 +446,7 @@
         </div>
         <ng-template #saveCancel>
             <div class="pull-right">
-                <button class="button" id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()"
+                <button class="button bgcolor-unset" id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()"
                     translate><span class="btn Btn-Green transition">Save</span></button>
                 <button class="btn Btn-Gray" id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard"
                     (click)="cancelPartners()" translate>Cancel</button>
@@ -611,7 +611,7 @@
                                 </select>
                             </div>
                             <div class="col-xs-6" style="margin-bottom: 10px">
-                                <button class="button" type="button" (click)="clipboardShowPreview()" translate><span
+                                <button class="button bgcolor-unset" type="button" (click)="clipboardShowPreview()" translate><span
                                         class="btn Btn-Green transition">Verify Data</span></button>
                             </div>
                             <div class="col-xs-12">
@@ -1436,7 +1436,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal" (click)="cancelPartners()"
                     translate>Decline</button>
-                <button type="button" [disabled]="!isCheckTC" class="button_blue" (click)="saveContactsWithPermission()"
+                <button type="button" [disabled]="!isCheckTC" class="button_blue bgcolor-unset" (click)="saveContactsWithPermission()"
                     translate><span class="btn btn-primary transition">Accept</span></button>
             </div>
         </div>
@@ -1660,7 +1660,7 @@
             <ngx-loading [show]="processingPartnersLoader || previewLoader"
                 [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-footer">
-                <button type="submit" class="button" (click)="validatePartners()" translate><span
+                <button type="submit" class="button bgcolor-unset" (click)="validatePartners()" translate><span
                         class="btn Btn-Green transition">Continue</span></button>
                 <button type="submit" class="btn Btn-Gray" (click)="closeAssignContactAndMdfAmountPopup()"
                     translate>Close</button>

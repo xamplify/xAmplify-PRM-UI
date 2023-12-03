@@ -2474,16 +2474,16 @@ i.collapseIconColorCu {
   margin-left: -20px !important;
 }
 .mar-lft-40{
-  margin-left: -40px !important;
+  margin-left: -40px;
 }
 .mar-rgt-40{
   margin-right: -40px !important;
 }
 .mar-lft-11{
-  margin-left: -11px !important;
+  margin-left: -11px;
 }
 .mar-rgt-9{
-  margin-right: -9px !important;
+  margin-right: -9px;
 }
 .mar-rgt{
   margin-right: 40px !important;
@@ -2503,4 +2503,7 @@ button.btn.btn-white.salesforce-btn.button{
 }
 .neg-mar-top{
   margin-top: -10px;
+}
+.d-justify-end{
+  justify-content: center!important;
 }
