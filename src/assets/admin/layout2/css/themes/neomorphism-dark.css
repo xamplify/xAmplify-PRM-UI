@@ -2828,7 +2828,7 @@ a.UserguideBtnCustomization {
   transform: scale(1.05);
 }
 .card-template:hover{
-  background-color:#34495a!important; 
+  background-color:#2c2f33 !important; 
   transition-duration: unset !important;
   background-position: unset!important;
 }

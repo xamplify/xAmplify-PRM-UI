@@ -1,196 +1,256 @@
-<div class="modal fade right" id="edit-campaign-details-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog" role="document"  style="width: 45% !important;">
-      <div class="modal-content">
-          <div class="modal-header">
-              <a class="close-circle" (click)="closePopup()">
-                 <i class="fa fa-times" aria-hidden="true"></i></a>
-              <h4 class="modal-title" id="myModalLabel" translate><strong>Edit Campaign Details</strong></h4>
-          </div>
-          <div class="modal-body">
-            <div  [hidden]="dataUpdated">
-                <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-                </app-response-message>
-                <div id="modal-content">
-                    <app-modal-popup-loader *ngIf="loader"></app-modal-popup-loader>
-                    <form class="form-horizontal" [hidden]="loader">
-                        
-                        <!---Campaign Name------>
-                        <div class="form-group">
-                            <label class="control-label col-sm-3">Campaign Name</label>
-                            <div class="col-sm-9">
-                            <input disabled type="text" class="form-control" autocomplete="false" placeholder="Campaign Name" [(ngModel)]="campaignDetailsDto.campaignName" [ngModelOptions]="{standalone: true}">
-                            </div>
-                        </div>
-                        <!---Description-->
-                        <div class="form-group">
-                            <label class="control-label col-sm-3 mName tab_p0">Description
-                            </label>
-                            <div class="col-sm-8">
-                                <textarea class="form-control" maxlength="1000" rows="5" [(ngModel)]="campaignDetailsDto.description" name="description"  placeholder="Description"></textarea>
-                            </div>
-                        </div>
-                        <!---Folder------>
-                        <div class="form-group">
-                            <label class="control-label col-sm-3">Folder<span class="required">*</span></label>
-                            <div class="col-sm-9">
-                                <select class="form-control" [(ngModel)]="campaignDetailsDto.categoryId" [ngModelOptions]="{standalone: true}">
-                                    <option *ngFor="let category of categories" [value]="category.id">
-                                    {{category.name}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div *ngIf="campaignDetailsDto.emailNotification && !campaignDetailsDto.oneClickLaunchChannelCampaign">
-                        <!---From Name------>
-                        <div class="form-group">
-                            <label class="control-label col-sm-3">From Name<span class="required">*</span></label>
-                            <div class="col-sm-9">
-                            <input class="form-control" autocomplete="false" placeholder="From Name" [(ngModel)]="campaignDetailsDto.fromName" [ngModelOptions]="{standalone: true}" >
-                            </div>
-                        </div>
-                        <!---From Email------>
-                        <div class="form-group">
-                            <label class="control-label col-sm-3">From Email<span class="required">*</span></label>
-                            <div class="col-sm-9">
-                                <select class="form-control" [(ngModel)]="campaignDetailsDto.fromEmail" [ngModelOptions]="{standalone: true}" (change)="setFromName()">
-                                    <option *ngFor="let teamMember of teamMemberEmailIds" [ngValue]="teamMember.emailId">
-                                        {{teamMember.emailId}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group" *ngIf="campaignDetailsDto?.campaignType!='LANDINGPAGE'">
-                            <label class="control-label col-sm-3" translate>Notify Me When</label>
-                            <div class="col-sm-9">
-                                <div class="email-options-checkbox-group email-options-notify">
-                                    <div class="email-options-checkbox clearfix">
-                                        <div class="col-sm-4 ui-switch-custom-div">
-                                            <switch [status]="campaignDetailsDto.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-                                                (statusChange)="setOptionByType($event,1)">
-                                            </switch>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <label translate>Email is opened</label>
-                                        </div>
-                                    </div>
-                                    <div *ngIf="campaignDetailsDto?.campaignType!='SOCIAL'" class="email-options-checkbox clearfix">
-                                        <div class="col-sm-4 ui-switch-custom-div">
-                                            <switch [status]="campaignDetailsDto.linkOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-                                                (statusChange)="setOptionByType($event,2)">
-                                            </switch>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <label translate>Link is opened</label>
-                                        </div>
-                                    </div>
-                                    <div class="email-options-checkbox clearfix" *ngIf="campaignDetailsDto.campaignType=='VIDEO'">
-                                        <div class="col-sm-4 ui-switch-custom-div">
-                                            <switch [status]="campaignDetailsDto.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-                                                (statusChange)="setOptionByType($event,3)">
-                                            </switch>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <label translate>Video is played</label>
-                                        </div>
-                                    </div>
-                                    <div class="email-options-checkbox clearfix" *ngIf="campaignDetailsDto.campaignType=='EVENT'">
-                                        <div class="col-sm-4 ui-switch-custom-div">
-                                            <switch [status]="campaignDetailsDto.rsvpReceived" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-                                                (statusChange)="setOptionByType($event,4)">
-                                            </switch>
-                                        </div>
-                                        <div class="col-sm-9">
-                                            <label translate>Guests RSVP</label>
-                                        </div>
-                                    </div>
+<div class="modal fade right" id="edit-campaign-details-popup" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document" style="width: 45% !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close-circle" (click)="closePopup()">
+                    <i class="fa fa-times" aria-hidden="true"></i></a>
+                <h4 class="modal-title" id="myModalLabel" translate><strong>Edit Campaign Details</strong></h4>
+            </div>
+            <div class="modal-body">
+                <div [hidden]="dataUpdated">
+                    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+                    </app-response-message>
+                    <div id="modal-content">
+                        <app-modal-popup-loader *ngIf="loader"></app-modal-popup-loader>
+                        <form class="form-horizontal" [hidden]="loader">
+
+                            <!---Campaign Name------>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">Campaign Name</label>
+                                <div class="col-sm-9">
+                                    <input disabled type="text" class="form-control" autocomplete="false"
+                                        placeholder="Campaign Name" [(ngModel)]="campaignDetailsDto.campaignName"
+                                        [ngModelOptions]="{standalone: true}">
                                 </div>
                             </div>
-                        </div>
-                        </div>
-
-
-                         <!---XNFR-222-->
-                         <div [hidden]="!campaignDetailsDto?.showScheduleOptions">
-                             <!--Edit The Post-->
-                            <div class="form-group" [hidden]="!campaignDetailsDto?.showAllowPartnerToEditThePostOption">
-                                <label class="control-label col-sm-3" translate>Allow {{authenticationService?.partnerModule?.customName}} To Edit The Post</label>
+                            <!---Description-->
+                            <div class="form-group">
+                                <label class="control-label col-sm-3 mName tab_p0">Description
+                                </label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" maxlength="1000" rows="5"
+                                        [(ngModel)]="campaignDetailsDto.description" name="description"
+                                        placeholder="Description"></textarea>
+                                </div>
+                            </div>
+                            <!---Folder------>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">Folder<span class="required">*</span></label>
                                 <div class="col-sm-9">
-                                    <div class="email-options-checkbox-group email-options-notify">
-                                        <div class="email-options-checkbox clearfix">
-                                            <div class="col-sm-4 ui-switch-custom-div">
-                                                <switch [status]="campaignDetailsDto.allowPartnerToEditThePost" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
-                                                    (statusChange)="setOptionByType($event,5)">
-                                                </switch>
+                                    <select class="form-control" [(ngModel)]="campaignDetailsDto.categoryId"
+                                        [ngModelOptions]="{standalone: true}">
+                                        <option *ngFor="let category of categories" [value]="category.id">
+                                            {{category.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div
+                                *ngIf="campaignDetailsDto.emailNotification && !campaignDetailsDto.oneClickLaunchChannelCampaign">
+                                <!---From Name------>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">From Name<span
+                                            class="required">*</span></label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" autocomplete="false" placeholder="From Name"
+                                            [(ngModel)]="campaignDetailsDto.fromName"
+                                            [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                </div>
+                                <!---From Email------>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3">From Email<span
+                                            class="required">*</span></label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" [(ngModel)]="campaignDetailsDto.fromEmail"
+                                            [ngModelOptions]="{standalone: true}" (change)="setFromName()">
+                                            <option *ngFor="let teamMember of teamMemberEmailIds"
+                                                [ngValue]="teamMember.emailId">
+                                                {{teamMember.emailId}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" *ngIf="campaignDetailsDto?.campaignType!='LANDINGPAGE'">
+                                    <label class="control-label col-sm-3" translate>Notify Me When</label>
+                                    <div class="col-sm-9">
+                                        <div class="email-options-checkbox-group email-options-notify">
+                                            <div class="email-options-checkbox clearfix">
+                                                <div class="col-sm-4 ui-switch-custom-div">
+                                                    <switch [status]="campaignDetailsDto.emailOpened"
+                                                        [onText]="callActionSwitch.onTextValue"
+                                                        [offText]="callActionSwitch.offTextValue"
+                                                        [onColor]="callActionSwitch.onGreenColorSwitch"
+                                                        [offColor]="callActionSwitch.onDefaultColorSwitch"
+                                                        [size]="callActionSwitch.defaultSize"
+                                                        (statusChange)="setOptionByType($event,1)">
+                                                    </switch>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <label translate>Email is opened</label>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="campaignDetailsDto?.campaignType!='SOCIAL'"
+                                                class="email-options-checkbox clearfix">
+                                                <div class="col-sm-4 ui-switch-custom-div">
+                                                    <switch [status]="campaignDetailsDto.linkOpened"
+                                                        [onText]="callActionSwitch.onTextValue"
+                                                        [offText]="callActionSwitch.offTextValue"
+                                                        [onColor]="callActionSwitch.onGreenColorSwitch"
+                                                        [offColor]="callActionSwitch.onDefaultColorSwitch"
+                                                        [size]="callActionSwitch.defaultSize"
+                                                        (statusChange)="setOptionByType($event,2)">
+                                                    </switch>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <label translate>Link is opened</label>
+                                                </div>
+                                            </div>
+                                            <div class="email-options-checkbox clearfix"
+                                                *ngIf="campaignDetailsDto.campaignType=='VIDEO'">
+                                                <div class="col-sm-4 ui-switch-custom-div">
+                                                    <switch [status]="campaignDetailsDto.videoPlayed"
+                                                        [onText]="callActionSwitch.onTextValue"
+                                                        [offText]="callActionSwitch.offTextValue"
+                                                        [onColor]="callActionSwitch.onGreenColorSwitch"
+                                                        [offColor]="callActionSwitch.onDefaultColorSwitch"
+                                                        [size]="callActionSwitch.defaultSize"
+                                                        (statusChange)="setOptionByType($event,3)">
+                                                    </switch>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <label translate>Video is played</label>
+                                                </div>
+                                            </div>
+                                            <div class="email-options-checkbox clearfix"
+                                                *ngIf="campaignDetailsDto.campaignType=='EVENT'">
+                                                <div class="col-sm-4 ui-switch-custom-div">
+                                                    <switch [status]="campaignDetailsDto.rsvpReceived"
+                                                        [onText]="callActionSwitch.onTextValue"
+                                                        [offText]="callActionSwitch.offTextValue"
+                                                        [onColor]="callActionSwitch.onGreenColorSwitch"
+                                                        [offColor]="callActionSwitch.onDefaultColorSwitch"
+                                                        [size]="callActionSwitch.defaultSize"
+                                                        (statusChange)="setOptionByType($event,4)">
+                                                    </switch>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <label translate>Guests RSVP</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
 
+
+                            <!---XNFR-222-->
                             <div [hidden]="!campaignDetailsDto?.showScheduleOptions">
-                            <!--Schedule Date & Time-->
-                            <div class="form-group">
-                                <label class="control-label col-sm-3" translate>Select Date & Time<span class="required">*</span></label>
-                                <div class="col-sm-9">
-                                    <div class="email-options-checkbox-group email-options-notify">
-                                        <div class="email-options-checkbox clearfix">
-                                            <div class="col-sm-8">
-                                                <input type="text" class="form-control edit-campaign-flatpicker" style="width:100%" placeholder="Select Date & Time" [(ngModel)]="campaignDetailsDto.scheduledDateAndTimeInString" [ngModelOptions]="{standalone: true}"/>
+                                <!--Edit The Post-->
+                                <div class="form-group"
+                                    [hidden]="!campaignDetailsDto?.showAllowPartnerToEditThePostOption">
+                                    <label class="control-label col-sm-3" translate>Allow
+                                        {{authenticationService?.partnerModule?.customName}} To Edit The Post</label>
+                                    <div class="col-sm-9">
+                                        <div class="email-options-checkbox-group email-options-notify">
+                                            <div class="email-options-checkbox clearfix">
+                                                <div class="col-sm-4 ui-switch-custom-div">
+                                                    <switch [status]="campaignDetailsDto.allowPartnerToEditThePost"
+                                                        [onText]="callActionSwitch.onTextValue"
+                                                        [offText]="callActionSwitch.offTextValue"
+                                                        [onColor]="callActionSwitch.onGreenColorSwitch"
+                                                        [offColor]="callActionSwitch.onDefaultColorSwitch"
+                                                        [size]="callActionSwitch.defaultSize"
+                                                        (statusChange)="setOptionByType($event,5)">
+                                                    </switch>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div> 
 
-                            <!--Country-->
-                            <div class="form-group">
-                                <label class="control-label col-sm-3">Country<span class="required">*</span></label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" style="width: 100%" [(ngModel)]="campaignDetailsDto.countryId" [ngModelOptions]="{standalone: true}" (change)="onSelectCountry($event.target.value)" id="edit-social-campaign-countryName">
-                                        <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
-                                    </select>
+                                <div [hidden]="!campaignDetailsDto?.showScheduleOptions">
+                                    <!--Schedule Date & Time-->
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3" translate>Select Date & Time<span
+                                                class="required">*</span></label>
+                                        <div class="col-sm-9">
+                                            <div class="email-options-checkbox-group email-options-notify">
+                                                <div class="email-options-checkbox clearfix">
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="form-control edit-campaign-flatpicker"
+                                                            style="width:100%" placeholder="Select Date & Time"
+                                                            [(ngModel)]="campaignDetailsDto.scheduledDateAndTimeInString"
+                                                            [ngModelOptions]="{standalone: true}" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Country-->
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3">Country<span
+                                                class="required">*</span></label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" style="width: 100%"
+                                                [(ngModel)]="campaignDetailsDto.countryId"
+                                                [ngModelOptions]="{standalone: true}"
+                                                (change)="onSelectCountry($event.target.value)"
+                                                id="edit-social-campaign-countryName">
+                                                <option *ngFor="let country of countries" [value]="country.id">
+                                                    {{country.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!--TimeZone-->
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3">TimeZone<span
+                                                class="required">*</span></label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" style="width: 100%" id="timezoneId"
+                                                [(ngModel)]="campaignDetailsDto.timezone"
+                                                [ngModelOptions]="{standalone: true}">
+                                                <ng-container *ngIf="timezones?.length === 1">
+                                                    <option *ngFor="let timezone of timezones"
+                                                        [value]="timezone.timezoneId" selected>
+                                                        {{timezone.cityName}}
+                                                    </option>
+                                                </ng-container>
+                                                <ng-container *ngIf="timezones?.length>1">
+                                                    <option *ngFor="let timezone of timezones"
+                                                        [value]="timezone.timezoneId">
+                                                        {{timezone.cityName}}
+                                                    </option>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                 </div>
-                            </div>
-
-                             <!--TimeZone-->
-                             <div class="form-group">
-                                <label class="control-label col-sm-3">TimeZone<span class="required">*</span></label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" style="width: 100%" id="timezoneId" [(ngModel)]="campaignDetailsDto.timezone" [ngModelOptions]="{standalone: true}">
-                                        <ng-container *ngIf="timezones?.length === 1">
-                                            <option *ngFor="let timezone of timezones" [value]="timezone.timezoneId" selected>
-                                                {{timezone.cityName}}
-                                            </option>
-                                        </ng-container>
-                                        <ng-container *ngIf="timezones?.length>1">
-                                            <option *ngFor="let timezone of timezones" [value]="timezone.timezoneId">
-                                                {{timezone.cityName}}
-                                            </option>
-                                        </ng-container>
-                                    </select>
-                                </div>
-                             </div>
 
                             </div>
+                        </form>
+                    </div>
+                </div>
 
-                         </div>
-                    </form>
+
+                <!--Success Message-->
+                <ng-container *ngIf="dataUpdated">
+                    <div class="success-message-text-icon-xamp">
+                        <i aria-hidden="true" class="fa fa-check" id="font-size-success"></i>
+                        <h4 class="event-success">Updated Successfully</h4>
+                    </div>
+                </ng-container>
+                <div class="modal-footer" *ngIf="!loader">
+                    <button type="button" class="btn Btn-Gray" (click)="closePopup()" translate>Close</button>
+                    <button *ngIf="!dataUpdated" [disabled]="buttonClicked" type="button" class="button_blue"
+                        (click)="update();buttonClicked=true" translate><span
+                            class="btn btn-primary transition">Update</span></button>
                 </div>
             </div>
-
-
-            <!--Success Message-->
-            <ng-container *ngIf="dataUpdated">
-                <div class="success-message-text-icon-xamp">
-                       <i  aria-hidden="true" class="fa fa-check" id="font-size-success"></i>
-                       <h4  class="event-success">Updated Successfully</h4>
-                 </div>
-            </ng-container>
-            <div class="modal-footer" *ngIf="!loader">
-                <button type="button" class="btn Btn-Gray" (click)="closePopup()" translate>Close</button>
-                <button *ngIf="!dataUpdated" [disabled]="buttonClicked" type="button" class="btn btn-primary"  (click)="update();buttonClicked=true" translate>Update</button>
-            </div>
         </div>
-  </div>
-</div>
+    </div>
