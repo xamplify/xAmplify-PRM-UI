@@ -237,6 +237,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
   showHelpGuideIcon:boolean;
   showDownloadOptionForSharedLeads = false;
   selectedUser: User = null;
+  isregistered:boolean=false;
   /*****XNFR-342*****/
   @ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
@@ -1475,11 +1476,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
         }
         this.listContactsByType(contactType);
 	}
-
+	
 	listContactsByType(contactType : string) {
 		this.campaignLoader = true;
 		try {
 			this.contactsByType.selectedCategory = contactType;
+			if(this.contactsByType.selectedCategory=='active'){
+				this.isregistered=true;
+			}
+			else{
+				this.isregistered=false;
+			}
 			this.contactsByType.isLoading = true;
 			this.resetResponse();
 			this.resetListContacts();
@@ -1834,6 +1841,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}
 			else if (this.contactsByType.selectedCategory === 'active') {
 				this.logListName = 'All_Active_' + csvNameSuffix + 's_list.csv';
+				//this.logListName = 'All_Registered_' + csvNameSuffix + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'non-active') {
 				this.logListName = 'All_Inactive_' + csvNameSuffix + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'invalid') {
