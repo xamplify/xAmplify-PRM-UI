@@ -22,10 +22,12 @@
          </li>
          <li
             *ngIf="!showListOfContactList && contactsByType.selectedCategory != 'all' && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid' && contactsByType.selectedCategory != 'unsubscribe'">
-            <span class="capitalize" translate>{{contactsByType.selectedCategory}}
+            <span class="capitalize" *ngIf= "!isregistered" translate>{{contactsByType.selectedCategory}}
+               <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+            </span>
+            <span class="capitalize" *ngIf= "isregistered" translate>Registered
                <span
                   *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-               <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
             </span>
          </li>
          <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'all'">
@@ -52,8 +54,10 @@
          <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'invalid'">
             <span class="capitalize" translate>
                <span
-                  *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-               <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+                  *ngIf="checkingContactTypeName=='Partner'"> {{authenticationService?.partnerModule?.customName}}</span>
+               <span *ngIf="checkingContactTypeName!='Partner'"> Undeliverable {{checkingContactTypeName}}s</span>
+               <!-- <span *ngIf="checkingContactTypeName!='Partner'&& this.isundeliverable"> valid {{checkingContactTypeName}}s</span> -->
+
             </span>
          </li>
       </ul>
@@ -723,7 +727,7 @@
                                     </div>
                                     <div id="container" *ngIf="contactList.moduleName=='SHARE LEADS' && !assignLeads">
                                        <h3 translate style="font-size: 14px;">
-                                          Shared leads list
+                                          Shared leads list 
                                           <span class="arrow"></span>
                                        </h3>
                                     </div>
