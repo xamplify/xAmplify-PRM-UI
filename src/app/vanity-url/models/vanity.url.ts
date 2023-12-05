@@ -13,4 +13,13 @@ export class VanityURL{
     loginType: string;
     backgroundLogoStyle2:string;
     /***** XNFR-233*****/
+    /**** XNFR-416 ******/
+	 backgroundColorStyle1:string = "";
+	
+	 backgroundColorStyle2:string = "";
+	
+	styleOneBgColor:boolean = false;
+	
+	styleTwoBgColor:boolean = false ;
+	/**** XNFR-416 ****/
 }

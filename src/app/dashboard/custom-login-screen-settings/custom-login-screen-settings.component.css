@@ -408,3 +408,18 @@ input[type=radio]:checked{
   width: 30px;
   padding-top: 3px;
 }
+.conectColor{
+  background-color: #008fd5;
+  border: 1px solid #3575b5;
+  border-radius: 5px;
+  /* padding:5px 10px; */
+  padding: 2px 6px;
+  color:white;
+  cursor: pointer;
+  font-size: 12px;
+}
+.allignCustomSwich{
+  position: relative;
+  bottom: 8px;
+  padding-left: 5px !important;
+}
