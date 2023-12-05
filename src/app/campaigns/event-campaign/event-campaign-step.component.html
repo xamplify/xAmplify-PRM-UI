@@ -26,7 +26,7 @@
 			</ng-template>
 		</ul>
 		<div id="folder-margin-xamp">
-			<button class="button_blue" id="right" style="padding-bottom: 5px;" (click)="openCreateFolderPopup()"
+			<button class="button_blue bgcolor-unset" id="right" style="padding-bottom: 5px;" (click)="openCreateFolderPopup()"
 				translate><span class="btn btn-primary transition">Create a Folder</span></button>
 		</div>
 	</div>
@@ -623,7 +623,7 @@
 							<div class="portlet-body clearfix" *ngIf="eventCampaign.publicEventCampaign"
 								[class.disabled]="(isPreviewEvent)">
 								<div *ngIf="socialStatusProviders?.length > 0" [class.disabled]="(isPreviewEvent)">
-									<button type="button" class="button_blue pull-right"
+									<button type="button" class="button_blue pull-right bgcolor-unset"
 										(click)="isSocialEnable = !isSocialEnable">
 										<span class="btn btn-primary transition"><i class="fa fa-share-alt fa-social"
 												style="margin: 0 5px;"></i> Social Share</span>
@@ -795,7 +795,7 @@
 					<div class="col-xs-12">
 						<button
 							*ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate"
-							type="button" style="float: right" class="button" (click)="resetTabs('recipients')"
+							type="button" style="float: right" class="button bgcolor-unset" (click)="resetTabs('recipients')"
 							title="Please Fill Campaign Details"
 							[disabled]="recipientsTabClass === 'disableRecipientsTab'"><span
 								class="btn Btn-Green transition">Next</span></button>
@@ -1083,7 +1083,7 @@
 								type="button" style="float:left;" class="btn Btn-Gray"
 								(click)="resetTabs('details')">Previous</button>
 							<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage"
-								type="button" style="float: right;" class="button"
+								type="button" style="float: right;" class="button bgcolor-unset"
 								[disabled]="emailTemplatesTabClass === 'disableTemplateTab'"
 								(click)="resetTabs('templates')" title=""><span
 									class="btn Btn-Green transition">Next</span></button>
@@ -1320,7 +1320,7 @@
 					<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button"
 						style="float:left;" class="btn Btn-Gray" (click)="resetTabs('recipients')">Previous</button>
 					<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button"
-						style="float: right;" class="button" (click)="resetTabs('launch')"
+						style="float: right;" class="button bgcolor-unset" (click)="resetTabs('launch')"
 						[class.disabled]="launchTabClass === 'disableLaunchTab'" title=""><span
 							class="btn Btn-Green transition">Next</span></button>
 				</div>
@@ -1429,7 +1429,7 @@
 												<td style="text-align: right" width="20%">
 													<button
 														[class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate"
-														[class.disabled]="isPreviewEvent" class="button_blue"
+														[class.disabled]="isPreviewEvent" class="button_blue bgcolor-unset"
 														style="color:#fff" (click)="resetTabs('recipients')"><span
 															class="btn btn-primary transition">Change</span></button>
 												</td>
@@ -1460,7 +1460,7 @@
 												<td style="text-align: right" width="20%">
 													<button
 														[class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate"
-														class="button_blue" [class.disabled]="isPreviewEvent"
+														class="button_blue bgcolor-unset" [class.disabled]="isPreviewEvent"
 														(click)="resetTabs('templates')"><span
 															class="btn btn-primary transition">Change</span></button>
 													<a *ngIf="reDistributeEvent || reDistributeEventManage"
@@ -2281,9 +2281,9 @@
 				</div>
 			</div>
 			<div class="folder-modal-footer" *ngIf="!folderErrorCustomResponse.isVisible">
-				<button type="button" class="btn Btn-Gray" (click)="closeFilterPopup()">Cancel</button>
+				<button type="button" class="btn Btn-Gray " (click)="closeFilterPopup()">Cancel</button>
 				<button type="button" class="button_blue" (click)="closeFilterPopup()"><span
-						class="btn btn-primary transition">Apply</span></button>
+						class="btn btn-primary transition bgcolor-unset">Apply</span></button>
 			</div>
 		</div>
 	</div>

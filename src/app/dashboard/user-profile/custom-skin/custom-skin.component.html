@@ -21,14 +21,14 @@
 		</div>
 		<div class="btn-group" [ngClass]="isValidContactName || name.hasError('required') ? 'm-top-70':'m-top-50'"
 			style="float: right;">
-			<button class="button_blue padding align" [ngClass]="(isValid  || isValidContactName || headerBg.hasError('required')|| footerText.hasError('required') || footerBg.hasError('required') || name.hasError('required')) ||
+			<button class="button_blue padding align bgcolor-unset" [ngClass]="(isValid  || isValidContactName || headerBg.hasError('required')|| footerText.hasError('required') || footerBg.hasError('required') || name.hasError('required')) ||
 		mainText.hasError('required') || mainCardBg.hasError('required') || mainBg.hasError('required') || btnColor.hasError('required') || btnBorderColor.hasError('required') || btnName.hasError('required')
 		|| leftBg.hasError('required') || leftBorder.hasError('required') || btnBgColor.hasError('required') || btnPrimaryBorderColor.hasError('required') || btnValueColor.hasError('required') || btnSecondaryBgColor.hasError('required') || btnSecondaryBorderColor.hasError('required') || btnSecondaryTextColor.hasError('required') || leftIcon.hasError('required') || mainBorder.hasError('required') || iconColors.hasError('required') || iconBorder.hasError('required') || leftText.hasError('required')
 		?'disabled':''" [disabled]="isValid || isValidContactName || name.hasError('required') " id="sample_editable_1_new"
 				style="border-radius: 3px;" *ngIf="themeDTO.defaultTheme || isSaveTheme"
 				(click)="getThemePropertiesWrapperObj(form)"><span
 					class="btn btn-primary transition">Save</span></button>
-			<button class="button_blue padding align" [ngClass]="isValid ?'disabled':''"
+			<button class="button_blue padding align bgcolor-unset" [ngClass]="isValid ?'disabled':''"
 				[disabled]="isValid || isValidContactName || headerBg.hasError('required')|| footerText.hasError('required') || footerBg.hasError('required') || name.hasError('required') || 
 		mainText.hasError('required') || mainCardBg.hasError('required') || mainBg.hasError('required') || btnColor.hasError('required') || btnBorderColor.hasError('required') || btnName.hasError('required')
 		|| leftBg.hasError('required') || leftBorder.hasError('required') || btnBgColor.hasError('required') ||btnPrimaryBorderColor.hasError('required') || btnValueColor.hasError('required') || btnSecondaryBgColor.hasError('required') || btnSecondaryBorderColor.hasError('required') || btnSecondaryTextColor.hasError('required') || leftIcon.hasError('required') || mainBorder.hasError('required') || iconColors.hasError('required') || iconBorder.hasError('required') || leftText.hasError('required')"

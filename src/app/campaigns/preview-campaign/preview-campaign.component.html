@@ -916,11 +916,13 @@
                      <i class="fa fa-files-o IconCustomization"></i>
                      <div class="clickicons"></div>
                   </a>
-                  <a *ngIf="(hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && !campaign.oneClickLaunch"
+                  <a class="custom-icon"
+                     *ngIf="(hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm || authenticationService.module.isVendorTier) && campaign.channelCampaign && !campaign.oneClickLaunch"
                      (click)="navigatePreviewPartners(campaign)" data-rel="fancybox-button" data-toggle="tooltip"
                      data-placement="auto"
                      title="Preview & Delete {{authenticationService?.partnerModule?.customName}}">
                      <i class="fa fa-handshake-o IconCustomization" id="partner-icon"></i>
+                     <div class="clickicons"></div>
                   </a>
                </ng-container>
                <ng-container *ngIf="(previewCampaignType==='EVENT') && campaign.launched">
@@ -931,10 +933,12 @@
                      <i class="fa fa-line-chart IconCustomization"></i>
                      <div class="clickicons"></div>
                   </a>
-                  <a *ngIf="(campaign.launched && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier)) && !campaign.nurtureCampaign && previewCampaignType!='SOCIAL'"
+                  <a class="custom-icon"
+                     *ngIf="(campaign.launched && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isPrm  || authenticationService.module.isVendorTier)) && !campaign.nurtureCampaign && previewCampaignType!='SOCIAL'"
                      data-rel="fancybox-button" (click)="openSaveAsModal(campaign)" data-toggle="tooltip"
                      data-placement="auto" title="Copy Campaign">
                      <i class="fa fa-files-o IconCustomization"></i>
+                     <div class="clickicons"></div>
                   </a>
                </ng-container>
                <a class="custom-icon"

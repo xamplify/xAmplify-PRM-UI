@@ -440,7 +440,8 @@
 										</div>
 										<div class="modal-footer">
 											<button type="button" id="module-access-button" (click)="updateAccess()"
-												disabled="disabled" class="btn Btn-Green" translate>Save</button>
+												disabled="disabled" class="button bgcolor-unset" translate><span
+													class="btn Btn-Green transition">Save</span></button>
 										</div>
 									</div>
 								</div>
@@ -453,9 +454,10 @@
 									<div class="col-xs-12 col-md-12 col-lg-12">
 										<div class="form-group" [attr.class]="userEmailIdDivClass">
 											<label class="control-label">Email/Username<font style="color: #f55d7a">
-													<b>*</b></font></label> <input type="text" id="userEmailId"
-												name="userEmailId" placeholder="Email/Username" maxlength="240"
-												class="form-control" [(ngModel)]="companyProfile.userEmailId"
+													<b>*</b>
+												</font></label> <input type="text" id="userEmailId" name="userEmailId"
+												placeholder="Email/Username" maxlength="240" class="form-control"
+												[(ngModel)]="companyProfile.userEmailId"
 												(input)="validatePattern('userEmailId')"
 												(blur)="validatePattern('userEmailId')"
 												(keydown)="this.fetchResult.next($event)" /> <span
@@ -868,10 +870,12 @@
 									<div class="pull-right" *ngIf="!isFromAdminPanel">
 										<button type="submit" [disabled]="authenticationService.isSuperAdmin()"
 											*ngIf="companyProfile.isAdd" id="saveOrUpdateCompanyButton" (click)="save()"
-											class="btn Btn-Green" disabled="disabled" translate>Save</button>
+											class="button bgcolor-unset" disabled="disabled" translate><span
+												class="btn Btn-Green transition">Save</span></button>
 										<button type="submit" [disabled]="authenticationService.isSuperAdmin()"
 											*ngIf="!companyProfile.isAdd" id="saveOrUpdateCompanyButton"
-											(click)="update()" class="btn Btn-Green" translate>Update</button>
+											(click)="update()" class="button bgcolor-unset" translate><span
+												class="btn Btn-Green transition">Update</span></button>
 									</div>
 								</div>
 								<!-- -End Of Panel -->
