@@ -147,7 +147,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     var buttons = $('<div><div id="bee-save-buton-loader"></div>')
       .append('<div class=""><h5>"' + text + '"</h5></div><br> ');
     buttons.append(self.createButton('Yes,Update it', function () {
-      self.updateCustomLogInScreenData();
+      self.updateCustomLogInScreenData(false);
       swal.close();
     })).append(self.createButton('Cancel', function () {
       swal.close();
@@ -301,7 +301,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
         }
       });
   }
-  updateCustomLogInScreenData() {
+  updateCustomLogInScreenData(isUpdate:boolean) {
     this.customLoginScreen.backGroundLogoPath = this.companyBgImagePath;
     this.customLoginScreen.backgroundLogoStyle2 = this.companyBgImagePath2;
       /**** XNFR-146  *******/
@@ -331,11 +331,13 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
           this.message = data.message;
           if (data.statusCode === 200) {
             if (this.isStyle1) {
-              this.saveOrUpdateLoginTemplateActiveForCompany(this.selectedTemplate);
+              this.saveOrUpdateLoginTemplateActiveForCompany(this.selectedTemplate,isUpdate);
             } else {
               this.customResponse = new CustomResponse('SUCCESS', this.message, true)
+              if(!isUpdate) {
               this.isShowFinalDiv = true;
               this.showStyle2();
+              }
             }
           } else {
             this.customResponse = new CustomResponse('SUCCESS', this.message, true)
@@ -460,7 +462,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     }).then(function () {
       self.deleteCustomLogInTempalte(id)
       setTimeout(() => {
-        self.updateCustomLogInScreenData();; // Execute method2 after a 2-second delay
+        self.updateCustomLogInScreenData(false);// Execute method2 after a 2-second delay
       }, 2000);
     }, function (dismiss: any) {
       console.log("you clicked showAlert cancel" + dismiss);
@@ -478,13 +480,13 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     });
   }
   companyLoginTemplateActive: CompanyLoginTemplateActive = new CompanyLoginTemplateActive();
-  saveOrUpdateLoginTemplateActiveForCompany(tId: number) {
+  saveOrUpdateLoginTemplateActiveForCompany(tId: number,isUpdate:boolean) {
     this.companyLoginTemplateActive.createdBy = this.loggedInUserId;
     this.companyLoginTemplateActive.templateId = tId;
-    this.activateTemplate(this.companyLoginTemplateActive);
+    this.activateTemplate(this.companyLoginTemplateActive,isUpdate);
   }
   activeTemplateId: number;
-  activateTemplate(companyLoginTemplateActive: CompanyLoginTemplateActive) {
+  activateTemplate(companyLoginTemplateActive: CompanyLoginTemplateActive,isUpdate:boolean) {
     this.companyProfileService.saveOrUpdateTemplateForCompany(companyLoginTemplateActive).subscribe(result => {
       if (result.statusCode === 200) {
         this.selectedTemplate = result.data;
@@ -493,8 +495,10 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
         this.getFinalScreenTableView();
         // this.customResponse = new CustomResponse('SUCCESS', result.data, true);
         this.customResponse = new CustomResponse('SUCCESS', this.message, true)
+        if(!isUpdate) {
         this.isShowFinalDiv = true;
         this.showStyle1();
+        }
       } else {
         if (result.data.errorMessages[0].message === "templateId parameter is missing") {
           this.message = "Please select an template."

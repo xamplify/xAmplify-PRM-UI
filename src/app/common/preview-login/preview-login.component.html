@@ -4,7 +4,7 @@
 </div> -->
 <!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
 <div *ngIf="!isStyleOne">
-  <div class="content" style="background-color: rgba(0,0,0,.0);"
+  <div class="content" style="background-color: rgba(0,0,0,.0);pointer-events: none;cursor: no-drop;"
     [ngClass]="{'login-content-left':authenticationService.loginScreenDirection==='Left','login-content-right':authenticationService.loginScreenDirection==='Right'}">
     <div style="background-color: rgba(0,0,0,.0);">
       <app-video [newLogin]="false" *ngIf="vanityURLEnabled"></app-video>
@@ -18,7 +18,7 @@
   <div class="row" style="display: content;margin-right: 0px !;margin: 0px !important;" *ngIf="vanityURLEnabled">
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 bg_image"
       [ngStyle]="{'float':authenticationService?.loginScreenDirection}" [ngClass]="isBgColor?'bg_color':'bg_image'">
-      <div class="content" style="background-color: rgba(0,0,0,.0);">
+      <div class="content" style="background-color: rgba(0,0,0,.0);pointer-events: none;cursor: no-drop;">
         <div style="background-color: rgba(0,0,0,.0);">
           <app-video [newLogin]="true" *ngIf="vanityURLEnabled"></app-video>
         </div>

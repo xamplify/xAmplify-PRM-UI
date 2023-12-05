@@ -16,7 +16,7 @@ declare const $: any;
 })
 export class PreviewLoginComponent implements OnInit {
   mainLoader: boolean;
-  customResponse: CustomResponse = new CustomResponse();
+  //customResponse: CustomResponse = new CustomResponse();
   loading = false;
   isStyleOne:boolean = false;
   isBgColor:boolean;
@@ -156,7 +156,7 @@ export class PreviewLoginComponent implements OnInit {
         if (response.statusCode == 200) {
           this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(response.data.htmlBody);
         } else {
-          this.customResponse = new CustomResponse('ERROR', response.message, true)
+          //this.customResponse = new CustomResponse('ERROR', response.message, true)
         }
       }
     )

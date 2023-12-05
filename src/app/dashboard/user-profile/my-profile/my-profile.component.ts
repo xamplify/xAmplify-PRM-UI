@@ -2602,6 +2602,9 @@ configSalesforce() {
 		this.beeContainerInput["customLognTemplate"] = this.cutomLoginTemplate;
 		this.editXamplifyDefaultTemplate = false;
 	}
+	changeLoginTemplateNameEvent(event:any) {
+		this.cutomLoginTemplate.name = event.replace(/\s/g, '')
+	}
 	saveOrUpdateCustomLogInTempalte(cutomLoginTemplate:CustomLoginTemplate){
 		this.vanityUrlService.saveCustomLoginTemplate(cutomLoginTemplate).subscribe(result => {
 		  if(result.statusCode === 200){

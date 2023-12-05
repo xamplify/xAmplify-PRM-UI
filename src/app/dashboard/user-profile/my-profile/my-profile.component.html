@@ -2873,7 +2873,7 @@
                                         <span style="color: #f55d7a"><strong>*</strong></span></label>
                                     <div class="col-lg-4 col-md-5 col-sm-5 col-xs-5" style="margin-left: -100px;">
                                         <input type="text" class="form-control" name="name" placeholder="name" id="name"
-                                            #name="ngModel" [(ngModel)]="cutomLoginTemplate.name" maxlength="255"
+                                            #name="ngModel" [(ngModel)]="cutomLoginTemplate.name" maxlength="255" (ngModelChange)="changeLoginTemplateNameEvent($event)"
                                             required>
                                     </div>
                                 </div>

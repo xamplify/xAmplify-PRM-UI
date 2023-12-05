@@ -252,8 +252,10 @@
     }
     .loginActive {
       color:#000000;
-      background-color: #cccccc;
+      background-color: #c3d4e5;
       border-radius: 0px;
+      border-bottom: 3px solid #008fd5;
+      padding: 5px 7px;
     }
     .loginActive:hover {
       width: 25%;
@@ -422,4 +424,17 @@ input[type=radio]:checked{
   position: relative;
   bottom: 8px;
   padding-left: 5px !important;
+}
+.button {
+  padding:0px 0px;
+  margin-left: 10px;
+}
+.inActive {
+  background: #f1f5f9;
+  padding: 5px 7px;
+  border-bottom: 3px solid #f1f5f9;
+  border-radius: 0px;
+}
+.btn + .btn {
+  margin-left: -3px 
 }
