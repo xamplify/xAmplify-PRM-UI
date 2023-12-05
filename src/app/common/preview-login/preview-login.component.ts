@@ -41,9 +41,9 @@ export class PreviewLoginComponent implements OnInit {
   constructor(public authenticationService: AuthenticationService, private vanityURLService: VanityURLService,
     private router: Router, public sanitizer: DomSanitizer,public referenceService: ReferenceService,
     private xtremandLogger: XtremandLogger, public envService:EnvService) {
-    this.SERVER_URL = this.envService.SERVER_URL;
-    this.APP_URL = this.envService.CLIENT_URL;
-    this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
+    // this.SERVER_URL = this.envService.SERVER_URL;
+    // this.APP_URL = this.envService.CLIENT_URL;
+     this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
    }
   isVanityURLEnabled() {
     let url = window.location.hostname;
