@@ -35,7 +35,7 @@
                         </a>
                      </div>
                      <div>
-                        <button class="button_blue" style="margin-right: 4px;padding-top:1px;"
+                        <button class="button_blue bgcolor-unset" style="margin-right: 4px;padding-top:1px;"
                            (click)="openCreateFolderPopup()" translate><span class="btn btn-primary transition">Create a
                               Folder</span></button>
                      </div>
@@ -157,8 +157,8 @@
                                                       </h2>
                                                       <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE |
                                                          translate}}</h6>
-                                                      <button class="btn btn-primary" style="color:#fff"
-                                                         translate>Browse</button>
+                                                      <button class="button_blue" style="color:#fff" translate><span
+                                                            class="btn btn-primary transition">Browse</span></button>
                                                       <br><br>
                                                       <span *ngIf="uploadedAssetName?.length>0">
                                                          <strong>File Name : {{uploadedAssetName | slice: 0:
@@ -518,7 +518,7 @@
                               style="margin-right: 20px;" type="button" (click)="closeCircle()"
                               translate>Cancel</button>
                            <button [disabled]="!isValidForm || isDisableForm" id="right"
-                              style="margin-right: 5px;padding-top:1px;" class="button_blue" type="button"
+                              style="margin-right: 5px;padding-top:1px;" class="button_blue bgcolor-unset" type="button"
                               (click)="isVideoAsset?uploadVideo():uploadOrUpdate()" translate><span
                                  class="btn btn-primary transition">{{submitButtonText}}</span></button>
                         </div>

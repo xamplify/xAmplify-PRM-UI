@@ -16,7 +16,7 @@
             </li>
         </ul>
         <div class="createFolderAlignment">
-            <button class="button_blue btn-bt-aln" id="right" (click)="openCreateFolderPopup()"><span
+            <button class="button_blue btn-bt-aln bgcolor-unset" id="right" (click)="openCreateFolderPopup()"><span
                     class="btn btn-primary transition">Create a
                     Folder</span></button>
         </div>
@@ -725,13 +725,13 @@
                                 </div>
 
                                 <div class="input-icon right pull-right pr-epx">
-                                    <button *ngIf="selectedEmailTemplateRow==0" class="button_blue"
+                                    <button *ngIf="selectedEmailTemplateRow==0" class="button_blue bgcolor-unset"
                                         [disabled]="selectedEmailTemplateRow==0" data-toggle="tooltip"
                                         data-placement="top" title="{{sendTestEmailToolTip}}">
                                         <span class="btn btn-primary transition"><i class="fa fa-envelope-o"></i>
                                             {{properties?.sendTestEmail}}</span>
                                     </button>
-                                    <button *ngIf="selectedEmailTemplateRow>0" class="button_blue" data-toggle="tooltip"
+                                    <button *ngIf="selectedEmailTemplateRow>0" class="button_blue bgcolor-unset" data-toggle="tooltip"
                                         data-placement="top" title="{{sendTestEmailToolTip}}"
                                         (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
                                         <span class="btn btn-primary transition"><i class="fa fa-envelope-o"></i>
@@ -2032,20 +2032,20 @@
                                 </div>
                                 <!--Other Buttons-->
                                 <div class="text-center">
-                                    <button type="button" class="btn Btn-Gray mBtnAlign f-w-600 w-10em"
-                                        (click)="showCampaignDetailsTab()">Previous</button>
-                                    <button *ngIf="!isPageCampaign" type="button" class="button mBtnAlign w-10em"
+                                    <button type="button" class="btn mBtnAlign f-w-600 w-10em prev-btn bgcolor-unset"
+                                        (click)="showCampaignDetailsTab()"><span class="btn Btn-Gray">Previous</span></button>
+                                    <button *ngIf="!isPageCampaign" type="button" class="button mBtnAlign w-10em bgcolor-unset "
                                         title="Send Test Email" data-toggle="tooltip" data-placement="top"
                                         (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
                                         <span class="btn Btn-Green transition pl_4">{{properties?.sendTestEmail}}<i
-                                                class="fa fa-envelope-o mr5"></i></span>
+                                                class="fa fa-envelope-o mr5 ml5"></i></span>
                                     </button>
-                                    <button type="submit" class="button mBtnAlign w-10em mar-lft-11"
+                                    <button type="submit" class="button mBtnAlign w-10em mar-lft-11 bgcolor-unset"
                                         [disabled]="!isContactList"
                                         (click)="isContactList && validateAndLaunchCampaign()"><span
                                             class="btn Btn-Green transition">{{buttonName}}</span></button>
                                     <button *ngIf="!isPageCampaign" type="button"
-                                        class="button mBtnAlign w-10em mar-lft-40" (click)="spamCheck()"><span
+                                        class="button mBtnAlign w-10em mar-lft-40 bgcolor-unset" (click)="spamCheck()"><span
                                             class="btn Btn-Green transition">Spam
                                             Check</span></button>
                                 </div>
@@ -2139,7 +2139,7 @@
 
 <ng-template #nextButton>
     <div>
-        <button type="button" class="button pull-right mBtnAlign f-w-600 w-10em mar-rgt-40"
+        <button type="button" class="button pull-right mBtnAlign f-w-600 w-10em1 mar-rgt-40 d-justify-end bgcolor-unset"
             [disabled]="!isValidFirstTab" (click)="isValidFirstTab && showLaunchTab()"><span
                 class="btn Btn-Green transition">Next</span></button>
     </div>

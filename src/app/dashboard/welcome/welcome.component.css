@@ -73,7 +73,10 @@
   .btn {
     min-width: 12em;
     font-weight: 600;
-    min-height: 3em;
+    justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    min-height: 43px;
   }
   .image-block {
     margin: 4em;

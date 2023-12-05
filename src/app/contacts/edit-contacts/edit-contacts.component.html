@@ -386,7 +386,7 @@
 						 (hasContactRole && loggedInUserId==uploadedUserId) || assignLeads">
 													<div class="btn-group mb_pt"
 														*ngIf="!isSynchronizationList && !isFormList">
-														<button id="add_contact" class="button mar-rgt_mar-lft"
+														<button id="add_contact" class="button mar-rgt_mar-lft bgcolor-unset"
 															(click)="addContactModalOpen()"
 															[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
 															translate>
@@ -399,7 +399,7 @@
 													<ng-container *ngIf="!refService.isMobileScreenSize()">
 														<div class="btn-group p-top2"
 															*ngIf="!isSynchronizationList && !isFormList">
-															<button id="copyFrom_clipboard" class="button"
+															<button id="copyFrom_clipboard" class="button bgcolor-unset"
 																[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
 																(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);"
 																translate>

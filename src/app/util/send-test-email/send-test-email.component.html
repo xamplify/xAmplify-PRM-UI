@@ -36,7 +36,7 @@
          </div>
          <div class="modal-footer" *ngIf="!processing">
             <button class="btn Btn-Gray" (click)="callEventEmitter()" data-dismiss="modal">Close</button>
-            <button type="submit" class="button" [disabled]="!isValidForm || clicked" (click)="send();clicked = true"
+            <button type="submit" class="button bgcolor-unset" [disabled]="!isValidForm || clicked" (click)="send();clicked = true"
                *ngIf="!sent && !isPreviewEmailTemplate">
                <span class="btn Btn-Green transition">Send Test<i class="fa fa-paper-plane mr5"
                      aria-hidden="true"></i></span>
