@@ -75,13 +75,17 @@
                     </td>
                     <td>
                         <div class="actions-block override-actions">
-                            <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="getTagById(tag)">
+                            <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Edit"
+                                (click)="getTagById(tag)">
                                 <i class="fa fa-pencil-square-o IconCustomization"></i>
+                                <div class="clickicons"></div>
                             </a>
-                            <a id="template-delete" [ngClass]="{'disable-click' : (loggedInUserId !== tag.createdBy)}"
+                            <a class="custom-icon" id="template-delete"
+                                [ngClass]="{'disable-click' : (loggedInUserId !== tag.createdBy)}"
                                 (click)="confirmDeleteTag(tag)" data-toggle="tooltip" data-placement="top"
                                 title="Delete">
                                 <i class="fa fa-trash-o trashIconCustomization"></i>
+                                <div class="del-icon"></div>
                             </a>
                         </div>
                     </td>
