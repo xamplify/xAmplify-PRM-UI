@@ -206,13 +206,15 @@
                         <a class="custom-icon">
                           <i [className]="teamMember?.secondAdmin || teamMember?.primaryAdmin ? 'fa fa-check active-status IconCustomization':'fa fa-times red IconCustomization'"
                             aria-hidden="true"></i>
-                          <div class="clickicons"></div>
+                          <div
+                            [className]="teamMember?.secondAdmin || teamMember?.primaryAdmin ? 'clickicons': 'del-icon'">
+                          </div>
                         </a>
                       </div>
                     </td>
                     <!---Enabled---->
-                    <td *ngIf="teamMember?.status=='UNAPPROVED'"
-                      [title]="teamMember?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Enable/Disable team member'">
+                    <td *ngIf=" teamMember?.status=='UNAPPROVED'" [title]=" teamMember?.status=='UNAPPROVED' ? 'This team member account is not activated yet'
+                            :'Enable/Disable team member'">
                       <div class="actions-block float-none">
                         <a class="custom-icon">
                           <i class="fa fa-times red IconCustomization" aria-hidden="true"></i>

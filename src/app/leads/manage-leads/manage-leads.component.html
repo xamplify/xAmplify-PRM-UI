@@ -178,7 +178,8 @@
                         <button class="btn btn-white padding mt button salesforce-btn mb-btns" style="margin-left: 3px;"
                           data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
 
-                          <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
+                          <span class=" btn Btn-Green transition"> <i class="fa fa-refresh" aria-hidden="true"></i> {{
+                            activeCRMDetails?.type | titlecase }}</span>
                         </button>
                       </a>
 
@@ -235,8 +236,8 @@
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                         <div class="form-group" style="text-align: -webkit-right;">
-                          <button class="button bgcolor-unset" translate="" type="button" ng-reflect-translate="" [disabled]=""
-                            (click)="validateDateFilters()"><span
+                          <button class="button bgcolor-unset" translate="" type="button" ng-reflect-translate=""
+                            [disabled]="" (click)="validateDateFilters()"><span
                               class="btn Btn-Green transition">Filter</span></button>
                         </div>
                       </div>
