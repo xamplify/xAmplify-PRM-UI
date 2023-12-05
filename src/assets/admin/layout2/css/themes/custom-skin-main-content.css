@@ -2425,3 +2425,6 @@ i.collapseIconColorCu {
 .mar-rgt{
   margin-right: 40px !important;
 }
+.d-justify-end{
+  justify-content: center!important;
+}

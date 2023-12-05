@@ -66,7 +66,7 @@
                     <ng-container
                       *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService?.module?.deletedPartner">
                       <div class="col-xs-6 col-sm-4 hidden-xs pull-right" style="padding:0px">
-                        <button class="btn-xs btn-padding fileinput-button btn-block rounded-0 button"
+                        <button class="btn-xs btn-padding fileinput-button btn-block rounded-0 button bgcolor-unset"
                           style="position: relative;">
                           <span style="text-align: center; font-size:14px;color: #fff !important;"
                             class="btn Btn-Green transition">Upload a CSV</span>
@@ -75,7 +75,7 @@
                         </button>
                       </div>
                       <div class="col-xs-12 col-sm-4 pull-right">
-                        <button class="btn-xs btn-block rounded-0 button_blue" style="padding:1px;"
+                        <button class="btn-xs btn-block rounded-0 button_blue bgcolor-unset" style="padding:1px;"
                           (click)="goToAddTeamMemberDiv()">
                           <span style="font-size:14px;color: #fff !important;"
                             class="btn btn-primary transition">Add</span>
@@ -483,7 +483,7 @@
                     </div>
                   </div>
                 </div>
-                <button [disabled]="!team?.validForm" id="right" type="submit" class="button_blue"
+                <button [disabled]="!team?.validForm" id="right" type="submit" class="button_blue bgcolor-unset"
                   (click)="addOrUpdateTeamMember()"><span
                     class="btn btn-primary transition">{{saveOrUpdateButtonText}}</span></button>
               </div>

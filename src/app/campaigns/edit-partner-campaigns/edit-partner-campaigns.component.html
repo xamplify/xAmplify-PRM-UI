@@ -23,7 +23,7 @@
             </li>
          </ul>
          <div id="folder-margin-xamp">
-            <button class="button_blue" id="right" (click)="openCreateFolderPopup()"><span
+            <button class="button_blue bgcolor-unset" id="right" (click)="openCreateFolderPopup()"><span
                   class="btn btn-primary transition">Create a Folder</span></button>
          </div>
       </div>
@@ -302,7 +302,7 @@
                                  <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">
                                     {{selectedUserlistIds.length}} lists are selected
                                  </h4>
-                                 <button class="pull-right btn-sm button_blue" style="margin-top: 6px"
+                                 <button class="pull-right btn-sm button_blue bgcolor-unset" style="margin-top: 6px"
                                     (click)="showContacts()"><span
                                        class="btn btn-primary transition">{{previewText}}</span></button>
                                  <br>
@@ -981,11 +981,11 @@
                         <div class="portlet-title border-none">
                            <div class="col-xs-12 center-block pt20 text-center">
                               <div class="mb_flex">
-                                 <button type="button" class="button" [disabled]="!isCampaignDetailsFormValid"
+                                 <button type="button" class="button bgcolor-unset" [disabled]="!isCampaignDetailsFormValid"
                                     (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)"
                                     style="width:10em"><span class="btn Btn-Green transition">Send Test
                                        Email</span></button>
-                                 <button type="submit" class="button mar-lft-40"
+                                 <button type="submit" class="button mar-lft-40 bgcolor-unset"
                                     [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid"
                                     style="width:10em"><span
                                        class="btn Btn-Green transition">{{buttonName}}</span></button>

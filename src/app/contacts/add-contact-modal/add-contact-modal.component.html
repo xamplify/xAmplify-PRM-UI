@@ -275,13 +275,13 @@
       </div>
       <div class="modal-footer popup_footer" style="border:none" *ngIf="!isPartner">
         <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
-        <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="button"
+        <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset"
           [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()"
           translate><span class="btn Btn-Green transition">Add</span></button>
-        <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="button"
+        <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset"
           [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
           (click)="addEditContactRow()" translate><span class="btn Btn-Green transition">Save</span></button>
-        <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button"
+        <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset"
           [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
           (click)="updateUser()" data-dismiss="modal" translate><span
             class="btn Btn-Green transition">Update</span></button>
@@ -289,13 +289,13 @@
       </div>
       <div class="modal-footer popup_footer" *ngIf="isPartner" style="border:none">
         <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
-        <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="button"
+        <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset"
           [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
           (click)="addRow()" translate><span class="btn Btn-Green transition">Proceed</span></button>
-        <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="button"
+        <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset"
           [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
           (click)="addEditContactRow()" translate><span class="btn Btn-Green transition">Proceed</span></button>
-        <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button"
+        <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset"
           [disabled]="!checkingForEmail || !isCompanyDetails || !validLimit  || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
           (click)="updateUser()" data-dismiss="modal" translate><span
             class="btn Btn-Green transition">Update</span></button>
