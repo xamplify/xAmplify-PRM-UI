@@ -4,177 +4,210 @@
       <app-modal-popup-loader></app-modal-popup-loader>
    </ng-container>
    <ng-container *ngIf="!initLoader">
-   <div class="page-bar">
-      <ul class="page-breadcrumb">
-         <li><i class="fa fa-home" aria-hidden="true"></i> 
-            <a [routerLink]="referenceService.homeRouter"  translate>Home</a> 
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li>
-            <a (click)="goToSelectMdfPage()" translate>MDF</a>
-              <i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li>
-            <a (click)="goToManageMdfRequests()" translate>Manage MDF Requests</a>
-              <i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li><a translate>Change Request</a></li>
-      </ul>
-      <a class="close-circle xamp-margin-left-icon" (click)="goToManageMdfRequests()" aria-hidden="true">
-      <i class="fa fa-times" aria-hidden="true"></i>
-      </a>
-      <a class="close-circle xamp-margin-left-icon" (click)="loadData()" aria-hidden="true">
-      <i class="fa fa-refresh" aria-hidden="true"></i>
-      </a>
-   </div>
-   <app-modal-popup-loader *ngIf="pageLoader"></app-modal-popup-loader>
-   <div class="row" *ngIf="!pageLoader">
-      <div class="col-md-12 col-lg-12">
-         <div class="portlet light tabheight" style="height:640px;padding-right: 0px!important;padding-top: 0px!important;padding-left: 0px !important;">
-            <div class="col-md-12 col-lg-12">
-               <div class="row">
-                  <div class="col-md-9 col-lg-9 pr0" style="padding: 0;">
-                     <div class="row zeroMarginRow">
-                        <div class="col-xs-8 col-sm-10 col-md-10 col-lg-10">
-                           <h2 style="font-weight: 500; color: #867c7c;">
-                              {{mdfRequest?.title | slice:0:40}}
-                              <span *ngIf="mdfRequest?.title?.length>40">..</span>
-                           </h2>
-                        </div>
-                        <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2 pl0" style="padding-top:15px;display: flex;justify-content: flex-end;">
-                           <div class="row">
-                              <div class="col-md-6 col-lg-6">
-                                 <div class="dropdown">
-                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
-                                    <span class="caret"></span></button>
-                                    <ul class="dropdown-menu">
-                                       <li><a (click)="openForm()">Change MDF Request Status & Assignment</a></li>
-                                       <li><a (click)="viewTimeLine()">View Timeline </a></li>
-                                       <li class="disabled"><a href="javascript:void(0)">Change MDF Request Owner</a></li>
-                                       <li class="disabled"><a href="javascript:void(0)">Archive </a></li>
-                                       <li class="disabled"><a href="javascript:void(0)">Delete </a></li>
-                                    </ul>
-                                 </div>
-                              </div>
+      <div class="page-bar">
+         <ul class="page-breadcrumb">
+            <li><i class="fa fa-home" aria-hidden="true"></i>
+               <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+               <a (click)="goToSelectMdfPage()" translate>MDF</a>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+               <a (click)="goToManageMdfRequests()" translate>Manage MDF Requests</a>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li><a translate>Change Request</a></li>
+         </ul>
+         <a class="close-circle xamp-margin-left-icon" (click)="goToManageMdfRequests()" aria-hidden="true">
+            <i class="fa fa-times" aria-hidden="true"></i>
+         </a>
+         <a class="close-circle xamp-margin-left-icon" (click)="loadData()" aria-hidden="true">
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+         </a>
+      </div>
+      <app-modal-popup-loader *ngIf="pageLoader"></app-modal-popup-loader>
+      <div class="row" *ngIf="!pageLoader">
+         <div class="col-md-12 col-lg-12">
+            <div class="portlet light tabheight"
+               style="height:640px;padding-right: 0px!important;padding-top: 0px!important;padding-left: 0px !important;">
+               <div class="col-md-12 col-lg-12">
+                  <div class="row">
+                     <div class="col-md-9 col-lg-9 pr0" style="padding: 0;">
+                        <div class="row zeroMarginRow">
+                           <div class="col-xs-8 col-sm-10 col-md-10 col-lg-10">
+                              <h2 style="font-weight: 500; color: #867c7c;">
+                                 {{mdfRequest?.title | slice:0:40}}
+                                 <span *ngIf="mdfRequest?.title?.length>40">..</span>
+                              </h2>
                            </div>
-                        </div>
-                     </div>
-                     <div class="row zeroMarginRow">
-                        <div class="col-md-12 col-lg-12" style="margin-top:10px;">
-                           <span class="label label-warning">{{mdfRequest?.mdfWorkFlowStepTypeInString}}</span>
-                        </div>
-                        <div class="col-md-12 col-lg-12" style="padding-top: 20px;">
-                           <div class="portlet light h-260" style="padding: 0px 0px!important;">
-                              <div class="portlet-title port-heading mdf-request-header">
-                                 <div class="caption caption-color">
-                                    MDF Request Status
-                                 </div>
-                              </div>
-                              <div class="row row-space">
-                                 <div class="col-sm-6 col-md-6 col-lg-6 pr0 right-border border_unset">
-                                    <div class="row">
-                                       <div class="col-xs-2 col-sm-2 col-md-3 col-lg-2">
-                                          <img class="img-circle" src="{{mdfRequestOwner?.profilePicturePath}}" alt="">
-                                       </div>
-                                       <div class="col-sm-9 col-md-9 col-lg-10 pl0">
-                                          <label class="labelTitleFonts">MDF Request Owner:</label><br>
-                                          <label data-placement="top" data-toggle="tooltip" title="{{mdfRequestOwner?.displayName}} ({{mdfRequestOwner?.companyName}})" style="font-size: 14px;color: #65b6e4;">
-                                             {{mdfRequestOwner?.displayName | slice:0:18}}
-                                             <span *ngIf="mdfRequestOwner?.displayName?.length>18">..</span>
-                                             <ng-container *ngIf="mdfRequestOwner?.companyName!=null && mdfRequestOwner?.companyName.length>0">
-                                                ( {{mdfRequestOwner?.companyName | slice:0:18}}
-                                                <span *ngIf="mdfRequestOwner?.companyName?.length>18">..</span> )
-                                             </ng-container>
-                                          </label>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="col-sm-6 col-md-6 col-lg-6 ">
-                                    <label class="labelTitleFonts">Event Date:</label>
-                                    {{mdfRequest?.eventDateInString}}
-                                 </div>
-                              </div>
+                           <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2 pl0"
+                              style="padding-top:15px;display: flex;justify-content: flex-end;">
                               <div class="row">
-                                 <div class="col-sm-12 col-md-12 col-lg-12">
-                                    <div class="row">
-                                       <div class="col-sm-4 col-md-4 col-lg-4" style="padding-top: 23px;">
-                                          <div class="row text-left border-right border_unset" style="padding-left: 30px;">
-                                             <label class="labelTitleFonts">Request Amount:</label><br>
-                                             <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.requestAmount | number:'1.0':'en-US'}}</label><br>
-                                             <label style="font-size: 15px;">{{mdfRequest?.requestCreatedDateInString}}</label><br>
+                                 <div class="col-md-6 col-lg-6">
+                                    <div class="dropdown">
+                                       <button class="btn btn-primary dropdown-toggle" type="button"
+                                          data-toggle="dropdown">Actions
+                                          <span class="caret"></span></button>
+                                       <ul class="dropdown-menu">
+                                          <li><a (click)="openForm()">Change MDF Request Status & Assignment</a></li>
+                                          <li><a (click)="viewTimeLine()">View Timeline </a></li>
+                                          <li class="disabled"><a href="javascript:void(0)">Change MDF Request Owner</a>
+                                          </li>
+                                          <li class="disabled"><a href="javascript:void(0)">Archive </a></li>
+                                          <li class="disabled"><a href="javascript:void(0)">Delete </a></li>
+                                       </ul>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="row zeroMarginRow">
+                           <div class="col-md-12 col-lg-12" style="margin-top:10px;">
+                              <span class="label label-warning">{{mdfRequest?.mdfWorkFlowStepTypeInString}}</span>
+                           </div>
+                           <div class="col-md-12 col-lg-12" style="padding-top: 20px;">
+                              <div class="portlet light h-260" style="padding: 0px 0px!important;">
+                                 <div class="portlet-title port-heading mdf-request-header">
+                                    <div class="caption caption-color">
+                                       MDF Request Status
+                                    </div>
+                                 </div>
+                                 <div class="row row-space">
+                                    <div class="col-sm-6 col-md-6 col-lg-6 pr0 right-border border_unset">
+                                       <div class="row">
+                                          <div class="col-xs-2 col-sm-2 col-md-3 col-lg-2">
+                                             <img class="img-circle" src="{{mdfRequestOwner?.profilePicturePath}}"
+                                                alt="">
+                                          </div>
+                                          <div class="col-sm-9 col-md-9 col-lg-10 pl0">
+                                             <label class="labelTitleFonts">MDF Request Owner:</label><br>
+                                             <label data-placement="top" data-toggle="tooltip"
+                                                title="{{mdfRequestOwner?.displayName}} ({{mdfRequestOwner?.companyName}})"
+                                                style="font-size: 14px;color: #65b6e4;">
+                                                {{mdfRequestOwner?.displayName | slice:0:18}}
+                                                <span *ngIf="mdfRequestOwner?.displayName?.length>18">..</span>
+                                                <ng-container
+                                                   *ngIf="mdfRequestOwner?.companyName!=null && mdfRequestOwner?.companyName.length>0">
+                                                   ( {{mdfRequestOwner?.companyName | slice:0:18}}
+                                                   <span *ngIf="mdfRequestOwner?.companyName?.length>18">..</span> )
+                                                </ng-container>
+                                             </label>
                                           </div>
                                        </div>
-                                       <div class="col-sm-4 col-md-4 col-lg-4" style="padding-top: 23px;">
-                                          <div class="row text-left border-right border_unset h_100" style="padding-left: 30px;height: 100px;">
-                                             <label class="labelTitleFonts">Allocated Amount:</label><br>
-                                             <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.sumOfAllocationAmount | number:'1.0':'en-US'}}</label><br>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 ">
+                                       <label class="labelTitleFonts">Event Date:</label>
+                                       {{mdfRequest?.eventDateInString}}
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                       <div class="row">
+                                          <div class="col-sm-4 col-md-4 col-lg-4" style="padding-top: 23px;">
+                                             <div class="row text-left border-right border_unset"
+                                                style="padding-left: 30px;">
+                                                <label class="labelTitleFonts">Request Amount:</label><br>
+                                                <label
+                                                   style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.requestAmount
+                                                   | number:'1.0':'en-US'}}</label><br>
+                                                <label
+                                                   style="font-size: 15px;">{{mdfRequest?.requestCreatedDateInString}}</label><br>
+                                             </div>
                                           </div>
-                                       </div>
-                                       <div class="col-sm-4 col-md-4 col-lg-4" style="padding-top: 23px;">
-                                          <div class="row text-left" style="padding-left: 30px;">
-                                             <label class="labelTitleFonts">Reimbursement Amount:</label><br>
-                                             <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.sumOfReimbursementAmount | number:'1.0':'en-US'}}</label><br>
+                                          <div class="col-sm-4 col-md-4 col-lg-4" style="padding-top: 23px;">
+                                             <div class="row text-left border-right border_unset h_100"
+                                                style="padding-left: 30px;height: 100px;">
+                                                <label class="labelTitleFonts">Allocated Amount:</label><br>
+                                                <label
+                                                   style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.sumOfAllocationAmount
+                                                   | number:'1.0':'en-US'}}</label><br>
+                                             </div>
+                                          </div>
+                                          <div class="col-sm-4 col-md-4 col-lg-4" style="padding-top: 23px;">
+                                             <div class="row text-left" style="padding-left: 30px;">
+                                                <label class="labelTitleFonts">Reimbursement Amount:</label><br>
+                                                <label
+                                                   style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.sumOfReimbursementAmount
+                                                   | number:'1.0':'en-US'}}</label><br>
+                                             </div>
                                           </div>
                                        </div>
                                     </div>
                                  </div>
                               </div>
                            </div>
-                        </div>
-                        <div class="col-md-12 col-lg-12" style="padding-top: 20px;">
-                           <div class="portlet light h-205">
-                              <div class="portlet-title">
-                                 <div class="caption" translate>
-                                    {{authenticationService?.partnerModule?.customName}} MDF Balances
+                           <div class="col-md-12 col-lg-12" style="padding-top: 20px;">
+                              <div class="portlet light h-205">
+                                 <div class="portlet-title">
+                                    <div class="caption" translate>
+                                       {{authenticationService?.partnerModule?.customName}} MDF Balances
+                                    </div>
                                  </div>
-                              </div>
-                              <div class="row" style="margin-top: 20px;">
-                                 <div class="col-md-12 col-lg-12" style="padding-left:24px;padding-right: 30px;">
-                                    <div class="row">
-                                       <div title="$ {{mdfAmountTiles?.totalBalance}}" class="col-sm-4 col-xs-6 col-lg-4 col-md-4 tiles_hover_effect">
-                                          <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor tiles_bradius">
-                                             <div class="visual">
-                                                <i aria-hidden="true" class=""></i>
-                                             </div>
-                                             <div class="details">
-                                                <div class="number" style="font-size: 20px;">{{mdfAmountTiles?.totalBalanceInString}}</div>
-                                                <div class="desc cardTextFontsize">Total MDF Balance</div>
-                                             </div>
-                                             <span class="morePadding">
-                                          <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
-                                          <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                                          </span>
-                                          </a>
-                                       </div>
-                                       <div title="$ {{mdfAmountTiles?.usedBalance}}" class="col-sm-4 col-xs-6 col-lg-4 col-md-4 tiles_hover_effect">
-                                          <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor tiles_bradius">
-                                             <div class="visual">
-                                                <i aria-hidden="true" class=""></i>
-                                             </div>
-                                             <div class="details">
-                                                <div class="number" style="font-size: 20px;">{{mdfAmountTiles?.usedBalanceInString}}</div>
-                                                <div class="desc cardTextFontsize">Total Used Balance</div>
-                                             </div>
-                                             <span class="morePadding">
-                                          <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view
-                                          <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                                          </span>
-                                          </a>
-                                       </div>
-                                       <div title="$ {{mdfAmountTiles?.availableBalance}}" class="col-sm-4 col-xs-6 col-lg-4 col-md-4 mt_10 tiles_hover_effect">
-                                          <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor tiles_bradius">
-                                             <div class="visual">
-                                                <i aria-hidden="true" class=""></i>
-                                             </div>
-                                             <div class="details">
-                                                <div class="number" style="font-size: 20px;">{{mdfAmountTiles?.availableBalanceInString}}</div>
-                                                <div class="desc cardTextFontsize">Total Available Balance</div>
-                                             </div>
-                                             <span class="morePadding">
-                                          <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view
-                                          <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                                          </span>
-                                          </a>
+                                 <div class="row" style="margin-top: 20px;">
+                                    <div class="col-md-12 col-lg-12" style="padding-left:24px;padding-right: 30px;">
+                                       <div class="row">
+                                          <div title="$ {{mdfAmountTiles?.totalBalance}}"
+                                             class="col-sm-4 col-xs-6 col-lg-4 col-md-4 tiles_hover_effect">
+                                             <a
+                                                class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor tiles_bradius">
+                                                <div class="visual">
+                                                   <i aria-hidden="true" class=""></i>
+                                                </div>
+                                                <div class="details">
+                                                   <div class="number" style="font-size: 20px;">
+                                                      {{mdfAmountTiles?.totalBalanceInString}}</div>
+                                                   <div class="desc cardTextFontsize">Total MDF Balance</div>
+                                                </div>
+                                                <span class="morePadding">
+                                                   <a translate="" ng-reflect-translate="" class="more hidden">Detailed
+                                                      view
+                                                      <i aria-hidden="true"
+                                                         class="m-icon-swapright m-icon-white"></i></a>
+                                                </span>
+                                             </a>
+                                          </div>
+                                          <div title="$ {{mdfAmountTiles?.usedBalance}}"
+                                             class="col-sm-4 col-xs-6 col-lg-4 col-md-4 tiles_hover_effect">
+                                             <a
+                                                class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor tiles_bradius">
+                                                <div class="visual">
+                                                   <i aria-hidden="true" class=""></i>
+                                                </div>
+                                                <div class="details">
+                                                   <div class="number" style="font-size: 20px;">
+                                                      {{mdfAmountTiles?.usedBalanceInString}}</div>
+                                                   <div class="desc cardTextFontsize">Total Used Balance</div>
+                                                </div>
+                                                <span class="morePadding">
+                                                   <a translate="" ng-reflect-translate="" class="more hidden">Detailed
+                                                      view
+                                                      <i aria-hidden="true"
+                                                         class="m-icon-swapright m-icon-white"></i></a>
+                                                </span>
+                                             </a>
+                                          </div>
+                                          <div title="$ {{mdfAmountTiles?.availableBalance}}"
+                                             class="col-sm-4 col-xs-6 col-lg-4 col-md-4 mt_10 tiles_hover_effect">
+                                             <a
+                                                class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor tiles_bradius">
+                                                <div class="visual">
+                                                   <i aria-hidden="true" class=""></i>
+                                                </div>
+                                                <div class="details">
+                                                   <div class="number" style="font-size: 20px;">
+                                                      {{mdfAmountTiles?.availableBalanceInString}}</div>
+                                                   <div class="desc cardTextFontsize">Total Available Balance</div>
+                                                </div>
+                                                <span class="morePadding">
+                                                   <a translate="" ng-reflect-translate="" class="more hidden">Detailed
+                                                      view
+                                                      <i aria-hidden="true"
+                                                         class="m-icon-swapright m-icon-white"></i></a>
+                                                </span>
+                                             </a>
+                                          </div>
                                        </div>
                                     </div>
                                  </div>
@@ -182,105 +215,134 @@
                            </div>
                         </div>
                      </div>
-                  </div>
-                  <div class="col-md-3 col-lg-3 pr0 mdf-bgcolor">
-                     <div class="row">
-                        <div class="col-md-12 col-lg-12 pl0">
-                           <h5 class="h5-heading">MDF Hierarchy</h5>
-                        </div>
-                        <!-----Request Owner------->
-                        <p style="margin-left: 20px;"><strong>{{authenticationService?.partnerModule?.customName}} Contact</strong></p>
-                        <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
-                           <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
-                              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
-                                 <img class="img-circle" src="{{mdfRequestOwner?.profilePicturePath}}" alt="">
-                              </div>
-                              <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 " style="padding-left: 34px!important;">
-                                 <ng-container *ngIf="mdfRequestOwner?.fullName!=null">
-                                    <label data-placement="top" data-toggle="tooltip" title="{{mdfRequestOwner?.fullName}}" class="labelTextStyle" *ngIf="mdfRequestOwner?.fullName!=null">
-                                    {{mdfRequestOwner?.fullName | slice:0:15}}
-                                    <span *ngIf="mdfRequestOwner?.fullName?.length>15">..</span>
+                     <div class="col-md-3 col-lg-3 pr0 mdf-bgcolor">
+                        <div class="row">
+                           <div class="col-md-12 col-lg-12 pl0">
+                              <h5 class="h5-heading">MDF Hierarchy</h5>
+                           </div>
+                           <!-----Request Owner------->
+                           <p style="margin-left: 20px;"><strong>{{authenticationService?.partnerModule?.customName}}
+                                 Contact</strong></p>
+                           <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
+                              <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
+                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
+                                    <img class="img-circle" src="{{mdfRequestOwner?.profilePicturePath}}" alt="">
+                                 </div>
+                                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 "
+                                    style="padding-left: 34px!important;">
+                                    <ng-container *ngIf="mdfRequestOwner?.fullName!=null">
+                                       <label data-placement="top" data-toggle="tooltip"
+                                          title="{{mdfRequestOwner?.fullName}}" class="labelTextStyle"
+                                          *ngIf="mdfRequestOwner?.fullName!=null">
+                                          {{mdfRequestOwner?.fullName | slice:0:15}}
+                                          <span *ngIf="mdfRequestOwner?.fullName?.length>15">..</span>
+                                       </label>
+                                    </ng-container>
+                                    <label data-placement="top" data-toggle="tooltip"
+                                       title="{{mdfRequestOwner?.emailId}}" class="labelTextStyle">
+                                       {{mdfRequestOwner?.emailId | slice:0:15}}
+                                       <span *ngIf="mdfRequestOwner?.emailId?.length>15">..</span>
                                     </label>
-                                 </ng-container>
-                                 <label data-placement="top" data-toggle="tooltip" title="{{mdfRequestOwner?.emailId}}" class="labelTextStyle">
-                                 {{mdfRequestOwner?.emailId | slice:0:15}}
-                                 <span *ngIf="mdfRequestOwner?.emailId?.length>15">..</span>
-                                 </label>
-                                 <label *ngIf="mdfRequestOwner?.title!=null"  data-placement="top" data-toggle="tooltip" title="{{mdfRequestOwner?.title}}" class="labelTextStyle">
-                                 {{mdfRequestOwner?.title | slice:0:15}}
-                                 <span *ngIf="mdfRequestOwner?.title?.length>15">..</span>
-                                 </label>
-                                 <label *ngIf="mdfRequestOwner?.companyName!=null" data-placement="top" data-toggle="tooltip" title="{{mdfRequestOwner?.companyName}}" class="labelTextStyle1">
-                                 {{mdfRequestOwner?.companyName | slice:0:15}}
-                                 <span *ngIf="mdfRequestOwner?.companyName?.length>15">..</span>
-                                 </label>
-                                 <label *ngIf="mdfRequestOwner?.companyPhoneNumber!=null" data-placement="top" data-toggle="tooltip" title="{{mdfRequestOwner?.companyPhoneNumber}}" class="labelTextStyle">
-                                 Phone: {{mdfRequestOwner?.companyPhoneNumber | slice:0:15}}
-                                 <span *ngIf="mdfRequestOwner?.companyPhoneNumber?.length>15">..</span></label>
+                                    <label *ngIf="mdfRequestOwner?.title!=null" data-placement="top"
+                                       data-toggle="tooltip" title="{{mdfRequestOwner?.title}}" class="labelTextStyle">
+                                       {{mdfRequestOwner?.title | slice:0:15}}
+                                       <span *ngIf="mdfRequestOwner?.title?.length>15">..</span>
+                                    </label>
+                                    <label *ngIf="mdfRequestOwner?.companyName!=null" data-placement="top"
+                                       data-toggle="tooltip" title="{{mdfRequestOwner?.companyName}}"
+                                       class="labelTextStyle1">
+                                       {{mdfRequestOwner?.companyName | slice:0:15}}
+                                       <span *ngIf="mdfRequestOwner?.companyName?.length>15">..</span>
+                                    </label>
+                                    <label *ngIf="mdfRequestOwner?.companyPhoneNumber!=null" data-placement="top"
+                                       data-toggle="tooltip" title="{{mdfRequestOwner?.companyPhoneNumber}}"
+                                       class="labelTextStyle">
+                                       Phone: {{mdfRequestOwner?.companyPhoneNumber | slice:0:15}}
+                                       <span *ngIf="mdfRequestOwner?.companyPhoneNumber?.length>15">..</span></label>
+                                 </div>
                               </div>
                            </div>
-                        </div>
-                        <!-----Vendor Company Details------->
-                        <p style="margin-left: 20px;"><strong>Vendor Contact</strong></p>
-                        <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
-                           <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
-                              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
-                                 <img class="img-circle" src="{{vendorContact?.profilePicturePath}}" alt="">
-                              </div>
-                              <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 " style="padding-left: 34px!important;">
-                                 <ng-container *ngIf="vendorContact?.fullName!=null">
-                                    <label data-placement="top" data-toggle="tooltip" title="{{vendorContact?.fullName}}" class="labelTextStyle">
-                                    {{vendorContact?.fullName | slice:0:15}}
-                                    <span *ngIf="vendorContact?.fullName?.length>15">..</span>
+                           <!-----Vendor Company Details------->
+                           <p style="margin-left: 20px;"><strong>Vendor Contact</strong></p>
+                           <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
+                              <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
+                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
+                                    <img class="img-circle" src="{{vendorContact?.profilePicturePath}}" alt="">
+                                 </div>
+                                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 "
+                                    style="padding-left: 34px!important;">
+                                    <ng-container *ngIf="vendorContact?.fullName!=null">
+                                       <label data-placement="top" data-toggle="tooltip"
+                                          title="{{vendorContact?.fullName}}" class="labelTextStyle">
+                                          {{vendorContact?.fullName | slice:0:15}}
+                                          <span *ngIf="vendorContact?.fullName?.length>15">..</span>
+                                       </label>
+                                    </ng-container>
+                                    <label data-placement="top" data-toggle="tooltip" title="{{vendorContact?.emailId}}"
+                                       class="labelTextStyle">
+                                       {{vendorContact?.emailId | slice:0:15}}
+                                       <span *ngIf="vendorContact?.emailId?.length>15">..</span>
                                     </label>
-                                 </ng-container>
-                                 <label data-placement="top" data-toggle="tooltip" title="{{vendorContact?.emailId}}" class="labelTextStyle">
-                                 {{vendorContact?.emailId | slice:0:15}}
-                                 <span *ngIf="vendorContact?.emailId?.length>15">..</span>
-                                 </label>
-                                 <label *ngIf="vendorContact?.companyName!=null" data-placement="top" data-toggle="tooltip" title="{{vendorContact?.companyName}}" class="labelTextStyle">
-                                 {{vendorContact?.companyName | slice:0:15}}
-                                 <span *ngIf="vendorContact?.companyName?.length>15">..</span>
-                                 </label>
-                                 <label *ngIf="vendorContact?.website!=null"  data-placement="top" data-toggle="tooltip" title="{{vendorContact?.website}}" class="labelTextStyle">
-                                 {{vendorContact?.website | slice:0:15}}
-                                 <span *ngIf="vendorContact?.website?.length>15">..</span>
-                                 </label>
-                                 <label *ngIf="vendorContact?.phoneNumber!=null && vendorContact?.phoneNumber?.length>0" data-placement="top" data-toggle="tooltip" title="{{vendorContact?.phoneNumber}}" class="labelTextStyle">
-                                 Phone: {{vendorContact?.phoneNumber | slice:0:15}}
-                                 <span *ngIf="vendorContact?.phoneNumber?.length>15">..</span></label>
+                                    <label *ngIf="vendorContact?.companyName!=null" data-placement="top"
+                                       data-toggle="tooltip" title="{{vendorContact?.companyName}}"
+                                       class="labelTextStyle">
+                                       {{vendorContact?.companyName | slice:0:15}}
+                                       <span *ngIf="vendorContact?.companyName?.length>15">..</span>
+                                    </label>
+                                    <label *ngIf="vendorContact?.website!=null" data-placement="top"
+                                       data-toggle="tooltip" title="{{vendorContact?.website}}" class="labelTextStyle">
+                                       {{vendorContact?.website | slice:0:15}}
+                                       <span *ngIf="vendorContact?.website?.length>15">..</span>
+                                    </label>
+                                    <label
+                                       *ngIf="vendorContact?.phoneNumber!=null && vendorContact?.phoneNumber?.length>0"
+                                       data-placement="top" data-toggle="tooltip" title="{{vendorContact?.phoneNumber}}"
+                                       class="labelTextStyle">
+                                       Phone: {{vendorContact?.phoneNumber | slice:0:15}}
+                                       <span *ngIf="vendorContact?.phoneNumber?.length>15">..</span></label>
+                                 </div>
                               </div>
                            </div>
-                        </div>
-                        <!-----Partner Company Details------->
-                        <p style="margin-left: 20px;"><strong>{{authenticationService?.partnerModule?.customName}} Manager</strong></p>
-                        <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
-                           <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
-                              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
-                                 <img class="img-circle" src="{{partnerManager?.profilePicturePath}}" alt="">
-                              </div>
-                              <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 " style="padding-left: 34px!important;">
-                                 <ng-container *ngIf="partnerManager?.fullName!=null">
-                                    <label data-placement="top" data-toggle="tooltip" title="{{partnerManager?.fullName}}" class="labelTextStyle">
-                                    {{partnerManager?.fullName | slice:0:15}}
-                                    <span *ngIf="partnerManager?.fullName?.length>15">..</span>
+                           <!-----Partner Company Details------->
+                           <p style="margin-left: 20px;"><strong>{{authenticationService?.partnerModule?.customName}}
+                                 Manager</strong></p>
+                           <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
+                              <div class="row border-bottom" style="margin-right: 0px;padding-bottom: 10px;">
+                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-right">
+                                    <img class="img-circle" src="{{partnerManager?.profilePicturePath}}" alt="">
+                                 </div>
+                                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 "
+                                    style="padding-left: 34px!important;">
+                                    <ng-container *ngIf="partnerManager?.fullName!=null">
+                                       <label data-placement="top" data-toggle="tooltip"
+                                          title="{{partnerManager?.fullName}}" class="labelTextStyle">
+                                          {{partnerManager?.fullName | slice:0:15}}
+                                          <span *ngIf="partnerManager?.fullName?.length>15">..</span>
+                                       </label>
+                                    </ng-container>
+                                    <label data-placement="top" data-toggle="tooltip"
+                                       title="{{partnerManager?.emailId}}" class="labelTextStyle">
+                                       {{partnerManager?.emailId | slice:0:15}}
+                                       <span *ngIf="partnerManager?.emailId?.length>15">..</span>
                                     </label>
-                                 </ng-container>
-                                 <label data-placement="top" data-toggle="tooltip" title="{{partnerManager?.emailId}}" class="labelTextStyle">
-                                 {{partnerManager?.emailId | slice:0:15}}
-                                 <span *ngIf="partnerManager?.emailId?.length>15">..</span>
-                                 </label>
-                                 <label *ngIf="partnerManager?.title!=null"  data-placement="top" data-toggle="tooltip" title="{{partnerManager?.title}}" class="labelTextStyle">
-                                 {{partnerManager?.title | slice:0:15}}
-                                 <span *ngIf="partnerManager?.title?.length>15">..</span>
-                                 </label>
-                                 <label data-placement="top" data-toggle="tooltip" *ngIf="partnerManager?.companyName!=null" title="{{partnerManager?.companyName}}" class="labelTextStyle1">
-                                 {{partnerManager?.companyName | slice:0:15}}
-                                 <span *ngIf="partnerManager?.companyName?.length>15">..</span>
-                                 </label>
-                                 <label *ngIf="partnerManager?.phoneNumber!=null && partnerManager?.phoneNumber?.length>0" data-placement="top" data-toggle="tooltip" title="{{partnerManager?.phoneNumber}}" class="labelTextStyle">
-                                 Phone: {{partnerManager?.phoneNumber | slice:0:15}}
-                                 <span *ngIf="partnerManager?.phoneNumber?.length>15">..</span></label>
+                                    <label *ngIf="partnerManager?.title!=null" data-placement="top"
+                                       data-toggle="tooltip" title="{{partnerManager?.title}}" class="labelTextStyle">
+                                       {{partnerManager?.title | slice:0:15}}
+                                       <span *ngIf="partnerManager?.title?.length>15">..</span>
+                                    </label>
+                                    <label data-placement="top" data-toggle="tooltip"
+                                       *ngIf="partnerManager?.companyName!=null" title="{{partnerManager?.companyName}}"
+                                       class="labelTextStyle1">
+                                       {{partnerManager?.companyName | slice:0:15}}
+                                       <span *ngIf="partnerManager?.companyName?.length>15">..</span>
+                                    </label>
+                                    <label
+                                       *ngIf="partnerManager?.phoneNumber!=null && partnerManager?.phoneNumber?.length>0"
+                                       data-placement="top" data-toggle="tooltip"
+                                       title="{{partnerManager?.phoneNumber}}" class="labelTextStyle">
+                                       Phone: {{partnerManager?.phoneNumber | slice:0:15}}
+                                       <span *ngIf="partnerManager?.phoneNumber?.length>15">..</span></label>
+                                 </div>
                               </div>
                            </div>
                         </div>
@@ -290,21 +352,21 @@
             </div>
          </div>
       </div>
-   </div>
    </ng-container>
-   
+
 </div>
 <!--Change Request Modal Pop Up------->
-<div id="changeRequestModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+<div id="changeRequestModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+   data-backdrop="static" data-keyboard="false">
    <div class="modal-dialog modal-css cw" role="document">
       <div class="modal-content">
          <ngx-loading [show]="modalPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
          <div class="modal-header">
             <a class="close-circle fa-margin" (click)="closeChangeRequestPopup()">
-            <i class="fa fa-times" aria-hidden="true"></i>
+               <i class="fa fa-times" aria-hidden="true"></i>
             </a>
             <a title="Refresh" class="close-circle" (click)="refreshData()">
-            <i class="fa fa-refresh" aria-hidden="true"></i>
+               <i class="fa fa-refresh" aria-hidden="true"></i>
             </a>
             <h4 class="modal-title header-fw" translate>Change MDF Request Status & Assignment</h4>
          </div>
@@ -317,38 +379,52 @@
                   <form role="form">
                      <div class="row">
                         <div class="col-sm-6 col-xs-12">
-                           <div [attr.class]="errorFieldNames.indexOf('status')>-1 ? 'form-group has-error':'form-group'">
+                           <div
+                              [attr.class]="errorFieldNames.indexOf('status')>-1 ? 'form-group has-error':'form-group'">
                               <label class="control-label" translate>Status
-                              <span style="color: red">*</span>
+                                 <span style="color: red">*</span>
                               </label>
-                              <select class="form-control" name="" style="width: 100%" [(ngModel)]="selectedMdfRequest.statusInInteger" [ngModelOptions]="{standalone: true}" (ngModelChange)="resetValues($event)">
-                              <option [value]="1"  [selected]="selectedMdfRequest.statusInInteger ==1">New Request (Open)</option>
-                              <option [value]="2" [selected]="selectedMdfRequest.statusInInteger ==2">In Progress,assigned to manager (Open)</option>
-                              <option [value]="3" [selected]="selectedMdfRequest.statusInInteger ==3">Pre-Approved for 90 days (Closed)</option>
-                              <option [value]="4" [selected]="selectedMdfRequest.statusInInteger ==4">Reimbursement Issued (Closed)</option>
-                              <option [value]="5" [selected]="selectedMdfRequest.statusInInteger ==5">Reimbursement Declined (Closed)</option>
-                              <option [value]="6" [selected]="selectedMdfRequest.statusInInteger ==6">Request Expired (Closed)</option>
-                              <option [value]="7" [selected]="selectedMdfRequest.statusInInteger ==7">Request Declined (Closed)</option>
+                              <select class="form-control" name="" style="width: 100%"
+                                 [(ngModel)]="selectedMdfRequest.statusInInteger" [ngModelOptions]="{standalone: true}"
+                                 (ngModelChange)="resetValues($event)">
+                                 <option [value]="1" [selected]="selectedMdfRequest.statusInInteger ==1">New Request
+                                    (Open)</option>
+                                 <option [value]="2" [selected]="selectedMdfRequest.statusInInteger ==2">In
+                                    Progress,assigned to manager (Open)</option>
+                                 <option [value]="3" [selected]="selectedMdfRequest.statusInInteger ==3">Pre-Approved
+                                    for 90 days (Closed)</option>
+                                 <option [value]="4" [selected]="selectedMdfRequest.statusInInteger ==4">Reimbursement
+                                    Issued (Closed)</option>
+                                 <option [value]="5" [selected]="selectedMdfRequest.statusInInteger ==5">Reimbursement
+                                    Declined (Closed)</option>
+                                 <option [value]="6" [selected]="selectedMdfRequest.statusInInteger ==6">Request Expired
+                                    (Closed)</option>
+                                 <option [value]="7" [selected]="selectedMdfRequest.statusInInteger ==7">Request
+                                    Declined (Closed)</option>
                               </select>
                               <ng-container *ngFor="let errorResponse of errorResponses">
-                                 <span class="required" *ngIf="errorResponse.field=='status'">{{errorResponse.message}}</span>
+                                 <span class="required"
+                                    *ngIf="errorResponse.field=='status'">{{errorResponse.message}}</span>
                               </ng-container>
                            </div>
                            <div class="form-group">
                               <label class="control-label" translate>Total MDF Balance
                               </label>
-                              <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
-                              [(ngModel)]="mdfAmountTiles.totalBalance"  [ngModelOptions]="{standalone: true}" 
-                              placeholder="Total MDF Balance" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                              <input type="name" [disabled]="true" class="form-control padding-mobile currency"
+                                 [(ngModel)]="mdfAmountTiles.totalBalance" [ngModelOptions]="{standalone: true}"
+                                 placeholder="Total MDF Balance" min="0.00" currencyMask
+                                 [options]="{align :'left',allowNegative :false }">
                            </div>
-                           <div [attr.class]="errorFieldNames.indexOf('allocationAmount')>-1 ? 'form-group has-error':'form-group'">
+                           <div
+                              [attr.class]="errorFieldNames.indexOf('allocationAmount')>-1 ? 'form-group has-error':'form-group'">
                               <label class="control-label" translate>Allocated Amount
-                              <span *ngIf="selectedMdfRequest?.statusInInteger<=3" style="color: red">*</span>
+                                 <span *ngIf="selectedMdfRequest?.statusInInteger<=3" style="color: red">*</span>
                               </label>
                               <div *ngIf="selectedMdfRequest?.statusInInteger<=3">
-                                 <input type="name" class="form-control padding-mobile currency" 
-                                 [(ngModel)]="selectedMdfRequest.allocationAmount"  [ngModelOptions]="{standalone: true}" 
-                                 placeholder="Allocated Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                                 <input type="name" class="form-control padding-mobile currency"
+                                    [(ngModel)]="selectedMdfRequest.allocationAmount"
+                                    [ngModelOptions]="{standalone: true}" placeholder="Allocated Amount" min="0.00"
+                                    currencyMask [options]="{align :'left',allowNegative :false }">
                                  <ng-container *ngFor="let errorResponse of errorResponses">
                                     <ng-container *ngIf="errorResponse.field=='allocationAmount'">
                                        <span class="required">{{errorResponse.message}}</span>
@@ -359,32 +435,39 @@
                                  </ng-container>
                               </div>
                               <div *ngIf="selectedMdfRequest?.statusInInteger>3">
-                                 <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
-                                 [(ngModel)]="selectedMdfRequest.allocationAmount"  [ngModelOptions]="{standalone: true}" 
-                                 placeholder="Allocated Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                                 <input type="name" [disabled]="true" class="form-control padding-mobile currency"
+                                    [(ngModel)]="selectedMdfRequest.allocationAmount"
+                                    [ngModelOptions]="{standalone: true}" placeholder="Allocated Amount" min="0.00"
+                                    currencyMask [options]="{align :'left',allowNegative :false }">
                               </div>
                            </div>
                            <ng-container *ngIf="selectedMdfRequest?.statusInInteger==4">
-                              <div [attr.class]="errorFieldNames.indexOf('reimbursementAmount')>-1 ? 'form-group has-error':'form-group'">
+                              <div
+                                 [attr.class]="errorFieldNames.indexOf('reimbursementAmount')>-1 ? 'form-group has-error':'form-group'">
                                  <label class="control-label" translate>Reimbursement Amount
-                                 <span style="color: red">*</span>
+                                    <span style="color: red">*</span>
                                  </label>
-                                 <input type="name"  class="form-control padding-mobile currency"
-                                 [(ngModel)]="selectedMdfRequest.reimbursementAmount"  [ngModelOptions]="{standalone: true}" 
-                                 placeholder="Reimbursement Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                                 <input type="name" class="form-control padding-mobile currency"
+                                    [(ngModel)]="selectedMdfRequest.reimbursementAmount"
+                                    [ngModelOptions]="{standalone: true}" placeholder="Reimbursement Amount" min="0.00"
+                                    currencyMask [options]="{align :'left',allowNegative :false }">
                                  <ng-container *ngFor="let errorResponse of errorResponses">
-                                    <span class="required" *ngIf="errorResponse.field=='reimbursementAmount'">{{errorResponse.message}}</span>
+                                    <span class="required"
+                                       *ngIf="errorResponse.field=='reimbursementAmount'">{{errorResponse.message}}</span>
                                  </ng-container>
                               </div>
                            </ng-container>
-                           <div [attr.class]="errorFieldNames.indexOf('allocationDateInString')>-1 ? 'form-group has-error':'form-group'">
+                           <div
+                              [attr.class]="errorFieldNames.indexOf('allocationDateInString')>-1 ? 'form-group has-error':'form-group'">
                               <label class="control-label" translate>Allocation Date
-                              <span *ngIf="selectedMdfRequest?.statusInInteger<=3" style="color: red">*</span>
+                                 <span *ngIf="selectedMdfRequest?.statusInInteger<=3" style="color: red">*</span>
                               </label>
-                              <app-date-picker [(dataField)]="selectedMdfRequest.allocationDateInString" [isFromMdfCredit]='true'>
+                              <app-date-picker [(dataField)]="selectedMdfRequest.allocationDateInString"
+                                 [isFromMdfCredit]='true'>
                               </app-date-picker>
                               <ng-container *ngFor="let errorResponse of errorResponses">
-                                 <span class="required" *ngIf="errorResponse.field=='allocationDateInString'">{{errorResponse.message}}</span>
+                                 <span class="required"
+                                    *ngIf="errorResponse.field=='allocationDateInString'">{{errorResponse.message}}</span>
                               </ng-container>
                            </div>
                         </div>
@@ -393,18 +476,20 @@
                            <div class="form-group">
                               <label class="control-label" translate>Description
                               </label>
-                              <textarea class="form-control"  [(ngModel)]="selectedMdfRequest.description"  [ngModelOptions]="{standalone: true}" 
-                              placeholder="Description"></textarea>
+                              <textarea class="form-control" [(ngModel)]="selectedMdfRequest.description"
+                                 [ngModelOptions]="{standalone: true}" placeholder="Description"></textarea>
                            </div>
-                           <div [attr.class]="errorFieldNames.indexOf('requestAmount')>-1 ? 'form-group has-error':'form-group'">
+                           <div
+                              [attr.class]="errorFieldNames.indexOf('requestAmount')>-1 ? 'form-group has-error':'form-group'">
                               <label class="control-label" translate>Requested Amount
                               </label>
-                              <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
-                              [(ngModel)]="selectedMdfRequest.requestAmount"  [ngModelOptions]="{standalone: true}" 
-                              placeholder="Requested Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                              <input type="name" [disabled]="true" class="form-control padding-mobile currency"
+                                 [(ngModel)]="selectedMdfRequest.requestAmount" [ngModelOptions]="{standalone: true}"
+                                 placeholder="Requested Amount" min="0.00" currencyMask
+                                 [options]="{align :'left',allowNegative :false }">
                               <ng-container *ngFor="let errorResponse of errorResponses">
                                  <ng-container *ngIf="errorResponse.field=='requestAmount'">
-                                    <span class="required" >{{errorResponse.message}}</span>
+                                    <span class="required">{{errorResponse.message}}</span>
                                     <ng-container *ngIf="errorResponse.message.indexOf('MDF')>-1">
                                        <a (click)="openMdfAmountPopup()">Click here to add MDF Amount</a>
                                     </ng-container>
@@ -414,26 +499,31 @@
                            <div class="form-group">
                               <label class="control-label" translate>Total Allocated Amount
                               </label>
-                              <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
-                              [(ngModel)]="selectedMdfRequest.sumOfAllocationAmount"  [ngModelOptions]="{standalone: true}" 
-                              placeholder="Total Allocated Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                              <input type="name" [disabled]="true" class="form-control padding-mobile currency"
+                                 [(ngModel)]="selectedMdfRequest.sumOfAllocationAmount"
+                                 [ngModelOptions]="{standalone: true}" placeholder="Total Allocated Amount" min="0.00"
+                                 currencyMask [options]="{align :'left',allowNegative :false }">
                            </div>
                            <ng-container *ngIf="selectedMdfRequest?.statusInInteger==4">
                               <div class="form-group">
                                  <label class="control-label" translate>Total Reimbursement Amount
                                  </label>
-                                 <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
-                                 [(ngModel)]="selectedMdfRequest.sumOfReimbursementAmount"  [ngModelOptions]="{standalone: true}" 
-                                 placeholder="Total Reimbursement Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                                 <input type="name" [disabled]="true" class="form-control padding-mobile currency"
+                                    [(ngModel)]="selectedMdfRequest.sumOfReimbursementAmount"
+                                    [ngModelOptions]="{standalone: true}" placeholder="Total Reimbursement Amount"
+                                    min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
                               </div>
                            </ng-container>
-                           <div [attr.class]="errorFieldNames.indexOf('allocationExpirationDateInString')>-1 ? 'form-group has-error':'form-group'">
+                           <div
+                              [attr.class]="errorFieldNames.indexOf('allocationExpirationDateInString')>-1 ? 'form-group has-error':'form-group'">
                               <label class="control-label" translate>Allocation Expiration Date
                               </label>
-                              <app-date-picker [(dataField)]="selectedMdfRequest.allocationExpirationDateInString" [isFromMdfCredit]='true'>
+                              <app-date-picker [(dataField)]="selectedMdfRequest.allocationExpirationDateInString"
+                                 [isFromMdfCredit]='true'>
                               </app-date-picker>
                               <ng-container *ngFor="let errorResponse of errorResponses">
-                                 <span class="required" *ngIf="errorResponse.field=='allocationExpirationDateInString'">{{errorResponse.message}}</span>
+                                 <span class="required"
+                                    *ngIf="errorResponse.field=='allocationExpirationDateInString'">{{errorResponse.message}}</span>
                               </ng-container>
                            </div>
                         </div>
@@ -444,9 +534,12 @@
          </div>
          <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader">
             <button class="btn Btn-Gray" type="button" (click)="closeChangeRequestPopup();" translate>Cancel</button>
-            <button type="button" class="btn btn-primary"  (click)="updateMdfRequest()" translate>Update</button>
+            <button type="button" class="button_blue" (click)="updateMdfRequest()" translate><span
+                  class="btn btn-primary transition">Update</span></button>
          </div>
       </div>
    </div>
 </div>
-<app-add-mdf-funds-modal-popup *ngIf="showMdfAmountPopup" [partnershipId]="mdfRequest?.partnershipId" [onlyAddMdfAmount]="true" (notifyParentComponent)="hideMdfAmountPopup()" (updateList)="updateDetails()"></app-add-mdf-funds-modal-popup>
+<app-add-mdf-funds-modal-popup *ngIf="showMdfAmountPopup" [partnershipId]="mdfRequest?.partnershipId"
+   [onlyAddMdfAmount]="true" (notifyParentComponent)="hideMdfAmountPopup()"
+   (updateList)="updateDetails()"></app-add-mdf-funds-modal-popup>

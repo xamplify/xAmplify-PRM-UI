@@ -2670,3 +2670,6 @@ display: inline-flex;
 .bgcolor-unset:hover{
   background-color: unset!important;
 }
+.pd_0{
+  padding-top: 0px !important;
+}
