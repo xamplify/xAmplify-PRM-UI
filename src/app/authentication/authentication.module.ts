@@ -21,6 +21,7 @@ import { AccessAccountComponent } from './access-account/access-account.componen
 import { SamlsecurityauthComponent } from './samlsecurityauth/samlsecurityauth.component';
 import { LogoutComponent } from './logout/logout.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { PreviewLoginComponent } from "app/common/preview-login/preview-login.component";
 
 @NgModule({
   imports: [
@@ -46,7 +47,8 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
     AccessAccountComponent,
     SamlsecurityauthComponent,
     LogoutComponent,
-    MaintenanceComponent
+    MaintenanceComponent,
+    PreviewLoginComponent
   ],
   exports: []
 })
