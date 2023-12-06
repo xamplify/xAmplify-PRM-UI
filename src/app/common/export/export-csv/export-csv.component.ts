@@ -15,36 +15,27 @@ export class ExportCsvComponent implements OnInit, AfterViewInit{
   }
 
   convertToCSV( objArray ) {
-      var array = typeof objArray != 'object' ? JSON.parse( objArray ) : objArray;
-      var str = '';
-      var row = "";
-      for ( var index in objArray[0] ) {
-          row += index + ',';
-      }
-      row = row.slice( 0, -1 );
-      str += row + '\r\n';
-      for ( var i = 0; i < array.length; i++ ) {
-          var line = '';
-          for ( var index in array[i] ) {
-              if ( line != '' ) line += ','
-                  if ( array[i][index] == undefined || array[i][index] == '' || array[i][index] == null) {
-                      line += ' ';
-                  } else{
-                      line += array[i][index];
-                      line = line.replace(",,", ",");
-                  }
-          }
-          str += line + '\r\n';
-      }
-      return str;
+      const csvHeader = Object.keys(objArray[0]).join(',');
+      const csvRows = objArray.map((row) => {
+          const values = Object.keys(row).map((obj) => {
+              if (row[obj] === null || row[obj] === undefined || row[obj] == '' || row[obj] == 0) {
+                  return `" "`;
+              } else {
+                  return `"${row[obj]+'\t'}"`;
+              }
+          });
+          return values.join(',');
+      });
+      return `${csvHeader}\n${csvRows.join('\n')}`;
   }
   
   downloadCsvList(){
       var csvData = this.convertToCSV( this.downloadListDetails );
+      console.log(csvData)
       var a = document.createElement( "a" );
       a.setAttribute( 'style', 'display:none;' );
       document.body.appendChild( a );
-      var blob = new Blob( [csvData], { type: 'text/csv' });
+      var blob = new Blob( [csvData], { type: 'text/csv;charset=utf-8;' });
       var url = window.URL.createObjectURL( blob );
       a.href = url;
       a.download = this.downloadListName;
