@@ -46,6 +46,7 @@ import { UnauthorizedPageComponent } from './error-pages/unauthorized-page/unaut
 import { CustomSkinComponent } from './dashboard/user-profile/custom-skin/custom-skin.component';
 import { DevicesInfoComponent } from './azuga/devices-info/devices-info.component';
 import { MaintenanceComponent } from './authentication/maintenance/maintenance.component';
+import { PreviewLoginComponent } from './common/preview-login/preview-login.component';
 
 
 export const routes: Routes = [
@@ -148,6 +149,9 @@ export const routes: Routes = [
 	{ path: 'au/:alias/:moduleToRedirect', component: SamlsecurityauthComponent },
 	{ path: 'vanity-domain-error', component: DomainErrorComponent },
 	{ path: 'maintenance', component: MaintenanceComponent },
+	/*** XNFR-416 *****/
+	{ path: 'login/preview', component: PreviewLoginComponent},
+	/*** XNFR-416 *****/
 	{ path: '404', component: PageNotFoundComponent },
 	{ path: '401', component: UnauthorizedPageComponent },
 	{ path: '**', component: PageNotFoundComponent },

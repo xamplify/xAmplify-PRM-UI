@@ -127,6 +127,22 @@ export class VanityURLService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 //XNFR-2333
+/**** XNFR-416 *****/
+getImageFile(imageUrl: string,name:any): Observable<File> {
+  return new Observable((observer) => {
+    fetch(imageUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        const file = new File([blob], name, { type: 'image/jpeg' });
+        observer.next(file);
+        observer.complete();
+      })
+      .catch((error) => {
+        observer.error(error);
+      });
+  });
+}
+/**** XNFR-416 *****/
   isVanityURLEnabled() {
    let url = window.location.hostname;
     let isLocalHost = this.envService.SERVER_URL.indexOf('localhost')>-1 && 
