@@ -731,8 +731,8 @@
                                         <span class="btn btn-primary transition"><i class="fa fa-envelope-o"></i>
                                             {{properties?.sendTestEmail}}</span>
                                     </button>
-                                    <button *ngIf="selectedEmailTemplateRow>0" class="button_blue bgcolor-unset" data-toggle="tooltip"
-                                        data-placement="top" title="{{sendTestEmailToolTip}}"
+                                    <button *ngIf="selectedEmailTemplateRow>0" class="button_blue bgcolor-unset"
+                                        data-toggle="tooltip" data-placement="top" title="{{sendTestEmailToolTip}}"
                                         (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
                                         <span class="btn btn-primary transition"><i class="fa fa-envelope-o"></i>
                                             {{properties?.sendTestEmail}}</span>
@@ -1978,7 +1978,7 @@
                                     <div class="btn-group btn-group-justified">
                                         <ng-container *ngFor="let launchOption of launchOptions;let i = index">
                                             <label
-                                                [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn Btn-Green mBtnAlign button-border'">
+                                                [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn Btn-Green mBtnAlign button-border campaign_save_shadow'">
                                                 <input type="radio" id="launch-option-{{i}}"
                                                     class="text-center mLabelAlign mr10 pointer radioButton_shadow"
                                                     name="scheduleCampaign" [value]="launchOption.value"
@@ -2033,9 +2033,11 @@
                                 <!--Other Buttons-->
                                 <div class="text-center">
                                     <button type="button" class="btn mBtnAlign f-w-600 w-10em prev-btn bgcolor-unset"
-                                        (click)="showCampaignDetailsTab()"><span class="btn Btn-Gray">Previous</span></button>
-                                    <button *ngIf="!isPageCampaign" type="button" class="button mBtnAlign w-10em bgcolor-unset "
-                                        title="Send Test Email" data-toggle="tooltip" data-placement="top"
+                                        (click)="showCampaignDetailsTab()"><span
+                                            class="btn Btn-Gray">Previous</span></button>
+                                    <button *ngIf="!isPageCampaign" type="button"
+                                        class="button mBtnAlign w-10em bgcolor-unset " title="Send Test Email"
+                                        data-toggle="tooltip" data-placement="top"
                                         (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
                                         <span class="btn Btn-Green transition pl_4">{{properties?.sendTestEmail}}<i
                                                 class="fa fa-envelope-o mr5 ml5"></i></span>
@@ -2045,8 +2047,8 @@
                                         (click)="isContactList && validateAndLaunchCampaign()"><span
                                             class="btn Btn-Green transition">{{buttonName}}</span></button>
                                     <button *ngIf="!isPageCampaign" type="button"
-                                        class="button mBtnAlign w-10em mar-lft-40 bgcolor-unset" (click)="spamCheck()"><span
-                                            class="btn Btn-Green transition">Spam
+                                        class="button mBtnAlign w-10em mar-lft-40 bgcolor-unset"
+                                        (click)="spamCheck()"><span class="btn Btn-Green transition">Spam
                                             Check</span></button>
                                 </div>
                             </div>

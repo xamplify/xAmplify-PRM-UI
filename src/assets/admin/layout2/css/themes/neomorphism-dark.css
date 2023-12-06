@@ -102,7 +102,8 @@ a.dashboard-stat.dashboard-stat-lighter.yellow-gold.min-h.default-cursor.tiles_b
 .header-text-css,
 .black-blue-c:hover,
 .lineplayercontrol,
-.row-space {
+.row-space,
+.popup-border-bottom {
   border-bottom: 1px solid #191b1e !important;
 }
 .portlet > .portlet-title,
@@ -264,7 +265,7 @@ ul.alt-row-style1 li:hover,
 .filter.form-selected,
 .filter.landing-page-selected,
 .mix-filter li.contact-filter-selected {
-  background-color: #22313a !important;
+  background-color: #222528 !important;
 }
 
 .list__item > .flex-row {
@@ -797,9 +798,7 @@ span.ui-column-resize {
 .pricing-border {
   border: 3px solid #2f4857 !important;
 }
-.activeCRM {
-  background-color: #2f4857 !important;
-}
+
 .alert-warning {
   background-color: #22313a !important;
   border: 1px solid #2f4857 !important;
@@ -1102,7 +1101,7 @@ input#copy-link {
   border-bottom: 1px solid #191b1e !important;
 }
 .cards {
-  border: 1px solid #2f4857 !important;
+  border: 1px solid #191b1e !important;
   background-image: linear-gradient(to top, #f1f2f5, rgba(255, 255, 255, 0)),
     linear-gradient(to bottom, #2f4758, #2f4758) !important;
 }
@@ -1620,7 +1619,7 @@ ul.drag-menu-cu li:hover {
   color: #fff !important;
 }
 .card-paddings-vcu {
-  background: #22313a !important;
+  background: #222528 !important;
 }
 .backgroundfor-mv-title {
   background: #5a738e !important;
@@ -1886,6 +1885,7 @@ i.singleIconCustomization {
 /* XNFR-335 start */
 .nav-tabs.dcTheme {
   background: #22313a54;
+  color:#fff;
 }
 .nav-tabs.dcTheme > li.active > a,
 .nav-tabs.dcTheme > li > a:hover {
@@ -1979,10 +1979,10 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
   background-color: #22313a !important;
 }
-.checkBox_shadow,
+/* .checkBox_shadow,
 .radioButton_shadow {
   box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
-}
+} */
 .full_popup {
   box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 }
@@ -2049,7 +2049,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .mix-filter li.active,
 .mix-filter li.campaign-type-selected,
 .mix-filter li.emailtemplate-selected {
-  background: #22313a !important;
+  background: #222528  !important;
   box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 }
 .table-responsive {
@@ -2411,7 +2411,7 @@ input {
 }
 /* sudha sri (9-11-2023) */
 .mix-filter-li-selected {
-  background-color: #22313a !important;
+  background-color: #222528 !important;
 }
 .portlet.light.cpad.hover-effect.pointer.card-radius,
 .portlet.light.cpad.hover-effect.pointer {
@@ -2421,7 +2421,7 @@ input {
   border-bottom: 1px solid #2f4857 !important;
 }
 .unsubscribingPopup {
-  background-color: #22313a !important;
+  background-color: #222528 !important;
 }
 fieldset {
   border: 1px solid #191b1e !important;
@@ -2439,7 +2439,8 @@ button.btn.btn-xs.hidden-xs.l-g-view.disabled {
   box-shadow : inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
   border: 1px solid #191b1e !important;
 }
-button.search-box-item-click {
+button.search-box-item-click,
+.campaign_save_shadow {
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 /* 13-11-2023 */
@@ -3193,4 +3194,12 @@ input.field-border-customization {
 /* 5-12-2023 SUDHA SRI */
 .card-background-v{
   background-color : #2b3c46 !important;
+}
+.integration_cards,
+.activeCRM{
+  background-color : #222528 !important;
+  border-radius: 10px;
+}
+.setting-icon-cu:hover {
+  background-color: #3f68c5;
 }

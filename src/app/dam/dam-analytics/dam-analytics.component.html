@@ -4,194 +4,218 @@
       <app-modal-popup-loader></app-modal-popup-loader>
    </ng-container>
    <ng-container *ngIf="!initLoader">
-  <div class="page-bar">
-    <ul class="page-breadcrumb">
-       <li><i class="fa fa-home" aria-hidden="true"></i>
-         <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
-          <i class="fa fa-angle-right" aria-hidden="true"></i>
-       </li>
-          <li>
-            <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-          </li>
-         <li>
-            <a (click)="goToDam()" translate>DAM</a> 
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-          </li>
-          <ng-container *ngIf="vendorView">
-          <li>
-            <a (click)="goBack()" translate>Published {{authenticationService?.partnerModule?.customName}}</a> 
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-          </li>
-       </ng-container>
-       <li><a translate> View & Download Analytics</a></li>
-    </ul>
-    <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
-      <i class="fa fa-times" aria-hidden="true"></i>
-  </a>
-  <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
-   <i class="fa fa-refresh" aria-hidden="true"></i>
-</a>
- </div>
-
- <div class="row">
-  <div class="col-md-12 col-lg-12">
-     <div class="portlet light mHeight" style="height: 172px;padding-top: 3px !important;">
-      <div style="padding-top: 10px;margin-left: 10px;">
-         <!-- <ul class="page-breadcrumb">
-            <li> -->
-               <span>
-                  <strong class="bold-asset">Asset Name </strong>: 
-                  <span title="{{selectedAssetName}}">{{selectedAssetName | slice:0:50}}</span>
-                  <span *ngIf="selectedAssetName?.length>50">..</span></span>
-            <!-- </li>
-         </ul> -->
+      <div class="page-bar">
+         <ul class="page-breadcrumb">
+            <li><i class="fa fa-home" aria-hidden="true"></i>
+               <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+               <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+               <a (click)="goToDam()" translate>DAM</a>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <ng-container *ngIf="vendorView">
+               <li>
+                  <a (click)="goBack()" translate>Published {{authenticationService?.partnerModule?.customName}}</a>
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+               </li>
+            </ng-container>
+            <li><a translate> View & Download Analytics</a></li>
+         </ul>
+         <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
+            <i class="fa fa-times" aria-hidden="true"></i>
+         </a>
+         <a class="close-circle xamp-margin-left-icon" (click)="refreshPage()" aria-hidden="true">
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+         </a>
       </div>
-        <div class="row" style="margin-top: 20px;margin-right: -20px;margin-left: 0px;">
-           <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
-           <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
-              <div class="row" style="margin-top: -14px;">
-                 <div  id="vendor-details-tile" class="{{tileClass}} mPad mrg_b5" style="border-radius: 5px !important;">
-                    <div class="row">
-                        <div class="flex margin-flex  mb_v_center" style="padding-left: 5px;">
-                            <span class='profile'>
-                                <span class='uppercase'>{{damAnalyticsTilesDto?.circleAlphabet}}</span>
-                                </span>
-                                <span class="margin-left" style="margin-left: 20px;">
+
+      <div class="row">
+         <div class="col-md-12 col-lg-12">
+            <div class="portlet light mHeight" style="height: 172px;padding-top: 3px !important;">
+               <div style="padding-top: 10px;margin-left: 10px;">
+                  <!-- <ul class="page-breadcrumb">
+            <li> -->
+                  <span>
+                     <strong class="bold-asset">Asset Name </strong>:
+                     <span title="{{selectedAssetName}}">{{selectedAssetName | slice:0:50}}</span>
+                     <span *ngIf="selectedAssetName?.length>50">..</span></span>
+                  <!-- </li>
+         </ul> -->
+               </div>
+               <div class="row" style="margin-top: 20px;margin-right: -20px;margin-left: 0px;">
+                  <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
+                  <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
+                     <div class="row" style="margin-top: -14px;">
+                        <div id="vendor-details-tile" class="{{tileClass}} mPad mrg_b5"
+                           style="border-radius: 5px !important;">
+                           <div class="row">
+                              <div class="flex margin-flex  mb_v_center" style="padding-left: 5px;">
+                                 <span class='profile'>
+                                    <span class='uppercase'>{{damAnalyticsTilesDto?.circleAlphabet}}</span>
+                                 </span>
+                                 <span class="margin-left" style="margin-left: 20px;">
                                     <h6 class='m0 user-email' *ngIf="damAnalyticsTilesDto?.contactCompany?.length>0">
-                                        <p class="user-company" title="{{damAnalyticsTilesDto?.contactCompany}}">
-                                            <span>{{damAnalyticsTilesDto?.contactCompany |slice:0:50}}</span>
-                                            <span *ngIf="damAnalyticsTilesDto?.contactCompany?.length>50">..</span>
-                                        </p>
-                                      </h6>
-                                      <br>
-                                      <h5 *ngIf="damAnalyticsTilesDto?.fullName?.length>0" class='ellipsis user-name' title="{{damAnalyticsTilesDto?.fullName}}">
-                                          {{damAnalyticsTilesDto?.fullName | slice:0:50}}
-                                        <span *ngIf="damAnalyticsTilesDto?.fullName?.length>50">..</span>
-                                       </h5>
-                                       <a class="wordLengthControl" style="display: table;" title="{{damAnalyticsTilesDto?.emailId}}">
-                                        {{damAnalyticsTilesDto?.emailId | slice:0:50}}<span *ngIf="damAnalyticsTilesDto?.emailId?.length>50">...</span></a>
-                                </span>
-                            </div>
-                    </div>
-                 </div>
-                 <div class="{{tileClass}} mPad tiles_hover_effect">
-                    <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
-                       <div class="visual">
-                          <i aria-hidden="true" class=""></i>
-                       </div>
-                       <div class="details">
-                          <div class="number">{{damAnalyticsTilesDto?.viewCount}}</div>
-                          <div class="desc">Total Views</div>
-                       </div>
-                       <span class="morePadding">
-                    <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
-                    <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                    </span>
-                    </a>
-                 </div>
-                 <div  class="{{tileClass}} mPad tiles_hover_effect">
-                    <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
-                       <div class="visual">
-                          <i aria-hidden="true" class=""></i>
-                       </div>
-                       <div class="details">
-                          <div class="number">{{damAnalyticsTilesDto?.downloadCount}}</div>
-                          <div class="desc">Total Downloads</div>
-                       </div>
-                       <span class="morePadding">
-                    <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
-                    <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                    </span>
-                    </a>
-                 </div>
-              </div>
-           </div>
-        </div>
-     </div>
-  </div>
-</div>
-<!-----Analytics List-->
-<div class="row">
-   <div class="portlet box">
-      <div class="clearfix">
-         <div class="col-xs-12">
-            <!-- BEGIN EXAMPLE TABLE PORTLET-->
-            <div class="portlet light">
-               <div class="portlet-title" style="padding-top: 3px;border-bottom: none;">
-                  <div class="caption" style="padding-top: 8px !important;padding-left: 3px !important;" translate>
-                     <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
-                     Analytics
-                  </div>
-                  <div class="inputs"  style="float: right; padding: 4px">
-                     <ul class="mix-filter m0 campaign-filter-option">
-                        <li class="filter" (click)="filterAnalytics('NONE',0)" [class.campaign-type-selected]="0 == selectedAnalyticsTypeIndex" translate>All</li>
-                        <li class="filter" (click)="filterAnalytics('VIEW',1)" [class.campaign-type-selected]="1 == selectedAnalyticsTypeIndex" translate>View</li>
-                        <li class="filter" (click)="filterAnalytics('DOWNLOAD',2)" [class.campaign-type-selected]="2 == selectedAnalyticsTypeIndex" translate>Download</li>
-                    </ul>
-                     <div class="portlet-input input-inline">
-                        <div class="input-icon right">
-                           <input type="text" id="sort-text"  style="height: 34px;" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
-                           <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchAnalytics();"></button>
-                           <button type="submit" class="search-box-item-click" (click)="searchAnalytics()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                       <p class="user-company" title="{{damAnalyticsTilesDto?.contactCompany}}">
+                                          <span>{{damAnalyticsTilesDto?.contactCompany |slice:0:50}}</span>
+                                          <span *ngIf="damAnalyticsTilesDto?.contactCompany?.length>50">..</span>
+                                       </p>
+                                    </h6>
+                                    <br>
+                                    <h5 *ngIf="damAnalyticsTilesDto?.fullName?.length>0" class='ellipsis user-name'
+                                       title="{{damAnalyticsTilesDto?.fullName}}">
+                                       {{damAnalyticsTilesDto?.fullName | slice:0:50}}
+                                       <span *ngIf="damAnalyticsTilesDto?.fullName?.length>50">..</span>
+                                    </h5>
+                                    <a class="wordLengthControl" style="display: table;"
+                                       title="{{damAnalyticsTilesDto?.emailId}}">
+                                       {{damAnalyticsTilesDto?.emailId | slice:0:50}}<span
+                                          *ngIf="damAnalyticsTilesDto?.emailId?.length>50">...</span></a>
+                                 </span>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="{{tileClass}} mPad tiles_hover_effect">
+                           <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
+                              <div class="visual">
+                                 <i aria-hidden="true" class=""></i>
+                              </div>
+                              <div class="details">
+                                 <div class="number">{{damAnalyticsTilesDto?.viewCount}}</div>
+                                 <div class="desc">Total Views</div>
+                              </div>
+                              <span class="morePadding">
+                                 <a translate="" ng-reflect-translate="" class="more hidden">Detailed view
+                                    <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                              </span>
+                           </a>
+                        </div>
+                        <div class="{{tileClass}} mPad tiles_hover_effect">
+                           <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
+                              <div class="visual">
+                                 <i aria-hidden="true" class=""></i>
+                              </div>
+                              <div class="details">
+                                 <div class="number">{{damAnalyticsTilesDto?.downloadCount}}</div>
+                                 <div class="desc">Total Downloads</div>
+                              </div>
+                              <span class="morePadding">
+                                 <a translate="" ng-reflect-translate="" class="more hidden">Detailed view
+                                    <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                              </span>
+                           </a>
                         </div>
                      </div>
                   </div>
                </div>
-            
-            <!--End Of Portlet Box-->
-            <div class="portlet-body table-responsive" style="overflow: hidden;padding-top: 0px;">
-              <app-list-loader *ngIf="analyticsLoader.isLoading"></app-list-loader>
-              <div class="clearfix"  *ngIf="!analyticsLoader.isLoading">
-               <div class="col-xs-12" style="padding: 0px 0;">
-                  <div class="table-responsive">
-                     <table class='table tgrid' aria-describedby="dam-analytics-list">
-                        <thead>
-                           <tr>
-                              <th scope="row"  translate>{{viewOrDownloadText}} Time</th>
-                              <th scope="row"  translate>Location</th>
-                              <th scope="row" translate>Device</th>
-                              <th scope="row" class="text-center" translate >{{viewOrDownloadText}}</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <tr *ngFor="let damAnalytics of pagination.pagedItems;let i=index">
-                             
-                              <td>
-                                 <app-timestamp [campaignView]="true" [dateAndTime]="damAnalytics?.displayTime"> </app-timestamp>
-                              </td>
-                              <td>
-                                 <app-location [userLocation]="damAnalytics"> </app-location>
-                              </td>
-                              <td>
-                                 <app-platform [deviceTypeOs]="false" [userPlatform]="damAnalytics"> </app-platform>
-                              </td>
-                              <td class="text-center">
-                                 <ng-container *ngIf="damAnalytics?.actionType=='View'">
-                                    <span title="View Icon"><i class="fa fa-eye campaignViewIcon IconCustomization" aria-hidden="true"></i></span>
-                                 </ng-container>
-                                 <ng-container *ngIf="damAnalytics?.actionType=='Download'">
-                                    <span title="Download Icon"><i class="fa fa-download icon-class IconCustomization" aria-hidden="true"></i></span>
-                                 </ng-container>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                     <div *ngIf="pagination.totalRecords==0 && !analyticsLoader.isLoading" class="alert alert-info">
-                        <strong>No Data Found.</strong>
-                    </div>
-            </div>
-            </div>
-            </div>
-            <div *ngIf="pagination.pagedItems.length !== 0" [hidden]="analyticsLoader.isLoading">
-               <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listAnalytics($event)" [hidden]="analyticsLoader.isLoading">
-               </app-pagination>
-           </div>
-            </div>
             </div>
          </div>
       </div>
-   </div>
-</div>
-</ng-container>
+      <!-----Analytics List-->
+      <div class="row">
+         <div class="portlet box">
+            <div class="clearfix">
+               <div class="col-xs-12">
+                  <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                  <div class="portlet light">
+                     <div class="portlet-title" style="padding-top: 3px;border-bottom: none;">
+                        <div class="caption" style="padding-top: 8px !important;padding-left: 3px !important;"
+                           translate>
+                           <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
+                           Analytics
+                        </div>
+                        <div class="inputs" style="float: right; padding: 4px">
+                           <ul class="mix-filter m0 campaign-filter-option">
+                              <li class="filter" (click)="filterAnalytics('NONE',0)"
+                                 [class.campaign-type-selected]="0 == selectedAnalyticsTypeIndex" translate>All</li>
+                              <li class="filter" (click)="filterAnalytics('VIEW',1)"
+                                 [class.campaign-type-selected]="1 == selectedAnalyticsTypeIndex" translate>View</li>
+                              <li class="filter" (click)="filterAnalytics('DOWNLOAD',2)"
+                                 [class.campaign-type-selected]="2 == selectedAnalyticsTypeIndex" translate>Download
+                              </li>
+                           </ul>
+                           <div class="portlet-input input-inline">
+                              <div class="input-icon right">
+                                 <input type="text" id="sort-text" style="height: 34px;" class="form-control"
+                                    [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}"
+                                    placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+                                 <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                    *ngIf="pagination.searchKey"
+                                    (click)="pagination.searchKey='';searchAnalytics();"></button>
+                                 <button type="submit" class="search-box-item-click" (click)="searchAnalytics()"><i
+                                       class="fa fa-search" aria-hidden="true"></i></button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+
+                     <!--End Of Portlet Box-->
+                     <div class="portlet-body table-responsive" style="overflow: hidden;padding-top: 0px;">
+                        <app-list-loader *ngIf="analyticsLoader.isLoading"></app-list-loader>
+                        <div class="clearfix" *ngIf="!analyticsLoader.isLoading">
+                           <div class="col-xs-12" style="padding: 0px 0;">
+                              <div class="table-responsive">
+                                 <table class='table tgrid' aria-describedby="dam-analytics-list">
+                                    <thead>
+                                       <tr>
+                                          <th scope="row" translate>{{viewOrDownloadText}} Time</th>
+                                          <th scope="row" translate>Location</th>
+                                          <th scope="row" translate>Device</th>
+                                          <th scope="row" class="text-center" translate>{{viewOrDownloadText}}</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr *ngFor="let damAnalytics of pagination.pagedItems;let i=index">
+
+                                          <td>
+                                             <app-timestamp [campaignView]="true"
+                                                [dateAndTime]="damAnalytics?.displayTime"> </app-timestamp>
+                                          </td>
+                                          <td>
+                                             <app-location [userLocation]="damAnalytics"> </app-location>
+                                          </td>
+                                          <td>
+                                             <app-platform [deviceTypeOs]="false" [userPlatform]="damAnalytics">
+                                             </app-platform>
+                                          </td>
+                                          <td class="text-center">
+                                             <ng-container *ngIf="damAnalytics?.actionType=='View'">
+                                                <a class="custom-icon" title="View Icon"><i
+                                                      class="fa fa-eye campaignViewIcon IconCustomization"
+                                                      aria-hidden="true"></i>
+                                                   <div class="clickicons"></div>
+                                                </a>
+                                             </ng-container>
+                                             <ng-container *ngIf="damAnalytics?.actionType=='Download'">
+                                                <span title="Download Icon"><i
+                                                      class="fa fa-download icon-class IconCustomization"
+                                                      aria-hidden="true"></i></span>
+                                             </ng-container>
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                                 <div *ngIf="pagination.totalRecords==0 && !analyticsLoader.isLoading"
+                                    class="alert alert-info">
+                                    <strong>No Data Found.</strong>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div *ngIf="pagination.pagedItems.length !== 0" [hidden]="analyticsLoader.isLoading">
+                           <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+                              (notifyParentDropDown)="listAnalytics($event)" [hidden]="analyticsLoader.isLoading">
+                           </app-pagination>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </ng-container>
 </div>
