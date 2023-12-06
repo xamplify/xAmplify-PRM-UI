@@ -49,7 +49,7 @@
         </ul>
         <div id="download-partners-csv" class="hidden-xs" style="padding-right: 3px;padding-top:1px;">
             <a (click)="downloadEmptyCsv()">
-                <button type="button" class="button" download
+                <button type="button" class="button p-rgt_p-top bgcolor-unset" download
                     [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
                     <span class="btn Btn-Green transition">Download CSV Template <i class="fa fa-download"
                             aria-hidden="true" style="margin-left: 5px"></i></span>
@@ -446,8 +446,8 @@
         </div>
         <ng-template #saveCancel>
             <div class="pull-right">
-                <button class="button" id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()"
-                    translate><span class="btn Btn-Green transition">Save</span></button>
+                <button class="button bgcolor-unset" id="save_button" *ngIf="selectedAddPartnerOption != 5"
+                    (click)="saveContacts()" translate><span class="btn Btn-Green transition">Save</span></button>
                 <button class="btn Btn-Gray" id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard"
                     (click)="cancelPartners()" translate>Cancel</button>
             </div>
@@ -611,8 +611,8 @@
                                 </select>
                             </div>
                             <div class="col-xs-6" style="margin-bottom: 10px">
-                                <button class="button" type="button" (click)="clipboardShowPreview()" translate><span
-                                        class="btn Btn-Green transition">Verify Data</span></button>
+                                <button class="button bgcolor-unset" type="button" (click)="clipboardShowPreview()"
+                                    translate><span class="btn Btn-Green transition">Verify Data</span></button>
                             </div>
                             <div class="col-xs-12">
                                 <textarea id="copyFromclipTextArea" class="textareaNumber" title="Calendar View"
@@ -910,11 +910,10 @@
                                                                 <div class="clickicons"></div>
                                                             </a>
                                                             <a class="custom-icon" id="envolope_{{i}}"
+                                                                aria-hidden="true" data-toggle="tooltip"
+                                                                data-placement="bottom" title="Send Email Notification"
                                                                 (click)="sendMail(contact.id)">
-                                                                <i class="fa fa-envelope IconCustomization"
-                                                                    aria-hidden="true" data-toggle="tooltip"
-                                                                    data-placement="bottom"
-                                                                    title="Send Email Notification"></i>
+                                                                <i class="fa fa-envelope IconCustomization"></i>
                                                                 <div class="clickicons"></div>
                                                             </a>
                                                             <a class="custom-icon" id="edit_{{i}}" data-toggle="tooltip"
@@ -1045,24 +1044,20 @@
         <app-scroll-top></app-scroll-top>
     </div>
 
-   <!-- Modal -->
-   <div *ngIf="contactService.isContactModalPopup && !updatePartnerUser">
-    <app-add-contact-modal [mdfAccess]="mdfAccess"
-        [gdprInput]="parentInput" [totalUsers]="contactService.allPartners"
-        [isContactTypeEdit]="true" [isUpdateUser]="updatePartnerUser"
-        [partnerListId] = "partnerListId"
-        (notifyParent)="addRow($event)"></app-add-contact-modal>
+    <!-- Modal -->
+    <div *ngIf="contactService.isContactModalPopup && !updatePartnerUser">
+        <app-add-contact-modal [mdfAccess]="mdfAccess" [gdprInput]="parentInput"
+            [totalUsers]="contactService.allPartners" [isContactTypeEdit]="true" [isUpdateUser]="updatePartnerUser"
+            [partnerListId]="partnerListId" (notifyParent)="addRow($event)"></app-add-contact-modal>
     </div>
 
     <div *ngIf="contactService.isContactModalPopup && updatePartnerUser">
-        <app-add-contact-modal [mdfAccess]="mdfAccess"
-            [gdprInput]="parentInput" [totalUsers]="contactService.allPartners"
-            [contactDetails]="partnerAllDetails"
-            [isUpdateUser]="updatePartnerUser"
-            [partnerListId] = "partnerListId"
+        <app-add-contact-modal [mdfAccess]="mdfAccess" [gdprInput]="parentInput"
+            [totalUsers]="contactService.allPartners" [contactDetails]="partnerAllDetails"
+            [isUpdateUser]="updatePartnerUser" [partnerListId]="partnerListId"
             (notifyParent)="updatePartnerListUser($event)"></app-add-contact-modal>
     </div>
-    
+
     <div id="zohoId">
         <div class="modal right" id="zohoShowLoginPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
             data-keyboard="false" data-backdrop="static">
@@ -1116,8 +1111,8 @@
                     <div class="modal-footer">
                         <button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="hideZohoModal()"
                             translate>Close</button>
-                        <button type="button" class="btn btn-primary" (click)="zohoContacts()"
-                            translate>Authorize</button>
+                        <button type="button" class="button_blue bgcolor-unset" (click)="zohoContacts()" translate><span
+                                class="btn btn-primary transition">Authorize</span></button>
                     </div>
                 </div>
             </div>
@@ -1162,8 +1157,8 @@
                     <div class="modal-footer" style="border-top:0px !important">
                         <button type="button" class="btn Btn-Gray" data-dismiss="modal"
                             (click)="hideZohoAuthorisedPopup()" translate>Close</button>
-                        <button type="button" class="btn btn-primary" (click)="checkingZohoPopupValues()"
-                            translate>Submit</button>
+                        <button type="button" class="button_blue bgcolor-unset" (click)="checkingZohoPopupValues()"
+                            translate><span class="btn btn-primary transition">Submit</span></button>
                     </div>
                 </div>
             </div>
@@ -1214,8 +1209,9 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn Btn-Gray" data-dismiss="modal" translate>Close</button>
-                        <button type="button" id="salesforce_save_button" class="btn btn-primary"
-                            (click)="checkingPopupValues()" data-dismiss="modal" translate>Submit</button>
+                        <button type="button" id="salesforce_save_button" class="button_blue bgcolor-unset"
+                            (click)="checkingPopupValues()" data-dismiss="modal" translate><span
+                                class="btn btn-primary transition">Submit</span></button>
                     </div>
                 </div>
             </div>
@@ -1247,9 +1243,10 @@
                                     credentials.
                                 </h4>
 
-                                <button type="button" class="btn btn-primary" style="margin-left: 38%; margin-top: 2%"
-                                    (click)="unlinkSocailAccount()" translate>Unlink
-                                    Account</button>
+                                <button type="button" class="button_blue bgcolor-unset"
+                                    style="margin-left: 38%; margin-top: 2%" (click)="unlinkSocailAccount()"
+                                    translate><span class="btn btn-primary transition">Unlink
+                                        Account</span></button>
                             </div>
                         </form>
                     </div>
@@ -1316,8 +1313,9 @@
             </div>
             <div class="modal-footer" style="border-top:none !important;">
                 <button type="button" class="btn Btn-Gray" data-dismiss="modal" translate>Close</button>
-                <button type="button" id="salesforce_save_button" class="btn btn-primary"
-                    (click)="checkingPopupValues()" data-dismiss="modal" translate>Submit</button>
+                <button type="button" id="salesforce_save_button" class="button_blue bgcolor-unset"
+                    (click)="checkingPopupValues()" data-dismiss="modal" translate><span
+                        class="btn btn-primary transition">Submit</span></button>
             </div>
         </div>
     </div>
@@ -1389,9 +1387,10 @@
                 <div class="modal-footer">
                     <button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="hideMarketoModal()"
                         translate>Close</button>
-                    <button type="button" class="btn btn-primary"
+                    <button type="button" class="button_blue bgcolor-unset"
                         [disabled]="!isMarketoModelFormValid || !marketoClientId || !marketoSecretId || !marketoInstance"
-                        (click)="getMarketoContacts()" translate>Authorize</button>
+                        (click)="getMarketoContacts()" translate><span
+                            class="btn btn-primary transition">Authorize</span></button>
                 </div>
             </div>
         </div>
@@ -1437,8 +1436,9 @@
             <div class="modal-footer">
                 <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal" (click)="cancelPartners()"
                     translate>Decline</button>
-                <button type="button" [disabled]="!isCheckTC" class="btn btn-primary"
-                    (click)="saveContactsWithPermission()" translate>Accept</button>
+                <button type="button" [disabled]="!isCheckTC" class="button_blue bgcolor-unset"
+                    (click)="saveContactsWithPermission()" translate><span
+                        class="btn btn-primary transition">Accept</span></button>
             </div>
         </div>
     </div>
@@ -1492,8 +1492,9 @@
             <div class="modal-footer" style="border-top:none !important">
                 <button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="hideHuspotModal()"
                     translate>Close</button>
-                <button type="button" id="hubspot_save_button" class="btn btn-primary" (click)="getHubSpotData()"
-                    data-dismiss="modal" translate>Submit</button>
+                <button type="button" id="hubspot_save_button" class="button_blue bgcolor-unset"
+                    (click)="getHubSpotData()" data-dismiss="modal" translate><span
+                        class="btn btn-primary transition">Submit</span></button>
             </div>
         </div>
     </div>
@@ -1538,8 +1539,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal" (click)="cancelPartners()"
                     translate>Cancel</button>
-                <button type="button" [disabled]="!cloudPartnersModalCheckBox" class="btn btn-primary"
-                    (click)="proceed()" translate>Accept</button>
+                <button type="button" [disabled]="!cloudPartnersModalCheckBox" class="button_blue bgcolor-unset"
+                    (click)="proceed()" translate><span class="btn btn-primary transition">Accept</span></button>
             </div>
         </div>
     </div>
@@ -1661,7 +1662,7 @@
             <ngx-loading [show]="processingPartnersLoader || previewLoader"
                 [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-footer">
-                <button type="submit" class="button" (click)="validatePartners()" translate><span
+                <button type="submit" class="button bgcolor-unset" (click)="validatePartners()" translate><span
                         class="btn Btn-Green transition">Continue</span></button>
                 <button type="submit" class="btn Btn-Gray" (click)="closeAssignContactAndMdfAmountPopup()"
                     translate>Close</button>

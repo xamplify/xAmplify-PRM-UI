@@ -60,7 +60,7 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { LeftsidenavbarCustomComponent } from 'app/dashboard/leftsidenavbar-custom/leftsidenavbar-custom.component';
 import { CustomLoginTemplate } from 'app/email-template/models/custom-login-template';
 import { Http } from '@angular/http';
-import 'rxjs/add/operator/map'; 
+import 'rxjs/add/operator/map';
 import { CompanyLoginTemplateActive } from 'app/email-template/models/company-login-template-active';
 import { CompanyProfileService } from 'app/dashboard/company-profile/services/company-profile.service';
 
@@ -75,21 +75,21 @@ declare var swal, $, videojs: any, Papa: any;
 	providers: [FileUtil, User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
-	
-	csvExcludeUsersFilePreview : boolean = false;
-    csvExcludeDomainsFilePreview : boolean = false;
+
+	csvExcludeUsersFilePreview: boolean = false;
+	csvExcludeDomainsFilePreview: boolean = false;
 	isListLoader = false;
-	isPartnerSuperVisor :boolean = false;
-	public searchExcludedUserKey: string=null;
-    public searchExcludedDomainKey: string=null;
-	domain : string;
-	validEmailFormat  = true;
-	validEmailPatternSuccess : boolean = true ;
-	isEmailExist :boolean = false;		
-	validEmailPattern : boolean = false;
-	isDomainExist : boolean = false;
-	validDomainFormat : boolean = true ;
-	validDomainPattern : boolean = false;
+	isPartnerSuperVisor: boolean = false;
+	public searchExcludedUserKey: string = null;
+	public searchExcludedDomainKey: string = null;
+	domain: string;
+	validEmailFormat = true;
+	validEmailPatternSuccess: boolean = true;
+	isEmailExist: boolean = false;
+	validEmailPattern: boolean = false;
+	isDomainExist: boolean = false;
+	validDomainFormat: boolean = true;
+	validDomainPattern: boolean = false;
 	addContactuser: User = new User();
 	defaultVideoPlayer: DefaultVideoPlayer;
 	tempDefaultVideoPlayerSettings: any;
@@ -166,10 +166,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	sfRedirectURL: string;
 	/*****************GDPR************************** */
 	gdprSetting: GdprSetting = new GdprSetting();
-	excludeUserCustomResponse  : CustomResponse = new CustomResponse(); 
-	filePreviewexcludeUserCustomResponse  : CustomResponse = new CustomResponse();
-	excludeDomainCustomResponse  : CustomResponse = new CustomResponse(); 
-	gdprCustomResponse : CustomResponse = new CustomResponse();
+	excludeUserCustomResponse: CustomResponse = new CustomResponse();
+	filePreviewexcludeUserCustomResponse: CustomResponse = new CustomResponse();
+	excludeDomainCustomResponse: CustomResponse = new CustomResponse();
+	gdprCustomResponse: CustomResponse = new CustomResponse();
 	gdprSettingLoaded = false;
 	category: Category = new Category();
 	categoryPagination: Pagination = new Pagination();
@@ -252,9 +252,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/*******************VANITY******************* */
 	loggedInThroughVanityUrl = false;
 	public hubSpotCurrentUser: any;
-	
-	excludedUsers : User[] = [];
-	excludedDomains : string[] = [];
+
+	excludedUsers: User[] = [];
+	excludedDomains: string[] = [];
 	csvUsersPager: any = {};
 	csvDomainsPager: any = {};
 	showUnsubscribeReasonsDiv = false;
@@ -265,15 +265,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	microsoftRibbonText: string;
 	microsoftRedirectURL: any;
 	isUpgrading = false;
-	sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+	sweetAlertParameterDto: SweetAlertParameterDto = new SweetAlertParameterDto();
 	isUpgradedRequestSubmitted = false;
 	activeCRMDetails: any;
 	integrationType: string = "";
 	containWithinAspectRatio = false;
 	transform: ImageTransform = {};
-    scale = 1;
-    canvasRotation = 0;
-    rotation = 0;
+	scale = 1;
+	canvasRotation = 0;
+	rotation = 0;
 	imageChangedEvent: any = '';
 	croppedImage: any = '';
 	showCropper = false;
@@ -282,28 +282,28 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	pipedriveRibbonText: string;
 	/****XNFR-224****/
 	loginAsPartnerOptionEnabledForVendor = false;
-	supportSettingCustomResponse : CustomResponse = new CustomResponse();
+	supportSettingCustomResponse: CustomResponse = new CustomResponse();
 	loginAsPartnerEmailNotification = false;
 	showSupportSettingOption = false;
 	isLoggedInAsPartner = false;
 	/****XNFR-224****/
 	/**** XNFR-238*** */
-	customSkinDto :CustomSkin = new CustomSkin();
-	selectedThemeIndex:number= 0;
-    themeResponse:CustomResponse = new CustomResponse();
-	themeDto: ThemeDto= new ThemeDto();
-	themeData : ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
-	themeNames : string = '';
+	customSkinDto: CustomSkin = new CustomSkin();
+	selectedThemeIndex: number = 0;
+	themeResponse: CustomResponse = new CustomResponse();
+	themeDto: ThemeDto = new ThemeDto();
+	themeData: ThemePropertiesListWrapper = new ThemePropertiesListWrapper();
+	themeNames: string = '';
 	dummyData = this.properties.serverErrorMessage;
 	statusCode: any;
-	saveAlert:boolean = false;
-	activeThemeDetails:CompanyThemeActivate = new CompanyThemeActivate();
-	themeDtoList:ThemeDto[];
-	defaultThemes:ThemeDto[];
-	isNoThemes:boolean = false;
-	vanityLoginDto:VanityLoginDto = new VanityLoginDto();
+	saveAlert: boolean = false;
+	activeThemeDetails: CompanyThemeActivate = new CompanyThemeActivate();
+	themeDtoList: ThemeDto[];
+	defaultThemes: ThemeDto[];
+	isNoThemes: boolean = false;
+	vanityLoginDto: VanityLoginDto = new VanityLoginDto();
 	/*** XNFR-238******/
-	searchWithModuleName:any;
+	searchWithModuleName: any;
 	showTemplates = false;
 	/****XNFR-326*****/
 	showEmailNotificationSettingsOption = false;
@@ -321,7 +321,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
 		public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardService: DashboardService,
 		private hubSpotService: HubSpotService, private dragulaService: DragulaService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
-		PagerService,public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http,private companyProfileService: CompanyProfileService) {
+			PagerService, public refService: ReferenceService, private renderer: Renderer, private translateService: TranslateService, private vanityUrlService: VanityURLService, private fileUtil: FileUtil, private httpClient: Http, private companyProfileService: CompanyProfileService) {
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		this.isLocalHost = this.authenticationService.isLocalHost();
 		this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
@@ -337,63 +337,63 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	toggleContainWithinAspectRatio() {
-		if(this.croppedImage!=''){
-            this.containWithinAspectRatio = !this.containWithinAspectRatio;
-		}else{
-        this.showCropper = false;
-        }
-    }
-    zoomOut() {
-		if(this.croppedImage!=""){
+		if (this.croppedImage != '') {
+			this.containWithinAspectRatio = !this.containWithinAspectRatio;
+		} else {
+			this.showCropper = false;
+		}
+	}
+	zoomOut() {
+		if (this.croppedImage != "") {
 			this.scale -= .1;
 			this.transform = {
 				...this.transform,
-				scale: this.scale       
+				scale: this.scale
 			};
-		}else{
+		} else {
 			//this.errorUploadCropper = true;
-			this.showCropper = false; 
+			this.showCropper = false;
 		}
-    }
+	}
 
-    zoomIn() {
-		if(this.croppedImage!=''){
-            this.scale += .1;
-            this.transform = {
-                ...this.transform,
-                scale: this.scale
-            };
-			
-		}else{
-        this.showCropper = false;
-      //  this.errorUploadCropper = true;
-        }
-    }
-    resetImage() {
-		if(this.croppedImage!=''){
-            this.scale = 1;
-            this.rotation = 0;
-            this.canvasRotation = 0;
-            this.transform = {};
-		}else{
-        this.showCropper = false;
-       // this.errorUploadCropper = true;
-    }
-    }
+	zoomIn() {
+		if (this.croppedImage != '') {
+			this.scale += .1;
+			this.transform = {
+				...this.transform,
+				scale: this.scale
+			};
+
+		} else {
+			this.showCropper = false;
+			//  this.errorUploadCropper = true;
+		}
+	}
+	resetImage() {
+		if (this.croppedImage != '') {
+			this.scale = 1;
+			this.rotation = 0;
+			this.canvasRotation = 0;
+			this.transform = {};
+		} else {
+			this.showCropper = false;
+			// this.errorUploadCropper = true;
+		}
+	}
 	imageCroppedMethod(event: ImageCroppedEvent) {
 		this.croppedImage = event.base64;
 		console.log(event, base64ToFile(event.base64));
-	  }
-	  imageLoaded() {
+	}
+	imageLoaded() {
 		this.showCropper = true;
 		console.log('Image loaded')
-	  }
-	  cropperReady(sourceImageDimensions: Dimensions) {
-        console.log('Cropper ready', sourceImageDimensions);
-    }
-	loadImageFailed () {
+	}
+	cropperReady(sourceImageDimensions: Dimensions) {
+		console.log('Cropper ready', sourceImageDimensions);
+	}
+	loadImageFailed() {
 		console.log('Load failed');
-	  }
+	}
 
 	cropperSettings() {
 		this.circleCropperSettings = this.utilService.cropSettings(this.circleCropperSettings, 200, 156, 200, true);
@@ -407,21 +407,21 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.cropRounded = !this.cropRounded;
 		this.circleData = {};
 		this.imageChangedEvent = null;
-		 this.croppedImage = '';
+		this.croppedImage = '';
 	}
 	fileChangeEvent() { this.cropRounded = false; $('#cropProfileImage').modal('show'); }
 	uploadProfileImage() {
-		if(this.croppedImage!=""){
-        this.loadingcrop = true;
-        let fileObj:any;
-        fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
-        fileObj = this.utilService.blobToFile(fileObj);
-        this.fileUploadCode(fileObj);
-      }else{
-		this.errorUploadCropper = false;
-        this.showCropper = false;
-      }
-      
+		if (this.croppedImage != "") {
+			this.loadingcrop = true;
+			let fileObj: any;
+			fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
+			fileObj = this.utilService.blobToFile(fileObj);
+			this.fileUploadCode(fileObj);
+		} else {
+			this.errorUploadCropper = false;
+			this.showCropper = false;
+		}
+
 	}
 	fileUploadCode(fileObj: File) {
 		this.userService.saveUserProfileLogo(fileObj).subscribe(
@@ -449,7 +449,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.imageChangedEvent = event;
 			const myReader: FileReader = new FileReader();
 			const that = this;
-			myReader.onloadend = function(loadEvent: any) {
+			myReader.onloadend = function (loadEvent: any) {
 				image.src = loadEvent.target.result;
 				that.cropper.setImage(image);
 			};
@@ -463,7 +463,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
 			this.videoJSplayer = videojs(document.getElementById('profile_video_player'),
 				{
-				 playbackRates: [0.5, 1, 1.5, 2],
+					playbackRates: [0.5, 1, 1.5, 2],
 					html5: {
 						hls: {
 							overrideNative: overrideNativeValue
@@ -474,21 +474,21 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 					}
 				},
 				{ "controls": true, "autoplay": false, "preload": "auto" },
-				function() {
+				function () {
 					const document: any = window.document;
-					this.ready(function() {
+					this.ready(function () {
 						$('.vjs-big-play-button').css('display', 'block');
 						self.isPlayed = false;
 					});
-					this.on('play', function() {
+					this.on('play', function () {
 						self.isPlayed = true;
 						$('.vjs-big-play-button').css('display', 'none');
 					});
-					this.on('pause', function() {
+					this.on('pause', function () {
 						self.isPlayed = true;
 						$('.vjs-big-play-button').css('display', 'none');
 					});
-					this.on('fullscreenchange', function() {
+					this.on('fullscreenchange', function () {
 						const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
 						const event = state ? 'FullscreenOn' : 'FullscreenOff';
 						if (event === 'FullscreenOn') {
@@ -514,7 +514,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	customConstructorCall() {
 		if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {
 			this.router.navigateByUrl(this.referenceService.homeRouter);
-			}
+		}
 		try {
 			if (this.authenticationService.isSuperAdmin()) {
 				this.userData = this.authenticationService.venorMyProfileReport;
@@ -528,14 +528,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.loggedInUserId = this.authenticationService.getUserId();
 			/**** show themes to partner ***/
 			this.vanityLoginDto.userId = this.loggedInUserId;
-            let companyProfileName = this.authenticationService.companyProfileName;
-            if (companyProfileName !== undefined && companyProfileName !== "") {
-            this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
-            this.vanityLoginDto.vanityUrlFilter = true;
-           } else {
-           this.vanityLoginDto.vanityUrlFilter = false;
-          }
-	       /**** show themes to partner in vanity***/
+			let companyProfileName = this.authenticationService.companyProfileName;
+			if (companyProfileName !== undefined && companyProfileName !== "") {
+				this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+				this.vanityLoginDto.vanityUrlFilter = true;
+			} else {
+				this.vanityLoginDto.vanityUrlFilter = false;
+			}
+			/**** show themes to partner in vanity***/
 			this.hasAllAccess = this.referenceService.hasAllAccess();
 			this.hasVideoRole = this.authenticationService.hasVideoRole();
 			if (this.authenticationService.isOrgAdminPartner() || this.authenticationService.isVendorPartner() || this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()) {
@@ -554,7 +554,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				}
 			}
 			this.initializeForm();
-			this.checkIntegrations();			
+			this.checkIntegrations();
 			this.isPartnerSuperVisor = this.authenticationService.module.isPartnerSuperVisor;
 		} catch (error) {
 			this.hasClientErrors = true;
@@ -564,11 +564,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnInit() {
 		try {
-            this.searchWithModuleName =  19;
+			this.searchWithModuleName = 19;
 			this.activeTabName = 'personalInfo';
 			this.activeTabHeader = this.properties.personalInfo;
 			this.customConstructorCall();
-			
+
 			this.geoLocation();
 			this.showThemes();
 			this.getDefaultThemes()
@@ -604,8 +604,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 			this.getRoles();
 			this.addDefaultPipelineStages();
-			window.addEventListener('message', function(e) {
-				window.removeEventListener('message', function(e){}, true);
+			window.addEventListener('message', function (e) {
+				window.removeEventListener('message', function (e) { }, true);
 				if (e.data == 'isHubSpotAuth') {
 					localStorage.setItem('isHubSpotAuth', 'yes');
 				}
@@ -618,7 +618,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, false);
 			this.getModuleAccessByUser();
 			this.findUpgradeRequest();
-			if(this.authenticationService.module.navigateToSPFConfigurationSection){
+			if (this.authenticationService.module.navigateToSPFConfigurationSection) {
 				this.activateTab('spf');
 			}
 		} catch (error) {
@@ -634,59 +634,59 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.excludeUsersOrDomains = result.excludeUsersOrDomains;
 			this.customSkinSettingOption = result.customSkinSettings;
 			this.ngxloading = false;
-		  }, _error => {
+		}, _error => {
 			this.ngxloading = false;
-		  });
-	  }
+		});
+	}
 
-	getRoles(){
+	getRoles() {
 		this.ngxloading = true;
 		this.userService.getRoles(this.authenticationService.getUserId())
-      .subscribe(
-      response => {
-           if(response.statusCode==200){
-              this.authenticationService.loggedInUserRole = response.data.role;
-              this.roleNames = this.authenticationService.loggedInUserRole;
-			if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLUserRoles && this.roleNames !== "Team Member") {
-				if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 13).length !== 0) {
-					this.roleNames = "Vendor";
-				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 2).length !== 0) {
-					this.roleNames = "OrgAdmin";
-				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 18).length !== 0) {
-					this.roleNames = "Marketing";
-				}else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 20).length !== 0) {
-					this.roleNames = "PRM";
-				} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !== 0) {
-					this.roleNames = "Partner";
-				}
-				/****XBI-1723*****/
-				let isLoggedAsPartner = this.utilService.isLoggedAsPartner();
-				if(isLoggedAsPartner){
-					let loggedInUserRole = this.authenticationService.loggedInUserRole;
-					let isPrm = loggedInUserRole.indexOf("Prm")>-1;
-					let isVendor = loggedInUserRole.indexOf("Vendor")>-1;
-					let isMarketing = loggedInUserRole.indexOf("Marketing")>-1;
-					let isOrgAdmin = loggedInUserRole.indexOf("OrgAdmin")>-1;
-					let isAnyAdmin = isPrm || isVendor || isMarketing || isOrgAdmin;
-					if(isAnyAdmin){
-						this.roleNames = "Partner";
+			.subscribe(
+				response => {
+					if (response.statusCode == 200) {
+						this.authenticationService.loggedInUserRole = response.data.role;
+						this.roleNames = this.authenticationService.loggedInUserRole;
+						if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLUserRoles && this.roleNames !== "Team Member") {
+							if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 13).length !== 0) {
+								this.roleNames = "Vendor";
+							} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 2).length !== 0) {
+								this.roleNames = "OrgAdmin";
+							} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 18).length !== 0) {
+								this.roleNames = "Marketing";
+							} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 20).length !== 0) {
+								this.roleNames = "PRM";
+							} else if (this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !== 0) {
+								this.roleNames = "Partner";
+							}
+							/****XBI-1723*****/
+							let isLoggedAsPartner = this.utilService.isLoggedAsPartner();
+							if (isLoggedAsPartner) {
+								let loggedInUserRole = this.authenticationService.loggedInUserRole;
+								let isPrm = loggedInUserRole.indexOf("Prm") > -1;
+								let isVendor = loggedInUserRole.indexOf("Vendor") > -1;
+								let isMarketing = loggedInUserRole.indexOf("Marketing") > -1;
+								let isOrgAdmin = loggedInUserRole.indexOf("OrgAdmin") > -1;
+								let isAnyAdmin = isPrm || isVendor || isMarketing || isOrgAdmin;
+								if (isAnyAdmin) {
+									this.roleNames = "Partner";
+								}
+								/****XBI-1723*****/
+							}
+
+
+						}
+
+
+					} else {
+						this.authenticationService.loggedInUserRole = 'User';
 					}
-				/****XBI-1723*****/
-			}
+					this.ngxloading = false;
+				},
+				error => { this.logger.errorPage(error) },
+				() => this.logger.log('Finished')
+			);
 
-				
-			}
-
-
-           }else{
-               this.authenticationService.loggedInUserRole = 'User';
-		   }
-		   this.ngxloading = false;
-      },
-      error => {this.logger.errorPage(error)},
-      () => this.logger.log('Finished')
-      );
-		
 	}
 
 	ngAfterViewInit() {
@@ -971,7 +971,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.updateUserProfileForm = this.fb.group({
 			'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
 			'lastName': [this.userData.lastName],
-			'middleName':[this.userData.middleName],
+			'middleName': [this.userData.middleName],
 			'mobileNumber': [this.userData.mobileNumber],
 			'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
 			'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
@@ -1067,7 +1067,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	readURL(input: any) {
 		if (input.files && input.files[0]) {
 			var reader = new FileReader();
-			reader.onload = function(e: any) {
+			reader.onload = function (e: any) {
 				$('#blah')
 					.attr('src', e.target.result)
 					.width(150)
@@ -1318,19 +1318,19 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 					showLoaderOnConfirm: true,
 					allowOutsideClick: false,
 					cancelButtonText: 'No'
-                    /*     preConfirm: () => {
-                             if(self.orgAdminCount>1){
-                                 $('a').addClass('disabled');
-                                 self.refService.isDisabling = true;
-                                 self.disableOrgAdmin();
-                             }else{
-                                 self.infoMessage = "Please Assign An OrgAdmin Before You Disable Yourself.";
-                                 $('#org-admin-info').show(600);
-                                 swal.close();
+					/*     preConfirm: () => {
+							 if(self.orgAdminCount>1){
+								 $('a').addClass('disabled');
+								 self.refService.isDisabling = true;
+								 self.disableOrgAdmin();
+							 }else{
+								 self.infoMessage = "Please Assign An OrgAdmin Before You Disable Yourself.";
+								 $('#org-admin-info').show(600);
+								 swal.close();
 
-                             }
-                         }*/
-				}).then(function() {
+							 }
+						 }*/
+				}).then(function () {
 					if (self.orgAdminCount > 1) {
 						$('a').addClass('disabled');
 						self.referenceService.isDisabling = true;
@@ -1341,7 +1341,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 						swal.close();
 
 					}
-				}, function(dismiss: any) {
+				}, function (dismiss: any) {
 					console.log('you clicked on option' + dismiss);
 				});
 
@@ -1437,7 +1437,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	remove(i, id) {
 		if (id)
-		var index = 1;
+			var index = 1;
 		this.questions = this.questions.filter(question => question.divId !== 'question-' + i)
 			.map(question => {
 				question.divId = 'question-' + index++;
@@ -1467,13 +1467,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				cancelButtonColor: '#999',
 				confirmButtonText: 'Yes, delete it!'
 
-			}).then(function(myData: any) {
+			}).then(function (myData: any) {
 				self.userService.deleteQuestion(question).subscribe(result => {
 					self.remove(i, question.id);
 					self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
 				}, error => console.log(error))
-			}, function(dismiss: any) {
-				
+			}, function (dismiss: any) {
+
 			});
 		} catch (error) {
 			console.log(error);
@@ -1586,7 +1586,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				cancelButtonColor: '#999',
 				confirmButtonText: 'Yes, delete it!'
 
-			}).then(function(myData: any) {
+			}).then(function (myData: any) {
 				self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
 					if (result.statusCode == 200) {
 						self.removeDealType(i, dealType.id);
@@ -1608,7 +1608,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 					});
 				})
-			}, function(dismiss: any) {
+			}, function (dismiss: any) {
 				console.log('you clicked on option');
 			});
 		} catch (error) {
@@ -1704,7 +1704,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.checkSalesforceIntegration();
 		this.checkMicrosoftIntegration();
 		this.checkPipedriveIntegration();
-		this.checkConnectWiseIntegration();		
+		this.checkConnectWiseIntegration();
 		this.getActiveCRMDetails();
 	}
 	checkMicrosoftIntegration() {
@@ -1799,7 +1799,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 			else {
 				this.pipedriveRibbonText = "configure";
-			}			
+			}
 		}, error => {
 			this.referenceService.loading(this.httpRequestLoader, false);
 			this.sfRibbonText = "configure";
@@ -1815,19 +1815,19 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		if (event === "0") {
 			this.checkIntegrations();
 			this.integrationTabIndex = 0;
-		}			
+		}
 	}
 	themeName = "Light Theme";
-   showSeletThemeSettings = false;
+	showSeletThemeSettings = false;
 	activateTab(activeTabName: any) {
 		this.activeTabName = activeTabName;
 		if (this.activeTabName == "personalInfo") {
 			this.activeTabHeader = this.properties.personalInfo;
-		} else if(this.activeTabName == "customTheme"){
+		} else if (this.activeTabName == "customTheme") {
 			this.activeTabHeader = "Custom Skin Settings";
 			this.themeResponse.isVisible = false;
 			//this.themeName = "Custom Theme";
-		} else if(this.activeTabName == "lightTheme"){
+		} else if (this.activeTabName == "lightTheme") {
 			this.activeTabHeader = "Custom Skin Settings";
 			this.themeResponse.isVisible = false;
 			// this.themeName = "Light Theme";
@@ -1859,10 +1859,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.showTemplates = false;
 			this.activeTabHeader = 'Your Templates';
 			let self = this;
-			setTimeout(()=>{                         
-				  self.showTemplates = true;
-				  self.ngxloading = false;
- 			}, 500);
+			setTimeout(() => {
+				self.showTemplates = true;
+				self.ngxloading = false;
+			}, 500);
 		} else if (this.activeTabName == "leadPipelines") {
 			this.activeTabHeader = this.properties.leadPipelines;
 			this.pipelinePagination = new Pagination();
@@ -1875,92 +1875,92 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.listAllPipelines(this.pipelinePagination);
 		} else if (this.activeTabName == "tags") {
 			this.activeTabHeader = this.properties.tags;
-		} else if(this.activeTabName == "customskin"){
+		} else if (this.activeTabName == "customskin") {
 			this.activeTabHeader = this.properties.customskin;
 			this.themeName = "";
-		}else if (this.activeTabName == "exclude") {
-            this.activeTabHeader = this.properties.exclude;
-            this.excludeUserPagination= new Pagination();
-            this.excludeUserPagination.pageIndex = 1;
-            this.excludeUserPagination.maxResults = 12;
-            this.listExcludedUsers(this.excludeUserPagination);
-            this.excludeDomainPagination = new Pagination();
-            this.excludeDomainPagination.pageIndex = 1;
-            this.excludeDomainPagination.maxResults = 12;
-            this.listExcludedDomains(this.excludeDomainPagination);
-		} else if(this.activeTabName =="spf"){
+		} else if (this.activeTabName == "exclude") {
+			this.activeTabHeader = this.properties.exclude;
+			this.excludeUserPagination = new Pagination();
+			this.excludeUserPagination.pageIndex = 1;
+			this.excludeUserPagination.maxResults = 12;
+			this.listExcludedUsers(this.excludeUserPagination);
+			this.excludeDomainPagination = new Pagination();
+			this.excludeDomainPagination.pageIndex = 1;
+			this.excludeDomainPagination.maxResults = 12;
+			this.listExcludedDomains(this.excludeDomainPagination);
+		} else if (this.activeTabName == "spf") {
 			this.ngxloading = true;
 			this.activeTabHeader = this.properties.spfHeaderText;
 			this.showSpfConfigurationDiv = false;
 			let self = this;
-			setTimeout(()=>{                         
+			setTimeout(() => {
 				self.showSpfConfigurationDiv = true;
 				self.ngxloading = false;
-		   }, 500);
-			
-		}else if(this.activeTabName== "unsubscribeReasons"){
+			}, 500);
+
+		} else if (this.activeTabName == "unsubscribeReasons") {
 			this.ngxloading = true;
 			this.showUnsubscribeReasonsDiv = false;
 			this.activeTabHeader = this.properties.unsubscribeReasonsHeaderText;
 			let self = this;
-			setTimeout(()=>{                         
-				  self.showUnsubscribeReasonsDiv = true;
-				  self.ngxloading = false;
- 			}, 500);
-		}else if(this.activeTabName =="team-group"){
+			setTimeout(() => {
+				self.showUnsubscribeReasonsDiv = true;
+				self.ngxloading = false;
+			}, 500);
+		} else if (this.activeTabName == "team-group") {
 			this.ngxloading = true;
 			this.showTeamMemberGroups = false;
 			this.activeTabHeader = this.properties.teamMemberGroups;
 			let self = this;
-			setTimeout(()=>{                         
-				  self.showTeamMemberGroups = true;
-				  self.ngxloading = false;
- 			}, 500);
-		}else if(this.activeTabName == "notifyPartners"){
+			setTimeout(() => {
+				self.showTeamMemberGroups = true;
+				self.ngxloading = false;
+			}, 500);
+		} else if (this.activeTabName == "notifyPartners") {
 			this.ngxloading = true;
 			this.showNotifyPartnersOption = false;
 			let self = this;
-			setTimeout(()=>{                         
-				  self.showNotifyPartnersOption = true;
-				  self.ngxloading = false;
- 			}, 500);
-		}else if(this.activeTabName == "support"){
+			setTimeout(() => {
+				self.showNotifyPartnersOption = true;
+				self.ngxloading = false;
+			}, 500);
+		} else if (this.activeTabName == "support") {
 			this.ngxloading = true;
 			this.showSupportSettingOption = false;
 			let self = this;
-			setTimeout(()=>{                         
-				  self.showSupportSettingOption = true;
-				  self.ngxloading = false;
- 			}, 500);
+			setTimeout(() => {
+				self.showSupportSettingOption = true;
+				self.ngxloading = false;
+			}, 500);
 			this.activeTabHeader = this.properties.supportText;
 		}
 		/****XNFR-326*****/
-		else if(this.activeTabName==this.properties.emailNotificationSettings){
+		else if (this.activeTabName == this.properties.emailNotificationSettings) {
 			this.ngxloading = true;
 			this.showEmailNotificationSettingsOption = false;
 			let self = this;
-			setTimeout(()=>{                         
+			setTimeout(() => {
 				self.showEmailNotificationSettingsOption = true;
 				self.ngxloading = false;
-		   }, 500);
-		  this.activeTabHeader = this.properties.emailNotificationSettings;
+			}, 500);
+			this.activeTabHeader = this.properties.emailNotificationSettings;
 		}
 		/*****XNFR-386******/
-		else if(this.activeTabName==this.properties.customLoginScreen){
+		else if (this.activeTabName == this.properties.customLoginScreen) {
 			this.ngxloading = true;
 			this.isCustomLoginScreenSettingsOptionClicked = false;
 			let self = this;
-			setTimeout(()=>{                         
+			setTimeout(() => {
 				self.isCustomLoginScreenSettingsOptionClicked = true;
 				self.ngxloading = false;
-		   }, 500);
-		  this.activeTabHeader = this.properties.customLoginScreen;
+			}, 500);
+			this.activeTabHeader = this.properties.customLoginScreen;
 		}
 		this.referenceService.goToTop();
 		this.showThemes();
 		this.themeResponse = new CustomResponse();
 	}
-	
+
 
 
 	ngOnDestroy() {
@@ -1977,24 +1977,24 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		//swal.close();
 	}
 
-configHubSpot() {
+	configHubSpot() {
 		if (this.loggedInThroughVanityUrl) {
 			let providerName = 'hubspot';
 			this.hubSpotCurrentUser = localStorage.getItem('currentUser');
-            const encodedData = window.btoa(this.hubSpotCurrentUser);
-            const encodedUrl = window.btoa(this.hubSpotRedirectURL);
-            let vanityUserId = JSON.parse(this.hubSpotCurrentUser)['userId'];
-            let url = null;
-            if(this.hubSpotRedirectURL){
-                    url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/"+ null ;
+			const encodedData = window.btoa(this.hubSpotCurrentUser);
+			const encodedUrl = window.btoa(this.hubSpotRedirectURL);
+			let vanityUserId = JSON.parse(this.hubSpotCurrentUser)['userId'];
+			let url = null;
+			if (this.hubSpotRedirectURL) {
+				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + null;
 
-            }else{
-                    url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
-            }
-            
-            var x = screen.width / 2 - 700 / 2;
-            var y = screen.height / 2 - 450 / 2;
-            window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
+			} else {
+				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
+			}
+
+			var x = screen.width / 2 - 700 / 2;
+			var y = screen.height / 2 - 450 / 2;
+			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
 		}
 		else if (this.hubSpotRedirectURL !== undefined && this.hubSpotRedirectURL !== '') {
 			window.location.href = this.hubSpotRedirectURL;
@@ -2009,7 +2009,7 @@ configHubSpot() {
 
 	// XNFR-215
 	configurePipedrive() {
-		this.integrationTabIndex = 6;	
+		this.integrationTabIndex = 6;
 	}
 
 	closeMicrosoftForm(event: any) {
@@ -2020,35 +2020,35 @@ configHubSpot() {
 	configureCRM(providerName: string, crmRedirectURL: any) {
 		if (this.loggedInThroughVanityUrl) {
 			let currentUser = localStorage.getItem('currentUser');
-            const encodedData = window.btoa(currentUser);
-            const encodedUrl = window.btoa(crmRedirectURL);
-            let vanityUserId = JSON.parse(currentUser)['userId'];
-            let url = null;
+			const encodedData = window.btoa(currentUser);
+			const encodedUrl = window.btoa(crmRedirectURL);
+			let vanityUserId = JSON.parse(currentUser)['userId'];
+			let url = null;
 			if (crmRedirectURL) {
 				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + null;
 			} else {
 				url = this.authenticationService.APP_URL + "v/" + providerName + "/" + encodedData;
 			}
-            
-            var x = screen.width / 2 - 700 / 2;
-            var y = screen.height / 2 - 450 / 2;
-            window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
+
+			var x = screen.width / 2 - 700 / 2;
+			var y = screen.height / 2 - 450 / 2;
+			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");
 		}
 		else if (crmRedirectURL !== undefined && crmRedirectURL !== '') {
 			window.location.href = crmRedirectURL;
 		}
 	}
 
-configSalesforce() {
+	configSalesforce() {
 		if (this.loggedInThroughVanityUrl) {
-		/*	let providerName = 'salesforce';
-			let salesforceCurrentUser = localStorage.getItem('currentUser');
-			let vanityUserId = JSON.parse(salesforceCurrentUser)['userId'];
-			let redirectURL = window.btoa(this.sfRedirectURL);
-			let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + redirectURL;
-			var x = screen.width / 2 - 700 / 2;
-			var y = screen.height / 2 - 450 / 2;
-			window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");*/
+			/*	let providerName = 'salesforce';
+				let salesforceCurrentUser = localStorage.getItem('currentUser');
+				let vanityUserId = JSON.parse(salesforceCurrentUser)['userId'];
+				let redirectURL = window.btoa(this.sfRedirectURL);
+				let url = this.authenticationService.APP_URL + "v/" + providerName + "/" + vanityUserId + "/" + null + "/" + null + "/" + redirectURL;
+				var x = screen.width / 2 - 700 / 2;
+				var y = screen.height / 2 - 450 / 2;
+				window.open(url, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes, addressbar=no,top=" + y + ",left=" + x + ",width=700,height=485");*/
 
 			let providerName = 'isalesforce';
 			let salesforceCurrentUser = localStorage.getItem('currentUser');
@@ -2191,7 +2191,7 @@ configSalesforce() {
 						pagination.totalRecords = data.totalRecords;
 						pagination.previewAccess = data.previewAccess;
 						this.categorySortOption.totalRecords = data.totalRecords;
-						$.each(data.categories, function(_index: number, category: any) {
+						$.each(data.categories, function (_index: number, category: any) {
 							category.displayTime = new Date(category.createdTimeInString);
 						});
 						pagination = this.pagerService.getPagedItems(pagination, data.categories);
@@ -2234,39 +2234,39 @@ configSalesforce() {
 		this.categoryPagination.pageIndex = event.page;
 		this.listCategories(this.categoryPagination);
 		if (event.type === 'excludeUsers') {
-	          this.excludeUserPagination.pageIndex = event.page;
-	          this.excludeUserPagination.maxResults = 12;
-	           this.listExcludedUsers(this.excludeUserPagination);
-	      }else if (event.type === 'excludedDomains') {  
-              this.excludeDomainPagination.pageIndex = event.page;
-              this.excludeDomainPagination.maxResults = 12;
-              this.listExcludedDomains(this.excludeDomainPagination);
-         } else if (event.type === 'csvUsers') {
-        	 this.csvUserPagination.pageIndex = event.page;   
-        	 if(event.maxResults === undefined){
-        		 this.csvUserPagination.maxResults = 12;
-        	 }else{
-             this.csvUserPagination.maxResults = event.maxResults;
-        	 }
-             this.csvUserPagination.totalRecords = this.excludedUsers.length;
-        	 this.csvUsersPager = this.socialPagerService.getPager(this.excludedUsers.length, event.page, this.csvUserPagination.maxResults );
-             this.csvUserPagination.pagedItems = this.excludedUsers.slice(this.csvUsersPager.startIndex, this.csvUsersPager.endIndex + 1);
-             this.csvUserPagination = this.pagerService.getPagedItems(this.csvUserPagination, this.csvUserPagination.pagedItems);
-         
-        } else if(event.type === 'csvDomains' ){
-        	this.csvDomainPagination.pageIndex = event.page;   
-            if(event.maxResults === undefined){
-                this.csvDomainPagination.maxResults = 12;
-            }else{
-            this.csvDomainPagination.maxResults = event.maxResults;
-            }
-            this.csvDomainPagination.totalRecords = this.excludedDomains.length;
-            this.csvDomainsPager = this.socialPagerService.getPager(this.excludedDomains.length, event.page, this.csvDomainPagination.maxResults );
-            this.csvDomainPagination.pagedItems = this.excludedDomains.slice(this.csvDomainsPager.startIndex, this.csvDomainsPager.endIndex + 1);
-            this.csvDomainPagination = this.pagerService.getPagedItems(this.csvDomainPagination, this.csvDomainPagination.pagedItems);
-        	
-        }
-		
+			this.excludeUserPagination.pageIndex = event.page;
+			this.excludeUserPagination.maxResults = 12;
+			this.listExcludedUsers(this.excludeUserPagination);
+		} else if (event.type === 'excludedDomains') {
+			this.excludeDomainPagination.pageIndex = event.page;
+			this.excludeDomainPagination.maxResults = 12;
+			this.listExcludedDomains(this.excludeDomainPagination);
+		} else if (event.type === 'csvUsers') {
+			this.csvUserPagination.pageIndex = event.page;
+			if (event.maxResults === undefined) {
+				this.csvUserPagination.maxResults = 12;
+			} else {
+				this.csvUserPagination.maxResults = event.maxResults;
+			}
+			this.csvUserPagination.totalRecords = this.excludedUsers.length;
+			this.csvUsersPager = this.socialPagerService.getPager(this.excludedUsers.length, event.page, this.csvUserPagination.maxResults);
+			this.csvUserPagination.pagedItems = this.excludedUsers.slice(this.csvUsersPager.startIndex, this.csvUsersPager.endIndex + 1);
+			this.csvUserPagination = this.pagerService.getPagedItems(this.csvUserPagination, this.csvUserPagination.pagedItems);
+
+		} else if (event.type === 'csvDomains') {
+			this.csvDomainPagination.pageIndex = event.page;
+			if (event.maxResults === undefined) {
+				this.csvDomainPagination.maxResults = 12;
+			} else {
+				this.csvDomainPagination.maxResults = event.maxResults;
+			}
+			this.csvDomainPagination.totalRecords = this.excludedDomains.length;
+			this.csvDomainsPager = this.socialPagerService.getPager(this.excludedDomains.length, event.page, this.csvDomainPagination.maxResults);
+			this.csvDomainPagination.pagedItems = this.excludedDomains.slice(this.csvDomainsPager.startIndex, this.csvDomainsPager.endIndex + 1);
+			this.csvDomainPagination = this.pagerService.getPagedItems(this.csvDomainPagination, this.csvDomainPagination.pagedItems);
+
+		}
+
 	}
 
 	getAllFilteredResults(pagination: Pagination) {
@@ -2431,9 +2431,9 @@ configSalesforce() {
 					swalCancelButtonColor: '#999',
 					confirmButtonText: 'Yes, delete it!'
 
-				}).then(function() {
+				}).then(function () {
 					self.deleteById(category);
-				}, function(dismiss: any) {
+				}, function (dismiss: any) {
 					console.log('you clicked on option' + dismiss);
 				});
 			} catch (error) {
@@ -2520,12 +2520,12 @@ configSalesforce() {
 				this.router.navigate(['/home/pages/manage/' + categoryId]);
 			} else if ("Campaigns" == type) {
 				this.router.navigate(['/home/campaigns/manage/' + categoryId]);
-			}else if("Asset Library"==type){
-				this.router.navigate(['/home/dam/manage/l/'+categoryId+'/fg']);
-			}else if("Track Builder"==type){
-				this.router.navigate(['/home/tracks/manage/l/'+categoryId+'/fg']);
-			}else if("Play Book"==type){
-				this.router.navigate(['/home/playbook/manage/l/'+categoryId+'/fg']);
+			} else if ("Asset Library" == type) {
+				this.router.navigate(['/home/dam/manage/l/' + categoryId + '/fg']);
+			} else if ("Track Builder" == type) {
+				this.router.navigate(['/home/tracks/manage/l/' + categoryId + '/fg']);
+			} else if ("Play Book" == type) {
+				this.router.navigate(['/home/playbook/manage/l/' + categoryId + '/fg']);
 			}
 		}
 
@@ -2583,16 +2583,16 @@ configSalesforce() {
 	selectedLanguage(event: any) {
 		//this.translateService.use(this.selectedLanguageCode);        
 	}
-/*********** XNFR-233 */
+	/*********** XNFR-233 */
 	openBeeEditor(event: any) {
 		this.xamplifyDefaultTemplate = event;
 		this.editXamplifyDefaultTemplate = true;
 		this.editCustomLoginTemplate = false;
 	}
-	jsonBody:any;
-	beeContainerInput= {};
-	editCustomLoginTemplate:boolean = false;
-	cutomLoginTemplate:CustomLoginTemplate;
+	jsonBody: any;
+	beeContainerInput = {};
+	editCustomLoginTemplate: boolean = false;
+	cutomLoginTemplate: CustomLoginTemplate;
 	openBeeEditorForLoginTemplate(event: any) {
 		this.cutomLoginTemplate = event;
 		this.editCustomLoginTemplate = true;
@@ -2602,35 +2602,36 @@ configSalesforce() {
 		this.beeContainerInput["customLognTemplate"] = this.cutomLoginTemplate;
 		this.editXamplifyDefaultTemplate = false;
 	}
+
 	changeLoginTemplateNameEvent(event:any) {
 		this.cutomLoginTemplate.name = event.replace(/\s/g, '')
 	}
 	saveOrUpdateCustomLogInTempalte(cutomLoginTemplate:CustomLoginTemplate){
 		this.vanityUrlService.saveCustomLoginTemplate(cutomLoginTemplate).subscribe(result => {
-		  if(result.statusCode === 200){
-			// this.goBackToMyprofileForCustomLogin();
-			this.customLoginTemplateResponse = new CustomResponse('SUCCESS', result.message, true);
-		  } else {
-			this.customLoginTemplateResponse = new CustomResponse('ERROR', result.data.errorMessages[0].message, true);
-		  }
+			if (result.statusCode === 200) {
+				// this.goBackToMyprofileForCustomLogin();
+				this.customLoginTemplateResponse = new CustomResponse('SUCCESS', result.message, true);
+			} else {
+				this.customLoginTemplateResponse = new CustomResponse('ERROR', result.data.errorMessages[0].message, true);
+			}
 		}, error => {
-		  this.customLoginTemplateResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT, true)
+			this.customLoginTemplateResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT, true)
 		});
-		
-	  }
-	  
-	  readBeeTemplateData(event: any) {
+
+	}
+
+	readBeeTemplateData(event: any) {
 		this.ngxloading = true;
 		this.cutomLoginTemplate.jsonBody = event.jsonContent;
 		this.cutomLoginTemplate.htmlBody = event.htmlContent;
 		this.cutomLoginTemplate.loggedInUserId = this.authenticationService.getUserId();
-        this.getBeeTemplateImagePath(event.htmlContent); 
+		this.getBeeTemplateImagePath(event.htmlContent);
 		this.saveOrUpdateCustomLogInTempalte(this.cutomLoginTemplate);
 		this.ngxloading = false;
-	  }
-	  getBeeTemplateImagePath(htmlContent:any):string {
+	}
+	getBeeTemplateImagePath(htmlContent: any): string {
 		const imageUrls: string[] = [];
-		let imagePath:any;
+		let imagePath: any;
 		const imgTagRegex = /<img [^>]*src="([^"]*)"[^>]*>/g;
 		let match;
 		while ((match = imgTagRegex.exec(htmlContent))) {
@@ -2641,7 +2642,7 @@ configSalesforce() {
 		return imagePath;
 	}
 	isTemplatesListDiv = false;
-    goBackToMyprofileForCustomLogin(){
+	goBackToMyprofileForCustomLogin() {
 		this.editCustomLoginTemplate = false;
 		this.editXamplifyDefaultTemplate = false;
 		this.isTemplatesListDiv = true;
@@ -2666,7 +2667,7 @@ configSalesforce() {
 		this.customFieldsResponse.isVisible = false;
 		//this.integrationTabIndex = 2;
 		this.integrationType = 'SALESFORCE';
-		this.integrationTabIndex = 5;		
+		this.integrationTabIndex = 5;
 		//this.listSalesforceCustomFields();
 	}
 
@@ -2676,7 +2677,7 @@ configSalesforce() {
 		this.customFieldsResponse.isVisible = false;
 		this.integrationType = 'HUBSPOT';
 		this.integrationTabIndex = 5;
-		
+
 		//this.listExternalCustomFields('hubspot');
 	}
 
@@ -2685,7 +2686,7 @@ configSalesforce() {
 		this.sfcfMasterCBClicked = false;
 		this.customFieldsResponse.isVisible = false;
 		this.integrationType = 'MICROSOFT';
-		this.integrationTabIndex = 5;		
+		this.integrationTabIndex = 5;
 	}
 
 	// xnfr-215
@@ -2694,7 +2695,7 @@ configSalesforce() {
 		this.sfcfMasterCBClicked = false;
 		this.customFieldsResponse.isVisible = false;
 		this.integrationType = 'PIPEDRIVE';
-		this.integrationTabIndex = 5;		
+		this.integrationTabIndex = 5;
 	}
 
 	// xnfr-215
@@ -2703,7 +2704,7 @@ configSalesforce() {
 		this.sfcfMasterCBClicked = false;
 		this.customFieldsResponse.isVisible = false;
 		this.integrationType = 'CONNECTWISE';
-		this.integrationTabIndex = 5;		
+		this.integrationTabIndex = 5;
 	}
 
 	marketoSettings() {
@@ -2711,7 +2712,7 @@ configSalesforce() {
 		this.sfcfMasterCBClicked = false;
 		this.customFieldsResponse.isVisible = false;
 		this.integrationType = 'MARKETO';
-		this.integrationTabIndex = 5;		
+		this.integrationTabIndex = 5;
 	}
 
 	listExternalCustomFields(type: string) {
@@ -2724,7 +2725,7 @@ configSalesforce() {
 					if (data.statusCode == 200) {
 						this.sfCustomFieldsResponse = data.data;
 						this.sfcfMasterCBClicked = false;
-						$.each(this.sfCustomFieldsResponse, function(_index: number, customField) {
+						$.each(this.sfCustomFieldsResponse, function (_index: number, customField) {
 							if (customField.selected) {
 								self.selectedCfIds.push(customField.name);
 							}
@@ -2756,7 +2757,7 @@ configSalesforce() {
 					if (data.statusCode == 200) {
 						this.sfCustomFieldsResponse = data.data;
 						this.sfcfMasterCBClicked = false;
-						$.each(this.sfCustomFieldsResponse, function(_index: number, customField) {
+						$.each(this.sfCustomFieldsResponse, function (_index: number, customField) {
 							if (customField.selected) {
 								self.selectedCfIds.push(customField.name);
 							}
@@ -2786,7 +2787,7 @@ configSalesforce() {
 		this.ngxloading = true;
 		let self = this;
 		this.selectedCustomFieldIds = [];
-		$('[name="sfcf[]"]:checked').each(function() {
+		$('[name="sfcf[]"]:checked').each(function () {
 			var id = $(this).val();
 			self.selectedCustomFieldIds.push(id);
 		});
@@ -2811,7 +2812,7 @@ configSalesforce() {
 		this.ngxloading = true;
 		let self = this;
 		this.selectedCustomFieldIds = [];
-		$('[name="sfcf[]"]:checked').each(function() {
+		$('[name="sfcf[]"]:checked').each(function () {
 			var id = $(this).val();
 			self.selectedCustomFieldIds.push(id);
 		});
@@ -2840,8 +2841,8 @@ configSalesforce() {
 			}
 			this.sfcfPager = this.socialPagerService.getPager(this.sfCustomFieldsResponse.length, page, this.pageSize);
 			this.sfcfPagedItems = this.sfCustomFieldsResponse.slice(this.sfcfPager.startIndex, this.sfcfPager.endIndex + 1);
-			var cfIds = this.sfcfPagedItems.map(function(a) { return a.name; });
-			var items = $.grep(this.selectedCfIds, function(element) {
+			var cfIds = this.sfcfPagedItems.map(function (a) { return a.name; });
+			var items = $.grep(this.selectedCfIds, function (element) {
 				return $.inArray(element, cfIds) !== -1;
 			});
 			if (items.length == this.sfcfPager.pageSize || items.length == this.sfCustomFieldsResponse.length || items.length == this.sfcfPagedItems.length) {
@@ -2881,9 +2882,9 @@ configSalesforce() {
 				cancelButtonColor: '#999',
 				confirmButtonText: 'Yes'
 
-			}).then(function() {
+			}).then(function () {
 				self.configSalesforce();
-			}, function(dismiss: any) {
+			}, function (dismiss: any) {
 				console.log('you clicked on option' + dismiss);
 			});
 		} catch (error) {
@@ -2901,7 +2902,7 @@ configSalesforce() {
 		if (ev.target.checked) {
 			$('[name="sfcf[]"]').prop('checked', true);
 			let self = this;
-			$('[name="sfcf[]"]:checked').each(function() {
+			$('[name="sfcf[]"]:checked').each(function () {
 				var id = $(this).val();
 				self.selectedCfIds.push(id);
 				self.paginatedSelectedIds.push(id);
@@ -2912,7 +2913,7 @@ configSalesforce() {
 			let self = this;
 			//$( '[name="sfcf[]"]' ).prop( 'checked', false );
 
-			$('[name="sfcf[]"]').each(function() {
+			$('[name="sfcf[]"]').each(function () {
 				var id = $(this).val();
 				if (self.requiredCfIds.indexOf(id) == -1) {
 					$(this).prop('checked', false);
@@ -2927,7 +2928,7 @@ configSalesforce() {
 				//this.allselectedUsers.length = 0;
 			} else {
 				//this.paginatedSelectedIds = [];
-				let currentPageCfIds = this.sfcfPagedItems.map(function(a) { return a.name; });
+				let currentPageCfIds = this.sfcfPagedItems.map(function (a) { return a.name; });
 				this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
 				this.selectedCfIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedCfIds, currentPageCfIds);
 			}
@@ -2987,7 +2988,7 @@ configSalesforce() {
 					if (data.statusCode == 200) {
 						self.pipeline = data.data;
 						let orderedStages = new Array<PipelineStage>();
-						self.pipeline.stages.forEach(function(stage, index) {
+						self.pipeline.stages.forEach(function (stage, index) {
 							if (stage.won === true) {
 								stage.markAs = "won";
 							} else if (stage.lost === true) {
@@ -3048,7 +3049,7 @@ configSalesforce() {
 			this.pipeline.isValid = this.pipeline.isValidName && this.pipeline.isValidStage;
 		} else {
 			let validStages = false;
-			this.pipeline.stages.forEach(function(stage, index) {
+			this.pipeline.stages.forEach(function (stage, index) {
 				if (($.trim(stage.stageName).length > 0)) {
 					validStages = true;
 				}
@@ -3106,7 +3107,7 @@ configSalesforce() {
 			this.pipeline.type = "DEAL";
 		}
 		let removeIndices = new Array();
-		this.pipeline.stages.forEach(function(stage, index) {
+		this.pipeline.stages.forEach(function (stage, index) {
 			if (stage.stageName !== undefined && $.trim(stage.stageName).length > 0) {
 				if (stage.markAs === "won") {
 					stage.won = true;
@@ -3158,14 +3159,14 @@ configSalesforce() {
 	}
 
 	deleteStage(divIndex: number) {
-		const deletedStage = this.pipeline.stages.splice(divIndex, 1)[0]; 
+		const deletedStage = this.pipeline.stages.splice(divIndex, 1)[0];
 		if (this.defaultStageIndex > divIndex) {
 			this.defaultStageIndex = this.defaultStageIndex - 1;
 		}
 		if (this.pipeline.stages.length === 1) {
-			this.pipeline.stages[0].private = false; 
-		  }
-		  if (deletedStage.private) {
+			this.pipeline.stages[0].private = false;
+		}
+		if (deletedStage.private) {
 			const selectedStages = this.pipeline.stages.filter(item => item.private);
 			if (selectedStages.length === 0) {
 				this.pipeline.stages[this.pipeline.stages.length - 1].canDelete = false;
@@ -3218,9 +3219,9 @@ configSalesforce() {
 				swalCancelButtonColor: '#999',
 				confirmButtonText: 'Yes, delete it!'
 
-			}).then(function() {
+			}).then(function () {
 				self.deletePipeline(pipeline);
-			}, function(dismiss: any) {
+			}, function (dismiss: any) {
 				console.log('you clicked on option' + dismiss);
 			});
 		} catch (error) {
@@ -3259,55 +3260,55 @@ configSalesforce() {
 		this.ngxloading = true;
 		if (pipeline.integrationType === "SALESFORCE") {
 			this.dashBoardService.syncPipeline(pipeline.id, this.loggedInUserId)
-			.subscribe(
-				data => {
-					this.ngxloading = false;
-					if (data.statusCode == 200) {
-						let message = pipeline.name + " Synchronized Successfully";
-						this.pipelineResponse = new CustomResponse('SUCCESS', message, true);
-						this.pipelinePagination.pageIndex = 1;
-						this.listAllPipelines(this.pipelinePagination);
-					} else if (data.statusCode === 401 && data.message === "Expired Refresh Token") { 
-						this.referenceService.loading(this.httpRequestLoader, false);
-						this.pipelineResponse = new CustomResponse('ERROR', "Your Salesforce Integration was expired. Please re-configure.", true);               
-					} else {
-						this.closePipelineModal();
-						this.pipelineResponse = new CustomResponse('ERROR', data.message, true);
-					}
-				},
-				error => {
-					this.ngxloading = false;
-					this.referenceService.showServerErrorMessage(this.httpRequestLoader);
-					this.pipelineResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
-				},
-				() => { }
-			);
+				.subscribe(
+					data => {
+						this.ngxloading = false;
+						if (data.statusCode == 200) {
+							let message = pipeline.name + " Synchronized Successfully";
+							this.pipelineResponse = new CustomResponse('SUCCESS', message, true);
+							this.pipelinePagination.pageIndex = 1;
+							this.listAllPipelines(this.pipelinePagination);
+						} else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
+							this.referenceService.loading(this.httpRequestLoader, false);
+							this.pipelineResponse = new CustomResponse('ERROR', "Your Salesforce Integration was expired. Please re-configure.", true);
+						} else {
+							this.closePipelineModal();
+							this.pipelineResponse = new CustomResponse('ERROR', data.message, true);
+						}
+					},
+					error => {
+						this.ngxloading = false;
+						this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+						this.pipelineResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+					},
+					() => { }
+				);
 		} else {
 			this.integrationService.syncPipeline(pipeline.id, this.loggedInUserId)
-			.subscribe(
-				data => {
-					this.ngxloading = false;
-					if (data.statusCode == 200) {
-						let message = pipeline.name + " Synchronized Successfully";
-						this.pipelineResponse = new CustomResponse('SUCCESS', message, true);
-						this.pipelinePagination.pageIndex = 1;
-						this.listAllPipelines(this.pipelinePagination);
-					} else {
-						this.closePipelineModal();
-						this.pipelineResponse = new CustomResponse('ERROR', data.message, true);
-					}
-				},
-				error => {
-					this.ngxloading = false;
-					this.referenceService.loading(this.httpRequestLoader, false);
-					let errorMessage = this.referenceService.getApiErrorMessage(error);
-                    this.pipelineResponse = new CustomResponse('ERROR',errorMessage,true);
-				},
-				() => { }
-			);
+				.subscribe(
+					data => {
+						this.ngxloading = false;
+						if (data.statusCode == 200) {
+							let message = pipeline.name + " Synchronized Successfully";
+							this.pipelineResponse = new CustomResponse('SUCCESS', message, true);
+							this.pipelinePagination.pageIndex = 1;
+							this.listAllPipelines(this.pipelinePagination);
+						} else {
+							this.closePipelineModal();
+							this.pipelineResponse = new CustomResponse('ERROR', data.message, true);
+						}
+					},
+					error => {
+						this.ngxloading = false;
+						this.referenceService.loading(this.httpRequestLoader, false);
+						let errorMessage = this.referenceService.getApiErrorMessage(error);
+						this.pipelineResponse = new CustomResponse('ERROR', errorMessage, true);
+					},
+					() => { }
+				);
 
 		}
-		
+
 	}
 
 
@@ -3339,610 +3340,610 @@ configSalesforce() {
 	}
 	pipelineEventHandler(keyCode: any) { if (keyCode === 13) { this.searchPipelines(); } }
 
-    addContactModalOpen() {
-    	this.addContactuser = new User();
-    	$('#addExcludeUserPopupModal').modal('show');    	
-    } 
-    
-    validateEmail(emailId: string) {
-        const lowerCaseEmail = emailId.toLowerCase();
-        if (this.validateEmailAddress(lowerCaseEmail)) {
-            this.validEmailPattern = true;
-        }
-    }
-    
-    validateEmailAddress( emailId: string ) {
-        var EMAIL_ID_PATTERN = this.regularExpressions.EMAIL_ID_PATTERN;
-        return EMAIL_ID_PATTERN.test( emailId );
-    }
-    
-    addContactModalClose() {
-        $('#addExcludeUserPopupModal').modal('hide');
-        $('.modal').removeClass('show');
-        this.validEmailPatternSuccess = true;
-        this.validEmailFormat = true;
-        this.isEmailExist = false;
-        this.validEmailPattern = false;
-    }
-
-    checkingEmailPattern( emailId: string ) { 
-    	this.validEmailFormat  = true;
-    	 this.isEmailExist  = false;
-        this.validEmailPatternSuccess = false;
-        if ( this.validateEmailAddress( emailId ) ) {
-            this.validEmailPatternSuccess = true;
-        } else{
-            this.validEmailPatternSuccess = false;
-        }    
+	addContactModalOpen() {
+		this.addContactuser = new User();
+		$('#addExcludeUserPopupModal').modal('show');
 	}
 
-	getCompanyName(){
+	validateEmail(emailId: string) {
+		const lowerCaseEmail = emailId.toLowerCase();
+		if (this.validateEmailAddress(lowerCaseEmail)) {
+			this.validEmailPattern = true;
+		}
+	}
+
+	validateEmailAddress(emailId: string) {
+		var EMAIL_ID_PATTERN = this.regularExpressions.EMAIL_ID_PATTERN;
+		return EMAIL_ID_PATTERN.test(emailId);
+	}
+
+	addContactModalClose() {
+		$('#addExcludeUserPopupModal').modal('hide');
+		$('.modal').removeClass('show');
+		this.validEmailPatternSuccess = true;
+		this.validEmailFormat = true;
+		this.isEmailExist = false;
+		this.validEmailPattern = false;
+	}
+
+	checkingEmailPattern(emailId: string) {
+		this.validEmailFormat = true;
+		this.isEmailExist = false;
+		this.validEmailPatternSuccess = false;
+		if (this.validateEmailAddress(emailId)) {
+			this.validEmailPatternSuccess = true;
+		} else {
+			this.validEmailPatternSuccess = false;
+		}
+	}
+
+	getCompanyName() {
 		let companyName = " your company";
-		if(this.currentUser!=undefined){
-			if(this.currentUser['logedInCustomerCompanyNeme']!=undefined){
-				companyName =  this.currentUser['logedInCustomerCompanyNeme'];
+		if (this.currentUser != undefined) {
+			if (this.currentUser['logedInCustomerCompanyNeme'] != undefined) {
+				companyName = this.currentUser['logedInCustomerCompanyNeme'];
 			}
 		}
 		return companyName;
 	}
-	
-	confirmAndsaveExcludedUser(excludedUser:User){
-		let emailId = '<strong>'+excludedUser.emailId+'</strong>';
-		let companyName = '<strong>'+this.getCompanyName()+"</strong>.";
-		let text = "Adding this email to your exclusion list ensures that "+emailId+" no longer receives any campaigns from "+companyName;
-		let self = this;
-			swal({
-				title: 'Are you sure want to continue?',
-				text: text,
-				type: 'warning',
-				showCancelButton: true,
-				swalConfirmButtonColor: '#54a7e9',
-				swalCancelButtonColor: '#999',
-				allowOutsideClick: false,
-				confirmButtonText: 'Yes'
-			}).then(function () {
-				self.saveExcludedUser(excludedUser);
-			}, function (dismiss: any) {
-				console.log('you clicked on option' + dismiss);
-			});
-	}
-      
-    saveExcludedUser(excludedUser: User) {
-        this.referenceService.startLoader(this.excludeUserLoader);
-        this.validEmailFormat = true;
-        this.isEmailExist = false;
-        this.excludedUsers = [];
-        this.excludedUsers.push(excludedUser);
-        this.userService.saveExcludedUsers(this.excludedUsers, this.loggedInUserId)
-            .subscribe(
-            data => {
-                if (data.statusCode == 200) {
-                    this.addContactModalClose();
-                    this.excludeUserCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
-                    this.listExcludedUsers(this.excludeUserPagination);
-                    this.referenceService.stopLoader(this.excludeUserLoader);
-                } else if (data.statusCode == 401) {
-                    this.referenceService.stopLoader(this.excludeUserLoader);
-                    this.validEmailFormat = false;
-                } else if (data.statusCode == 402) {
-                    this.referenceService.stopLoader(this.excludeUserLoader);
-                    this.isEmailExist = true;
-                }
-            },
-            error => {
-                this.referenceService.stopLoader(this.excludeUserLoader);
-            },
-            () => { }
-            );
-    }
-	
-    listExcludedUsers(excludeUserPagination: Pagination) {
-    	this.referenceService.startLoader(this.excludeUserLoader);
-        if(this.searchExcludedUserKey!=null){
-        	excludeUserPagination.searchKey = this.searchExcludedUserKey;
-        }
-        this.userService.listExcludedUsers(this.loggedInUserId, excludeUserPagination)
-            .subscribe(
-            response => {
-                response.data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
-                excludeUserPagination.totalRecords = response.data.totalRecords;
-                excludeUserPagination = this.pagerService.getPagedItems(excludeUserPagination, response.data.data);
-                this.referenceService.stopLoader(this.excludeUserLoader);
-            },
-            error => {
-            	this.referenceService.stopLoader(this.excludeUserLoader);
-            },
-            () => { }
-            );
-    }
 
-    showDeleteExcludedUserAlert(userId:number){
-        let self = this;
-        swal({
-            title: 'Are you sure?',
-            text: "You won't be able to undo this action!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#54a7e9',
+	confirmAndsaveExcludedUser(excludedUser: User) {
+		let emailId = '<strong>' + excludedUser.emailId + '</strong>';
+		let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
+		let text = "Adding this email to your exclusion list ensures that " + emailId + " no longer receives any campaigns from " + companyName;
+		let self = this;
+		swal({
+			title: 'Are you sure want to continue?',
+			text: text,
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			allowOutsideClick: false,
+			confirmButtonText: 'Yes'
+		}).then(function () {
+			self.saveExcludedUser(excludedUser);
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		});
+	}
+
+	saveExcludedUser(excludedUser: User) {
+		this.referenceService.startLoader(this.excludeUserLoader);
+		this.validEmailFormat = true;
+		this.isEmailExist = false;
+		this.excludedUsers = [];
+		this.excludedUsers.push(excludedUser);
+		this.userService.saveExcludedUsers(this.excludedUsers, this.loggedInUserId)
+			.subscribe(
+				data => {
+					if (data.statusCode == 200) {
+						this.addContactModalClose();
+						this.excludeUserCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
+						this.listExcludedUsers(this.excludeUserPagination);
+						this.referenceService.stopLoader(this.excludeUserLoader);
+					} else if (data.statusCode == 401) {
+						this.referenceService.stopLoader(this.excludeUserLoader);
+						this.validEmailFormat = false;
+					} else if (data.statusCode == 402) {
+						this.referenceService.stopLoader(this.excludeUserLoader);
+						this.isEmailExist = true;
+					}
+				},
+				error => {
+					this.referenceService.stopLoader(this.excludeUserLoader);
+				},
+				() => { }
+			);
+	}
+
+	listExcludedUsers(excludeUserPagination: Pagination) {
+		this.referenceService.startLoader(this.excludeUserLoader);
+		if (this.searchExcludedUserKey != null) {
+			excludeUserPagination.searchKey = this.searchExcludedUserKey;
+		}
+		this.userService.listExcludedUsers(this.loggedInUserId, excludeUserPagination)
+			.subscribe(
+				response => {
+					response.data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
+					excludeUserPagination.totalRecords = response.data.totalRecords;
+					excludeUserPagination = this.pagerService.getPagedItems(excludeUserPagination, response.data.data);
+					this.referenceService.stopLoader(this.excludeUserLoader);
+				},
+				error => {
+					this.referenceService.stopLoader(this.excludeUserLoader);
+				},
+				() => { }
+			);
+	}
+
+	showDeleteExcludedUserAlert(userId: number) {
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: "You won't be able to undo this action!",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#54a7e9',
 			cancelButtonColor: '#999',
 			allowOutsideClick: false,
-            confirmButtonText: 'Yes, delete it!'
+			confirmButtonText: 'Yes, delete it!'
 
-        }).then(function() {
-            self.deleteExcludedUser(userId);
-        }, function(dismiss: any) {
-            console.log('you clicked on option' + dismiss);
-        });
-    }
-    
-    
-	
-    deleteExcludedUser(userId:number){
-        this.ngxloading = true;
-        this.userService.deleteExcludedUser(this.loggedInUserId, userId)
-            .subscribe(
-            response => {  
-            	 if (response.statusCode == 200) {
-            		 this.excludeUserCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_delete, true);
-            		 this.listExcludedUsers(this.excludeUserPagination);            		 
-            	 }
-                this.ngxloading = false;
-            },
-            error => {
-                this.ngxloading = false;
-            },
-            () => { }
-            );
-    }
-    
-    addDomainModalOpen() {
-        this.domain = null;
-        $('#addDomainModal').modal('show');
-    }
-
-
-    addDomainModalClose() {
-        $('#addDomainModal').modal('toggle');
-        $("#addDomainModal .close").click();
-        $('#addDomainModal').modal('hide');
-        $('.modal').removeClass('show');
-        this.domain = null;
-        this.isDomainExist = false;
-        this.validDomainFormat = true;
-        this.validDomainPattern = false;
-    }
-    
-    validateDomain(domain: string) {
-        const lowerCaseDomain = domain.toLowerCase();
-        if (this.validateDomainName(lowerCaseDomain)) {
-            this.validDomainFormat = true;
-            this.validDomainPattern = true;
-        }else{
-        	 this.validDomainPattern = false;
-        }
-    }
-    
-    validateDomainName( domain: string ) {
-        var DOMAIN_NAME_PATTERN = this.regularExpressions.DOMAIN_PATTERN;
-        return DOMAIN_NAME_PATTERN.test( domain );
+		}).then(function () {
+			self.deleteExcludedUser(userId);
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		});
 	}
-	
-	confirmAndsaveExcludedDomain(domain:string){
-		let updatedDomain = '<strong>'+domain+'</strong>';
-		let companyName = '<strong>'+this.getCompanyName()+"</strong>.";
-		let text = "Adding this domain to your exclusion list ensures that "+updatedDomain+" users no longer receive any campaigns from "+companyName;
+
+
+
+	deleteExcludedUser(userId: number) {
+		this.ngxloading = true;
+		this.userService.deleteExcludedUser(this.loggedInUserId, userId)
+			.subscribe(
+				response => {
+					if (response.statusCode == 200) {
+						this.excludeUserCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_delete, true);
+						this.listExcludedUsers(this.excludeUserPagination);
+					}
+					this.ngxloading = false;
+				},
+				error => {
+					this.ngxloading = false;
+				},
+				() => { }
+			);
+	}
+
+	addDomainModalOpen() {
+		this.domain = null;
+		$('#addDomainModal').modal('show');
+	}
+
+
+	addDomainModalClose() {
+		$('#addDomainModal').modal('toggle');
+		$("#addDomainModal .close").click();
+		$('#addDomainModal').modal('hide');
+		$('.modal').removeClass('show');
+		this.domain = null;
+		this.isDomainExist = false;
+		this.validDomainFormat = true;
+		this.validDomainPattern = false;
+	}
+
+	validateDomain(domain: string) {
+		const lowerCaseDomain = domain.toLowerCase();
+		if (this.validateDomainName(lowerCaseDomain)) {
+			this.validDomainFormat = true;
+			this.validDomainPattern = true;
+		} else {
+			this.validDomainPattern = false;
+		}
+	}
+
+	validateDomainName(domain: string) {
+		var DOMAIN_NAME_PATTERN = this.regularExpressions.DOMAIN_PATTERN;
+		return DOMAIN_NAME_PATTERN.test(domain);
+	}
+
+	confirmAndsaveExcludedDomain(domain: string) {
+		let updatedDomain = '<strong>' + domain + '</strong>';
+		let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
+		let text = "Adding this domain to your exclusion list ensures that " + updatedDomain + " users no longer receive any campaigns from " + companyName;
 		let self = this;
-			swal({
-				title: 'Are you sure want to continue?',
-				text: text,
-				type: 'warning',
-				showCancelButton: true,
-				swalConfirmButtonColor: '#54a7e9',
-				swalCancelButtonColor: '#999',
-				allowOutsideClick: false,
-				confirmButtonText: 'Yes'
-			}).then(function () {
-				self.saveExcludedDomain(domain);
-			}, function (dismiss: any) {
-				console.log('you clicked on option' + dismiss);
-			});
+		swal({
+			title: 'Are you sure want to continue?',
+			text: text,
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			allowOutsideClick: false,
+			confirmButtonText: 'Yes'
+		}).then(function () {
+			self.saveExcludedDomain(domain);
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		});
 	}
-    
-    saveExcludedDomain(domain:string){
-    	this.referenceService.startLoader(this.excludeDomainLoader);
-    	this.isDomainExist = false;
-    	this.validDomainFormat = true;
-    	this.excludedDomains = [];
-    	this.excludedDomains.push(domain);
-        this.userService.saveExcludedDomains(this.excludedDomains, this.loggedInUserId)
-        .subscribe(
-        data => {
-            if (data.statusCode == 200) {
-                this.addDomainModalClose();
-                this.excludeDomainCustomResponse  = new CustomResponse('SUCCESS', data.message, true);
-                this.listExcludedDomains(this.excludeDomainPagination);
-                this.referenceService.stopLoader(this.excludeDomainLoader);
-            } else if (data.statusCode == 401) { 
-            	this.referenceService.stopLoader(this.excludeDomainLoader);
-                   this.isDomainExist = true;
-            } else if (data.statusCode == 402) {
-            	this.validDomainFormat = false;
-            	this.referenceService.stopLoader(this.excludeDomainLoader);
-            }                
-        },
-        error => {
-        	this.referenceService.stopLoader(this.excludeDomainLoader);
-        },
-        () => { }
-        );
-    }
-    
-    listExcludedDomains(excludeDomainPagination: Pagination) {
-    	this.referenceService.startLoader(this.excludeDomainLoader);
-        if(this.searchExcludedDomainKey!=null){
-        	excludeDomainPagination.searchKey = this.searchExcludedDomainKey;
-        }
-        this.userService.listExcludedDomains(this.loggedInUserId, excludeDomainPagination)
-            .subscribe(
-            response => {
-                response.data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
-                excludeDomainPagination.totalRecords = response.data.totalRecords;
-                excludeDomainPagination = this.pagerService.getPagedItems(excludeDomainPagination, response.data.data);
-                this.referenceService.stopLoader(this.excludeDomainLoader);
-            },
-            error => {
-            	this.referenceService.stopLoader(this.excludeDomainLoader);
-            },
-            () => { }
-            );
-    }
-    
-    showDeleteExcludedDomainAlert(domain: string) {
-        let self = this;
-        swal({
-            title: 'Are you sure?',
-            text: "You won't be able to undo this action!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#54a7e9',
-            cancelButtonColor: '#999',
-            confirmButtonText: 'Yes, delete it!'
 
-        }).then(function() {
-            self.deleteExcludedDomain(domain);
-        }, function(dismiss: any) {
-            console.log('you clicked on option' + dismiss);
-        });
-    }
-    
-    deleteExcludedDomain(domain: string) {
-        this.ngxloading = true;
-        this.userService.deleteExcludedDomain(this.loggedInUserId, domain)
-            .subscribe(
-            response => {
-                if (response.statusCode == 200) {
-                    this.excludeDomainCustomResponse = new CustomResponse('SUCCESS', response.message, true);
-                    this.listExcludedDomains(this.excludeDomainPagination);
-                }
-                this.ngxloading = false;
-            },
-            error => {
-                this.ngxloading = false;
-            },
-            () => { }
-            );
-    }
-    
-    search(type: string) {
-        try {
-            if (type === 'excludeUsers') {
-                this.excludeUserPagination.pageIndex = 1;
-                this.listExcludedUsers(this.excludeUserPagination);
-            } else if (type === 'excludedDomains') {
-                this.excludeDomainPagination.pageIndex = 1;
-                this.listExcludedDomains(this.excludeDomainPagination);
-            }
-        } catch (error) {
-            // this.xtremandLogger.error(error, "ManageContactsComponent", "sorting()");
-        }
-    }
-    
-    searchExcludeUsersDataEventHandler(keyCode: any) {
-        if (keyCode === 13) {
-            this.excludeUserPagination.pageIndex = 1;
-            this.listExcludedUsers(this.excludeUserPagination);
-        }
-    }
-    searchExcludeDomainsDataEventHandler(keyCode: any) {
-        if (keyCode === 13) {
-            this.excludeDomainPagination.pageIndex = 1;
-            this.listExcludedDomains(this.excludeDomainPagination);
-        }
-      }
-    
-    downloadEmptyCSV(excludetype: string) {
-        if (excludetype === 'exclude-users'){
-            window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_EXCLUDE_USER_LIST_EMPTY.csv";
-        } else if (excludetype === 'exclude-domains'){
-            window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_EXCLUDE_DOMAIN_EMPTY.csv";
-        }
-    }
-    
-    fileChange( input: any, excludetype: string ) {
-       this.readFiles( input.files, excludetype );
-    }
-    
-    isCSVFile(file) {
-        return file.name.endsWith(".csv");
-    }
-    
-    validateHeaders(headers, excludetype: string) {
-        if (excludetype === 'exclude-users') {
-            return (this.removeDoubleQuotes(headers[0]) == "EMAILID" || headers[0] == "EMAIL ID");
-        } else if (excludetype === 'exclude-domains') {
-            return (this.removeDoubleQuotes(headers[0]) == "DOMAIN NAME" || headers[0] == "DOMAINNAME"|| headers[0] == "DOMAIN");
-        }
-    }
-    
-    removeDoubleQuotes(input:string){
-        if(input!=undefined){
-            return input.trim().replace('"','').replace('"','');
-        }else{
-            return "";
-        }
-    }
-    
-    readFiles(files: any, excludetype: string) {
-        if (this.fileUtil.isCSVFile(files[0])) {
-            this.isListLoader = true;
-            let reader = new FileReader();
-            reader.readAsText(files[0]);
-            var lines = new Array();
-            var self = this;
-            reader.onload = function(e: any) {
-                var contents = e.target.result;
-                let csvData = reader.result;
-                let csvRecordsArray = csvData.split(/\r|\n/);
-                let headersRow = self.fileUtil.getHeaderArray(csvRecordsArray);
-                let headers = headersRow[0].split(',');
-                if ((headers.length == 1)) {
-                    if (self.validateHeaders(headers, excludetype)) {
-                        var csvResult = Papa.parse(contents);
-                        var allTextLines = csvResult.data;
-                        if (excludetype === 'exclude-users') {
-                        	self.csvUserPagination = new Pagination();
-                        	self.excludedUsers = [];
-                            self.readExcludedUsersCSVFileContent(allTextLines, self.csvUserPagination);
-                        } else {
-                        	self.csvDomainPagination = new Pagination();
-                            self.excludedDomains = [];
-                            self.readExcludedDomainsCSVFileContent(allTextLines, self.csvDomainPagination);
-                        }
+	saveExcludedDomain(domain: string) {
+		this.referenceService.startLoader(this.excludeDomainLoader);
+		this.isDomainExist = false;
+		this.validDomainFormat = true;
+		this.excludedDomains = [];
+		this.excludedDomains.push(domain);
+		this.userService.saveExcludedDomains(this.excludedDomains, this.loggedInUserId)
+			.subscribe(
+				data => {
+					if (data.statusCode == 200) {
+						this.addDomainModalClose();
+						this.excludeDomainCustomResponse = new CustomResponse('SUCCESS', data.message, true);
+						this.listExcludedDomains(this.excludeDomainPagination);
+						this.referenceService.stopLoader(this.excludeDomainLoader);
+					} else if (data.statusCode == 401) {
+						this.referenceService.stopLoader(this.excludeDomainLoader);
+						this.isDomainExist = true;
+					} else if (data.statusCode == 402) {
+						this.validDomainFormat = false;
+						this.referenceService.stopLoader(this.excludeDomainLoader);
+					}
+				},
+				error => {
+					this.referenceService.stopLoader(this.excludeDomainLoader);
+				},
+				() => { }
+			);
+	}
 
-                    } else {
-                    	self.showErrorMessage(excludetype);
-                    	self.isListLoader = false;
-                    }
-                } else {
-                	self.showErrorMessage(excludetype);
-                	self.isListLoader = false;
-                }
-            }
-        } else {
-        	self.customResponse = new CustomResponse('ERROR', self.properties.FILE_TYPE_ERROR, true);
+	listExcludedDomains(excludeDomainPagination: Pagination) {
+		this.referenceService.startLoader(this.excludeDomainLoader);
+		if (this.searchExcludedDomainKey != null) {
+			excludeDomainPagination.searchKey = this.searchExcludedDomainKey;
+		}
+		this.userService.listExcludedDomains(this.loggedInUserId, excludeDomainPagination)
+			.subscribe(
+				response => {
+					response.data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
+					excludeDomainPagination.totalRecords = response.data.totalRecords;
+					excludeDomainPagination = this.pagerService.getPagedItems(excludeDomainPagination, response.data.data);
+					this.referenceService.stopLoader(this.excludeDomainLoader);
+				},
+				error => {
+					this.referenceService.stopLoader(this.excludeDomainLoader);
+				},
+				() => { }
+			);
+	}
 
-        }
-    }
-    
-    showErrorMessage(excludetype: string) {
-        if (excludetype === 'exclude-users') {
-            this.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
-        } else if (excludetype === 'exclude-domains') {
-            this.excludeDomainCustomResponse = new CustomResponse('ERROR', "Invalid Csv", true);
-        }
-    }
+	showDeleteExcludedDomainAlert(domain: string) {
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: "You won't be able to undo this action!",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#54a7e9',
+			cancelButtonColor: '#999',
+			confirmButtonText: 'Yes, delete it!'
 
-    readExcludedUsersCSVFileContent(allTextLines: any, csvUserPagination: Pagination) {
-    	this.csvExcludeUsersFilePreview = true;
-        for (var i = 1; i < allTextLines.length; i++) {
-            if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
-                let user = new User();
-                user.emailId = allTextLines[i][0].trim();
-                this.excludedUsers.push(user);
-            }
-        }
-        this.csvUserPagination.page = 1;
-        this.csvUserPagination.maxResults = 12;
-        this.csvUserPagination.type = "csvUsers";
-        this.setPage(this.csvUserPagination);
+		}).then(function () {
+			self.deleteExcludedDomain(domain);
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		});
+	}
 
-        this.isListLoader = false;
-        if (this.excludedUsers.length === 0) {
-            this.customResponse = new CustomResponse('ERROR', "No users found.", true);
-        }
+	deleteExcludedDomain(domain: string) {
+		this.ngxloading = true;
+		this.userService.deleteExcludedDomain(this.loggedInUserId, domain)
+			.subscribe(
+				response => {
+					if (response.statusCode == 200) {
+						this.excludeDomainCustomResponse = new CustomResponse('SUCCESS', response.message, true);
+						this.listExcludedDomains(this.excludeDomainPagination);
+					}
+					this.ngxloading = false;
+				},
+				error => {
+					this.ngxloading = false;
+				},
+				() => { }
+			);
+	}
 
-    }
+	search(type: string) {
+		try {
+			if (type === 'excludeUsers') {
+				this.excludeUserPagination.pageIndex = 1;
+				this.listExcludedUsers(this.excludeUserPagination);
+			} else if (type === 'excludedDomains') {
+				this.excludeDomainPagination.pageIndex = 1;
+				this.listExcludedDomains(this.excludeDomainPagination);
+			}
+		} catch (error) {
+			// this.xtremandLogger.error(error, "ManageContactsComponent", "sorting()");
+		}
+	}
 
-    readExcludedDomainsCSVFileContent(allTextLines: any, csvDomainPagination: Pagination) {
-    	this.csvExcludeDomainsFilePreview = true;
-        for (var i = 1; i < allTextLines.length; i++) {
-            if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
-                let domain = allTextLines[i][0].trim();
-                this.excludedDomains.push(domain);
-            }
-        }
-        this.csvDomainPagination.page = 1;
-        this.csvDomainPagination.maxResults = 12;
-        this.csvDomainPagination.type = "csvDomains";
-        this.setPage(this.csvDomainPagination);
+	searchExcludeUsersDataEventHandler(keyCode: any) {
+		if (keyCode === 13) {
+			this.excludeUserPagination.pageIndex = 1;
+			this.listExcludedUsers(this.excludeUserPagination);
+		}
+	}
+	searchExcludeDomainsDataEventHandler(keyCode: any) {
+		if (keyCode === 13) {
+			this.excludeDomainPagination.pageIndex = 1;
+			this.listExcludedDomains(this.excludeDomainPagination);
+		}
+	}
 
-        this.isListLoader = false;
-        if (this.excludedDomains.length === 0) {
-            this.excludeDomainCustomResponse = new CustomResponse('ERROR', "No domains found.", true);
-        }
+	downloadEmptyCSV(excludetype: string) {
+		if (excludetype === 'exclude-users') {
+			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_EXCLUDE_USER_LIST_EMPTY.csv";
+		} else if (excludetype === 'exclude-domains') {
+			window.location.href = this.authenticationService.MEDIA_URL + "UPLOAD_EXCLUDE_DOMAIN_EMPTY.csv";
+		}
+	}
 
-    }
-    
-    confirmAndsaveExcludedUsers(excludedUsers:User[]){
-        let companyName = '<strong>'+this.getCompanyName()+"</strong>.";
-        let text = "Adding emails to your exclusion list ensures that these emails are no longer receives any campaigns from "+companyName;
-        let self = this;
-            swal({
-                title: 'Are you sure want to continue?',
-                text: text,
-                type: 'warning',
-                showCancelButton: true,
-                swalConfirmButtonColor: '#54a7e9',
-                swalCancelButtonColor: '#999',
-                allowOutsideClick: false,
-                confirmButtonText: 'Yes'
-            }).then(function () {
-                self.saveExcludedUsers(excludedUsers);
-            }, function (dismiss: any) {
-                console.log('you clicked on option' + dismiss);
-            });
-    }
-    
-    saveExcludedUsers(excludedUsers: User[]) {
-        this.referenceService.startLoader(this.excludeUserLoader);
-        this.validEmailFormat = true;
-        this.isEmailExist = false;
-        this.userService.saveExcludedUsers(excludedUsers, this.loggedInUserId)
-            .subscribe(
-            data => {
-                if (data.statusCode == 200) {
-                    this.csvExcludeUsersFilePreview = false;
-                    this.excludeUserCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
-                    this.listExcludedUsers(this.excludeUserPagination);
-                    this.referenceService.stopLoader(this.excludeUserLoader);
-                } else if (data.statusCode == 401) {
-                    this.referenceService.stopLoader(this.excludeUserLoader);
-                    this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
-                } else if (data.statusCode == 402) {
-                    this.referenceService.stopLoader(this.excludeUserLoader);
-                    this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
-                } else if (data.statusCode == 403) {
-                    this.referenceService.stopLoader(this.excludeUserLoader);
-                    this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
-                }
-            },
-            error => {
-                this.referenceService.stopLoader(this.excludeUserLoader);
-            },
-            () => { }
-            );
-    }
-    
-    cancelCSVFilePreview(excludetype: string) {
-        if (excludetype === 'exclude-users') {
-            this.csvExcludeUsersFilePreview = false;
-            this.listExcludedUsers(this.excludeUserPagination);
-        } else if (excludetype === 'exclude-domains') {
-        	this.csvExcludeDomainsFilePreview = false;
-            this.listExcludedDomains(this.excludeDomainPagination);
-        }
-    }
-    
-    confirmAndsaveExcludedDomains(excludedDomains: string[]) {
-        let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
-        let text = "Adding domains to your exclusion list ensures that these domains related users are no longer receives any campaigns from " + companyName;
-        let self = this;
-        swal({
-            title: 'Are you sure want to continue?',
-            text: text,
-            type: 'warning',
-            showCancelButton: true,
-            swalConfirmButtonColor: '#54a7e9',
-            swalCancelButtonColor: '#999',
-            allowOutsideClick: false,
-            confirmButtonText: 'Yes'
-        }).then(function() {
-            self.saveExcludedDomains(excludedDomains);
-        }, function(dismiss: any) {
-            console.log('you clicked on option' + dismiss);
-        });
-    }
-    
-    saveExcludedDomains(excludedDomains: string[]) {
-        this.referenceService.startLoader(this.excludeDomainLoader);
-        this.isDomainExist = false;
-        this.validDomainFormat = true;
-        this.userService.saveExcludedDomains(excludedDomains, this.loggedInUserId)
-            .subscribe(
-            data => {
-                if (data.statusCode == 200) {
-                    this.referenceService.stopLoader(this.excludeDomainLoader);
-                    this.csvExcludeDomainsFilePreview = false;
-                    this.excludeDomainCustomResponse = new CustomResponse('SUCCESS', data.message, true);
-                    this.listExcludedDomains(this.excludeDomainPagination);
-                } else if (data.statusCode == 401) {
-                    this.referenceService.stopLoader(this.excludeDomainLoader);
-                    this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
-                } else if (data.statusCode == 402) {
-                    this.referenceService.stopLoader(this.excludeDomainLoader);
-                    this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
-                } else if (data.statusCode == 403) {
-                    this.referenceService.stopLoader(this.excludeDomainLoader);
-                    this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
-                }
-            },
-            error => {
-                this.referenceService.stopLoader(this.excludeDomainLoader);
-            },
-            () => { }
-            );
-    }
+	fileChange(input: any, excludetype: string) {
+		this.readFiles(input.files, excludetype);
+	}
 
-	upgrade(){
+	isCSVFile(file) {
+		return file.name.endsWith(".csv");
+	}
+
+	validateHeaders(headers, excludetype: string) {
+		if (excludetype === 'exclude-users') {
+			return (this.removeDoubleQuotes(headers[0]) == "EMAILID" || headers[0] == "EMAIL ID");
+		} else if (excludetype === 'exclude-domains') {
+			return (this.removeDoubleQuotes(headers[0]) == "DOMAIN NAME" || headers[0] == "DOMAINNAME" || headers[0] == "DOMAIN");
+		}
+	}
+
+	removeDoubleQuotes(input: string) {
+		if (input != undefined) {
+			return input.trim().replace('"', '').replace('"', '');
+		} else {
+			return "";
+		}
+	}
+
+	readFiles(files: any, excludetype: string) {
+		if (this.fileUtil.isCSVFile(files[0])) {
+			this.isListLoader = true;
+			let reader = new FileReader();
+			reader.readAsText(files[0]);
+			var lines = new Array();
+			var self = this;
+			reader.onload = function (e: any) {
+				var contents = e.target.result;
+				let csvData = reader.result;
+				let csvRecordsArray = csvData.split(/\r|\n/);
+				let headersRow = self.fileUtil.getHeaderArray(csvRecordsArray);
+				let headers = headersRow[0].split(',');
+				if ((headers.length == 1)) {
+					if (self.validateHeaders(headers, excludetype)) {
+						var csvResult = Papa.parse(contents);
+						var allTextLines = csvResult.data;
+						if (excludetype === 'exclude-users') {
+							self.csvUserPagination = new Pagination();
+							self.excludedUsers = [];
+							self.readExcludedUsersCSVFileContent(allTextLines, self.csvUserPagination);
+						} else {
+							self.csvDomainPagination = new Pagination();
+							self.excludedDomains = [];
+							self.readExcludedDomainsCSVFileContent(allTextLines, self.csvDomainPagination);
+						}
+
+					} else {
+						self.showErrorMessage(excludetype);
+						self.isListLoader = false;
+					}
+				} else {
+					self.showErrorMessage(excludetype);
+					self.isListLoader = false;
+				}
+			}
+		} else {
+			self.customResponse = new CustomResponse('ERROR', self.properties.FILE_TYPE_ERROR, true);
+
+		}
+	}
+
+	showErrorMessage(excludetype: string) {
+		if (excludetype === 'exclude-users') {
+			this.customResponse = new CustomResponse('ERROR', "Invalid Csv", true);
+		} else if (excludetype === 'exclude-domains') {
+			this.excludeDomainCustomResponse = new CustomResponse('ERROR', "Invalid Csv", true);
+		}
+	}
+
+	readExcludedUsersCSVFileContent(allTextLines: any, csvUserPagination: Pagination) {
+		this.csvExcludeUsersFilePreview = true;
+		for (var i = 1; i < allTextLines.length; i++) {
+			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
+				let user = new User();
+				user.emailId = allTextLines[i][0].trim();
+				this.excludedUsers.push(user);
+			}
+		}
+		this.csvUserPagination.page = 1;
+		this.csvUserPagination.maxResults = 12;
+		this.csvUserPagination.type = "csvUsers";
+		this.setPage(this.csvUserPagination);
+
+		this.isListLoader = false;
+		if (this.excludedUsers.length === 0) {
+			this.customResponse = new CustomResponse('ERROR', "No users found.", true);
+		}
+
+	}
+
+	readExcludedDomainsCSVFileContent(allTextLines: any, csvDomainPagination: Pagination) {
+		this.csvExcludeDomainsFilePreview = true;
+		for (var i = 1; i < allTextLines.length; i++) {
+			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
+				let domain = allTextLines[i][0].trim();
+				this.excludedDomains.push(domain);
+			}
+		}
+		this.csvDomainPagination.page = 1;
+		this.csvDomainPagination.maxResults = 12;
+		this.csvDomainPagination.type = "csvDomains";
+		this.setPage(this.csvDomainPagination);
+
+		this.isListLoader = false;
+		if (this.excludedDomains.length === 0) {
+			this.excludeDomainCustomResponse = new CustomResponse('ERROR', "No domains found.", true);
+		}
+
+	}
+
+	confirmAndsaveExcludedUsers(excludedUsers: User[]) {
+		let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
+		let text = "Adding emails to your exclusion list ensures that these emails are no longer receives any campaigns from " + companyName;
+		let self = this;
+		swal({
+			title: 'Are you sure want to continue?',
+			text: text,
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			allowOutsideClick: false,
+			confirmButtonText: 'Yes'
+		}).then(function () {
+			self.saveExcludedUsers(excludedUsers);
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		});
+	}
+
+	saveExcludedUsers(excludedUsers: User[]) {
+		this.referenceService.startLoader(this.excludeUserLoader);
+		this.validEmailFormat = true;
+		this.isEmailExist = false;
+		this.userService.saveExcludedUsers(excludedUsers, this.loggedInUserId)
+			.subscribe(
+				data => {
+					if (data.statusCode == 200) {
+						this.csvExcludeUsersFilePreview = false;
+						this.excludeUserCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
+						this.listExcludedUsers(this.excludeUserPagination);
+						this.referenceService.stopLoader(this.excludeUserLoader);
+					} else if (data.statusCode == 401) {
+						this.referenceService.stopLoader(this.excludeUserLoader);
+						this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
+					} else if (data.statusCode == 402) {
+						this.referenceService.stopLoader(this.excludeUserLoader);
+						this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
+					} else if (data.statusCode == 403) {
+						this.referenceService.stopLoader(this.excludeUserLoader);
+						this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
+					}
+				},
+				error => {
+					this.referenceService.stopLoader(this.excludeUserLoader);
+				},
+				() => { }
+			);
+	}
+
+	cancelCSVFilePreview(excludetype: string) {
+		if (excludetype === 'exclude-users') {
+			this.csvExcludeUsersFilePreview = false;
+			this.listExcludedUsers(this.excludeUserPagination);
+		} else if (excludetype === 'exclude-domains') {
+			this.csvExcludeDomainsFilePreview = false;
+			this.listExcludedDomains(this.excludeDomainPagination);
+		}
+	}
+
+	confirmAndsaveExcludedDomains(excludedDomains: string[]) {
+		let companyName = '<strong>' + this.getCompanyName() + "</strong>.";
+		let text = "Adding domains to your exclusion list ensures that these domains related users are no longer receives any campaigns from " + companyName;
+		let self = this;
+		swal({
+			title: 'Are you sure want to continue?',
+			text: text,
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			allowOutsideClick: false,
+			confirmButtonText: 'Yes'
+		}).then(function () {
+			self.saveExcludedDomains(excludedDomains);
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		});
+	}
+
+	saveExcludedDomains(excludedDomains: string[]) {
+		this.referenceService.startLoader(this.excludeDomainLoader);
+		this.isDomainExist = false;
+		this.validDomainFormat = true;
+		this.userService.saveExcludedDomains(excludedDomains, this.loggedInUserId)
+			.subscribe(
+				data => {
+					if (data.statusCode == 200) {
+						this.referenceService.stopLoader(this.excludeDomainLoader);
+						this.csvExcludeDomainsFilePreview = false;
+						this.excludeDomainCustomResponse = new CustomResponse('SUCCESS', data.message, true);
+						this.listExcludedDomains(this.excludeDomainPagination);
+					} else if (data.statusCode == 401) {
+						this.referenceService.stopLoader(this.excludeDomainLoader);
+						this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
+					} else if (data.statusCode == 402) {
+						this.referenceService.stopLoader(this.excludeDomainLoader);
+						this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
+					} else if (data.statusCode == 403) {
+						this.referenceService.stopLoader(this.excludeDomainLoader);
+						this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
+					}
+				},
+				error => {
+					this.referenceService.stopLoader(this.excludeDomainLoader);
+				},
+				() => { }
+			);
+	}
+
+	upgrade() {
 		this.isUpgrading = true;
-		this.sweetAlertParameterDto.text="You will be upgraded to Marketing";
+		this.sweetAlertParameterDto.text = "You will be upgraded to Marketing";
 		this.sweetAlertParameterDto.confirmButtonText = "Yes";
 
 	}
 
-	receiveEvent(event:any){
-		if(event){
+	receiveEvent(event: any) {
+		if (event) {
 			this.ngxloading = true;
 			this.dashBoardService.saveUpgradeRequest().
-			subscribe(
-				response=>{
-					this.ngxloading = false;
-					this.referenceService.showSweetAlertSuccessMessage("Your Request Submitted Successfully");
-					this.isUpgradedRequestSubmitted = true;
-				},error=>{
-					this.ngxloading = false;
-					this.isUpgrading = false;
-					let statusCode = JSON.parse(error['status']);
-					if (statusCode == 409 || statusCode==400) {
-						let errorResponse = JSON.parse(error['_body']);
-						let message = errorResponse['message'];
+				subscribe(
+					response => {
+						this.ngxloading = false;
+						this.referenceService.showSweetAlertSuccessMessage("Your Request Submitted Successfully");
 						this.isUpgradedRequestSubmitted = true;
-						this.referenceService.showSweetAlertFailureMessage(message);
-					  }else {
-						this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
+					}, error => {
+						this.ngxloading = false;
+						this.isUpgrading = false;
+						let statusCode = JSON.parse(error['status']);
+						if (statusCode == 409 || statusCode == 400) {
+							let errorResponse = JSON.parse(error['_body']);
+							let message = errorResponse['message'];
+							this.isUpgradedRequestSubmitted = true;
+							this.referenceService.showSweetAlertFailureMessage(message);
+						} else {
+							this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
+						}
 					}
-				}
-			);
-		}else{
+				);
+		} else {
 			this.isUpgrading = false;
 		}
 	}
 
-	findUpgradeRequest(){
+	findUpgradeRequest() {
 		this.ngxloading = true;
 		this.dashBoardService.isRequestExists().
-		subscribe(
-			response=>{
-				this.isUpgradedRequestSubmitted = response.data;
-			},error=>{
-				this.ngxloading = false;
-				this.isUpgradedRequestSubmitted = false;
-			}
-		);
+			subscribe(
+				response => {
+					this.isUpgradedRequestSubmitted = response.data;
+				}, error => {
+					this.ngxloading = false;
+					this.isUpgradedRequestSubmitted = false;
+				}
+			);
 	}
 
 	closeIntegrationSettings(event: any) {
-		this.integrationTabIndex = 0;	
+		this.integrationTabIndex = 0;
 	}
 
 	refreshIntegrationSettings(event: any) {
@@ -3954,16 +3955,16 @@ configSalesforce() {
 		try {
 			let self = this;
 			swal({
-			  title: 'Are you sure?',
-			  text: "Click Yes to mark this as your active CRM",
-			  type: 'warning',
-			  showCancelButton: true,
-			  swalConfirmButtonColor: '#54a7e9',
-			  swalCancelButtonColor: '#999',
-			  confirmButtonText: 'Yes, activate!'
-	  
+				title: 'Are you sure?',
+				text: "Click Yes to mark this as your active CRM",
+				type: 'warning',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+				confirmButtonText: 'Yes, activate!'
+
 			}).then(function () {
-				let request:any = {};
+				let request: any = {};
 				request.userId = self.loggedInUserId;
 				request.type = type;
 				self.ngxloading = true;
@@ -3975,11 +3976,11 @@ configSalesforce() {
 							}
 						});
 			}, function (dismiss: any) {
-			  console.log('you clicked on option' + dismiss);
+				console.log('you clicked on option' + dismiss);
 			});
-		  } catch (error) {
+		} catch (error) {
 			this.referenceService.showServerError(this.httpRequestLoader);
-		  }		
+		}
 	}
 
 	getActiveCRMDetails() {
@@ -3990,7 +3991,7 @@ configSalesforce() {
 					this.ngxloading = false;
 					this.referenceService.loading(this.httpRequestLoader, false);
 					this.activeCRMDetails = data.data;
-					
+
 				});
 	}
 
@@ -4002,135 +4003,134 @@ configSalesforce() {
 					this.ngxloading = false;
 					this.pipelineResponse = new CustomResponse('SUCCESS', "Synchronized Successfully", true);
 					this.listAllPipelines(this.pipelinePagination);
-				}, error=>{
+				}, error => {
 					this.ngxloading = false;
 					let errorMessage = this.referenceService.getApiErrorMessage(error);
-                    this.pipelineResponse = new CustomResponse('ERROR',errorMessage,true);					
+					this.pipelineResponse = new CustomResponse('ERROR', errorMessage, true);
 				}
 			);
 
 	}
 
-	defaultStageChange(pipelineStage: PipelineStage) {		
-		this.pipeline.stages.forEach(stage => { stage.defaultStage = false});
+	defaultStageChange(pipelineStage: PipelineStage) {
+		this.pipeline.stages.forEach(stage => { stage.defaultStage = false });
 		pipelineStage.defaultStage = true;
 	}
 	/************* XNFR-238 *********************/
 	customAppShow = false;
-	
+
 	tabNames = ""
-	customskinSettingsEnable(tabNames:string){
+	customskinSettingsEnable(tabNames: string) {
 		this.ngxloading = true;
 		this.customSkinDto.createdBy = this.loggedInUserId;
-		if(tabNames == "lightTheme"){
+		if (tabNames == "lightTheme") {
 			this.ngxloading = false;
 			this.selectedThemeIndex = 1;
 			this.customAppShow = false;
 			this.customSkinDto.darkTheme = false;
-		    this.customSkinDto.defaultSkin = true;
+			this.customSkinDto.defaultSkin = true;
 			this.authenticationService.isDarkForCharts = true;
 			//this.saveDarkTheme(this.customSkinDto,this.selectedThemeIndex)
 
-		}else if (tabNames == "customTheme"){
+		} else if (tabNames == "customTheme") {
 			this.ngxloading = false;
 			this.customAppShow = true;
 			this.selectedThemeIndex = 0;
 			this.customSkinDto.darkTheme = false;
-			this.changeCustomSettings(this.customSkinDto,this.selectedThemeIndex);
+			this.changeCustomSettings(this.customSkinDto, this.selectedThemeIndex);
 
-		}else if(tabNames == "DarkTheme") {
+		} else if (tabNames == "DarkTheme") {
 			this.customAppShow = false;
 			this.selectedThemeIndex = 2;
 			this.ngxloading = false;
 			this.customSkinDto.darkTheme = true;
 			this.customSkinDto.defaultSkin = true;
 			//this.saveDarkTheme(this.customSkinDto,this.selectedThemeIndex);
-	
-		}	
+
+		}
 	}
-	changeCustomSettings(form:CustomSkin,selectedThemeIndex:number){
+	changeCustomSettings(form: CustomSkin, selectedThemeIndex: number) {
 		this.ngxloading = true;
 		form.defaultSkin = this.customSkinDto.defaultSkin;
 		this.dashBoardService.changeCustomSettingTheme(form).subscribe(
-			(data:any) =>{
+			(data: any) => {
 				this.ngxloading = false;
-				 if( form.darkTheme && selectedThemeIndex == 1)
-				 {
-				   window.location.reload();
-				 }else {
+				if (form.darkTheme && selectedThemeIndex == 1) {
+					window.location.reload();
+				} else {
 					this.customAppShow = true;
-				 }
-			},error=>{
+				}
+			}, error => {
 				this.ngxloading = false;
 			}
-			)	
+		)
 	}
 
-	message:string="";
-	
-	goBack(){
+	message: string = "";
+
+	goBack() {
 		this.router.navigate(['/home/dashboard/myprofile']);
 	}
 
-	  showRefreshSweetAlertSuccessMessage(message: string) {
+	showRefreshSweetAlertSuccessMessage(message: string) {
 		swal({
-		  title: message,
-		  type: "success",
-		  allowOutsideClick: false,
+			title: message,
+			type: "success",
+			allowOutsideClick: false,
 		}).then(
-		  function (allowOutsideClick) {
-			if (allowOutsideClick) {
-		    window.location.reload();
-			}
-		  });
-	  }
+			function (allowOutsideClick) {
+				if (allowOutsideClick) {
+					window.location.reload();
+				}
+			});
+	}
 	showThemes() {
 		this.ngxloading = true;
 		this.dashBoardService.multipleThemesShow().subscribe(
 			(response) => {
 				this.ngxloading = false
-				 this.themeDtoList = response.data;
-				 if(this.themeDtoList.length === 0 || this.themeDtoList.length<1){
-                    this.isNoThemes = true;
-				 }
+				this.themeDtoList = response.data;
+				if (this.themeDtoList.length === 0 || this.themeDtoList.length < 1) {
+					this.isNoThemes = true;
+				}
 			},
 			error => {
 				this.ngxloading = false;
 			}
 		);
 	}
-	lightdark:ThemeDto[]=[];
-	getDefaultThemes(){
+	lightdark: ThemeDto[] = [];
+	getDefaultThemes() {
 		this.ngxloading = true;
 		this.dashBoardService.getDefaultThemes().subscribe(
 			(response) => {
 				this.ngxloading = false
-				 this.defaultThemes = response.data;
+				this.defaultThemes = response.data;
 			},
 			error => {
 				this.ngxloading = false;
 			}
 		);
 	}
-	showActivateButton:boolean;
-	showDto(dto:ThemeDto){
-        this.themeDto = dto;
+	showActivateButton: boolean;
+	showDto(dto: ThemeDto) {
+		this.themeDto = dto;
 		this.themeName = dto.name;
 		for (var char of this.themeDtoList) {
-			if(char.name === this.themeDto.name){
-              this.showActivateButton = true;
+			if (char.name === this.themeDto.name) {
+				this.showActivateButton = true;
 			}
-		  }
+		}
 	}
-	activateTheme:CompanyThemeActivate = new CompanyThemeActivate();
-	activateThemeForCompany(companyThemeId:number){
-	 this.activateTheme.createdBy = this.authenticationService.getUserId();
-     this.activateTheme.themeId =companyThemeId; 
-	 this.activateThemeApi(this.activateTheme);
+	activateTheme: CompanyThemeActivate = new CompanyThemeActivate();
+	activateThemeForCompany(companyThemeId: number) {
+		this.activateTheme.createdBy = this.authenticationService.getUserId();
+		this.activateTheme.themeId = companyThemeId;
+		this.activateThemeApi(this.activateTheme);
 	}
-	activateThemeApi(theme:CompanyThemeActivate) {
+	activateThemeApi(theme: CompanyThemeActivate) {
 		this.ngxloading = true;
-		this.dashBoardService.activateThemeForCompany (theme).subscribe(
+		this.dashBoardService.activateThemeForCompany(theme).subscribe(
 			(data: any) => {
 				this.ngxloading = false;
 				location.reload();
@@ -4142,7 +4142,7 @@ configSalesforce() {
 				this.ngxloading = false;
 			});
 	}
-	activateThemeForCompanyWithAlert(companyThemeId:number){
+	activateThemeForCompanyWithAlert(companyThemeId: number) {
 		let self = this;
 		swal({
 			title: 'Are you sure?',
@@ -4156,15 +4156,15 @@ configSalesforce() {
 
 		}).then(function () {
 			self.activateThemeForCompany(companyThemeId);
-		},function (dismiss: any) {
+		}, function (dismiss: any) {
 			console.log("you clicked showAlert cancel" + dismiss);
 		});
 	}
-	deleteByThemeId(id:number){
+	deleteByThemeId(id: number) {
 		this.refService.goToTop();
 		this.ngxloading = true;
 		this.dashBoardService.deleteThemeProperties(id).subscribe(
-			(response:any) =>{
+			(response: any) => {
 				this.ngxloading = false;
 				this.statusCode = 200;
 				$('#themeListDiv_' + id).remove();
@@ -4172,16 +4172,16 @@ configSalesforce() {
 				//this.router.navigate(['/home/dashboard/myprofile']);
 				this.themeResponse.isVisible = false;
 				let message = "Theme Deleted Sucessfully"
-				 this.themeResponse = new CustomResponse('SUCCESS',message,true);
+				this.themeResponse = new CustomResponse('SUCCESS', message, true);
 			},
-			error =>{
+			error => {
 				this.ngxloading = false;
 				this.statusCode = 500;
 				this.message = "Oops!Something went wrong";
-			  }
+			}
 		)
 	}
-	deleteByThemeIdWithAlert(id:number){
+	deleteByThemeIdWithAlert(id: number) {
 		let self = this;
 		swal({
 			title: 'Are you sure?',
@@ -4194,40 +4194,40 @@ configSalesforce() {
 
 		}).then(function () {
 			self.deleteByThemeId(id);
-		},function (dismiss: any) {
+		}, function (dismiss: any) {
 			console.log("you clicked showAlert cancel" + dismiss);
 		});
 	}
 	// closeTheme(){
 	// 	this.router.navigate(['/home/dashboard/myprofile']);
 	// }
-	
-	getActiveThemeData(){
+
+	getActiveThemeData() {
 		this.ngxloading = true;
 		this.dashBoardService.getActiveTheme(this.vanityLoginDto).subscribe(
-			(data:any) =>{
+			(data: any) => {
 				this.ngxloading = false;
 				this.activeThemeDetails = data.data;
-		},
-		(error:any) =>{
-			this.ngxloading = false;
-			this.statusCode = 500;
-		  }
+			},
+			(error: any) => {
+				this.ngxloading = false;
+				this.statusCode = 500;
+			}
 		)
 	}
-	isSaveTheme:boolean = false;
-	saveTheme(){
+	isSaveTheme: boolean = false;
+	saveTheme() {
 		this.isSaveTheme = true;
 	}
-    updateTheme(){
+	updateTheme() {
 		this.isSaveTheme = false;
 	}
-	showThemeAlert(event:any){
+	showThemeAlert(event: any) {
 		this.activeTabName = 'customskin';
 		this.activeTabHeader = this.properties.customskin;
-        this.showThemes();
+		this.showThemes();
 		this.themeResponse.isVisible = false;
-		this.themeResponse = new CustomResponse('SUCCESS',event,true);
+		this.themeResponse = new CustomResponse('SUCCESS', event, true);
 	}
 	//activateTab('customskin');
 	closeTheme() {
@@ -4235,52 +4235,52 @@ configSalesforce() {
 		this.activeTabHeader = this.properties.customskin;
 		this.themeResponse.isVisible = false;
 		this.isSaveTheme = false;
-		this.showThemes();	
+		this.showThemes();
 	}
 	goToCustomThemes() {
 		this.activeTabName = 'customTheme';
 		this.activeTabHeader = "Custom Theme Settings";
 		//this.themeResponse.isVisible = false;
 	}
-	viewTheme(){
+	viewTheme() {
 		this.activeTabName = 'lightTheme';
 		this.activeTabHeader = "Theme View";
 		this.themeResponse.isVisible = false;
 		this.referenceService.goToTop();
 	}
 
- /************* XNFR-238 *********************/	
+	/************* XNFR-238 *********************/
 
- /************* XNFR-338 *********************/
- 
- shouldDisableCheckbox(index: number): boolean {
-	const selectedCount = this.pipeline.stages.filter(item => item.private).length;
-    const remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
+	/************* XNFR-338 *********************/
 
-    if (remainingUnselectedCount === 0 && !this.pipeline.stages[index].private) {
-        this.pipeline.stages[index].canDelete = false;
-    } else {
-        this.pipeline.stages[index].canDelete = true;
-    }
+	shouldDisableCheckbox(index: number): boolean {
+		const selectedCount = this.pipeline.stages.filter(item => item.private).length;
+		const remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
 
-    return remainingUnselectedCount === 0 && !this.pipeline.stages[index].private;
-  }	
-  handleMarkAsChange(changedIndex: number): void {
-	const changedStage = this.pipeline.stages[changedIndex];
+		if (remainingUnselectedCount === 0 && !this.pipeline.stages[index].private) {
+			this.pipeline.stages[index].canDelete = false;
+		} else {
+			this.pipeline.stages[index].canDelete = true;
+		}
 
-	if (changedStage.markAs === 'won' || changedStage.markAs === 'lost') {
-	  this.resetOtherMarkedStages(changedIndex, changedStage.markAs);
+		return remainingUnselectedCount === 0 && !this.pipeline.stages[index].private;
 	}
-  }
+	handleMarkAsChange(changedIndex: number): void {
+		const changedStage = this.pipeline.stages[changedIndex];
 
-  resetOtherMarkedStages(changedIndex: number, newMarking: string): void {
-	for (let i = 0; i < this.pipeline.stages.length; i++) {
-	  if (i !== changedIndex && this.pipeline.stages[i].markAs === newMarking) {
-		this.pipeline.stages[i].markAs = 'markAs';
-	  }
+		if (changedStage.markAs === 'won' || changedStage.markAs === 'lost') {
+			this.resetOtherMarkedStages(changedIndex, changedStage.markAs);
+		}
 	}
-  }
-  /************* XNFR-338 *********************/
+
+	resetOtherMarkedStages(changedIndex: number, newMarking: string): void {
+		for (let i = 0; i < this.pipeline.stages.length; i++) {
+			if (i !== changedIndex && this.pipeline.stages[i].markAs === newMarking) {
+				this.pipeline.stages[i].markAs = 'markAs';
+			}
+		}
+	}
+	/************* XNFR-338 *********************/
 
 	// XNFR-403
 	checkConnectWiseIntegration() {
@@ -4302,7 +4302,7 @@ configSalesforce() {
 	}
 
 	configureConnectWise() {
-		this.integrationTabIndex = 7;	
+		this.integrationTabIndex = 7;
 	}
 	// XNFR-403
 

@@ -1515,8 +1515,8 @@
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn Btn-Green" [disabled]="criterias.length === 0" (click)="contactFilter()"
-               translate>Submit</button>
+            <button type="button" class="button" [disabled]="criterias.length === 0" (click)="contactFilter()"
+               translate><span class="btn Btn-Green transition">Submit</span></button>
             <button type="button" class="btn Btn-Gray" (click)="cancelSegmentation()" data-dismiss="modal"
                translate>Cancel</button>
          </div>
@@ -1576,8 +1576,9 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal" translate>Close</button>
-            <button type="button" class="btn btn-primary" (click)="hasSaveAsAccess()"
-               [disabled]="assignLeads && disableSave" translate>Save changes</button>
+            <button type="button" class="button_blue bgcolor-unset" (click)="hasSaveAsAccess()"
+               [disabled]="assignLeads && disableSave" translate><span class="btn btn-primary transition">Save
+                  changes</span></button>
          </div>
       </div>
    </div>

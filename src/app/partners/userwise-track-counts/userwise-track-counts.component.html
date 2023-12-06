@@ -1,5 +1,5 @@
 <div class="col-sm-6 col-md-6 col-lg-6 col-xs-12 ml15m">
-  <div class="panel panel-info mh530 panel-bgMain">
+  <div class="panel panel-info mh530 panel-bgMain panel-card br-10">
     <div class="panel-heading panel-heading-custom panel-bg" id="pj-track-playbook-details-div">
       <h3 class="panel-title mt7">{{type | titlecase }} Counts</h3>
       <span class="pull-right mt25m">
@@ -32,9 +32,12 @@
                   <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
               <!-- <td>{{item.trackCount}}</td> -->
               <td>
+                <div class="custom-icon">
                 <i class="circled-number IconCustomization fontStyleNormal">
                   <strong>{{item.trackCount}}</strong>
                 </i>
+                <div class="clickicons"></div>
+              </div>
               </td>
             </tr>
           </tbody>

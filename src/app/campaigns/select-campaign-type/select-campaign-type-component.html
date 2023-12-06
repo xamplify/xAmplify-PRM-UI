@@ -1,341 +1,427 @@
-<style type="text/css">   
-    .pricing-head>h4 {
-    background-color: #ffffff;
-    color: #bac39f;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-direction: column;
-    align-content: space-between;
-    flex-wrap: nowrap;
-    }
-    .important {
-    color: red;
-    }
-    .box-wrapper {
-    display: block;
-    position: relative;
-    z-index: 0;
-    overflow: hidden;
-    /*hidden the content inside*/
-    }
-    .box-content {
-    width: 100%;
-    height: 214px;
-    padding-top: 16px;
-    padding-right: 10px;
-    padding-bottom: 4px;
-    padding-left: 10px;
-    background: #ffffff;
-    border-top-right-radius: 8px;
-    }
-    .box-wrapper:hover .box-content {
-    top: 0;
-    /*bring the content back*/
-    }
-    .pricing {
-    position: relative;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    background: #fff;
-    }
-    .card-background-v {
-    background: #34495a;
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
-    }
-    .camp-card{
-    height: 255px;
-    border-radius: 10px;
-    margin: 5px;
-    }
-    .camp-card-bg{        
-    height: 214px;
-    border-radius: 8px 0px 0 0  !important;  
-    }  
-    .camp-card-bg{
-    background: #f1f1f1 !important;
-    }
-    .custom{
-    background-color: #008fd5 ;
-    color: #fff;
-    border: 1px solid #3575b5;
-    }
-    .box-content h5 {
-    margin: 0px 0px 5px 0px;
-    }
-    .zerosides {
-    padding: 0px;
-    }
-    .pricing-footer{
-    padding: 0 !important; 
-    }
-    .img-custom-hgt {
-    height: 64px;
-    }
-    .camp-card:hover {
-    box-shadow: 0px 1px 7px #00000038;
-    }
-    .camp-card-bg{
-    background: #def0fa !important;
-    }
-    /* 19-05-2023 */
-    .pricing-content li {
-    padding: 5px 10px;
-    }
-    @media (min-width: 1200px) and (max-width: 1320px)  {
-    .pricing-content li {
-    font-size: 10px !important;
-    padding: 6px 11px !important;
-    } 
-    }
-    @media (min-width: 1000px) and (max-width: 1199px)  {
-    .pricing-content li {
-    font-size: 8px !important;
-    padding: 4px 4px !important;
-    }
-    .box-content {
-    padding-right: 6px !important;
-    padding-left: 6px !important;
-    }
-    .img-custom-hgt {
-    height: 50px !important;
-    }
-    }
-    /* mobile */
-    @media screen and (max-width: 600px) {  
-    .pricing-footer {
-    position: relative !important;
-    bottom: -13px !important;
-    }
-    .card-background-v{
-    background: #34495a00 !important;
-    }
-    .pricing{
-    background: #34495a !important;
-    }
-    }
-    /* tablet */
-    @media screen and (max-width: 991px) { 
-    .pricing-footer {
-    position: relative !important;
-    bottom: -13px !important;
-    }
-    .pricing-content li {
-    font-size: 11px !important;
-    }
-    .card-background-v{
-    background: #34495a00 !important;
-    }
-    .pricing{
-    background: #34495a !important;
-    }
-    }
-    .pricing-content li i {
-    display: inline;
-    }
- </style>
- <div class="page-content">
-    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-    <div class="page-bar">
-        <ul class="page-breadcrumb">
-            <li><i class="fa fa-home" aria-hidden="true"></i>
-                 <a [routerLink]="refService.homeRouter" translate>Home</a> 
-                 <i class="fa fa-angle-right" aria-hidden="true"></i></li>
-            <li><a translate>Select Campaign</a></li>
-        </ul>
-        <app-user-guide-help-button  [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
-  
-    </div>
-    <!-- End of page-bar -->
-    <div  *ngIf="companyIdError">
-       <h5 class="required">Something went wrong.Please try after sometime</h5>
-    </div>
-    <div class="row" *ngIf="!companyIdError">
-       <div class="col-md-12">
-          <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-          </app-response-message>
-          <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
-          <div  class="">
-             <app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
-             <ng-container *ngIf="!loading">
-                <div class="portlet-title">
-                   <div class="caption" style="padding-top: 10px;padding-bottom: 25px;font-size: 18px;" translate>
-                      <b>Create a campaign</b>&nbsp;&nbsp; <small style="font-size: 14px" translate>Which type of campaign would you like to create?</small>
-                      <button class="btn btn-primary mrg_top0" id="right" style="margin-top: -7px;" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
-                   </div>
-                </div>
-                <div class="portlet-body">
-                   <div class="row clearfix">
-                      <!-- Pricing -->
-                      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 box-wrapper" *ngIf="campaignAccess.videoCampaign">
-                         <div class="pricing pricing-border hover-effect pointer camp-card camp-cards" (click)="goToCreateCampaignSection('video')">
-                            <div class="col-md-4 col-lg-4 col-xs-4 zerosides">
-                               <div class="pricing-head ">
-                                  <h4 class="camp-card-bg">
-                                     <img alt="Video e-mail Campaign" class="pricing-head-img img-responsive img-custom-hgt"  src="assets/images/video-email.svg">
-                                  </h4>
-                               </div>
-                            </div>
-                            <div class="col-md-8 col-lg-8 col-xs-8 zerosides">
-                               <div class="box-content">
-                                  <h5><span style="padding-left:10px;font-weight: 600;" translate> Steps involved:</span></h5>
-                                  <ul class="pricing-content list-unstyled">
-                                     <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details</li>
-                                     <li translate><i class="fa fa-video-camera"  aria-hidden="true"></i> Select a video <span class="important">*</span></li>
-                                     <li translate><i class="fa fa-users"  aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
-                                     <li translate><i class="fa fa-envelope"  aria-hidden="true"></i> Select an e-mail template <span class="important">*</span></li>
-                                     <li translate style="border-bottom:none !important;" ><i class="fa fa-rocket" aria-hidden="true"></i> Preview and Launch</li>
-                                  </ul>
-                               </div>
-                            </div>
-                            <div class="col-md-12 col-lg-12 card-background-v">
-                               <div class="pricing-footer">
-                                  <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;" translate>Video</h4>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 box-wrapper" *ngIf="campaignAccess.emailCampaign">
-                         <div class="pricing pricing-border hover-effect pointer camp-card camp-cards" (click)="goToCreateCampaignSection('regular')">
-                            <div class="col-md-4 col-lg-4 col-xs-4 zerosides">
-                               <div class="pricing-head ">
-                                  <h4 class="camp-card-bg">
-                                     <img alt="Regular E-mail Campaign" class="pricing-head-img img-responsive  img-custom-hgt"  src="assets/images/regular-email.svg">
-                                  </h4>
-                               </div>
-                            </div>
-                            <div class="col-md-8 col-lg-8 col-xs-8 zerosides">
-                               <div class="box-content">
-                                  <h5><span style="padding-left:10px;font-weight: 600;" translate> Steps involved:</span></h5>
-                                  <ul class="pricing-content list-unstyled">
-                                     <li translate><i class="fa fa-list"  aria-hidden="true"></i> Provide campaign details</li>
-                                     <li translate><i class="fa fa-users"  aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
-                                     <li translate><i class="fa fa-envelope"  aria-hidden="true"></i> Select an e-mail template <span class="important">*</span></li>
-                                     <li translate><i class="fa fa-rocket"  aria-hidden="true"></i> Preview and Launch</li>
-                                  </ul>
-                               </div>
-                            </div>
-                            <div class="col-md-12 col-lg-12 card-background-v">
-                               <div class="pricing-footer">
-                                  <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;" translate>E-mail </h4>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 box-wrapper"  *ngIf="campaignAccess.socialCampaign">
-                         <div class="pricing pricing-border hover-effect pointer camp-card camp-cards"  (click)="goToCreateCampaignSection('social')">
-                            <div class="col-md-4 col-lg-4 col-xs-4 zerosides">
-                               <div class="pricing-head ">
-                                  <h4 class="camp-card-bg">
-                                     <img alt="Social Campaign" class="pricing-head-img img-responsive img-custom-hgt" src="assets/images/social-campaign.svg">
-                                  </h4>
-                               </div>
-                            </div>
-                            <div class="col-md-8 col-lg-8 col-xs-8 zerosides">
-                               <div class="box-content">
-                                  <h5><span style="padding-left:10px;font-weight: 600;" translate> Steps involved:</span></h5>
-                                  <ul class="pricing-content list-unstyled">
-                                     <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details</li>
-                                     <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
-                                     <li translate><i class="fa fa-rocket" aria-hidden="true"></i> Preview and Launch</li>
-                                  </ul>
-                               </div>
-                            </div>
-                            <div class="col-md-12 col-lg-12 card-background-v">
-                               <div class="pricing-footer">
-                                  <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;" translate>Social Media</h4>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 box-wrapper"  *ngIf="campaignAccess.eventCampaign">
-                         <div class="pricing pricing-border hover-effect pointer camp-card camp-cards"  (click)="goToCreateCampaignSection('eventCampaign')">
-                            <div class="col-md-4 col-lg-4 col-xs-4 zerosides">
-                               <div class="pricing-head ">
-                                  <h4 class="camp-card-bg">
-                                     <img alt="Social Campaign" class="pricing-head-img img-responsive  img-custom-hgt"  src="assets/images/event-campaign.svg">
-                                  </h4>
-                               </div>
-                            </div>
-                            <div class="col-md-8 col-lg-8 col-xs-8 zerosides">
-                               <div class="box-content">
-                                  <h5><span style="padding-left:10px;font-weight: 600;" translate> Steps involved:</span></h5>
-                                  <ul class="pricing-content list-unstyled">
-                                     <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details</li>
-                                     <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
-                                     <li translate><i class="fa fa-envelope" aria-hidden="true"></i> Select an e-mail template <span class="important">*</span></li>
-                                     <li translate><i class="fa fa-rocket" aria-hidden="true"></i> Preview and Launch</li>
-                                  </ul>
-                               </div>
-                            </div>
-                            <div class="col-md-12 col-lg-12 card-background-v">
-                               <div class="pricing-footer">
-                                  <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;" translate>Event</h4>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 box-wrapper"  *ngIf="campaignAccess.landingPageCampaign">
-                         <div class="pricing pricing-border hover-effect pointer camp-card camp-cards"  (click)="goToCreateCampaignSection('landingPage')">
-                            <div class="col-md-4 col-lg-4 col-xs-4 zerosides">
-                               <div class="pricing-head ">
-                                  <h4 class="camp-card-bg">
-                                     <img alt="Social Campaign" class="pricing-head-img img-responsive img-custom-hgt"  src="assets/images/landing-page.svg">
-                                  </h4>
-                               </div>
-                            </div>
-                            <div class="col-md-8 col-lg-8 col-xs-8 zerosides">
-                               <div class="box-content">
-                                  <h5><span style="padding-left:10px;font-weight: 600;" translate> Steps involved:</span></h5>
-                                  <ul class="pricing-content list-unstyled">
-                                     <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details</li>
-                                     <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
-                                     <li translate><i class="fa fa-envelope" aria-hidden="true"></i> Select a  page <span class="important">*</span></li>
-                                     <li translate><i class="fa fa-rocket" aria-hidden="true"></i> Preview and Launch</li>
-                                  </ul>
-                               </div>
-                            </div>
-                            <div class="col-md-12 col-lg-12 card-background-v">
-                               <div class="pricing-footer">
-                                  <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;" translate>Page</h4>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 box-wrapper"  *ngIf="campaignAccess.survey">
-                         <div class="pricing pricing-border hover-effect pointer camp-card camp-cards" (click)="goToCreateCampaignSection('survey')">
-                            <div class="col-md-4 col-lg-4 col-xs-4 zerosides">
-                               <div class="pricing-head ">
-                                  <h4 class="camp-card-bg">
-                                     <img alt="Social Campaign" class="pricing-head-img img-responsive img-custom-hgt" src="assets/images/survey.svg">
-                                  </h4>
-                               </div>
-                            </div>
-                            <div class="col-md-8 col-lg-8 col-xs-8 zerosides">
-                               <div class="box-content">
-                                  <h5><span style="padding-left:10px;font-weight: 600;" translate> Steps involved:</span></h5>
-                                  <ul class="pricing-content list-unstyled">
-                                     <li translate><i class="fa fa-list"  aria-hidden="true"></i> Provide campaign details</li>
-                                     <li translate><i class="fa fa-users"  aria-hidden="true"></i> Select Recipients <span class="important">*</span></li>
-                                     <li translate><i class="fa fa-envelope"  aria-hidden="true"></i> Select an e-mail template <span class="important">*</span></li>
-                                     <li translate><i class="fa fa-rocket"  aria-hidden="true"></i> Preview and Launch</li>
-                                  </ul>
-                               </div>
-                            </div>
-                            <div class="col-md-12 col-lg-12 card-background-v">
-                               <div class="pricing-footer">
-                                  <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;" translate>Survey </h4>
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                </div>
-             </ng-container>
-          </div>
-       </div>
-    </div>
- </div>
- <app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
- <app-spf-modal-popup *ngIf="showSpf" [companyId]="loggedInUserCompanyId"></app-spf-modal-popup>
+<style type="text/css">
+   .pricing-head>h4 {
+      background-color: #ffffff;
+      color: #bac39f;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      flex-direction: column;
+      align-content: space-between;
+      flex-wrap: nowrap;
+   }
+
+   .important {
+      color: red;
+   }
+
+   .box-wrapper {
+      display: block;
+      position: relative;
+      z-index: 0;
+      overflow: hidden;
+      /*hidden the content inside*/
+   }
+
+   .box-content {
+      width: 100%;
+      height: 214px;
+      padding-top: 16px;
+      padding-right: 10px;
+      padding-bottom: 4px;
+      padding-left: 10px;
+      background: #ffffff;
+      border-top-right-radius: 8px;
+   }
+
+   .box-wrapper:hover .box-content {
+      top: 0;
+      /*bring the content back*/
+   }
+
+   .pricing {
+      position: relative;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      background: #fff;
+   }
+
+   .card-background-v {
+      background: #34495a;
+      border-bottom-right-radius: 8px;
+      border-bottom-left-radius: 8px;
+   }
+
+   .camp-card {
+      height: 255px;
+      border-radius: 10px;
+      margin: 5px;
+   }
+
+   .camp-card-bg {
+      height: 214px;
+      border-radius: 8px 0px 0 0 !important;
+   }
+
+   .camp-card-bg {
+      background: #f1f1f1 !important;
+   }
+
+   .custom {
+      background-color: #008fd5;
+      color: #fff;
+      border: 1px solid #3575b5;
+   }
+
+   .box-content h5 {
+      margin: 0px 0px 5px 0px;
+   }
+
+   .zerosides {
+      padding: 0px;
+   }
+
+   .pricing-footer {
+      padding: 0 !important;
+   }
+
+   .img-custom-hgt {
+      height: 64px;
+   }
+
+   .camp-card:hover {
+      box-shadow: 0px 1px 7px #00000038;
+   }
+
+   .camp-card-bg {
+      background: #def0fa !important;
+   }
+
+   /* 19-05-2023 */
+   .pricing-content li {
+      padding: 5px 10px;
+   }
+
+   @media (min-width: 1200px) and (max-width: 1320px) {
+      .pricing-content li {
+         font-size: 10px !important;
+         padding: 6px 11px !important;
+      }
+   }
+
+   @media (min-width: 1000px) and (max-width: 1199px) {
+      .pricing-content li {
+         font-size: 8px !important;
+         padding: 4px 4px !important;
+      }
+
+      .box-content {
+         padding-right: 6px !important;
+         padding-left: 6px !important;
+      }
+
+      .img-custom-hgt {
+         height: 50px !important;
+      }
+   }
+
+   /* mobile */
+   @media screen and (max-width: 600px) {
+      .pricing-footer {
+         position: relative !important;
+         bottom: -13px !important;
+      }
+
+      .card-background-v {
+         background: #34495a00 !important;
+      }
+
+      .pricing {
+         background: #34495a !important;
+      }
+   }
+
+   /* tablet */
+   @media screen and (max-width: 991px) {
+      .pricing-footer {
+         position: relative !important;
+         bottom: -13px !important;
+      }
+
+      .pricing-content li {
+         font-size: 11px !important;
+      }
+
+      .card-background-v {
+         background: #34495a00 !important;
+      }
+
+      .pricing {
+         background: #34495a !important;
+      }
+   }
+
+   .pricing-content li i {
+      display: inline;
+   }
+</style>
+<div class="page-content">
+   <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+   <div class="page-bar">
+      <ul class="page-breadcrumb">
+         <li><i class="fa fa-home" aria-hidden="true"></i>
+            <a [routerLink]="refService.homeRouter" translate>Home</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+         </li>
+         <li><a translate>Select Campaign</a></li>
+      </ul>
+      <app-user-guide-help-button [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
+
+   </div>
+   <!-- End of page-bar -->
+   <div *ngIf="companyIdError">
+      <h5 class="required">Something went wrong.Please try after sometime</h5>
+   </div>
+   <div class="row" *ngIf="!companyIdError">
+      <div class="col-md-12">
+         <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+         </app-response-message>
+         <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
+         <div class="">
+            <app-modal-popup-loader *ngIf="loading"></app-modal-popup-loader>
+            <ng-container *ngIf="!loading">
+               <div class="portlet-title">
+                  <div class="caption" style="padding-top: 10px;padding-bottom: 25px;font-size: 18px;" translate>
+                     <b>Create a campaign</b>&nbsp;&nbsp; <small style="font-size: 14px" translate>Which type of
+                        campaign would you like to create?</small>
+                     <button class="button_blue mrg_top0 bgcolor-unset" id="right" style="margin-top: -7px;"
+                        (click)="openCreateFolderPopup()" translate><span class="btn btn-primary transition">Create a
+                           Folder</span></button>
+                  </div>
+               </div>
+               <div class="portlet-body">
+                  <div class="row clearfix">
+                     <!-- Pricing -->
+                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 box-wrapper" *ngIf="campaignAccess.videoCampaign">
+                        <div class="pricing pricing-border hover-effect pointer camp-card camp-cards"
+                           (click)="goToCreateCampaignSection('video')">
+                           <div class="col-md-4 col-lg-4 col-xs-4 zerosides">
+                              <div class="pricing-head ">
+                                 <h4 class="camp-card-bg">
+                                    <img alt="Video e-mail Campaign"
+                                       class="pricing-head-img img-responsive img-custom-hgt"
+                                       src="assets/images/video-email.svg">
+                                 </h4>
+                              </div>
+                           </div>
+                           <div class="col-md-8 col-lg-8 col-xs-8 zerosides">
+                              <div class="box-content">
+                                 <h5><span style="padding-left:10px;font-weight: 600;" translate> Steps involved:</span>
+                                 </h5>
+                                 <ul class="pricing-content list-unstyled">
+                                    <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details
+                                    </li>
+                                    <li translate><i class="fa fa-video-camera" aria-hidden="true"></i> Select a video
+                                       <span class="important">*</span></li>
+                                    <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span
+                                          class="important">*</span></li>
+                                    <li translate><i class="fa fa-envelope" aria-hidden="true"></i> Select an e-mail
+                                       template <span class="important">*</span></li>
+                                    <li translate style="border-bottom:none !important;"><i class="fa fa-rocket"
+                                          aria-hidden="true"></i> Preview and Launch</li>
+                                 </ul>
+                              </div>
+                           </div>
+                           <div class="col-md-12 col-lg-12 card-background-v">
+                              <div class="pricing-footer">
+                                 <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;"
+                                    translate>Video</h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 box-wrapper" *ngIf="campaignAccess.emailCampaign">
+                        <div class="pricing pricing-border hover-effect pointer camp-card camp-cards"
+                           (click)="goToCreateCampaignSection('regular')">
+                           <div class="col-md-4 col-lg-4 col-xs-4 zerosides">
+                              <div class="pricing-head ">
+                                 <h4 class="camp-card-bg">
+                                    <img alt="Regular E-mail Campaign"
+                                       class="pricing-head-img img-responsive  img-custom-hgt"
+                                       src="assets/images/regular-email.svg">
+                                 </h4>
+                              </div>
+                           </div>
+                           <div class="col-md-8 col-lg-8 col-xs-8 zerosides">
+                              <div class="box-content">
+                                 <h5><span style="padding-left:10px;font-weight: 600;" translate> Steps involved:</span>
+                                 </h5>
+                                 <ul class="pricing-content list-unstyled">
+                                    <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details
+                                    </li>
+                                    <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span
+                                          class="important">*</span></li>
+                                    <li translate><i class="fa fa-envelope" aria-hidden="true"></i> Select an e-mail
+                                       template <span class="important">*</span></li>
+                                    <li translate><i class="fa fa-rocket" aria-hidden="true"></i> Preview and Launch
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                           <div class="col-md-12 col-lg-12 card-background-v">
+                              <div class="pricing-footer">
+                                 <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;"
+                                    translate>E-mail </h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 box-wrapper"
+                        *ngIf="campaignAccess.socialCampaign">
+                        <div class="pricing pricing-border hover-effect pointer camp-card camp-cards"
+                           (click)="goToCreateCampaignSection('social')">
+                           <div class="col-md-4 col-lg-4 col-xs-4 zerosides">
+                              <div class="pricing-head ">
+                                 <h4 class="camp-card-bg">
+                                    <img alt="Social Campaign" class="pricing-head-img img-responsive img-custom-hgt"
+                                       src="assets/images/social-campaign.svg">
+                                 </h4>
+                              </div>
+                           </div>
+                           <div class="col-md-8 col-lg-8 col-xs-8 zerosides">
+                              <div class="box-content">
+                                 <h5><span style="padding-left:10px;font-weight: 600;" translate> Steps involved:</span>
+                                 </h5>
+                                 <ul class="pricing-content list-unstyled">
+                                    <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details
+                                    </li>
+                                    <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span
+                                          class="important">*</span></li>
+                                    <li translate><i class="fa fa-rocket" aria-hidden="true"></i> Preview and Launch
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                           <div class="col-md-12 col-lg-12 card-background-v">
+                              <div class="pricing-footer">
+                                 <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;"
+                                    translate>Social Media</h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 box-wrapper" *ngIf="campaignAccess.eventCampaign">
+                        <div class="pricing pricing-border hover-effect pointer camp-card camp-cards"
+                           (click)="goToCreateCampaignSection('eventCampaign')">
+                           <div class="col-md-4 col-lg-4 col-xs-4 zerosides">
+                              <div class="pricing-head ">
+                                 <h4 class="camp-card-bg">
+                                    <img alt="Social Campaign" class="pricing-head-img img-responsive  img-custom-hgt"
+                                       src="assets/images/event-campaign.svg">
+                                 </h4>
+                              </div>
+                           </div>
+                           <div class="col-md-8 col-lg-8 col-xs-8 zerosides">
+                              <div class="box-content">
+                                 <h5><span style="padding-left:10px;font-weight: 600;" translate> Steps involved:</span>
+                                 </h5>
+                                 <ul class="pricing-content list-unstyled">
+                                    <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details
+                                    </li>
+                                    <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span
+                                          class="important">*</span></li>
+                                    <li translate><i class="fa fa-envelope" aria-hidden="true"></i> Select an e-mail
+                                       template <span class="important">*</span></li>
+                                    <li translate><i class="fa fa-rocket" aria-hidden="true"></i> Preview and Launch
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                           <div class="col-md-12 col-lg-12 card-background-v">
+                              <div class="pricing-footer">
+                                 <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;"
+                                    translate>Event</h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 box-wrapper"
+                        *ngIf="campaignAccess.landingPageCampaign">
+                        <div class="pricing pricing-border hover-effect pointer camp-card camp-cards"
+                           (click)="goToCreateCampaignSection('landingPage')">
+                           <div class="col-md-4 col-lg-4 col-xs-4 zerosides">
+                              <div class="pricing-head ">
+                                 <h4 class="camp-card-bg">
+                                    <img alt="Social Campaign" class="pricing-head-img img-responsive img-custom-hgt"
+                                       src="assets/images/landing-page.svg">
+                                 </h4>
+                              </div>
+                           </div>
+                           <div class="col-md-8 col-lg-8 col-xs-8 zerosides">
+                              <div class="box-content">
+                                 <h5><span style="padding-left:10px;font-weight: 600;" translate> Steps involved:</span>
+                                 </h5>
+                                 <ul class="pricing-content list-unstyled">
+                                    <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details
+                                    </li>
+                                    <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span
+                                          class="important">*</span></li>
+                                    <li translate><i class="fa fa-envelope" aria-hidden="true"></i> Select a page <span
+                                          class="important">*</span></li>
+                                    <li translate><i class="fa fa-rocket" aria-hidden="true"></i> Preview and Launch
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                           <div class="col-md-12 col-lg-12 card-background-v">
+                              <div class="pricing-footer">
+                                 <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;"
+                                    translate>Page</h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 box-wrapper" *ngIf="campaignAccess.survey">
+                        <div class="pricing pricing-border hover-effect pointer camp-card camp-cards"
+                           (click)="goToCreateCampaignSection('survey')">
+                           <div class="col-md-4 col-lg-4 col-xs-4 zerosides">
+                              <div class="pricing-head ">
+                                 <h4 class="camp-card-bg">
+                                    <img alt="Social Campaign" class="pricing-head-img img-responsive img-custom-hgt"
+                                       src="assets/images/survey.svg">
+                                 </h4>
+                              </div>
+                           </div>
+                           <div class="col-md-8 col-lg-8 col-xs-8 zerosides">
+                              <div class="box-content">
+                                 <h5><span style="padding-left:10px;font-weight: 600;" translate> Steps involved:</span>
+                                 </h5>
+                                 <ul class="pricing-content list-unstyled">
+                                    <li translate><i class="fa fa-list" aria-hidden="true"></i> Provide campaign details
+                                    </li>
+                                    <li translate><i class="fa fa-users" aria-hidden="true"></i> Select Recipients <span
+                                          class="important">*</span></li>
+                                    <li translate><i class="fa fa-envelope" aria-hidden="true"></i> Select an e-mail
+                                       template <span class="important">*</span></li>
+                                    <li translate><i class="fa fa-rocket" aria-hidden="true"></i> Preview and Launch
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                           <div class="col-md-12 col-lg-12 card-background-v">
+                              <div class="pricing-footer">
+                                 <h4 style="padding-top: 4px; font-size: 15px;font-weight: 600;color: #fff !important;"
+                                    translate>Survey </h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </ng-container>
+         </div>
+      </div>
+   </div>
+</div>
+<app-add-folder-modal-popup #addFolderModalPopupComponent
+   (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
+<app-spf-modal-popup *ngIf="showSpf" [companyId]="loggedInUserCompanyId"></app-spf-modal-popup>

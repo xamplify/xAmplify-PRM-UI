@@ -52,9 +52,7 @@ export class TrackAssetDetailsComponent implements OnInit {
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.maxResults = 6;
     this.pagination.lmsType = this.type;
-    if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
-      this.pagination.teamMemberId = this.teamMemberId;
-    }    
+    this.pagination.teamMemberId = this.teamMemberId;
     this.parterService.getTrackAssetDetails(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);

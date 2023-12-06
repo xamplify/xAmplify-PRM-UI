@@ -292,20 +292,18 @@
                                                                     aria-hidden="true"></i>
                                                                 <div class="clickicons"></div>
                                                             </a>
-                                                            <span class="badge"
-                                                            id="notification">{{form.count}}</span>
+                                                            <span class="badge" id="notification">{{form.count}}</span>
                                                         </ng-container>
                                                         <ng-container *ngIf="form.count>0">
-                                                            <a class="custom-icon  mrgt-unset" data-rel="fancybox-button"
-                                                                (click)="goToAnalytics(form)" data-toggle="tooltip"
-                                                                data-placement="top" title="Form Analytics"
-                                                                style="margin-top: -5px;">
+                                                            <a class="custom-icon  mrgt-unset"
+                                                                data-rel="fancybox-button" (click)="goToAnalytics(form)"
+                                                                data-toggle="tooltip" data-placement="top"
+                                                                title="Form Analytics" style="margin-top: -5px;">
                                                                 <i class="fa fa-line-chart IconCustomization"
                                                                     aria-hidden="true"></i>
                                                                 <div class="clickicons"></div>
                                                             </a>
-                                                            <span class="badge"
-                                                            id="notification">{{form.count}}</span>
+                                                            <span class="badge" id="notification">{{form.count}}</span>
                                                         </ng-container>
                                                     </ng-container>
                                                 </div>
@@ -468,9 +466,9 @@
                             [ngModel]="formAliasUrl" #userinput>
                         <br>
                         <div style="padding-top: 8px;">
-                            <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Form link')"
-                                translate>Copy Link
-                            </a>
+                            <button class="button_blue bgcolor-unset" id="right" (click)="copyInputMessage(userinput,'Form link')"
+                                translate><span class="btn btn-primary transition">Copy Link</span>
+                            </button>
                         </div>
                         <br>
                     </div>
@@ -479,9 +477,10 @@
                         <textarea class="text-color borderColorsCU" id="text-area" rows="3" [ngModel]="iframeEmbedUrl"
                             spellcheck="false" #iframeUrlInput></textarea>
                         <div style="padding-top: 10px;">
-                            <a class="btn btn-primary" id="right"
-                                (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed Link
-                            </a>
+                            <button class="button_blue bgcolor-unset" id="right"
+                                (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate><span
+                                    class="btn btn-primary transition">Copy Embed Link</span>
+                            </button>
                         </div>
                     </div>
                 </div>

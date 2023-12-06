@@ -359,11 +359,12 @@
                                             *ngIf="activeTabName == 'customTheme'|| activeTabName == 'lightTheme'
                                         || activeTabName == 'DarkTheme' || activeTabName == 'neumorphismDark'|| activeTabName == 'neumorphismLight'">
                                             <div class="btn-group" style="padding-top: 7px;">
-                                                <button class="btn btn-primary padding align"
+                                                <button class="button_blue padding align bgcolor-unset"
                                                     style="border-radius: 3px;"
                                                     *ngIf="activeTabName == 'lightTheme' && themeDto?.id != activeThemeDetails?.themeId"
-                                                    (click)="activateThemeForCompanyWithAlert(themeDto.id)">Activate
-                                                    Theme</button>
+                                                    (click)="activateThemeForCompanyWithAlert(themeDto.id)"><span
+                                                        class="btn btn-primary transition">Activate
+                                                        Theme</span></button>
 
                                             </div>
 
@@ -409,26 +410,30 @@
                                                                     class="actions-block override-actions ActionAlign mb_whitespace">
                                                                     <div
                                                                         class="mActionAlign ActionButtonPad iconmobile-align">
-                                                                        <a class="mMobileDisable custom-icon" data-toggle="tooltip"
+                                                                        <a class="mMobileDisable custom-icon"
+                                                                            data-toggle="tooltip"
                                                                             data-placement="bottom" title="View"
                                                                             (click)="viewTheme();showDto(dto);"><i
                                                                                 aria-hidden="true"
                                                                                 class="fa fa-eye mDisableColor IconCustomization"></i>
-                                                                                <div class="clickicons"></div>
+                                                                            <div class="clickicons"></div>
                                                                         </a>
-                                                                        <a  class="custom-icon" data-toggle="tooltip" data-placement="bottom"
-                                                                            title="Activate"
+                                                                        <a class="custom-icon" data-toggle="tooltip"
+                                                                            data-placement="bottom" title="Activate"
                                                                             (click)="activateThemeForCompanyWithAlert(dto.id)"
                                                                             *ngIf="dto?.id != activeThemeDetails?.themeId"><i
                                                                                 _ngcontent-c69="" aria-hidden="true"
                                                                                 class="fa fa-power-off IconCustomization"></i>
-                                                                            <div class="clickicons"></div> </a>
+                                                                            <div class="clickicons"></div>
+                                                                        </a>
                                                                         <a data-toggle="tooltip" data-placement="bottom"
-                                                                            class="mMobileDisable custom-icon" title="Copy"
+                                                                            class="mMobileDisable custom-icon"
+                                                                            title="Copy"
                                                                             (click)="goToCustomThemes();showDto(dto);saveTheme();"
                                                                             *ngIf="dto?.id != 4"><i aria-hidden="true"
                                                                                 class="fa fa-files-o mDisableColor IconCustomization"></i>
-                                                                            <div class="clickicons"></div></a>
+                                                                            <div class="clickicons"></div>
+                                                                        </a>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -474,27 +479,31 @@
                                                                 (click)="goToCustomThemes();showDto(dto);updateTheme();"><i
                                                                     aria-hidden="true"
                                                                     class="fa fa-edit mDisableColor IconCustomization"></i>
-                                                                <div class="clickicons"></div></a>
-                                                            <a class ="custom-icon" data-toggle="tooltip" data-placement="bottom"
-                                                                title="Activate"
+                                                                <div class="clickicons"></div>
+                                                            </a>
+                                                            <a class="custom-icon" data-toggle="tooltip"
+                                                                data-placement="bottom" title="Activate"
                                                                 (click)="activateThemeForCompanyWithAlert(dto.id)"
                                                                 *ngIf="dto?.id != activeThemeDetails?.themeId"><i
                                                                     _ngcontent-c69="" aria-hidden="true"
                                                                     class="fa fa-power-off IconCustomization"></i>
-                                                                <div class="clickicons"></div></a>
+                                                                <div class="clickicons"></div>
+                                                            </a>
                                                             <a class="mMobileDisable custom-icon" data-toggle="tooltip"
                                                                 data-placement="bottom" title="Copy"
                                                                 (click)="goToCustomThemes();showDto(dto);saveTheme();"><i
                                                                     aria-hidden="true"
                                                                     class="fa fa-files-o mDisableColor IconCustomization"></i>
-                                                                <div class="clickicons"></div></a>
-                                                            <a  class="custom-icon" data-toggle="tooltip" data-placement="bottom"
-                                                                title="Delete"
+                                                                <div class="clickicons"></div>
+                                                            </a>
+                                                            <a class="custom-icon" data-toggle="tooltip"
+                                                                data-placement="bottom" title="Delete"
                                                                 (click)="deleteByThemeIdWithAlert(dto.id)"
                                                                 *ngIf="dto?.id != activeThemeDetails?.themeId"> <i
                                                                     _ngcontent-c69="" aria-hidden="true"
                                                                     class="fa fa-trash-o trashIconCustomization"></i>
-                                                                <div class="del-icon"></div></a>
+                                                                <div class="del-icon"></div>
+                                                            </a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -619,7 +628,7 @@
                                                     style="padding: left 18px;">
                                                     <button type="submit"
                                                         [disabled]="!updateUserProfileForm.valid || authenticationService.isSuperAdmin()"
-                                                        class="button" translate>
+                                                        class="button bgcolor-unset" translate>
                                                         <span class="btn Btn-Green transition">Save Changes</span>
                                                     </button>
                                                 </div>
@@ -713,8 +722,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button [disabled]="!formSubmiteState" class="btn Btn-Green"
-                                                    (click)="saveForm()">{{submitButtonText}}</button>
+                                                <button [disabled]="!formSubmiteState" class="button bgcolor-unset"
+                                                    (click)="saveForm()"><span
+                                                        class="btn Btn-Green transition">{{submitButtonText}}</span></button>
 
                                             </form>
                                             <form role="form" aria-label="">
@@ -785,8 +795,8 @@
                                                     </div>
                                                 </div>
                                                 <button [disabled]="!dealSubmiteState || this.dealtypes.length == 0"
-                                                    class="btn Btn-Green"
-                                                    (click)="saveDealTypes()">{{dealButtonText}}</button>
+                                                    class="button bgcolor-unset" (click)="saveDealTypes()"><span
+                                                        class="btn Btn-Green transition">{{dealButtonText}}</span></button>
                                             </form>
                                         </div>
                                         <!---Integrations-->
@@ -797,7 +807,7 @@
                                                         [class.disabled]="isMarketoProcess" (click)="configmarketo()"
                                                         *ngIf="!httpRequestLoader.isLoading">
                                                         <div
-                                                            [className]="activeCRMDetails?.type === 'MARKETO'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
+                                                            [className]="activeCRMDetails?.type === 'MARKETO'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0 integration_cards'">
                                                             <div class="card-body" style="padding:10px">
                                                                 <span *ngIf="integrateRibbonText == 'configured'"
                                                                     class="integration-cards">
@@ -846,7 +856,7 @@
                                                     <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 intg_mb_16"
                                                         *ngIf="!httpRequestLoader.isLoading">
                                                         <div
-                                                            [className]="activeCRMDetails?.type === 'HUBSPOT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
+                                                            [className]="activeCRMDetails?.type === 'HUBSPOT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0 integration_cards'">
                                                             <div class="card-body" style="padding:10px;">
                                                                 <span *ngIf="hubSpotRibbonText == 'configured'"
                                                                     class="integration-cards">
@@ -893,7 +903,7 @@
                                                     <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 intg_mb_16"
                                                         *ngIf="!httpRequestLoader.isLoading">
                                                         <div
-                                                            [className]="activeCRMDetails?.type === 'SALESFORCE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
+                                                            [className]="activeCRMDetails?.type === 'SALESFORCE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0 integration_cards'">
                                                             <div class="card-body" style="padding:10px;">
                                                                 <span *ngIf="sfRibbonText == 'configured'"
                                                                     class="integration-cards">
@@ -940,7 +950,7 @@
                                                     <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16"
                                                         *ngIf="!httpRequestLoader.isLoading">
                                                         <div
-                                                            [className]="activeCRMDetails?.type === 'MICROSOFT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
+                                                            [className]="activeCRMDetails?.type === 'MICROSOFT'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0 integration_cards'">
                                                             <div class="card-body" style="padding:10px;">
                                                                 <span *ngIf="microsoftRibbonText == 'configured'"
                                                                     class="integration-cards">
@@ -985,7 +995,7 @@
                                                     <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16"
                                                         *ngIf="!httpRequestLoader.isLoading">
                                                         <div
-                                                            [className]="activeCRMDetails?.type === 'PIPEDRIVE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
+                                                            [className]="activeCRMDetails?.type === 'PIPEDRIVE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0 integration_cards'">
                                                             <div class="card-body" style="padding:10px;">
                                                                 <span *ngIf="pipedriveRibbonText == 'configured'"
                                                                     class="integration-cards">
@@ -1027,36 +1037,46 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16" *ngIf="!httpRequestLoader.isLoading">
-                                                        <div [className]="activeCRMDetails?.type === 'CONNECTWISE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0'">
-                                                            <div class="card-body" style="padding:10px;">    
-                                                                <span *ngIf="connectwiseRibbonText == 'configured'" 
-                                                                class="integration-cards">
-                                                                        <a (click)="connectwiseSettings()" data-toggle="tooltip"
-                                                                data-placement="top" title="ConnectWise Settings"><i class="fa fa-cog"
-                                                                        style="font-size: 20px !important;"></i></a>
-                                                                    </span>                                                       
-                                                                <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">ConnectWise</h5>
-    
-                                                                <div class="ribbon draft config" style="left:10px" *ngIf="connectwiseRibbonText == 'configured'">
-                                                                    <span [style.background-color]="'green'">{{connectwiseRibbonText}}</span>
+                                                    <div class="col-lg-4 col-sm-6 col-md-6 col-xs-12 tab_mt_20 intg_mb_16"
+                                                        *ngIf="!httpRequestLoader.isLoading">
+                                                        <div
+                                                            [className]="activeCRMDetails?.type === 'CONNECTWISE'? 'card mb-5 mb-lg-0 activeCRM' : 'card mb-5 mb-lg-0 integration_cards'">
+                                                            <div class="card-body" style="padding:10px;">
+                                                                <span *ngIf="connectwiseRibbonText == 'configured'"
+                                                                    class="integration-cards">
+                                                                    <a (click)="connectwiseSettings()"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="ConnectWise Settings"><i
+                                                                            class="fa fa-cog"
+                                                                            style="font-size: 20px !important;"></i></a>
+                                                                </span>
+                                                                <h5 class="card-title  text-uppercase text-center"
+                                                                    style="padding-top: 4%;">ConnectWise</h5>
+
+                                                                <div class="ribbon draft config" style="left:10px"
+                                                                    *ngIf="connectwiseRibbonText == 'configured'">
+                                                                    <span
+                                                                        [style.background-color]="'green'">{{connectwiseRibbonText}}</span>
                                                                 </div>
-                                                                <div class="ribbon draft" style="left:10px" *ngIf="connectwiseRibbonText != 'configured'">
-                                                                    <span [style.background-color]="'yello'">{{connectwiseRibbonText}}</span>
+                                                                <div class="ribbon draft" style="left:10px"
+                                                                    *ngIf="connectwiseRibbonText != 'configured'">
+                                                                    <span
+                                                                        [style.background-color]="'yello'">{{connectwiseRibbonText}}</span>
                                                                 </div>
                                                                 <div style="height: 120px;">
                                                                     <div>
-                                                                        <img src="assets/images/crm/connectwise-xamplify.png" style="margin-top:20px; text-align: center;width:100%">
+                                                                        <img src="assets/images/crm/connectwise-xamplify.png"
+                                                                            style="margin-top:20px; text-align: center;width:100%">
                                                                     </div>
                                                                 </div>
-                                                                    <a (click)="configureConnectWise()"
-                                                                        class="btn btn-block btn-primary text-uppercase"
-                                                                        *ngIf="connectwiseRibbonText == 'configure'"
-                                                                        translate>configure</a>
-                                                                    <a (click)="configureConnectWise()"
-                                                                        class="btn btn-block btn-primary text-uppercase"
-                                                                        *ngIf="connectwiseRibbonText == 'configured'"
-                                                                        translate>re configure</a>
+                                                                <a (click)="configureConnectWise()"
+                                                                    class="btn btn-block btn-primary text-uppercase"
+                                                                    *ngIf="connectwiseRibbonText == 'configure'"
+                                                                    translate>configure</a>
+                                                                <a (click)="configureConnectWise()"
+                                                                    class="btn btn-block btn-primary text-uppercase"
+                                                                    *ngIf="connectwiseRibbonText == 'configured'"
+                                                                    translate>re configure</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1333,8 +1353,10 @@
                                                     <div class="row">
                                                         <div class="col-xs-12 col-sm-12 col-lg-12">
                                                             <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
-                                                                <button class="btn btn-primary" (click)="addPipeline()"
-                                                                    translate>Create Pipeline</button>
+                                                                <button class="button_blue bgcolor-unset"
+                                                                    (click)="addPipeline()" translate><span
+                                                                        class="btn btn-primary transition">Create
+                                                                        Pipeline</span></button>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-7 col-lg-7 p0">
                                                                 <div class="page-toolbar">
@@ -1441,33 +1463,40 @@
                                                                                 <div
                                                                                     class="actions-block override-actions mb_whitespace tb_view_actions">
                                                                                     <ng-container>
-                                                                                        <a class="custom-icon" *ngIf="pipeline.canSync"
+                                                                                        <a class="custom-icon"
+                                                                                            *ngIf="pipeline.canSync"
                                                                                             data-toggle="tooltip"
                                                                                             data-placement="top"
                                                                                             title="Synchronize with {{pipeline.integrationType}}"
                                                                                             (click)="syncPipeline(pipeline)">
                                                                                             <i
                                                                                                 class="fa fa-refresh IconCustomization"></i>
-                                                                                                <div class="clickicons"></div>
+                                                                                            <div class="clickicons">
+                                                                                            </div>
                                                                                         </a>
-                                                                                        <a  class="custom-icon" data-toggle="tooltip"
+                                                                                        <a class="custom-icon"
+                                                                                            data-toggle="tooltip"
                                                                                             data-placement="top"
                                                                                             title="View"
                                                                                             (click)="viewPipeline(pipeline)">
                                                                                             <i
                                                                                                 class="fa fa-eye IconCustomization"></i>
-                                                                                                <div class="clickicons"></div>
+                                                                                            <div class="clickicons">
+                                                                                            </div>
                                                                                         </a>
-                                                                                        <a class="custom-icon" *ngIf="pipeline.canUpdate"
+                                                                                        <a class="custom-icon"
+                                                                                            *ngIf="pipeline.canUpdate"
                                                                                             data-toggle="tooltip"
                                                                                             data-placement="top"
                                                                                             title="Edit"
                                                                                             (click)="editPipeline(pipeline)">
                                                                                             <i
                                                                                                 class="fa fa-pencil-square-o IconCustomization"></i>
-                                                                                                <div class="clickicons"></div>
+                                                                                            <div class="clickicons">
+                                                                                            </div>
                                                                                         </a>
-                                                                                        <a  class="custom-icon" *ngIf="pipeline.canDelete"
+                                                                                        <a class="custom-icon"
+                                                                                            *ngIf="pipeline.canDelete"
                                                                                             id="template-delete"
                                                                                             (click)="confirmDeletePipeline(pipeline)"
                                                                                             data-toggle="tooltip"
@@ -1475,7 +1504,7 @@
                                                                                             title="Delete">
                                                                                             <i
                                                                                                 class="fa fa-trash-o trashIconCustomization"></i>
-                                                                                                <div class="del-icon"></div>
+                                                                                            <div class="del-icon"></div>
                                                                                         </a>
                                                                                     </ng-container>
                                                                                 </div>
@@ -1576,9 +1605,10 @@
                                                 <div class="col-lg-12 col-md-13 col-sm-12 col-xs-12">
                                                     <div class="margin-top-10">
                                                         <button type="submit" id="register-submit-btn"
-                                                            [disabled]="!updatePasswordForm.valid" class="btn Btn-Green"
-                                                            translate>
-                                                            Change Password</button>
+                                                            [disabled]="!updatePasswordForm.valid"
+                                                            class="button bgcolor-unset" translate>
+                                                            <span class="btn Btn-Green transition">Change
+                                                                Password</span></button>
                                                         <input type="reset" class="btn Btn-Gray" value="Cancel">
                                                     </div>
                                                 </div>
@@ -1618,8 +1648,10 @@
                                                 </label>
                                             </div>
                                             <div class="margin-top-10">
-                                                <button type="submit" class="btn Btn-Green" (click)="setDefaultView()"
-                                                    translate>Save Changes</button>
+                                                <button type="submit" class="button bgcolor-unset"
+                                                    (click)="setDefaultView()" translate><span
+                                                        class="btn Btn-Green transition">Save
+                                                        Changes</span></button>
                                             </div>
                                         </div>
                                         <!-- END PRIVACY SETTINGS TAB -->
@@ -1701,12 +1733,14 @@
                                                 </table>
                                                 <div class="col-xs-12"
                                                     style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
-                                                    <button type="submit" class="btn Btn-Green"
+                                                    <button type="submit" class="button bgcolor-unset"
                                                         (click)="saveGdprSetting()" *ngIf="!gdprSetting.isExists"
-                                                        translate>Save Settings</button>
-                                                    <button type="submit" class="btn Btn-Green"
+                                                        translate><span class="btn Btn-Green transition">Save
+                                                            Settings</span></button>
+                                                    <button type="submit" class="button bgcolor-unset"
                                                         (click)="updateGdprSetting()" *ngIf="gdprSetting.isExists"
-                                                        translate>Update Settings</button>
+                                                        translate><span class="btn Btn-Green transition">Update
+                                                            Settings</span></button>
 
                                                 </div>
                                             </form>
@@ -1747,8 +1781,10 @@
                                                     <div class="row">
                                                         <div class="col-xs-12 col-sm-12 col-lg-12">
                                                             <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
-                                                                <button class="btn-primary" (click)="addCategory()"
-                                                                    translate>Create a Folder</button>
+                                                                <button class="button_blue bgcolor-unset"
+                                                                    (click)="addCategory()" translate><span
+                                                                        class="btn btn-primary transition">Create a
+                                                                        Folder</span></button>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-7 col-lg-7 p0">
                                                                 <div class="page-toolbar">
@@ -1868,36 +1904,40 @@
                                                                             </ng-container>
                                                                             <ng-container
                                                                                 *ngIf="!category.defaultCategory">
-                                                                                <a class="custom-icon" data-toggle="tooltip"
+                                                                                <a class="custom-icon"
+                                                                                    data-toggle="tooltip"
                                                                                     data-placement="top" title="Edit"
                                                                                     (click)="getCategoryById(category)">
                                                                                     <i class="fa fa-pencil-square-o IconCustomization"
                                                                                         aria-hidden="true"></i>
-                                                                                        <div class="clickicons"></div>
+                                                                                    <div class="clickicons"></div>
                                                                                 </a>
-                                                                                <a class="custom-icon" id="template-delete"
+                                                                                <a class="custom-icon"
+                                                                                    id="template-delete"
                                                                                     (click)="confirmDeleteCategory(category)"
                                                                                     data-toggle="tooltip"
                                                                                     data-placement="top" title="Delete">
                                                                                     <i class="fa fa-trash-o trashIconCustomization"
                                                                                         aria-hidden="true"></i>
-                                                                                        <div class="del-icon"></div> 
+                                                                                    <div class="del-icon"></div>
                                                                                 </a>
                                                                             </ng-container>
                                                                             <ng-container *ngIf="category?.count>0">
-                                                                                <a class="custom-icon" *ngIf="categoryPagination.previewAccess"
+                                                                                <a class="custom-icon"
+                                                                                    *ngIf="categoryPagination.previewAccess"
                                                                                     data-toggle="tooltip"
                                                                                     data-placement="top" title="Preview"
                                                                                     (click)="previewItems(category)">
                                                                                     <i class="fa fa-eye IconCustomization"
                                                                                         aria-hidden="true"></i>
-                                                                                        <div class="clickicons"></div>
+                                                                                    <div class="clickicons"></div>
                                                                                 </a>
-                                                                                <a class="custom-icon" *ngIf="!categoryPagination.previewAccess"
+                                                                                <a class="custom-icon"
+                                                                                    *ngIf="!categoryPagination.previewAccess"
                                                                                     title="You do not have permission to preview">
                                                                                     <i class="fa fa-eye disabled-event IconCustomization"
                                                                                         aria-hidden="true"></i>
-                                                                                        <div class="clickicons"></div>
+                                                                                    <div class="clickicons"></div>
                                                                                 </a>
                                                                             </ng-container>
                                                                             <ng-container *ngIf="category?.count==0">
@@ -1960,7 +2000,8 @@
                                                                 </td>
                                                                 <td>
                                                                     <div class="override-actions">
-                                                                        <a class="custom-icon" [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'"
+                                                                        <a class="custom-icon"
+                                                                            [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'"
                                                                             data-toggle="tooltip"
                                                                             data-placement="bottom">
                                                                             <i *ngIf="item.previewAccess"
@@ -1968,7 +2009,8 @@
                                                                                 (click)="goToFolder(categoryPreviewItem.categoryId,item)"><b>{{item.moduleItemsCount}}</b></i>
                                                                             <i *ngIf="!item.previewAccess"
                                                                                 class="circled-number fontStyleNormal IconCustomization xampify-cursor-not-allowed"><b>{{item.moduleItemsCount}}</b></i>
-                                                                      <div class="clickicons"></div>  </a>
+                                                                            <div class="clickicons"></div>
+                                                                        </a>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -2326,9 +2368,10 @@
                                                                 </div>
                                                                 <div class="col-xs-12 button-align"
                                                                     style="padding-left: 10px;">
-                                                                    <button type="submit" class="btn Btn-Green"
-                                                                        [disabled]="hasVideoRole" translate>Save
-                                                                        Changes</button>
+                                                                    <button type="submit" class="button bgcolor-unset"
+                                                                        [disabled]="hasVideoRole" translate><span
+                                                                            class="btn Btn-Green transition">Save
+                                                                            Changes</span></button>
                                                                     <button type="button" class="btn Btn-Gray"
                                                                         (click)="resetForm()" [disabled]="hasVideoRole"
                                                                         translate>Cancel</button>
@@ -2358,11 +2401,12 @@
                                                                 A User</h4>
                                                             <button (click)="downloadEmptyCSV('exclude-users')"
                                                                 type="button"
-                                                                class="btn Btn-Green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10"
+                                                                class="button col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10 bgcolor-unset"
                                                                 download style="float:right"
                                                                 [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}"
                                                                 translate>
-                                                                Download User CSV Template
+                                                                <span class="btn Btn-Green transition">Download User CSV
+                                                                    Template</span>
                                                                 <i class="fa fa-download" aria-hidden="true"
                                                                     style="margin-left: 5px"></i>
                                                             </button>
@@ -2374,24 +2418,27 @@
                                                                 *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                                 <button
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn Btn-Green btn-c-width"
+                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset"
                                                                     [disabled]="csvExcludeUsersFilePreview"
                                                                     (click)="addContactModalOpen()" translate>
-                                                                    One at a Time <i class="fa fa-plus"
-                                                                        style="font-size: 12px; margin-left: 2px;"></i>
+                                                                    <span class="btn Btn-Green transition">One at a Time
+                                                                        <i class="fa fa-plus"
+                                                                            style="font-size: 12px; margin-left: 2px;"></i></span>
                                                                 </button>
 
                                                                 <button id="uploadCSV"
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn Btn-Green btn-c-width"
+                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset"
                                                                     translate>
-                                                                    <span style="text-align: center" translate>Upload
-                                                                        CSV</span> <input class="upload-file"
-                                                                        type="file" title=" "
-                                                                        (click)="input.value = null"
-                                                                        (change)="fileChange(input, 'exclude-users')"
-                                                                        accept=".csv" #input />
-                                                                    <i class="fa fa-upload" aria-hidden="true"
-                                                                        style="font-size: 12px; margin-left: 5px;"></i>
+                                                                    <span class="btn Btn-Green transition">
+                                                                        <span style="text-align: center"
+                                                                            translate>Upload
+                                                                            CSV</span> <input class="upload-file"
+                                                                            type="file" title=" "
+                                                                            (click)="input.value = null"
+                                                                            (change)="fileChange(input, 'exclude-users')"
+                                                                            accept=".csv" #input />
+                                                                        <span><i class="fa fa-upload" aria-hidden="true"
+                                                                                style="font-size: 12px; margin-left: 5px;"></i></span></span>
                                                                 </button>
 
                                                             </div>
@@ -2531,13 +2578,15 @@
                                                                                             style="float:none;"
                                                                                             *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                                                            <a class="custom-icon" data-toggle="tooltip"
+                                                                                            <a class="custom-icon"
+                                                                                                data-toggle="tooltip"
                                                                                                 data-placement="top"
                                                                                                 title="delete"
                                                                                                 (click)="showDeleteExcludedUserAlert(user.userId)">
                                                                                                 <i class="fa fa-trash-o trashIconCustomization"
                                                                                                     aria-hidden="true"></i>
-                                                                                                    <div class="del-icon"></div>
+                                                                                                <div class="del-icon">
+                                                                                                </div>
                                                                                             </a>
                                                                                         </div>
                                                                                     </td>
@@ -2601,24 +2650,27 @@
                                                                 *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                                 <button id="add_domain"
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn Btn-Green btn-c-width"
+                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset"
                                                                     [disabled]="csvExcludeDomainsFilePreview"
                                                                     (click)="addDomainModalOpen()" translate>
-                                                                    One at a Time <i class="fa fa-plus"
-                                                                        style="font-size: 12px; margin-left: 2px;"></i>
+                                                                    <span class="btn Btn-Green transition">One at a Time
+                                                                        <i class="fa fa-plus"
+                                                                            style="font-size: 12px; margin-left: 2px;"></i></span>
                                                                 </button>
 
                                                                 <button id="uploadCSV"
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn Btn-Green btn-c-width"
+                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-widthu button bgcolor-unset"
                                                                     translate>
-                                                                    <span style="text-align: center" translate>Upload
-                                                                        CSV</span> <input class="upload-file"
-                                                                        type="file" title=" "
-                                                                        (click)="input.value = null"
-                                                                        (change)="fileChange(input, 'exclude-domains')"
-                                                                        accept=".csv" #input />
-                                                                    <i class="fa fa-upload" aria-hidden="true"
-                                                                        style="font-size: 12px; margin-left: 5px;"></i>
+                                                                    <span class="btn Btn-Green transition">
+                                                                        <span style="text-align: center"
+                                                                            translate>Upload
+                                                                            CSV</span> <input class="upload-file"
+                                                                            type="file" title=" "
+                                                                            (click)="input.value = null"
+                                                                            (change)="fileChange(input, 'exclude-domains')"
+                                                                            accept=".csv" #input />
+                                                                        <i class="fa fa-upload" aria-hidden="true"
+                                                                            style="font-size: 12px; margin-left: 5px;"></i></span>
                                                                 </button>
 
                                                             </div>
@@ -2755,13 +2807,15 @@
                                                                                             style="float:none;"
                                                                                             *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                             authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                                                            <a class="custom-icon" data-toggle="tooltip"
+                                                                                            <a class="custom-icon"
+                                                                                                data-toggle="tooltip"
                                                                                                 data-placement="top"
                                                                                                 title="delete"
                                                                                                 (click)="showDeleteExcludedDomainAlert(obj.domainName)">
                                                                                                 <i class="fa fa-trash-o trashIconCustomization"
                                                                                                     aria-hidden="true"></i>
-                                                                                                    <div class="del-icon"></div>
+                                                                                                <div class="del-icon">
+                                                                                                </div>
                                                                                             </a>
                                                                                         </div>
                                                                                     </td>
@@ -2970,8 +3024,9 @@
                                 aria-hidden="true"></i></button>
                     </div>
                     <div>
-                        <button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadProfileImage()">Save
-                            Changes</button>
+                        <button class="button_blue bgcolor-unset" [disabled]="!showCropper"
+                            (click)="uploadProfileImage()"><span class="btn btn-primary transition">Save
+                                Changes</span></button>
                     </div>
                 </div>
             </div>
@@ -3009,7 +3064,8 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" [disabled]="!category.isValid || addCategoryLoader.isLoading "
-                    class="btn btn-primary" (click)="saveOrUpdateCategory()">{{categoyButtonSubmitText}}</button>
+                    class="button_blue bgcolor-unset" (click)="saveOrUpdateCategory()"><span
+                        class="btn btn-primary transition">{{categoyButtonSubmitText}}</span></button>
             </div>
         </div>
     </div>
@@ -3169,7 +3225,8 @@
             </div>
             <div class="modal-footer" *ngIf="!pipelinePreview">
                 <button type="submit" [disabled]="!pipeline.isValid || addPipelineLoader.isLoading"
-                    class="btn Btn-Green" (click)="saveOrUpdatePipeline()">Submit</button>
+                    class="button bgcolor-unset" (click)="saveOrUpdatePipeline()"><span
+                        class="btn Btn-Green transition">Submit</span></button>
 
             </div>
         </div>

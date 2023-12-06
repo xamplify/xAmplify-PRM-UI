@@ -157,8 +157,9 @@
                       </span>
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
                         (click)="addDeal()" style="padding-left: 11px;">
-                        <button class="btn btn-primary" translate>
-                          <i class="fa fa-plus" aria-hidden="true"></i> Add a Deal
+                        <button class="button_blue bgcolor-unset" translate>
+                          <span class="btn btn-primary transition"><i class="fa fa-plus" aria-hidden="true"></i> Add a
+                            Deal</span>
                         </button>
                       </a>
 
@@ -166,9 +167,10 @@
                       <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO'"
                         (click)="syncLeadsWithActiveCRM()">
 
-                        <button class="btn btn-white button salesforce-btn" style="margin-right: -6px;"
+                        <button class="btn btn-white salesforce-btn button neg-mar-top bgcolor-unset" style="margin-right: -6px;"
                           data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
-                          <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
+                          <span class="btn Btn-Green transition"><i class="fa fa-refresh" aria-hidden="true"></i> {{
+                            activeCRMDetails?.type | titlecase }}</span>
                         </button>
                       </a>
 
@@ -211,8 +213,9 @@
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                         <div class="form-group" style="text-align: -webkit-right;">
-                          <button class="btn Btn-Green" translate="" type="button" ng-reflect-translate="" [disabled]=""
-                            (click)="validateDateFilters()">Filter</button>
+                          <button class="button bgcolor-unset" translate="" type="button" ng-reflect-translate="" [disabled]=""
+                            (click)="validateDateFilters()"><span
+                              class="btn Btn-Green transition">Filter</span></button>
                         </div>
                       </div>
                       <div class="portlet box">

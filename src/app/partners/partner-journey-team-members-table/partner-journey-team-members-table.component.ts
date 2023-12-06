@@ -37,6 +37,11 @@ export class PartnerJourneyTeamMembersTableComponent implements OnInit {
   }
 
   ngOnInit() {    
+    // this.getTeamInfo(this.pagination);
+    // this.getTeamEmails();
+  } 
+
+  ngOnChanges(){
     this.getTeamInfo(this.pagination);
     this.getTeamEmails();
   }

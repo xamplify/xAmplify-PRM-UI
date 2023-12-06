@@ -291,8 +291,7 @@
 																data-toggle="dropdown" title="Download"></span> <span
 																data-placement="bottom" title="Download"></span>
 															<ul class="dropdown-menu pull-right">
-																<li *ngIf="campaign.campaignType != 'EVENT'"><a
-																		class=""
+																<li *ngIf="campaign.campaignType != 'EVENT'"><a class=""
 																		(click)="downloadFile(campaign,'html')"
 																		data-toggle="tooltip" data-placement="bottom"
 																		title="Download Html" data-rel="fancybox-button"
@@ -304,8 +303,7 @@
 																		<div class=""></div>
 																	</a>
 																</li>
-																<li *ngIf="campaign.campaignType != 'EVENT'"><a
-																		class=""
+																<li *ngIf="campaign.campaignType != 'EVENT'"><a class=""
 																		(click)="downloadFile(campaign,'pdf')"
 																		data-toggle="tooltip" data-placement="bottom"
 																		title="Download Pdf" data-rel="fancybox-button"
@@ -466,8 +464,7 @@
 															data-toggle="tooltip" data-placement="bottom"
 															title="Download"></span>
 														<ul class="dropdown-menu pull-right custome-dropdown-changs">
-															<li><a class=""
-																	(click)="downloadFile(campaign,'html')"
+															<li><a class="" (click)="downloadFile(campaign,'html')"
 																	data-toggle="tooltip" data-placement="bottom"
 																	title="Download Html" data-rel="fancybox-button"
 																	target="_blank" translate>
@@ -478,8 +475,7 @@
 																</a>
 															</li>
 															<li class="Iconhover"
-																*ngIf="campaign.campaignType != 'EVENT'"><a
-																	class=""
+																*ngIf="campaign.campaignType != 'EVENT'"><a class=""
 																	(click)="downloadFile(campaign,'pdf')"
 																	data-toggle="tooltip" data-placement="bottom"
 																	title="Download Pdf" data-rel="fancybox-button"
@@ -659,7 +655,7 @@
 		<div class="clickicons"></div>
 	</a> <a class="custom-icon" *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton"
 		(click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top"
-		title="Redistribute Campaign" data-rel="fancybox-button"> <i class="fa fa-rocket IconCustomization"></i>
+		title="Redistribute Campaign" data-rel="fancybox-button"> <i class="fa fa-rocket"></i>
 		<div class="clickicons"></div>
 	</a>
 	<a class="custom-icon" *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton" data-toggle="tooltip"

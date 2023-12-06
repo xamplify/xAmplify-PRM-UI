@@ -57,9 +57,7 @@ export class ShareLeadDetailsComponent implements OnInit {
     this.pagination.maxResults = 6;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
-    if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
-      this.pagination.teamMemberId = this.teamMemberId;
-    }    
+    this.pagination.teamMemberId = this.teamMemberId;  
     this.parterService.getShareLeadDetails(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
