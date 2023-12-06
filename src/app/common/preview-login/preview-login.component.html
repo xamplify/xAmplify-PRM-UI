@@ -6,9 +6,13 @@
 <div *ngIf="!isStyleOne">
   <div class="content" style="background-color: rgba(0,0,0,.0);pointer-events: none;cursor: no-drop;"
     [ngClass]="{'login-content-left':authenticationService.loginScreenDirection==='Left','login-content-right':authenticationService.loginScreenDirection==='Right'}">
+    <div class="alert alert-danger alert-su" style="text-align: center;font-size: 16px;">
+      <strong>Preview</strong>
+    </div>
     <div style="background-color: rgba(0,0,0,.0);">
       <app-video [newLogin]="false" *ngIf="vanityURLEnabled"></app-video>
     </div>
+
     <img src="assets/images/customloginscreens/logoin.png" style="height: 33%;width: 100%;object-fit: cover;"
             class="imgpreview">
   </div>
@@ -19,10 +23,13 @@
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 bg_image"
       [ngStyle]="{'float':authenticationService?.loginScreenDirection}" [ngClass]="isBgColor?'bg_color':'bg_image'">
       <div class="content" style="background-color: rgba(0,0,0,.0);pointer-events: none;cursor: no-drop;">
+        <div class="alert alert-danger alert-su" style="text-align: center;font-size: 16px;">
+          <strong>Preview</strong>
+        </div>
         <div style="background-color: rgba(0,0,0,.0);">
           <app-video [newLogin]="true" *ngIf="vanityURLEnabled"></app-video>
         </div>
-        <img src="assets/images/customloginscreens/logoin.png" style="    height: 33%;width: 100%;object-fit: cover;"
+        <img src="assets/images/customloginscreens/logoin.png" style="height: 33%;width: 100%;object-fit: cover;"
         class="imgpreview">
         <!-- <div class="row">
           <div class="row" *ngIf="model" style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 8px;">
