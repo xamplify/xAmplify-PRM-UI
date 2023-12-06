@@ -26,6 +26,8 @@ export class VideoComponent implements OnInit {
       }else{
         this.authService.v_companyBgImagePath2 = "assets/images/stratapps.jpeg";
       }
+      document.documentElement.style.setProperty('--login-bg-image', 'url('+this.authService.v_companyBgImagePath2+')');
+
     }
   }
 }
