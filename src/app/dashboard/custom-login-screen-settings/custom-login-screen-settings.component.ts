@@ -553,8 +553,8 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   }
   setDefaultBgImageStyleTwo() {
     this.styleTwoBackgroundImagePath = "";
-    this.imageUrl = "assets/images/xAmplify-sandbox.png"
-    this.setDefaultImage(this.imageUrl, 'xAmplify-sandbox.png');
+    this.imageUrl = "assets/images/stratapps.jpeg"
+    this.setDefaultImage(this.imageUrl, 'stratapps.jpeg');
   }
 
   setBackgroundColorForStyle1() {
