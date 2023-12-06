@@ -33,8 +33,8 @@
             </ng-container>
         </ul>
         <div *ngIf="location.includes('/campaigns/social')" id="folder-margin-xamp">
-            <button class="btn btn-primary" id="right" style="padding-bottom: 5px;" (click)="openCreateFolderPopup()"
-                translate>Create a Folder</button>
+            <button class="button_blue" id="right" style="padding-bottom: 5px;" (click)="openCreateFolderPopup()"
+                translate><span class="btn btn-primary transition">Create a Folder</span></button>
         </div>
     </div>
     <div class="row" [hidden]="isRedirectEnabled">
@@ -653,8 +653,8 @@
                 <div class="col-xs-12 m0 p0" id="post-actions-button-group">
                     <div class="col-xs-12 col-sm-6 pr10 pull-right">
                         <div class="btn-group pull-right" *ngIf="!(selectedAccounts > 1 && !isCustomizeButtonClicked)">
-                            <button type="button" class="btn btn-primary rounded-0"
-                                (click)="shareNow()">{{buttonText}}</button>
+                            <button type="button" class="button_blue rounded-0" (click)="shareNow()"><span
+                                    class="btn btn-primary transition">{{buttonText}}</span></button>
                             <button type="button" style="min-width: 32px;"
                                 class="btn btn-primary dropdown-toggle rounded-0" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false" *ngIf="isSocialCampaign">
