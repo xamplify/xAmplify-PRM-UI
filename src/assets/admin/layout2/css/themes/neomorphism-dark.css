@@ -3203,3 +3203,17 @@ input.field-border-customization {
 .setting-icon-cu:hover {
   background-color: #3f68c5;
 }
+
+/** XNFR-416 ***/
+.loginActive {
+  color: #fff !important;
+  background-color : #222528 !important;
+  border-bottom: 3px solid #008fd5 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.inActive {
+  color: #fff !important;
+  background-color : #222528 !important;
+  border-bottom: 3px solid #f1f5f9 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
