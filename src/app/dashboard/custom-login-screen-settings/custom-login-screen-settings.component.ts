@@ -612,7 +612,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
 
   }
   openNewTab(){
-    const newTabUrl = this.authenticationService.APP_URL +'login/preview'; // Replace with the URL you want to open
+    const newTabUrl = this.authenticationService.DOMAIN_URL +'login/preview'; // Replace with the URL you want to open
     // Open the URL in a new tab
     window.open(newTabUrl, '_blank');
   }
