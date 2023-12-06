@@ -493,7 +493,6 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
         this.activeTemplateId = result.data
         this.refService.goToTop();
         this.getFinalScreenTableView();
-        // this.customResponse = new CustomResponse('SUCCESS', result.data, true);
         this.customResponse = new CustomResponse('SUCCESS', this.message, true)
         if(!isUpdate) {
         this.isShowFinalDiv = true;
@@ -508,7 +507,6 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
         this.customResponse = new CustomResponse('ERROR', this.message, true);
       }
     }, error => {
-      //this.customLoginTemplateResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT, true)
     });
   }
   selectedTemplate: number;
@@ -517,11 +515,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       this.selectedTemplate = id;
     }
   }
-  // selectTemplateName(name: any) {
-  //   if (name != 'Create_Template') {
-  //     this.templateName = name;
-  //   }
-  // }
+
 
 
   getFinalScreenTableView() {
@@ -553,8 +547,8 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   }
   setDefaultBgImageStyleTwo() {
     this.styleTwoBackgroundImagePath = "";
-    this.imageUrl = "assets/images/xAmplify-sandbox.png"
-    this.setDefaultImage(this.imageUrl, 'xAmplify-sandbox.png');
+    this.imageUrl = "assets/images/stratapps.jpeg"
+    this.setDefaultImage(this.imageUrl, 'stratapps.jpeg');
   }
 
   setBackgroundColorForStyle1() {
@@ -571,9 +565,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       } else {
         this.removeColorCodeErrorMessage(colorCode, type);
       }
-    } else {
-      //this.removeColorCodeErrorMessage(colorCode, type);
-    }
+    } 
   }
   private addColorCodeErrorMessage(type: string) {
     this.isValidColorCode = false;
@@ -612,8 +604,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
 
   }
   openNewTab(){
-    const newTabUrl = this.authenticationService.APP_URL +'login/preview'; // Replace with the URL you want to open
-    // Open the URL in a new tab
+    const newTabUrl = this.authenticationService.DOMAIN_URL +'login/preview'; // Replace with the URL you want to open
     window.open(newTabUrl, '_blank');
   }
 }
