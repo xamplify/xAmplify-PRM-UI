@@ -34,7 +34,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   assetId: number = 0;
   isAdd = false;
   modalTitle = "";
-  saveOrUpdateButtonText = "";
+  saveOrUpdateButtonText = "Save";
   name = "";
   description = "";
   validForm = false;
@@ -94,6 +94,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
       this.ngxloading = true;
+      this.referenceService.assetResponseMessage = "";
       this.beeContainerInput["module"] = "dam";
       /*******XNFR-255***/
       this.findShareWhiteLabelContentAccess();
@@ -295,6 +296,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
           (result: any) => {
             this.hidePopup();
             this.referenceService.isCreated = true;
+            this.referenceService.assetResponseMessage = result.message;
             this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
             this.modalPopupLoader = false;
           },
@@ -491,8 +493,17 @@ showFolderCreatedSuccessMessage(message:any){
 /********XNFR-255**********/
 receivePartnerCompanyAndGroupsEventEmitterData(event:any){
   this.damPostDto.partnerGroupIds = event['partnerGroupIds'];
-    this.damPostDto.partnerIds = event['partnerIds'];
-    this.damPostDto.partnerGroupSelected = event['partnerGroupSelected'];
+  this.damPostDto.partnerIds = event['partnerIds'];
+  this.damPostDto.partnerGroupSelected = event['partnerGroupSelected'];
+  /****XNFR-342****/
+  if(this.isAdd){
+    if(this.damPostDto.partnerGroupIds.length>0 || this.damPostDto.partnerIds.length>0){
+        this.saveOrUpdateButtonText = "Save & Publish";
+    }else{
+        this.saveOrUpdateButtonText = "Save";
+    }
+}
+/****XNFR-342****/
 }
 
 downloadPdf(){
