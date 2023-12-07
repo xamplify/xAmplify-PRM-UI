@@ -90,7 +90,7 @@
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-7 p0 mb_15">
                 <div class="col-md-12 col-lg-12">
                   <div class="form-group">
-                    <label class="control-label" translate>Position Of Login Form <span class="required">
+                    <label class="control-label" translate>Select Login Form Position <span class="required">
                         <strong>*</strong></span></label>
                     <select (ngModelChange)="onSelectChangeStyle1($event)" [(ngModel)]="styleOneDirection"
                       class="form-control">
@@ -268,11 +268,11 @@
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-7 p0 mb_15">
                 <div class="col-md-12 col-lg-12">
                   <div class="form-group">
-                    <label class="control-label" translate>Select Login Screen Direction <span class="required">
+                    <label class="control-label" translate>Select Login Form Position <span class="required">
                         <strong>*</strong></span></label>
                     <select (ngModelChange)="onSelectChangeStyale2($event)" [(ngModel)]="styleTwoDirection"
                       class="form-control">
-                      <option [ngValue]="undefined" disabled selected> Select Login Form Direction </option>
+                      <option [ngValue]="undefined" disabled selected> Select Login Form Position </option>
                       <option *ngFor="let direction of properties?.loginScreenDirectionOptions">{{direction}}</option>
                     </select>
                   </div>
