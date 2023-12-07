@@ -57,9 +57,7 @@ export class UserwiseTrackDetailsComponent implements OnInit {
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
     this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.maxResults = 6;
-    if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
-      this.pagination.teamMemberId = this.teamMemberId;
-    }    
+    this.pagination.teamMemberId = this.teamMemberId;   
     this.parterService.getUserWiseTrackDetails(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);

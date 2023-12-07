@@ -290,9 +290,10 @@
                            </div>
                         </div>
                         <div class="actions-block override-actions" id="landing-page-icons">
-                           <a data-toggle="tooltip" data-placement="top" title="Preview"
+                           <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview"
                               (click)="showLandingPagePreview(campaign)">
                               <i class="fa fa-eye" aria-hidden="true"></i>
+                              <div class="clickicons"></div>
                            </a>
                            <a *ngIf="campaign.formsCount > 0" routerLink="/home/forms/clpf/{{ campaign.campaignId }}"
                               data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Count">
@@ -301,21 +302,23 @@
                                  campaign.formsCount
                                  }}</span>
                            </a>
-                           <a *ngIf="campaign.campaignLandingPageAnalyticsCount > 0" (click)="
+                           <a class="custom-icon" *ngIf="campaign.campaignLandingPageAnalyticsCount > 0" (click)="
   goToCampaignLandingPageAnalytics(campaign.campaignId)
   " data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Page Analytics">
                               <i class="fa fa-line-chart" aria-hidden="true"></i>
                               <span class="badge" id="notification-color">{{
                                  campaign.campaignLandingPageAnalyticsCount
                                  }}</span>
+                              <div class="clickicons"></div>
                            </a>
-                           <a class="disabled" *ngIf="campaign.campaignLandingPageAnalyticsCount == 0"
+                           <a class="disabled custom-icon" *ngIf="campaign.campaignLandingPageAnalyticsCount == 0"
                               data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                               title="Page Analytics">
                               <i class="fa fa-line-chart" aria-hidden="true"></i>
                               <span class="badge" id="notification-color">{{
                                  campaign.campaignLandingPageAnalyticsCount
                                  }}</span>
+                              <div class="clickicons"></div>
                            </a>
                         </div>
                      </a>
@@ -742,12 +745,13 @@
                      </div>
                      <div [hidden]="mainLoader || hasClientError" class="col-xs-6 col-sm-3 col-md-2 col-lg-2 p-5x"
                         *ngIf="campaignType === 'VIDEO'" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-                        <button class="portlet light color1-invert crcb b-b-c"
+                        <button class="portlet light color1-invert crcb b-b-c custom-icon"
                            (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"
                            [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                            [disabled]="campaignReport.usersWatchCount < 1 || !isDataShare">
                            <div class="portlet-body text-center">
                               <i class="fa fa-eye"></i>
+                              <div class="clickicons"></div>
                               <h1>
                                  <b>{{ campaignReport.usersWatchCount }}</b>
                               </h1>
@@ -1552,7 +1556,7 @@
   ">
                                                       <div class="actions-block override-actions"
                                                          style="margin-right: 100px">
-                                                         <a [className]="showUserLevelCampaignAnalytics ? '': 'inactive custom-icon'"
+                                                         <a [className]="showUserLevelCampaignAnalytics ? 'custom-icon': 'inactive custom-icon'"
                                                             data-rel="fancybox-button" data-toggle="tooltip"
                                                             data-placement="top" title="User Level Campaign Analytics">
                                                             <i class="fa fa-line-chart IconCustomization"
@@ -1622,7 +1626,8 @@
                                                       <td class="text-center" (click)="$event.stopPropagation()">
                                                          <div class="actions-block override-actions"
                                                             id="landing-page-icons">
-                                                            <a *ngIf="item.pageAnalyticsCount > 0" routerLink="/home/pages/{{
+                                                            <a class="custom-icon" *ngIf="item.pageAnalyticsCount > 0"
+                                                               routerLink="/home/pages/{{
      campaign.campaignId
      }}/{{
      item.userId
@@ -1631,13 +1636,15 @@
                                                                <i class="fa fa-line-chart"></i>
                                                                <span class="badge" id="notification-color">{{
                                                                   item.pageAnalyticsCount }}</span>
+                                                               <div class="clickicons"></div>
                                                             </a>
-                                                            <a *ngIf="item.pageAnalyticsCount == 0"
+                                                            <a class="custom-icon" *ngIf="item.pageAnalyticsCount == 0"
                                                                data-rel="fancybox-button" data-toggle="tooltip"
                                                                data-placement="top" title="Page Analytics">
                                                                <i class="fa fa-line-chart"></i>
                                                                <span class="badge" id="notification-color">{{
                                                                   item.pageAnalyticsCount }}</span>
+                                                               <div class="clickicons"></div>
                                                             </a>
                                                          </div>
                                                       </td>
@@ -3430,7 +3437,7 @@
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()">
+            <button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="clearPaginationValues()">
                Close
             </button>
          </div>

@@ -79,10 +79,11 @@
 		</ul>
 		<div align="right" style="margin-top: 3px;float: right;" class="hidden-xs" *ngIf="!assignLeads">
 			<a (click)="downloadEmptyCsv()">
-				<button type="button" class="button" download style="color: #ffffff;margin-right: 3px;"
+				<button type="button" class="button p-rgt_p-top bgcolor-unset" download
+					style="color: #ffffff;margin-right: 3px;"
 					[ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
-					<span class="btn Btn-Green transition">Download Contact CSV Template</span> <i
-						class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
+					<span class="btn Btn-Green transition">Download Contact CSV Template <i class="fa fa-download"
+							aria-hidden="true" style="margin-left: 5px"></i></span>
 				</button>
 			</a>
 		</div>
@@ -423,8 +424,9 @@
 												</select>
 											</div>
 											<div class="col-xs-6" style="margin-bottom: 10px">
-												<button class="button" type="button" (click)="clipboardShowPreview()"
-													translate><span class="btn Btn-Green transition">VERIFY
+												<button class="button bgcolor-unset" type="button"
+													(click)="clipboardShowPreview()" translate><span
+														class="btn Btn-Green transition">VERIFY
 														DATA</span></button>
 											</div>
 											<div class="col-xs-12">
@@ -499,10 +501,12 @@
 						<!--  // -->
 						<div class="col-xs-12 col-md-6" class="pull-right">
 							<section class="pull-right mt_10" style="margin-bottom: 10px; margin-top: 3px;">
-								<button id="sample_editable_1_new" class="button" (click)="saveContacts()" translate>
+								<button id="sample_editable_1_new" class="button bgcolor-unset" (click)="saveContacts()"
+									translate>
 									<span class="btn Btn-Green transition">Save<i class="fa fa-save"></i></span>
 								</button>
-								<button id="cancel_button" class="button" (click)="cancelContacts()" translate>
+								<button id="cancel_button" class="button bgcolor-unset" (click)="cancelContacts()"
+									translate>
 									<span class="btn Btn-Green transition">Cancel<i class="fa fa-cancel"></i></span>
 								</button>
 							</section>
@@ -959,7 +963,8 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideZohoModal()"
 						translate>Close</button>
-					<button type="button" class="btn btn-primary" (click)="zohoContacts()" translate>Authorize</button>
+					<button type="button" class="button_blue bgcolor-unset" (click)="zohoContacts()" translate><span
+							class="btn btn-primary transition">Authorize</span></button>
 				</div>
 			</div>
 		</div>
@@ -1001,8 +1006,8 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()"
 					translate>Close</button>
-				<button type="button" class="btn btn-primary" (click)="checkingZohoPopupValues()"
-					translate>Submit</button>
+				<button type="button" class="button_blue bgcolor-unset" (click)="checkingZohoPopupValues()"
+					translate><span class="btn btn-primary transition">Submit</span></button>
 			</div>
 		</div>
 	</div>
@@ -1029,7 +1034,8 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
-				<button type="button" class="btn btn-primary" (click)="salesforceContacts()" translate>Submit</button>
+				<button type="button" class="button_blue bgcolor-unset" (click)="salesforceContacts()" translate><span
+						class="btn btn-primary transition">Submit</span></button>
 			</div>
 		</div>
 	</div>
@@ -1063,8 +1069,9 @@
 							like to delete associated contact lists?<input class="checkBox_shadow" type="checkbox"
 								[(ngModel)]="isUnLinkSocialNetwork" [ngModelOptions]="{standalone: true}">
 						</h4>
-						<button type="button" class="btn btn-primary" style="margin-left: 38%; margin-top: 2%"
-							(click)="unlinkSocailAccount()" translate>Unlink Account
+						<button type="button" class="button_blue bgcolor-unset" style="margin-left: 38%; margin-top: 2%"
+							(click)="unlinkSocailAccount()" translate><span class="btn btn-primary transition">Unlink
+								Account</span>
 						</button>
 					</div>
 				</form>
@@ -1120,8 +1127,9 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
-				<button type="button" id="salesforce_save_button" class="btn btn-primary"
-					(click)="checkingPopupValues()" translate>Submit</button>
+				<button type="button" id="salesforce_save_button" class="button_blue bgcolor-unset"
+					(click)="checkingPopupValues()" translate><span
+						class="btn btn-primary transition">Submit</span></button>
 			</div>
 		</div>
 	</div>
@@ -1174,8 +1182,9 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
-				<button type="button" id="salesforce_save_button" class="btn btn-primary"
-					(click)="checkingPopupValues()" data-dismiss="modal" translate>Submit</button>
+				<button type="button" id="salesforce_save_button" class="button-color bgcolor-unset"
+					(click)="checkingPopupValues()" data-dismiss="modal" translate><span
+						class="btn btn-primary transition">Submit</span></button>
 			</div>
 		</div>
 	</div>
@@ -1237,9 +1246,10 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideMarketoModal()"
 						translate>Close</button>
-					<button type="button" class="btn btn-primary"
+					<button type="button" class="button_blue bgcolor-unset"
 						[class.disabled]="!isMarketoModelFormValid || !marketoClientId || !marketoSecretId || !marketoInstance"
-						(click)="getMarketoContacts()" translate>Authorize</button>
+						(click)="getMarketoContacts()" translate><span
+							class="btn btn-primary transition">Authorize</span></button>
 				</div>
 			</div>
 		</div>
@@ -1286,8 +1296,9 @@
 			<div class="modal-footer">
 				<button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal" (click)="cancelContacts()"
 					translate>Decline</button>
-				<button type="button" [disabled]="!isCheckTC" class="btn btn-primary"
-					(click)="saveContactsWithPermission()" translate>Accept</button>
+				<button type="button" [disabled]="!isCheckTC" class="button_blue bgcolor-unset"
+					(click)="saveContactsWithPermission()" translate><span
+						class="btn btn-primary transition">Accept</span></button>
 			</div>
 		</div>
 	</div>
@@ -1338,8 +1349,9 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
-				<button type="button" id="hubspot_save_button" class="btn btn-primary" (click)="getHubSpotData()"
-					data-dismiss="modal" translate>Submit</button>
+				<button type="button" id="hubspot_save_button" class="button_blue bgcolor-unset"
+					(click)="getHubSpotData()" data-dismiss="modal" translate><span
+						class="btn btn-primary transition">Submit</span></button>
 			</div>
 		</div>
 	</div>

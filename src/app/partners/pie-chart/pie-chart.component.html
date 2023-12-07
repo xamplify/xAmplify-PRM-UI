@@ -1,10 +1,10 @@
 <div *ngIf="chartId !== 'redistributedCampaignDetailsPieChart'" id="pie{{partnerCompanyId}}" style="min-width: 100px; height: 75px; max-width: 100px;"></div>
 <div *ngIf="chartId === 'redistributedCampaignDetailsPieChart'" class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-    <div class="col-xs-12 pl0 pr0 pr0responsive">
+    <div class="col-xs-12 pl0 pr0 pr0responsive panel-card">
       <!-- <div class="overflow-x-auto"> -->
         <div> 
-        <div class="portlet-title minheight-zero-px pjCardTitlebg" [hidden]="loader">
-          <div class="caption pjCardTitleCenterAlignment1">
+        <div class="portlet-title minheight-zero-px pjCardTitlebg br-none" [hidden]="loader">
+          <div class="caption pjCardTitleCenterAlignment1 panel-bg">
             <span class="caption-subject font-red-sunglo uppercase" translate style="font-weight: 500;">{{headerText}}</span>
           </div>
         </div>

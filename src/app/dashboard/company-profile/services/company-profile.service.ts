@@ -141,6 +141,7 @@ export class CompanyProfileService {
         return Observable.throw(error);
     }
     
+
        getPartnerDetails() {
          return this.http.get(this.authenticationService.REST_URL + "userlists/partner-details/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, "")
             .map(this.extractData)

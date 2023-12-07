@@ -21,3 +21,9 @@
 	top:0;
 	min-height: 100vh;
 }
+.bg_image2 {
+    background-image: var(--login-bg-image);
+}
+.bg_color2 {
+	background: var(--login-bg-color);
+}

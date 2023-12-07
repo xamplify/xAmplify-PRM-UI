@@ -2409,8 +2409,11 @@ i.collapseIconColorCu {
 /* PJ End*/
 /* Button Transitions */
 /* sudha sri(23-11-2023) */
-.button:hover,button {
+.button:hover,button,.button_blue:hover {
   background: none;
+}
+.p-top{
+  padding-top: 2px !important;
 }
 .marg-lft{
   margin-left: -20px !important;
@@ -2418,4 +2421,10 @@ i.collapseIconColorCu {
 .mar-rgt_mar-lft{
   margin-right: -20px !important;
   padding-left: 2px !important;
+}
+.mar-rgt{
+  margin-right: 40px !important;
+}
+.d-justify-end{
+  justify-content: center!important;
 }

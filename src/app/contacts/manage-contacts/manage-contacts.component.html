@@ -1381,8 +1381,8 @@
                                                 <table cellpadding="5" cellspacing="0" class="border"
                                                    style="border:none !important;" aria-describedby="">
                                                    <tbody>
-                                                      <tr>
-                                                         <td class='pt10 pb10 bold' translate>Address: </td>
+                                                      <tr class="bg-unset">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Address: </td>
                                                          <td align="center" class="hidden-xs">
                                                             <h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}
                                                             </h5>
@@ -1396,31 +1396,31 @@
                                                             </h5>
                                                          </td>
                                                       </tr>
-                                                      <tr>
-                                                         <td class='pt10 pb10 bold' translate>Vertical: </td>
+                                                      <tr class="bg-unset">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Vertical: </td>
                                                          <td class="hidden-xs" title="{{contact.vertical}}">
                                                             {{contact.vertical |
                                                             slice:0:14}}
                                                             <span *ngIf="contact.vertical?.length>14">..</span>
                                                          </td>
                                                       </tr>
-                                                      <tr>
-                                                         <td class='pt10 pb10 bold' translate>Region: </td>
+                                                      <tr class="bg-unset">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Region: </td>
                                                          <td class="hidden-xs" title="{{contact.region}}">
                                                             {{contact.region | slice:0:14}}
                                                             <span *ngIf="contact.region?.length>14">..</span>
                                                          </td>
                                                       </tr>
-                                                      <tr>
-                                                         <td class='pt10 pb10 bold' translate>Type: </td>
+                                                      <tr class="bg-unset">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Type: </td>
                                                          <td class="hidden-xs" title="{{contact.partnerType}}">
                                                             {{contact.partnerType |
                                                             slice:0:14}}
                                                             <span *ngIf="contact.partnerType?.length>14">..</span>
                                                          </td>
                                                       </tr>
-                                                      <tr>
-                                                         <td class='pt10 pb10 bold' translate>Category: </td>
+                                                      <tr class="bg-unset">
+                                                         <td class='pt10 pb10 bold mr_10' translate>Category: </td>
                                                          <td class="hidden-xs" title="{{contact.category}}">
                                                             {{contact.category |
                                                             slice:0:14}}
@@ -1515,8 +1515,8 @@
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn Btn-Green" [disabled]="criterias.length === 0" (click)="contactFilter()"
-               translate>Submit</button>
+            <button type="button" class="button" [disabled]="criterias.length === 0" (click)="contactFilter()"
+               translate><span class="btn Btn-Green transition">Submit</span></button>
             <button type="button" class="btn Btn-Gray" (click)="cancelSegmentation()" data-dismiss="modal"
                translate>Cancel</button>
          </div>
@@ -1576,8 +1576,9 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal" translate>Close</button>
-            <button type="button" class="btn btn-primary" (click)="hasSaveAsAccess()"
-               [disabled]="assignLeads && disableSave" translate>Save changes</button>
+            <button type="button" class="button_blue bgcolor-unset" (click)="hasSaveAsAccess()"
+               [disabled]="assignLeads && disableSave" translate><span class="btn btn-primary transition">Save
+                  changes</span></button>
          </div>
       </div>
    </div>

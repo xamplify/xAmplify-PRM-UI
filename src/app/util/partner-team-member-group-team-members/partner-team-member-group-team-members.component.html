@@ -4,18 +4,21 @@
 </div>
 
 <!--Modal PopUp-->
-<div  class="modal fade right" id="teamMembersPreviewPopup" tabindex="-1" role="dialog" aria-labelledby="teamMembersPreviewPopup" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" [ngClass] = "isPartnerPopup ? '' : 'full-width-modal-popup'"  role="document">
+<div class="modal fade right" id="teamMembersPreviewPopup" tabindex="-1" role="dialog"
+    aria-labelledby="teamMembersPreviewPopup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" [ngClass]="isPartnerPopup ? '' : 'full-width-modal-popup'" role="document">
         <div class="modal-content">
-            <div class="modal-header" >
+            <div class="modal-header">
                 <h4 class="modal-title popup-header-title-font text-center" translate>Team Members</h4>
             </div>
             <div class="modal-body">
                 <ng-template *ngIf="openInModalPopup" [ngTemplateOutlet]="teamMemberGroupsTemplateOutlet"></ng-template>
             </div>
             <div class="modal-footer" *ngIf="!teamMembersLoader.isLoading">
-                <button type="submit" [disabled]="currentPartner?.selectedTeamMemberIds?.length==0" class="btn btn-danger"  (click)="removeAllSelectedTeamMembers()" translate>Clear All</button>
-                <button type="submit" class="btn Btn-Green"  (click)="closeTeamMembersPreviewPopup()" translate>Proceed</button>
+                <button type="submit" [disabled]="currentPartner?.selectedTeamMemberIds?.length==0"
+                    class="btn btn-danger" (click)="removeAllSelectedTeamMembers()" translate>Clear All</button>
+                <button type="submit" class="button" (click)="closeTeamMembersPreviewPopup()" translate><span
+                        class="btn Btn-Green transition">Proceed</span></button>
             </div>
         </div>
     </div>
@@ -25,28 +28,37 @@
 <ng-template #teamMemberGroupsTemplateOutlet>
     <app-list-loader *ngIf="teamMembersLoader.isLoading"></app-list-loader>
     <div class="table-responsive" *ngIf="!teamMembersLoader.isLoading">
-        <div *ngIf="currentPartner?.selectedTeamMemberIds?.length>0  && teamMembersPagination.totalRecords>0" class="alert alert-success text-center">
+        <div *ngIf="currentPartner?.selectedTeamMemberIds?.length>0  && teamMembersPagination.totalRecords>0"
+            class="alert alert-success text-center">
             <strong>Selected Team Members : {{currentPartner?.selectedTeamMemberIds?.length}}</strong>
-         </div>
-        <table *ngIf="teamMembersPagination.pagedItems?.length>0" class="table tgrid table-condensed table-bordered hash-table-color"
-             id="{{partnerModuleTeamMembersTableId}}-{{currentPartner?.index}}" aria-describedby="teamMembersPreviewTable">
+        </div>
+        <table *ngIf="teamMembersPagination.pagedItems?.length>0"
+            class="table tgrid table-condensed table-bordered hash-table-color"
+            id="{{partnerModuleTeamMembersTableId}}-{{currentPartner?.index}}"
+            aria-describedby="teamMembersPreviewTable">
             <thead>
                 <tr>
                     <th scope="row" class="text-center">
-                     <input type="checkbox"  class="checkBox_shadow" [(ngModel)]="currentPartner.isTeamMemberHeaderCheckBoxChecked" id="{{partnerGroupTeamMemberheaderCheckBoxId}}-{{currentPartner?.index}}"
-                      (change)="selectOrUnselectAllTeamMembersOfTheCurrentPage($event,currentPartner)">
-                   </th>
+                        <input type="checkbox" class="checkBox_shadow"
+                            [(ngModel)]="currentPartner.isTeamMemberHeaderCheckBoxChecked"
+                            id="{{partnerGroupTeamMemberheaderCheckBoxId}}-{{currentPartner?.index}}"
+                            (change)="selectOrUnselectAllTeamMembersOfTheCurrentPage($event,currentPartner)">
+                    </th>
                     <th scope="row">Entity Info</th>
-                  </tr>
+                </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let teamMember of teamMembersPagination.pagedItems;let i=index" id="partner-module-teamMember-tr-{{i}}" [class.row-selected]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.id)>-1"
+                <tr *ngFor="let teamMember of teamMembersPagination.pagedItems;let i=index"
+                    id="partner-module-teamMember-tr-{{i}}"
+                    [class.row-selected]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.id)>-1"
                     (click)="highlightTeamMemberOnRowClick(teamMember.id,$event,currentPartner)">
                     <td class="text-center">
-                        <input type="checkbox" class="checkBox_shadow" id="{{teamMember.id}}" [checked]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.id)>-1"
-                            name="{{partnerModuleTeamMemberCheckBoxName}}-{{currentPartner?.index}}[]" value="{{teamMember.id}}"
+                        <input type="checkbox" class="checkBox_shadow" id="{{teamMember.id}}"
+                            [checked]="currentPartner?.selectedTeamMemberIds?.indexOf(teamMember.id)>-1"
+                            name="{{partnerModuleTeamMemberCheckBoxName}}-{{currentPartner?.index}}[]"
+                            value="{{teamMember.id}}"
                             (click)="$event.stopPropagation();highlightTeamMemberRowOnCheckBoxClick(teamMember.id,$event,currentPartner);">
-                        </td>
+                    </td>
                     <td>
                         <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember">
                         </app-user-info>
@@ -56,13 +68,15 @@
         </table>
     </div>
     <!-- End of 24 -->
-    <div *ngIf="teamMembersPagination.totalRecords==0 && !teamMembersLoader.isLoading" class="alert alert-info text-center">
+    <div *ngIf="teamMembersPagination.totalRecords==0 && !teamMembersLoader.isLoading"
+        class="alert alert-info text-center">
         <strong>No Records Found</strong>
-     </div>
-     <div *ngIf="teamMembersPagination.pagedItems.length !== 0" class="pg8" [hidden]="teamMembersLoader.isLoading">
-        <app-pagination [pagination]="teamMembersPagination" (notifyParent)="navigatePartnerModuleTeamMembers($event,currentPartner)"
-           (notifyParentDropDown)="findPartnerModuleTeamMembers($event,currentPartner)">
+    </div>
+    <div *ngIf="teamMembersPagination.pagedItems.length !== 0" class="pg8" [hidden]="teamMembersLoader.isLoading">
+        <app-pagination [pagination]="teamMembersPagination"
+            (notifyParent)="navigatePartnerModuleTeamMembers($event,currentPartner)"
+            (notifyParentDropDown)="findPartnerModuleTeamMembers($event,currentPartner)">
         </app-pagination>
-     </div>
-<br>
+    </div>
+    <br>
 </ng-template>

@@ -26,8 +26,9 @@
 			</ng-template>
 		</ul>
 		<div id="folder-margin-xamp">
-			<button class="btn btn-primary" id="right" style="padding-bottom: 5px;" (click)="openCreateFolderPopup()"
-				translate>Create a Folder</button>
+			<button class="button_blue bgcolor-unset" id="right" style="padding-bottom: 5px;"
+				(click)="openCreateFolderPopup()" translate><span class="btn btn-primary transition">Create a
+					Folder</span></button>
 		</div>
 	</div>
 	<app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
@@ -623,9 +624,10 @@
 							<div class="portlet-body clearfix" *ngIf="eventCampaign.publicEventCampaign"
 								[class.disabled]="(isPreviewEvent)">
 								<div *ngIf="socialStatusProviders?.length > 0" [class.disabled]="(isPreviewEvent)">
-									<button type="button" class="btn btn-primary pull-right"
+									<button type="button" class="button_blue pull-right bgcolor-unset"
 										(click)="isSocialEnable = !isSocialEnable">
-										<i class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social Share
+										<span class="btn btn-primary transition"><i class="fa fa-share-alt fa-social"
+												style="margin: 0 5px;"></i> Social Share</span>
 									</button>
 									<div class="clearfix"></div>
 									<div [hidden]="!isSocialEnable">
@@ -794,8 +796,8 @@
 					<div class="col-xs-12">
 						<button
 							*ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate"
-							type="button" style="float: right" class="button" (click)="resetTabs('recipients')"
-							title="Please Fill Campaign Details"
+							type="button" style="float: right" class="button bgcolor-unset"
+							(click)="resetTabs('recipients')" title="Please Fill Campaign Details"
 							[disabled]="recipientsTabClass === 'disableRecipientsTab'"><span
 								class="btn Btn-Green transition">Next</span></button>
 					</div>
@@ -1082,7 +1084,7 @@
 								type="button" style="float:left;" class="btn Btn-Gray"
 								(click)="resetTabs('details')">Previous</button>
 							<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage"
-								type="button" style="float: right;" class="button"
+								type="button" style="float: right;" class="button bgcolor-unset"
 								[disabled]="emailTemplatesTabClass === 'disableTemplateTab'"
 								(click)="resetTabs('templates')" title=""><span
 									class="btn Btn-Green transition">Next</span></button>
@@ -1111,7 +1113,8 @@
 											aria-hidden="true"></i>
 									</button>
 								</div>
-								<button type="submit" class="campaign-email-template-filter-icon mr21"
+								<button type="submit"
+									class="campaign-email-template-filter-icon mr21 evnt_filter_icon_shadow"
 									(click)="showFolderFilterPopup()" style="padding-bottom: 8px !important;">
 									<i class="fa fa-filter cesf-xamp requried" *ngIf="selectedFolderIds?.length>0"
 										aria-hidden="true"></i>
@@ -1318,7 +1321,7 @@
 					<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button"
 						style="float:left;" class="btn Btn-Gray" (click)="resetTabs('recipients')">Previous</button>
 					<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button"
-						style="float: right;" class="button" (click)="resetTabs('launch')"
+						style="float: right;" class="button bgcolor-unset" (click)="resetTabs('launch')"
 						[class.disabled]="launchTabClass === 'disableLaunchTab'" title=""><span
 							class="btn Btn-Green transition">Next</span></button>
 				</div>
@@ -1425,9 +1428,12 @@
 														partners.</span>
 												</td>
 												<td style="text-align: right" width="20%">
-													<a [class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate"
-														[class.disabled]="isPreviewEvent" class="btn btn-primary btn-sm"
-														style="color:#fff" (click)="resetTabs('recipients')">Change</a>
+													<button
+														[class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate"
+														[class.disabled]="isPreviewEvent"
+														class="button_blue bgcolor-unset" style="color:#fff"
+														(click)="resetTabs('recipients')"><span
+															class="btn btn-primary transition">Change</span></button>
 												</td>
 											</tr>
 										</table>
@@ -1454,9 +1460,12 @@
 													</a>
 												</td>
 												<td style="text-align: right" width="20%">
-													<a [class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate"
-														class="btn btn-primary btn-sm" [class.disabled]="isPreviewEvent"
-														(click)="resetTabs('templates')">Change</a>
+													<button
+														[class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate"
+														class="button_blue bgcolor-unset"
+														[class.disabled]="isPreviewEvent"
+														(click)="resetTabs('templates')"><span
+															class="btn btn-primary transition">Change</span></button>
 													<a *ngIf="reDistributeEvent || reDistributeEventManage"
 														class="btn btn-primary btn-sm"
 														(click)="editPartnerTemplate()"><i
@@ -2275,8 +2284,9 @@
 				</div>
 			</div>
 			<div class="folder-modal-footer" *ngIf="!folderErrorCustomResponse.isVisible">
-				<button type="button" class="btn Btn-Gray" (click)="closeFilterPopup()">Cancel</button>
-				<button type="button" class="btn btn-primary" (click)="closeFilterPopup()">Apply</button>
+				<button type="button" class="btn Btn-Gray " (click)="closeFilterPopup()">Cancel</button>
+				<button type="button" class="button_blue" (click)="closeFilterPopup()"><span
+						class="btn btn-primary transition bgcolor-unset">Apply</span></button>
 			</div>
 		</div>
 	</div>
