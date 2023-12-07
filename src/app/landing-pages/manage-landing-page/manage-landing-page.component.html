@@ -22,7 +22,7 @@
     </div>
     <div class="row" *ngIf="statusCode==200">
         <div class="col-md-12">
-            <div class="portlet light clearfix" style="box-shadow: none;">
+            <div class="portlet light remove_cardBgcolor padding_0 clearfix" style="box-shadow: none;">
                 <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject"
                         (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>

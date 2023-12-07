@@ -425,10 +425,10 @@ input[type=radio]:checked{
   bottom: 8px;
   padding-left: 5px !important;
 }
-.button {
+/* .button {
   padding:0px 0px;
   margin-left: 10px;
-}
+} */
 .inActive {
   background: #f1f5f9;
   padding: 5px 7px;
