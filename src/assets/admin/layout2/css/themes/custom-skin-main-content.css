@@ -2419,3 +2419,19 @@ i.collapseIconColorCu {
   margin-right: -20px !important;
   padding-left: 2px !important;
 }
+/* deal-page */
+.card-bgcolor{
+  background-color: var(--div-bg-color) !important;
+}
+.deal-bgcolor{
+  background-color: var(--div-bg-color) !important;
+}
+.br-unset{
+  border-top:  1px solid var(--border-color) !important;
+}
+.panel.panel-default.deal-bgcolor {
+  background-color: var(--div-bg-color) !important;
+}
+.deal-bgcolors{
+  background-color: var(--div-bg-color) !important;
+}

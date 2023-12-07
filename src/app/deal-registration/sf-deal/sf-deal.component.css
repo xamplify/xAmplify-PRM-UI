@@ -62,7 +62,7 @@ margin: 0px 3px;
   padding: 0px 6px;
   margin: 0px 3px;
   float: right;
-  right: 21px;
+  right: 10px;
 }
 .panel-title > a {
   display: block;
@@ -70,18 +70,7 @@ margin: 0px 3px;
   font-size: 16px;
 }
 .panel-title > a:hover {
-  color:#333;
-}
-.panel-title > a:after {
-  content: "\f078"; /* fa-chevron-down */
-  font-family: 'FontAwesome';
-  position: absolute;
-  right: 0;
-  font-size: 14px;
-}
-.panel-title > a[aria-expanded="true"]:after {
-  content: "\f077"; /* fa-chevron-up */
-  font-size: 14px;
+  color:unset!important;
 }
 .dropdown-menu{
 position: relative;
@@ -103,25 +92,25 @@ width: 100%;
 .br-unset{
   border-radius: unset!important;
   margin: 0px 15px;
+  border-top:1px solid #ddd;
 }
 .card-bgcolor{
   background-color: #f0f5f9b5;
   border-radius: 5px;
   padding: 10px 15px;
 }
+.panel.panel-default.deal-bgcolor {
+  background-color: #f0f5f9b5;
+}
+.deal-bgcolors{
+  background-color: #f0f5f9b5;
+}
 .deal-heading{
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
 }
 .panel-heading {
-  background-color: #f0f5f9b5!important;
-  padding: 13px 15px;
-}
-.panel.panel-default {
-  background-color: #f0f5f9b5!important;
-}
-.panel-color{
-  background-color: #f0f5f9b5!important;
+  padding: 10px 15px;
 }
 .h-300{
   min-height: 308px;
@@ -146,7 +135,6 @@ width: 100%;
   display: inline-block;
   width: 100%;
 }
-
 .xamplify-dropdown-content {
   position: absolute;
   background-color: #ffffff;
@@ -154,7 +142,6 @@ width: 100%;
   z-index: 1;
   width: 100%;
 }
-
 .xamplify-dropdown-option {
   color: black;
   padding: 10px;
@@ -183,11 +170,9 @@ width: 100%;
   padding: 10px 10px;
   font-size: medium !important;
 }
-
 .cursor-pointer{
   cursor: pointer;
 }
-
 .text-dropdown{
   cursor: auto;
   display: inline-block;
@@ -196,22 +181,4 @@ width: 100%;
 .disabled-dropdown{
   pointer-events: none;
   opacity: 0.4;
-}
-.autocomplete-list {
-  position: absolute;
-  width: 100%;
-  margin-top: 5px;
-  border: 1px solid #e8e8e8;
-  border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.autocomplete-list li {
-  cursor: pointer;
-  padding: 8px;
-  list-style-type: none;
-}
-
-.autocomplete-list li:hover {
-  background-color: #f0f0f0;
 }

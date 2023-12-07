@@ -34,6 +34,8 @@ export class SfDealComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   isLoading = false;
   isCollapsed: boolean;
+  isCollapsed2: boolean;
+  isCollapsed3: any;
   
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
@@ -278,9 +280,12 @@ export class SfDealComponent implements OnInit {
     return true;
   }
   //
-  toggleCollapse(event: Event) {
+  toggleCollapseDeal(event: Event) {
     event.preventDefault();
-    this.isCollapsed = !this.isCollapsed;
+    this.isCollapsed2 = !this.isCollapsed2;
   }
-
+  toggleCollapseProduct(event: Event) {
+    event.preventDefault();
+    this.isCollapsed3 = !this.isCollapsed3;
+  }
 }

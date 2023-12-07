@@ -97,6 +97,7 @@ export class AddDealComponent implements OnInit {
   sfDealComponent: SfDealComponent;
   activeCRMDetails: any;
   isCollapsed: boolean;
+  isCollapsed1: boolean;
   
   constructor(private logger: XtremandLogger, public messageProperties: Properties,public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -1027,9 +1028,13 @@ getActiveCRMPipelines() {
 }
 
 //
-toggleCollapse(event: Event) {
+// isCollapsedcontact:boolean=true;
+toggleCollapsepipepline(event: Event) {
   event.preventDefault();
   this.isCollapsed = !this.isCollapsed;
 }
-
+toggleCollapsecontact(event: Event) {
+  event.preventDefault();
+  this.isCollapsed1 = !this.isCollapsed1;
+}
 }

@@ -2660,3 +2660,7 @@ display: inline-flex;
 .btn-hvr-text{
   background-color: #ddd;
 }
+/* deal page */
+.panel-default > .deal-bgcolor{
+  background-color: #f0f5f9b5!important;
+}

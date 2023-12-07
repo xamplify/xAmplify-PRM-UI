@@ -58,29 +58,18 @@
   font-size: 16px;
 }
 .panel-title > a:hover {
-  color:#333;
-}
-.panel-title > a:after {
-  content: "\f078"; 
-  font-family: 'FontAwesome';
-  position: absolute;
-  right: 0;
-  font-size: 14px;
-}
-.panel-title > a[aria-expanded="true"]:after {
-  content: "\f077";
-  font-size: 14px;
+  color:unset!important;
 }
 .panel-heading {
-  background-color: #f0f5f9b5!important;
-  padding: 13px 15px;
+  padding: 10px 15px;
 }
-.panel.panel-default {
-  background-color: #f0f5f9b5!important;
+.panel.panel-default.deal-bgcolor {
+  background-color: #f0f5f9b5;
 }
 .br-unset{
   border-radius: unset!important;
   margin: 0px 15px;
+  border-top:1px solid #ddd;
 }
 @media only screen and (max-width:600px){
   .card-bgcolor{

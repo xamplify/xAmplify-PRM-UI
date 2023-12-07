@@ -1,17 +1,16 @@
 <div class="row m0">
   <div class="panel-group m10" id="accordion" role="tablist" aria-multiselectable="true">
-    <div class="panel panel-default">
-      <div class="panel-heading" role="tab" id="heading-6">
+    <div class="panel panel-default deal-bgcolor">
+      <div class="panel-heading deal-bgcolor">
         <h4 class="panel-title">
-          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-6"
-            aria-expanded="false" aria-controls="collapse-6">
-            Deal Details
-          </a>
+          <a  class="collapsed" href="DealDetails" (click)="toggleCollapseDeal($event)"> <i
+            [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed2, 'fa-chevron-down collapseIn': isCollapsed2}" class="arrowpositinon fa collapseIconColorCu"
+            aria-hidden="false" style="float: right;"></i>Deal Details</a>
         </h4>
       </div>
-      <div id="collapse-6" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-6">
+      <div [ngClass]="{'collapse': isCollapsed2, '': !isCollapsed2}" id="DealDetails">
         <div class="panel-body br-unset pl0 pr0">
-          <div class="row portlet light m0 panel-color" style="margin-bottom: 50px;border: 1px solid #ddd;margin: 10px;padding: 10px">
+          <div class="row portlet light m0 deal-bgcolors" style="margin-bottom: 50px;border: 1px solid #ddd;margin: 10px;padding: 10px">
             <div class="alert alert-danger" id="company-profile-error-div" *ngIf="showSFFormError">
               <a class="close" aria-label="close">x</a>
               <strong>{{sfFormError}}</strong>
@@ -229,20 +228,21 @@
 </div>
     <!-- Add product start -->
     <div class="panel-group m10" id="accordion" role="tablist" aria-multiselectable="true">
-      <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="heading-3">
+      <div class="panel panel-default deal-bgcolor">
+        <div class="panel-heading deal-bgcolor">
           <h4 class="panel-title">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-              Products
-              <button class="btn btn-primary add-btns"  data-placement="top" data-toggle="tooltip" title="Add Product"  aria-hidden="true">
-                <i class="fa fa-plus add-prdts"></i>
-              </button>
-            </a>
+             <a  class="collapsed" href="Products" (click)="toggleCollapseProduct($event)"> <i
+            [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed3, 'fa-chevron-down collapseIn': isCollapsed3}" class="arrowpositinon fa collapseIconColorCu"
+            aria-hidden="false" style="float: right;"></i>Products
+            <button class="btn btn-primary add-btns"  data-placement="top" data-toggle="tooltip" title="Add Product"  aria-hidden="true">
+              <i class="fa fa-plus add-prdts"></i>
+            </button>
+          </a>
           </h4>
         </div>
-        <div id="collapse-3" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-3">
+        <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="Products">
           <div class="panel-body br-unset pl0 pr0">
-            <div class="row portlet light m0 panel-color"> 
+            <div class="row portlet light m0 deal-bgcolors"> 
               <div class ="col-xs-12 col-sm-12 col-md-12 col-lg-12">
               <div class="row Add-Icon">
                 <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 Add-Icon">

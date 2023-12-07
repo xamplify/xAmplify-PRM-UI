@@ -21,16 +21,16 @@
       <form role="form" id="deal-registration-form">        
         <div class="row ">          
           <div class="col-sm-6 col-xs-12 px-10 pl0">
-            <div class="panel-group m10" id="accordion" role="tablist" aria-multiselectable="true">
-              <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="heading-4">
+            <div class="panel-group m10"  role="tablist" aria-multiselectable="true">
+              <div class="panel panel-default deal-bgcolor">
+                <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-                  Pipeline Details
-                    </a>
+                    <a  href="pipelineDetails" (click)="toggleCollapsepipepline($event)"> <i
+                      [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed, 'fa-chevron-down collapseIn': isCollapsed}" class="arrowpositinon fa collapseIconColorCu"
+                      aria-hidden="false" style="float: right;"></i>  Pipeline Details</a>
                   </h4>
                 </div>
-                <div id="collapse-4" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-4">
+                <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="pipelineDetails">
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                      <div class="card-bgcolor h-260 pl0 pr0">
                     <div class="form-group" style="margin-bottom: 20px" *ngIf="!isVendorVersion && deal.campaignId > 0">
@@ -91,74 +91,18 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="card-bgcolor">
-            <h4 class="caption" class="portlet-title deal-heading">Pipeline Details</h4>
-            <div class="form-group" style="margin-bottom: 20px" *ngIf="!isVendorVersion && deal.campaignId > 0">
-              <label class="control-label">Campaign Name
-                <font style="color: #f55d7a">
-                  <b>*</b>
-                </font>
-              </label>
-              <input type="text" disabled="disabled" name="campaignName" value="{{deal.campaignName}}"
-                class="form-control" id="campaignName" />
-            </div>
-
-            <div class="form-group" style="margin-bottom: 20px" *ngIf="isVendorVersion && deal.parentCampaignId > 0">
-              <label class="control-label">Campaign Name
-                <font style="color: #f55d7a">
-                  <b>*</b>
-                </font>
-              </label>
-              <input type="text" disabled="disabled" name="parentCampaignName" value="{{deal.parentCampaignName}}"
-                class="form-control" id="parentCampaignName" />
-            </div>
-
-            <div class="form-group" [attr.class]="createdForCompanyId" style="margin-bottom: 20px" 
-              *ngIf="!isVendorVersion || (isVendorVersion && (isOrgAdmin || authenticationService.module.isMarketingCompany)) ">
-              <label class="control-label">Deal For<font style="color: #f55d7a"> <b>*</b></font></label>
-              <select class="form-control" [(ngModel)]="deal.createdForCompanyId"
-                [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId" id="createdForCompanyId"
-                [disabled]="preview || edit || leadId > 0 || vanityLoginDto?.vanityUrlFilter" (ngModelChange)="onChangeCreatedFor()" 
-                (input)="validateField('createdForCompanyId',false)">
-                <option [value]="0">Select Company</option>
-                <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">{{vendor.companyName}}
-                </option>
-              </select>
-            </div>
-
-            <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px" *ngIf="!hasCampaignPipeline && !activeCRMDetails?.hasDealPipeline">
-              <label class="control-label">Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
-              <select class="form-control" [(ngModel)]="deal.pipelineId" [ngModelOptions]="{standalone: true}"
-                placeholder="pipelineId" id="pipelineId" [disabled]="preview"
-                (ngModelChange)="resetStages()" (input)="validateField('pipelineId',false)">
-                <option [value]="0">Select Pipeline</option>
-                <option *ngFor="let pipeline of pipelines" [value]="pipeline.id">{{pipeline.name}}</option>
-              </select>
-            </div>
-
-            <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px">
-              <label class="control-label">Stage<font style="color: #f55d7a"> <b>*</b></font></label>
-              <select class="form-control" [(ngModel)]="deal.pipelineStageId"
-                [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="pipelineStageId"
-                [disabled]="preview" (input)="validateField('pipelineStageId',false)">              
-                <option [value]="0">Select Stage</option>
-                <option *ngIf="!isVendorVersion && deal.currentStagePrivate" [value]="deal.currentStageId">{{deal.currentStageName}}</option>
-                <option *ngFor="let stage of stages" [value]="stage.id">{{stage.stageName}}</option>
-              </select>
-            </div>           
-           </div> -->
           </div>
           <div class="col-sm-6 col-xs-12 px-10 pl0">
             <div class="panel-group m10" id="accordion" role="tablist" aria-multiselectable="true">
-              <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="heading-2">
+              <div class="panel panel-default deal-bgcolor">
+                <div class="panel-heading deal-bgcolor">
                   <h4 class="panel-title">
-                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-                 Contact Info
-                    </a>
+                    <a  href="ContactInfo" (click)="toggleCollapsecontact($event)"> <i
+                      [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed1, 'fa-chevron-down collapseIn': isCollapsed1}" class="arrowpositinon fa collapseIconColorCu"
+                      aria-hidden="false" style="float: right;"></i>  Contact Info</a>
                   </h4>
                 </div>
-                <div id="collapse-2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-2">
+                  <div [ngClass]="{'collapse': isCollapsed1, '': !isCollapsed1}" id="ContactInfo">
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
                   <div class="card-bgcolor h-260 pl0 pr0">
                     <fieldset class="border-none">
@@ -170,13 +114,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="card-bgcolor h-300">
-            <fieldset class="border-none">
-              <h4 class="portlet-title deal-heading">Contact Info</h4>
-              <app-user-info *ngIf="showContactInfo" [userInfo]="contact" [isLeadInfo]="true"></app-user-info>
-              <div *ngIf="!showContactInfo">Not Available</div>
-            </fieldset>            
-          </div> -->
           </div>
         </div>
         <div *ngIf= "showCustomForm && deal.createdForCompanyId">
