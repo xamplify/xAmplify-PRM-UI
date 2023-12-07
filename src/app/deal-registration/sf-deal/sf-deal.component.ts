@@ -33,6 +33,7 @@ export class SfDealComponent implements OnInit {
   sfFormError: string = "";
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   isLoading = false;
+  isCollapsed: boolean;
   
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
@@ -275,6 +276,11 @@ export class SfDealComponent implements OnInit {
       return false;
     }
     return true;
+  }
+  //
+  toggleCollapse(event: Event) {
+    event.preventDefault();
+    this.isCollapsed = !this.isCollapsed;
   }
 
 }

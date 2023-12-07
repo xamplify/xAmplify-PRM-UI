@@ -33,16 +33,7 @@ declare var flatpickr: any, $: any, swal: any;
   providers: [HttpRequestLoader, LeadsService,Properties],
 })
 export class AddDealComponent implements OnInit {
-  // product search dropdown start
-  defaultOption:string = "";
-  filteredDropDownItems:Array<any> = new Array<any>();
-  showFolderDropDown: boolean = false;
-  @Input() dropDownItems:Array<any> = new Array<any>();
-  @Input() categoryId:number = 0;
-  @Input() disabled = false;
-  @Output() selectDropdownComponentEmitter = new EventEmitter();
-  dropDownSearchValue:any;
-// product search dropdown end
+
   @Input() public dealId: any;
   @Input() public leadId: any;
   @Input() public campaignId: any;
@@ -105,6 +96,7 @@ export class AddDealComponent implements OnInit {
   @ViewChild(SfDealComponent)
   sfDealComponent: SfDealComponent;
   activeCRMDetails: any;
+  isCollapsed: boolean;
   
   constructor(private logger: XtremandLogger, public messageProperties: Properties,public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -118,15 +110,6 @@ export class AddDealComponent implements OnInit {
   }
 
   ngOnInit() {
-    // product search dropdown start
-    if(this.categoryId!=undefined && this.categoryId!=0){
-      let selectedCategoryName = this.dropDownItems.filter((category) => category.id === this.categoryId)[0];
-      this.defaultOption = selectedCategoryName['name'];
-     }else{
-       let names = this.referenceService.filterSelectedColumnsFromArrayList(this.dropDownItems,'name');
-       this.defaultOption = names[0];
-     }
-     // product search dropdown end
     this.utilService.getJSONLocation().subscribe(response => console.log(response));
     this.deal.createdForCompanyId = 0;
     this.deal.pipelineId = 0;
@@ -158,27 +141,7 @@ export class AddDealComponent implements OnInit {
     }
     this.getVendorList();
   }
-  // product search dropdown start
-  filterDropDownData(inputElement: any) {
-    if (inputElement == null || inputElement == undefined) {
-      this.filteredDropDownItems = this.dropDownItems;
-    } else {
-      let value = inputElement.value;
-      if (value != undefined && value != null && value != "") {
-        this.filteredDropDownItems = this.dropDownItems.filter(
-          item => item.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
-      } else {
-        this.filteredDropDownItems = this.dropDownItems;
-      }
-    }
-  }
-  setDropDownValue(input: any) {
-    this.defaultOption = input.name;
-    this.filteredDropDownItems = this.dropDownItems;
-    this.showFolderDropDown = false;
-    this.selectDropdownComponentEmitter.emit(input.id);
-  }
-// product search dropdown end
+
   setCreatedForCompanyId() {
     this.leadsService.getCompanyIdByCompanyProfileName(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
     .subscribe(
@@ -1061,6 +1024,12 @@ getActiveCRMPipelines() {
       },
       () => { }
     );
+}
+
+//
+toggleCollapse(event: Event) {
+  event.preventDefault();
+  this.isCollapsed = !this.isCollapsed;
 }
 
 }
