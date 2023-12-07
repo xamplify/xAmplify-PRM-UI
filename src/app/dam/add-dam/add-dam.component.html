@@ -243,8 +243,8 @@
                <button type="button" class="button_blue bgcolor-unset" [disabled]="!validForm" (click)="saveOrUpdate(false)"
                   translate><span class="btn btn-primary transition">{{saveOrUpdateButtonText}}</span></button>
                <button *ngIf="!isAdd" type="button" class="button_blue bgcolor-unset" [disabled]="!validForm"
-                  (click)="saveOrUpdate(true)" translate><span class="btn btn-primary transition">Save
-                     As</span></button>
+                  (click)="saveOrUpdate(true)" translate><span class="btn btn-primary transition">{{saveAsButtonText}}</span>
+               </button>
             </div>
          </div>
       </div>

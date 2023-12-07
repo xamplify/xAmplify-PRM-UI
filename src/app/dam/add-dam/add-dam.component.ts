@@ -35,6 +35,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
   isAdd = false;
   modalTitle = "";
   saveOrUpdateButtonText = "Save";
+  saveAsButtonText = "Save As";
   name = "";
   description = "";
   validForm = false;
@@ -496,11 +497,22 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
   this.damPostDto.partnerIds = event['partnerIds'];
   this.damPostDto.partnerGroupSelected = event['partnerGroupSelected'];
   /****XNFR-342****/
+  let isPartnerCompanyOrGroupSelected = this.damPostDto.partnerGroupIds.length>0 || this.damPostDto.partnerIds.length>0;
   if(this.isAdd){
-    if(this.damPostDto.partnerGroupIds.length>0 || this.damPostDto.partnerIds.length>0){
+    if(isPartnerCompanyOrGroupSelected){
         this.saveOrUpdateButtonText = "Save & Publish";
+        this.saveAsButtonText = "Save As & Publish";
     }else{
         this.saveOrUpdateButtonText = "Save";
+        this.saveAsButtonText = "Save As";
+    }
+}else{
+    if(isPartnerCompanyOrGroupSelected){
+       this.saveAsButtonText = "Save As & Publish";
+       this.saveOrUpdateButtonText = "Update & Publish";
+    }else{
+      this.saveAsButtonText = "Save As";
+      this.saveOrUpdateButtonText = "Update";
     }
 }
 /****XNFR-342****/
