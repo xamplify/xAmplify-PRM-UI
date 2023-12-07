@@ -86,6 +86,7 @@ export class PreviewLoginComponent implements OnInit {
     this.authenticationService.isstyleTWoBgColor = result.styleTwoBgColor;
     this.authenticationService.v_companyLogoImagePath = result.companyLogoImagePath;
     this.isBgColor = result.styleOneBgColor;
+    let path = "https://xamplify.io/assets/images/stratapps.jpeg";
     if(result.loginType === "STYLE_ONE"){
       this.isStyleOne = true;
       if(result.styleOneBgColor) {
@@ -95,7 +96,7 @@ export class PreviewLoginComponent implements OnInit {
         if(result.companyBgImagePath != null && result.companyBgImagePath != "") {
         document.documentElement.style.setProperty('--login-bg-image-style1', 'url('+this.authenticationService.MEDIA_URL+ result.companyBgImagePath+')');
         } else {
-          document.documentElement.style.setProperty('--login-bg-image-style1', 'url(assets/images/xAmplify-sandbox.png)');
+          document.documentElement.style.setProperty('--login-bg-image-style1', 'url('+path+')');
         }
       }
     } else {
@@ -104,10 +105,10 @@ export class PreviewLoginComponent implements OnInit {
       document.documentElement.style.setProperty('--login-bg-color', result.backgroundColorStyle2);
       } else {
         //document.documentElement.style.setProperty('--login-bg-color', 'none');
-        if(result.backgroundLogoStyle2 != null && result.backgroundLogoStyle2 != '') {
+        if(result.backgroundLogoStyle2 != null && result.backgroundLogoStyle2 != "") {
           document.documentElement.style.setProperty('--login-bg-image', 'url('+this.authenticationService.MEDIA_URL+ result.backgroundLogoStyle2+')');
         } else {
-        document.documentElement.style.setProperty('--login-bg-image', 'url(assets/images/xAmplify-sandbox.png)');
+        document.documentElement.style.setProperty('--login-bg-image', 'url('+path+')');
         }
       }
     }
