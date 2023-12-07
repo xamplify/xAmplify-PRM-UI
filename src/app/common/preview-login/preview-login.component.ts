@@ -84,6 +84,7 @@ export class PreviewLoginComponent implements OnInit {
     this.authenticationService.loginType = result.loginType;
     this.isStyleTwoBgColor = result.styleTwoBgColor;
     this.authenticationService.isstyleTWoBgColor = result.styleTwoBgColor;
+    this.authenticationService.v_companyLogoImagePath = result.companyLogoImagePath;
     this.isBgColor = result.styleOneBgColor;
     if(result.loginType === "STYLE_ONE"){
       this.isStyleOne = true;
@@ -91,7 +92,7 @@ export class PreviewLoginComponent implements OnInit {
       document.documentElement.style.setProperty('--login-bg-color-style1', result.backgroundColorStyle1);
       } else {
         //document.documentElement.style.setProperty('--login-bg-color-style1', 'none');
-        if(result.companyBgImagePath != null || result.companyBgImagePath != '') {
+        if(result.companyBgImagePath != null && result.companyBgImagePath != "") {
         document.documentElement.style.setProperty('--login-bg-image-style1', 'url('+this.authenticationService.MEDIA_URL+ result.companyBgImagePath+')');
         } else {
           document.documentElement.style.setProperty('--login-bg-image-style1', 'url(assets/images/xAmplify-sandbox.png)');
@@ -103,7 +104,7 @@ export class PreviewLoginComponent implements OnInit {
       document.documentElement.style.setProperty('--login-bg-color', result.backgroundColorStyle2);
       } else {
         //document.documentElement.style.setProperty('--login-bg-color', 'none');
-        if(result.backgroundLogoStyle2 != null || result.backgroundLogoStyle2 != '') {
+        if(result.backgroundLogoStyle2 != null && result.backgroundLogoStyle2 != '') {
           document.documentElement.style.setProperty('--login-bg-image', 'url('+this.authenticationService.MEDIA_URL+ result.backgroundLogoStyle2+')');
         } else {
         document.documentElement.style.setProperty('--login-bg-image', 'url(assets/images/xAmplify-sandbox.png)');
