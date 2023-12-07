@@ -137,6 +137,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     /****XNFR-326***/
     isAssetPublishedEmailNotification = false;
     assetPublishEmailNotificationLoader = true;
+    isAssetPublished = false;
 
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -256,6 +257,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 						if(this.damUploadPostDto.tagIds == undefined){
 							this.damUploadPostDto.tagIds = new Array<number>();
 						}
+                        this.isAssetPublished = result.data.published;
 						this.validateForm('assetName');
 						this.validateForm('description');
 						this.formLoader = false;
@@ -1196,11 +1198,18 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
     this.damUploadPostDto.partnerIds = event['partnerIds'];
     this.damUploadPostDto.partnerGroupSelected = event['partnerGroupSelected'];
     /****XNFR-342****/
+    let isPartnerCompanyOrGroupSelected = this.damUploadPostDto.partnerGroupIds.length>0 || this.damUploadPostDto.partnerIds.length>0;
     if(this.isAdd){
-        if(this.damUploadPostDto.partnerGroupIds.length>0 || this.damUploadPostDto.partnerIds.length>0){
+        if(isPartnerCompanyOrGroupSelected){
             this.submitButtonText = "Save & Publish";
         }else{
             this.submitButtonText = "Save";
+        }
+    }else{
+        if(isPartnerCompanyOrGroupSelected && !this.isAssetPublished){
+            this.submitButtonText = "Update & Publish";
+        }else{
+            this.submitButtonText = "Update";
         }
     }
     /****XNFR-342****/
