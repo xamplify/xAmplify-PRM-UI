@@ -278,11 +278,6 @@ bgIMage2:any;
             this.authenticationService.v_companyName = result.companyName;
             this.authenticationService.vanityURLink = result.vanityURLink;
             this.authenticationService.loginType = result.loginType;
-            // if(result.loginType === "STYLE_ONE"){
-            //   this.isStyleOne = true;
-            // } else {
-            //   this.isStyleOne = false;
-            // }
             this.authenticationService.isstyleTWoBgColor = result.styleTwoBgColor;
             this.isBgColor = result.styleOneBgColor;
             if(result.loginType === "STYLE_ONE"){
@@ -291,7 +286,7 @@ bgIMage2:any;
               document.documentElement.style.setProperty('--login-bg-color-style1', result.backgroundColorStyle1);
               } else {
                 //document.documentElement.style.setProperty('--login-bg-color-style1', 'none');
-                if(result.companyBgImagePath != null || result.companyBgImagePath != '') {
+                if(result.companyBgImagePath != null && result.companyBgImagePath != "") {
                 document.documentElement.style.setProperty('--login-bg-image-style1', 'url('+this.authenticationService.MEDIA_URL+ result.companyBgImagePath+')');
                 } else {
                   document.documentElement.style.setProperty('--login-bg-image-style1', 'url(assets/images/xAmplify-sandbox.png)');
@@ -303,7 +298,7 @@ bgIMage2:any;
               document.documentElement.style.setProperty('--login-bg-color', result.backgroundColorStyle2);
               } else {
                 //document.documentElement.style.setProperty('--login-bg-color', 'none');
-                if(result.backgroundLogoStyle2 != null || result.backgroundLogoStyle2 != '') {
+                if(result.backgroundLogoStyle2 != null && result.backgroundLogoStyle2 != "") {
                   document.documentElement.style.setProperty('--login-bg-image', 'url('+this.authenticationService.MEDIA_URL+ result.backgroundLogoStyle2+')');
                 } else {
                 document.documentElement.style.setProperty('--login-bg-image', 'url(assets/images/xAmplify-sandbox.png)');

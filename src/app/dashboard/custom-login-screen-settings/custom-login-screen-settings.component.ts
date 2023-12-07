@@ -103,6 +103,29 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   showLoginStylesDiv() {
     this.isShowFinalDiv = false;
     this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, false)
+   /***** XBI-2024 ***/
+   if (this.loggedInUserId != undefined) {
+    this.companyProfileService.getByUserId(this.loggedInUserId)
+      .subscribe(
+        data => {
+          if (data.data != undefined) {
+            this.companyProfile = data.data;
+            this.formPosition = data.data.loginScreenDirection;
+            this.loginType = data.data.loginType;
+            /**** XNFR-416 *****/
+            this.selectedColor1 = data.data.backgroundColorStyle1;
+            this.selectedColor2 = data.data.backgroundColorStyle2;
+            this.isBackgroundColorStyleOne = data.data.styleOneBgColor;
+            this.isBackgroundColorStyleTwo = data.data.styleTwoBgColor;
+            this.authenticationService.isstyleTWoBgColor = data.data.styleTwoBgColor
+            /**** XNFR-416 *****/
+          }
+        },
+        error => { this.logger.errorPage(error) },
+        () => { this.logger.info("Completed getCompanyProfileByUserId()") }
+      );
+  }
+   /**** XBI-2024 *****/
     if (this.loginType == "STYLE_ONE") {
       this.styleOneBackgroundImagePath = this.companyProfile.backgroundLogoPath;
       this.showStyle1();
@@ -221,7 +244,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
               this.selectedColor1 = data.data.backgroundColorStyle1;
               this.selectedColor2 = data.data.backgroundColorStyle2;
               this.isBackgroundColorStyleOne = data.data.styleOneBgColor;
-              this.isBackgroundColorStyleTwo = data.data.styleTwoBgColor
+              this.isBackgroundColorStyleTwo = data.data.styleTwoBgColor;
               this.authenticationService.isstyleTWoBgColor = data.data.styleTwoBgColor
               /**** XNFR-416 *****/
               this.setCompanyProfileViewData()
@@ -500,7 +523,8 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
         }
       } else {
         if (result.data.errorMessages[0].message === "templateId parameter is missing") {
-          this.message = "Please select an template."
+          this.message = "please select a template."
+          this.templateName = "N/A";
         } else {
           this.message = "something went wrong. Please try again.";
         }
@@ -522,8 +546,12 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     this.vanityURLService.getFinalScreenTableView()
       .subscribe(
         data => {
-          this.loginType = data.data.loginType
+          if(data.data == null || data.data == undefined || data.data == ""){
+            this.templateName = "N/A";
+          } else {
           this.templateName = data.data.templateName
+          }
+          this.loginType = data.data.loginType
           this.selectedTemplate = data.data.templateId;
           this.activeTemplateId = data.data.templateId;
         })

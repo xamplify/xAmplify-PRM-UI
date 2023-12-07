@@ -240,6 +240,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   whiteLabeledBannerText = "";
   /***XNFR-387 ****/
   notifyWorkflowToolTipMessage = "";
+  isMultipleCrmsActivated = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -551,8 +552,10 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     }
 
     findCampaignDetailsData(){
+        
         this.campaignService.findCampaignDetailsData().subscribe(
             response=>{
+                this.isMultipleCrmsActivated = false;
                 let data = response.data;
                 this.names.push(data['campaignNames']);
                 this.categoryNames = data['categories'];
@@ -606,9 +609,16 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 /***XNFR-382 */
                 this.notifyWorkflowToolTipMessage = "Send email notifications to your "+this.partnerModuleCustomName+" about your campaign workflows";
                 this.removeBlur();
-            },error=>{
-                this.removeBlur();
-                this.xtremandLogger.errorPage(error);
+            },(error:any)=>{
+                let errorMessage = this.referenceService.showHttpErrorMessage(error);
+                if("Multiple CRM Accounts Activated For This Company."==errorMessage){
+                    this.isMultipleCrmsActivated = true;
+                    this.referenceService.goToRouter('home/campaigns/select');
+                    this.referenceService.showSweetAlertErrorMessage(errorMessage+" Please Contact Admin.");
+                }else{
+                    this.removeBlur();
+                    this.xtremandLogger.errorPage(error);
+                }
         },()=>{
             this.findCampaignPipeLines();
             /***Load Email Templates/Videos/ Partners /Contacts***/
@@ -2363,7 +2373,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     canDeactivate(): Observable<boolean> | boolean {
         this.authenticationService.stopLoaders();
         let isInvalidEditPage = !this.isAdd && this.campaignService.campaign==undefined;
-        if(this.anyLaunchButtonClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked){
+        if(this.anyLaunchButtonClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked || this.isMultipleCrmsActivated){
             return true;
         }else{
             return false;
