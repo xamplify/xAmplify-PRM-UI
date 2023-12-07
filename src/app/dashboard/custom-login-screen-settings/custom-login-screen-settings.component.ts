@@ -641,7 +641,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   }
   openNewTab(){
     this.customResponse = new CustomResponse('ERROR', this.message, false);
-    const newTabUrl = this.authenticationService.APP_URL +'login/preview'; // Replace with the URL you want to open
+    const newTabUrl = this.authenticationService.DOMAIN_URL +'login/preview'; // Replace with the URL you want to open
     window.open(newTabUrl, '_blank');
 
   }
