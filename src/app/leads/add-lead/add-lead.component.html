@@ -164,7 +164,9 @@
         </div>
       </div>
       <div class="pull-right" style="margin: 15px" *ngIf="!preview">
-        <button type="submit" id="saveLead" (click)="validateAndSubmit()" class="btn btn-primary">Submit
+        <button *ngIf="!edit" type="submit" id="saveLead" (click)="validateAndSubmit()" class="btn btn-primary">Submit
+        </button>
+        <button  *ngIf="edit" type="submit" id="saveLead" (click)="validateAndSubmit()" class="btn btn-primary">Update
         </button>
       </div>
     </div>
