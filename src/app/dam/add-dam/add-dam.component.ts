@@ -34,7 +34,8 @@ export class AddDamComponent implements OnInit, OnDestroy {
   assetId: number = 0;
   isAdd = false;
   modalTitle = "";
-  saveOrUpdateButtonText = "";
+  saveOrUpdateButtonText = "Save";
+  saveAsButtonText = "Save As";
   name = "";
   description = "";
   validForm = false;
@@ -94,6 +95,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
       this.ngxloading = true;
+      this.referenceService.assetResponseMessage = "";
       this.beeContainerInput["module"] = "dam";
       /*******XNFR-255***/
       this.findShareWhiteLabelContentAccess();
@@ -295,6 +297,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
           (result: any) => {
             this.hidePopup();
             this.referenceService.isCreated = true;
+            this.referenceService.assetResponseMessage = result.message;
             this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
             this.modalPopupLoader = false;
           },
@@ -491,8 +494,28 @@ showFolderCreatedSuccessMessage(message:any){
 /********XNFR-255**********/
 receivePartnerCompanyAndGroupsEventEmitterData(event:any){
   this.damPostDto.partnerGroupIds = event['partnerGroupIds'];
-    this.damPostDto.partnerIds = event['partnerIds'];
-    this.damPostDto.partnerGroupSelected = event['partnerGroupSelected'];
+  this.damPostDto.partnerIds = event['partnerIds'];
+  this.damPostDto.partnerGroupSelected = event['partnerGroupSelected'];
+  /****XNFR-342****/
+  let isPartnerCompanyOrGroupSelected = this.damPostDto.partnerGroupIds.length>0 || this.damPostDto.partnerIds.length>0;
+  if(this.isAdd){
+    if(isPartnerCompanyOrGroupSelected){
+        this.saveOrUpdateButtonText = "Save & Publish";
+        this.saveAsButtonText = "Save As & Publish";
+    }else{
+        this.saveOrUpdateButtonText = "Save";
+        this.saveAsButtonText = "Save As";
+    }
+}else{
+    if(isPartnerCompanyOrGroupSelected){
+       this.saveAsButtonText = "Save As & Publish";
+       this.saveOrUpdateButtonText = "Update & Publish";
+    }else{
+      this.saveAsButtonText = "Save As";
+      this.saveOrUpdateButtonText = "Update";
+    }
+}
+/****XNFR-342****/
 }
 
 downloadPdf(){

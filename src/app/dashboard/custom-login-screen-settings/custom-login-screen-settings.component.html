@@ -4,9 +4,9 @@
   <div class="tabscard col-xs-12 p0">
     <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0 styles" *ngIf="!isShowFinalDiv">
       <button type="submit" class="btn nav nav-tabs dcTheme btn-md" [ngClass]="isStyle1? 'loginActive': 'inActive'"
-        id="tabWidthCu" (click)="showStyle1()" [disabled]="isShowFinalDiv"><b>Login Style 1</b></button>
+        id="tabWidthCu" (click)="showStyle1()" [disabled]="isShowFinalDiv"><b>Login Template Style</b></button>
       <button type="submit" class="btn nav nav-tabs dcTheme btn-md" [ngClass]="!isStyle1 ? 'loginActive': 'inActive'"
-        id="tabWidthCu" (click)="showStyle2()" [disabled]="isShowFinalDiv"><b>Login Style 2</b></button>
+        id="tabWidthCu" (click)="showStyle2()" [disabled]="isShowFinalDiv"><b>Login Image Style</b></button>
     </div>
     <div role="presentation" id="tabWidthCu" class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0" id="updateDiv"
       style="margin-top: 5px;">
@@ -45,8 +45,8 @@
             <tr>
               <td><label><b>Login Type</b></label></td>
               <td>:</td>
-              <td *ngIf="loginType === 'STYLE_ONE'">Login Style 1</td>
-              <td *ngIf="loginType === 'STYLE_TWO'">Login Style 2</td>
+              <td *ngIf="loginType === 'STYLE_ONE'">Login Template Style</td>
+              <td *ngIf="loginType === 'STYLE_TWO'">Login Image Style</td>
             </tr>
             <tr *ngIf="loginType === 'STYLE_ONE'">
               <td><label><b>Template Name</b></label></td>
@@ -56,7 +56,8 @@
             <tr>
               <td><label><b>Position Of Login Form</b></label></td>
               <td>:</td>
-              <td>{{formPosition}}</td>
+              <td *ngIf="loginType==='STYLE_ONE'">{{styleOneDirection}}</td>
+              <td *ngIf="loginType==='STYLE_TWO'">{{styleTwoDirection}}</td>
             </tr>
             <tr>
               <td><label><b>Status</b></label></td>
@@ -95,7 +96,7 @@
                   <div class="form-group">
                     <label class="control-label" translate>Select Login Form Position <span class="required">
                         <strong>*</strong></span></label>
-                    <select (ngModelChange)="onSelectChangeStyale1($event)" [(ngModel)]="styleOneDirection"
+                    <select (ngModelChange)="onSelectChangeStyle1($event)" [(ngModel)]="styleOneDirection"
                       class="form-control">
                       <option [ngValue]="undefined" disabled selected> Select Login Form Position </option>
                       <option *ngFor="let direction1 of properties?.loginFormPosition">{{direction1}}</option>
@@ -220,7 +221,7 @@
                   </label>
                 </span>
                 <div class="ribbon draft config" *ngIf="emailTemplate.id === activeTemplateId">
-                  <span [style.background-color]="'green'">Active</span>
+                  <span [style.background-color]="'green'" *ngIf="loginType === 'STYLE_ONE'" >Active</span>
                 </div>
                 <img class="email-template-preview" *ngIf="emailTemplate.name === 'Create_Template'"
                   src="assets/images/customloginscreens/wireframe4.png" alt="Image Not Found">
@@ -271,11 +272,11 @@
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-7 p0 mb_15">
                 <div class="col-md-12 col-lg-12">
                   <div class="form-group">
-                    <label class="control-label" translate>Select Login Screen Direction <span class="required">
+                    <label class="control-label" translate>Select Login Form Position <span class="required">
                         <strong>*</strong></span></label>
                     <select (ngModelChange)="onSelectChangeStyale2($event)" [(ngModel)]="styleTwoDirection"
                       class="form-control">
-                      <option [ngValue]="undefined" disabled selected> Select Login Screen Direction </option>
+                      <option [ngValue]="undefined" disabled selected> Select Login Form Position </option>
                       <option *ngFor="let direction of properties?.loginScreenDirectionOptions">{{direction}}</option>
                     </select>
                   </div>
@@ -381,11 +382,11 @@
             There are two distinct login styles across five different unique login page designs.
           </li>
           <li translate>
-            <b>LOGIN STYLE 1</b> has sections on the right and left, in one, the login form can be placed, and in the
+            <b>Login Template Style</b> has sections on the right and left, in one, the login form can be placed, and in the
             other, you can create the template you want for your sales and marketing material.
           </li>
           <li translate>
-            <b>LOGIN STYLE 2</b> allows you to insert background images throughout the page and positions the login
+            <b>Login Image Style</b> allows you to insert background images throughout the page and positions the login
             form to the left, middle, or right.
           </li>
         </ul>

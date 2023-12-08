@@ -280,6 +280,7 @@ bgIMage2:any;
             this.authenticationService.loginType = result.loginType;
             this.authenticationService.isstyleTWoBgColor = result.styleTwoBgColor;
             this.isBgColor = result.styleOneBgColor;
+            let path = "https://xamplify.io/assets/images/stratapps.jpeg";
             if(result.loginType === "STYLE_ONE"){
               this.isStyleOne = true;
               if(result.styleOneBgColor) {
@@ -289,7 +290,7 @@ bgIMage2:any;
                 if(result.companyBgImagePath != null && result.companyBgImagePath != "") {
                 document.documentElement.style.setProperty('--login-bg-image-style1', 'url('+this.authenticationService.MEDIA_URL+ result.companyBgImagePath+')');
                 } else {
-                  document.documentElement.style.setProperty('--login-bg-image-style1', 'url(assets/images/xAmplify-sandbox.png)');
+                  document.documentElement.style.setProperty('--login-bg-image-style1', 'url('+path+')');
                 }
               }
             } else {
@@ -301,7 +302,7 @@ bgIMage2:any;
                 if(result.backgroundLogoStyle2 != null && result.backgroundLogoStyle2 != "") {
                   document.documentElement.style.setProperty('--login-bg-image', 'url('+this.authenticationService.MEDIA_URL+ result.backgroundLogoStyle2+')');
                 } else {
-                document.documentElement.style.setProperty('--login-bg-image', 'url(assets/images/xAmplify-sandbox.png)');
+                document.documentElement.style.setProperty('--login-bg-image', 'url('+path+')');
                 }
               }
             }

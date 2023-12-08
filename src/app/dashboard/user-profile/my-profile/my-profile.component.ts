@@ -2643,6 +2643,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	isTemplatesListDiv = false;
 	goBackToMyprofileForCustomLogin() {
+		this.customLoginTemplateResponse = new CustomResponse('SUCCESS', "Close", false);
 		this.editCustomLoginTemplate = false;
 		this.editXamplifyDefaultTemplate = false;
 		this.isTemplatesListDiv = true;
