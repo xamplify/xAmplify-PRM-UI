@@ -145,15 +145,16 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				}
 			}
 		}
-		if (this.referenceService.isCreated) {
-			this.customResponse = new CustomResponse('SUCCESS', 'Template Added Successfully', true);
-		} else if (this.referenceService.isUpdated) {
-			this.customResponse = new CustomResponse('SUCCESS', 'Template Updated Successfully', true);
-		} else if (this.referenceService.isUploaded) {
-			this.customResponse = new CustomResponse('SUCCESS', 'Uploaded Successfully', true);
-		} else if (this.referenceService.isAssetDetailsUpldated && !this.folderListViewExpanded) {
-			this.customResponse = new CustomResponse('SUCCESS', 'Details Updated Successfully', true);
+
+		let message = this.referenceService.assetResponseMessage;
+		if (this.referenceService.isAssetDetailsUpldated && !this.folderListViewExpanded){
+			this.customResponse = new CustomResponse('SUCCESS', message, true);
+		}else{
+			if(message.length>0){
+				this.customResponse = new CustomResponse('SUCCESS', message, true);
+			}
 		}
+		
 		if(this.viewType!="fl" && this.viewType!="fg"){
 			this.getCompanyId();		
 		}
@@ -164,6 +165,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.referenceService.isUpdated = false;
 		this.referenceService.isUploaded = false;
 		this.referenceService.isAssetDetailsUpldated = false;
+		this.referenceService.assetResponseMessage = "";
 	}
 
 	/********XNFR-169******/
