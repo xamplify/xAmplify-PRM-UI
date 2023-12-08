@@ -168,7 +168,9 @@
 
                         <button class="btn btn-white button salesforce-btn" style="margin-right: -6px;"
                           data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
-                          <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
+                          <i class="fa fa-refresh" aria-hidden="true"></i> 
+                          <span *ngIf="activeCRMDetails?.type==='HUBSPOT'">HubSpot</span>
+                          <span *ngIf="activeCRMDetails?.type!='HUBSPOT'">{{ activeCRMDetails?.type | titlecase }}</span>
                         </button>
                       </a>
 
