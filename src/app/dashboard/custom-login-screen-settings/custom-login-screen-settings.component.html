@@ -8,17 +8,20 @@
       <button type="submit" class="btn nav nav-tabs dcTheme btn-md" [ngClass]="!isStyle1 ? 'loginActive': 'inActive'"
         id="tabWidthCu" (click)="showStyle2()" [disabled]="isShowFinalDiv"><b>Login Image Style</b></button>
     </div>
-    <div role="presentation" id="tabWidthCu" class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0" id="updateDiv" style="margin-top: 5px;">
-    
+    <div role="presentation" id="tabWidthCu" class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0" id="updateDiv"
+      style="margin-top: 5px;">
+
       <button id="updateDiv" class="close-circle float-right" style="margin-left: 10px;height: 30px;padding-top: 0px;"
         (click)="backToPrevoiusPage()">
         <i class="fa fa-times" aria-hidden="true"></i>
       </button>
-      <button type="submit" id="updateDiv" (click)="updateCustomLogInScreenData(true)" class="button float-right" translate> <span
-        class="btn btn-sm Btn-Green transition">Update</span></button>
-        <button class="button float-right" type="submit" id="updateDiv" translate (click)="openNewTab()">
-          <span class="btn btn-sm Btn-Green transition"><i class="fa fa-eye" aria-hidden="true"  style="margin-right: 5px;"></i>Preview</span>
-        </button>
+      <button type="submit" id="updateDiv" (click)="updateCustomLogInScreenData(true)"
+        class="button float-right mg-top7" translate> <span
+          class="btn btn-sm Btn-Green transition">Update</span></button>
+      <button class="button float-right mg-top7" type="submit" id="updateDiv" translate (click)="openNewTab()">
+        <span class="btn btn-sm Btn-Green transition"><i class="fa fa-eye" aria-hidden="true"
+            style="margin-right: 5px;"></i>Preview</span>
+      </button>
 
     </div>
     <div class="col-xs-12 col-sm-12 p0" id="alertDiv">
@@ -31,7 +34,8 @@
           <button (click)="showLoginStylesDiv()" class="button float-right" type="submit" id="alertDiv" translate><span
               class="btn btn-sm Btn-Green transition">Edit</span></button>
           <button class="button float-right" type="submit" id="alertDiv" translate (click)="openNewTab()">
-            <span class="btn btn-sm Btn-Green transition"><i class="fa fa-eye" aria-hidden="true"  style="margin-right: 5px;"></i>Preview</span>
+            <span class="btn btn-sm Btn-Green transition"><i class="fa fa-eye" aria-hidden="true"
+                style="margin-right: 5px;"></i>Preview</span>
           </button>
         </div>
       </div>

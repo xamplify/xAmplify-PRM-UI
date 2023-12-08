@@ -101,7 +101,7 @@
          <div class="clearfix">
             <div class="col-xs-12">
                <!-- BEGIN EXAMPLE TABLE PORTLET-->
-               <div class="portlet light">
+               <div class="portlet light remove_cardBgcolor padding_0">
                   <div class="portlet-title pt0" style="border-bottom: none;padding-top: 6px;">
                      <div class="caption" translate style="padding-left: 3px !important;padding-top: 12px !important;">
                         <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
@@ -198,7 +198,7 @@
                                              {{campaignAnalytics?.clickedUrlsCount}}
                                           </td>
                                           <td class="center-align">
-                                             <div  class ="display-inlineflex" (click)="$event.stopPropagation()">
+                                             <div class="display-inlineflex" (click)="$event.stopPropagation()">
                                                 <a class="custom-icon" *ngIf="campaignAnalytics?.autoResponsesCount==0">
                                                    <i class="circled-number IconCustomization fontStyleNormal"
                                                       style="margin-right: 50px;cursor: not-allowed">{{campaignAnalytics?.autoResponsesCount}}</i>

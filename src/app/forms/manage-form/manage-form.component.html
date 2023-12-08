@@ -41,7 +41,7 @@
     <div class="row" *ngIf="statusCode==200">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="col-md-12" *ngIf="!detailedResponse">
-            <div class="portlet light clearfix">
+            <div class="portlet light remove_cardBgcolor padding_0 clearfix">
                 <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject"
                         (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
@@ -466,8 +466,9 @@
                             [ngModel]="formAliasUrl" #userinput>
                         <br>
                         <div style="padding-top: 8px;">
-                            <button class="button_blue bgcolor-unset" id="right" (click)="copyInputMessage(userinput,'Form link')"
-                                translate><span class="btn btn-primary transition">Copy Link</span>
+                            <button class="button_blue bgcolor-unset" id="right"
+                                (click)="copyInputMessage(userinput,'Form link')" translate><span
+                                    class="btn btn-primary transition">Copy Link</span>
                             </button>
                         </div>
                         <br>

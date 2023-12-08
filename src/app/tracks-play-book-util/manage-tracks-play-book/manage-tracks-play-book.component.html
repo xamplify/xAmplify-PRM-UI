@@ -5,7 +5,7 @@
 <div class="row">
     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="col-md-12 mTop mrg_top0">
-        <div class="portlet light clearfix">
+        <div class="portlet light remove_cardBgcolor padding_0 clearfix">
             <!--List/Grid View-->
             <div *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
                 <div *ngIf="showRefreshNotification && !httpRequestLoader?.isLoading" class="alert alert-info">

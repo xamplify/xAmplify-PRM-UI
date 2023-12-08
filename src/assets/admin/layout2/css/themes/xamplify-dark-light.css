@@ -2507,3 +2507,6 @@ button.btn.btn-white.salesforce-btn.button{
 .d-justify-end{
   justify-content: center!important;
 }
+.neg-mg-btm{
+  margin-bottom: -10px !important;
+}
