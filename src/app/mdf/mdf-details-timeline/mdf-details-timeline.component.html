@@ -126,7 +126,7 @@
       </div>
 
       <div class="row">
-         <div class="col-md-12 col-lg-12">
+         <div class="col-md-12 col-lg-12 pt_12">
             <div class="portlet light">
                <div class="portlet-title">
                   <div class="caption" translate>
@@ -154,11 +154,14 @@
                                  <span *ngIf="referenceService.isSafariBrowser()">{{timeLine?.displayTime}}</span>
                               </strong>
                            <p *ngIf="timeLine?.allocationDateInString?.length>0">Allocation Date:
-                              <strong>{{timeLine?.allocationDateInString}}</strong></p>
+                              <strong>{{timeLine?.allocationDateInString}}</strong>
+                           </p>
                            <p *ngIf="timeLine?.expirationDateInString?.length>0">Expiration Date:
-                              <strong>{{timeLine?.expirationDateInString}}</strong></p>
+                              <strong>{{timeLine?.expirationDateInString}}</strong>
+                           </p>
                            <p *ngIf="timeLine?.description?.length>0">Description:
-                              <strong>{{timeLine?.description}}</strong></p>
+                              <strong>{{timeLine?.description}}</strong>
+                           </p>
                         </div>
                      </article>
                   </div>
