@@ -2751,7 +2751,7 @@ resubscribeUserResult(event : any){
 
  /***********XNFR-342*********/
  openUnPublishedContentModalPopUp(contactList:any){
-	this.shareUnPublishedComponent.openPopUp(contactList.id,undefined,this.checkingContactTypeName);
+	this.shareUnPublishedComponent.openPopUp(contactList.id,undefined,this.checkingContactTypeName,contactList.name);
  }
  
 }
