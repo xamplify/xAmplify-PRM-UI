@@ -344,18 +344,18 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     if (this.isStyle1) {
       this.customLoginScreen.loginType = "STYLE_ONE";
       if (this.customLoginScreen.logInScreenDirection === 'Center') {
-        this.customLoginScreen.logInScreenDirection = 'Right';
-        this.formPosition = "Right";
+        this.customLoginScreen.logInScreenDirection = this.styleOneDirection;
+        this.formPosition = this.styleOneDirection;
       } else {
-        this.formPosition = this.customLoginScreen.logInScreenDirection;
-        this.customLoginScreen.logInScreenDirection = this.customLoginScreen.logInScreenDirection;
+        this.formPosition = this.styleOneDirection;
+        this.customLoginScreen.logInScreenDirection = this.styleOneDirection;
       }
     } else {
       this.customLoginScreen.loginType = "STYLE_TWO";
-      this.formPosition = this.customLoginScreen.logInScreenDirection;
+      this.formPosition = this.styleTwoDirection;
+      this.customLoginScreen.logInScreenDirection = this.styleTwoDirection
     }
     this.loginType = this.customLoginScreen.loginType;
-    //this.formPosition = this.customLoginScreen.logInScreenDirection;
     this.companyProfileService.updateCustomLogInScreenData(this.customLoginScreen)
       .subscribe(
         data => {

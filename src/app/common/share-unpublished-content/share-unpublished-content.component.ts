@@ -58,14 +58,15 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.isPublishedSuccessfully = false;
   }
 
-  openPopUp(userListId: number, contact:any,type:string){
+  openPopUp(userListId: number, contact:any,type:string,userListName:string){
     this.resetValues();
     this.isPublishedSuccessfully = false;
     let accessList = [];
     accessList.push(this.hasCampaignAccess);
-    accessList.push(this.hasDamAccess);
-    accessList.push(this.hasLmsAccess);
-    accessList.push(this.hasPlaybookAccess);
+    let isActiveOrInActiveMasterPartnerList = ("Active Master Partner List" || "InActive Master Partner List")==userListName;
+    accessList.push(this.hasDamAccess && !isActiveOrInActiveMasterPartnerList);
+    accessList.push(this.hasLmsAccess && !isActiveOrInActiveMasterPartnerList);
+    accessList.push(this.hasPlaybookAccess && !isActiveOrInActiveMasterPartnerList);
     let filteredArrayList = this.referenceService.filterArrayList(accessList,false);
     this.showFilterOptions = filteredArrayList!=undefined && filteredArrayList.length>1;
     this.addFilterOptions();
