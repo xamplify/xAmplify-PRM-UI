@@ -94,11 +94,27 @@
 					</thead>
 				</table>
 			  </div>
-
 			  <div class="table-responsive">
 				<app-response-message [customResponse]="customResponse"
 				*ngIf="customResponse.isVisible"></app-response-message>
 			  </div>
+
+			  <!--Download Partner Contacts-->
+			  <div class="table-responsive">
+			  <table  class='table tgrid' aria-describedby="">
+				  <thead>
+					  <tr>
+						  <th scope="row">Download Contacts Of Your {{authenticationService.partnerModule.customName}}</th>
+							  <th scope="row">
+								  <button class="btn btn-info" title="Click Here To Download" (click)="downloadContacts()">
+									<i class="fa fa-download" aria-hidden="true"></i>
+								  </button>
+							  </th>
+						  </tr>
+				  </thead>
+			  </table>
+			</div>
+
 			<fieldset style="margin: 20px 2px;">
 				<legend>Module Access</legend>
 				<app-modal-popup-loader *ngIf="moduleLoader"></app-modal-popup-loader>
