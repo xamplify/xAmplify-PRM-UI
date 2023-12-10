@@ -311,10 +311,21 @@ downloadContacts(){
 		let param: any = {
 			'companyId': this.companyId,
 		};
-    let fileName = this.companyProfilename+".csv";
+    let fileName = this.companyProfilename+"-contacts.csv";
 		let completeUrl = this.authenticationService.REST_URL + "superadmin/downloadTotalContactsOfAllPartners/"+fileName+"?access_token=" + this.authenticationService.access_token;
 		this.referenceService.post(param, completeUrl);
 		this.ngxLoading = false;
+}
+
+downloadContactsCount(){
+  this.ngxLoading = true;
+  let param: any = {
+    'companyId': this.companyId,
+  };
+  let fileName = this.companyProfilename+"-contacts-count.csv";
+  let completeUrl = this.authenticationService.REST_URL + "superadmin/downloadTotalContactsCountOfAllPartners/"+fileName+"?access_token=" + this.authenticationService.access_token;
+  this.referenceService.post(param, completeUrl);
+  this.ngxLoading = false;
 }
 
 }
