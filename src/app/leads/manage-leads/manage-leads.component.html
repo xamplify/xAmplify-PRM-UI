@@ -133,7 +133,7 @@
       <!-- -----------------------------Leads List-------------------------------------- -->
       <div class="row">
         <div class="col-md-12">
-          <div class="page-bar p10" id="header">
+          <div class="page-bar remove_cardBgcolor padding_0 p10" id="header">
             <div class="tab-content">
               <div *ngIf="!showCampaignLeads">
                 <!-- XNFR-148 -->
@@ -166,7 +166,7 @@
 
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
                         (click)="addLead()" style="padding-left: 4px;">
-                        <button class="button_blue padding align mb-btns p-top-0 bgcolor-unset" translate>
+                        <button class="button_blue padding align mb-btns p-top-0 bgcolor-unset pd_0" translate>
                           <span class="btn btn-primary transition"><i class="fa fa-plus  mb-btns"
                               aria-hidden="true"></i> Add a Lead</span>
                         </button>

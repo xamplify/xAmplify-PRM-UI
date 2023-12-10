@@ -233,7 +233,7 @@
                      </div>
                   </div>
                   <!-- End tile here-->
-                  <div [ngClass]="{'page-bar p10': showListOfContactList}">
+                  <div [ngClass]="{'page-bar remove_cardBgcolor p10': showListOfContactList}">
                      <div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '': ''}">
                         <div class="tab-pane active">
                            <div class="row mr0 ml0">
@@ -862,10 +862,9 @@
                                        <ng-container
                                           *ngIf="contactList.name!=properties?.activeMasterPartnerList && contactList.name!=properties?.inActiveMasterPartnerList && !contactList?.teamMemberPartnerList">
                                           <a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList"
-                                             style=""
                                              *ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isPrm || authenticationService.module.isPrmTeamMember ||authenticationService.module.isPrmAndPartner ||authenticationService.module.isPrmAndPartnerTeamMember || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner() || (hasPartnersRole && loggedInUserId==contactList.uploadedUserId)
-                        || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
-                        && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
+                                                || (hasShareLeadsRole && loggedInUserId == contactList.uploadedUserId))
+                                                   && !contactList.defaultPartnerList && !contactList.marketoMasterList && ((assignLeads) || (!sharedLeads && contactList.moduleName!='SHARE LEADS') && !contactList.formList)"
                                              (click)="showAlert(contactList.id)" data-toggle="tooltip"
                                              data-placement="top" class="delete custom-icon"
                                              title="{{actionsDescription.contact_list_delete}}"

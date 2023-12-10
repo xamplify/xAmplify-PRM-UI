@@ -39,7 +39,7 @@
 	<div [hidden]="loader">
 		<div [hidden]="isEditPartnerTemplate" id="event-tabs">
 			<ngx-loading [show]="completeLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-			<div class="portlet light"
+			<div class="portlet light mg_btm_23"
 				*ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate"
 				style="display: flex; padding-top: 1em;border-radius: 5px !important;">
 				<div id="step2" class="col-block col-block-complete" (click)="resetTabs('details')"
@@ -1095,7 +1095,8 @@
 				<!-- Step three email templates   -->
 				<div class="col-xs-12 mb10" [hidden]="!emailTemplatesTab" style="padding: 10px 0 0 0;">
 					<app-grid-loader *ngIf="gridLoader"></app-grid-loader>
-					<div class="boxes portlet light" style="border:none !important" [hidden]="gridLoader">
+					<div class="boxes portlet light remove_cardBgcolor" style="border:none !important"
+						[hidden]="gridLoader">
 						<div class="portlet-title"
 							style="display:block;background: none !important;border-bottom:none !important">
 							<div>

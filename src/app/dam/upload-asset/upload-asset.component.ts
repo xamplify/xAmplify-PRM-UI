@@ -45,7 +45,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	dupliateNameErrorMessage: string;
 	descriptionErrorMessage: string;
 	isValidForm = false;
-	submitButtonText = "Submit";
+	submitButtonText = "Save";
 	isAdd = true;
 	headerText = "Upload Asset";
 	previewItems = false;
@@ -137,6 +137,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     /****XNFR-326***/
     isAssetPublishedEmailNotification = false;
     assetPublishEmailNotificationLoader = true;
+    isAssetPublished = false;
 
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -179,6 +180,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.isAdd = this.router.url.indexOf('/upload') > -1;
 		this.showDefaultLogo = this.isAdd;
 		this.headerText = this.isAdd ? 'Upload Asset' : 'Edit Asset';
+        this.referenceService.assetResponseMessage = "";
 		if (!this.isAdd) {
 			this.id = this.route.snapshot.params['id'];
 			this.getAssetDetailsById(this.id);
@@ -255,6 +257,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 						if(this.damUploadPostDto.tagIds == undefined){
 							this.damUploadPostDto.tagIds = new Array<number>();
 						}
+                        this.isAssetPublished = result.data.published;
 						this.validateForm('assetName');
 						this.validateForm('description');
 						this.formLoader = false;
@@ -464,6 +467,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 		this.damService.uploadOrUpdate(this.formData, this.damUploadPostDto,this.isAdd).subscribe(
 			(result: any) => {
 				swal.close();
+                this.referenceService.assetResponseMessage = result.message;
 				if (result.statusCode == 200) {
 					if(this.isAdd){
 						this.referenceService.isUploaded = true;
@@ -571,6 +575,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	            (result: any) => {
 	                if (result.statusCode == 200) {
 	                this.processing = false;
+                    this.referenceService.assetResponseMessage = result.message;
 	                if(!this.damService.ispreviousAssetIsProcessing){
 	                    if(this.isAdd){
 	                        this.referenceService.isUploaded = true;
@@ -1192,6 +1197,23 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
     this.damUploadPostDto.partnerGroupIds = event['partnerGroupIds'];
     this.damUploadPostDto.partnerIds = event['partnerIds'];
     this.damUploadPostDto.partnerGroupSelected = event['partnerGroupSelected'];
+    /****XNFR-342****/
+    let isPartnerCompanyOrGroupSelected = this.damUploadPostDto.partnerGroupIds.length>0 || this.damUploadPostDto.partnerIds.length>0;
+    if(this.isAdd){
+        if(isPartnerCompanyOrGroupSelected){
+            this.submitButtonText = "Save & Publish";
+        }else{
+            this.submitButtonText = "Save";
+        }
+    }else{
+        if(isPartnerCompanyOrGroupSelected && !this.isAssetPublished){
+            this.submitButtonText = "Update & Publish";
+        }else{
+            this.submitButtonText = "Update";
+        }
+    }
+    /****XNFR-342****/
+   
 }
 
 toggleContainWithinAspectRatio() {

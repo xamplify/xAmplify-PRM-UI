@@ -981,8 +981,8 @@ input.cmn-toggle-round-flat + label:before {
 textarea:active,
 textarea:focus {
   border-radius: 1px;
-  border-color: #2f4857 !important ;
-  outline: 1px solid #2f4857 !important;
+  border-color: #191b1e !important ;
+  outline: 1px solid #191b1e !important;
 }
 .swal2-input:not([type="file"]),
 .swal2-textarea {
@@ -1136,7 +1136,8 @@ input#copy-link {
   color: white !important;
   background-color: #2e3033;
   border: 0px solid #191b1e !important;
-  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  padding: 6px 6px !important;
 }
 .filter-box-selected {
   background-color: #22313a !important;
@@ -2050,7 +2051,7 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .mix-filter li.campaign-type-selected,
 .mix-filter li.emailtemplate-selected {
   background: #222528  !important;
-  box-shadow: -3px -3px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 .table-responsive {
   border-radius: 10px;
@@ -2191,6 +2192,7 @@ i.fa.fa-expand.fa-fa-consistency.IconCustomization {
   background-color: #2c2f33 !important;
   border: 1px solid #191b1e !important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  border-radius: 10px !important;
 }
 .pricing-head h4#image-style {
   background-color: #2c2f33 !important;
@@ -3202,4 +3204,55 @@ input.field-border-customization {
 }
 .setting-icon-cu:hover {
   background-color: #3f68c5;
+}
+.page-bar.p10 {
+  box-shadow: none !important;
+  padding: 0px 1px 0px 1px !important;
+}
+.campaign_boxes{
+  background: #2c2f33 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+legend.scheduler-border{
+  padding:5px 10px !important;
+}
+.page-bar.remove_cardBgcolor,
+.portlet.light.remove_cardBgcolor,
+.remove_shadow_bgcolor {
+  box-shadow: none !important;
+  background: none !important;
+}
+li.filter.filter_box_sizes{
+  padding: 6px 8px;
+}
+.padding_0,.portlet.light.remove_cardBgcolor.padding_0{
+  padding: 0px !important;
+}
+.neg_margin-10{
+  margin-top: -10px !important;
+}
+.margin_bottom-20{margin-bottom: 20px !important;}
+.mg_btm_23{margin-bottom: 23px !important;}
+.mg-top7{
+  margin-top: -7px;
+}
+div.button span {
+  font-weight: 600;
+  font-family: Gantari,Open Sans,sans-serif;
+  font-size: 13px;
+  letter-spacing: 0px;
+  text-transform: math-auto; 
+}
+/** XNFR-416 ***/
+.loginActive {
+  color: #fff !important;
+  background-color : #222528 !important;
+  border-bottom: 3px solid #008fd5 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.inActive {
+  color: #fff !important;
+  background-color : #222528 !important;
+  border-bottom: 3px solid #f1f5f9 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }

@@ -44,6 +44,7 @@ export class ModuleAccessComponent implements OnInit {
   showOneClickLaunchErrorMessage: boolean;
   statusCode = 0;
   analyticsCountDto: AnalyticsCountDto = new AnalyticsCountDto();
+  downloadLoader = false;
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService, private mdfService: MdfService) { }
   ngOnInit() {
     this.companyId = this.route.snapshot.params['alias'];
@@ -303,6 +304,28 @@ findMaximumAdminsLimitDetails(){
       this.ngxLoading =false;
     }
   );
+}
+
+downloadContacts(){
+  this.ngxLoading = true;
+		let param: any = {
+			'companyId': this.companyId,
+		};
+    let fileName = this.companyProfilename+"-contacts.csv";
+		let completeUrl = this.authenticationService.REST_URL + "superadmin/downloadTotalContactsOfAllPartners/"+fileName+"?access_token=" + this.authenticationService.access_token;
+		this.referenceService.post(param, completeUrl);
+		this.ngxLoading = false;
+}
+
+downloadContactsCount(){
+  this.ngxLoading = true;
+  let param: any = {
+    'companyId': this.companyId,
+  };
+  let fileName = this.companyProfilename+"-contacts-count.csv";
+  let completeUrl = this.authenticationService.REST_URL + "superadmin/downloadTotalContactsCountOfAllPartners/"+fileName+"?access_token=" + this.authenticationService.access_token;
+  this.referenceService.post(param, completeUrl);
+  this.ngxLoading = false;
 }
 
 }

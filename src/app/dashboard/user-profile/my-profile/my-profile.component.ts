@@ -2643,6 +2643,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	isTemplatesListDiv = false;
 	goBackToMyprofileForCustomLogin() {
+		this.customLoginTemplateResponse = new CustomResponse('SUCCESS', "Close", false);
 		this.editCustomLoginTemplate = false;
 		this.editXamplifyDefaultTemplate = false;
 		this.isTemplatesListDiv = true;
@@ -4105,7 +4106,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.dashBoardService.getDefaultThemes().subscribe(
 			(response) => {
 				this.ngxloading = false
-				this.defaultThemes = response.data;
+				// this.defaultThemes = response.data;
+			this.defaultThemes = response.data.sort((a, b) => a.id - b.id);
 			},
 			error => {
 				this.ngxloading = false;
