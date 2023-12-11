@@ -288,4 +288,9 @@ export class SfDealComponent implements OnInit {
     event.preventDefault();
     this.isCollapsed3 = !this.isCollapsed3;
   }
+
+  /*****XNFR-403*****/
+  getSelectedProductDetails(event:any){
+    console.log(event);
+  }
 }
