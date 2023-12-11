@@ -157,7 +157,7 @@
                                   data-placement="bottom" title="{{tag?.tagName}}">
                                   <div class="btn btn-primary-dark btn-primary-light"
                                     style="padding: 4px 10px;border-radius: 5px !important;">
-                                    {{tag.tagName | slice:0:10}} <span *ngIf="tag.tagName?.length>15">..</span></div>
+                                    {{tag.tagName | slice:0:10}} <span *ngIf="tag.tagName?.length>11">..</span></div>
                                 </div>
                               </td>
                               <td style="padding: 5px;vertical-align: middle;"
@@ -176,7 +176,7 @@
                                   <div class="btn btn-primary-dark btn-primary-light"
                                     style="padding: 4px 10px;border-radius: 5px !important;">
                                     {{tagsListSecondColumn[i].tagName | slice:0:10}} <span
-                                      *ngIf="tagsListSecondColumn[i].tagName?.length>15">..</span></div>
+                                      *ngIf="tagsListSecondColumn[i].tagName?.length>11">..</span></div>
 
                                 </div>
                               </td>
@@ -300,12 +300,12 @@
             <div class="page-toolbar">
 
               <div class="inline mToolBarPad" style="margin-left: -3px;padding-top: 12px;">
-                <button *ngIf="type == undefined || type == 'TRACK'" class="button_blue bgcolor-unset" (click)="openQuizPopup()"><span
-                    class="btn btn-primary transition">Select
+                <button *ngIf="type == undefined || type == 'TRACK'" class="button_blue bgcolor-unset"
+                  (click)="openQuizPopup()"><span class="btn btn-primary transition">Select
                     Quiz</span></button>
-                <button class="button_blue bgcolor-unset" (click)="openOrderAssetsPopup()"><span class="btn btn-primary transition"
-                    *ngIf="type == undefined || type == 'TRACK'">Order Assets And Quiz</span><span
-                    class="btn btn-primary transition" *ngIf="type !== 'TRACK'">Order
+                <button class="button_blue bgcolor-unset" (click)="openOrderAssetsPopup()"><span
+                    class="btn btn-primary transition" *ngIf="type == undefined || type == 'TRACK'">Order Assets And
+                    Quiz</span><span class="btn btn-primary transition" *ngIf="type !== 'TRACK'">Order
                     Assets</span></button>
 
               </div>
@@ -453,10 +453,10 @@
       <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-3')"
         translate>Previous</button>
       <div class="pull-right">
-        <button class="button_blue bgcolor-unset" type="submit" [disabled]="!tracksPlayBook.isValid" (click)="save()"><span
-            class="btn btn-primary transition">{{SubmitButtonValue}}</span></button>
-        <button class="button_blue bgcolor-unset" type="submit" [disabled]="!tracksPlayBook.isValid" *ngIf="!tracksPlayBook.published"
-          (click)="saveAndPublish()"><span
+        <button class="button_blue bgcolor-unset" type="submit" [disabled]="!tracksPlayBook.isValid"
+          (click)="save()"><span class="btn btn-primary transition">{{SubmitButtonValue}}</span></button>
+        <button class="button_blue bgcolor-unset" type="submit" [disabled]="!tracksPlayBook.isValid"
+          *ngIf="!tracksPlayBook.published" (click)="saveAndPublish()"><span
             class="btn btn-primary transition">{{SubmitAndPublishButtonValue}}</span></button>
       </div>
     </div>
