@@ -62,14 +62,15 @@
                       </select>
                     </div>
         
-                    <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px" *ngIf="!hasCampaignPipeline && !activeCRMDetails?.hasDealPipeline">
+                    <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px">
                       <label class="control-label">Pipeline<span class="required"><strong>*</strong></span></label>
                       <select class="form-control" [(ngModel)]="deal.pipelineId" [ngModelOptions]="{standalone: true}"
-                        placeholder="pipelineId" id="pipelineId" [disabled]="preview"
+                        placeholder="pipelineId" id="pipelineId" [disabled]="preview || hasCampaignPipeline || activeCRMDetails?.hasDealPipeline"
                         (ngModelChange)="resetStages()" (input)="validateField('pipelineId',false)">
                         <option [value]="0">Select Pipeline</option>
                         <option *ngFor="let pipeline of pipelines" [value]="pipeline.id">{{pipeline.name}}</option>
                       </select>
+
                     </div>
         
                     <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px">

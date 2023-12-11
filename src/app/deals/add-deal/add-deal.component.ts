@@ -236,6 +236,7 @@ export class AddDealComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             let campaignDealPipeline = data.data;
+            self.pipelines.push(campaignDealPipeline);
             self.deal.pipelineId = campaignDealPipeline.id;
             self.pipelineIdError = false;
             self.stages = campaignDealPipeline.stages;
@@ -475,11 +476,14 @@ export class AddDealComponent implements OnInit {
   }
 
   resetStages() {
-    this.deal.pipelineStageId = 0;
-    this.getStages();
-    this.pipelineStageId = "form-group has-error has-feedback";
-    this.pipelineStageIdError = true;
-    this.isDealRegistrationFormValid = false;
+    if(!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline){
+      this.deal.pipelineStageId = 0;
+      this.getStages();
+      this.pipelineStageId = "form-group has-error has-feedback";
+      this.pipelineStageIdError = true;
+      this.isDealRegistrationFormValid = false;
+    }
+    
   }
 
   getStages() {
@@ -990,6 +994,7 @@ getActiveCRMPipelines() {
         this.isLoading = false;
         if (data.statusCode == 200) {
           let activeCRMPipelines:Array<any> = data.data;
+          self.pipelines = activeCRMPipelines;
           if (activeCRMPipelines.length === 1) {
             let activeCRMPipeline = activeCRMPipelines[0];
             self.deal.pipelineId = activeCRMPipeline.id;
@@ -997,7 +1002,6 @@ getActiveCRMPipelines() {
             self.stages = activeCRMPipeline.stages;
             self.activeCRMDetails.hasDealPipeline = true;
           } else {     
-            self.pipelines = activeCRMPipelines;
             let dealPipelineExist = false;
             for (let p of activeCRMPipelines) {              
               if (p.id == this.deal.pipelineId) {
