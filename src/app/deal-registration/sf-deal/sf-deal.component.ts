@@ -36,7 +36,8 @@ export class SfDealComponent implements OnInit {
   isCollapsed: boolean;
   isCollapsed2: boolean;
   isCollapsed3: any;
-  
+  /*********XNFR-403*********/
+  connectWiseProducts:Array<any> = new Array<any>();
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
 
@@ -55,7 +56,6 @@ export class SfDealComponent implements OnInit {
       if (this.dealId == undefined || this.dealId <= 0) {
         this.dealId = 0;
       }
-      
       this.isLoading = true;
       if ("SALESFORCE" === this.activeCRM) {
         this.getSalesforceCustomForm();
@@ -87,13 +87,13 @@ export class SfDealComponent implements OnInit {
         if (reqFieldsCheck.length === 0) {
           this.isDealRegistrationFormValid = false;
         }
+        this.connectWiseProducts = result.data.connectWiseProducts;
       } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") { 
         this.showSFFormError = true;    
         this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
       } 
       
     }, error => {
-      console.log(error);
       this.isLoading = false;
       this.showSFFormError = true; 
       this.sfFormError = this.referenceService.getApiErrorMessage(error);       

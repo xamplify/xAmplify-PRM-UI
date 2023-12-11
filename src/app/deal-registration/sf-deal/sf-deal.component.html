@@ -16,6 +16,7 @@
               <strong>{{sfFormError}}</strong>
             </div>
             <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
               <div class="col-lg-12 col-md-12">
                 <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
                   <ng-template  *ngIf="(0 == i % 2)" [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
@@ -36,60 +37,43 @@
           <a  class="collapsed" href="Products" (click)="toggleCollapseProduct($event)"> <i
         [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed3, 'fa-chevron-down collapseIn': isCollapsed3}" class="arrowpositinon fa collapseIconColorCu"
         aria-hidden="false" style="float: right;"></i>Products
-        <button class="btn btn-primary add-btns"  data-placement="top" data-toggle="tooltip" title="Add Product"  aria-hidden="true">
-          <i class="fa fa-plus add-prdts"></i>
-        </button>
       </a>
       </h4>
     </div>
     <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="Products">
-      <div class="panel-body br-unset pl0 pr0">
-        <div class="row portlet light m0 deal-bgcolors"> 
+      <div class="panel-body br-unset pl0 pr0" >
+        <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
+        <div class="row portlet light m0 deal-bgcolors" *ngIf="!isLoading"> 
           <div class ="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <div class="row Add-Icon">
             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 Add-Icon">
-              <button class="btn btn-primary add-btn"  data-placement="top" data-toggle="tooltip" title="Add Product"  aria-hidden="true">
+              <button class="btn btn-primary add-btn"  data-placement="top" data-toggle="tooltip" title="Add"  aria-hidden="false">
                 <i class="fa fa-plus add-prdt"></i>
               </button>
-              <button class="btn btn-danger add-btn"  data-placement="top" data-toggle="tooltip" title="Add Product"  aria-hidden="true">
+              <button class="btn btn-danger add-btn"  data-placement="top" data-toggle="tooltip" title="Delete"  aria-hidden="false">
                 <i class="fa fa-trash-o p0 add-prdt"></i>
               </button>
             </div>
           </div>
           </div>
+
+
           <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
             <label>Name</label>
-            <!-- <div class="xamplify-dropdown" *ngIf="!disabled">
-              <input type="text" class="form-control text-dropdown"
-                (click)="showFolderDropDown=!showFolderDropDown;filterDropDownData(dropDownSearchValue)" readonly>
-                <i class="fa fa-angle-down xamplify-dropdown-icon cursor-pointer" aria-hidden="true" (click)="showFolderDropDown=!showFolderDropDown;filterDropDownData(dropDownSearchValue)"></i>
-              <div *ngIf="showFolderDropDown" id="folderDropDown" class="xamplify-dropdown-content xamplify-dropdown-scroller">
-                <input type="text" class="search-bgcolor" placeholder="Search.." id="myInput"
-                  (input)="filterDropDownData(dropDownSearchValue)" #dropDownSearchValue>
-                <div class="xamplify-dropdown-option" [ngClass]="{'xamplify-dropdown-content-odd': 0 === i % 2}"
-                  *ngFor="let item of filteredDropDownItems;let i=index"
-                  (click)="setDropDownValue(item)">
-                  <div title="{{item.name}}">{{item?.name | slice: 0: 50}}<span *ngIf="item?.name?.length>50">...</span></div>
-                </div>
-                <div *ngIf="filteredDropDownItems?.length==0" class="alert alert-info custom-center">
-                  <strong>No Records Found</strong>
-                </div>
-              </div>
-            </div> -->
           </div> 
           <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
             <label>Quantity</label>
-            <input type="text" class="form-control"  placeholder="Enter the Quantity">
+            <input type="number" class="form-control"  placeholder="Enter the Quantity">
           </div>  
           <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
             <label>Price</label>
-            <input type="text" class="form-control"  placeholder="Enter the Price">
+            <input type="number" class="form-control"  placeholder="Enter the Price">
           </div>  
           <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
             <label>Cost</label>
-            <input type="text" class="form-control"  placeholder="Enter the Cost">
+            <input type="number" class="form-control"  placeholder="Enter the Cost">
           </div>    
-          </div>
+        </div>
       </div>
     </div>
   </div>
