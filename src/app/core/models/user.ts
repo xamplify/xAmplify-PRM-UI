@@ -61,4 +61,6 @@ export class User {
     partnershipId = 0;
     selectedTeamMemberGroupName = "";
     companyProfileDTO : CompanyProfileDTO = new CompanyProfileDTO();
+    displayContactCompany : string;
+    companyNameStatus : string;
 }

@@ -22,4 +22,7 @@ export class VanityURL{
 	
 	styleTwoBgColor:boolean = false ;
 	/**** XNFR-416 ****/
+    /** XBI-2016 ***/
+    loginFormDirectionStyleOne:string;
+    /** XBI-2016**/
 }

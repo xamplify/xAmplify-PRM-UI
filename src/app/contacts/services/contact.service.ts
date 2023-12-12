@@ -840,5 +840,12 @@ export class ContactService {
         .catch(this.handleError);
     
     }
+    
+      validateCompanyName(companyName:string){
+      return this._http.get(this.contactsUrl + "validate-partner-company"+  "/" + companyName + "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    
+    }
 
 }

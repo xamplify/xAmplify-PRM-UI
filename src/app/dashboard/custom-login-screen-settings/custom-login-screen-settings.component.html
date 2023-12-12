@@ -119,7 +119,7 @@
                       </span>
                     </div>
                 </div> -->
-                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
+                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12" *ngIf="!authenticationService?.module?.isMarketingCompany">
                   <label class="control-label col-sm-6 p0" translate>Display My Logo <span class="requried"><strong>*
                         :</strong></span>
                   </label>
@@ -282,12 +282,12 @@
                   </div>
                 </div>
                 <!-- Strat Display my logo toggle with help for style 2 -->
-                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
+                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12" *ngIf="!authenticationService?.module?.isMarketingCompany">
                   <label class="control-label col-sm-6 p0" translate>Display My Logo <span class="requried"><strong>*
                         :</strong></span>
                   </label>
                   <div>
-                    <div>
+                    <div >
                       <app-custom-ui-switch [customSwitch]="customLoginScreen?.showVendorCompanyLogo"
                         (customUiSwitchEventEmitter)="setVendorLogoOption($event)"></app-custom-ui-switch>
                       <span class="info-color-xampc">

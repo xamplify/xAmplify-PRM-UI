@@ -170,7 +170,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	/*    orgAdminsList = [];*/
 	editingEmailId = '';
 	loading = false;
-	contactAllDetails = [];
+	contactAllDetails : any;
 	openCampaignModal = false;
 	logListName = "";
 	searchContactType = "";
@@ -2521,7 +2521,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.addContactuser = new User();
 		this.isUpdateUser = false;
 		this.updateContactUser = false;
-		this.contactAllDetails = [];
+		this.contactAllDetails = null;
 		this.contactService.isContactModalPopup = true;
 	}
 
@@ -2897,6 +2897,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		try {
 			this.loading = true;
 			this.editUser.pagination = this.pagination;
+			this.editUser.pagination.partnerCompanyId = this.contactAllDetails.companyId;
 			if (event.mobileNumber) {
 				if (event.mobileNumber.length < 6) {
 					event.mobileNumber = "";
@@ -3707,7 +3708,7 @@ copyGroupUsersModalPopupEventReceiver(){
  
  /***********XNFR-342*********/
  openUnPublishedContentModalPopUp(contact:any){
-	this.shareUnPublishedComponent.openPopUp(this.selectedContactListId, contact, this.checkingContactTypeName);
+	this.shareUnPublishedComponent.openPopUp(this.selectedContactListId, contact, this.checkingContactTypeName,contact.name);
  }
     
 }

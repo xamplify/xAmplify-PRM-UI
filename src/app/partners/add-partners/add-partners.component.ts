@@ -113,7 +113,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	contactListAssociatedCampaignsList: any;
 	editingEmailId = '';
 	loading = false;
-	partnerAllDetails = [];
+	partnerAllDetails : any;
 	openCampaignModal = false;
 
 	disableOtherFuctionality = false;
@@ -1379,6 +1379,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 	updatePartnerListUser(event) {
 		try {
 			this.editUser.pagination = this.pagination;
+			this.editUser.pagination.partnerCompanyId = this.partnerAllDetails.companyId;
 			if (event.mobileNumber) {
 				if (event.mobileNumber.length < 6) {
 					event.mobileNumber = "";
@@ -4477,7 +4478,7 @@ unsubscribeUser(selectedUserForUnsubscribed : any){
 
  /******XNFR-342***/
  openUnPublishedContentModalPopUp(contact:any){
-	this.shareUnPublishedComponent.openPopUp(this.partnerListId, contact, "Partner");
+	this.shareUnPublishedComponent.openPopUp(this.partnerListId, contact, "Partner",contact.name);
  }
 
 

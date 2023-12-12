@@ -283,6 +283,7 @@ bgIMage2:any;
             let path = "https://xamplify.io/assets/images/stratapps.jpeg";
             if(result.loginType === "STYLE_ONE"){
               this.isStyleOne = true;
+              this.authenticationService.loginScreenDirection = result.loginFormDirectionStyleOne;
               if(result.styleOneBgColor) {
               document.documentElement.style.setProperty('--login-bg-color-style1', result.backgroundColorStyle1);
               } else {
@@ -295,6 +296,7 @@ bgIMage2:any;
               }
             } else {
               this.isStyleOne = false;
+              this.authenticationService.loginScreenDirection = result.loginScreenDirection;
               if(result.styleTwoBgColor) {
               document.documentElement.style.setProperty('--login-bg-color', result.backgroundColorStyle2);
               } else {
@@ -328,7 +330,7 @@ bgIMage2:any;
               this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
             }
             this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
-            this.authenticationService.loginScreenDirection = result.loginScreenDirection;
+            //this.authenticationService.loginScreenDirection = result.loginScreenDirection;
             this.vanityURLService.setVanityURLTitleAndFavIcon();
             if (result.showMicrosoftSSO) {
               this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" });

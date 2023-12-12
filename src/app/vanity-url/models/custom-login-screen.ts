@@ -18,4 +18,6 @@ export class CustomLoginScreen {
 
     styleTwoBgColor: boolean = false;
     /**** XNFR-416 ****/
+    /*** XBI-2016 ****/
+    loginFormDirectionStyleOne:string;
 }

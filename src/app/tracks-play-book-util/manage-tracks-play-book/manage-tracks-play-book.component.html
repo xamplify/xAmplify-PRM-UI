@@ -191,9 +191,9 @@
                                                 [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString">
                                             </app-timestamp>
                                             <!---XNFR-327-->
-                                            <h6 *ngIf="learningTrack.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress"
+                                            <h6 *ngIf="learningTrack.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList "
                                                 class="view-banner published" translate>Published</h6>
-                                            <h6 *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress"
+                                            <h6 *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList"
                                                 class="view-banner ProcessingTextWidth">
                                                 <span><img src="assets/images/loading.gif" alt="Processing"
                                                         style="height:15px"></span>
@@ -216,7 +216,7 @@
                                             </div>
                                         </td>
                                         <td id="actions-row" class="text-center mActionAlign">
-                                            <div *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress"
+                                            <div *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList"
                                                 class="actions-block override-actions custom-width-icon mb_whitespace"
                                                 [ngClass]="{actionAlignment : !isPartnerView}">
                                                 <a class="mMobileDisable custom-icon"
@@ -262,7 +262,7 @@
                                                 </a>
                                             </div>
                                             <!--XNFR-327-->
-                                            <div *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress"
+                                            <div *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList"
                                                 class="actions-block override-actions custom-width-icon mb_whitespace">
                                                 <a data-toggle="tooltip" data-placement="top" title="Refresh"
                                                     (click)="listLearningTracks(pagination)">
@@ -328,14 +328,13 @@
                             <!---XNFR-327--->
                             <div class="ribbon tab-ribbon">
                                 <span
-                                    *ngIf="learningTrack.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress">Published</span>
-                                <span *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress && !isPartnerView">
-                                    <img src="assets/images/loading.gif" class="margin-0-ht5px"
-                                        alt="Processing">Processing
+                                    *ngIf="learningTrack.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList">Published</span>
+                                <span *ngIf="(learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList) && !isPartnerView">
+                                    <img src="assets/images/loading.gif" class="margin-0-ht5px" alt="Processing">Processing
                                 </span>
                             </div>
                             <!---XNFR-327--->
-                            <div *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress"
+                            <div *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList"
                                 [ngClass]="{actionAlignment_sp_even : !isPartnerView}" class="bar gridIconCustomization"
                                 style="padding: 0px 10px;">
                                 <div class="btnAlignPad edit_icons mbtnAlignPad ">
@@ -392,7 +391,7 @@
                             </div>
                             <!--Refresh Icon-->
                             <!--XNFR-327-->
-                            <div *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress"
+                            <div *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList"
                                 class="bar gridIconCustomization p0-p10">
                                 <a class="custom-grid-icon" data-toggle="tooltip" data-placement="top" title="Refresh"
                                     (click)="listLearningTracks(pagination)">
