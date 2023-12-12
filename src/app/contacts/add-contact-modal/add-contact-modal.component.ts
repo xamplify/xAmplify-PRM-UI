@@ -390,7 +390,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     
     validatePartnerCompany(){
     try {
-    this.contactService.validateCompanyName(this.addContactuser.contactCompany)
+    this.contactService.validateCompanyName(this.addContactuser.contactCompany, this.contactDetails.companyId)
     .subscribe(
 					(data: any) => {
 						if(data.statusCode == 200){

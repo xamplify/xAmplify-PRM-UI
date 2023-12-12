@@ -841,8 +841,8 @@ export class ContactService {
     
     }
     
-      validateCompanyName(companyName:string){
-      return this._http.get(this.contactsUrl + "validate-partner-company"+  "/" + companyName + "?access_token=" + this.authenticationService.access_token)
+      validateCompanyName(companyName:string, partnerCompanyId:number){
+      return this._http.get(this.contactsUrl + "validate-partner-company"+  "/" + companyName +  "/" + partnerCompanyId + "?access_token=" + this.authenticationService.access_token)
         .map(this.extractData)
         .catch(this.handleError);
     
