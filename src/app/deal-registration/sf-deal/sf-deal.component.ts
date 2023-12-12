@@ -3,11 +3,11 @@ import { ContactService } from 'app/contacts/services/contact.service';
 import { Form } from 'app/forms/models/form';
 import { ColumnInfo } from 'app/forms/models/column-info';
 import { ReferenceService } from 'app/core/services/reference.service';
-import { FormOption } from 'app/forms/models/form-option';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 
-declare var $: any, swal;
+declare var $: any, swal:any;
 
 @Component({
   selector: 'app-sf-deal',
@@ -38,6 +38,7 @@ export class SfDealComponent implements OnInit {
   isCollapsed3: any;
   /*********XNFR-403*********/
   connectWiseProducts:Array<any> = new Array<any>();
+  searchableDropDownDto:SearchableDropdownDto = new SearchableDropdownDto();
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
 
@@ -87,7 +88,10 @@ export class SfDealComponent implements OnInit {
         if (reqFieldsCheck.length === 0) {
           this.isDealRegistrationFormValid = false;
         }
+        /*********XNFR-403*********/
         this.connectWiseProducts = result.data.connectWiseProducts;
+        this.searchableDropDownDto.data = this.connectWiseProducts;
+        this.searchableDropDownDto.placeHolder = "Please select product";
       } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") { 
         this.showSFFormError = true;    
         this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
@@ -290,7 +294,7 @@ export class SfDealComponent implements OnInit {
   }
 
   /*****XNFR-403*****/
-  getSelectedProductDetails(event:any){
+  searchableDropdownEventReceiver(event:any){
     console.log(event);
   }
 }

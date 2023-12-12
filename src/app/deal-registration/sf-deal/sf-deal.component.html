@@ -60,18 +60,19 @@
 
           <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
             <label>Name</label>
+            <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto" (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event)"></app-searchable-dropdown>
           </div> 
           <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
             <label>Quantity</label>
-            <input type="number" class="form-control"  placeholder="Enter the Quantity">
+            <input type="number" class="form-control" min="0"  placeholder="Enter the Quantity">
           </div>  
           <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
             <label>Price</label>
-            <input type="number" class="form-control"  placeholder="Enter the Price">
+            <input type="number" class="form-control" min="0"  placeholder="Enter the Price">
           </div>  
           <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
             <label>Cost</label>
-            <input type="number" class="form-control"  placeholder="Enter the Cost">
+            <input type="number" class="form-control" min="0"  placeholder="Enter the Cost">
           </div>    
         </div>
       </div>

@@ -1,1 +1,8 @@
-<ejs-dropdownlist id='ddlelement' #samples [dataSource]='data' [fields]='fields' [placeholder]='text' [allowFiltering]='true' (filtering)='onFiltering($event)'></ejs-dropdownlist>
+<ejs-dropdownlist id='ddlelement' #samples [dataSource]='searchableDropDownDto.data' [(value)]='value'
+ [fields]='searchableDropDownDto.fields' [placeholder]='searchableDropDownDto.placeHolder'
+  [allowFiltering]='true' (filtering)='onFiltering($event)' (change)='getSelectedDropDownData($event)'></ejs-dropdownlist>
+
+<!--Referring Links-->
+<!--https://ej2.syncfusion.com/angular/documentation/drop-down-list/filtering-->
+<!--https://ej2.syncfusion.com/angular/documentation/drop-down-list/getting-started-->
+<!--https://ej2.syncfusion.com/angular/documentation/drop-down-list/how-to/value-change?cs-save-lang=1&cs-lang=ts-->
