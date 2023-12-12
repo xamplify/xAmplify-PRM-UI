@@ -157,8 +157,8 @@
                       </span>
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
                         (click)="addDeal()" style="padding-left: 11px;">
-                        <button class="button_blue bgcolor-unset p0" translate>
-                          <span class="btn btn-primary transition"><i class="fa fa-plus" aria-hidden="true"></i> Add a
+                        <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
+                          <span class="btn btn-primary transition d-inline"><i class="fa fa-plus" aria-hidden="true"></i> Add a
                             Deal</span>
                         </button>
                       </a>
@@ -168,7 +168,7 @@
                         (click)="syncLeadsWithActiveCRM()">
 
                         <!-- <button class="btn btn-white salesforce-btn button neg-mar-top bgcolor-unset" -->
-                        <button class="btn salesforce-btn button neg-mar-top bgcolor-unset p0 neg-mg-btm"
+                        <button class="btn salesforce-btn button neg-mar-top bgcolor-unset p0 neg-mg-btm btn-transitions"
                           data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
                           <span class="btn Btn-Green transition"><i class="fa fa-refresh" aria-hidden="true"></i> {{
                             activeCRMDetails?.type | titlecase }}</span>
