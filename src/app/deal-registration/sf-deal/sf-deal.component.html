@@ -119,7 +119,7 @@
           <div class="form-check">
             <label class="form-check-label">
               <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
-                (click)="columnInfo.value = radioButton.labelId"
+                (click)="columnInfo.value = radioButton.labelId" (change)="validateField(columnInfo)"
                 [checked]="radioButton.labelId === columnInfo.value || radioButton.labelId=== columnInfo.selectedValue"
                 [disabled]="isVendor || isPreview">
               {{radioButton.name}}
