@@ -93,9 +93,12 @@
 		  </div>
 	   </div>
 	</div>
+	 <!-- 12-12-2023-->
+	 <app-copyright [styleOne]="flase" *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
+	 <app-copyright [styleOne]="flase" *ngIf="vanityURLEnabled"></app-copyright>
  </div>
- <app-copyright [styleOne]="flase" *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
- <app-copyright [styleOne]="flase" *ngIf="vanityURLEnabled"></app-copyright>
+ <!-- <app-copyright [styleOne]="flase" *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
+ <app-copyright [styleOne]="flase" *ngIf="vanityURLEnabled"></app-copyright> -->
 </div>
 <div *ngIf="isStyleOne">
 	<div class="row" style="display: content;margin-right: 0px !;margin: 0px !important;" *ngIf="vanityURLEnabled">

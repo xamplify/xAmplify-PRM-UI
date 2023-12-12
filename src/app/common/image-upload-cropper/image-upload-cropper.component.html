@@ -8,19 +8,19 @@
 				<h4 class="modal-title" id="cropBgImage">{{cropLogoImageText}}</h4>
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
-				<button style="position: relative; top: -5px;"
-					class="button fileinput-button-css pd_left1 bgcolor-unset"
-					*ngIf="!bgImageChangedEvent; else changeButton">
-					<span class="btn Btn-Green transition">Upload image</span> <input style="height: 36px;" title=" "
-						id="custom-input" type="file" (change)="uploadfileBgImageChangeEvent($event)">
-				</button>
-				<ng-template #changeButton>
-					<button style="position: relative; top: -5px;"
-						class="button fileinput-button-css pd_left1 bgcolor-unset">
-						<span class="btn Btn-Green transition">Upload image</span> <input style="height: 36px;"
-							title=" " id="custom-input" type="file" (change)="uploadfileBgImageChangeEvent($event)">
-					</button>
-				</ng-template>
+				<div style="position: relative;top: -5px;" class="btn Btn-Green fileinput-button-css"
+                    *ngIf="!bgImageChangedEvent; else uploadButton"><span>Upload
+                        image</span>
+                    <input style="height: 36px;" title=" "  id="custom-input" type="file"
+					(change)="uploadfileBgImageChangeEvent($event)">
+                </div>
+                <ng-template #uploadButton>
+                    <div style="position: relative;top: -5px;" class="btn Btn-Green fileinput-button-css"><span>Upload
+                            image</span>
+                        <input style="height: 36px;" title=" "  id="custom-input" type="file"
+						(change)="uploadfileBgImageChangeEvent($event)">
+                    </div>
+                </ng-template>
 				<div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload
 					only images</div>
 				<div>
@@ -77,7 +77,7 @@
 						<li>For optimal results, your uploaded image should fit within the
 							white rectangle.</li>
 						<li>The uploaded image should have the pixels in any of the given dimensions
-							1024×768, 1280×960, 1400×1050, 1440×1080 , 1600×1200, 1856×1392, 1920×1440
+							1024Ã—768, 1280Ã—960, 1400Ã—1050, 1440Ã—1080 , 1600Ã—1200, 1856Ã—1392, 1920Ã—1440
 						</li>
 						<li>
 							Please Upload .jpg, .jpeg, .png, .webp files only.
