@@ -47,7 +47,7 @@
             <li><a translate>Onboarding
                     {{authenticationService?.partnerModule?.customName}}</a></li>
         </ul>
-        <div id="download-partners-csv" class="hidden-xs" style="padding-right: 3px;padding-top:1px;">
+        <div id="download-partners-csv" class="hidden-xs dwnload-csv_btn" style="padding-right: 3px;padding-top:1px;">
             <a (click)="downloadEmptyCsv()">
                 <button type="button" class="button p-rgt_p-top bgcolor-unset" download
                     [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
@@ -447,7 +447,8 @@
         <ng-template #saveCancel>
             <div class="pull-right">
                 <button class="button bgcolor-unset" id="save_button" *ngIf="selectedAddPartnerOption != 5"
-                    (click)="saveContacts()" translate><span class="btn Btn-Green transition">Save</span></button>
+                    (click)="saveContacts()" translate><span
+                        class="btn Btn-Green transition text_pd5">Save</span></button>
                 <button class="btn Btn-Gray" id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard"
                     (click)="cancelPartners()" translate>Cancel</button>
             </div>
@@ -612,7 +613,8 @@
                             </div>
                             <div class="col-xs-6" style="margin-bottom: 10px">
                                 <button class="button bgcolor-unset" type="button" (click)="clipboardShowPreview()"
-                                    translate><span class="btn Btn-Green transition">Verify Data</span></button>
+                                    translate><span class="btn Btn-Green transition text_pd5">Verify
+                                        Data</span></button>
                             </div>
                             <div class="col-xs-12">
                                 <textarea id="copyFromclipTextArea" class="textareaNumber" title="Calendar View"

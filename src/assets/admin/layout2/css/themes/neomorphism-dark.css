@@ -665,7 +665,7 @@ select {
 }
 .input-group-addon {
   color: white !important;
-  background-color: #22313a;
+  background-color: #2e3033;
   border: 1px solid #191b1e !important;
 }
 .input-group-addon {
@@ -2269,7 +2269,8 @@ left-menu-color ul li a,
 }
 .custom,
 .barview,
-.gridIconCustomization {
+.gridIconCustomization,
+.vanity_cards_blue {
   /* box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important; */
   box-shadow: inset 1px 2px 11px #000, inset -3px -1px 7px #3b4451 !important;
 }
@@ -3256,7 +3257,7 @@ div.button span {
   border-bottom: 3px solid #f1f5f9 !important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
-/* me */
+/* manikanta */
 .detail_card{
   border: 1px solid #191b1e !important;
   box-shadow: inset 1px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
@@ -3312,4 +3313,24 @@ top:-3px;
   clip-path: polygon(0 0, 50% 50%, 100% 0);
   margin-top: 1px;
 
+}
+/* 12-12-2023 */
+.toggleOnOff input:checked + .sliderOnOff{
+  background-color: #2196F3 !important;
+    box-shadow: unset!important;
+}
+/* btn-green position alignmnet */
+.dwnload-csv_btn{
+  margin-top: 3px !important;
+  margin-bottom: 4px !important;
+}
+.text_pd5{
+  padding-top:5px !important;
+}
+.text_pd0{
+  padding-bottom: 0px !important;
+}
+.btn-alignment{
+  margin-right: 8px !important;
+  margin-top: -4px !important;
 }

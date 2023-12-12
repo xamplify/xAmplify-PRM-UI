@@ -8,16 +8,18 @@
 				<h4 class="modal-title" id="cropBgImage">{{cropLogoImageText}}</h4>
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
-				<div style="position: relative; top: -5px; width: 118px;" class="button fileinput-button-css"
+				<button style="position: relative; top: -5px;"
+					class="button fileinput-button-css pd_left1 bgcolor-unset"
 					*ngIf="!bgImageChangedEvent; else changeButton">
 					<span class="btn Btn-Green transition">Upload image</span> <input style="height: 36px;" title=" "
 						id="custom-input" type="file" (change)="uploadfileBgImageChangeEvent($event)">
-				</div>
+				</button>
 				<ng-template #changeButton>
-					<div style="position: relative; top: -5px; width: 118px;" class="button fileinput-button-css">
+					<button style="position: relative; top: -5px;"
+						class="button fileinput-button-css pd_left1 bgcolor-unset">
 						<span class="btn Btn-Green transition">Upload image</span> <input style="height: 36px;"
 							title=" " id="custom-input" type="file" (change)="uploadfileBgImageChangeEvent($event)">
-					</div>
+					</button>
 				</ng-template>
 				<div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload
 					only images</div>
