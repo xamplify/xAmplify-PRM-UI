@@ -154,13 +154,18 @@ export class IntegrationSettingsComponent implements OnInit {
 
 	}
 
+	
 	setSfCfPage(page: number) {
-		this.referenceService.goToTop();
 		this.paginatedSelectedIds = [];
 		try {
 			if (page < 1 || (this.sfcfPager.totalPages > 0 && page > this.sfcfPager.totalPages)) {
 				return;
 			}
+			if(this.sfcfPager.currentPage === page && this.sfcfPager.currentPage!== undefined)
+			{
+				return;
+			}
+			this.referenceService.goToTop();
 			this.sfcfPager = this.socialPagerService.getPager(this.sfCustomFieldsResponse.length, page, this.pageSize);
 			this.sfcfPagedItems = this.sfCustomFieldsResponse.slice(this.sfcfPager.startIndex, this.sfcfPager.endIndex + 1);
 			var cfIds = this.sfcfPagedItems.map(function (a) { return a.name; });
