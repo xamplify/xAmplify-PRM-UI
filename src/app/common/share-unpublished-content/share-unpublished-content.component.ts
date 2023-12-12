@@ -63,7 +63,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.isPublishedSuccessfully = false;
     let accessList = [];
     accessList.push(this.hasCampaignAccess);
-    let isActiveOrInActiveMasterPartnerList = ("Active Master Partner List" || "InActive Master Partner List")==userListName;
+    let isActiveOrInActiveMasterPartnerList = ("Active Master Partner List" || "Inactive Master Partner List")==userListName;
     accessList.push(this.hasDamAccess && !isActiveOrInActiveMasterPartnerList);
     accessList.push(this.hasLmsAccess && !isActiveOrInActiveMasterPartnerList);
     accessList.push(this.hasPlaybookAccess && !isActiveOrInActiveMasterPartnerList);
