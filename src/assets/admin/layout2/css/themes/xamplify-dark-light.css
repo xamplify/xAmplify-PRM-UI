@@ -2510,3 +2510,13 @@ button.btn.btn-white.salesforce-btn.button{
 .neg-mg-btm{
   margin-bottom: -10px !important;
 }
+.loginActive {
+  color: #fff !important;
+  background-color : #22313a  !important;
+  border-bottom: 3px solid #008fd5 !important;
+}
+.inActive {
+  color: #fff !important;
+  background-color : #22313a !important;
+  border-bottom: 3px solid #f1f5f9 !important;
+}
