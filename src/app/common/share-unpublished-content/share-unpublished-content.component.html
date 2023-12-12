@@ -27,6 +27,7 @@
               **Please be noted that you will only see a list of unshared {{selectedModule}}. <br />
               **{{selectedModule}} that have been chosen will be shared with the
               <span *ngIf="isPartnersRouter">{{authenticationService?.partnerModule?.customName}}</span>
+              <span *ngIf="selectedModule=='Tracks' || selectedModule=='Play Books'"> and previously selected {{authenticationService?.partnerModule?.customName}}/ List of {{authenticationService?.partnerModule?.customName}} will be removed</span>
               <span *ngIf="!isPartnersRouter">contact</span>.
               It will take some time to process everything. There is no need to reshare it.
             </strong>
