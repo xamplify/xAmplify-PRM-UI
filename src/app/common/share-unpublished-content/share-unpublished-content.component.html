@@ -68,7 +68,7 @@
       <div class="modal-footer">
         <button *ngIf="!isPublishedSuccessfully" type="submit" class="button bgcolor-unset"
           [disabled]="selectedIds?.length==0 || isShareButtonClicked" (click)="share();isShareButtonClicked=true"><span
-            class="btn Btn-Green transition">Share {{selectedModule}}</span></button>
+            class="btn Btn-Green transition text_pd5">Share {{selectedModule}}</span></button>
         <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
       </div>
     </div>
