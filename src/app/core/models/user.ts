@@ -59,4 +59,5 @@ export class User {
     selectedTeamMemberIds = [];
     partnershipId = 0;
     selectedTeamMemberGroupName = "";
+    secondAdmin : boolean = false;
 }

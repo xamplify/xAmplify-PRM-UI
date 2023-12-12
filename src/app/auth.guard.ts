@@ -53,6 +53,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.authenticationService.user.roles =  JSON.parse( currentUser )['roles'];
             this.authenticationService.user.hasCompany =  JSON.parse( currentUser )['hasCompany'];
             this.authenticationService.user.campaignAccessDto = JSON.parse( currentUser )['campaignAccessDto'];
+            this.authenticationService.user.secondAdmin = JSON.parse( currentUser )['secondAdmin'];
             this.getUserByUserName(userName);
             if(url.includes('home/error')){ 
                 this.router.navigateByUrl('/home/dashboard') 
@@ -364,8 +365,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
     checkVendorAccessUrls(url:string,urlType:string):boolean{
       try{
-      if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany
-                && url.indexOf("/"+this.contactBaseUrl+"/")< 0){
+      if( (url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany && url.indexOf("/"+this.contactBaseUrl+"/")< 0) 
+            || (this.authenticationService.user.secondAdmin && url.indexOf("/"+urlType+"/")>-1 )){  
             return true;
         }else{
             return this.goToAccessDenied(url);
