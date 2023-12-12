@@ -9,15 +9,15 @@
         </h4>
       </div>
       <div [ngClass]="{'collapse': isCollapsed2, '': !isCollapsed2}" id="DealDetails">
-        <div class="panel-body br-unset pl0 pr0">
-          <div class="row portlet light m0 deal-bgcolors" style="margin-bottom: 50px;border: 1px solid #ddd;margin: 10px;padding: 10px">
+        <div class="panel-body br-unset pl0 pr0 mrg">
+          <div class="row portlet light m0 deal-bgcolors border-unset" style="margin-bottom: 50px;border: 1px solid #ddd;margin: 10px;padding: 10px">
             <div class="alert alert-danger" id="company-profile-error-div" *ngIf="showSFFormError">
               <a class="close" aria-label="close">x</a>
               <strong>{{sfFormError}}</strong>
             </div>
             <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
-              <div class="col-lg-12 col-md-12">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
                 <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
                   <ng-template  *ngIf="(0 == i % 2)" [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
                   <ng-template  *ngIf="(0 != i % 2)" [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
@@ -60,7 +60,6 @@
 
           <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
             <label>Name</label>
-            <app-select-dropdown  [dropDownItems]="connectWiseProducts" (selectDropdownComponentEmitter)="getSelectedProductDetails($event)"></app-select-dropdown>
           </div> 
           <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
             <label>Quantity</label>
@@ -83,7 +82,7 @@
 
 <!--Added On 11/12/2023-->
 <ng-template #formFields let-columnInfo="columnInfo">
-  <div class="form-group  col-md-6 col-lg-6">
+  <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6 pl0">
     <label class="control-label">{{columnInfo.labelName}}
       <span class="required" *ngIf="columnInfo.required">*</span>
       <span
@@ -184,7 +183,7 @@
     <ng-container *ngIf="columnInfo.labelType=='radio'">
       <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
         <div class="form-check">
-          <label class="form-check-label">
+          <label class="form-check-label radioAlignmant">
             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
               (click)="columnInfo.value = radioButton.labelId"
               [checked]="radioButton.labelId === columnInfo.value || radioButton.labelId=== columnInfo.selectedValue"

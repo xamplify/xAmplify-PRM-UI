@@ -182,3 +182,13 @@ width: 100%;
   pointer-events: none;
   opacity: 0.4;
 }
+/* 12/12/03 */
+.border-unset{
+  border:unset!important;
+  padding: 0px!important;
+}
+.mrg{
+margin: 0px 5px 0px 15px!important;
+}
+
+
