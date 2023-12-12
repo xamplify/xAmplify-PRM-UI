@@ -3,6 +3,7 @@ import { FilteringEventArgs } from '@syncfusion/ej2-dropdowns';
 import { EmitType } from '@syncfusion/ej2-base';
 import { Query } from '@syncfusion/ej2-data';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { emit } from 'process';
 
 @Component({
   selector: 'app-searchable-dropdown',
@@ -13,6 +14,7 @@ export class SearchableDropdownComponent implements OnInit {
 
   @Input() searchableDropDownDto:SearchableDropdownDto;
   @Output() searchableDropdownEventEmitter = new EventEmitter();
+  @Input() dtoObject:any;
 
   constructor() { }
 
@@ -30,8 +32,16 @@ export class SearchableDropdownComponent implements OnInit {
   }
 
   getSelectedDropDownData(event:any){
-    console.log(event.itemData);
-    this.searchableDropdownEventEmitter.emit(event.itemData);
+    let emitter = {};
+    let selectedDropDownInfo = event.itemData;
+    emitter['selectedDropDownInfo'] = selectedDropDownInfo;
+    if(this.dtoObject!=undefined){
+      this.dtoObject['price'] = selectedDropDownInfo['price'];
+      this.dtoObject['cost'] = selectedDropDownInfo['cost'];
+      this.dtoObject['id'] = selectedDropDownInfo['id'];
+      emitter['dtoObject'] = this.dtoObject;
+    }
+    this.searchableDropdownEventEmitter.emit(emitter);
 
   }
 

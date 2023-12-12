@@ -6,6 +6,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
+import { ConnectwiseProductsDto } from 'app/deals/models/connectwise-products-dto';
 
 declare var $: any, swal:any;
 
@@ -37,7 +38,7 @@ export class SfDealComponent implements OnInit {
   isCollapsed2: boolean;
   isCollapsed3: any;
   /*********XNFR-403*********/
-  connectWiseProducts:Array<any> = new Array<any>();
+  connectWiseProducts:Array<ConnectwiseProductsDto> = new Array<ConnectwiseProductsDto>();
   searchableDropDownDto:SearchableDropdownDto = new SearchableDropdownDto();
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
@@ -89,9 +90,13 @@ export class SfDealComponent implements OnInit {
           this.isDealRegistrationFormValid = false;
         }
         /*********XNFR-403*********/
-        this.connectWiseProducts = result.data.connectWiseProducts;
-        this.searchableDropDownDto.data = this.connectWiseProducts;
-        this.searchableDropDownDto.placeHolder = "Please select product";
+        this.searchableDropDownDto.data = result.data.connectWiseProducts;
+        let connectwiseProduct = new ConnectwiseProductsDto();
+        connectwiseProduct.price = 0;
+        connectwiseProduct.cost = 0;
+        this.connectWiseProducts.push(connectwiseProduct);
+        this.searchableDropDownDto.placeHolder = "Please Select Product";
+        /*********XNFR-403*********/
       } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") { 
         this.showSFFormError = true;    
         this.sfFormError = "We found something wrong about your Vendor's configuration. Please contact your Vendor.";
@@ -295,6 +300,9 @@ export class SfDealComponent implements OnInit {
 
   /*****XNFR-403*****/
   searchableDropdownEventReceiver(event:any){
+    let selectedDropDownInfo = event['selectedDropDownInfo'];
+    let connectwiseProduct = event['dtoObject'];
     console.log(event);
+    console.log(this.connectWiseProducts);
   }
 }
