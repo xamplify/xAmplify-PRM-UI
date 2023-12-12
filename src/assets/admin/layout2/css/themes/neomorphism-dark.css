@@ -1340,7 +1340,7 @@ ul.alt-row-style1 li:nth-child(even) {
 .p-5x > .r-r-c,
 .p-5x > .vlt-b-c,
 .p-5x > .lt-g-b-c {
-  border: 3px solid #191b1e !important;
+  border: 1px solid #191b1e !important;
 }
 @keyframes placeHolderShimmer {
   0% {
@@ -2413,7 +2413,7 @@ input {
 }
 /* sudha sri (9-11-2023) */
 .mix-filter-li-selected {
-  background-color: #222528 !important;
+  background-color:#202020 !important;
 }
 .portlet.light.cpad.hover-effect.pointer.card-radius,
 .portlet.light.cpad.hover-effect.pointer {
@@ -3255,4 +3255,61 @@ div.button span {
   background-color : #222528 !important;
   border-bottom: 3px solid #f1f5f9 !important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+/* me */
+.detail_card{
+  border: 1px solid #191b1e !important;
+  box-shadow: inset 1px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.p-5x .detail_card:hover{
+  border-radius: 10px !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+    background: #2b2f33!important;
+    transform: scale(1.04);
+    transition: all 0.3s ease;
+}
+.tiles_hover_effect>.totalBoxFlex {
+  border-radius: 10px!important;
+}
+#notification-color{
+  z-index: 1001;
+  position: relative;
+}
+i.chart-hover:hover{
+  background-color: #3f68c5 !important;
+}
+i.fa.fa-line-chart.chart-hover:hover{
+  background-color: #3f68c5 !important;
+}
+.btn-transitions{
+top:-3px;
+}
+.d-inline{
+  display: inline;
+}
+.text-underline{
+    content: '';
+    position: absolute;
+    min-width: 160px;
+    aspect-ratio: 3 / 1;
+    left: 4px;
+    border-radius: 50%;
+    border: 5px solid hsl(130 80% 50%);
+    -webkit-clip-path: polygon(0 0, 50% 50%, 100% 0);
+    clip-path: polygon(0 0, 50% 50%, 100% 0);
+    margin-top: 1px;
+
+}
+.text-underlines{
+  content: '';
+  position: absolute;
+  min-width: 160px;
+  aspect-ratio: 3 / 1;
+  left: 4px;
+  border-radius: 50%;
+  border: 5px solid hsl(130 80% 50%);
+  -webkit-clip-path: polygon(0 0, 50% 50%, 100% 0);
+  clip-path: polygon(0 0, 50% 50%, 100% 0);
+  margin-top: 1px;
+
 }

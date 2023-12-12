@@ -1,5 +1,5 @@
 <div class="page-content">
-<div class="page-bar">
+  <div class="page-bar">
     <ul class="page-breadcrumb">
       <li *ngIf="!authenticationService.isSuperAdmin()">
         <i class="fa fa-home" aria-hidden="true"></i>
@@ -8,81 +8,90 @@
       </li>
       <li *ngIf="authenticationService.isSuperAdmin()">
         <i class="fa fa-home" aria-hidden="true"></i>
-          <a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a>
+        <a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a>
         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
       <li>
-       <li>
-          <a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a>
-          <i class="fa fa-angle-right" aria-hidden="true"></i>
-      	</li>
+      <li>
+        <a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </li>
       <li>
         <a>Redistributed Campaigns</a>
       </li>
     </ul>
   </div>
-<div class="row">
-  <!----XNFR-125-->
+  <div class="row">
+    <!----XNFR-125-->
     <div *ngIf="!oneClickLaunchCampaign" class="col-xs-12 p5">
       <div class="portlet light">
         <div class="portlet-title">
           <div class="caption" style="padding-top: 6px !important;">
             <span class="caption-subject font-red-sunglo uppercase">Redistributed Campaigns</span>
           </div>
-        <div class="inputs">
-        <div class="portlet-input input-inline">
-        <div class="input-icon right prmmtpx">
-          <input type="text" style="height:34px;" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search..." 
-              (keypress)="partnerCampaignUISearch($event.keyCode)">
-          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';searchInListRedistributedThroughPartnerCampaign();"></button>
-          <button type="submit" class="search-box-item-click" (click)="searchInListRedistributedThroughPartnerCampaign()">
-            <i class="fa fa-search" aria-hidden="true" ></i></button>
+          <div class="inputs">
+            <div class="portlet-input input-inline">
+              <div class="input-icon right prmmtpx">
+                <input type="text" style="height:34px;" class="form-control" [(ngModel)]="searchKey"
+                  [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                  (keypress)="partnerCampaignUISearch($event.keyCode)">
+                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+                  (click)="searchKey='';searchInListRedistributedThroughPartnerCampaign();"></button>
+                <button type="submit" class="search-box-item-click"
+                  (click)="searchInListRedistributedThroughPartnerCampaign()">
+                  <i class="fa fa-search" aria-hidden="true"></i></button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      </div>
-        </div>
-          <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+        <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
         <div class="portlet-body mScroll" [hidden]="httpRequestLoader.isLoading">
-          <app-team-member-filter-option (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+          <app-team-member-filter-option
+            (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
           <table class="table tgrid" aria-describedby="">
             <thead>
-            <tr>
-              <th scope="col">{{authenticationService?.partnerModule?.customName}}</th>
-              <th class="custom-center" scope="col">Campaign Name</th>
+              <tr>
+                <th scope="col">{{authenticationService?.partnerModule?.customName}}</th>
+                <th class="custom-center" scope="col">Campaign Name</th>
                 <th class="custom-center" scope="col">Redistributed On</th>
-              <th class="custom-center" scope="col">Analytics</th>
+                <th class="custom-center" scope="col">Analytics</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;">
-                <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
+                <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true"
+                    [isPartnerInfo]="true"></app-user-info></td>
                 <td class="custom-center">{{item.campaignName}}</td>
-                  <td class="custom-center">
-                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.displayTime"> </app-timestamp>
-                  </td>
                 <td class="custom-center">
-                <div class="actions-block override-actions float-none">
-                  <a data-rel="fancybox-button" (click)="goToCampaignAnalytics(item)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports" class='mr5'>
+                  <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.displayTime"> </app-timestamp>
+                </td>
+                <td class="custom-center">
+                  <div class="actions-block override-actions float-none">
+                    <a data-rel="fancybox-button" (click)="goToCampaignAnalytics(item)" data-toggle="tooltip"
+                      data-placement="top" title="Campaign Based Reports" class='mr5 custom-icon'>
                       <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
-                  </a>
-                  <a routerLink="/home/forms/cf/{{item.campaignId}}" *ngIf="item.formsCount>0 && item.campaignType.indexOf('EVENT')<0" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
-                    <i class="fa fa-wpforms IconCustomization" aria-hidden="true"></i>
-                    <span class="badge" id="notification">{{item.formsCount}}</span>
-                  </a>
-                </div>
+                      <div class="clickicons"></div>
+                    </a>
+                    <a routerLink="/home/forms/cf/{{item.campaignId}}"
+                      *ngIf="item.formsCount>0 && item.campaignType.indexOf('EVENT')<0" data-rel="fancybox-button"
+                      data-toggle="tooltip" data-placement="top" title="Form Analytics">
+                      <i class="fa fa-wpforms IconCustomization" aria-hidden="true"></i>
+                      <span class="badge" id="notification">{{item.formsCount}}</span>
+                    </a>
+                  </div>
                 </td>
               </tr>
             </tbody>
           </table>
           <div *ngIf="pagination.totalRecords==0" class="alert alert-info">
-        <strong>No campaigns found</strong>
-      </div>
+            <strong>No campaigns found</strong>
+          </div>
         </div>
         <div *ngIf="!httpRequestLoader.isLoading">
-          <app-pagination [pagination]="pagination"  (notifyParentDropDown)="paginationDropdown($event)"
-          (notifyParent)="setPage($event)"></app-pagination>
+          <app-pagination [pagination]="pagination" (notifyParentDropDown)="paginationDropdown($event)"
+            (notifyParent)="setPage($event)"></app-pagination>
         </div>
       </div>
     </div>
-</div>
+  </div>
 </div>

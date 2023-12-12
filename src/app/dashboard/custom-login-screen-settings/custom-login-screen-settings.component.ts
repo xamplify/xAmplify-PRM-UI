@@ -82,6 +82,9 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   isBackgroundColorStyleTwo: boolean = false;
   isBackgroundColorStyleOne: boolean = false;
   /**** XNFR-416 ******/
+  /**XBI-2016 ***/
+  styleOneDirection: any;
+  styleTwoDirection: any
   constructor(public envService: EnvService, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public properties: Properties,
     private companyProfileService: CompanyProfileService, private logger: XtremandLogger, public utilService: UtilService, public refService: ReferenceService, private vanityURLService: VanityURLService, private pagerService: PagerService, public socialPagerService: SocialPagerService, public regularExpressions: RegularExpressions, public videoUtilService: VideoUtilService) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -128,7 +131,12 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
             if (data.data != undefined) {
               this.companyProfile = data.data;
               this.formPosition = data.data.loginScreenDirection;
-              this.loginType = data.data.loginType;
+               this.loginType = data.data.loginType;
+              /**** XNFR-2016 ****/
+              this.styleOneDirection = data.data.loginFormDirectionStyleOne;
+              this.styleTwoDirection = data.data.loginScreenDirection;
+              this.customLoginScreen.showVendorCompanyLogo = data.data.showVendorCompanyLogo;
+              /**** XNFR-2016 */
               /**** XNFR-416 *****/
               this.selectedColor1 = data.data.backgroundColorStyle1;
               this.selectedColor2 = data.data.backgroundColorStyle2;
@@ -146,6 +154,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
 
   backToPrevoiusPage() {
     this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, false)
+    this.getLoginDetails();
     if (this.selectedTemplate != this.activeTemplateId && this.isStyle1) {
       this.customResponse = new CustomResponse('ERROR', this.message, false);
       this.showSweetAlert()
@@ -246,7 +255,6 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
             if (data.data != undefined) {
               this.companyProfile = data.data;
               this.formPosition = data.data.loginScreenDirection;
-              //this.authenticationService.v_companyBgImagePath2 = this.companyProfile.backgroundLogoStyle2;
               this.loginType = data.data.loginType;
               /**** XNFR-416 *****/
               this.selectedColor1 = data.data.backgroundColorStyle1;
@@ -255,6 +263,10 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
               this.isBackgroundColorStyleTwo = data.data.styleTwoBgColor;
               this.authenticationService.isstyleTWoBgColor = data.data.styleTwoBgColor
               /**** XNFR-416 *****/
+               /**** XNFR-2016 ****/
+               this.styleOneDirection = data.data.loginFormDirectionStyleOne;
+               this.styleTwoDirection = data.data.loginScreenDirection;
+               /**** XNFR-2016 */
               this.setCompanyProfileViewData()
             }
           },
@@ -341,19 +353,12 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       this.customLoginScreen.backgroundColorStyle1 = this.selectedColor1;
       this.customLoginScreen.backgroundColorStyle2 = this.selectedColor2;
       /**** XNFR-146 ******/
+      this.customLoginScreen.loginFormDirectionStyleOne = this.styleOneDirection;
+      this.customLoginScreen.logInScreenDirection = this.styleTwoDirection
     if (this.isStyle1) {
       this.customLoginScreen.loginType = "STYLE_ONE";
-      if (this.customLoginScreen.logInScreenDirection === 'Center') {
-        this.customLoginScreen.logInScreenDirection = this.styleOneDirection;
-        this.formPosition = this.styleOneDirection;
-      } else {
-        this.formPosition = this.styleOneDirection;
-        this.customLoginScreen.logInScreenDirection = this.styleOneDirection;
-      }
     } else {
       this.customLoginScreen.loginType = "STYLE_TWO";
-      this.formPosition = this.styleTwoDirection;
-      this.customLoginScreen.logInScreenDirection = this.styleTwoDirection
     }
     this.loginType = this.customLoginScreen.loginType;
     this.companyProfileService.updateCustomLogInScreenData(this.customLoginScreen)
@@ -378,30 +383,24 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   }
   showVendorCompanyLogo: boolean;
   getLogInScreenDetails() {
-    this.styleOneDirection = this.authenticationService.loginScreenDirection;
-    this.styleTwoDirection = this.authenticationService.loginScreenDirection;
-    if (this.styleOneDirection == 'Center') {
-      this.styleOneDirection = 'Right';
-    }
-    this.customLoginScreen.logInScreenDirection = this.authenticationService.loginScreenDirection;
     this.customLoginScreen.showVendorCompanyLogo = this.authenticationService.v_showCompanyLogo;
     this.customLoginScreen.backGroundLogoPath = this.authenticationService.v_companyBgImagePath;
     this.customLoginScreen.backgroundLogoStyle2 = this.authenticationService.v_companyBgImagePath2;
   }
-  styleOneDirection: any;
-  styleTwoDirection: any
+
   onSelectChangeStyle1(style1: any) {
     this.styleOneDirection = style1;
-    this.customLoginScreen.logInScreenDirection = this.styleOneDirection;
+    this.customLoginScreen.loginFormDirectionStyleOne = this.styleOneDirection;
   }
   onSelectChangeStyale2(style2: any) {
     this.styleTwoDirection = style2;
     this.customLoginScreen.logInScreenDirection = this.styleTwoDirection;
-
   }
 
   showStyle1() {
     this.styleTwoBackgroundImagePath = this.companyBgImagePath;
+    this.selectedTemplate = this.activeTemplateId;
+    this.getLoginDetails();
     this.customResponse = new CustomResponse('ERROR', this.message, false);
     if (!this.isShowFinalDiv) {
       this.isStyle1 = true;
@@ -418,6 +417,8 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   }
   showStyle2() {
     this.styleTwoBackgroundImagePath = this.companyBgImagePath2;
+    this.selectedTemplate = this.activeTemplateId;
+    this.getLoginDetails();
     this.customResponse = new CustomResponse('ERROR', this.message, false);
     if (!this.isShowFinalDiv) {
       this.isStyle1 = false;
