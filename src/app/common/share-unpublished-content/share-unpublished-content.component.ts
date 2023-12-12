@@ -63,7 +63,10 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.isPublishedSuccessfully = false;
     let accessList = [];
     let isPrmAndPartnerCompany = this.authenticationService.module.isPrmAndPartner || this.authenticationService.module.isPrmAndPartnerTeamMember;
-    accessList.push(this.hasCampaignAccess && !isPrmAndPartnerCompany);
+    if(isPrmAndPartnerCompany){
+      this.hasCampaignAccess = !this.isPartnersRouter;
+    }
+    accessList.push(this.hasCampaignAccess);
     let isActiveMasterPartnerList = $.trim(userListName)=="Active Master Partner List";
     let isInActiveMasterPartnerList = $.trim(userListName)=="Inactive Master Partner List";
     let isActiveOrInActiveMasterPartnerList = isActiveMasterPartnerList || isInActiveMasterPartnerList;
