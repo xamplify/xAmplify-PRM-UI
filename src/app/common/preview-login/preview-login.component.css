@@ -154,3 +154,12 @@ a.forget-password:hover {
 	overflow: auto;
 	/* padding: 40px 100px; */
 }
+
+.login .content {
+	margin: 30px auto 10px auto;
+}
+
+.copyright-css-right-styleone {
+	padding-top: 25px !important;
+}
+

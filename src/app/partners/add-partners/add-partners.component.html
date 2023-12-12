@@ -934,7 +934,9 @@
                                                             </a>
                                                             <!--XNFR-342-->
                                                             <ng-container
-                                                                *ngIf="authenticationService?.module?.isCampaign || authenticationService?.module?.isPrmCompany">
+                                                                *ngIf="authenticationService?.module?.isCampaign ||
+                                                                 authenticationService?.module?.damAccess || authenticationService?.module?.lmsAccess
+                                                                 || authenticationService?.module?.playbookAccess">
                                                                 <a class="custom-icon" data-toggle="tooltip"
                                                                     data-placement="bottom"
                                                                     title="{{actionsDescription?.shareUnPublishedContent}}"

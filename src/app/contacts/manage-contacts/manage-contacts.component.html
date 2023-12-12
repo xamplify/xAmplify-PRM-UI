@@ -637,7 +637,8 @@
                                                    <!--XNFR-342---->
                                                    <a class="custom-icon"
                                                       *ngIf="!assignLeads && !sharedLeads && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner
-                                                          && (authenticationService.module.isPrmCompany || authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
+                                                          && (authenticationService?.module?.damAccess || authenticationService?.module?.lmsAccess
+                                                          || authenticationService?.module?.playbookAccess || authenticationService.module.isCampaign || authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
                                                       data-toggle="tooltip" data-placement="top"
                                                       (click)="openUnPublishedContentModalPopUp(contactList)"
                                                       [title]="(((authenticationService?.module?.isCampaign || authenticationService.module.isReDistribution) && !authenticationService?.module?.damAccess 
@@ -877,7 +878,8 @@
                                        <!--XNFR-342-->
                                        <a class="Iconhover custom-grid-icon"
                                           *ngIf="!assignLeads && !sharedLeads && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner
-                                          && (authenticationService.module.isPrmCompany || authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
+                                          && (authenticationService?.module?.damAccess || authenticationService?.module?.lmsAccess
+                                          || authenticationService?.module?.playbookAccess || authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
                                           data-toggle="tooltip" data-placement="top"
                                           (click)="openUnPublishedContentModalPopUp(contactList)"
                                           [title]="(((authenticationService?.module?.isCampaign || authenticationService.module.isReDistribution) && !authenticationService?.module?.damAccess 
