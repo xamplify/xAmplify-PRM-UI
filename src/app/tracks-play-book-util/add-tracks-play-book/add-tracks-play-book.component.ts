@@ -1067,7 +1067,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   validateDescription() {
-    let description = this.referenceService.getTrimmedCkEditorDescription(this.tracksPlayBook.description);
+     let description = this.referenceService.getTrimmedCkEditorDescription(this.tracksPlayBook.description);
+    description = description.substring(3,description.length-4).trim();
     if (description.length < 1) {
       this.addErrorMessage("description", "description can not be empty");
     } else if (description.length > 5000) {
