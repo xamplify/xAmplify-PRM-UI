@@ -376,7 +376,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
               }
             }
           } else {
-            this.customResponse = new CustomResponse('SUCCESS', this.message, true)
+            this.customResponse = new CustomResponse('ERROR', data.data.errorMessages[0].message, true)
           }
           this.statusCode = data.statusCode;
         });
