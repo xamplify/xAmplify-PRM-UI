@@ -40,6 +40,7 @@ export class SfDealComponent implements OnInit {
   /*********XNFR-403*********/
   connectWiseProducts:Array<ConnectwiseProductsDto> = new Array<ConnectwiseProductsDto>();
   searchableDropDownDto:SearchableDropdownDto = new SearchableDropdownDto();
+  connectwiseProduct: ConnectwiseProductsDto = new ConnectwiseProductsDto();
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
 
@@ -91,11 +92,8 @@ export class SfDealComponent implements OnInit {
         }
         /*********XNFR-403*********/
         this.searchableDropDownDto.data = result.data.connectWiseProducts;
-        let connectwiseProduct = new ConnectwiseProductsDto();
-        connectwiseProduct.price = 0;
-        connectwiseProduct.cost = 0;
-        this.connectWiseProducts.push(connectwiseProduct);
         this.searchableDropDownDto.placeHolder = "Please Select Product";
+        this.addProduct();
         /*********XNFR-403*********/
       } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") { 
         this.showSFFormError = true;    
@@ -304,5 +302,22 @@ export class SfDealComponent implements OnInit {
     let connectwiseProduct = event['dtoObject'];
     console.log(event);
     console.log(this.connectWiseProducts);
+  }
+
+  addProduct(){
+    let length = this.connectWiseProducts.length;
+    length = length + 1;
+    const divId = 'product-' + length;
+    let connectwiseProduct = new ConnectwiseProductsDto();
+    connectwiseProduct.divId = divId;
+    this.connectWiseProducts.push(connectwiseProduct);
+  }
+
+  removeProduct(divId:string){
+    if(this.connectWiseProducts.length>1){
+      this.connectWiseProducts = this.referenceService.spliceArray(this.connectWiseProducts, divId);
+      $('#' + divId).remove();
+    }
+   
   }
 }

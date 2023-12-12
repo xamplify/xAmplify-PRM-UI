@@ -34,51 +34,52 @@
   <div class="panel panel-default deal-bgcolor">
     <div class="panel-heading deal-bgcolor">
       <h4 class="panel-title">
-          <a  class="collapsed" href="Products" (click)="toggleCollapseProduct($event)"> <i
-        [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed3, 'fa-chevron-down collapseIn': isCollapsed3}" class="arrowpositinon fa collapseIconColorCu"
-        aria-hidden="false" style="float: right;"></i>Products
-      </a>
+          <a  class="collapsed" href="Products" (click)="toggleCollapseProduct($event)">
+            <i [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed3, 'fa-chevron-down collapseIn': isCollapsed3}" class="arrowpositinon fa collapseIconColorCu"
+            aria-hidden="true" style="float: right;"></i>
+            Products
+          </a>
       </h4>
     </div>
     <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="Products">
-      <div class="panel-body br-unset pl0 pr0" >
-        <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
-        <div class="row portlet light m0 deal-bgcolors" *ngIf="!isLoading"> 
-          <div class ="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <div class="row Add-Icon">
-            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 Add-Icon">
-              <button class="btn btn-primary add-btn"  data-placement="top" data-toggle="tooltip" title="Add"  aria-hidden="false">
-                <i class="fa fa-plus add-prdt"></i>
-              </button>
-              <button class="btn btn-danger add-btn"  data-placement="top" data-toggle="tooltip" title="Delete"  aria-hidden="false">
-                <i class="fa fa-trash-o p0 add-prdt"></i>
-              </button>
-            </div>
+      <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
+      <div *ngIf="!isLoading">
+        <div class="panel-body br-unset pl0 pr0" *ngFor="let product of connectWiseProducts;let i=index"  id="{{product?.divId}}" >
+          <div class="row portlet light m0 deal-bgcolors"> 
+              <div class ="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="row Add-Icon">
+                  <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 Add-Icon">
+                    <button (click)="addProduct()" class="btn btn-primary add-btn"  data-placement="top" data-toggle="tooltip" title="Add"  aria-hidden="false">
+                      <i class="fa fa-plus add-prdt"></i>
+                    </button>
+                    <button [ngClass]="connectWiseProducts?.length>1 ? 'btn btn-danger add-btn':'btn btn-danger add-btn disabled'" 
+                          (click)="connectWiseProducts?.length>1  && removeProduct(product?.divId)"
+                        data-placement="top" data-toggle="tooltip" title="Delete"  aria-hidden="false">
+                      <i class="fa fa-trash-o p0 add-prdt"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10" >
+                <label>Name</label>
+                <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto" [dtoObject]="product" (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event)"></app-searchable-dropdown>
+              </div> 
+              <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
+                <label>Quantity</label>
+                <input type="number" [(ngModel)]="product.quantity" class="form-control" min="0"  placeholder="Enter the Quantity">
+              </div>  
+              <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
+                <label>Price</label>
+                <input type="number" [(ngModel)]="product.price" class="form-control" min="0"  placeholder="Enter the Price">
+              </div>  
+              <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
+                <label>Cost</label>
+                <input type="number"  [(ngModel)]="product.cost" class="form-control" min="0"  placeholder="Enter the Cost">
+              </div>    
           </div>
-          </div>
-
-          <div *ngFor="let product of connectWiseProducts;let i=index">
-            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
-              <label>Name</label>
-              <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto" [dtoObject]="product" (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event)"></app-searchable-dropdown>
-            </div> 
-            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
-              <label>Quantity</label>
-              <input type="number" [(ngModel)]="product.quantity" class="form-control" min="0"  placeholder="Enter the Quantity">
-            </div>  
-            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
-              <label>Price</label>
-              <input type="number" [(ngModel)]="product.price" class="form-control" min="0"  placeholder="Enter the Price">
-            </div>  
-            <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3 mb10">
-              <label>Cost</label>
-              <input type="number"  [(ngModel)]="product.cost" class="form-control" min="0"  placeholder="Enter the Cost">
-            </div>    
-          </div>
-
-          
         </div>
-      </div>
+    </div>
     </div>
   </div>
 </div>

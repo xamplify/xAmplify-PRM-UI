@@ -4,4 +4,6 @@ export class ConnectwiseProductsDto {
     quantity = 0;
     price = 0;
     cost = 0;
+    divId = "";
+    
 }
