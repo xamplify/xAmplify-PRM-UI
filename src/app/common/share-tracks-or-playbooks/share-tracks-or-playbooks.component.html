@@ -19,7 +19,7 @@
         <div class="portlet-input input-inline">
           <div class="input-icon right" id="icon">
             <input type="text" id="sort-text" autocomplete="off" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="findUnPublishedTracksOrPlayBooksOnKeyPress($event.keyCode)">
-            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchTracks();"></button>
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchTracksOrPlayBooks();"></button>
             <button type="submit" class="search-box-item-click" (click)="searchTracksOrPlayBooks()">
             <i class="fa fa-search" aria-hidden="true"></i>
             </button>
