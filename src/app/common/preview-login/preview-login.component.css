@@ -163,3 +163,32 @@ a.forget-password:hover {
 	padding-top: 25px !important;
 }
 
+.center-preview {
+    width: 100px;
+    height: auto;
+    -webkit-clip-path: polygon(30% 0%, 70% 0%, 100% 0, 100% 70%, 50% 100%, 0% 70%, 0 0);
+    clip-path: polygon(30% 0%, 70% 0%, 100% 0, 100% 70%, 50% 100%, 0% 70%, 0 0);
+    background: #337ab7;
+    text-align: center;
+    color: #fff;
+    padding: 30px 10px;
+    position: fixed;
+    z-index: 1;
+    top: 4%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* margin: 0 auto;
+    display: block; */
+}
+.Preview-text{
+	display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: space-between;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0px;
+}
+
+ 
+
