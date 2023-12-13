@@ -291,8 +291,8 @@
                         <ng-container *ngFor='let deal of dealsPagination.pagedItems; let i=index'>
                           <tr>
                             <td style="width: 40%;">
-                              <div>{{deal.title | slice:0:30}}
-                                <span *ngIf="deal.title?.length>30">...</span>
+                              <div><span  data-toggle="tooltip" data-placement="top" title="{{deal.title}}">{{deal.title | slice:0:30}}
+                                <span *ngIf="deal.title?.length>30">...</span></span>
                               </div>
                               <div>
                                 <h5 *ngIf="isPartnerVersion"><b>Added For:</b>
