@@ -2662,5 +2662,12 @@ display: inline-flex;
 }
 /* deal page */
 .panel-default > .deal-bgcolor{
-  background-color: #f0f5f9b5!important;
+  /* background-color: #f0f5f9b5!important; */
+  border-radius: 5px;
+}
+.mrg1{
+  margin: 0px 5px 0px 20px!important;
+}
+.panel.panel-default.deal-bgcolor {
+  background-color: #ffffff !important;
 }

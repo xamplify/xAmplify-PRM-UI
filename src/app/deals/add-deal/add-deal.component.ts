@@ -98,6 +98,7 @@ export class AddDealComponent implements OnInit {
   activeCRMDetails: any;
   isCollapsed: boolean;
   isCollapsed1: boolean;
+  isCollapsed2: boolean;
   
   constructor(private logger: XtremandLogger, public messageProperties: Properties,public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -1041,4 +1042,9 @@ toggleCollapsecontact(event: Event) {
   event.preventDefault();
   this.isCollapsed1 = !this.isCollapsed1;
 }
+toggleCollapsecampaignInfo(event: Event) {
+  event.preventDefault();
+  this.isCollapsed2 = !this.isCollapsed2;
+}
+
 }
