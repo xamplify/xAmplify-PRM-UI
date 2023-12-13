@@ -34,8 +34,8 @@
   </div>
 </div>
 <!-- Add product start -->
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-  <div class="panel panel-default deal-bgcolor deal-panel">
+<div *ngIf="showProductsPanel" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default deal-bgcolor">
     <div class="panel-heading deal-bgcolor">
       <h4 class="panel-title">
         <a class="collapsed" href="Products" (click)="toggleCollapseProduct($event)">
@@ -48,7 +48,7 @@
     <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="Products">
       <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
       <div *ngIf="!isLoading">
-        <div class="br-unset">
+        <div class="br-unset pb15">
           <div class="panel-body pl0 pr0 pb0" *ngFor="let product of connectWiseProducts;let i=index"
             id="{{product?.divId}}">
             <div class="row portlet light m0 deal-bgcolors">
@@ -220,7 +220,6 @@
             {{checkBox.name}}
           </label>
         </div>
-        <br>
       </ng-container>
     </ng-container>
     <!-- ---------------------------DropDown Menu----------------------------- -->

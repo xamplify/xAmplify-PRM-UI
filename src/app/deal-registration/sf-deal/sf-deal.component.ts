@@ -42,6 +42,7 @@ export class SfDealComponent implements OnInit {
   searchableDropDownDto:SearchableDropdownDto = new SearchableDropdownDto();
   connectwiseProduct: ConnectwiseProductsDto = new ConnectwiseProductsDto();
   allDivIds = [];
+  showProductsPanel: boolean = false;
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
 
@@ -66,6 +67,10 @@ export class SfDealComponent implements OnInit {
       } else {
         this.getActiveCRMCustomForm();
       }      
+    }
+
+    if ("CONNECTWISE" === this.activeCRM) {
+      this.showProductsPanel = true;
     }
   }
   
