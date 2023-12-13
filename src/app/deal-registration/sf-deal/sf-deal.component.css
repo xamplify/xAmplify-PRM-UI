@@ -186,12 +186,22 @@ margin: 0px 5px 0px 15px!important;
 }
 .radiobtn-card{
   border: 1px solid #ddd;
-  padding: 10px 0px 0px 0px;
+  padding: 0px;
   width: 100%;
   border-radius: 3px;
   overflow-y: auto;
-  height: 75px;
+  height: auto;
+  max-height: 87px;
 }
+
+.radiobtn{
+  border: 1px solid #ddd;
+}
+
+.deal-panel{
+  padding-bottom: 15px;
+}
+
 ::-webkit-scrollbar {
   width: 7px;
   height: 7px;
