@@ -1,22 +1,25 @@
-<div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError" style="border:none !important;padding-bottom: 8px;">
-  <app-response-message class="pg8" [customResponse]="leadsResponse" *ngIf="leadsResponse.isVisible"></app-response-message>
+<div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError"
+  style="border:none !important;padding-bottom: 8px;">
+  <app-response-message class="pg8" [customResponse]="leadsResponse"
+    *ngIf="leadsResponse.isVisible"></app-response-message>
   <div class="col-xs-12 col-sm-5 col-lg-5" *ngIf="fromAnalytics && showTeamMemberFilter">
-    <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" [customSelectedIndex]="selectedFilterIndex" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+    <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany"
+      [customSelectedIndex]="selectedFilterIndex"
+      (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
   </div>
   <div class="page-toolbar col-xs-10 col-sm-6 col-lg-6 mSearchAlign" style="padding-right: 2px;">
-    <div class="btn-group pull-right" style="width: max-content;">      
+    <div class="btn-group pull-right" style="width: max-content;">
       <div class="inputs" align="right" style="float: right; display: inline-flex;">
         <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
           <div class="input-icon right" style="position: relative;right: -11px;">
             <input type="text" class="form-control" [(ngModel)]="leadsSortOption.searchKey"
-              [ngModelOptions]="{standalone: true}" placeholder="Search"
-              (keypress)="leadEventHandler($event.keyCode)">
-            <button class="glyphicon glyphicon-remove search-box-item-clear"
-              *ngIf="leadsSortOption.searchKey" (click)="clearSearch()"></button>
+              [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="leadEventHandler($event.keyCode)">
+            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="leadsSortOption.searchKey"
+              (click)="clearSearch()"></button>
             <button type="submit" class="search-box-item-click" (click)="searchLeads()">
               <i class="fa fa-search" aria-hidden="true"></i>
             </button>
-          </div>          
+          </div>
         </div>
         <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view mr5" data-toggle="tooltip" title="Filter"
           (click)="toggleFilterOption()">
@@ -45,14 +48,15 @@
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
         <div class="form-group" style="text-align: -webkit-right;">
-          <button  class="btn Btn-Green" translate="" type="button" ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()">Filter</button>
+          <button class="button bgcolor-unset" translate="" type="button" ng-reflect-translate="" [disabled]=""
+            (click)="validateDateFilters()"><span class="btn Btn-Green transition">Filter</span></button>
         </div>
-      </div>                                       
+      </div>
       <div class="portlet box">
         <app-response-message class="pg8" [customResponse]="filterResponse" *ngIf="filterResponse.isVisible">
-        </app-response-message> 
+        </app-response-message>
         <form role="form" class="form-horizontal form-bordered form-label-stripped">
-          <div class="form-group">                         
+          <div class="form-group">
             <div class="form-inline col-sm-12">
               <div class="form-group col-sm-4">
                 <label class="control-label">From Date &nbsp;
@@ -67,22 +71,22 @@
                 </app-date-picker>
               </div>
               <div class="row">
-                            <div class="form-group col-sm-6 ml0-mr0" style="margin-top: 13px;padding-left: 54px;;display: flex;">
-                              <label class="control-label" style="padding-right: 5px;">Status &nbsp; </label>
-                              <select class="form-control select-width" [(ngModel)]="statusFilter"
-                              [ngModelOptions]="{standalone: true}">
-                                  <option value="">---Select Status---</option>  
-                                <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
-                                </option>
-                              </select>
-                            </div>
-                            </div>                          
+                <div class="form-group col-sm-6 ml0-mr0" style="margin-top: 13px;padding-left: 54px;;display: flex;">
+                  <label class="control-label" style="padding-right: 5px;">Status &nbsp; </label>
+                  <select class="form-control select-width" [(ngModel)]="statusFilter"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="">---Select Status---</option>
+                    <option *ngFor="let stage of stageNamesForFilterDropDown" [value]="stage">{{stage}}
+                    </option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </form>
       </div>
-    </div>                                    
-  </div>                
+    </div>
+  </div>
 </div>
 
 <section class='m10'
@@ -92,7 +96,7 @@
     <table class='table tgrid table-hover table-sm' aria-describedby="leadTable">
       <thead>
         <tr>
-          <th class="center-aligned" translate>Lead Details</th>                        
+          <th class="center-aligned" translate>Lead Details</th>
           <th class="center" translate>Added By</th>
           <th class="center" translate>Status</th>
           <th style="width: 18%; text-align:center" translate>Actions</th>
@@ -107,39 +111,41 @@
               <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
               <div style="margin-left: 60px;">
                 <h5 *ngIf="isPartnerVersion"><strong>Added For:</strong>
-                  <span  style="color: #5b9bd1;">{{lead.createdForCompanyName | slice:0:30}}
+                  <span style="color: #5b9bd1;">{{lead.createdForCompanyName | slice:0:30}}
                     <span *ngIf="lead.createdForCompanyName?.length>20">...</span>
-                  </span>  
-                </h5> 
+                  </span>
+                </h5>
               </div>
               <div *ngIf="isPartnerVersion && lead?.campaignId > 0" style="margin-left: 60px;">
                 <h5><strong>Campaign:</strong>
-                  <span  style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
+                  <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
                     <span *ngIf="lead.campaignName?.length>30">...</span>
-                  </span>  
-                </h5> 
+                  </span>
+                </h5>
               </div>
               <div *ngIf="isVendorVersion && lead?.parentCampaignId > 0" style="margin-left: 60px;">
                 <h5><strong>Campaign:</strong>
-                  <span  style="color: #5b9bd1;">{{lead.parentCampaignName | slice:0:30}}
+                  <span style="color: #5b9bd1;">{{lead.parentCampaignName | slice:0:30}}
                     <span *ngIf="lead.parentCampaignName?.length>30">...</span>
-                  </span>  
-                </h5> 
+                  </span>
+                </h5>
               </div>
-              <div *ngIf="isVendorVersion && lead?.parentCampaignId <= 0 && lead?.campaignId > 0" style="margin-left: 60px;">
+              <div *ngIf="isVendorVersion && lead?.parentCampaignId <= 0 && lead?.campaignId > 0"
+                style="margin-left: 60px;">
                 <h5><strong>Campaign:</strong>
-                  <span  style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
+                  <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
                     <span *ngIf="lead.campaignName?.length>30">...</span>
-                  </span>  
-                </h5> 
+                  </span>
+                </h5>
               </div>
-              
-            </td>                          
+
+            </td>
             <td class="mAlignment" style="width: 20%;">
               <h5 *ngIf="!isPartnerVersion">{{lead.createdByCompanyName | slice:0:30}}
                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
               </h5>
-              <h5 class='ellipsis m_t_view' title="{{lead.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{lead.createdByName | slice:0:20}}
+              <h5 class='ellipsis m_t_view' title="{{lead.createdByName}}"
+                style="margin: 7px 0 2px 0;font-weight: 400;">{{lead.createdByName | slice:0:20}}
                 <span *ngIf="lead.createdByName?.length>20">...</span>
               </h5>
               <h6 class='m0' style="font-weight: 400;">
@@ -150,38 +156,49 @@
                 <app-timestamp [isOnlyDate]="false" [dateAndTime]="lead.createdTime">
                 </app-timestamp>
               </h5>
-            </td>                          
+            </td>
             <td style="width: 10%;">
               {{lead.currentStageName | slice:0:30}}
               <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
-                <i class="fa fa-check-circle mr5" aria-hidden="true" style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                Deal</div>
-                
-              <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner" class="register_deal">
+                <i class="fa fa-check-circle mr5" aria-hidden="true"
+                  style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                Deal
+              </div>
+
+              <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner"
+                class="register_deal">
                 <a style="color: #008fd5;" (click)="registerDeal(lead)" translate>
                   Register Deal</a>
               </div>
-                
+
             </td>
             <td>
               <div class="actions-block override-actions tb_view_actions">
-                  <a data-rel="fancybox-button" (click)="viewLead(lead)" title="View Lead" id="lead">
-                    <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
+                <a class="custom-icon" data-rel="fancybox-button" (click)="viewLead(lead)" title="View Lead" id="lead">
+                  <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
+                  <div class="clickicons"></div>
+                </a>
+                <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                  <a class="custom-icon" data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="editLead(lead)"
+                    title="Edit Lead" id="lead">
+                    <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+                    <div class="clickicons"></div>
                   </a>
-                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
-                    <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="editLead(lead)" title="Edit Lead" id="lead">
-                      <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
-                    </a>
-                    <a data-rel="fancybox-button" *ngIf="lead.canUpdate" (click)="confirmDeleteLead(lead)" title="Delete Lead" id="lead">
-                      <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
-                    </a>
-                    <a *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)" title="Comments" style="margin-top: 10px">                            
-                      <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px"> </i>
-                      <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default" style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
-                    </a>
-                  </ng-container>
-                  
-              </div>                              
+                  <a class="custom-icon" data-rel="fancybox-button" *ngIf="lead.canUpdate"
+                    (click)="confirmDeleteLead(lead)" title="Delete Lead" id="lead">
+                    <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                    <div class="del-icon"></div>
+                  </a>
+                  <a class="custom-icon" *ngIf="true" data-rel="fancybox-button" (click)="showComments(lead)"
+                    title="Comments">
+                    <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px"> </i>
+                    <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"
+                      style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
+                    <div class="clickicons"></div>
+                  </a>
+                </ng-container>
+
+              </div>
             </td>
           </tr>
 
@@ -192,14 +209,14 @@
   </div>
 
   <!-- --------------------Pagination0-------------------- -->
-<div *ngIf="!httpRequestLoader.isLoading && leadsPagination.pagedItems.length !== 0" class="pg8">
-  <app-pagination [pagination]="leadsPagination" (notifyParent)="setLeadsPage($event)"
-    (notifyParentDropDown)="listCampaignLeads($event)"></app-pagination>
-</div>
-<!-- End of 24 -->
-<div *ngIf="!httpRequestLoader.isLoading && leadsPagination.totalRecords==0" class="alert alert-info">
-  <strong translate>No Leads Found.</strong>
-</div>
+  <div *ngIf="!httpRequestLoader.isLoading && leadsPagination.pagedItems.length !== 0" class="pg8">
+    <app-pagination [pagination]="leadsPagination" (notifyParent)="setLeadsPage($event)"
+      (notifyParentDropDown)="listCampaignLeads($event)"></app-pagination>
+  </div>
+  <!-- End of 24 -->
+  <div *ngIf="!httpRequestLoader.isLoading && leadsPagination.totalRecords==0" class="alert alert-info">
+    <strong translate>No Leads Found.</strong>
+  </div>
 </section>
 
 <div *ngIf="!httpRequestLoader.isLoading && leadsSortOption.totalRecords==0" class="alert alert-info">

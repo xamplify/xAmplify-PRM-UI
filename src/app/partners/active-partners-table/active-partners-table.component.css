@@ -4,34 +4,86 @@
     }
   }
 
-  .Shortbyfield{position: relative;right: -3px;}
-  .SotybyBoxPosition{position: relative;right: 19px;}
+  .Shortbyfield{position: relative;right: 0px;}
+  .SotybyBoxPosition{position: relative;right: 0px;left: 33px;}
   .Fullboxmargin{float: right; margin-bottom:-22px;}
-  .SearchBoxCu{margin-right: 12px; width:170px}
+  .SearchBoxCu{margin-right: 100px; width:175px}
   .mainSearchBoxCu{position: relative;width: 178px; right: 21px;}
   .arrowpositinon{float: right; position: relative; bottom: 25px; font-size: 18px !important}
-  .portletCardCu {font-size: 16px; padding-top: 4px;margin-bottom: 0px;border-bottom: none;}
+  .portletCardCu {font-size: 16px; padding-top: 4px !important;margin-bottom: 0px;border-bottom: none;}
   .TitlePaddingTop{padding-top: 6px;}
-
+  .FliterAlignment {position: absolute;top: 0px;right: 30px;}
+  span.btn-aligmntCu {
+    display: flex;
+    justify-content: flex-end;
+}
+i.arrowpositinon.collapseIn {
+  bottom: 15px;
+}
+.btn-group.open .dropdown-toggle {
+  box-shadow: none;
+}
 @media (min-width: 200px) and (max-width: 767px) {
   .Shortbyfield {
-    right: 0px;
+    right: 35px;
   }
   .SotybyBoxPosition {
     right: 0px;
+    top: 10px;
   }
   .mainSearchBoxCu  {
     position: relative;
     width: 170px;
     right: 0px;
+    top: 10px;
   }
   .Fullboxmargin {
-    margin-bottom: -10px;
+    margin-bottom: -14px;
   }
-  .portletCardCu {padding-top: 0px;}
+  .portletCardCu {padding-top: 0px; margin-bottom: -17px;}
   .TitlePaddingTop{padding-top: 0px;}
   .arrowpositinon  {
     bottom: 56px;
   }
+  i.arrowpositinon.collapseIn{
+    bottom: 42px;
+ }
+ .FliterAlignment{
+  top: -26px;
+  height: 28px !important;
+}
 
+span.FliterAlignment i.fa.fa-filter.p10 {
+  padding: 6px !important;
+}
+
+.filtermobileTop{margin-top: 40px !important;}
+
+}
+span.filterActiveBg {
+  background-color: #10ad39;
+}
+span.filterActiveBg i {
+  color: #fff;
+}
+.defaultFilterACtiveBg{
+  background-color: #f1f3fa;
+}
+@media (min-width: 992px) and (max-width: 1041px) {
+  .Shortbyfield{right: 10px;}
+}
+
+
+@media (min-width: 768px) and (max-width: 991px) {
+
+  .mainSearchBoxCu  {
+    right: 70px;
+  }
+  .Shortbyfield {
+    right: 100px;
+  }
+  .Fullboxmargin {
+    margin-bottom: -4px;
+  }
+ 
 }

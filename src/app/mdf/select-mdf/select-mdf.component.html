@@ -3,9 +3,9 @@
   <div class="page-bar">
     <ul class="page-breadcrumb">
       <li>
-        <i class="fa fa-home" aria-hidden="true"></i> 
+        <i class="fa fa-home" aria-hidden="true"></i>
         <a [routerLink]="referenceService?.homeRouter" translate>Home</a>
-         <i class="fa fa-angle-right" aria-hidden="true"></i>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
       <li><a translate>MDF</a></li>
     </ul>
@@ -17,44 +17,50 @@
     <div class="col-md-12">
       <div class="">
         <div class="portlet-body mb12">
-          <div class="row mtop" *ngIf="authenticationService?.user?.hasCompany && (authenticationService?.mdf ||authenticationService?.mdfAccessAsPartner)">
+          <div class="row mtop"
+            *ngIf="authenticationService?.user?.hasCompany && (authenticationService?.mdf ||authenticationService?.mdfAccessAsPartner)">
             <!--------MDF------------->
             <div class="col-md-4 col-centered">
               <div class="portlet light cpad  hover-effect pointer card-radius">
                 <div class="portlet-body">
-                  <div class="img1">
-                    <img alt="Content/Videos" class="pricing-head-img img-responsive mauto" src="assets/images/mdf.svg">
+                  <div class="img1 card-template">
+                    <img alt="Content/Videos" class="pricing-head-img img-responsive mauto img-templates"
+                      src="assets/images/mdf.svg">
                   </div>
                   <div class="text text-border">
                     <h4 class="header-text-css" translate>MDF</h4>
                     <p class="header-description-css" translate>
                       <ng-container *ngIf="authenticationService?.mdf">
-                        <span>Efficiently allocate funds for {{authenticationService?.partnerModule?.customName}} and effectively manage request management.</span><br>
+                        <span>Efficiently allocate funds for {{authenticationService?.partnerModule?.customName}} and
+                          effectively manage request management.</span><br>
                       </ng-container>
                       <span *ngIf="authenticationService?.mdfAccessAsPartner">Request Your Vendors.</span>
                     </p>
                   </div>
                   <ng-container *ngIf="authenticationService?.mdf">
-                  <div class="text text-border">
-                    <h5 class="mltp">
-                      <a (click)="navigate('/mdf/details')">
-                      <i class="fa fa-plus" aria-hidden="true"></i>
-                      <span class="design-name" translate>Manage MDF Details</span></a>
-                    </h5>
-                  </div>
-                  <div class="text text-border" [ngClass]="authenticationService?.mdfAccessAsPartner?'':'border-none'">
-                    <h5 class="mltp">
-                      <a (click)="navigate('mdf/requests')">
-                      <i class="fa fa-list" aria-hidden="true"></i>
-                      <span  class="design-name" translate>Manage MDF Requests Of Your {{authenticationService?.partnerModule?.customName}}</span></a>
-                    </h5>
-                  </div>
-                </ng-container>
+                    <div class="text text-border">
+                      <h5 class="mltp">
+                        <a (click)="navigate('/mdf/details')">
+                          <i class="fa fa-plus" aria-hidden="true"></i>
+                          <span class="design-name" translate>Manage MDF Details</span></a>
+                      </h5>
+                    </div>
+                    <div class="text text-border"
+                      [ngClass]="authenticationService?.mdfAccessAsPartner?'':'border-none'">
+                      <h5 class="mltp">
+                        <a (click)="navigate('mdf/requests')">
+                          <i class="fa fa-list" aria-hidden="true"></i>
+                          <span class="design-name" translate>Manage MDF Requests Of Your
+                            {{authenticationService?.partnerModule?.customName}}</span></a>
+                      </h5>
+                    </div>
+                  </ng-container>
                   <div *ngIf="authenticationService?.mdfAccessAsPartner" class="text border-none">
                     <h5 class="mltp">
                       <a (click)="navigate('mdf/requests/p')">
-                      <i class="fa fa-list" aria-hidden="true"></i>
-                      <span  class="design-name" translate>Manage MDF Requests ({{authenticationService?.partnerModule?.customName}} View)</span></a>
+                        <i class="fa fa-list" aria-hidden="true"></i>
+                        <span class="design-name" translate>Manage MDF Requests
+                          ({{authenticationService?.partnerModule?.customName}} View)</span></a>
                     </h5>
                   </div>
                 </div>

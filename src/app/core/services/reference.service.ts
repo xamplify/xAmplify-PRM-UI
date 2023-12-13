@@ -144,6 +144,10 @@ export class ReferenceService {
   /*** XNFR-user-guides */
   mergeTagName:any;
   hideLeftMenu : boolean = false;
+
+  loginStyleType:any;
+  loginTemplateId = 53;
+  assetResponseMessage = "";
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,

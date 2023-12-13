@@ -1,6 +1,6 @@
-<div class="col-sm-7 col-md-7 col-lg-7 col-xs-12 ml15m">
-  <div class="panel panel-info mh480 panel-bgMain">
-    <div class="panel-heading panel-heading-custom panel-bg" id="pj-asset-details-div">
+<div class="col-sm-6 col-md-7 col-lg-8 col-xs-12 ml15m">
+  <div class="panel panel-info mh480 panel-bgMain br-10 panel-card">
+    <div class="panel-heading panel-heading-custom panel-bg panel-custom" id="pj-asset-details-div">
       <h3 class="panel-title mt7">Track Asset Details</h3>
       <span class="pull-right mt25m mobilesearchdisplay">
         <div class="input-icon right mobilesearchdisplayTop" style="position: relative;width: 178px;top: -1px;">
@@ -15,7 +15,7 @@
       </span>
     </div>
     <div class="panel-body">    
-      <div class="scroll table-responsive tableHeightScroll">
+      <div class="scroll table-responsive {{scrollClass}}">
         <table class="table">
           <thead>
             <tr> 
@@ -29,15 +29,16 @@
           <tbody>          
             <tr *ngFor="let item of pagination.pagedItems;let i  = index">
               <td *ngIf="isDetailedAnalytics"><app-user-info [isPartnerEntityInfo]="true" [userInfo]="item"></app-user-info></td>
-              <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">{{item.companyName}}</a></td>
-              <td><p data-toggle="tooltip" data-placement="top" title="{{item?.assetName}}">{{item.assetName | slice:0:10}} 
-                    <span *ngIf="item.assetName?.length>10">...</span>
+              <!-- <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)">{{item.companyName}}</a></td> -->
+              <td *ngIf="!isDetailedAnalytics"><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <td><p data-toggle="tooltip" data-placement="top" title="{{item?.assetName}}">{{item.assetName | slice:0:30}} 
+                    <span *ngIf="item.assetName?.length>30">...</span>
                   </p>
-                  <p data-toggle="tooltip" data-placement="top" title="{{item?.assetType}}"> Type: {{item.assetType | slice:0:10}}   
-                    <span *ngIf="item.assetType?.length>10">...</span>
+                  <p data-toggle="tooltip" data-placement="top" title="{{item?.assetType}}"> Type: {{item.assetType | slice:0:30}}   
+                    <span *ngIf="item.assetType?.length>30">...</span>
                   </p> 
-                  <p data-toggle="tooltip" data-placement="top" title="{{item?.title}}"> Track : {{item?.title | slice:0:10}} 
-                    <span *ngIf="item?.title?.length>10">...</span>
+                  <p data-toggle="tooltip" data-placement="top" title="{{item?.title}}"> Track : {{item?.title | slice:0:30}} 
+                    <span *ngIf="item?.title?.length>30">...</span>
                   </p>
               </td>
               <td>

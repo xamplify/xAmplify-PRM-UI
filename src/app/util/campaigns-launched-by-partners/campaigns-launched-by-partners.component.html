@@ -1,5 +1,5 @@
 <div class="col-xs-12 col-sm-6" style="padding-right: 5px;">
-    <div class="portlet light" style="min-height: 507px;margin-bottom: 20px;">
+    <div class="portlet light" style="min-height: 501px;margin-bottom: 20px;">
       <div class="portlet-title pjCardTitlebg" style="min-height: 44px;">
         <div class="caption pjCardTitleCenterAlignment">
           <div class="caption-subject font-red-sunglo uppercase responsiveTitleCu" title="Campaigns  Launched By Active {{authenticationService?.partnerModule?.customName}}"  translate>
@@ -30,10 +30,11 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of activePartnersPagination.pagedItems">
-              <td title="{{item?.partnerCompanyName}}">
-                <strong>{{item?.partnerCompanyName | slice:0:20}}</strong>
-                <span *ngIf="item?.partnerCompanyName.length>20">...</span>
-              </td>
+              <!-- <td> -->
+                <!-- <strong>{{item?.partnerCompanyName | slice:0:20}}</strong>
+                <span *ngIf="item?.partnerCompanyName.length>20">...</span> -->
+                <td><a class="detailstext" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"><app-user-info [isPartnerAnalyticsCompany]="true" [userInfo]="item"></app-user-info></a></td>
+              <!-- </td> -->
               <td class="text-center">
               <div>
                 <button class="btn btn-default btn-xs re-distributed-high-level TableDataBtn">

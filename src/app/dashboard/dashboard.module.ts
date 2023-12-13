@@ -88,7 +88,7 @@ import { LeftsidenavbarCustomComponent } from './leftsidenavbar-custom/leftsiden
 import { EmailNotificationSettingsComponent } from './email-notification-settings/email-notification-settings.component';
 import { ActiveThreadsInfoComponent } from './active-threads-info/active-threads-info.component';
 import { CustomLoginScreenSettingsComponent } from './custom-login-screen-settings/custom-login-screen-settings.component';
-
+import { ConnectwiseAuthenticationComponent } from './connectwise-authentication/connectwise-authentication.component';
 
 
 @NgModule({
@@ -152,7 +152,8 @@ import { CustomLoginScreenSettingsComponent } from './custom-login-screen-settin
         LeftsidenavbarCustomComponent,
         EmailNotificationSettingsComponent,
         ActiveThreadsInfoComponent,
-        CustomLoginScreenSettingsComponent
+        CustomLoginScreenSettingsComponent,
+        ConnectwiseAuthenticationComponent
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],

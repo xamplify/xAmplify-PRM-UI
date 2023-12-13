@@ -4,51 +4,86 @@
         <ul class="page-breadcrumb">
             <li>
                 <i class="fa fa-home" aria-hidden="true"></i>
-                 <a [routerLink]="refService.homeRouter" translate>Home</a>
-                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a [routerLink]="refService.homeRouter" translate>Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li>
                 <a [routerLink]="['/home/design/add']" translate>Create Design</a>
-                 <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li><a translate>Design Templates</a></li>
         </ul>
         <app-user-guide-help-button
-                 *ngIf="5 != selectedTemplateTypeIndex && 11 != selectedTemplateTypeIndex && 12 != selectedTemplateTypeIndex"
-                [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+            *ngIf="5 != selectedTemplateTypeIndex && 11 != selectedTemplateTypeIndex && 12 != selectedTemplateTypeIndex"
+            [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     </div>
     <!-- END PAGE HEADER-->
     <!-- BEGIN PAGE CONTENT-->
     <div class="row">
         <div class="col-md-12">
-            <div class="portlet light">
+            <div class="portlet light remove_cardBgcolor padding_0">
                 <div class="portlet-title m0" style="border-bottom:none !important;padding-top: 5px;">
                     <div class="row">
                         <div class="col-xs-12 col-sm-9">
                             <div>
                                 <ul class="mix-filter">
-                                    <li class="filter" (click)="showAllTemplates(0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex" translate>All</li>
-                                    <li class="filter" (click)="showRichTemplates(2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex" *ngIf="!httpRequestLoader.isLoading" translate>Email</li>
-                                    <li class="filter" (click)="showRichVideoTemplates(4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign &&!httpRequestLoader.isLoading " translate>Video</li>
-                                    <li class="filter" (click)="showRegularCoBrandingTemplates(6)" [class.emailtemplate-selected]="6 == selectedTemplateTypeIndex" *ngIf="campaignAccess.emailCampaign && !httpRequestLoader.isLoading && !isMarketingCompany" translate>Email Co-Branding</li>
-                                    <li class="filter" (click)="showVideoCoBrandingTemplates(7)" [class.emailtemplate-selected]="7 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign && !httpRequestLoader.isLoading && !isMarketingCompany" translate>Video Co-Branding</li>
-                                    <li class="filter" (click)="showUploadTemplates(5)" [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex" *ngIf="!httpRequestLoader.isLoading" translate>Upload Custom</li>
-                                    <li class="filter" (click)="showEventTemplates(9)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="campaignAccess.eventCampaign && !httpRequestLoader.isLoading" translate>Event</li>
-                                    <li class="filter" (click)="showEventCoBrandingTemplates(10)" [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex" *ngIf="campaignAccess.eventCampaign && !httpRequestLoader.isLoading && !isMarketingCompany" translate>Event Co-Branding</li>
-                                    <li class="filter" (click)="showSurveyTemplates(13)" [class.emailtemplate-selected]="13 == selectedTemplateTypeIndex" *ngIf="campaignAccess.formBuilder && !httpRequestLoader.isLoading" translate>Survey</li>
-                                    <li class="filter" (click)="showSurveyTemplates(14)" [class.emailtemplate-selected]="14 == selectedTemplateTypeIndex" *ngIf="campaignAccess.formBuilder && !httpRequestLoader.isLoading && !isMarketingCompany" translate>Survey Co-Branding</li>                                    
-                                    <li class="filter" (click)="getTemplatesFromMarketo()" [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex" translate>Marketo Templates</li>
-                                    <li class="filter" (click)="getTemplatesFromHubSpot()" [class.emailtemplate-selected]="12 == selectedTemplateTypeIndex" translate>HubSpot Templates</li>
+                                    <li class="filter" (click)="showAllTemplates(0)"
+                                        [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex" translate>All
+                                    </li>
+                                    <li class="filter" (click)="showRichTemplates(2)"
+                                        [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex"
+                                        *ngIf="!httpRequestLoader.isLoading" translate>Email</li>
+                                    <li class="filter" (click)="showRichVideoTemplates(4)"
+                                        [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex"
+                                        *ngIf="campaignAccess.videoCampaign &&!httpRequestLoader.isLoading " translate>
+                                        Video</li>
+                                    <li class="filter" (click)="showRegularCoBrandingTemplates(6)"
+                                        [class.emailtemplate-selected]="6 == selectedTemplateTypeIndex"
+                                        *ngIf="campaignAccess.emailCampaign && !httpRequestLoader.isLoading && !isMarketingCompany"
+                                        translate>Email Co-Branding</li>
+                                    <li class="filter" (click)="showVideoCoBrandingTemplates(7)"
+                                        [class.emailtemplate-selected]="7 == selectedTemplateTypeIndex"
+                                        *ngIf="campaignAccess.videoCampaign && !httpRequestLoader.isLoading && !isMarketingCompany"
+                                        translate>Video Co-Branding</li>
+                                    <li class="filter" (click)="showUploadTemplates(5)"
+                                        [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex"
+                                        *ngIf="!httpRequestLoader.isLoading" translate>Upload Custom</li>
+                                    <li class="filter" (click)="showEventTemplates(9)"
+                                        [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex"
+                                        *ngIf="campaignAccess.eventCampaign && !httpRequestLoader.isLoading" translate>
+                                        Event</li>
+                                    <li class="filter" (click)="showEventCoBrandingTemplates(10)"
+                                        [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex"
+                                        *ngIf="campaignAccess.eventCampaign && !httpRequestLoader.isLoading && !isMarketingCompany"
+                                        translate>Event Co-Branding</li>
+                                    <li class="filter" (click)="showSurveyTemplates(13)"
+                                        [class.emailtemplate-selected]="13 == selectedTemplateTypeIndex"
+                                        *ngIf="campaignAccess.formBuilder && !httpRequestLoader.isLoading" translate>
+                                        Survey</li>
+                                    <li class="filter" (click)="showSurveyTemplates(14)"
+                                        [class.emailtemplate-selected]="14 == selectedTemplateTypeIndex"
+                                        *ngIf="campaignAccess.formBuilder && !httpRequestLoader.isLoading && !isMarketingCompany"
+                                        translate>Survey Co-Branding</li>
+                                    <li class="filter" (click)="getTemplatesFromMarketo()"
+                                        [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex" translate>
+                                        Marketo Templates</li>
+                                    <li class="filter" (click)="getTemplatesFromHubSpot()"
+                                        [class.emailtemplate-selected]="12 == selectedTemplateTypeIndex" translate>
+                                        HubSpot Templates</li>
                                     <li class="filter" style="display: none;" translate>Own Template</li>
                                 </ul>
                             </div>
                         </div>
                         <div class="colxs-12 col-sm-3">
-                            <div class="inputs regular_emails"  style="float: right">
+                            <div class="inputs regular_emails" style="float: right">
                                 <div class="portlet-input input-inline input-small mb_10">
-                                    <div class="input-icon right" style="width: 200px;margin-left: -55px;padding-top: 5px;">
-                                        <input type="text" class="form-control" [(ngModel)]="templateFilter.name" placeholder="Search for a template">
-                                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="templateFilter.name" (click)="templateFilter.name=''" style="padding-top: 10px;"></button>
+                                    <div class="input-icon right"
+                                        style="width: 200px;margin-left: -55px;padding-top: 5px;">
+                                        <input type="text" class="form-control" [(ngModel)]="templateFilter.name"
+                                            placeholder="Search for a template">
+                                        <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                            *ngIf="templateFilter.name" (click)="templateFilter.name=''"
+                                            style="padding-top: 10px;"></button>
                                         <button type="submit" class="search-box-item-click">
                                             <i class="fa fa-search" aria-hidden="true"></i></button>
                                     </div>
@@ -60,63 +95,112 @@
                 <div class="portlet-body" style="padding: 0px 3px 0px 3px;">
                     <div class="row">
                         <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
-                        <app-landing-page-loader [maxBoxLength]=4 *ngIf="importLoading || httpRequestLoader.isLoading"></app-landing-page-loader>
+                        <app-landing-page-loader [maxBoxLength]=4
+                            *ngIf="importLoading || httpRequestLoader.isLoading"></app-landing-page-loader>
                         <ng-container *ngIf="!importLoading && !httpRequestLoader.isLoading">
-                        <div style="position: relative; top: -10px">
-                            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-                        </div>
-                        <div *ngIf="(selectedTemplateTypeIndex == 11 || selectedTemplateTypeIndex == 12) && filteredEmailTemplates?.length > 0" style="width: 100%;padding-left: 15px;" class="row">
-                            <label class="select-all-filter filter_btn" style="float:right;"> <input class="checkBox_shadow" type="checkbox" value="" 
-									[(ngModel)]="selectAllTemplates" (ngModelChange)="selectAll(selectAllTemplates)" >
-									<span style="font-weight: 600;font-size: 12px;" translate>Select All</span> </label>
-                            <div *ngIf="isSaveMarketoTemplatesButtonState" style="float:right;margin-right: 10px">
-                                <button class="btn filter_btn" style="height: 36px;background-color: #6dcff6;" (click)="importMarketotemplates()" translate>IMPORT</button>
+                            <div style="position: relative; top: -10px">
+                                <app-response-message [customResponse]="customResponse"
+                                    *ngIf="customResponse.isVisible"></app-response-message>
                             </div>
-                            <div *ngIf="isSaveHubSpotTemplatesButtonState" style="float:right;margin-right: 10px">
-                                <button class="btn filter_btn" style="height: 36px;background-color: #6dcff6;" (click)="importHubSpotTemplates()" translate>IMPORT</button>
-                            </div>
-                        </div>
-                        <div class="alert alert-info ml10 mr10 text-center" *ngIf="filteredCount?.count==0">
-                            No Templates Available
-                        </div>
-                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 mrg_10" *ngFor="let beeRegularTemplate of filteredEmailTemplates | selectEmailTemplatesFilter: templateFilter:filteredCount;let i=index">
-                            <div class="grid-box mb_hgh_grid">
-                                <div *ngIf="beeRegularTemplate.marketoTemplate" style="width: 100%;padding-left: 15px;">
-                                    <label class="checkbox-inline" style="float:left;"><input class="checkBox_shadow" type="checkbox" value="" style="width: 20px;height: 20px;"
-										[(ngModel)]="beeRegularTemplate.isSelectedMarketoTemplate" (ngModelChange)="setSelectedTemplates(beeRegularTemplate)"></label>
+                            <div *ngIf="(selectedTemplateTypeIndex == 11 || selectedTemplateTypeIndex == 12) && filteredEmailTemplates?.length > 0"
+                                style="width: 100%;padding-left: 15px;" class="row">
+                                <label class="select-all-filter filter_btn" style="float:right;"> <input
+                                        class="checkBox_shadow" type="checkbox" value=""
+                                        [(ngModel)]="selectAllTemplates"
+                                        (ngModelChange)="selectAll(selectAllTemplates)">
+                                    <span style="font-weight: 600;font-size: 12px;" translate>Select All</span> </label>
+                                <div *ngIf="isSaveMarketoTemplatesButtonState" style="float:right;margin-right: 10px">
+                                    <button class="btn filter_btn" style="height: 36px;background-color: #6dcff6;"
+                                        (click)="importMarketotemplates()" translate>IMPORT</button>
                                 </div>
-                                <div *ngIf="beeRegularTemplate.hubSpotTemplate" style="width: 100%;padding-left: 15px;">
-                                    <label class="checkbox-inline" style="float:left;"><input class="checkBox_shadow" type="checkbox" value="" style="width: 20px;height: 20px;"
-										[(ngModel)]="beeRegularTemplate.isSelectedHubSpotTemplate" (ngModelChange)="selectedHubSpotTemplate(beeRegularTemplate)"></label>
-                                </div>
-                                <img class="img-responsive center-block" *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate" src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
-                                <img class="img-responsive center-block" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate" src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
-                                <img class="img-responsive center-block" *ngIf="beeRegularTemplate.marketoTemplate || beeRegularTemplate.hubSpotTemplate" src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
-                                <h4 title="{{beeRegularTemplate.name}}">{{beeRegularTemplate.name|slice:0:23}}<span *ngIf="beeRegularTemplate.name?.length>23">....</span></h4>
-                                <div class="bar gridIconCustomization">
-                                    <a class="Iconhover"  data-toggle="tooltip" data-placement="top" title="Create template" (click)="showTemplateById(beeRegularTemplate)" *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
-                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                    </a>
-                                    <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(beeRegularTemplate)" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
-                                        <i class="fa fa-eye" aria-hidden="true"></i></a>
-                                    <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showMarketoEmailtemplatePreview(beeRegularTemplate.id)" *ngIf="beeRegularTemplate.marketoTemplate">
-                                        <i class="fa fa-eye" aria-hidden="true"></i></a>
-                                    <a class="Iconhover" (click)="edit(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="Create Template" *ngIf="beeRegularTemplate.marketoTemplate">
-                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                    </a>
-                                    <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showHubSpotEmailtemplatePreview(beeRegularTemplate.id)" *ngIf="beeRegularTemplate.hubSpotTemplate">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
-                                    </a>
-                                    <a class="Iconhover" (click)="createTemplate(beeRegularTemplate.id)" data-toggle="tooltip" data-placement="top" title="Create Template" *ngIf="beeRegularTemplate.hubSpotTemplate">
-                                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                    </a>
-                                    <a class="delete" (click)="confirmDeleteEmailTemplate(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="Delete Default Template" *ngIf="loggedInAsSuperAdmin && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
-                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                    </a>
+                                <div *ngIf="isSaveHubSpotTemplatesButtonState" style="float:right;margin-right: 10px">
+                                    <button class="btn filter_btn" style="height: 36px;background-color: #6dcff6;"
+                                        (click)="importHubSpotTemplates()" translate>IMPORT</button>
                                 </div>
                             </div>
-                        </div>
-                    </ng-container>
+                            <div class="alert alert-info ml10 mr10 text-center" *ngIf="filteredCount?.count==0">
+                                No Templates Available
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 mrg_10"
+                                *ngFor="let beeRegularTemplate of filteredEmailTemplates | selectEmailTemplatesFilter: templateFilter:filteredCount;let i=index">
+                                <div class="grid-box mb_hgh_grid">
+                                    <div *ngIf="beeRegularTemplate.marketoTemplate"
+                                        style="width: 100%;padding-left: 15px;">
+                                        <label class="checkbox-inline" style="float:left;"><input
+                                                class="checkBox_shadow" type="checkbox" value=""
+                                                style="width: 20px;height: 20px;"
+                                                [(ngModel)]="beeRegularTemplate.isSelectedMarketoTemplate"
+                                                (ngModelChange)="setSelectedTemplates(beeRegularTemplate)"></label>
+                                    </div>
+                                    <div *ngIf="beeRegularTemplate.hubSpotTemplate"
+                                        style="width: 100%;padding-left: 15px;">
+                                        <label class="checkbox-inline" style="float:left;"><input
+                                                class="checkBox_shadow" type="checkbox" value=""
+                                                style="width: 20px;height: 20px;"
+                                                [(ngModel)]="beeRegularTemplate.isSelectedHubSpotTemplate"
+                                                (ngModelChange)="selectedHubSpotTemplate(beeRegularTemplate)"></label>
+                                    </div>
+                                    <img class="img-responsive center-block"
+                                        *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate"
+                                        src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
+                                    <img class="img-responsive center-block"
+                                        *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate"
+                                        src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
+                                    <img class="img-responsive center-block"
+                                        *ngIf="beeRegularTemplate.marketoTemplate || beeRegularTemplate.hubSpotTemplate"
+                                        src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
+                                    <h4 title="{{beeRegularTemplate.name}}">{{beeRegularTemplate.name|slice:0:23}}<span
+                                            *ngIf="beeRegularTemplate.name?.length>23">....</span></h4>
+                                    <div class="bar gridIconCustomization">
+                                        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top"
+                                            title="Create template" (click)="showTemplateById(beeRegularTemplate)"
+                                            *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
+                                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                            <div class="clickicons"></div>
+                                        </a>
+                                        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top"
+                                            title="Preview" (click)="showPreview(beeRegularTemplate)"
+                                            *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                            <div class="clickicons"></div>
+                                        </a>
+                                        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top"
+                                            title="Preview"
+                                            (click)="showMarketoEmailtemplatePreview(beeRegularTemplate.id)"
+                                            *ngIf="beeRegularTemplate.marketoTemplate">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                            <div class="clickicons"></div>
+                                        </a>
+                                        <a class="Iconhover custom-icon" (click)="edit(beeRegularTemplate)"
+                                            data-toggle="tooltip" data-placement="top" title="Create Template"
+                                            *ngIf="beeRegularTemplate.marketoTemplate">
+                                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                            <div class="clickicons"></div>
+                                        </a>
+                                        <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top"
+                                            title="Preview"
+                                            (click)="showHubSpotEmailtemplatePreview(beeRegularTemplate.id)"
+                                            *ngIf="beeRegularTemplate.hubSpotTemplate">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                            <div class="clickicons"></div>
+                                        </a>
+                                        <a class="Iconhover custom-icon" (click)="createTemplate(beeRegularTemplate.id)"
+                                            data-toggle="tooltip" data-placement="top" title="Create Template"
+                                            *ngIf="beeRegularTemplate.hubSpotTemplate">
+                                            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                                            <div class="clickicons"></div>
+                                        </a>
+                                        <a class="delete custom-icon"
+                                            (click)="confirmDeleteEmailTemplate(beeRegularTemplate)"
+                                            data-toggle="tooltip" data-placement="top" title="Delete Default Template"
+                                            *ngIf="loggedInAsSuperAdmin && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate">
+                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                            <div class="del-icon"></div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
                     </div>
                 </div>
             </div>
@@ -129,14 +213,16 @@
     <div class="modal-dialog modal-lg modal-template">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i
+                        class="fa fa-times" aria-hidden="true"></i></button>
                 <h4 class="modal-title" id="email-template-title" style="text-align: center;"></h4>
             </div>
             <div class="modal-body">
                 <div id="htmlContent"></div>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" data-dismiss="modal" class="btn Btn-Gray" style="float: right" translate>Close</a>
+                <a href="javascript:void(0)" data-dismiss="modal" class="btn Btn-Gray" style="float: right"
+                    translate>Close</a>
             </div>
         </div>
     </div>
@@ -147,7 +233,8 @@
 
 <!-- END CONTENT -->
 
-<div class="modal right fade" id="templateRetrieve" tabindex="-1" role="dialog" aria-labelledby="templateRetrieve" data-keyboard="false" data-backdrop="static">
+<div class="modal right fade" id="templateRetrieve" tabindex="-1" role="dialog" aria-labelledby="templateRetrieve"
+    data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog template-modal" role="document" style="width: 50%">
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="modal-content rounded-0">
@@ -158,30 +245,38 @@
             </div>
 
             <div>
-                <img src="assets/images/crm/Mark-amplify.png" style="margin: 30px 30% 0;width: 50%;text-align: center;" alt="">
+                <img src="assets/images/crm/Mark-amplify.png" style="margin: 30px 30% 0;width: 50%;text-align: center;"
+                    alt="">
             </div>
 
             <div class="modal-body" style="padding: 39px;">
                 <form class="form-horizontal">
                     <div *ngIf="templateError" class="alert alert-danger"><span>{{templateError}}</span></div>
-                    <div *ngIf="templateSuccessMsg" class="alert alert-success"><span>{{templateSuccessMsg}}</span></div>
+                    <div *ngIf="templateSuccessMsg" class="alert alert-success"><span>{{templateSuccessMsg}}</span>
+                    </div>
                     <div [attr.class]="clientIdClass">
                         <label class="control-label col-sm-3" for="email" translate>Client Id:</label>
                         <div class="col-sm-8">
-                            <input type="email" class="form-control" id="email" placeholder="Client Id" [(ngModel)]="clientId" [ngModelOptions]="{standalone: true}" (input)="validateModelForm('email')">
+                            <input type="email" class="form-control" id="email" placeholder="Client Id"
+                                [(ngModel)]="clientId" [ngModelOptions]="{standalone: true}"
+                                (input)="validateModelForm('email')">
                         </div>
                     </div>
                     <div [attr.class]="secretIdClass">
                         <label class="control-label col-sm-3" for="pwd" translate>Secret Id:</label>
                         <div class="col-sm-8">
-                            <input type="password" class="form-control" id="pwd" placeholder="Secret Id" [(ngModel)]="secretId" [ngModelOptions]="{standalone: true}" (input)="validateModelForm('pwd')">
+                            <input type="password" class="form-control" id="pwd" placeholder="Secret Id"
+                                [(ngModel)]="secretId" [ngModelOptions]="{standalone: true}"
+                                (input)="validateModelForm('pwd')">
                         </div>
                     </div>
 
                     <div [attr.class]="marketoInstanceClass">
                         <label class="control-label col-sm-3" for="instance" translate>Marketo Instance:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="instance" placeholder="Marketo Instance" [(ngModel)]="marketoInstance" [ngModelOptions]="{standalone: true}" (input)="validateModelForm('instance')">
+                            <input type="text" class="form-control" id="instance" placeholder="Marketo Instance"
+                                [(ngModel)]="marketoInstance" [ngModelOptions]="{standalone: true}"
+                                (input)="validateModelForm('instance')">
                         </div>
                     </div>
                 </form>
@@ -190,10 +285,11 @@
             <div class="modal-footer">
                 <div style="text-align: right;">
                     <button class="btn Btn-Gray" (click)="clearValues()" translate>Clear</button>
-                    <button class="btn btn-primary" [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitRetrieTemplates()" translate>Submit</button>
+                    <button class="btn btn-primary"
+                        [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance"
+                        (click)="submitRetrieTemplates()" translate>Submit</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-

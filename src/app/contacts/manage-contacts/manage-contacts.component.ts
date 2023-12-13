@@ -239,12 +239,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
   selectedUser: User = null;
   /*****XNFR-342*****/
   @ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
-  isLocalHost = false;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
 		private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch, private vanityUrlService: VanityURLService,
 		public route: ActivatedRoute) {
-		this.isLocalHost = this.authenticationService.isLocalHost();
 		this.loggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
 		  this.loggedInUserId = this.authenticationService.getUserId();
 	        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
@@ -1274,6 +1272,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                     data = data;
                     this.loading = false;
                     if (data.statusCode === 401) {
+						this.disableSave = false;
                     	this.saveAsError = data.message;
                         //this.customResponse = new CustomResponse('ERROR', data.message, true);
                     } else if (data.statusCode === 402) {
@@ -1935,6 +1934,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.saveAsListName = '';
 			this.selectedLegalBasisOptions = [];
 			this.saveAsError = '';
+			this.disableSave=false;
 			$('#saveAsModal').modal('show');
 		} catch (error) {
 			this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsAlert()");
@@ -1967,6 +1967,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	validateLegalBasisOptions() {
 		if (this.gdprStatus && this.selectedLegalBasisOptions.length == 0 && this.saveAsTypeList === 'manage-all-contacts') {
 			this.isValidLegalOptions = false;
+			this.disableSave = false;
 		} else {
 			this.isValidLegalOptions = true;
 		}
@@ -2062,7 +2063,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         this.saveSelectedUsers(name, this.selectedLegalBasisOptions, this.model.isPublic);
                     }
                 }
-            } else if (name == "") { this.saveAsError = 'List Name is Required.'; }
+            } else if (name == "") { 
+				this.disableSave = false;
+				this.saveAsError = 'List Name is Required.'; 
+			}
              else { this.saveAsError = 'You have exceeded 250 characters!'; }
         } catch (error) {
             this.xtremandLogger.error(error, "ManageContactsComponent", "saveAs()");
@@ -2747,7 +2751,7 @@ resubscribeUserResult(event : any){
 
  /***********XNFR-342*********/
  openUnPublishedContentModalPopUp(contactList:any){
-	this.shareUnPublishedComponent.openPopUp(contactList.id,undefined,this.checkingContactTypeName);
+	this.shareUnPublishedComponent.openPopUp(contactList.id,undefined,this.checkingContactTypeName,contactList.name);
  }
  
 }

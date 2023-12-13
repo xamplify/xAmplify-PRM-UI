@@ -15,6 +15,9 @@ export class PieChartComponent implements OnInit {
   @Input() partnerCompanyId: number;
   @Input() chartId: any;
   @Input() teamMemberId: any;
+  @Input() applyFilter: boolean;
+  @Input()  isDetailedAnalytics: boolean;
+  @Input() selectedPartnerCompanyIds: any = [];
   @Output() notifySelectSlice = new EventEmitter();
   @Output() notifyUnSelectSlice = new EventEmitter();
   headerText: string;
@@ -98,7 +101,7 @@ export class PieChartComponent implements OnInit {
       var pieChartData;
       this.parterService.launchedCampaignsCountGroupByCampaignType(this.partnerCompanyId, this.authenticationService.user.id).subscribe(
         (data: any) => {
-          pieChartData = [{name: 'VIDEO', y: data.VIDEO}, {name: 'REGULAR', y: data.REGULAR},{name: 'SOCIAL', y: data.SOCIAL},{name: 'EVENT', y: data.EVENT},{name: 'SURVEY', y: data.SURVEY}];
+          pieChartData = [{name: 'VIDEO', y: data.VIDEO}, {name: 'Email', y: data.REGULAR},{name: 'SOCIAL', y: data.SOCIAL},{name: 'EVENT', y: data.EVENT},{name: 'SURVEY', y: data.SURVEY}];
         },
         (error: any) => { 
 		this.xtremandLogger.error(error);
@@ -129,6 +132,9 @@ export class PieChartComponent implements OnInit {
     partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
     partnerJourneyRequest.partnerCompanyId = this.partnerCompanyId;
     partnerJourneyRequest.teamMemberUserId = this.teamMemberId;
+    partnerJourneyRequest.detailedAnalytics = this.isDetailedAnalytics;
+    partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+    partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
     this.parterService.redistributedCampaignDetailsPieChart(partnerJourneyRequest).subscribe(
       response => {
         this.processResponse(response);

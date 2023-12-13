@@ -171,7 +171,7 @@ h6 {
 #asset-preview-content {
   color: white !important;
 }
-#notification {
+#notifications {
   background-color: #22313a !important ;
   border: 1px solid #2f4857 !important;
 }
@@ -941,6 +941,7 @@ span.ui-column-resize {
 /* remved ,button:disabled */
 .btn-hvr-text {
   color: black !important;
+  background-color: #ddd;
 }
 .table tr.row-selected td {
   background-color: #2b3c46 !important;
@@ -2376,3 +2377,146 @@ i.IconodownloadedCount:hover {
   border-radius: 10px;
 }
 
+.input-group > .form-control:focus {
+  border-color: #2f4857 !important;
+}
+.notify_count {
+  font-family: "Gantari", "Open Sans", sans-serif;
+  position: absolute;
+  top: 11px;
+  left: 24px;
+  right: 0px;
+  font-weight: 300;
+  padding: 6px 3px !important;
+  height: 21px !important;
+  width: 21px;
+  font-size: 10px !important;
+}
+.override-actions {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+/* 11/21/2023 */
+a.delete.custom-icon:hover {
+  color: #ffff!important;
+  z-index: 99;
+  position: relative;
+}
+#notification{
+  position: relative!important;
+  background-color: #ed1c24 !important;
+  border: none!important;
+  top: -4px!important;
+  left: -1px!important;
+  z-index: 99;
+}
+.actionicons{
+display: flex!important;
+justify-content: center!important;
+}
+.mrgt-unset{
+ margin-top:unset!important;
+ margin-right: 12px;
+}
+#notification-list{
+  position: relative!important;
+  background-color: #ed1c24 !important;
+  border: none!important;
+  top: -2px!important;
+  left: 2px!important;
+  margin-top:0px!important;
+  z-index: 99;
+}
+.mrg-right5{
+margin-right: 5px;
+}
+.display-inlineblock{
+  display: inline-block;
+}
+.display-inlineflex{
+display: inline-flex;
+}
+
+/* PJ */
+i.collapseIconColorCu {
+  color: #fff;
+}
+.portlet-title > .pjCardTitleCenterAlignment1 {
+  border-bottom: 1px solid #2f4857 !important;
+  background-color: #22313a !important;
+}
+.pjCardTitlebg  {
+  border: 1px solid #2f4857 !important;
+}
+.highchartsColorCu{
+  background: #2b3c46 !important;
+  border-left: 1px solid #2f4857 !important;
+  border-right: 1px solid #2f4857 !important;
+  border-bottom: 1px solid #2f4857 !important;
+}
+/* PJ End*/
+
+  /****** XNFR-233 *****/
+  .preview_img {
+    background-color: #22313a !important;
+  }
+/* Button Transitions */
+/* sudha sri(23-11-2023) */
+.button:hover,button,.button_blue:hover {
+  background: none;
+}
+.mar-rgt_mar-lft{
+  margin-right: -20px !important;
+  padding-left: 2px !important;
+}
+.marg-lft{
+  margin-left: -20px !important;
+}
+.mar-lft-40{
+  margin-left: -40px;
+}
+.mar-rgt-40{
+  margin-right: -40px !important;
+}
+.mar-lft-11{
+  margin-left: -11px;
+}
+.mar-rgt-9{
+  margin-right: -9px;
+}
+.mar-rgt{
+  margin-right: 40px !important;
+}
+.p-top{
+  padding-top: 2px !important;
+}
+.p-top-0{
+  padding-top: 0px !important;
+}
+button.new-tab-button.m_mb8.button_blue:hover {
+  background-color: #286090;
+}
+button.btn.btn-white.salesforce-btn.button{
+  background-color: #2b3c46 !important;
+  border: 1px solid #2b3c46 !important;
+}
+.neg-mar-top{
+  margin-top: -10px;
+}
+.d-justify-end{
+  justify-content: center!important;
+}
+.neg-mg-btm{
+  margin-bottom: -10px !important;
+}
+.loginActive {
+  color: #fff !important;
+  background-color : #22313a  !important;
+  border-bottom: 3px solid #008fd5 !important;
+}
+.inActive {
+  color: #fff !important;
+  background-color : #22313a !important;
+  border-bottom: 3px solid #f1f5f9 !important;
+}

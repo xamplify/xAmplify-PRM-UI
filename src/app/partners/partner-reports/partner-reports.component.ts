@@ -15,6 +15,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
 import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { VendorInvitation } from '../../dashboard/models/vendor-invitation';
+import { PartnerJourneyRequest } from '../models/partner-journey-request';
 
 declare var $, swal, Highcharts, CKEDITOR: any;
 
@@ -140,9 +141,14 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         });
         this.barChartLoader = false;
     }
-    partnerReportData() {
+    
+    getPartnersRedistributedCampaignsData() {
         this.barChartLoader = true;
-        this.parterService.partnerReports(this.loggedInUserId, this.applyFilter).subscribe(
+        let partnerJourneyRequest = new PartnerJourneyRequest();
+        partnerJourneyRequest.loggedInUserId = this.authenticationService.getUserId();
+        partnerJourneyRequest.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
+        partnerJourneyRequest.partnerTeamMemberGroupFilter = this.applyFilter;
+        this.parterService.partnersRedistributedCampaignsData(partnerJourneyRequest).subscribe(
             (data: any) => {
                 const campaignData = [];
                 campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
@@ -271,7 +277,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.getActivePartnerReports();
         this.loadCountryData();
         setTimeout(() => {
-             this.partnerReportData();
+             this.getPartnersRedistributedCampaignsData();
              this.reloadWithFilter = true;
              this.loadAllCharts = false;
         }, 500);
@@ -707,7 +713,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
                 }
             }else{
                 this.loadCountryData();
-                this.partnerReportData();
+                this.getPartnersRedistributedCampaignsData();
                 this.goToActivePartnersDiv();
             }
             if (localStorage != undefined) {
@@ -722,6 +728,10 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.isShowCKeditor = false;
         $('#approve-decline-modal').modal('hide');
+    }
+
+    ngOnChanges(){
+        this.goToActivePartnersDiv();
     }
 
     getModuleAccess() {
@@ -805,6 +815,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.inActivePartnersCountLoader = true;
         this.approvePartnersCountLoader = true;
         this.throughPartnerCampaignsCountLoader = true;
+        this.selectedPartnerCompanyIds = [];
         if(this.selectedTabIndex==0){
             this.loadAllCharts = true;
             this.reloadWithFilter = false;
@@ -819,7 +830,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         self.findApprovePartnersCount();
         if(self.selectedTabIndex==0){
             self.reloadWithFilter = true;
-            self.partnerReportData();
+            self.getPartnersRedistributedCampaignsData();
             self.loadAllCharts = false;
         }else if(self.selectedTabIndex==2){
             self.reloadRedistributeCampaigns = true;
@@ -948,6 +959,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
       getSelectedPartnerCompanyIds(partnerCompanyIds: any){
         this.selectedPartnerCompanyIds = partnerCompanyIds;
+        this.getPartnersRedistributedCampaignsData();
       }
       redistributedCampaignDetailsPieChartSelected(type: any){
         this.selectedCampaignType = type;

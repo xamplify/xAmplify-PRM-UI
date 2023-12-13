@@ -833,5 +833,19 @@ export class ContactService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+    
+    validatePartnersCompany(partners : any, partnerListId:number){
+      return this._http.post(this.contactsUrl + "validate-partners"+  "/" + partnerListId + "?access_token=" + this.authenticationService.access_token, partners)
+        .map(this.extractData)
+        .catch(this.handleError);
+    
+    }
+    
+      validateCompanyName(companyName:string, partnerCompanyId:number){
+      return this._http.get(this.contactsUrl + "validate-partner-company"+  "/" + companyName +  "/" + partnerCompanyId + "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    
+    }
 
 }

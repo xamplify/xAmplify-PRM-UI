@@ -716,3 +716,10 @@ th.leftAlignTableth {
     margin-left: -14px !important;
   }
 }
+/* 12/11/2023 */
+.mr-2{
+  margin-right: 6px;
+  }
+  .d-inlineblock{
+    display: inline-block!important;
+  }

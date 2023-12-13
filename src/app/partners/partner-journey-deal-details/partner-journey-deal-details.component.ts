@@ -18,6 +18,7 @@ import { SortOption } from 'app/core/models/sort-option';
 export class PartnerJourneyDealDetailsComponent implements OnInit {
   @Input() partnerCompanyId: any;
   @Input() teamMemberId: any;
+  @Input() applyFilter: boolean;
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Input() isDetailedAnalytics: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
@@ -54,9 +55,8 @@ export class PartnerJourneyDealDetailsComponent implements OnInit {
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.pagination.maxResults = 6;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
-    if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
-      this.pagination.teamMemberId = this.teamMemberId;
-    }    
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
+    this.pagination.teamMemberId = this.teamMemberId;    
     this.parterService.getDealDetails(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);

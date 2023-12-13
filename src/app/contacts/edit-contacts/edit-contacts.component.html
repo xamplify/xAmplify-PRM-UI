@@ -1,1328 +1,1760 @@
 <!-- BEGIN PAGE CONTENT-->
 <div class="page-bar">
 	<ul class="page-breadcrumb">
-	   <li><i class="fa fa-home" aria-hidden="true"></i>
-		  <a [routerLink]="refService.homeRouter" translate>Home</a>
-		  <i	class="fa fa-angle-right" aria-hidden="true"></i>
-	   </li>
-	   <li>
-		  <a (click)="refresh()" translate> Manage 
-		  <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-		  <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
-		  </a>
-	   </li>
-	   <li>
-		  <a (click)="backToEditContacts()" translate>
-		  <i	class="fa fa-angle-right" aria-hidden="true"></i>Edit 
-		  <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-		  <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
-		  </a>
-	   </li>
-	   <li *ngIf="! showEditContactData"><i class="fa fa-angle-right" aria-hidden="true">
-		  </i>
-		  <span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'unsubscribe' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory != 'invalid'">{{contactsByType.selectedCategory}}
-		  <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-		  <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
-		  </span>
-		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'" translate>Unregistered 
-		  <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-		  <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
-		  </span>
-		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate>Unsubscribed 
-		  <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-		  <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
-		  </span>
-		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'" translate>Registered 
-		  <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-		  <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
-		  </span>
-		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'" translate>Undeliverable 
-		  <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-		  <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
-		  </span>
-	   </li>
+		<li><i class="fa fa-home" aria-hidden="true"></i>
+			<a [routerLink]="refService?.homeRouter" translate>Home</a>
+			<i class="fa fa-angle-right" aria-hidden="true"></i>
+		</li>
+		<li>
+			<a (click)="refresh()" translate> Manage
+				<span
+					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+			</a>
+		</li>
+		<li>
+			<a (click)="backToEditContacts()" translate>
+				<i class="fa fa-angle-right" aria-hidden="true"></i>Edit
+				<span
+					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+			</a>
+		</li>
+		<li *ngIf="! showEditContactData"><i class="fa fa-angle-right" aria-hidden="true">
+			</i>
+			<span class="capitalize"
+				*ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'unsubscribe' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory != 'invalid'">{{contactsByType.selectedCategory}}
+				<span
+					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+			</span>
+			<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'" translate>Unregistered
+				<span
+					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+			</span>
+			<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate>Unsubscribed
+				<span
+					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+			</span>
+			<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'" translate>Registered
+				<span
+					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+			</span>
+			<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'" translate>Undeliverable
+				<span
+					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+			</span>
+		</li>
 	</ul>
- </div>
- <div class="clearfix" id="manageContacts">
+</div>
+<div class="clearfix" id="manageContacts">
 	<div class="col-xs-12">
-	   <div class="row">
-		  <div>
-			 <div class="tab-content">
-				<div class="my-container">
-				   <ngx-loading [show]="loading"
-				   [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-				</div>
-				<div class="tab-pane active">
-				   <!-- BEGIN FILTER -->
-				   <div class="portlet light m0" style="padding-bottom: 5px !important;">
-					  <div>
-						 <div class="page-breadcrumb">
-							<span>
-							<span *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList
-							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList" data-toggle="tooltip" data-placement="top" title="Edit list Name"
-							style="cursor:pointer;font-size: 16px;" (click)="editListName()">
-							<span class="ellipsis">{{selectedContactListName | slice:0:30}}
-							<span *ngIf="selectedContactListName?.length>30">...</span>
-							</span>
-							</span>
-							<span *ngIf="isDefaultPartnerList || selectedContactListName==properties?.activeMasterPartnerList || selectedContactListName==properties?.inActiveMasterPartnerList || isTeamMemberPartnerList"
-							   style="font-size: 16px;">{{selectedContactListName}}
-							</span>
-							<div *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList" class="pencil-color">
-							   <i class="fa fa-pencil" aria-hidden="true"></i>
+		<div class="row">
+			<div>
+				<div class="tab-content">
+					<div class="my-container">
+						<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+					</div>
+					<div class="tab-pane active">
+						<!-- BEGIN FILTER -->
+						<div class="portlet light m0" style="padding-bottom: 5px !important;">
+							<div>
+								<div class="page-breadcrumb">
+									<span>
+										<span *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList
+							&& selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList"
+											data-toggle="tooltip" data-placement="top" title="Edit list Name"
+											style="cursor:pointer;font-size: 16px;" (click)="editListName()">
+											<span class="ellipsis">{{selectedContactListName | slice:0:30}}
+												<span *ngIf="selectedContactListName?.length>30">...</span>
+											</span>
+										</span>
+										<span
+											*ngIf="isDefaultPartnerList || selectedContactListName==properties?.activeMasterPartnerList || selectedContactListName==properties?.inActiveMasterPartnerList || isTeamMemberPartnerList"
+											style="font-size: 16px;">{{selectedContactListName}}
+										</span>
+										<div *ngIf="!isDefaultPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList"
+											class="pencil-color">
+											<i class="fa fa-pencil" aria-hidden="true"></i>
+										</div>
+									</span>
+								</div>
 							</div>
-							</span>
-						 </div>
-					  </div>
-					  <!-- END DASHBOARD STATS -->
-					  <div class="clearfix"></div>
-					  <div class="row mt5 mb5">
-						 <div class="col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
-							<button class="btn-block dashboard-stat blue" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
-							(click)="backToEditContacts()">
-							<div class="visual">
-							   <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'all' ? '#white' : '#ccc' }"
-							   *ngIf="contactsByType.selectedCategory == 'all'" aria-hidden="true"></i>
+							<!-- END DASHBOARD STATS -->
+							<div class="clearfix"></div>
+							<div class="row mt5 mb5">
+								<div class="col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect"
+									[ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+									<button class="btn-block dashboard-stat blue"
+										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
+										(click)="backToEditContacts()">
+										<div class="visual">
+											<i class="fa fa-check-circle"
+												style="font-size: 40px;line-height: 60px;opacity: 1"
+												[ngStyle]="{'color': contactsByType.selectedCategory == 'all' ? '#white' : '#ccc' }"
+												*ngIf="contactsByType.selectedCategory == 'all'" aria-hidden="true"></i>
+										</div>
+										<div class="details">
+											<div class="number">{{contactsByType.allContactsCount}}</div>
+											<div class="desc fz17" translate>All</div>
+										</div>
+										<span class="morePadding"> <a class="more"
+												style="text-align: left; background: #3480b5; color: white" translate>
+												Detailed view <i class="m-icon-swapright m-icon-white"
+													aria-hidden="true"></i>
+											</a>
+										</span>
+									</button>
+								</div>
+								<div class="col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect"
+									*ngIf="!isPartner"
+									[ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+									<button class="btn-block dashboard-stat green"
+										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'valid'"
+										(click)="showingContactDetails('valid')"
+										[disabled]="contactsByType.validContactsCount == 0">
+										<div class="visual">
+											<i class="fa fa-check-circle"
+												style="font-size: 40px;line-height: 60px;opacity: 1"
+												[ngStyle]="{'color': contactsByType.selectedCategory == 'valid' ? '#white' : '#ccc' }"
+												*ngIf="contactsByType.selectedCategory == 'valid'"
+												aria-hidden="true"></i>
+										</div>
+										<div class="details">
+											<div class="number">{{contactsByType.validContactsCount}}</div>
+											<div class="desc fz17" translate>Valid</div>
+										</div>
+										<span class="morePadding"> <a class="more"
+												style="text-align: left; background: #268c83; color:white" translate>
+												Detailed view <i class="m-icon-swapright m-icon-white"
+													aria-hidden="true"></i>
+											</a>
+										</span>
+									</button>
+								</div>
+								<div class="col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect"
+									*ngIf="isPartner"
+									[ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+									<button class="btn-block dashboard-stat green"
+										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'active'"
+										(click)="showingContactDetails('active')"
+										[disabled]="contactsByType.activeContactsCount == 0">
+										<div class="visual">
+											<i class="fa fa-check-circle"
+												style="font-size: 40px;line-height: 60px;opacity: 1"
+												[ngStyle]="{'color': contactsByType.selectedCategory == 'active' ? '#white' : '#ccc' }"
+												*ngIf="contactsByType.selectedCategory == 'active'"
+												aria-hidden="true"></i>
+										</div>
+										<div class="details">
+											<div class="number">{{contactsByType.activeContactsCount}}</div>
+											<div class="desc fz17" translate>Registered</div>
+										</div>
+										<span class="morePadding"> <a class="more"
+												style="text-align: left; background: #268c83; color:white" translate>
+												Detailed view <i class="m-icon-swapright m-icon-white"
+													aria-hidden="true"></i>
+											</a>
+										</span>
+									</button>
+								</div>
+								<div class="col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect"
+									*ngIf="isPartner"
+									[ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+									<button class="btn-block dashboard-stat purple"
+										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'non-active'"
+										(click)="showingContactDetails('non-active')"
+										[disabled]="contactsByType.inactiveContactsCount == 0">
+										<div class="visual">
+											<i class="fa fa-check-circle"
+												style="font-size: 40px;line-height: 60px;opacity: 1"
+												[ngStyle]="{'color': contactsByType.selectedCategory == 'non-active' ? '#white' : '#ccc' }"
+												*ngIf="contactsByType.selectedCategory == 'non-active'"
+												aria-hidden="true"></i>
+										</div>
+										<div class="details">
+											<div class="number">{{contactsByType.inactiveContactsCount}}</div>
+											<div class="desc fz17" translate>Unregistered</div>
+										</div>
+										<span class="morePadding"> <a class="more" style="text-align: left;" translate>
+												Detailed view <i class="m-icon-swapright m-icon-white"
+													aria-hidden="true"></i>
+											</a>
+										</span>
+									</button>
+								</div>
+								<div class="col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect"
+									[ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+									<button class="btn-block dashboard-stat yellow-gold"
+										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'invalid'"
+										(click)="showingContactDetails('invalid')"
+										[disabled]="contactsByType.invalidContactsCount == 0">
+										<div class="visual">
+											<i class="fa fa-check-circle"
+												style="font-size: 40px;line-height: 60px;opacity: 1"
+												[ngStyle]="{'color': contactsByType.selectedCategory == 'invalid' ? '#white' : '#ccc' }"
+												*ngIf="contactsByType.selectedCategory == 'invalid'"
+												aria-hidden="true"></i>
+										</div>
+										<div class="details">
+											<div class="number">{{contactsByType.invalidContactsCount}}</div>
+											<div class="desc fz17" translate>Undeliverable</div>
+										</div>
+										<span class="morePadding">
+											<a class="more" style="text-align: left;" translate>
+												Detailed view <i class="m-icon-swapright m-icon-white"
+													aria-hidden="true"></i>
+											</a>
+										</span>
+									</button>
+								</div>
+								<div class="col-xs-6 col-sm-2 col-lg-2 mt5  pr pr15 tiles_hover_effect "
+									[ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+									<button class="btn-block dashboard-stat red"
+										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
+										(click)="showingContactDetails('unsubscribe')"
+										[disabled]="contactsByType.unsubscribedContactsCount == 0">
+										<div class="visual">
+											<i class="fa fa-check-circle"
+												style="font-size: 40px;line-height: 60px;opacity: 1"
+												[ngStyle]="{'color': contactsByType.selectedCategory == 'unsubscribe' ? '#white' : '#ccc' }"
+												*ngIf="contactsByType.selectedCategory == 'unsubscribe'"
+												aria-hidden="true"></i>
+										</div>
+										<div class="details">
+											<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
+											<div class="desc fz17" translate>Unsubscribed</div>
+										</div>
+										<span class="morePadding"> <a class="more" style="text-align: left;" translate>
+												Detailed view <i class="m-icon-swapright m-icon-white"
+													aria-hidden="true"></i>
+											</a>
+										</span>
+									</button>
+								</div>
 							</div>
-							<div class="details">
-							   <div class="number">{{contactsByType.allContactsCount}}</div>
-							   <div class="desc fz17"  translate>All</div>
-							</div>
-							<span class="morePadding"> <a class="more" style="text-align: left; background: #3480b5; color: white" translate>
-							Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
-							</a>
-							</span>
-							</button>
-						 </div>
-						 <div class="col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect"  *ngIf="!isPartner"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
-						 <button class="btn-block dashboard-stat green" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'valid'"
-						 (click)="showingContactDetails('valid')"
-						 [disabled]="contactsByType.validContactsCount == 0">
-						 <div class="visual">
-							<i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'valid' ? '#white' : '#ccc' }"
-							*ngIf="contactsByType.selectedCategory == 'valid'" aria-hidden="true"></i>
-						 </div>
-						 <div class="details">
-							<div class="number">{{contactsByType.validContactsCount}}</div>
-							<div class="desc fz17"  translate>Valid</div>
-						 </div>
-						 <span class="morePadding"> <a class="more" style="text-align: left; background: #268c83; color:white" translate>
-						 Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
-						 </a>
-						 </span>
-						 </button>
-					  </div>
-					  <div class="col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect"  *ngIf="isPartner"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
-					  <button class="btn-block dashboard-stat green" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'active'"
-					  (click)="showingContactDetails('active')"
-					  [disabled]="contactsByType.activeContactsCount == 0">
-					  <div class="visual">
-						 <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'active' ? '#white' : '#ccc' }"
-						 *ngIf="contactsByType.selectedCategory == 'active'" aria-hidden="true"></i>
-					  </div>
-					  <div class="details">
-						 <div class="number">{{contactsByType.activeContactsCount}}</div>
-						 <div class="desc fz17"  translate>Registered</div>
-					  </div>
-					  <span class="morePadding"> <a class="more" style="text-align: left; background: #268c83; color:white" translate>
-					  Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
-					  </a>
-					  </span>
-					  </button>
-				   </div>
-				   <div class="col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect" *ngIf="isPartner"  [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
-				   <button class="btn-block dashboard-stat purple" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'non-active'"
-				   (click)="showingContactDetails('non-active')"
-				   [disabled]="contactsByType.inactiveContactsCount == 0">
-				   <div class="visual">
-					  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'non-active' ? '#white' : '#ccc' }"
-					  *ngIf="contactsByType.selectedCategory == 'non-active'" aria-hidden="true"></i>
-				   </div>
-				   <div class="details">
-					  <div class="number">{{contactsByType.inactiveContactsCount}}</div>
-					  <div class="desc fz17" translate>Unregistered</div>
-				   </div>
-				   <span class="morePadding"> <a class="more" style="text-align: left;" translate>
-				   Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
-				   </a>
-				   </span>
-				   </button>
-				</div>
-				<div class="col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect" [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
-				   <button class="btn-block dashboard-stat yellow-gold" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'invalid'"
-				   (click)="showingContactDetails('invalid')"
-				   [disabled]="contactsByType.invalidContactsCount == 0">
-				   <div class="visual">
-					  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'invalid' ? '#white' : '#ccc' }"
-					  *ngIf="contactsByType.selectedCategory == 'invalid'" aria-hidden="true"></i>
-				   </div>
-				   <div class="details">
-					  <div class="number">{{contactsByType.invalidContactsCount}}</div>
-					  <div class="desc fz17" translate>Undeliverable</div>
-				   </div>
-				   <span class="morePadding"> 
-				   <a class="more" style="text-align: left;" translate>
-				   Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
-				   </a>
-				   </span>
-				   </button>
-				</div>
-				<div class="col-xs-6 col-sm-2 col-lg-2 mt5  pr pr15 tiles_hover_effect " [ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' ,'col-sm-4ths': checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
-				   <button class="btn-block dashboard-stat red" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
-				   (click)="showingContactDetails('unsubscribe')"
-				   [disabled]="contactsByType.unsubscribedContactsCount == 0">
-				   <div class="visual">
-					  <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': contactsByType.selectedCategory == 'unsubscribe' ? '#white' : '#ccc' }"
-					  *ngIf="contactsByType.selectedCategory == 'unsubscribe'" aria-hidden="true"></i>
-				   </div>
-				   <div class="details">
-					  <div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
-					  <div class="desc fz17" translate>Unsubscribed</div>
-				   </div>
-				   <span class="morePadding"> <a class="more" style="text-align: left;" translate>
-				   Detailed view <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
-				   </a>
-				   </span>
-				   </button>
-				</div>
-			 </div>
-			 <!-- END DASHBOARD STATS -->
-			 <div class="clearfix"></div>
-			 <!-- END FILTER -->
-		  </div>
-	   </div>
-	   <div>
-		  <app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
-		  <app-response-message [customResponse]="emailNotificationCustomResponse" *ngIf="emailNotificationCustomResponse.isVisible"></app-response-message>
-	   </div>
-	   <app-team-member-filter-option *ngIf="isPartner && showFilter" [resetTMSelectedFilterIndex]="resetTMSelectedFilterIndex.asObservable()" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
-	   <br/>
-	   <div *ngIf="showEditContactData">
-		  <div class="col-xs-12 p0">
-			 <!-- BEGIN EXAMPLE TABLE PORTLET-->
-			 <div class="portlet light" [ngStyle]="{'margin-top' :
+							<!-- END DASHBOARD STATS -->
+							<div class="clearfix"></div>
+							<!-- END FILTER -->
+						</div>
+					</div>
+					<div>
+						<app-response-message [customResponse]="customResponse"
+							*ngIf="customResponse.isVisible"></app-response-message>
+						<app-response-message [customResponse]="emailNotificationCustomResponse"
+							*ngIf="emailNotificationCustomResponse.isVisible"></app-response-message>
+					</div>
+					<app-team-member-filter-option *ngIf="isPartner && showFilter"
+						[resetTMSelectedFilterIndex]="resetTMSelectedFilterIndex.asObservable()"
+						(teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+					<br />
+					<div *ngIf="showEditContactData">
+						<div class="col-xs-12 p0">
+							<!-- BEGIN EXAMPLE TABLE PORTLET-->
+							<div class="portlet light remove_cardBgcolor padding_0"
+								[ngStyle]="{'margin-top' :
 				((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads)) ? '-9px !important' : '2px !important'}">
-				<div class="portlet-title" style="padding-bottom: 6px !important;">
-				   <div class="caption" translate style="font-size: 2;padding-top: 8px !important;">
-					  <i class="fa fa-edit" aria-hidden="true" style="font-size: 20px;"></i>List of 
-					  <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-					  <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
-				   </div>
-				   <div class="color-grey" *ngIf="!sharedLeads">
-					  <div *ngIf="!isSynchronizationList">
-						 <button id="cancel_button" class="btn pull-right Btn-Gray mb_btn" [disabled]="selectedAddContactsOption === 9"
-						 (click)="cancelContacts()" style="margin-left: 5px;" translate>
-						 Cancel<i class="fa fa-cancel" aria-hidden="true"></i>
-						 </button>
-					  </div>
-					  <div class="btn-group pull-right pt" >
-						 <button class="btn Btn-Green mb_btn" style="border-radius: 3px !important;"
-							id="save&delete_button" data-toggle="dropdown" translate>
-						 Actions <i class="fa fa-angle-down" aria-hidden="true"></i>
-						 </button>
-						 <ul class="dropdown-menu pull-right">
-							<li><a *ngIf="selectedAddContactsOption != 8 && !isSegmentation" id="save_button" (click)="saveContacts()">Save
-							   </a>
-							</li>
-							<li><a id="saveAs_button"
-							   *ngIf=" ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads))"
-							   (click)="saveAs(true)" translate>Create New List </a>
-							</li>
-							<li><a id="exportToExcel"
-							   *ngIf="selectedAddContactsOption == 8 && (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads)) && !sharedLeads"
-							   (click)="hasAccess()" translate>Export To Excel</a>
-							</li>
-							<li><a id="download_empy_csv"
-							   (click)="downloadEmptyCsv()" *ngIf="selectedAddContactsOption == 8 && ((assignLeads && !contactService?.assignedToPartner) || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))" translate>Download CSV Template</a>
-							</li>
-							<li *ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList">
-							   <a id="delete_button"
-							   *ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) && !sharedLeads"
-							   (click)="showAlert(selectedContactListId)" translate> Delete</a>
-							</li>
-							<!---XNFR-278-->
-							<li *ngIf="isPartner && (selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) ">
-							   <a (click)="openMergePopup()" translate> Add To Lists</a>
-							</li>
-							<!---XNFR-278-->
-						 </ul>
-					  </div>
-					  <button id="cancel_button" class="btn pull-right" *ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) "
-					  (click)="saveAs(true)" style="margin-right: 5px;" translate> Create New List
-					  </button>
-				   </div>
-				   <div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt mt_9" style="margin-right: 5px;">
-					  <div *ngIf="!clickBoard && !filePrevew"  class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">
-						 <div *ngIf="!isSegmentation" (click)="modelForSeg()" style="float: right; cursor: pointer;"
-						 data-toggle="modal" data-target="#filterModal">
-						 <i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
-							title="Apply a filter" style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
-					  </div>
-					  <div *ngIf="isSegmentation" (click)="removeSegmentation()" style="float: right; cursor: pointer;">
-					  <i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
-						 title="Remove a filter" style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
-						 class="fa fa-times" aria-hidden="true" style="color: red; margin-left: -8px;"></i>
-				   </div>
-				</div>
-				<div class="col-xs-10 col-md-10 col-sm-10 p0 mWidthSort" style="width: 52.33333333%;">
-				   <div class="btn-group pull-right" *ngIf="showEditContactData && selectedAddContactsOption === 8 && !clickBoard && !filePrevew">
-					  <div class="inputs" align="right" style="float: right">
-						 <div class="inputs" align="right" style="float: right;display: inline-flex;">
-							<div style="float: left; margin-right: 10px;">
-							   <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
-							   (ngModelChange)="sortByOption($event)">
-							   <ng-container *ngFor="let sort of sortOptions; let i = index">
-								  <option [ngValue]="sort">{{sort.name}}</option>
-							   </ng-container>
-							   </select>
-							</div>
-							<div class="portlet-input input-inline">
-							   <div class="input-icon right">
-								  <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
-								  class="form-control" placeholder="Search"
-								  (keypress)="eventHandler($event.keyCode)">
-								  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
-								  (click)="searchKey='';search('contactList')"></button>
-								  <button type="submit" class="search-box-item-click" (click)="search('contactList')">
-								  <i class="fa fa-search" aria-hidden="true"></i>
-								  </button>
-							   </div>
-							</div>
-						 </div>
-					  </div>
-				   </div>
-				</div>
-			 </div>
-		  </div>
-		  <div class="portlet-body">
-			 <div class="table-toolbar">
-				<div class="clearfix">
-				   <ng-container
-					  *ngIf="!isTeamMemberPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
+								<div class="portlet-title" style="padding-bottom: 6px !important;">
+									<div class="caption" translate style="font-size: 2;padding-top: 8px !important;">
+										<i class="fa fa-edit" aria-hidden="true" style="font-size: 20px;"></i>List of
+										<span
+											*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+										<span
+											*ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+									</div>
+									<div class="color-grey" *ngIf="!sharedLeads">
+										<div *ngIf="!isSynchronizationList">
+											<button id="cancel_button" class="btn pull-right Btn-Gray mb_btn"
+												[disabled]="selectedAddContactsOption === 9" (click)="cancelContacts()"
+												style="margin-left: 5px;" translate>
+												Cancel<i class="fa fa-cancel" aria-hidden="true"></i>
+											</button>
+										</div>
+										<div class="btn-group pull-right pt">
+											<button class="btn Btn-Green mb_btn" style="border-radius: 3px !important;"
+												id="save&delete_button" data-toggle="dropdown" translate>
+												Actions <i class="fa fa-angle-down" aria-hidden="true"></i>
+											</button>
+											<ul class="dropdown-menu pull-right">
+												<li><a *ngIf="selectedAddContactsOption != 8 && !isSegmentation"
+														id="save_button" (click)="saveContacts()">Save
+													</a>
+												</li>
+												<li><a id="saveAs_button"
+														*ngIf=" ((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads))"
+														(click)="saveAs(true)" translate>Create New List </a>
+												</li>
+												<li><a id="exportToExcel"
+														*ngIf="selectedAddContactsOption == 8 && (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads)) && !sharedLeads"
+														(click)="hasAccess()" translate>Export To Excel</a>
+												</li>
+												<li><a id="download_empy_csv" (click)="downloadEmptyCsv()"
+														*ngIf="selectedAddContactsOption == 8 && ((assignLeads && !contactService?.assignedToPartner) || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))"
+														translate>Download CSV Template</a>
+												</li>
+												<li
+													*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList">
+													<a id="delete_button"
+														*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) && !sharedLeads"
+														(click)="showAlert(selectedContactListId)" translate> Delete</a>
+												</li>
+												<!---XNFR-278-->
+												<li
+													*ngIf="isPartner && (selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) ">
+													<a (click)="openMergePopup()" translate> Add To Lists</a>
+												</li>
+												<!---XNFR-278-->
+											</ul>
+										</div>
+										<button id="cancel_button" class="btn pull-right button_blue pd_0 bgcolor-unset"
+											*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) "
+											(click)="saveAs(true)" style="margin-right: 5px;" translate><span
+												class="btn btn-primary transition text_pd0">Create New List</span>
+										</button>
+									</div>
+									<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt mt_9"
+										style="margin-right: 5px;">
+										<div *ngIf="!clickBoard && !filePrevew"
+											class="col-xs-2 col-md-2 col-sm-2 mWidth" style="width: 47.66666667%;">
+											<div *ngIf="!isSegmentation" (click)="modelForSeg()"
+												style="float: right; cursor: pointer;" data-toggle="modal"
+												data-target="#filterModal">
+												<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
+													data-placement="left" title="Apply a filter"
+													style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
+											</div>
+											<div *ngIf="isSegmentation" (click)="removeSegmentation()"
+												style="float: right; cursor: pointer;">
+												<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
+													data-placement="left" title="Remove a filter"
+													style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
+													class="fa fa-times" aria-hidden="true"
+													style="color: red; margin-left: -8px;"></i>
+											</div>
+										</div>
+										<div class="col-xs-10 col-md-10 col-sm-10 p0 mWidthSort"
+											style="width: 52.33333333%;">
+											<div class="btn-group pull-right"
+												*ngIf="showEditContactData && selectedAddContactsOption === 8 && !clickBoard && !filePrevew">
+												<div class="inputs" align="right" style="float: right">
+													<div class="inputs" align="right"
+														style="float: right;display: inline-flex;">
+														<div style="float: left; margin-right: 10px;">
+															<select class="form-control SeclectBoxPaddingsAbj"
+																[(ngModel)]="sortOption"
+																(ngModelChange)="sortByOption($event)">
+																<ng-container
+																	*ngFor="let sort of sortOptions; let i = index">
+																	<option [ngValue]="sort">{{sort.name}}</option>
+																</ng-container>
+															</select>
+														</div>
+														<div class="portlet-input input-inline">
+															<div class="input-icon right">
+																<input type="text" [(ngModel)]="searchKey"
+																	[ngModelOptions]="{standalone: true}"
+																	class="form-control" placeholder="Search"
+																	(keypress)="eventHandler($event.keyCode)">
+																<button
+																	class="glyphicon glyphicon-remove search-box-item-clear"
+																	*ngIf="searchKey"
+																	(click)="searchKey='';search('contactList')"></button>
+																<button type="submit" class="search-box-item-click"
+																	(click)="search('contactList')">
+																	<i class="fa fa-search" aria-hidden="true"></i>
+																</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="portlet-body">
+									<div class="table-toolbar">
+										<div class="clearfix">
+											<ng-container
+												*ngIf="!isTeamMemberPartnerList && selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 					  && (showAddOptions && ((assignLeads && !contactService?.assignedToPartner) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')))">
-					  <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 p0" style="margin-top: -19px;" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
+												<div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 p0"
+													style="margin-top: -19px;" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
 						 authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner ||
 						 (hasContactRole && loggedInUserId==uploadedUserId) || assignLeads">
-						 <div class="btn-group mb_pt" *ngIf="!isSynchronizationList && !isFormList">
-							<button id="add_contact" class="btn Btn-Green" (click)="addContactModalOpen()"
-							[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
-							translate>
-							One at a Time
-							<i class="fa fa-plus" style="font-size: 12px; margin-left: 5px;" aria-hidden="true"></i>
-							</button>
-						 </div>
-						 <ng-container *ngIf="!refService.isMobileScreenSize()">
-							<div class="btn-group p-top2" *ngIf="!isSynchronizationList && !isFormList">
-							   <button id="copyFrom_clipboard" class="btn Btn-Green"
-							   [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
-							   (click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);" translate>
-							   Copy List From ClipBoard <i class="fa fa-clipboard" aria-hidden="true"
-								  style="font-size: 12px; margin-left: 5px;"></i>
-							   </button>
-							</div>
-							<div class="btn-group mt" *ngIf="!isSynchronizationList && !isFormList">
-							   <div class="fileUpload btn Btn-Green" id="upload_csv"
-								  [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9"
-								  translate>
-								  Upload CSV <i class="fa fa-upload" aria-hidden="true"
-									 style="font-size: 12px; margin-left: 5px;"></i> <input type="file" ng2FileSelect
-								  class="upload" [uploader]="uploader" title=" " (click)="input.value = null;resetResponse();"
-								  (change)="fileChange(input)" accept=".csv" #input
-								  [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
-							   </div>
-							</div>
-						 </ng-container>
-					  </div>
-				   </ng-container>
-				</div>
-			 </div>
-			 <div style="margin-bottom: 0px; padding-left: 1cm">
-				<table class="table" *ngIf="uploadCsvUsingFile" aria-describedby="">
-				   <thead>
-				   </thead>
-				   <tbody>
-					  <tr *ngFor="let item of uploader.queue">
-						 <td width="28%"><strong>{{ item?.file?.name
-							}}</strong>
-						 </td>
-						 <td class="text-center">
-							<span *ngIf="item.isSuccess">
-							<i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
-							</span>
-							<span *ngIf="item.isCancel">
-							<i class="glyphicon glyphicon-ban-circle" aria-hidden="true"></i></span>
-							<span *ngIf="item.isError">
-							<i	class="glyphicon glyphicon-remove" aria-hidden="true"></i>
-							</span>
-						 </td>
-						 <td nowrap>
-							<button type="button" class="btn btn-danger btn-xs"
-							(click)="item.remove()" (click)="removeCsv()" translate>
-							<span class="glyphicon glyphicon-trash"></span> Remove
-							</button>
-						 </td>
-					  </tr>
-				   </tbody>
-				</table>
-				<div *ngIf="fileTypeError" id="csvFileTypeError"
-				   class="alert alert-danger alert-dismissable"
-				   style="width: 50%">
-				   <strong translate>File type not allowed please select the .csv file only..</strong>
-				</div>
-				<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
-				   class="alert alert-danger alert-dismissable"
-				   style="width: 80%">
-				   <strong translate>We found invalid emailIds please remove..<strong>{{invalidPatternEmails}}</strong>
-				   and Re Upload..
-				   </strong>
-				</div>
-			 </div>
-			 <div *ngIf="dublicateEmailId" class="col-md-6"
-				class="col-md-9 alert alert alert-danger alert-dismissable"
-				style="width: 100%">
-				<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-				<h4 translate>Duplicate EmailId Exist Please Remove..
-				   <u>{{duplicateEmailIds}}</u>
-				</h4>
-			 </div>
-			 <div *ngIf="noContactsFound==true" class="alert alert-info">
-				<strong>No results found</strong>
-			 </div>
-			 <div *ngIf="showInvalidMaills==true" class="col-md-6"
-				class="col-md-9 alert alert alert-danger alert-dismissable">
-				<a class="close" (click)="closeShowValidMessage()"
-				   data-dismiss="alert" aria-label="close">&times;</a> <strong translate>
-				Invalid email pattern Contacts found.. !!!</strong>
-			 </div>
-			 <!-- ---Legal Basis Options -->
-			 <div *ngIf="(isValidClipBoardData&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)" class="col-sm-6 form-group" id="customWidth">
-				<div class="form-group">
-				   <label for="name" class="col-xs-12 col-sm-4 control-label" translate>Legal Basis Options <span class="danger">*</span></label>
-				   <div id="multiselect-sample" class="control-section">
-					  <div class="col-lg-8 content-wrapper">
-						 <div class="control-styles">
-							<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
-							[dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (blur)="validateLegalBasisOptions()"></ejs-multiselect>
-							<span class="custom-error-message chagneText" *ngIf="!isValidLegalOptions" translate>Please select at least one option</span>
-						 </div>
-					  </div>
-				   </div>
-				</div>
-			 </div>
-			 <div class="row" *ngIf="clickBoard">
-				<div class="col-sm-12" style="padding-left:0px">
-				   <h3 class="col-xs-12" translate>Copy from text -- paste below</h3>
-				   <div class="col-sm-9 form-group">
-					  <div class="col-sm-3" style="padding-left: 0px;">
-						 <select class="col-sm-2 options form-control">
-							<option selected value="DEFAULT" translate>Delimiter Type</option>
-							<option value="CommaSeperated" translate>Comma Separated</option>
-							<option value="TabSeperated" translate>Tab Separated</option>
-						 </select>
-					  </div>
-					  <button class=" col-sm-3 btn Btn-Green" type="button"
-						
-						 (click)="clipboardShowPreview()" translate>VERIFY DATA</button>
-				   </div>
-				   <div class="col-sm-9">
-					  <textarea *ngIf="!isPartner" class="textareaNumber" [(ngModel)]="clipboardTextareaText"
-					  placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone"
-					  [ngModelOptions]="{standalone: true}"
-					  style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
-					  required="required">
-					  </textarea>
-					  <textarea *ngIf="isPartner" id="copyFromclipTextArea" class="textareaNumber"
-					  [(ngModel)]="clipboardTextareaText"
-					  data-toggle="tooltip" data-placement="bottom" title="please fill out this form"
-					  placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
-					  [ngModelOptions]="{standalone: true}"
-					  style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
-					  required="required">
-					  </textarea>
-				   </div>
-				   <div class="col-sm-3">
-					  <span id="clipBoardValidationMessage"></span>
-				   </div>
-				</div>
-			 </div>
-			 <div class="row" id="file_preview" *ngIf="filePrevew">
-				<div class="col-xs-12">
-				   <!-- BEGIN EXAMPLE TABLE PORTLET-->
-				   <div *ngIf="users?.length == 0 && selectedAddContactsOption == 2 && isCsvFileLsitLoading">
-					  <app-list-loader></app-list-loader>
-				   </div>
-				   <div class="portlet" *ngIf="users?.length != 0">
-					  <div class="portlet-title">
-						 <div class="caption" translate>
-							<i class="fa fa-edit" aria-hidden="true"></i>File Preview
-						 </div>
-					  </div>
-					  <div class="portlet-body">
-						 <table class="table tgrid"	id="sample_editable_2" aria-describedby="">
-							<thead>
-							   <tr>
-								  <th translate scope="col">FIRST NAME</th>
-								  <th translate scope="col">LAST NAME</th>
-								  <th translate scope="col">EMAILID</th>
-								  <th translate scope="col">MORE</th>
-							   </tr>
-							</thead>
-							<tbody>
-							   <ng-container *ngFor="let user of csvPagedItems; let i = index">
-								  <tr>
-									 <td> <span data-toggle="tooltip" data-placement="bottom" title="{{user.firstName}}">{{user.firstName | slice:0:30}}</span>
-										<span *ngIf="user.firstName?.length>30">...</span>
-									 </td>
-									 <td><span data-toggle="tooltip" data-placement="bottom" title="{{user.lastName}}">{{user.lastName | slice:0:25}}</span>
-										<span *ngIf="user.lastName?.length>25">...</span>
-									 </td>
-									 <td ><span data-toggle="tooltip" data-placement="bottom" title="{{user.emailId}}">{{user.emailId | slice:0:35}}</span>
-										<span *ngIf="user.emailId?.length>35">...</span>
-									 </td>
-									 <td>
-										<button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'
-										   (click)="user.isShowDetails = ! user.isShowDetails">
-										<span *ngIf="!user.isShowDetails" translate>More</span> <span
-										   *ngIf="user.isShowDetails" translate>Less</span>
-										</button>
-									 </td>
-								  </tr>
-								  <tr
-									 [ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
-									 <td colspan="6">
-										<table cellpadding="5" cellspacing="0"class="border"
-										   style="border:none !important;" aria-describedby="">
-										   <tbody>
-											  <tr style="border-bottom: 1px solid #dcdcdc">
-												 <td class='pt10 pb10' translate>Company:</td>
-												 <td class='pt10 pb10'>{{user.contactCompany}}</td>
-											  </tr>
-											  <tr style="border-bottom: 1px solid #dcdcdc">
-												 <td class='pt10 pb10' translate>Job Title:</td>
-												 <td class='pt10 pb10'>{{user.jobTitle}}</td>
-											  </tr>
-											  <tr style="border-bottom: 1px solid #dcdcdc" *ngIf="isPartner">
-												 <td class='pt10 pb10' translate>Vertical:</td>
-												 <td class='pt10 pb10'>{{user.vertical}}</td>
-											  </tr>
-											  <tr style="border-bottom: 1px solid #dcdcdc" *ngIf="isPartner">
-												 <td class='pt10 pb10' translate>Region:</td>
-												 <td class='pt10 pb10'>{{user.region}}</td>
-											  </tr>
-											  <tr style="border-bottom: 1px solid #dcdcdc" *ngIf="isPartner">
-												 <td class='pt10 pb10' translate>Type:</td>
-												 <td class='pt10 pb10'>{{user.partnerType}}</td>
-											  </tr>
-											  <tr style="border-bottom: 1px solid #dcdcdc" *ngIf="isPartner">
-												 <td class='pt10 pb10' translate>Category:</td>
-												 <td class='pt10 pb10'>{{user.category}}</td>
-											  </tr>
-											  <tr style="border-bottom: 1px solid #dcdcdc">
-												 <td class='pt10 pb10' translate>Address:</td>
-												 <td class='pt10 pb10'>{{user.address}}</td>
-											  </tr>
-											  <tr style="border-bottom: 1px solid #dcdcdc">
-												 <td class='pt10 pb10' translate>City:</td>
-												 <td class='pt10 pb10'>{{user.city}}</td>
-											  </tr>
-											  <tr style="border-bottom: 1px solid #dcdcdc">
-												 <td class='pt10 pb10' translate>State:</td>
-												 <td class='pt10 pb10'>{{user.state}}</td>
-											  </tr>
-											  <tr style="border-bottom: 1px solid #dcdcdc">
-												 <td class='pt10 pb10' translate>Zip Code:</td>
-												 <td class='pt10 pb10'>{{user.zipCode}}</td>
-											  </tr>
-											  <tr style="border-bottom: 1px solid #dcdcdc">
-												 <td class='pt10 pb10' translate>Country:</td>
-												 <td class='pt10 pb10'>{{user.country}}</td>
-											  </tr>
-											  <tr style="border-bottom: 1px solid #dcdcdc">
-												 <td class='pt10 pb10' translate>Phone Number:</td>
-												 <td class='pt10 pb10'>
-													<a href="tel:{{user.mobileNumber}}}"><i class="fa fa-phone" aria-hidden="true" style="padding-right: 4px;"></i>{{user.mobileNumber}}</a>
-												 </td>
-											  </tr>
-										   </tbody>
+													<div class="btn-group mb_pt"
+														*ngIf="!isSynchronizationList && !isFormList">
+														<button id="add_contact"
+															class="button mar-rgt_mar-lft bgcolor-unset"
+															(click)="addContactModalOpen()"
+															[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
+															translate>
+															<span class="btn Btn-Green transition text_pd5">One at a
+																Time<i class="fa fa-plus"
+																	style="font-size: 12px; margin-left: 5px;"
+																	aria-hidden="true"></i></span>
+														</button>
+													</div>
+													<ng-container *ngIf="!refService.isMobileScreenSize()">
+														<div class="btn-group p-top2"
+															*ngIf="!isSynchronizationList && !isFormList">
+															<button id="copyFrom_clipboard" class="button bgcolor-unset"
+																[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
+																(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);"
+																translate>
+																<span class="btn Btn-Green transition text_pd5">Copy
+																	List From
+																	ClipBoard<i class="fa fa-clipboard"
+																		aria-hidden="true"
+																		style="font-size: 12px; margin-left: 5px;"></i></span>
+															</button>
+														</div>
+														<div class="btn-group mt"
+															*ngIf="!isSynchronizationList && !isFormList">
+															<div class="fileUpload marg-lft" id="upload_csv"
+																[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9"
+																translate>
+																<button class="button bgcolor-unset">
+																	<span
+																		class="btn Btn-Green transition text_pd5">Upload
+																		CSV <i class="fa fa-upload" aria-hidden="true"
+																			style="font-size: 12px; margin-left: 5px;"></i></span>
+																</button>
+																<input type="file" ng2FileSelect class="upload"
+																	[uploader]="uploader" title=" "
+																	(click)="input.value = null;resetResponse();"
+																	(change)="fileChange(input)" accept=".csv" #input
+																	[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
+															</div>
+														</div>
+													</ng-container>
+												</div>
+											</ng-container>
+										</div>
+									</div>
+									<div style="margin-bottom: 0px; padding-left: 1cm">
+										<table class="table" *ngIf="uploadCsvUsingFile" aria-describedby="">
+											<thead>
+											</thead>
+											<tbody>
+												<tr *ngFor="let item of uploader.queue">
+													<td width="28%"><strong>{{ item?.file?.name
+															}}</strong>
+													</td>
+													<td class="text-center">
+														<span *ngIf="item.isSuccess">
+															<i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
+														</span>
+														<span *ngIf="item.isCancel">
+															<i class="glyphicon glyphicon-ban-circle"
+																aria-hidden="true"></i></span>
+														<span *ngIf="item.isError">
+															<i class="glyphicon glyphicon-remove"
+																aria-hidden="true"></i>
+														</span>
+													</td>
+													<td nowrap>
+														<button type="button" class="btn btn-danger btn-xs"
+															(click)="item.remove()" (click)="removeCsv()" translate>
+															<span class="glyphicon glyphicon-trash"></span> Remove
+														</button>
+													</td>
+												</tr>
+											</tbody>
 										</table>
-									 </td>
-								  </tr>
-							   </ng-container>
-							</tbody>
-						 </table>
-						 <ul *ngIf="pager.pages && pager.pages.length"
-							class="pagination">
-							<li [ngClass]="{disabled:pager.currentPage === 1}"><a
-							   (click)="setCsvPage(1)" translate>First</a></li>
-							<li [ngClass]="{disabled:pager.currentPage === 1}"><a
-							   (click)="setCsvPage(pager.currentPage - 1)" translate>Previous</a></li>
-							<li *ngFor="let page of pager.pages"
-							[ngClass]="{active:pager.currentPage === page}"><a
-							   (click)="setCsvPage(page)">{{page}}</a></li>
-							<li
-							   [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-							   <a (click)="setCsvPage(pager.currentPage + 1)" translate>Next</a>
-							</li>
-							<li
-							   [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-							   <a (click)="setCsvPage(pager.totalPages)" translate>Last</a>
-							</li>
-						 </ul>
-					  </div>
-				   </div>
-				   <!-- END EXAMPLE TABLE PORTLET-->
-				</div>
-			 </div>
-			 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-			 <div class="clearfix">
-				<div class="col-xs-12 p0" style="">
-				   <div class="table-responsive">
-					  <table class='table tgrid' *ngIf="(contacts?.length > 0) && isShowUsers && !httpRequestLoader.isLoading || (isValidClipBoardData)" aria-describedby="" style="padding-top: 9px;">
-						 <thead>
-							<tr>
-							   <th class='text-center' scope="col"><input type="checkbox" class="checkBox_shadow"
-								  name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-								  (change)="checkAll($event, contacts)"
-								  id="checkAllExistingContacts"/>
-							   </th>
-							   <th scope="col" style="width: 25%" *ngIf="isPartner" translate>Entity info</th>
-							   <th scope="col" style="width: 25%" *ngIf="!isPartner" translate>NAME</th>
-							   <th scope="col" *ngIf="isPartner" translate>VERTICAL</th>
-							   <th scope="col" *ngIf="isPartner" translate>REGION</th>
-							   <th scope="col" *ngIf="isPartner" translate>TYPE</th>
-							   <th scope="col" *ngIf="isPartner" translate>CATEGORY</th>
-							   <th scope="col" class="hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
-							   <th scope="col" class="text-center hidden-xs"  *ngIf="!isPartner" translate>ADDRESS</th>
-							   <th scope="col" class="text-center " *ngIf="gdprStatus || isPartner"></th>
-							   <th scope="col" class="text-center hidden-xs" *ngIf="isPartner"></th>
-							   <th scope="col"  class='text-center' style="width:16%"
-							  *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  ||
+										<div *ngIf="fileTypeError" id="csvFileTypeError"
+											class="alert alert-danger alert-dismissable" style="width: 50%">
+											<strong translate>File type not allowed please select the .csv file
+												only..</strong>
+										</div>
+										<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
+											class="alert alert-danger alert-dismissable" style="width: 80%">
+											<strong translate>We found invalid emailIds please
+												remove..<strong>{{invalidPatternEmails}}</strong>
+												and Re Upload..
+											</strong>
+										</div>
+									</div>
+									<div *ngIf="dublicateEmailId" class="col-md-6"
+										class="col-md-9 alert alert alert-danger alert-dismissable" style="width: 100%">
+										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+										<h4 translate>Duplicate EmailId Exist Please Remove..
+											<u>{{duplicateEmailIds}}</u>
+										</h4>
+									</div>
+									<div *ngIf="noContactsFound==true" class="alert alert-info">
+										<strong>No results found</strong>
+									</div>
+									<div *ngIf="showInvalidMaills==true" class="col-md-6"
+										class="col-md-9 alert alert alert-danger alert-dismissable">
+										<a class="close" (click)="closeShowValidMessage()" data-dismiss="alert"
+											aria-label="close">&times;</a> <strong translate>
+											Invalid email pattern Contacts found.. !!!</strong>
+									</div>
+									<!-- ---Legal Basis Options -->
+									<div *ngIf="(isValidClipBoardData&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)"
+										class="col-sm-6 form-group" id="customWidth">
+										<div class="form-group">
+											<label for="name" class="col-xs-12 col-sm-4 control-label" translate>Legal
+												Basis Options <span class="danger">*</span></label>
+											<div id="multiselect-sample" class="control-section">
+												<div class="col-lg-8 content-wrapper">
+													<div class="control-styles">
+														<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions'
+															[ngModelOptions]="{standalone: true}"
+															[allowFiltering]='true' [ignoreAccent]='true'
+															id='multiselectelement' [dataSource]='legalBasisOptions'
+															[fields]='fields' [placeholder]='placeHolder'
+															(blur)="validateLegalBasisOptions()"></ejs-multiselect>
+														<span class="custom-error-message chagneText"
+															*ngIf="!isValidLegalOptions" translate>Please select at
+															least one option</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row" *ngIf="clickBoard">
+										<div class="col-sm-12" style="padding-left:0px">
+											<h3 class="col-xs-12" translate>Copy from text -- paste below</h3>
+											<div class="col-sm-9 form-group">
+												<div class="col-sm-3" style="padding-left: 0px;">
+													<select class="col-sm-2 options form-control">
+														<option selected value="DEFAULT" translate>Delimiter Type
+														</option>
+														<option value="CommaSeperated" translate>Comma Separated
+														</option>
+														<option value="TabSeperated" translate>Tab Separated</option>
+													</select>
+												</div>
+												<button class=" col-sm-3 btn button bgcolor-unset" type="button"
+													(click)="clipboardShowPreview()" translate><span
+														class="btn Btn-Green transition text_pd5">VERIFY
+														DATA</span></button>
+											</div>
+											<div class="col-sm-9">
+												<textarea *ngIf="!isPartner" class="textareaNumber"
+													[(ngModel)]="clipboardTextareaText"
+													placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone"
+													[ngModelOptions]="{standalone: true}"
+													style="min-width: 100%; max-width: 100%; height: 150px; font-size: 12px; line-height: 1.4;"
+													required="required">
+					  </textarea>
+												<textarea *ngIf="isPartner" id="copyFromclipTextArea"
+													class="textareaNumber" [(ngModel)]="clipboardTextareaText"
+													data-toggle="tooltip" data-placement="bottom"
+													title="please fill out this form"
+													placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
+													[ngModelOptions]="{standalone: true}"
+													style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
+													required="required">
+					  </textarea>
+											</div>
+											<div class="col-sm-3">
+												<span id="clipBoardValidationMessage"></span>
+											</div>
+										</div>
+									</div>
+									<div class="row" id="file_preview" *ngIf="filePrevew">
+										<div class="col-xs-12">
+											<!-- BEGIN EXAMPLE TABLE PORTLET-->
+											<div
+												*ngIf="users?.length == 0 && selectedAddContactsOption == 2 && isCsvFileLsitLoading">
+												<app-list-loader></app-list-loader>
+											</div>
+											<div class="portlet" *ngIf="users?.length != 0">
+												<div class="portlet-title">
+													<div class="caption" translate>
+														<i class="fa fa-edit" aria-hidden="true"></i>File Preview
+													</div>
+												</div>
+												<div class="portlet-body">
+													<table class="table tgrid" id="sample_editable_2"
+														aria-describedby="">
+														<thead>
+															<tr>
+																<th translate scope="col">FIRST NAME</th>
+																<th translate scope="col">LAST NAME</th>
+																<th translate scope="col">EMAILID</th>
+																<th translate scope="col">MORE</th>
+															</tr>
+														</thead>
+														<tbody>
+															<ng-container
+																*ngFor="let user of csvPagedItems; let i = index">
+																<tr>
+																	<td> <span data-toggle="tooltip"
+																			data-placement="bottom"
+																			title="{{user.firstName}}">{{user.firstName
+																			| slice:0:30}}</span>
+																		<span
+																			*ngIf="user.firstName?.length>30">...</span>
+																	</td>
+																	<td><span data-toggle="tooltip"
+																			data-placement="bottom"
+																			title="{{user.lastName}}">{{user.lastName |
+																			slice:0:25}}</span>
+																		<span
+																			*ngIf="user.lastName?.length>25">...</span>
+																	</td>
+																	<td><span data-toggle="tooltip"
+																			data-placement="bottom"
+																			title="{{user.emailId}}">{{user.emailId |
+																			slice:0:35}}</span>
+																		<span *ngIf="user.emailId?.length>35">...</span>
+																	</td>
+																	<td>
+																		<button class="border-btn-small lightgray-btn"
+																			id='more_less_button_{{i}}'
+																			(click)="user.isShowDetails = ! user.isShowDetails">
+																			<span *ngIf="!user.isShowDetails"
+																				translate>More</span> <span
+																				*ngIf="user.isShowDetails"
+																				translate>Less</span>
+																		</button>
+																	</td>
+																</tr>
+																<tr
+																	[ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
+																	<td colspan="6">
+																		<table cellpadding="5" cellspacing="0"
+																			class="border"
+																			style="border:none !important;"
+																			aria-describedby="">
+																			<tbody>
+																				<tr
+																					style="border-bottom: 1px solid #dcdcdc">
+																					<td class='pt10 pb10' translate>
+																						Company:</td>
+																					<td class='pt10 pb10'>
+																						{{user.contactCompany}}</td>
+																				</tr>
+																				<tr
+																					style="border-bottom: 1px solid #dcdcdc">
+																					<td class='pt10 pb10' translate>Job
+																						Title:</td>
+																					<td class='pt10 pb10'>
+																						{{user.jobTitle}}</td>
+																				</tr>
+																				<tr style="border-bottom: 1px solid #dcdcdc"
+																					*ngIf="isPartner">
+																					<td class='pt10 pb10' translate>
+																						Vertical:</td>
+																					<td class='pt10 pb10'>
+																						{{user.vertical}}</td>
+																				</tr>
+																				<tr style="border-bottom: 1px solid #dcdcdc"
+																					*ngIf="isPartner">
+																					<td class='pt10 pb10' translate>
+																						Region:</td>
+																					<td class='pt10 pb10'>
+																						{{user.region}}</td>
+																				</tr>
+																				<tr style="border-bottom: 1px solid #dcdcdc"
+																					*ngIf="isPartner">
+																					<td class='pt10 pb10' translate>
+																						Type:</td>
+																					<td class='pt10 pb10'>
+																						{{user.partnerType}}</td>
+																				</tr>
+																				<tr style="border-bottom: 1px solid #dcdcdc"
+																					*ngIf="isPartner">
+																					<td class='pt10 pb10' translate>
+																						Category:</td>
+																					<td class='pt10 pb10'>
+																						{{user.category}}</td>
+																				</tr>
+																				<tr
+																					style="border-bottom: 1px solid #dcdcdc">
+																					<td class='pt10 pb10' translate>
+																						Address:</td>
+																					<td class='pt10 pb10'>
+																						{{user.address}}</td>
+																				</tr>
+																				<tr
+																					style="border-bottom: 1px solid #dcdcdc">
+																					<td class='pt10 pb10' translate>
+																						City:</td>
+																					<td class='pt10 pb10'>{{user.city}}
+																					</td>
+																				</tr>
+																				<tr
+																					style="border-bottom: 1px solid #dcdcdc">
+																					<td class='pt10 pb10' translate>
+																						State:</td>
+																					<td class='pt10 pb10'>{{user.state}}
+																					</td>
+																				</tr>
+																				<tr
+																					style="border-bottom: 1px solid #dcdcdc">
+																					<td class='pt10 pb10' translate>Zip
+																						Code:</td>
+																					<td class='pt10 pb10'>
+																						{{user.zipCode}}</td>
+																				</tr>
+																				<tr
+																					style="border-bottom: 1px solid #dcdcdc">
+																					<td class='pt10 pb10' translate>
+																						Country:</td>
+																					<td class='pt10 pb10'>
+																						{{user.country}}</td>
+																				</tr>
+																				<tr
+																					style="border-bottom: 1px solid #dcdcdc">
+																					<td class='pt10 pb10' translate>
+																						Phone Number:</td>
+																					<td class='pt10 pb10'>
+																						<a
+																							href="tel:{{user.mobileNumber}}}"><i
+																								class="fa fa-phone"
+																								aria-hidden="true"
+																								style="padding-right: 4px;"></i>{{user.mobileNumber}}</a>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</td>
+																</tr>
+															</ng-container>
+														</tbody>
+													</table>
+													<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+														<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+																(click)="setCsvPage(1)" translate>First</a></li>
+														<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+																(click)="setCsvPage(pager.currentPage - 1)"
+																translate>Previous</a></li>
+														<li *ngFor="let page of pager.pages"
+															[ngClass]="{active:pager.currentPage === page}"><a
+																(click)="setCsvPage(page)">{{page}}</a></li>
+														<li
+															[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+															<a (click)="setCsvPage(pager.currentPage + 1)"
+																translate>Next</a>
+														</li>
+														<li
+															[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+															<a (click)="setCsvPage(pager.totalPages)" translate>Last</a>
+														</li>
+													</ul>
+												</div>
+											</div>
+											<!-- END EXAMPLE TABLE PORTLET-->
+										</div>
+									</div>
+									<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+									<div class="clearfix">
+										<div class="col-xs-12 p0" style="">
+											<div class="table-responsive">
+												<table class='table tgrid'
+													*ngIf="(contacts?.length > 0) && isShowUsers && !httpRequestLoader.isLoading || (isValidClipBoardData)"
+													aria-describedby="" style="padding-top: 9px;">
+													<thead>
+														<tr>
+															<th class='text-center' scope="col"><input type="checkbox"
+																	class="checkBox_shadow" name="all"
+																	[(ngModel)]="isHeaderCheckBoxChecked"
+																	(change)="checkAll($event, contacts)"
+																	id="checkAllExistingContacts" />
+															</th>
+															<th scope="col" style="width: 25%" *ngIf="isPartner"
+																translate>Entity info</th>
+															<th scope="col" style="width: 25%" *ngIf="!isPartner"
+																translate>NAME</th>
+															<th scope="col" *ngIf="isPartner" translate>VERTICAL</th>
+															<th scope="col" *ngIf="isPartner" translate>REGION</th>
+															<th scope="col" *ngIf="isPartner" translate>TYPE</th>
+															<th scope="col" *ngIf="isPartner" translate>CATEGORY</th>
+															<th scope="col" class="hidden-xs" *ngIf="!isPartner"
+																translate>Job Title</th>
+															<th scope="col" class="text-center hidden-xs"
+																*ngIf="!isPartner" translate>ADDRESS</th>
+															<th scope="col" class="text-center "
+																*ngIf="gdprStatus || isPartner"></th>
+															<th scope="col" class="text-center hidden-xs"
+																*ngIf="isPartner"></th>
+															<th scope="col" class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  ||
 							  authenticationService.module.isVendorTier || authenticationService.module.isPrm || authenticationService.module.isPartner
 							 || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId))
 							 || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard
 							 && (!assignLeads || (assignLeads && !isSynchronizationList))
 							 " translate>
-							 ACTIONS
-							 </th>
-							</tr>
-						 </thead>
-						 <tbody>
-							<ng-container *ngIf="selectedAddContactsOption == 0">
-							   <ng-container
-								  *ngFor="let newContact of users; let i = index">
-								  <tr class='row_{{i}}' style="background-color: #73c5be;">
-									 <td align="center" class="checkBox_shadow"><input type="checkbox" checked="newContact.checked"></td>
-									 <td *ngIf="isPartner">
-										<app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="newContact"></app-user-info>
-									 </td>
-									 <td>
-										<app-user-info  [userInfo]="newContact"></app-user-info>
-									 </td>
-									 <td class="hidden-xs">
-										<h5 class='mb0 textWhite ellipsis' data-toggle="tooltip" data-placement="bottom" title="{{newContact.jobTitle}}">{{newContact.jobTitle | slice:0:25}}
-										   <span *ngIf="newContact.jobTitle?.length>25">...</span>
-										</h5>
-										<h6 class='mt0 textWhite ellipsis' *ngIf="!isPartner" data-toggle="tooltip" data-placement="bottom" title="{{newContact.contactCompany}}">{{newContact.contactCompany | slice:0:25}}
-										   <span *ngIf="newContact.contactCompany?.length>25">...</span>
-										</h6>
-									 </td>
-									 <td class="hidden-xs">
-										<h5 *ngIf="newContact?.address" class='mb0 textWhite'>{{newContact.address}}</h5>
-										<h5 class='mb0 textWhite'>{{newContact.city}},&nbsp;{{newContact.state}}</h5>
-										<h5 *ngIf="newContact?.zipCode || newContact.country"
-										   class='mt0 textWhite'>{{newContact.zipCode}},&nbsp;{{newContact.country}}</h5>
-									 </td>
-									 <td align="center"><a class="delete textWhite"
-										(click)="cancelRow(i)" translate> Cancel </a></td>
-									 <ng-template #NA>N/A</ng-template>
-								  </tr>
-							   </ng-container>
-							</ng-container>
-							<ng-container
-							   *ngFor="let contact of pagination.pagedItems;let i = index">
-							   <tr class='row_{{i}}'>
-								  <td class='text-center'
-									 *ngIf="!isCampaignDraftContactList "><input
-									 type="checkbox" (change)="saveAsSelectedContacts($event, contact)"
-									 [checked]="selectedContactListIds.indexOf(contact.id)>-1"
-									 class="chk  checkBox_shadow"
-									 [class.contact-list-selected]="selectedContactListIds.indexOf(contact.id)>-1"
-									 lang="{{contact.name}}" name="campaignContact[]"
-									 value="{{contact.id}}" id="{{contact.id}}"
-									 (click)="highlightRow(contact.id,$event)" />
-								  </td>
-								  <td *ngIf="isPartner">
-									 <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="contact"> </app-user-info>
-									 <!---XNFR-85-->
-									 <ng-container *ngIf="!contact?.multipleTeamMemberGroupsAssigned">
-										<span [className]="contact?.teamMemberGroupId>0 ?'active-status':'inactive-status'">
-										   <ng-container *ngIf="contact?.teamMemberGroupId>0">
-											  <strong data-toggle="tooltip" data-placement="bottom" title="{{contact?.selectedTeamMemberGroupName}}">Group Name : {{contact?.selectedTeamMemberGroupName | slice:0:10}}
-											  <span *ngIf="contact?.selectedTeamMemberGroupName?.length>10">..</span>
-											  </strong><br>
-											  <strong>Team Members : {{contact?.selectedTeamMembersCount}}</strong>
-										   </ng-container>
-										   <ng-container *ngIf="contact?.teamMemberGroupId==0">
-											  <strong>No Group Selected</strong>
-										   </ng-container>
-										</span>
-									 </ng-container>
-									 <ng-container *ngIf="contact?.multipleTeamMemberGroupsAssigned">
-										<span class="inactive-status">
-										<strong>Please contact admin</strong>
-										</span>
-									 </ng-container>
-								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner" >{{contact.vertical | slice:0:14}}
-									 <span *ngIf="contact.vertical?.length>14">..</span>
-								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner">{{contact.region | slice:0:14}}
-									 <span *ngIf="contact.region?.length>14">..</span>
-								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner">{{contact.partnerType | slice:0:14}}
-									 <span *ngIf="contact.partnerType?.length>14">..</span>
-								  </td>
-								  <td class="white-space-transform" *ngIf="isPartner">{{contact.category | slice:0:14}}
-									 <span *ngIf="contact.category?.length>14">..</span>
-								  </td>
-								  <td *ngIf="!isPartner">
-									 <app-user-info [isContactCompanyInfo]="true" [userInfo]="contact"> </app-user-info>
-								  </td>
-								  <td class="hidden-xs" *ngIf="!isPartner">
-									 <h5 class='mb0 ellipsis' data-toggle="tooltip" data-placement="bottom" title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
-										<span *ngIf="contact.jobTitle?.length>25">...</span>
-									 </h5>
-								  </td>
-								  <td align="center" class="hidden-xs">
-									 <h5 *ngIf="contact?.address" class='mb0'>{{contact.address | slice:0:30}}
-										<span *ngIf="contact.address?.length>30">..</span>
-									 </h5>
-									 <h5 class='mb0'>{{contact.city | slice:0:15}}
-										<span *ngIf="contact.city?.length>15">..</span>
-										<span *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state | slice:0:15}}
-										<span *ngIf="contact.state?.length>15">..</span>
-									 </h5>
-									 <h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
-								  </td>
-								  <td align="center" *ngIf="gdprStatus || isPartner">
-									 <button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'
-										(click)="contact.isShowDetails = ! contact.isShowDetails">
-									 <span *ngIf="!contact.isShowDetails" translate>More</span> <span
-										*ngIf="contact.isShowDetails" translate>Less</span>
-									 </button>
-								  </td>
-								  <td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || 
+																ACTIONS
+															</th>
+														</tr>
+													</thead>
+													<tbody>
+														<ng-container *ngIf="selectedAddContactsOption == 0">
+															<ng-container
+																*ngFor="let newContact of users; let i = index">
+																<tr class='row_{{i}}'
+																	style="background-color: #73c5be;">
+																	<td align="center" class="checkBox_shadow"><input
+																			type="checkbox"
+																			checked="newContact.checked"></td>
+																	<td *ngIf="isPartner">
+																		<app-user-info [isPartnerEntityInfo]="true"
+																			[isPartnerInfo]="true"
+																			[userInfo]="newContact"></app-user-info>
+																	</td>
+																	<td>
+																		<app-user-info
+																			[userInfo]="newContact"></app-user-info>
+																	</td>
+																	<td class="hidden-xs">
+																		<h5 class='mb0 textWhite ellipsis'
+																			data-toggle="tooltip"
+																			data-placement="bottom"
+																			title="{{newContact.jobTitle}}">
+																			{{newContact.jobTitle | slice:0:25}}
+																			<span
+																				*ngIf="newContact.jobTitle?.length>25">...</span>
+																		</h5>
+																		<h6 class='mt0 textWhite ellipsis'
+																			*ngIf="!isPartner" data-toggle="tooltip"
+																			data-placement="bottom"
+																			title="{{newContact.contactCompany}}">
+																			{{newContact.contactCompany | slice:0:25}}
+																			<span
+																				*ngIf="newContact.contactCompany?.length>25">...</span>
+																		</h6>
+																	</td>
+																	<td class="hidden-xs">
+																		<h5 *ngIf="newContact?.address"
+																			class='mb0 textWhite'>{{newContact.address}}
+																		</h5>
+																		<h5 class='mb0 textWhite'>
+																			{{newContact.city}},&nbsp;{{newContact.state}}
+																		</h5>
+																		<h5 *ngIf="newContact?.zipCode || newContact.country"
+																			class='mt0 textWhite'>
+																			{{newContact.zipCode}},&nbsp;{{newContact.country}}
+																		</h5>
+																	</td>
+																	<td align="center"><a class="delete textWhite"
+																			(click)="cancelRow(i)" translate> Cancel
+																		</a></td>
+																	<ng-template #NA>N/A</ng-template>
+																</tr>
+															</ng-container>
+														</ng-container>
+														<ng-container
+															*ngFor="let contact of pagination.pagedItems;let i = index">
+															<tr class='row_{{i}}'>
+																<td class='text-center'
+																	*ngIf="!isCampaignDraftContactList "><input
+																		type="checkbox"
+																		(change)="saveAsSelectedContacts($event, contact)"
+																		[checked]="selectedContactListIds.indexOf(contact.id)>-1"
+																		class="chk  checkBox_shadow"
+																		[class.contact-list-selected]="selectedContactListIds.indexOf(contact.id)>-1"
+																		lang="{{contact.name}}" name="campaignContact[]"
+																		value="{{contact.id}}" id="{{contact.id}}"
+																		(click)="highlightRow(contact.id,$event)" />
+																</td>
+																<td *ngIf="isPartner">
+																	<app-user-info [isPartnerEntityInfo]="true"
+																		[isPartnerInfo]="true" [userInfo]="contact">
+																	</app-user-info>
+																	<!---XNFR-85-->
+																	<ng-container
+																		*ngIf="!contact?.multipleTeamMemberGroupsAssigned">
+																		<span
+																			[className]="contact?.teamMemberGroupId>0 ?'active-status':'inactive-status'">
+																			<ng-container
+																				*ngIf="contact?.teamMemberGroupId>0">
+																				<strong data-toggle="tooltip"
+																					data-placement="bottom"
+																					title="{{contact?.selectedTeamMemberGroupName}}">Group
+																					Name :
+																					{{contact?.selectedTeamMemberGroupName
+																					| slice:0:10}}
+																					<span
+																						*ngIf="contact?.selectedTeamMemberGroupName?.length>10">..</span>
+																				</strong><br>
+																				<strong>Team Members :
+																					{{contact?.selectedTeamMembersCount}}</strong>
+																			</ng-container>
+																			<ng-container
+																				*ngIf="contact?.teamMemberGroupId==0">
+																				<strong>No Group Selected</strong>
+																			</ng-container>
+																		</span>
+																	</ng-container>
+																	<ng-container
+																		*ngIf="contact?.multipleTeamMemberGroupsAssigned">
+																		<span class="inactive-status">
+																			<strong>Please contact admin</strong>
+																		</span>
+																	</ng-container>
+																</td>
+																<td class="white-space-transform" *ngIf="isPartner">
+																	{{contact.vertical | slice:0:14}}
+																	<span *ngIf="contact.vertical?.length>14">..</span>
+																</td>
+																<td class="white-space-transform" *ngIf="isPartner">
+																	{{contact.region | slice:0:14}}
+																	<span *ngIf="contact.region?.length>14">..</span>
+																</td>
+																<td class="white-space-transform" *ngIf="isPartner">
+																	{{contact.partnerType | slice:0:14}}
+																	<span
+																		*ngIf="contact.partnerType?.length>14">..</span>
+																</td>
+																<td class="white-space-transform" *ngIf="isPartner">
+																	{{contact.category | slice:0:14}}
+																	<span *ngIf="contact.category?.length>14">..</span>
+																</td>
+																<td *ngIf="!isPartner">
+																	<app-user-info [isContactCompanyInfo]="true"
+																		[userInfo]="contact"> </app-user-info>
+																</td>
+																<td class="hidden-xs" *ngIf="!isPartner">
+																	<h5 class='mb0 ellipsis' data-toggle="tooltip"
+																		data-placement="bottom"
+																		title="{{contact.jobTitle}}">{{contact.jobTitle
+																		| slice:0:25}}
+																		<span
+																			*ngIf="contact.jobTitle?.length>25">...</span>
+																	</h5>
+																</td>
+																<td align="center" class="hidden-xs">
+																	<h5 *ngIf="contact?.address" class='mb0'>
+																		{{contact.address | slice:0:30}}
+																		<span
+																			*ngIf="contact.address?.length>30">..</span>
+																	</h5>
+																	<h5 class='mb0'>{{contact.city | slice:0:15}}
+																		<span *ngIf="contact.city?.length>15">..</span>
+																		<span
+																			*ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state
+																		| slice:0:15}}
+																		<span *ngIf="contact.state?.length>15">..</span>
+																	</h5>
+																	<h5 *ngIf="contact?.zipCode || contact.country"
+																		class='mt0'>{{contact.zipCode}}<span
+																			*ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
+																	</h5>
+																</td>
+																<td align="center" *ngIf="gdprStatus || isPartner">
+																	<button class="border-btn-small lightgray-btn"
+																		id='more_less_button_{{i}}'
+																		(click)="contact.isShowDetails = ! contact.isShowDetails">
+																		<span *ngIf="!contact.isShowDetails"
+																			translate>More</span> <span
+																			*ngIf="contact.isShowDetails"
+																			translate>Less</span>
+																	</button>
+																</td>
+																<td align="center"
+																	*ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPrm || 
 								  authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !clickBoard  && (!assignLeads || (assignLeads && !isSynchronizationList))">
-									 <div class="actions-block override-actions white-space-transform" style="width:170px;" >
-										<a *ngIf= "!contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)" 
-										data-toggle="tooltip" data-placement="bottom" title="unsubscribe" (click)="unsubscribeUser(contact)">
-										<i class="fa fa-bell-slash-o IconCustomization" aria-hidden="true"></i>
-										</a>
-										<a *ngIf= "contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)" 
-										data-toggle="tooltip" data-placement="bottom" title="subscribe" (click)="resubscribeUser(contact)">
-										<i class="fa fa-bell-o IconCustomization" aria-hidden="true"></i>
-										</a>
-										<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_edit}}" (click)="editUserDetails(contact)" *ngIf= "((!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)) && !isSynchronizationList">
-										<i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
-										</a>
-										<a data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.contact_delete}}" (click)="deleteUserShowAlert(contact.id)"
-										*ngIf= "selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
+																	<div class="actions-block override-actions white-space-transform  actions_width"
+																		style="width:170px;">
+																		<a class="custom-icon"
+																			*ngIf="!contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)"
+																			data-toggle="tooltip"
+																			data-placement="bottom" title="unsubscribe"
+																			(click)="unsubscribeUser(contact)">
+																			<i class="fa fa-bell-slash-o IconCustomization"
+																				aria-hidden="true"></i>
+																			<div class="clickicons"></div>
+																		</a>
+																		<a class="custom-icon"
+																			*ngIf="contact.unsubscribed && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces) && (checkingContactTypeName == 'Contact' || sharedLeads)"
+																			data-toggle="tooltip"
+																			data-placement="bottom" title="subscribe"
+																			(click)="resubscribeUser(contact)">
+																			<i class="fa fa-bell-o IconCustomization"
+																				aria-hidden="true"></i>
+																			<div class="clickicons"></div>
+																		</a>
+																		<a class="custom-icon" data-toggle="tooltip"
+																			data-placement="bottom"
+																			title="{{actionsDescription.contact_edit}}"
+																			(click)="editUserDetails(contact)"
+																			*ngIf="((!sharedLeads)|| (assignLeads && !contactService?.assignedToPartner)) && !isSynchronizationList">
+																			<i class="fa fa-pencil-square-o IconCustomization"
+																				aria-hidden="true"></i>
+																			<div class="clickicons"></div>
+																		</a>
+																		<a class="custom-icon" data-toggle="tooltip"
+																			data-placement="bottom"
+																			title="{{actionsDescription.contact_delete}}"
+																			(click)="deleteUserShowAlert(contact.id)"
+																			*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList
 										&& ((!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST') || (assignLeads && !contactService?.assignedToPartner))
 										&& !isTeamMemberPartnerList && !sharedLeads && !isSynchronizationList">
-										<i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
-										</a>
-										<ng-container *ngIf="(!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember) && !assignLeads && !sharedLeads
-										   && (authenticationService.module.isCampaign || authenticationService.module.isReDistribution) && !isSynchronizationList">
-										   <a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)" *ngIf= "(!sharedLeads)">
-										   <i class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i></a>
-										</ng-container>
-										<a *ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads && (!sharedLeads) && !isSynchronizationList"   data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
-										<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i></a>
-									 </div>
-								  </td>
-								  <ng-template #NA>N/A</ng-template>
-							   </tr>
-							   <tr
-								  [ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
-								  <td [attr.colspan]="isPartner ? '9':'6'">
-									 <table cellpadding="5" cellspacing="0" class="border"
-										style="border:none !important;">
-										<tbody>
-										   <tr *ngIf="gdprStatus">
-											  <td class='pt10 pb10 bold' translate>Legal Basis : </td>
-											  <td align="center" class="pt10 pb10">
-												 {{contact.legalBasisString}}
-											  </td>
-										   </tr>
-										   <tr *ngIf="isPartner && authenticationService.contactsCount">
-											  <td class='pt10 pb10 bold' translate>Contacts Limit : </td>
-											  <td align="center" class="pt10 pb10">
-												 {{contact.contactsLimit}}
-										   </tr>
-										</tbody>
-									 </table>
-								  </td>
-							   </tr>
-							</ng-container>
-						 </tbody>
-					  </table>
-				   </div>
+																			<i class="fa fa-trash-o trashIconCustomization"
+																				aria-hidden="true"></i>
+																			<div class="del-icon"></div>
+																		</a>
+																		<!--XNFR-342---->
+																		<ng-container
+																			*ngIf="!assignLeads && !sharedLeads && !isSynchronizationList">
+																			<a class="custom-icon" data-toggle="tooltip"
+																				data-placement="top"
+																				(click)="openUnPublishedContentModalPopUp(contact)"
+																				[title]="(((authenticationService?.module?.isCampaign || authenticationService?.module?.isReDistribution) && !authenticationService?.module?.damAccess 
+                                                                     && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || checkingContactTypeName=='Contact')
+                                                                      ?  actionsDescription?.send_campaigns:actionsDescription?.shareUnPublishedContent">
+																				<i [ngClass]="((authenticationService?.module?.isCampaign && !authenticationService?.module?.damAccess 
+                                                                  && !authenticationService?.module?.lmsAccess && !authenticationService?.module?.playbookAccess) || checkingContactTypeName=='Contact') ? 'fa fa-bullhorn IconCustomization':'fa fa-share IconCustomization'"
+																					aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																		</ng-container>
+																		<!--XNFR-342---->
+																		<a class="custom-icon"
+																			*ngIf="authenticationService.module.isCampaign && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember && !assignLeads && (!sharedLeads) && !isSynchronizationList"
+																			data-toggle="tooltip"
+																			data-placement="bottom"
+																			title="Campaign Analytics"
+																			(click)="goToCampaigns(contact)">
+																			<i class="fa fa-line-chart IconCustomization"
+																				aria-hidden="true"></i>
+																			<div class="clickicons"></div>
+																		</a>
+																	</div>
+																</td>
+																<ng-template #NA>N/A</ng-template>
+															</tr>
+															<tr
+																[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
+																<td [attr.colspan]="isPartner ? '9':'6'">
+																	<table cellpadding="5" cellspacing="0"
+																		class="border" style="border:none !important;">
+																		<tbody>
+																			<tr *ngIf="gdprStatus" class="bg-unset">
+																				<td class='pt10 pb10 bold mr_10'
+																					translate>Legal Basis : </td>
+																				<td align="center" class="pt10 pb10">
+																					{{contact.legalBasisString}}
+																				</td>
+																			</tr>
+																			<tr *ngIf="isPartner && authenticationService.contactsCount"
+																				class="bg-unset">
+																				<td class='pt10 pb10 bold mr_10'
+																					translate>Contacts Limit : </td>
+																				<td align="center" class="pt10 pb10">
+																					{{contact.contactsLimit}}
+																			</tr>
+																		</tbody>
+																	</table>
+																</td>
+															</tr>
+														</ng-container>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- pagination added for copy from clipboard preview data -->
+								<ul *ngIf="pager.pages && pager.pages.length && isValidClipBoardData"
+									class="pagination">
+									<li [ngClass]="{disabled:pager.currentPage === 1}"><a (click)="setClipBoardPage(1)"
+											translate>First</a></li>
+									<li [ngClass]="{disabled:pager.currentPage === 1}"><a
+											(click)="setClipBoardPage(pager.currentPage - 1)" translate>Previous</a>
+									</li>
+									<li *ngFor="let page of pager.pages"
+										[ngClass]="{active:pager.currentPage === page}"><a
+											(click)="setClipBoardPage(page)">{{page}}</a></li>
+									<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+										<a (click)="setClipBoardPage(pager.currentPage + 1)" translate>Next</a>
+									</li>
+									<li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+										<a (click)="setClipBoardPage(pager.totalPages)" translate>Last</a>
+									</li>
+								</ul>
+								<app-pagination *ngIf="isShowUsers" [pagination]="pagination" [type]="'contacts'"
+									(notifyParent)="setPage($event)"
+									(notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
+							</div>
+							<!-- END EXAMPLE TABLE PORTLET-->
+						</div>
+					</div>
 				</div>
-			 </div>
-		  </div>
-		  <!-- pagination added for copy from clipboard preview data -->								
-		  <ul *ngIf="pager.pages && pager.pages.length && isValidClipBoardData"
-			 class="pagination">
-			 <li [ngClass]="{disabled:pager.currentPage === 1}"><a
-				(click)="setClipBoardPage(1)" translate>First</a></li>
-			 <li [ngClass]="{disabled:pager.currentPage === 1}"><a
-				(click)="setClipBoardPage(pager.currentPage - 1)" translate>Previous</a></li>
-			 <li *ngFor="let page of pager.pages"
-			 [ngClass]="{active:pager.currentPage === page}"><a
-				(click)="setClipBoardPage(page)">{{page}}</a></li>
-			 <li
-				[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-				<a (click)="setClipBoardPage(pager.currentPage + 1)" translate>Next</a>
-			 </li>
-			 <li
-				[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-				<a (click)="setClipBoardPage(pager.totalPages)" translate>Last</a>
-			 </li>
-		  </ul>
-		  <app-pagination *ngIf="isShowUsers" [pagination]="pagination" [type]="'contacts'"
-		  (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
-	   </div>
-	   <!-- END EXAMPLE TABLE PORTLET-->
-	</div>
- </div>
- </div>
- <div class="" *ngIf="showAllContactData">
-	<div class="col-xs-12">
-	   <div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0" 
-		  class="alert alert-info">
-		  <strong translate>No results found</strong>
-	   </div>
-	   <div class="alert alert-success alert-dismissable col-xs-12"
-		  style="padding: 15px 10px 12px;"
-		  *ngIf="invalidDeleteSuccessMessage">
-		  <strong translate>Success!</strong> your 
-		  <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-		  <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
-		  has
-		  been deleted successfully.
-	   </div>
-	</div>
-	<div class="valid-list" id="hidingListOfUsersTable">
-	   <!-- BEGIN EXAMPLE TABLE PORTLET-->
-	   <div class="portlet light">
-		  <div class="portlet-title">
-			 <div class="caption" style="padding-top: 8px !important;">
-				<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory !='invalid'">{{contactsByType.selectedCategory}}
-				<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span> 
-				List
-				</span>
-				<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'" translate>
-				Unregistered 
-				<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span> 
-				List
-				</span>
-				<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'" translate>
-				Registered 
-				<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span> 
-				List
-				</span>
-				<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'" translate>
-				Undeliverable 
-				<span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span> 
-				List
-				</span>
-			 </div>
-			 <div class="btn-group pull-right pb5">
-				<div class="btn-group pull-right gear-icon" *ngIf="!sharedLeads"
-				   >
-				   <span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: 8px; float:right;">
-				   <i class="fa fa-cog" style="font-size:20px; margin-right:5px" aria-hidden="true"></i>
-				   <i class="fa fa-angle-down" style="font-size:14px; float:right" aria-hidden="true"></i>
-				   </span>
-				   <ul class="dropdown-menu pull-right">
-					  <li *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">
-						 <a id="delete_button" (click)="invalidContactsShowAlert()" translate> Delete</a>
-					  </li>
-					  <li *ngIf="!sharedLeads || (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))"><a id="export_button"
-						 (click) = "hasAccessForDownloadUndeliverableContacts()" translate> Export To Excel </a></li>
-				   </ul>
-				</div>
-				<div class="col-xs-2 col-md-2 col-sm-2" style="padding: 0;">
-				   <div *ngIf="!isSegmentation" (click)="modelForSeg()"
-				   style="float: left; cursor: pointer; "
-				   data-toggle="modal" data-target="#filterModal">
-				   <i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
-					  data-placement="left" title="Apply a filter"
-					  style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
-				</div>
-				<div *ngIf="isSegmentation" (click)="removeSegmentation()"
-				style="float: left; cursor: pointer; padding-right: 20px;">
-				<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
-				   data-placement="left" title="Remove a filter"
-				   style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
-				   class="fa fa-times" aria-hidden="true"
-				   style="color: red; margin-left: -8px;"></i>
-			 </div>
-		  </div>
-		  <div class="col-xs-8 col-md-8 col-sm-8 p0">
-			 <div class="inputs" align="right" style="float: right; display: inline-flex;">
-				<div style="float: left; margin-right: 10px;">
-				   <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption"
-				   (ngModelChange)="sortByOption($event)">
-				   <ng-container
-					  *ngFor="let sort of sortOptions; let i = index">
-					  <option [ngValue]="sort">{{sort.name}}</option>
-				   </ng-container>
-				   </select>
-				</div>
-				<div class="portlet-input input-inline">
-				   <div class="input-icon right">
-					  <input type="text"
-					  [(ngModel)]="searchKey"
-					  [ngModelOptions]="{standalone: true}"
-					  class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
-					  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search('contacts')"></button>
-					  <button type="submit" class="search-box-item-click" (click)="search('contacts')"><i class="fa fa-search" aria-hidden="true"></i></button>
-				   </div>
-				</div>
-			 </div>
-		  </div>
-	   </div>
-	</div>
-	<div class="portlet-body">
-	   <div class="page-bar" *ngIf="!showEditContactData" style="border:none !important;">
-		  <div class="col-xs-12 col-md-12 col-sm-12 p0">
-		  </div>
-	   </div>
-	   <div class="table-responsive">
-		  <app-loader [model]="httpRequestLoader.isHorizontalCss"
-		  *ngIf="httpRequestLoader.isLoading"></app-loader>
-		  <table class='table tgrid' id="sample_editable_1" style="overflow: hidden;"
-			 *ngIf="!httpRequestLoader.isLoading" aria-describedby="">
-			 <thead>
-				<tr>
-				   <th style="text-align: center;"
-					  *ngIf="contactsByType.selectedCategory == 'invalid'" scope="col"><input
-					  type="checkbox" name="all" class="checkBox_shadow"
-					  [(ngModel)]="isInvalidHeaderCheckBoxChecked"
-					  (change)="checkAllInvalidContacts($event)" class=""
-					  id="checkAllExistingInvalidContacts" />
-				   </th>
-				   <th style="width: 25%" *ngIf="isPartner" translate scope="col">Entity info</th>
-				   <th style="width: 25%" *ngIf="!isPartner" translate scope="col">NAME</th>
-				   <th *ngIf="contactsByType.selectedCategory == 'invalid' && !isPartner" translate scope="col">EMAIL CATEGORY</th>
-				   <th *ngIf="isPartner" translate scope="col">VERTICAL</th>
-				   <th *ngIf="isPartner" translate scope="col">REGION</th>
-				   <th *ngIf="isPartner" translate scope="col">TYPE</th>
-				   <th *ngIf="isPartner" translate scope="col">CATEGORY</th>
-				   <th class="hidden-xs" *ngIf="!isPartner" translate scope="col">Job Title</th>
-				   <th class="text-center hidden-xs"  *ngIf="!isPartner" translate scope="col">ADDRESS</th>
-				   <th class="text-center hidden-xs" *ngIf="contactsByType.selectedCategory !== 'invalid' && (gdprStatus || isPartner)" scope="col"></th>
-				   <th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate scope="col">Reason</th>
-				   <th scope="col" class="text-center" *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||  
+				<div class="" *ngIf="showAllContactData">
+					<div class="col-xs-12">
+						<div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0"
+							class="alert alert-info">
+							<strong translate>No results found</strong>
+						</div>
+						<div class="alert alert-success alert-dismissable col-xs-12" style="padding: 15px 10px 12px;"
+							*ngIf="invalidDeleteSuccessMessage">
+							<strong translate>Success!</strong> your
+							<span
+								*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+							<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+							has
+							been deleted successfully.
+						</div>
+					</div>
+					<div class="valid-list" id="hidingListOfUsersTable">
+						<!-- BEGIN EXAMPLE TABLE PORTLET-->
+						<div class="portlet light">
+							<div class="portlet-title">
+								<div class="caption" style="padding-top: 8px !important;">
+									<span class="capitalize"
+										*ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory !='invalid'">{{contactsByType.selectedCategory}}
+										<span
+											*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+										<span
+											*ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span>
+										List
+									</span>
+									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'"
+										translate>
+										Unregistered
+										<span
+											*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+										<span
+											*ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span>
+										List
+									</span>
+									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'"
+										translate>
+										Registered
+										<span
+											*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+										<span
+											*ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span>
+										List
+									</span>
+									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'"
+										translate>
+										Undeliverable
+										<span
+											*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+										<span
+											*ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}</span>
+										List
+									</span>
+								</div>
+								<div class="btn-group pull-right pb5">
+									<div class="btn-group pull-right gear-icon" *ngIf="!sharedLeads">
+										<span class="dropdown-toggle" data-toggle="dropdown"
+											style="box-shadow:none; margin-top: 8px; float:right;">
+											<i class="fa fa-cog" style="font-size:20px; margin-right:5px"
+												aria-hidden="true"></i>
+											<i class="fa fa-angle-down" style="font-size:14px; float:right"
+												aria-hidden="true"></i>
+										</span>
+										<ul class="dropdown-menu pull-right">
+											<li *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">
+												<a id="delete_button" (click)="invalidContactsShowAlert()" translate>
+													Delete</a>
+											</li>
+											<li
+												*ngIf="!sharedLeads || (assignLeads || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))">
+												<a id="export_button"
+													(click)="hasAccessForDownloadUndeliverableContacts()" translate>
+													Export To Excel </a>
+											</li>
+										</ul>
+									</div>
+									<div class="col-xs-2 col-md-2 col-sm-2" style="padding: 0;">
+										<div *ngIf="!isSegmentation" (click)="modelForSeg()"
+											style="float: left; cursor: pointer; " data-toggle="modal"
+											data-target="#filterModal">
+											<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
+												data-placement="left" title="Apply a filter"
+												style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
+										</div>
+										<div *ngIf="isSegmentation" (click)="removeSegmentation()"
+											style="float: left; cursor: pointer; padding-right: 20px;">
+											<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
+												data-placement="left" title="Remove a filter"
+												style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
+												class="fa fa-times" aria-hidden="true"
+												style="color: red; margin-left: -8px;"></i>
+										</div>
+									</div>
+									<div class="col-xs-8 col-md-8 col-sm-8 p0">
+										<div class="inputs" align="right" style="float: right; display: inline-flex;">
+											<div style="float: left; margin-right: 10px;">
+												<select class="form-control SeclectBoxPaddingsAbj"
+													[(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+													<ng-container *ngFor="let sort of sortOptions; let i = index">
+														<option [ngValue]="sort">{{sort.name}}</option>
+													</ng-container>
+												</select>
+											</div>
+											<div class="portlet-input input-inline">
+												<div class="input-icon right">
+													<input type="text" [(ngModel)]="searchKey"
+														[ngModelOptions]="{standalone: true}" class="form-control"
+														placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+													<button class="glyphicon glyphicon-remove search-box-item-clear"
+														*ngIf="searchKey"
+														(click)="searchKey='';search('contacts')"></button>
+													<button type="submit" class="search-box-item-click"
+														(click)="search('contacts')"><i class="fa fa-search"
+															aria-hidden="true"></i></button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="portlet-body">
+								<div class="page-bar" *ngIf="!showEditContactData" style="border:none !important;">
+									<div class="col-xs-12 col-md-12 col-sm-12 p0">
+									</div>
+								</div>
+								<div class="table-responsive">
+									<app-loader [model]="httpRequestLoader.isHorizontalCss"
+										*ngIf="httpRequestLoader.isLoading"></app-loader>
+									<table class='table tgrid' id="sample_editable_1" style="overflow: hidden;"
+										*ngIf="!httpRequestLoader.isLoading" aria-describedby="">
+										<thead>
+											<tr>
+												<th style="text-align: center;"
+													*ngIf="contactsByType.selectedCategory == 'invalid'" scope="col">
+													<input type="checkbox" name="all" class="checkBox_shadow"
+														[(ngModel)]="isInvalidHeaderCheckBoxChecked"
+														(change)="checkAllInvalidContacts($event)" class=""
+														id="checkAllExistingInvalidContacts" />
+												</th>
+												<th style="width: 25%" *ngIf="isPartner" translate scope="col">Entity
+													info</th>
+												<th style="width: 25%" *ngIf="!isPartner" translate scope="col">NAME
+												</th>
+												<th *ngIf="contactsByType.selectedCategory == 'invalid' && !isPartner"
+													translate scope="col">EMAIL CATEGORY</th>
+												<th *ngIf="isPartner" translate scope="col">VERTICAL</th>
+												<th *ngIf="isPartner" translate scope="col">REGION</th>
+												<th *ngIf="isPartner" translate scope="col">TYPE</th>
+												<th *ngIf="isPartner" translate scope="col">CATEGORY</th>
+												<th class="hidden-xs" *ngIf="!isPartner" translate scope="col">Job Title
+												</th>
+												<th class="text-center hidden-xs" *ngIf="!isPartner" translate
+													scope="col">ADDRESS</th>
+												<th class="text-center hidden-xs"
+													*ngIf="contactsByType.selectedCategory !== 'invalid' && (gdprStatus || isPartner)"
+													scope="col"></th>
+												<th class="text-center hidden-xs"
+													*ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate
+													scope="col">Reason</th>
+												<th scope="col" class="text-center" *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||  
 					  contactsByType.selectedCategory == 'all') && isPartner)" style="width:17%" translate></th>
-				   <th scope="col" *ngIf="contactsByType.selectedCategory === 'invalid' && !sharedLeads">Actions</th>
-				   <th scope="col" *ngIf="!isPartner || contactsByType.selectedCategory =='invalid'"></th>
-				   <th scope="col" *ngIf="isPartner && contactsByType.selectedCategory =='unsubscribe'"></th >
-				</tr>
-			 </thead>
-			 <tbody>
-				<ng-container
-				   *ngFor="let allcontacts of contactsByType.contacts;let i = index">
-				   <tr class='row_{{i}}'>
-					  <td *ngIf="contactsByType.selectedCategory == 'invalid'"
-						 align="center"><input type="checkbox"
-						 [checked]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
-						 class="chk checkBox_shadow"
-						 [class.invalid-contacts-selected]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
-						 lang="{{allcontacts.id}}" name="invalidContact[]"
-						 value="{{allcontacts.id}}" id="{{allcontacts.id}}"
-						 (click)="invalidContactsSelectedUserIds(allcontacts.id,$event)" />
-					  </td>
-					  <td *ngIf="isPartner">
-						 <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="allcontacts"> </app-user-info>
-						 <!----XNFR-85-->
-						 <ng-container *ngIf="!allcontacts?.multipleTeamMemberGroupsAssigned">
-							<span [className]="allcontacts?.teamMemberGroupId>0 ?'active-status':'inactive-status'">
-							   <ng-container *ngIf="allcontacts?.teamMemberGroupId>0">
-								  <strong data-toggle="tooltip" data-placement="bottom" title="{{allcontacts?.selectedTeamMemberGroupName}}">Group Name : {{allcontacts?.selectedTeamMemberGroupName | slice:0:10}}
-								  <span *ngIf="allcontacts?.selectedTeamMemberGroupName?.length>10">..</span>
-								  </strong>
-								  <br>
-								  <strong>Team Members : {{allcontacts?.selectedTeamMembersCount}}</strong>
-							   </ng-container>
-							   <ng-container *ngIf="allcontacts?.teamMemberGroupId==0">
-								  <strong>No Group Selected</strong>
-							   </ng-container>
-							</span>
-						 </ng-container>
-						 <ng-container *ngIf="allcontacts?.multipleTeamMemberGroupsAssigned">
-							<span class="inactive-status">
-							<strong>Please contact admin</strong>
-							</span>
-						 </ng-container>
-					  </td>
-					  <td *ngIf="!isPartner">
-						 <app-user-info [isContactCompanyInfo]="true" [userInfo]="allcontacts"> </app-user-info>
-					  </td>
-					  <td *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs" >{{allcontacts.emailCategory}}
-						 <span *ngIf="!allcontacts.emailCategory"><strong>-</strong></span>
-					  </td>
-					  <td *ngIf="isPartner">{{allcontacts.vertical | slice:0:14}}
-						 <span *ngIf="allcontacts.vertical?.length>14">..</span>
-					  </td>
-					  <td *ngIf="isPartner">{{allcontacts.region | slice:0:14}}
-						 <span *ngIf="allcontacts.region?.length>14">..</span>
-					  </td>
-					  <td *ngIf="isPartner">{{allcontacts.partnerType | slice:0:14}}
-						 <span *ngIf="allcontacts.partnerType?.length>14">..</span>
-					  </td>
-					  <td *ngIf="isPartner">{{allcontacts.category | slice:0:14}}
-						 <span *ngIf="allcontacts.category?.length>14">..</span>
-					  </td>
-					  <td class="hidden-xs" *ngIf="!isPartner">
-						 <h5 class='mb0 ellipsis'  >{{allcontacts.jobTitle | slice:0:25}}
-							<span *ngIf="allcontacts.jobTitle?.length>25">...</span>
-						 </h5>
-					  </td>
-					  <td class="hidden-xs center" *ngIf="!isPartner">
-						 <h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address  | slice:0:30}}
-							<span *ngIf="allcontacts.address?.length>30">..</span>
-						 </h5>
-						 <h5 class='mb0'>{{allcontacts.city | slice:0:15}}
-							<span *ngIf="allcontacts.city?.length>15">..</span>
-							<span *ngIf="allcontacts.city && allcontacts.state">,&nbsp;</span>{{allcontacts.state | slice:0:15}}
-							<span *ngIf="allcontacts.state?.length>15">..</span>
-						 </h5>
-						 <h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
-							class='mt0'>{{allcontacts.zipCode}}<span *ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}</h5>
-					  </td>
-					  <td *ngIf="contactsByType.selectedCategory == 'valid'"></td>
-					 <!--  <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td> -->
-					  <td *ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads">
-						 <span class="markas markAsValidLable" (click)="validateUndeliverableContacts(allcontacts.id)">Mark as valid</span>
-					  </td>
-					  <td>
-						 <button class="border-btn-small lightgray-btn" id='more_less_button_{{i}}'
-							(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
-						 <span *ngIf="!allcontacts.isShowDetails" translate>More</span> <span
-							*ngIf="allcontacts.isShowDetails" translate>Less</span>
-						 </button>
-					  </td>
-					  
-					   <td  class="hidden-xs" *ngIf="contactsByType.selectedCategory == 'unsubscribe'">
-					   <h5 class='mb0 ellipsis' data-toggle="tooltip" data-placement="bottom" title="{{allcontacts.unsubscribedReason}}" >{{allcontacts.unsubscribedReason | slice:0:25}}
-							<span *ngIf="allcontacts.unsubscribedReason?.length>25">...</span>
-						 </h5>
-                      </td>
-					  
-					  
-					  <td  *ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribe'">
-						 <button class="btn Btn-Green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces)"
-						 [disabled] = "assignLeads" (click)="resubscribeUser(allcontacts)" translate>
-						 Subscribe
-						 </button>
-						 <div class="actions-block no-float" *ngIf="isPartner && (contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' || contactsByType.selectedCategory == 'all')">
-							<ng-container *ngIf="allcontacts?.validEmail">
-							   <a  (click)="sendMail(allcontacts.id)">
-							   <i class="fa fa-envelope IconCustomization"   aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Send Email Notification"></i>
-							   </a>
-							</ng-container>
-							<ng-container *ngIf="!allcontacts?.validEmail">
-							   <a>
-							   <i class="fa fa-envelope gray IconCustomization"  aria-hidden="true" data-toggle="tooltip" data-placement="bottom"  title="Email can't be sent for invalid email Id"></i>
-							   </a>
-							</ng-container>
-						 </div>
-					  </td>
-					  <ng-container *ngIf="(contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active') && !isPartner">
-						 <td></td>
-					  </ng-container>
-					  <ng-template #NA>N/A</ng-template>
-				   </tr>
-				   <tr
-					  [ngClass]="{'hidden': !allcontacts.isShowDetails, 'show-more': allcontacts.isShowDetails}">
-					  <td colspan="8">
-						 <table cellpadding="5" cellspacing="0" class="border"
-							style="border:none !important;">
-							<tbody>
-							   <tr>
-								  <td class='pt10 pb10 bold' translate>Legal Basis : </td>
-								  &nbsp;
-								  <td align="center" class="pt10 pb10">
-									 {{allcontacts.legalBasisString}}
-								  </td>
-							   </tr>
-							   <ng-container *ngIf="isPartner && authenticationService.contactsCount">
-								  <tr>
-									 <td class='pt10 pb10 bold' translate>Contacts Limit : </td>
-									 <td align="center" class="pt10 pb10">
-										{{allcontacts.contactsLimit}}
-									 </td>
-								  </tr>
-							   </ng-container>
-							</tbody>
-						 </table>
-					  </td>
-				   </tr>
-				</ng-container>
-			 </tbody>
-		  </table>
-	   </div>
-	   <app-pagination [pagination]="contactsByType.pagination" [type]="contactsByType.selectedCategory"
-	   (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
-	</div>
- </div>
- <!--pager here  -->
- </div>
- </div>
- </div>
- </div>
- </div>
- <!-- modals -->
- <div *ngIf="contactService.isContactModalPopup && !updateContactUser">
-	<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess" [gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser] = "false"  (notifyParent)="addRow($event)" ></app-add-contact-modal>
- </div>
- <div *ngIf="contactService.isContactModalPopup && updateContactUser">
-	<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"  [gdprInput]="parentInput" [totalUsers]="contacts"  [contactDetails]="contactAllDetails" [isUpdateUser] = "isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
- </div>
- <app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
- <!-- BEGIN PAGE CONTENT-->
- <div id="filterModal" class="modal right fade" role="dialog"
-	data-backdrop="static" data-keyboard="false">
-	<div class="modal-dialog modal-css">
-	   <!-- Modal content-->
-	   <div class="modal-content">
-		  <div class="modal-header">
-			 <a class="close-circle" data-dismiss="modal" (click)="cancelSegmentation()"><i class="fa fa-times"></i></a>
-			 <h4 class="modal-title" translate>Filter</h4>
-		  </div>
-		  <div class="modal-body" style="padding: 20px 10px;">
-			 <div class="row">
-				<div class="col-sm-12">
-				   <div class="row col-sm-11"
-					  *ngFor="let addRow of criterias; let i = index"
-					  style="padding-bottom: 10px;">
-					  <div class="form-group">
-						 <div class="form-inline col-sm-12">
-							<div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-4 tab_v_flex tab_p0">
-							   <b [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}"  class="dataAlignment">{{i}}</b>
-							   <select class="form-control"
-							   [(ngModel)]="criterias[i].property" [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}">
-							   <option
-								  *ngFor="let filterOption of filterOptions; let i = index">{{filterOption.value}}</option>
-							   </select>
+												<th scope="col"
+													*ngIf="contactsByType.selectedCategory === 'invalid' && !sharedLeads">
+													Actions</th>
+												<th scope="col"
+													*ngIf="!isPartner || contactsByType.selectedCategory =='invalid'">
+												</th>
+												<th scope="col"
+													*ngIf="isPartner && contactsByType.selectedCategory =='unsubscribe'">
+												</th>
+											</tr>
+										</thead>
+										<tbody>
+											<ng-container
+												*ngFor="let allcontacts of contactsByType.contacts;let i = index">
+												<tr class='row_{{i}}'>
+													<td *ngIf="contactsByType.selectedCategory == 'invalid'"
+														align="center"><input type="checkbox"
+															[checked]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
+															class="chk checkBox_shadow"
+															[class.invalid-contacts-selected]="selectedInvalidContactIds.indexOf(allcontacts.id)>-1"
+															lang="{{allcontacts.id}}" name="invalidContact[]"
+															value="{{allcontacts.id}}" id="{{allcontacts.id}}"
+															(click)="invalidContactsSelectedUserIds(allcontacts.id,$event)" />
+													</td>
+													<td *ngIf="isPartner">
+														<app-user-info [isPartnerEntityInfo]="true"
+															[isPartnerInfo]="true" [userInfo]="allcontacts">
+														</app-user-info>
+														<!----XNFR-85-->
+														<ng-container
+															*ngIf="!allcontacts?.multipleTeamMemberGroupsAssigned">
+															<span
+																[className]="allcontacts?.teamMemberGroupId>0 ?'active-status':'inactive-status'">
+																<ng-container *ngIf="allcontacts?.teamMemberGroupId>0">
+																	<strong data-toggle="tooltip"
+																		data-placement="bottom"
+																		title="{{allcontacts?.selectedTeamMemberGroupName}}">Group
+																		Name :
+																		{{allcontacts?.selectedTeamMemberGroupName |
+																		slice:0:10}}
+																		<span
+																			*ngIf="allcontacts?.selectedTeamMemberGroupName?.length>10">..</span>
+																	</strong>
+																	<br>
+																	<strong>Team Members :
+																		{{allcontacts?.selectedTeamMembersCount}}</strong>
+																</ng-container>
+																<ng-container *ngIf="allcontacts?.teamMemberGroupId==0">
+																	<strong>No Group Selected</strong>
+																</ng-container>
+															</span>
+														</ng-container>
+														<ng-container
+															*ngIf="allcontacts?.multipleTeamMemberGroupsAssigned">
+															<span class="inactive-status">
+																<strong>Please contact admin</strong>
+															</span>
+														</ng-container>
+													</td>
+													<td *ngIf="!isPartner">
+														<app-user-info [isContactCompanyInfo]="true"
+															[userInfo]="allcontacts"> </app-user-info>
+													</td>
+													<td *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner"
+														class="hidden-xs">{{allcontacts.emailCategory}}
+														<span
+															*ngIf="!allcontacts.emailCategory"><strong>-</strong></span>
+													</td>
+													<td *ngIf="isPartner">{{allcontacts.vertical | slice:0:14}}
+														<span *ngIf="allcontacts.vertical?.length>14">..</span>
+													</td>
+													<td *ngIf="isPartner">{{allcontacts.region | slice:0:14}}
+														<span *ngIf="allcontacts.region?.length>14">..</span>
+													</td>
+													<td *ngIf="isPartner">{{allcontacts.partnerType | slice:0:14}}
+														<span *ngIf="allcontacts.partnerType?.length>14">..</span>
+													</td>
+													<td *ngIf="isPartner">{{allcontacts.category | slice:0:14}}
+														<span *ngIf="allcontacts.category?.length>14">..</span>
+													</td>
+													<td class="hidden-xs" *ngIf="!isPartner">
+														<h5 class='mb0 ellipsis'>{{allcontacts.jobTitle | slice:0:25}}
+															<span *ngIf="allcontacts.jobTitle?.length>25">...</span>
+														</h5>
+													</td>
+													<td class="hidden-xs center" *ngIf="!isPartner">
+														<h5 *ngIf="allcontacts?.address" class='mb0'>
+															{{allcontacts.address | slice:0:30}}
+															<span *ngIf="allcontacts.address?.length>30">..</span>
+														</h5>
+														<h5 class='mb0'>{{allcontacts.city | slice:0:15}}
+															<span *ngIf="allcontacts.city?.length>15">..</span>
+															<span
+																*ngIf="allcontacts.city && allcontacts.state">,&nbsp;</span>{{allcontacts.state
+															| slice:0:15}}
+															<span *ngIf="allcontacts.state?.length>15">..</span>
+														</h5>
+														<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
+															class='mt0'>{{allcontacts.zipCode}}<span
+																*ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}
+														</h5>
+													</td>
+													<td *ngIf="contactsByType.selectedCategory == 'valid'"></td>
+													<!--  <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td> -->
+													<td
+														*ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads">
+														<span class="markas markAsValidLable"
+															(click)="validateUndeliverableContacts(allcontacts.id)">Mark
+															as valid</span>
+													</td>
+													<td>
+														<button class="border-btn-small lightgray-btn"
+															id='more_less_button_{{i}}'
+															(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
+															<span *ngIf="!allcontacts.isShowDetails"
+																translate>More</span> <span
+																*ngIf="allcontacts.isShowDetails" translate>Less</span>
+														</button>
+													</td>
+
+													<td class="hidden-xs"
+														*ngIf="contactsByType.selectedCategory == 'unsubscribe'">
+														<h5 class='mb0 ellipsis' data-toggle="tooltip"
+															data-placement="bottom"
+															title="{{allcontacts.unsubscribedReason}}">
+															{{allcontacts.unsubscribedReason | slice:0:25}}
+															<span
+																*ngIf="allcontacts.unsubscribedReason?.length>25">...</span>
+														</h5>
+													</td>
+
+
+													<td
+														*ngIf="((contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' ||   contactsByType.selectedCategory == 'all') && isPartner) || contactsByType.selectedCategory == 'unsubscribe'">
+														<button class="btn Btn-Green"
+															*ngIf="contactsByType.selectedCategory == 'unsubscribe' && (authenticationService?.module?.adminOrSuperVisor || authenticationService.isPartner() || hasAllAcces)"
+															[disabled]="assignLeads"
+															(click)="resubscribeUser(allcontacts)" translate>
+															Subscribe
+														</button>
+														<div class="actions-block no-float"
+															*ngIf="isPartner && (contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' || contactsByType.selectedCategory == 'all')">
+															<ng-container *ngIf="allcontacts?.validEmail">
+																<a class="custom-icon"
+																	(click)="sendMail(allcontacts.id)">
+																	<i class="fa fa-envelope IconCustomization"
+																		aria-hidden="true" data-toggle="tooltip"
+																		data-placement="bottom"
+																		title="Send Email Notification"></i>
+																	<div class="clickicons"></div>
+																</a>
+															</ng-container>
+															<ng-container *ngIf="!allcontacts?.validEmail">
+																<a class="custom-icon">
+																	<i class="fa fa-envelope gray IconCustomization"
+																		aria-hidden="true" data-toggle="tooltip"
+																		data-placement="bottom"
+																		title="Email can't be sent for invalid email Id"></i>
+																	<div class="clickicons"></div>
+																</a>
+															</ng-container>
+														</div>
+													</td>
+													<ng-container
+														*ngIf="(contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active') && !isPartner">
+														<td></td>
+													</ng-container>
+													<ng-template #NA>N/A</ng-template>
+												</tr>
+												<tr
+													[ngClass]="{'hidden': !allcontacts.isShowDetails, 'show-more': allcontacts.isShowDetails}">
+													<td colspan="8">
+														<table cellpadding="5" cellspacing="0" class="border"
+															style="border:none !important;">
+															<tbody>
+																<tr class="bg-unset">
+																	<td class='pt10 pb10 bold' translate>Legal Basis :
+																	</td>
+																	&nbsp;
+																	<td align="center" class="pt10 pb10">
+																		{{allcontacts.legalBasisString}}
+																	</td>
+																</tr>
+																<ng-container
+																	*ngIf="isPartner && authenticationService.contactsCount">
+																	<tr class="bg-unset">
+																		<td class='pt10 pb10 bold' translate>Contacts
+																			Limit : </td>
+																		<td align="center" class="pt10 pb10">
+																			{{allcontacts.contactsLimit}}
+																		</td>
+																	</tr>
+																</ng-container>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+											</ng-container>
+										</tbody>
+									</table>
+								</div>
+								<app-pagination [pagination]="contactsByType.pagination"
+									[type]="contactsByType.selectedCategory" (notifyParent)="setPage($event)"
+									(notifyParentDropDown)="onChangeAllContactUsers($event)"></app-pagination>
 							</div>
-							<div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
-							   <select class="form-control"
-							   [(ngModel)]="criterias[i].operation">
-							   <option
-								  *ngFor="let filterCondition of filterConditions; let i = index">{{filterCondition.value}}</option>
-							   </select>
-							</div>
-							<div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3 tb_view_10">
-							   <input type="text" class="form-control" placeholder="value*"	[(ngModel)]="criterias[i].value1" required (keypress)="eventEnterKeyHandler($event.keyCode)">
-							</div>
-							<div class="form-group col-xs-6 col-sm-3 col-md-1 col-lg-1 filter-delete tb_view_10 filter_del" data-toggle="tooltip"
-							   data-placement="left" title="Remove a condition">
-							   <span (click)="cancelSegmentationRow(i)">
-							   <i class="fa fa-trash-o" aria-hidden="true" 	style="color: red; font-size: 26px; margin-top: 6px"></i>
-							   </span>
-							</div>
-						 </div>
-					  </div>
-				   </div>
-				   <!-- <div class="row col-sm-3 col-lg-1 tab_ml0" style="margin-left: 30px;"> -->
-					<div class="row col-xs-6 col-sm-3 col-md-1 col-lg-1 tab_ml0">
-					  <div>
-						 <span  [class.disabled]="criterias.length > 5"  (click)="addNewRow()" type="button" class="btn btn-default pull-right">
-						 <i data-toggle="tooltip" data-placement="left" title="Add a condition" class="fa fa-plus-square" aria-hidden="true"
-							style="color: #0196da"></i>
-						 </span>
-					  </div>
-				   </div>
+						</div>
+						<!--pager here  -->
+					</div>
 				</div>
-			 </div>
-			 <div class="col-xs-12 m0" *ngIf="isSegmentationErrorMessage">
-				<h4 class="m0" style="color: red; text-align: center;">{{filterConditionErrorMessage}}</h4>
-			 </div>
-		  </div>
-		  <div class="modal-footer">
-			 <button type="button" class="btn Btn-Green" [disabled]="criterias.length === 0"
-			 (click)="contactFilter()" translate>Submit</button>
-			 <button type="button" class="btn Btn-Gray"
-				(click)="cancelSegmentation()" data-dismiss="modal" translate>Cancel</button>
-		  </div>
-	   </div>
+			</div>
+		</div>
 	</div>
- </div>
- </div>
- <!-- T&C Modal -->
- <div class="modal fade" id="tcModal" tabindex="-1" data-backdrop="static" data-keyboard="false"
-	role="dialog" aria-labelledby="tcModalLabel" aria-hidden="true">
+	<!-- modals -->
+	<div *ngIf="contactService.isContactModalPopup && !updateContactUser">
+		<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"
+			[gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser]="false"
+			[partnerListId]="contactListId" (notifyParent)="addRow($event)"></app-add-contact-modal>
+	</div>
+
+	<div *ngIf="contactService.isContactModalPopup && updateContactUser">
+		<app-add-contact-modal [isTeamMemberPartnerList]="isTeamMemberPartnerList" [mdfAccess]="mdfAccess"
+			[gdprInput]="parentInput" [totalUsers]="contacts" [contactDetails]="contactAllDetails"
+			[isUpdateUser]="isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
+	</div>
+	<app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList"
+		[downloadListName]="logListName"> </app-export-csv>
+	<!-- BEGIN PAGE CONTENT-->
+	<div id="filterModal" class="modal right fade" role="dialog" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog modal-css">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<a class="close-circle" data-dismiss="modal" (click)="cancelSegmentation()"><i
+							class="fa fa-times"></i></a>
+					<h4 class="modal-title" translate>Filter</h4>
+				</div>
+				<div class="modal-body" style="padding: 20px 10px;">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="row col-sm-11" *ngFor="let addRow of criterias; let i = index"
+								style="padding-bottom: 10px;">
+								<div class="form-group">
+									<div class="form-inline col-sm-12">
+										<div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-4 tab_v_flex tab_p0">
+											<b [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}"
+												class="dataAlignment">{{i}}</b>
+											<select class="form-control" [(ngModel)]="criterias[i].property"
+												[ngStyle]="{'margin-left':i=== 1?'2px':'0px'}">
+												<option *ngFor="let filterOption of filterOptions; let i = index">
+													{{filterOption.value}}</option>
+											</select>
+										</div>
+										<div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3">
+											<select class="form-control" [(ngModel)]="criterias[i].operation">
+												<option *ngFor="let filterCondition of filterConditions; let i = index">
+													{{filterCondition.value}}</option>
+											</select>
+										</div>
+										<div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-3 tb_view_10">
+											<input type="text" class="form-control" placeholder="value*"
+												[(ngModel)]="criterias[i].value1" required
+												(keypress)="eventEnterKeyHandler($event.keyCode)">
+										</div>
+										<div class="form-group col-xs-6 col-sm-3 col-md-1 col-lg-1 filter-delete tb_view_10 filter_del"
+											data-toggle="tooltip" data-placement="left" title="Remove a condition">
+											<span (click)="cancelSegmentationRow(i)">
+												<i class="fa fa-trash-o" aria-hidden="true"
+													style="color: red; font-size: 26px; margin-top: 6px"></i>
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- <div class="row col-sm-3 col-lg-1 tab_ml0" style="margin-left: 30px;"> -->
+							<div class="row col-xs-6 col-sm-3 col-md-1 col-lg-1 tab_ml0">
+								<div>
+									<span [class.disabled]="criterias.length > 5" (click)="addNewRow()" type="button"
+										class="btn btn-default pull-right">
+										<i data-toggle="tooltip" data-placement="left" title="Add a condition"
+											class="fa fa-plus-square" aria-hidden="true" style="color: #0196da"></i>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 m0" *ngIf="isSegmentationErrorMessage">
+						<h4 class="m0" style="color: red; text-align: center;">{{filterConditionErrorMessage}}</h4>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="button bgcolor-unset" [disabled]="criterias.length === 0"
+						(click)="contactFilter()" translate><span
+							class="btn Btn-Green transition">Submit</span></button>
+					<button type="button" class="btn Btn-Gray" (click)="cancelSegmentation()" data-dismiss="modal"
+						translate>Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- T&C Modal -->
+<div class="modal fade" id="tcModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog"
+	aria-labelledby="tcModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-copy" role="document">
-	   <div class="modal-content" style="top: 100px;">
-		  <div class="modal-header">
-			 <h4 class="modal-title f-w-600" id="saveAsModalLabel" translate> Are you sure?</h4>
-		  </div>
-		  <div class="modal-body">
-			 <div>
-				<h4 class="modal-title f-w-600" translate>You are agreeing to xAmplify's Terms and Conditions.</h4>
-			 </div>
-			 <div class="form-group" style="margin-top: 15px;" *ngIf="isPartner">
-				<input class="checkBox_shadow" type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked> <!-- I Agree <a (click)="navigateToTermsAndConditions()">T&C </a>-->
-				By onboarding a {{authenticationService?.partnerModule?.customName}} you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()" translate>xAmplify Terms of Use</a> and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
-				<br>
-			 </div>
-			 <div class="form-group" style="margin-top: 15px;" *ngIf="!isPartner">
-				<input class="checkBox_shadow" type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked><!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->
-				By adding a contact you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a> and agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
-				<br>
-			 </div>
-			 <div *ngIf="!isCheckTC" style="color:red" translate>You must agree T&C</div>
-		  </div>
-		  <div class="modal-footer">
-			 <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelContacts()" translate>Decline</button>
-			 <button type="button" [disabled]="!isCheckTC" class="btn btn-primary"
-			 (click)="saveContactsWithPermission()" translate>Accept</button>
-		  </div>
-	   </div>
+		<div class="modal-content" style="top: 100px;">
+			<div class="modal-header">
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel" translate> Are you sure?</h4>
+			</div>
+			<div class="modal-body">
+				<div>
+					<h4 class="modal-title f-w-600" translate>You are agreeing to xAmplify's Terms and Conditions.</h4>
+				</div>
+				<div class="form-group" style="margin-top: 15px;" *ngIf="isPartner">
+					<input class="checkBox_shadow" type="checkbox" [(ngModel)]="isCheckTC"
+						[ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked>
+					<!-- I Agree <a (click)="navigateToTermsAndConditions()">T&C </a>-->
+					By onboarding a {{authenticationService?.partnerModule?.customName}} you confirm that you have read
+					and agree to the <a (click)="navigateToTermsOfUse()" translate>xAmplify Terms of Use</a> and that
+					you agree to the processing of your personal data by xAmplify as described in the <a
+						(click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in
+					compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
+					<br>
+				</div>
+				<div class="form-group" style="margin-top: 15px;" *ngIf="!isPartner">
+					<input class="checkBox_shadow" type="checkbox" [(ngModel)]="isCheckTC"
+						[ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc"
+						checked><!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->
+					By adding a contact you confirm that you have read and agree to the <a
+						(click)="navigateToTermsOfUse()">xAmplify Terms of Use</a> and agree to the processing of your
+					personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>.
+					Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and
+					<a (click)="navigateToCCPA()">CCPA</a>.
+					<br>
+				</div>
+				<div *ngIf="!isCheckTC" style="color:red" translate>You must agree T&C</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelContacts()"
+					translate>Decline</button>
+				<button type="button" [disabled]="!isCheckTC" class="btn btn-primary"
+					(click)="saveContactsWithPermission()" translate>Accept</button>
+			</div>
+		</div>
 	</div>
- </div>
- <app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" [isPartner]="isPartner"
- [showGDPR]="showGDPR" [isFormList]="isFormList" (notifyParentSaveAs)="closeSaveAsModal()" [gdprInput]="parentInput"></app-save-as>
- <app-send-campaigns #sendCampaignComponent></app-send-campaigns>
- <!-- END PAGE CONTENT -->
- <div class="modal fade right" id="assignContactAndMdfPopup" tabindex="-1" role="dialog" aria-labelledby="assignContactAndMdfPopup" data-backdrop="static" data-keyboard="false">
-	<div class="modal-dialog"  [ngClass] = "isEditContactPopupShow ? '' : 'custom-width-modal-popup'"  role="document">
-	   <div class="modal-content">
-		  <div class="modal-header" >
-			 <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
-			 <i class="fa fa-times" aria-hidden="true"></i>
-			 </button>
-		  </div>
-		  <div class="modal-body">
-			 <div class="alert alert-danger" *ngIf="contactAndMdfPopupResponse.isVisible"> 
-				<strong class="pre-wrap-next-line">{{contactAndMdfPopupResponse?.responseMessage}}</strong>
-			 </div>
-			 <app-modal-popup-loader *ngIf="processingPartnersLoader"></app-modal-popup-loader>
-			 <div class="table-responsive" *ngIf="!processingPartnersLoader" >
-				<table class="table tgrid table-hover table-sm beige dark-beige" id="assignContactAndTable" aria-describedby="assignContactAndTable">
-				   <thead>
-					  <tr>
-						 <th scope="row" translate>Entity Info</th>
-						 <th *ngIf="authenticationService.contactsCount" scope="row" translate>#Contacts
-							<span >
-							<i class="fa fa-question-circle" aria-hidden="true" 
-							data-toggle="tooltip" data-placement="bottom"
-							 title="Assign number of contacts to each {{authenticationService?.partnerModule?.customName}} (Minimum 1)" 
-							></i>
-							</span>
-						 </th>
-						 <th scope="row" translate>Sign up Notification
-							<span id="">
-							<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
-							  title="Send/Unsend signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
-							</span>
-						 </th>
-						 <th *ngIf="authenticationService?.module?.adminOrSuperVisor" scope="row" translate>Team Member Group
-							<span id="">
-							<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
-							 title="Assign team member groups to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
-							</span>
-						 </th>
-					  </tr>
-				   </thead>
-				   <tbody>
-					  <ng-container *ngFor="let partner of users;let i=index">
-						 <tr id="partner-row-{{i}}">
-							<td>
-							   <app-user-info [isPartnerEntityInfo]="true" [userInfo]="partner">
-							   </app-user-info>
-							</td>
-							<td *ngIf="authenticationService.contactsCount" class="contact-count error" id="contact-count-{{i}}">
-							   <input type="number" [(ngModel)]="partner.contactsLimit"  [ngModelOptions]="{standalone: true}"  class="form-control" name="contactsLimit" placeholder="Contacts" min="1" oninput="validity.valid||(value='');">
-							</td>
-							<td *ngIf="showNotifyPartnerOption" >
-							<switch [status]="partner.notifyPartners" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
-							data-toggle="tooltip" data-placement="bottom" [title]="partner?.disableNotifyPartnersOption ? 'This option is not available.Because it is already part of Master List':''"
-							[size]="callActionSwitch.defaultSize" (statusChange)="setNotifyPartnerOption(partner,$event)" [disabled]="partner?.disableNotifyPartnersOption">
-							</switch>
-							</td>
-							<!--- (XNFR-85) ----->
-							<td *ngIf="authenticationService?.module?.adminOrSuperVisor" id="edit-team-member-group-error-count-{{i}}">
-							   <div class="input-group">
-								  <select id="edit-partner-tm-group-{{i}}" [disabled]="partner?.selectedTeamMemberIds?.length > 0" class="form-control" [(ngModel)]="partner.teamMemberGroupId" (ngModelChange)="getTeamMembersByGroupId(partner,i)">
-								  <option  *ngFor="let teamMemberGroup of teamMemberGroups" [ngValue]="teamMemberGroup.id">
-								  {{teamMemberGroup?.name}} ({{teamMemberGroup?.teamMembersCount}})
-								  </option> 
-								  </select>
-								  <span class="input-group-btn">
-								  <button data-toggle="tooltip" data-placement="bottom" title="Preview Modules" [disabled]="partner.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(partner.teamMemberGroupId)">
-								  <i class="fa fa-eye white" aria-hidden="true"></i>
-								  </button>
-								  </span>
-								  <span class="input-group-btn" >
-								  <button data-toggle="tooltip" data-placement="bottom" title="Select Team Members" [disabled]="partner.teamMemberGroupId==0"  class="btn btn-info" type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
-								  <i  class="fa" [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}" aria-hidden="true"></i>
-								  </button>
-								  </span>
-							   </div>
-							   <span class="active-status" *ngIf="partner?.selectedTeamMemberIds?.length>0">
-							   <strong>Selected Team Members: {{partner?.selectedTeamMemberIds?.length}}</strong>
-							   <a *ngIf="users?.length>1" (click)="applyForAll(partner)">
-							   <strong><i class="fa fa-check"></i>Apply For All</strong>
-							   </a>
-							   </span>
-							</td>
-						 </tr>
-						 <!---XNFR-131-->
-						 <tr *ngIf="partner?.expand">
-							<td colspan="5" class="bgc-lg">
-							   <app-partner-team-member-group-team-members  [currentPartner]="currentPartner" (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
-							</td>
-						 </tr>
-					  </ng-container>
-				   </tbody>
-				</table>
-			 </div>
-			 <br>
-		  </div>
-		  <ngx-loading [show]="processingPartnersLoader || previewLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-		  <div class="modal-footer">
-			 <button type="submit" class="btn Btn-Green"  (click)="validatePartners()" translate>Continue</button>
-			 <button type="submit" class="btn btn-default" (click)="closeAssignContactAndMdfAmountPopup()" translate>Close</button>
-		  </div>
-	   </div>
+</div>
+<app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName"
+	[isPartner]="isPartner" [showGDPR]="showGDPR" [isFormList]="isFormList" (notifyParentSaveAs)="closeSaveAsModal()"
+	[gdprInput]="parentInput"></app-save-as>
+<app-send-campaigns #sendCampaignComponent></app-send-campaigns>
+<!-- END PAGE CONTENT -->
+<div class="modal fade right" id="assignContactAndMdfPopup" tabindex="-1" role="dialog"
+	aria-labelledby="assignContactAndMdfPopup" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog" [ngClass]="isEditContactPopupShow ? '' : 'custom-width-modal-popup'" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
+					<i class="fa fa-times" aria-hidden="true"></i>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-danger" *ngIf="contactAndMdfPopupResponse.isVisible">
+					<strong class="pre-wrap-next-line">{{contactAndMdfPopupResponse?.responseMessage}}</strong>
+				</div>
+				<app-modal-popup-loader *ngIf="processingPartnersLoader"></app-modal-popup-loader>
+				<div class="table-responsive" *ngIf="!processingPartnersLoader">
+					<table class="table tgrid table-hover table-sm beige dark-beige" id="assignContactAndTable"
+						aria-describedby="assignContactAndTable">
+						<thead>
+							<tr>
+								<th scope="row" translate>Entity Info</th>
+								<th *ngIf="authenticationService.contactsCount" scope="row" translate>#Contacts
+									<span>
+										<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
+											data-placement="bottom"
+											title="Assign number of contacts to each {{authenticationService?.partnerModule?.customName}} (Minimum 1)"></i>
+									</span>
+								</th>
+								<th scope="row" translate>Sign up Notification
+									<span id="">
+										<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
+											data-placement="bottom"
+											title="Send/Unsend signup email notifications to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
+									</span>
+								</th>
+								<th *ngIf="authenticationService?.module?.adminOrSuperVisor" scope="row" translate>Team
+									Member Group
+									<span id="">
+										<i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip"
+											data-placement="bottom"
+											title="Assign team member groups to your newly onboarded {{authenticationService?.partnerModule?.customName}}"></i>
+									</span>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<ng-container *ngFor="let partner of users;let i=index">
+								<tr id="partner-row-{{i}}">
+									<td>
+										<app-user-info [isPartnerEntityInfo]="true" [userInfo]="partner">
+										</app-user-info>
+									</td>
+									<td *ngIf="authenticationService.contactsCount" class="contact-count error"
+										id="contact-count-{{i}}">
+										<input type="number" [(ngModel)]="partner.contactsLimit"
+											[ngModelOptions]="{standalone: true}" class="form-control"
+											name="contactsLimit" placeholder="Contacts" min="1"
+											oninput="validity.valid||(value='');">
+									</td>
+									<td *ngIf="showNotifyPartnerOption">
+										<switch [status]="partner.notifyPartners"
+											[onText]="callActionSwitch.onTextValue"
+											[offText]="callActionSwitch.offTextValue"
+											[onColor]="callActionSwitch.onGreenColorSwitch"
+											[offColor]="callActionSwitch.onDefaultColorSwitch" data-toggle="tooltip"
+											data-placement="bottom"
+											[title]="partner?.disableNotifyPartnersOption ? 'This option is not available.Because it is already part of Master List':''"
+											[size]="callActionSwitch.defaultSize"
+											(statusChange)="setNotifyPartnerOption(partner,$event)"
+											[disabled]="partner?.disableNotifyPartnersOption">
+										</switch>
+									</td>
+									<!--- (XNFR-85) ----->
+									<td *ngIf="authenticationService?.module?.adminOrSuperVisor"
+										id="edit-team-member-group-error-count-{{i}}">
+										<div class="input-group">
+											<select id="edit-partner-tm-group-{{i}}"
+												[disabled]="partner?.selectedTeamMemberIds?.length > 0"
+												class="form-control" [(ngModel)]="partner.teamMemberGroupId"
+												(ngModelChange)="getTeamMembersByGroupId(partner,i)">
+												<option *ngFor="let teamMemberGroup of teamMemberGroups"
+													[ngValue]="teamMemberGroup.id">
+													{{teamMemberGroup?.name}} ({{teamMemberGroup?.teamMembersCount}})
+												</option>
+											</select>
+											<span class="input-group-btn">
+												<button data-toggle="tooltip" data-placement="bottom"
+													title="Preview Modules" [disabled]="partner.teamMemberGroupId==0"
+													class="btn btn-info" type="button" tabindex="-1"
+													(click)="previewModules(partner.teamMemberGroupId)">
+													<i class="fa fa-eye white" aria-hidden="true"></i>
+												</button>
+											</span>
+											<span class="input-group-btn">
+												<button data-toggle="tooltip" data-placement="bottom"
+													title="Select Team Members"
+													[disabled]="partner.teamMemberGroupId==0" class="btn btn-info"
+													type="button" tabindex="-1" (click)="getTeamMembers(partner,i)">
+													<i class="fa"
+														[ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}"
+														aria-hidden="true"></i>
+												</button>
+											</span>
+										</div>
+										<span class="active-status" *ngIf="partner?.selectedTeamMemberIds?.length>0">
+											<strong>Selected Team Members:
+												{{partner?.selectedTeamMemberIds?.length}}</strong>
+											<a *ngIf="users?.length>1" (click)="applyForAll(partner)">
+												<strong><i class="fa fa-check"></i>Apply For All</strong>
+											</a>
+										</span>
+									</td>
+								</tr>
+								<!---XNFR-131-->
+								<tr *ngIf="partner?.expand">
+									<td colspan="5" class="bgc-lg">
+										<app-partner-team-member-group-team-members [currentPartner]="currentPartner"
+											(partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
+									</td>
+								</tr>
+							</ng-container>
+						</tbody>
+					</table>
+				</div>
+				<br>
+			</div>
+			<ngx-loading [show]="processingPartnersLoader || previewLoader"
+				[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+			<div class="modal-footer">
+				<button type="submit" class="button bgcolor-unset" (click)="validatePartners()" translate><span
+						class="btn Btn-Green transition">Continue</span></button>
+				<button type="submit" class="btn Btn-Gray" (click)="closeAssignContactAndMdfAmountPopup()"
+					translate>Close</button>
+			</div>
+		</div>
 	</div>
- </div>
- <!-- Group Preview Popup  (XNFR-85)-->
- <app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
- <!-- End of  Group Preview Popup -->
- <app-confirm-sweet-alert-util *ngIf="showSweetAlert" [parameterDto]="sweetAlertParameterDto" (notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
- <!---XNFR-278-->
- <ng-container *ngIf="mergeOptionClicked">
-	<app-copy-group-users-modal-popup [userListId]="selectedContactListId" [selectedUserIds]="selectedUserIdsForMerging" (copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>      
- </ng-container>
- 
-  <div *ngIf="contactService.isUnsubscribeContactModalPopup">
-	<app-unsubscribe-contact-modal [selectedUser] = "selectedUser" (notifyParent)="unsubscribeUserResult($event)">
+</div>
+<!-- Group Preview Popup  (XNFR-85)-->
+<app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId"
+	(previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
+<!-- End of  Group Preview Popup -->
+<app-confirm-sweet-alert-util *ngIf="showSweetAlert" [parameterDto]="sweetAlertParameterDto"
+	(notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
+<!---XNFR-278-->
+<ng-container *ngIf="mergeOptionClicked">
+	<app-copy-group-users-modal-popup [userListId]="selectedContactListId" [selectedUserIds]="selectedUserIdsForMerging"
+		(copyGroupUsersModalPopupEventEmitter)="copyGroupUsersModalPopupEventReceiver($event)"></app-copy-group-users-modal-popup>
+</ng-container>
+
+<div *ngIf="contactService.isUnsubscribeContactModalPopup">
+	<app-unsubscribe-contact-modal [selectedUser]="selectedUser" (notifyParent)="unsubscribeUserResult($event)">
 	</app-unsubscribe-contact-modal>
- </div>
- 
-   <div *ngIf="contactService.isresubscribeContactModalPopup && showEdit">
-	<app-resubscribe-contact-modal [selectedUser] = "selectedUser" (notifyParent)="resubscribeUserResult($event)">
+</div>
+
+<div *ngIf="contactService.isresubscribeContactModalPopup && showEdit">
+	<app-resubscribe-contact-modal [selectedUser]="selectedUser" (notifyParent)="resubscribeUserResult($event)">
 	</app-resubscribe-contact-modal>
- </div>
- 
- 
- 
+</div>
+
+<!---XNFR-342---->
+<app-share-unpublished-content #shareUnPublishedComponent
+	[hasCampaignAccess]="(authenticationService?.module?.isCampaign || authenticationService?.module?.isReDistribution)"
+	[hasDamAccess]="authenticationService?.module?.damAccess && checkingContactTypeName!='Contact'"
+	[hasLmsAccess]="authenticationService?.module?.lmsAccess && checkingContactTypeName!='Contact'"
+	[hasPlaybookAccess]="authenticationService?.module?.playbookAccess && checkingContactTypeName!='Contact'">
+</app-share-unpublished-content>

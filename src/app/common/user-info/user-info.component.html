@@ -1,82 +1,115 @@
-<div class="flex margin-flex align-tableimg-center mrgleft_0" >
-	<span *ngIf="true" class='profile' [style.background-color]="backgroudColor">
-	<span class='uppercase'> {{highlightLetter}} </span>
+<div class="flex margin-flex align-tableimg-center mrgleft_0 card-template">
+	<span *ngIf="true" class='profile img-templates' [style.background-color]="backgroudColor">
+		<span class='uppercase'> {{highlightLetter}} </span>
 	</span>
 	<span class="ml10" *ngIf="(userInfo?.firstName |slice:0:1)==null && (userInfo?.emailId |slice:0:1)==null 
 	   && (userInfo?.email |slice:0:1)==null">-
 	</span>
 	<span class="margin-left" *ngIf="!isPartnerEntityInfo">
-	  
-	   <ng-container *ngIf="isFromAdminList">
-		  <h5 *ngIf="userInfo?.firstName || userInfo?.lastName" class='ellipsis user-name'
-		   data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName || ''}} {{userInfo?.lastName || ''}}">
-			{{userInfo?.firstName | slice:0:15}}
-			 <span *ngIf="userInfo?.firstName?.length>15">..</span>
-			 &nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
-		  </h5>
-		   <!-- -Only First Name -->
-		  <h5 *ngIf="userInfo?.firstName" class='ellipsis user-name'><span  data-toggle="tooltip" data-placement="bottom"  title="{{userInfo?.firstName}}">{{userInfo?.firstName | slice:0:15}}</span>
-			 <span *ngIf="userInfo?.firstName?.length>15">..</span>
-		  </h5>
-		  <!-- -Only Last Name Name -->
-		  <h5 *ngIf="userInfo?.lastName" class='ellipsis user-name' >
-			<span data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.lastName}}">{{userInfo?.lastName | slice:0:15}}</span>
-			 <span *ngIf="userInfo?.lastName?.length>15">..</span>
-		  </h5>
-	   </ng-container>
-	   <h5 *ngIf="!isFromAdminList" class=''>
-		<span  data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName || ''}} {{userInfo?.lastName || ''}} ">
-			{{userInfo?.firstName | slice:0:15}} <span *ngIf="userInfo?.firstName?.length>15">..</span>
-		    &nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
-		</span>
-	   </h5>
-	   <h6 class='m0 user-email'>
-		  <a style="display: table;" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.emailId}}">{{userInfo?.emailId | slice:0:30}}<span *ngIf="userInfo?.emailId?.length>30">...</span></a>
-		  <p class="user-company mb-float" *ngIf="isPartnerEntityInfo" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.contactCompany}}"><span>{{userInfo?.contactCompany |slice:0:25}}</span><span *ngIf="userInfo?.contactCompany?.length>25">..</span></p>
-		  <p class="user-company mb-float" *ngIf="isContactCompanyInfo" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.contactCompany}}"><span>{{userInfo?.contactCompany |slice:0:25}}</span><span *ngIf="userInfo?.contactCompany?.length>25">..</span></p>
-		  <p class="user-company mb-float" *ngIf="isCompanyInfo" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.companyName}}"><span>{{userInfo?.companyName |slice:0:25}}</span><span *ngIf="userInfo?.companyName?.length>25">..</span></p>
-		  <p class="user-company mb-float" *ngIf="isPartnerEntityInfo" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.jobTitle}}"><span>{{userInfo?.jobTitle |slice:0:25}}</span><span *ngIf="userInfo?.jobTitle?.length>25">..</span></p>
-		  <span *ngIf="userInfo?.mobileNumber" >
-		  <a href="tel:{{userInfo?.mobileNumber}}"><i class="fa fa-phone" aria-hidden="true" style="padding-right: 4px;"></i> {{userInfo?.mobileNumber}}</a>
-		  </span>
-	   </h6>
-	   <h6 class='m0 user-email' *ngIf="isLeadInfo">
-		  <a style="display: table;" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.email}}">{{userInfo?.email | slice:0:30}}<span
-			 *ngIf="userInfo?.email?.length>30">...</span></a>
-		  <p class="user-company" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.company}}"><span>{{userInfo?.company |slice:0:25}}</span><span
-			 *ngIf="userInfo?.company?.length>25">..</span></p>
-		  <span *ngIf="userInfo?.phone" [class.disabled]="true"
-		  style="pointer-events: none !important; cursor: auto;position: relative !important;">
-		  {{userInfo?.phone}}
-	</span>
-	</h6>
+
+		<ng-container *ngIf="isFromAdminList">
+			<h5 *ngIf="userInfo?.firstName || userInfo?.lastName" class='ellipsis user-name' data-toggle="tooltip"
+				data-placement="bottom" title="{{userInfo?.firstName || ''}} {{userInfo?.lastName || ''}}">
+				{{userInfo?.firstName | slice:0:15}}
+				<span *ngIf="userInfo?.firstName?.length>15">..</span>
+				&nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
+			</h5>
+			<!-- -Only First Name -->
+			<h5 *ngIf="userInfo?.firstName" class='ellipsis user-name'><span data-toggle="tooltip"
+					data-placement="bottom" title="{{userInfo?.firstName}}">{{userInfo?.firstName | slice:0:15}}</span>
+				<span *ngIf="userInfo?.firstName?.length>15">..</span>
+			</h5>
+			<!-- -Only Last Name Name -->
+			<h5 *ngIf="userInfo?.lastName" class='ellipsis user-name'>
+				<span data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.lastName}}">{{userInfo?.lastName
+					| slice:0:15}}</span>
+				<span *ngIf="userInfo?.lastName?.length>15">..</span>
+			</h5>
+		</ng-container>
+		<h5 *ngIf="!isFromAdminList" class=''>
+			<span data-toggle="tooltip" data-placement="bottom"
+				title="{{userInfo?.firstName || ''}} {{userInfo?.lastName || ''}} ">
+				{{userInfo?.firstName | slice:0:15}} <span *ngIf="userInfo?.firstName?.length>15">..</span>
+				&nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
+			</span>
+		</h5>
+		<h6 class='m0 user-email'>
+			<a style="display: table;" data-toggle="tooltip" data-placement="bottom"
+				title="{{userInfo?.emailId}}">{{userInfo?.emailId | slice:0:30}}<span
+					*ngIf="userInfo?.emailId?.length>30">...</span></a>
+			<p class="user-company mb-float" *ngIf="isPartnerEntityInfo" data-toggle="tooltip" data-placement="bottom"
+				title="{{userInfo?.contactCompany}}"><span>{{userInfo?.contactCompany |slice:0:25}}</span><span
+					*ngIf="userInfo?.contactCompany?.length>25">..</span></p>
+			<p class="user-company mb-float" *ngIf="isContactCompanyInfo" data-toggle="tooltip" data-placement="bottom"
+				title="{{userInfo?.contactCompany}}"><span>{{userInfo?.contactCompany |slice:0:25}}</span><span
+					*ngIf="userInfo?.contactCompany?.length>25">..</span></p>
+			<p class="user-company mb-float" *ngIf="isCompanyInfo" data-toggle="tooltip" data-placement="bottom"
+				title="{{userInfo?.companyName}}"><span>{{userInfo?.companyName |slice:0:25}}</span><span
+					*ngIf="userInfo?.companyName?.length>25">..</span></p>
+			<p class="user-company mb-float" *ngIf="isPartnerEntityInfo" data-toggle="tooltip" data-placement="bottom"
+				title="{{userInfo?.jobTitle}}"><span>{{userInfo?.jobTitle |slice:0:25}}</span><span
+					*ngIf="userInfo?.jobTitle?.length>25">..</span></p>
+			<span *ngIf="userInfo?.mobileNumber">
+				<a href="tel:{{userInfo?.mobileNumber}}"><i class="fa fa-phone" aria-hidden="true"
+						style="padding-right: 4px;"></i> {{userInfo?.mobileNumber}}</a>
+			</span>
+		</h6>
+		<h6 class='m0 user-email' *ngIf="isLeadInfo">
+			<a style="display: table;" data-toggle="tooltip" data-placement="bottom"
+				title="{{userInfo?.email}}">{{userInfo?.email | slice:0:30}}<span
+					*ngIf="userInfo?.email?.length>30">...</span></a>
+			<p class="user-company" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.company}}">
+				<span>{{userInfo?.company |slice:0:25}}</span><span *ngIf="userInfo?.company?.length>25">..</span></p>
+			<span *ngIf="userInfo?.phone" [class.disabled]="true"
+				style="pointer-events: none !important; cursor: auto;position: relative !important;">
+				{{userInfo?.phone}}
+			</span>
+		</h6>
 	</span>
 	<span class="margin-left" *ngIf="isPartnerEntityInfo">
-	   <h6 class='m0 user-email'>
-		  <p class="user-company" *ngIf="isPartnerEntityInfo && userInfo?.companyName" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.companyName}}"><span>{{userInfo?.companyName |slice:0:25}}</span><span *ngIf="userInfo?.companyName?.length>25">..</span></p>
-		  <p class="user-company" *ngIf="isPartnerEntityInfo && !userInfo?.companyName" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.contactCompany}}"><span>{{userInfo?.contactCompany |slice:0:25}}</span><span *ngIf="userInfo?.contactCompany?.length>25">..</span></p>
-		  <p class="user-company" *ngIf="isContactCompanyInfo" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.contactCompany}}"><span>{{userInfo?.contactCompany |slice:0:25}}</span><span *ngIf="userInfo?.contactCompany?.length>25">..</span></p>
-		  <p class="user-company" *ngIf="isCompanyInfo" data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.companyName}}"><span>{{userInfo?.companyName |slice:0:25}}</span><span *ngIf="userInfo?.companyName?.length>25">..</span></p>
-	   </h6>
-	   <br>
-	   <!-- -Only First Name -->
-	   <h5 *ngIf="userInfo?.firstName && !userInfo?.lastName" class='ellipsis user-name' data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName}}">{{userInfo?.firstName | slice:0:15}}
-		  <span *ngIf="userInfo?.firstName?.length>15">..</span>
-	   </h5>
-	   <!-- -Only Last Name Name -->
-	   <h5 *ngIf="!userInfo?.firstName && userInfo?.lastName" class='ellipsis user-name' data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.lastName}}">{{userInfo?.lastName | slice:0:15}}
-		  <span *ngIf="userInfo?.lastName?.length>15">..</span>
-	   </h5>
-	   <h5 *ngIf="userInfo?.lastName && userInfo?.firstName" class='ellipsis user-name' data-toggle="tooltip" data-placement="bottom" title="{{userInfo?.firstName}}">{{userInfo?.firstName | slice:0:15}}
-		  <span *ngIf="userInfo?.firstName?.length>15">..</span>
-		  &nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
-	   </h5>
-	   <p class="user-company mb-float" *ngIf="isPartnerEntityInfo"><span>{{userInfo?.jobTitle |slice:0:25}}</span><span *ngIf="userInfo?.jobTitle?.length>25">..</span></p>
-	   <td>
-		  <a class="detailstext" style="display: table;" data-toggle="tooltip" data-placement="bottom"  title="{{userInfo?.emailId}}">{{userInfo?.emailId | slice:0:30}}<span *ngIf="userInfo?.emailId?.length>30">...</span></a>
-		  <span *ngIf="userInfo?.mobileNumber">
-		  <a href="tel:{{userInfo?.mobileNumber}}"><i class="fa fa-phone" aria-hidden="true" style="padding-right: 4px;"></i>{{userInfo?.mobileNumber}}</a>
-		  </span>
-	   </td>
+		<h6 class='m0 user-email'>
+			<p class="user-company" *ngIf="isPartnerEntityInfo && userInfo?.companyName" data-toggle="tooltip"
+				data-placement="bottom" title="{{userInfo?.companyName}}"><span>{{userInfo?.companyName
+					|slice:0:25}}</span><span *ngIf="userInfo?.companyName?.length>25">..</span></p>
+					
+			<p class="user-company" *ngIf="isPartnerEntityInfo && !userInfo?.companyName" data-toggle="tooltip"
+				data-placement="bottom" title="{{userInfo?.displayContactCompany}}"><span>{{userInfo?.displayContactCompany
+					|slice:0:25}}</span><span *ngIf="userInfo?.displayContactCompany?.length>25">..</span></p>
+			
+			<p class="user-company" *ngIf="isContactCompanyInfo" data-toggle="tooltip" data-placement="bottom"
+				title="{{userInfo?.contactCompany}}"><span>{{userInfo?.contactCompany |slice:0:25}}</span><span
+					*ngIf="userInfo?.contactCompany?.length>25">..</span></p>
+			
+			<p class="user-company" *ngIf="isCompanyInfo" data-toggle="tooltip" data-placement="bottom"
+				title="{{userInfo?.companyName}}"><span>{{userInfo?.companyName |slice:0:25}}</span><span
+					*ngIf="userInfo?.companyName?.length>25">..</span></p>
+		</h6>
+		<br>
+		<!-- -Only First Name -->
+		<h5 *ngIf="userInfo?.firstName && !userInfo?.lastName" class='ellipsis user-name' data-toggle="tooltip"
+			data-placement="bottom" title="{{userInfo?.firstName}}">{{userInfo?.firstName | slice:0:15}}
+			<span *ngIf="userInfo?.firstName?.length>15">..</span>
+		</h5>
+		<!-- -Only Last Name Name -->
+		<h5 *ngIf="!userInfo?.firstName && userInfo?.lastName" class='ellipsis user-name' data-toggle="tooltip"
+			data-placement="bottom" title="{{userInfo?.lastName}}">{{userInfo?.lastName | slice:0:15}}
+			<span *ngIf="userInfo?.lastName?.length>15">..</span>
+		</h5>
+		<h5 *ngIf="userInfo?.lastName && userInfo?.firstName" class='ellipsis user-name' data-toggle="tooltip"
+			data-placement="bottom" title="{{userInfo?.firstName}}">{{userInfo?.firstName | slice:0:15}}
+			<span *ngIf="userInfo?.firstName?.length>15">..</span>
+			&nbsp;{{userInfo?.lastName | slice:0:12}}<span *ngIf="userInfo?.lastName?.length>12">..</span>
+		</h5>
+		<p class="user-company mb-float" *ngIf="isPartnerEntityInfo"><span>{{userInfo?.jobTitle
+				|slice:0:25}}</span><span *ngIf="userInfo?.jobTitle?.length>25">..</span></p>
+		<td>
+			<a class="detailstext" style="display: table;" data-toggle="tooltip" data-placement="bottom"
+				title="{{userInfo?.emailId}}">{{userInfo?.emailId | slice:0:30}}<span
+					*ngIf="userInfo?.emailId?.length>30">...</span></a>
+			<span *ngIf="userInfo?.mobileNumber">
+				<a href="tel:{{userInfo?.mobileNumber}}"><i class="fa fa-phone" aria-hidden="true"
+						style="padding-right: 4px;"></i>{{userInfo?.mobileNumber}}</a>
+			</span>
+		</td>
 	</span>
- </div>
+</div>

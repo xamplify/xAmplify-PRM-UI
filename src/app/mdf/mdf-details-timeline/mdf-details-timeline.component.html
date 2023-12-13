@@ -4,153 +4,171 @@
       <app-modal-popup-loader></app-modal-popup-loader>
    </ng-container>
    <ng-container *ngIf="!initLoader">
-    <div class="page-bar">
-        <ul class="page-breadcrumb">
-           <li>
-              <i class="fa fa-home" aria-hidden="true"></i> 
-              <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
-              <i class="fa fa-angle-right" aria-hidden="true"></i>
-           </li>
-           <li>
-            <a (click)="goToSelectMdfPage()" translate>MDF</a>  
-             <i class="fa fa-angle-right" aria-hidden="true"></i>
-           </li>
-           <li>
-            <a (click)="goBack()" translate>Manage MDF Details</a>  
-             <i class="fa fa-angle-right" aria-hidden="true"></i>
-           </li>
-           <li><a translate>Timeline</a></li>
-        </ul>
-        <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
-           <i class="fa fa-times" aria-hidden="true"></i>
-       </a>
-       <a title="Refresh" class="close-circle xamp-margin-left-icon" (click)="refreshHistory()" aria-hidden="true">
-           <i class="fa fa-refresh" aria-hidden="true"></i>
-       </a>
-     </div>
-   <div class="row">
-      <div class="col-md-12 col-lg-12">
-         <div class="portlet light" style="height:198px;">
-            <div class="portlet-title">
-                <div class="caption" translate>
-                   {{authenticationService?.partnerModule?.customName}} MDF Balances
-                </div>
-             </div>
-            <div class="row" style="margin-top: 20px;">
-              <app-box-loader [countLoader]=4 *ngIf="tilesLoader"></app-box-loader>
-               <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 40px;padding-right: 30px;">
-                  <div class="row">
-                     <div  id="vendor-details-tile" class="{{tileClass}}" style="border: 1px solid lightgrey;border-radius: 5px;padding-left: 25px;">
-                        <div class="row">
-                            <div class="flex margin-flex">
-                                <span class='profile'>
+      <div class="page-bar">
+         <ul class="page-breadcrumb">
+            <li>
+               <i class="fa fa-home" aria-hidden="true"></i>
+               <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+               <a (click)="goToSelectMdfPage()" translate>MDF</a>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+               <a (click)="goBack()" translate>Manage MDF Details</a>
+               <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li><a translate>Timeline</a></li>
+         </ul>
+         <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
+            <i class="fa fa-times" aria-hidden="true"></i>
+         </a>
+         <a title="Refresh" class="close-circle xamp-margin-left-icon" (click)="refreshHistory()" aria-hidden="true">
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+         </a>
+      </div>
+      <div class="row">
+         <div class="col-md-12 col-lg-12">
+            <div class="portlet light" style="height:198px;">
+               <div class="portlet-title">
+                  <div class="caption" translate>
+                     {{authenticationService?.partnerModule?.customName}} MDF Balances
+                  </div>
+               </div>
+               <div class="row" style="margin-top: 20px;">
+                  <app-box-loader [countLoader]=4 *ngIf="tilesLoader"></app-box-loader>
+                  <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 40px;padding-right: 30px;">
+                     <div class="row">
+                        <div id="vendor-details-tile" class="{{tileClass}}"
+                           style="border: 1px solid lightgrey;border-radius: 5px;padding-left: 25px;">
+                           <div class="row">
+                              <div class="flex margin-flex card-template">
+                                 <span class='profile img-templates'>
                                     <span class='uppercase'>{{mdfPartnerDto?.contactCompany |slice:0:1}}</span>
-                                    </span>
-                                    <span class="margin-left" style="margin-left: 20px;">
-                                        <h6 class='m0 user-email' *ngIf="mdfPartnerDto?.contactCompany?.length>0">
-                                            <p class="user-company" title="{{mdfPartnerDto?.contactCompany}}">
-                                                <span>{{mdfPartnerDto?.contactCompany |slice:0:23}}</span>
-                                                <span *ngIf="mdfPartnerDto?.contactCompany?.length>23">..</span>
-                                            </p>
-                                          </h6>
-                                          <br>
-                                          <h5 *ngIf="mdfPartnerDto?.fullName?.length>0" class='ellipsis user-name' title="{{mdfPartnerDto?.fullName}}">
-                                              {{mdfPartnerDto?.fullName | slice:0:27}}
-                                            <span *ngIf="mdfPartnerDto?.fullName?.length>27">..</span>
-                                           </h5>
-                                           <a class="textBreak" style="display: table;" title="{{mdfPartnerDto?.emailId}}">
-                                            {{mdfPartnerDto?.emailId | slice:0:30}}<span *ngIf="mdfPartnerDto?.emailId?.length>30">...</span></a>
-                                    </span>
-                                </div>
+                                 </span>
+                                 <span class="margin-left" style="margin-left: 20px;">
+                                    <h6 class='m0 user-email' *ngIf="mdfPartnerDto?.contactCompany?.length>0">
+                                       <p class="user-company" title="{{mdfPartnerDto?.contactCompany}}">
+                                          <span>{{mdfPartnerDto?.contactCompany |slice:0:23}}</span>
+                                          <span *ngIf="mdfPartnerDto?.contactCompany?.length>23">..</span>
+                                       </p>
+                                    </h6>
+                                    <br>
+                                    <h5 *ngIf="mdfPartnerDto?.fullName?.length>0" class='ellipsis user-name'
+                                       title="{{mdfPartnerDto?.fullName}}">
+                                       {{mdfPartnerDto?.fullName | slice:0:27}}
+                                       <span *ngIf="mdfPartnerDto?.fullName?.length>27">..</span>
+                                    </h5>
+                                    <a class="textBreak" style="display: table;" title="{{mdfPartnerDto?.emailId}}">
+                                       {{mdfPartnerDto?.emailId | slice:0:30}}<span
+                                          *ngIf="mdfPartnerDto?.emailId?.length>30">...</span></a>
+                                 </span>
+                              </div>
+                           </div>
                         </div>
-                     </div>
-                     <div title="$ {{mdfPartnerDto?.totalBalance}}" class="{{tileClass}} tiles_hover_effect" style="padding-right: 3px;">
-                        <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor tiles_bradius">
-                           <div class="visual">
-                              <i aria-hidden="true" class=""></i>
-                           </div>
-                           <div class="details">
-                              <div class="number">{{mdfPartnerDto?.totalBalanceInString}}</div>
-                              <div class="desc">Total MDF Balance</div>
-                           </div>
-                           <span class="morePadding">
-                        <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
-                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                        </span>
-                        </a>
-                     </div>
-                     <div title="$ {{mdfPartnerDto?.usedBalance}}" class="{{tileClass}} tiles_hover_effect" style="padding-right: 3px;">
-                        <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor tiles_bradius">
-                           <div class="visual">
-                              <i aria-hidden="true" class=""></i>
-                           </div>
-                           <div class="details">
-                              <div class="number">{{mdfPartnerDto?.usedBalanceInString}}</div>
-                              <div class="desc">Total Used Balance</div>
-                           </div>
-                           <span class="morePadding">
-                        <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
-                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                        </span>
-                        </a>
-                     </div>
-                     <div title="$ {{mdfPartnerDto?.availableBalance}}" class="{{tileClass}} tiles_hover_effect" style="padding-right: 3px;">
-                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor tiles_bradius">
-                           <div class="visual">
-                              <i aria-hidden="true" class=""></i>
-                           </div>
-                           <div class="details">
-                              <div class="number">{{mdfPartnerDto?.availableBalanceInString}}</div>
-                              <div class="desc">Total Available Balance</div>
-                           </div>
-                           <span class="morePadding">
-                        <a  translate="" ng-reflect-translate="" class="more hidden">Detailed view  
-                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                        </span>
-                        </a>
+                        <div title="$ {{mdfPartnerDto?.totalBalance}}" class="{{tileClass}} tiles_hover_effect"
+                           style="padding-right: 3px;">
+                           <a
+                              class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor tiles_bradius">
+                              <div class="visual">
+                                 <i aria-hidden="true" class=""></i>
+                              </div>
+                              <div class="details">
+                                 <div class="number">{{mdfPartnerDto?.totalBalanceInString}}</div>
+                                 <div class="desc">Total MDF Balance</div>
+                              </div>
+                              <span class="morePadding">
+                                 <a translate="" ng-reflect-translate="" class="more hidden">Detailed view
+                                    <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                              </span>
+                           </a>
+                        </div>
+                        <div title="$ {{mdfPartnerDto?.usedBalance}}" class="{{tileClass}} tiles_hover_effect"
+                           style="padding-right: 3px;">
+                           <a
+                              class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor tiles_bradius">
+                              <div class="visual">
+                                 <i aria-hidden="true" class=""></i>
+                              </div>
+                              <div class="details">
+                                 <div class="number">{{mdfPartnerDto?.usedBalanceInString}}</div>
+                                 <div class="desc">Total Used Balance</div>
+                              </div>
+                              <span class="morePadding">
+                                 <a translate="" ng-reflect-translate="" class="more hidden">Detailed view
+                                    <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                              </span>
+                           </a>
+                        </div>
+                        <div title="$ {{mdfPartnerDto?.availableBalance}}" class="{{tileClass}} tiles_hover_effect"
+                           style="padding-right: 3px;">
+                           <a
+                              class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor tiles_bradius">
+                              <div class="visual">
+                                 <i aria-hidden="true" class=""></i>
+                              </div>
+                              <div class="details">
+                                 <div class="number">{{mdfPartnerDto?.availableBalanceInString}}</div>
+                                 <div class="desc">Total Available Balance</div>
+                              </div>
+                              <span class="morePadding">
+                                 <a translate="" ng-reflect-translate="" class="more hidden">Detailed view
+                                    <i aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                              </span>
+                           </a>
+                        </div>
                      </div>
                   </div>
                </div>
             </div>
          </div>
       </div>
-   </div>
- 
-   <div class="row">
-    <div class="col-md-12 col-lg-12">
-       <div class="portlet light">
-          <div class="portlet-title">
-             <div class="caption" translate>
-                MDF Amount History
-             </div>
-          </div>
-          <app-modal-popup-loader *ngIf="timeLineLoader"></app-modal-popup-loader>
-          <div  class="row" style="margin-top: 20px;" *ngIf="!timeLineLoader">
-            <div class="timeline">
-                <div class="line text-muted"></div>
-                <article *ngFor="let timeLine of mdfDetailsTimeLineHistory" class="panel panel-default panel-outline" style="border-style: none !important;">
-                    <div class="panel-heading icon">
-                        <img class="img-circle mdf-style" src="{{timeLine?.profilePicturePath}}" alt="">
-                    </div>
-                    <div class="panel-body pt0">
-                        <p>
-                          <strong style="color:#65b6e4;">{{timeLine?.displayName}}</strong> 
-                          <button [attr.class]="timeLine.mdfAmountType=='Added' ? 'btn fund-added btn-xs cmargin' : 'btn fund-removed btn-xs cmargin'">{{timeLine?.mdfAmountType}}</button>  
-                          <strong>$ {{timeLine?.mdfAmount | number:'1.0':'en-US'}}</strong> On
-                           <strong>
-                              <span *ngIf="!referenceService.isSafariBrowser()">{{timeLine?.displayTime |date:'mediumDate'}} {{timeLine?.displayTime |date:'shortTime'}}</span>
-                              <span *ngIf="referenceService.isSafariBrowser()">{{timeLine?.displayTime}}</span>
-                           </strong>
-                          <p *ngIf="timeLine?.allocationDateInString?.length>0">Allocation Date: <strong>{{timeLine?.allocationDateInString}}</strong></p>
-                          <p *ngIf="timeLine?.expirationDateInString?.length>0">Expiration Date: <strong>{{timeLine?.expirationDateInString}}</strong></p>
-                          <p *ngIf="timeLine?.description?.length>0">Description: <strong>{{timeLine?.description}}</strong></p>
-                    </div>
-                </article>
+
+      <div class="row">
+         <div class="col-md-12 col-lg-12 pt_12">
+            <div class="portlet light">
+               <div class="portlet-title">
+                  <div class="caption" translate>
+                     MDF Amount History
+                  </div>
+               </div>
+               <app-modal-popup-loader *ngIf="timeLineLoader"></app-modal-popup-loader>
+               <div class="row" style="margin-top: 20px;" *ngIf="!timeLineLoader">
+                  <div class="timeline">
+                     <div class="line text-muted"></div>
+                     <article *ngFor="let timeLine of mdfDetailsTimeLineHistory"
+                        class="panel panel-default panel-outline" style="border-style: none !important;">
+                        <div class="panel-heading icon">
+                           <img class="img-circle mdf-style" src="{{timeLine?.profilePicturePath}}" alt="">
+                        </div>
+                        <div class="panel-body pt0">
+                           <p>
+                              <strong style="color:#65b6e4;">{{timeLine?.displayName}}</strong>
+                              <button
+                                 [attr.class]="timeLine.mdfAmountType=='Added' ? 'btn fund-added btn-xs cmargin' : 'btn fund-removed btn-xs cmargin'">{{timeLine?.mdfAmountType}}</button>
+                              <strong>$ {{timeLine?.mdfAmount | number:'1.0':'en-US'}}</strong> On
+                              <strong>
+                                 <span *ngIf="!referenceService.isSafariBrowser()">{{timeLine?.displayTime
+                                    |date:'mediumDate'}} {{timeLine?.displayTime |date:'shortTime'}}</span>
+                                 <span *ngIf="referenceService.isSafariBrowser()">{{timeLine?.displayTime}}</span>
+                              </strong>
+                           <p *ngIf="timeLine?.allocationDateInString?.length>0">Allocation Date:
+                              <strong>{{timeLine?.allocationDateInString}}</strong>
+                           </p>
+                           <p *ngIf="timeLine?.expirationDateInString?.length>0">Expiration Date:
+                              <strong>{{timeLine?.expirationDateInString}}</strong>
+                           </p>
+                           <p *ngIf="timeLine?.description?.length>0">Description:
+                              <strong>{{timeLine?.description}}</strong>
+                           </p>
+                        </div>
+                     </article>
+                  </div>
+               </div>
             </div>
-          </div>
-       </div>
-    </div>
- </div>
-</ng-container>
- 
+         </div>
+      </div>
+   </ng-container>
+
 </div>

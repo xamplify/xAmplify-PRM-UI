@@ -5,6 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import { CompanyProfile } from '../models/company-profile';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { CampaignAccess } from '../../../campaigns/models/campaign-access';
+import { CustomLoginScreen } from 'app/vanity-url/models/custom-login-screen';
+import { CompanyLoginTemplateActive } from 'app/email-template/models/company-login-template-active';
 
 
 @Injectable()
@@ -113,7 +115,23 @@ export class CompanyProfileService {
             .catch(this.handleError);
         //   }
     }
-
+    /*** XNFR-233 */
+    updateCustomLogInScreenData(customLoginScreen: CustomLoginScreen){
+        return this.http.post(this.URL + "company-profile/customLogIn/"+ this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token, customLoginScreen)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    saveOrUpdateTemplateForCompany(companyLoginTemplateActive: CompanyLoginTemplateActive){
+        return this.http.post(this.URL + "company-profile/activateLoginTemplate?access_token=" + this.authenticationService.access_token, companyLoginTemplateActive)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    // getLogInScreenDetails(){
+    //     return this.http.get(this.URL + "company-profile/customLogInScreenDetails/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, "")
+    //         .map(this.extractData)
+    //         .catch(this.handleError);
+    // }
+    /** XNFR-233 */
     private extractData(res: Response) {
         let body = res.json();
         return body || {};
@@ -123,6 +141,7 @@ export class CompanyProfileService {
         return Observable.throw(error);
     }
     
+
        getPartnerDetails() {
          return this.http.get(this.authenticationService.REST_URL + "userlists/partner-details/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, "")
             .map(this.extractData)

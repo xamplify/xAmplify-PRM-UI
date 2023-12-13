@@ -19,12 +19,14 @@ export class TrackAssetDetailsComponent implements OnInit {
   @Input() teamMemberId: any;
   @Input() type: any;
   @Input()  isDetailedAnalytics: boolean;
+  @Input() applyFilter: boolean;
   @Input() selectedPartnerCompanyIds: any = [];
 
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   searchKey: string = "";
 	pagination: Pagination = new Pagination();
+  scrollClass: any; 
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -47,17 +49,22 @@ export class TrackAssetDetailsComponent implements OnInit {
     this.pagination.partnerCompanyId = this.partnerCompanyId;
     this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.pagination.detailedAnalytics = this.isDetailedAnalytics;
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
     this.pagination.maxResults = 6;
     this.pagination.lmsType = this.type;
-    if (this.teamMemberId !== undefined && this.teamMemberId != null && this.teamMemberId > 0) {
-      this.pagination.teamMemberId = this.teamMemberId;
-    }    
+    this.pagination.teamMemberId = this.teamMemberId;
     this.parterService.getTrackAssetDetails(this.pagination).subscribe(
 			(response: any) => {	
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {          
           this.sortOption.totalRecords = response.data.totalRecords;
 				  this.pagination.totalRecords = response.data.totalRecords;
+          if(pagination.totalRecords == 0){
+            this.scrollClass = 'noData'
+          } else {
+            this.scrollClass = 'tableHeightScroll'
+          }
+
 				  this.pagination = this.pagerService.getPagedItems(this.pagination, response.data.list);
         }        	
 			},

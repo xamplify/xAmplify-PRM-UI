@@ -94,8 +94,8 @@
               campaignType === 'SOCIAL' ||
               campaignType === 'SURVEY'
               ">
-                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter yellow-gold forbidden" style="display: flex"
-                        [class.disabled]="
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter yellow-gold forbidden"
+                        style="display: flex" [class.disabled]="
                  !isPartnerEnabledAnalyticsAccess ? true : null
                  ">
                         <div class="visual">
@@ -134,7 +134,8 @@
                               }})
                            </div>
                            <div class="camp-number">
-                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignName }}">{{
+                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom"
+                                 title="{{ campaign.campaignName }}">{{
                                  campaign.campaignName | slice : 0 : 12
                                  }}</strong>
                               <span *ngIf="campaign.campaignName?.length > 17">...</span>
@@ -159,7 +160,8 @@
                         <div class="camp-details">
                            <div class="camp-title">Video Info</div>
                            <div class="camp-number">
-                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignVideoFile.title }}">{{
+                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom"
+                                 title="{{ campaign.campaignVideoFile.title }}">{{
                                  campaign.campaignVideoFile.title | slice : 0 : 12
                                  }}</strong>
                               <span *ngIf="campaign.campaignVideoFile.title?.length > 17">...</span>
@@ -171,9 +173,11 @@
                      </a>
                   </div>
                   <!-- ****************video not found info**************** -->
-                  <div class="pl10 pr10 col-xs-12 blur tiles_hover_effect" [ngClass]="{ 'col-sm-4': campaignType === 'VIDEO' }"
+                  <div class="pl10 pr10 col-xs-12 blur tiles_hover_effect"
+                     [ngClass]="{ 'col-sm-4': campaignType === 'VIDEO' }"
                      *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId == 0">
-                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter purple-soft blur" style="display: flex">
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter purple-soft blur"
+                        style="display: flex">
                         <div class="visual">
                            <i class="fa fa-video-camera" aria-hidden="true"></i>
                         </div>
@@ -191,14 +195,16 @@
                   <!-- ****************Event campaign info**************** -->
                   <div class="pl10 pr10 col-xs-12 tiles_hover_effect" *ngIf="campaignType === 'EVENT'"
                      [ngClass]="{ 'col-sm-4': campaignType === 'EVENT' }">
-                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter red-soft forbidden" style="display: flex">
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter red-soft forbidden"
+                        style="display: flex">
                         <div class="visual">
                            <i class="fa fa-bullhorn" aria-hidden="true"></i>
                         </div>
                         <div class="camp-details">
                            <div class="camp-title">{{ campaignType }}</div>
                            <div class="camp-number">
-                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignName }}">{{
+                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom"
+                                 title="{{ campaign.campaignName }}">{{
                                  campaign.campaignName | slice : 0 : 25
                                  }}</strong>
                               <span *ngIf="campaign.campaignName?.length > 25">..</span>
@@ -234,7 +240,8 @@
                         <div class="camp-details">
                            <div class="camp-title">Email Info</div>
                            <div class="camp-number">
-                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.emailTemplate.name }}">{{
+                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="bottom"
+                                 title="{{ campaign.emailTemplate.name }}">{{
                                  campaign.emailTemplate.name | slice : 0 : 12
                                  }}</strong>
                               <span *ngIf="campaign.emailTemplate.name?.length > 12">...</span>
@@ -263,7 +270,8 @@
   }" *ngIf="
   campaignType === 'LANDINGPAGE' && campaign.landingPageId > 0
   ">
-                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" style="display: flex" [class.disabled]="
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft"
+                        [class.disabled]="
      !isPartnerEnabledAnalyticsAccess ? true : null
      ">
                         <div class="visual">
@@ -272,7 +280,8 @@
                         <div class="camp-details">
                            <div class="camp-title">Page Info</div>
                            <div class="camp-number">
-                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="top" title="{{ campaign.landingPage.name }}">{{ campaign.landingPage.name |
+                              <strong class="m0 StongTextdc" data-toggle="tooltip" data-placement="top"
+                                 title="{{ campaign.landingPage.name }}">{{ campaign.landingPage.name |
                                  slice : 0 : 12 }}</strong>
                               <span *ngIf="campaign.landingPage.name?.length > 12">...</span>
                            </div>
@@ -280,12 +289,12 @@
                               <span>Click for preview</span>
                            </div>
                         </div>
-                        <div class="actions-block override-actions" id="landing-page-icons">
-                           <a data-toggle="tooltip" data-placement="top" title="Preview"
+                        <div class="actions-block override-actions d-inlineblock" id="landing-page-icons">
+                           <a  data-toggle="tooltip" data-placement="top" title="Preview"
                               (click)="showLandingPagePreview(campaign)">
                               <i class="fa fa-eye" aria-hidden="true"></i>
                            </a>
-                           <a *ngIf="campaign.formsCount > 0" routerLink="/home/forms/clpf/{{ campaign.campaignId }}"
+                           <a class="mr-2" *ngIf="campaign.formsCount > 0" routerLink="/home/forms/clpf/{{ campaign.campaignId }}"
                               data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Count">
                               <i class="fa fa-wpforms" aria-hidden="true"></i>
                               <span class="badge" id="notification-color">{{
@@ -300,7 +309,7 @@
                                  campaign.campaignLandingPageAnalyticsCount
                                  }}</span>
                            </a>
-                           <a class="disabled" *ngIf="campaign.campaignLandingPageAnalyticsCount == 0"
+                           <a class="disabled " *ngIf="campaign.campaignLandingPageAnalyticsCount == 0"
                               data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                               title="Page Analytics">
                               <i class="fa fa-line-chart" aria-hidden="true"></i>
@@ -315,7 +324,8 @@
                   <div [hidden]="
   campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE'
   " class="pl10 pr10 col-xs-12 col-sm-4 blur tiles_hover_effect" *ngIf="campaign.selectedEmailTemplateId == 0">
-                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" style="cursor: default; display: flex">
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft"
+                        style="cursor: default; display: flex">
                         <div class="visual">
                            <i class="fa fa-envelope-open" aria-hidden="true"></i>
                         </div>
@@ -341,8 +351,8 @@
      'col-sm-6': campaignType === 'SOCIAL',
      forbidden: !isPartnerEnabledAnalyticsAccess ? true : null
      }">
-                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter green-soft" (click)="showContactListModal()"
-                        [class.disabled]="
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter green-soft"
+                        (click)="showContactListModal()" [class.disabled]="
   !isPartnerEnabledAnalyticsAccess ? true : null
   " style="display: flex">
                         <div class="visual">
@@ -356,7 +366,8 @@
                               List Info
                            </div>
                            <div class="camp-number">
-                              <strong class="m0 StongTextdc" *ngIf="!campaign?.oneClickLaunch">{{ campaingContactLists?.length }}
+                              <strong class="m0 StongTextdc" *ngIf="!campaign?.oneClickLaunch">{{
+                                 campaingContactLists?.length }}
                                  List(s)</strong>
                               <strong class="m0" *ngIf="campaign?.oneClickLaunch">{{ campaingContactLists?.length }}
                                  Shared List(s)</strong>
@@ -600,7 +611,7 @@
                      [hidden]="mainLoader || hasClientError || !campaign.emailNotification">
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE' || campaignType === 'SURVEY'">
-                        <button class="portlet light color1-invert crcb lt-blue-c"
+                        <button class="portlet light color1-invert crcb lt-blue-c detail_card"
                            (click)="emailActionDetails(campaign.campaignId, 'recipients', emailActionDetailsPagination)"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.totalRecipients < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -615,7 +626,7 @@
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
-                        <button class="portlet light color1-invert crcb lt-green-c"
+                        <button class="portlet light color1-invert crcb lt-green-c detail_card"
                            (click)="emailActionDetails(campaign.campaignId, 'sent', emailActionDetailsPagination)"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.emailSentCount < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -631,7 +642,7 @@
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'"
                         [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-                        <button class="portlet light color1-invert crcb tk-blue-c"
+                        <button class="portlet light color1-invert crcb tk-blue-c detail_card"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            (click)="emailActionDetails(campaign.campaignId, 'deliverability', emailActionDetailsPagination)"
                            [disabled]="campaignReport.deliveredCount < 1  || !isPartnerEnabledAnalyticsAccess">
@@ -646,7 +657,7 @@
                      </div>
                      <div *ngIf="campaignType != 'SOCIAL'" class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         [hidden]="mainLoader || hasClientError" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-                        <button class="portlet light color1-invert crcb vlt-blue-c"
+                        <button class="portlet light color1-invert crcb vlt-blue-c detail_card"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"
                            [disabled]="campaignReport.emailOpenCount < 1  || !isPartnerEnabledAnalyticsAccess">
@@ -662,7 +673,7 @@
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'"
                         [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-                        <button class="portlet light color1-invert crcb pure-blue-c"
+                        <button class="portlet light color1-invert crcb pure-blue-c detail_card"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"
                            [disabled]="campaignReport.emailOpenCount < 1  || !isPartnerEnabledAnalyticsAccess">
@@ -679,7 +690,7 @@
                         [ngClass]="{'hidden': campaignType === 'SOCIAL','forbidden' :!isDataShare ?true:null}">
                         <!----This is For Vendor/Partner------->
                         <ng-container *ngIf="!isNavigatedThroughAnalytics">
-                           <button class="portlet light color1-invert crcb black-blue-c" (click)="
+                           <button class="portlet light color1-invert crcb black-blue-c detail_card" (click)="
   emailActionList(
   campaign.campaignId,
   'click',
@@ -716,7 +727,7 @@
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'"
                         [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}">
-                        <button class="portlet light color1-invert crcb y-b-c"
+                        <button class="portlet light color1-invert crcb y-b-c detail_card"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
                            [disabled]="campaignReport.emailClickedCount < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -731,7 +742,7 @@
                      </div>
                      <div [hidden]="mainLoader || hasClientError" class="col-xs-6 col-sm-3 col-md-2 col-lg-2 p-5x"
                         *ngIf="campaignType === 'VIDEO'" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-                        <button class="portlet light color1-invert crcb b-b-c"
+                        <button class="portlet light color1-invert crcb b-b-c detail_card"
                            (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"
                            [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                            [disabled]="campaignReport.usersWatchCount < 1 || !isDataShare">
@@ -746,7 +757,7 @@
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
-                        <button class="portlet light color1-invert crcb r-b-c"
+                        <button class="portlet light color1-invert crcb r-b-c detail_card"
                            (click)="emailActionDetails(campaign.campaignId, 'hardbounce', emailActionDetailsPagination)"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.hardBounce < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -761,7 +772,7 @@
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
-                        <button class="portlet light color1-invert crcb h-r-c"
+                        <button class="portlet light color1-invert crcb h-r-c detail_card"
                            (click)="emailActionDetails(campaign.campaignId, 'softbounce', emailActionDetailsPagination)"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.softBounce < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -776,7 +787,7 @@
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
-                        <button class="portlet light color1-invert crcb r-r-c"
+                        <button class="portlet light color1-invert crcb r-r-c detail_card"
                            (click)="emailActionDetails(campaign.campaignId, 'unsubscribe', emailActionDetailsPagination)"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.unsubscribed < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -791,7 +802,7 @@
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts">
-                        <button class="portlet light color1-invert crcb vlt-b-c" (click)="showCampaignLeads()"
+                        <button class="portlet light color1-invert crcb vlt-b-c detail_card" (click)="showCampaignLeads()"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.leadCount < 1 || !isPartnerEnabledAnalyticsAccess">
                            <div class="portlet-body text-center">
@@ -805,7 +816,7 @@
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts">
-                        <button class="portlet light color1-invert crcb lt-g-b-c" (click)="showCampaignDeals()"
+                        <button class="portlet light color1-invert crcb lt-g-b-c detail_card" (click)="showCampaignDeals()"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.dealCount < 1 || !isPartnerEnabledAnalyticsAccess">
                            <div class="portlet-body text-center">
@@ -952,7 +963,7 @@
                                     </h2>
                                     <h6 class="percentage-text">Viewed</h6>
                                  </section>
-                                 <h5  class="percentageBelowHeading" style="
+                                 <h5 class="percentageBelowHeading" style="
                                     text-align: center;
                                     color: #00a6e8;
                                     margin-top: 3.5em;
@@ -984,7 +995,7 @@
                                     </h2>
                                     <h6 class="percentage-text">Viewed</h6>
                                  </section>
-                                 <h5  class="percentageBelowHeading" style="
+                                 <h5 class="percentageBelowHeading" style="
                                     text-align: center;
                                     color: #00a6e8;
                                     margin-top: 3.5em;
@@ -1034,25 +1045,25 @@
                                  </span>
                               </div>
                               <div class="move-position-left">
-                              <div class="col-xs-5 col-sm-2" style="margin-top: -4px; padding-left: 0px" *ngIf="
+                                 <div class="col-xs-5 col-sm-2" style="margin-top: -4px; padding-left: 0px" *ngIf="
                                  campaignType === 'VIDEO' ||
                                  campaignType === 'REGULAR' ||
                                  campaignType === 'SURVEY'
                                  ">
-                                 <div class="btn-group pull-right" style="cursor: pointer; color: #7d8c98">
-                                    <div class="">
-                                       <select class="form-control" [(ngModel)]="selectedCampaignSortedOption"
-                                          (ngModelChange)="campaignViewSortBy($event)">
-                                          <option *ngFor="
+                                    <div class="btn-group pull-right" style="cursor: pointer; color: #7d8c98">
+                                       <div class="">
+                                          <select class="form-control" [(ngModel)]="selectedCampaignSortedOption"
+                                             (ngModelChange)="campaignViewSortBy($event)">
+                                             <option *ngFor="
                                              let sortOption of campaignViewsSortByDropDown
                                              " [ngValue]="sortOption">
-                                             {{ sortOption.name }}
-                                          </option>
-                                       </select>
+                                                {{ sortOption.name }}
+                                             </option>
+                                          </select>
+                                       </div>
                                     </div>
                                  </div>
-                              </div>
-                              <div class="col-xs-5" [ngClass]="{
+                                 <div class="col-xs-5" [ngClass]="{
                                  'col-sm-4':
                                  campaignType !== 'VIDEO' &&
                                  campaignType !== 'REGULAR' &&
@@ -1066,31 +1077,31 @@
                                  padding-right: 0px;
                                  padding-left: 0px;
                                  ">
-                                 <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{ standalone: true }"
-                                    class="form-control" placeholder="Search"
-                                    (keypress)="eventHandler($event.keyCode)" />
-                                 <button class="search-box-item-clear" *ngIf="searchKey"
-                                    (click)="searchKey = ''; search()">
-                                    <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
-                                 </button>
-                                 <button type="submit" class="search-box-item-click" style="right: 1px"
-                                    (click)="search()">
-                                    <i class="fa fa-search" style="padding: 4px" aria-hidden="true"></i>
-                                 </button>
-                              </div>  </div>
+                                    <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{ standalone: true }"
+                                       class="form-control" placeholder="Search"
+                                       (keypress)="eventHandler($event.keyCode)" />
+                                    <button class="search-box-item-clear" *ngIf="searchKey"
+                                       (click)="searchKey = ''; search()">
+                                       <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+                                    </button>
+                                    <button type="submit" class="search-box-item-click" style="right: 1px"
+                                       (click)="search()">
+                                       <i class="fa fa-search" style="padding: 4px" aria-hidden="true"></i>
+                                    </button>
+                                 </div>
+                              </div>
                               <div *ngIf="
                                     'LANDINGPAGE' != campaignType &&
                                     'SOCIAL' != campaignType
                                     " [class.disabled]="
                                     campaignViewsPagination.pagedItems?.length == 0
-                                    " class="btn-group pull-right col-xs-1 setting-icon-cu"
-                                    data-toggle="tooltip" data-placement="top" title="Click here to export excel"
-                                 >
+                                    " class="btn-group pull-right col-xs-1 setting-icon-cu" data-toggle="tooltip"
+                                 data-placement="top" title="Click here to export excel">
                                  <span id="delete_button" (click)="
                                  downloadTypeName = 'campaignViews';
                                  downloadFunctionality()
                                  ">
-                                       <i  class="fas fa-file-export" style="font-size:12px;"></i>
+                                    <i class="fas fa-file-export" style="font-size:12px;"></i>
                                  </span>
                               </div>
                            </div>
@@ -1312,11 +1323,12 @@
      let item of campaignViewsPagination.pagedItems;
      let i = index
      ">
-                                                <tr (click)="userTimeline(item)"
-                                                data-toggle="tooltip" data-placement="bottom"
+                                                <tr (click)="userTimeline(item)" data-toggle="tooltip"
+                                                   data-placement="bottom"
                                                    title="Click here to see all campaigns analytics">
                                                    <td>
-                                                      <i data-toggle="tooltip" data-placement="bottom" title="This user is unsubscribed"
+                                                      <i data-toggle="tooltip" data-placement="bottom"
+                                                         title="This user is unsubscribed"
                                                          *ngIf="item?.unsubscribedUser" class="fa fa-flag"
                                                          id="unsubscribed-flag" aria-hidden="true"></i>
                                                       <app-user-info [isCompanyInfo]="true" [userInfo]="item">
@@ -1328,7 +1340,8 @@
      campaignType != 'REGULAR' &&
      campaignType != 'SURVEY'
      ">
-                                                      <h6 data-toggle="tooltip" data-placement="top" title="{{ campaign.campaignName }}">
+                                                      <h6 data-toggle="tooltip" data-placement="top"
+                                                         title="{{ campaign.campaignName }}">
                                                          {{ item.campaignName | slice : 0 : 35 }}
                                                          <span *ngIf="
      campaign.campaignName?.length > 35
@@ -1539,12 +1552,12 @@
   ">
                                                       <div class="actions-block override-actions"
                                                          style="margin-right: 100px">
-                                                         <a [className]="
-     showUserLevelCampaignAnalytics
-     ? ''
-     : 'inactive'
-     " data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="User Level Campaign Analytics">
-                                                            <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                                                         <a [className]="showUserLevelCampaignAnalytics ? 'custom-icon': 'inactive custom-icon'"
+                                                            data-rel="fancybox-button" data-toggle="tooltip"
+                                                            data-placement="top" title="User Level Campaign Analytics">
+                                                            <i class="fa fa-line-chart IconCustomization"
+                                                               aria-hidden="true"></i>
+                                                            <div class="clickicons"></div>
                                                          </a>
                                                       </div>
                                                    </td>
@@ -1609,20 +1622,21 @@
                                                       <td class="text-center" (click)="$event.stopPropagation()">
                                                          <div class="actions-block override-actions"
                                                             id="landing-page-icons">
-                                                            <a *ngIf="item.pageAnalyticsCount > 0" routerLink="/home/pages/{{
+                                                            <a *ngIf="item.pageAnalyticsCount > 0"
+                                                               routerLink="/home/pages/{{
      campaign.campaignId
      }}/{{
      item.userId
      }}/campaign/analytics" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                                                                title="Page Analytics">
-                                                               <i class="fa fa-line-chart"></i>
+                                                               <i class="fa fa-line-chart chart-hover"></i>
                                                                <span class="badge" id="notification-color">{{
                                                                   item.pageAnalyticsCount }}</span>
                                                             </a>
                                                             <a *ngIf="item.pageAnalyticsCount == 0"
                                                                data-rel="fancybox-button" data-toggle="tooltip"
                                                                data-placement="top" title="Page Analytics">
-                                                               <i class="fa fa-line-chart"></i>
+                                                               <i class="fa fa-line-chart chart-hover"></i>
                                                                <span class="badge" id="notification-color">{{
                                                                   item.pageAnalyticsCount }}</span>
                                                             </a>
@@ -1634,7 +1648,7 @@
                                                             <a routerLink="/home/forms/clpf/{{
      campaign.campaignId
      }}/{{ item.userId }}" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Count">
-                                                               <i class="fa fa-wpforms"></i>
+                                                               <i class="fa fa-wpforms chart-hover"></i>
                                                                <span class="badge" id="notification-color">{{
                                                                   campaign.formsCount }}</span>
                                                             </a>
@@ -1868,7 +1882,8 @@
                   </div>
                   <div class="alert alert-info flex" *ngIf="isLeadListDownloadProcessing">
                      <div class="loader" style="margin-right: 10px; width: 25px; height: 25px"></div>
-                     <strong class="m5" translate style="padding-left:10px;">Please wait while we process your request.</strong>
+                     <strong class="m5" translate style="padding-left:10px;">Please wait while we process your
+                        request.</strong>
                   </div>
                   <div class="table-responsive">
                      <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
@@ -1914,7 +1929,7 @@
                                        </ng-container>
                                        <td>
                                           <a class="close-circle" (click)="expandColumns(formDataRow, rowIndex)"
-                                          data-toggle="tooltip" data-placement="top" title="View More Columns"
+                                             data-toggle="tooltip" data-placement="top" title="View More Columns"
                                              *ngIf="leadsFormHeaders.length > 4">
                                              <i class="fa" [ngClass]="{
                                          'fa-plus': !formDataRow.expanded,
@@ -2049,15 +2064,19 @@
                <div class="portlet light">
                   <div class="portlet-body clearfix">
                      <div class="col-xs-12" *ngIf="rsvpDetailType !== 'partnerRsvp'">
-                        <span class="btn btn-sm btn-primary pull-right" style="cursor: default"
-                        data-toggle="tooltip" data-placement="bottom"  title="{{ campaign.campaignName }}">{{ campaign.campaignName | slice : 0 : 20 }}
+                        <span class="btn btn-sm btn-primary pull-right" style="cursor: default" data-toggle="tooltip"
+                           data-placement="bottom" title="{{ campaign.campaignName }}">{{ campaign.campaignName | slice
+                           : 0 : 20 }}
                            <span *ngIf="campaign.campaignName?.length > 20">...</span></span>
-                        <h4 class="m0" data-toggle="tooltip" data-placement="bottom" title="{{ campaignReport.selectedPartnerFirstName }}">
+                        <h4 class="m0" data-toggle="tooltip" data-placement="bottom"
+                           title="{{ campaignReport.selectedPartnerFirstName }}">
                            {{ campaignReport.selectedPartnerFirstName | slice : 0 : 20 }}
                            <span *ngIf="campaignReport.selectedPartnerFirstName?.length > 20">...</span>
                         </h4>
                         <h4 class="m0">
-                           <a data-toggle="tooltip" data-placement="bottom" title="{{ campaignReport.selectedPartnerEmailId }}">{{ campaignReport.selectedPartnerEmailId | slice : 0 : 24 }}
+                           <a data-toggle="tooltip" data-placement="bottom"
+                              title="{{ campaignReport.selectedPartnerEmailId }}">{{
+                              campaignReport.selectedPartnerEmailId | slice : 0 : 24 }}
                               <span *ngIf="campaignReport.selectedPartnerEmailId?.length > 24">...</span>
                            </a>
                         </h4>
@@ -2066,9 +2085,9 @@
                         </h5>
                      </div>
                      <div class="col-xs-12" *ngIf="rsvpDetailType === 'partnerRsvp'">
-                        <span class="btn btn-sm btn-primary pull-right" style="cursor: default"
-                        data-toggle="tooltip" data-placement="bottom"
-                           title="{{ campaign.campaignName }}">{{ campaign.campaignName | slice : 0 : 40 }}
+                        <span class="btn btn-sm btn-primary pull-right" style="cursor: default" data-toggle="tooltip"
+                           data-placement="bottom" title="{{ campaign.campaignName }}">{{ campaign.campaignName | slice
+                           : 0 : 40 }}
                            <span *ngIf="campaign.campaignName?.length > 40">...</span></span>
                         <h4 class="m0">Your Campaign Response</h4>
                         <!-- <h4>Response</h4> -->
@@ -2438,7 +2457,8 @@
                         </span>
                      </ng-container>
                      <ng-container *ngIf="disabled">
-                        <button data-toggle="tooltip" data-placement="bottom" title="This campaign has been deleted by your vendor.You can't register a lead" style="
+                        <button data-toggle="tooltip" data-placement="bottom"
+                           title="This campaign has been deleted by your vendor.You can't register a lead" style="
                        position: absolute;
                        left: 350px;
                        margin-top: 7px;
@@ -2559,7 +2579,8 @@
                         </div>
                         <div class="timeline-body">
                            <h5>
-                              <span class="f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignName }}">
+                              <span class="f-w-600" data-toggle="tooltip" data-placement="bottom"
+                                 title="{{ campaign.campaignName }}">
                                  {{ campaign.campaignName | slice : 0 : 30 }}
                                  <span *ngIf="campaign.campaignName?.length > 30">...</span>
                               </span>
@@ -2596,7 +2617,8 @@
                            <h5>
                               <span *ngIf="emailLog.actionId == 13">
                                  Campaign
-                                 <span class="f-w-600" *ngIf="emailLog.subject" data-toggle="tooltip" data-placement="bottom" title="{{ emailLog.subject }}">
+                                 <span class="f-w-600" *ngIf="emailLog.subject" data-toggle="tooltip"
+                                    data-placement="bottom" title="{{ emailLog.subject }}">
                                     {{ emailLog.subject | slice : 0 : 30 }}
                                     <span *ngIf="emailLog.subject?.length > 30">...</span>
                                  </span>
@@ -2605,7 +2627,8 @@
                               <span *ngIf="
                              emailLog.actionId == 14 && campaign.campaignVideoFile
                              ">Clicked
-                                 <span class="f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignVideoFile.title }}">{{
+                                 <span class="f-w-600" data-toggle="tooltip" data-placement="bottom"
+                                    title="{{ campaign.campaignVideoFile.title }}">{{
                                     campaign.campaignVideoFile.title | slice : 0 : 30
                                     }}
                                     <span *ngIf="campaign.campaignVideoFile.title?.length > 30">...</span></span>
@@ -2617,7 +2640,8 @@
                              ">
                                  Clicked on the URL
                                  <span class="f-w-600">
-                                    <a href="{{ emailLog.url }}" target="_blank" data-toggle="tooltip" data-placement="bottom" title="{{ emailLog.url }}">{{
+                                    <a href="{{ emailLog.url }}" target="_blank" data-toggle="tooltip"
+                                       data-placement="bottom" title="{{ emailLog.url }}">{{
                                        emailLog.url | slice : 0 : 30 }}
                                        <span *ngIf="emailLog.url?.length > 30">...</span></a>
                                  </span>
@@ -2628,7 +2652,8 @@
                              emailLog.url == 'Clicked on View in browser'
                              ">
                                  <span class="f-w-600">
-                                    <a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom" title="{{ emailLog.url }}">{{ emailLog.url }}
+                                    <a href="javascript:void(0);" data-toggle="tooltip" data-placement="bottom"
+                                       title="{{ emailLog.url }}">{{ emailLog.url }}
                                     </a>
                                  </span>
                               </span>
@@ -2636,7 +2661,8 @@
                              campaign.campaignVideoFile &&
                              (emailLog.actionId == 1 || emailLog.actionId == 10)
                              ">
-                                 <span class="f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignVideoFile.title }}">{{
+                                 <span class="f-w-600" data-toggle="tooltip" data-placement="bottom"
+                                    title="{{ campaign.campaignVideoFile.title }}">{{
                                     campaign.campaignVideoFile.title | slice : 0 : 30 }}
                                     <span *ngIf="campaign.campaignVideoFile.title?.length > 30">...</span>
                                  </span>
@@ -2739,7 +2765,8 @@
          <div class="modal-body">
             <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
                <div class="loader" style="margin-right: 10px; width: 25px; height: 25px"></div>
-               <strong class="m5" translate style="padding-left:10px;">Please wait while we process your request.</strong>
+               <strong class="m5" translate style="padding-left:10px;">Please wait while we process your
+                  request.</strong>
             </div>
             <div class="row">
                <div class="table-responsive">
@@ -2871,10 +2898,12 @@
                      </div>
                   </div>
                </div>
-               <div class="col-xs-2 col-sm-2 col-lg-2 setting-icon-cu ml10" data-toggle="tooltip" data-placement="top" title="Click here to export excel">
+               <div class="col-xs-2 col-sm-2 col-lg-2 setting-icon-cu ml10" data-toggle="tooltip" data-placement="top"
+                  title="Click here to export excel">
                   <span class="delbtn">
-                     <a id="delete_button" (click)="downloadCampaignDetailsByActionType(campaignReport.emailActionType)">
-                       <i class="fas fa-file-export singleIconCustomization"></i>
+                     <a id="delete_button"
+                        (click)="downloadCampaignDetailsByActionType(campaignReport.emailActionType)">
+                        <i class="fas fa-file-export singleIconCustomization"></i>
                      </a>
                   </span>
                </div>
@@ -2883,7 +2912,8 @@
          <div class="modal-body">
             <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
                <div class="loader" style="margin-right: 10px; width: 25px; height: 25px"></div>
-               <strong class="m5" translate style="padding-left:10px;"> Please wait while we process your request.</strong>
+               <strong class="m5" translate style="padding-left:10px;"> Please wait while we process your
+                  request.</strong>
             </div>
             <div class="row">
                <div class="table-responsive">
@@ -2987,8 +3017,8 @@
                                           <tbody>
                                              <tr *ngFor="let emailLog of item.emailLogHistory">
                                                 <td *ngIf="
-                                               campaignReport.emailActionType === 'open'" 
-                                               data-toggle="tooltip" data-placement="bottom" [title]="emailLog.subject">
+                                               campaignReport.emailActionType === 'open'" data-toggle="tooltip"
+                                                   data-placement="bottom" [title]="emailLog.subject">
                                                    <h6>
                                                       {{ emailLog.subject | slice : 0 : 40 }}
                                                       <span *ngIf="emailLog.subject?.length > 40">...</span>
@@ -3091,7 +3121,8 @@
          <div class="modal-body">
             <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
                <div class="loader" style="margin-right: 10px; width: 25px; height: 25px"></div>
-               <strong class="m5" translate style="padding-left:10px;">Please wait while we process your request.</strong>
+               <strong class="m5" translate style="padding-left:10px;">Please wait while we process your
+                  request.</strong>
             </div>
             <div class="row" style="display: inline-block; padding-top: 10px">
                <div class="table-responsive">
@@ -3232,7 +3263,8 @@
          <div class="modal-body clearfix">
             <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
                <div class="loader" style="margin-right: 10px; width: 25px; height: 25px"></div>
-               <strong class="m5" translate style="padding-left:10px;">Please wait while we process your request.</strong>
+               <strong class="m5" translate style="padding-left:10px;">Please wait while we process your
+                  request.</strong>
             </div>
             <div class="table-responsive">
                <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
@@ -3344,7 +3376,8 @@
          <div class="modal-body clearfix">
             <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
                <div class="loader" style="margin-right: 10px; width: 25px; height: 25px"></div>
-               <strong class="m5" translate style="padding-left:10px;"> Please wait while we process your request.</strong>
+               <strong class="m5" translate style="padding-left:10px;"> Please wait while we process your
+                  request.</strong>
             </div>
             <div class="table-responsive">
                <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
@@ -3398,7 +3431,7 @@
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()">
+            <button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="clearPaginationValues()">
                Close
             </button>
          </div>
@@ -3451,9 +3484,8 @@
                         </thead>
                         <tbody>
                            <tr *ngFor="let item of campaingContactLists">
-                              <td class="center" (click)="getSelectedListOfContacts(item.id)" 
-                              data-toggle="tooltip" data-placement="bottom" [title]="item.name"
-                                 [ngStyle]="{
+                              <td class="center" (click)="getSelectedListOfContacts(item.id)" data-toggle="tooltip"
+                                 data-placement="bottom" [title]="item.name" [ngStyle]="{
                              'background-color':
                              contactListId === item.id ? 'lightblue' : ''
                              }">
@@ -3687,7 +3719,8 @@
          <div class="modal-body clearfix">
             <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
                <div class="loader" style="margin-right: 10px; width: 25px; height: 25px"></div>
-               <strong class="m5" translate style="padding-left:10px;">Please wait while we process your request.</strong>
+               <strong class="m5" translate style="padding-left:10px;">Please wait while we process your
+                  request.</strong>
             </div>
             <div class="row col-xs-12 col-md-12 col-lg-12 col-sm-12" style="display: inline-block">
                <div class="table-responsive">
@@ -3868,7 +3901,8 @@
                      </div>
                      <div class="alert alert-info flex" *ngIf="isLeadListDownloadProcessing">
                         <div class="loader" style="margin-right: 10px; width: 25px; height: 25px"></div>
-                        <strong class="m5" translate style="padding-left:10px;">Please wait while we process your request.</strong>
+                        <strong class="m5" translate style="padding-left:10px;">Please wait while we process your
+                           request.</strong>
                      </div>
                      <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                      <div class="portlet-body" *ngIf="
@@ -3917,7 +3951,7 @@
                                        </ng-container>
                                        <td>
                                           <a class="close-circle" (click)="expandColumns(formDataRow, rowIndex)"
-                                          data-toggle="tooltip" data-placement="bottom" title="View More Columns"
+                                             data-toggle="tooltip" data-placement="bottom" title="View More Columns"
                                              *ngIf="partnerLeadsFormHeaders.length > 4">
                                              <i class="fa" [ngClass]="{
                                          'fa-plus': !formDataRow.expanded,
@@ -4005,7 +4039,8 @@
                Analytics</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
-         <li class="breadcrumb-font-color" style="color: #888" *ngIf="isDataShare" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignName }}">
+         <li class="breadcrumb-font-color" style="color: #888" *ngIf="isDataShare" data-toggle="tooltip"
+            data-placement="bottom" title="{{ campaign.campaignName }}">
             {{ campaign.campaignName | slice : 0 : 35
             }}<span *ngIf="campaign.campaignName?.length > 35">...</span>
             <strong *ngIf="!isPartnerEnabledAnalyticsAccess" style="color: #0195da">(Interactive Data)</strong>
@@ -4015,7 +4050,8 @@
          </li>
       </ng-container>
       <li [ngClass]="hidePageContent ? 'caption-subject font-red-sunglo' : ''" style="color: #888"
-         *ngIf="!isDataShare || hidePageContent" data-toggle="tooltip" data-placement="bottom" title="{{ campaign.campaignName }}">
+         *ngIf="!isDataShare || hidePageContent" data-toggle="tooltip" data-placement="bottom"
+         title="{{ campaign.campaignName }}">
          {{ campaign.campaignName | slice : 0 : 35
          }}<span *ngIf="campaign.campaignName?.length > 35">...</span>
       </li>

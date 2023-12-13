@@ -33,6 +33,7 @@ import { UserUserListWrapper } from '../models/user-userlist-wrapper';
 import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { Subject } from 'rxjs';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
+import { ShareUnpublishedContentComponent } from 'app/common/share-unpublished-content/share-unpublished-content.component';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -169,7 +170,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	/*    orgAdminsList = [];*/
 	editingEmailId = '';
 	loading = false;
-	contactAllDetails = [];
+	contactAllDetails : any;
 	openCampaignModal = false;
 	logListName = "";
 	searchContactType = "";
@@ -245,9 +246,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	 mergeOptionClicked = false;
 	 selectedUserIdsForMerging: any[];
 	  /****XNFR-278****/
-	  
 	 @Input() showEdit: boolean;
-	  
+	  /*****XNFR-342*****/
+  	@ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -1705,7 +1706,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		if (this.isValidLegalOptions) {
 			if (this.isPartner) {
 				this.loading = true;
-				this.getContactsLimit();
+				if(this.selectedAddContactsOption == 0){
+				  this.getContactsLimit();
+				}else{
+				  this.validatePartnersCompany();
+				}
 			} else {
 				this.saveData();
 			}
@@ -2516,7 +2521,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.addContactuser = new User();
 		this.isUpdateUser = false;
 		this.updateContactUser = false;
-		this.contactAllDetails = [];
+		this.contactAllDetails = null;
 		this.contactService.isContactModalPopup = true;
 	}
 
@@ -2892,6 +2897,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		try {
 			this.loading = true;
 			this.editUser.pagination = this.pagination;
+			this.editUser.pagination.partnerCompanyId = this.contactAllDetails.companyId;
 			if (event.mobileNumber) {
 				if (event.mobileNumber.length < 6) {
 					event.mobileNumber = "";
@@ -3645,8 +3651,64 @@ copyGroupUsersModalPopupEventReceiver(){
   this.contactsCount(this.selectedContactListId);
   this.customResponse = new CustomResponse('SUCCESS', event, true);
  }
+
  
-
-
+ validatePartnersCompany(){
+    try {
+    this.contactService.validatePartnersCompany(this.users, this.contactListId)
+    .subscribe(
+					(data: any) => {
+						if(data.statusCode == 200){
+				                
+				                this.getContactsLimit();
+							
+						}else{
+						this.loading = false;
+						let emailIds = "";
+					$.each(data.data, function (index: number, emailId: string) {
+						emailIds += (index + 1) + "." + emailId + "\n";
+					});
+					let updatedMessage = data.message + "<br/>" + emailIds;
+					this.customResponse = new CustomResponse('ERROR', updatedMessage, true);
+					}
+					},
+					error => this.xtremandLogger.error(error),
+						() => console.log('validatePartnersCompany() finished')
+				);
+		} catch (error) {
+			this.xtremandLogger.error(error, "AddPartnersComponent", "validating Partners");
+		}
+	}
+	
+	saveAssignContactAndMdfPopupData(){
+		this.processingPartnersLoader = true;
+		$(".modal-body").animate({ scrollTop: 0 }, 'slow');
+		let errorCount = 0;
+		$.each(this.users, function(index: number, partner: any) {
+			let contactsLimit = partner.contactsLimit;
+			if(this.applyForAllClicked){
+				partner.teamMemberGroupId = this.selectAllTeamMemberGroupId;
+				partner.selectedTeamMemberIds = this.selectAllTeamMemberIds;
+			  }
+			 if(contactsLimit < 1){
+				partner.contactsLimit = 1;
+			 }
+		});
+		if (errorCount > 0) {
+			this.processingPartnersLoader = false;
+			this.resetApplyFilter();
+		} else {
+			$('#assignContactAndMdfPopup').modal('hide');
+					this.processingPartnersLoader = false;
+					this.showNotifyPartnerOption = false;
+					this.resetApplyFilter();
+					this.saveData();
+		}
+	}
+ 
+ /***********XNFR-342*********/
+ openUnPublishedContentModalPopUp(contact:any){
+	this.shareUnPublishedComponent.openPopUp(this.selectedContactListId, contact, this.checkingContactTypeName,this.selectedContactListName);
+ }
     
 }

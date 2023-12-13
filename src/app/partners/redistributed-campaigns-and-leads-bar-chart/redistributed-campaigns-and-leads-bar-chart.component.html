@@ -3,7 +3,7 @@
     <div class="portlet light overflow-x-auto" style="min-height: 530px;"
       [ngStyle]="{'margin-bottom':chartId=='redistributeCampaignsAndLeadsCountBarChart'?'15px':'20px'}">
       <div class="portlet-title minheight-zero-px pjCardTitlebg" [hidden]="chartLoader">
-        <div class="caption pjCardTitleCenterAlignment1">
+        <div class="caption pjCardTitleCenterAlignment1 panel-bg">
           <span class="caption-subject font-red-sunglo uppercase" translate>{{headerText}}</span>
         </div>
         <div [hidden]="!hasLeadsAndDealsAccess">
@@ -51,15 +51,15 @@
         <app-modal-popup-loader [height]="460" [hidden]="!chartLoader"></app-modal-popup-loader>
         <figure [hidden]="chartLoader" class="highcharts-figure mBarChartWidth">
           <div id="{{chartId}}">
-            <div class="alert alert-info center-align " *ngIf="statusCode==404">
+            <div class="alert alert-info" *ngIf="statusCode==404">
               <strong>No Data Found</strong>
             </div>
-            <div class="alert alert-danger center-align" *ngIf="statusCode==500">
+            <div class="alert alert-danger" *ngIf="statusCode==500">
               <strong>{{properties?.serverErrorMessage}}</strong>
             </div>
           </div>
         </figure>
-        <div class="alert alert-info center-align " *ngIf="statusCode==404">
+        <div class="alert alert-info " *ngIf="statusCode==404">
           <strong>No Data Found</strong>
         </div>
 

@@ -7,7 +7,8 @@ import { ShareCampaignsComponent } from '../share-campaigns/share-campaigns.comp
 import { CustomResponse } from '../../common/models/custom-response';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { setTimeout } from 'timers';
-
+import { SweetAlertParameterDto } from '../models/sweet-alert-parameter-dto';
+declare var $:any;
 @Component({
   selector: 'app-share-unpublished-content',
   templateUrl: './share-unpublished-content.component.html',
@@ -47,6 +48,8 @@ export class ShareUnpublishedContentComponent implements OnInit {
   isPartnerInfoRequried = false;
   isShareButtonClicked = false;
   isPublishingToPartnerList = false;
+  trackOrPlayBooksSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+  isTrackOrPlayBooksSweetAlertComponentCalled = false;
   constructor(public authenticationService:AuthenticationService,public referenceService:ReferenceService,
     public properties:Properties,private router: Router,private campaignService:CampaignService) { }
 
@@ -55,14 +58,21 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.isPublishedSuccessfully = false;
   }
 
-  openPopUp(userListId: number, contact:any,type:string){
+  openPopUp(userListId: number, contact:any,type:string,userListName:string){
     this.resetValues();
     this.isPublishedSuccessfully = false;
     let accessList = [];
+    let isPrmAndPartnerCompany = this.authenticationService.module.isPrmAndPartner || this.authenticationService.module.isPrmAndPartnerTeamMember;
+    if(isPrmAndPartnerCompany){
+      this.hasCampaignAccess = !this.isPartnersRouter;
+    }
     accessList.push(this.hasCampaignAccess);
-    accessList.push(this.hasDamAccess);
-    accessList.push(this.hasLmsAccess);
-    accessList.push(this.hasPlaybookAccess);
+    let isActiveMasterPartnerList = $.trim(userListName)=="Active Master Partner List";
+    let isInActiveMasterPartnerList = $.trim(userListName)=="Inactive Master Partner List";
+    let isActiveOrInActiveMasterPartnerList = isActiveMasterPartnerList || isInActiveMasterPartnerList;
+    accessList.push(this.hasDamAccess && !isActiveOrInActiveMasterPartnerList);
+    accessList.push(this.hasLmsAccess && !isActiveOrInActiveMasterPartnerList);
+    accessList.push(this.hasPlaybookAccess && !isActiveOrInActiveMasterPartnerList);
     let filteredArrayList = this.referenceService.filterArrayList(accessList,false);
     this.showFilterOptions = filteredArrayList!=undefined && filteredArrayList.length>1;
     this.addFilterOptions();
@@ -118,6 +128,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
   applyFilter(index:number,filterOption:string){
     this.ngxLoading =true;
     this.selectedIndex = index;
+    this.isShareButtonClicked = false; 
     this.selectedIds = [];
     this.modalHeaderText = "Please Select "+filterOption;
     this.selectedModule = filterOption;
@@ -146,19 +157,51 @@ export class ShareUnpublishedContentComponent implements OnInit {
 
   share(){
     if(this.selectedIds!=undefined && this.selectedIds.length>0){
-      this.ngxLoading = true;
       let campaignDetails = this.addPartnerDtos();
       if(this.selectedModule==this.properties.campaignsHeaderText){
+        this.ngxLoading = true;
         campaignDetails["campaignIds"] = this.selectedIds;
         campaignDetails["type"] = this.type;
         this.shareCampaigns(campaignDetails);
-      }else{
+      }else if(this.selectedModule==this.properties.assetsHeaderText){
+        this.ngxLoading = true;
         this.shareAssets(campaignDetails);
+      }else if(this.selectedModule==this.properties.tracksHeaderText
+         || this.selectedModule==this.properties.playBooksHeaderText){
+          this.addLoaderAndShareTracksOrPlayBooks();
       }
     }else{
       this.referenceService.goToTop();
       this.customResponse = new CustomResponse('ERROR','Please select atleast one row',true);
     }
+  }
+
+  trackOrPlayBooksSweetAlertEventReceiver(event:boolean){
+    if(event){
+      this.addLoaderAndShareTracksOrPlayBooks();
+    }else{
+      this.isTrackOrPlayBooksSweetAlertComponentCalled = false;
+      this.isShareButtonClicked = false;
+    }
+  }
+
+
+  private addLoaderAndShareTracksOrPlayBooks() {
+    this.ngxLoading = true;
+    let campaignDetails = this.addPartnerDtos();
+    this.shareTracksOrPlayBooks(campaignDetails);
+  }
+
+  shareTracksOrPlayBooks(campaignDetails: {}) {
+    campaignDetails["trackOrPlaybookIds"] = this.selectedIds;
+    this.authenticationService.shareSelectedTracksOrPlayBooks(campaignDetails,this.selectedModule).
+    subscribe(
+      response=>{
+        this.showPublishedSuccessMessage(response);
+      },error=>{
+        this.showPublishError();
+      }
+    );
   }
 
 
@@ -172,6 +215,9 @@ export class ShareUnpublishedContentComponent implements OnInit {
     campaignDetails['userListId'] = this.selectedUserListId;
     campaignDetails['loggedInUserId'] = this.authenticationService.getUserId();
     campaignDetails['publishingToPartnerList'] = this.isPublishingToPartnerList;
+    if(this.contact!=undefined){
+      campaignDetails['partnershipId'] = this.contact.partnershipId;
+    }
     return campaignDetails;
   }
 
@@ -211,7 +257,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
 
   shareAssets(campaignDetails:any){
     campaignDetails["damIds"] = this.selectedIds;
-    this.authenticationService.shareUnPublishedAssets(campaignDetails).
+    this.authenticationService.shareSelectedAssets(campaignDetails).
     subscribe(
       response=>{
         this.showPublishedSuccessMessage(response);

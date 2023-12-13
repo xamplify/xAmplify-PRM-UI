@@ -27,11 +27,16 @@ export class ActivePartnersTableComponent implements OnInit {
   public companyInfoFields: any;
   public companyInfoFilterPlaceHolder: string = 'Select Companies';
   filterCategoryLoader = false;
+  isCollapsed: boolean = true;
   pagination: Pagination = new Pagination();
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   customResponse: CustomResponse = new CustomResponse();
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Output() notifySelectedPartnerCompanyIds = new EventEmitter();
+  @Input() selectedPartnerCompanyIds: any = [];
+  showFilterDropDown: boolean = false;
+  filterActiveBg: string;
+  filterApplied: boolean = false;
 
 
   constructor(public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService,
@@ -42,13 +47,21 @@ export class ActivePartnersTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
+    //this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
+    //this.getActivePartners(this.pagination);
+  }
+
+  ngOnChanges(){
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;   
     this.getActivePartners(this.pagination);
+    this.findCompanyNames();
+    this.setFilterColor();
   }
 
   getActivePartners(pagination: Pagination) {
     this.referenseService.loading(this.httpRequestLoader, true);
     this.pagination.userId = this.loggedInUserId;
+    this.pagination.selectedPartnerCompanyIds = this.selectedPartnerCompanyIds;
     this.parterService.getActivePartners(this.pagination).subscribe(
       (response: any) => {
         this.referenseService.loading(this.httpRequestLoader, false);
@@ -108,35 +121,69 @@ export class ActivePartnersTableComponent implements OnInit {
     this.notifyShowDetailedAnalytics.emit(partnerCompanyId);
   }
 
-  toggleFilterOption() {
-    this.showFilterOption = !this.showFilterOption;
+  toggleCollapse(event: Event) {
+    event.preventDefault();
+    this.isCollapsed = !this.isCollapsed;
   }
+
+  clickFilter() {
+    if(!this.filterApplied) {
+      this.showFilterOption = !this.showFilterOption;
+    } else {      
+      if (this.showFilterOption) {
+        this.showFilterOption = false;
+      } else {
+        this.showFilterDropDown = true;
+      }     
+    }
+    
+  }
+
+  viewDropDownFilter(){
+    this.showFilterOption = true;
+    this.showFilterDropDown = false;
+  }
+
 
   closeFilterOption() {
     this.showFilterOption = false;
   }
 
   clearFilter() {
-    this.selectedCompanyIds = []
+    this.selectedCompanyIds = [];
     this.notifySelectedPartnerCompanyIds.emit(this.selectedCompanyIds);
+    this.isCollapsed = true;
+    this.showFilterDropDown = false;
+    this.filterActiveBg = 'defaultFilterACtiveBg';
+    this.filterApplied = false;
   }
 
   applyFilters() {
+    this.filterApplied = true;
     this.notifySelectedPartnerCompanyIds.emit(this.selectedCompanyIds);
+    this.isCollapsed = false;
+    this.showFilterOption = false;
+    this.filterActiveBg = 'filterActiveBg';
   }
-
-  findCompanyNames() {
-    if (this.showFilterOption) {
-      this.filterCategoryLoader = true;
-      this.companyInfoFields = { text: 'companyName', value: 'companyId' };
-      // this.parterService.getPartnerJourneyCompanyDetailsForFilter(this.loggedInUserId).
-      // subscribe(data => {
-      this.companyNameFilters = [{ companyName: 'j p morgan', companyId: 944 }, { companyName: 'prm.c4', companyId: 833 }, { companyName: 'bingo', companyId: 1227 }, { companyName: 'rohithorgadmin', companyId: 1235 }];
-      // }, error => {
-      //     this.companyNameFilters = [];
-      //     this.filterCategoryLoader = false;
-      // });
+  setFilterColor(){
+    if(this.selectedCompanyIds != null && this.selectedCompanyIds.length >0 && this.selectedCompanyIds != undefined){
+      this.filterActiveBg = 'filterActiveBg';
+      this.isCollapsed = false;
+      this.filterApplied = true;
     }
+  }
+  
+  findCompanyNames() {
+    this.filterCategoryLoader = true;
+      this.selectedCompanyIds = this.selectedPartnerCompanyIds;
+      this.companyInfoFields = { text: 'companyName', value: 'companyId' };
+      this.parterService.getPartnerJourneyCompanyDetailsForFilter(this.pagination).
+      subscribe(response => {
+        this.companyNameFilters = response.data;
+      }, error => {
+          this.companyNameFilters = [];
+          this.filterCategoryLoader = false;
+      });
   }
 
 }

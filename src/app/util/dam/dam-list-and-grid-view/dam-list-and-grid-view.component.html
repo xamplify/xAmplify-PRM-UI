@@ -1,11 +1,10 @@
 <div [className]="folderListView ? 'message-class-folder-list':'message-class'">
-	<app-response-message [customResponse]="customResponse"	*ngIf="customResponse.isVisible"></app-response-message>
+	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
-<ngx-loading [show]="loading"
-	[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="row">
 	<div class="col-md-12">
-		<div class="portlet light clearfix mDamResponse mt0">
+		<div class="portlet light remove_cardBgcolor padding_0 clearfix mDamResponse mt0">
 			<!--List View / Grid View-->
 			<div *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
 				<div *ngIf="showRefreshNotification && !listLoader?.isLoading" class="alert alert-info">
@@ -13,311 +12,487 @@
 				</div>
 				<ng-container *ngIf="!isGridViewHistory && !assetDetailsPreview">
 					<ng-template *ngIf="!listLoader?.isLoading" [ngTemplateOutlet]="damHeaderOptions"></ng-template>
-					<app-list-loader
-						*ngIf="listLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
-					<app-grid-loader
-						*ngIf="listLoader.isLoading && modulesDisplayType.isGridView"></app-grid-loader>
+					<app-list-loader *ngIf="listLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
+					<app-grid-loader *ngIf="listLoader.isLoading && modulesDisplayType.isGridView"></app-grid-loader>
 					<!---List View----->
-					<section
-						*ngIf="modulesDisplayType.isListView && !listLoader.isLoading">
+					<section *ngIf="modulesDisplayType.isListView && !listLoader.isLoading">
 						<div class="table-responsive">
-							<table class='table tgrid table-hover table-sm'
-								id="manage-assets-table" *ngIf="pagination.pagedItems?.length>0"
-								aria-describedby="manageAssetTables">
+							<table class='table tgrid table-hover table-sm' id="manage-assets-table"
+								*ngIf="pagination.pagedItems?.length>0" aria-describedby="manageAssetTables">
 								<thead>
 									<tr>
 										<th style="width:45%" translate id="border-bottom">Asset Details</th>
-										<th class="text-center"scope="row" translate id="border-bottom">Type</th>
-										<th class="text-center" scope="row" translate
-											*ngIf="isPartnerView" id="border-bottom">Published On</th>
-										<th class="text-center" scope="row" translate
-											*ngIf="!isPartnerView" id="border-bottom">Created On</th>
-										<th  class="text-center" translate id="border-bottom">Actions</th>
+										<th class="text-center" scope="row" translate id="border-bottom">Type</th>
+										<th class="text-center" scope="row" translate *ngIf="isPartnerView"
+											id="border-bottom">Published On</th>
+										<th class="text-center" scope="row" translate *ngIf="!isPartnerView"
+											id="border-bottom">Created On</th>
+										<th class="text-center" translate id="border-bottom">Actions</th>
 									</tr>
 								</thead>
 								<tbody>
-									<ng-container
-										*ngFor="let asset of pagination.pagedItems ;let i =index">
-									<tr>
-									<td *ngIf="(!isPartnerView && asset.videoId)">
-										<app-video-thumbnail class="pull-left" [damId]="asset.id" [asset]="asset" [videoFile]="asset.videoFileDTO" 
-											[published]="asset?.published" [assetStatus]="asset?.status" [categoryName]="asset.categoryName" [processing]="asset?.publishingOrWhiteLabelingInProgress"></app-video-thumbnail>
-									</td>
-									<td  *ngIf="!asset.videoId || isPartnerView" >
-										<div class="thumbnail-wrapper" style="width: 180px; height: 100px; border:1px solid #ccc;">
-											<img class="custom-image-css" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
-												alt="Image Not Found" style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
-										</div>
-										<div class="title-div" style="width: 50%;">
-												<h4 class="mt5 mb5 f-w-600">
-													<span   data-toggle="tooltip" data-placement="bottom"
-													title="{{asset?.assetName}}"><strong>{{asset?.assetName | slice: 0: 25}}</strong></span>
-													<span *ngIf="asset?.assetName?.length>25">...</span>
-												</h4>
-												<!-- XNFR-169 -->
-												<h6>
-													<span data-toggle="tooltip" data-placement="bottom" title="{{asset?.categoryName}}" translate> Folder <strong >{{asset?.categoryName}}</strong></span>
-												</h6>
-												<h6 class="" data-toggle="tooltip" data-placement="bottom" title="{{asset?.displayName}}">
-													<span *ngIf="isPartnerView" translate> Published By <strong>{{asset?.displayName}}</strong></span>
-													<span *ngIf="!isPartnerView" translate> Created By <strong>{{asset?.displayName | slice: 0: 23}}</strong></span>
-												</h6>
-												<h6 class="moreipsis"
-													*ngIf="!isPartnerView && asset?.beeTemplate">
-													<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
-												</h6>
-												<h6 class="moreipsis" *ngIf="isPartnerView">
-													<span data-toggle="tooltip" data-placement="bottom" title="{{asset?.vendorCompanyName}}" translate> From <strong>{{asset?.vendorCompanyName
-															| slice:0:20}}</strong> <strong
-														*ngIf="asset?.vendorCompanyName?.length>20">..</strong>
-													</span>
-												</h6>
-												<!---XNFR-255-->
-												<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress" class="view-banner published">Published</h6>
-												<h6 *ngIf="asset?.publishingOrWhiteLabelingInProgress" class="view-banner">
-													<span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
-													Processing
-												</h6>
-												<!---XNFR-255-->
-												<span *ngIf="asset.viewBy=='DRAFT'" class="draft-video mb0">DRAFT</span>
-												 <!---XNFR-255-->
-												 <ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
-													<span class="view-banner-white-labeled mb5">White-Labeled</span>
-													<h6 class="moreipsis"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
-														<span translate>Received From <strong>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
+									<ng-container *ngFor="let asset of pagination.pagedItems ;let i =index">
+										<tr>
+											<td *ngIf="(!isPartnerView && asset.videoId)">
+												<app-video-thumbnail class="pull-left" [damId]="asset.id"
+													[asset]="asset" [videoFile]="asset.videoFileDTO"
+													[published]="asset?.published" [assetStatus]="asset?.status"
+													[categoryName]="asset.categoryName"
+													[processing]="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList"></app-video-thumbnail>
+											</td>
+											<td *ngIf="!asset.videoId || isPartnerView">
+												<div class="thumbnail-wrapper image_effect"
+													style="width: 180px; height: 100px; border:1px solid #ccc;">
+													<img class="custom-image-css" src="{{asset?.thumbnailPath}}"
+														onerror="this.src='assets/images/no-preview.jpg';"
+														alt="Image Not Found"
+														style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
+												</div>
+												<div class="title-div" style="width: 50%;">
+													<h4 class="mt5 mb5 f-w-600">
+														<span data-toggle="tooltip" data-placement="bottom"
+															title="{{asset?.assetName}}"><strong>{{asset?.assetName |
+																slice: 0: 25}}</strong></span>
+														<span *ngIf="asset?.assetName?.length>25">...</span>
+													</h4>
+													<!-- XNFR-169 -->
+													<h6>
+														<span data-toggle="tooltip" data-placement="bottom"
+															title="{{asset?.categoryName}}" translate> Folder
+															<strong>{{asset?.categoryName}}</strong></span>
 													</h6>
-												</ng-container>
-												 <!---XNFR-255-->
-												 <h6 *ngIf="asset.tagNames?.length > 0">
-													<ng-container *ngIf="asset.tagNames?.length > 0">
-														<div class="tag tablegray-tag" title="{{asset.tagNames[0]}}">
-															<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} <span
-																*ngIf="asset.tagNames[0]?.length>20">..</span>
-															</ng-container>
-															<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}} <span
-																	*ngIf="asset.tagNames[0]?.length>10">..</span>
-															</ng-container>
-														</div>
-														<ng-container *ngIf="asset.tagNames.length > 1">
-															<div class="tag tablegray-tag" title="{{asset.tagNames[1]}}">
-																{{asset.tagNames[1] | slice:0:10}} <span *ngIf="asset.tagNames[1]?.length>10">..</span>
-															</div>
-														</ng-container>
-														<span *ngIf="asset.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
-															title="{{asset.toolTipTagNames}}">...</span>
+													<h6 class="" data-toggle="tooltip" data-placement="bottom"
+														title="{{asset?.displayName}}">
+														<span *ngIf="isPartnerView" translate> Published By
+															<strong>{{asset?.displayName}}</strong></span>
+														<span *ngIf="!isPartnerView" translate> Created By
+															<strong>{{asset?.displayName | slice: 0:
+																23}}</strong></span>
+													</h6>
+													<h6 class="moreipsis" *ngIf="!isPartnerView && asset?.beeTemplate">
+														<span translate> Version
+															<strong>{{asset?.versionInString}}</strong></span>
+													</h6>
+													<h6 class="moreipsis" *ngIf="isPartnerView">
+														<span data-toggle="tooltip" data-placement="bottom"
+															title="{{asset?.vendorCompanyName}}" translate> From
+															<strong>{{asset?.vendorCompanyName
+																| slice:0:20}}</strong> <strong
+																*ngIf="asset?.vendorCompanyName?.length>20">..</strong>
+														</span>
+													</h6>
+													<!---XNFR-255-->
+													<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress &&!asset?.publishingToPartnerList"
+														class="view-banner published">Published</h6>
+													<h6 *ngIf="asset?.publishingOrWhiteLabelingInProgress ||  asset?.publishingToPartnerList"
+														class="view-banner">
+														<span><img src="assets/images/loading.gif" alt="Processing"
+																style="height:15px"></span>
+														Processing
+													</h6>
+													<!---XNFR-255-->
+													<span *ngIf="asset.viewBy=='DRAFT'"
+														class="draft-video mb0">DRAFT</span>
+													<!---XNFR-255-->
+													<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
+														<span class="view-banner-white-labeled mb5">White-Labeled</span>
+														<h6 class="moreipsis"
+															title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+															<span translate>Received From
+																<strong>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
+														</h6>
 													</ng-container>
-												</h6>
-										</div>
-									</td>
-										<td class="text-center"><span class="assettype-bgcolor">{{asset?.assetType}} </span> </td>
-										<td class="text-center"><app-timestamp
-												[dateAndTime]="asset?.displayTime"> </app-timestamp></td>
-										<td class="mAlignView" >
-											<div class="actions-block override-actions ActionAlign action_inline" >
-												<ng-container *ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress">
-													<div class="mActionAlign ActionButtonPad">	
-														<a *ngIf="asset?.history &&!isPartnerView  && asset?.edit"  data-toggle="tooltip" data-placement="top" title="History"	(click)="expandHistory(asset,i)"> 
-															<i class="fa IconCustomization"	[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}" aria-hidden="true"></i>
-														</a> 
-														<a class="mMobileDisable" *ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"  data-toggle="tooltip" data-placement="top"	title="Design" (click)="addOrEdit(asset.id)">
-															<i class="fa fa-paint-brush mDisableColor IconCustomization" aria-hidden="true"></i>
-														</a> 
-														<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView"   data-toggle="tooltip" data-placement="top" title="Edit"	(click)="addOrEdit(asset.id)">
-															<i class="fa fa-edit mDisableColor IconCustomization"	aria-hidden="true"></i>
-														</a> 
-														<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit"  data-toggle="tooltip" data-placement="top" title="Edit" (click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId )">
-															<i class="fa fa-edit mDisableColor IconCustomization"	aria-hidden="true"></i>
-														</a>
-													
-														<ng-container *ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
-															<a *ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos" (click)="campaignRouter(asset.alias, asset.viewBy)" data-toggle="tooltip" data-placement="top" title="Create campaign">
-																<i class="fa fa-bullhorn IconCustomization" aria-hidden="true"></i>
+													<!---XNFR-255-->
+													<h6 *ngIf="asset.tagNames?.length > 0">
+														<ng-container *ngIf="asset.tagNames?.length > 0">
+															<div class="tag tablegray-tag"
+																title="{{asset.tagNames[0]}}">
+																<ng-container
+																	*ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0]
+																	| slice:0:20}} <span
+																		*ngIf="asset.tagNames[0]?.length>20">..</span>
+																</ng-container>
+																<ng-container
+																	*ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0]
+																	| slice:0:10}} <span
+																		*ngIf="asset.tagNames[0]?.length>10">..</span>
+																</ng-container>
+															</div>
+															<ng-container *ngIf="asset.tagNames.length > 1">
+																<div class="tag tablegray-tag"
+																	title="{{asset.tagNames[1]}}">
+																	{{asset.tagNames[1] | slice:0:10}} <span
+																		*ngIf="asset.tagNames[1]?.length>10">..</span>
+																</div>
+															</ng-container>
+															<span *ngIf="asset.tagNames?.length>2" class="tag-dots"
+																data-toggle="tooltip" data-placement="top"
+																title="{{asset.toolTipTagNames}}">...</span>
+														</ng-container>
+													</h6>
+												</div>
+											</td>
+											<td class="text-center"><span class="assettype-bgcolor">{{asset?.assetType}}
+												</span> </td>
+											<td class="text-center"><app-timestamp [dateAndTime]="asset?.displayTime">
+												</app-timestamp></td>
+											<td class="mAlignView">
+												<div class="actions-block override-actions ActionAlign action_inline">
+													<ng-container
+														*ngIf="asset?.status=='COMPLETED' && !asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList">
+														<div class="mActionAlign ActionButtonPad">
+															<a class="custom-icon"
+																*ngIf="asset?.history &&!isPartnerView  && asset?.edit"
+																data-toggle="tooltip" data-placement="top"
+																title="History" (click)="expandHistory(asset,i)">
+																<i class="fa IconCustomization"
+																	[ngClass]="{'fa-history': !asset?.expand, 'fa-minus': asset?.expand}"
+																	aria-hidden="true"></i>
+																<div class="clickicons"></div>
+															</a>
+															<a class="mMobileDisable custom-icon"
+																*ngIf="asset?.beeTemplate && !isPartnerView && asset?.edit"
+																data-toggle="tooltip" data-placement="top"
+																title="Design" (click)="addOrEdit(asset.id)">
+																<i class="fa fa-paint-brush mDisableColor IconCustomization"
+																	aria-hidden="true"></i>
+																<div class="clickicons"></div>
+															</a>
+															<a class="mMobileDisable custom-icon"
+																*ngIf="asset?.beeTemplate && isPartnerView"
+																data-toggle="tooltip" data-placement="top" title="Edit"
+																(click)="addOrEdit(asset.id)">
+																<i class="fa fa-edit mDisableColor IconCustomization"
+																	aria-hidden="true"></i>
+																<div class="clickicons"></div>
+															</a>
+															<a class="mMobileDisable custom-icon"
+																*ngIf="!isPartnerView && asset?.edit"
+																data-toggle="tooltip" data-placement="top" title="Edit"
+																(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate,asset?.videoId )">
+																<i class="fa fa-edit mDisableColor IconCustomization"
+																	aria-hidden="true"></i>
+																<div class="clickicons"></div>
 															</a>
 
-															<a class="disable" *ngIf="asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft">
-																<i class="fa fa-bullhorn IconCustomization" aria-hidden="true" ></i>
+															<ng-container
+																*ngIf="!isPartnerView && (hasAllAccess || (hasCampaignRole && authenticationService.module.damAccess && loggedInUserId==asset.createdBy) || authenticationService.module.isVendor  || authenticationService.module.isVendorTier)">
+																<a class="custom-icon"
+																	*ngIf="asset.viewBy!='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
+																	(click)="campaignRouter(asset.alias, asset.viewBy)"
+																	data-toggle="tooltip" data-placement="top"
+																	title="Create campaign">
+																	<i class="fa fa-bullhorn IconCustomization"
+																		aria-hidden="true"></i>
+																	<div class="clickicons"></div>
+																</a>
+
+																<a class="disable custom-icon"
+																	*ngIf="asset.viewBy=='DRAFT' && asset.processed && authenticationService?.module?.showCampaignOptionInManageVideos"
+																	data-toggle="tooltip" data-placement="top"
+																	[title]="actionsDescription.video_draft">
+																	<i class="fa fa-bullhorn IconCustomization"
+																		aria-hidden="true"></i>
+																	<div class="clickicons"></div>
+																</a>
+																<a class="disable custom-icon"
+																	*ngIf="!asset.processed && authenticationService?.module?.showCampaignOptionInManageVideo"
+																	data-toggle="tooltip" data-placement="top"
+																	title="Unavailable for processing">
+																	<i class="fa fa-bullhorn IconCustomization"
+																		aria-hidden="true"></i>
+																	<div class="clickicons"></div>
+																</a>
+															</ng-container>
+															<a class="custom-icon"
+																*ngIf="!isPartnerView && asset?.showPreviewIcon"
+																data-toggle="tooltip" data-placement="top"
+																title="Preview" (click)="preview(asset)">
+																<i class="fa fa-eye IconCustomization"
+																	aria-hidden="true"></i>
+																<div class="clickicons"></div>
 															</a>
-															<a class="disable" *ngIf="!asset.processed && authenticationService?.module?.showCampaignOptionInManageVideo" data-toggle="tooltip" data-placement="top" title="Unavailable for processing">
-																<i class="fa fa-bullhorn IconCustomization" aria-hidden="true" ></i>
+
+															<a class="custom-icon" *ngIf="!isPartnerView"
+																data-toggle="tooltip" data-placement="top"
+																title="Download" (click)="openPopup(asset)">
+																<i class="fa fa-download IconCustomization"
+																	aria-hidden="true"></i>
+																<div class="clickicons"></div>
 															</a>
-														</ng-container>
-														<a *ngIf="!isPartnerView && asset?.showPreviewIcon"  data-toggle="tooltip" data-placement="top"	title="Preview" (click)="preview(asset)">
-															<i	class="fa fa-eye IconCustomization" aria-hidden="true"></i>
-														</a> 
-													
-														<a *ngIf="!isPartnerView"  data-toggle="tooltip" data-placement="top" title="Download"	(click)="openPopup(asset)">
-															<i class="fa fa-download IconCustomization"	aria-hidden="true"></i>
-														</a> 
-														<a  data-toggle="tooltip" data-placement="top" title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(asset)">
-															<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
-														</a> 
-														<a *ngIf="isPartnerView"  data-toggle="tooltip" data-placement="top" title="View Details"
-															(click)="viewDetails(asset)">
-															<i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+															<a class="custom-icon" data-toggle="tooltip"
+																data-placement="top" title="View Analytics"
+																*ngIf="!authenticationService.module.isMarketingCompany"
+																(click)="viewAnalytics(asset)">
+																<i class="fa fa-line-chart IconCustomization"
+																	aria-hidden="true"></i>
+																<div class="clickicons"></div>
+															</a>
+															<a class="custom-icon" *ngIf="isPartnerView"
+																data-toggle="tooltip" data-placement="top"
+																title="View Details" (click)="viewDetails(asset)">
+																<i class="fa fa-eye IconCustomization"
+																	aria-hidden="true"></i>
+																<div class="clickicons"></div>
+															</a>
+															<a class="custom-icon"
+																*ngIf="!isPartnerView && asset?.delete"
+																data-toggle="tooltip" data-placement="top"
+																title="Delete" (click)="confirmDelete(asset)">
+																<i class="fa fa-trash-o trashIconCustomization"
+																	aria-hidden="true"></i>
+																<div class="del-icon"></div>
+															</a>
+														</div>
+													</ng-container>
+													<!--Added On 02/08/2023-->
+													<ng-container
+														*ngIf="asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">
+														<a class="custom-icon" data-toggle="tooltip"
+															data-placement="top" title="Refresh"
+															(click)="refreshList()">
+															<i class="fa fa-refresh IconCustomization"
+																aria-hidden="true"></i>
+															<div class="clickicons"></div>
 														</a>
-														<a *ngIf="!isPartnerView && asset?.delete" 
-														data-toggle="tooltip" data-placement="top"
-														title="Delete"
-															(click)="confirmDelete(asset)"> 
-															<i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
-														</a>
+													</ng-container>
+													<!--Added On 02/08/2023-->
+												</div>
+											</td>
+										</tr>
+										<tr [ngClass]="{'hidden': !asset?.expand}">
+											<td [attr.colspan]="colspanValue">
+												<div class="table-responsive">
+													<div *ngIf="showRefreshNotificationForHistoryAssets"
+														class="alert alert-info">
+														<strong>Please <a
+																(click)="listAssetsHistory(historyPagination)">click
+																here</a> to find latest updates</strong>
 													</div>
-												</ng-container>
-												<!--Added On 02/08/2023-->
-												<ng-container *ngIf="asset?.status!='COMPLETED' || asset?.publishingOrWhiteLabelingInProgress">
-													<a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="refreshList()"> 
-														<i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
-													</a> 
-												</ng-container>
-												<!--Added On 02/08/2023-->
-											</div>
-										</td>
-									</tr>
-									<tr [ngClass]="{'hidden': !asset?.expand}">
-										<td [attr.colspan]="colspanValue">
-											<div class="table-responsive">
-												<div *ngIf="showRefreshNotificationForHistoryAssets" class="alert alert-info">
-													<strong>Please <a (click)="listAssetsHistory(historyPagination)">click here</a> to find latest updates</strong>
-												</div>
-												<table class="table tgrid table-condensed"
-													aria-describedby="asset-history" id="asset-history">
-													<thead>
-														<tr>
-															<th colspan="2" style="width: 37%" id="border-bottom">
-																<span class="gridHeader" translate>Asset Details</span>
-															</th>
-															<th class="text-center" scope="row" translate>Type</th>
-															<th class="text-center" scope="row" translate>Created
-																On</th>
-															<th class="text-center" id="min-width" translate>Actions</th>
-														</tr>
-													</thead>
-													<tbody>
-														<app-auto-response-loader *ngIf="historyLoader.isLoading">
-														</app-auto-response-loader>
-														<ng-container *ngIf="!historyLoader.isLoading">
-														<tr
-															*ngFor="let asset of historyPagination.pagedItems ;let i =index"
-															id="history-tr">
-															<td style="width: 12%;">
-																<div class="thumbnail-wrapper" style="width: 180px;height: 100px;">
-																	<img class="custom-image-css"
-																		src="{{asset?.thumbnailPath}}" alt="Image Not Found" onerror="this.src='assets/images/no-preview.jpg';" style="width: 180px; height: 100px;border-radius:5px;"> 
-																</div>
-															</td>
-															<td>
-																<h4 class="mt5 mb5 f-w-600"
-																	title="{{asset?.assetName}}">
-																	<span><strong>{{asset?.assetName | slice: 0: 25}}</strong></span>
-																	<span *ngIf="asset?.assetName?.length>25">...</span>
-																</h4>
-																<!---XNFR-255-->
-																<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
-																	<h6 class="moreipsis"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
-																		<span translate>Received From <strong>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
-																	</h6>
-																	<span class="view-banner-white-labeled mb5">White-Labeled</span>
-																</ng-container>
-																 <!---XNFR-255-->
-																<h6 class="moreipsis" title="{{asset?.categoryName}}">
-																	<span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
-																</h6>
-																<h6 class="moreipsis" title="{{asset?.displayName}}">
-																	<span translate> Created By  <strong>{{asset?.displayName}}</strong></span>
-																</h6>
-																<h6 class="moreipsis"
-																	*ngIf="!isPartnerView && asset?.beeTemplate">
-																	<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
-																</h6>
-																<!---XNFR-255-->
-																<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress" class="view-banner published"
-																	translate>Published</h6>
-																<h6 *ngIf="asset?.publishingOrWhiteLabelingInProgress " class="view-banner">
-																	<span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>
-																	Processing
-																</h6>
-																<!---XNFR-255-->
-																 <!---XBI-1993-->
-																<h6 *ngIf="asset.tagNames?.length > 0">
-																	<ng-container *ngIf="asset.tagNames?.length > 0">
-																		<div class="tag tablegray-tag" title="{{asset.tagNames[0]}}">
-																			<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} <span
-																				*ngIf="asset.tagNames[0]?.length>20">..</span>
-																			</ng-container>
-																			<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}} <span
-																					*ngIf="asset.tagNames[0]?.length>10">..</span>
-																			</ng-container>
+													<table class="table tgrid table-condensed"
+														aria-describedby="asset-history" id="asset-history">
+														<thead>
+															<tr>
+																<th colspan="2" style="width: 37%" id="border-bottom">
+																	<span class="gridHeader" translate>Asset
+																		Details</span>
+																</th>
+																<th class="text-center" scope="row" translate>Type</th>
+																<th class="text-center" scope="row" translate>Created
+																	On</th>
+																<th class="text-center" id="min-width" translate>Actions
+																</th>
+															</tr>
+														</thead>
+														<tbody>
+															<app-auto-response-loader *ngIf="historyLoader.isLoading">
+															</app-auto-response-loader>
+															<ng-container *ngIf="!historyLoader.isLoading">
+																<tr *ngFor="let asset of historyPagination.pagedItems ;let i =index"
+																	id="history-tr">
+																	<td style="width: 12%;">
+																		<div class="thumbnail-wrapper image_effect"
+																			style="width: 180px;height: 100px;">
+																			<img class="custom-image-css"
+																				src="{{asset?.thumbnailPath}}"
+																				alt="Image Not Found"
+																				onerror="this.src='assets/images/no-preview.jpg';"
+																				style="width: 180px; height: 100px;border-radius:5px;">
 																		</div>
-																		<ng-container *ngIf="asset.tagNames.length > 1">
-																			<div class="tag tablegray-tag" title="{{asset.tagNames[1]}}">
-																				{{asset.tagNames[1] | slice:0:10}} <span *ngIf="asset.tagNames[1]?.length>10">..</span>
-																			</div>
+																	</td>
+																	<td>
+																		<h4 class="mt5 mb5 f-w-600"
+																			title="{{asset?.assetName}}">
+																			<span><strong>{{asset?.assetName | slice: 0:
+																					25}}</strong></span>
+																			<span
+																				*ngIf="asset?.assetName?.length>25">...</span>
+																		</h4>
+																		<!---XNFR-255-->
+																		<ng-container
+																			*ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
+																			<h6 class="moreipsis"
+																				title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+																				<span translate>Received From
+																					<strong>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
+																			</h6>
+																			<span
+																				class="view-banner-white-labeled mb5">White-Labeled</span>
 																		</ng-container>
-																		<span *ngIf="asset.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
-																			title="{{asset.toolTipTagNames}}">...</span>
-																	</ng-container>
-																</h6>
-																<!---XBI-1993-->
-															</td>
-															<td class="text-center">
-																<span class="assettype-bgcolor">{{asset?.assetType}} </span>
-																</td>
-															<td class="text-center"><app-timestamp	[dateAndTime]="asset?.displayTime"></app-timestamp></td>
-															<!--Child Assets-->
-															<td id="actions-row" style="width: 32%;">
-																<div class="actions-block override-actions ActionAlign" *ngIf="!asset?.publishingOrWhiteLabelingInProgress">
-																	<!--XNFR-381-->
-																	<a class="mMobileDisable"  data-toggle="tooltip" data-placement="top"  title="Switch To Parent Template" (click)="changeAsParentPdf(asset.id)">
-																		<i class="fa fa-exchange mDisableColor IconCustomization" aria-hidden="true"></i>
-																	</a> 
-																	<!--XNFR-381-->
-																	<a class="mMobileDisable"  data-toggle="tooltip" data-placement="top"  title="Design" (click)="addOrEdit(asset.id)"> <i
-																		class="fa fa-paint-brush mDisableColor IconCustomization" aria-hidden="true"></i>
-																	</a> 
-																	<a class="mMobileDisable" *ngIf="asset?.beeTemplate && isPartnerView"  data-toggle="tooltip" data-placement="top"  title="Edit" (click)="addOrEdit(asset.id)"> 
-																		<i class="fa fa-edit mDisableColor IconCustomization" aria-hidden="true"></i>
-																	</a> 
-																	<a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit"  data-toggle="tooltip" data-placement="top"  title="Edit" (click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate )">
-																		<i class="fa fa-edit mDisableColor IconCustomization" aria-hidden="true"></i>
-																	</a> <a title="Preview" (click)="preview(asset)"> <i
-																		class="fa fa-eye IconCustomization" aria-hidden="true"></i>
-																	</a> 
-																	<a  data-toggle="tooltip" data-placement="top"  title="Download" (click)="openPopup(asset)"> <i
-																		class="fa fa-download IconCustomization" aria-hidden="true"></i>
-																	</a> 
-																	<a  data-toggle="tooltip" data-placement="top"  title="View Analytics" *ngIf="!authenticationService.module.isMarketingCompany" (click)="viewAnalytics(asset)">
-																		<i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
-																	</a> 
-																	<a  data-toggle="tooltip" data-placement="top"  title="Delete" (click)="confirmDelete(asset)"> <i
-																		class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
-																	</a>
-																</div>
-																<!--Added On 02/08/2023----->
-																<div class="actions-block override-actions ActionAlign" *ngIf="asset?.publishingOrWhiteLabelingInProgress">
-																	<a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listAssetsHistory(historyPagination)"> 
-																		<i class="fa fa-refresh IconCustomization" aria-hidden="true"></i>
-																	</a> 
-																</div>
-																<!--Added On 02/08/2023----->
-															</td>
-														</tr>
-														</ng-container>
-													</tbody>
-												</table>
-												<!---Pagination-->
-												<div *ngIf="historyPagination.totalRecords==0 && !historyLoader.isLoading" class="alert alert-info text-center">
-													<strong>No Data Found.</strong>
+																		<!---XNFR-255-->
+																		<h6 class="moreipsis"
+																			title="{{asset?.categoryName}}">
+																			<span translate> Folder
+																				<strong>{{asset?.categoryName}}</strong></span>
+																		</h6>
+																		<h6 class="moreipsis"
+																			title="{{asset?.displayName}}">
+																			<span translate> Created By
+																				<strong>{{asset?.displayName}}</strong></span>
+																		</h6>
+																		<h6 class="moreipsis"
+																			*ngIf="!isPartnerView && asset?.beeTemplate">
+																			<span translate> Version
+																				<strong>{{asset?.versionInString}}</strong></span>
+																		</h6>
+																		<!---XNFR-255-->
+																		<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList"
+																			class="view-banner published" translate>
+																			Published</h6>
+																		<h6 *ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList "
+																			class="view-banner">
+																			<span><img src="assets/images/loading.gif"
+																					alt="Processing"
+																					style="height:15px"></span>
+																			Processing
+																		</h6>
+																		<!---XNFR-255-->
+																		<!---XBI-1993-->
+																		<h6 *ngIf="asset.tagNames?.length > 0">
+																			<ng-container
+																				*ngIf="asset.tagNames?.length > 0">
+																				<div class="tag tablegray-tag"
+																					title="{{asset.tagNames[0]}}">
+																					<ng-container
+																						*ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0]
+																						| slice:0:20}} <span
+																							*ngIf="asset.tagNames[0]?.length>20">..</span>
+																					</ng-container>
+																					<ng-container
+																						*ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0]
+																						| slice:0:10}} <span
+																							*ngIf="asset.tagNames[0]?.length>10">..</span>
+																					</ng-container>
+																				</div>
+																				<ng-container
+																					*ngIf="asset.tagNames.length > 1">
+																					<div class="tag tablegray-tag"
+																						title="{{asset.tagNames[1]}}">
+																						{{asset.tagNames[1] |
+																						slice:0:10}} <span
+																							*ngIf="asset.tagNames[1]?.length>10">..</span>
+																					</div>
+																				</ng-container>
+																				<span *ngIf="asset.tagNames?.length>2"
+																					class="tag-dots"
+																					data-toggle="tooltip"
+																					data-placement="top"
+																					title="{{asset.toolTipTagNames}}">...</span>
+																			</ng-container>
+																		</h6>
+																		<!---XBI-1993-->
+																	</td>
+																	<td class="text-center">
+																		<span
+																			class="assettype-bgcolor">{{asset?.assetType}}
+																		</span>
+																	</td>
+																	<td class="text-center"><app-timestamp
+																			[dateAndTime]="asset?.displayTime"></app-timestamp>
+																	</td>
+																	<!--Child Assets-->
+																	<td id="actions-row" style="width: 32%;">
+																		<div class="actions-block override-actions ActionAlign"
+																			*ngIf="!asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList">
+																			<!--XNFR-381-->
+																			<a class="mMobileDisable custom-icon"
+																				data-toggle="tooltip"
+																				data-placement="top"
+																				title="Switch To Parent Template"
+																				(click)="changeAsParentPdf(asset.id)">
+																				<i class="fa fa-exchange mDisableColor IconCustomization"
+																					aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<!--XNFR-381-->
+																			<a class="mMobileDisable custom-icon"
+																				data-toggle="tooltip"
+																				data-placement="top" title="Design"
+																				(click)="addOrEdit(asset.id)"> <i
+																					class="fa fa-paint-brush mDisableColor IconCustomization"
+																					aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<a class="mMobileDisable custom-icon"
+																				*ngIf="asset?.beeTemplate && isPartnerView"
+																				data-toggle="tooltip"
+																				data-placement="top" title="Edit"
+																				(click)="addOrEdit(asset.id)">
+																				<i class="fa fa-edit mDisableColor IconCustomization"
+																					aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<a class="mMobileDisable custom-icon"
+																				*ngIf="!isPartnerView && asset?.edit"
+																				data-toggle="tooltip"
+																				data-placement="top" title="Edit"
+																				(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate )">
+																				<i class="fa fa-edit mDisableColor IconCustomization"
+																					aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<a class="custom-icon" title="Preview"
+																				(click)="preview(asset)"> <i
+																					class="fa fa-eye IconCustomization"
+																					aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<a class="custom-icon" data-toggle="tooltip"
+																				data-placement="top" title="Download"
+																				(click)="openPopup(asset)"> <i
+																					class="fa fa-download IconCustomization"
+																					aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<a class="custom-icon" data-toggle="tooltip"
+																				data-placement="top"
+																				title="View Analytics"
+																				*ngIf="!authenticationService.module.isMarketingCompany"
+																				(click)="viewAnalytics(asset)">
+																				<i class="fa fa-line-chart IconCustomization"
+																					aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<a class="custom-icon" data-toggle="tooltip"
+																				data-placement="top" title="Delete"
+																				(click)="confirmDelete(asset)"> <i
+																					class="fa fa-trash-o trashIconCustomization"
+																					aria-hidden="true"></i>
+																				<div class="del-icon"></div>
+																			</a>
+																		</div>
+																		<!--Added On 02/08/2023----->
+																		<div class="actions-block override-actions ActionAlign"
+																			*ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">
+																			<a class="custom-icon" data-toggle="tooltip"
+																				data-placement="top" title="Refresh"
+																				(click)="listAssetsHistory(historyPagination)">
+																				<i class="fa fa-refresh IconCustomization"
+																					aria-hidden="true"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																		</div>
+																		<!--Added On 02/08/2023----->
+																	</td>
+																</tr>
+															</ng-container>
+														</tbody>
+													</table>
+													<!---Pagination-->
+													<div *ngIf="historyPagination.totalRecords==0 && !historyLoader.isLoading"
+														class="alert alert-info text-center">
+														<strong>No Data Found.</strong>
+													</div>
+													<div *ngIf="historyPagination.pagedItems.length !== 0"
+														[hidden]="historyLoader.isLoading">
+														<app-pagination [pagination]="historyPagination"
+															(notifyParent)="setHistoryPage($event)"
+															(notifyParentDropDown)="listAssetsHistory($event)">
+														</app-pagination>
+													</div>
 												</div>
-												<div *ngIf="historyPagination.pagedItems.length !== 0"
-													[hidden]="historyLoader.isLoading">
-													<app-pagination [pagination]="historyPagination"
-														(notifyParent)="setHistoryPage($event)"
-														(notifyParentDropDown)="listAssetsHistory($event)">
-													</app-pagination>
-												</div>
-											</div>
-										</td>
-									</tr>
+											</td>
+										</tr>
 									</ng-container>
 								</tbody>
 							</table>
@@ -325,23 +500,30 @@
 					</section>
 					<!----Grid View------->
 					<section *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading">
-						<div class="row" *ngIf="modulesDisplayType.isGridView && !listLoader.isLoading && !listLoader.isServerError">
-							<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tb_view_10" *ngFor="let asset of pagination.pagedItems ;let i =index"	id="assetList_{{asset.id}}">
+						<div class="row"
+							*ngIf="modulesDisplayType.isGridView && !listLoader.isLoading && !listLoader.isServerError">
+							<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tb_view_10"
+								*ngFor="let asset of pagination.pagedItems ;let i =index" id="assetList_{{asset.id}}">
 								<div class="grid-box min-h default-cursor mHeight">
-									<img *ngIf="!asset?.videoId" class="img-class mxv" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"alt="Image Not Found">
-									<img *ngIf="asset?.videoId>0" class="img-class mxv" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/default-image.jpg';" alt="Image Not Found">
-									<h4 class="overflow-hidden mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="bottom" title="{{asset?.assetName}}">
+									<img *ngIf="!asset?.videoId" class="img-class mxv" src="{{asset?.thumbnailPath}}"
+										onerror="this.src='assets/images/no-preview.jpg';" alt="Image Not Found">
+									<img *ngIf="asset?.videoId>0" class="img-class mxv" src="{{asset?.thumbnailPath}}"
+										onerror="this.src='assets/images/default-image.jpg';" alt="Image Not Found">
+									<h4 class="overflow-hidden mt5 mb5 f-w-600" data-toggle="tooltip"
+										data-placement="bottom" title="{{asset?.assetName}}">
 										{{asset?.assetName | slice:0:25}} <span
 											*ngIf="asset?.assetName?.length>25">...</span><br>
 									</h4>
 									<!---XNFR-255-->
 									<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
-										<h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
-											<span translate>Received From <strong>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
+										<h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom"
+											title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+											<span translate>Received From
+												<strong>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
 										</h6>
 										<span class="view-banner-white-labeled mb5">White-Labeled</span>
 									</ng-container>
-									 <!---XNFR-255-->
+									<!---XNFR-255-->
 									<div class="divapdding-or-cards">
 										<span class="view-banner-dam assettype-bgcolor">{{asset?.assetType}}</span>
 										<h6 translate>
@@ -351,34 +533,40 @@
 												</app-timestamp>
 											</strong>
 										</h6>
-										<h6  translate>
+										<h6 translate>
 											By <strong>{{asset?.displayName | slice:0:17}}</strong> <span
 												*ngIf="asset?.displayName?.length>17">..</span>
 										</h6>
-										<h6 class="moreipsis" >
-											<span data-toggle="tooltip" data-placement="top" title="{{asset?.categoryName}}" translate> Folder <strong>{{asset?.categoryName}}</strong></span>
+										<h6 class="moreipsis">
+											<span data-toggle="tooltip" data-placement="top"
+												title="{{asset?.categoryName}}" translate> Folder
+												<strong>{{asset?.categoryName}}</strong></span>
 										</h6>
-										<h6 class="moreipsis"
-											*ngIf="!isPartnerView && asset?.beeTemplate">
+										<h6 class="moreipsis" *ngIf="!isPartnerView && asset?.beeTemplate">
 											<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
 										</h6>
-										<h6 *ngIf="isPartnerView" >
-											From <strong  data-toggle="tooltip" data-placement="bottom" title="{{asset?.vendorCompanyName}}">{{asset?.vendorCompanyName | slice:0:17}}</strong> <span
+										<h6 *ngIf="isPartnerView">
+											From <strong data-toggle="tooltip" data-placement="bottom"
+												title="{{asset?.vendorCompanyName}}">{{asset?.vendorCompanyName |
+												slice:0:17}}</strong> <span
 												*ngIf="asset?.vendorCompanyName?.length>17">..</span>
 										</h6>
 									</div>
 									<!--XNFR-255-->
 									<div class="ribbon tab-ribbon">
-										<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
-										<span *ngIf="asset?.publishingOrWhiteLabelingInProgress">Processing</span>
+										<span
+											*ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
+										<span
+											*ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">Processing</span>
 									</div>
 									<!--XNFR-255-->
 									<div class="bar auto-height gridIconCustomization">
-										<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset" [folderListView]="folderListView"
-										(assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
-										(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
-										(assetGridViewActionsDeleteActionEmitter) = "assetGridViewActionsDeleteActionEmitter($event)"
-										(assetGridViewRefreshListEmitter)="refreshList()">
+										<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset"
+											[folderListView]="folderListView"
+											(assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
+											(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
+											(assetGridViewActionsDeleteActionEmitter)="assetGridViewActionsDeleteActionEmitter($event)"
+											(assetGridViewRefreshListEmitter)="refreshList()">
 										</app-asset-grid-view-actions>
 									</div>
 								</div>
@@ -389,117 +577,110 @@
 					<div *ngIf="pagination.totalRecords==0 && !listLoader.isLoading"
 						class="alert alert-info text-center">
 						<strong>No Data Found.</strong>
-					</div> 
-					<div *ngIf="pagination.pagedItems.length !== 0"	[hidden]="listLoader.isLoading">
-						<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listItems($event)"></app-pagination>
+					</div>
+					<div *ngIf="pagination.pagedItems.length !== 0" [hidden]="listLoader.isLoading">
+						<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+							(notifyParentDropDown)="listItems($event)"></app-pagination>
 					</div>
 				</ng-container>
 
 				<!-------PDF History------>
 				<ng-container *ngIf="isGridViewHistory && !assetDetailsPreview">
-				<h4 title="{{selectedAssetName}}">
-					<strong>{{selectedAssetName | slice:0:25}}
-						<span *ngIf="selectedAssetName?.length>25">...</span>
-					</strong>
-					<a	class="close-circle" (click)="closeHistory()"> 
-						<i	class="fa fa-times" aria-hidden="true"></i>
-					</a>
-				</h4>
-				<app-grid-loader *ngIf="historyLoader.isLoading"></app-grid-loader>
-				<section *ngIf="!historyLoader.isLoading">
-					<div class="row">
-						<div class="col-md-3 col-sm-4 col-xs-12"
-							*ngFor="let asset of historyPagination.pagedItems ;let i =index"
-							id="assetList_{{asset.id}}">
-							<div class="grid-box box-shadow">
-								<img class="img-class mxv" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"
-									alt="{{asset?.assetName}}">
-								<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
-									{{asset?.assetName | slice:0:25}} <span
-										*ngIf="asset?.assetName?.length>25">...</span><br>
-								</h4>
-								<h4 class="moreipsis" title="{{asset?.categoryName}}">
-									<span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
-								</h4>
-								<h4>Version {{asset?.versionInString}}</h4>
-								<div>
-									<span class="view-banner-dam">{{asset?.assetType}}</span>
-									<h6 translate>
-										<span *ngIf="isPartnerView">Published On</span> <span
-											*ngIf="!isPartnerView">Created On</span> <strong> <app-timestamp
-												[showInLine]="'true'" [dateAndTime]="asset?.displayTime">
-											</app-timestamp>
-										</strong>
-									</h6>
-									<h6 title="{{asset?.displayName}}" translate>
-										By <strong>{{asset?.displayName | slice:0:17}}</strong> <span
-											*ngIf="asset?.displayName?.length>17">..</span>
-									</h6>
-									<h6 *ngIf="isPartnerView" title="{{asset?.vendorCompanyName}}">
-										By <strong>{{asset?.vendorCompanyName | slice:0:17}}</strong> <span
-											*ngIf="asset?.vendorCompanyName?.length>17">..</span>
-									</h6>
-								</div>
-								<div class="ribbon">
-									<span *ngIf="asset?.published" translate>Published</span>
-								</div>
-								<div class="bar auto-height">
-									<a class="mMobileDisable" *ngIf="asset?.beeTemplate"
-									data-toggle="tooltip" data-placement="top"
-									 title="Design"
-										(click)="addOrEdit(asset.id)"> <i class="fa fa-paint-brush mDisableColor"
-										aria-hidden="true"></i>
-									</a> <a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit"
-									data-toggle="tooltip" data-placement="top"
-									 title="Edit"
-										(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate)">
-										<i class="fa fa-edit mDisableColor"
-										aria-hidden="true"></i>
-									</a> <a 
-									data-toggle="tooltip" data-placement="top"
-									title="Preview" *ngIf="!isPartnerView && asset?.showPreviewIcon" (click)="preview(asset)"> <i
-										class="fa fa-eye" aria-hidden="true"></i>
-									</a> <a *ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService.module.isMarketingCompany" title="Publish"
-										(click)="openPublishPopup(asset.id)"> <i
-										class="fa f-share" aria-hidden="true"></i>
-									</a> <a *ngIf="!isPartnerView" 
-									data-toggle="tooltip" data-placement="top"
-									title="Download" (click)="openPopup(asset)"> <i
-										class="fa fa-download" aria-hidden="true"></i>
-									</a> <a *ngIf="!authenticationService.module.isMarketingCompany"
-									data-toggle="tooltip" data-placement="top"
-									 title="View Analytics" (click)="viewAnalytics(asset)"> <i
-										class="fa fa-line-chart" aria-hidden="true"></i>
-									</a> <a *ngIf="!isPartnerView && asset?.delete"
-									data-toggle="tooltip" data-placement="top"
-									 title="Delete" class="delete"
-										(click)="confirmDelete(asset)"> <i class="fa fa-trash-o"
-										aria-hidden="true"></i>
-									</a>
+					<h4 title="{{selectedAssetName}}">
+						<strong>{{selectedAssetName | slice:0:25}}
+							<span *ngIf="selectedAssetName?.length>25">...</span>
+						</strong>
+						<a class="close-circle" (click)="closeHistory()">
+							<i class="fa fa-times" aria-hidden="true"></i>
+						</a>
+					</h4>
+					<app-grid-loader *ngIf="historyLoader.isLoading"></app-grid-loader>
+					<section *ngIf="!historyLoader.isLoading">
+						<div class="row">
+							<div class="col-md-3 col-sm-4 col-xs-12"
+								*ngFor="let asset of historyPagination.pagedItems ;let i =index"
+								id="assetList_{{asset.id}}">
+								<div class="grid-box box-shadow">
+									<img class="img-class mxv" src="{{asset?.thumbnailPath}}"
+										onerror="this.src='assets/images/no-preview.jpg';" alt="{{asset?.assetName}}">
+									<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
+										{{asset?.assetName | slice:0:25}} <span
+											*ngIf="asset?.assetName?.length>25">...</span><br>
+									</h4>
+									<h4 class="moreipsis" title="{{asset?.categoryName}}">
+										<span translate> Folder <strong>{{asset?.categoryName}}</strong></span>
+									</h4>
+									<h4>Version {{asset?.versionInString}}</h4>
+									<div>
+										<span class="view-banner-dam">{{asset?.assetType}}</span>
+										<h6 translate>
+											<span *ngIf="isPartnerView">Published On</span> <span
+												*ngIf="!isPartnerView">Created On</span> <strong> <app-timestamp
+													[showInLine]="'true'" [dateAndTime]="asset?.displayTime">
+												</app-timestamp>
+											</strong>
+										</h6>
+										<h6 title="{{asset?.displayName}}" translate>
+											By <strong>{{asset?.displayName | slice:0:17}}</strong> <span
+												*ngIf="asset?.displayName?.length>17">..</span>
+										</h6>
+										<h6 *ngIf="isPartnerView" title="{{asset?.vendorCompanyName}}">
+											By <strong>{{asset?.vendorCompanyName | slice:0:17}}</strong> <span
+												*ngIf="asset?.vendorCompanyName?.length>17">..</span>
+										</h6>
+									</div>
+									<div class="ribbon">
+										<span *ngIf="asset?.published" translate>Published</span>
+									</div>
+									<div class="bar auto-height">
+										<a class="mMobileDisable" *ngIf="asset?.beeTemplate" data-toggle="tooltip"
+											data-placement="top" title="Design" (click)="addOrEdit(asset.id)"> <i
+												class="fa fa-paint-brush mDisableColor" aria-hidden="true"></i>
+										</a> <a class="mMobileDisable" *ngIf="!isPartnerView && asset?.edit"
+											data-toggle="tooltip" data-placement="top" title="Edit"
+											(click)="editDetails(asset.id, asset?.assetType, asset.alias, asset?.beeTemplate)">
+											<i class="fa fa-edit mDisableColor" aria-hidden="true"></i>
+										</a> <a data-toggle="tooltip" data-placement="top" title="Preview"
+											*ngIf="!isPartnerView && asset?.showPreviewIcon" (click)="preview(asset)">
+											<i class="fa fa-eye" aria-hidden="true"></i>
+										</a> <a
+											*ngIf="!isPartnerView && asset.viewBy!='DRAFT' && !authenticationService.module.isMarketingCompany"
+											title="Publish" (click)="openPublishPopup(asset.id)"> <i class="fa f-share"
+												aria-hidden="true"></i>
+										</a> <a *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top"
+											title="Download" (click)="openPopup(asset)"> <i class="fa fa-download"
+												aria-hidden="true"></i>
+										</a> <a *ngIf="!authenticationService.module.isMarketingCompany"
+											data-toggle="tooltip" data-placement="top" title="View Analytics"
+											(click)="viewAnalytics(asset)"> <i class="fa fa-line-chart"
+												aria-hidden="true"></i>
+										</a> <a *ngIf="!isPartnerView && asset?.delete" data-toggle="tooltip"
+											data-placement="top" title="Delete" class="delete"
+											(click)="confirmDelete(asset)"> <i class="fa fa-trash-o"
+												aria-hidden="true"></i>
+										</a>
+									</div>
 								</div>
 							</div>
 						</div>
+					</section>
+					<div *ngIf="historyPagination.totalRecords==0 && !historyLoader.isLoading"
+						class="alert alert-info text-center">
+						<strong>No Data Found.</strong>
 					</div>
-				</section>
-				<div
-					*ngIf="historyPagination.totalRecords==0 && !historyLoader.isLoading"
-					class="alert alert-info text-center">
-					<strong>No Data Found.</strong>
-				</div>
-				<div *ngIf="historyPagination.pagedItems.length !== 0"
-					[hidden]="historyLoader.isLoading">
-					<app-pagination [pagination]="historyPagination"
-						(notifyParent)="setPage($event)"
-						(notifyParentDropDown)="listAssetsHistory($event)">
-					</app-pagination>
-				</div>
+					<div *ngIf="historyPagination.pagedItems.length !== 0" [hidden]="historyLoader.isLoading">
+						<app-pagination [pagination]="historyPagination" (notifyParent)="setPage($event)"
+							(notifyParentDropDown)="listAssetsHistory($event)">
+						</app-pagination>
+					</div>
 				</ng-container>
 				<!-------END of PDF History------>
 			</div>
 
 			<!--Folder List View / Folder Grid View -->
 			<div *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
-				<app-folder-type-view-util [moduleId]="roles.damId" [modulesDisplayType]="modulesDisplayType"></app-folder-type-view-util>
+				<app-folder-type-view-util [moduleId]="roles.damId"
+					[modulesDisplayType]="modulesDisplayType"></app-folder-type-view-util>
 			</div>
 
 		</div>
@@ -508,17 +689,20 @@
 
 <!--Download Pdf Modal Popup-->
 <ng-container *ngIf="showPdfModalPopup">
-<app-download-asset-popup [asset]="asset" [isPartnerView]="isPartnerView" (downloadAssetPopupEventEmitter)="downloadAssetPopupEventEmitter()"></app-download-asset-popup>
+	<app-download-asset-popup [asset]="asset" [isPartnerView]="isPartnerView"
+		(downloadAssetPopupEventEmitter)="downloadAssetPopupEventEmitter()"></app-download-asset-popup>
 </ng-container>
 <!---Preview Pop Up-->
 <ng-container *ngIf="isPreview">
-	<app-preview-asset-popup [asset]="asset" (previewAssetPopupEmitter)="previewAssetPopupEmitter()"></app-preview-asset-popup>
+	<app-preview-asset-popup [asset]="asset"
+		(previewAssetPopupEmitter)="previewAssetPopupEmitter()"></app-preview-asset-popup>
 </ng-container>
 <!--Delete Asset-->
 <ng-container *ngIf="deleteAsset">
 	<app-delete-assets [asset]="asset" (deleteAssetLoaderEmitter)="deleteAssetLoaderEmitter()"
-	 (deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter($event)" 
-	 (deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"  (deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
+		(deleteAssetSuccessEmitter)="deleteAssetSuccessEmitter($event)"
+		(deleteAssetCancelEmitter)="deleteAssetCancelEmitter()"
+		(deleteAssetFailEmitter)="deleteAssetFailEmitter($event)">
 	</app-delete-assets>
 </ng-container>
 
@@ -529,75 +713,105 @@
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
 				<h4 class="pull-left m10 text-primary">{{SuffixHeading}}
-					<span>Assets</span></h4>
+					<span>Assets</span>
+				</h4>
 			</div>
 			<div class="page-toolbar col-xs-12 col-sm-12 col-md-9 col-lg-9">
 				<div class="btn-group pull-right">
 					<div class="d-flex">
-					<div class="group-dropdown">
-						<button [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
-						modulesDisplayType.isFolderListView? 'fa fa-th btn btn-xs l-g-view': modulesDisplayType.isFolderGridView?'fa fa-folder btn btn-xs l-g-view':'fa fa-th-list btn btn-xs l-g-view'" style="padding:10px !important"></button>
-					<div class="group-dd-content">
-					<ng-container class='m10'>
-						 <span	class="btn btn-xs l-g-view"	[class.disabled]="modulesDisplayType.isListView" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('l')"> 
-							<i class="fa fa-th-list p10" aria-hidden="true"></i></span> 
-							<span class="btn btn-xs l-g-view margin-space" [class.disabled]="modulesDisplayType.isGridView"	data-toggle="tooltip" data-placement="bottom" title="Grid View"	(click)="setViewType('g')"> 
-								<i class="fa fa-th-large p10" aria-hidden="true"></i>
-							</span>
-							 <ng-container *ngIf="!showUpArrowButton && !folderListView">
-								<span class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder Grid View"  (click)="setViewType('fg')">
-									<i  class="fa fa-folder p10" aria-hidden="true"></i>
-								</span>
-								<span class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" title="Folder List View"  (click)="setViewType('fl')">
-									<i  class="fa fa-th p10" aria-hidden="true"></i>
-								</span>
-							</ng-container>
-					</ng-container>
-				 </div>
-				</div>
-				<span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
-					<i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-				</span>
-				<div class="inputs mDamTop alignline-m-flex" style="float: right">
-					<a class="close-circle ref-mar" id="alignline-m-ref-mar" (click)="refreshList()" data-toggle="tooltip" data-placement="bottom" title="Refresh">
-						<i class="fa fa-refresh" aria-hidden="true"></i>
-					</a>
-					<div class="pb3 float-left">
-						<ng-container *ngIf="isPartnerView">
-							<select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width" [(ngModel)]="sortOption.publishedDamSortOption"	(ngModelChange)="sortAssets($event)"style="position: relative; right: -3px;">
-								<option	*ngFor="let option of sortOption.publishedDamSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
-							</select> 
-						</ng-container>
-						<ng-container *ngIf="!isPartnerView">
-							<select	class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width" [(ngModel)]="sortOption.damSortOption"	(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
-								<option	*ngFor="let option of sortOption.damSortDropDownOptions" [ngValue]="option">{{option.name}}</option>
-							</select> 
-						</ng-container>
-					</div>
-					<!--Filter Type---->
-					<div class="pb3 float-left ml5" id="alignline-m-mleftright">
-						<ng-container *ngIf="fileTypes?.length>0">
-							<select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width" [(ngModel)]="selectedFileType"	(ngModelChange)="filterAssetsByFileType($event)"style="position: relative; right: -3px;">
-								<option value="">Select Asset Type</option>
-								<option	*ngFor="let fileType of fileTypes" [ngValue]="fileType">{{fileType}}</option>
-							</select> 
-						</ng-container>
-					</div>
-					<div class="portlet-input input-inline input-small tab_srch_w" id="alignline-m-margin"	style="margin-right: 10px;">
-						<div class="input-icon right mDamSearch rSearch" id="alignline-m-serch" style="position: relative; right: -6px;">
-							<input type="text" style="height: 34px;" class="form-control"	[(ngModel)]="sortOption.searchKey"	[ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
-							<button	class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchAssets();"></button>
-							<button type="submit" class="search-box-item-click"	(click)="searchAssets()">
-								<i class="fa fa-search" aria-hidden="true"></i>
-							</button>
+						<div class="group-dropdown">
+							<button
+								[ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
+						modulesDisplayType.isFolderListView? 'fa fa-th btn btn-xs l-g-view': modulesDisplayType.isFolderGridView?'fa fa-folder btn btn-xs l-g-view':'fa fa-th-list btn btn-xs l-g-view'"
+								style="padding:10px !important"></button>
+							<div class="group-dd-content">
+								<ng-container class='m10'>
+									<span class="btn btn-xs l-g-view" [class.disabled]="modulesDisplayType.isListView"
+										data-toggle="tooltip" data-placement="bottom" title="List View"
+										(click)="setViewType('l')">
+										<i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+									<span class="btn btn-xs l-g-view margin-space"
+										[class.disabled]="modulesDisplayType.isGridView" data-toggle="tooltip"
+										data-placement="bottom" title="Grid View" (click)="setViewType('g')">
+										<i class="fa fa-th-large p10" aria-hidden="true"></i>
+									</span>
+									<ng-container *ngIf="!showUpArrowButton && !folderListView">
+										<span class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip"
+											data-placement="bottom" title="Folder Grid View"
+											(click)="setViewType('fg')">
+											<i class="fa fa-folder p10" aria-hidden="true"></i>
+										</span>
+										<span class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width"
+											data-toggle="tooltip" data-placement="bottom" title="Folder List View"
+											(click)="setViewType('fl')">
+											<i class="fa fa-th p10" aria-hidden="true"></i>
+										</span>
+									</ng-container>
+								</ng-container>
+							</div>
+						</div>
+						<span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip"
+							data-placement="bottom" title="Go back" (click)="setViewType('fg')">
+							<i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+						</span>
+						<div class="inputs mDamTop alignline-m-flex" style="float: right">
+							<a class="close-circle ref-mar" id="alignline-m-ref-mar" (click)="refreshList()"
+								data-toggle="tooltip" data-placement="bottom" title="Refresh">
+								<i class="fa fa-refresh" aria-hidden="true"></i>
+							</a>
+							<div class="pb3 float-left">
+								<ng-container *ngIf="isPartnerView">
+									<select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width"
+										[(ngModel)]="sortOption.publishedDamSortOption"
+										(ngModelChange)="sortAssets($event)" style="position: relative; right: -3px;">
+										<option *ngFor="let option of sortOption.publishedDamSortDropDownOptions"
+											[ngValue]="option">{{option.name}}</option>
+									</select>
+								</ng-container>
+								<ng-container *ngIf="!isPartnerView">
+									<select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width"
+										[(ngModel)]="sortOption.damSortOption" (ngModelChange)="sortAssets($event)"
+										style="position: relative; right: -3px;">
+										<option *ngFor="let option of sortOption.damSortDropDownOptions"
+											[ngValue]="option">{{option.name}}</option>
+									</select>
+								</ng-container>
+							</div>
+							<!--Filter Type---->
+							<div class="pb3 float-left ml5" id="alignline-m-mleftright">
+								<ng-container *ngIf="fileTypes?.length>0">
+									<select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width"
+										[(ngModel)]="selectedFileType" (ngModelChange)="filterAssetsByFileType($event)"
+										style="position: relative; right: -3px;">
+										<option value="">Select Asset Type</option>
+										<option *ngFor="let fileType of fileTypes" [ngValue]="fileType">{{fileType}}
+										</option>
+									</select>
+								</ng-container>
+							</div>
+							<div class="portlet-input input-inline input-small tab_srch_w" id="alignline-m-margin"
+								style="margin-right: 10px;">
+								<div class="input-icon right mDamSearch rSearch" id="alignline-m-serch"
+									style="position: relative; right: -6px;">
+									<input type="text" style="height: 34px;" class="form-control"
+										[(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
+										placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+									<button class="glyphicon glyphicon-remove search-box-item-clear"
+										*ngIf="sortOption.searchKey"
+										(click)="sortOption.searchKey='';searchAssets();"></button>
+									<button type="submit" class="search-box-item-click" (click)="searchAssets()">
+										<i class="fa fa-search" aria-hidden="true"></i>
+									</button>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-			    </div>
 				</div>
 			</div>
 		</div>
 	</div>
 </ng-template>
- <!---XNFR-381-->
-<app-confirm-sweet-alert-util *ngIf="isChangeAsParentPdfIconClicked" [parameterDto]="changeAsParentPdfSweetAlertParameterDto" (notifyComponent)="changeAsParentPdfEmitter($event)"></app-confirm-sweet-alert-util>
+<!---XNFR-381-->
+<app-confirm-sweet-alert-util *ngIf="isChangeAsParentPdfIconClicked"
+	[parameterDto]="changeAsParentPdfSweetAlertParameterDto"
+	(notifyComponent)="changeAsParentPdfEmitter($event)"></app-confirm-sweet-alert-util>

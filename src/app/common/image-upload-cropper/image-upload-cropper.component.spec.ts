@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShareTracksComponent } from './share-tracks.component';
+import { ImageUploadCropperComponent } from './image-upload-cropper.component';
 
-describe('ShareTracksComponent', () => {
-  let component: ShareTracksComponent;
-  let fixture: ComponentFixture<ShareTracksComponent>;
+describe('ImageUploadCropperComponent', () => {
+  let component: ImageUploadCropperComponent;
+  let fixture: ComponentFixture<ImageUploadCropperComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ShareTracksComponent ]
+      declarations: [ ImageUploadCropperComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShareTracksComponent);
+    fixture = TestBed.createComponent(ImageUploadCropperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

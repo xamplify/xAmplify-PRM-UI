@@ -1,0 +1,97 @@
+<div class="modal right fade" id="cropBgImage" tabindex="-1" role="dialog" aria-labelledby="cropBgImage"
+	data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog imgCrop-modal" role="document">
+		<div class="modal-content rounded-0">
+			<div class="modal-header">
+				<a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i class="fa fa-times"
+						aria-hidden="true"></i></a>
+				<h4 class="modal-title" id="cropBgImage">{{cropLogoImageText}}</h4>
+			</div>
+			<div class="modal-body" style="overflow-y: unset !important;">
+				<button style="position: relative;top: -5px;" class="button fileinput-button-css"
+					*ngIf="!bgImageChangedEvent; else uploadButton"><span
+						class="btn Btn-Green transition translate">Upload
+						image</span>
+					<input style="height: 36px;" title=" " id="custom-input" type="file"
+						(change)="uploadfileBgImageChangeEvent($event)">
+				</button>
+				<ng-template #uploadButton>
+					<button style="position: relative;top: -5px;" class="button fileinput-button-css"><span
+							class="btn Btn-Green transition translate">Upload
+							image</span>
+						<input style="height: 36px;" title=" " id="custom-input" type="file"
+							(change)="uploadfileBgImageChangeEvent($event)">
+					</button>
+				</ng-template>
+				<div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please upload
+					only images</div>
+				<div>
+					<ngx-loading [show]="loadingcrop"
+						[config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
+					<div [hidden]="!bgImageChangedEvent">
+
+						<app-img-croppr-v2 [imageChangedEvent]="bgImageChangedEvent" [maintainAspectRatio]="true"
+							[containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="aspectRatio"
+							[resizeToWidth]="resizeToWidth" [cropperMinWidth]="720" [onlyScaleDown]="true"
+							[roundCropper]="false" [alignImage]="'left'" [style.display]="showCropper ? null : 'none'"
+							format="png" [transform]="transform" (imageCropped)="bgImageCroppedMethod($event)"
+							(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady($event)"
+							(loadImageFailed)="loadImageFailed()">
+						</app-img-croppr-v2>
+					</div>
+					<div *ngIf="!bgImageChangedEvent">
+						<fieldset style="background: #cacaca; height: 227px; margin-bottom: 5px;">
+						</fieldset>
+					</div>
+
+
+				</div>
+
+				<div class="d-flex justify-content-between">
+					<div class="button-group" style="position: relative;text-align:left">
+						<button class="btn-info" (click)="toggleContainWithinAspectRatioBgImage()"
+							[disabled]="!showCropper">
+
+							{{
+							containWithinAspectRatio
+							? 'Fill Aspect Ratio'
+							: 'Contain Within Aspect Ratio'
+							}}
+						</button>
+						<button class="btn-info" (click)="zoomOutBgImage()" [disabled]="!showCropper"><i
+								class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i>
+						</button>
+						<button class="btn-info" (click)="zoomInBgImage()" [disabled]="!showCropper"><i
+								class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i>
+						</button>
+						<button class="btn-info" (click)="resetImageBgImage()" [disabled]="!showCropper"> <i
+								class="fa fa-refresh" title="reset" data-toggle="tooltip"
+								aria-hidden="true"></i></button>
+					</div>
+					<div>
+						<button class="btn button_blue bgcolor-unset" [disabled]="!showCropper"
+							(click)="uploadBgImage()"><span class="btn btn-primary transition">Save
+								Changes</span></button>
+					</div>
+				</div>
+				<div>
+					<ul style="padding: 0 15px;">
+						<li>For optimal results, your uploaded image should fit within the
+							white rectangle.</li>
+						<li>The uploaded image should have the pixels in any of the given dimensions
+							1024x768, 1280x960, 1400x1050, 1440x1080 , 1600x1200, 1856x1392, 1920x1440
+						</li>
+						<li>
+							Please upload .jpg, .jpeg, .png, .webp files only.
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<svg id="svg-filter">
+		<filter id="svg-blur">
+			<feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
+		</filter>
+	</svg>
+</div>

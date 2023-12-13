@@ -7,7 +7,9 @@
   border-left: 5px solid #a94442;
   }
 </style>
-<div *ngIf = "authService.v_companyBgImagePath" class="xamplify-background-image" [style.backgroundImage]="'url('+authService.v_companyBgImagePath+')'">
+<div *ngIf = "(authService.v_companyBgImagePath2 || authService.v_companyLogoImagePath) && !newLogin" class="xamplify-background-image" [ngClass]="authService.isstyleTWoBgColor?'bg_color2':'bg_image2'">
+</div>
+<div *ngIf = "authService.v_companyBgImagePath2 && newLogin" class="xamplify-background-image">
 </div>
 <div class="logo">
   <a [href]="properties.xamplify_router">

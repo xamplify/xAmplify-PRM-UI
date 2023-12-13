@@ -2,10 +2,10 @@
 <div style="position: relative; top: -10px">
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
-<div class="portlet light">
+<div class="portlet light remove_cardBgcolor padding_0">
   <div class="row">
     <div class="col-md-12">
-      <div class=" clearfix" >
+      <div class=" clearfix">
         <div class="portlet-title" style="border-bottom: none">
           <div class="row">
             <div class="page-toolbar col-xs-12">
@@ -72,13 +72,14 @@
                       <div
                         *ngIf="partner.hasLearningTrackQuiz && partner.learningTrackScore !== undefined && partner.learningTrackMaxScore !== undefined "
                         (click)="showFormAnalytics(partner)">
-                        <div *ngIf="partner?.quizName" data-toggle="tooltip" data-placement="top" title="{{partner.quizName}}">
+                        <div *ngIf="partner?.quizName" data-toggle="tooltip" data-placement="top"
+                          title="{{partner.quizName}}">
                           {{partner.quizName | slice:0:35}} <span *ngIf="partner.quizName?.length>35">...</span></div>
                         <div class="quiz-score-margin">
-                        <h6 class="view-banner" style="background-color: #5cb85c;" translate>
-                          {{partner.learningTrackScore}} out of {{partner.learningTrackMaxScore}}
-                        </h6>
-                      </div>
+                          <h6 class="view-banner" style="background-color: #5cb85c;" translate>
+                            {{partner.learningTrackScore}} out of {{partner.learningTrackMaxScore}}
+                          </h6>
+                        </div>
                         <div *ngIf="partner?.quizSubmittedTime">
                           Submitted On <br>
                           <app-timestamp [showInLine]="'true'" [dateAndTime]="partner.quizSubmittedTime">
@@ -98,12 +99,14 @@
                     <td *ngIf="type != undefined && type == 'PLAYBOOK'" class="hidden-xs text-center">
                       <app-timestamp [dateAndTime]="partner.updatedTime">
                       </app-timestamp>
-                  </td>
+                    </td>
                     <td id="actions-row" class="text-center">
-                      <div class="actions-block override-actions custom-width-icon" [ngClass]="{'no-float' : type != undefined && type == 'PLAYBOOK'}" >
-                        <a data-toggle="tooltip" data-placement="top" title="View Analytics"
+                      <div class="actions-block override-actions custom-width-icon"
+                        [ngClass]="{'no-float' : type != undefined && type == 'PLAYBOOK'}">
+                        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="View Analytics"
                           (click)="viewAnalytics(partner,i)">
                           <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                          <div class="clickicons"></div>
                         </a>
                       </div>
                     </td>
@@ -166,16 +169,22 @@
                 *ngFor="let detailedAnalytics of detailedAnalyticsPagination.pagedItems ;let i =index">
                 <li class="timeline-inverted">
                   <div class="timeline-badge">
-                    <img *ngIf="!detailedAnalytics.typeQuiz" alt="Image not found" [src]="detailedAnalytics.assetThumbnail">
-                    <img *ngIf="detailedAnalytics.typeQuiz" [ngClass]="{'form-image':detailedAnalytics.featuredImage === undefined || !detailedAnalytics.featuredImage}" [src]="detailedAnalytics.featuredImage"
-                      onerror="this.src='assets/images/form.png';" alt="Image not found">
+                    <img *ngIf="!detailedAnalytics.typeQuiz" alt="Image not found"
+                      [src]="detailedAnalytics.assetThumbnail">
+                    <img *ngIf="detailedAnalytics.typeQuiz"
+                      [ngClass]="{'form-image':detailedAnalytics.featuredImage === undefined || !detailedAnalytics.featuredImage}"
+                      [src]="detailedAnalytics.featuredImage" onerror="this.src='assets/images/form.png';"
+                      alt="Image not found">
                   </div>
-                  <div class="timeline-panel" [ngClass]="{'disable-click': detailedAnalytics.type !== 'SUBMITTED'}" (click)="showFormAnalyticsFromPopup(detailedAnalytics)">
+                  <div class="timeline-panel" [ngClass]="{'disable-click': detailedAnalytics.type !== 'SUBMITTED'}"
+                    (click)="showFormAnalyticsFromPopup(detailedAnalytics)">
                     <div class="timeline-heading name-wrap">
                       <span class="timeline-title">
-                        <label><span *ngIf="!detailedAnalytics.typeQuiz">Asset</span><span *ngIf="detailedAnalytics.typeQuiz">Quiz</span>
+                        <label><span *ngIf="!detailedAnalytics.typeQuiz">Asset</span><span
+                            *ngIf="detailedAnalytics.typeQuiz">Quiz</span>
                           Name:</label>
-                        <h5 style="display: inline;" title="{{detailedAnalytics.assetName}}">{{detailedAnalytics.assetName}}</h5>
+                        <h5 style="display: inline;" title="{{detailedAnalytics.assetName}}">
+                          {{detailedAnalytics.assetName}}</h5>
                       </span>
                     </div>
                     <div class="timeline-body">
@@ -197,7 +206,8 @@
                         <div *ngIf="detailedAnalytics.type == 'SUBMITTED'">
                           <div class="quiz-score-margin-popup">
                             <h6 class="view-banner" style="background-color: #5cb85c; font-size: 12px;" translate>
-                              {{detailedAnalytics.learningTrackScore}} out of {{detailedAnalytics.learningTrackMaxScore}}
+                              {{detailedAnalytics.learningTrackScore}} out of
+                              {{detailedAnalytics.learningTrackMaxScore}}
                             </h6>
                           </div>
                         </div>

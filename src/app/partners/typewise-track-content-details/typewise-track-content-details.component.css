@@ -11,13 +11,18 @@
 	height:480px;
 }
 .tableHeightScroll{   
-	 height: 359px !important;
-     overflow-y: auto;
-    margin-bottom: 6px;
+    height: 343px !important;
+    overflow-y: auto;
+    margin-bottom: 20px;
 }
+.noData{
+    height: 0px;
+}
+
 /* width */
 ::-webkit-scrollbar {
 	width: 7px;
+    height:7px;
   }
 @media (min-width: 992px) and (max-width: 1225px)  { 
 	.tableHeightScroll {
@@ -109,7 +114,9 @@
 .panel-heading {
     padding: 11px 15px !important;
 }
-
+.table>tbody>tr>td {
+	vertical-align: middle !important;
+}
 
 
 

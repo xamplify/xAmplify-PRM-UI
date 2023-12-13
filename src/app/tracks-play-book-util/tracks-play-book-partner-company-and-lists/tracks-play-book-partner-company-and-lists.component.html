@@ -2,12 +2,16 @@
   <div class="panel-heading" id="company-and-group-tabs">
     <ul class="nav nav-tabs">
       <li id="partners-li">
-        <a class="partnersC"  data-placement="top"  title="Click to see {{authenticationService?.partnerModule?.customName}} companies" href="#partners" data-toggle="tab"
+        <a class="partnersC" data-placement="top"
+          title="Click to see {{authenticationService?.partnerModule?.customName}} companies" href="#partners"
+          data-toggle="tab"
           (click)="findPartnerCompanies(pagination)">{{authenticationService?.partnerModule?.customName}}</a>
       </li>
       <li id="partnerGroups-li">
-        <a class="partnerGroupsC"  data-placement="bottom"   title="Click to see list of {{authenticationService?.partnerModule?.customName}}" href="#partnerGroups" data-toggle="tab"
-          (click)="findPartnerGroups(partnerGroupsPagination)">List Of {{authenticationService?.partnerModule?.customName}}</a>
+        <a class="partnerGroupsC" data-placement="bottom"
+          title="Click to see list of {{authenticationService?.partnerModule?.customName}}" href="#partnerGroups"
+          data-toggle="tab" (click)="findPartnerGroups(partnerGroupsPagination)">List Of
+          {{authenticationService?.partnerModule?.customName}}</a>
       </li>
     </ul>
   </div>
@@ -16,40 +20,43 @@
       <div class="tab-pane fade" id="partners">
         <div class="col-xs-12">
           <div class="row">
-          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0">
-            <app-team-member-filter-option *ngIf="showFilter && !authenticationService?.module?.isMarketingCompany" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
-          </div>
-          <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6 col-md-6 mb-flex">
-            <div class="pull-right">
-              <button class="btn btn-danger margin-space" *ngIf="(selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0) "
-                (click)="clearAll('partners')">Clear All</button>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 p0">
+              <app-team-member-filter-option *ngIf="showFilter && !authenticationService?.module?.isMarketingCompany"
+                (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
             </div>
-            <div class="btn-group pull-right">
-              <div class="inputs float-right" style="display: inline-flex;">
-                <div class="portlet-input input-inline" id="search-div">
-                  <div class="input-icon right mr5" id="icon">
-                    <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
-                      [ngModelOptions]="{standalone: true}" placeholder="Search..."
-                      (keypress)="partnersSearchOnKeyEvent($event.keyCode)">
-                    <button  class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
-                      (click)="sortOption.searchKey='';searchPartners();"></button>
-                    <button type="submit" class="search-box-item-click" (click)="searchPartners()">
-                      <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>
+            <div class="page-toolbar col-xs-12 col-sm-6 col-lg-6 col-md-6 mb-flex">
+              <div class="pull-right">
+                <button class="btn btn-danger margin-space"
+                  *ngIf="(selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0) "
+                  (click)="clearAll('partners')">Clear All</button>
+              </div>
+              <div class="btn-group pull-right">
+                <div class="inputs float-right" style="display: inline-flex;">
+                  <div class="portlet-input input-inline" id="search-div">
+                    <div class="input-icon right mr5" id="icon">
+                      <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
+                        [ngModelOptions]="{standalone: true}" placeholder="Search..."
+                        (keypress)="partnersSearchOnKeyEvent($event.keyCode)">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
+                        (click)="sortOption.searchKey='';searchPartners();"></button>
+                      <button type="submit" class="search-box-item-click" (click)="searchPartners()">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          </div>
-        </div>       
-         <ng-container>
+        </div>
+        <ng-container>
           <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
             <div class="row">
               <div>
-               
+
                 <div class="col-xs-12" style="padding-top: 5px;">
-                  <div class="alert alert-success text-center" style="padding: 5px;" *ngIf="selectedPartnershipIds?.length>0">
+                  <div class="alert alert-success text-center" style="padding: 5px;"
+                    *ngIf="selectedPartnershipIds?.length>0">
                     <strong>
                       <ng-container *ngIf="selectedPartnershipIds?.length==1">
                         {{selectedPartnershipIds?.length}} company is selected
@@ -73,7 +80,7 @@
                 id="parnter-companies" aria-describedby="trackPlayBookPartnersTableDescription">
                 <thead>
                   <tr>
-                    <th scope="col"></th>                    
+                    <th scope="col"></th>
                     <th scope="col">Company Logo</th>
                     <th scope="col" class="text-center">Company Name</th>
                     <th scope="col">Created Time</th>
@@ -84,7 +91,8 @@
                     <tr [class.row-selected]="selectedPartnershipIds.indexOf(partner.partnershipId)>-1">
                       <td class="cw">
                         <div class="actions-block left-float">
-                          <a (click)="viewTeamMembers(partner)" data-toggle="tooltip" data-placement="bottom"  title="View/Hide Team Members">
+                          <a (click)="viewTeamMembers(partner)" data-toggle="tooltip" data-placement="bottom"
+                            title="View/Hide Team Members">
                             <i class="fa IconCustomization"
                               [ngClass]="{'fa-angle-right': !partner.expand, 'fa-angle-down': partner.expand}"
                               aria-hidden="true"></i>
@@ -92,12 +100,13 @@
                         </div>
                       </td>
                       <td style="width: 10%;">
-                        <div  data-toggle="tooltip" data-placement="right"  title="{{partner?.companyName}}" class="thumbnail-wrapper img">
+                        <div data-toggle="tooltip" data-placement="right" title="{{partner?.companyName}}"
+                          class="thumbnail-wrapper img">
                           <img alt="No image found" onerror="this.src='assets/images/company-profile-logo.png';"
                             [src]="authenticationService.MEDIA_URL+partner.companyLogo">
                         </div>
                       </td>
-                      <td  class="text-center">
+                      <td class="text-center">
                         <span>{{partner?.companyName | slice:0:20}}</span>
                         <span *ngIf="partner?.companyName.length>20">...</span>
                       </td>
@@ -140,7 +149,8 @@
                                 <thead>
                                   <tr>
                                     <th scope="row" class="text-center">
-                                      <input type="checkbox" class="pointer checkBox_shadow" [(ngModel)]="isHeaderCheckBoxChecked"
+                                      <input type="checkbox" class="pointer checkBox_shadow"
+                                        [(ngModel)]="isHeaderCheckBoxChecked"
                                         (change)="selectAllTeamMembersOfTheCurrentPage($event,partner.partnershipId)">
                                     </th>
                                     <th scope="row">Entity Info</th>
@@ -152,7 +162,8 @@
                                     [class.row-selected]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1"
                                     (click)="highlightSelectedAdminOrTeamMemberRowOnRowClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
                                     <td class="text-center">
-                                      <input type="checkbox" class="pointer checkBox_shadow" id="{{adminAndTeamMember.userId}}"
+                                      <input type="checkbox" class="pointer checkBox_shadow"
+                                        id="{{adminAndTeamMember.userId}}"
                                         [checked]="selectedTeamMemberIds.indexOf(adminAndTeamMember.userId)>-1"
                                         name="adminOrTeamMemberCheckBox[]" value="{{adminAndTeamMember.userId}}"
                                         (click)="highlightAdminOrTeamMemberRowOnCheckBoxClick(adminAndTeamMember.userId,partner.partnershipId,$event)">
@@ -205,10 +216,11 @@
                     <div class="inputs float-right" style="display: inline-flex;">
                       <div class="portlet-input input-inline mSearchAlign" id="search-div">
                         <div class="input-icon right" id="icon">
-                          <input type="text" id="sort-text" class="form-control" [(ngModel)]="partnerGroupsSortOption.searchKey"
-                            [ngModelOptions]="{standalone: true}" placeholder="search..."
-                            (keypress)="partnerGroupsSearchOnKeyEvent($event.keyCode)">
-                          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="partnerGroupsSortOption.searchKey"
+                          <input type="text" id="sort-text" class="form-control"
+                            [(ngModel)]="partnerGroupsSortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                            placeholder="search..." (keypress)="partnerGroupsSearchOnKeyEvent($event.keyCode)">
+                          <button class="glyphicon glyphicon-remove search-box-item-clear"
+                            *ngIf="partnerGroupsSortOption.searchKey"
                             (click)="partnerGroupsSortOption.searchKey='';searchPartnerGroups();"></button>
                           <button type="submit" class="search-box-item-click" (click)="searchPartnerGroups()">
                             <i class="fa fa-search" aria-hidden="true"></i>
@@ -246,11 +258,12 @@
               <thead>
                 <tr>
                   <th scope="col" class="text-center">
-                    <input type="checkbox" class="pointer checkBox_shadow" [(ngModel)]="isParnterGroupHeaderCheckBoxChecked"
-                      id="parnterGroupsHeaderCheckBox"
-                      (change)="selectOrUnselectAllPartnerGroupsOfTheCurrentPage($event)"></th>
+                    <input type="checkbox" class="pointer checkBox_shadow"
+                      [(ngModel)]="isParnterGroupHeaderCheckBoxChecked" id="parnterGroupsHeaderCheckBox"
+                      (change)="selectOrUnselectAllPartnerGroupsOfTheCurrentPage($event)">
+                  </th>
                   <th *ngIf="showExpandButton"></th>
-                  <th scope="col" class="text-center">List Name</th>                  
+                  <th scope="col" class="text-center">List Name</th>
                   <th scope="col" class="text-center">Count</th>
                   <th scope="col" class="text-center">Created Time</th>
                   <th scope="col" class="text-center">Preview</th>
@@ -258,17 +271,21 @@
               </thead>
               <tbody>
                 <ng-container *ngFor="let partnerGroup of partnerGroupsPagination.pagedItems;let i = index;">
-                  <tr id="partnerGroups-tr-{{partnerGroup.id}}" [class.row-selected]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
+                  <tr id="partnerGroups-tr-{{partnerGroup.id}}"
+                    [class.row-selected]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
                     (click)="highlightSelectedPartnerGroupOnRowClick(partnerGroup.id,$event)">
                     <td class="text-center">
-                      <input type="checkbox" class="pointer checkBox_shadow" id="{{partnerGroup.id}}" [checked]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1"
-                        name="partnerGroupsCheckBox[]" value="{{partnerGroup.id}}"
+                      <input type="checkbox" class="pointer checkBox_shadow" id="{{partnerGroup.id}}"
+                        [checked]="selectedPartnerGroupIds.indexOf(partnerGroup.id)>-1" name="partnerGroupsCheckBox[]"
+                        value="{{partnerGroup.id}}"
                         (click)="$event.stopPropagation();highlightPartnerGroupRowOnCheckBoxClick(partnerGroup.id,$event);">
                     </td>
                     <td class="cw" *ngIf="showExpandButton">
                       <div class="actions-block left-float">
-                        <a (click)="$event.stopPropagation();viewMatchedContacts(partnerGroup)" data-toggle="tooltip" data-placement="bottom"  title="Matched Results">
-                          <i class="fa IconCustomization" [ngClass]="{'fa-angle-right': !partnerGroup.expand, 'fa-angle-down': partnerGroup.expand}"
+                        <a (click)="$event.stopPropagation();viewMatchedContacts(partnerGroup)" data-toggle="tooltip"
+                          data-placement="bottom" title="Matched Results">
+                          <i class="fa IconCustomization"
+                            [ngClass]="{'fa-angle-right': !partnerGroup.expand, 'fa-angle-down': partnerGroup.expand}"
                             aria-hidden="true"></i>
                         </a>
                       </div>
@@ -285,14 +302,19 @@
                       </app-timestamp>
                     </td>
                     <td class="text-center">
-                      <div class="actions-block none-float" (click)="$event.stopPropagation();previewUserListUsers(partnerGroup)">
-                        <a data-toggle="tooltip" data-placement="top" title="Preview"><i class="fa fa-eye IconCustomization" aria-hidden="true"></i></a>
+                      <div class="actions-block none-float"
+                        (click)="$event.stopPropagation();previewUserListUsers(partnerGroup)">
+                        <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview"><i
+                            class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                          <div class="clickicons"></div>
+                        </a>
                       </div>
                     </td>
                   </tr>
                   <tr role="row" *ngIf="partnerGroup?.expand">
                     <td colspan="12">
-                      <app-userlist-users [searchKey]="partnerGroupsPagination.searchKey" [userListId]="partnerGroup.id"></app-userlist-users>
+                      <app-userlist-users [searchKey]="partnerGroupsPagination.searchKey"
+                        [userListId]="partnerGroup.id"></app-userlist-users>
                     </td>
                   </tr>
                 </ng-container>
@@ -316,7 +338,7 @@
 
 <ng-container *ngIf="showUsersPreview">
   <app-preview-user-list [userListName]="selectedPartnerGroupName" [userListId]="selectedPartnerGroupId"
-    (notifyParentComponent)="resetValues()"></app-preview-user-list>
+    [moduleName]="'lms'" [inputId]="inputId" (notifyParentComponent)="resetValues()"></app-preview-user-list>
 </ng-container>
 
 <!--XNFR-326---->

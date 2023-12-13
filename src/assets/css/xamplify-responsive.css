@@ -125,6 +125,9 @@
   .tab_pl0{
     padding-left: 0px!important;
   }
+  .pagination>li>a, .pagination>li>span {
+    padding: 6px 8px !important;
+  }
 }
 /* Manage Campaigns ribbon adjustment 04-07-2023 */
 @media only screen and (min-width: 601px) and (max-width: 992px) { 

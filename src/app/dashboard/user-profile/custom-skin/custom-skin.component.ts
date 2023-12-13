@@ -29,8 +29,8 @@ export class CustomSkinComponent implements OnInit {
   @ViewChild("myckeditor") ckeditor: any;
   @Input() themeDTO: ThemeDto;
   @Input() themeId: number;
-  @Input() isSaveTheme :boolean;
-  @Input() activeThemeId:number;
+  @Input() isSaveTheme: boolean;
+  @Input() activeThemeId: number;
   @Output() closeEvent = new EventEmitter<any>();
   @Output() updateEvent = new EventEmitter<any>();
   isValidDivBgColor = true;
@@ -71,6 +71,8 @@ export class CustomSkinComponent implements OnInit {
   secondaryButtonBgColor: string;
   secondaryButtonBorderColor: string;
   secondaryButtonTextColor: string;
+  iconBorderColor: string;
+  iconHoverColor: string;
   /*******Main_Content******** */
   /*******Left Menu***** */
   leftBgColor: string;
@@ -134,7 +136,7 @@ export class CustomSkinComponent implements OnInit {
   constructor(public regularExpressions: RegularExpressions, public videoUtilService: VideoUtilService,
     public dashboardService: DashboardService, public authenticationService: AuthenticationService,
     public referenceService: ReferenceService,
-    public xtremandLogger: XtremandLogger,private formBuilder: FormBuilder,
+    public xtremandLogger: XtremandLogger, private formBuilder: FormBuilder,
     public ustilService: UtilService, public router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isLoggedInFromAdminSection = this.ustilService.isLoggedInFromAdminPortal();
@@ -171,7 +173,7 @@ export class CustomSkinComponent implements OnInit {
     this.saveThemePropertiesToList(form);
   }
   colorsdto: ThemePropertiesDto;
-  
+
   headerModuleName = "TOP_NAVIGATION_BAR";
   leftMenuModuleName = "LEFT_SIDE_MENU";
   footerModuleName = "FOOTER";
@@ -251,7 +253,7 @@ export class CustomSkinComponent implements OnInit {
   //   //.saveThemePropertiesToList(this.mainContentForm);
 
   // }
-  nameValid:boolean = false;
+  nameValid: boolean = false;
   changEvent(ev: any) {
     this.sname = ev.replace(/\s/g, '');
     this.getAllThemeNames(this.sname);
@@ -273,7 +275,7 @@ export class CustomSkinComponent implements OnInit {
 
     /********Top_Navigation_Bar***************/
     if (type === "headerBgColor") {
-      this.headerForm.backgroundColor = colorCode; 
+      this.headerForm.backgroundColor = colorCode;
       this.isValidBackgroundColor = true;
     } else if (type === "headerBBorderColor") {
       this.headerForm.buttonBorderColor = colorCode; this.isValidButtonBorderColor = true;
@@ -295,21 +297,30 @@ export class CustomSkinComponent implements OnInit {
     } else if (type === "mainTextColor") {
       this.mainContentForm.textColor = colorCode; this.isValidTextColor = true;
     }
+    else if (type === "iconBorderColor") {
+      this.mainContentForm.iconBorderColor = colorCode; this.isValidTextColor = true;
+    }
+    else if (type === "iconColor") {
+      this.mainContentForm.iconColor = colorCode; this.isValidTextColor = true;
+    }
+    else if (type === "iconHoverColor") {
+      this.mainContentForm.iconHoverColor = colorCode; this.isValidTextColor = true;
+    }
     // for btn customization
-     else if(type === "mainButtonBgColor"){
+    else if (type === "mainButtonBgColor") {
       this.mainContentForm.buttonColor = colorCode; this.isValidTextColor = true;
-    } else if(type === "mainButtonBorderColor"){
+    } else if (type === "mainButtonBorderColor") {
       this.mainContentForm.buttonPrimaryBorderColor = colorCode; this.isValidTextColor = true;
-    } else if(type ==="mainButtonValueColor"){
-      this.mainContentForm.buttonValueColor= colorCode; this.isValidTextColor = true;
-    } else if(type === "mainButtonIconColor"){
-      this.mainContentForm.iconColor= colorCode; this.isValidTextColor = true;
-    } else if(type === "secondaryButtonBgColor"){
-      this.mainContentForm.buttonSecondaryColor= colorCode; this.isValidTextColor = true;
-    } else if(type === "secondaryButtonBorderColor"){
-      this.mainContentForm.buttonSecondaryBorderColor= colorCode; this.isValidTextColor = true;
-    } else if(type === "secondaryButtonTextColor"){
-      this.mainContentForm.buttonSecondaryTextColor= colorCode; this.isValidTextColor = true;
+    } else if (type === "mainButtonValueColor") {
+      this.mainContentForm.buttonValueColor = colorCode; this.isValidTextColor = true;
+    } else if (type === "mainButtonIconColor") {
+      this.mainContentForm.iconColor = colorCode; this.isValidTextColor = true;
+    } else if (type === "secondaryButtonBgColor") {
+      this.mainContentForm.buttonSecondaryColor = colorCode; this.isValidTextColor = true;
+    } else if (type === "secondaryButtonBorderColor") {
+      this.mainContentForm.buttonSecondaryBorderColor = colorCode; this.isValidTextColor = true;
+    } else if (type === "secondaryButtonTextColor") {
+      this.mainContentForm.buttonSecondaryTextColor = colorCode; this.isValidTextColor = true;
     }
     /*********Main_content********************/
     /*******Left Menu************ */
@@ -374,8 +385,8 @@ export class CustomSkinComponent implements OnInit {
     if (this.leftBgColor === this.leftTextColor) {
       this.isValid = true;
       //this.validMessage = "The User Interface Is Going to Be Affected if the Reliant Objects Have the Same Color."
-    } 
-    else if (this.leftBgColor == this.leftIconColor){
+    }
+    else if (this.leftBgColor == this.leftIconColor) {
       this.isValid = true;
       //this.validMessage = "The User Interface Is Going to Be Affected if the Reliant Objects Have the Same Color."
     }
@@ -383,32 +394,32 @@ export class CustomSkinComponent implements OnInit {
       this.isValid = true;
       //this.validMessage = "Please Change the color ,it was already exsits"
     }
-    else if  (this.headerBColor  ===this.headerBIconColor) {
+    else if (this.headerBColor === this.headerBIconColor) {
       this.isValid = true;
       //this.validMessage = "Please Change the color ,it was already exsits"
     }
-    else if  (this.headerBColor ===this.headerBVColor){
+    else if (this.headerBColor === this.headerBVColor) {
       this.isValid = true;
       //this.validMessage = "Please Change the color ,it was already exsits"
     }
-    else if  (this.footerBgColor === this.footerTextColor) {
+    else if (this.footerBgColor === this.footerTextColor) {
       this.isValid = true;
       //this.validMessage = "Please Change the color ,it was already exsits"
-    } 
-     else if (this.mainDivColor === this.mainBgColor) {
+    }
+    else if (this.mainDivColor === this.mainBgColor) {
       this.isValid = true;
       //this.validMessage = "Please Change the color ,it was already exsits"
-     }
-     else if (this.mainDivColor ===this.mainTextColor) {
+    }
+    else if (this.mainDivColor === this.mainTextColor) {
       this.isValid = true;
-     // this.validMessage = "Please Change the color ,it was already exsits"
+      // this.validMessage = "Please Change the color ,it was already exsits"
     } else {
       this.isValid = false;
       this.validMessage = "";
     }
-   if (this.isValid){
-    this.validMessage = "The user interface is going to be affected if the reliant objects have the same color.";
-   }
+    if (this.isValid) {
+      this.validMessage = "The user interface is going to be affected if the reliant objects have the same color.";
+    }
     if (this.isValidBackgroundColor && this.isValidButtonColor && this.isValidButtonValueColor && this.isValidTextColor && this.isValidButtonBorderColor) {
       this.isValidColorCode = true;
     }
@@ -436,22 +447,31 @@ export class CustomSkinComponent implements OnInit {
       this.mainContentForm.buttonBorderColor = ""; this.isValidButtonBorderColor = true;
     } else if (type === "mainTextColor") {
       this.mainContentForm.textColor = ""; this.isValidTextColor = true;
-    } 
-    // for btn customization
-    else if(type === "mainButtonBgColor"){
-      this.mainContentForm.buttonColor = ""; this.isValidTextColor = true;
-    } else if(type === "mainButtonBorderColor"){
-      this.mainContentForm.buttonPrimaryBorderColor = ""; this.isValidTextColor = true;
-    } else if(type === "mainButtonValueColor"){
-      this.mainContentForm.buttonValueColor = ""; this.isValidTextColor = true;
-    } else if(type === "mainButtonIconColor"){
+    }
+    else if (type === "iconBorderColor") {
+      this.mainContentForm.iconBorderColor = ""; this.isValidTextColor = true;
+    }
+    else if (type === "iconColor") {
       this.mainContentForm.iconColor = ""; this.isValidTextColor = true;
-    } else if(type === "secondaryButtonBgColor"){
-      this.mainContentForm.buttonSecondaryColor=""; this.isValidTextColor = true;
-    } else if(type === "secondaryButtonBorderColor"){
-      this.mainContentForm.buttonSecondaryBorderColor=""; this.isValidTextColor = true;
-    } else if(type === "secondaryButtonTextColor"){
-      this.mainContentForm.buttonSecondaryTextColor=""; this.isValidTextColor = true;
+    }
+    else if (type === "iconHoverColor") {
+      this.mainContentForm.iconHoverColor = ""; this.isValidTextColor = true;
+    }
+    // for btn customization
+    else if (type === "mainButtonBgColor") {
+      this.mainContentForm.buttonColor = ""; this.isValidTextColor = true;
+    } else if (type === "mainButtonBorderColor") {
+      this.mainContentForm.buttonPrimaryBorderColor = ""; this.isValidTextColor = true;
+    } else if (type === "mainButtonValueColor") {
+      this.mainContentForm.buttonValueColor = ""; this.isValidTextColor = true;
+    } else if (type === "mainButtonIconColor") {
+      this.mainContentForm.iconColor = ""; this.isValidTextColor = true;
+    } else if (type === "secondaryButtonBgColor") {
+      this.mainContentForm.buttonSecondaryColor = ""; this.isValidTextColor = true;
+    } else if (type === "secondaryButtonBorderColor") {
+      this.mainContentForm.buttonSecondaryBorderColor = ""; this.isValidTextColor = true;
+    } else if (type === "secondaryButtonTextColor") {
+      this.mainContentForm.buttonSecondaryTextColor = ""; this.isValidTextColor = true;
     }
     /*********Main_content********************/
     /*******Left Menu************ */
@@ -497,9 +517,9 @@ export class CustomSkinComponent implements OnInit {
       const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
       $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
       /*******Header Form*********8 */
-      if (type === "headerBgColor") { 
-        this.headerBgColor = event; 
-        this.headerForm.backgroundColor = event; this.isValidBackgroundColor = true; 
+      if (type === "headerBgColor") {
+        this.headerBgColor = event;
+        this.headerForm.backgroundColor = event; this.isValidBackgroundColor = true;
       } else if (type === "headerBBorderColor") {
         this.headerBBorderColor = event; this.headerForm.buttonBorderColor = event;
         this.isValidButtonBorderColor = true;
@@ -526,31 +546,43 @@ export class CustomSkinComponent implements OnInit {
         this.mainTextColor = event;
         this.mainContentForm.textColor = event; this.isValidTextColor = true;
       }
+      else if (type === "iconBorderColor") {
+        this.iconBorderColor = event;
+        this.mainContentForm.iconBorderColor = event; this.isValidTextColor = true;
+      }
+      else if (type === "iconColor") {
+        this.iconColor = event;
+        this.mainContentForm.iconColor = event; this.isValidTextColor = true;
+      }
+      else if (type === "iconHoverColor") {
+        this.iconHoverColor = event;
+        this.mainContentForm.iconHoverColor = event; this.isValidTextColor = true;
+      }
       // for btn customization
-       else if(type === "mainButtonBgColor"){
+      else if (type === "mainButtonBgColor") {
         this.mainButtonBgColor = event;
         document.documentElement.style.setProperty('--button-primary-bg-color', this.mainContentForm.buttonColor);
         this.mainContentForm.buttonColor = event; this.isValidTextColor = true;
-      } else if(type === "mainButtonBorderColor"){
+      } else if (type === "mainButtonBorderColor") {
         this.mainButtonBorderColor = event;
         document.documentElement.style.setProperty('--button-primary-border-color', this.mainContentForm.buttonPrimaryBorderColor);
         this.mainContentForm.buttonPrimaryBorderColor = event; this.isValidTextColor = true;
-      } else if(type === "mainButtonValueColor"){
+      } else if (type === "mainButtonValueColor") {
         this.mainButtonValueColor = event;
         document.documentElement.style.setProperty('--button-primary-text-color', this.mainContentForm.buttonValueColor);
         this.mainContentForm.buttonValueColor = event; this.isValidTextColor = true;
-      } else if(type === "mainButtonIconColor"){
-        this.mainButtonIconColor =  event;
+      } else if (type === "mainButtonIconColor") {
+        this.mainButtonIconColor = event;
         this.mainContentForm.iconColor = event; this.isValidTextColor = true;
-      } else if(type === "secondaryButtonBgColor"){
-        this.secondaryButtonBgColor= event;
+      } else if (type === "secondaryButtonBgColor") {
+        this.secondaryButtonBgColor = event;
         document.documentElement.style.setProperty('--button-secondary-bg-color', this.mainContentForm.buttonSecondaryColor);
         this.mainContentForm.buttonSecondaryColor = event; this.isValidTextColor = true;
-      } else if(type === "secondaryButtonBorderColor"){
+      } else if (type === "secondaryButtonBorderColor") {
         this.secondaryButtonBorderColor = event;
         document.documentElement.style.setProperty('--button-secondary-border-color', this.mainContentForm.buttonSecondaryBorderColor);
         this.mainContentForm.buttonSecondaryBorderColor = event; this.isValidTextColor = true;
-      } else if(type === "secondaryButtonTextColor"){
+      } else if (type === "secondaryButtonTextColor") {
         this.secondaryButtonTextColor = event;
         document.documentElement.style.setProperty('--button-secondary-text-color', this.mainContentForm.buttonSecondaryTextColor);
         this.mainContentForm.buttonSecondaryTextColor = event; this.isValidTextColor = true;
@@ -579,7 +611,7 @@ export class CustomSkinComponent implements OnInit {
         this.footerTextColor = event;
         this.footerForm.textColor = event; this.isValidTextColor = true;
       }
-     
+
       // else if (type === "divBgColor") {
       //   this.divBgColor = event;
       //   form.divBgColor = event;
@@ -623,14 +655,16 @@ export class CustomSkinComponent implements OnInit {
     this.saveThemeDto.description = 'Hi';
     this.saveThemeDto.defaultTheme = false;
     this.saveThemeDto.createdBy = this.loggedInUserId;
+    this.saveThemeDto.parentId = this.themeId;
+    console.log(this.saveThemeDto.parentId, "sudha");
     //this.ngxloading = false;
   }
 
 
   // gives default values with id
   getDefaultSkin(id: number) {
-   this.ngxloading = true;
-   this.divLoader = true;
+    this.ngxloading = true;
+    this.divLoader = true;
     this.dashboardService.getPropertiesById(id)
       .subscribe(
         (data: any) => {
@@ -663,6 +697,9 @@ export class CustomSkinComponent implements OnInit {
           this.mainDivColor = this.mainContentForm.divBgColor;
           this.mainBorderColor = this.mainContentForm.buttonBorderColor;
           this.mainTextColor = this.mainContentForm.textColor;
+          this.iconBorderColor = this.mainContentForm.iconBorderColor;
+          this.iconColor = this.mainContentForm.iconColor;
+          this.iconHoverColor = this.mainContentForm.iconHoverColor;
           // for btn customization
           this.mainButtonBgColor = this.mainContentForm.buttonColor;
           this.mainButtonBorderColor = this.mainContentForm.buttonPrimaryBorderColor;
@@ -690,8 +727,10 @@ export class CustomSkinComponent implements OnInit {
     self.colorsdto.textColor = form.textColor;
     self.colorsdto.buttonColor = form.buttonColor;
     self.colorsdto.divBgColor = form.divBgColor;
-    self.colorsdto.iconColor = form.iconColor;
+    self.colorsdto.iconBorderColor = form.iconBorderColor;
+    self.colorsdto.iconHoverColor = form.iconHoverColor;
     self.colorsdto.buttonBorderColor = form.buttonBorderColor;
+    self.colorsdto.iconColor = form.iconColor;
     self.colorsdto.buttonValueColor = form.buttonValueColor;
     self.colorsdto.showFooter = form.showFooter;
     self.colorsdto.moduleTypeString = form.moduleTypeString;
@@ -725,16 +764,16 @@ export class CustomSkinComponent implements OnInit {
     this.themePropertiesListWrapper.themeDto = this.saveThemeDto;
     console.log(this.themePropertiesListWrapper, 'wrapper');
     console.log(this.themeDto, 'dto');
-    
+
 
     this.dashboardService.saveMultipleTheme(this.themePropertiesListWrapper).subscribe(
       (data: any) => {
         this.ngxloading = false;
-         //this.statusCode = 200;
+        //this.statusCode = 200;
         //this.referenceService.showSweetAlertSuccessMessage("Theme Created Successfully");
         //event emit
-        if(data.statusCode == 200){
-        this.saveThemeEventEmit("Theme Saved Successfully")
+        if (data.statusCode == 200) {
+          this.saveThemeEventEmit("Theme Saved Successfully")
         } else if (data.statusCode == 409) {
           this.isValidContactName = true;
           this.invalidContactNameError = "Name Already Exists.";
@@ -752,10 +791,10 @@ export class CustomSkinComponent implements OnInit {
       }
     )
   }
-  saveThemeEventEmit(value:String){
+  saveThemeEventEmit(value: String) {
     this.closeEvent.emit(value);
   }
- 
+
 
   loadNames() {
     this.dashboardService.getAllThemeNames().subscribe(
@@ -778,15 +817,15 @@ export class CustomSkinComponent implements OnInit {
     var list = this.tnames;
     this.xtremandLogger.log(list);
     if ($.inArray(contactName, list) > -1) {
-      if(contactName === this.themeDTO.name){
+      if (contactName === this.themeDTO.name) {
         this.isValidContactName = false;
         $(".ng-valid[required], .ng-valid.required").css("color", "Black");
-      $("button#sample_editable_1_new").prop('disabled', false);
-      }else {
-      this.isValidContactName = true;
-      $("button#sample_editable_1_new").prop('disabled', true);
-      $(".ng-valid[required], .ng-valid.required").css("color", "red");
-      this.invalidContactNameError = "Name is already exists";
+        $("button#sample_editable_1_new").prop('disabled', false);
+      } else {
+        this.isValidContactName = true;
+        $("button#sample_editable_1_new").prop('disabled', true);
+        $(".ng-valid[required], .ng-valid.required").css("color", "red");
+        this.invalidContactNameError = "Name is already exists";
       }
     } else {
       $(".ng-valid[required], .ng-valid.required").css("color", "Black");
@@ -800,10 +839,10 @@ export class CustomSkinComponent implements OnInit {
     this.dashboardService.getThemeDTOById(this.themeId).subscribe(
       (data: any) => {
         this.themeDto = data.data;
-        if(this.themeDto.name === "Light" || this.themeDto.name === "Dark" ||
-        this.themeDto.name === "Neumorphism Light" || this.themeDto.name === "Neumorphism Dark" 
-        || this.isSaveTheme){
-        this.sname = this.themeDto.name + '_copy';
+        if (this.themeDto.name === "Light" || this.themeDto.name === "Dark" ||
+          this.themeDto.name === "Neumorphism Light" || this.themeDto.name === "Neumorphism Dark"
+          || this.isSaveTheme) {
+          this.sname = this.themeDto.name + '_copy';
         }
         else {
           this.sname = this.themeDto.name;
@@ -812,15 +851,15 @@ export class CustomSkinComponent implements OnInit {
       }
     )
   }
-  updateThemedto:ThemeDto = new ThemeDto();
-  emptyDto:ThemeDto = new ThemeDto();
+  updateThemedto: ThemeDto = new ThemeDto();
+  emptyDto: ThemeDto = new ThemeDto();
   UpdateThemeDto() {
     this.ngxloading = true;
     this.updateThemedto.id = this.themeId;
     this.updateThemedto.name = this.sname;
     this.updateThemedto.defaultTheme = false;
     this.updateThemedto.createdBy = this.loggedInUserId;
-    
+
     if (CKEDITOR != undefined) {
       for (var instanceName in CKEDITOR.instances) {
         CKEDITOR.instances[instanceName].updateElement();
@@ -831,7 +870,7 @@ export class CustomSkinComponent implements OnInit {
     this.leftSideForm.moduleTypeString = this.leftMenuModuleName;
     this.footerForm.moduleTypeString = this.footerModuleName;
     this.mainContentForm.moduleTypeString = this.mainModuleName;
-    this.headerForm.themeId =this.themeId;
+    this.headerForm.themeId = this.themeId;
     this.leftSideForm.themeId = this.themeId;
     this.footerForm.themeId = this.themeId;
     this.mainContentForm.themeId = this.themeId;
@@ -840,56 +879,56 @@ export class CustomSkinComponent implements OnInit {
     this.updateThemedto.themesProperties.push(this.footerForm);
     this.updateThemedto.themesProperties.push(this.mainContentForm)
     console.log(this.updateThemedto, 'wrapper');
-  
+
 
     this.dashboardService.updateThemeDto(this.updateThemedto).subscribe(
       (data: any) => {
         this.ngxloading = false;
-         //this.statusCode = 200;
-         if(data.statusCode == 200){
-            this.saveThemeEventEmit("Theme Updated Successfully")
-         } else if (data.statusCode == 402){
+        //this.statusCode = 200;
+        if (data.statusCode == 200) {
+          this.saveThemeEventEmit("Theme Updated Successfully")
+        } else if (data.statusCode == 402) {
           this.isValidContactName = true;
           this.invalidContactNameError = "Name is Required.";
-         } else {
+        } else {
           this.isValid = true;
           this.validMessage = data.message;
-         }
-      
+        }
+
       },
       error => {
         this.ngxloading = false;
         this.statusCode = 500;
-        this.updateThemedto= this.emptyDto;
+        this.updateThemedto = this.emptyDto;
         this.message = "Oops!Something went wrong";
       }
     )
   }
-  updateThemeWithAlert(){
-		let self = this;
-		swal({
-			title: 'Are you sure?',
-			text: "Do you want to save the changes?",
-			type: 'warning',
-			showCancelButton: true,
-			swalConfirmButtonColor: '#54a7e9',
-			swalCancelButtonColor: '#999',
-			confirmButtonText: 'Yes'
+  updateThemeWithAlert() {
+    let self = this;
+    swal({
+      title: 'Are you sure?',
+      text: "Do you want to save the changes?",
+      type: 'warning',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Yes'
 
-		}).then(function () {
-			self.UpdateThemeDto();
+    }).then(function () {
+      self.UpdateThemeDto();
       location.reload();
-		},function (dismiss: any) {
-			console.log("you clicked showAlert cancel" + dismiss);
-		});
-	}
-  update(){
-    if(this.activeThemeId === this.themeId){
+    }, function (dismiss: any) {
+      console.log("you clicked showAlert cancel" + dismiss);
+    });
+  }
+  update() {
+    if (this.activeThemeId === this.themeId) {
       this.updateThemeWithAlert();
-    }else {
+    } else {
       this.UpdateThemeDto();
     }
   }
 
-  
+
 }
