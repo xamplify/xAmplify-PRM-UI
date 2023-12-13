@@ -41,6 +41,7 @@ export class SfDealComponent implements OnInit {
   connectWiseProducts:Array<ConnectwiseProductsDto> = new Array<ConnectwiseProductsDto>();
   searchableDropDownDto:SearchableDropdownDto = new SearchableDropdownDto();
   connectwiseProduct: ConnectwiseProductsDto = new ConnectwiseProductsDto();
+  allDivIds = [];
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
 
@@ -305,11 +306,12 @@ export class SfDealComponent implements OnInit {
   }
 
   addProduct(){
-    let length = this.connectWiseProducts.length;
+    let length = this.allDivIds.length;
     length = length + 1;
     const divId = 'product-' + length;
     let connectwiseProduct = new ConnectwiseProductsDto();
     connectwiseProduct.divId = divId;
+    this.allDivIds.push(divId);
     this.connectWiseProducts.push(connectwiseProduct);
   }
 
