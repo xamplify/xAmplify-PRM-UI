@@ -3344,3 +3344,8 @@ button.button:disabled {
 .textCss{
   border-bottom: 1px solid #191b1e !important;
 }
+button.button:disabled span,
+button.button_blue:disabled span{
+  cursor: not-allowed !important;
+}
+
