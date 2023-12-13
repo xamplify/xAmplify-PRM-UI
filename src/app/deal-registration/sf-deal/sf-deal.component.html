@@ -3,26 +3,30 @@
     <div class="panel panel-default deal-bgcolor">
       <div class="panel-heading deal-bgcolor">
         <h4 class="panel-title">
-          <a  class="collapsed" href="DealDetails" (click)="toggleCollapseDeal($event)"> <i
-            [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed2, 'fa-chevron-down collapseIn': isCollapsed2}" class="arrowpositinon fa collapseIconColorCu"
-            aria-hidden="false" style="float: right;"></i>Deal Details</a>
+          <a class="collapsed" href="DealDetails" (click)="toggleCollapseDeal($event)"> <i
+              [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed2, 'fa-chevron-down collapseIn': isCollapsed2}"
+              class="arrowpositinon fa collapseIconColorCu" aria-hidden="false" style="float: right;"></i>Deal
+            Details</a>
         </h4>
       </div>
       <div [ngClass]="{'collapse': isCollapsed2, '': !isCollapsed2}" id="DealDetails">
         <div class="panel-body br-unset pl0 pr0 mrg">
-          <div class="row portlet light m0 deal-bgcolors border-unset" style="margin-bottom: 50px;border: 1px solid #ddd;margin: 10px;padding: 10px">
+          <div class="row portlet light m0 deal-bgcolors border-unset"
+            style="margin-bottom: 50px;border: 1px solid #ddd;margin: 10px;padding: 10px">
             <div class="alert alert-danger" id="company-profile-error-div" *ngIf="showSFFormError">
               <a class="close" aria-label="close">x</a>
               <strong>{{sfFormError}}</strong>
             </div>
             <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-                <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
-                  <ng-template  *ngIf="(0 == i % 2)" [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
-                  <ng-template  *ngIf="(0 != i % 2)" [ngTemplateOutlet]="formFields" [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
-                </ng-container>
-              </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+              <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
+                <ng-template *ngIf="(0 == i % 2)" [ngTemplateOutlet]="formFields"
+                  [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
+                <ng-template *ngIf="(0 != i % 2)" [ngTemplateOutlet]="formFields"
+                  [ngTemplateOutletContext]="{columnInfo:columnInfo}"></ng-template>
+              </ng-container>
+            </div>
           </div>
         </div>
       </div>
@@ -31,57 +35,63 @@
 </div>
 <!-- Add product start -->
 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-  <div class="panel panel-default deal-bgcolor">
+  <div class="panel panel-default deal-bgcolor deal-panel">
     <div class="panel-heading deal-bgcolor">
       <h4 class="panel-title">
-          <a  class="collapsed" href="Products" (click)="toggleCollapseProduct($event)">
-            <i [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed3, 'fa-chevron-down collapseIn': isCollapsed3}" class="arrowpositinon fa collapseIconColorCu"
-            aria-hidden="true" style="float: right;"></i>
-            Products
-          </a>
+        <a class="collapsed" href="Products" (click)="toggleCollapseProduct($event)">
+          <i [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed3, 'fa-chevron-down collapseIn': isCollapsed3}"
+            class="arrowpositinon fa collapseIconColorCu" aria-hidden="true" style="float: right;"></i>
+          Products
+        </a>
       </h4>
     </div>
     <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="Products">
       <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
       <div *ngIf="!isLoading">
-        <div class="panel-body br-unset pl0 pr0" *ngFor="let product of connectWiseProducts;let i=index"  id="{{product?.divId}}" >
-          <div class="row portlet light m0 deal-bgcolors"> 
-              
-            
+        <div class="br-unset">
+          <div class="panel-body pl0 pr0 pb0" *ngFor="let product of connectWiseProducts;let i=index"
+            id="{{product?.divId}}">
+            <div class="row portlet light m0 deal-bgcolors">
               <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 mb10 pr0">
                 <label>Name</label>
-                <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto" [dtoObject]="product" (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event)"></app-searchable-dropdown>
-              </div> 
-                
+                <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto" [dtoObject]="product"
+                  (searchableDropdownEventEmitter)="searchableDropdownEventReceiver($event)"></app-searchable-dropdown>
+              </div>
               <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 mb10  pr0">
                 <label>Price</label>
-                <input type="number" [(ngModel)]="product.price" class="form-control" min="0"  placeholder="Enter the Price">
-              </div>  
+                <input type="number" [(ngModel)]="product.price" class="form-control" min="0"
+                  placeholder="Enter the Price">
+              </div>
               <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 mb10  pr0">
                 <label>Cost</label>
-                <input type="number"  [(ngModel)]="product.cost" class="form-control" min="0"  placeholder="Enter the Cost">
-              </div> 
+                <input type="number" [(ngModel)]="product.cost" class="form-control" min="0"
+                  placeholder="Enter the Cost">
+              </div>
               <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2 mb10  pr0">
                 <label>Quantity</label>
-                <input type="number" [(ngModel)]="product.quantity" class="form-control" min="0"  placeholder="Enter the Quantity">
+                <input type="number" [(ngModel)]="product.quantity" class="form-control" min="0"
+                  placeholder="Enter the Quantity">
               </div>
-              <div class ="col-xs-6 col-sm-2 col-md-2 col-lg-2  pr0">
-                <div class="row Add-Icon"> 
+              <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2  pr0">
+                <div class="row Add-Icon">
                   <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 Add-Icon">
-                    <button (click)="addProduct()" class="btn btn-primary add-btn"  data-placement="top" data-toggle="tooltip" title="Add"  aria-hidden="false">
+                    <button (click)="addProduct()" class="btn btn-primary add-btn" data-placement="top"
+                      data-toggle="tooltip" title="Add" aria-hidden="false">
                       <i class="fa fa-plus add-prdt"></i>
                     </button>
-                    <button [ngClass]="connectWiseProducts?.length>1 ? 'btn btn-danger add-btn':'btn btn-danger add-btn disabled'" 
-                          (click)="connectWiseProducts?.length>1  && removeProduct(product?.divId)"
-                        data-placement="top" data-toggle="tooltip" title="Delete"  aria-hidden="false">
+                    <button
+                      [ngClass]="connectWiseProducts?.length>1 ? 'btn btn-danger add-btn':'btn btn-danger add-btn disabled'"
+                      (click)="connectWiseProducts?.length>1  && removeProduct(product?.divId)" data-placement="top"
+                      data-toggle="tooltip" title="Delete" aria-hidden="false">
                       <i class="fa fa-trash-o p0 add-prdt"></i>
                     </button>
                   </div>
                 </div>
-              </div>   
+              </div>
+            </div>
           </div>
         </div>
-    </div>
+      </div>
     </div>
   </div>
 </div>
@@ -109,16 +119,14 @@
     <ng-container *ngIf="columnInfo.labelType=='number'">
       <input type="{{columnInfo.labelType}}" [disabled]="isPreview || isVendor" class="form-control"
         placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value"
-        maxlength="{{columnInfo.labelLength}}" (keypress)="numericOnly($event)"
-        (input)="validateField(columnInfo)">
+        maxlength="{{columnInfo.labelLength}}" (keypress)="numericOnly($event)" (input)="validateField(columnInfo)">
       <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
     </ng-container>
 
     <!-- ---------------------------Date----------------------------- -->
     <ng-container *ngIf="columnInfo.labelType=='date'">
-      <app-flatpickr [type]="'date'" [dateFormat]="'Y-m-d'" [enableTime]="false"
-        [(dataField)]="columnInfo.value" [class.disabled]="isVendor || isPreview"
-        (input)="validateField(columnInfo)"></app-flatpickr>
+      <app-flatpickr [type]="'date'" [dateFormat]="'Y-m-d'" [enableTime]="false" [(dataField)]="columnInfo.value"
+        [class.disabled]="isVendor || isPreview" (input)="validateField(columnInfo)"></app-flatpickr>
       <span class="required" *ngIf="columnInfo.divClass=='error'">Please select the closed date</span>
     </ng-container>
 
@@ -132,9 +140,8 @@
 
     <!-- ---------------------------DateTme----------------------------- -->
     <ng-container *ngIf="columnInfo.labelType=='datetime'">
-      <app-flatpickr [type]="'dateTime'" [dateFormat]="'Y-m-d H:i'" [enableTime]="true"
-        [(dataField)]="columnInfo.value" [class.disabled]="isVendor || isPreview"
-        (input)="validateField(columnInfo)">
+      <app-flatpickr [type]="'dateTime'" [dateFormat]="'Y-m-d H:i'" [enableTime]="true" [(dataField)]="columnInfo.value"
+        [class.disabled]="isVendor || isPreview" (input)="validateField(columnInfo)">
       </app-flatpickr>
       <span class=" required" *ngIf="columnInfo.divClass=='error'">Please select the datetime</span>
     </ng-container>
@@ -158,27 +165,25 @@
     <!-- ---------------------------GeoLocation----------------------------- -->
     <ng-container *ngIf="columnInfo.labelType=='geolocation'">
       <input type="number" [disabled]="isPreview || isVendor" class="form-control"
-        placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value"
-        step="any" (input)="validateField(columnInfo)">
+        placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" step="any"
+        (input)="validateField(columnInfo)">
       <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
     </ng-container>
 
     <!-- ---------------------------Percentage----------------------------- -->
     <ng-container *ngIf="columnInfo.labelType=='percent'">
-      <input type="text" class="form-control" placeholder="{{columnInfo.placeHolder}}"
-        id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" (input)="validateField(columnInfo)"
-        (keypress)="numberOnly($event)" maxlength="{{columnInfo.labelLength}}"
-        [disabled]="isVendor || isPreview">
+      <input type="text" class="form-control" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}"
+        [(ngModel)]="columnInfo.value" (input)="validateField(columnInfo)" (keypress)="numberOnly($event)"
+        maxlength="{{columnInfo.labelLength}}" [disabled]="isVendor || isPreview">
       <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
     </ng-container>
 
     <!-- ---------------------------Currency----------------------------- -->
     <ng-container *ngIf="columnInfo.labelType=='currency'">
-      <input type="text" currencyMask [options]="{align :'left',allowNegative :false }"
-        class="form-control currency" [(ngModel)]="columnInfo.value" [ngModelOptions]="{standalone: true}"
-        id="{{columnInfo.labelId}}" (input)="validateField(columnInfo)"
-        (ngModelChange)="validateField(columnInfo)" maxlength="{{columnInfo.labelLength}}"
-        [disabled]="isVendor || isPreview">
+      <input type="text" currencyMask [options]="{align :'left',allowNegative :false }" class="form-control currency"
+        [(ngModel)]="columnInfo.value" [ngModelOptions]="{standalone: true}" id="{{columnInfo.labelId}}"
+        (input)="validateField(columnInfo)" (ngModelChange)="validateField(columnInfo)"
+        maxlength="{{columnInfo.labelLength}}" [disabled]="isVendor || isPreview">
       <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
     </ng-container>
     <!-- ---------------------------Text Area----------------------------- -->
@@ -191,7 +196,7 @@
     <ng-container *ngIf="columnInfo.labelType=='radio'">
       <div class="radiobtn-card">
         <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
-          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-check">
+          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-check radiobtn">
             <label class="form-check-label radioAlignmant">
               <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
                 (click)="columnInfo.value = radioButton.labelId"
@@ -202,16 +207,16 @@
           </div>
           <!-- <br> -->
         </ng-container>
-      </div>      
+      </div>
     </ng-container>
     <!-- ---------------------------Check Box----------------------------- -->
     <ng-container *ngIf="columnInfo.labelType=='checkbox'">
       <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
         <div class="form-check">
           <label class="form-check-label">
-            <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
-              [checked]="columnInfo.value==='true'" class="form-check-input"
-              (click)="updateCheckBoxModel(columnInfo, $event)" [disabled]="isVendor || isPreview">
+            <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" [checked]="columnInfo.value==='true'"
+              class="form-check-input" (click)="updateCheckBoxModel(columnInfo, $event)"
+              [disabled]="isVendor || isPreview">
             {{checkBox.name}}
           </label>
         </div>
@@ -229,9 +234,8 @@
     <!-- ---------------------------Multi DropDown Menu----------------------------- -->
     <ng-container *ngIf="columnInfo.labelType=='multiselect'">
       <angular4-multiselect [data]="columnInfo.dropDownChoices" [(ngModel)]="columnInfo.value"
-        [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
-        (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
-        (onDeSelectAll)="onDeSelectAll($event)">
+        [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
+        (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
       </angular4-multiselect>
     </ng-container>
   </div>
