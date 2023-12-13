@@ -887,9 +887,6 @@ span.ui-column-resize {
   background-color: #2c2f33 !important;
   /* box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important; */
 }
-.button:disabled {
-  color: #000000 !important;
-}
 .profile-usermenu ul li a {
   color: #93a3b5 !important;
 }
@@ -3334,3 +3331,21 @@ top:-3px;
   margin-right: 8px !important;
   margin-top: -4px !important;
 }
+/* 13-12-2023(sudha sri) */
+button.button_blue:disabled,
+button.button:disabled {
+  background: #2c2f33 !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  opacity: 0.5;
+}
+.tags-table tr:nth-child(odd){
+  background-color: #2c2f33;
+}
+.textCss{
+  border-bottom: 1px solid #191b1e !important;
+}
+button.button:disabled span,
+button.button_blue:disabled span{
+  cursor: not-allowed !important;
+}
+

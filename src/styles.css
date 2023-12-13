@@ -2676,3 +2676,12 @@ display: inline-flex;
 .pd_left1{
   padding-left : 1px !important;
 }   
+/* 13-12-2023(sudha sri) */
+button.button_blue:disabled,
+button.button:disabled {
+  opacity: 0.6;  
+}
+button.button:disabled span,
+button.button_blue:disabled span{
+  cursor: not-allowed !important;
+}
