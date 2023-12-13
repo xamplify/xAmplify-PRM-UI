@@ -3009,3 +3009,25 @@ justify-content: center!important;
   background-color: #2c2f33 !important;
   border: 1px solid #191b1e !important;
 }
+
+/* EditDeal page */
+.panel.panel-default.deal-bgcolor{
+ background-color: #2e3033 !important;
+ box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.br-unset{
+  border-top: unset !important;
+}
+.radiobtn-card{
+  border: 1px solid #191b1e!important;
+}
+.card-bgcolors{
+  background-color:#2e3033!important;
+}
+.panel-heading.deal-bgcolor {
+  border: unset!important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.radiobtn{
+  border: 1px solid #191b1e!important;
+}

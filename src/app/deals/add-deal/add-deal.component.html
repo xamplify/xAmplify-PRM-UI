@@ -33,7 +33,7 @@
                 </div>
                 <div [ngClass]="{'collapse': isCollapsed, '': !isCollapsed}" id="pipelineDetails">
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
-                     <div class="card-bgcolor h-260 pl0 pr0">
+                     <div class="card-bgcolors h-260 pl0 pr0">
                     <!-- <div class="form-group" style="margin-bottom: 20px" *ngIf="!isVendorVersion && deal.campaignId > 0">
                       <label class="control-label">Campaign Name
                         <span class="required"><strong>*</strong></span>
@@ -104,7 +104,7 @@
                 </div>
                   <div [ngClass]="{'collapse': isCollapsed1, '': !isCollapsed1}" id="ContactInfo">
                   <div class="panel-body br-unset pl0 pr0 pt0 pb0">
-                  <div class="card-bgcolor h-260 pl0 pr0">
+                  <div class="card-bgcolors h-260 pl0 pr0">
                     <fieldset class="border-none">
                       <app-user-info *ngIf="showContactInfo" [userInfo]="contact" [isLeadInfo]="true"></app-user-info>
                       <div *ngIf="!showContactInfo">Not Available</div>
@@ -127,7 +127,7 @@
                   </div>
                     <div [ngClass]="{'collapse': isCollapsed2, '': !isCollapsed2}" id="CampaignInfo">
                     <div class="panel-body br-unset pl0 pr0 pt0 pb0">
-                    <div class="card-bgcolor h-260 pl0 pr0">
+                    <div class="card-bgcolors h-260 pl0 pr0">
                       <div class="form-group" style="margin-bottom: 20px" *ngIf="!isVendorVersion && deal.campaignId > 0">
                         <label class="control-label">Campaign Name
                           <span class="required"><strong>*</strong></span>

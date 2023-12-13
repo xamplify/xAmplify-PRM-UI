@@ -40,8 +40,7 @@
   border-bottom: 1px solid #e5e5e5;
 }
 /* prt */
-.card-bgcolor{
-  /* background-color: #f0f5f9b5; */
+.card-bgcolors{
   border-radius: 5px;
   padding: 10px 15px;
 }
@@ -69,7 +68,7 @@
   border-top:1px solid #ddd;
 }
 @media only screen and (max-width:600px){
-  .card-bgcolor{
+  .card-bgcolors{
    margin-bottom:14px;
   }
 }

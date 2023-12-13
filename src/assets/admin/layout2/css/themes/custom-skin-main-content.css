@@ -2429,3 +2429,9 @@ i.collapseIconColorCu {
 .radiobtn-card{
   border: 1px solid var(--border-color) !important;
 }
+.card-bgcolors{
+  background-color:var(--div-bg-color) !important; 
+}
+.radiobtn{
+  border: 1px solid var(--border-color) !important;
+}

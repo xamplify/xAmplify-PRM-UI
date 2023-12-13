@@ -2486,18 +2486,6 @@ i.collapseIconColorCu {
   margin-right: -9px !important;
 }
 /* deal-page */
-.card-bgcolor{
-  /* background-color: #2b3c46 !important; */
-}
-.deal-bgcolor{
-  /* background-color: #2b3c46 !important; */
-}
-.panel.panel-default.deal-bgcolor {
-  /* background-color: #2b3c46 !important; */
-}
-.deal-bgcolors{
-  /* background-color: #2b3c46 !important; */
-}
 .panel.panel-default.deal-bgcolor{
   background-color: #2b3c46 !important;
 }
@@ -2505,5 +2493,11 @@ i.collapseIconColorCu {
   border-top: 1px solid #2f4857 !important;
 }
 .radiobtn-card{
+  border: 1px solid #2f4857 !important;
+}
+.card-bgcolors{
+  background-color: #2b3c46 !important; 
+}
+.radiobtn{
   border: 1px solid #2f4857 !important;
 }
