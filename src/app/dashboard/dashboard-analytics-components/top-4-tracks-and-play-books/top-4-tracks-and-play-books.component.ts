@@ -205,32 +205,43 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       });
   }
 
-  confirmChangePublish(id: number, isPublish: boolean) {
-    let text = "";
-    if (isPublish) {
-      text = "You want to publish.";
-    } else {
-      text = "You want to unpublish.";
-    }
-    try {
-      let self = this;
-      swal({
-        title: 'Are you sure?',
-        text: text,
-        type: 'warning',
-        showCancelButton: true,
-        swalConfirmButtonColor: '#54a7e9',
-        swalCancelButtonColor: '#999',
-        confirmButtonText: 'Yes'
-
-      }).then(function () {
-        self.changePublish(id, isPublish);
-      }, function (dismiss: any) {
+  confirmChangePublish(id: number, isPublish: boolean,learningTrack : any) {
+      if(isPublish && !learningTrack.hasDamContent){
+        swal({
+          title: 'Add assets to publish.',
+          type: 'warning',
+          swalConfirmButtonColor: '#54a7e9',
+          confirmButtonText: 'Ok'
+        }).then(function (dismiss: any) {
         console.log('you clicked on option' + dismiss);
-      });
-    } catch (error) {
-      this.xtremandLogger.error(this.referenceService.errorPrepender + " ChangePublish():" + error);
-      this.loader = false;
+        });
+      } else {
+        let text = "";
+        if (isPublish) {
+          text = "You want to publish.";
+        } else {
+          text = "You want to unpublish.";
+        }
+        try {
+        let self = this;
+          swal({
+            title: 'Are you sure?',
+            text: text,
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            confirmButtonText: 'Yes'
+
+          }).then(function () {
+            self.changePublish(id, isPublish);
+          }, function (dismiss: any) {
+            console.log('you clicked on option' + dismiss);
+          });
+        } catch (error) {
+          this.xtremandLogger.error(this.referenceService.errorPrepender + " ChangePublish():" + error);
+          this.loader = false;
+        }
     }
   }
 

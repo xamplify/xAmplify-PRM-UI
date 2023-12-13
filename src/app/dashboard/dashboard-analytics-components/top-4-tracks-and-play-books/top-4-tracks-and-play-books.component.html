@@ -70,7 +70,7 @@
                                 <a class="Iconhover" *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false)">
                                     <i class="fa fa-reply" aria-hidden="true"></i>
                                 </a>
-                                <a class="Iconhover" *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true)">
+                                <a class="Iconhover" *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
                                     <i class="fa fa-share" aria-hidden="true"></i>
                                 </a>
                                 <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">
