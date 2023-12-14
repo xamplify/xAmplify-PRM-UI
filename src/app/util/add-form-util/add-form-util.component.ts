@@ -187,7 +187,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   customResponseForFormUpdate: CustomResponse = new CustomResponse();
   existingOpenLinkInNewTabValue: boolean = false;
   isTableLoaded: boolean = true;
-  countryNames = ['Select Country']
+  /***XNFR-423***/
+  countryNames = ['Select Country'];
+
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
       private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, 
@@ -1859,4 +1861,20 @@ descriptionCharacterSize(column: ColumnInfo){
         document.documentElement.style.setProperty('--form-bg-color', this.form.backgroundColor);
         require("style-loader!../../../assets/admin/layout2/css/themes/form-custom-skin.css");
       }
+
+    getCountryNames(){
+        this.ngxloading = true;
+        this.authenticationService.getCountryNames().
+        subscribe(
+            response=>{
+                let countryNames = response.data;
+                for(let i = 0; i < countryNames.length ; i++){
+                    this.countryNames.push(countryNames[i]);
+                }
+                this.ngxloading = false;
+            },error=>{
+                this.logger.error("Error In Getting Country Names");
+                this.ngxloading = false;
+            });
+    }
 }
