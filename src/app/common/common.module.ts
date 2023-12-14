@@ -147,6 +147,7 @@ import { ShareUnpublishedContentComponent } from './share-unpublished-content/sh
 import { ShareTracksOrPlaybooksComponent } from './share-tracks-or-playbooks/share-tracks-or-playbooks.component';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { SearchableDropdownComponent } from 'app/util/searchable-dropdown/searchable-dropdown.component';
+import { ConnectwiseAuthenticationPopupComponent } from 'app/contacts/connectwise-authentication-popup/connectwise-authentication-popup.component';
 
 
 @NgModule({
@@ -172,7 +173,7 @@ import { SearchableDropdownComponent } from 'app/util/searchable-dropdown/search
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent, DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,
-		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
+		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,ConnectwiseAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,
 		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,SelectEmailTemplateComponent,CustomUiSwitchComponent,
@@ -201,7 +202,7 @@ import { SearchableDropdownComponent } from 'app/util/searchable-dropdown/search
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent,DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,
-		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
+		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,ConnectwiseAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent,
 

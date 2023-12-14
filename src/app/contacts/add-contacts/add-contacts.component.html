@@ -359,6 +359,32 @@
 														height="86" width="90">
 												</a>
 											</div>
+											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
+												style="margin-top: 10px;">
+												<a *ngIf="connectWiseImageBlur" id="connectWiseContact_button"
+													style="background-color: white"
+													(click)="checkingConnectWiseContactsAuthentication()"
+													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 12">
+													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
+														src="assets/images/crm/connectwise.png" style="border-radius:8px;"
+														class="connectWiseImageClass" data-toggle="tooltip"
+														data-placement="right"
+														title="Click here to access contacts from your ConnectWise account"
+														height="86" width="90"
+														onmouseover="this.src='assets/images/crm/connecting.png';"
+														onmouseout="this.src='assets/images/crm/connectwise.png';">
+												</a> <a *ngIf="connectWiseImageNormal" id="connectWise_buttonNormal"
+													style="background-color: white"
+													(click)="checkingConnectWiseContactsAuthentication()"
+													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 12">
+													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
+														src="assets/images/crm/connectwise.png" style="border-radius:8px;"
+														class="connectWiseImageClass" data-toggle="tooltip"
+														data-placement="right"
+														title="Click here to access contacts from your ConnectWise account"
+														height="86" width="90">
+												</a>
+											</div>
 										</div>
 									</div>
 									<div class="clearfix"></div>
@@ -1251,6 +1277,11 @@
 <!-- XNFR-230 -->
 <div *ngIf="showPipedriveAuthenticationForm">
 	<app-pipedrive-authentication-popup (closeEvent)="closePipedriveForm($event)"></app-pipedrive-authentication-popup>
+</div>
+
+<!-- XNFR-403 -->
+<div *ngIf="showConnectWiseAuthenticationForm">
+	<app-connectwise-authentication-popup (closeEvent)="closeConnectWiseForm($event)"></app-connectwise-authentication-popup>
 </div>
 <!-- T&C Modal -->
 <div class="modal fade" id="tcModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog"
