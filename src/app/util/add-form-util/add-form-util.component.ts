@@ -188,7 +188,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   existingOpenLinkInNewTabValue: boolean = false;
   isTableLoaded: boolean = true;
   /***XNFR-423***/
-  countryNames = ['Select Country'];
+  countryNames = [];
 
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
@@ -1869,10 +1869,7 @@ descriptionCharacterSize(column: ColumnInfo){
         this.authenticationService.getCountryNames().
         subscribe(
             response=>{
-                let countryNames = response.data;
-                for(let i = 0; i < countryNames.length ; i++){
-                    this.countryNames.push(countryNames[i]);
-                }
+                this.countryNames =  this.authenticationService.addCountryNamesToList(response.data,this.countryNames);
                 this.ngxloading = false;
             },error=>{
                 this.logger.error("Error In Getting Country Names");

@@ -1231,6 +1231,14 @@ getCountryNames(){
   return this.callGetMethod(url);
 }
 
+addCountryNamesToList(coutryNames:any,countryNamesArray:any){
+  countryNamesArray.push('Please Select Country');
+  for(let i = 0; i < coutryNames.length ; i++){
+    countryNamesArray.push(coutryNames[i]);
+  }
+  return countryNamesArray;
+}
+
 
   
 }

@@ -67,11 +67,13 @@ export class FormPreviewComponent implements OnInit {
   maxScore: number;
   loggedInUserEmail: string;
 
+  /*****XNFR-423****/
+  countryNames = [];
+
   resolved(captchaResponse: string) {
     if(captchaResponse){
       this.formService.validateCaptcha(captchaResponse).subscribe(
         (response: any) => {
-          console.log(response);
           this.enableButton = response;
           this.captchaValue.emit(this.enableButton);
         },
@@ -138,7 +140,7 @@ export class FormPreviewComponent implements OnInit {
             let self = this;
             this.hasFormExists = true;
             this.form = response.data;
-            //$("body").css("background-color","this.form.backgroundColor");
+            this.countryNames = this.authenticationService.addCountryNamesToList(this.form.countryNames,this.countryNames);
             if (this.form.showBackgroundImage) {
               this.formBackgroundImage = this.form.backgroundImage;
               this.pageBackgroundColor = "";
