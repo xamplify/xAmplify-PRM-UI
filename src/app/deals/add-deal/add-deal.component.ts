@@ -554,6 +554,18 @@ export class AddDealComponent implements OnInit {
     }
     this.deal.answers = answers;
     this.deal.properties = obj;
+    /********XNFR-403***********/
+    let filtertedConnectWiseProducts = new Array<any>();
+    $.each(this.sfDealComponent.connectWiseProducts,function(_index:number,product:any){
+      let id = product.id;
+      if(id!=undefined && id>0){
+        filtertedConnectWiseProducts.push(product);
+      }
+    });
+    if(filtertedConnectWiseProducts.length>0){
+      this.deal.productsJSONString = JSON.stringify(filtertedConnectWiseProducts);
+    }
+    /********XNFR-403***********/
     this.dealsService.saveOrUpdateDeal(this.deal)
       .subscribe(
         data => {
@@ -564,7 +576,6 @@ export class AddDealComponent implements OnInit {
           this.showLoadingButton = false;
           this.deal.properties.forEach(p => p.isSaved = true);
           if (data.statusCode == 200) {            
-            //this.customResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
             this.notifySubmitSuccess.emit(); 
           } else if (data.statusCode == 500) {
             this.customResponse = new CustomResponse('ERROR', data.message, true);

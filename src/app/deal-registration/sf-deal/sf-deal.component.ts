@@ -304,10 +304,6 @@ export class SfDealComponent implements OnInit {
 
   /*****XNFR-403*****/
   searchableDropdownEventReceiver(event:any){
-    let selectedDropDownInfo = event['selectedDropDownInfo'];
-    let connectwiseProduct = event['dtoObject'];
-    console.log(event);
-    console.log(this.connectWiseProducts);
   }
 
   addProduct(){
