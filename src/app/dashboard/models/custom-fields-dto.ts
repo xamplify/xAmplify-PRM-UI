@@ -7,5 +7,6 @@ export class CustomFieldsDto {
     defaultField = false;
     placeHolder = "";
     canUnselect = true;
-
+    displayName = "";
+    formDefaultFieldType= '';
 }

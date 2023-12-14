@@ -46,6 +46,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	integrationPipelines = [];
 	selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
 	customFieldsDtosLoader = false;
+	expandField: boolean = false;
 
 	constructor(private integrationService: IntegrationService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent,
 		public referenceService: ReferenceService, public authenticationService: AuthenticationService) {
@@ -207,6 +208,8 @@ export class IntegrationSettingsComponent implements OnInit {
 				selectedCustomFieldsDto.name = customFiledDto.name;
 				selectedCustomFieldsDto.required = customFiledDto.required;
 				selectedCustomFieldsDto.placeHolder = customFiledDto.placeHolder;
+				selectedCustomFieldsDto.displayName = customFiledDto.displayName;
+				selectedCustomFieldsDto.formDefaultFieldType = customFiledDto.formDefaultFieldType;
 				self.selectedCustomFieldsDtos.push(selectedCustomFieldsDto);
 			}
 		});
@@ -497,6 +500,102 @@ export class IntegrationSettingsComponent implements OnInit {
 		}
 		ev.stopPropagation();
 	}
-
+	toggleSettings(sfCustomField){
+		sfCustomField.showSettings = !sfCustomField.showSettings;
+	}
 	
+	// onFieldSelectionChange(selectedValue: string) {
+	// 	this.selectedCustomFieldsDtos.forEach(field => {
+	// 	  if (field.formDefaultFieldType !== selectedValue) {
+	// 		field.formDefaultFieldType = null;
+	// 	  }
+	// 	});
+	//   }
+
+	//   onFieldSelectionChange(selectedField: any) {
+	// 	this.sfcfPagedItems.forEach(field => {
+	// 	  if (field !== selectedField && 
+	// 		  (field.formDefaultFieldType === 'AMOUNT' || 
+	// 		   field.formDefaultFieldType === 'CLOSE_DATE' || 
+	// 		   field.formDefaultFieldType === 'DEAL_NAME')) {
+	// 		field.formDefaultFieldType = null;
+	// 	  }
+	// 	});
+	//   }
+	selectedFieldTypes: string[] = [];
+	// onFieldSelectionChange(selectedField: any) {
+	// 	const selectedFieldType = selectedField.formDefaultFieldType;
+	  
+	// 	if (!this.selectedFieldTypes.includes(selectedFieldType)) {
+	// 	  // If the selected field type is not in selectedFieldTypes, update the selection
+	// 	  this.selectedFieldTypes = [selectedFieldType];
+	  
+	// 	  this.sfcfPagedItems.forEach(field => {
+	// 		if (field !== selectedField &&
+	// 			(field.formDefaultFieldType === 'AMOUNT' ||
+	// 			 field.formDefaultFieldType === 'CLOSE_DATE' ||
+	// 			 field.formDefaultFieldType === 'DEAL_NAME')) {
+	// 		  field.formDefaultFieldType = null;
+	// 		}
+	// 	  });
+	// 	} else {
+	// 	  // Reset the selectedFieldTypes and formDefaultFieldType if the same type is reselected
+	// 	  this.selectedFieldTypes = [];
+	// 	  selectedField.formDefaultFieldType = null;
+	// 	}
+	//   }
+	// onFieldSelectionChange(selectedField: any) {
+	// 	const selectedFieldType = selectedField.formDefaultFieldType;
+	  
+	// 	if (this.selectedFieldTypes.includes(selectedFieldType)) {
+	// 	  selectedField.formDefaultFieldType = null;
+	// 	} else {
+	// 	  this.selectedFieldTypes = [selectedFieldType];
+		  
+	// 	  this.sfcfPagedItems.forEach(field => {
+	// 		if (field !== selectedField &&
+	// 			(field.formDefaultFieldType === 'AMOUNT' ||
+	// 			 field.formDefaultFieldType === 'CLOSE_DATE' ||
+	// 			 field.formDefaultFieldType === 'DEAL_NAME')) {
+	// 		  field.formDefaultFieldType = null;
+	// 		}
+	// 	  });
+	// 	}
+	//   }
+	onFieldSelectionChange(selectedField: any) {
+		const selectedFieldType = selectedField.formDefaultFieldType;
+	  	let amountCount = 0;
+		let closeDateCount = 0;
+		let dealNameCount = 0;
+	  		this.sfcfPagedItems.forEach(field => {
+		  if (field.formDefaultFieldType === 'AMOUNT') {
+			amountCount++;
+		  } else if (field.formDefaultFieldType === 'CLOSE_DATE') {
+			closeDateCount++;
+		  } else if (field.formDefaultFieldType === 'DEAL_NAME') {
+			dealNameCount++;
+		  }
+		  if (selectedFieldType === 'AMOUNT' && amountCount > 1) {
+			field.formDefaultFieldType = null;
+		  } else if (selectedFieldType === 'CLOSE_DATE' && closeDateCount > 1) {
+			field.formDefaultFieldType = null;
+		  } else if (selectedFieldType === 'DEAL_NAME' && dealNameCount > 1) {
+			field.formDefaultFieldType = null;
+		  }
+		});
+	  }
+
+
+
+	//   onFieldSelectionChange(selectedField: any) {
+	// 	const selectedId = selectedField.id;
+	// 	this.sfcfPagedItems.forEach(field => {
+	// 	  if (field.id !== selectedId && 
+	// 		  (field.formDefaultFieldType === 'AMOUNT' || 
+	// 		   field.formDefaultFieldType === 'CLOSE_DATE' || 
+	// 		   field.formDefaultFieldType === 'DEAL_NAME')) {
+	// 		field.formDefaultFieldType = null;
+	// 	  }
+	// 	});
+	//   }
 }
