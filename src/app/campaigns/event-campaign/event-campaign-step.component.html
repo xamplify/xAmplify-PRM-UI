@@ -58,8 +58,11 @@
 							<ng-container *ngIf="contactListTabName=='Partners'">
 								{{authenticationService?.partnerModule?.customName | translate}}
 							</ng-container>
-							<ng-container *ngIf="contactListTabName!='Partners'">
+							<ng-container *ngIf="contactListTabName!='Partners'&& !authenticationService.module.isMarketingCompany">
 								{{authenticationService?.partnerModule?.customName}} & Recipients
+							</ng-container>
+							<ng-container *ngIf="authenticationService.module.isMarketingCompany">
+								Recipients
 							</ng-container>
 						</h5>
 					</div>
