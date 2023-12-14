@@ -53,7 +53,9 @@
             <tr *ngIf="loginType === 'STYLE_ONE'">
               <td><label><b>Template Name</b></label></td>
               <td>:</td>
-              <td>{{templateName}}</td>
+              <td><span [title]="templateName" data-toggle="tooltip" data-placement="bottom">{{templateName | slice:0:18 }}</span>
+                <span *ngIf="templateName?.length>18">...</span>
+              </td>
             </tr>
             <tr>
               <td><label><b>Position Of Login Form</b></label></td>
