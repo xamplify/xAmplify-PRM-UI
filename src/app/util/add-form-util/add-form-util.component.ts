@@ -54,7 +54,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       { 'labelName': 'Mobile Number', 'labelType': 'text' },
       { 'labelName': 'Date', 'labelType': 'date' },
       { 'labelName': 'Price', 'labelType': 'price' },
-      { 'labelName': 'Upload', 'labelType': 'upload' }
+      { 'labelName': 'Upload', 'labelType': 'upload' },
+      { 'labelName': 'Country', 'labelType': 'country' }
   ];
   customFields = [
       { 'labelName': 'Single Line Text Field', 'labelType': 'text', 'value': 'Field' },
@@ -186,7 +187,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   customResponseForFormUpdate: CustomResponse = new CustomResponse();
   existingOpenLinkInNewTabValue: boolean = false;
   isTableLoaded: boolean = true;
-
+  countryNames = ['Select Country']
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
       private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, 
