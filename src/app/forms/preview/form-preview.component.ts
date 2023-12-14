@@ -313,7 +313,8 @@ export class FormPreviewComponent implements OnInit {
     
     const requiredFormLabels = formLabelDtos.filter((item) => (item.required === true && $.trim(item.value).length === 0));
     const invalidEmailIdsFieldsCount = formLabelDtos.filter((item) => (item.divClass == 'error')).length;
-    if (requiredFormLabels.length > 0 || invalidEmailIdsFieldsCount > 0) {
+    const invalidCountryNameCount =formLabelDtos.filter((item) => ( item.labelType=="country" && item.required === true && $.trim(item.value)=="Please Select Country")).length;
+    if (requiredFormLabels.length > 0 || invalidEmailIdsFieldsCount > 0 || invalidCountryNameCount>0) {
       this.validForm = false;
       this.addHeaderMessage('Please fill required fields', this.errorAlertClass);
     } else {

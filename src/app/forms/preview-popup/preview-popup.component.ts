@@ -12,12 +12,11 @@ import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from '../../core/services/util.service';
-import { environment } from 'environments/environment';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { DomSanitizer } from "@angular/platform-browser";
 import { EnvService } from 'app/env.service'
 
-declare var swal, $: any;
+declare var  $: any;
 @Component({
     selector: 'app-preview-popup',
     templateUrl: './preview-popup.component.html',
@@ -47,6 +46,8 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     showEmbedLink = true;
     @Input() buttonText: string = "Show Forms";
     @Input() learningTrackId: number = 0;
+    /*******XNFR-423*****/
+    countryNames = [];
 
     constructor(private formService: FormService, public envService: EnvService, public logger: XtremandLogger, public authenticationService: AuthenticationService,
         public referenceService: ReferenceService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService,
@@ -182,6 +183,9 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
                 (data: any) => {
                     if (data.statusCode === 200) {
                         this.form = data.data;
+                         /****XNFR-423****/
+                         this.countryNames = this.authenticationService.addCountryNamesToList(this.form.countryNames,this.countryNames);
+                        /****XNFR-423****/
                         if(this.form.showBackgroundImage){
                             this.formBackgroundImage = this.form.backgroundImage;
                             this.pageBackgroundColor = "";
@@ -203,7 +207,6 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
                             }
                         });
                         this.setCustomCssValues();
-                        console.log(data.data);
                         this.formError = false;
                     } else {
                         this.formError = true;
@@ -222,6 +225,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     formPreviewBeforeSave(columnInfos: Array<ColumnInfo>, form: Form) {
         this.ngxloading = true;
         this.form = form;
+       
         this.form.formLabelDTOs = columnInfos;
         this.formError = false;
         this.ngxloading = false;
