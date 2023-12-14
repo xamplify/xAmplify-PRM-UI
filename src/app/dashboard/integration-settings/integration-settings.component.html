@@ -73,8 +73,8 @@
                 <td><span>{{sfCustomField.label}}</span></td>
                 <td><span>{{sfCustomField.type}}</span><span
                     *ngIf="sfCustomField.entryType">-{{sfCustomField.entryType}}</span></td>
-                    <td>
-                      <span *ngIf="sfCustomField.selected && (integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE')">Required
+                    <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
+                      <span *ngIf="sfCustomField.selected">Required
                         <span class="fa fa-info-circle pipelinedata" data-toggle="tooltip" data-placement="right" title="Your partner must fill in this custom field if you toggle on this option."></span>
                           <label class="toggleOnOff" [ngClass]="!sfCustomField?.canUnselect ? 'disabled-opacity':''">
                             <input class="checkBox_shadow" type="checkbox" [disabled]="!sfCustomField.canUnselect" [(ngModel)]="sfCustomField.required" [ngModelOptions]="{standalone: true}">
@@ -83,8 +83,8 @@
                           </label>
                         </span>   
                     </td>
-                  <td>
-                    <input *ngIf="sfCustomField.selected && (integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE')" type="text" class="form-control"  placeholder="PlaceHolder"
+                  <td *ngIf="integrationType === 'PIPEDRIVE' || integrationType === 'CONNECTWISE'">
+                    <input *ngIf="sfCustomField.selected" type="text" class="form-control"  placeholder="PlaceHolder"
                      [(ngModel)]="sfCustomField.placeHolder" [ngModelOptions]="{standalone: true}">
                     </td>
                 <td><a *ngIf="integrationType === 'HUBSPOT' && sfCustomField.selected" (click)="toggleSettings(sfCustomField)"><i class="fa fa-edit mr5 IconCustomization"></i></a></td>
