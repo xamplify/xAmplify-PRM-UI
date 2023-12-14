@@ -1,5 +1,8 @@
 <!-- new UI Of select Login screen and Bg Image-->
 <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+<div class="alert alert-danger alert-su" *ngIf="this.customLoinTemplates.length<=1 && isStyle1 && showCreateAlert">
+  <strong>Please Create a Template</strong>
+</div>
 <div class="col-xs-12 col-sm-12 p10 " style="padding-top: 0px !important;">
   <div class="tabscard col-xs-12 p0">
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 p0 styles" *ngIf="!isShowFinalDiv">
@@ -15,9 +18,12 @@
         (click)="backToPrevoiusPage()">
         <i class="fa fa-times" aria-hidden="true"></i>
       </button>
-      <button type="submit" id="updateDiv" (click)="updateCustomLogInScreenData(true)"
+      <button type="submit" id="updateDiv" *ngIf="!isStyle1" (click)="updateCustomLogInScreenData(true)"
         class="button float-right mg-top7 bgcolor-unset pd_0 p0" translate> <span
           class="btn btn-sm Btn-Green transition">Update</span></button>
+      <button type="submit" id="updateDiv" *ngIf="isStyle1" (click)="saveLoginTemplate()"
+          class="button float-right mg-top7 bgcolor-unset pd_0 p0" translate> <span
+            class="btn btn-sm Btn-Green transition">Update</span></button>
       <button class="button float-right mg-top7 bgcolor-unset pd_0" type="submit" id="updateDiv" translate
         (click)="openNewTab()">
         <span class="btn btn-sm Btn-Green transition"><i class="fa fa-eye" aria-hidden="true"
