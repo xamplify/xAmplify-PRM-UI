@@ -6,7 +6,6 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Processor } from '../../core/models/processor';
 import { CustomResponse } from '../../common/models/custom-response';
-import { filter, pairwise } from 'rxjs/operators';
 import { FormService } from '../services/form.service';
 import { Form } from '../models/form';
 import { FormSubmit } from '../models/form-submit';
@@ -330,6 +329,13 @@ export class FormPreviewComponent implements OnInit {
           formField.dropdownIds = field.value;
           formField.value = "";
         }
+        /****XNFR-423****/
+        if(field.labelType=="country"){
+          if(!field.required){
+            formField.value = "";
+          }
+        }
+        /****XNFR-423****/
         formSubmit.fields.push(formField);
       });
       let formType:string = null
