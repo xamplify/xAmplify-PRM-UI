@@ -48,8 +48,11 @@
     <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="Products">
       <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
       <div *ngIf="!isLoading">
-        <div class="br-unset pb15">
-          <div class="panel-body pl0 pr0 pb0" *ngFor="let product of connectWiseProducts;let i=index"
+        <div  class="br-unset pb15" >
+          <div class="alert alert-info text-center mt5" *ngIf="connectWiseProducts?.length==0">
+              <strong>Please <a (click)="addProduct()">Click here</a> to add a product</strong>
+          </div>
+          <div [@simpleFadeAnimation]  class="panel-body pl0 pr0 pb0" *ngFor="let product of connectWiseProducts;let i=index"
             id="{{product?.divId}}">
             <div class="row portlet light m0 deal-bgcolors">
               <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 mb10 pr0">
@@ -79,9 +82,7 @@
                       data-toggle="tooltip" title="Add" aria-hidden="false">
                       <i class="fa fa-plus add-prdt"></i>
                     </button>
-                    <button
-                      [ngClass]="connectWiseProducts?.length>1 ? 'btn btn-danger add-btn':'btn btn-danger add-btn disabled'"
-                      (click)="connectWiseProducts?.length>1  && removeProduct(product?.divId)" data-placement="top"
+                    <button  class="btn btn-danger add-btn"  (click)="removeProduct(product?.divId)" data-placement="top"
                       data-toggle="tooltip" title="Delete" aria-hidden="false">
                       <i class="fa fa-trash-o p0 add-prdt"></i>
                     </button>

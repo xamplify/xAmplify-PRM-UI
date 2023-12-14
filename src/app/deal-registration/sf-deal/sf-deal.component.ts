@@ -7,13 +7,15 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { ConnectwiseProductsDto } from 'app/deals/models/connectwise-products-dto';
+import { FadeAnimation } from 'app/core/animations/fade-animation';
 
 declare var $: any, swal:any;
 
 @Component({
   selector: 'app-sf-deal',
   templateUrl: './sf-deal.component.html',
-  styleUrls: ['./sf-deal.component.css']
+  styleUrls: ['./sf-deal.component.css'],
+  animations:[FadeAnimation]
 })
 export class SfDealComponent implements OnInit {
   @Input() public createdForCompanyId: any;
@@ -46,6 +48,16 @@ export class SfDealComponent implements OnInit {
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
 
+  addLoader(){
+    this.isLoading = true;
+    this.referenceService.showSweetAlertProceesor('We are fetching the deal form');
+  }
+
+   removeLoader(){
+    this.isLoading = false;
+    this.referenceService.closeSweetAlert();
+   }
+
   ngOnInit() {
     this.showSFFormError = false;
     this.dropdownSettings = {
@@ -61,7 +73,7 @@ export class SfDealComponent implements OnInit {
       if (this.dealId == undefined || this.dealId <= 0) {
         this.dealId = 0;
       }
-      this.isLoading = true;
+      this.addLoader();
       if ("SALESFORCE" === this.activeCRM) {
         this.getSalesforceCustomForm();
       } else {
@@ -77,7 +89,7 @@ export class SfDealComponent implements OnInit {
   getActiveCRMCustomForm() {
     this.integrationService.getactiveCRMCustomForm(this.createdForCompanyId, this.dealId).subscribe(result => {
       this.showSFFormError = false; 
-      this.isLoading = false;
+      this.removeLoader();
       if (result.statusCode == 200) {
         this.form = result.data;
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
@@ -107,7 +119,7 @@ export class SfDealComponent implements OnInit {
       } 
       
     }, error => {
-      this.isLoading = false;
+      this.removeLoader();
       this.showSFFormError = true; 
       this.sfFormError = this.referenceService.getApiErrorMessage(error);       
     });
@@ -116,7 +128,8 @@ export class SfDealComponent implements OnInit {
   getSalesforceCustomForm() {
     this.contactService.getSfForm(this.createdForCompanyId, this.dealId).subscribe(result => {
       this.showSFFormError = false; 
-      this.isLoading = false;
+      this.removeLoader();
+      this.referenceService.closeSweetAlert();
       if (result.statusCode == 200) {
         this.form = result.data;
         let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
@@ -317,10 +330,7 @@ export class SfDealComponent implements OnInit {
   }
 
   removeProduct(divId:string){
-    if(this.connectWiseProducts.length>1){
-      this.connectWiseProducts = this.referenceService.spliceArray(this.connectWiseProducts, divId);
-      $('#' + divId).remove();
-    }
-   
+    this.connectWiseProducts = this.referenceService.spliceArray(this.connectWiseProducts, divId);
+    $('#' + divId).remove();
   }
 }
