@@ -259,6 +259,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                 this.removeBlurClass();
             }
         }
+        /****XNFR-423****/
+        this.getCountryNames();
         
 
     }
