@@ -8,7 +8,7 @@
 				<h4 class="modal-title" id="cropBgImage">{{cropLogoImageText}}</h4>
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
-				<button style="position: relative;top: -5px;" class="button fileinput-button-css"
+				<button style="position: relative;top: -5px;" class="button fileinput-button-css bgcolor-unset pd-left0"
 					*ngIf="!bgImageChangedEvent; else uploadButton"><span
 						class="btn Btn-Green transition translate">Upload
 						image</span>
@@ -16,7 +16,8 @@
 						(change)="uploadfileBgImageChangeEvent($event)">
 				</button>
 				<ng-template #uploadButton>
-					<button style="position: relative;top: -5px;" class="button fileinput-button-css"><span
+					<button style="position: relative;top: -5px;"
+						class="button fileinput-button-css bgcolor-unset pd-left0"><span
 							class="btn Btn-Green transition translate">Upload
 							image</span>
 						<input style="height: 36px;" title=" " id="custom-input" type="file"
