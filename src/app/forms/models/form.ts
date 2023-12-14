@@ -67,6 +67,8 @@ export class Form {
     customSkinBackgroundColor: string = "";
     customSkinDivBackgroundColor: string = "";
     customSkinButtonBorderColor: string = "";
+    /***XNFR-423****/
+    countryNames = [];
 
 
 }
