@@ -209,7 +209,7 @@ export class Properties {
 	zohoImage: string = 'assets/admin/pages/media/works/zoho-contacts.png';
 	googleImage: string = 'assets/admin/pages/media/works/google-contacts.png';
 	salesforceImage: string = 'assets/admin/pages/media/works/salesforce-contacts.png';
-	manualImage: string = 'assets/admin/pages/media/works/contacts2.svg';
+	manualImage: string = 'assets/admin/pages/media/works/contacts2.png';
 	marketoImage: string = 'assets/admin/pages/media/works/marketo-conatct.png';
 	hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
 	microsoftImage: string = 'assets/admin/pages/media/works/microsoft-contact.png';
