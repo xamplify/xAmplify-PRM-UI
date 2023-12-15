@@ -331,7 +331,7 @@ export class FormPreviewComponent implements OnInit {
         }
         /****XNFR-423****/
         if(field.labelType=="country"){
-          if(!field.required){
+          if(!field.required && formField.value=="Please Select Country"){
             formField.value = "";
           }
         }

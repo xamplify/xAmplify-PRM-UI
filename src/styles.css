@@ -2685,3 +2685,10 @@ button.button:disabled span,
 button.button_blue:disabled span{
   cursor: not-allowed !important;
 }
+.pd-left0{
+  padding-left: 0px;
+}
+.pd-top_pd-rgt2{
+  padding-right: 2px;
+  padding-top: 2px;
+}
