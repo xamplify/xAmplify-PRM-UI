@@ -443,6 +443,7 @@ export class ReferenceService {
       var div = $("#" + divId);
       if (div.length) {
         var contentNav = div.offset().top;
+        console.log(contentNav);
         $("html,body").animate(
           {
             scrollTop: contentNav,

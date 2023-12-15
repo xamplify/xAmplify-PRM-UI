@@ -565,7 +565,7 @@ export class AddDealComponent implements OnInit {
       if(id!=undefined && id>0){
         let productRequestDto = new ConnectwiseProductsRequestDto();
         productRequestDto.forecastType = 'Product';
-        productRequestDto.quanity = product.quantity;
+        productRequestDto.quantity = product.quantity;
         productRequestDto.revenue = product.price;
         productRequestDto.cost = product.cost;
         let catalogItem = new ConnectwiseCatalogItemDto();

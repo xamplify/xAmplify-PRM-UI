@@ -15,7 +15,7 @@ export const FadeAnimation = [
     // fade in when created. this could also be written as transition('void => *')
     transition(':enter', [
       style({opacity: 0}),
-      animate(1000)
+      animate(500)
     ]),
 
     // fade out when destroyed. this could also be written as transition('void => *')

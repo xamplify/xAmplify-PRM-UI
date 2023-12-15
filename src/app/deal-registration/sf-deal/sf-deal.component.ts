@@ -44,8 +44,8 @@ export class SfDealComponent implements OnInit {
   searchableDropDownDto:SearchableDropdownDto = new SearchableDropdownDto();
   connectwiseProduct: ConnectwiseProductsDto = new ConnectwiseProductsDto();
   allDivIds = [];
-  showProductsPanel: boolean = false;
-  isConnectWiseCRMActive = false;
+  isConnectWiseEnabledAsActiveCRM: boolean = false;
+  isValidRepValues = true;
   /*******XNFR-403****/
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
@@ -84,9 +84,8 @@ export class SfDealComponent implements OnInit {
     }
 
     if ("CONNECTWISE" === this.activeCRM) {
-      this.showProductsPanel = true;
+      this.isConnectWiseEnabledAsActiveCRM = true;
     }
-    this.isConnectWiseCRMActive = "CONNECTWISE" === this.activeCRM;
   }
   
   getActiveCRMCustomForm() {
@@ -214,6 +213,28 @@ export class SfDealComponent implements OnInit {
         this.validateGeoLocation(geoObj);
       }      
     }
+    /*******XNFR-403*******/
+    if(this.isConnectWiseEnabledAsActiveCRM){
+      let salesRepFormInfo = this.form.formLabelDTOs.filter(column => $.trim(column.labelName) === "Sales Rep");
+      let isValidSalesRepFormInfo = salesRepFormInfo!=undefined && salesRepFormInfo.length>0;
+      let salesRepValue = isValidSalesRepFormInfo ? salesRepFormInfo[0]['value']:"";
+      let isValidSalesRepValue = salesRepValue!=undefined && salesRepValue!="";
+
+      let insideRepFormInfo = this.form.formLabelDTOs.filter(column => $.trim(column.labelName) === "Inside Rep");
+      let isValidInsideRepFormInfo = insideRepFormInfo!=undefined && insideRepFormInfo.length>0;
+      let insideRepValue = isValidInsideRepFormInfo ? insideRepFormInfo[0]['value']:"";
+      let isValidInsideRepValue = insideRepValue!=undefined && insideRepValue!="";
+
+      let isBothRepValuesSame = isValidSalesRepValue && isValidInsideRepValue && salesRepValue==insideRepValue;
+      this.isDealRegistrationFormValid = !isBothRepValuesSame;
+      this.isValidRepValues = !isBothRepValuesSame;
+      if(!this.isValidRepValues){
+        this.referenceService.goToDiv("dealStageDiv");
+      }
+      
+      } 
+    /*******XNFR-403*******/
+
   }
 
   validateEmailId(columnInfo: ColumnInfo) {

@@ -5,7 +5,7 @@ import { ConnectwiseStatusDto } from "./connectwise-status-dto";
 export class ConnectwiseProductsRequestDto {
 
     forecastType = "";
-    quanity = 0;
+    quantity = 0;
     revenue = 0;
     cost = 0;
     catalogItem:ConnectwiseCatalogItemDto = new ConnectwiseCatalogItemDto();
