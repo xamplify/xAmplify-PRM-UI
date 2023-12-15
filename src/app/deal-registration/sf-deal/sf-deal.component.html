@@ -17,7 +17,7 @@
               <strong>{{sfFormError}}</strong>
             </div>
             <!---XNFR-403-->
-            <div [@simpleFadeAnimation]  class="alert alert-danger" *ngIf="!isValidRepValues">
+            <div [@slowAnimate]  class="alert alert-danger" *ngIf="!isValidRepValues">
               <strong>Sales Rep & Inside Rep values cannot be same</strong>
             </div>
             <!---XNFR-403-->
@@ -56,7 +56,7 @@
           <div class="alert alert-info text-center mt5" *ngIf="connectWiseProducts?.length==0">
               <strong>Please <a (click)="addProduct()">Click here</a> to add a product</strong>
           </div>
-          <div [@simpleFadeAnimation]  class="panel-body pl0 pr0 pb0" *ngFor="let product of connectWiseProducts;let i=index"
+          <div [@slowAnimate]  class="panel-body pl0 pr0 pb0" *ngFor="let product of connectWiseProducts;let i=index"
             id="{{product?.divId}}">
             <div class="row portlet light m0 deal-bgcolors">
               <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4 mb10 pr0">
