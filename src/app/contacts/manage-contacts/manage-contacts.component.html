@@ -419,6 +419,10 @@
                                                    src="{{properties?.pipedriveImage}}" alt="manual"
                                                    style="height: 54px;">
                                                 <img
+                                                   *ngIf="contactList.socialNetwork=='CONNECTWISE' && contactList.synchronisedList"
+                                                   src="{{properties?.connectwiseImage}}" alt="manual"
+                                                   style="height: 54px;">
+                                                <img
                                                    *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"
                                                    src="{{properties?.marketoImage}}" alt="manual"
                                                    style="height: 70px;">
@@ -709,6 +713,9 @@
                                     <img alt="" class="imageClassCss image_effect"
                                        *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList"
                                        src="{{properties?.pipedriveImage}}">
+                                    <img alt="" class="imageClassCss image_effect"
+                                       *ngIf="contactList.socialNetwork=='CONNECTWISE' && contactList.synchronisedList"
+                                       src="{{properties?.connectwiseImage}}">
                                     <img class="imageClassCss image_effect"
                                        *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"
                                        src="{{properties?.marketoImage}}" alt="manual" style="height: 60px;">

@@ -658,7 +658,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 		
 		else if (contactList.socialNetwork == 'HUBSPOT' || contactList.socialNetwork == 'MICROSOFT'
-			|| contactList.socialNetwork == 'MARKETO' || contactList.socialNetwork == 'PIPEDRIVE') {
+			|| contactList.socialNetwork == 'MARKETO' || contactList.socialNetwork == 'PIPEDRIVE' || contactList.socialNetwork == 'CONNECTWISE') {
 			this.contactListIdForSyncLocal = contactList.id;
 			this.socialNetworkForSyncLocal = contactList.socialNetwork;
 			this.syncronizeContactList(this.socialContact);

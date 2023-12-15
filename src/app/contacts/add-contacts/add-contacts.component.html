@@ -1377,5 +1377,59 @@
 		</div>
 	</div>
 </div>
+
+<!-- ConnectWise Modal -->
+<div class="modal right fade" id="ContactConnectWiseModal" tabindex="-1" role="dialog" aria-labelledby="TestConnectWiseModal">
+	<div class="modal-dialog modal-css" role="document">
+		<div class="modal-content rounded-0">
+			<div class="modal-header">
+				<a class="close-circle" data-dismiss="modal" style="position: relative;"><i class="fa fa-times"></i></a>
+				<div class="col-sm-3" style="margin-top: 25px">
+					<img src="assets/images/crm/connectwise-logo.png" alt="Picture of a happy monkey" style="height: 60px"
+						width="150px" />
+				</div>
+				<div class="col-sm-12 salesforce">
+					<h4 class="modal-title" translate>Import from ConnectWise:</h4>
+				</div>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="control-label col-sm-3" for="email" translate>Select
+								Option:</label>
+							<div class="col-sm-8">
+								<select class="opts form-control" id="connectwise-dropdown-1"
+									(change)="onChangeConnectWiseDropdown($event)">
+									<option selected value="DEFAULT" translate>Select</option>
+									<option value="contacts" translate>Contacts</option>
+									<option value="lists" translate>Groups</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group" *ngIf="connectWiseContactListsData?.length > 0">
+							<label class="control-label col-sm-3" for="connecwise-dropdown-2" translate>Select
+								Option:</label>
+							<div class="col-sm-8">
+								<select class="form-control" id="connectwise-dropdown-2"
+									(change)="onChangeConnectWiseListsDropdown($event.target.value)">
+									<option selected value="DEFAULT" translate>Select</option>
+									<option *ngFor="let item of connectWiseContactListsData" value='{{item.id}}'>
+										{{item.name}}</option>
+								</select>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
+				<button type="button" id="connectwise_save_button" class="btn btn-primary" (click)="getConnectWiseData()"
+					data-dismiss="modal" translate>Submit</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <app-share-leads *ngIf="authenticationService.isSharePartnerModal"
 	(notifyParent)="selectedSharePartner($event)"></app-share-leads>
