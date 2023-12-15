@@ -581,7 +581,7 @@ export class AddDealComponent implements OnInit {
       }
     });
     if(filtertedConnectWiseProducts.length>0){
-      this.deal.productsJSONString = JSON.stringify(filtertedConnectWiseProducts);
+      this.deal.forcastItemsJson = JSON.stringify(filtertedConnectWiseProducts);
     }
     /********XNFR-403***********/
     this.dealsService.saveOrUpdateDeal(this.deal)

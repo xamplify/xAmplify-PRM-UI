@@ -45,6 +45,8 @@ export class SfDealComponent implements OnInit {
   connectwiseProduct: ConnectwiseProductsDto = new ConnectwiseProductsDto();
   allDivIds = [];
   showProductsPanel: boolean = false;
+  isConnectWiseCRMActive = false;
+  /*******XNFR-403****/
   constructor(private contactService: ContactService, private referenceService: ReferenceService, private integrationService: IntegrationService) {
   }
 
@@ -84,6 +86,7 @@ export class SfDealComponent implements OnInit {
     if ("CONNECTWISE" === this.activeCRM) {
       this.showProductsPanel = true;
     }
+    this.isConnectWiseCRMActive = "CONNECTWISE" === this.activeCRM;
   }
   
   getActiveCRMCustomForm() {
