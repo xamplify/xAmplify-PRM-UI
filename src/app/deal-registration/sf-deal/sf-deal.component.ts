@@ -329,6 +329,7 @@ export class SfDealComponent implements OnInit {
     this.connectWiseProducts.push(connectwiseProduct);
   }
 
+  /****XNFR-403****/
   removeProduct(divId:string){
     this.connectWiseProducts = this.referenceService.spliceArray(this.connectWiseProducts, divId);
     this.referenceService.removeDivWithAnimation(divId);

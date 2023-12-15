@@ -23,6 +23,11 @@ import {Properties} from 'app/common/models/properties';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { ConnectwiseProductsDto } from '../models/connectwise-products-dto';
+import { ConnectwiseProductsRequestDto } from '../models/connectwise-products-request-dto';
+import { ConnectwiseCatalogItemDto } from '../models/connectwise-catalog-item-dto';
+import { ConnectwiseOpportunityDto } from '../models/connectwise-opportunity-dto';
+import { ConnectwiseStatusDto } from '../models/connectwise-status-dto';
 declare var flatpickr: any, $: any, swal: any;
 
 
@@ -506,7 +511,6 @@ export class AddDealComponent implements OnInit {
     this.ngxloading = true;
     this.isLoading = true;
     this.deal.userId = this.loggedInUserId;
-    //this.deal.closeDateString = this.deal.closeDate;
     var obj = [];
     let answers: DealAnswer[] = [];
 
@@ -555,11 +559,25 @@ export class AddDealComponent implements OnInit {
     this.deal.answers = answers;
     this.deal.properties = obj;
     /********XNFR-403***********/
-    let filtertedConnectWiseProducts = new Array<any>();
-    $.each(this.sfDealComponent.connectWiseProducts,function(_index:number,product:any){
+    let filtertedConnectWiseProducts = new Array<ConnectwiseProductsRequestDto>();
+    $.each(this.sfDealComponent.connectWiseProducts,function(_index:number,product:ConnectwiseProductsDto){
       let id = product.id;
       if(id!=undefined && id>0){
-        filtertedConnectWiseProducts.push(product);
+        let productRequestDto = new ConnectwiseProductsRequestDto();
+        productRequestDto.forecastType = 'Product';
+        productRequestDto.quanity = product.quantity;
+        productRequestDto.revenue = product.price;
+        productRequestDto.cost = product.cost;
+        let catalogItem = new ConnectwiseCatalogItemDto();
+        catalogItem.id = product.id;
+        productRequestDto.catalogItem = catalogItem;
+        let opportunity = new ConnectwiseOpportunityDto();
+        opportunity.id = 0;
+        productRequestDto.opportunity = opportunity;
+        let status = new ConnectwiseStatusDto();
+        status.id = 1;
+        productRequestDto.status = status;
+        filtertedConnectWiseProducts.push(productRequestDto);
       }
     });
     if(filtertedConnectWiseProducts.length>0){
