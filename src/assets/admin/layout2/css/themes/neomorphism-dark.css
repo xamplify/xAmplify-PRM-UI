@@ -1743,12 +1743,12 @@ p.addhrtosvg {
   border-top: 1px dashed #2f4857 !important;
 }
 .bg-color-for-footercard2 {
-  border: 1px solid #2f4857 !important;
+  border: 1px solid #191b1e !important;
   background: #2c2f33 !important;
 }
 .cardfotter-toggleon {
-  border: 1px solid #2f4857 !important;
-  background: #22313a !important;
+  border: 1px solid #191b1e !important;
+  background: #2c2f33 !important;
 }
 /* design Manage Forms  Analytics table borders */
 table.table.table-allsideboders {
@@ -2965,7 +2965,7 @@ justify-content: center!important;
   .Btn-Green,
   .btn-primary {
     position: relative !important;
-    z-index: 1 !important;
+    /* z-index: 1 !important; */
     background: #2c2f33 !important;
   }
   .button::before {
@@ -3341,11 +3341,19 @@ button.button:disabled {
 .tags-table tr:nth-child(odd){
   background-color: #2c2f33;
 }
-.textCss{
-  border-bottom: 1px solid #191b1e !important;
-}
 button.button:disabled span,
 button.button_blue:disabled span{
   cursor: not-allowed !important;
 }
-
+/* 14-12-2023 forms preview*/
+.pd-top2{
+  padding-top : 2px !important;
+}
+.mrgn-top-btm{
+  margin-top: -1px;
+  margin-bottom: 3px;
+  padding-bottom: 1px;
+}
+.btn:focus{
+  color: #fff !important;
+}

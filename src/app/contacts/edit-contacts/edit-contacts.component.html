@@ -422,12 +422,14 @@
 																		class="btn Btn-Green transition text_pd5">Upload
 																		CSV <i class="fa fa-upload" aria-hidden="true"
 																			style="font-size: 12px; margin-left: 5px;"></i></span>
+																	<input type="file" ng2FileSelect class="upload"
+																		[uploader]="uploader" title=" "
+																		(click)="input.value = null;resetResponse();"
+																		(change)="fileChange(input)" accept=".csv"
+																		#input
+																		[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
 																</button>
-																<input type="file" ng2FileSelect class="upload"
-																	[uploader]="uploader" title=" "
-																	(click)="input.value = null;resetResponse();"
-																	(change)="fileChange(input)" accept=".csv" #input
-																	[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
+
 															</div>
 														</div>
 													</ng-container>
@@ -1580,10 +1582,11 @@
 				<div *ngIf="!isCheckTC" style="color:red" translate>You must agree T&C</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelContacts()"
+				<button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="cancelContacts()"
 					translate>Decline</button>
-				<button type="button" [disabled]="!isCheckTC" class="btn btn-primary"
-					(click)="saveContactsWithPermission()" translate>Accept</button>
+				<button type="button" [disabled]="!isCheckTC" class="button_blue bgcolor-unset"
+					(click)="saveContactsWithPermission()" translate><span
+						class="btn btn-primary transition">Accept</span></button>
 			</div>
 		</div>
 	</div>
