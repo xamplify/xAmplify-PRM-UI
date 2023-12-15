@@ -2118,6 +2118,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	saveListAsNewList() {
 		try {
+			this.referenceService.loading(this.httpRequestLoader, true);
 			this.contactService.saveAsNewList(this.contactListObject)
 				.subscribe(
 					data => {
