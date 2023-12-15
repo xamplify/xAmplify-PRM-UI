@@ -1889,7 +1889,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkAll( ev: any ) {
-        if ( this.selectedAddContactsOption != 6 && this.selectedAddContactsOption != 9 && this.selectedAddContactsOption != 10 && this.selectedAddContactsOption !=11) {
+        if ( this.selectedAddContactsOption != 6 && this.selectedAddContactsOption != 9 && this.selectedAddContactsOption != 10 && this.selectedAddContactsOption !=11 && this.selectedAddContactsOption !=12) {
             if ( ev.target.checked ) {
                 console.log( "checked" );
                 $( '[name="campaignContact[]"]' ).prop( 'checked', true );
@@ -4935,7 +4935,7 @@ checkingConnectWiseContactsAuthentication() {
                 this.customResponse = new CustomResponse( 'ERROR', data.message, true );
             } else {
                 let response = data.data;
-                this.selectedAddContactsOption = 11;
+                this.selectedAddContactsOption = 12;
                 this.disableOtherFuctionality = true;
                 this.connectWiseImageBlur = false;
                 this.connectWiseImageNormal = true;

@@ -649,9 +649,9 @@
 													<th translate>EMAIL</th>
 													<th translate>FIRST NAME</th>
 													<th translate>LAST NAME</th>
-													<th *ngIf="selectedAddContactsOption === 5" translate>COMPANY</th>
+													<th *ngIf="selectedAddContactsOption === 5 || selectedAddContactsOption === 12" translate>COMPANY</th>
 													<th
-														*ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11">
+														*ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11 || selectedAddContactsOption == 12">
 													</th>
 												</tr>
 											</thead>
@@ -659,7 +659,7 @@
 												<ng-container *ngFor="let user of pagedItems;let i = index">
 													<tr>
 														<td align="center"
-															*ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10 && selectedAddContactsOption != 11">
+															*ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10 && selectedAddContactsOption != 11 && selectedAddContactsOption != 12">
 															<input type="checkbox"
 																[checked]="selectedContactListIds.indexOf(user.id)>-1"
 																class="chk checkBox_shadow"
@@ -669,7 +669,7 @@
 																(click)="highlightRow(user.id,user.emailId,user.email,user.firstName,user.lastName,user.company,user.contactCompany,$event)" />
 														</td>
 														<td align="center"
-															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11">
+															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11 || selectedAddContactsOption == 12">
 															<input type="checkbox"
 																[checked]="selectedContactListIds.indexOf(user.id)>-1"
 																class="chk checkBox_shadow"
@@ -679,17 +679,19 @@
 																(click)="highlightMarketoRow(user)" />
 														</td>
 														<td
-															*ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10 && selectedAddContactsOption !=11">
+															*ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9 && selectedAddContactsOption != 10 && selectedAddContactsOption !=11 && selectedAddContactsOption != 12">
 															{{user.emailId}}</td>
 														<td
-															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11">
+															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11 || selectedAddContactsOption == 12">
 															{{user.email}}</td>
 														<td>{{user.firstName}}</td>
 														<td>{{user.lastName}}</td>
 														<td *ngIf="selectedAddContactsOption === 5">
 															{{user.contactCompany}}</td>
+															<td *ngIf="selectedAddContactsOption === 12">
+																{{user.company}}</td>
 														<td
-															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11">
+															*ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9 || selectedAddContactsOption == 10 || selectedAddContactsOption == 11 || selectedAddContactsOption == 12">
 															<button class="lightgray-btn" id='more_less_button_{{i}}'
 																(click)="user.isShowDetails = ! user.isShowDetails">
 																<span *ngIf="!user.isShowDetails" translate>More</span>
@@ -703,7 +705,7 @@
 															<table cellpadding="5" cellspacing="0" class="border"
 																style="border:none !important;">
 																<tbody>
-																	<tr *ngIf="user?.company">
+																	<tr *ngIf="user?.company && selectedAddContactsOption != 12">
 																		<td class='pt10 pb10 bold' translate>Company:
 																		</td>
 																		<td class='pt10 pb10'
