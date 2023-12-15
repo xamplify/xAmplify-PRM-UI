@@ -95,6 +95,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     public socialContactUsers: SocialContact[] = new Array();
     public salesforceListViewsData: Array<any> = [];
     public hubSpotContactListsData:Array<any>=[];
+    public connectWiseContactListsData:Array<any>=[];
     pager: any = {};
     pagedItems: any[];
     checkingForEmail: boolean;
@@ -3966,7 +3967,9 @@ checkingConnectWiseContactsAuthentication() {
             let response = data;
             if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
                 this.xtremandLogger.info("isAuthorize true");
-                this.getConnectWiseContacts();
+                // this.getConnectWiseContacts();
+                // this.getConnectWiseContactLists();
+                this.showConnectWiseModal();
             }
             else {
                 this.showConnectWisePreSettingsForm();
@@ -4926,7 +4929,77 @@ checkingConnectWiseContactsAuthentication() {
 		if (event === "0") {
 			this.showConnectWiseAuthenticationForm = false;
 		}		
-	}
+	} 
+
+    showConnectWiseModal() {
+        $( '#ContactConnectWiseModal' ).modal( 'show' );
+    }
+
+    hideConnectWiseModal() {
+        $( '#ContactConnectWiseModal' ).modal( 'hide' );
+    }
+
+    onChangeConnectWiseDropdown( event: Event ) {
+        try {
+            this.contactType = event.target["value"];
+            this.socialNetwork = "connectwise";
+            this.connectWiseContactListsData = [];
+            if ( this.contactType == "DEFAULT" ) {
+                $( "button#connectwise_save_button" ).prop( 'disabled', true );
+            } else {
+                $( "button#connectwise_save_button" ).prop( 'disabled', false );
+            }
+
+
+            if ( this.contactType === "lists") {
+                $( "button#connectwise_save_button" ).prop( 'disabled', true );
+                this.integrationService.getContactLists('connectwise').subscribe(data => {
+                        let response = data.data;
+                        if ( response.contacts.length > 0 ) {
+                            for ( var i = 0; i < response.contacts.length; i++ ){
+                                this.connectWiseContactListsData.push( response.contacts[i] );
+                                this.xtremandLogger.log( response.contacts[i] ); 
+                            }
+                        } else {
+                            this.customResponse = new CustomResponse( 'ERROR', "No " + this.contactType + " found", true );
+                            this.hideConnectWiseModal();
+                        }
+                    },
+                    ( error: any ) => {
+                        this.xtremandLogger.error( error );
+                        this.xtremandLogger.errorPage( error );
+                    },
+                    () => this.xtremandLogger.log( "onChangeConnectWiseDropdown" )
+                    );
+            }
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent onChangeConnectWiseDropdown()." )
+        }
+    }
+
+
+    onChangeConnectWiseListsDropdown( item: any ) {
+        if ( event.target["value"] == "DEFAULT" ) {
+            $( "button#connectwise_save_button" ).prop( 'disabled', true );
+        } else {
+            $( "button#connectwise_save_button" ).prop( 'disabled', false );
+        }
+        this.connectWiseSelectContactListOption = item;
+        let selectedOptions = event.target['options'];
+        let selectedIndex = selectedOptions.selectedIndex;
+        this.hubSpotContactListName = selectedOptions[selectedIndex].text;
+    }
+
+    getConnectWiseData(){
+        $( "button#salesforce_save_button" ).prop( 'disabled', true );
+        if(this.contactType === "contacts"){
+            this.getConnectWiseContacts();
+            this.hubSpotContactListName= '';
+        }else if(this.contactType === "lists"){
+            this.getConnectWiseContactListsById();
+        }
+    }
+    
     getConnectWiseContacts() {
         this.loading = true;
         this.integrationService.getContacts('connectwise').subscribe(data => {
@@ -4949,7 +5022,30 @@ checkingConnectWiseContactsAuthentication() {
     this.xtremandLogger.log("ConnectWise Configuration Checking done")
     );
 }
-
+getConnectWiseContactListsById() {
+    this.loading = true;
+    if(this.connectWiseSelectContactListOption !== undefined && this.connectWiseSelectContactListOption !== ''){
+    this.integrationService.getContactListsById(this.connectWiseSelectContactListOption, 'connectwise').subscribe(data => {
+        this.loading = false;
+        if (data.statusCode == 401) {
+            this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+        } else {
+            let response = data.data;
+            this.selectedAddContactsOption = 12;
+            this.disableOtherFuctionality = true;
+            this.connectWiseImageBlur = false;
+            this.connectWiseImageNormal = true;
+            this.frameConnectWisePreview(response);
+        }
+    },(error: any) => {
+        this.loading = false;
+        let errorMessage = this.referenceService.getApiErrorMessage(error);
+        this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+}, () =>                 
+this.xtremandLogger.log("ConnectWise Configuration Checking done")
+);
+ }
+}
     frameConnectWisePreview(response:any){
         if ( !response.contacts ) {
             this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );

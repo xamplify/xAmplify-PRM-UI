@@ -214,6 +214,7 @@ export class Properties {
 	hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
 	microsoftImage: string = 'assets/admin/pages/media/works/microsoft-contact.png';
 	pipedriveImage: string = 'assets/admin/pages/media/works/pipedrive-contacts.png';
+	connectwiseImage: string = 'assets/admin/pages/media/works/connectwise-contacts.png';
 
 	teamMemberGroups = 'Team Member Groups';
 
