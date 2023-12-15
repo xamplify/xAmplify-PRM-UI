@@ -486,3 +486,7 @@ input[type=radio]:checked{
   .paddingRight{padding: 0px;}
 }
 /* mobile End*/
+
+.alert-su {
+  padding:6px 12px;
+}

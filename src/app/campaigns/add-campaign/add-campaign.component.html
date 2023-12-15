@@ -16,8 +16,8 @@
             </li>
         </ul>
         <div class="createFolderAlignment">
-            <button class="button_blue btn-bt-aln bgcolor-unset" id="right" (click)="openCreateFolderPopup()"><span
-                    class="btn btn-primary transition">Create a
+            <button class="button_blue btn-bt-aln bgcolor-unset mrgn-top-btm pd-top_pd-rgt2" id="right"
+                (click)="openCreateFolderPopup()"><span class="btn btn-primary transition">Create a
                     Folder</span></button>
         </div>
     </div>
@@ -2143,7 +2143,8 @@
 
 <ng-template #nextButton>
     <div>
-        <button type="button" class="button pull-right mBtnAlign f-w-600 w-10em1 mar-rgt-40 d-justify-end bgcolor-unset"
+        <button type="button"
+            class="button pull-right mBtnAlign f-w-600 w-10em1 mar-rgt-40 d-justify-end bgcolor-unset pd-top2"
             [disabled]="!isValidFirstTab" (click)="isValidFirstTab && showLaunchTab()"><span
                 class="btn Btn-Green transition">Next</span></button>
     </div>

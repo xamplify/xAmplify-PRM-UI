@@ -2428,3 +2428,12 @@ i.collapseIconColorCu {
 .d-justify-end{
   justify-content: center!important;
 }
+/* 13-12-2023(sudha sri) */
+button.button_blue:disabled,
+button.button:disabled {
+  opacity: 0.6;  
+}
+button.button:disabled span,
+button.button_blue:disabled span{
+  cursor: not-allowed !important;
+}

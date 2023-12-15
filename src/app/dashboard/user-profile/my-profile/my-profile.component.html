@@ -2056,8 +2056,8 @@
                                                                 src="assets/images/theme/1/Webp/dd.webp"
                                                                 class="desktopimg-custome">
                                                             <img *ngIf="themeDto.id==4"
-                                                                src="assets/images/theme/1/Webp/NDM.webp"
-                                                                class="mobileimg-custome">
+                                                                src="assets/images/theme/1/Webp/ND.webp"
+                                                                class="desktopimg-custome">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12 mobileview">
@@ -2069,8 +2069,8 @@
                                                                 src="assets/images/theme/1/Webp/dm.webp"
                                                                 class="mobileimg-custome">
                                                             <img *ngIf="themeDto.id==4"
-                                                                src="assets/images/theme/1/Webp/ND.webp"
-                                                                class="desktopimg-custome">
+                                                                src="assets/images/theme/1/Webp/NDM.webp"
+                                                                class="mobileimg-custome">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2944,7 +2944,8 @@
                                 <div class="caption caption-md col-xs-12">
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
                                     <span
-                                        class="caption-subject font-blue-madison bold">{{cutomLoginTemplate?.name}}</span>
+                                        class="caption-subject font-blue-madison bold" [title]="cutomLoginTemplate?.name" data-toggle="tooltip" data-placement="bottom">{{cutomLoginTemplate?.name | slice:0:30}}</span>
+                                        <span *ngIf="cutomLoginTemplate?.name?.length>30">...</span>
                                     <a class="close-circle pull-right" (click)="goBackToMyprofileForCustomLogin()">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>
