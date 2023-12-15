@@ -331,6 +331,6 @@ export class SfDealComponent implements OnInit {
 
   removeProduct(divId:string){
     this.connectWiseProducts = this.referenceService.spliceArray(this.connectWiseProducts, divId);
-    $('#' + divId).remove();
+    this.referenceService.removeDivWithAnimation(divId);
   }
 }

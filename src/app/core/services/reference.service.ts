@@ -3288,9 +3288,14 @@ export class ReferenceService {
     }
     return message;
   }
-  
-  
   /********Email Templates****/
+
+  /***XNFR-403***/
+  removeDivWithAnimation(divId:string){
+    $('#' + divId).hide(1000, function () {
+      $('#' + divId).remove();
+    });
+  }
   
 
   
