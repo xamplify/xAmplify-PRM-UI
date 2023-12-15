@@ -281,8 +281,8 @@ setViewType(viewType: string) {
           this.callFolderListViewEmitter();
         } else {
           swal("Please Contact Admin!", response.message, "error");
+          this.referenceService.stopLoader(this.httpRequestLoader);
         }
-        this.referenceService.stopLoader(this.httpRequestLoader);
       },
       (error: string) => {
         this.logger.errorPage(error);

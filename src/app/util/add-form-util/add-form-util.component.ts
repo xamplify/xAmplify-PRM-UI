@@ -54,7 +54,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       { 'labelName': 'Mobile Number', 'labelType': 'text' },
       { 'labelName': 'Date', 'labelType': 'date' },
       { 'labelName': 'Price', 'labelType': 'price' },
-      { 'labelName': 'Upload', 'labelType': 'upload' }
+      { 'labelName': 'Upload', 'labelType': 'upload' },
+      { 'labelName': 'Country', 'labelType': 'country' }
   ];
   customFields = [
       { 'labelName': 'Single Line Text Field', 'labelType': 'text', 'value': 'Field' },
@@ -186,6 +187,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   customResponseForFormUpdate: CustomResponse = new CustomResponse();
   existingOpenLinkInNewTabValue: boolean = false;
   isTableLoaded: boolean = true;
+  /***XNFR-423***/
+  countryNames = [];
 
   constructor(public regularExpressions: RegularExpressions,public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
@@ -256,6 +259,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                 this.removeBlurClass();
             }
         }
+        /****XNFR-423****/
+        this.getCountryNames();
         
 
     }
@@ -1858,4 +1863,17 @@ descriptionCharacterSize(column: ColumnInfo){
         document.documentElement.style.setProperty('--form-bg-color', this.form.backgroundColor);
         require("style-loader!../../../assets/admin/layout2/css/themes/form-custom-skin.css");
       }
+
+    getCountryNames(){
+        this.ngxloading = true;
+        this.authenticationService.getCountryNames().
+        subscribe(
+            response=>{
+                this.countryNames =  this.authenticationService.addCountryNamesToList(response.data,this.countryNames);
+                this.ngxloading = false;
+            },error=>{
+                this.logger.error("Error In Getting Country Names");
+                this.ngxloading = false;
+            });
+    }
 }

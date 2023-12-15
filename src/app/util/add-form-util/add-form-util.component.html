@@ -269,6 +269,20 @@
                                                                                     </option>
                                                                                 </select>
                                                                             </ng-container>
+                                                                            <!-- ---------------------------DropDown Menu(XNFR-423)----------------------------- -->
+                                                                            <ng-container
+                                                                                *ngIf="columnInfo.labelType=='country'">
+                                                                                <select
+                                                                                    class="form-control form-placeholder"
+                                                                                    [style.backgroundColor]="pageBackgroundColor"
+                                                                                    [style.borderColor]="form.borderColor"
+                                                                                    [style.color]="form.labelColor">
+                                                                                    <option
+                                                                                        *ngFor="let countryName of countryNames">
+                                                                                        {{countryName}}
+                                                                                    </option>
+                                                                                </select>
+                                                                            </ng-container>
                                                                             <!-- ---------------------------Quiz----------------------------- -->
                                                                             <ng-container
                                                                                 *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">

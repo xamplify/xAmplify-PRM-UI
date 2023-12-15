@@ -154,6 +154,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
 
   backToPrevoiusPage() {
     this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, false)
+    this.showCreateAlert = false;
     this.getLoginDetails();
     if (this.selectedTemplate != this.activeTemplateId && this.isStyle1) {
       this.customResponse = new CustomResponse('ERROR', this.message, false);
@@ -400,6 +401,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   showStyle1() {
     this.styleTwoBackgroundImagePath = this.companyBgImagePath;
     this.selectedTemplate = this.activeTemplateId;
+    this.showCreateAlert = true;
     this.getLoginDetails();
     this.customResponse = new CustomResponse('ERROR', this.message, false);
     if (!this.isShowFinalDiv) {
@@ -456,7 +458,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       }
     }, error => {
       this.loading = false;
-      this.customResponse = new CustomResponse('ERROR', "Error while deleting Email Template", true);
+      this.customResponse = new CustomResponse('ERROR', "Error while Getting Login Email Template", true);
     });
   }
   deleteTemplate(id: number) {
@@ -473,6 +475,8 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       self.deleteCustomLogInTempalte(id);
     }, function (dismiss: any) {
       console.log("you clicked showAlert cancel" + dismiss);
+      self.customResponse = new CustomResponse('ERROR', "Error while deleting Email Template", false);
+
     });
   }
 
@@ -500,17 +504,26 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       }, 2000);
     }, function (dismiss: any) {
       console.log("you clicked showAlert cancel" + dismiss);
+      self.customResponse = new CustomResponse('ERROR', "you clicked showAlert cancel", false);
     });
   }
+  showCreateAlert :boolean = true;
   deleteCustomLogInTempalte(id: number) {
     this.vanityURLService.deleteCustomLogInTemplateById(id).subscribe(result => {
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('ERROR', result.message, true);
+        this.showCreateAlert = false;
+        setTimeout(() => {
+          if(this.customLoinTemplates.length <= 1) {
+          this.showCreateAlert = true;
+          this.customResponse = new CustomResponse('ERROR', result.message, false);
+          } 
+        }, 2000);
         this.referenceService.goToTop();
         this.getCustomLoginTemplates(this.pagination);
       }
     }, error => {
-      this.customResponse = new CustomResponse('ERROR', "Error while deleting Email Template", true);
+      this.customResponse = new CustomResponse('ERROR', "you clicked showAlert cancel", true);
     });
   }
   companyLoginTemplateActive: CompanyLoginTemplateActive = new CompanyLoginTemplateActive();
@@ -534,7 +547,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
         }
       } else {
         if (result.data.errorMessages[0].message === "templateId parameter is missing") {
-          this.message = "please select a template."
+          this.message = "Please Select a Template"
           this.templateName = "N/A";
         } else {
           this.message = "something went wrong. Please try again.";
@@ -550,7 +563,18 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       this.selectedTemplate = id;
     }
   }
-
+  saveLoginTemplate(){
+    if(this.customLoinTemplates.length<=1 || this.selectedTemplate==undefined){
+      if(this.customLoinTemplates.length<=1){
+        this.showCreateAlert = true;
+      } else {
+      this.showCreateAlert = false;
+      this.customResponse = new CustomResponse('ERROR', "Please Select a Template", true);
+      }
+    } else {
+      this.updateCustomLogInScreenData(true);
+    }
+  }
 
 
   getFinalScreenTableView() {
@@ -645,6 +669,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   openNewTab(){
     this.customResponse = new CustomResponse('ERROR', this.message, false);
     const newTabUrl = this.authenticationService.DOMAIN_URL +'login/preview'; // Replace with the URL you want to open
+    // const newTabUrl = this.authenticationService.APP_URL +'login/preview'; // Replace with the URL you want to open
     window.open(newTabUrl, '_blank');
 
   }
