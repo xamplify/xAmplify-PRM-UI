@@ -3289,7 +3289,6 @@ export class ReferenceService {
     }
     return message;
   }
-  /********Email Templates****/
 
   /***XNFR-403***/
   removeDivWithAnimation(divId:string){
@@ -3297,6 +3296,23 @@ export class ReferenceService {
       $('#' + divId).remove();
     });
   }
+
+  isJsonString(str:string) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+  }
+
+  convertJsonStringToJsonObject(jsonString:string){
+    var jsonObject : any
+    if(this.isJsonString(jsonString)){
+      return jsonObject = JSON.parse(jsonString);
+    }
+  }
+  /***XNFR-403***/
   
 
   

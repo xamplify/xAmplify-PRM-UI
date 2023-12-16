@@ -15,6 +15,8 @@ export class SearchableDropdownComponent implements OnInit {
   @Input() searchableDropDownDto:SearchableDropdownDto;
   @Output() searchableDropdownEventEmitter = new EventEmitter();
   @Input() dtoObject:any;
+  public sort: string = 'Ascending'; 
+
 
   constructor() { }
 
