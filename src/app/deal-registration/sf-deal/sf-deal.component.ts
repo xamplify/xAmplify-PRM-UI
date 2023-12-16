@@ -214,27 +214,30 @@ export class SfDealComponent implements OnInit {
       }      
     }
     /*******XNFR-403*******/
-    if(this.isConnectWiseEnabledAsActiveCRM){
-      let salesRepFormInfo = this.form.formLabelDTOs.filter(column => $.trim(column.labelName) === "Sales Rep");
-      let isValidSalesRepFormInfo = salesRepFormInfo!=undefined && salesRepFormInfo.length>0;
-      let salesRepValue = isValidSalesRepFormInfo ? salesRepFormInfo[0]['value']:"";
-      let isValidSalesRepValue = salesRepValue!=undefined && salesRepValue!="";
-
-      let insideRepFormInfo = this.form.formLabelDTOs.filter(column => $.trim(column.labelName) === "Inside Rep");
-      let isValidInsideRepFormInfo = insideRepFormInfo!=undefined && insideRepFormInfo.length>0;
-      let insideRepValue = isValidInsideRepFormInfo ? insideRepFormInfo[0]['value']:"";
-      let isValidInsideRepValue = insideRepValue!=undefined && insideRepValue!="";
-
-      let isBothRepValuesSame = isValidSalesRepValue && isValidInsideRepValue && salesRepValue==insideRepValue;
-      this.isDealRegistrationFormValid = !isBothRepValuesSame;
-      this.isValidRepValues = !isBothRepValuesSame;
-      if(!this.isValidRepValues){
-        this.referenceService.goToDiv("dealStageDiv");
-      }
-      
-      } 
+    this.validateRepValues(); 
     /*******XNFR-403*******/
 
+  }
+
+  private validateRepValues() {
+    if (this.isConnectWiseEnabledAsActiveCRM) {
+      let salesRepFormInfo = this.form.formLabelDTOs.filter(column => $.trim(column.labelName) === "Sales Rep");
+      let isValidSalesRepFormInfo = salesRepFormInfo != undefined && salesRepFormInfo.length > 0;
+      let salesRepValue = isValidSalesRepFormInfo ? salesRepFormInfo[0]['value'] : "";
+      let isValidSalesRepValue = salesRepValue != undefined && salesRepValue != "";
+
+      let insideRepFormInfo = this.form.formLabelDTOs.filter(column => $.trim(column.labelName) === "Inside Rep");
+      let isValidInsideRepFormInfo = insideRepFormInfo != undefined && insideRepFormInfo.length > 0;
+      let insideRepValue = isValidInsideRepFormInfo ? insideRepFormInfo[0]['value'] : "";
+      let isValidInsideRepValue = insideRepValue != undefined && insideRepValue != "";
+
+      let isBothRepValuesSame = isValidSalesRepValue && isValidInsideRepValue && salesRepValue == insideRepValue;
+      this.isDealRegistrationFormValid = isBothRepValuesSame;
+      this.isValidRepValues = !isBothRepValuesSame;
+      if (!this.isValidRepValues) {
+        this.referenceService.goToDiv("dealStageDiv");
+      }
+    }
   }
 
   validateEmailId(columnInfo: ColumnInfo) {
