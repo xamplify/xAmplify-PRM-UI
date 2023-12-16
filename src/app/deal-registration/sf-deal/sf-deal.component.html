@@ -54,7 +54,8 @@
       <div *ngIf="!isLoading">
         <div  class="br-unset pb15" >
           <div class="alert alert-info text-center mt5" *ngIf="connectWiseProducts?.length==0">
-              <strong>Please <a (click)="addProduct()">Click here</a> to add a product</strong>
+              <strong *ngIf="isPreview">No products found</strong>
+              <strong *ngIf="!isPreview">Please <a (click)="addProduct()">Click here</a> to add a product</strong>
           </div>
           <div [@slowAnimate]  class="panel-body pl0 pr0 pb0" *ngFor="let product of connectWiseProducts;let i=index"
             id="{{product?.divId}}">
