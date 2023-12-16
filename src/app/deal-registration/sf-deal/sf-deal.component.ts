@@ -42,10 +42,10 @@ export class SfDealComponent implements OnInit {
   isCollapsed3: any;
   /*********XNFR-403*********/
   @Input() forcastItemsJson:string;
-  connectWiseProducts:Array<ConnectwiseProductsDto> = new Array<ConnectwiseProductsDto>();
-  forcastItems:Array<ConnectwiseProductsRequestDto> = new Array<ConnectwiseProductsRequestDto>();
+  connectWiseProducts:Array<any> = new Array<any>();
+  forcastItems:Array<any> = new Array<any>();
   searchableDropDownDto:SearchableDropdownDto = new SearchableDropdownDto();
-  connectwiseProduct: ConnectwiseProductsDto = new ConnectwiseProductsDto();
+  connectwiseProduct:any;
   allDivIds = [];
   isConnectWiseEnabledAsActiveCRM: boolean = false;
   isValidRepValues = true;
@@ -119,16 +119,15 @@ export class SfDealComponent implements OnInit {
           let self = this;
           if(this.forcastItems!=undefined && this.forcastItems.length>0){
             $.each(this.forcastItems,function(index:number, 
-                foreCastItemDto:ConnectwiseProductsRequestDto){
-              let connectwiseProductsDto = new ConnectwiseProductsDto();
+                foreCastItemDto:any){
+              let connectwiseProductsDto:any;
               connectwiseProductsDto.id = foreCastItemDto.catalogItem.id;
               connectwiseProductsDto.quantity = foreCastItemDto.quantity;
               connectwiseProductsDto.cost = foreCastItemDto.cost;
               connectwiseProductsDto.price = foreCastItemDto.revenue;
               connectwiseProductsDto.opportunityId = foreCastItemDto.opportunity.id;
               connectwiseProductsDto.statusId = foreCastItemDto.status.id;
-              let length = self.allDivIds.length;
-              length = length + 1;
+              let length = index + 1;
               var divId = 'product-' + length;
               connectwiseProductsDto.divId = divId;
               connectwiseProductsDto.selectedProductId = connectwiseProductsDto.id;

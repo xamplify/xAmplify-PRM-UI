@@ -9,5 +9,6 @@ export class ConnectwiseProductsDto {
     statusId = 0;
     revenue = 0;
     selectedProductId = 0;
+    isNewProduct = false ;
     
 }

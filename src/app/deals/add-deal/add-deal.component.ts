@@ -558,24 +558,30 @@ export class AddDealComponent implements OnInit {
     this.deal.answers = answers;
     this.deal.properties = obj;
     /********XNFR-403***********/
-    let filtertedConnectWiseProducts = new Array<ConnectwiseProductsRequestDto>();
-    $.each(this.sfDealComponent.connectWiseProducts,function(_index:number,product:ConnectwiseProductsDto){
+    let filtertedConnectWiseProducts = new Array<any>();
+    $.each(this.sfDealComponent.connectWiseProducts,function(_index:number,
+      product:any){
       let id = product.id;
       if(id!=undefined && id>0){
-        let productRequestDto = new ConnectwiseProductsRequestDto();
-        productRequestDto.forecastType = 'Product';
-        productRequestDto.quantity = product.quantity;
-        productRequestDto.revenue = product.price;
-        productRequestDto.cost = product.cost;
-        let catalogItem = new ConnectwiseCatalogItemDto();
-        catalogItem.id = product.id;
-        productRequestDto.catalogItem = catalogItem;
-        let opportunity = new ConnectwiseOpportunityDto();
-        opportunity.id = 0;
-        productRequestDto.opportunity = opportunity;
-        let status = new ConnectwiseStatusDto();
-        status.id = 1;
-        productRequestDto.status = status;
+        let productRequestDto: any;
+        if(product.isNewProduct){
+          productRequestDto.forecastType = 'Product';
+          productRequestDto.quantity = product.quantity;
+          productRequestDto.revenue = product.price;
+          productRequestDto.cost = product.cost;
+          let catalogItem:any;
+          catalogItem.id = product.id;
+          productRequestDto.catalogItem = catalogItem;
+          let opportunity:any;
+          opportunity.id = 0;
+          productRequestDto.opportunity = opportunity;
+          let status:any;
+          status.id = 1;
+          productRequestDto.status = status;
+        }else{
+
+        }
+        
         filtertedConnectWiseProducts.push(productRequestDto);
       }
     });
@@ -583,7 +589,11 @@ export class AddDealComponent implements OnInit {
       this.deal.forcastItemsJson = JSON.stringify(filtertedConnectWiseProducts);
     }
     /********XNFR-403***********/
-    this.dealsService.saveOrUpdateDeal(this.deal)
+
+    console.log(filtertedConnectWiseProducts);
+
+
+    /* this.dealsService.saveOrUpdateDeal(this.deal)
       .subscribe(
         data => {
           this.ngxloading = false;
@@ -606,7 +616,7 @@ export class AddDealComponent implements OnInit {
           this.customResponse = new CustomResponse('ERROR', this.messageProperties.serverErrorMessage, true);
         },
         () => { }
-      );
+      ); */
   }
 
   validateQuestion(property: DealDynamicProperties) {
