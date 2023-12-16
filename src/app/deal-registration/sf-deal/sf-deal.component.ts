@@ -131,6 +131,7 @@ export class SfDealComponent implements OnInit {
               var divId = 'product-' + length;
               connectwiseProductsDto.divId = divId;
               connectwiseProductsDto.selectedProductId = connectwiseProductsDto.id;
+              connectwiseProductsDto.isNewProduct = true;
               self.connectWiseProducts.push(connectwiseProductsDto);
             });
           }
