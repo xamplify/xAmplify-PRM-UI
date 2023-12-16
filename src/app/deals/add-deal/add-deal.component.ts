@@ -156,7 +156,6 @@ export class AddDealComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
         if (data.statusCode == 200) {
           this.deal.createdForCompanyId = data.data;
-          //this.isSalesForceEnabled();
           this.getActiveCRMDetails();
         }
       },
@@ -271,6 +270,7 @@ export class AddDealComponent implements OnInit {
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
             self.deal = data.data; 
+            /****XNFR-403******/
             if (self.deal.createdForCompanyId === self.deal.createdByCompanyId) {
               self.ownDeal = true;
             }   
@@ -283,7 +283,6 @@ export class AddDealComponent implements OnInit {
             }
             self.setCloseDate(data); 
             if (self.deal.createdForCompanyId > 0) {
-              //self.isSalesForceEnabled();
               this.getActiveCRMDetails();
             } 
           }

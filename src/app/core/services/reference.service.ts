@@ -3307,7 +3307,7 @@ export class ReferenceService {
   }
 
   convertJsonStringToJsonObject(jsonString:string){
-    var jsonObject : any
+    var jsonObject : any;
     if(this.isJsonString(jsonString)){
       return jsonObject = JSON.parse(jsonString);
     }

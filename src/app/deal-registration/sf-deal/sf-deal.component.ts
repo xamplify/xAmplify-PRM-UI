@@ -8,6 +8,7 @@ import { IntegrationService } from 'app/core/services/integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 import { ConnectwiseProductsDto } from 'app/deals/models/connectwise-products-dto';
 import { FadeAnimation } from 'app/core/animations/fade-animation';
+import { ConnectwiseProductsRequestDto } from 'app/deals/models/connectwise-products-request-dto';
 
 declare var $: any, swal:any;
 
@@ -40,7 +41,9 @@ export class SfDealComponent implements OnInit {
   isCollapsed2: boolean;
   isCollapsed3: any;
   /*********XNFR-403*********/
+  @Input() forcastItemsJson:string;
   connectWiseProducts:Array<ConnectwiseProductsDto> = new Array<ConnectwiseProductsDto>();
+  forcastItems:Array<ConnectwiseProductsRequestDto> = new Array<ConnectwiseProductsRequestDto>();
   searchableDropDownDto:SearchableDropdownDto = new SearchableDropdownDto();
   connectwiseProduct: ConnectwiseProductsDto = new ConnectwiseProductsDto();
   allDivIds = [];
@@ -111,9 +114,31 @@ export class SfDealComponent implements OnInit {
           this.isDealRegistrationFormValid = false;
         }
         /*********XNFR-403*********/
+        if(this.dealId>0){
+          this.forcastItems = this.referenceService.convertJsonStringToJsonObject(this.forcastItemsJson);
+          let self = this;
+          if(this.forcastItems!=undefined && this.forcastItems.length>0){
+            $.each(this.forcastItems,function(index:number, 
+                foreCastItemDto:ConnectwiseProductsRequestDto){
+              let connectwiseProductsDto = new ConnectwiseProductsDto();
+              connectwiseProductsDto.id = foreCastItemDto.catalogItem.id;
+              connectwiseProductsDto.quantity = foreCastItemDto.quantity;
+              connectwiseProductsDto.cost = foreCastItemDto.cost;
+              connectwiseProductsDto.price = foreCastItemDto.revenue;
+              connectwiseProductsDto.opportunityId = foreCastItemDto.opportunity.id;
+              connectwiseProductsDto.statusId = foreCastItemDto.status.id;
+              let length = self.allDivIds.length;
+              length = length + 1;
+              var id = 'product-' + length;
+              connectwiseProductsDto.divId = id;
+              self.connectWiseProducts.push(connectwiseProductsDto);
+            });
+          }
+        } else{
+          this.addProduct();
+        }
         this.searchableDropDownDto.data = result.data.connectWiseProducts;
         this.searchableDropDownDto.placeHolder = "Please Select Product";
-        this.addProduct();
         /*********XNFR-403*********/
       } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") { 
         this.showSFFormError = true;    
