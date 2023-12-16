@@ -41,9 +41,9 @@ export class SfDealComponent implements OnInit {
   isCollapsed2: boolean;
   isCollapsed3: any;
   /*********XNFR-403*********/
-  @Input() forcastItemsJson:string;
+  @Input() forecastItemsJson:string;
   connectWiseProducts:Array<any> = new Array<any>();
-  forcastItems:Array<any> = new Array<any>();
+  forecastItems:Array<any> = new Array<any>();
   searchableDropDownDto:SearchableDropdownDto = new SearchableDropdownDto();
   connectwiseProduct:any;
   allDivIds = [];
@@ -115,10 +115,11 @@ export class SfDealComponent implements OnInit {
         }
         /*********XNFR-403*********/
         if(this.dealId>0){
-          this.forcastItems = this.referenceService.convertJsonStringToJsonObject(this.forcastItemsJson);
+          this.forecastItems = this.referenceService.convertJsonStringToJsonObject(this.forecastItemsJson);
+          console.log(this.forecastItems);
           let self = this;
-          if(this.forcastItems!=undefined && this.forcastItems.length>0){
-            $.each(this.forcastItems,function(index:number, 
+          if(this.forecastItems!=undefined && this.forecastItems.length>0){
+            $.each(this.forecastItems,function(index:number, 
                 foreCastItemDto:any){
               let connectwiseProductsDto:any;
               connectwiseProductsDto['id'] = foreCastItemDto['catalogItem']['id'];
