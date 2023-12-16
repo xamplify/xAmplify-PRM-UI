@@ -559,41 +559,32 @@ export class AddDealComponent implements OnInit {
     this.deal.properties = obj;
     /********XNFR-403***********/
     let filtertedConnectWiseProducts = new Array<any>();
+    let self = this;
+    console.log(this.sfDealComponent.connectWiseProducts);
     $.each(this.sfDealComponent.connectWiseProducts,function(_index:number,
       product:any){
       let id = product.id;
+      let productRequestDto = {};
       if(id!=undefined && id>0){
-        let productRequestDto: any;
         if(product.isNewProduct){
-          productRequestDto['forecastType'] = 'Product';
-          productRequestDto['quantity'] = product.quantity;
-          productRequestDto['revenue'] = product.price;
-          productRequestDto['cost'] = product.cost;
-          let catalogItem:any;
-          catalogItem['id'] = product.id;
-          productRequestDto['catalogItem'] = catalogItem;
-          let opportunity:any;
-          opportunity['id'] = 0;
-          productRequestDto['opportunity'] = opportunity;
-          let status:any;
-          status['id'] = 1;
-          productRequestDto['status'] = status;
+          self.addNewProduct(productRequestDto, product);
         }else{
-
+            
         }
-        
-        filtertedConnectWiseProducts.push(productRequestDto);
+      }else{
+        self.addNewProduct(productRequestDto, product);
       }
+      filtertedConnectWiseProducts.push(productRequestDto);
+
     });
     if(filtertedConnectWiseProducts.length>0){
       this.deal.forcastItemsJson = JSON.stringify(filtertedConnectWiseProducts);
     }
     /********XNFR-403***********/
 
-    console.log(filtertedConnectWiseProducts);
 
 
-    /* this.dealsService.saveOrUpdateDeal(this.deal)
+    this.dealsService.saveOrUpdateDeal(this.deal)
       .subscribe(
         data => {
           this.ngxloading = false;
@@ -616,7 +607,23 @@ export class AddDealComponent implements OnInit {
           this.customResponse = new CustomResponse('ERROR', this.messageProperties.serverErrorMessage, true);
         },
         () => { }
-      ); */
+      );
+  }
+
+  private addNewProduct(productRequestDto: {}, product: any) {
+    productRequestDto['forecastType'] = 'Product';
+    productRequestDto['quantity'] = product.quantity;
+    productRequestDto['revenue'] = product.price;
+    productRequestDto['cost'] = product.cost;
+    let catalogItem = {};
+    catalogItem['id'] = product.id;
+    productRequestDto['catalogItem'] = catalogItem;
+    let opportunity = {};
+    opportunity['id'] = 0;
+    productRequestDto['opportunity'] = opportunity;
+    let status = {};
+    status['id'] = 1;
+    productRequestDto['status'] = status;
   }
 
   validateQuestion(property: DealDynamicProperties) {
