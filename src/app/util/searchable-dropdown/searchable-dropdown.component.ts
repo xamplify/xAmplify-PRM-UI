@@ -15,6 +15,7 @@ export class SearchableDropdownComponent implements OnInit {
   @Input() searchableDropDownDto:SearchableDropdownDto;
   @Output() searchableDropdownEventEmitter = new EventEmitter();
   @Input() dtoObject:any;
+  @Input() disableDropDown:boolean;
   public sort: string = 'Ascending'; 
   public value: string = '';
 
@@ -27,6 +28,7 @@ export class SearchableDropdownComponent implements OnInit {
       if(this.dtoObject!=undefined && this.dtoObject.selectedProductId!=undefined && this.dtoObject.selectedProductId>0){
           this.value = this.dtoObject.selectedProductId;
       }
+      this.disableDropDown = this.disableDropDown==undefined ? false:this.disableDropDown;
   }
 
   public onFiltering: EmitType<FilteringEventArgs>  =  (e: FilteringEventArgs) => {
