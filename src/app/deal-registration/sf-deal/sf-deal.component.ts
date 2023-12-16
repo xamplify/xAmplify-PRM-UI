@@ -369,6 +369,7 @@ export class SfDealComponent implements OnInit {
 
   /*****XNFR-403*****/
   searchableDropdownEventReceiver(event:any){
+    console.log(this.connectWiseProducts);
   }
 
   addProduct(){
@@ -377,6 +378,9 @@ export class SfDealComponent implements OnInit {
     const divId = 'product-' + length;
     let connectwiseProduct = new ConnectwiseProductsDto();
     connectwiseProduct.divId = divId;
+    connectwiseProduct.opportunityId = 0;
+    connectwiseProduct.statusId = 1;
+    connectwiseProduct.quantity = 1;
     this.allDivIds.push(divId);
     this.connectWiseProducts.push(connectwiseProduct);
   }
