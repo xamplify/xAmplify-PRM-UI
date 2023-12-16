@@ -16,22 +16,24 @@ export class SearchableDropdownComponent implements OnInit {
   @Output() searchableDropdownEventEmitter = new EventEmitter();
   @Input() dtoObject:any;
   public sort: string = 'Ascending'; 
+  public value: string = '';
 
 
   constructor() { }
 
-  //Bind the filter event
-  public onFiltering: EmitType<FilteringEventArgs>  =  (e: FilteringEventArgs) => {
-      let query = new Query();
-      //frame the query based on search string with filter type.
-      query = (e.text != "") ? query.where("name", "contains", e.text, true) : query;
-      //pass the filter data source, filter query to updateData method.
-      e.updateData(this.searchableDropDownDto.data, query);
-  };
+  
 
   ngOnInit() {
-  
+      if(this.dtoObject!=undefined && this.dtoObject.selectedProductId!=undefined && this.dtoObject.selectedProductId>0){
+          this.value = this.dtoObject.selectedProductId;
+      }
   }
+
+  public onFiltering: EmitType<FilteringEventArgs>  =  (e: FilteringEventArgs) => {
+    let query = new Query();
+    query = (e.text != "") ? query.where("name", "contains", e.text, true) : query;
+    e.updateData(this.searchableDropDownDto.data, query);
+  };
 
   getSelectedDropDownData(event:any){
     let emitter = {};

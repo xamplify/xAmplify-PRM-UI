@@ -129,8 +129,9 @@ export class SfDealComponent implements OnInit {
               connectwiseProductsDto.statusId = foreCastItemDto.status.id;
               let length = self.allDivIds.length;
               length = length + 1;
-              var id = 'product-' + length;
-              connectwiseProductsDto.divId = id;
+              var divId = 'product-' + length;
+              connectwiseProductsDto.divId = divId;
+              connectwiseProductsDto.selectedProductId = connectwiseProductsDto.id;
               self.connectWiseProducts.push(connectwiseProductsDto);
             });
           }
