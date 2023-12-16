@@ -40,14 +40,14 @@ export class SearchableDropdownComponent implements OnInit {
   getSelectedDropDownData(event:any){
     let emitter = {};
     let selectedDropDownInfo = event.itemData;
-    emitter['selectedDropDownInfo'] = selectedDropDownInfo;
     if(this.dtoObject!=undefined){
+      this.dtoObject['revenue'] = selectedDropDownInfo['price'];
+      this.dtoObject['id'] = selectedDropDownInfo['id'];
       this.dtoObject['price'] = selectedDropDownInfo['price'];
       this.dtoObject['cost'] = selectedDropDownInfo['cost'];
-      this.dtoObject['id'] = selectedDropDownInfo['id'];
-      this.dtoObject['revenue'] = selectedDropDownInfo['price'];
-      emitter['dtoObject'] = this.dtoObject;
+      this.dtoObject['quantity'] = selectedDropDownInfo['quantity'];
     }
+    console.log(this.dtoObject);
     this.searchableDropdownEventEmitter.emit(emitter);
 
   }

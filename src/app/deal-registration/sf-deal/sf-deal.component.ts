@@ -121,17 +121,17 @@ export class SfDealComponent implements OnInit {
             $.each(this.forcastItems,function(index:number, 
                 foreCastItemDto:any){
               let connectwiseProductsDto:any;
-              connectwiseProductsDto.id = foreCastItemDto.catalogItem.id;
-              connectwiseProductsDto.quantity = foreCastItemDto.quantity;
-              connectwiseProductsDto.cost = foreCastItemDto.cost;
-              connectwiseProductsDto.price = foreCastItemDto.revenue;
-              connectwiseProductsDto.opportunityId = foreCastItemDto.opportunity.id;
-              connectwiseProductsDto.statusId = foreCastItemDto.status.id;
+              connectwiseProductsDto['id'] = foreCastItemDto['catalogItem']['id'];
+              connectwiseProductsDto['quantity'] = foreCastItemDto['quantity'];
+              connectwiseProductsDto['cost'] = foreCastItemDto['cost'];
+              connectwiseProductsDto['price'] = foreCastItemDto['revenue'];
+              connectwiseProductsDto['opportunityId'] = foreCastItemDto['opportunity']['id'];
+              connectwiseProductsDto['statusId'] = foreCastItemDto['status']['id'];
               let length = index + 1;
               var divId = 'product-' + length;
-              connectwiseProductsDto.divId = divId;
-              connectwiseProductsDto.selectedProductId = connectwiseProductsDto.id;
-              connectwiseProductsDto.isNewProduct = true;
+              connectwiseProductsDto['divId'] = divId;
+              connectwiseProductsDto['selectedProductId'] = connectwiseProductsDto['id'];
+              connectwiseProductsDto['isNewProduct'] = false;
               self.connectWiseProducts.push(connectwiseProductsDto);
             });
           }
@@ -377,11 +377,17 @@ export class SfDealComponent implements OnInit {
     let length = this.allDivIds.length;
     length = length + 1;
     const divId = 'product-' + length;
-    let connectwiseProduct = new ConnectwiseProductsDto();
-    connectwiseProduct.divId = divId;
-    connectwiseProduct.opportunityId = 0;
-    connectwiseProduct.statusId = 1;
-    connectwiseProduct.quantity = 1;
+    let connectwiseProduct = {};
+    connectwiseProduct['isNewProduct'] = true;
+    connectwiseProduct['id'] = 0;
+    connectwiseProduct['divId'] = divId;
+    connectwiseProduct['cost'] = 0;
+    connectwiseProduct['price'] = 0;
+    connectwiseProduct['quantity'] = 1;
+    connectwiseProduct['opportunityId'] = 0;
+    connectwiseProduct['statusId'] = 1;
+    connectwiseProduct['revenue'] = connectwiseProduct['price'];
+    connectwiseProduct['selectedProductId'] = 0;
     this.allDivIds.push(divId);
     this.connectWiseProducts.push(connectwiseProduct);
   }

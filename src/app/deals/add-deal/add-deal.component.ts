@@ -565,19 +565,19 @@ export class AddDealComponent implements OnInit {
       if(id!=undefined && id>0){
         let productRequestDto: any;
         if(product.isNewProduct){
-          productRequestDto.forecastType = 'Product';
-          productRequestDto.quantity = product.quantity;
-          productRequestDto.revenue = product.price;
-          productRequestDto.cost = product.cost;
+          productRequestDto['forecastType'] = 'Product';
+          productRequestDto['quantity'] = product.quantity;
+          productRequestDto['revenue'] = product.price;
+          productRequestDto['cost'] = product.cost;
           let catalogItem:any;
-          catalogItem.id = product.id;
-          productRequestDto.catalogItem = catalogItem;
+          catalogItem['id'] = product.id;
+          productRequestDto['catalogItem'] = catalogItem;
           let opportunity:any;
-          opportunity.id = 0;
-          productRequestDto.opportunity = opportunity;
+          opportunity['id'] = 0;
+          productRequestDto['opportunity'] = opportunity;
           let status:any;
-          status.id = 1;
-          productRequestDto.status = status;
+          status['id'] = 1;
+          productRequestDto['status'] = status;
         }else{
 
         }
