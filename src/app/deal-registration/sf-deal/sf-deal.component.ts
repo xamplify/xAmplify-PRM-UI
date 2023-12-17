@@ -25,7 +25,7 @@ export class SfDealComponent implements OnInit {
   @Input() activeCRM: string;
   form: Form = new Form();
   errorMessage: string;
-  isDealRegistrationFormValid: boolean = true;
+  isDealRegistrationFormInvalid: boolean = true;
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
@@ -106,7 +106,7 @@ export class SfDealComponent implements OnInit {
   
         let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
         if (reqFieldsCheck.length === 0) {
-          this.isDealRegistrationFormValid = false;
+          this.isDealRegistrationFormInvalid = false;
         }
         /*********XNFR-403*********/
         if(this.dealId>0){
@@ -118,8 +118,6 @@ export class SfDealComponent implements OnInit {
                   forecastItemDto['price'] = forecastItemDto['revenue'];
             });
           }
-        } else{
-          this.addProduct();
         }
         this.searchableDropDownDto.data = result.data.connectWiseProducts;
         this.searchableDropDownDto.placeHolder = "Please Select Product";
@@ -157,7 +155,7 @@ export class SfDealComponent implements OnInit {
   
         let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
         if (reqFieldsCheck.length === 0) {
-          this.isDealRegistrationFormValid = false;
+          this.isDealRegistrationFormInvalid = false;
         }
       } else if (result.statusCode === 401 && result.message === "Expired Refresh Token") { 
         this.showSFFormError = true;    
@@ -192,11 +190,11 @@ export class SfDealComponent implements OnInit {
   validateAllFields() {
     let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === "" || column.value === null || (column.value !== null && column.value.length === 0)));
     if (reqFieldsCheck.length === 0) {
-      this.isDealRegistrationFormValid = false;
+      this.isDealRegistrationFormInvalid = false;
     } else {
-      this.isDealRegistrationFormValid = true;
+      this.isDealRegistrationFormInvalid = true;
     }
-    if (!this.isDealRegistrationFormValid) {
+    if (!this.isDealRegistrationFormInvalid) {
       let allEmails = this.form.formLabelDTOs.filter(column => column.labelType === "email");
       for (let emailObj of allEmails) {
         this.validateEmailId(emailObj);
@@ -239,12 +237,14 @@ export class SfDealComponent implements OnInit {
       let isValidInsideRepFormInfo = insideRepFormInfo != undefined && insideRepFormInfo.length > 0;
       let insideRepValue = isValidInsideRepFormInfo ? insideRepFormInfo[0]['value'] : "";
       let isValidInsideRepValue = insideRepValue != undefined && insideRepValue != "";
-
-      let isBothRepValuesSame = isValidSalesRepValue && isValidInsideRepValue && salesRepValue == insideRepValue;
-      this.isDealRegistrationFormValid = isBothRepValuesSame;
-      this.isValidRepValues = !isBothRepValuesSame;
-      if (!this.isValidRepValues) {
-        this.referenceService.goToDiv("dealStageDiv");
+      
+      if(isValidSalesRepValue && isValidInsideRepValue){
+        let isBothRepValuesSame = salesRepValue == insideRepValue;
+        this.isDealRegistrationFormInvalid = isBothRepValuesSame;
+        this.isValidRepValues = !isBothRepValuesSame;
+        if (!this.isValidRepValues) {
+          this.referenceService.goToDiv("dealStageDiv");
+        }
       }
     }
   }
@@ -255,7 +255,7 @@ export class SfDealComponent implements OnInit {
       if (!this.referenceService.validateEmailId($.trim(columnInfo.value))) {
         columnInfo.errorMessage = "Please enter a valid email address";
         columnInfo.divClass = "error";
-        this.isDealRegistrationFormValid = true;
+        this.isDealRegistrationFormInvalid = true;
       }
     }
   }
@@ -272,7 +272,7 @@ export class SfDealComponent implements OnInit {
       if (isNaN(x) || x < 0 || x > 100) {
         columnInfo.errorMessage = "Please enter a value between 0 and 100";
         columnInfo.divClass = "error";
-        this.isDealRegistrationFormValid = true;
+        this.isDealRegistrationFormInvalid = true;
       } else {
         columnInfo.divClass = "success";
       }
@@ -285,7 +285,7 @@ export class SfDealComponent implements OnInit {
       if (!this.referenceService.validateWebsiteURL($.trim(columnInfo.value))) {
         columnInfo.errorMessage = "Please enter a valid URL";
         columnInfo.divClass = "error";
-        this.isDealRegistrationFormValid = true;
+        this.isDealRegistrationFormInvalid = true;
       }
     }    
   }
@@ -295,7 +295,7 @@ export class SfDealComponent implements OnInit {
     if (phoneNumber.length < 8 || !this.referenceService.validatePhoneNumber($.trim(phoneNumber))) {
       columnInfo.errorMessage = "Please enter valid phone number";
       columnInfo.divClass = "error";
-      this.isDealRegistrationFormValid = true;
+      this.isDealRegistrationFormInvalid = true;
     } else {
       columnInfo.divClass = "success";
     }
@@ -323,11 +323,11 @@ export class SfDealComponent implements OnInit {
       if ((columnInfo.labelName.includes('Latitude')) && (isNaN(x) || x < -90 || x > 90)) {
         columnInfo.errorMessage = "Please enter a value from -90 to 90";
         columnInfo.divClass = "error";
-        this.isDealRegistrationFormValid = true;
+        this.isDealRegistrationFormInvalid = true;
       }else if ((columnInfo.labelName.includes('Longitude')) && (isNaN(x) || x < -180 || x > 180)) {
         columnInfo.errorMessage = "Please enter a value from -180 to 180";
         columnInfo.divClass = "error";
-        this.isDealRegistrationFormValid = true;
+        this.isDealRegistrationFormInvalid = true;
       } else {
         columnInfo.divClass = "success";
       }

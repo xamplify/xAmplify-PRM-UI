@@ -312,10 +312,10 @@
         <div class="pull-right mr10" *ngIf="!preview && showCustomForm">
           <ng-container *ngIf="!showLoadingButton">
             <button type="button" id="saveDeal"
-            [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()"
+            [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()"
             class="btn Btn-Green" *ngIf="!edit">REGISTER DEAL</button>
           <button type="button" id="saveDeal"
-            [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()"
+            [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()"
             class="btn Btn-Green" *ngIf="edit">UPDATE DEAL</button>
           </ng-container>
           <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
