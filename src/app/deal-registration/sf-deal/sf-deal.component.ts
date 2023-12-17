@@ -111,7 +111,6 @@ export class SfDealComponent implements OnInit {
         /*********XNFR-403*********/
         if(this.dealId>0){
           this.forecastItems = this.referenceService.convertJsonStringToJsonObject(this.forecastItemsJson);
-          console.log(this.forecastItems);
           if(this.forecastItems!=undefined && this.forecastItems.length>0){
             $.each(this.forecastItems,function(index:number, 
                 forecastItemDto:any){
@@ -351,19 +350,11 @@ export class SfDealComponent implements OnInit {
     this.isCollapsed3 = !this.isCollapsed3;
   }
 
+  
   /*****XNFR-403*****/
-  searchableDropdownEventReceiver(event:any,index:number){
-    let forecastItem = this.forecastItems[index];
-    forecastItem['revenue'] = event['price'];
-    forecastItem['catalogItem']['id'] = event['id'];
-    forecastItem['price'] = forecastItem['price'];
-    forecastItem['cost'] = forecastItem['cost'];
-    console.log(this.forecastItems);
-
-  }
-
   addProduct(){
     let forecastItem = {};
+    forecastItem['forecastType'] = "Product";
     let catalogItem = {};
     catalogItem['id'] = 0;
     forecastItem['catalogItem'] = catalogItem;
@@ -380,10 +371,16 @@ export class SfDealComponent implements OnInit {
     this.forecastItems.push(forecastItem);
   }
 
+  /*****XNFR-403*****/
+  searchableDropdownEventReceiver(event:any,index:number){
+    let forecastItem = this.forecastItems[index];
+    forecastItem['catalogItem']['id'] = event['id'];
+
+  }
+
   /****XNFR-403****/
   removeProduct(index:number){
    this.forecastItems = this.referenceService.spliceArrayByIndex(this.forecastItems,index);
-   console.log(this.forecastItems);
    this.referenceService.removeRowWithAnimation(index);
     
   }

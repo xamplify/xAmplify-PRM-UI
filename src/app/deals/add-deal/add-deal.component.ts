@@ -270,7 +270,6 @@ export class AddDealComponent implements OnInit {
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
             self.deal = data.data; 
-            /****XNFR-403******/
             if (self.deal.createdForCompanyId === self.deal.createdByCompanyId) {
               self.ownDeal = true;
             }   
@@ -557,13 +556,12 @@ export class AddDealComponent implements OnInit {
     this.deal.properties = obj;
     /********XNFR-403***********/
     let filtertedConnectWiseProducts = new Array<any>();
-    let self = this;
     console.log(this.sfDealComponent.forecastItems);
     $.each(this.sfDealComponent.forecastItems,function(_index:number,
       forecastItem:any){
         let id = forecastItem['catalogItem']['id'];
         if(id!=undefined && id>0){
-          console.log(forecastItem);
+          forecastItem['revenue'] = forecastItem['price'];
           filtertedConnectWiseProducts.push(forecastItem);
         }
     });
