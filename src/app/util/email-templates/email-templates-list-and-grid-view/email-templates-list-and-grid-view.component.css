@@ -28,15 +28,7 @@ a.disabled {
   pointer-events: none;
   cursor: not-allowed;
 }
-.view-banner {
-  color: #fff;
-  padding: 5px 10px;
-  text-align: center;
-  width: 120px;
-  border-radius: 3px;
-  margin: 10px 0px;
-  font-size: 10px !important;
-}
+
 .email-template-preview {
   height: 140px;
   width: 100%;
@@ -242,3 +234,9 @@ div#htmlContent {
   top: -10px;
 }
 
+/*******Remove this after merging XNFR-374 */
+.grid-box h6 {
+  text-align: left !important;
+  margin: 0px !important;
+  width: 100% !important;
+}

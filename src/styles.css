@@ -1587,18 +1587,7 @@ strong {
   width: 10%;
 }
 /***03 Jun******/
-.view-banner {
-  background-color: #00a6e8;
-  color: white;
-  padding: 4px 6px;
-  text-align: center;
-  width: auto !important;
-  /* margin: 0 auto; */
-  font-size: 10px !important;
-  font-weight: 600;
-  border-radius: 3px;
 
-}
 
 .ccss {
   width: 100% !important;
@@ -1704,6 +1693,34 @@ strong {
   width: 50% !important;
 }
 
+/******view-banner***/
+.view-banner {
+  background-color: #00a6e8;
+  color: white;
+  padding: 4px 6px;
+  text-align: center;
+  width: auto !important;
+  font-size: 10px !important;
+  font-weight: 600;
+  border-radius: 3px;
+}
+
+.view-banner-white-labeled {
+  background-color: #68b4f1;
+  color: white !important;
+  padding: 4px 6px !important;
+  text-align: center;
+  font-size: 10px !important;
+  border-radius: 3px;
+  display: -ms-flexbox;
+  display: flex !important;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100px !important;
+  line-height: 1.3 !important;
+  align-content: space-around;
+  align-items: center;
+} 
 .view-banner-agency {
   background-color: #00a6e8;
   color: #fff !important;
@@ -1737,6 +1754,19 @@ strong {
   font-weight: 600;
 }
 
+h6.view-banner.published,
+h5.view-banner.published,
+h6.view-banner,
+h5.view-banner {
+  color: white !important;
+}
+
+
+h5.view-banner-green.white-labeled-cu1 {
+  width: 100px !important;
+}
+
+/******view-banner***/
 .fs-13px {
   font-size: 13px !important;
 }
@@ -2156,12 +2186,7 @@ fieldset[disabled] .btn-danger.active {
   background-color: #4db1e2;
 }
 /* 23-6-2023 sudha sri */
-h6.view-banner.published,
-h5.view-banner.published,
-h6.view-banner,
-h5.view-banner {
-  color: white !important;
-}
+
 /* 27-6-2023 */
 .aligncheckbox-lineto-table {
   margin-top: 2px;
@@ -2211,14 +2236,7 @@ h5.view-banner {
 .lightgray-btn:hover {
   background: #ececee;
 }
-.view-banner-white-labeled {
-   background-color: #68b4f1;
-  color: white !important;
-  padding: 4px 6px !important;
-  text-align: center;
-  font-size: 10px !important;
-  border-radius: 3px;
-} 
+
 span.LableSpaceings {
   margin-left: 12px;
   margin-top: 1px;
@@ -2298,9 +2316,7 @@ span.ListLabelSpacings {
   border-radius: 3px;
   width: auto;
 }
-h5.view-banner-green.white-labeled-cu1 {
-  width: 100px !important;
-}
+
 .orange-lable-cu1 {
   background: #e87e04 !important;
   padding: 4px 8px !important;
@@ -2759,17 +2775,17 @@ span.progresleft {
   opacity: 1;
 }
 
-.grid-box h6 {
-  text-align: left;
-  /* Un comment this line after adding all the grid changes */
-  /* margin: 0px;
-  width: 100%; */
-}
+/*********UnComment These Code After XNFR-374 And Remove This Duplicate Code From ALL Manage Components */
+/* .grid-box h6 {
+  text-align: left !important;
+  margin: 0px !important;
+  width: 100% !important;
+} */
 
 /****Remove This Afer Merging The code****/
 .grid-box h6 {
   text-align: left;
-  margin: 5px 0 5px 25px !important;
+  margin: 5px 0 5px 25px;
 }
 /****Remove This Afer Merging The code****/
 
@@ -2809,6 +2825,15 @@ span.progresleft {
     border: 1px solid #e0e0e0;
     border-radius: 5px;
   }
+}
+
+.margin-0-auto{
+  margin: 0 auto;
+}
+
+.fit-image {
+  width: 100%; 
+  height: 340px;
 }
 
 
