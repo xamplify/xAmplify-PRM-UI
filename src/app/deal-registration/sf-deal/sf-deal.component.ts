@@ -353,13 +353,11 @@ export class SfDealComponent implements OnInit {
 
   /*****XNFR-403*****/
   searchableDropdownEventReceiver(event:any,index:number){
-    console.log(event);
     let forecastItem = this.forecastItems[index];
     forecastItem['revenue'] = event['price'];
-    forecastItem['catalogItem']['id'] = forecastItem['id'];
+    forecastItem['catalogItem']['id'] = event['id'];
     forecastItem['price'] = forecastItem['price'];
     forecastItem['cost'] = forecastItem['cost'];
-    console.log(forecastItem);
     console.log(this.forecastItems);
 
   }
