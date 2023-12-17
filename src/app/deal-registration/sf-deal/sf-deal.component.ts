@@ -370,8 +370,12 @@ export class SfDealComponent implements OnInit {
     forecastItem['cost'] = 0;
     forecastItem['price'] = 0;
     forecastItem['quantity'] = 1;
-    forecastItem['opportunityId'] = 0;
-    forecastItem['statusId'] = 1;
+    let opportunity = {};
+    opportunity['id'] = 0;
+    forecastItem['opportunity'] = opportunity;
+    let status = {};
+    status['id'] = 1;
+    forecastItem['status'] = status;
     forecastItem['revenue'] = forecastItem['price'];
     this.forecastItems.push(forecastItem);
   }
