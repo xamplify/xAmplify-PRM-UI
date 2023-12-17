@@ -50,7 +50,9 @@
       </h4>
     </div>
     <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="Products">
-      <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
+      <div class="panel-body" *ngIf="isLoading">
+        <app-modal-popup-loader></app-modal-popup-loader>
+      </div>
       <div *ngIf="!isLoading">
         <div  class="br-unset pb15">
           <div class="alert alert-info text-center mt5" *ngIf="forecastItems?.length==0">
