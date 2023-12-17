@@ -2761,16 +2761,17 @@ span.progresleft {
 
 .grid-box h6 {
   text-align: left;
-  margin: 5px 0 5px 25px;
-}
-
-.grid-box h6 {
-  text-align: left;
   /* Un comment this line after adding all the grid changes */
   /* margin: 0px;
   width: 100%; */
 }
 
+/****Remove This Afer Merging The code****/
+.grid-box h6 {
+  text-align: left;
+  margin: 5px 0 5px 25px !important;
+}
+/****Remove This Afer Merging The code****/
 
 .grid-box img {
   margin: 1em;
