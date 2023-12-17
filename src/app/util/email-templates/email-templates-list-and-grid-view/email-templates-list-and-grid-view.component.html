@@ -42,11 +42,11 @@
                           <img class="email-template-preview" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg" alt="" style="border: 1px solid #e0e0e0;">
                       </td>
                       <td>
-                          <h4 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.name}}">
-                              <span> <b translate>Template Name:</b> {{emailTemplate.name}} </span>
-                          </h4>
+                          <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.name}}">
+                              <span><b>Template Name:</b> {{emailTemplate.name}} </span>
+                          </h6>
                           <h6 class="moreipsis">
-                              <span translate> <b translate>Folder:</b>{{emailTemplate.category}}</span>
+                              <span> <b>Folder:</b>{{emailTemplate.category}}</span>
                           </h6>
                           <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                               <h6 class="moreipsis">

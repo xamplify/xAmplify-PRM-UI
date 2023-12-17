@@ -2347,7 +2347,7 @@ button.table-scbscribe-btn:hover {
   border-radius: 2px !important;
   padding: 4px 10px !important;
   font-size: 10px !important;  
-  /***UnComment This Line Later */
+  /***Un Comment This Line Later */
   /* display: flex; */
   justify-content: center;
   margin-left: 12px;
@@ -2767,7 +2767,7 @@ span.progresleft {
 .grid-box h6 {
   text-align: left;
   /* Un comment this line after adding all the grid changes */
- /*  margin: 0px;
+  /* margin: 0px;
   width: 100%; */
 }
 
