@@ -52,7 +52,7 @@
     <div [ngClass]="{'collapse': isCollapsed3, '': !isCollapsed3}" id="Products">
       <app-modal-popup-loader *ngIf="isLoading"></app-modal-popup-loader>
       <div *ngIf="!isLoading">
-        <div  class="br-unset pb15" >
+        <div  class="br-unset pb15">
           <div class="alert alert-info text-center mt5" *ngIf="forecastItems?.length==0">
               <strong *ngIf="isPreview">No products found</strong>
               <strong *ngIf="!isPreview">Please <a (click)="addProduct()">Click here</a> to add a product</strong>

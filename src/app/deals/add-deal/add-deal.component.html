@@ -304,23 +304,23 @@
 
         <div class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
           <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()"
-            class="btn Btn-Green" *ngIf="!edit">REGISTER DEAL</button>
+            class="btn Btn-Green" *ngIf="!edit">Register Deal</button>
           <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()"
-            class="btn Btn-Green" *ngIf="edit">UPDATE DEAL</button>
+            class="btn Btn-Green" *ngIf="edit">Update Deal</button>
 
         </div>
         <div class="pull-right mr10" *ngIf="!preview && showCustomForm">
           <ng-container *ngIf="!showLoadingButton">
             <button type="button" id="saveDeal"
             [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()"
-            class="btn Btn-Green" *ngIf="!edit">REGISTER DEAL</button>
+            class="btn Btn-Green" *ngIf="!edit">Register Deal</button>
           <button type="button" id="saveDeal"
             [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()"
-            class="btn Btn-Green" *ngIf="edit">UPDATE DEAL</button>
+            class="btn Btn-Green" *ngIf="edit">Update Deal</button>
           </ng-container>
           <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Loading.....
+            Please Wait.....
           </button>
         </div>
       </form>
