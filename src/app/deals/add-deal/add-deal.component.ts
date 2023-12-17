@@ -422,9 +422,7 @@ export class AddDealComponent implements OnInit {
   }
 
   onChangeCreatedFor() {
-    //this.validateField('createdForCompanyId',false);
     if (this.deal.createdForCompanyId > 0) {
-      //this.isSalesForceEnabled();
       this.getActiveCRMDetails();
     } else {
       this.showDefaultForm = false;
@@ -560,22 +558,14 @@ export class AddDealComponent implements OnInit {
     /********XNFR-403***********/
     let filtertedConnectWiseProducts = new Array<any>();
     let self = this;
-    console.log(this.sfDealComponent.connectWiseProducts);
-    $.each(this.sfDealComponent.connectWiseProducts,function(_index:number,
-      product:any){
-      let id = product.id;
-      let productRequestDto = {};
-      if(id!=undefined && id>0){
-        if(product.isNewProduct){
-          self.addNewProduct(productRequestDto, product);
-        }else{
-            
+    console.log(this.sfDealComponent.forecastItems);
+    $.each(this.sfDealComponent.forecastItems,function(_index:number,
+      forecastItem:any){
+        let id = forecastItem['catalogItem']['id'];
+        if(id!=undefined && id>0){
+          console.log(forecastItem);
+          filtertedConnectWiseProducts.push(forecastItem);
         }
-      }else{
-        self.addNewProduct(productRequestDto, product);
-      }
-      filtertedConnectWiseProducts.push(productRequestDto);
-
     });
     if(filtertedConnectWiseProducts.length>0){
       this.deal.forcastItemsJson = JSON.stringify(filtertedConnectWiseProducts);

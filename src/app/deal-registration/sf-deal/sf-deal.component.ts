@@ -6,9 +6,7 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
-import { ConnectwiseProductsDto } from 'app/deals/models/connectwise-products-dto';
 import { FadeAnimation } from 'app/core/animations/fade-animation';
-import { ConnectwiseProductsRequestDto } from 'app/deals/models/connectwise-products-request-dto';
 
 declare var $: any, swal:any;
 
@@ -42,11 +40,8 @@ export class SfDealComponent implements OnInit {
   isCollapsed3: any;
   /*********XNFR-403*********/
   @Input() forecastItemsJson:string;
-  connectWiseProducts:Array<any> = new Array<any>();
   forecastItems:Array<any> = new Array<any>();
   searchableDropDownDto:SearchableDropdownDto = new SearchableDropdownDto();
-  connectwiseProduct:any;
-  allDivIds = [];
   isConnectWiseEnabledAsActiveCRM: boolean = false;
   isValidRepValues = true;
   /*******XNFR-403****/
@@ -117,23 +112,10 @@ export class SfDealComponent implements OnInit {
         if(this.dealId>0){
           this.forecastItems = this.referenceService.convertJsonStringToJsonObject(this.forecastItemsJson);
           console.log(this.forecastItems);
-          let self = this;
           if(this.forecastItems!=undefined && this.forecastItems.length>0){
             $.each(this.forecastItems,function(index:number, 
-                foreCastItemDto:any){
-              let connectwiseProductsDto:any;
-              connectwiseProductsDto['id'] = foreCastItemDto['catalogItem']['id'];
-              connectwiseProductsDto['quantity'] = foreCastItemDto['quantity'];
-              connectwiseProductsDto['cost'] = foreCastItemDto['cost'];
-              connectwiseProductsDto['price'] = foreCastItemDto['revenue'];
-              connectwiseProductsDto['opportunityId'] = foreCastItemDto['opportunity']['id'];
-              connectwiseProductsDto['statusId'] = foreCastItemDto['status']['id'];
-              let length = index + 1;
-              var divId = 'product-' + length;
-              connectwiseProductsDto['divId'] = divId;
-              connectwiseProductsDto['selectedProductId'] = connectwiseProductsDto['id'];
-              connectwiseProductsDto['isNewProduct'] = false;
-              self.connectWiseProducts.push(connectwiseProductsDto);
+                forecastItemDto:any){
+                  forecastItemDto['price'] = forecastItemDto['revenue'];
             });
           }
         } else{
@@ -370,32 +352,37 @@ export class SfDealComponent implements OnInit {
   }
 
   /*****XNFR-403*****/
-  searchableDropdownEventReceiver(event:any){
-    console.log(this.connectWiseProducts);
+  searchableDropdownEventReceiver(event:any,index:number){
+    console.log(event);
+    let forecastItem = this.forecastItems[index];
+    forecastItem['revenue'] = event['price'];
+    forecastItem['catalogItem']['id'] = forecastItem['id'];
+    forecastItem['price'] = forecastItem['price'];
+    forecastItem['cost'] = forecastItem['cost'];
+    console.log(forecastItem);
+    console.log(this.forecastItems);
+
   }
 
   addProduct(){
-    let length = this.allDivIds.length;
-    length = length + 1;
-    const divId = 'product-' + length;
-    let connectwiseProduct = {};
-    connectwiseProduct['isNewProduct'] = true;
-    connectwiseProduct['id'] = 0;
-    connectwiseProduct['divId'] = divId;
-    connectwiseProduct['cost'] = 0;
-    connectwiseProduct['price'] = 0;
-    connectwiseProduct['quantity'] = 1;
-    connectwiseProduct['opportunityId'] = 0;
-    connectwiseProduct['statusId'] = 1;
-    connectwiseProduct['revenue'] = connectwiseProduct['price'];
-    connectwiseProduct['selectedProductId'] = 0;
-    this.allDivIds.push(divId);
-    this.connectWiseProducts.push(connectwiseProduct);
+    let forecastItem = {};
+    let catalogItem = {};
+    catalogItem['id'] = 0;
+    forecastItem['catalogItem'] = catalogItem;
+    forecastItem['cost'] = 0;
+    forecastItem['price'] = 0;
+    forecastItem['quantity'] = 1;
+    forecastItem['opportunityId'] = 0;
+    forecastItem['statusId'] = 1;
+    forecastItem['revenue'] = forecastItem['price'];
+    this.forecastItems.push(forecastItem);
   }
 
   /****XNFR-403****/
-  removeProduct(divId:string){
-    this.connectWiseProducts = this.referenceService.spliceArray(this.connectWiseProducts, divId);
-    this.referenceService.removeDivWithAnimation(divId);
+  removeProduct(index:number){
+   this.forecastItems = this.referenceService.spliceArrayByIndex(this.forecastItems,index);
+   console.log(this.forecastItems);
+   this.referenceService.removeRowWithAnimation(index);
+    
   }
 }

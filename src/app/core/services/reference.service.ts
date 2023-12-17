@@ -3291,9 +3291,9 @@ export class ReferenceService {
   }
 
   /***XNFR-403***/
-  removeDivWithAnimation(divId:string){
-    $('#' + divId).hide(1000, function () {
-      $('#' + divId).remove();
+  removeRowWithAnimation(id:any){
+    $('#' + id).hide(1000, function () {
+      $('#' + id).remove();
     });
   }
 
@@ -3312,8 +3312,27 @@ export class ReferenceService {
       return jsonObject = JSON.parse(jsonString);
     }
   }
+
+  removeArrayItemByIndex(items:any,index:number){
+    var updatedItems = [];
+    for(var i=0;i<items.length;i++){
+        let item = items[i];
+        if(i!=index){
+          updatedItems.push(item);
+        }
+    }
+    return updatedItems;
+  }
+
+  spliceArrayByIndex(arr: any, indexToRemove: number) {
+    arr = $.grep(arr, function (data: any, index: number) {
+      return index !== indexToRemove;
+    });
+    return arr;
+  }
+
   /***XNFR-403***/
-  
+
 
   
 }

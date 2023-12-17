@@ -3,7 +3,6 @@ import { FilteringEventArgs } from '@syncfusion/ej2-dropdowns';
 import { EmitType } from '@syncfusion/ej2-base';
 import { Query } from '@syncfusion/ej2-data';
 import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
-import { emit } from 'process';
 
 @Component({
   selector: 'app-searchable-dropdown',
@@ -14,7 +13,7 @@ export class SearchableDropdownComponent implements OnInit {
 
   @Input() searchableDropDownDto:SearchableDropdownDto;
   @Output() searchableDropdownEventEmitter = new EventEmitter();
-  @Input() dtoObject:any;
+  @Input() id:any;
   @Input() disableDropDown:boolean;
   public sort: string = 'Ascending'; 
   public value: string = '';
@@ -25,9 +24,7 @@ export class SearchableDropdownComponent implements OnInit {
   
 
   ngOnInit() {
-      if(this.dtoObject!=undefined && this.dtoObject.selectedProductId!=undefined && this.dtoObject.selectedProductId>0){
-          this.value = this.dtoObject.selectedProductId;
-      }
+      this.value = this.id;
       this.disableDropDown = this.disableDropDown==undefined ? false:this.disableDropDown;
   }
 
@@ -38,15 +35,8 @@ export class SearchableDropdownComponent implements OnInit {
   };
 
   getSelectedDropDownData(event:any){
-    let emitter = {};
     let selectedDropDownInfo = event.itemData;
-    if(this.dtoObject!=undefined){
-      this.dtoObject['revenue'] = selectedDropDownInfo['price'];
-      this.dtoObject['id'] = selectedDropDownInfo['id'];
-      this.dtoObject['price'] = selectedDropDownInfo['price'];
-      this.dtoObject['cost'] = selectedDropDownInfo['cost'];
-    }
-    this.searchableDropdownEventEmitter.emit(emitter);
+    this.searchableDropdownEventEmitter.emit(selectedDropDownInfo);
 
   }
 
