@@ -3967,8 +3967,8 @@ checkingConnectWiseContactsAuthentication() {
             let response = data;
             if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
                 this.xtremandLogger.info("isAuthorize true");
-                // this.getConnectWiseContacts();
-                this.showConnectWiseModal();
+                this.getConnectWiseContacts();
+                // this.showConnectWiseModal();
             }
             else {
                 this.showConnectWisePreSettingsForm();
