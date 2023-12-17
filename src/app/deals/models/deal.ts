@@ -40,5 +40,5 @@ export class Deal {
    unReadChatCount: any;
    unReadPropertyChatCount: any;
    /****XNFR-403****/
-   forcastItemsJson = "";
+   forecastItemsJson = "";
 }

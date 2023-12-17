@@ -555,23 +555,19 @@ export class AddDealComponent implements OnInit {
     this.deal.answers = answers;
     this.deal.properties = obj;
     /********XNFR-403***********/
-    let filtertedConnectWiseProducts = new Array<any>();
-    console.log(this.sfDealComponent.forecastItems);
+    let filtertedForecastItems = new Array<any>();
     $.each(this.sfDealComponent.forecastItems,function(_index:number,
       forecastItem:any){
         let id = forecastItem['catalogItem']['id'];
         if(id!=undefined && id>0){
           forecastItem['revenue'] = forecastItem['price'];
-          filtertedConnectWiseProducts.push(forecastItem);
+          filtertedForecastItems.push(forecastItem);
         }
     });
-    if(filtertedConnectWiseProducts.length>0){
-      this.deal.forcastItemsJson = JSON.stringify(filtertedConnectWiseProducts);
+    if(filtertedForecastItems.length>0){
+      this.deal.forecastItemsJson = JSON.stringify(filtertedForecastItems);
     }
     /********XNFR-403***********/
-
-
-
     this.dealsService.saveOrUpdateDeal(this.deal)
       .subscribe(
         data => {
@@ -598,21 +594,7 @@ export class AddDealComponent implements OnInit {
       );
   }
 
-  private addNewProduct(productRequestDto: {}, product: any) {
-    productRequestDto['forecastType'] = 'Product';
-    productRequestDto['quantity'] = product.quantity;
-    productRequestDto['revenue'] = product.price;
-    productRequestDto['cost'] = product.cost;
-    let catalogItem = {};
-    catalogItem['id'] = product.id;
-    productRequestDto['catalogItem'] = catalogItem;
-    let opportunity = {};
-    opportunity['id'] = 0;
-    productRequestDto['opportunity'] = opportunity;
-    let status = {};
-    status['id'] = 1;
-    productRequestDto['status'] = status;
-  }
+  
 
   validateQuestion(property: DealDynamicProperties) {
 
