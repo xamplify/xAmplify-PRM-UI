@@ -561,6 +561,7 @@ export class AddDealComponent implements OnInit {
         let id = forecastItem['catalogItem']['id'];
         if(id!=undefined && id>0){
           forecastItem['revenue'] = forecastItem['price'];
+          delete forecastItem['price'];
           filtertedForecastItems.push(forecastItem);
         }
     });
