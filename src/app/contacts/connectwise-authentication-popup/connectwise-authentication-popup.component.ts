@@ -1,0 +1,138 @@
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CustomResponse } from 'app/common/models/custom-response';
+import { RegularExpressions } from 'app/common/models/regular-expressions';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { IntegrationService } from 'app/core/services/integration.service';
+import { ReferenceService } from 'app/core/services/reference.service';
+import { DashboardService } from 'app/dashboard/dashboard.service';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+declare var $;
+@Component({
+  selector: 'app-connectwise-authentication-popup',
+  templateUrl: './connectwise-authentication-popup.component.html',
+  styleUrls: ['./connectwise-authentication-popup.component.css']
+})
+export class ConnectwiseAuthenticationPopupComponent implements OnInit {
+  @Input() loggedInUserId: any;
+  @Output() closeEvent = new EventEmitter<any>();  
+  customResponse: CustomResponse = new CustomResponse();
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  loading: boolean = false;
+  currentUser: string;
+  companyId: any;
+  clientId: any;
+  publicKey: any;
+  privateKey: any;
+  constructor(private authenticationService: AuthenticationService, private dashBoardService: DashboardService,
+    public referenceService: ReferenceService, private vanityUrlService: VanityURLService, public regularExpressions: RegularExpressions,
+    private integrationService: IntegrationService) { }
+
+  ngOnInit() {
+    this.loggedInUserId = this.authenticationService.getUserId();
+    $("#connectWisePreSettingsForm").modal('show');
+  }
+  checkAuthorization() {
+    this.loading = true;
+    this.integrationService.checkConfigurationByType("connectwise").subscribe(data => {
+      this.loading = false;
+      let response = data;
+      if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+        this.getAuthCredentials();
+      }
+    }, error => {
+      this.loading = false;
+    }, () => { }
+    );
+  }
+
+  getAuthCredentials() {
+    this.loading = true;
+    this.dashBoardService.getAuthCredentialsForConnectWise(this.loggedInUserId)
+      .subscribe(
+        response => {
+          this.loading = false;
+          if (response.statusCode == 200) {
+            let data = response.data;
+            this.clientId = data.clientId;
+            this.companyId = data.externalOrganizationId;
+            this.publicKey = data.publicKey;
+            this.privateKey = data.privateKey;            
+          } else {
+            this.customResponse = new CustomResponse('ERROR', response.message, true);
+          }
+        },
+        error => {
+          this.loading = false;
+        },
+        () => { }
+      );
+  }
+
+  validateModelForm() {
+    let valid = true;
+    let errorMessage = "";
+    if (this.companyId == undefined || this.companyId == null || this.companyId.trim().length <= 0) {
+      valid = false;
+      errorMessage = "Please provide ConnectWise Company ID";
+    } else if (this.clientId == undefined || this.clientId == null || this.clientId.trim().length <= 0) {
+      valid = false;
+      errorMessage = "Please provide ConnectWise Client ID";
+    } else if (this.publicKey == undefined || this.publicKey == null || this.publicKey.trim().length <= 0) {
+      valid = false;
+      errorMessage = "Please provide Public Key";
+    } else if (this.privateKey == undefined || this.privateKey == null || this.privateKey.trim().length <= 0) {
+      valid = false;
+      errorMessage = "Please provide Private Key";
+    }
+
+
+    if (valid) {
+      this.customResponse.isVisible = false;
+      this.saveAuthCredentials()
+    } else {
+      this.customResponse = new CustomResponse('ERROR', errorMessage, true);
+    }
+
+  }
+
+  saveAuthCredentials() {
+    this.loading = true;
+    let requestObj = {
+      userId: this.loggedInUserId,
+      clientId: this.clientId.trim(),
+      publicKey: this.publicKey.trim(),
+      privateKey: this.privateKey.trim(),
+      externalOrganizationId: this.companyId.trim()
+    }
+
+    this.dashBoardService.saveAuthCredentialsForConnectWise(requestObj)
+      .subscribe(
+        response => {
+          this.loading = false;
+          if (response.statusCode == 200) {
+            $( "#connectWisePreSettingsForm" ).modal( 'hide' );
+          } else if (response.statusCode == 403) {
+            this.customResponse = new CustomResponse('INFO', response.message, true);
+          } else {
+            this.customResponse = new CustomResponse('ERROR', response.message, true);
+          }
+        },
+        error => {
+          this.loading = false;
+          let errorMessage = this.referenceService.getApiErrorMessage(error);
+          this.customResponse = new CustomResponse('ERROR', errorMessage, true);
+        },
+        () => { }
+      );
+  }
+
+  closeForm() {
+    console.log("Closed ConnectWise Auth")
+    this.closeEvent.emit("0");
+  }
+  hideConnectWiseSettingForm() {
+    $("#connectWisePreSettingsForm").hide();
+    this.closeEvent.emit("0");
+  }
+}
