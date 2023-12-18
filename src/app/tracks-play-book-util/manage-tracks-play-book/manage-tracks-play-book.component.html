@@ -5,14 +5,15 @@
 <div class="row">
     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="col-md-12 mTop mrg_top0">
-        
+
         <div class="portlet light remove_cardBgcolor padding_0 clearfix">
             <!--List/Grid View-->
             <div *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
                 <div class="portlet-title" style="border-bottom: none">
                     <div *ngIf="showRefreshNotification && !httpRequestLoader?.isLoading" class="alert alert-info">
-                         <strong>Please <a (click)="listLearningTracks(pagination)">click here</a> to find latest updates</strong>
-                        </div>
+                        <strong>Please <a (click)="listLearningTracks(pagination)">click here</a> to find latest
+                            updates</strong>
+                    </div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-4 col-lg-3">
                             <h4 class="pull-left m10 text-primary">{{suffixHeader}}{{titleHeader}}</h4>
@@ -329,8 +330,10 @@
                             <div class="ribbon tab-ribbon">
                                 <span
                                     *ngIf="learningTrack.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList">Published</span>
-                                <span *ngIf="(learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList) && !isPartnerView">
-                                    <img src="assets/images/loading.gif" class="margin-0-ht5px" alt="Processing">Processing
+                                <span
+                                    *ngIf="(learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList) && !isPartnerView">
+                                    <img src="assets/images/loading.gif" class="margin-0-ht5px"
+                                        alt="Processing">Processing
                                 </span>
                             </div>
                             <!---XNFR-327--->
@@ -456,9 +459,9 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn Btn-Gray" type="button" (click)="closePopUp()">Cancel</button>
-                        <button class="button bgcolor-unset" type="button" [disabled]="!selectedOption"
+                        <button class="button bgcolor-unset pd-top2" type="button" [disabled]="!selectedOption"
                             (click)="unPublishAction(UnPublishedId, false)"><span
-                                class="btn Btn-Green transition">Unpublish</span></button>
+                                class="btn Btn-Green transition text_pd5">Unpublish</span></button>
                     </div>
                 </div>
             </div>
