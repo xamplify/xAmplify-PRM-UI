@@ -259,25 +259,27 @@
 										</div>
 										<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
 											style="margin-top: 10px;">
-											<a *ngIf="marketoImageBlur" id="marketoContact_button"
+											<a *ngIf="microsoftDynamicsImageBlur" id="MicrosoftContact_button"
 												style="background-color: white"
-												(click)="checkingMarketoContactsAuthentication()"
-												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
-													src="assets/images/crm/marketo.png" style="border-radius:8px;"
-													class="marketoImageClass" data-toggle="tooltip" data-placement="top"
-													title="Click here to access contacts from your Marketo account"
+												(click)="checkingMicrosoftContactsAuthentication()"
+												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
+													src="assets/images/crm/microsoft.png" style="border-radius: 8px;"
+													class="microsoftImageClass" data-toggle="tooltip"
+													data-placement="top"
+													title="Click here to access contacts from your Microsoft Dynamics account"
 													height="86" width="90"
 													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/marketo.png';">
-											</a> <a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal"
-												style="background-color: white"
-												(click)="checkingMarketoContactsAuthentication()"
-												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
-													src="assets/images/crm/marketo.png" style="border-radius:8px;"
-													class="marketoImageClass" data-toggle="tooltip" data-placement="top"
-													title="Click here to access contacts from your Marketo account"
+													onmouseout="this.src='assets/images/crm/microsoft.png';">
+											</a> <a *ngIf="microsoftDynamicsImageNormal"
+												id="MicrosoftContact_buttonNormal" style="background-color: white"
+												(click)="checkingMicrosoftContactsAuthentication()"
+												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
+												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
+													src="assets/images/crm/microsoft.png" style="border-radius:8px;"
+													class="microsoftImageClass" data-toggle="tooltip"
+													data-placement="top"
+													title="Click here to access contacts from your Microsoft Dynamics account"
 													height="86" width="90">
 											</a>
 										</div>
@@ -306,31 +308,31 @@
 											</a>
 										</div>
 										<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
-											style="margin-top: 10px;">
-											<a *ngIf="microsoftDynamicsImageBlur" id="MicrosoftContact_button"
-												style="background-color: white"
-												(click)="checkingMicrosoftContactsAuthentication()"
-												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
-													src="assets/images/crm/microsoft.png" style="border-radius: 8px;"
-													class="microsoftImageClass" data-toggle="tooltip"
-													data-placement="top"
-													title="Click here to access contacts from your Microsoft Dynamics account"
-													height="86" width="90"
-													onmouseover="this.src='assets/images/crm/connecting.png';"
-													onmouseout="this.src='assets/images/crm/microsoft.png';">
-											</a> <a *ngIf="microsoftDynamicsImageNormal"
-												id="MicrosoftContact_buttonNormal" style="background-color: white"
-												(click)="checkingMicrosoftContactsAuthentication()"
-												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 10">
-												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
-													src="assets/images/crm/microsoft.png" style="border-radius:8px;"
-													class="microsoftImageClass" data-toggle="tooltip"
-													data-placement="top"
-													title="Click here to access contacts from your Microsoft Dynamics account"
-													height="86" width="90">
-											</a>
-										</div>
+												style="margin-top: 10px;">
+												<a *ngIf="connectWiseImageBlur" id="connectWiseContact_button"
+													style="background-color: white"
+													(click)="checkingConnectWiseContactsAuthentication()"
+													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 12">
+													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
+														src="assets/images/crm/connectwise.png" style="border-radius:8px;"
+														class="connectWiseImageClass" data-toggle="tooltip"
+														data-placement="top"
+														title="Click here to access contacts from your ConnectWise account"
+														height="86" width="90"
+														onmouseover="this.src='assets/images/crm/connecting.png';"
+														onmouseout="this.src='assets/images/crm/connectwise.png';">
+												</a> <a *ngIf="connectWiseImageNormal" id="connectWise_buttonNormal"
+													style="background-color: white"
+													(click)="checkingConnectWiseContactsAuthentication()"
+													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 12">
+													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
+														src="assets/images/crm/connectwise.png" style="border-radius:8px;"
+														class="connectWiseImageClass" data-toggle="tooltip"
+														data-placement="top"
+														title="Click here to access contacts from your ConnectWise account"
+														height="86" width="90">
+												</a>
+											</div>
 										<!-- XNFR-230 -->
 										<div id="showCRM" class="collapse">
 											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
@@ -360,31 +362,29 @@
 												</a>
 											</div>
 											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2 mlm8 image_effect"
-												style="margin-top: 10px;">
-												<a *ngIf="connectWiseImageBlur" id="connectWiseContact_button"
-													style="background-color: white"
-													(click)="checkingConnectWiseContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 12">
-													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
-														src="assets/images/crm/connectwise.png" style="border-radius:8px;"
-														class="connectWiseImageClass" data-toggle="tooltip"
-														data-placement="right"
-														title="Click here to access contacts from your ConnectWise account"
-														height="86" width="90"
-														onmouseover="this.src='assets/images/crm/connecting.png';"
-														onmouseout="this.src='assets/images/crm/connectwise.png';">
-												</a> <a *ngIf="connectWiseImageNormal" id="connectWise_buttonNormal"
-													style="background-color: white"
-													(click)="checkingConnectWiseContactsAuthentication()"
-													[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 12">
-													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
-														src="assets/images/crm/connectwise.png" style="border-radius:8px;"
-														class="connectWiseImageClass" data-toggle="tooltip"
-														data-placement="right"
-														title="Click here to access contacts from your ConnectWise account"
-														height="86" width="90">
-												</a>
-											</div>
+											style="margin-top: 10px;">
+											<a *ngIf="marketoImageBlur" id="marketoContact_button"
+												style="background-color: white"
+												(click)="checkingMarketoContactsAuthentication()"
+												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
+													src="assets/images/crm/marketo.png" style="border-radius:8px;"
+													class="marketoImageClass" data-toggle="tooltip" data-placement="right"
+													title="Click here to access contacts from your Marketo account"
+													height="86" width="90"
+													onmouseover="this.src='assets/images/crm/connecting.png';"
+													onmouseout="this.src='assets/images/crm/marketo.png';">
+											</a> <a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal"
+												style="background-color: white"
+												(click)="checkingMarketoContactsAuthentication()"
+												[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+												<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
+													src="assets/images/crm/marketo.png" style="border-radius:8px;"
+													class="marketoImageClass" data-toggle="tooltip" data-placement="right"
+													title="Click here to access contacts from your Marketo account"
+													height="86" width="90">
+											</a>
+										</div> 
 										</div>
 									</div>
 									<div class="clearfix"></div>
