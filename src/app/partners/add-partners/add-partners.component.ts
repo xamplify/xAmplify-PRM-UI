@@ -638,7 +638,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 				                this.validatePartnersCompany(this.newPartnerUser, this.partnerListId);
 						}
 					if ( this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
-					     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11) {
+					     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12) {
 								this.askForPermission();
 					   }
 					   
@@ -2200,7 +2200,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			
 			if ( this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
 			     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 
-          || this.selectedAddPartnerOption == 11) {
+          || this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12) {
 				if (this.allselectedUsers.length != 0) {
 			        this.newPartnerUser = this.allselectedUsers;
 			   }else if (this.socialPartnerUsers.length > 0) {
@@ -4702,7 +4702,7 @@ unsubscribeUser(selectedUserForUnsubscribed : any){
 							}
 			
 							if ( this.selectedAddPartnerOption == 3 || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 ||
-							     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11) {
+							     this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9 || this.selectedAddPartnerOption == 10 || this.selectedAddPartnerOption == 11 || this.selectedAddPartnerOption == 12) {
 								this.openCloudPartnerPopUp();
 							}
 						}else{

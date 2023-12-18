@@ -105,19 +105,19 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <h4 class="moreipsis">
-                                            <span  data-toggle="tooltip" data-placement="bottom" title="{{form.name}}"><b>Form Name:</b> {{form.name}} </span>
+                                        <h4 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{form.name}}">
+                                            <span><b>Form Name:</b> {{form.name}} </span>
                                         </h4>
-                                        <h6 class="moreipsis">
-                                            <span  data-toggle="tooltip" data-placement="bottom" title="{{form.categoryName}}"><b>Folder:</b> {{form.categoryName}} </span>
+                                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{form.categoryName}}">
+                                            <span><b>Folder:</b> {{form.categoryName}} </span>
                                         </h6>
-                                        <h6 class="moreipsis" >
-                                            <span> <b>Created By:</b> {{form.createdName}} </span>
+                                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{form.createdName}}">
+                                            <span><b>Created By:</b> {{form.createdName}} </span>
                                         </h6>
                                         <!---XNFR-255-->
                                         <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor && !partnerView">
-                                            <h6 class="moreipsis" >
-                                                <span translate> <b translate>Received From:</b> {{form?.whiteLabeledFormSharedByVendorCompanyName}} </span>
+                                            <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{form.whiteLabeledFormSharedByVendorCompanyName}}">
+                                                <span> <b>Received From:</b> {{form?.whiteLabeledFormSharedByVendorCompanyName}} </span>
                                             </h6>
                                             <h5 class="view-banner display-ib margin-0-auto">White-Labeled</h5>
                                         </ng-container>
@@ -211,29 +211,27 @@
                         <div class="img-class tab_view_img DesignGridViewImage image_effect">
                             <img class="fit-image" style="margin: unset;" [src]=" form.thumbnailImage" onerror="this.src='assets/images/form.png';" alt="{{form.name}}">
                         </div>
-                        <h4 class="ellipsis GridViewCotent gridViewDesignTextAlignmnent ListFontCu" data-placement="bottom" data-toggle="tooltip" title="{{form.name}}">
-                            <b>Form Name:</b> {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span> 
+                        <h4 class="xamplify-ellipsis GridViewCotent gridViewDesignTextAlignmnent ListFontCu" data-placement="top" data-toggle="tooltip" title="{{form.name}}">
+                            <b>Form Name:</b> {{form.name}}
                         </h4>
                         <!---XNFR-255-->
                         <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor">
-                            <h6 class="GridViewCotent" data-placement="bottom" data-toggle="tooltip" title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
+                            <h6 class="GridViewCotent xamplify-ellipsis" data-placement="top" data-toggle="tooltip" title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
                                 <span><b>Received From:</b> {{form?.whiteLabeledFormSharedByVendorCompanyName}} </span>
                             </h6>
                             <span class="view-banner-white-labeled LabeledmarginLeft">White-Labeled</span>
                         </ng-container>
                         <!---XNFR-255-->
                         <div>
-                            <h6 class="GridViewCotent"  data-placement="bottom" data-toggle="tooltip" title="{{form.categoryName}}">
-                                <b translate>Folder:</b> {{form.categoryName | slice:0:25}} 
-                                <span *ngIf="form.categoryName?.length>25">..</span>
+                            <h6 class="GridViewCotent xamplify-ellipsis"  data-placement="top" data-toggle="tooltip" title="{{form.categoryName}}">
+                                <b>Folder:</b> {{form.categoryName}} 
                             </h6>
                             <h6 class="GridViewCotent" translate>
                                 <b translate>Created On:</b>
                                 <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString"> </app-timestamp>
                             </h6>
-                            <h6 class="GridViewCotent" data-placement="bottom" data-toggle="tooltip" title="{{form.createdName}}" translate>
-                                <b translate>By:</b> {{form.createdName | slice:0:25}} 
-                                <span *ngIf="form.createdName?.length>25">..</span>
+                            <h6 class="GridViewCotent xamplify-ellipsis" data-placement="top" data-toggle="tooltip" title="{{form.createdName}}" translate>
+                                <b translate>By:</b> {{form.createdName}} 
                             </h6>
                         </div>
                         <div class="ribbon tab-ribbon">

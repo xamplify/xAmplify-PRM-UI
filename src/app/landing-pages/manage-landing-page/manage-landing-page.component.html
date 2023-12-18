@@ -200,20 +200,20 @@
                                 <tbody>
                                     <tr *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                                         <td class="hidden-xs custom-icon-width">
-                                            <img id="landing-page-image-preview-custom-css" src="{{landingPage.thumbnailPath}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
+                                            <img id="landing-page-image-preview-custom-css image_effect" src="{{landingPage.thumbnailPath}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
                                         </td>
                                         <td>
                                             <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{landingPage?.name}}">
                                                 <span><b>Page Name:</b> {{landingPage?.name}} </span>
                                             </h6>
-                                            <h6 class="moreipsis">
+                                            <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"  title="{{landingPage?.categoryName}}">
                                                 <span><b>Folder:</b>{{landingPage?.categoryName}}</span>
                                             </h6>
-                                            <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom"  title="{{landingPage?.createdUser}}">
+                                            <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"  title="{{landingPage?.createdUser}}">
                                                 <span *ngIf="!isPartnerLandingPage"><b>Created By:</b> {{landingPage?.createdUser}} </span>
                                                 <span *ngIf="isPartnerLandingPage"><b>Shared By:</b> {{landingPage?.createdUser}}</span>
                                             </h6>
-                                            <h6 class="moreipsis" *ngIf="isPartnerLandingPage">
+                                            <h6 class="moreipsis" *ngIf="isPartnerLandingPage" data-toggle="tooltip" data-placement="top" title="{{landingPage?.companyName}}">
                                                 <span translate> <b>From:</b> {{landingPage?.companyName}}</span>
                                             </h6>
                                             <h6 class="moreipsis">
@@ -223,7 +223,7 @@
                                             </h6>
                                             <!---XNFR-255-->
                                             <ng-container *ngIf="landingPage?.whiteLabeledLandingPageReceivedFromVendor">
-                                                <h6 class="moreipsis"  title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}">
+                                                <h6 class="moreipsis"  title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}" data-toggle="tooltip" data-placement="top">
                                                     <span translate> <b>Received From:</b> {{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}</span>
                                                 </h6>
                                                 <span class="view-banner display-ib margin-0-auto">White-Labeled</span>
@@ -361,18 +361,18 @@
                                     <span class="ribbon1" *ngIf="landingPage.coBranded"><span translate>Co-Branded</span></span>
                                     <span class="ribbon1" *ngIf="!landingPage.coBranded"><span translate>Regular</span></span>
                                 </ng-container>
-                                <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}"  alt="Not Found">
+                                <img class="img-responsive center-block image_effect" src="{{landingPage.thumbnailPath}}"  alt="Not Found">
                                 <div>
                                     <h4 class="xamplify-ellipsis overflow-hidden GridViewCotent gridViewTextAlignmnent" data-placement="bottom" data-toggle="tooltip" title="{{landingPage.name}}">
                                        <b>Page Name:</b> {{landingPage.name}}
                                     </h4>
-                                    <h6 class="GridViewCotent xamplify-ellipsis" title="{{landingPage.categoryName}}">
+                                    <h6 class="GridViewCotent xamplify-ellipsis" title="{{landingPage.categoryName}}" data-placement="bottom" data-toggle="tooltip">
                                         <b>Folder:</b> {{landingPage.categoryName}}
                                      </h6>
                                     <!---XNFR-255-->
                                     <div class="aligntowbtns">
                                         <ng-container *ngIf="landingPage?.whiteLabeledLandingPageReceivedFromVendor">
-                                            <h6 class="GridViewCotent xamplify-ellipsis" title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}">
+                                            <h6 class="GridViewCotent xamplify-ellipsis" data-placement="bottom" data-toggle="tooltip" title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}">
                                                 <b translate>Received From:</b> {{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}} 
                                             </h6>
                                             <span class="view-banner-white-labeled LabeledmarginLeft">White-Labeled</span>
@@ -387,7 +387,7 @@
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"></app-timestamp>
                                     </h6>
                                    
-                                    <h6 title="{{landingPage.createdUser}}" class="GridViewCotent xamplify-ellipsis"><b>By:</b> 
+                                    <h6 title="{{landingPage.createdUser}}" class="GridViewCotent xamplify-ellipsis" data-placement="bottom" data-toggle="tooltip"><b>By:</b> 
                                          {{landingPage.createdUser}} 
                                     </h6>
                                     <h6 class="moreipsis" class="GridViewCotent">

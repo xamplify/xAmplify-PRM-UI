@@ -42,14 +42,14 @@
                                         <img class="email-template-preview image_effect" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg" alt="" style="border: 1px solid #e0e0e0;">
                                     </td>
                                     <td>
-                                        <h4 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.name}}">
+                                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate?.name}}">
                                             <span><b>Template Name:</b> {{emailTemplate.name}} </span>
-                                        </h4>
-                                        <h6 class="moreipsis">
-                                            <span><b>Folder:</b>{{emailTemplate.category}}</span>
+                                        </h6>
+                                        <h6 class="moreipsis" title="{{emailTemplate?.name}}" data-toggle="tooltip" data-placement="top">
+                                            <span><b>Folder:</b>{{emailTemplate?.category}}</span>
                                         </h6>
                                         <ng-container *ngIf="emailTemplate.type=='PARTNER'">
-                                            <h6 class="moreipsis">
+                                            <h6 class="moreipsis" title="{{emailTemplate?.vendorName}}" data-toggle="tooltip" data-placement="top">
                                                 <span><b>Shared By:</b> {{emailTemplate.vendorName}}</span>
                                             </h6>
                                             <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"  title="{{emailTemplate.vendorOrganizationName}}">
@@ -157,50 +157,44 @@
                             </span>
                             <img class="email-template-preview email-image-temp-custimize image_effect" *ngIf="emailTemplate.subject"  src="{{emailTemplate.subject}}" alt="Image Not Found">
                             <img alt="" class="email-template-preview email-image-temp-custimize image_effect" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg">
-                            <h4 class="ellipsis GridViewCotent gridViewDesignTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{emailTemplate?.name}}">
-                                <b translate>Template Name:</b> {{emailTemplate.name | slice:0:15}} <span *ngIf="emailTemplate.name?.length>15">...</span>  
+                            <h4 class="xamplify-ellipsis GridViewCotent gridViewDesignTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{emailTemplate?.name}}">
+                                <b translate>Template Name: </b> {{emailTemplate.name}} 
                             </h4>
                             <div>
-                                <h6 class="GridViewCotent" title="{{emailTemplate?.category}}">
-                                    <span translate><b translate>Folder:</b>  {{emailTemplate?.category | slice:0:20}} 
-                                        <span *ngIf="emailTemplate?.category?.length>20">...</span>
-                                    </span>
+                                <h6 class="xamplify-ellipsis GridViewCotent" title="{{emailTemplate?.category}}" data-toggle="tooltip"  data-placement="top">
+                                    <span><b>Folder: </b>{{emailTemplate?.category}}</span>
                                 </h6>
-                                <h6 class="GridViewCotent" *ngIf="emailTemplate.type=='PARTNER'" translate>
-                                    <b translate>Shared On:</b>  
-                                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
-                                        </app-timestamp>
+                                <h6 class="GridViewCotent" *ngIf="emailTemplate.type=='PARTNER'">
+                                    <b>Shared On:</b>  
+                                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"></app-timestamp>
                                     <span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
-                                        data-toggle="tooltip"  data-placement="top" title="Spam score" >{{emailTemplate.spamScore}}</span>
+                                    data-toggle="tooltip"  data-placement="top" title="Spam score" >{{emailTemplate.spamScore}}</span>
                                 </h6>
-                                <h6 class="GridViewCotent" *ngIf="emailTemplate.type!='PARTNER'" translate>
-                                        <b translate>Created On:</b>  
+                                <h6 class="GridViewCotent" *ngIf="emailTemplate.type!='PARTNER'">
+                                        <b translate>Created On: </b>  
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
                                         </app-timestamp>
                                     <span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
                                         data-toggle="tooltip" data-placement="top" title="Spam score">{{emailTemplate.spamScore}}</span>
                                 </h6>
                                 <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-                                    <h6 class="GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.createdBy}}" translate>
-                                        <b translate>By:</b> {{emailTemplate.createdBy | slice:0:17}}
-                                        <span *ngIf="emailTemplate.createdBy?.length>17">..</span>
+                                    <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.createdBy}}" translate>
+                                        <b translate>By:</b> {{emailTemplate.createdBy}}
                                     </h6>
-                                    <h6 class="GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.companyName}}" translate>
-                                        <b translate>From:</b> {{emailTemplate.companyName | slice:0:17}} 
-                                        <span *ngIf="emailTemplate.companyName?.length>17">..</span>
+                                    <h6 class="GridViewCotent xamplify-ellipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.companyName}}" translate>
+                                        <b translate>From:</b> {{emailTemplate.companyName}} 
                                     </h6>
                                 </ng-container>
                                 <div class="ribbon tab-ribbon draft" *ngIf="emailTemplate.draft">
-                                    <span  translate>DRAFT</span>
+                                    <span>DRAFT</span>
                                 </div>
                                 <!---XNFR-255-->
                                 <ng-container *ngIf="emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor">
                                     <div class="ribbon tab-ribbon active whitelabeled-ribbon">
                                         <span translate>{{whiteLabeledBanner}}</span>
                                     </div>
-                                    <h6 class="GridViewCotent" title="{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}" translate>
-                                        <b translate>Received From:</b>   {{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName | slice:0:20}} 
-                                        <span *ngIf="emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName?.length>20">..</span>
+                                    <h6 class="GridViewCotent xamplify-ellipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}}" >
+                                        <b>Received From:</b>{{emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName}} 
                                     </h6>
                                 </ng-container>
                                 <!---XNFR-255-->
