@@ -2,16 +2,16 @@
   <div class="portlet light">
     <div class="portlet-title" *ngIf="!httpRequestLoader.isLoading">
       <div class="col-xs-12">
-        <div class="row">						
+        <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12 text-right">
-            <div class="inputs" align="right" style="padding-bottom:10px!important">								
+            <div class="inputs" align="right" style="padding-bottom:10px!important">
               <div class="portlet-input input-inline" id="search-margin">
                 <div class="input-icon right" id="icon-right">
                   <input type="text" id="search-text" class="form-control" [(ngModel)]="searchKey"
                     [ngModelOptions]="{standalone: true}" placeholder="search..."
                     (keypress)="eventHandler($event.keyCode)">
-                  <button class="glyphicon glyphicon-remove search-box-item-clear"
-                    *ngIf="searchKey" (click)="searchKey='';search()"></button>
+                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+                    (click)="searchKey='';search()"></button>
                   <button type="submit" class="search-box-item-click" (click)="search()">
                     <i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
@@ -29,44 +29,50 @@
         </app-response-message>
       </div>
       <div class="table-responsive">
-      <table class="table tgrid" aria-describedby="form-analytics-table">
-        <thead>
-          <tr>
-            <th scope="row">#</th>		
-            <th scope="row" *ngIf="showUserInfo">Name</th>				
-            <th scope="row">Device Details</th>
-            <th scope="row">IP Address</th>
-            <th scope="row">Location</th>	
-            <th scope="row">Country</th>
-            <th scope="row">Submited On</th>	
-            <th style="width: 10%; text-align:right" translate>Actions</th>						
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
-            <tr id="form-data-row-{{rowIndex}}" class="form-data-row">
-              		<td>{{rowIndex+1}}</td>
-                  <td *ngIf="showUserInfo"><app-user-info [userInfo]="formDataRow?.user" [isCompanyInfo]="true"></app-user-info></td>
-                  <td><span class="deviceType">{{formDataRow.deviceType}}</span><div><b>OS: </b>{{formDataRow.os}}</div></td>
-                  <td>{{formDataRow.ipAddress}}</td>
-                  <td>{{formDataRow.city}}, {{formDataRow.state}}<div><b>ZIP: </b>{{formDataRow.zip}}</div></td>
-                  <td><b>{{formDataRow.country}}</b></td>	
-                  <td>
-                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="formDataRow.openedTimeInString">
-                    </app-timestamp>
-                  </td>
-                  <td>
-                    <div class="actions-block override-actions">
-                      <a data-rel="fancybox-button" (click)="viewDetailedResponse(formDataRow)" title="View Detailed Response" id="viewDR{{rowIndex}}">
-                        <i class="fa fa-eye mr5" aria-hidden="true"></i>
-                      </a>
-                    </div>
-                  </td>					
-            </tr>            
-          </ng-container>
-        </tbody>
-      </table>
-    </div>
+        <table class="table tgrid" aria-describedby="form-analytics-table">
+          <thead>
+            <tr>
+              <th scope="row">#</th>
+              <th scope="row" *ngIf="showUserInfo">Name</th>
+              <th scope="row">Device Details</th>
+              <th scope="row">IP Address</th>
+              <th scope="row">Location</th>
+              <th scope="row">Country</th>
+              <th scope="row">Submited On</th>
+              <th style="width: 10%; text-align:right" translate>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
+              <tr id="form-data-row-{{rowIndex}}" class="form-data-row">
+                <td>{{rowIndex+1}}</td>
+                <td *ngIf="showUserInfo"><app-user-info [userInfo]="formDataRow?.user"
+                    [isCompanyInfo]="true"></app-user-info></td>
+                <td><span class="deviceType">{{formDataRow.deviceType}}</span>
+                  <div><b>OS: </b>{{formDataRow.os}}</div>
+                </td>
+                <td>{{formDataRow.ipAddress}}</td>
+                <td>{{formDataRow.city}}, {{formDataRow.state}}<div><b>ZIP: </b>{{formDataRow.zip}}</div>
+                </td>
+                <td><b>{{formDataRow.country}}</b></td>
+                <td>
+                  <app-timestamp [isOnlyDate]="false" [dateAndTime]="formDataRow.openedTimeInString">
+                  </app-timestamp>
+                </td>
+                <td>
+                  <div class="actions-block override-actions">
+                    <a class="custom-icon" data-rel="fancybox-button" (click)="viewDetailedResponse(formDataRow)"
+                      title="View Detailed Response" id="viewDR{{rowIndex}}">
+                      <i class="fa fa-eye mr5" aria-hidden="true"></i>
+                      <div class="clickicons"></div>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
@@ -83,5 +89,6 @@
 </div>
 
 <ng-container *ngIf="detailedResponse">
-  <app-form-detail-response [formSubmitId]="selectedFormSubmitId" (notifyClose)="detailedResponse=false"></app-form-detail-response>
+  <app-form-detail-response [formSubmitId]="selectedFormSubmitId"
+    (notifyClose)="detailedResponse=false"></app-form-detail-response>
 </ng-container>

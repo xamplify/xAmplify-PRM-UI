@@ -8,7 +8,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { setTimeout } from 'timers';
 import { SweetAlertParameterDto } from '../models/sweet-alert-parameter-dto';
-
+declare var $:any;
 @Component({
   selector: 'app-share-unpublished-content',
   templateUrl: './share-unpublished-content.component.html',
@@ -58,14 +58,21 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.isPublishedSuccessfully = false;
   }
 
-  openPopUp(userListId: number, contact:any,type:string){
+  openPopUp(userListId: number, contact:any,type:string,userListName:string){
     this.resetValues();
     this.isPublishedSuccessfully = false;
     let accessList = [];
+    let isPrmAndPartnerCompany = this.authenticationService.module.isPrmAndPartner || this.authenticationService.module.isPrmAndPartnerTeamMember;
+    if(isPrmAndPartnerCompany){
+      this.hasCampaignAccess = !this.isPartnersRouter;
+    }
     accessList.push(this.hasCampaignAccess);
-    accessList.push(this.hasDamAccess);
-    accessList.push(this.hasLmsAccess);
-    accessList.push(this.hasPlaybookAccess);
+    let isActiveMasterPartnerList = $.trim(userListName)=="Active Master Partner List";
+    let isInActiveMasterPartnerList = $.trim(userListName)=="Inactive Master Partner List";
+    let isActiveOrInActiveMasterPartnerList = isActiveMasterPartnerList || isInActiveMasterPartnerList;
+    accessList.push(this.hasDamAccess && !isActiveOrInActiveMasterPartnerList);
+    accessList.push(this.hasLmsAccess && !isActiveOrInActiveMasterPartnerList);
+    accessList.push(this.hasPlaybookAccess && !isActiveOrInActiveMasterPartnerList);
     let filteredArrayList = this.referenceService.filterArrayList(accessList,false);
     this.showFilterOptions = filteredArrayList!=undefined && filteredArrayList.length>1;
     this.addFilterOptions();
@@ -208,7 +215,9 @@ export class ShareUnpublishedContentComponent implements OnInit {
     campaignDetails['userListId'] = this.selectedUserListId;
     campaignDetails['loggedInUserId'] = this.authenticationService.getUserId();
     campaignDetails['publishingToPartnerList'] = this.isPublishingToPartnerList;
-    campaignDetails['partnershipId'] = this.contact.partnershipId;
+    if(this.contact!=undefined){
+      campaignDetails['partnershipId'] = this.contact.partnershipId;
+    }
     return campaignDetails;
   }
 

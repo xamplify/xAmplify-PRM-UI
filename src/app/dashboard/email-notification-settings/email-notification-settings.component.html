@@ -4,56 +4,56 @@
 <div *ngIf="!loading">
 
   <!---Partner Invitation-->
-  <ng-template [ngTemplateOutlet]="notificationOptionTemplateOutlet"
-   [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:partnerInvitationTextDto,
+  <ng-template [ngTemplateOutlet]="notificationOptionTemplateOutlet" [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:partnerInvitationTextDto,
       notificationSettingOption:emailNotificationSettingsDto?.notifyPartners,moduleType:1}">
   </ng-template>
 
   <!---Assets-->
   <ng-template *ngIf="authenticationService?.module?.damAccess" [ngTemplateOutlet]="notificationOptionTemplateOutlet"
-  [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:assetPublishedTextDto,
+    [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:assetPublishedTextDto,
      notificationSettingOption:emailNotificationSettingsDto?.assetPublishedEmailNotification,moduleType:2}">
   </ng-template>
 
   <!---Tracks-->
   <ng-template *ngIf="authenticationService?.module?.lmsAccess" [ngTemplateOutlet]="notificationOptionTemplateOutlet"
- [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:trackPublishedTextDto,
+    [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:trackPublishedTextDto,
     notificationSettingOption:emailNotificationSettingsDto?.trackPublishedEmailNotification,moduleType:3}">
   </ng-template>
 
   <!---Play Book-->
   <ng-template *ngIf="authenticationService?.module?.lmsAccess" [ngTemplateOutlet]="notificationOptionTemplateOutlet"
-  [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:playbookPublishedTextDto,
+    [ngTemplateOutletContext]="{emailNotificationSettingsTextDto:playbookPublishedTextDto,
     notificationSettingOption:emailNotificationSettingsDto?.playbookPublishedEmailNotification,moduleType:4}">
   </ng-template>
 
   <!--Update Button-->
   <div id="right">
-    <button type="button"   class="btn btn-primary" translate (click)="updateSettings()">Update</button>
+    <button type="button" class="button_blue bgcolor-unset" translate (click)="updateSettings()"><span
+        class="btn btn-primary transition">Update</span></button>
   </div>
 
 </div>
 
 <ng-template #notificationOptionTemplateOutlet let-emailNotificationSettingsTextDto="emailNotificationSettingsTextDto"
-   let-notificationSettingOption= "notificationSettingOption" let-moduleType="moduleType">
+  let-notificationSettingOption="notificationSettingOption" let-moduleType="moduleType">
   <div class="portlet light">
     <div class="portlet-title tabbable-line bt-zero-px mh-zero-px">
       <div class="caption caption-md col-xs-12">
         <span class="caption-subject font-blue-madison bold">{{emailNotificationSettingsTextDto?.headerText}}</span>
       </div>
     </div>
-  <h4 class="bold-font-weight">{{emailNotificationSettingsTextDto?.text1}}
-  </h4>
-  <label class="bold-font">{{emailNotificationSettingsTextDto?.text2}}.</label>
-  <div>
-    <h5 class="bold-font-weight h5-custom-font">{{emailNotificationSettingsTextDto?.text3}}
-      <br><br>
-      <switch  [status]="notificationSettingOption" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
-      [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize" (statusChange)="changeOption(moduleType,$event)">
-    </switch> 
-  </h5>
+    <h4 class="bold-font-weight">{{emailNotificationSettingsTextDto?.text1}}
+    </h4>
+    <label class="bold-font">{{emailNotificationSettingsTextDto?.text2}}.</label>
+    <div>
+      <h5 class="bold-font-weight h5-custom-font">{{emailNotificationSettingsTextDto?.text3}}
+        <br><br>
+        <switch [status]="notificationSettingOption" [onText]="callActionSwitch.onTextValue"
+          [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+          [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.defaultSize"
+          (statusChange)="changeOption(moduleType,$event)">
+        </switch>
+      </h5>
+    </div>
   </div>
-</div>
 </ng-template>
-
-

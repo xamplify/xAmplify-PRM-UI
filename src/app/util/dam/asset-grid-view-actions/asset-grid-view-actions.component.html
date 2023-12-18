@@ -6,8 +6,8 @@
 		<div class="clickicons"></div>
 	</a>
 	<!--XNFR-381-->
-	<a class="custom-grid-icon" *ngIf="isChildTemplatesRouter && asset?.beeTemplate && !isPartnerView"
-		class="mMobileDisable mDisableColor Iconhover" data-toggle="tooltip" data-placement="right"
+	<a *ngIf="isChildTemplatesRouter && asset?.beeTemplate && !isPartnerView"
+		class="mMobileDisable mDisableColor Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="right"
 		title="Switch To Parent Template" (click)="changeAsParentPdf(asset)">
 		<i class="fa fa-exchange mDisableColor" aria-hidden="true"></i>
 		<div class="clickicons"></div>

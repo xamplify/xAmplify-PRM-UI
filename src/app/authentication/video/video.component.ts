@@ -16,7 +16,7 @@ export class VideoComponent implements OnInit {
   constructor(public properties: Properties, public authService: AuthenticationService,public envService: EnvService) { }
 
   ngOnInit() {
-    if (this.authService.vanityURLEnabled && this.authService.v_companyBgImagePath2) {
+    if (this.authService.vanityURLEnabled && this.authService.v_companyLogoImagePath) {
       this.properties.COMPANY_LOGO = this.authService.v_companyLogoImagePath;      
       this.properties.xamplify_router = this.authService.vanityURLink;
     }else{
@@ -26,6 +26,8 @@ export class VideoComponent implements OnInit {
       }else{
         this.authService.v_companyBgImagePath2 = "assets/images/stratapps.jpeg";
       }
+      document.documentElement.style.setProperty('--login-bg-image', 'url('+this.authService.v_companyBgImagePath2+')');
+
     }
   }
 }

@@ -1,0 +1,51 @@
+<!-- <div class="loader-container" *ngIf="mainLoader">
+  <div class="loader"></div>
+  <img alt="logo" class="logo-default" style="height: 54px" src="assets/images/xamplify-logo.png">
+</div> -->
+<!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
+
+<div *ngIf="!isStyleOne">
+  <div class="content" style="background-color: rgba(0,0,0,.0);pointer-events: none;cursor: no-drop;"
+    [ngClass]="{'login-content-left':authenticationService.loginScreenDirection==='Left','login-content-right':authenticationService.loginScreenDirection==='Right'}">
+    <!-- <div class="alert alert-danger alert-su" style="text-align: center;font-size: 16px;">
+      <strong>Preview</strong>
+    </div> -->
+    <div class="center-preview">
+      <p class="Preview-text">Preview</p>
+    </div>
+    <div style="background-color: rgba(0,0,0,.0);">
+      <app-video [newLogin]="false" *ngIf="vanityURLEnabled"></app-video>
+    </div>
+
+    <img src="assets/images/customloginscreens/logoin.png" style="height: 33%;width: 100%;object-fit: cover;"
+            class="imgpreview">
+            <app-copyright [styleOne]="flase" *ngIf="vanityURLEnabled"></app-copyright>
+
+  </div>
+  <!-- <app-copyright [styleOne]="flase" *ngIf="vanityURLEnabled"></app-copyright> -->
+</div>
+<div *ngIf="isStyleOne">
+  <div class="row" style="display: content;margin-right: 0px !;margin: 0px !important;" *ngIf="vanityURLEnabled">
+    <div class="center-preview">
+      <p class="Preview-text">Preview</p>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 bg_image"
+      [ngStyle]="{'float':authenticationService?.loginScreenDirection}" [ngClass]="isBgColor?'bg_color':'bg_image'">
+      <div class="content" style="background-color: rgba(0,0,0,.0);pointer-events: none;cursor: no-drop;">
+        <!-- <div class="alert alert-danger alert-su" style="text-align: center;font-size: 16px;">
+          <strong>Preview</strong>
+        </div> -->
+        <div style="background-color: rgba(0,0,0,.0);">
+          <app-video [newLogin]="true" *ngIf="vanityURLEnabled"></app-video>
+        </div>
+        <img src="assets/images/customloginscreens/logoin.png" style="height: 33%;width: 100%;object-fit: cover;"
+        class="imgpreview">
+        <!-- <app-copyright [styleOne]="true" *ngIf="vanityURLEnabled"></app-copyright> -->
+      </div>
+      <app-copyright [styleOne]="true" *ngIf="vanityURLEnabled"></app-copyright>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 rightcontent p0">
+      <div [innerHTML]="htmlContent"></div>
+    </div>
+  </div>
+</div>

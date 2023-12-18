@@ -294,8 +294,8 @@ export class Properties {
 
 	loginScreenDirectionOptions = ["Center","Left","Right"];
 
-	vendorLogoTooltipText = "<b> On </b> - Your company logo will be displayed throughout the platform when your partners log into their accounts. <br/>"
-            + "<b> Off </b> - Each partner's logo will be displayed throughout the platform when they log into their account. <br/>" + "<b>*This setting does not affect co-branding.</b>";
+	vendorLogoTooltipText = "<b> On </b> - Your company logo will appear on the partner(s) account. <br/>"
+	+ "<b> Off </b> -  Your partner(s) logo will remain unchanged. <br/>" + "<b>*This setting does not affect co-branding.</b>";
 
 	/***XNFR-386****/
 	/**** XNFR-233 **** */

@@ -151,6 +151,9 @@ export class AuthenticationService {
   v_companyBgImagePath2;
   /**** XNFR-233 */
   formBackground="";
+  /*** XNFR-416 ****/
+  isstyleTWoBgColor:boolean;
+  /*** XNFR-416 ****/
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -1220,6 +1223,20 @@ shareSelectedTracksOrPlayBooks(requestDto:any,module:string){
 findPublishedPartnerIdsByUserListIdAndDamId(userListId:number,id:number,moduleName:string){
   let url = this.REST_URL + moduleName+"/findPublishedPartnerIds/"+userListId+"/"+id+"?access_token=" + this.access_token;
   return this.callGetMethod(url);
+}
+
+/*******XNFR-423****/
+getCountryNames(){
+  let url = this.REST_URL+"/admin/countryNames?access_token=" + this.access_token;
+  return this.callGetMethod(url);
+}
+
+addCountryNamesToList(coutryNames:any,countryNamesArray:any){
+  countryNamesArray.push('Please Select Country');
+  for(let i = 0; i < coutryNames.length ; i++){
+    countryNamesArray.push(coutryNames[i]);
+  }
+  return countryNamesArray;
 }
 
 

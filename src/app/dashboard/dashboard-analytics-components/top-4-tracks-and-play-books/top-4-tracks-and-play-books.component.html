@@ -55,15 +55,17 @@
                         </div>
                         <div class="ribbon tab-ribbon">
                             <!---XNFR-327--->
-                            <span style="background-color: #5cb85c;" *ngIf="learningTrack?.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress" translate>Published</span>
-                            <span *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress && !isPartnerView">
+                            <span style="background-color: #5cb85c;" *ngIf="learningTrack?.published && !isPartnerView &&
+                             !learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList" translate>Published</span>
+                            <span *ngIf="(learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList)
+                                         && !isPartnerView">
                                 <img src="assets/images/loading.gif" class="margin-0-ht5px" alt="Processing">Processing
                             </span>
                             <!---XNFR-327--->
                         </div>
                         <div class="bar auto-height gridIconCustomization">
                              <!---XNFR-327--->
-                            <ng-container *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress">
+                            <ng-container *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList">
                                 <a class="Iconhover" *ngIf="learningTrack.canUpdate && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Preview & Edit" (click)="edit(learningTrack.id)">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
@@ -84,7 +86,7 @@
                                 </a>
                             </ng-container>
                             <!---XNFR-327--->
-                            <ng-container *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress">
+                            <ng-container *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList">
                                 <a  data-toggle="tooltip" data-placement="top" title="Refresh"	(click)="listLearningTracks(pagination)"> 
                                     <i class="fa fa-refresh" aria-hidden="true"></i>
                                 </a> 

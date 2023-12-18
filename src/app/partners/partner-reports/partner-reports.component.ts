@@ -932,7 +932,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
     closeDetailedAnalytics() {
         this.showDetailedAnalytics = false;
-        // this.goToActivePartnersDiv();
+        this.goToActivePartnersDiv();
     }
 
     interactionTracksDonutSliceSelected(type: any) {

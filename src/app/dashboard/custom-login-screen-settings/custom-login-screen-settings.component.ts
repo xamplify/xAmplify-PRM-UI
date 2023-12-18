@@ -17,6 +17,8 @@ import { EmailTemplatePreviewUtilComponent } from 'app/util/email-template-previ
 import { SocialPagerService } from 'app/contacts/services/social-pager.service';
 import { EnvService } from 'app/env.service';
 import { CompanyLoginTemplateActive } from 'app/email-template/models/company-login-template-active';
+import { RegularExpressions } from 'app/common/models/regular-expressions';
+import { VideoUtilService } from 'app/videos/services/video-util.service';
 
 declare var $, Swal, swal: any;
 @Component({
@@ -69,8 +71,22 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   formPosition: string;
   styleOneBackgroundImagePath = "";
   styleTwoBackgroundImagePath = "";
+  /*** XNFR-416 ****/
+  imageUrl: any
+  isValidColorCode = true;
+  isValidBackgroundColorStyle1 = true;
+  isValidBackgroundColorStyle2 = true;
+  valueRange: number;
+  selectedColor2: any = '#000';
+  selectedColor1: any = '#000'
+  isBackgroundColorStyleTwo: boolean = false;
+  isBackgroundColorStyleOne: boolean = false;
+  /**** XNFR-416 ******/
+  /**XBI-2016 ***/
+  styleOneDirection: any;
+  styleTwoDirection: any
   constructor(public envService: EnvService, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public properties: Properties,
-    private companyProfileService: CompanyProfileService, private logger: XtremandLogger, public utilService: UtilService, public refService: ReferenceService, private vanityURLService: VanityURLService, private pagerService: PagerService, public socialPagerService: SocialPagerService) {
+    private companyProfileService: CompanyProfileService, private logger: XtremandLogger, public utilService: UtilService, public refService: ReferenceService, private vanityURLService: VanityURLService, private pagerService: PagerService, public socialPagerService: SocialPagerService, public regularExpressions: RegularExpressions, public videoUtilService: VideoUtilService) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
@@ -90,6 +106,10 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   showLoginStylesDiv() {
     this.isShowFinalDiv = false;
     this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, false)
+   /***** XBI-2024 ***/
+   this.getLoginDetails();
+   this.selectedTemplate = this.activeTemplateId;
+   /**** XBI-2024 *****/
     if (this.loginType == "STYLE_ONE") {
       this.styleOneBackgroundImagePath = this.companyProfile.backgroundLogoPath;
       this.showStyle1();
@@ -102,52 +122,86 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     $('#alertDiv').hide();
     $('#updateDiv').show();
     $('.styles').show();
+  }
+  private getLoginDetails() {
+    if (this.loggedInUserId != undefined) {
+      this.companyProfileService.getByUserId(this.loggedInUserId)
+        .subscribe(
+          data => {
+            if (data.data != undefined) {
+              this.companyProfile = data.data;
+              this.formPosition = data.data.loginScreenDirection;
+               this.loginType = data.data.loginType;
+              /**** XNFR-2016 ****/
+              this.styleOneDirection = data.data.loginFormDirectionStyleOne;
+              this.styleTwoDirection = data.data.loginScreenDirection;
+              this.customLoginScreen.showVendorCompanyLogo = data.data.showVendorCompanyLogo;
+              /**** XNFR-2016 */
+              /**** XNFR-416 *****/
+              this.selectedColor1 = data.data.backgroundColorStyle1;
+              this.selectedColor2 = data.data.backgroundColorStyle2;
+              this.isBackgroundColorStyleOne = data.data.styleOneBgColor;
+              this.isBackgroundColorStyleTwo = data.data.styleTwoBgColor;
+              this.authenticationService.isstyleTWoBgColor = data.data.styleTwoBgColor;
+              /**** XNFR-416 *****/
+            }
+          },
+          error => { this.logger.errorPage(error); },
+          () => { this.logger.info("Completed getCompanyProfileByUserId()"); }
+        );
     }
+  }
+
   backToPrevoiusPage() {
+    this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, false)
+    this.showCreateAlert = false;
+    this.getLoginDetails();
     if (this.selectedTemplate != this.activeTemplateId && this.isStyle1) {
+      this.customResponse = new CustomResponse('ERROR', this.message, false);
       this.showSweetAlert()
     } else {
       this.isShowFinalDiv = true;
+      this.customResponse = new CustomResponse('ERROR', this.message, false);
       $('#alertDiv').show();
       $('#styleDivOne').hide()
       $('#styleDivTwo').hide()
       $('#updateDiv').hide();
     }
   }
-  
+
   clickedButtonName = "";
-  createButton(text:string, cb:any) {
+  createButton(text: string, cb: any) {
     let buttonClass = "btn btn-sm btn-primary";
     let cancelButtonClass = "btn btn-sm Btn-Gray";
-    let cancelButtonSettings = 'class="'+cancelButtonClass+'"';
+    let cancelButtonSettings = 'class="' + cancelButtonClass + '"';
     if (text == "Yes,Update it") {
-        return $('<input type="submit" class="'+buttonClass+'"  value="' + text + '"  id="save" >').on('click', cb);
-    }else if(text == "Cancel"){
-        return $('<input type="submit" class="btn btn-sm btn-default"  value="' + text + '" id="save-and-redirect" >').on('click', cb);
-    }else if (text == "Back") {
-        return $('<input type="submit" class="btn btn-sm Btn-Gray"  value="' + text + '" id="save-as" >').on('click', cb);
+      return $('<input type="submit" class="' + buttonClass + '"  value="' + text + '"  id="save" >').on('click', cb);
+    } else if (text == "Cancel") {
+      return $('<input type="submit" class="btn btn-sm btn-default"  value="' + text + '" id="save-and-redirect" >').on('click', cb);
+    } else if (text == "Back") {
+      return $('<input type="submit" class="btn btn-sm Btn-Gray"  value="' + text + '" id="save-as" >').on('click', cb);
     }
-}
+  }
   showSweetAlert() {
-     let self = this;
-     let text = "Do you really want to change the template?"
+    let self = this;
+    let text = "Do you really want to change the template?"
     var buttons = $('<div><div id="bee-save-buton-loader"></div>')
-                  .append('<div class=""><h5>"' + text + '"</h5></div><br> ');
+      .append('<div class=""><h5>"' + text + '"</h5></div><br> ');
     buttons.append(self.createButton('Yes,Update it', function () {
-      self.updateCustomLogInScreenData();
+      self.updateCustomLogInScreenData(false);
       swal.close();
-  })).append(self.createButton('Cancel', function () {
-    swal.close();
-  })).append(self.createButton('Back', function () {
-    swal.close();
-    this.isShowFinalDiv = true;
-    //this.getFinalScreenTableView()
-    $('#alertDiv').show();
-    $('#styleDivOne').hide()
-    $('#styleDivTwo').hide()
-    $('#updateDiv').hide();
-    $('.styles').hide();
-  }))
+    })).append(self.createButton('Cancel', function () {
+      swal.close();
+    })).append(self.createButton('Back', function () {
+      swal.close();
+      this.isShowFinalDiv = true;
+      //this.getFinalScreenTableView()
+      $('#alertDiv').show();
+      $('#styleDivOne').hide()
+      $('#styleDivTwo').hide()
+      $('#updateDiv').hide();
+      $('.styles').hide();
+    }))
     swal({
       title: 'Are you sure!',
       type: 'warning',
@@ -155,10 +209,10 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       showConfirmButton: false,
       showCancelButton: false,
       allowOutsideClick: false,
-      allowEscapeKey: false 
-  });
+      allowEscapeKey: false
+    });
   }
- 
+
   resizeToWidth: any;
   bgImageClickForStyle1() {
     this.isShowUploadScreen = false;
@@ -202,8 +256,18 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
             if (data.data != undefined) {
               this.companyProfile = data.data;
               this.formPosition = data.data.loginScreenDirection;
-              //this.authenticationService.v_companyBgImagePath2 = this.companyProfile.backgroundLogoStyle2;
               this.loginType = data.data.loginType;
+              /**** XNFR-416 *****/
+              this.selectedColor1 = data.data.backgroundColorStyle1;
+              this.selectedColor2 = data.data.backgroundColorStyle2;
+              this.isBackgroundColorStyleOne = data.data.styleOneBgColor;
+              this.isBackgroundColorStyleTwo = data.data.styleTwoBgColor;
+              this.authenticationService.isstyleTWoBgColor = data.data.styleTwoBgColor
+              /**** XNFR-416 *****/
+               /**** XNFR-2016 ****/
+               this.styleOneDirection = data.data.loginFormDirectionStyleOne;
+               this.styleTwoDirection = data.data.loginScreenDirection;
+               /**** XNFR-2016 */
               this.setCompanyProfileViewData()
             }
           },
@@ -281,68 +345,65 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
         }
       });
   }
-  updateCustomLogInScreenData() {
+  updateCustomLogInScreenData(isUpdate:boolean) {
     this.customLoginScreen.backGroundLogoPath = this.companyBgImagePath;
     this.customLoginScreen.backgroundLogoStyle2 = this.companyBgImagePath2;
+      /**** XNFR-146  *******/
+      this.customLoginScreen.styleOneBgColor = this.isBackgroundColorStyleOne;
+      this.customLoginScreen.styleTwoBgColor = this.isBackgroundColorStyleTwo
+      this.customLoginScreen.backgroundColorStyle1 = this.selectedColor1;
+      this.customLoginScreen.backgroundColorStyle2 = this.selectedColor2;
+      /**** XNFR-146 ******/
+      this.customLoginScreen.loginFormDirectionStyleOne = this.styleOneDirection;
+      this.customLoginScreen.logInScreenDirection = this.styleTwoDirection
     if (this.isStyle1) {
       this.customLoginScreen.loginType = "STYLE_ONE";
-      if (this.customLoginScreen.logInScreenDirection === 'Center') {
-        this.customLoginScreen.logInScreenDirection = 'Right';
-        this.formPosition = "Right";
-      } else {
-        this.formPosition = this.customLoginScreen.logInScreenDirection;
-        this.customLoginScreen.logInScreenDirection = this.customLoginScreen.logInScreenDirection;
-      }
     } else {
       this.customLoginScreen.loginType = "STYLE_TWO";
-      this.formPosition = this.customLoginScreen.logInScreenDirection;
     }
     this.loginType = this.customLoginScreen.loginType;
-    //this.formPosition = this.customLoginScreen.logInScreenDirection;
     this.companyProfileService.updateCustomLogInScreenData(this.customLoginScreen)
       .subscribe(
         data => {
           this.message = data.message;
           if (data.statusCode === 200) {
             if (this.isStyle1) {
-              this.saveOrUpdateLoginTemplateActiveForCompany(this.selectedTemplate);
+              this.saveOrUpdateLoginTemplateActiveForCompany(this.selectedTemplate,isUpdate);
             } else {
               this.customResponse = new CustomResponse('SUCCESS', this.message, true)
+              if(!isUpdate) {
               this.isShowFinalDiv = true;
               this.showStyle2();
+              }
             }
           } else {
-            this.customResponse = new CustomResponse('SUCCESS', this.message, true)
+            this.customResponse = new CustomResponse('ERROR', data.data.errorMessages[0].message, true)
           }
           this.statusCode = data.statusCode;
         });
   }
   showVendorCompanyLogo: boolean;
   getLogInScreenDetails() {
-    this.styleOneDirection = this.authenticationService.loginScreenDirection;
-    this.styleTwoDirection = this.authenticationService.loginScreenDirection;
-    if (this.styleOneDirection == 'Center') {
-      this.styleOneDirection = 'Right';
-    }
-    this.customLoginScreen.logInScreenDirection = this.authenticationService.loginScreenDirection;
     this.customLoginScreen.showVendorCompanyLogo = this.authenticationService.v_showCompanyLogo;
     this.customLoginScreen.backGroundLogoPath = this.authenticationService.v_companyBgImagePath;
     this.customLoginScreen.backgroundLogoStyle2 = this.authenticationService.v_companyBgImagePath2;
   }
-  styleOneDirection: any;
-  styleTwoDirection: any
-  onSelectChangeStyale1(style1: any) {
+
+  onSelectChangeStyle1(style1: any) {
     this.styleOneDirection = style1;
-    this.customLoginScreen.logInScreenDirection = this.styleOneDirection;
+    this.customLoginScreen.loginFormDirectionStyleOne = this.styleOneDirection;
   }
   onSelectChangeStyale2(style2: any) {
     this.styleTwoDirection = style2;
     this.customLoginScreen.logInScreenDirection = this.styleTwoDirection;
-
   }
 
   showStyle1() {
     this.styleTwoBackgroundImagePath = this.companyBgImagePath;
+    this.selectedTemplate = this.activeTemplateId;
+    this.showCreateAlert = true;
+    this.getLoginDetails();
+    this.customResponse = new CustomResponse('ERROR', this.message, false);
     if (!this.isShowFinalDiv) {
       this.isStyle1 = true;
       $('#styleDivOne').show();
@@ -358,6 +419,9 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
   }
   showStyle2() {
     this.styleTwoBackgroundImagePath = this.companyBgImagePath2;
+    this.selectedTemplate = this.activeTemplateId;
+    this.getLoginDetails();
+    this.customResponse = new CustomResponse('ERROR', this.message, false);
     if (!this.isShowFinalDiv) {
       this.isStyle1 = false;
       $('#styleDivOne').hide();
@@ -394,7 +458,7 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       }
     }, error => {
       this.loading = false;
-      this.customResponse = new CustomResponse('ERROR', "Error while deleting Email Template", true);
+      this.customResponse = new CustomResponse('ERROR', "Error while Getting Login Email Template", true);
     });
   }
   deleteTemplate(id: number) {
@@ -411,6 +475,8 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       self.deleteCustomLogInTempalte(id);
     }, function (dismiss: any) {
       console.log("you clicked showAlert cancel" + dismiss);
+      self.customResponse = new CustomResponse('ERROR', "Error while deleting Email Template", false);
+
     });
   }
 
@@ -434,51 +500,61 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
     }).then(function () {
       self.deleteCustomLogInTempalte(id)
       setTimeout(() => {
-        self.updateCustomLogInScreenData();; // Execute method2 after a 2-second delay
+        self.updateCustomLogInScreenData(true);// Execute method2 after a 2-second delay
       }, 2000);
     }, function (dismiss: any) {
       console.log("you clicked showAlert cancel" + dismiss);
+      self.customResponse = new CustomResponse('ERROR', "you clicked showAlert cancel", false);
     });
   }
+  showCreateAlert :boolean = true;
   deleteCustomLogInTempalte(id: number) {
     this.vanityURLService.deleteCustomLogInTemplateById(id).subscribe(result => {
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('ERROR', result.message, true);
+        this.showCreateAlert = false;
+        setTimeout(() => {
+          if(this.customLoinTemplates.length <= 1) {
+          this.showCreateAlert = true;
+          this.customResponse = new CustomResponse('ERROR', result.message, false);
+          } 
+        }, 2000);
         this.referenceService.goToTop();
         this.getCustomLoginTemplates(this.pagination);
       }
     }, error => {
-      this.customResponse = new CustomResponse('ERROR', "Error while deleting Email Template", true);
+      this.customResponse = new CustomResponse('ERROR', "you clicked showAlert cancel", true);
     });
   }
   companyLoginTemplateActive: CompanyLoginTemplateActive = new CompanyLoginTemplateActive();
-  saveOrUpdateLoginTemplateActiveForCompany(tId: number) {
+  saveOrUpdateLoginTemplateActiveForCompany(tId: number,isUpdate:boolean) {
     this.companyLoginTemplateActive.createdBy = this.loggedInUserId;
     this.companyLoginTemplateActive.templateId = tId;
-    this.activateTemplate(this.companyLoginTemplateActive);
+    this.activateTemplate(this.companyLoginTemplateActive,isUpdate);
   }
   activeTemplateId: number;
-  activateTemplate(companyLoginTemplateActive: CompanyLoginTemplateActive) {
+  activateTemplate(companyLoginTemplateActive: CompanyLoginTemplateActive,isUpdate:boolean) {
     this.companyProfileService.saveOrUpdateTemplateForCompany(companyLoginTemplateActive).subscribe(result => {
       if (result.statusCode === 200) {
         this.selectedTemplate = result.data;
         this.activeTemplateId = result.data
         this.refService.goToTop();
         this.getFinalScreenTableView();
-        // this.customResponse = new CustomResponse('SUCCESS', result.data, true);
         this.customResponse = new CustomResponse('SUCCESS', this.message, true)
+        if(!isUpdate) {
         this.isShowFinalDiv = true;
         this.showStyle1();
+        }
       } else {
         if (result.data.errorMessages[0].message === "templateId parameter is missing") {
-          this.message = "Please select an template."
+          this.message = "Please Select a Template"
+          this.templateName = "N/A";
         } else {
           this.message = "something went wrong. Please try again.";
         }
         this.customResponse = new CustomResponse('ERROR', this.message, true);
       }
     }, error => {
-      //this.customLoginTemplateResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT, true)
     });
   }
   selectedTemplate: number;
@@ -487,21 +563,114 @@ export class CustomLoginScreenSettingsComponent implements OnInit {
       this.selectedTemplate = id;
     }
   }
-  // selectTemplateName(name: any) {
-  //   if (name != 'Create_Template') {
-  //     this.templateName = name;
-  //   }
-  // }
+  saveLoginTemplate(){
+    if(this.customLoinTemplates.length<=1 || this.selectedTemplate==undefined){
+      if(this.customLoinTemplates.length<=1){
+        this.showCreateAlert = true;
+      } else {
+      this.showCreateAlert = false;
+      this.customResponse = new CustomResponse('ERROR', "Please Select a Template", true);
+      }
+    } else {
+      this.updateCustomLogInScreenData(true);
+    }
+  }
 
 
   getFinalScreenTableView() {
     this.vanityURLService.getFinalScreenTableView()
       .subscribe(
         data => {
-          this.loginType = data.data.loginType
+          if(data.data == null || data.data == undefined || data.data == ""){
+            this.templateName = "N/A";
+          } else {
           this.templateName = data.data.templateName
+          }
+          this.loginType = data.data.loginType
           this.selectedTemplate = data.data.templateId;
           this.activeTemplateId = data.data.templateId;
         })
+  }
+  /**** XNFR-416 ******/
+  setDefaultBgImage() {
+    this.styleOneBackgroundImagePath = "";
+    this.imageUrl = "assets/images/stratapps.jpeg"
+    this.setDefaultImage(this.imageUrl, 'stratapps.jpeg');
+  }
+  private setDefaultImage(imageUrl: any, name: any) {
+    this.vanityURLService.getImageFile(imageUrl, name).subscribe(
+      (file: File) => {
+        // Now you have the image file, you can do further processing or save it.
+        this.processBgImageFile(file);
+        console.log(file);
+      },
+      (error) => {
+        console.error('Error uploading image:', error);
+      });
+  }
+  setDefaultBgImageStyleTwo() {
+    this.styleTwoBackgroundImagePath = "";
+    this.imageUrl = "assets/images/stratapps.jpeg"
+    this.setDefaultImage(this.imageUrl, 'stratapps.jpeg');
+  }
+
+  setBackgroundColorForStyle1() {
+    this.isBackgroundColorStyleOne = !this.isBackgroundColorStyleOne;
+  }
+
+  setBackgroundColorForStyle2() {
+    this.isBackgroundColorStyleTwo = !this.isBackgroundColorStyleTwo;
+  }
+  checkValidColorCode(colorCode: string, type: string) {
+    if ($.trim(colorCode).length > 0) {
+      if (!this.regularExpressions.COLOR_CODE_PATTERN.test(colorCode)) {
+        this.addColorCodeErrorMessage(type);
+      } else {
+        this.removeColorCodeErrorMessage(colorCode, type);
+      }
+    } 
+  }
+  private addColorCodeErrorMessage(type: string) {
+    this.isValidColorCode = false;
+    if (type === "selectedColor1") {
+      this.customLoginScreen.backgroundColorStyle1 = "";
+      this.isValidBackgroundColorStyle1 = true;
+    } else if (type === "selecteColor2") {
+      this.customLoginScreen.backgroundColorStyle2 = "";
+      this.isValidBackgroundColorStyle2 = true;
+    }
+  } catch(error) {
+    console.log(error);
+  }
+  removeColorCodeErrorMessage(colorCode: string, type: string) {
+    if (type === "selectedColor1") {
+      this.customLoginScreen.backgroundColorStyle1 = colorCode;
+      this.isValidBackgroundColorStyle1 = true;
+    } else if (type === "selecteColor2") {
+      this.customLoginScreen.backgroundColorStyle2 = colorCode;
+      this.isValidBackgroundColorStyle2 = true;
+    }
+  }
+  changeControllerColor(event: any, type: string) {
+    try {
+      const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
+      $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+      /*******Header Form*********8 */
+      if (type === "selectedColor1") {
+        this.selectedColor1 = event;
+        this.isValidBackgroundColorStyle1 = true;
+      } else if (type === "selectedColor2") {
+        this.selectedColor2 = event;
+        this.isValidBackgroundColorStyle2 = true;
+      }
+    } catch (error) { console.log(error); }
+
+  }
+  openNewTab(){
+    this.customResponse = new CustomResponse('ERROR', this.message, false);
+    const newTabUrl = this.authenticationService.DOMAIN_URL +'login/preview'; // Replace with the URL you want to open
+    // const newTabUrl = this.authenticationService.APP_URL +'login/preview'; // Replace with the URL you want to open
+    window.open(newTabUrl, '_blank');
+
   }
 }

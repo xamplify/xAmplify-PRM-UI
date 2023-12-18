@@ -270,7 +270,7 @@
   }" *ngIf="
   campaignType === 'LANDINGPAGE' && campaign.landingPageId > 0
   ">
-                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft" style="display: flex"
+                     <a class="dashboard-stat totalBoxFlex dashboard-stat-lighter blue-soft"
                         [class.disabled]="
      !isPartnerEnabledAnalyticsAccess ? true : null
      ">
@@ -289,12 +289,12 @@
                               <span>Click for preview</span>
                            </div>
                         </div>
-                        <div class="actions-block override-actions" id="landing-page-icons">
-                           <a data-toggle="tooltip" data-placement="top" title="Preview"
+                        <div class="actions-block override-actions d-inlineblock" id="landing-page-icons">
+                           <a  data-toggle="tooltip" data-placement="top" title="Preview"
                               (click)="showLandingPagePreview(campaign)">
                               <i class="fa fa-eye" aria-hidden="true"></i>
                            </a>
-                           <a *ngIf="campaign.formsCount > 0" routerLink="/home/forms/clpf/{{ campaign.campaignId }}"
+                           <a class="mr-2" *ngIf="campaign.formsCount > 0" routerLink="/home/forms/clpf/{{ campaign.campaignId }}"
                               data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Count">
                               <i class="fa fa-wpforms" aria-hidden="true"></i>
                               <span class="badge" id="notification-color">{{
@@ -309,7 +309,7 @@
                                  campaign.campaignLandingPageAnalyticsCount
                                  }}</span>
                            </a>
-                           <a class="disabled" *ngIf="campaign.campaignLandingPageAnalyticsCount == 0"
+                           <a class="disabled " *ngIf="campaign.campaignLandingPageAnalyticsCount == 0"
                               data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                               title="Page Analytics">
                               <i class="fa fa-line-chart" aria-hidden="true"></i>
@@ -611,7 +611,7 @@
                      [hidden]="mainLoader || hasClientError || !campaign.emailNotification">
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE' || campaignType === 'SURVEY'">
-                        <button class="portlet light color1-invert crcb lt-blue-c"
+                        <button class="portlet light color1-invert crcb lt-blue-c detail_card"
                            (click)="emailActionDetails(campaign.campaignId, 'recipients', emailActionDetailsPagination)"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.totalRecipients < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -626,7 +626,7 @@
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
-                        <button class="portlet light color1-invert crcb lt-green-c"
+                        <button class="portlet light color1-invert crcb lt-green-c detail_card"
                            (click)="emailActionDetails(campaign.campaignId, 'sent', emailActionDetailsPagination)"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.emailSentCount < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -642,7 +642,7 @@
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'"
                         [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-                        <button class="portlet light color1-invert crcb tk-blue-c"
+                        <button class="portlet light color1-invert crcb tk-blue-c detail_card"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            (click)="emailActionDetails(campaign.campaignId, 'deliverability', emailActionDetailsPagination)"
                            [disabled]="campaignReport.deliveredCount < 1  || !isPartnerEnabledAnalyticsAccess">
@@ -657,7 +657,7 @@
                      </div>
                      <div *ngIf="campaignType != 'SOCIAL'" class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         [hidden]="mainLoader || hasClientError" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-                        <button class="portlet light color1-invert crcb vlt-blue-c"
+                        <button class="portlet light color1-invert crcb vlt-blue-c detail_card"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"
                            [disabled]="campaignReport.emailOpenCount < 1  || !isPartnerEnabledAnalyticsAccess">
@@ -673,7 +673,7 @@
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'"
                         [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-                        <button class="portlet light color1-invert crcb pure-blue-c"
+                        <button class="portlet light color1-invert crcb pure-blue-c detail_card"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"
                            [disabled]="campaignReport.emailOpenCount < 1  || !isPartnerEnabledAnalyticsAccess">
@@ -690,7 +690,7 @@
                         [ngClass]="{'hidden': campaignType === 'SOCIAL','forbidden' :!isDataShare ?true:null}">
                         <!----This is For Vendor/Partner------->
                         <ng-container *ngIf="!isNavigatedThroughAnalytics">
-                           <button class="portlet light color1-invert crcb black-blue-c" (click)="
+                           <button class="portlet light color1-invert crcb black-blue-c detail_card" (click)="
   emailActionList(
   campaign.campaignId,
   'click',
@@ -727,7 +727,7 @@
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2" [hidden]="mainLoader || hasClientError"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'"
                         [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}">
-                        <button class="portlet light color1-invert crcb y-b-c"
+                        <button class="portlet light color1-invert crcb y-b-c detail_card"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            (click)="emailActionList(campaign.campaignId, 'click', emailActionListPagination)"
                            [disabled]="campaignReport.emailClickedCount < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -742,7 +742,7 @@
                      </div>
                      <div [hidden]="mainLoader || hasClientError" class="col-xs-6 col-sm-3 col-md-2 col-lg-2 p-5x"
                         *ngIf="campaignType === 'VIDEO'" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
-                        <button class="portlet light color1-invert crcb b-b-c"
+                        <button class="portlet light color1-invert crcb b-b-c detail_card"
                            (click)="usersWatchList(campaign.campaignId, usersWatchListPagination)"
                            [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                            [disabled]="campaignReport.usersWatchCount < 1 || !isDataShare">
@@ -757,7 +757,7 @@
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
-                        <button class="portlet light color1-invert crcb r-b-c"
+                        <button class="portlet light color1-invert crcb r-b-c detail_card"
                            (click)="emailActionDetails(campaign.campaignId, 'hardbounce', emailActionDetailsPagination)"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.hardBounce < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -772,7 +772,7 @@
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
-                        <button class="portlet light color1-invert crcb h-r-c"
+                        <button class="portlet light color1-invert crcb h-r-c detail_card"
                            (click)="emailActionDetails(campaign.campaignId, 'softbounce', emailActionDetailsPagination)"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.softBounce < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -787,7 +787,7 @@
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'SURVEY'">
-                        <button class="portlet light color1-invert crcb r-r-c"
+                        <button class="portlet light color1-invert crcb r-r-c detail_card"
                            (click)="emailActionDetails(campaign.campaignId, 'unsubscribe', emailActionDetailsPagination)"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.unsubscribed < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -802,7 +802,7 @@
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts">
-                        <button class="portlet light color1-invert crcb vlt-b-c" (click)="showCampaignLeads()"
+                        <button class="portlet light color1-invert crcb vlt-b-c detail_card" (click)="showCampaignLeads()"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.leadCount < 1 || !isPartnerEnabledAnalyticsAccess">
                            <div class="portlet-body text-center">
@@ -816,7 +816,7 @@
                      </div>
                      <div class="p-5x col-xs-6 col-sm-3 col-md-2 col-lg-2"
                         *ngIf="campaignType != 'SOCIAL' && campaignType != 'LANDINGPAGE' && campaignType != 'EVENT' && campaign.showLeadAndDealCounts">
-                        <button class="portlet light color1-invert crcb lt-g-b-c" (click)="showCampaignDeals()"
+                        <button class="portlet light color1-invert crcb lt-g-b-c detail_card" (click)="showCampaignDeals()"
                            [ngClass]="{'forbidden' :!isDataShare || !isPartnerEnabledAnalyticsAccess ?true:null}"
                            [disabled]="campaignReport.dealCount < 1 || !isPartnerEnabledAnalyticsAccess">
                            <div class="portlet-body text-center">
@@ -1552,7 +1552,7 @@
   ">
                                                       <div class="actions-block override-actions"
                                                          style="margin-right: 100px">
-                                                         <a [className]="showUserLevelCampaignAnalytics ? '': 'inactive custom-icon'"
+                                                         <a [className]="showUserLevelCampaignAnalytics ? 'custom-icon': 'inactive custom-icon'"
                                                             data-rel="fancybox-button" data-toggle="tooltip"
                                                             data-placement="top" title="User Level Campaign Analytics">
                                                             <i class="fa fa-line-chart IconCustomization"
@@ -1622,20 +1622,21 @@
                                                       <td class="text-center" (click)="$event.stopPropagation()">
                                                          <div class="actions-block override-actions"
                                                             id="landing-page-icons">
-                                                            <a *ngIf="item.pageAnalyticsCount > 0" routerLink="/home/pages/{{
+                                                            <a *ngIf="item.pageAnalyticsCount > 0"
+                                                               routerLink="/home/pages/{{
      campaign.campaignId
      }}/{{
      item.userId
      }}/campaign/analytics" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top"
                                                                title="Page Analytics">
-                                                               <i class="fa fa-line-chart"></i>
+                                                               <i class="fa fa-line-chart chart-hover"></i>
                                                                <span class="badge" id="notification-color">{{
                                                                   item.pageAnalyticsCount }}</span>
                                                             </a>
                                                             <a *ngIf="item.pageAnalyticsCount == 0"
                                                                data-rel="fancybox-button" data-toggle="tooltip"
                                                                data-placement="top" title="Page Analytics">
-                                                               <i class="fa fa-line-chart"></i>
+                                                               <i class="fa fa-line-chart chart-hover"></i>
                                                                <span class="badge" id="notification-color">{{
                                                                   item.pageAnalyticsCount }}</span>
                                                             </a>
@@ -1647,7 +1648,7 @@
                                                             <a routerLink="/home/forms/clpf/{{
      campaign.campaignId
      }}/{{ item.userId }}" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Form Count">
-                                                               <i class="fa fa-wpforms"></i>
+                                                               <i class="fa fa-wpforms chart-hover"></i>
                                                                <span class="badge" id="notification-color">{{
                                                                   campaign.formsCount }}</span>
                                                             </a>
@@ -3430,7 +3431,7 @@
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()">
+            <button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="clearPaginationValues()">
                Close
             </button>
          </div>
