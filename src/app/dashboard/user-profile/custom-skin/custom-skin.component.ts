@@ -655,6 +655,8 @@ export class CustomSkinComponent implements OnInit {
     this.saveThemeDto.description = 'Hi';
     this.saveThemeDto.defaultTheme = false;
     this.saveThemeDto.createdBy = this.loggedInUserId;
+    this.saveThemeDto.parentId = this.themeId;
+    console.log(this.saveThemeDto.parentId, "sudha");
     //this.ngxloading = false;
   }
 

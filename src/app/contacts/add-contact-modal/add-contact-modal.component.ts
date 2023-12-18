@@ -170,7 +170,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     .subscribe(
 					(data: any) => {
 						if(data.statusCode == 200){
-						   this.closeAndEmitData();
+						   this.closeAndEmitData();						   
 						}else{
 						this.partners = [];
 						let emailIds = "";
@@ -199,6 +199,19 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     }
 
     updateUser() {
+    if(this.isPartner && (this.addContactuser.companyNameStatus==='inactive' || this.addContactuser.companyNameStatus===undefined)){
+       if(this.gdprStatus){
+            if(this.addContactuser.legalBasis.length>0){
+                this.isValidLegalOptions = true;
+                this.validatePartnerCompany();
+            }else{
+                this.isValidLegalOptions = false;
+            }
+        }else{
+            this.validatePartnerCompany();
+        }
+    }
+    else{
         if(this.gdprStatus){
             if(this.addContactuser.legalBasis.length>0){
                 this.isValidLegalOptions = true;
@@ -213,6 +226,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.contactService.isContactModalPopup = false;
             this.notifyParent.emit( this.addContactuser );
         }
+       }
+        
     }
 
     contactCompanyChecking( contactCompany: string ) {
@@ -255,6 +270,11 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.addContactuser.contactsLimit = this.contactDetails.contactsLimit;
             this.validLimit = this.contactDetails.contactsLimit>0;
             this.addContactuser.mdfAmount = this.contactDetails.mdfAmount;
+            if ( this.isPartner){
+            this.addContactuser.displayContactCompany = this.contactDetails.displayContactCompany;
+            this.addContactuser.companyNameStatus = this.contactDetails.companyNameStatus;
+            }
+            
             if ( this.isPartner || this.isAssignLeads ) {
                 if ( this.addContactuser.contactCompany !== undefined && this.addContactuser.contactCompany !== '') {
                     this.isCompanyDetails = true;
@@ -363,5 +383,30 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     ngOnDestroy(){
         this.addContactModalClose();
     }
+    
+    contactCompanyChanged(updatedContactCompany : any){
+     this.addContactuser.contactCompany = updatedContactCompany;
+    }
+    
+    validatePartnerCompany(){
+    try {
+    this.contactService.validateCompanyName(this.addContactuser.contactCompany, this.contactDetails.companyId)
+    .subscribe(
+					(data: any) => {
+						if(data.statusCode == 200){
+						    $( '#addContactModal' ).modal( 'hide' );
+                            this.contactService.isContactModalPopup = false;
+                            this.notifyParent.emit( this.addContactuser );
+						}else{
+					let updatedMessage = data.message + "\n" + data.data;
+					this.validationResponse = new CustomResponse('ERROR', updatedMessage, true);
+					}},
+					error => this.logger.error(error),
+						() => console.log('validatePartnerCompany() finished')
+				);
+		} catch (error) {
+			this.logger.error(error, "AddContactModalComponent", "validating Partners");
+		}
+	}
 
 }

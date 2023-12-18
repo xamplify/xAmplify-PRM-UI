@@ -313,7 +313,7 @@
 										<button id="cancel_button" class="btn pull-right button_blue pd_0 bgcolor-unset"
 											*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) "
 											(click)="saveAs(true)" style="margin-right: 5px;" translate><span
-												class="btn btn-primary transition">Create New List</span>
+												class="btn btn-primary transition text_pd0">Create New List</span>
 										</button>
 									</div>
 									<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt mt_9"
@@ -392,8 +392,8 @@
 															(click)="addContactModalOpen()"
 															[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
 															translate>
-															<span class="btn Btn-Green transition">One at a Time<i
-																	class="fa fa-plus"
+															<span class="btn Btn-Green transition text_pd5">One at a
+																Time<i class="fa fa-plus"
 																	style="font-size: 12px; margin-left: 5px;"
 																	aria-hidden="true"></i></span>
 														</button>
@@ -405,7 +405,8 @@
 																[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
 																(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);"
 																translate>
-																<span class="btn Btn-Green transition">Copy List From
+																<span class="btn Btn-Green transition text_pd5">Copy
+																	List From
 																	ClipBoard<i class="fa fa-clipboard"
 																		aria-hidden="true"
 																		style="font-size: 12px; margin-left: 5px;"></i></span>
@@ -417,15 +418,18 @@
 																[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9"
 																translate>
 																<button class="button bgcolor-unset">
-																	<span class="btn Btn-Green transition">Upload CSV <i
-																			class="fa fa-upload" aria-hidden="true"
+																	<span
+																		class="btn Btn-Green transition text_pd5">Upload
+																		CSV <i class="fa fa-upload" aria-hidden="true"
 																			style="font-size: 12px; margin-left: 5px;"></i></span>
+																	<input type="file" ng2FileSelect class="upload"
+																		[uploader]="uploader" title=" "
+																		(click)="input.value = null;resetResponse();"
+																		(change)="fileChange(input)" accept=".csv"
+																		#input
+																		[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
 																</button>
-																<input type="file" ng2FileSelect class="upload"
-																	[uploader]="uploader" title=" "
-																	(click)="input.value = null;resetResponse();"
-																	(change)="fileChange(input)" accept=".csv" #input
-																	[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
+
 															</div>
 														</div>
 													</ng-container>
@@ -528,8 +532,10 @@
 														<option value="TabSeperated" translate>Tab Separated</option>
 													</select>
 												</div>
-												<button class=" col-sm-3 btn Btn-Green" type="button"
-													(click)="clipboardShowPreview()" translate>VERIFY DATA</button>
+												<button class=" col-sm-3 btn button bgcolor-unset" type="button"
+													(click)="clipboardShowPreview()" translate><span
+														class="btn Btn-Green transition text_pd5">VERIFY
+														DATA</span></button>
 											</div>
 											<div class="col-sm-9">
 												<textarea *ngIf="!isPartner" class="textareaNumber"
@@ -1576,10 +1582,11 @@
 				<div *ngIf="!isCheckTC" style="color:red" translate>You must agree T&C</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelContacts()"
+				<button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="cancelContacts()"
 					translate>Decline</button>
-				<button type="button" [disabled]="!isCheckTC" class="btn btn-primary"
-					(click)="saveContactsWithPermission()" translate>Accept</button>
+				<button type="button" [disabled]="!isCheckTC" class="button_blue bgcolor-unset"
+					(click)="saveContactsWithPermission()" translate><span
+						class="btn btn-primary transition">Accept</span></button>
 			</div>
 		</div>
 	</div>
@@ -1717,8 +1724,9 @@
 			<ngx-loading [show]="processingPartnersLoader || previewLoader"
 				[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 			<div class="modal-footer">
-				<button type="submit" class="btn Btn-Green" (click)="validatePartners()" translate>Continue</button>
-				<button type="submit" class="btn btn-default" (click)="closeAssignContactAndMdfAmountPopup()"
+				<button type="submit" class="button bgcolor-unset" (click)="validatePartners()" translate><span
+						class="btn Btn-Green transition">Continue</span></button>
+				<button type="submit" class="btn Btn-Gray" (click)="closeAssignContactAndMdfAmountPopup()"
 					translate>Close</button>
 			</div>
 		</div>

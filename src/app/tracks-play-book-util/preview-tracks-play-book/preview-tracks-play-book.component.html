@@ -140,14 +140,14 @@
                                                                     title="{{assetDetails.assetType}}">Type:
                                                                     {{assetDetails.assetType}}</strong><br>
                                                             </div>
-                                                            <a class="button_blue"
+                                                            <button class="button_blue bgcolor-unset"
                                                                 (click)="assetPreview(assetDetails)"><span
-                                                                    class="btn btn-primary transition">View</span></a>
-                                                            <a *ngIf="assetDetails?.assetType!='mp4'"
-                                                                class="button_blue"
+                                                                    class="btn btn-primary transition">View</span></button>
+                                                            <button *ngIf="assetDetails?.assetType!='mp4'"
+                                                                class="button_blue bgcolor-unset"
                                                                 [ngClass]="{'isDisabled' : !assetDetails?.thumbnailPath}"
                                                                 (click)="downloadAsset(assetDetails)"><span
-                                                                    class="btn btn-primary transition">Download</span></a>
+                                                                    class="btn btn-primary transition">Download</span></button>
                                                         </div>
                                                     </div>
                                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
