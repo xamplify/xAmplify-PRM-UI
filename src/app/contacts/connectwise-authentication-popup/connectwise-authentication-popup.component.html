@@ -1,0 +1,59 @@
+<div class="modal right fade" id="connectWisePreSettingsForm" tabindex="-1" role="dialog"
+   aria-labelledby="connectWiseModalLabel" data-keyboard="false" data-backdrop="static">
+   <div class="modal-dialog modal-css" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <a class="close-circle" data-dismiss="modal" (click)="hideConnectWiseSettingForm()"><i
+               class="fa fa-times"></i></a>
+            <h4 class="modal-title" id="templateRetrieve" translate>ConnectWise integration with xAmplify</h4>
+            <div>
+               <div>
+                  <img src="assets/images/crm/connectwise-xamplify.png"
+                     style="margin: 30px 25% 0;width: 50%;text-align: center;">
+               </div>
+            </div>
+         </div>
+         <div class="modal-body">
+            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible" style="margin: 10px">
+            </app-response-message>
+            <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <form class="form-horizontal" autocomplete="off">
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="companyId">Company ID:</label>
+                <div class="col-sm-8">
+                  <input type="text" style="width: 75%" class="form-control" id="companyId" placeholder="ConnectWise Company ID"
+                    autocomplete="false" [(ngModel)]="companyId" [ngModelOptions]="{standalone: true}">
+                </div>
+              </div>  
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="clientId">Client ID:</label>
+                <div class="col-sm-8">
+                  <input type="text" style="width: 75%" class="form-control" id="clientId" placeholder="ConnectWise Client ID"
+                    autocomplete="nope" [(ngModel)]="clientId" [ngModelOptions]="{standalone: true}">
+                </div>
+              </div>  
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="publicKey">Public Key:</label>
+                <div class="col-sm-8">
+                  <input type="text" style="width: 75%" class="form-control" id="publicKey" placeholder="Public Key"
+                    autocomplete="nope" [(ngModel)]="publicKey" [ngModelOptions]="{standalone: true}">
+                </div>
+              </div>  
+              <div class="form-group">
+                <label class="control-label col-sm-3" for="privateKey">Private Key:</label>
+                <div class="col-sm-8">
+                  <input type="password" style="width: 75%" class="form-control" id="privateKey" placeholder="Private Key"
+                    autocomplete="false" autocomplete="false" [(ngModel)]="privateKey" [ngModelOptions]="{standalone: true}">
+                </div>
+              </div>  
+            </form>
+         </div>
+         <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal" (click)="hideConnectWiseSettingForm()">CANCEL</button>
+          <button type="button" class="btn btn-primary" [disabled]="!companyId || !clientId || !publicKey || !privateKey"
+            [class.disabled]="!companyId || !clientId || !publicKey || !privateKey"
+            (click)="validateModelForm()">AUTHORIZE</button>
+        </div>
+      </div>
+   </div>
+</div>

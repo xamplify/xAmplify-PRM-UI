@@ -39,3 +39,36 @@
   width: 100%;
   border-bottom: 1px solid #e5e5e5;
 }
+/* prt */
+.card-bgcolors{
+  border-radius: 5px;
+  padding: 10px 15px;
+}
+.deal-heading{
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+.h-260{
+  min-height: 100px;
+}
+.panel-title > a {
+  display: block;
+  position: relative;
+  font-size: 16px;
+}
+.panel-title > a:hover {
+  color:unset!important;
+}
+.panel-heading {
+  padding: 10px 15px;
+}
+.br-unset{
+  border-radius: unset!important;
+  margin: 0px 15px;
+  border-top:1px solid #ddd;
+}
+@media only screen and (max-width:600px){
+  .card-bgcolors{
+   margin-bottom:14px;
+  }
+}
