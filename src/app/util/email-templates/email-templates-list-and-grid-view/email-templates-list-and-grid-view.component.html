@@ -157,7 +157,7 @@
                             </span>
                             <img class="email-template-preview email-image-temp-custimize image_effect" *ngIf="emailTemplate.subject"  src="{{emailTemplate.subject}}" alt="Image Not Found">
                             <img alt="" class="email-template-preview email-image-temp-custimize image_effect" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg">
-                            <h4 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{emailTemplate?.name}}">
+                            <h4 class="xamplify-ellipsis GridViewCotent gridViewDesignTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{emailTemplate?.name}}">
                                 <b translate>Template Name: </b> {{emailTemplate.name}} 
                             </h4>
                             <div>
@@ -180,7 +180,6 @@
                                 <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                     <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.createdBy}}" translate>
                                         <b translate>By:</b> {{emailTemplate.createdBy}}
-                                       
                                     </h6>
                                     <h6 class="GridViewCotent xamplify-ellipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.companyName}}" translate>
                                         <b translate>From:</b> {{emailTemplate.companyName}} 

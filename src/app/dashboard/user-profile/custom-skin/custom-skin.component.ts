@@ -413,6 +413,8 @@ export class CustomSkinComponent implements OnInit {
     else if (this.mainDivColor === this.mainTextColor) {
       this.isValid = true;
       // this.validMessage = "Please Change the color ,it was already exsits"
+    } else if (this.mainDivColor === this.iconHoverColor) {
+      this.isValid = true;
     } else {
       this.isValid = false;
       this.validMessage = "";

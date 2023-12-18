@@ -78,7 +78,7 @@ img.active {
   color: white;
 }
 .refresh-margin {
-  margin: 8px 5px 5px 5px !important;
+  margin: 8px 5px 5px 5px;
 }
 
 @media screen and (max-width: 600px) {
@@ -103,7 +103,7 @@ img.active {
   }
 }
 .xamp-margin-left-icon {
-  margin: 8px 5px 5px 5px !important;
+  margin: 8px 5px 5px 5px;
 }
 @media screen and (max-width: 600px) {
   .vendor_list {
