@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter,Renderer } from '@angular/core';
 import { DamService } from 'app/dam/services/dam.service';
 import { ActivatedRoute } from '@angular/router';
 /*****Common Imports**********************/
@@ -94,8 +94,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	childAssetId = 0;
 	/****XNFR-381*****/
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
-		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription) {
+		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription,public renderer:Renderer) {
 		this.loggedInUserId = this.authenticationService.getUserId();
+		this.referenceService.renderer = this.renderer;
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.vanityLoginDto.userId = this.loggedInUserId;
