@@ -23,6 +23,11 @@ import {Properties} from 'app/common/models/properties';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { ConnectwiseProductsDto } from '../models/connectwise-products-dto';
+import { ConnectwiseProductsRequestDto } from '../models/connectwise-products-request-dto';
+import { ConnectwiseCatalogItemDto } from '../models/connectwise-catalog-item-dto';
+import { ConnectwiseOpportunityDto } from '../models/connectwise-opportunity-dto';
+import { ConnectwiseStatusDto } from '../models/connectwise-status-dto';
 declare var flatpickr: any, $: any, swal: any;
 
 
@@ -96,6 +101,9 @@ export class AddDealComponent implements OnInit {
   @ViewChild(SfDealComponent)
   sfDealComponent: SfDealComponent;
   activeCRMDetails: any;
+  isCollapsed: boolean;
+  isCollapsed1: boolean;
+  isCollapsed2: boolean;
   
   constructor(private logger: XtremandLogger, public messageProperties: Properties,public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -148,7 +156,6 @@ export class AddDealComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
         if (data.statusCode == 200) {
           this.deal.createdForCompanyId = data.data;
-          //this.isSalesForceEnabled();
           this.getActiveCRMDetails();
         }
       },
@@ -234,6 +241,7 @@ export class AddDealComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             let campaignDealPipeline = data.data;
+            self.pipelines.push(campaignDealPipeline);
             self.deal.pipelineId = campaignDealPipeline.id;
             self.pipelineIdError = false;
             self.stages = campaignDealPipeline.stages;
@@ -274,7 +282,6 @@ export class AddDealComponent implements OnInit {
             }
             self.setCloseDate(data); 
             if (self.deal.createdForCompanyId > 0) {
-              //self.isSalesForceEnabled();
               this.getActiveCRMDetails();
             } 
           }
@@ -414,9 +421,7 @@ export class AddDealComponent implements OnInit {
   }
 
   onChangeCreatedFor() {
-    //this.validateField('createdForCompanyId',false);
     if (this.deal.createdForCompanyId > 0) {
-      //this.isSalesForceEnabled();
       this.getActiveCRMDetails();
     } else {
       this.showDefaultForm = false;
@@ -473,11 +478,14 @@ export class AddDealComponent implements OnInit {
   }
 
   resetStages() {
-    this.deal.pipelineStageId = 0;
-    this.getStages();
-    this.pipelineStageId = "form-group has-error has-feedback";
-    this.pipelineStageIdError = true;
-    this.isDealRegistrationFormValid = false;
+    if(!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline){
+      this.deal.pipelineStageId = 0;
+      this.getStages();
+      this.pipelineStageId = "form-group has-error has-feedback";
+      this.pipelineStageIdError = true;
+      this.isDealRegistrationFormValid = false;
+    }
+    
   }
 
   getStages() {
@@ -499,7 +507,6 @@ export class AddDealComponent implements OnInit {
     this.ngxloading = true;
     this.isLoading = true;
     this.deal.userId = this.loggedInUserId;
-    //this.deal.closeDateString = this.deal.closeDate;
     var obj = [];
     let answers: DealAnswer[] = [];
 
@@ -547,6 +554,21 @@ export class AddDealComponent implements OnInit {
     }
     this.deal.answers = answers;
     this.deal.properties = obj;
+    /********XNFR-403***********/
+    let filtertedForecastItems = new Array<any>();
+    $.each(this.sfDealComponent.forecastItems,function(_index:number,
+      forecastItem:any){
+        let id = forecastItem['catalogItem']['id'];
+        if(id!=undefined && id>0){
+          forecastItem['revenue'] = forecastItem['price'];
+          delete forecastItem['price'];
+          filtertedForecastItems.push(forecastItem);
+        }
+    });
+    if(filtertedForecastItems.length>0){
+      this.deal.forecastItemsJson = JSON.stringify(filtertedForecastItems);
+    }
+    /********XNFR-403***********/
     this.dealsService.saveOrUpdateDeal(this.deal)
       .subscribe(
         data => {
@@ -557,7 +579,6 @@ export class AddDealComponent implements OnInit {
           this.showLoadingButton = false;
           this.deal.properties.forEach(p => p.isSaved = true);
           if (data.statusCode == 200) {            
-            //this.customResponse = new CustomResponse('SUCCESS', "Deal Submitted Successfully", true);
             this.notifySubmitSuccess.emit(); 
           } else if (data.statusCode == 500) {
             this.customResponse = new CustomResponse('ERROR', data.message, true);
@@ -573,6 +594,8 @@ export class AddDealComponent implements OnInit {
         () => { }
       );
   }
+
+  
 
   validateQuestion(property: DealDynamicProperties) {
 
@@ -988,6 +1011,7 @@ getActiveCRMPipelines() {
         this.isLoading = false;
         if (data.statusCode == 200) {
           let activeCRMPipelines:Array<any> = data.data;
+          self.pipelines = activeCRMPipelines;
           if (activeCRMPipelines.length === 1) {
             let activeCRMPipeline = activeCRMPipelines[0];
             self.deal.pipelineId = activeCRMPipeline.id;
@@ -995,7 +1019,6 @@ getActiveCRMPipelines() {
             self.stages = activeCRMPipeline.stages;
             self.activeCRMDetails.hasDealPipeline = true;
           } else {     
-            self.pipelines = activeCRMPipelines;
             let dealPipelineExist = false;
             for (let p of activeCRMPipelines) {              
               if (p.id == this.deal.pipelineId) {
@@ -1023,6 +1046,21 @@ getActiveCRMPipelines() {
       },
       () => { }
     );
+}
+
+//
+// isCollapsedcontact:boolean=true;
+toggleCollapsepipepline(event: Event) {
+  event.preventDefault();
+  this.isCollapsed = !this.isCollapsed;
+}
+toggleCollapsecontact(event: Event) {
+  event.preventDefault();
+  this.isCollapsed1 = !this.isCollapsed1;
+}
+toggleCollapsecampaignInfo(event: Event) {
+  event.preventDefault();
+  this.isCollapsed2 = !this.isCollapsed2;
 }
 
 }

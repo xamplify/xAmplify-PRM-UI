@@ -1,0 +1,25 @@
+<ng-container *ngIf="!disableDropDown">
+   <ejs-dropdownlist id='ddlelement' #samples [dataSource]='searchableDropDownDto.data'
+   [(value)]='value'
+   [fields]='searchableDropDownDto.fields' [placeholder]='searchableDropDownDto.placeHolder'
+    [allowFiltering]='true' (filtering)='onFiltering($event)'
+    [showClearButton]="true" [sortOrder]='sort' 
+     (change)='getSelectedDropDownData($event)'></ejs-dropdownlist>
+</ng-container>
+
+
+ <ng-container *ngIf="disableDropDown">
+   <ejs-dropdownlist id='ddlelement' #samples [dataSource]='searchableDropDownDto.data'
+   [(value)]='value'
+   [fields]='searchableDropDownDto.fields' [placeholder]='searchableDropDownDto.placeHolder'
+    disabled='disabled'></ejs-dropdownlist>
+ </ng-container>  
+
+
+
+<!--Referring Links-->
+<!--https://ej2.syncfusion.com/angular/documentation/drop-down-list/filtering-->
+<!--https://ej2.syncfusion.com/angular/documentation/drop-down-list/getting-started-->
+<!--https://ej2.syncfusion.com/angular/documentation/drop-down-list/how-to/value-change?cs-save-lang=1&cs-lang=ts-->
+<!--https://stackblitz.com/edit/angular-o3mzzo?file=app.component.ts-->
+<!--https://ej2.syncfusion.com/angular/documentation/drop-down-list/getting-started?_gl=1*1x7t02h*_ga*MTk5OTc2MjY4NS4xNjkyNjgxNDc5*_ga_41J4HFMX1J*MTcwMjcyMzQ3Mi4xMS4xLjE3MDI3MjY1NjMuMC4wLjA.#setup-angular-environment-->

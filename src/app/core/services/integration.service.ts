@@ -84,6 +84,20 @@ export class IntegrationService {
             .catch(this.handleError);
     }
 
+    getContactLists(type: string): Observable<any> {
+        this.logger.info(this.authenticationService.REST_URL + "external/" + this.authenticationService.getUserId() + "/contacts/lists?access_token=" + this.authenticationService.access_token + "&type="+type);
+        return this._http.get(this.authenticationService.REST_URL + "external/" + this.authenticationService.getUserId() + "/contacts/lists?access_token=" + this.authenticationService.access_token + "&type="+type)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getContactListsById(listId: any, type: string): Observable<any> {
+        this.logger.info(this.authenticationService.REST_URL + "external/" + this.authenticationService.getUserId() + "/lists/" + listId + "/contacts?access_token=" + this.authenticationService.access_token + "&type="+type);
+        return this._http.get(this.authenticationService.REST_URL + "external/" + this.authenticationService.getUserId() + "/lists/" + listId + "/contacts?access_token=" + this.authenticationService.access_token + "&type="+type)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     saveContacts(contacts: SocialContact): Observable<any> {
         this.logger.info(this.authenticationService.REST_URL + "external/saveContacts?access_token=" + this.authenticationService.access_token);
         var requestoptions = new RequestOptions({

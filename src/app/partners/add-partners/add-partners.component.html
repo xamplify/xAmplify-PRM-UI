@@ -227,30 +227,34 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8 image_effect"
-                                        style="margin-top: 10px;">
-                                        <a *ngIf="marketoImageBlur" id="marketoContact_button"
-                                            style="background-color: white"
-                                            (click)="checkingMarketoContactsAuthentication()"
-                                            [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 8">
-                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
-                                                src="assets/images/crm/marketo.png" class="marketoImageClass"
-                                                style="border-radius:8px;" data-toggle="tooltip" data-placement="top"
-                                                title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Marketo account"
-                                                height="86" width="90"
-                                                onmouseover="this.src='assets/images/crm/connecting.png';"
-                                                onmouseout="this.src='assets/images/crm/marketo.png';" alt="">
-                                        </a> <a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal"
-                                            style="background-color: white"
-                                            (click)="checkingMarketoContactsAuthentication()"
-                                            [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 8">
-                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
-                                                src="assets/images/crm/marketo.png" class="marketoImageClass"
-                                                style="border-radius:8px;" data-toggle="tooltip" data-placement="top"
-                                                title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Marketo account"
-                                                height="86" width="90">
-                                        </a>
-                                    </div>
+
+                                     <!-- Microsoft -->
+                                     <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8 image_effect"
+                                     style="margin-top: 10px;">
+                                     <a *ngIf="microsoftDynamicsImageBlur" id="microsoftDynamicsContact_button"
+                                         style="background-color: white"
+                                         (click)="checkingMicrosoftDynamicsAuthentication()"
+                                         [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 10">
+                                         <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
+                                             src="assets/images/crm/microsoft.png" style="border-radius:8px;"
+                                             class="microsoftDynamicsImageClass" data-toggle="tooltip"
+                                             data-placement="top"
+                                             title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Microsoft Dynamics account"
+                                             height="86" width="90"
+                                             onmouseover="this.src='assets/images/crm/connecting.png';"
+                                             onmouseout="this.src='assets/images/crm/microsoft.png';">
+                                     </a> <a *ngIf="microsoftDynamicsImageNormal"
+                                         id="microsoftDynamicsContact_buttonNormal" style="background-color: white"
+                                         (click)="checkingMicrosoftDynamicsAuthentication()"
+                                         [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 10">
+                                         <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
+                                             src="assets/images/crm/microsoft.png" style="border-radius:8px;"
+                                             class="microsoftDynamicsImageClass" data-toggle="tooltip"
+                                             data-placement="top"
+                                             title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Microsoft Dynamics account"
+                                             height="86" width="90">
+                                     </a>
+                                 </div>
 
                                     <!-- Hubspot -->
                                     <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8 image_effect "
@@ -277,33 +281,32 @@
                                                 height="86" width="90">
                                         </a>
                                     </div>
-                                    <!-- Microsoft -->
                                     <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8 image_effect"
-                                        style="margin-top: 10px;">
-                                        <a *ngIf="microsoftDynamicsImageBlur" id="microsoftDynamicsContact_button"
-                                            style="background-color: white"
-                                            (click)="checkingMicrosoftDynamicsAuthentication()"
-                                            [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 10">
-                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
-                                                src="assets/images/crm/microsoft.png" style="border-radius:8px;"
-                                                class="microsoftDynamicsImageClass" data-toggle="tooltip"
-                                                data-placement="top"
-                                                title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Microsoft Dynamics account"
-                                                height="86" width="90"
-                                                onmouseover="this.src='assets/images/crm/connecting.png';"
-                                                onmouseout="this.src='assets/images/crm/microsoft.png';">
-                                        </a> <a *ngIf="microsoftDynamicsImageNormal"
-                                            id="microsoftDynamicsContact_buttonNormal" style="background-color: white"
-                                            (click)="checkingMicrosoftDynamicsAuthentication()"
-                                            [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 10">
-                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :microsoftDynamicsImageBlur==true}"
-                                                src="assets/images/crm/microsoft.png" style="border-radius:8px;"
-                                                class="microsoftDynamicsImageClass" data-toggle="tooltip"
-                                                data-placement="top"
-                                                title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Microsoft Dynamics account"
-                                                height="86" width="90">
-                                        </a>
-                                    </div>
+                                    style="margin-top: 10px;">
+                                    <a *ngIf="connectWiseImageBlur" id="connectWiseContact_button"
+                                        style="background-color: white"
+                                        (click)="checkingConnectWiseContactsAuthentication()"
+                                        [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 12">
+                                        <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
+                                            src="assets/images/crm/connectwise.png" style="border-radius:8px;"
+                                            class="connectWiseImageClass" data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Click here to access {{authenticationService?.partnerModule?.customName}} from your ConnectWise account"
+                                            height="86" width="90"
+                                            onmouseover="this.src='assets/images/crm/connecting.png';"
+                                            onmouseout="this.src='assets/images/crm/connectwise.png';">
+                                    </a> <a *ngIf="connectWiseImageNormal" id="connectwise_buttonNormal"
+                                        style="background-color: white"
+                                        (click)="checkingConnectWiseContactsAuthentication()"
+                                        [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 12">
+                                        <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :connectWiseImageBlur==true}"
+                                            src="assets/images/crm/connectwise.png" style="border-radius:8px;"
+                                            class="connnectWiseImageClass" data-toggle="tooltip"
+                                            data-placement="top"
+                                            title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Connetwise account"
+                                            height="86" width="90">
+                                    </a>
+                                </div>
                                     <!-- XNFR-230 -->
                                     <div id="showCRM" class="collapse">
                                         <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8 image_effect"
@@ -333,6 +336,30 @@
                                             </a>
                                         </div>
 
+                                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2 mlm8 image_effect"
+                                        style="margin-top: 10px;">
+                                        <a *ngIf="marketoImageBlur" id="marketoContact_button"
+                                            style="background-color: white"
+                                            (click)="checkingMarketoContactsAuthentication()"
+                                            [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 8">
+                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
+                                                src="assets/images/crm/marketo.png" class="marketoImageClass"
+                                                style="border-radius:8px;" data-toggle="tooltip" data-placement="right"
+                                                title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Marketo account"
+                                                height="86" width="90"
+                                                onmouseover="this.src='assets/images/crm/connecting.png';"
+                                                onmouseout="this.src='assets/images/crm/marketo.png';" alt="">
+                                        </a> <a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal"
+                                            style="background-color: white"
+                                            (click)="checkingMarketoContactsAuthentication()"
+                                            [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 8">
+                                            <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}"
+                                                src="assets/images/crm/marketo.png" class="marketoImageClass"
+                                                style="border-radius:8px;" data-toggle="tooltip" data-placement="right"
+                                                title="Click here to access {{authenticationService?.partnerModule?.customName}} from your Marketo account"
+                                                height="86" width="90">
+                                        </a>
+                                    </div>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
@@ -505,7 +532,7 @@
                                             <td>{{user.lastName}}</td>
                                             <td *ngIf="selectedAddPartnerOption === 6">{{user.contactCompany}}</td>
                                             <td
-                                                *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 11">
+                                                *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9 || selectedAddPartnerOption == 11 || selectedAddPartnerOption == 12">
                                                 <button class="lightgray-btn" id='more_less_button_{{i}}'
                                                     (click)="user.isShowDetails = ! user.isShowDetails">
                                                     <span *ngIf="!user.isShowDetails" translate>More</span> <span
@@ -1409,6 +1436,11 @@
     <app-pipedrive-authentication-popup (closeEvent)="closePipedriveForm($event)"></app-pipedrive-authentication-popup>
 </div>
 
+<!-- XNFR-403-->
+<div *ngIf="showConnectWiseAuthenticationForm">
+    <app-connectwise-authentication-popup (closeEvent)="closeConnectWiseForm($event)"></app-connectwise-authentication-popup>
+</div>
+
 <!-- T&C Modal -->
 <div class="modal fade" id="tcModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog"
     aria-labelledby="tcModalLabel" aria-hidden="true">
@@ -1504,6 +1536,58 @@
     </div>
 </div>
 
+<!-- ConnectWise Modal -->
+<div class="modal right fade" id="ContactConnectWiseModal" tabindex="-1" role="dialog" aria-labelledby="TestConnectWiseModal">
+	<div class="modal-dialog modal-css" role="document">
+		<div class="modal-content rounded-0">
+			<div class="modal-header">
+				<a class="close-circle" data-dismiss="modal" style="position: relative;"><i class="fa fa-times"></i></a>
+				<div class="col-sm-3" style="margin-top: 25px">
+					<img src="assets/images/crm/connectwise-logo.png" alt="Picture of a happy monkey" style="height: 60px"
+						width="150px" />
+				</div>
+				<div class="col-sm-12 salesforce">
+					<h4 class="modal-title" translate>Import from ConnectWise:</h4>
+				</div>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="control-label col-sm-3" for="email" translate>Select
+								Option:</label>
+							<div class="col-sm-8">
+								<select class="opts form-control" id="connectwise-dropdown-1"
+									(change)="onChangeConnectWiseDropdown($event)">
+									<option selected value="DEFAULT" translate>Select</option>
+									<option value="contacts" translate>Contacts</option>
+									<option value="lists" translate>Groups</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group" *ngIf="connectWiseContactListsData?.length > 0">
+							<label class="control-label col-sm-3" for="connecwise-dropdown-2" translate>Select
+								Option:</label>
+							<div class="col-sm-8">
+								<select class="form-control" id="connectwise-dropdown-2"
+									(change)="onChangeConnectWiseListsDropdown($event.target.value)">
+									<option selected value="DEFAULT" translate>Select</option>
+									<option *ngFor="let item of connectWiseContactListsData" value='{{item.id}}'>
+										{{item.name}}</option>
+								</select>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
+				<button type="button" id="connectwise_save_button" class="btn btn-primary" (click)="getConnectWiseData()"
+					data-dismiss="modal" translate>Submit</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 <!---XNFR-342---->
 <app-share-unpublished-content #shareUnPublishedComponent
