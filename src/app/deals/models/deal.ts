@@ -39,4 +39,6 @@ export class Deal {
    sfCustomFieldsDataDto: Array<SfCustomFieldsDataDTO> = new Array<SfCustomFieldsDataDTO>();
    unReadChatCount: any;
    unReadPropertyChatCount: any;
+   /****XNFR-403****/
+   forecastItemsJson = "";
 }
