@@ -10,10 +10,9 @@
         <h4 class="modal-title size-font" *ngIf="isUpdateUser" translate>Edit {{checkingContactTypeName}}</h4>
       </div>
       <div class="modal-body border-bottom-1px popup_body">
-        <div class="alert alert-danger"
-                        *ngIf="validationResponse.isVisible">
-                        <strong class="pre-wrap-next-line">{{validationResponse?.responseMessage}}</strong>
-                    </div>
+        <div class="alert alert-danger" *ngIf="validationResponse.isVisible">
+          <strong class="pre-wrap-next-line">{{validationResponse?.responseMessage}}</strong>
+        </div>
         <div class="hide-scrollbar">
           <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
           <form class="form-horizontal" autocomplete="off">
@@ -25,7 +24,7 @@
               <div class="form-group col-xs-10 col-sm-10 mrg0" id="major-field-width">
                 <input type="company" style="border: none !important"
                   class="form-control padding-mobile placeholder-bg-color" id="company"
-                  [(ngModel)]="addContactuser.contactCompany"
+                  [(ngModel)]="addContactuser.contactCompany" 
                   (input)="contactCompanyChecking(addContactuser.contactCompany)" [ngModelOptions]="{standalone: true}"
                   placeholder="Company" maxlength="250">
                 <div class="textCss"></div>
@@ -284,7 +283,7 @@
         <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset"
           [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
           (click)="updateUser()" data-dismiss="modal" translate><span
-            class="btn Btn-Green transition">Update</span></button>
+            class="btn Btn-Green transition text_pd5">Update</span></button>
 
       </div>
       <div class="modal-footer popup_footer" *ngIf="isPartner" style="border:none">
@@ -297,8 +296,7 @@
           (click)="addEditContactRow()" translate><span class="btn Btn-Green transition">Proceed</span></button>
         <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset"
           [disabled]="!checkingForEmail || !isCompanyDetails || !validLimit  || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
-          (click)="updateUser()" data-dismiss="modal" translate><span
-            class="btn Btn-Green transition">Update</span></button>
+          (click)="updateUser()" translate><span class="btn Btn-Green transition text_pd5">Update</span></button>
       </div>
     </div>
   </div>

@@ -419,6 +419,10 @@
                                                    src="{{properties?.pipedriveImage}}" alt="manual"
                                                    style="height: 54px;">
                                                 <img
+                                                   *ngIf="contactList.socialNetwork=='CONNECTWISE' && contactList.synchronisedList"
+                                                   src="{{properties?.connectwiseImage}}" alt="manual"
+                                                   style="height: 54px;">
+                                                <img
                                                    *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"
                                                    src="{{properties?.marketoImage}}" alt="manual"
                                                    style="height: 70px;">
@@ -637,7 +641,8 @@
                                                    <!--XNFR-342---->
                                                    <a class="custom-icon"
                                                       *ngIf="!assignLeads && !sharedLeads && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner
-                                                          && (authenticationService.module.isPrmCompany || authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
+                                                          && (authenticationService?.module?.damAccess || authenticationService?.module?.lmsAccess
+                                                          || authenticationService?.module?.playbookAccess || authenticationService.module.isCampaign || authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
                                                       data-toggle="tooltip" data-placement="top"
                                                       (click)="openUnPublishedContentModalPopUp(contactList)"
                                                       [title]="(((authenticationService?.module?.isCampaign || authenticationService.module.isReDistribution) && !authenticationService?.module?.damAccess 
@@ -709,6 +714,9 @@
                                     <img alt="" class="imageClassCss image_effect"
                                        *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList"
                                        src="{{properties?.pipedriveImage}}">
+                                    <img alt="" class="imageClassCss image_effect"
+                                       *ngIf="contactList.socialNetwork=='CONNECTWISE' && contactList.synchronisedList"
+                                       src="{{properties?.connectwiseImage}}">
                                     <img class="imageClassCss image_effect"
                                        *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"
                                        src="{{properties?.marketoImage}}" alt="manual" style="height: 60px;">
@@ -877,7 +885,8 @@
                                        <!--XNFR-342-->
                                        <a class="Iconhover custom-grid-icon"
                                           *ngIf="!assignLeads && !sharedLeads && contactList?.noOfContacts>0 && !authenticationService?.module?.deletedPartner
-                                          && (authenticationService.module.isPrmCompany || authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
+                                          && (authenticationService?.module?.damAccess || authenticationService?.module?.lmsAccess
+                                          || authenticationService?.module?.playbookAccess || authenticationService.module.isCampaign || authenticationService.module.isReDistribution)"
                                           data-toggle="tooltip" data-placement="top"
                                           (click)="openUnPublishedContentModalPopUp(contactList)"
                                           [title]="(((authenticationService?.module?.isCampaign || authenticationService.module.isReDistribution) && !authenticationService?.module?.damAccess 
@@ -1576,7 +1585,7 @@
          <div class="modal-footer">
             <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal" translate>Close</button>
             <button type="button" class="button_blue bgcolor-unset" (click)="hasSaveAsAccess()"
-               [disabled]="assignLeads && disableSave" translate><span class="btn btn-primary transition">Save
+               [disabled]="assignLeads && disableSave" translate><span class="btn btn-primary transition text_pd5">Save
                   changes</span></button>
          </div>
       </div>

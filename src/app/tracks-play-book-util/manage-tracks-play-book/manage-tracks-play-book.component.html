@@ -5,14 +5,14 @@
 <div class="row">
     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="col-md-12 mTop mrg_top0">
+        
         <div class="portlet light remove_cardBgcolor padding_0 clearfix">
             <!--List/Grid View-->
             <div *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-                <div *ngIf="showRefreshNotification && !httpRequestLoader?.isLoading" class="alert alert-info">
-                    <strong>Please <a (click)="listLearningTracks(pagination)">click here</a> to find latest
-                        updates</strong>
-                </div>
                 <div class="portlet-title" style="border-bottom: none">
+                    <div *ngIf="showRefreshNotification && !httpRequestLoader?.isLoading" class="alert alert-info">
+                         <strong>Please <a (click)="listLearningTracks(pagination)">click here</a> to find latest updates</strong>
+                        </div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-4 col-lg-3">
                             <h4 class="pull-left m10 text-primary">{{suffixHeader}}{{titleHeader}}</h4>
@@ -24,7 +24,7 @@
                                     <div class="group-dropdown">
                                         <button
                                             [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs hidden-xs l-g-view':
-                                modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
+                                                modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
                                             style="padding: 10px !important"></button>
                                         <div class="group-dd-content">
                                             <ng-container class='m10'>

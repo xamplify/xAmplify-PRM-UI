@@ -48,8 +48,9 @@
                   <a class="close-circle" (click)="hidePopup()">
                      <i class="fa fa-times" aria-hidden="true"></i>
                   </a>
-                  <button class="button_blue bgcolor-unset" style="padding-top:0px;" id="right"
-                     (click)="openCreateFolderPopup()" translate><span class="btn btn-primary transition mr5">Create a
+                  <button class="button_blue bgcolor-unset btn-alignment" style="padding-top:0px;" id="right"
+                     (click)="openCreateFolderPopup()" translate><span
+                        class="btn btn-primary transition mr5 text_pd0">Create a
                         Folder</span></button>
                </div>
                <h4 class="modal-title" style="font-weight: 600;" translate>Add Details</h4>
@@ -241,11 +242,13 @@
                      class="btn btn-primary transition">Download <a
                         style="font-weight: 100;font-size: x-small;color: #fff;">(Preview PDF)</a></span></button>
 
-               <button type="button" class="button_blue bgcolor-unset" [disabled]="!validForm" (click)="saveOrUpdate(false)"
-                  translate><span class="btn btn-primary transition">{{saveOrUpdateButtonText}}</span></button>
+               <button type="button" class="button_blue bgcolor-unset" [disabled]="!validForm"
+                  (click)="saveOrUpdate(false)" translate><span
+                     class="btn btn-primary transition">{{saveOrUpdateButtonText}}</span></button>
 
                <button *ngIf="!isAdd" type="button" class="button_blue bgcolor-unset" [disabled]="!validForm"
-                  (click)="saveOrUpdate(true)" translate><span class="btn btn-primary transition">{{saveAsButtonText}}</span>
+                  (click)="saveOrUpdate(true)" translate><span
+                     class="btn btn-primary transition">{{saveAsButtonText}}</span>
                </button>
             </div>
          </div>

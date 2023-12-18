@@ -158,6 +158,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
 
     listForms(pagination: Pagination) {
+        this.referenceService.goToTop();
         this.referenceService.loading(this.httpRequestLoader, true);
 		/**********Vanity Url Filter**************** */
         if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
