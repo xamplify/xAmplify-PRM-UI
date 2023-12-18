@@ -795,7 +795,7 @@ legend {
 }
 
 .btn-primary:hover {
-  background-color: #4db1e2 !important;
+  background-color: #4db1e2;
 }
 
 .text-primary {
@@ -2859,3 +2859,7 @@ span.progresleft {
 
 /* XNFR-374 Grid View Enhancement END */
 
+/* sudha sri (18-12-2023) */
+.pd-top11{
+  padding-top: 11px !important;
+}
