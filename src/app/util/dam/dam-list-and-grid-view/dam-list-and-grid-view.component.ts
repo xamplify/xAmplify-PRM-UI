@@ -23,7 +23,8 @@ import { UserService } from 'app/core/services/user.service';
 import { ActionsDescription } from 'app/common/models/actions-description';
 import { Roles } from 'app/core/models/roles';
 import { SweetAlertParameterDto } from 'app/common/models/sweet-alert-parameter-dto';
-declare var $:any, swal: any;
+import { Criteria } from 'app/contacts/models/criteria';
+declare var $: any, swal: any, flatpickr;
 @Component({
 	selector: 'app-dam-list-and-grid-view',
 	templateUrl: './dam-list-and-grid-view.component.html',
@@ -67,21 +68,21 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	hasCampaignRole = false;
 	hasAllAccess = false;
 	hasDamAccess = false;
-	@Output() newItemEvent  = new EventEmitter<any>();
+	@Output() newItemEvent = new EventEmitter<any>();
 	/********XNFR-169******/
-	roles:Roles = new Roles();
+	roles: Roles = new Roles();
 	categoryId = 0;
 	showUpArrowButton = false;
 	folderViewType = "";
-	@Input() folderListViewCategoryId:any;
+	@Input() folderListViewCategoryId: any;
 	folderListView = false;
 	exportObject = {};
 	@Output() updatedItemsCountEmitter = new EventEmitter();
 	@Input() folderListViewExpanded = false;
-	SuffixHeading:string = "";
-	titleHeader:string = "";
+	SuffixHeading: string = "";
+	titleHeader: string = "";
 	actionsDivClass = "actions-block override-actions custom-width-icon min-width-thtwpx ActionAlign";
-	public fileTypes:Array<any> = new Array<any>();
+	public fileTypes: Array<any> = new Array<any>();
 	selectedFileType = "";
 	/****XNFR-255*****/
 	showWhiteLabeledPopup: boolean;
@@ -89,11 +90,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	showRefreshNotificationForHistoryAssets = false;
 	/****XNFR-381*****/
 	isChangeAsParentPdfIconClicked = false;
-	changeAsParentPdfSweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
+	changeAsParentPdfSweetAlertParameterDto: SweetAlertParameterDto = new SweetAlertParameterDto();
 	childAssetId = 0;
 	/****XNFR-381*****/
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
-			public videoFileService: VideoFileService, public userService: UserService, public actionsDescription:ActionsDescription) {
+		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
@@ -103,13 +104,18 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		let isEditVideo = this.router.url.indexOf('/editVideo')>-1;
-		let isPreviewVideo = this.router.url.indexOf('/previewVideo')>-1;
-		if(!isEditVideo && !isPreviewVideo){
+		let isEditVideo = this.router.url.indexOf('/editVideo') > -1;
+		let isPreviewVideo = this.router.url.indexOf('/previewVideo') > -1;
+		if (!isEditVideo && !isPreviewVideo) {
 			this.callInitMethods();
 			this.videoFileService.campaignReport = false;
 		}
-		this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';		
+		this.SuffixHeading = this.isPartnerView ? 'Shared ' : 'Manage ';
+		if (this.isPartnerView) {
+			this.filterOptions.push({ 'name': 'publishedby', 'value': 'Published By' });
+		} else {
+			this.filterOptions.push({ 'name': 'createdby', 'value': 'Created By' })
+		}
 	}
 
 	callInitMethods() {
@@ -121,42 +127,42 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.hasAllAccess = this.referenceService.hasAllAccess();
 		this.isPartnerView = this.router.url.indexOf('/shared') > -1;
 		this.startLoaders();
-		if(this.folderListViewCategoryId!=undefined){
+		if (this.folderListViewCategoryId != undefined) {
 			this.categoryId = this.folderListViewCategoryId;
 			this.folderListView = true;
-		}else{
+		} else {
 			this.viewType = this.route.snapshot.params['viewType'];
 			this.categoryId = this.route.snapshot.params['categoryId'];
 			this.folderViewType = this.route.snapshot.params['folderViewType'];
-			this.showUpArrowButton = this.categoryId!=undefined && this.categoryId!=0;
+			this.showUpArrowButton = this.categoryId != undefined && this.categoryId != 0;
 		}
 		if (this.viewType != undefined) {
 			this.modulesDisplayType = this.referenceService.setDisplayType(this.modulesDisplayType, this.viewType);
 		} else {
-			if(this.categoryId==undefined || this.categoryId==0){
+			if (this.categoryId == undefined || this.categoryId == 0) {
 				this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
-				this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
-				if(this.modulesDisplayType.isFolderListView){
+				this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ? 'g' : '';
+				if (this.modulesDisplayType.isFolderListView) {
 					this.viewType = "fl";
-					this.referenceService.goToManageAssets(this.viewType,this.isPartnerView);
-				}else if(this.modulesDisplayType.isFolderGridView){
+					this.referenceService.goToManageAssets(this.viewType, this.isPartnerView);
+				} else if (this.modulesDisplayType.isFolderGridView) {
 					this.viewType = "fg";
-					this.referenceService.goToManageAssets(this.viewType,this.isPartnerView);
+					this.referenceService.goToManageAssets(this.viewType, this.isPartnerView);
 				}
 			}
 		}
 
 		let message = this.referenceService.assetResponseMessage;
-		if (this.referenceService.isAssetDetailsUpldated && !this.folderListViewExpanded){
+		if (this.referenceService.isAssetDetailsUpldated && !this.folderListViewExpanded) {
 			this.customResponse = new CustomResponse('SUCCESS', message, true);
-		}else{
-			if(message.length>0){
+		} else {
+			if (message.length > 0) {
 				this.customResponse = new CustomResponse('SUCCESS', message, true);
 			}
 		}
-		
-		if(this.viewType!="fl" && this.viewType!="fg"){
-			this.getCompanyId();		
+
+		if (this.viewType != "fl" && this.viewType != "fg") {
+			this.getCompanyId();
 		}
 	}
 
@@ -170,16 +176,16 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	/********XNFR-169******/
 	setViewType(viewType: string) {
-		if(this.viewType!=viewType){
+		if (this.viewType != viewType) {
 			if (this.folderListView) {
 				let gridView = "g" == viewType;
 				this.modulesDisplayType.isGridView = gridView;
 				this.modulesDisplayType.isListView = !gridView;
 			} else {
 				if (this.folderViewType != undefined && viewType != "fg") {
-					this.referenceService.goToManageAssetsByCategoryId("fg", viewType, this.categoryId,this.isPartnerView);
+					this.referenceService.goToManageAssetsByCategoryId("fg", viewType, this.categoryId, this.isPartnerView);
 				} else {
-					this.referenceService.goToManageAssets(viewType,this.isPartnerView);
+					this.referenceService.goToManageAssets(viewType, this.isPartnerView);
 				}
 				this.titleHeader = ' Assets';
 			}
@@ -231,7 +237,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 
-	
+
 
 	stopLoadersAndShowError(error: any) {
 		this.stopLoaders();
@@ -245,7 +251,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.referenceService.loading(this.listLoader, false);
 	}
 	listAssets(pagination: Pagination) {
-		if(!this.folderListView){
+		if (!this.folderListView) {
 			this.referenceService.goToTop();
 		}
 		this.startLoaders();
@@ -270,17 +276,17 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 						}
 					});
 					asset.toolTipTagNames = toolTipTagNames;
-					if(asset.videoFileDTO && toolTipTagNames!=null && toolTipTagNames.length>0){
-					asset.videoFileDTO.toolTipTagNames = toolTipTagNames;
+					if (asset.videoFileDTO && toolTipTagNames != null && toolTipTagNames.length > 0) {
+						asset.videoFileDTO.toolTipTagNames = toolTipTagNames;
 					}
-					if(asset.videoFileDTO && asset.tagNames!=null && asset.tagNames.length>0){
-						asset.videoFileDTO.tagNames  = asset.tagNames.slice();
+					if (asset.videoFileDTO && asset.tagNames != null && asset.tagNames.length > 0) {
+						asset.videoFileDTO.tagNames = asset.tagNames.slice();
 					}
-					if(asset.publishingOrWhiteLabelingInProgress){
+					if (asset.publishingOrWhiteLabelingInProgress) {
 						publishingAssets.push(asset);
 					}
 				});
-				this.showRefreshNotification = publishingAssets.length>0;
+				this.showRefreshNotification = publishingAssets.length > 0;
 				pagination = this.pagerService.getPagedItems(pagination, data.assets);
 			}
 			this.stopLoaders();
@@ -290,7 +296,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	listPublishedAssets(pagination: Pagination) {
-		if(!this.folderListView){
+		if (!this.folderListView) {
 			this.referenceService.goToTop();
 		}
 		this.startLoaders();
@@ -396,11 +402,11 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				let publishingAssets = [];
 				$.each(data.assets, function (_index: number, asset: any) {
 					asset.displayTime = new Date(asset.createdDateInUTCString);
-					if(asset.publishingOrWhiteLabelingInProgress){
+					if (asset.publishingOrWhiteLabelingInProgress) {
 						publishingAssets.push(asset);
 					}
 				});
-				this.showRefreshNotificationForHistoryAssets = publishingAssets.length>0;
+				this.showRefreshNotificationForHistoryAssets = publishingAssets.length > 0;
 				pagination = this.pagerService.getPagedItems(pagination, data.assets);
 			}
 			this.loading = false;
@@ -417,9 +423,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	addOrEdit(id: number) {
 		if (this.isPartnerView) {
-			this.referenceService.navigateToRouterByViewTypes("/home/dam/editp/" + id,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+			this.referenceService.navigateToRouterByViewTypes("/home/dam/editp/" + id, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 		} else {
-			this.referenceService.navigateToRouterByViewTypes("/home/dam/edit/" + id,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+			this.referenceService.navigateToRouterByViewTypes("/home/dam/edit/" + id, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 		}
 	}
 
@@ -439,75 +445,75 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.historyPagination = new Pagination();
 	}
 
-    viewAnalytics(asset: any) {
-        this.loading = true;
-        localStorage.setItem('assetName', asset.assetName);
-        let isVideo = this.isVideo(asset.assetType);
-        if (isVideo) {
-        	 if (this.isPartnerView) {
-                this.navigateToDamAnalyticsForPartnerLogin(asset.id);
-            } else {
-                try {
-                    this.videoFileService.getVideo(asset.alias, 'DRAFT')
-                        .subscribe((editVideoFile: SaveVideoFile) => {
-                            if (editVideoFile.access) {
-                                if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
-                                    editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
-                                }
-                                editVideoFile.damId = asset.id;
-                                this.videoFileService.saveVideoFile = editVideoFile;
-                                this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
-                                this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
-                                this.videoFileService.campaignReport = true;
-                                localStorage.setItem('campaignReport', 'true');
-                                localStorage.setItem('saveVideoFile', JSON.stringify(editVideoFile));
+	viewAnalytics(asset: any) {
+		this.loading = true;
+		localStorage.setItem('assetName', asset.assetName);
+		let isVideo = this.isVideo(asset.assetType);
+		if (isVideo) {
+			if (this.isPartnerView) {
+				this.navigateToDamAnalyticsForPartnerLogin(asset.id);
+			} else {
+				try {
+					this.videoFileService.getVideo(asset.alias, 'DRAFT')
+						.subscribe((editVideoFile: SaveVideoFile) => {
+							if (editVideoFile.access) {
+								if (editVideoFile.imageFiles == null || editVideoFile.gifFiles == null) {
+									editVideoFile.gifFiles = []; editVideoFile.imageFiles = [];
+								}
+								editVideoFile.damId = asset.id;
+								this.videoFileService.saveVideoFile = editVideoFile;
+								this.referenceService.selectedVideoLogo = editVideoFile.brandingLogoUri;
+								this.referenceService.selectedVideoLogodesc = editVideoFile.brandingLogoDescUri;
+								this.videoFileService.campaignReport = true;
+								localStorage.setItem('campaignReport', 'true');
+								localStorage.setItem('saveVideoFile', JSON.stringify(editVideoFile));
 								/*****XNFR-169***/
 								this.navigateToPartnerAnalytics(asset.id);
-                            } else {
-                                this.authenticationService.forceToLogout();
-                            }
-                        },
-                        (error: any) => {
-                            this.xtremandLogger.error('Error In: show edit videos ():' + error);
-                            this.xtremandLogger.errorPage(error);
-                        }
-                        );
-                } catch (error) {
-                    this.xtremandLogger.error('error' + error);
-                }
-            }
-        } else {
+							} else {
+								this.authenticationService.forceToLogout();
+							}
+						},
+							(error: any) => {
+								this.xtremandLogger.error('Error In: show edit videos ():' + error);
+								this.xtremandLogger.errorPage(error);
+							}
+						);
+				} catch (error) {
+					this.xtremandLogger.error('error' + error);
+				}
+			}
+		} else {
 			/*****XNFR-169***/
-            if (this.isPartnerView) {
-                this.navigateToDamAnalyticsForPartnerLogin(asset.id);
-            } else {
+			if (this.isPartnerView) {
+				this.navigateToDamAnalyticsForPartnerLogin(asset.id);
+			} else {
 				this.navigateToPartnerAnalytics(asset.id);
-            }
-        }
-    }
+			}
+		}
+	}
 
 	/*****XNFR-169***/
-	navigateToPartnerAnalytics(id:number){
-		let url = "/home/dam/partnerAnalytics/"+id;
-		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+	navigateToPartnerAnalytics(id: number) {
+		let url = "/home/dam/partnerAnalytics/" + id;
+		this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 	}
 
-	navigateToDamAnalyticsForPartnerLogin(id:number){
+	navigateToDamAnalyticsForPartnerLogin(id: number) {
 		let url = "/home/dam/pda/" + id;
-		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+		this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 	}
 
 
-    editDetails(id: number, assetType: string, alias:string, beeTemplate : boolean, videoId:number) {
+	editDetails(id: number, assetType: string, alias: string, beeTemplate: boolean, videoId: number) {
 		this.loading = true;
-        if (!beeTemplate && this.isVideo(assetType)) {
-			let url = "/home/dam/editVideo/"+videoId+"/"+id;
-			this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
-        } else {
+		if (!beeTemplate && this.isVideo(assetType)) {
+			let url = "/home/dam/editVideo/" + videoId + "/" + id;
+			this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
+		} else {
 			/*****XNFR-169***/
-			let url = "/home/dam/editDetails/"+id;
-			this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
-        }
+			let url = "/home/dam/editDetails/" + id;
+			this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
+		}
 	}
 
 	refreshList() {
@@ -532,13 +538,13 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		} else if (showPublishPopup) {
 			this.selectedAssetId = this.asset.id;
 			this.showPublishPopup = true;
-		}else if(campaign){
+		} else if (campaign) {
 			this.campaignRouter(this.asset.alias, this.asset.viewBy);
-		}else if(edit){
-            this.editDetails(this.asset.id, this.asset.assetType, this.asset.alias, this.asset.beeTemplate, this.asset.videoId);
-        }else if(analytics){
-            this.viewAnalytics(this.asset);
-        }
+		} else if (edit) {
+			this.editDetails(this.asset.id, this.asset.assetType, this.asset.alias, this.asset.beeTemplate, this.asset.videoId);
+		} else if (analytics) {
+			this.viewAnalytics(this.asset);
+		}
 
 	}
 
@@ -554,14 +560,14 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.callInitMethods();
 	}
 	/*****Preview Asset******* */
-    preview(asset: any) {
-        if (this.isVideo(asset.assetType)) {
-			let url = "/home/dam/previewVideo/"+asset.videoId+"/"+asset.id;
-			this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
-        } else {
-            this.isPreview = true;
-            this.asset = asset;
-        }
+	preview(asset: any) {
+		if (this.isVideo(asset.assetType)) {
+			let url = "/home/dam/previewVideo/" + asset.videoId + "/" + asset.id;
+			this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
+		} else {
+			this.isPreview = true;
+			this.asset = asset;
+		}
 	}
 
 	previewAssetPopupEmitter() {
@@ -597,21 +603,21 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.asset = event;
 	}
 
-	deleteAssetSuccessEmitter(response:any) {
-		if(response.statusCode==200){
-		this.customResponse = new CustomResponse('SUCCESS', this.asset.assetName + " Deleted Successfully", true);
-		this.deleteAsset = false;
-		this.referenceService.loading(this.listLoader, false);
-		this.asset = {};
-		this.pagination.pageIndex = 1;
-		if(this.isPartnerView){
-			this.findFileTypesForPartnerView();
-		}else{
-			this.findFileTypes();
-		}
-		this.listAssets(this.pagination);
-		this.callFolderListViewEmitter();
-		}else if(response.statusCode==401){
+	deleteAssetSuccessEmitter(response: any) {
+		if (response.statusCode == 200) {
+			this.customResponse = new CustomResponse('SUCCESS', this.asset.assetName + " Deleted Successfully", true);
+			this.deleteAsset = false;
+			this.referenceService.loading(this.listLoader, false);
+			this.asset = {};
+			this.pagination.pageIndex = 1;
+			if (this.isPartnerView) {
+				this.findFileTypesForPartnerView();
+			} else {
+				this.findFileTypes();
+			}
+			this.listAssets(this.pagination);
+			this.callFolderListViewEmitter();
+		} else if (response.statusCode == 401) {
 			this.customResponse = new CustomResponse('ERROR', response.message, true);
 		}
 	}
@@ -620,7 +626,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.customResponse = new CustomResponse('ERROR', message, true);
 		this.deleteAsset = false;
 		this.referenceService.loading(this.listLoader, false);
-		this.asset = {};		
+		this.asset = {};
 	}
 
 	deleteAssetLoaderEmitter() {
@@ -632,121 +638,122 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		this.asset = {};
 	}
 
-	viewDetails(asset:any){
+	viewDetails(asset: any) {
 		/*****XNFR-169***/
-		let url = "/home/dam/sharedp/view/"+asset.id;
-		this.referenceService.navigateToRouterByViewTypes(url,this.categoryId,this.viewType,this.folderViewType,this.folderListView);
+		let url = "/home/dam/sharedp/view/" + asset.id;
+		this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
 	}
-    getDefaultVideoSettings() {
-        this.userService.getVideoDefaultSettings().subscribe((data) => { this.referenceService.defaultPlayerSettings = data; });
-    }
-    
-    isVideo(filename: any) {
-        const parts = filename.split('.');
-        const ext = parts[parts.length - 1];
-        switch (ext.toLowerCase()) {
-            case 'm4v':
-            case 'mkv':
-            case 'avi':
-            case 'mpg':
-            case 'mp4':
-            case 'flv':
-            case 'mov':
-            case 'wmv':
-            case 'divx':
-            case 'f4v':
-            case 'mpeg':
-            case 'vob':
-            case 'xvid':
-                // etc
-                return true;
-        }
-        return false;
-    }
-    
-    listAssetsByType(videoType: string) {
-        this.pagination.pageIndex = 1;
-        this.pagination.maxResults = 12;
-        this.pagination.type = videoType;
-        this.pagination.userId = this.loggedInUserId;
-        this.sortOption.searchKey = null;
-        this.pagination.searchKey = this.sortOption.searchKey;
-        this.listAssets(this.pagination);
-    }
-    
-    campaignRouter(alias:string, viewBy:string) {
-        try{
-		this.referenceService.showSweetAlertProcessingLoader("We are taking to you create campaign page.");
-         this.videoFileService.getVideo(alias, viewBy)
-             .subscribe((videoFile: SaveVideoFile) => {
-                 if(videoFile.access){
-                 this.referenceService.campaignVideoFile = videoFile;
-                 this.referenceService.selectedCampaignType = 'video';
-                 this.referenceService.isCampaignFromVideoRouter = true;
-                 this.router.navigateByUrl('/home/campaigns/create/'+this.referenceService.selectedCampaignType);
-				 this.referenceService.closeSweetAlertWithDelay();
-                 }else{
-					this.referenceService.closeSweetAlert();
-                     this.authenticationService.forceToLogout();
-                 }
-             },
-             (error: string) => {
-				this.referenceService.closeSweetAlert();
-                 this.xtremandLogger.error('Error In: show campaign videos ():' + error);
-                 this.xtremandLogger.errorPage(error);
-             });
-           }catch(error){ this.xtremandLogger.error('error'+error);}
-     }
+	getDefaultVideoSettings() {
+		this.userService.getVideoDefaultSettings().subscribe((data) => { this.referenceService.defaultPlayerSettings = data; });
+	}
 
-
-	 callFolderListViewEmitter(){
-		if(this.folderListView){
-			this.exportObject['categoryId'] = this.categoryId;
-            this.exportObject['itemsCount'] = this.pagination.totalRecords;	
-            this.updatedItemsCountEmitter.emit(this.exportObject);
+	isVideo(filename: any) {
+		const parts = filename.split('.');
+		const ext = parts[parts.length - 1];
+		switch (ext.toLowerCase()) {
+			case 'm4v':
+			case 'mkv':
+			case 'avi':
+			case 'mpg':
+			case 'mp4':
+			case 'flv':
+			case 'mov':
+			case 'wmv':
+			case 'divx':
+			case 'f4v':
+			case 'mpeg':
+			case 'vob':
+			case 'xvid':
+				// etc
+				return true;
 		}
-	 }
+		return false;
+	}
 
-	 findFileTypes(){
+	listAssetsByType(videoType: string) {
+		this.pagination.pageIndex = 1;
+		this.pagination.maxResults = 12;
+		this.pagination.type = videoType;
+		this.pagination.userId = this.loggedInUserId;
+		this.sortOption.searchKey = null;
+		this.pagination.searchKey = this.sortOption.searchKey;
+		this.listAssets(this.pagination);
+	}
+
+	campaignRouter(alias: string, viewBy: string) {
+		try {
+			this.referenceService.showSweetAlertProcessingLoader("We are taking to you create campaign page.");
+			this.videoFileService.getVideo(alias, viewBy)
+				.subscribe((videoFile: SaveVideoFile) => {
+					if (videoFile.access) {
+						this.referenceService.campaignVideoFile = videoFile;
+						this.referenceService.selectedCampaignType = 'video';
+						this.referenceService.isCampaignFromVideoRouter = true;
+						this.router.navigateByUrl('/home/campaigns/create/' + this.referenceService.selectedCampaignType);
+						this.referenceService.closeSweetAlertWithDelay();
+					} else {
+						this.referenceService.closeSweetAlert();
+						this.authenticationService.forceToLogout();
+					}
+				},
+					(error: string) => {
+						this.referenceService.closeSweetAlert();
+						this.xtremandLogger.error('Error In: show campaign videos ():' + error);
+						this.xtremandLogger.errorPage(error);
+					});
+		} catch (error) { this.xtremandLogger.error('error' + error); }
+	}
+
+
+	callFolderListViewEmitter() {
+		if (this.folderListView) {
+			this.exportObject['categoryId'] = this.categoryId;
+			this.exportObject['itemsCount'] = this.pagination.totalRecords;
+			this.updatedItemsCountEmitter.emit(this.exportObject);
+		}
+	}
+
+	findFileTypes() {
 		this.loading = true;
-		 this.damService.findFileTypes(this.loggedInUserCompanyId,this.categoryId).subscribe(
-			 response=>{
+		this.damService.findFileTypes(this.loggedInUserCompanyId, this.categoryId).subscribe(
+			response => {
 				this.fileTypes = response.data;
 				this.loading = false;
-			 },error=>{
+			}, error => {
 				this.fileTypes = [];
 				this.loading = false;
-			 }
-		 );
-	 }
-
-	 findFileTypesForPartnerView() {
-		this.loading = true;
-		this.damService.findFileTypesForPartnerView(this.vanityLoginDto,this.categoryId).subscribe(
-			response=>{
-			   this.fileTypes = response.data;
-			   this.loading = false;
-			},error=>{
-				this.loading = false;
-			   this.fileTypes = [];
 			}
 		);
 	}
 
-	 filterAssetsByFileType(event:any){
+	findFileTypesForPartnerView() {
+		this.loading = true;
+		this.damService.findFileTypesForPartnerView(this.vanityLoginDto, this.categoryId).subscribe(
+			response => {
+				this.fileTypes = response.data;
+				this.loading = false;
+			}, error => {
+				this.loading = false;
+				this.fileTypes = [];
+			}
+		);
+	}
+
+	filterAssetsByFileType(event: any) {
 		this.pagination.pageIndex = 1;
 		this.pagination.filterBy = event;
+		this.showFilterOption = false;
 		this.listItems(this.pagination);
-	 }
+	}
 
-	 /*****XNFR-255******* */
-	 openWhiteLabeledPopup(assetId: number) {
+	/*****XNFR-255******* */
+	openWhiteLabeledPopup(assetId: number) {
 		this.showWhiteLabeledPopup = true;
 		this.selectedAssetId = assetId;
 	}
 
 	/****XNFR-381*****/
-	changeAsParentPdf(assetId:number){
+	changeAsParentPdf(assetId: number) {
 		this.childAssetId = assetId;
 		this.changeAsParentPdfSweetAlertParameterDto.text = 'Are you sure you want to switch this child template as the parent template?';
 		this.changeAsParentPdfSweetAlertParameterDto.confirmButtonText = "Yes,swtich it";
@@ -754,31 +761,229 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	/****XNFR-381*****/
-	changeAsParentPdfEmitter(event:boolean){
-		if(event){
+	changeAsParentPdfEmitter(event: boolean) {
+		if (event) {
 			this.customResponse = new CustomResponse();
 			this.loading = true;
 			this.referenceService.showSweetAlertProceesor('We are processing your request');
 			this.damService.changeAsParentAsset(this.childAssetId).subscribe(
-				response=>{
+				response => {
 					this.resetChangeAsParentPdfValues();
-					this.customResponse = new CustomResponse('SUCCESS','Template switched successfully',true);
+					this.customResponse = new CustomResponse('SUCCESS', 'Template switched successfully', true);
 					this.referenceService.closeSweetAlert();
 					this.listAssets(this.pagination);
-				},(error:any)=>{
+				}, (error: any) => {
 					this.resetChangeAsParentPdfValues();
 					this.loading = false;
 					this.referenceService.closeSweetAlert();
 					let errorMessage = this.referenceService.getBadRequestErrorMessage(error);
-					this.customResponse = new CustomResponse('ERROR',errorMessage,true);
+					this.customResponse = new CustomResponse('ERROR', errorMessage, true);
 				});
-		}else{
+		} else {
 			this.resetChangeAsParentPdfValues();
 		}
 	}
 	/****XNFR-381*****/
-	resetChangeAsParentPdfValues(){
+	resetChangeAsParentPdfValues() {
 		this.childAssetId = 0;
 		this.isChangeAsParentPdfIconClicked = false;
+	}
+
+	/**** XNFR-409 *****/
+	showFilterOption: boolean;
+	criteria = new Criteria();
+	criterias = new Array<Criteria>();
+	fromDateFilter: any;
+	toDateFilter: any;
+	createdOnDate: any
+	filterResponse: CustomResponse = new CustomResponse();
+	filterMode: boolean = false;
+	isValidationErrorMessage: boolean
+	filterConditionErrorMessage: any;
+	isAssetsType: boolean;
+	isclearFilter: boolean;
+	filterOptions = [
+		{ 'name': '', 'value': 'Field Name*' },
+		{ 'name': 'assetsname', 'value': 'Assets Name' },
+		{ 'name': 'folder', 'value': 'Folder' },
+		{ 'name': 'type', 'value': 'Type' },
+		{ 'name': 'tags', 'value': 'Tags' },
+	];
+	filterConditions = [
+		{ 'name': '', 'value': 'Condition*' },
+		{ 'name': 'eq', 'value': '=' },
+		{ 'name': 'like', 'value': 'Contains' },
+	];
+	filterOption = this.filterOptions[0];
+
+	toggleFilterOption() {
+		this.showFilterOption = !this.showFilterOption;
+		this.criterias.splice(0)
+		this.fromDateFilter = "";
+		this.toDateFilter = "";
+		this.createdOnDate = "";
+		let criteria = new Criteria();
+		this.criterias.push(criteria);
+		this.pagination.filterOptionEnable = true;
+		if (!this.showFilterOption) {
+			this.pagination.fromDateFilterString = "";
+			this.pagination.toDateFilterString = "";
+			this.filterResponse.isVisible = false;
+			if (this.filterMode) {
+				this.pagination.pageIndex = 1;
+				//this.listCampaign(this.pagination);
+				this.filterMode = false;
+			}
+		} else {
+			this.filterMode = false;
+		}
+		if (this.router.url.indexOf('/fl') > -1 || this.router.url.indexOf('/fg') > -1) {
+			this.filterOptions = this.filterOptions.filter(item => item.name !== 'folder'); //XNFR-409
+		} else if (this.router.url.indexOf('/fg') > -1) {
+			this.filterOptions = this.filterOptions.filter(item => item.name !== 'folder');//XNFR-409
+		} else if (this.router.url.indexOf('/g') > -1) {
+			this.filterOptions = this.filterOptions.filter(item => item.name !== 'tags');//XNFR-409
+		}
+	}
+	addNewRow() {
+		let criteria = new Criteria();
+		this.criterias.push(criteria);
+	}
+	cancelSegmentationRow(rowId: number) {
+		if (rowId !== -1) {
+			this.criterias.splice(rowId, 1);
+		}
+	}
+	closeFilterOption() {
+		this.showFilterOption = false;
+		this.fromDateFilter = "";
+		this.toDateFilter = "";
+		this.createdOnDate = "";
+		this.criterias.slice(0, this.criterias.length);
+		this.pagination.fromDateFilterString = "";
+		this.pagination.toDateFilterString = "";
+		this.filterResponse.isVisible = false;
+		if (this.filterMode) {
+			this.pagination.pageIndex = 1;
+			//this.listCampaign(this.pagination);
+			this.filterMode = false;
+		}
+	}
+	validateDateFilters() {
+		console.log(this.criterias);
+		if (this.fromDateFilter != undefined && this.fromDateFilter != "") {
+			var fromDate = Date.parse(this.fromDateFilter);
+			this.isValidationErrorMessage = false;
+			if (this.toDateFilter != undefined && this.toDateFilter != "") {
+				var toDate = Date.parse(this.toDateFilter);
+				if (fromDate <= toDate) {
+					this.pagination.pageIndex = 1;
+					this.pagination.fromDateFilterString = this.fromDateFilter;
+					this.pagination.toDateFilterString = this.toDateFilter;
+					this.filterMode = true;
+					this.filterResponse.isVisible = false;
+					this.pagination.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+					//this.listCampaign(this.pagination);
+				} else {
+					this.isValidationErrorMessage = true;
+					this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
+				}
+			} else {
+				this.isValidationErrorMessage = true;
+				this.filterResponse = new CustomResponse('ERROR', "Please pick To Date", true);
+			}
+		} else {
+			// this.filterResponse = new CustomResponse('ERROR', "Please pick From Date", true);
+		}
+	}
+	assetsFilter() {
+		try {
+			this.validateDateFilters();
+			for (let i = 0; i < this.criterias.length; i++) {
+				if (this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
+					this.isValidationErrorMessage = true;
+					if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
+						this.filterConditionErrorMessage = "Please fill the required data at position " + i;
+					} else if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*") {
+						this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + i;
+					} else if (this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
+						this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + i;
+					} else if (this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
+						this.filterConditionErrorMessage = "Please select the Condition and Value at position " + i;
+					} else if (this.criterias[i].operation == "Condition*") {
+						this.filterConditionErrorMessage = "Please select the Condition at position " + i;
+					} else if (this.criterias[i].property == "Field Name*") {
+						this.filterConditionErrorMessage = "Please select the Field Name at position " + i;
+					} else if (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "") {
+						this.filterConditionErrorMessage = "Please fill the value at position " + i;
+					}
+					break;
+				} else {
+					this.isValidationErrorMessage = false;
+				}
+			}
+
+			if (!this.isValidationErrorMessage) {
+				for (let i = 0; i < this.criterias.length; i++) {
+					if (this.criterias[i].operation == "=") {
+						this.criterias[i].operation = "eq";
+						this.isAssetsType = false;
+					}
+
+					if (this.criterias[i].operation == "Contains") {
+						this.criterias[i].operation = "like";
+						this.isAssetsType = false;
+					}
+
+					if (this.criterias[i].property == "Assets Name") {
+						this.criterias[i].property = "assetsname";
+						this.isAssetsType = false;
+					}
+					else if (this.criterias[i].property == "Folder") {
+						this.criterias[i].property = "folder";
+						this.isAssetsType = false;
+					}
+					else if (this.criterias[i].property == "Type") {
+						this.criterias[i].property = "type";
+						this.pagination.filterBy = this.criterias[i].value1;
+						this.isAssetsType = true;
+					}
+					else if (this.criterias[i].property == "Tags") {
+						this.criterias[i].property = "tags";
+						this.isAssetsType = false;
+					}
+					else if (this.criterias[i].property == "Created By") {
+						this.criterias[i].property = "createdby";
+						this.isAssetsType = false;
+					}
+					console.log(this.criterias[i].operation);
+					console.log(this.criterias[i].property);
+					console.log(this.criterias[i].value1);
+				}
+				this.pagination.criterias = this.criterias;
+				this.showFilterOption = false;
+				console.log(this.criterias);
+				this.pagination.pageIndex = 1;
+				this.pagination.filterBy = "tharak"
+				this.showFilterOption = false;
+				this.listItems(this.pagination);
+			}
+			this.isclearFilter = true;
+		} catch (error) {
+			this.xtremandLogger.error(error, "manageassetsfilter", "assetsFilter()");
+		}
+	}
+	clearFilterOptions() {
+		this.isclearFilter = false;
+		this.showFilterOption = false;
+		this.criterias.splice(0)
+		this.isValidationErrorMessage = false;
+		this.criterias = new Array<Criteria>();
+		this.listItems(this.pagination);
+	}
+	eventEnterKeyHandler(keyCode: any) {
+		if (keyCode === 13) {
+			this.assetsFilter();
+		}
 	}
 }

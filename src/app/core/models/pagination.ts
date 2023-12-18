@@ -113,5 +113,6 @@ export class Pagination {
 	selectedVideoId = 0;
 	partnerJourneyFilter = false;
 	detailedAnalytics = false;
-
+	/***XNFR-409 *****/
+    filterOptionEnable:boolean = false;
 }
