@@ -2836,6 +2836,12 @@ span.progresleft {
   height: 340px;
 }
 
+.xamplify-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 
 
 /* XNFR-374 Grid View Enhancement END */

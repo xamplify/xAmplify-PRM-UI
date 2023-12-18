@@ -363,35 +363,32 @@
                                 </ng-container>
                                 <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}"  alt="Not Found">
                                 <div>
-                                    <h4 class="overflow-hidden GridViewCotent gridViewTextAlignmnent" data-placement="bottom" data-toggle="tooltip" title="{{landingPage.name}}">
-                                       <b>Page Name:</b> {{landingPage.name|slice:0:15}} <span *ngIf="landingPage.name?.length>15">....</span>
+                                    <h4 class="xamplify-ellipsis overflow-hidden GridViewCotent gridViewTextAlignmnent" data-placement="bottom" data-toggle="tooltip" title="{{landingPage.name}}">
+                                       <b>Page Name:</b> {{landingPage.name}}
                                     </h4>
+                                    <h6 class="GridViewCotent xamplify-ellipsis" title="{{landingPage.categoryName}}">
+                                        <b>Folder:</b> {{landingPage.categoryName}}
+                                     </h6>
                                     <!---XNFR-255-->
                                     <div class="aligntowbtns">
-                                    <ng-container *ngIf="landingPage?.whiteLabeledLandingPageReceivedFromVendor">
-                                        <h6 class="GridViewCotent" title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}">
-                                            <span translate> <b>Received From:</b> {{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}</span>
-                                        </h6>
-                                        <span class="view-banner-white-labeled LabeledmarginLeft">White-Labeled</span>
-                                    </ng-container>
-                                    <span  class="view-banner green-btn-cu LabeledmarginLeft" translate>{{landingPage.type}}</span>
+                                        <ng-container *ngIf="landingPage?.whiteLabeledLandingPageReceivedFromVendor">
+                                            <h6 class="GridViewCotent xamplify-ellipsis" title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}">
+                                                <b translate>Received From:</b> {{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}} 
+                                            </h6>
+                                            <span class="view-banner-white-labeled LabeledmarginLeft">White-Labeled</span>
+                                        </ng-container>
+                                        <span  class="view-banner green-btn-cu LabeledmarginLeft">{{landingPage.type}}</span>
                                     </div> 
                                     <!---XNFR-255-->
-                                    <h6 class="GridViewCotent" title="{{landingPage.categoryName}}" translate>
-                                       <b>Folder:</b> {{landingPage.categoryName | slice:0:25}}
-                                        <span *ngIf="landingPage.categoryName?.length>25">..</span>
+                                     <h6 *ngIf="!isPartnerLandingPage" translate class="GridViewCotent"> <b>Created On:</b>   
+                                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"></app-timestamp>
                                     </h6>
-                                    <h6 *ngIf="!isPartnerLandingPage" translate class="GridViewCotent"> <b>Created On:</b>   
-                                                <app-timestamp [isOnlyDate]="true"
-                                                    [dateAndTime]="landingPage.displayTime"> </app-timestamp>
-                                            </h6>
-                                    <h6 *ngIf="isPartnerLandingPage" translate class="GridViewCotent"> <b>Shared On:</b> 
-                                                <app-timestamp [isOnlyDate]="true"
-                                                    [dateAndTime]="landingPage.displayTime"> </app-timestamp>
-                                            </h6>
-                                    <h6 title="{{landingPage.createdUser}}" translate class="GridViewCotent"> <b>By:</b> 
-                                         {{landingPage.createdUser | slice:0:25}} 
-                                        <span *ngIf="landingPage.createdUser?.length>25">..</span>
+                                    <h6 *ngIf="isPartnerLandingPage" translate class="GridViewCotent"><b>Shared On:</b> 
+                                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"></app-timestamp>
+                                    </h6>
+                                   
+                                    <h6 title="{{landingPage.createdUser}}" class="GridViewCotent xamplify-ellipsis"><b>By:</b> 
+                                         {{landingPage.createdUser}} 
                                     </h6>
                                     <h6 class="moreipsis" class="GridViewCotent">
                                         <span translate>

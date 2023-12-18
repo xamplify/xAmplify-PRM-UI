@@ -157,13 +157,13 @@
                             </span>
                             <img class="email-template-preview email-image-temp-custimize image_effect" *ngIf="emailTemplate.subject"  src="{{emailTemplate.subject}}" alt="Image Not Found">
                             <img alt="" class="email-template-preview email-image-temp-custimize image_effect" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg">
-                            <h4 class="ellipsis GridViewCotent gridViewDesignTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{emailTemplate.name}}">
+                            <h4 class="ellipsis GridViewCotent gridViewDesignTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{emailTemplate?.name}}">
                                 <b translate>Template Name:</b> {{emailTemplate.name | slice:0:15}} <span *ngIf="emailTemplate.name?.length>15">...</span>  
                             </h4>
                             <div>
-                                <h6 class="GridViewCotent">
-                                    <span translate><b translate>Folder:</b>  {{emailTemplate.category | slice:0:20}} 
-                                        <span *ngIf="emailTemplate.category?.length>20">...</span>
+                                <h6 class="GridViewCotent" title="{{emailTemplate?.category}}">
+                                    <span translate><b translate>Folder:</b>  {{emailTemplate?.category | slice:0:20}} 
+                                        <span *ngIf="emailTemplate?.category?.length>20">...</span>
                                     </span>
                                 </h6>
                                 <h6 class="GridViewCotent" *ngIf="emailTemplate.type=='PARTNER'" translate>
