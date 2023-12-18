@@ -430,15 +430,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 	}
 
-
-	viewGirdHistory(asset: any) {
-		this.isGridViewHistory = true;
-		this.selectedAssetId = asset.id;
-		this.selectedAssetName = asset.assetName;
-		this.historyPagination.campaignId = asset.id;
-		this.listAssetsHistory(this.historyPagination);
-	}
-
 	closeHistory() {
 		this.isGridViewHistory = false;
 		this.selectedAssetId = 0;
