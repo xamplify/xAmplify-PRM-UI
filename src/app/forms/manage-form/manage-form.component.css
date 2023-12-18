@@ -183,3 +183,7 @@ cursor: default;
   margin: 0px !important;
   width: 100% !important;
 }
+
+.gridCardBoxHeight{
+  height: 385px !important;
+}
