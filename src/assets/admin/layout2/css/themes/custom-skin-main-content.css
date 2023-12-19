@@ -1788,7 +1788,7 @@ i.IconCustomization {
 i.IconCustomization:hover {
   border: 1px solid var(--icon-border-color) !important;
   background: var(--icon-hover-color) !important;
-  color: var(--icon-color) !important;
+  color: var(--div-bg-color) !important;
 }
 
 .IconCustomizationcondition a i {
