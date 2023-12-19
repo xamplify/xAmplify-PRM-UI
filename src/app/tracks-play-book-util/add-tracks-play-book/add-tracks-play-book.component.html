@@ -1010,7 +1010,6 @@
                             <span class="label-name">{{checkBox.name}}</span>
                           </label>
                         </div>
-                        <!-- <br> -->
                       </ng-container>
                     </ng-container>
                     <!-- ---------------------------DropDown Menu----------------------------- -->
@@ -1018,6 +1017,13 @@
                       <select class="form-control form-placeholder">
                         <option *ngFor="let dropDownValue of columnInfo.dropDownChoices">
                           {{dropDownValue.name}}</option>
+                      </select>
+                    </ng-container>
+                    <!-- ---------------------------Country(XNFR-423)----------------------------- -->
+                    <ng-container *ngIf="columnInfo.labelType=='country'">
+                      <select class="form-control form-placeholder">
+                          <option *ngFor="let countryName of countryNames">
+                              {{countryName}}</option>
                       </select>
                     </ng-container>
                     <!-- ---------------------------Quiz Choices----------------------------- -->
