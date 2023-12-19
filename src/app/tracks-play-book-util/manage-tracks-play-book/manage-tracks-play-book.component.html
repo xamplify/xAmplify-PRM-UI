@@ -107,7 +107,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let learningTrack of pagination.pagedItems ;let i =index">
-                                        <td class="hidden-xs text-cente" style="width: 10%;">
+                                        <td class="hidden-xs text-center" style="width: 10%;">
                                             <img class="img-track-list" [src]="learningTrack.featuredImage" onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack?.title}}">
                                         </td>
                                         <td>
@@ -141,9 +141,9 @@
                                         <td class="hidden-xs text-center">
                                             <app-timestamp style="display: block;margin-bottom: 4px;" [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString"></app-timestamp>
                                             <!---XNFR-327-->
-                                            <h6 *ngIf="learningTrack.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList" class="green-banner inline-flex">Published</h6>
-                                            <h6 *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList" class="view-banner inline-flex ProcessingTextWidth">
-                                                <span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span> Processing
+                                            <h6 *ngIf="learningTrack?.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList" class="green-banner inline-flex">Published</h6>
+                                            <h6 *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList" class="view-banner inline-flex">
+                                                <span><img src="assets/images/loading.gif" alt="Processing"></span> Processing
                                             </h6>
                                             <!---XNFR-327-->
                                         </td>
