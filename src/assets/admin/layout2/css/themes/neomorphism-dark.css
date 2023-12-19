@@ -3223,9 +3223,12 @@ input.field-border-customization {
 .card-background-v{
   background-color : #2b3c46 !important;
 }
-.integration_cards,
+.integration_cards{
+  background-color : #23272c !important;
+  border-radius: 10px;
+}
 .activeCRM{
-  background-color : #222528 !important;
+  background-color : #1f1f1f !important;;
   border-radius: 10px;
 }
 .setting-icon-cu:hover {
