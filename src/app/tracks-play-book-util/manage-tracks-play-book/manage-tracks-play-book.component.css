@@ -20,7 +20,7 @@
   width: auto;
   height: 100%;
   width: 100% !important;
-  border: solid 1px #dddddd;
+  border-bottom: solid 1px #dddddd;
 }
 
 .grid-box {
@@ -37,7 +37,7 @@
   border-radius: 3px;
   text-align: center;
   margin: 0 0;
-  font-size: 11px;
+  font-size: 10px !important;
   font-weight: 600;
   display: inline;
 }
@@ -192,4 +192,11 @@ p.warning-red-textcolor {
 }
 .p0-p10{
   padding: 0px 10px Im !important;
+}
+
+/*******Remove this after merging XNFR-374 */
+.grid-box h6 {
+  text-align: left !important;
+  margin: 0px !important;
+  width: 100% !important;
 }
