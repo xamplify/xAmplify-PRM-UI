@@ -75,8 +75,7 @@
                     </div>
                 </div>
                 <app-grid-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isGridView"></app-grid-loader>
-                <app-list-loader *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView ">
-                </app-list-loader>
+                <app-list-loader *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
                 <section *ngIf="modulesDisplayType.isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
                         <div class="table-responsive">
@@ -129,9 +128,7 @@
                                         <td class="hidden-xs text-center">
                                             <ng-container *ngIf="learningTrack.tagNames?.length > 0">
                                                 <div class="tag tablegray-tag">
-                                                    <span data-toggle="tooltip" data-placement="top" title="{{learningTrack.tagNames[0]}}">
-                                                        {{learningTrack.tagNames[0]}}
-                                                    </span>
+                                                    <span data-toggle="tooltip" data-placement="top" title="{{learningTrack.tagNames[0]}}">{{learningTrack.tagNames[0]}}</span>
                                                 </div>
                                                 <ng-container *ngIf="learningTrack.tagNames.length > 1">
                                                     <div class="tag tablegray-tag">
@@ -142,12 +139,10 @@
                                             </ng-container>
                                         </td>
                                         <td class="hidden-xs text-center">
-                                            <app-timestamp style="display: block;margin-bottom: 4px;"
-                                                [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString">
-                                            </app-timestamp>
+                                            <app-timestamp style="display: block;margin-bottom: 4px;" [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString"></app-timestamp>
                                             <!---XNFR-327-->
-                                            <h6 *ngIf="learningTrack.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList" class="view-banner published" translate>Published</h6>
-                                            <h6 *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList" class="view-banner ProcessingTextWidth">
+                                            <h6 *ngIf="learningTrack.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList" class="green-banner inline-flex">Published</h6>
+                                            <h6 *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList" class="view-banner inline-flex ProcessingTextWidth">
                                                 <span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span> Processing
                                             </h6>
                                             <!---XNFR-327-->
@@ -155,8 +150,7 @@
                                         <td>
                                             <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')">
                                                 <div class="progress">
-                                                    <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{learningTrack.progress}}%" [ngStyle]="{'width': learningTrack.progress + '%'}" style="border-radius:1px;" role="progressbar">
-                                                    </div>
+                                                    <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{learningTrack.progress}}%" [ngStyle]="{'width': learningTrack.progress + '%'}" style="border-radius:1px;" role="progressbar"></div>
                                                 </div>
                                                 <span *ngIf="learningTrack.progress != undefined">{{learningTrack.progress}}%</span>
                                                 <span *ngIf="learningTrack.progress == undefined">0%</span>
@@ -293,7 +287,7 @@
                     </div>
                 </div>
                 <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
-                    <div *ngIf="pagination.pagedItems.length !== 0">
+                    <div *ngIf="pagination.pagedItems.length !== 0" class="mt5">
                         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listLearningTracks($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
                     </div>
                     <!-- End of 24 -->

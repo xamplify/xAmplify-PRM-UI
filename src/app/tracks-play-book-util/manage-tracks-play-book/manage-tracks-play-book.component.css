@@ -30,17 +30,6 @@
   min-width: 145px;
 }
 
-.view-banner {
-  background-color: #00a6e8;
-  color: white;
-  padding: 3px 10px;
-  border-radius: 3px;
-  text-align: center;
-  margin: 0 0;
-  font-size: 10px !important;
-  font-weight: 600;
-  display: inline;
-}
 
 .ribbon div::before {
   content: "";
