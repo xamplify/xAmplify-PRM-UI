@@ -60,5 +60,6 @@ export class User {
     selectedTeamMemberIds = [];
     partnershipId = 0;
     selectedTeamMemberGroupName = "";
+    excludedCatagory = "";
     companyProfileDTO : CompanyProfileDTO = new CompanyProfileDTO();
 }
