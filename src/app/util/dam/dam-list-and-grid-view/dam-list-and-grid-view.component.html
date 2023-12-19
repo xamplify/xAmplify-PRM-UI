@@ -20,16 +20,13 @@
 						<ng-template [ngTemplateOutlet]="filterOptionDiv"></ng-template>
 						<!-- XNFR-409 -->
 						<div class="table-responsive">
-							<table class='table tgrid table-hover table-sm' id="manage-assets-table"
-								*ngIf="pagination.pagedItems?.length>0" aria-describedby="manageAssetTables">
+							<table class='table tgrid table-hover table-sm' id="manage-assets-table" *ngIf="pagination.pagedItems?.length>0" aria-describedby="manageAssetTables">
 								<thead>
 									<tr>
 										<th style="width:45%" translate id="border-bottom">Asset Details</th>
 										<th class="text-center" scope="row" translate id="border-bottom">Type</th>
-										<th class="text-center" scope="row" translate *ngIf="isPartnerView"
-											id="border-bottom">Published On</th>
-										<th class="text-center" scope="row" translate *ngIf="!isPartnerView"
-											id="border-bottom">Created On</th>
+										<th class="text-center" scope="row" translate *ngIf="isPartnerView" id="border-bottom">Published On</th>
+										<th class="text-center" scope="row" translate *ngIf="!isPartnerView" id="border-bottom">Created On</th>
 										<th class="text-center" translate id="border-bottom">Actions</th>
 									</tr>
 								</thead>
@@ -46,25 +43,21 @@
 														alt="Image Not Found" style="width: 179px; height: 100px;border-radius:5px;object-fit: initial;">
 												</div>
 												<div class="title-div" style="width: 50%;">
-													<h4 class="mt5 mb5 f-w-600" data-toggle="tooltip" data-placement="top" title="{{asset?.assetName}}">
-														<span><b>Asset Name:</b> <span> {{asset?.assetName | slice: 0: 17}}</span></span>
-														<span *ngIf="asset?.assetName?.length>17">...</span>
+													<h4 class="mt5 mb5 f-w-600 xamplify-ellipsis" data-toggle="tooltip" data-placement="top" title="{{asset?.assetName}}">
+														<span><b>Asset Name: </b><span>{{asset?.assetName}}</span></span>
 													</h4>
-													<h6 data-toggle="tooltip" data-placement="top" title="{{asset?.categoryName}}"> 
-														<span  translate><b>Folder:</b> {{asset?.categoryName | slice: 0: 20}} </span>
-														<span *ngIf="asset?.categoryName?.length>20">...</span>
+													<h6 class="xamplify-ellipsis" data-toggle="tooltip" data-placement="top" title="{{asset?.categoryName}}"> 
+														<span><b>Folder:</b> {{asset?.categoryName}} </span>
 													</h6>
-													<h6  data-toggle="tooltip" data-placement="top" title="{{asset?.displayName}}">
+													<h6 class="xamplify-ellipsis" data-toggle="tooltip" data-placement="top" title="{{asset?.displayName}}">
 														<span *ngIf="isPartnerView" translate> <b>Published By:</b> {{asset?.displayName}} </span>
 														<span *ngIf="!isPartnerView" translate> <b>Created By:</b>{{asset?.displayName | slice: 0: 23}} </span>
 													</h6>
-													<h6 class="moreipsis"	*ngIf="!isPartnerView && asset?.beeTemplate">
+													<h6 class="xamplify-ellipsis"	*ngIf="!isPartnerView && asset?.beeTemplate">
 														<span> <b>Version:</b>  {{asset?.versionInString}} </span>
 													</h6>
-													<h6 class="moreipsis" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="bottom" title="{{asset?.vendorCompanyName}}">
-														<span  translate><b>From:</b>  {{asset?.vendorCompanyName
-																| slice:0:20}}  <span *ngIf="asset?.vendorCompanyName?.length>20">...</span>
-														</span>
+													<h6 class="xamplify-ellipsis" *ngIf="isPartnerView" data-toggle="tooltip" data-placement="top" title="{{asset?.vendorCompanyName}}">
+														<span><b>From:</b>  {{asset?.vendorCompanyName}}</span>
 													</h6>
 													<!---XNFR-255-->
 													<h6 *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress" class="view-banner published">Published</h6>
@@ -77,28 +70,21 @@
 													<!---XNFR-255-->
 													<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
 														<span class="view-banner-white-labeled mb5 G ListLabelSpacings">White-Labeled</span>
-														<h6 class="moreipsis" data-toggle="tooltip" data-placement="top"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
-															<span translate> <b>Received From:</b> {{asset?.whiteLabeledAssetSharedByVendorCompanyName}} </span>
+														<h6 class="xamplify-ellipsis" data-toggle="tooltip" data-placement="top"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+															<span><b>Received From:</b> {{asset?.whiteLabeledAssetSharedByVendorCompanyName}} </span>
 														</h6>
 													</ng-container>
 												 	<!---XNFR-255-->
 													 <h6 *ngIf="asset.tagNames?.length > 0">
 														<ng-container *ngIf="asset.tagNames?.length > 0">
 															<div class="tag tablegray-tag" title="{{asset.tagNames[0]}}" data-toggle="tooltip" data-placement="top">
-																<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} <span
-																	*ngIf="asset.tagNames[0]?.length>20">..</span>
-																</ng-container>
-																<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}} <span
-																		*ngIf="asset.tagNames[0]?.length>10">..</span>
-																</ng-container>
+																<ng-container *ngIf="asset.tagNames?.length == 1">{{asset.tagNames[0] | slice:0:20}} <span *ngIf="asset.tagNames[0]?.length>20">..</span></ng-container>
+																<ng-container *ngIf="asset.tagNames?.length > 1">{{asset.tagNames[0] | slice:0:10}} <span *ngIf="asset.tagNames[0]?.length>10">..</span></ng-container>
 															</div>
 															<ng-container *ngIf="asset.tagNames.length > 1">
-																<div class="tag tablegray-tag" title="{{asset.tagNames[1]}}" data-toggle="tooltip" data-placement="top">
-																	{{asset.tagNames[1] | slice:0:10}} <span *ngIf="asset.tagNames[1]?.length>10">..</span>
-																</div>
+																<div class="tag tablegray-tag" title="{{asset.tagNames[1]}}" data-toggle="tooltip" data-placement="top">{{asset.tagNames[1] | slice:0:10}} <span *ngIf="asset.tagNames[1]?.length>10">..</span></div>
 															</ng-container>
-															<span *ngIf="asset.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top"
-																title="{{asset.toolTipTagNames}}">...</span>
+															<span *ngIf="asset.tagNames?.length>2" class="tag-dots" data-toggle="tooltip" data-placement="top" title="{{asset.toolTipTagNames}}">...</span>
 														</ng-container>
 													</h6>
 												</div>
@@ -203,8 +189,7 @@
 																	id="history-tr">
 																	<td style="width: 12%;">
 																		<div class="thumbnail-wrapper image_effect" style="width: 180px;height: 100px;">
-																			<img class="custom-image-css" src="{{asset?.thumbnailPath}}" alt="Image Not Found" onerror="this.src='assets/images/no-preview.jpg';"
-																				style="width: 180px; height: 100px;border-radius:5px;">
+																			<img class="custom-image-css" src="{{asset?.thumbnailPath}}" alt="Image Not Found" onerror="this.src='assets/images/no-preview.jpg';" style="width: 180px; height: 100px;border-radius:5px;">
 																		</div>
 																	</td>
 																	<td>
@@ -365,11 +350,7 @@
 										</ng-container>
 										<span class="view-banner-dam assettype-bgcolor LableSpaceings">{{asset?.assetType}}</span>
 									 </div>
-									<h6  class="xamplify-ellipsis GridViewCotent pt10">
-										<span *ngIf="isPartnerView"> <b>Published On: </b></span>
-										<span *ngIf="!isPartnerView"> <b>Created On: </b></span>
-										<app-timestamp [showInLine]="'true'" [dateAndTime]="asset?.displayTime"></app-timestamp>
-									</h6>
+									
 									<h6  class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{asset?.displayName}}"><b>By:</b> {{asset?.displayName}}</h6>
 									<h6 class="xamplify-ellipsis GridViewCotent" >
 										<span data-toggle="tooltip" data-placement="top" title="{{asset?.categoryName}}" translate> <b>Folder:</b> {{asset?.categoryName}}</span>
@@ -381,6 +362,11 @@
 										<b>From:</b><span>{{asset?.vendorCompanyName}}</span> 
 									</h6>
 									</div>
+									<h6  class="xamplify-ellipsis GridViewCotent pt10">
+										<span *ngIf="isPartnerView"> <b>Published On: </b></span>
+										<span *ngIf="!isPartnerView"> <b>Created On: </b></span>
+										<app-timestamp [showInLine]="'true'" [dateAndTime]="asset?.displayTime"></app-timestamp>
+									</h6>
 									<div class="ribbon tab-ribbon">
 										<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
 										<span *ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">Processing</span>
