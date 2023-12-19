@@ -2943,9 +2943,10 @@
                             <div class="portlet-title tabbable-line">
                                 <div class="caption caption-md col-xs-12">
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
-                                    <span
-                                        class="caption-subject font-blue-madison bold" [title]="cutomLoginTemplate?.name" data-toggle="tooltip" data-placement="bottom">{{cutomLoginTemplate?.name | slice:0:30}}</span>
-                                        <span *ngIf="cutomLoginTemplate?.name?.length>30">...</span>
+                                    <span class="caption-subject font-blue-madison bold"
+                                        [title]="cutomLoginTemplate?.name" data-toggle="tooltip"
+                                        data-placement="bottom">{{cutomLoginTemplate?.name | slice:0:30}}</span>
+                                    <span *ngIf="cutomLoginTemplate?.name?.length>30">...</span>
                                     <a class="close-circle pull-right" (click)="goBackToMyprofileForCustomLogin()">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>

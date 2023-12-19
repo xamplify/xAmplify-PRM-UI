@@ -2863,3 +2863,7 @@ span.progresleft {
 .pd-top11{
   padding-top: 11px !important;
 }
+button.button:disabled span,
+button.button_blue:disabled span{
+  cursor: not-allowed !important;
+}
