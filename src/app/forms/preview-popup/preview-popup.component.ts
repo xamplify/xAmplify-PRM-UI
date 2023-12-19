@@ -225,7 +225,9 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     formPreviewBeforeSave(columnInfos: Array<ColumnInfo>, form: Form) {
         this.ngxloading = true;
         this.form = form;
-       
+        /**XBI-2063**/
+        this.countryNames = this.authenticationService.addCountryNamesToList(this.form.countryNames,this.countryNames);
+         /**XBI-2063**/
         this.form.formLabelDTOs = columnInfos;
         this.formError = false;
         this.ngxloading = false;
