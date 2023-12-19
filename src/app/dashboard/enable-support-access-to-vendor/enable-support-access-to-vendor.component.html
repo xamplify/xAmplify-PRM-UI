@@ -1,40 +1,52 @@
-  <app-dashboard-loader *ngIf="httpRequestLoader.isLoading"></app-dashboard-loader>
-  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-  <form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-      <table class="table table-light" style="border:0px!important;background-color:transparent!important">
-          <tbody>
-              <fieldset>
-                  <legend>{{properties?.supportText}}</legend>
-                  <tr class="col-md-12 col-lg-12">
-                      <div>
-                          <div class="col-md-9 col-lg-9">
-                              <h5 class="f-w-600" id="text-color-my-profile" translate>Enabling support access typically entails granting access to your account to a Vendor support team or their team member in order for them to assist, guide, and resolve any issues you may be experiencing. 
-                              </h5>
-                              <ul>
-                                  <li id="text-color-my-profile" translate>To ensure that only authorised users have access to your company account, please enable or disable the toggle.</li>
-                                  <li id="text-color-my-profile" style="margin-top: 25px" translate>Please send me an email whenever a team member from the Vendor company logs into my account.</li>
-                              </ul>
-                          </div>
-                          <div class="col-md-3 col-lg-3" style="padding-top:65px">
-                              <section>
-                                  <switch [(status)]="loginAsPartnerDto.loginAsPartnerOptionEnabledForVendor" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                      (statusChange)="loginAsPartnerDto.loginAsPartnerOptionEnabledForVendor!=loginAsPartnerDto.loginAsPartnerOptionEnabledForVendor">
-                                  </switch>
-                              </section>
-                          </div>
-                          <div class="col-md-3 col-lg-3" style="padding-top:30px">
-                              <section>
-                                  <switch [(status)]="loginAsPartnerDto.loginAsPartnerEmailNotificationEnabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
-                                      (statusChange)="loginAsPartnerDto.loginAsPartnerEmailNotificationEnabled!=loginAsPartnerDto.loginAsPartnerEmailNotificationEnabled">
-                                  </switch>
-                              </section>
-                          </div>
-                      </div>
-                  </tr>
-              </fieldset><br>
-          </tbody>
-      </table>
-      <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
-          <button type="submit" class="btn Btn-Green" (click)="updateLoginAsPartnerSettingsOptions()" translate>Update</button>
-      </div>
-  </form>
+<app-dashboard-loader *ngIf="httpRequestLoader.isLoading"></app-dashboard-loader>
+<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+<form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid"
+    *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+    <table class="table table-light" style="border:0px!important;background-color:transparent!important">
+        <tbody>
+            <fieldset>
+                <legend>{{properties?.supportText}}</legend>
+                <tr class="col-md-12 col-lg-12">
+                    <div>
+                        <div class="col-md-9 col-lg-9">
+                            <h5 class="f-w-600" id="text-color-my-profile" translate>Enabling support access typically
+                                entails granting access to your account to a Vendor support team or their team member in
+                                order for them to assist, guide, and resolve any issues you may be experiencing.
+                            </h5>
+                            <ul>
+                                <li id="text-color-my-profile" translate>To ensure that only authorised users have
+                                    access to your company account, please enable or disable the toggle.</li>
+                                <li id="text-color-my-profile" style="margin-top: 25px" translate>Please send me an
+                                    email whenever a team member from the Vendor company logs into my account.</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3 col-lg-3" style="padding-top:65px">
+                            <section>
+                                <switch [(status)]="loginAsPartnerDto.loginAsPartnerOptionEnabledForVendor"
+                                    [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                                    [onColor]="callActionSwitch.onGreenColorSwitch"
+                                    [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+                                    (statusChange)="loginAsPartnerDto.loginAsPartnerOptionEnabledForVendor!=loginAsPartnerDto.loginAsPartnerOptionEnabledForVendor">
+                                </switch>
+                            </section>
+                        </div>
+                        <div class="col-md-3 col-lg-3" style="padding-top:30px">
+                            <section>
+                                <switch [(status)]="loginAsPartnerDto.loginAsPartnerEmailNotificationEnabled"
+                                    [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                                    [onColor]="callActionSwitch.onGreenColorSwitch"
+                                    [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+                                    (statusChange)="loginAsPartnerDto.loginAsPartnerEmailNotificationEnabled!=loginAsPartnerDto.loginAsPartnerEmailNotificationEnabled">
+                                </switch>
+                            </section>
+                        </div>
+                    </div>
+                </tr>
+            </fieldset><br>
+        </tbody>
+    </table>
+    <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
+        <button type="submit" class="button" (click)="updateLoginAsPartnerSettingsOptions()" translate><span
+                class="btn Btn-Green transition">Update</span></button>
+    </div>
+</form>
