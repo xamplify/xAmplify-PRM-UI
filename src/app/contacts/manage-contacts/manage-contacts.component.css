@@ -207,17 +207,7 @@ h3 {
     float: left !important;
   }
 }
-.view-banner {
-  background-color: #00a6e8;
-  color: white;
-  padding: 5px 10px;
-  text-align: center;
-  width: auto;
-  margin: 0 auto;
-  font-size: 10px;
-  font-weight: 600;
-  margin-bottom: 2px;
-}
+
 .view-banner-green {
   background-color: #26a69a;
 }

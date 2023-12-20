@@ -474,7 +474,7 @@
                                                 </h5>
 
                                                 <h5 class="mb0 moreipsis" style="padding: 0px;">
-                                                   <span class='f-w-400' data-toggle="tooltip" data-placement="right"  title="{{contactList?.companyName}}">
+                                                   <span class='f-w-400' data-toggle="tooltip" data-placement="top"  title="{{contactList?.companyName}}">
                                                        <b>Company Name:</b> {{contactList.companyName}}
                                                    </span>
                                                    <h5 class="mb0 hidden-sm hidden-md hidden-lg">
@@ -739,34 +739,33 @@
                                              <span class="arrow"></span>
                                           </h3>
                                        </div>
-                                       <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent" data-toggle="tooltip" data-placement="bottom" title="{{contactList.name}}" style="float:none !important">
-                                          <b translate> List Name:</b>  {{contactList.name | slice:0:12}} <span *ngIf="contactList.name?.length>12">...</span>
+                                       <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{contactList.name}}" style="float:none !important">
+                                          <b translate> List Name:</b>  {{contactList.name}}
                                        </h4>
                                        <div class="aligntowbtns"> 
                                           <span class="view-banner Assigned-lable LableSpaceings" *ngIf="assignLeads && contactList?.assignedLeadsList && contactList.assignedToPartner"  translate>Assigned</span>
                                           <span class="view-banner orange-lable-cu LableSpaceings" *ngIf="assignLeads && contactList?.assignedLeadsList && !contactList.assignedToPartner" translate>Not Assigned</span>
                                        </div>
-                                       <h6 class="GridViewCotent" >
-                                          <span data-toggle="tooltip" data-placement="bottom" title="{{contactList.uploadedBy}}"> <b>By:</b> {{contactList.uploadedBy | slice:0:30}}</span> <span
-                                             *ngIf="contactList.uploadedBy?.length>30">...</span>
+                                       <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{contactList.uploadedBy}}">
+                                          <span>
+                                             <b>By:</b> {{contactList.uploadedBy}}</span> 
                                        </h6>
-                                       <h6 class="GridViewCotent">
-                                          <span data-toggle="tooltip" data-placement="bottom" title="{{contactList.companyName}}"><b>Company Name:</b> {{contactList.companyName | slice:0:30}}</span> <span
-                                             *ngIf="contactList.companyName?.length>30">...</span>
+                                       <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{contactList.companyName}}">
+                                          <span><b>Company Name:</b> {{contactList.companyName}}</span>
                                        </h6>
-                                       <h6 class="GridViewCotent"
+                                       <h6 class="xamplify-ellipsis GridViewCotent"
                                           *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)"
-                                          translate><b translate>Total:</b> 
-                                          <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}:</span>
-                                          <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s:</span>  {{contactList.noOfContacts}}
+                                          translate><b>Total </b> 
+                                          <b *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}:</b>
+                                          <b *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s:</b>  {{contactList.noOfContacts}}
                                        </h6>
                                        <h6 class="GridViewCotent" *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))"
                                           translate> <b translate>Total:</b> <span *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}:</span>
                                           <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s:</span> 
                                           <strong>-</strong>
                                        </h6>
-                                       <h6 class="GridViewCotent" translate>
-                                          <b translate> Created date:</b> 
+                                       <h6 class="GridViewCotent">
+                                          <b> Created Date:</b> 
                                           <app-timestamp [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
                                        </h6>
                                        <h6 class="GridViewCotent" translate *ngIf="assignLeads">
