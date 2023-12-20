@@ -1918,6 +1918,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.selectedContactListId = contactSelectedListId;
 			this.currentContactType = "all_contacts";
 			pagination.criterias = this.criterias;
+			pagination.sharedLeads = this.sharedLeads;
 			this.contactService.loadUsersOfContactList(contactSelectedListId, pagination).subscribe(
 				(data: any) => {
 					this.xtremandLogger.info("MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify(data));
