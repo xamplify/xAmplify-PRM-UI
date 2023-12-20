@@ -1,5 +1,5 @@
 <!-- Nav tabs -->
-<app-response-message class="pg8" [customResponse]="customFieldsResponse" *ngIf="customFieldsResponse.isVisible">
+<app-response-message class="pg8" [customResponse]="customFieldsResponse" *ngIf="customFieldsResponse.isVisible  ">
 </app-response-message>
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div>
@@ -93,7 +93,7 @@
         <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a
             (click)="setSfCfPage(sfcfPager.currentPage - 1)">Previous</a></li>
         <li *ngFor="let page of sfcfPager.pages" [ngClass]="{active:sfcfPager.currentPage === page}"><a
-            (click)="setSfCfPage(page)">{{page}}</a></li>
+            (click)="setSfCfPage(page)" [class.disabled]="sfcfPager.currentPage === page" >{{page}}</a></li>
         <li [ngClass]="{disabled:sfcfPager.currentPage === sfcfPager.totalPages}">
           <a (click)="setSfCfPage(sfcfPager.currentPage + 1)">Next</a>
         </li>
