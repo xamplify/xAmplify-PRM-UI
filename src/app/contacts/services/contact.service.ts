@@ -848,4 +848,9 @@ export class ContactService {
     
     }
 
+    excludedUserMakeAsValid(object:any){
+        return this._http.post(this.contactsUrl + "excluded-user-make-as-valid"+  "/" + this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token, object)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }
