@@ -160,10 +160,10 @@
                   <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}"
                     class="list-team-member-class">
                     <td class="pdl-15">
-                      <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
+                      <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember" [hideCompanyName]="true" [hideJobTitle]="true"></app-user-info>
                       <span
                         *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany 
-              && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl && !teamMember?.primaryAdmin"
+                      && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl && !teamMember?.primaryAdmin"
                         [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
                         data-toggle="tooltip" data-placement="bottom"
                         [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">

@@ -18,12 +18,14 @@ export class UserInfoComponent implements OnInit {
     @Input() isCreatedByUser: boolean;
     @Input() isPartnerAnalyticsCompany: boolean;
     @Input() hideJobTitle:boolean;
+    @Input() hideCompanyName:boolean;
     backgroudColor: any;
     highlightLetter: string = "*";
     constructor() { }
 
     ngOnInit() {        
         this.hideJobTitle = this.hideJobTitle==undefined ? false: this.hideJobTitle;
+        this.hideCompanyName = this.hideCompanyName==undefined ? false : this.hideCompanyName;
         if (this.userInfo != undefined) {
             if (this.isCreatedByUser) {
                 this.userInfo.firstName = this.userInfo.createdByName;

@@ -207,17 +207,7 @@ h3 {
     float: left !important;
   }
 }
-.view-banner {
-  background-color: #00a6e8;
-  color: white;
-  padding: 5px 10px;
-  text-align: center;
-  width: auto;
-  margin: 0 auto;
-  font-size: 10px;
-  font-weight: 600;
-  margin-bottom: 2px;
-}
+
 .view-banner-green {
   background-color: #26a69a;
 }
@@ -348,16 +338,7 @@ h6 {
   background: #5bb2f5;
     color: white;
   }
-  .moreipsis span {
-    position: relative;
-    /* left: 0; */
-    /* right: 0; */
-    float: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-height: 30px;
-}
+ 
 @media screen and (max-width: 1024px){
 .table-responsive>.table>tbody>tr>td, .table-responsive>.table>tbody>tr>th, .table-responsive>.table>tfoot>tr>td, .table-responsive>.table>tfoot>tr>th, .table-responsive>.table>thead>tr>td, .table-responsive>.table>thead>tr>th {
     white-space: nowrap;
@@ -400,4 +381,10 @@ h6 {
   position: absolute;
   left: 0;
   top: 7px;
+}
+/*******Remove this after merging XNFR-374 */
+.grid-box h6 {
+  text-align: left !important;
+  margin: 0px !important;
+  width: 100% !important;
 }
