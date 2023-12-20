@@ -185,7 +185,7 @@
                                         </ng-container>
                                         <!-- ---------------------------Date----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='date'">
-                                            <app-date-picker class="form-placeholder" [class.disabled]='true' [isFromForm]='true'></app-date-picker>
+                                            <app-date-picker class="form-placeholder disabled-element" [class.disabled]='true' [isFromForm]='true'></app-date-picker>
                                         </ng-container>
                                         <!-- ---------------------------Price----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='price'">
@@ -258,7 +258,7 @@
                                     </div>
                                 </ng-container>
                                 <div *ngIf="form.showCaptcha">
-                                    <re-captcha (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
+                                    <re-captcha class="disabled-element" (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
                                 </div>
                                 <div *ngIf="form.buttonColor?.length>0;then show else dontShow"></div>
                                 <ng-template #show>

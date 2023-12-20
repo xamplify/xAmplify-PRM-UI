@@ -218,3 +218,7 @@ span.quiz_optionname {
     }
 
   }
+.disabled-element{
+  opacity: 0.65;
+  pointer-events: none;
+}
