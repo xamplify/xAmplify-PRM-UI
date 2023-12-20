@@ -210,21 +210,15 @@
                                              <div class="col-md-12 col-lg-12">
                                                 <div class="row">
                                                    <div class="col-md-2 col-lg-2 text-right">
-                                                      <img class="img-circle float-left"
-                                                         src="{{vendor?.companyLogoPath}}" alt="">
+                                                      <img class="img-circle float-left"  src="{{vendor?.companyLogoPath}}" alt="">
                                                    </div>
-                                                   <div class="col-md-10 col-lg-10 "
-                                                      style="padding-left: 34px!important;">
-                                                      <label data-toggle="tooltip" data-placement="bottom"
-                                                         title="{{vendor?.companyName}}"
-                                                         style="font-size: 15px;font-weight: 600;">
-                                                         {{vendor?.companyName | slice:0:20}}
+                                                   <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                                                      <label data-toggle="tooltip" data-placement="top" title="{{vendor?.companyName}}">
+                                                         <b>Company Name:</b> {{vendor?.companyName | slice:0:20}}
                                                          <span *ngIf="vendor?.companyName.length>20">..</span>
                                                       </label><br>
-                                                      <label data-toggle="tooltip" data-placement="bottom"
-                                                         title="{{vendor?.companyProfileName}}"
-                                                         style="font-size: 15px;font-weight: 600;">
-                                                         {{vendor?.companyProfileName | slice:0:20}}
+                                                      <label data-toggle="tooltip" data-placement="top" title="{{vendor?.companyProfileName}}">
+                                                        <b>Company Profile Name:</b> {{vendor?.companyProfileName | slice:0:20}}
                                                          <span *ngIf="vendor?.companyProfileName.length>20">..</span>
                                                       </label>
                                                    </div>
