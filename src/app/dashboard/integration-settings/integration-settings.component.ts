@@ -113,14 +113,14 @@ export class IntegrationSettingsComponent implements OnInit {
 	}
 
 	listExternalCustomFields() {
-		this.ngxloading = true;
+		//this.ngxloading = true;
 		this.customFieldsDtosLoader = true;
 		let self = this;
 		self.selectedCfIds = [];
 		self.integrationService.listExternalCustomFields(this.integrationType.toLowerCase(), this.loggedInUserId)
 			.subscribe(
 				data => {
-					this.ngxloading = false;
+					//this.ngxloading = false;
 					if (data.statusCode == 200) {
 						this.sfCustomFieldsResponse = data.data;
 						this.sfcfMasterCBClicked = false;
@@ -302,6 +302,7 @@ export class IntegrationSettingsComponent implements OnInit {
 						data => {
 							if (data.statusCode == 200) {
 								self.unlinkEvent.emit();
+								self.ngxloading = false;
 							}
 						});
 			}, function (dismiss: any) {
