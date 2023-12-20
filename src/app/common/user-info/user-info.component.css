@@ -27,6 +27,7 @@
 .user-name {
   margin: 2px 0;
   font-weight: 400;
+  padding: 0px;
 }
 .user-email {
   font-weight: 400;
@@ -47,4 +48,6 @@
   display: flex;
   align-items: center;
 }
- 
+b, strong {
+  color: #333;
+}
