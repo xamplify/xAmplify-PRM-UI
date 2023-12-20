@@ -45,8 +45,8 @@
                                  <br>
                                  <h5 *ngIf="userDetails?.fullName?.length>0" class='ellipsis user-name'
                                     data-toggle="tooltip" data-placement="bottom" title="{{userDetails?.fullName}}">
-                                    {{userDetails?.fullName | slice:0:50}}
-                                    <span *ngIf="userDetails?.fullName?.length>50">..</span>
+                                    {{userDetails?.fullName | slice:0:25}}
+                                    <span *ngIf="userDetails?.fullName?.length>20">..</span>
                                  </h5>
                                  <a style="display: table;" data-toggle="tooltip" data-placement="bottom"
                                     title="{{userDetails?.emailId}}">
