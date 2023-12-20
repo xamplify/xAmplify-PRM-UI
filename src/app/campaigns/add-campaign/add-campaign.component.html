@@ -2060,11 +2060,11 @@
                 {{beeContainerInput?.emailTemplateName}}
                 <div>
                     <a class="close-circle pull-right" (click)="hideEditTemplateDiv()"
-                        [ngStyle]="{'margin-top':isShowEditTemplatePopup && campaignType=='page'? '10px':''}">
+                    [ngStyle]="{'margin-top':isShowEditTemplatePopup && campaignType=='page' || campaignType=='survey'? '10px':''}">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
                     <app-preview-popup #previewPopUpComponent
-                        *ngIf="isShowEditTemplatePopup && campaignType=='page'"></app-preview-popup>
+                        *ngIf="(isShowEditTemplatePopup && campaignType=='page') ||(isShowEditTemplatePopup && campaignType=='survey')"  [buttonText]="campaignType=='survey'?'Show Surveys':'Show Forms'"></app-preview-popup>
                     <app-merge-tags *ngIf="isShowEditTemplatePopup"
                         [input]="editTemplateMergeTagsInput"></app-merge-tags>
                     <button (click)="toggleOpenLinksInNewTab()" class="btn-primary olint"
