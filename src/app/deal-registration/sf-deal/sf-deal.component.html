@@ -152,10 +152,11 @@
       </ng-container>
       <!-- ---------------------------Multi DropDown Menu----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='multiselect'">
-        <angular4-multiselect [data]="columnInfo.dropDownChoices" [(ngModel)]="columnInfo.value"
+        <span [class.disabled]="isVendor || isPreview">
+        <angular4-multiselect [data]="columnInfo.dropDownChoices" [(ngModel)]="columnInfo.value" 
           [settings]="dropdownSettings" (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)"
           (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
-        </angular4-multiselect>
+        </angular4-multiselect></span>
       </ng-container>
     </div>
   </ng-container>
