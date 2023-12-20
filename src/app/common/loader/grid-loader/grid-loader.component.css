@@ -21,13 +21,12 @@
   }
 }
 .rect-box {
-  width: 140px;
-  height: 80px;
-  margin: 30px auto;
+  width: auto;
+  height: 150px;
+  margin: 1px auto;
+  border-radius: 4px;
 }
-.thin {
-  height: 6px;
-}
+
 .w50 {
   width: 50%;
 }
@@ -36,7 +35,7 @@
 }
 .grid-box {
   position: relative;
-  height: 222px;
+  height: 312px;
   border: 1px solid #f1f1f1;
   background-color: #fff;
 }
