@@ -39,4 +39,13 @@ export class TeamMember{
     partnersCount = 0;
     teamMemberGroupPartnersCount = 0;
 
+
+
+    validFirstName=false;
+    lastNameErrorMessage="";
+
+
+
+
+
 }

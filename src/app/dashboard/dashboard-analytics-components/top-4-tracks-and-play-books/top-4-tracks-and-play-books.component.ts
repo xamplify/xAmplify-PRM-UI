@@ -32,6 +32,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
   loggedInUserId:number = 0;
   contents:Array<any> = new Array<any>();
   customResponse:CustomResponse = new CustomResponse();
+  titleHeader = "";
   constructor(public referenceService: ReferenceService,  public tracksPlayBookUtilService:TracksPlayBookUtilService, public authenticationService: AuthenticationService,public xtremandLogger:XtremandLogger,public pagerService:PagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.pagination.userId = this.loggedInUserId;
@@ -44,10 +45,12 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       this.headerTitle = this.isPartnerView ? 'Shared Tracks':'Tracks';
       this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared tracks' : 'Click here to manage tracks'
       this.addButtonText = "Add Tracks";
+      this.titleHeader = "Tracks";
     }else{
       this.headerTitle = this.isPartnerView ? 'Shared Play Books':'Play Books';
       this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared play books' : 'Click here to manage play books'
       this.addButtonText = "Add Play Books";
+      this.titleHeader = "Play Books";
     }
     this.listLearningTracks(this.pagination);
   }
@@ -205,32 +208,43 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       });
   }
 
-  confirmChangePublish(id: number, isPublish: boolean) {
-    let text = "";
-    if (isPublish) {
-      text = "You want to publish.";
-    } else {
-      text = "You want to unpublish.";
-    }
-    try {
-      let self = this;
-      swal({
-        title: 'Are you sure?',
-        text: text,
-        type: 'warning',
-        showCancelButton: true,
-        swalConfirmButtonColor: '#54a7e9',
-        swalCancelButtonColor: '#999',
-        confirmButtonText: 'Yes'
-
-      }).then(function () {
-        self.changePublish(id, isPublish);
-      }, function (dismiss: any) {
+  confirmChangePublish(id: number, isPublish: boolean,learningTrack : any) {
+      if(isPublish && !learningTrack.hasDamContent){
+        swal({
+          title: 'Add assets to publish.',
+          type: 'warning',
+          swalConfirmButtonColor: '#54a7e9',
+          confirmButtonText: 'Ok'
+        }).then(function (dismiss: any) {
         console.log('you clicked on option' + dismiss);
-      });
-    } catch (error) {
-      this.xtremandLogger.error(this.referenceService.errorPrepender + " ChangePublish():" + error);
-      this.loader = false;
+        });
+      } else {
+        let text = "";
+        if (isPublish) {
+          text = "You want to publish.";
+        } else {
+          text = "You want to unpublish.";
+        }
+        try {
+        let self = this;
+          swal({
+            title: 'Are you sure?',
+            text: text,
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            confirmButtonText: 'Yes'
+
+          }).then(function () {
+            self.changePublish(id, isPublish);
+          }, function (dismiss: any) {
+            console.log('you clicked on option' + dismiss);
+          });
+        } catch (error) {
+          this.xtremandLogger.error(this.referenceService.errorPrepender + " ChangePublish():" + error);
+          this.loader = false;
+        }
     }
   }
 

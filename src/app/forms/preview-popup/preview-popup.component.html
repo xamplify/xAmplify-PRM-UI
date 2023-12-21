@@ -86,11 +86,13 @@
                                                         White-Labeled</h5>
                                                 </ng-container>
                                                 <!---XNFR-255-->
-                                                <h6 class="view-banner" *ngIf="form.formSubType === 'REGULAR'"
-                                                    translate>Regular</h6>
-                                                <h6 class="view-banner" *ngIf="form.formSubType === 'QUIZ'" translate>
+                                                <h6 class="view-banner-forms mb5 white-labeled-width"
+                                                    *ngIf="form.formSubType === 'REGULAR'" translate>Regular</h6>
+                                                <h6 class="view-banner-forms mb5 white-labeled-width"
+                                                    *ngIf="form.formSubType === 'QUIZ'" translate>
                                                     Quiz</h6>
-                                                <h6 class="view-banner" *ngIf="form.formSubType === 'SURVEY'" translate>
+                                                <h6 class="view-banner-forms mb5 white-labeled-width"
+                                                    *ngIf="form.formSubType === 'SURVEY'" translate>
                                                     Survey</h6>
                                             </td>
                                             <td [hidden]="authenticationService.isShowForms">
@@ -177,11 +179,11 @@
 
             </div>
             <div class="modal-footer">
-                <button data-dismiss="modal" class="btn Btn-Gray" style="float: right"><span
-                        *ngIf="!authenticationService.isShowForms">Close</span></button>
+                <button *ngIf="!authenticationService.isShowForms" data-dismiss="modal" class="btn Btn-Gray"
+                    style="float: right"><span>Close</span></button>
                 <button *ngIf="authenticationService.isShowForms" class="button bgcolor-unset" data-dismiss="modal"
                     style="float: right">
-                    <span class="btn Btn-Green transition">Submit</span></button>
+                    <span class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
             </div>
         </div>
     </div>
@@ -237,8 +239,7 @@
                                         </ng-container>
                                         <!-- ---------------------------Date----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='date'">
-                                            <app-date-picker class="form-placeholder" [class.disabled]='true'
-                                                [isFromForm]='true'></app-date-picker>
+                                            <app-date-picker class="form-placeholder disabled-element" [class.disabled]='true' [isFromForm]='true'></app-date-picker>
                                         </ng-container>
                                         <!-- ---------------------------Price----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='price'">
@@ -326,7 +327,7 @@
                                     </div>
                                 </ng-container>
                                 <div *ngIf="form.showCaptcha">
-                                    <re-captcha (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
+                                    <re-captcha class="disabled-element" (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
                                 </div>
                                 <div *ngIf="form.buttonColor?.length>0;then show else dontShow"></div>
                                 <ng-template #show>

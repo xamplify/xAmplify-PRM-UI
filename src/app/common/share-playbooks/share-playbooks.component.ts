@@ -10,7 +10,7 @@ export class SharePlaybooksComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    alert("PlayBooks Component");
+    
   }
 
 }

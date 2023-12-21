@@ -113,7 +113,7 @@
                                     <li [ngClass]="{'active-tab': activeTabName == 'settings'}"
                                         [class.disabled]="authenticationService.isSuperAdmin()">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}"
-                                            (click)="activateTab('settings');clearCustomResponse();">{{properties.viewType
+                                            (click)="activateTab('settings');clearCustomResponse();getSelectedDashboardForPartner()">{{properties.viewType
                                             | translate}}</a>
                                     </li>
                                     <!---Tags-->
@@ -480,7 +480,9 @@
                                             <tr *ngFor="let dto of themeDtoList" id="themeListDiv_{{dto.id}}">
                                                 <td> <img src="{{dto?.themeImagePath}}" alt=""
                                                         class="img-customization"> </td>
-                                                <td class="text-center">{{dto.name}}
+                                                <td class="text-center"><span [title]="dto.name" data-toggle="tooltip"
+                                                        data-placement="bottom">{{dto.name | slice:0:18 }}</span>
+                                                    <span *ngIf="dto.name?.length>18">...</span>
                                                     <br>
                                                     <h6 _ngcontent-c26=""
                                                         class="label label-info  selectcolor active-color"
@@ -2887,6 +2889,40 @@
                                     </div>
                                 </div>
                             </div>
+
+                        
+                        <!--  XNFR-415 -->
+                        <div *ngIf="  (( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany ) && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing)">
+                            <div  *ngIf="activeTabName === 'settings'"  [ngClass]="{'active-tab': activeTabName === 'settings'}">
+                                <div class="portlet light">
+                                    <div class="portlet-title tabbable-line">
+                                            <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName==='settings'">{{"Default Dashboard for My Partners" | translate}}</span>
+                                    </div>
+                                        <form>
+                                            <br>
+                                            <label class="container-checkbox-xamplify" translate>Welcome
+                                                <input class="radioButton_shadow" type="radio"  name="dashboardSelectedOption" 
+                                                    value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME]}}" 
+                                                    [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME] || defaultSelectedDashboardTypeSetting === undefined ">    
+                                                <span class="checkmark"></span>
+                                                </label>
+                                                <label class="container-checkbox-xamplify" translate>
+                                                    <div *ngIf="dynamicDashboardType.includes('Advanced Dashboard') else detailedDashboardOption">Advanced Dashboard</div>
+                                                        <ng-template #detailedDashboardOption>
+                                                            <div *ngIf="dynamicDashboardType.includes('Detailed Dashboard') ; else dashboardOption">Detailed Dashboard </div> 
+                                                        </ng-template>
+                                                    <ng-template #dashboardOption>Dashboard </ng-template>
+                                                    <input class="radioButton_shadow" type="radio"  name="dashboardSelectedOption" 
+                                                    value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD]}}"
+                                                        [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD] ">   <!--DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD]-->
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <br>
+                                                <button type="submit" class="btn Btn-Green" (click)="setDashboardForPartner()">Save Changes</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- END PROFILE CONTENT -->
@@ -2943,9 +2979,10 @@
                             <div class="portlet-title tabbable-line">
                                 <div class="caption caption-md col-xs-12">
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
-                                    <span
-                                        class="caption-subject font-blue-madison bold" [title]="cutomLoginTemplate?.name" data-toggle="tooltip" data-placement="bottom">{{cutomLoginTemplate?.name | slice:0:30}}</span>
-                                        <span *ngIf="cutomLoginTemplate?.name?.length>30">...</span>
+                                    <span class="caption-subject font-blue-madison bold"
+                                        [title]="cutomLoginTemplate?.name" data-toggle="tooltip"
+                                        data-placement="bottom">{{cutomLoginTemplate?.name | slice:0:30}}</span>
+                                    <span *ngIf="cutomLoginTemplate?.name?.length>30">...</span>
                                     <a class="close-circle pull-right" (click)="goBackToMyprofileForCustomLogin()">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>

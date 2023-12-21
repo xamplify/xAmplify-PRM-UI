@@ -202,7 +202,7 @@
                     </div>
                     <div class="inline" style="float: right; padding-bottom: 5px;">
                       <button type="button" class="button_blue bgcolor-unset" (click)="clearImage()"><span
-                          class="btn btn-primary transition">Clear</span></button>
+                          class="btn btn-primary transition txt_pd-top3">Clear</span></button>
                     </div>
                   </div>
                   <div class="feature-img-bg" style="cursor: pointer;text-align:center;color:#fff;"
@@ -259,11 +259,12 @@
           <div class="input-icon right pull-right cebp" style="margin-right: -2px;
         padding-top: 5px;">
             <ul class="button-align inline">
-              <li style="margin-right: 5px;"><button class="button_blue bgcolor-unset" (click)="getAssetsList()"><span
-                    class="btn btn-primary transition text_pd5">Add
+              <li style="margin-right: -12px;" class="add_media_margin"><button class="button_blue bgcolor-unset"
+                  (click)="getAssetsList()"><span class="btn btn-primary transition txt_pd-top3">Add
                     Media</span></button></li>
-              <li style="margin-right: 5px;"><button class="button_blue bgcolor-unset" (click)="getFormsList()"><span
-                    class="btn btn-primary transition text_pd5">Add Forms</span></button>
+              <li style="margin-right: -5px;" class="add_forms_margin"><button class="button_blue bgcolor-unset"
+                  (click)="getFormsList()"><span class="btn btn-primary transition txt_pd-top3">Add
+                    Forms</span></button>
               </li>
             </ul>
           </div>
@@ -301,13 +302,15 @@
           <div class="col-lg-12">
             <div class="page-toolbar">
 
-              <div class="inline mToolBarPad" style="margin-left: -3px;padding-top: 12px;">
-                <button *ngIf="type == undefined || type == 'TRACK'" class="button_blue bgcolor-unset"
-                  (click)="openQuizPopup()"><span class="btn btn-primary transition">Select
+              <div class="inline mToolBarPad" style="margin-left: -5px;padding-top: 7px;">
+                <button *ngIf="type == undefined || type == 'TRACK'"
+                  class="button_blue bgcolor-unset select_quiz_margin" (click)="openQuizPopup()"><span
+                    class="btn btn-primary transition txt_pd-top3">Select
                     Quiz</span></button>
-                <button class="button_blue bgcolor-unset" (click)="openOrderAssetsPopup()"><span
-                    class="btn btn-primary transition" *ngIf="type == undefined || type == 'TRACK'">Order Assets And
-                    Quiz</span><span class="btn btn-primary transition" *ngIf="type !== 'TRACK'">Order
+                <button class="button_blue bgcolor-unset asset_padding" (click)="openOrderAssetsPopup()"><span
+                    class="btn btn-primary transition txt_pd-top3" *ngIf="type == undefined || type == 'TRACK'">Order
+                    Assets And
+                    Quiz</span><span class="btn btn-primary transition txt_pd-top3" *ngIf="type !== 'TRACK'">Order
                     Assets</span></button>
 
               </div>
@@ -456,9 +459,10 @@
       <button type="button" class="btn Btn-Gray pull-left" (click)="changeActiveTab('step-3')"
         translate>Previous</button>
       <div class="pull-right">
-        <button class="button_blue bgcolor-unset" type="submit" [disabled]="!tracksPlayBook.isValid"
-          (click)="save()"><span class="btn btn-primary transition">{{SubmitButtonValue}}</span></button>
-        <button class="button_blue bgcolor-unset" type="submit" [disabled]="!tracksPlayBook.isValid"
+        <button class="button_blue bgcolor-unset txt_pd-top3 track_save_button" type="submit"
+          [disabled]="!tracksPlayBook.isValid" (click)="save()"><span
+            class="btn btn-primary transition">{{SubmitButtonValue}}</span></button>
+        <button class="button_blue bgcolor-unset txt_pd-top3" type="submit" [disabled]="!tracksPlayBook.isValid"
           *ngIf="!tracksPlayBook.published" (click)="saveAndPublish()"><span
             class="btn btn-primary transition text_pd5">{{SubmitAndPublishButtonValue}}</span></button>
       </div>
@@ -1010,7 +1014,6 @@
                             <span class="label-name">{{checkBox.name}}</span>
                           </label>
                         </div>
-                        <!-- <br> -->
                       </ng-container>
                     </ng-container>
                     <!-- ---------------------------DropDown Menu----------------------------- -->
@@ -1018,6 +1021,13 @@
                       <select class="form-control form-placeholder">
                         <option *ngFor="let dropDownValue of columnInfo.dropDownChoices">
                           {{dropDownValue.name}}</option>
+                      </select>
+                    </ng-container>
+                    <!-- ---------------------------Country(XNFR-423)----------------------------- -->
+                    <ng-container *ngIf="columnInfo.labelType=='country'">
+                      <select class="form-control form-placeholder">
+                          <option *ngFor="let countryName of countryNames">
+                              {{countryName}}</option>
                       </select>
                     </ng-container>
                     <!-- ---------------------------Quiz Choices----------------------------- -->
