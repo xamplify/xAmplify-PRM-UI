@@ -20,9 +20,3 @@
   width: 100%;
 }
 
-/*******Remove this after merging XNFR-374 */
-.grid-box h6 {
-  text-align: left !important;
-  margin: 0px !important;
-  width: 100% !important;
-}
