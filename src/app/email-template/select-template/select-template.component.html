@@ -285,9 +285,10 @@
             <div class="modal-footer">
                 <div style="text-align: right;">
                     <button class="btn Btn-Gray" (click)="clearValues()" translate>Clear</button>
-                    <button class="btn btn-primary"
+                    <button class="button_blue bgcolor-unset"
                         [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance"
-                        (click)="submitRetrieTemplates()" translate>Submit</button>
+                        (click)="submitRetrieTemplates()" translate><span
+                            class="btn btn-primary transition">Submit</span></button>
                 </div>
             </div>
         </div>

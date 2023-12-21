@@ -8,7 +8,7 @@
 		<div class="form-group" style="padding-left:113px;margin-top: -40px;">
 			<input type="name" placeholder="Enter Name" class="form-control border-alignment" [value]="sname"
 				[(ngModel)]="sname" (ngModelChange)="changEvent($event)" (input)="loadNames()" name="name" required
-				id="name" #name="ngModel">
+				id="name" #name="ngModel" maxlength="250">
 			<div *ngIf="name.hasError('required')">
 				<p class="danger" translate>Name is required</p>
 			</div>

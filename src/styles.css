@@ -519,8 +519,9 @@ tr.highlight {
   font-size: 13px !important;
 }		   
 
-.tgrid > tbody > tr > td > h4, h5, h6 {
-  font-size: 13px !important;
+.tgrid > tbody > tr > td, h4, h5, h6 {
+  font-size: 13px;
+
 }
 
 .tgrid > tbody > tr:hover1 {
@@ -2882,4 +2883,9 @@ button.button_blue:disabled span{
   line-height: 1.3 !important;
   align-content: space-around;
   align-items: center;
+}
+/* sudha sri(20-12-2023) */
+.btn-abjustmentin-breadcrumbs{
+  padding-top: 3px;
+  padding-right: 3px;
 }
