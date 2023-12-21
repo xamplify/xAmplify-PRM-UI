@@ -8,6 +8,13 @@ export class RegularExpressions {
     ALPHA_NUMERIC =/^[a-z0-9]+$/;
     COLOR_CODE_PATTERN = /^#([0-9a-fA-F]{3}){1,2}$/;
     DOMAIN_PATTERN = /\b((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63}\b/;
-    ALPHABETS_PATTERN = /^[A-Za-z\s]+$/;
+    ALPHABETS_PATTERN =  /^[A-Za-z\s]+$/;
+    
+
+// added one more regEx.
+        FIRSTNAME_PATTERN=/[a-zA-Z]/;
+        //FIRSTNAME_PATTERN=/[^a-zA-Z\s]/;
+
+
 
 }

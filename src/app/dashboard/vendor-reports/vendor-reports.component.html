@@ -81,8 +81,8 @@
 																	*ngIf="vendorReport?.vendorEmailId?.length>20">...</span>
 															</div>
 															<span *ngIf="vendorReport.vendorPhone" class="phone">
-																<i aria-hidden="true" class="fa fa-phone" style="padding-right: 4px;"></i>{{vendorReport?.vendorPhone |
-																slice:0:20}}<span *ngIf="vendorReport?.vendorPhone?.length>20">...</span>
+																<i aria-hidden="true" class="fa fa-phone" style="padding-right: 4px;"></i><a href="tel:vendorReport?.vendorPhone">{{vendorReport?.vendorPhone |
+																slice:0:20}}</a><span *ngIf="vendorReport?.vendorPhone?.length>20">...</span>
 															</span>
 														</td>
 														<td>
@@ -134,6 +134,7 @@
 															<span *ngIf="vendorReport.partnerPhone" class="phone">
 																<i aria-hidden="true" class="fa fa-phone" style="padding-right: 4px;"></i>{{vendorReport?.partnerPhone |
 																slice:0:20}}<span *ngIf="vendorReport?.partnerPhone?.length>20">...</span>
+																
 															</span>
 														</td>
 														<td>

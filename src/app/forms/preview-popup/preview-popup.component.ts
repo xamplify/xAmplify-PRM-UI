@@ -70,7 +70,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
         }
 
         if (this.router.url.indexOf("/home/emailtemplates/create") > -1
-            || this.router.url.indexOf("/home/emailtemplates/edit") > -1) {
+            || this.router.url.indexOf("/home/emailtemplates/edit") > -1||this.router.url.indexOf("/home/campaigns/create/survey")> -1) {
             this.showEmbedLink = false;
         }
 

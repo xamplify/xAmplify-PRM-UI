@@ -128,7 +128,7 @@
                                         <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
                                           <div class="form-check optionTB" style="padding: 5px ; border-radius: 5px;border:0px !important;"
                                             *ngIf="!(columnInfo.value =='')"
-                                            [style.background-color]="(choice.correct && choice.isSelected == true)  ? '#e6f4ea' : (!choice.correct && choice.isSelected) ? '#fce8e6'  : choice.correct && choice.isSelected == false ? '#fcfcfc': ''"
+                                            [style.background-color]="(choice.correct && choice.isSelected == true)  ? '#e6f4ea' : (!choice.correct && choice.isSelected) ? '#ffb6c1'  : choice.correct && choice.isSelected == false ? 'fcfcfc': ''"
                                             [style.border-bottom]="(choice.correct && choice.isSelected == false) ? '3px solid #1e8e3e' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
                                             [style.border-top]="(choice.correct && choice.isSelected == false) ? '1px solid #bfdcc8' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"
                                             [style.border-right]="(choice.correct && choice.isSelected == false) ? '1px solid #bfdcc8' :  choice.correct && choice.isSelected ? '1px solid #bfdcc8' :!choice.correct && choice.isSelected ? '1px solid #e0bfbb':''"

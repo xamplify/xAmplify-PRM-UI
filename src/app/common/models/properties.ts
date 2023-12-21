@@ -58,7 +58,10 @@ export class Properties {
 	SOCIAL_ACCOUNT_REMOVED_ERROR = "An error occured while removing your social Account.";
 	CONTACT_LIST_VALIDATION = 'Please click on verify data.';
 	CONTACT_EMAIL_VALIDATE_SUCCESS = "Selected Contacts have been validated successfully.";
-	CONTACT_REMOVED_FROM_EXCLUDED_LIST = "Selected user has been removed from the excluded list successfully"
+	CONTACT_REMOVED_FROM_EXCLUDED_LIST = "Selected Contact has removed from Excluded list successfully";
+
+	//CONTACT_REMOVED_FROM_EXCLUDED_LIST = "Selected user has been removed from the excluded list successfully";
+
 
 	/* For Partners*/
 	PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully and we are processing your partner list";

@@ -46,6 +46,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	integrationPipelines = [];
 	selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
 	customFieldsDtosLoader = false;
+	expandField: boolean = false;
 
 	constructor(private integrationService: IntegrationService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent,
 		public referenceService: ReferenceService, public authenticationService: AuthenticationService) {
@@ -113,14 +114,14 @@ export class IntegrationSettingsComponent implements OnInit {
 	}
 
 	listExternalCustomFields() {
-		this.ngxloading = true;
+		//this.ngxloading = true;
 		this.customFieldsDtosLoader = true;
 		let self = this;
 		self.selectedCfIds = [];
 		self.integrationService.listExternalCustomFields(this.integrationType.toLowerCase(), this.loggedInUserId)
 			.subscribe(
 				data => {
-					this.ngxloading = false;
+					//this.ngxloading = false;
 					if (data.statusCode == 200) {
 						this.sfCustomFieldsResponse = data.data;
 						this.sfcfMasterCBClicked = false;
@@ -154,13 +155,14 @@ export class IntegrationSettingsComponent implements OnInit {
 
 	}
 
+	
 	setSfCfPage(page: number) {
-		this.referenceService.goToTop();
 		this.paginatedSelectedIds = [];
 		try {
 			if (page < 1 || (this.sfcfPager.totalPages > 0 && page > this.sfcfPager.totalPages)) {
 				return;
 			}
+			this.referenceService.goToTop();
 			this.sfcfPager = this.socialPagerService.getPager(this.sfCustomFieldsResponse.length, page, this.pageSize);
 			this.sfcfPagedItems = this.sfCustomFieldsResponse.slice(this.sfcfPager.startIndex, this.sfcfPager.endIndex + 1);
 			var cfIds = this.sfcfPagedItems.map(function (a) { return a.name; });
@@ -207,6 +209,8 @@ export class IntegrationSettingsComponent implements OnInit {
 				selectedCustomFieldsDto.name = customFiledDto.name;
 				selectedCustomFieldsDto.required = customFiledDto.required;
 				selectedCustomFieldsDto.placeHolder = customFiledDto.placeHolder;
+				selectedCustomFieldsDto.displayName = customFiledDto.displayName;
+				selectedCustomFieldsDto.formDefaultFieldType = customFiledDto.formDefaultFieldType;
 				self.selectedCustomFieldsDtos.push(selectedCustomFieldsDto);
 			}
 		});
@@ -226,6 +230,25 @@ export class IntegrationSettingsComponent implements OnInit {
 					() => { }
 		 		);
 		 } else {
+			const amountField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'AMOUNT');
+			const closeDateField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'CLOSE_DATE');
+			const dealNameField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'DEAL_NAME');		
+			 if (((this.integrationType === 'HUBSPOT') && (!amountField || !closeDateField || !dealNameField))) {
+				 this.ngxloading = false;
+				 const missingFields: string[] = [];
+				 if (!amountField) {
+					 missingFields.push('Amount');
+				 }
+				 if (!closeDateField) {
+					 missingFields.push('Close Date');
+				 }
+				 if (!dealNameField) {
+					 missingFields.push('Deal Name');
+				 }
+				 const missingFieldsMessage = missingFields.join(', ');
+				 this.referenceService.goToTop();
+				 return this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);
+			}
 		 	this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, this.integrationType.toLowerCase())
 				.subscribe(
 		 			data => {
@@ -301,6 +324,7 @@ export class IntegrationSettingsComponent implements OnInit {
 						data => {
 							if (data.statusCode == 200) {
 								self.unlinkEvent.emit();
+								self.ngxloading = false;
 							}
 						});
 			}, function (dismiss: any) {
@@ -497,6 +521,74 @@ export class IntegrationSettingsComponent implements OnInit {
 		}
 		ev.stopPropagation();
 	}
+	toggleSettings(sfCustomField){
+		sfCustomField.showSettings = !sfCustomField.showSettings;
+	}
+		
+	onFieldSelectionChange(selectedField: any): void {
+		const selectedFieldType = selectedField.formDefaultFieldType;
+		let countSelectedType = 0;
 
+		this.sfCustomFieldsResponse.forEach(field => {
+			if (field.formDefaultFieldType === selectedFieldType) {
+				countSelectedType++;
+				field.required = true;
+				field.canUnselect = false;
+			}
+		});
+		if (countSelectedType > 1) {
+			this.sfCustomFieldsResponse.forEach(field => {
+				if (field.formDefaultFieldType === selectedFieldType && field !== selectedField) {
+					field.formDefaultFieldType = null;
+					field.canUnselect = true;
+				}
+			});
+		}
+	}
+
+	// onFieldSelectionChange(selectedField: any): void {
+	// 	const selectedFieldType = selectedField.formDefaultFieldType;
+	
+	// 	const fieldTypeCounts = {
+	// 		'AMOUNT': 0,
+	// 		'CLOSE_DATE': 0,
+	// 		'DEAL_NAME': 0
+	// 	};
+	
+	// 	let selectedIndex = -1;
+	// 	this.sfCustomFieldsResponse.forEach((field, index) => {
+	// 		if (field.formDefaultFieldType === 'AMOUNT') {
+	// 			fieldTypeCounts['AMOUNT']++;
+	// 		} else if (field.formDefaultFieldType === 'CLOSE_DATE') {
+	// 			fieldTypeCounts['CLOSE_DATE']++;
+	// 		} else if (field.formDefaultFieldType === 'DEAL_NAME') {
+	// 			fieldTypeCounts['DEAL_NAME']++;
+	// 		}
+	
+	// 		if (field === selectedField) {
+	// 			selectedIndex = index;
+	// 		}
+	// 	});
+	
+	// 	if (fieldTypeCounts[selectedFieldType] > 1) {
+	// 		this.sfCustomFieldsResponse.forEach((field, index) => {
+	// 			if (field.formDefaultFieldType === selectedFieldType && index !== selectedIndex) {
+	// 				field.formDefaultFieldType = null;
+	// 			}
+	// 		});
+	// 	}
+	
+	// 	if (selectedFieldType !== null) {
+	// 		const remainingFieldTypes = Object.keys(fieldTypeCounts).filter(type => type !== selectedFieldType);
+	// 		remainingFieldTypes.forEach(fieldType => {
+	// 			if (fieldTypeCounts[fieldType] === 0) {
+	// 				const emptyField = this.sfCustomFieldsResponse.find(field => field.formDefaultFieldType === null);
+	// 				if (emptyField) {
+	// 					emptyField.formDefaultFieldType = fieldType;
+	// 				}
+	// 			}
+	// 		});
+	// 	}
+	// }
 	
 }

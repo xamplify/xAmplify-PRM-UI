@@ -316,6 +316,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
           }
         }
         this.dashboardTypes = filteredDashboardTypes;
+        this.refService.setAssignedDashboardToPartner(data);
         this.authenticationService.dashboardTypes = data;
       },error=>{
         this.logger.error(error);

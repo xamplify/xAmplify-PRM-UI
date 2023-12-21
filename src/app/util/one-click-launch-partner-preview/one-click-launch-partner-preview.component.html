@@ -127,6 +127,8 @@
                                              *ngIf="(!shareLead.marketoMasterList && !shareLead.emailValidationInd) || (shareLead.marketoMasterList && (!shareLead.marketoSyncComplete || !shareLead.emailValidationInd))"
                                              src="assets/images/Spinner.gif"
                                              style="width: 55px; margin-top: -88px; margin-left: 17px;" alt="">
+                                          <img *ngIf="shareLead.socialNetwork=='MICROSOFT' && shareLead.synchronisedList" src="{{properties?.microsoftImage}}"
+                                                    alt="manual" class="list-icons-sm">
                                        </td>
                                        <td>
                                           <h4 class="moreipsis" title="{{shareLead.name}}">
