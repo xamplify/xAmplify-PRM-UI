@@ -60,8 +60,10 @@ export class User {
     selectedTeamMemberIds = [];
     partnershipId = 0;
     selectedTeamMemberGroupName = "";
+    secondAdmin : boolean = false;
     companyProfileDTO : CompanyProfileDTO = new CompanyProfileDTO();
     displayContactCompany : string;
     companyNameStatus : string;
     excludedCatagory = "";
+
 }

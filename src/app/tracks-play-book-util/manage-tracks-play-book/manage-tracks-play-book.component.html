@@ -126,7 +126,10 @@
                                         <th class="hidden-xs text-center" style="width: 15%;" translate scope="col"
                                             id="border-bottom">Tags</th>
                                         <th class="hidden-xs text-center" style="width: 15%;" translate scope="col"
-                                            id="border-bottom">Created On</th>
+                                            id="border-bottom">
+                                            <span *ngIf="isPartnerView">Published On</span>
+                                            <span *ngIf="!isPartnerView">Created On</span>
+                                        </th>
                                         <ng-container *ngIf="isPartnerView">
                                             <th *ngIf="type == undefined || type == 'TRACK'" class="text-center"
                                                 style="width: 15%;" translate id="border-bottom">Progress</th>

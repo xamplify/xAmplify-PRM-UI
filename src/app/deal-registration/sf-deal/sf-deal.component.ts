@@ -29,7 +29,7 @@ export class SfDealComponent implements OnInit {
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
-  multiSelectvalueArray=[];
+  
   optionObj: any;
   showSFFormError: boolean = false;
   sfFormError: string = "";
@@ -96,11 +96,13 @@ export class SfDealComponent implements OnInit {
         for (let multiSelectObj of allMultiSelects) {
           if (multiSelectObj !== undefined && multiSelectObj.value !== undefined) {
             let selectedOptions = multiSelectObj.value.split(';');
+            let multiSelectvalueArray = [];
             for (let option of selectedOptions) {
+              
               this.optionObj = multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
-              this.multiSelectvalueArray.push(this.optionObj);
+              multiSelectvalueArray.push(this.optionObj);
             }
-            multiSelectObj.value = this.multiSelectvalueArray;
+            multiSelectObj.value = multiSelectvalueArray;
           }
         }      
   
@@ -144,11 +146,12 @@ export class SfDealComponent implements OnInit {
         for (let multiSelectObj of allMultiSelects) {
           if (multiSelectObj !== undefined && multiSelectObj.value !== undefined) {
             let selectedOptions = multiSelectObj.value.split(';');
+            let multiSelectvalueArray = [];
             for (let option of selectedOptions) {
               this.optionObj = multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
-              this.multiSelectvalueArray.push(this.optionObj);
+              multiSelectvalueArray.push(this.optionObj);
             }
-            multiSelectObj.value = this.multiSelectvalueArray;
+            multiSelectObj.value = multiSelectvalueArray;
           }
         }      
   

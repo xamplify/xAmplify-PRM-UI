@@ -350,6 +350,16 @@ export class ReferenceService {
     return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
   }
 
+
+  // validating method for firstname that deals with the regular expression
+
+  validateFirstName(firstName:string){
+    //let name=firstName.replace(this.regularExpressions.ALPHABETS_PATTERN , "");
+    //return this.regularExpressions.ALPHABETS_PATTERN.test(name);
+    return this.regularExpressions.FIRSTNAME_PATTERN.test(firstName);
+
+  }
+
   validateEmail(text: string) {
     var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
     return (text && EMAIL_REGEXP.test(text));

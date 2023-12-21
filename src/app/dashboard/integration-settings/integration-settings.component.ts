@@ -113,14 +113,14 @@ export class IntegrationSettingsComponent implements OnInit {
 	}
 
 	listExternalCustomFields() {
-		this.ngxloading = true;
+		//this.ngxloading = true;
 		this.customFieldsDtosLoader = true;
 		let self = this;
 		self.selectedCfIds = [];
 		self.integrationService.listExternalCustomFields(this.integrationType.toLowerCase(), this.loggedInUserId)
 			.subscribe(
 				data => {
-					this.ngxloading = false;
+					//this.ngxloading = false;
 					if (data.statusCode == 200) {
 						this.sfCustomFieldsResponse = data.data;
 						this.sfcfMasterCBClicked = false;
@@ -154,13 +154,14 @@ export class IntegrationSettingsComponent implements OnInit {
 
 	}
 
+	
 	setSfCfPage(page: number) {
-		this.referenceService.goToTop();
 		this.paginatedSelectedIds = [];
 		try {
 			if (page < 1 || (this.sfcfPager.totalPages > 0 && page > this.sfcfPager.totalPages)) {
 				return;
 			}
+			this.referenceService.goToTop();
 			this.sfcfPager = this.socialPagerService.getPager(this.sfCustomFieldsResponse.length, page, this.pageSize);
 			this.sfcfPagedItems = this.sfCustomFieldsResponse.slice(this.sfcfPager.startIndex, this.sfcfPager.endIndex + 1);
 			var cfIds = this.sfcfPagedItems.map(function (a) { return a.name; });
@@ -301,6 +302,7 @@ export class IntegrationSettingsComponent implements OnInit {
 						data => {
 							if (data.statusCode == 200) {
 								self.unlinkEvent.emit();
+								self.ngxloading = false;
 							}
 						});
 			}, function (dismiss: any) {

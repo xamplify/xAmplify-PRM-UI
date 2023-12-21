@@ -97,7 +97,7 @@ export class AddDealComponent implements OnInit {
   property: DealDynamicProperties = new DealDynamicProperties();
   ownDeal: boolean = false;
   showCommentActions: boolean = false;
-
+  
   @ViewChild(SfDealComponent)
   sfDealComponent: SfDealComponent;
   activeCRMDetails: any;
@@ -113,6 +113,7 @@ export class AddDealComponent implements OnInit {
         this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
         this.vanityLoginDto.userId = this.loggedInUserId;
         this.vanityLoginDto.vanityUrlFilter = true;
+        
       }
   }
 
@@ -156,6 +157,7 @@ export class AddDealComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
         if (data.statusCode == 200) {
           this.deal.createdForCompanyId = data.data;
+          //this.isSalesForceEnabled();
           this.getActiveCRMDetails();
         }
       },
@@ -599,7 +601,7 @@ export class AddDealComponent implements OnInit {
 
   validateQuestion(property: DealDynamicProperties) {
 
-      if (property.key.length > 0) {
+      if (property.key.length > 0 && property.value.length > 0 && property.key.trim() && property.value.trim()) {
           property.validationStausKey = this.successClass;
           property.error = false;
       } else {

@@ -472,8 +472,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
+  
   /***********Add Team Member(s) ********************/
   goToAddTeamMemberDiv() {
     this.referenceService.hideDiv('csv-error-div');
@@ -529,17 +528,31 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.team.validEmailId = this.referenceService.validateEmailId(this.team.emailId);
       this.team.emailIdErrorMessage = this.team.validEmailId ? '' : 'Please enter a valid email address';
       this.emaillIdDivClass = this.team.validEmailId ? this.successClass : this.errorClass;
-    } else if ("teamMemberGroup" == fieldName) {
+    }
+    //adding new if condition to validate the first name.
+    if ("firstName" == fieldName) {
+      this.team.validFirstName = this.referenceService.validateFirstName(this.team.firstName);
+      this.team.lastNameErrorMessage = this.team.validFirstName ? '' : 'Please enter a valid name';
+      this.emaillIdDivClass = this.team.validFirstName ? this.successClass : this.errorClass;
+    }
+    
+    else if ("teamMemberGroup" == fieldName) {
       this.team.validTeamMemberGroupId = this.team.teamMemberGroupId != undefined && this.team.teamMemberGroupId > 0;
     }
     this.validateAllFields();
   }
   validateAllFields() {
     if (this.editTeamMember) {
+
       this.team.validEmailId = this.referenceService.validateEmailId(this.team.emailId);
       this.team.validTeamMemberGroupId = this.team.teamMemberGroupId != undefined && this.team.teamMemberGroupId > 0;
+    
+
+      this.team.validFirstName = this.referenceService.validateFirstName(this.team.firstName);
+    
+    
     }
-    this.team.validForm = this.team.validEmailId && this.team.validTeamMemberGroupId;
+    this.team.validForm = this.team.validEmailId && this.team.validTeamMemberGroupId && this.team.validFirstName ;
   }
 
 
@@ -579,7 +592,8 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   addTeamMember() {
     this.loading = true;
     let teamMemberDtos = new Array<any>();
-    let teamMemberDto = { 'emailId': this.team.emailId, 'firstName': this.team.firstName, 'lastName': this.team.lastName, 'teamMemberGroupId': this.team.teamMemberGroupId, 'secondAdmin': this.team.secondAdmin };
+    // i have used trim for first name to eleminate the leading and trailing white spaces.
+        let teamMemberDto = { 'emailId': this.team.emailId, 'firstName': this.team.firstName.trim(), 'lastName': this.team.lastName, 'teamMemberGroupId': this.team.teamMemberGroupId, 'secondAdmin': this.team.secondAdmin };
     teamMemberDtos.push(teamMemberDto);
     let teamInput = {};
     this.setTeamInputData(teamMemberDtos, teamInput);
@@ -594,6 +608,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           } else {
             this.team.validEmailId = false;
             this.team.emailIdErrorMessage = data.message;
+
+              //new fields Added for validating the names.
+              this.team.validFirstName=false;
+              this.team.lastNameErrorMessage=data.mesaage;
+              
             this.emaillIdDivClass = this.errorClass;
             this.team.validForm = false;
           }

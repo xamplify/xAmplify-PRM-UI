@@ -243,6 +243,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         if(this.processing){
            this.damService.ispreviousAssetIsProcessing = true;
         }
+        this.damService.uploadAssetInProgress = false;
 		
 	}
 
@@ -452,6 +453,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	}
 
 	uploadOrUpdate() {
+        this.damService.uploadAssetInProgress = true;
 		this.getCkEditorData();
         this.customResponse = new CustomResponse();
 		this.referenceService.goToTop();
@@ -473,8 +475,11 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 						this.referenceService.isUploaded = true;
 					}else{
 						this.referenceService.isAssetDetailsUpldated = true;
-					}                    
-					this.goToManageDam();
+					} 
+                    if(this.damService.uploadAssetInProgress){
+                        this.damService.uploadAssetInProgress = false;
+                        this.goToManageDam();
+                    }                   
 				} else if (result.statusCode == 400) {
 					this.customResponse = new CustomResponse('ERROR', result.message, true);
 				} else if (result.statusCode == 404) {
@@ -502,6 +507,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	}
 	
 	uploadVideo() {
+        this.damService.uploadAssetInProgress = true;
         this.getCkEditorData();
         this.referenceService.goToTop();
         this.clearErrors();
@@ -582,7 +588,10 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	                    }else{
 	                        this.referenceService.isAssetDetailsUpldated = true;
 	                    }
-	                    this.goToManageDam();
+                        if(this.damService.uploadAssetInProgress){
+                            this.damService.uploadAssetInProgress = false;
+                            this.goToManageDam();
+                        }
 	                    }
 	                } else if (result.statusCode == 400) {
 	                    this.customResponse = new CustomResponse('ERROR', result.message, true);
@@ -611,7 +620,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         /********XNFR-169*********/
 		this.loading = true;
         this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
-	}
+    }
 
 	clearErrors() {
 		this.dupliateNameErrorMessage = "";
