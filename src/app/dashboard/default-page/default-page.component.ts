@@ -106,13 +106,11 @@ export class DefaultPageComponent implements OnInit {
                 });
             }
         }
-        else{
         const userId = this.authenticationService.user.id;
         this.getDefaultPage(userId);
         if(!this.referenceService.isMobileScreenSize()){
         this.isGridView(userId); }
         else { this.referenceService.isGridView = true; }
-        }
     }
 
     /* -- XNFR-415 -- */
