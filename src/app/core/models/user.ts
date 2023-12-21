@@ -1,5 +1,6 @@
 import { Role } from './role';
 import { CampaignAccess } from '../../campaigns/models/campaign-access';
+import { CompanyProfileDTO } from '../../dashboard/company-profile/models/company-profile-dto';
 
 export class User {
     username: string;
@@ -60,4 +61,9 @@ export class User {
     partnershipId = 0;
     selectedTeamMemberGroupName = "";
     secondAdmin : boolean = false;
+    companyProfileDTO : CompanyProfileDTO = new CompanyProfileDTO();
+    displayContactCompany : string;
+    companyNameStatus : string;
+    excludedCatagory = "";
+
 }

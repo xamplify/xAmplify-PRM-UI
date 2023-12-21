@@ -5,33 +5,45 @@
             <li><i class="fa fa-home" aria-hidden="true"></i>
                 <a [routerLink]="referenceService.homeRouter" translate>Home</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
-                <a [routerLink]="['/home/design/add']" translate>Create Design</a> 
+                <a [routerLink]="['/home/design/add']" translate>Create Design</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li><a translate>Create Pages</a></li>
         </ul>
-        <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+        <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="portlet light clearfix">
+            <div class="portlet light remove_cardBgcolor padding_0 clearfix">
                 <div class="portlet-title" style="border-bottom: none;">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-lg-12">
                             <div class="col-xs-8 col-sm-8 col-lg-8 p0">
-                                <ul class="mix-filter" style="padding-top: 5px;" *ngIf="!authenticationService?.module?.isMarketingCompany">
-                                    <li class="filter" (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All</li>
-                                    <li class="filter" (click)="showAllLandingPages('Regular',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex" translate>Regular</li>
-                                    <li class="filter"  (click)="showAllLandingPages('Co-Branded',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex" translate>Co-Branded</li>
+                                <ul class="mix-filter" style="padding-top: 5px;"
+                                    *ngIf="!authenticationService?.module?.isMarketingCompany">
+                                    <li class="filter" (click)="showAllLandingPages('All',0)"
+                                        [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All
+                                    </li>
+                                    <li class="filter" (click)="showAllLandingPages('Regular',1)"
+                                        [class.landing-page-selected]="1 == selectedLandingPageTypeIndex" translate>
+                                        Regular</li>
+                                    <li class="filter" (click)="showAllLandingPages('Co-Branded',2)"
+                                        [class.landing-page-selected]="2 == selectedLandingPageTypeIndex" translate>
+                                        Co-Branded</li>
                                 </ul>
                             </div>
                             <div class="col-xs-4 col-sm-4 col-lg-4 p0">
                                 <!-- <div class="col-xs-4 col-sm-4 col-lg-4 p0" style="padding-top: 10px !important;"> -->
                                 <div class="btn-group pull-right">
                                     <div class="portlet-input input-inline">
-                                        <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
-                                        <button class="glyphicon glyphicon-remove search-box-item-clear" (click)="searchKey='';searchLandingPages();" *ngIf="searchKey?.length>0"></button>
-                                        <button type="submit" class="search-box-item-click" (click)="searchLandingPages()"><i class="fa fa-search"></i></button>
+                                        <input type="text" class="form-control" [(ngModel)]="searchKey"
+                                            [ngModelOptions]="{standalone: true}" placeholder="search..."
+                                            (keypress)="eventHandler($event.keyCode)">
+                                        <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                            (click)="searchKey='';searchLandingPages();"
+                                            *ngIf="searchKey?.length>0"></button>
+                                        <button type="submit" class="search-box-item-click"
+                                            (click)="searchLandingPages()"><i class="fa fa-search"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -40,23 +52,33 @@
                 </div>
                 <div class="portlet-body" style="padding: 0px 0px 0px 0px;">
                     <div class="row">
-                        <app-landing-page-loader [maxBoxLength]=4  *ngIf="httpRequestLoader.isLoading"></app-landing-page-loader>
+                        <app-landing-page-loader [maxBoxLength]=4
+                            *ngIf="httpRequestLoader.isLoading"></app-landing-page-loader>
                         <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
                         <ng-container *ngIf="!httpRequestLoader.isLoading">
-                            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_20" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
+                            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_20"
+                                *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                                 <div class="grid-box">
-                                    <span class="ribbon1" *ngIf="landingPage.coBranded"><span translate>Co-Branded</span></span>
-                                    <span class="ribbon1" *ngIf="!landingPage.coBranded"><span translate>Regular</span></span>
+                                    <span class="ribbon1" *ngIf="landingPage.coBranded"><span
+                                            translate>Co-Branded</span></span>
+                                    <span class="ribbon1" *ngIf="!landingPage.coBranded"><span
+                                            translate>Regular</span></span>
                                     <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}" alt="">
-                                    <h4 title="{{landingPage.name}}">{{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
+                                    <h4 title="{{landingPage.name}}">{{landingPage.name|slice:0:23}} <span
+                                            *ngIf="landingPage.name?.length>23">....</span></h4>
                                     <div class="bar gridIconCustomization">
-                                        <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="Create  Page" (click)="showLandingPage(landingPage.id)">
+                                        <a class="Iconhover" data-toggle="tooltip" data-placement="top"
+                                            title="Create  Page" (click)="showLandingPage(landingPage.id)">
                                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
                                         </a>
-                                        <a class="Iconhover" *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip" data-placement="top" title="Save As Default Page" (click)="goToCreatePage(landingPage.id)">
+                                        <a class="Iconhover" *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip"
+                                            data-placement="top" title="Save As Default Page"
+                                            (click)="goToCreatePage(landingPage.id)">
                                             <i class="fa fa-save" aria-hidden="true"></i>
                                         </a>
-                                        <a class="delete" *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip" data-placement="top" title="Delete Default Page" (click)="confirmDeleteLandingPage(landingPage)">
+                                        <a class="delete" *ngIf="loggedInAsSuperAdmin" data-toggle="tooltip"
+                                            data-placement="top" title="Delete Default Page"
+                                            (click)="confirmDeleteLandingPage(landingPage)">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </a>
                                     </div>
@@ -69,8 +91,10 @@
                     <strong translate>No Pages Found.</strong>
                 </div>
                 <div *ngIf="pagination?.pagedItems.length !== 0" class="pg8">
-                    <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)" (notifyParentDropDown)="listLandingPages($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
-                  </div>
+                    <app-pagination [pagination]="pagination" (notifyParent)="navigateBetweenPageNumbers($event)"
+                        (notifyParentDropDown)="listLandingPages($event)"
+                        [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                </div>
 
             </div>
             <!-- END PAGE CONTENT-->

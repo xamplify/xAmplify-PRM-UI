@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Input,Renderer } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';

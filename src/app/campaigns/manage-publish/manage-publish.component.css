@@ -152,7 +152,7 @@ td h5 {
   border-color: gray;
 }
 .bar a {
-  margin: 10px 1px;
+  margin: 10px 2px;
 }
 .re-distributed-high-level {
   width: 120px;
@@ -168,7 +168,7 @@ td h5 {
 }
 .custom-font-weight {
   font-weight: 600 !important;
-  white-space: pre-wrap;
+  /* white-space: pre-wrap; */
 }
 .custom-font-size {
   font-size: 16px !important;
@@ -267,4 +267,11 @@ span.gearicon-font-cu {
 }
 .active-campaign-color {
   background-color: #5cb85c;
+}
+
+/*******Remove this after merging XNFR-374 */
+.grid-box h6 {
+  text-align: left !important;
+  margin: 0px !important;
+  width: 100% !important;
 }

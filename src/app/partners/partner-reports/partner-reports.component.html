@@ -65,8 +65,8 @@
             </div>
 
             <!--Redistributed Campaigns Count-->
-            <app-box-loader [countLoader]=5 *ngIf="redistributedCampaignsCountLoader"></app-box-loader>
-            <div *ngIf="!redistributedCampaignsCountLoader"
+            <app-box-loader [countLoader]=5 *ngIf="redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-box-loader>
+            <div *ngIf="!redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
               class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
                 (click)="goToReDistributedPartnersDiv()">
@@ -91,8 +91,8 @@
             </div>
 
             <!--Through Partner Campaigns Count-->
-            <app-box-loader [countLoader]=5 *ngIf="throughPartnerCampaignsCountLoader"></app-box-loader>
-            <div *ngIf="!throughPartnerCampaignsCountLoader"
+            <app-box-loader [countLoader]=5 *ngIf="throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-box-loader>
+            <div *ngIf="!throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
               class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
               <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex"
                 (click)="goToThroughPartnersDiv()">
@@ -187,7 +187,7 @@
     *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-count-tiles>
 
   <!-- --------------------Active Partners Analytics-------- -->
-  <div id="active-partner-div" *ngIf="!loadAllCharts && selectedTabIndex == 0" style="padding-right: 12px;">
+  <div id="active-partner-div" *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember" style="padding-right: 12px;">
     <div class="row">
       <div class="">
         <!---XNFR-220----->
@@ -220,7 +220,6 @@
           <div class="portlet light mAlignGraph" style="margin-bottom: 15px;">
             <div class="portlet-body" style="padding-top: 0;">
               <div id="campaign-type-chart" class="campaign-type mGraphwidth" style="margin: -5px;"></div>
-                <!-- <app-redistributed-campaigns-and-leads-bar-chart *ngIf="!loadAllCharts && selectedTabIndex == 0" [applyFilter]="applyFilter"  [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [barChartId]="'campaign-type-chart'"></app-redistributed-campaigns-and-leads-bar-chart>             -->
             </div>
           </div>
           <!-- END PORTLET-->
@@ -261,10 +260,12 @@
           <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
             <table class="table tgrid" *ngIf="inActivePartnersPagination.pagedItems.length != 0" aria-describedby="">
               <thead>
+                <tr>
                 <th class="center-aligned" style="width:50%" scope="col">
                   {{authenticationService?.partnerModule?.customName}}</th>
                 <th class="hidden-xs" style="text-align: left;" scope="col">LAST REMINDER SENT</th>
                 <th style="text-align: left" class="mAlign" scope="col">Actions</th>
+              </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
@@ -278,8 +279,9 @@
                   </td>
                   <td class="mAlign" (click)="sendPartnerReminder(item)">
                     <div class="actions-block float-none">
-                      <a data-toggle="tooltip" data-placement="left" title="Send reminder email">
+                      <a class="custom-icon" data-toggle="tooltip" data-placement="left" title="Send reminder email">
                         <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
+                        <div class="clickicons"></div>
                       </a>
                     </div>
                   </td>
@@ -313,9 +315,11 @@
             <div class="table-responsive">
               <table class="table tgrid" *ngIf="approvePartnersPagination.pagedItems.length != 0">
                 <thead>
+                  <tr>
                   <th class="center-aligned">partners</th>
                   <th style="text-align: center;">status</th>
                   <th style="text-align: center;">Actions</th>
+                </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of approvePartnersPagination.pagedItems" style="cursor: pointer;">
@@ -578,9 +582,10 @@
                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate"> </app-timestamp>
                       </td>
                       <td class="text-center">
-                        <a data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(campaign)"
+                        <a class="custom-icon" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(campaign)"
                           data-toggle="tooltip" data-placement="top" title="Campaign Based Reports">
                           <i class="circled-number fa fa-line-chart IconCustomization" aria-hidden="true"></i>
+                          <div class="clickicons"></div>
                         </a>
                       </td>
                     </tr>
@@ -649,8 +654,9 @@
                         </div>
                         <div class="bar gridIconCustomization">
                           <a (click)="referenseService.goToCampaignAnalytics(campaign)" data-toggle="tooltip"
-                            data-placement="top" title="Campaign Based Reports" class="Iconhover">
+                            data-placement="top" title="Campaign Based Reports" class="Iconhover custom-icon">
                             <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
                           </a>
                         </div>
                       </div>
@@ -769,13 +775,13 @@
     <!-- <ng-container *ngIf="reloadWithFilter"> -->
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
       [chartId]="'allRedistributeCampaignsAndLeadsCountBarChart'"
-      *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaigns-and-leads-bar-chart>
+      *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-redistributed-campaigns-and-leads-bar-chart>
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
       [chartId]="'allLeadsAndDealsBarChart'"
-      *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaigns-and-leads-bar-chart>
+      *ngIf="!loadAllCharts && selectedTabIndex == 0 "></app-redistributed-campaigns-and-leads-bar-chart>
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
       [chartId]="'redistributeCampaignsAndLeadsCountBarChart'"
-      *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-redistributed-campaigns-and-leads-bar-chart>
+      *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-redistributed-campaigns-and-leads-bar-chart>
     <!-- <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
         [chartId]="'redistributeCampaignsAndLeadsCountBarChartQuarterly'"></app-redistributed-campaigns-and-leads-bar-chart> -->
     <app-redistributed-campaigns-and-leads-bar-chart [applyTeamMemberFilter]="applyFilter"
@@ -792,12 +798,12 @@
           (notifySelectSlice)="redistributedCampaignDetailsPieChartSelected($event)"
           (notifyUnSelectSlice)="redistributedCampaignDetailsPieChartUnSelected($event)" [isDetailedAnalytics]="false"
           [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
-          *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-pie-chart>
+          *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-pie-chart>
       </div>
       <app-redistributed-campaign-details [partnerCompanyId]="'0'" [campaignTypeFilter]="selectedCampaignType"
         [isDetailedAnalytics]="false" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
         (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [applyFilter]="applyFilter"
-        *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService.module?.isCampaign"></app-redistributed-campaign-details>
+        *ngIf="!loadAllCharts && selectedTabIndex == 0 && authenticationService.module?.isCampaign && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-redistributed-campaign-details>
     </div>
   </div>
 

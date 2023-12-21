@@ -243,7 +243,7 @@
         display: none; /*Safari and Chrome*/
     }
     button#tabWidthCu {
-        width: 25%;
+        width: 37%;
         /* background: #dddddd69; */
     } 
 
@@ -252,8 +252,10 @@
     }
     .loginActive {
       color:#000000;
-      background-color: #cccccc;
+      background-color: #c3d4e5;
       border-radius: 0px;
+      border-bottom: 3px solid #008fd5;
+      padding: 5px 7px;
     }
     .loginActive:hover {
       width: 25%;
@@ -272,10 +274,12 @@
       background-color: #f1f5f9;
       padding: 10px;
       border-radius: 4px;
+      /* height: 181px; */
   }
   .imgpreview{
     width: 100%;
     height: 120px;
+    object-fit: contain;
   }
   @media screen and (max-width:600px){
     .mt_15{
@@ -335,11 +339,11 @@
   position: absolute;
   background: #fff;
   padding-top: 1px;
-  padding-right: 3px;
+  padding-right: 6px;
   padding-bottom: 0px;
   padding-left: 3px;
   border-radius: 3px;
-  left: 0;
+  right: 0;
   margin-top: 2px;
   margin-right: 0px;
   margin-bottom: 0px;
@@ -379,9 +383,9 @@ input[type=radio]:checked{
   box-shadow: 0 0 0 0.5px #54a7e9;
   border-radius: 5px;
 }
-.grid-box.template-selected-border {
+/* .grid-box.template-selected-border {
   border: none !important;
-}
+} */
 /* 
 .alert-su {
   padding:6px 12px;
@@ -393,4 +397,96 @@ input[type=radio]:checked{
   padding: 4px 8px;
   border-radius: 3px;
   color:#000000;
+}
+.allignTemplates {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.upload-imgheight1 {
+  height: 115px;
+}
+
+.refresh-fa-fa {
+  height: 30px !important;
+  width: 30px;
+  padding-top: 3px;
+}
+.conectColor{
+  background-color: #008fd5;
+  border: 1px solid #3575b5;
+  border-radius: 5px;
+  /* padding:5px 10px; */
+  padding: 2px 6px;
+  color:white;
+  cursor: pointer;
+  font-size: 12px;
+}
+.allignCustomSwich{
+  position: relative;
+  bottom: 8px;
+  padding-left: 5px !important;
+}
+/* .button {
+  padding:0px 0px;
+  margin-left: 10px;
+} */
+.inActive {
+  background: #f1f5f9;
+  padding: 5px 7px;
+  border-bottom: 3px solid #f1f5f9;
+  border-radius: 0px;
+}
+.btn + .btn {
+  margin-left: -3px 
+}
+.switchBtnCu{position: relative; bottom: 10px;left: 5px;}
+.paddingRight{padding-right: 0px;}
+
+/* desktop */
+@media ( 1300px <= width <= 1453px) {  
+  button#tabWidthCu{width: 40%;}
+}
+@media ( 1141px <= width <= 1453px) {  
+  button#tabWidthCu{width: 49%;}
+}
+@media ( 992px <= width <= 1141px) {  
+  b.TabFontCu {font-size: 9px;}
+  button#tabWidthCu{width: 49%;}
+}
+@media ( 992px <= width <= 1201px) {  
+  /* .imgpreview { object-fit: contain;} */
+  .MTop { margin-top:10px; }
+  .marginLeftZero {margin-left:0px;padding: 10px 0px;}
+  .paddingRight{padding: 0px;}
+  .FontCustomization{font-size: 13px;}
+  
+}
+@media ( 992px <= width <= 1269px) {  
+  .UploadBackgroundFontCu {font-size: 12px;}
+}
+@media ( 992px <= width <= 1020px) {  
+  .custom-login{padding: 10px 0px;}
+  .FontCustomization{font-size: 13px;}
+}
+ /* desktop End*/
+
+ /* tablet */
+ @media ( 768px <= width <= 990px) {  
+  button#tabWidthCu {width: 48%;}
+  .FontCustomization {font-size: 12px;}
+}
+ /* tablet End*/
+
+/* mobile */
+ @media ( 200px <= width <= 767px) {  
+  button#tabWidthCu { width: 100%;}
+  .MTop { margin-top:10px; }
+  .marginLeftZero {margin-left:0px;}
+  .paddingRight{padding: 0px;}
+}
+/* mobile End*/
+
+.alert-su {
+  padding:6px 12px;
 }

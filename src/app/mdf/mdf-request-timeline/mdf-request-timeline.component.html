@@ -3,170 +3,219 @@
     <ng-container *ngIf="initLoader">
         <app-modal-popup-loader></app-modal-popup-loader>
     </ng-container>
-<ng-container *ngIf="!initLoader">
-  <div class="page-bar">
-     <ul class="page-breadcrumb">
-        <li><i class="fa fa-home" aria-hidden="true"></i> 
-           <a  [routerLink]="referenceService.homeRouter"translate>Home</a> <i class="fa fa-angle-right" aria-hidden="true"></i>
-        </li>
-        <li>
-            <a (click)="goToSelectMdfPage()" translate>MDF</a>  
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-        </li>
-        <li>
-            <a (click)="goBack()" translate>Manage MDF Requests</a>  
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-        </li>
-        <li><a translate>Timeline</a></li>
-     </ul>
-     <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
-        <i class="fa fa-times" aria-hidden="true"></i>
-    </a> 
-    <a title="Refresh" class="close-circle xamp-margin-left-icon" (click)="refreshHistory()" aria-hidden="true">
-        <i class="fa fa-refresh" aria-hidden="true"></i>
-    </a>
-  </div>
-  <div class="row">
-    <div class="col-md-12 col-lg-12">
-       <div class="portlet light">
-          <div class="portlet-title">
-              <div class="caption" translate>
-                 Request Details
-              </div>
-           </div>
-          <app-dashboard-loader *ngIf="headerLoader"></app-dashboard-loader>
-          <div class="row" *ngIf="!headerLoader">
-             <div  class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
-                <div class="row">
-                    <div class="col-md-3 col-lg-3 text-left">
-                        <label style="font-size: 15px;font-weight: 600; color: #65b6e4;">MDF Request</label><br>
-                        <label style="font-size: 14px;font-weight: 600;">{{mdfRequest?.title}}</label>
-                    </div>
-                    <div class="col-md-3 col-lg-3 text-left">
-                        <label style="font-size: 15px;font-weight: 600; color: #65b6e4;">Amount</label><br>
-                        <label style="font-size: 14px;font-weight: 600;">$ {{mdfRequest?.requestAmount | number:'1.0':'en-US'}}</label>
-                    </div>
-                    <div class="col-md-3 col-lg-3 text-left">
-                        <label style="font-size: 15px;font-weight: 600; color: #65b6e4;">Created Date</label><br>
-                        <label style="font-size: 14px;font-weight: 600;">{{mdfRequest?.requestCreatedDateInString}}</label>
-                    </div>
-                    <div class="col-md-3 col-lg-3 text-left">
-                      <label style="font-size: 15px;font-weight: 600; color: #65b6e4;">Event Date</label><br>
-                      <label style="font-size: 14px;font-weight: 600;">{{mdfRequest?.eventDateInString}}</label>
-                  </div>
-                </div>
-             </div>
-          </div>
-       </div>
-    </div>
- </div>
-
- <div class="row">
-    <div class="col-md-12 col-lg-12">
-        <!-- removed height 500 -->
-        <div class="portlet light">
-            <app-modal-popup-loader *ngIf="timeLineLoader"></app-modal-popup-loader>
-            <div class="row" *ngIf="!timeLineLoader">
-                <div class="col-md-12 col-lg-12">
-                    <div class="panel with-nav-tabs panel-default">
-                        <div class="panel-heading">
-                            <ul class="nav nav-tabs tabsactievcolorinu">
-                                <li class="active"><a href="#timeLineTab" data-toggle="tab">History</a></li>
-                                <li><a href="#documentsTab" data-toggle="tab">{{documentsTitle}}</a></li>
-                            </ul>
+    <ng-container *ngIf="!initLoader">
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li><i class="fa fa-home" aria-hidden="true"></i>
+                    <a [routerLink]="referenceService.homeRouter" translate>Home</a> <i class="fa fa-angle-right"
+                        aria-hidden="true"></i>
+                </li>
+                <li>
+                    <a (click)="goToSelectMdfPage()" translate>MDF</a>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </li>
+                <li>
+                    <a (click)="goBack()" translate>Manage MDF Requests</a>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </li>
+                <li><a translate>Timeline</a></li>
+            </ul>
+            <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+            <a title="Refresh" class="close-circle xamp-margin-left-icon" (click)="refreshHistory()" aria-hidden="true">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="portlet light">
+                    <div class="portlet-title">
+                        <div class="caption" translate>
+                            Request Details
                         </div>
-                        <div class="panel-body">
-                            <div class="tab-content">
-                                <div class="tab-pane fade in active" id="timeLineTab">
-                                    <div class="row">
-                                        <div class="timeline">
-                                            <div class="line text-muted"></div>
-                                            <article *ngFor="let timeLine of mdfRequestTimeLineHistory" class="panel panel-default panel-outline" style="border-style: none !important;">
-                                                <div class="panel-heading icon">
-                                                    <img class="img-circle mdf-style" src="{{timeLine?.profilePicturePath}}" alt="">
-                                                </div>
-                                                <div class="panel-body pt0">
-                                                    <p>
-                                                      <strong style="color:#65b6e4;">{{timeLine?.displayName}}</strong>
-                                                      <ng-container *ngIf="timeLine?.statusInInteger!=1">
-                                                        changed the status to 
-                                                        <button class="btn btn-warning btn-xs cmargin">{{timeLine?.status}}</button>  
-                                                      </ng-container>
-                                                      <ng-container *ngIf="timeLine?.statusInInteger==1">
-                                                        <button class="btn btn-warning btn-xs cmargin">Requested MDF</button>
-                                                      </ng-container>
-                                                      On
-                                                       <strong>
-                                                          <span *ngIf="!referenceService.isSafariBrowser()">{{timeLine?.displayTime |date:'mediumDate'}} {{timeLine?.displayTime |date:'shortTime'}}</span>
-                                                          <span *ngIf="referenceService.isSafariBrowser()">{{timeLine?.displayTime}}</span>
-                                                       </strong>
-                                                       <ng-container *ngIf="timeLine?.statusInInteger==2 || timeLine?.statusInInteger==3">
-                                                        <p *ngIf="timeLine?.allocationAmount!=null">Allocation Amount: <strong>$ {{timeLine?.allocationAmount | number:'1.0':'en-US'}}</strong></p>
-                                                        <p *ngIf="timeLine?.allocationDateInString?.length>0">Allocation Date: <strong>{{timeLine?.allocationDateInString}}</strong></p>
-                                                        <p *ngIf="timeLine?.expirationDateInString?.length>0">Expiration Date: <strong>{{timeLine?.expirationDateInString}}</strong></p>
-                                                       </ng-container>
-                                                       <ng-container *ngIf="timeLine?.statusInInteger==4">
-                                                        <p *ngIf="timeLine?.reimburseAmount!=null">Reimbursement Amount: <strong>$ {{timeLine?.reimburseAmount | number:'1.0':'en-US'}}</strong></p>
-                                                       </ng-container>
-                                                      <p *ngIf="timeLine?.description?.length>0">Description: <strong>{{timeLine?.description}}</strong></p>
-                                                </div>
-                                            </article>
-                                        </div>
-                                    </div>
+                    </div>
+                    <app-dashboard-loader *ngIf="headerLoader"></app-dashboard-loader>
+                    <div class="row" *ngIf="!headerLoader">
+                        <div class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
+                            <div class="row">
+                                <div class="col-md-3 col-lg-3 text-left">
+                                    <label style="font-size: 15px;font-weight: 600; color: #65b6e4;">MDF
+                                        Request</label><br>
+                                    <label style="font-size: 14px;font-weight: 600;">{{mdfRequest?.title}}</label>
                                 </div>
-                                <div class="tab-pane fade" id="documentsTab">
-                                    <div *ngIf="partnerView" class="upload-doc-div">
-                                        <button class="btn btn-primary" id="right" (click)="openMdfDocumentsPopup()" translate>Upload</button>
-                                    </div>
-                                    <app-list-loader *ngIf="documentListLoader.isLoading"></app-list-loader>
-                                    <div class="table-responsive">
-                                        <table class='table tgrid' aria-describedby="upload-documents">
-                                            <thead>
-                                                <tr>
-                                                   <th scope="row" translate>Document Name</th>
-                                                   <th scope="row" translate>Description</th>
-                                                   <th scope="row" translate>Uploaded Time</th>
-                                                   <th scope="row" translate>Uploaded By</th>
-                                                   <th scope="row" class='text-center' translate>Actions</th>
-                                                </tr>
-                                             </thead>
-                                             <tbody>
-                                                <ng-container *ngFor="let document of pagination.pagedItems;let i=index">
-                                                    <tr>
-                                                        <td>
-                                                            {{document?.fileName}}
-                                                        </td>
-                                                        <td title="{{document?.description}}">
-                                                            <span>{{document?.description | slice:0:25}}</span>
-                                                            <span *ngIf="document?.description.length>25">..</span>
-                                                        </td>
-                                                        <td>
-                                                            <span *ngIf="!referenceService.isSafariBrowser()">{{document?.displayTime |date:'mediumDate'}} {{document?.displayTime |date:'shortTime'}}</span>
-                                                           <span *ngIf="referenceService.isSafariBrowser()">{{document?.displayTime}}</span>
-                                                        </td>
-                                                        <td>
-                                                            {{document?.displayName}}
-                                                        </td>
-                                                        <td style="text-align: center;">
-                                                            <div class=" override-actions">
-                                                               <a (click)="downloadFile(document)" title="Download">
-                                                               <i class="fa fa-download action-btn IconCustomization" aria-hidden="true"></i>
-                                                               </a>
-                                                               <!-- <a (click)="delete()" title="Delete">
+                                <div class="col-md-3 col-lg-3 text-left">
+                                    <label style="font-size: 15px;font-weight: 600; color: #65b6e4;">Amount</label><br>
+                                    <label style="font-size: 14px;font-weight: 600;">$ {{mdfRequest?.requestAmount |
+                                        number:'1.0':'en-US'}}</label>
+                                </div>
+                                <div class="col-md-3 col-lg-3 text-left">
+                                    <label style="font-size: 15px;font-weight: 600; color: #65b6e4;">Created
+                                        Date</label><br>
+                                    <label
+                                        style="font-size: 14px;font-weight: 600;">{{mdfRequest?.requestCreatedDateInString}}</label>
+                                </div>
+                                <div class="col-md-3 col-lg-3 text-left">
+                                    <label style="font-size: 15px;font-weight: 600; color: #65b6e4;">Event
+                                        Date</label><br>
+                                    <label
+                                        style="font-size: 14px;font-weight: 600;">{{mdfRequest?.eventDateInString}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 col-lg-12 pt_12">
+                <!-- removed height 500 -->
+                <div class="portlet light">
+                    <app-modal-popup-loader *ngIf="timeLineLoader"></app-modal-popup-loader>
+                    <div class="row" *ngIf="!timeLineLoader">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="panel with-nav-tabs panel-default">
+                                <div class="panel-heading">
+                                    <ul class="nav nav-tabs tabsactievcolorinu">
+                                        <li class="active"><a href="#timeLineTab" data-toggle="tab">History</a></li>
+                                        <li><a href="#documentsTab" data-toggle="tab">{{documentsTitle}}</a></li>
+                                    </ul>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade in active" id="timeLineTab">
+                                            <div class="row">
+                                                <div class="timeline">
+                                                    <div class="line text-muted"></div>
+                                                    <article *ngFor="let timeLine of mdfRequestTimeLineHistory"
+                                                        class="panel panel-default panel-outline"
+                                                        style="border-style: none !important;">
+                                                        <div class="panel-heading icon">
+                                                            <img class="img-circle mdf-style"
+                                                                src="{{timeLine?.profilePicturePath}}" alt="No Image Found" onerror="this.src='assets/images/icon-user-default.png';">
+                                                        </div>
+                                                        <div class="panel-body pt0">
+                                                            <p>
+                                                                <strong
+                                                                    style="color:#65b6e4;">{{timeLine?.displayName}}</strong>
+                                                                <ng-container *ngIf="timeLine?.statusInInteger!=1">
+                                                                    changed the status to
+                                                                    <button
+                                                                        class="btn btn-warning btn-xs cmargin">{{timeLine?.status}}</button>
+                                                                </ng-container>
+                                                                <ng-container *ngIf="timeLine?.statusInInteger==1">
+                                                                    <button
+                                                                        class="btn btn-warning btn-xs cmargin">Requested
+                                                                        MDF</button>
+                                                                </ng-container>
+                                                                On
+                                                                <strong>
+                                                                    <span
+                                                                        *ngIf="!referenceService.isSafariBrowser()">{{timeLine?.displayTime
+                                                                        |date:'mediumDate'}} {{timeLine?.displayTime
+                                                                        |date:'shortTime'}}</span>
+                                                                    <span
+                                                                        *ngIf="referenceService.isSafariBrowser()">{{timeLine?.displayTime}}</span>
+                                                                </strong>
+                                                                <ng-container
+                                                                    *ngIf="timeLine?.statusInInteger==2 || timeLine?.statusInInteger==3">
+                                                                    <p *ngIf="timeLine?.allocationAmount!=null">
+                                                                        Allocation Amount: <strong>$
+                                                                            {{timeLine?.allocationAmount |
+                                                                            number:'1.0':'en-US'}}</strong></p>
+                                                                    <p
+                                                                        *ngIf="timeLine?.allocationDateInString?.length>0">
+                                                                        Allocation Date:
+                                                                        <strong>{{timeLine?.allocationDateInString}}</strong>
+                                                                    </p>
+                                                                    <p
+                                                                        *ngIf="timeLine?.expirationDateInString?.length>0">
+                                                                        Expiration Date:
+                                                                        <strong>{{timeLine?.expirationDateInString}}</strong>
+                                                                    </p>
+                                                                </ng-container>
+                                                                <ng-container *ngIf="timeLine?.statusInInteger==4">
+                                                                    <p *ngIf="timeLine?.reimburseAmount!=null">
+                                                                        Reimbursement Amount: <strong>$
+                                                                            {{timeLine?.reimburseAmount |
+                                                                            number:'1.0':'en-US'}}</strong></p>
+                                                                </ng-container>
+                                                            <p *ngIf="timeLine?.description?.length>0">Description:
+                                                                <strong>{{timeLine?.description}}</strong></p>
+                                                        </div>
+                                                    </article>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="documentsTab">
+                                            <div *ngIf="partnerView" class="upload-doc-div">
+                                                <button class="btn btn-primary" id="right"
+                                                    (click)="openMdfDocumentsPopup()" translate>Upload</button>
+                                            </div>
+                                            <app-list-loader *ngIf="documentListLoader.isLoading"></app-list-loader>
+                                            <div class="table-responsive">
+                                                <table class='table tgrid' aria-describedby="upload-documents">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="row" translate>Document Name</th>
+                                                            <th scope="row" translate>Description</th>
+                                                            <th scope="row" translate>Uploaded Time</th>
+                                                            <th scope="row" translate>Uploaded By</th>
+                                                            <th scope="row" class='text-center' translate>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <ng-container
+                                                            *ngFor="let document of pagination.pagedItems;let i=index">
+                                                            <tr>
+                                                                <td>
+                                                                    {{document?.fileName}}
+                                                                </td>
+                                                                <td title="{{document?.description}}">
+                                                                    <span>{{document?.description | slice:0:25}}</span>
+                                                                    <span
+                                                                        *ngIf="document?.description.length>25">..</span>
+                                                                </td>
+                                                                <td>
+                                                                    <span
+                                                                        *ngIf="!referenceService.isSafariBrowser()">{{document?.displayTime
+                                                                        |date:'mediumDate'}} {{document?.displayTime
+                                                                        |date:'shortTime'}}</span>
+                                                                    <span
+                                                                        *ngIf="referenceService.isSafariBrowser()">{{document?.displayTime}}</span>
+                                                                </td>
+                                                                <td>
+                                                                    {{document?.displayName}}
+                                                                </td>
+                                                                <td style="text-align: center;">
+                                                                    <div class=" override-actions">
+                                                                        <a (click)="downloadFile(document)"
+                                                                            title="Download">
+                                                                            <i class="fa fa-download action-btn IconCustomization"
+                                                                                aria-hidden="true"></i>
+                                                                        </a>
+                                                                        <!-- <a (click)="delete()" title="Delete">
                                                                 <i class="fa fa-trash action-btn trashIconCustomization" aria-hidden="true"></i>
                                                                 </a> -->
-                                                            </div>
-                                                         </td>
-                                                    </tr>
-                                                </ng-container>
-                                             </tbody>
-                                        </table>
-                                        <div *ngIf="pagination.pagedItems.length !== 0">
-                                            <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listDocuments($event)" [hidden]="documentListLoader.isLoading">
-                                            </app-pagination>
-                                        </div>
-                                        <div *ngIf="pagination.totalRecords==0 && !documentListLoader.isLoading" class="alert alert-info">
-                                            <strong>No Data Found.</strong>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </ng-container>
+                                                    </tbody>
+                                                </table>
+                                                <div *ngIf="pagination.pagedItems.length !== 0">
+                                                    <app-pagination [pagination]="pagination"
+                                                        (notifyParent)="setPage($event)"
+                                                        (notifyParentDropDown)="listDocuments($event)"
+                                                        [hidden]="documentListLoader.isLoading">
+                                                    </app-pagination>
+                                                </div>
+                                                <div *ngIf="pagination.totalRecords==0 && !documentListLoader.isLoading"
+                                                    class="alert alert-info">
+                                                    <strong>No Data Found.</strong>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -176,58 +225,60 @@
                 </div>
             </div>
         </div>
-    </div>
- </div>
-</ng-container>
-  </div>
+    </ng-container>
+</div>
 
-  <!--Upload Document Popup-->
-  <!--Add/Remove Amount Modal Pop Up------->
-<div id="uploadMdfDocumentsPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+<!--Upload Document Popup-->
+<!--Add/Remove Amount Modal Pop Up------->
+<div id="uploadMdfDocumentsPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-css" role="document">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <ngx-loading [show]="modalPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-          <div class="modal-header">
-              <a class="close-circle" (click)="closeMdfDocumentsPopup()">
-                <i class="fa fa-times" aria-hidden="true"></i></a>
-              <h4 class="modal-title" style="font-weight: 600;" translate>Upload Document</h4>
-          </div>
-          <div class="modal-body">
-            <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-            </app-response-message>
-            <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
-            <form role="form" class="form-horizontal form-bordered form-label-stripped" *ngIf="!modalPopupLoader">
-                <div class="portlet box">
-                    <div class="">
-                        <div class="col-md-12 col-lg-12 ">
-                            <div class="form-group">
-                                <label class="control-label col-sm-3" translate>Upload
-                                    <span class="required">*</span>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <ngx-loading [show]="modalPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <div class="modal-header">
+                <a class="close-circle" (click)="closeMdfDocumentsPopup()">
+                    <i class="fa fa-times" aria-hidden="true"></i></a>
+                <h4 class="modal-title" style="font-weight: 600;" translate>Upload Document</h4>
+            </div>
+            <div class="modal-body">
+                <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+                </app-response-message>
+                <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+                <form role="form" class="form-horizontal form-bordered form-label-stripped" *ngIf="!modalPopupLoader">
+                    <div class="portlet box">
+                        <div class="">
+                            <div class="col-md-12 col-lg-12 ">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" translate>Upload
+                                        <span class="required">*</span>
                                     </label>
-                                <div class="col-sm-8">
-                                    <input type="file" id="requestDocument" class="form-control" placeholder="Upload File" (change)="onFileChangeEvent($event)">
-                                    <span>Maximum File Size Limit 10 MB</span>
+                                    <div class="col-sm-8">
+                                        <input type="file" id="requestDocument" class="form-control"
+                                            placeholder="Upload File" (change)="onFileChangeEvent($event)">
+                                        <span>Maximum File Size Limit 10 MB</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-12 col-lg-12 ">
-                            <div class="form-group">
-                                <label class="control-label col-sm-3" translate>Description
+                            <div class="col-md-12 col-lg-12 ">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-3" translate>Description
                                     </label>
-                                <div class="col-sm-8">
-                                   <textarea class="form-control" [(ngModel)]="description"  [ngModelOptions]="{standalone: true}"  placeholder="Description" maxlength="1000"></textarea>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control" [(ngModel)]="description"
+                                            [ngModelOptions]="{standalone: true}" placeholder="Description"
+                                            maxlength="1000"></textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
-          </div>
-          <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader">
-            <button class="btn btn-info" type="reset" (click)="closeMdfDocumentsPopup();" translate>Cancel</button>
-            <button type="button" class="btn btn-primary"  (click)="uploadMdfDocument()" translate>Upload</button>
-        </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader">
+                <button class="btn btn-info" type="reset" (click)="closeMdfDocumentsPopup();" translate>Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="uploadMdfDocument()" translate>Upload</button>
+            </div>
         </div>
     </div>
 </div>

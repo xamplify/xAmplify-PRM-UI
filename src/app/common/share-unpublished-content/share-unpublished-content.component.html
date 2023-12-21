@@ -1,79 +1,80 @@
 <div class="modal fade right" id="shareUnPublishedContentPopUp" tabindex="-1" role="dialog" aria-labelledby=""
-   data-backdrop="static" data-keyboard="false">
-   <div class="modal-dialog w85-per" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close-circle" (click)="closePopup()">
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog w85-per" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" (click)="closePopup()">
           <i class="fa fa-times" aria-hidden="true"></i>
-          </button>
-          <h4 class="modal-title text-center">{{modalHeaderText}}</h4>
-       </div>
-       <div class="modal-body">
+        </button>
+        <h4 class="modal-title text-center">{{modalHeaderText}}</h4>
+      </div>
+      <div class="modal-body">
         <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <app-list-loader *ngIf="ngxLoading"></app-list-loader>
         <!--Campaigns/Assets/Tracks/Play Books-->
-          <div *ngIf="!isPublishedSuccessfully && !ngxLoading">
-            <!--Filter Option---->
-            <div  *ngIf="showFilterOptions">
-                <ul class="mix-filter" >
-                  <ng-container *ngFor="let filterOption of filterOptions;let i = index">
-                    <li (click)="applyFilter(i,filterOption)" [class.mix-filter-li-selected]="i == selectedIndex">{{filterOption}}</li>
-                  </ng-container>
-                </ul>
-            </div>
-            <div class="alert alert-info">
-              <strong>
-                  **Please be noted that you will only see a list of unshared {{selectedModule}}. <br/>
-                  **{{selectedModule}} that have been chosen will be shared with the
-                  <span *ngIf="isPartnersRouter">{{authenticationService?.partnerModule?.customName}}</span>
-                  <span *ngIf="!isPartnersRouter">contact</span>. 
-                  It will take some time to process everything. There is no need to reshare it.
-              </strong>
-            </div>
-            <!--Campaigns/Assets/Tracks/Playbooks-->
-            <app-share-campaigns *ngIf="isCampaignChildComponentCalled" 
-              [selectedUserListId]="selectedUserListId" [contact]="contact" [type]="type"  
-              (shareCampaignsEventEmitter)="shareUnPublishedContentEventReceiver($event)">
-            </app-share-campaigns>
-
-            <!--Assets-->
-            <app-share-assets *ngIf="isAssetChildComponentCalled"
-            [selectedUserListId]="selectedUserListId" [contact]="contact"
-            (shareAssetsEventEmitter)="shareUnPublishedContentEventReceiver($event)" >
-            </app-share-assets>
-
-            <!--Tracks/PlayBooks-->
-            <app-share-tracks-or-playbooks
-              *ngIf="isTrackChildComponentCalled || isPlayBookChildComponentCalled"
-              [selectedUserListId]="selectedUserListId" [contact]="contact"
-              [type]="selectedModule"
-              (shareTracksOrPlayBooksEventEmitter)="shareUnPublishedContentEventReceiver($event)"
-            ></app-share-tracks-or-playbooks>
-           
+        <div *ngIf="!isPublishedSuccessfully && !ngxLoading">
+          <!--Filter Option---->
+          <div *ngIf="showFilterOptions">
+            <ul class="mix-filter">
+              <ng-container *ngFor="let filterOption of filterOptions;let i = index">
+                <li (click)="applyFilter(i,filterOption)" [class.mix-filter-li-selected]="i == selectedIndex">
+                  {{filterOption}}</li>
+              </ng-container>
+            </ul>
           </div>
+          <div class="alert alert-info">
+            <strong>
+              **Please be noted that you will only see a list of unshared {{selectedModule}}. <br />
+              **{{selectedModule}} that have been chosen will be shared with the
+              <span *ngIf="isPartnersRouter">{{authenticationService?.partnerModule?.customName}}</span>
+              <span *ngIf="selectedModule=='Tracks' || selectedModule=='Play Books'"> and previously selected
+                {{authenticationService?.partnerModule?.customName}}/ List of
+                {{authenticationService?.partnerModule?.customName}} will be removed</span>
+              <span *ngIf="!isPartnersRouter">contact</span>.
+              It will take some time to process everything. There is no need to reshare it.
+            </strong>
+          </div>
+          <!--Campaigns/Assets/Tracks/Playbooks-->
+          <app-share-campaigns *ngIf="isCampaignChildComponentCalled" [selectedUserListId]="selectedUserListId"
+            [contact]="contact" [type]="type"
+            (shareCampaignsEventEmitter)="shareUnPublishedContentEventReceiver($event)">
+          </app-share-campaigns>
 
-          <!--Published Message-->
-          <div class="thank-you-pop" *ngIf="isPublishedSuccessfully">
-            <ng-container *ngIf="statusCode==200">
-               <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
-               <h4 class="event-success">{{responseMessage}}</h4>
-            </ng-container>
-            <ng-container *ngIf="statusCode!=200">
-               <i class="fa fa-times-circle" id="font-size-error" aria-hidden="true"></i>
-               <h4 class="event-error">{{responseMessage}}</h4>
-            </ng-container>
-         </div>
+          <!--Assets-->
+          <app-share-assets *ngIf="isAssetChildComponentCalled" [selectedUserListId]="selectedUserListId"
+            [contact]="contact" (shareAssetsEventEmitter)="shareUnPublishedContentEventReceiver($event)">
+          </app-share-assets>
+
+          <!--Tracks/PlayBooks-->
+          <app-share-tracks-or-playbooks *ngIf="isTrackChildComponentCalled || isPlayBookChildComponentCalled"
+            [selectedUserListId]="selectedUserListId" [contact]="contact" [type]="selectedModule"
+            (shareTracksOrPlayBooksEventEmitter)="shareUnPublishedContentEventReceiver($event)"></app-share-tracks-or-playbooks>
+
+        </div>
+
+        <!--Published Message-->
+        <div class="thank-you-pop" *ngIf="isPublishedSuccessfully">
+          <ng-container *ngIf="statusCode==200">
+            <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
+            <h4 class="event-success">{{responseMessage}}</h4>
+          </ng-container>
+          <ng-container *ngIf="statusCode!=200">
+            <i class="fa fa-times-circle" id="font-size-error" aria-hidden="true"></i>
+            <h4 class="event-error">{{responseMessage}}</h4>
+          </ng-container>
+        </div>
 
       </div>
       <!--Footer--->
-      
+
       <div class="modal-footer">
-        <button *ngIf="!isPublishedSuccessfully" type="submit" class="btn Btn-Green" [disabled]="selectedIds?.length==0 || isShareButtonClicked" (click)="share();isShareButtonClicked=true">Share {{selectedModule}}</button>
+        <button *ngIf="!isPublishedSuccessfully" type="submit" class="button bgcolor-unset"
+          [disabled]="selectedIds?.length==0 || isShareButtonClicked" (click)="share();isShareButtonClicked=true"><span
+            class="btn Btn-Green transition txt_pd-top3">Share {{selectedModule}}</span></button>
         <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
-     </div>
+      </div>
     </div>
-</div>    
-<app-confirm-sweet-alert-util *ngIf="isTrackOrPlayBooksSweetAlertComponentCalled" [parameterDto]="trackOrPlayBooksSweetAlertParameterDto"
-   (notifyComponent)="trackOrPlayBooksSweetAlertEventReceiver($event)"></app-confirm-sweet-alert-util>
-
-
+  </div>
+  <app-confirm-sweet-alert-util *ngIf="isTrackOrPlayBooksSweetAlertComponentCalled"
+    [parameterDto]="trackOrPlayBooksSweetAlertParameterDto"
+    (notifyComponent)="trackOrPlayBooksSweetAlertEventReceiver($event)"></app-confirm-sweet-alert-util>

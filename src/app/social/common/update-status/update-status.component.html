@@ -33,8 +33,8 @@
             </ng-container>
         </ul>
         <div *ngIf="location.includes('/campaigns/social')" id="folder-margin-xamp">
-            <button class="btn btn-primary" id="right" style="padding-bottom: 5px;" (click)="openCreateFolderPopup()"
-                translate>Create a Folder</button>
+            <button class="button_blue" id="right" style="padding-bottom: 5px;" (click)="openCreateFolderPopup()"
+                translate><span class="btn btn-primary transition">Create a Folder</span></button>
         </div>
     </div>
     <div class="row" [hidden]="isRedirectEnabled">

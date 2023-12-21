@@ -34,6 +34,9 @@ export class ActivePartnersTableComponent implements OnInit {
   @Output() notifyShowDetailedAnalytics = new EventEmitter();
   @Output() notifySelectedPartnerCompanyIds = new EventEmitter();
   @Input() selectedPartnerCompanyIds: any = [];
+  showFilterDropDown: boolean = false;
+  filterActiveBg: string;
+  filterApplied: boolean = false;
 
 
   constructor(public listLoaderValue: ListLoaderValue, public authenticationService: AuthenticationService,
@@ -44,12 +47,15 @@ export class ActivePartnersTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
-    this.getActivePartners(this.pagination);
+    //this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;
+    //this.getActivePartners(this.pagination);
   }
 
   ngOnChanges(){
+    this.pagination.partnerTeamMemberGroupFilter = this.applyFilter;   
     this.getActivePartners(this.pagination);
+    this.findCompanyNames();
+    this.setFilterColor();
   }
 
   getActivePartners(pagination: Pagination) {
@@ -120,26 +126,55 @@ export class ActivePartnersTableComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  toggleFilterOption() {
-    this.showFilterOption = !this.showFilterOption;
+  clickFilter() {
+    if(!this.filterApplied) {
+      this.showFilterOption = !this.showFilterOption;
+    } else {      
+      if (this.showFilterOption) {
+        this.showFilterOption = false;
+      } else {
+        this.showFilterDropDown = true;
+      }     
+    }
+    
   }
+
+  viewDropDownFilter(){
+    this.showFilterOption = true;
+    this.showFilterDropDown = false;
+  }
+
 
   closeFilterOption() {
     this.showFilterOption = false;
   }
 
   clearFilter() {
-    this.selectedCompanyIds = []
+    this.selectedCompanyIds = [];
     this.notifySelectedPartnerCompanyIds.emit(this.selectedCompanyIds);
+    this.isCollapsed = true;
+    this.showFilterDropDown = false;
+    this.filterActiveBg = 'defaultFilterACtiveBg';
+    this.filterApplied = false;
   }
 
   applyFilters() {
+    this.filterApplied = true;
     this.notifySelectedPartnerCompanyIds.emit(this.selectedCompanyIds);
+    this.isCollapsed = false;
+    this.showFilterOption = false;
+    this.filterActiveBg = 'filterActiveBg';
   }
-
+  setFilterColor(){
+    if(this.selectedCompanyIds != null && this.selectedCompanyIds.length >0 && this.selectedCompanyIds != undefined){
+      this.filterActiveBg = 'filterActiveBg';
+      this.isCollapsed = false;
+      this.filterApplied = true;
+    }
+  }
+  
   findCompanyNames() {
-    if (this.showFilterOption) {
-      this.filterCategoryLoader = true;
+    this.filterCategoryLoader = true;
       this.selectedCompanyIds = this.selectedPartnerCompanyIds;
       this.companyInfoFields = { text: 'companyName', value: 'companyId' };
       this.parterService.getPartnerJourneyCompanyDetailsForFilter(this.pagination).
@@ -149,7 +184,6 @@ export class ActivePartnersTableComponent implements OnInit {
           this.companyNameFilters = [];
           this.filterCategoryLoader = false;
       });
-    }
   }
 
 }

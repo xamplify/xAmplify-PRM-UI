@@ -3,7 +3,7 @@
 }
 
 .bar a{
-    margin: 10px 1px;
+    margin: 10px 2px;
 }
 
 .re-distributed-high-level {
@@ -53,3 +53,10 @@
 	line-height: 2.5;
   }
 
+/*******Remove this after merging XNFR-374 */
+.grid-box h6 {
+	text-align: left !important;
+	margin: 0px !important;
+	width: 100% !important;
+  }
+  

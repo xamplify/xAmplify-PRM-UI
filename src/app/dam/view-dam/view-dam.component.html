@@ -1,87 +1,90 @@
 <div class="page-content">
 	<div class="page-bar">
-	   <ul class="page-breadcrumb">
-		  <li><i class="fa fa-home" aria-hidden="true"></i> 
-			 <a [routerLink]="referenceService.homeRouter" translate>Home</a> 
-			 <i class="fa fa-angle-right" aria-hidden="true"></i>
-		  </li>
-		  <li>
-			 <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a> 
-			 <i class="fa fa-angle-right" aria-hidden="true"></i>
-		  </li>
-		  <li>
-			 <a (click)="closeAssetDetails()" translate>DAM</a>
-			 <i class="fa fa-angle-right" aria-hidden="true"></i>
-		  </li>
-		  <li>
-			 <a translate>View Asset</a>
-		  </li>
-	   </ul>
+		<ul class="page-breadcrumb">
+			<li><i class="fa fa-home" aria-hidden="true"></i>
+				<a [routerLink]="referenceService.homeRouter" translate>Home</a>
+				<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
+			<li>
+				<a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+				<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
+			<li>
+				<a (click)="closeAssetDetails()" translate>DAM</a>
+				<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
+			<li>
+				<a translate>View Asset</a>
+			</li>
+		</ul>
 	</div>
 	<div class="row">
-	   <div class="col-md-12">
-		  <div class="portlet light clearfix minhsfp">
-			 <div class="portlet-title bbnone" style="border-bottom: none;">
-				<div class="row">
-				   <div class="col-xs-3">
-					  <h4 class="pull-left m10 text-primary">View Asset</h4>
-				   </div>
-				   <div class="page-toolbar col-xs-9">
-					  <div class="btn-group pull-right">
-						 <div class="inputs" style="float: right;" *ngIf="!assetViewLoader">
-							<a	class="close-circle ref-mar" (click)="closeAssetDetails()" title="Close"> 
-							<i	class="fa fa-times" aria-hidden="true"></i>
-							</a>
-						 </div>
-					  </div>
-				   </div>
-				</div>
-			 </div>
-			 <app-modal-popup-loader	[hidden]="!assetViewLoader"></app-modal-popup-loader>
-			 <div [hidden]="assetViewLoader">
-				<div class="row">
-				   <div class="col-md-8 col-lg-8">
-					  <div class="portlet light mhtpx">
-						 <div class="portlet-title port-heading">
-							<div class="caption">Overview</div>
-						 </div>
-						 <div class="col-md-12 col-lg-12" *ngIf="loadVideoPlayer">
-							<app-xamplify-video-player  [videoId]="selectedAsset?.videoId"></app-xamplify-video-player>
-						 </div>
-						 <div style="margin-left: 10px;">
-							<h2 class="text-wrap">
-							   <strong  title="{{assetDetailsViewDto?.assetName}}" data-toggle="tooltip" data-placement="top">{{assetDetailsViewDto?.assetName}}</strong>
-							</h2>
-							<br>
-							<div class="desc-html">
-							   <div [innerHTML]="assetDetailsViewDto?.description" class="desc-break"> <br>
-							   </div>
+		<div class="col-md-12">
+			<div class="portlet light clearfix minhsfp">
+				<div class="portlet-title bbnone" style="border-bottom: none;">
+					<div class="row">
+						<div class="col-xs-3">
+							<h4 class="pull-left m10 text-primary">View Asset</h4>
+						</div>
+						<div class="page-toolbar col-xs-9">
+							<div class="btn-group pull-right">
+								<div class="inputs" style="float: right;" *ngIf="!assetViewLoader">
+									<a class="close-circle ref-mar" (click)="closeAssetDetails()" title="Close">
+										<i class="fa fa-times" aria-hidden="true"></i>
+									</a>
+								</div>
 							</div>
-						 </div>
-					  </div>
-				   </div>
-				   <div class="col-md-4 col-lg-4">
-					  <div>
-						 <div class="grid-box zero-margin" style="min-height: 200px;">
-							<img class="img-class mxv"
-							   src="{{assetDetailsViewDto?.thumbnailPath}}"
-							   alt="No Image Found"><br> <a class="btn btn-primary" [class.disabled]= "!showDownload"
-							(click)="downloadContent()">Download</a>
-							<h4>
-							   Published On :
-							   <app-timestamp [showInLine]="'true'"
-							   [dateAndTime]="assetDetailsViewDto?.displayTime">
-							   </app-timestamp>
-							</h4>
-						 </div>
-					  </div>
-				   </div>
+						</div>
+					</div>
 				</div>
-			 </div>
-		  </div>
-	   </div>
+				<app-modal-popup-loader [hidden]="!assetViewLoader"></app-modal-popup-loader>
+				<div [hidden]="assetViewLoader">
+					<div class="row">
+						<div class="col-md-8 col-lg-8">
+							<div class="portlet light mhtpx">
+								<div class="portlet-title port-heading">
+									<div class="caption">Overview</div>
+								</div>
+								<div class="col-md-12 col-lg-12" *ngIf="loadVideoPlayer">
+									<app-xamplify-video-player
+										[videoId]="selectedAsset?.videoId"></app-xamplify-video-player>
+								</div>
+								<div style="margin-left: 10px;">
+									<h2 class="text-wrap">
+										<strong title="{{assetDetailsViewDto?.assetName}}" data-toggle="tooltip"
+											data-placement="top">{{assetDetailsViewDto?.assetName}}</strong>
+									</h2>
+									<br>
+									<div class="desc-html">
+										<div [innerHTML]="assetDetailsViewDto?.description" class="desc-break"> <br>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-lg-4">
+							<div>
+								<div class="grid-box zero-margin" style="min-height: 200px;">
+									<img class="img-class mxv" src="{{assetDetailsViewDto?.thumbnailPath}}"
+										alt="No Image Found"><br> <button class="button_blue bgcolor-unset"
+										[class.disabled]="!showDownload" (click)="downloadContent()"><span
+											class="btn btn-primary transition text_pd5">Download</span></button>
+									<h4>
+										Published On :
+										<app-timestamp [showInLine]="'true'"
+											[dateAndTime]="assetDetailsViewDto?.displayTime">
+										</app-timestamp>
+									</h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
- </div>
- <ng-container *ngIf="download">
-	<app-download-asset-popup [asset]="selectedAsset" [isPartnerView]="true" (downloadAssetPopupEventEmitter)="downloadAssetPopupEventEmitter()"></app-download-asset-popup>
- </ng-container>
+</div>
+<ng-container *ngIf="download">
+	<app-download-asset-popup [asset]="selectedAsset" [isPartnerView]="true"
+		(downloadAssetPopupEventEmitter)="downloadAssetPopupEventEmitter()"></app-download-asset-popup>
+</ng-container>

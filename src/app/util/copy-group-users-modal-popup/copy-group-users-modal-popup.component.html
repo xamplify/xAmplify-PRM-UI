@@ -1,127 +1,155 @@
-<div class="modal fade right" id="copyGroupUsersModalPopup" tabindex="-1" role="dialog" aria-labelledby="" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <button type="button" class="close-circle" (click)="closePopup()">
-                  <i class="fa fa-times" aria-hidden="true"></i>
-              </button>
-              <h4 class="modal-title text-center">Select Lists</h4>
-          </div>
-          <div class="modal-body">
-              <div class="thank-you-pop" *ngIf="copySuccess">
-                  <ng-container *ngIf="statusCode==200">
-                      <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
-                      <h4 class="event-success">{{responseMessage}}</h4>
-                  </ng-container>
-                  <ng-container *ngIf="statusCode!=200">
-                      <i class="fa fa-times-circle" id="font-size-error" aria-hidden="true"></i>
-                      <h4 class="event-error">{{responseMessage}}</h4>
-                  </ng-container>
+<div class="modal fade right" id="copyGroupUsersModalPopup" tabindex="-1" role="dialog" aria-labelledby=""
+    data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" (click)="closePopup()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title text-center">Select Lists</h4>
+            </div>
+            <div class="modal-body">
+                <div class="thank-you-pop" *ngIf="copySuccess">
+                    <ng-container *ngIf="statusCode==200">
+                        <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
+                        <h4 class="event-success">{{responseMessage}}</h4>
+                    </ng-container>
+                    <ng-container *ngIf="statusCode!=200">
+                        <i class="fa fa-times-circle" id="font-size-error" aria-hidden="true"></i>
+                        <h4 class="event-error">{{responseMessage}}</h4>
+                    </ng-container>
 
 
-              </div>
-              <ng-container *ngIf="!copySuccess">
-                  <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse?.isVisible">
-                  </app-response-message>
-                  <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
-                      <div class="row">
-                          <div>
-                              <div class="col-xs-12">
-                                  <div class="page-toolbar">
-                                      <div class="btn-group pull-right">
-                                          <div class="inputs float-right" style="display: inline-flex;">
-                                              <div>
-                                                  <select class="form-control" [(ngModel)]="sortOption.selectedUserListGroupDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                                                  <option
-                                                      *ngFor="let option of sortOption.campaignRecipientsDropDownOptions"
-                                                      [ngValue]="option">
-                                                      {{option.name}}</option>
-                                              </select>
-                                              </div>
-                                              <div class="portlet-input input-inline" id="search-div">
-                                                  <div class="input-icon right" id="icon">
-                                                      <input type="text" autocomplete="off" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="groupsSearchOnKeyEvent($event.keyCode)">
-                                                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption?.searchKey" (click)="sortOption.searchKey='';searchGroups();"></button>
-                                                      <button type="submit" class="search-box-item-click" (click)="searchGroups()">
-                                                      <i class="fa fa-search" aria-hidden="true"></i>
-                                                  </button>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <br>
-                  <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-                  <ng-container *ngIf="!httpRequestLoader.isLoading">
-                    <div *ngIf="selectedPartnerGroupIds?.length>0  && pagination?.totalRecords>0" class="alert alert-success text-center">
-                        <strong>Selected Lists: {{selectedPartnerGroupIds?.length}}</strong>
-                     </div>
-                      <div class="table-responsive">
-                          <table class='table tgrid table-condensed table-bordered' *ngIf="pagination?.pagedItems?.length>0" id="copy-group-users-list-table">
-                              <thead>
-                                  <tr>
-                                      <th class="text-center pointer checkBox_shadow">
-                                        <input type="checkbox"  [(ngModel)]="isHeaderCheckBoxChecked" id="copy-group-users-header-checkbox-id"
-                                        (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)">
-                                      </th>
-                                      <th class="text-center">Name</th>
-                                      <th class="text-center">Count</th>
-                                      <th class="text-center">Created On</th>
-                                      <th class="text-center">Preview</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                <ng-container *ngFor="let group of pagination.pagedItems ;let i =index" >
-                                    <tr class="pointer" id="copy-group-users-tr-{{group.id}}" [class.row-selected]="selectedPartnerGroupIds?.indexOf(group.id)>-1"
-                                        (click)="highlightSelectedPartnerGroupOnRowClick(group.id,$event)">
-                                        <td class="text-center">
-                                            <input class="pointer checkBox_shadow" type="checkbox" id="{{group.id}}" value="{{group.id}}" [checked]="selectedPartnerGroupIds.indexOf(group.id)>-1" name="copyGroupUsersCheckBoxName[]" 
-                                             (click)="$event.stopPropagation();highlightSelectedPartnerGroupOnCheckBoxClick(group.id,$event)">
-                                        </td>
-                                        <td class="text-center" title="{{group?.groupName}}">
-                                            {{group?.groupName | slice:0:25}} <span *ngIf="group?.groupName?.length>25">...</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <span>{{group?.numberOfPartners}}</span>
-                                        </td>
-                                        <td class="text-center">
-                                           <app-display-date-and-time [dateAndTimeUTCString]="group?.createdTimeInString"></app-display-date-and-time>
-                                        </td>
-                                        <td class="text-center">
-                                            <div class="actions-block float-none" (click)="$event.stopPropagation();previewUserListUsers(group)">
-                                               <a><i class="fa fa-eye" aria-hidden="true"></i></a>
+                </div>
+                <ng-container *ngIf="!copySuccess">
+                    <app-response-message class="pg8" [customResponse]="customResponse"
+                        *ngIf="customResponse?.isVisible">
+                    </app-response-message>
+                    <div class="portlet-title" style="border-bottom: none;" *ngIf="!httpRequestLoader.isLoading">
+                        <div class="row">
+                            <div>
+                                <div class="col-xs-12">
+                                    <div class="page-toolbar">
+                                        <div class="btn-group pull-right">
+                                            <div class="inputs float-right" style="display: inline-flex;">
+                                                <div>
+                                                    <select class="form-control"
+                                                        [(ngModel)]="sortOption.selectedUserListGroupDropDownOption"
+                                                        (ngModelChange)="sortBy($event)" id="select-dropdown">
+                                                        <option
+                                                            *ngFor="let option of sortOption.campaignRecipientsDropDownOptions"
+                                                            [ngValue]="option">
+                                                            {{option.name}}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="portlet-input input-inline" id="search-div">
+                                                    <div class="input-icon right" id="icon">
+                                                        <input type="text" autocomplete="off" id="sort-text"
+                                                            class="form-control" [(ngModel)]="sortOption.searchKey"
+                                                            [ngModelOptions]="{standalone: true}"
+                                                            placeholder="search..."
+                                                            (keypress)="groupsSearchOnKeyEvent($event.keyCode)">
+                                                        <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                                            *ngIf="sortOption?.searchKey"
+                                                            (click)="sortOption.searchKey='';searchGroups();"></button>
+                                                        <button type="submit" class="search-box-item-click"
+                                                            (click)="searchGroups()">
+                                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
-                                         </td>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+                    <ng-container *ngIf="!httpRequestLoader.isLoading">
+                        <div *ngIf="selectedPartnerGroupIds?.length>0  && pagination?.totalRecords>0"
+                            class="alert alert-success text-center">
+                            <strong>Selected Lists: {{selectedPartnerGroupIds?.length}}</strong>
+                        </div>
+                        <div class="table-responsive">
+                            <table class='table tgrid table-condensed table-bordered'
+                                *ngIf="pagination?.pagedItems?.length>0" id="copy-group-users-list-table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center pointer checkBox_shadow">
+                                            <input type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
+                                                id="copy-group-users-header-checkbox-id"
+                                                (change)="selectOrUnselectAllRowsOfTheCurrentPage($event)">
+                                        </th>
+                                        <th class="text-center">Name</th>
+                                        <th class="text-center">Count</th>
+                                        <th class="text-center">Created On</th>
+                                        <th class="text-center">Preview</th>
                                     </tr>
-                                </ng-container>
-                              </tbody>
-                          </table>
-                      </div>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let group of pagination.pagedItems ;let i =index">
+                                        <tr class="pointer" id="copy-group-users-tr-{{group.id}}"
+                                            [class.row-selected]="selectedPartnerGroupIds?.indexOf(group.id)>-1"
+                                            (click)="highlightSelectedPartnerGroupOnRowClick(group.id,$event)">
+                                            <td class="text-center">
+                                                <input class="pointer checkBox_shadow" type="checkbox" id="{{group.id}}"
+                                                    value="{{group.id}}"
+                                                    [checked]="selectedPartnerGroupIds.indexOf(group.id)>-1"
+                                                    name="copyGroupUsersCheckBoxName[]"
+                                                    (click)="$event.stopPropagation();highlightSelectedPartnerGroupOnCheckBoxClick(group.id,$event)">
+                                            </td>
+                                            <td class="text-center" title="{{group?.groupName}}">
+                                                {{group?.groupName | slice:0:25}} <span
+                                                    *ngIf="group?.groupName?.length>25">...</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span>{{group?.numberOfPartners}}</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <app-display-date-and-time
+                                                    [dateAndTimeUTCString]="group?.createdTimeInString"></app-display-date-and-time>
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="actions-block float-none"
+                                                    (click)="$event.stopPropagation();previewUserListUsers(group)">
+                                                    <a class="custom-icon">
+                                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                                        <div class="clickicons"></div>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
 
-                      <!-- End of 24 -->
-                      <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-                          <strong>No Data Found.</strong>
-                      </div>
-                  </ng-container>
-              </ng-container>
-              <div *ngIf="pagination.pagedItems.length !== 0" class="" [hidden]="httpRequestLoader.isLoading">
-                  <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)" (notifyParentDropDown)="findGroupsForMerging($event)">
-                  </app-pagination>
-              </div>
-          </div>
-          <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
-              <button type="submit" class="btn Btn-Green" [disabled]="selectedPartnerGroupIds?.length==0" *ngIf="!copySuccess" (click)="copyToGroups()">Add</button>
-              <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
-          </div>
-      </div>
-  </div>
+                        <!-- End of 24 -->
+                        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading"
+                            class="alert alert-info">
+                            <strong>No Data Found.</strong>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <div *ngIf="pagination.pagedItems.length !== 0" class="" [hidden]="httpRequestLoader.isLoading">
+                    <app-pagination [pagination]="pagination" (notifyParent)="navigateToNextPage($event)"
+                        (notifyParentDropDown)="findGroupsForMerging($event)">
+                    </app-pagination>
+                </div>
+            </div>
+            <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">
+                <button type="submit" class="button bgcolor-unset" [disabled]="selectedPartnerGroupIds?.length==0"
+                    *ngIf="!copySuccess" (click)="copyToGroups()"><span
+                        class="btn Btn-Green transition text_pd5">Add</span></button>
+                <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <ng-container *ngIf="showUsersPreview">
-    <app-preview-user-list [userListName]="selectedGroupName" [userListId]="selectedUserListId" (notifyParentComponent)="resetPreviewValues()"></app-preview-user-list>
+    <app-preview-user-list [userListName]="selectedGroupName" [userListId]="selectedUserListId"
+        (notifyParentComponent)="resetPreviewValues()"></app-preview-user-list>
 </ng-container>
-    

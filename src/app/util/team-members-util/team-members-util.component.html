@@ -66,17 +66,19 @@
                     <ng-container
                       *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier && !authenticationService?.module?.deletedPartner">
                       <div class="col-xs-6 col-sm-4 hidden-xs pull-right" style="padding:0px">
-                        <div class="btn-xs btn-padding Btn-Green fileinput-button btn-block rounded-0"
+                        <button class="btn-xs btn-padding fileinput-button btn-block rounded-0 button bgcolor-unset"
                           style="position: relative;">
-                          <h6 style="text-align: center; font-size:14px;color: #fff !important;">Upload a CSV</h6>
+                          <span style="text-align: center; font-size:14px;color: #fff !important;"
+                            class="btn Btn-Green transition">Upload a CSV</span>
                           <input type="file" title="" class="file-upload" #fileImportInput name="File Upload"
                             id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
-                        </div>
+                        </button>
                       </div>
                       <div class="col-xs-12 col-sm-4 pull-right">
-                        <button class="btn-xs btn-primary btn-block rounded-0" style="padding:1px;"
+                        <button class="btn-xs btn-block rounded-0 button_blue bgcolor-unset" style="padding:1px;"
                           (click)="goToAddTeamMemberDiv()">
-                          <h6 style="font-size:14px;color: #fff !important;">Add</h6>
+                          <span style="font-size:14px;color: #fff !important;"
+                            class="btn btn-primary transition">Add</span>
                         </button>
                       </div>
                     </ng-container>
@@ -158,10 +160,10 @@
                   <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}"
                     class="list-team-member-class">
                     <td class="pdl-15">
-                      <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
+                      <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember" [hideCompanyName]="true" [hideJobTitle]="true"></app-user-info>
                       <span
                         *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany 
-              && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl && !teamMember?.primaryAdmin"
+                      && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl && !teamMember?.primaryAdmin"
                         [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
                         data-toggle="tooltip" data-placement="bottom"
                         [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
@@ -201,32 +203,38 @@
                     <!---Second Admin---->
                     <td *ngIf="showSecondAdmin && isTeamMemberModule">
                       <div class="actions-block float-none">
-                        <a class="">
+                        <a class="custom-icon">
                           <i [className]="teamMember?.secondAdmin || teamMember?.primaryAdmin ? 'fa fa-check active-status IconCustomization':'fa fa-times red IconCustomization'"
                             aria-hidden="true"></i>
+                          <div
+                            [className]="teamMember?.secondAdmin || teamMember?.primaryAdmin ? 'clickicons': 'del-icon'">
+                          </div>
                         </a>
                       </div>
                     </td>
                     <!---Enabled---->
-                    <td *ngIf="teamMember?.status=='UNAPPROVED'"
-                      [title]="teamMember?.status=='UNAPPROVED'? 'This team member account is not activated yet':'Enable/Disable team member'">
+                    <td *ngIf=" teamMember?.status=='UNAPPROVED'" [title]=" teamMember?.status=='UNAPPROVED' ? 'This team member account is not activated yet'
+                            :'Enable/Disable team member'">
                       <div class="actions-block float-none">
-                        <a class="">
+                        <a class="custom-icon">
                           <i class="fa fa-times red IconCustomization" aria-hidden="true"></i>
+                          <div class="del-icon"></div>
                         </a>
                       </div>
                     </td>
                     <td *ngIf="teamMember?.status!='UNAPPROVED' && teamMember?.status!='DECLINE'">
                       <div class="actions-block float-none">
-                        <a class="">
+                        <a class="custom-icon">
                           <i class="fa fa-check active-status IconCustomization" aria-hidden="true"></i>
+                          <div class="clickicons"></div>
                         </a>
                       </div>
                     </td>
                     <td *ngIf="teamMember?.status=='DECLINE'" title="This team member is inactive">
                       <div class="actions-block float-none">
-                        <a class="">
+                        <a class="custom-icon">
                           <i class="fa fa-times red IconCustomization" aria-hidden="true"></i>
+                          <div class="del-icon"></div>
                         </a>
                       </div>
                     </td>
@@ -236,60 +244,69 @@
                       <div class="actions-block override-actions custom-width-icon">
                         <!--Login As-->
                         <ng-container *ngIf="teamMember?.loginAs && !isLoggedInAsTeamMember">
-                          <a *ngIf="teamMember?.enabled" data-toggle="tooltip" data-placement="bottom" title="Login As"
-                            (click)="loginAs(teamMember)">
+                          <a class="custom-icon" *ngIf="teamMember?.enabled" data-toggle="tooltip"
+                            data-placement="bottom" title="Login As" (click)="loginAs(teamMember)">
                             <i class="fa fa-sign-in IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
                           </a>
-                          <a class="" *ngIf="!teamMember?.enabled"
-                            [className]="isLoggedInAsTeamMember? 'pointer-events-none':'inactive'" data-toggle="tooltip"
-                            data-placement="bottom" title="{{teamMember.loginAsToolTipMessage}}">
+                          <a *ngIf="!teamMember?.enabled"
+                            [className]="isLoggedInAsTeamMember? 'pointer-events-none':'inactive custom-icon'"
+                            data-toggle="tooltip" data-placement="bottom" title="{{teamMember.loginAsToolTipMessage}}">
                             <i class="fa fa-sign-in gray IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
                           </a>
                         </ng-container>
                         <!--XNFR-139-Primary Admin--->
                         <a data-toggle="tooltip" data-placement="bottom"
                           [title]="teamMember.status=='APPROVE'? 'Enable As Primary Admin':'Inactive team member cannot be enabled as primary admin'"
                           (click)="setPrimaryAdminOptions(teamMember)"
-                          [className]="(teamMember.status!='APPROVE' || isLoggedInAsTeamMember) && !authenticationService?.module?.isAdmin ? 'inactive':''">
+                          [className]="(teamMember.status!='APPROVE' || isLoggedInAsTeamMember) && !authenticationService?.module?.isAdmin ? 'inactive custom-icon':'custom-icon'">
                           <i [className]="teamMember.status=='APPROVE' && authenticationService?.module?.isAdmin ? 'fa fa-user-o IconCustomization':'fa fa-user-o gray IconCustomization'"
                             aria-hidden="true"></i>
+                          <div class="clickicons"></div>
                         </a>
                         <!--Edit--->
                         <a *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner"
                           data-toggle="tooltip" data-placement="bottom" title="Edit"
                           (click)="edit(teamMember.teamMemberId)"
-                          [className]="isLoggedInAsTeamMember? 'pointer-events-none':''">
+                          [className]="isLoggedInAsTeamMember? 'pointer-events-none':'custom-icon'">
                           <i class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
+                          <div class="clickicons"></div>
                         </a>
                         <!---Analytics--->
                         <a data-toggle="tooltip" data-placement="bottom"
                           [title]="teamMember.status=='UNAPPROVED'? 'Not available for inactive team member':'Click here to see campaign anlaytics'"
-                          [className]="teamMember.status=='UNAPPROVED'? 'inactive':''"
+                          [className]="teamMember.status=='UNAPPROVED'? 'inactive custom-icon':'custom-icon'"
                           *ngIf="!authenticationService.module.isPrm && !authenticationService.module.isPrmTeamMember && !authenticationService?.module?.deletedPartner && !authenticationService.partnershipEstablishedOnlyWithPrm && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner"
                           (click)="goToCampaignAnalytics(teamMember)">
                           <i class="fa fa-line-chart IconCustomization"
                             [ngClass]="teamMember.status=='UNAPPROVED'? 'disabled gray': 'active'"
                             aria-hidden="true"></i>
+                          <div class="clickicons"></div>
                         </a>
                         <!--Resend Invitation-->
                         <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
                           <a *ngIf="teamMember.status=='UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
                             title="Resend the invitation email"
-                            [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"
+                            [className]="isLoggedInAsTeamMember? 'pointer-events-none custom-icon':'custom-icon'"
                             (click)="resendEmailInvitation(teamMember.emailId)">
                             <i class="fa fa-envelope IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
                           </a>
                           <a *ngIf="teamMember.status!='UNAPPROVED'" data-toggle="tooltip" data-placement="bottom"
-                            title="Invitation cannot be sent as the account is created successfully" class="inactive">
+                            title="Invitation cannot be sent as the account is created successfully"
+                            class="inactive custom-icon">
                             <i class="fa fa-envelope gray IconCustomization" aria-hidden="true"></i>
+                            <div class="clickicons"></div>
                           </a>
                         </ng-container>
                         <!---Delete-->
                         <a data-toggle="tooltip" data-placement="bottom" title="Delete"
                           *ngIf="isTeamMemberModule && !authenticationService?.module?.deletedPartner"
-                          [className]="isLoggedInAsTeamMember? 'pointer-events-none':''"
+                          [className]="isLoggedInAsTeamMember? 'pointer-events-none custom-icon':'custom-icon'"
                           (click)="showPopup(teamMember)">
                           <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                          <div class="del-icon"></div>
                         </a>
                       </div>
                     </td>
@@ -482,8 +499,9 @@
                     </div>
                   </div>
                 </div>
-                <button [disabled]="!team?.validForm" id="right" type="submit" class="btn btn-primary"
-                  (click)="addOrUpdateTeamMember()">{{saveOrUpdateButtonText}}</button>
+                <button [disabled]="!team?.validForm" id="right" type="submit" class="button_blue bgcolor-unset"
+                  (click)="addOrUpdateTeamMember()"><span
+                    class="btn btn-primary transition">{{saveOrUpdateButtonText}}</span></button>
               </div>
             </div>
           </form>

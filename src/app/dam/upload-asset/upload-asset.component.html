@@ -35,8 +35,10 @@
                         </a>
                      </div>
                      <div>
-                        <button class="btn btn-primary" style="margin-right: 4px;" (click)="openCreateFolderPopup()"
-                           translate>Create a Folder</button>
+                        <button class="button_blue bgcolor-unset" style="margin-right: 4px;padding-top:1px;"
+                           (click)="openCreateFolderPopup()" translate><span
+                              class="btn btn-primary transition asset_cf_padding">Create a
+                              Folder</span></button>
                      </div>
                   </div>
                </div>
@@ -156,8 +158,9 @@
                                                       </h2>
                                                       <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE |
                                                          translate}}</h6>
-                                                      <button class="btn btn-primary" style="color:#fff"
-                                                         translate>Browse</button>
+                                                      <button class="button_blue bgcolor-unset" style="color:#fff"
+                                                         translate><span
+                                                            class="btn btn-primary transition txt_pd-top3">Browse</span></button>
                                                       <br><br>
                                                       <span *ngIf="uploadedAssetName?.length>0">
                                                          <strong>File Name : {{uploadedAssetName | slice: 0:
@@ -516,10 +519,10 @@
                            <button [disabled]="isDisableForm" class="btn Btn-Gray" id="right"
                               style="margin-right: 20px;" type="button" (click)="closeCircle()"
                               translate>Cancel</button>
-                           <button [disabled]="!isValidForm || isDisableForm" id="right" style="margin-right: 5px;"
-                              class="btn btn-primary" type="button"
-                              (click)="isVideoAsset?uploadVideo():uploadOrUpdate()"
-                              translate>{{submitButtonText}}</button>
+                           <button [disabled]="!isValidForm || isDisableForm" id="right"
+                              style="margin-right: 0px;padding-top:1px;" class="button_blue bgcolor-unset pd_rgt5"
+                              type="button" (click)="isVideoAsset?uploadVideo():uploadOrUpdate()" translate><span
+                                 class="btn btn-primary transition asset_text_pd0">{{submitButtonText}}</span></button>
                         </div>
                      </div>
                   </div>

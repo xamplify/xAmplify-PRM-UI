@@ -3,11 +3,12 @@
         <ul class="page-breadcrumb">
             <li>
                 <i class="fa fa-home" aria-hidden="true"></i>
-                 <a translate [routerLink]="referenceService?.homeRouter">Home</a> <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a translate [routerLink]="referenceService?.homeRouter">Home</a> <i class="fa fa-angle-right"
+                    aria-hidden="true"></i>
             </li>
             <li><a translate>Create Design</a></li>
         </ul>
-        <app-user-guide-help-button  [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
+        <app-user-guide-help-button [searchForGuides]="searchWithModuleName"></app-user-guide-help-button>
     </div>
     <!-- End of page-bar -->
     <div class="row">
@@ -18,11 +19,13 @@
             <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
             <div class="portlet padding">
                 <div class="portlet-title">
-                    <div class="caption" translate style="font-size:20px !important;">                     
+                    <div class="caption" translate style="font-size:20px !important;">
                         Create a Design
                     </div>
                     <div>
-                        <button class="btn btn-primary" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+                        <button class="button_blue bgcolor-unset" id="right" (click)="openCreateFolderPopup()"
+                            translate><span class="btn btn-primary transition design_text">Create a
+                                Folder</span></button>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -35,27 +38,34 @@
                                 <div class="portlet light hover-effect pointer card-radius">
                                     <div class="portlet-body">
                                         <div class="img1 card-template">
-                                            <img alt="Templates" style="margin: 0 auto;" class="pricing-head-img img-responsive	img-templates" src="assets/images/templates.svg">
+                                            <img alt="Templates" style="margin: 0 auto;"
+                                                class="pricing-head-img img-responsive	img-templates"
+                                                src="assets/images/templates.svg">
                                         </div>
                                         <div class="text text-border">
                                             <h4 class="header-text-css" translate>Templates
                                             </h4>
                                             <p class="header-description-css" translate>
-                                                Ideal for utilization in email marketing, video campaigns, and event promotions.
+                                                Ideal for utilization in email marketing, video campaigns, and event
+                                                promotions.
                                             </p>
                                         </div>
                                         <div class="text mMobileDisable text-border">
                                             <h5>
-                                                <a class="mDisableColor" [routerLink]="['../../emailtemplates/select']"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i>&nbsp;
-                                 <span class="design-name mDisableColor" translate>Design Templates</span></a>
+                                                <a class="mDisableColor"
+                                                    [routerLink]="['../../emailtemplates/select']"><i
+                                                        class="glyphicon glyphicon-edit" aria-hidden="true"></i>&nbsp;
+                                                    <span class="design-name mDisableColor" translate>Design
+                                                        Templates</span></a>
                                             </h5>
                                         </div>
                                         <div class="text" style="border: none !important">
                                             <h5 class="designpage-dark-cu">
 
-                                                <a style="padding-left: 10px;" [routerLink]="['../../emailtemplates/manage']"><i
-                                    class="fa fa-list" aria-hidden="true">&nbsp;</i>&nbsp;
-                                    <span  class="design-name" translate>Manage Templates</span></a>
+                                                <a style="padding-left: 10px;"
+                                                    [routerLink]="['../../emailtemplates/manage']"><i class="fa fa-list"
+                                                        aria-hidden="true">&nbsp;</i>&nbsp;
+                                                    <span class="design-name" translate>Manage Templates</span></a>
 
                                             </h5>
                                         </div>
@@ -66,18 +76,23 @@
                                 <div class="portlet light hover-effect pointer card-radius">
                                     <div class="portlet-body">
                                         <div class="img1 card-template">
-                                            <img alt="Forms" style="margin: 0 auto;" class="pricing-head-img img-responsive	img-templates" src="assets/images/forms.svg">
+                                            <img alt="Forms" style="margin: 0 auto;"
+                                                class="pricing-head-img img-responsive	img-templates"
+                                                src="assets/images/forms.svg">
                                         </div>
                                         <div class="text text-border">
                                             <h4 class="header-text-css" translate>Forms</h4>
                                             <p class="header-description-css" translate>
-                                                Gather information such as contact details, newsletters, customer feedback effectively.
+                                                Gather information such as contact details, newsletters, customer
+                                                feedback effectively.
                                             </p>
                                         </div>
                                         <div class="text mMobileDisable text-border">
                                             <h5>
-                                                <a class="mDisableColor" [routerLink]="['../../forms/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;
-                                   <span class="design-name mDisableColor" translate>Design Forms</span></a>
+                                                <a class="mDisableColor" [routerLink]="['../../forms/select']"><i
+                                                        class="glyphicon glyphicon-edit"></i>&nbsp;
+                                                    <span class="design-name mDisableColor" translate>Design
+                                                        Forms</span></a>
 
                                             </h5>
                                         </div>
@@ -85,8 +100,8 @@
                                             <h5 class="designpage-dark-cu">
 
                                                 <a style="padding-left: 10px;" [routerLink]="['../../forms/manage']"><i
-                                    class="fa fa-list"></i>&nbsp;
-                                    <span class="design-name" translate>Manage Forms</span></a>
+                                                        class="fa fa-list"></i>&nbsp;
+                                                    <span class="design-name" translate>Manage Forms</span></a>
 
                                             </h5>
                                         </div>
@@ -97,29 +112,35 @@
                                 <div class="portlet light hover-effect pointer card-radius">
                                     <div class="portlet-body">
                                         <div class="img1 card-template">
-                                            <img alt="Pages" style="margin: 0 auto;" class="pricing-head-img img-responsive	img-templates" src="assets/images/pages.svg">
+                                            <img alt="Pages" style="margin: 0 auto;"
+                                                class="pricing-head-img img-responsive	img-templates"
+                                                src="assets/images/pages.svg">
                                         </div>
                                         <div class="text text-border">
                                             <h4 class="header-text-css" translate>Pages
                                             </h4>
                                             <p class="header-description-css" translate>
-                                               	Transform web visitors into potential leads and enhance the success rate of conversions.
+                                                Transform web visitors into potential leads and enhance the success rate
+                                                of conversions.
                                             </p>
                                         </div>
                                         <div class="text mMobileDisable text-border" *ngIf="landingPage">
                                             <h5>
 
-                                                <a class="mDisableColor" [routerLink]="['../../pages/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;
-                                           <span class="design-name mDisableColor" translate>Design Pages</span></a>
+                                                <a class="mDisableColor" [routerLink]="['../../pages/select']"><i
+                                                        class="glyphicon glyphicon-edit"></i>&nbsp;
+                                                    <span class="design-name mDisableColor" translate>Design
+                                                        Pages</span></a>
 
                                             </h5>
                                         </div>
                                         <div class="text" style="border: none !important">
                                             <h5 class="designpage-dark-cu">
 
-                                                <a *ngIf="landingPage" style="padding-left: 10px;" [routerLink]="['../../pages/manage']"><i
-                                    class="fa fa-list"></i>&nbsp;
-                                    <span class="design-name" translate>Manage Pages</span></a>
+                                                <a *ngIf="landingPage" style="padding-left: 10px;"
+                                                    [routerLink]="['../../pages/manage']"><i
+                                                        class="fa fa-list"></i>&nbsp;
+                                                    <span class="design-name" translate>Manage Pages</span></a>
 
                                             </h5>
                                         </div>
@@ -134,4 +155,5 @@
     </div>
 </div>
 
-<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
+<app-add-folder-modal-popup #addFolderModalPopupComponent
+    (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>

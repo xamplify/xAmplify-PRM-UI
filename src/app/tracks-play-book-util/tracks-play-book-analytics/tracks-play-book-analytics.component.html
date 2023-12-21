@@ -2,7 +2,7 @@
 <div style="position: relative; top: -10px">
   <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
-<div class="portlet light">
+<div class="portlet light remove_cardBgcolor padding_0">
   <div class="row">
     <div class="col-md-12">
       <div class=" clearfix">
@@ -36,7 +36,8 @@
         <app-list-loader *ngIf=" httpRequestLoader.isLoading ">
         </app-list-loader>
         <!---Filter (XNFR-85)-->
-        <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany" (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
+        <app-team-member-filter-option *ngIf="!authenticationService?.module?.isMarketingCompany"
+          (teamMemberFilterOptionEventEmitter)="getSelectedIndex($event)"></app-team-member-filter-option>
         <ng-container *ngIf="!httpRequestLoader.isLoading">
           <div class="table-responsive">
             <table class='table tgrid table-hover table-sm' id="lms-analytics-list-table"
@@ -63,8 +64,8 @@
                 <tr *ngFor="let company of pagination.pagedItems ;let i =index">
                   <td class="hidden-xs text-cente" style="width: 10%;">
                     <div class="thumbnail-wrapper image_effect">
-                    <img class="img-company-list" [src]="authenticationService.MEDIA_URL + company.companyLogo"
-                      onerror="this.src='assets/images/company-profile-logo.png';" alt="{{company.companyLogo}}">
+                      <img class="img-company-list" [src]="authenticationService.MEDIA_URL + company.companyLogo"
+                        onerror="this.src='assets/images/company-profile-logo.png';" alt="{{company.companyLogo}}">
                     </div>
                   </td>
                   <td>
@@ -74,10 +75,10 @@
                   </td>
                   <td class="text-center">{{company.count}}
                   </td>
-                  <td class="mtext-center"id="actions-row">
+                  <td class="mtext-center" id="actions-row">
                     <div class="actions-block override-actions custom-width-icon">
-                      <a class="custom-icon" *ngIf="company.count > 0" data-toggle="tooltip" data-placement="top" title="View Analytics"
-                        (click)="viewAnalytics(company)">
+                      <a class="custom-icon" *ngIf="company.count > 0" data-toggle="tooltip" data-placement="top"
+                        title="View Analytics" (click)="viewAnalytics(company)">
                         <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                         <div class="clickicons"></div>
                       </a>

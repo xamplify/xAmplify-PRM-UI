@@ -13,26 +13,6 @@
   cursor: not-allowed;
 }
 
-.view-banner {
-  background-color: #00a6e8;
-  color: white;
-  padding: 4px;
-  text-align: center;
-  width: 125px;
-  margin: 0 0;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.view-banner-dam {
-  background-color: #00a6e8;
-  color: white;
-  padding: 3px 6px 3px 6px;
-  text-align: center;
-  font-size: 10px;
-  border-radius: 3px;
-}
-
 .ribbon div {
   font-size: 10px;
   font-weight: bold;
@@ -85,8 +65,6 @@
 
 .thumbnail-wrapper {
   float: left;
-  /* width: 175px;
-	height: 60px; */
   width: 144px;
   height: 81px;
   background-color: #fff;
@@ -115,7 +93,7 @@
 }
 
 .min-h {
-  min-height: 315px;
+  min-height: 350px;
 }
 
 .ref-mar {
@@ -123,7 +101,16 @@
 }
 
 .mxv {
-  max-width: 175px !important;
+  object-fit: fill;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  max-width: 100% !important;
+  max-height: 150px;
+  min-height: 150px;
+  margin: 0px;
+  width: 100%;
 }
 
 .tag {
@@ -206,7 +193,7 @@
   color: #666;
 }
 .title-div > h4 {
-  font-size: 15px;
+  font-size: 13px;
 }
 .title-div > h5 {
   font-size: 12px;
@@ -259,3 +246,20 @@
   margin: 5px 0px;
 }
 
+.width83{
+  width:75%
+}
+
+.alert-su {
+  padding:6px 12px;
+  text-align: center;
+}
+
+.gridViewImgBg img{margin: 0px;}
+
+/*******Remove this after merging XNFR-374 */
+.grid-box h6 {
+  text-align: left !important;
+  margin: 0px !important;
+  width: 100% !important;
+}

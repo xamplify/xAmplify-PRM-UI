@@ -11,9 +11,9 @@
 	height:480px;
 }
 .tableHeightScroll{   
-	 height: 359px !important;
-     overflow-y: auto;
-    margin-bottom: 6px;
+    height: 343px !important;
+    overflow-y: auto;
+    margin-bottom: 20px;
 }
 .noData{
     height: 0px;

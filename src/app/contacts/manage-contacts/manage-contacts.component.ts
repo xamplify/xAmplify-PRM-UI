@@ -659,7 +659,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 		
 		else if (contactList.socialNetwork == 'HUBSPOT' || contactList.socialNetwork == 'MICROSOFT'
-			|| contactList.socialNetwork == 'MARKETO' || contactList.socialNetwork == 'PIPEDRIVE') {
+			|| contactList.socialNetwork == 'MARKETO' || contactList.socialNetwork == 'PIPEDRIVE' || contactList.socialNetwork == 'CONNECTWISE') {
 			this.contactListIdForSyncLocal = contactList.id;
 			this.socialNetworkForSyncLocal = contactList.socialNetwork;
 			this.syncronizeContactList(this.socialContact);
@@ -1273,6 +1273,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                     data = data;
                     this.loading = false;
                     if (data.statusCode === 401) {
+						this.disableSave = false;
                     	this.saveAsError = data.message;
                         //this.customResponse = new CustomResponse('ERROR', data.message, true);
                     } else if (data.statusCode === 402) {
@@ -1442,7 +1443,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}else if(this.sharedLeads){
                 this.contactListObject.sharedLeads = true; 
             }
-            
+            			
+			this.contactListObject.moduleName = this.module;
             this.contactListObject.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
             this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 
@@ -1455,6 +1457,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						this.contactsByType.activeContactsCount = data.activecontacts;
 						this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
 						this.contactsByType.validContactsCount = data.validContactsCount;
+						this.contactsByType.excludedContactsCount = data.excluded;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
@@ -1508,7 +1511,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactListObject.sharedLeads = this.sharedLeads;
 			this.contactListObject.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter; 
 			this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
-			
+			this.contactListObject.moduleName = this.module;
+
 			this.userListPaginationWrapper.userList = this.contactListObject;
 			
 			this.contactService.listContactsByType(this.userListPaginationWrapper)
@@ -1941,6 +1945,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.saveAsListName = '';
 			this.selectedLegalBasisOptions = [];
 			this.saveAsError = '';
+			this.disableSave=false;
 			$('#saveAsModal').modal('show');
 		} catch (error) {
 			this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsAlert()");
@@ -1973,6 +1978,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	validateLegalBasisOptions() {
 		if (this.gdprStatus && this.selectedLegalBasisOptions.length == 0 && this.saveAsTypeList === 'manage-all-contacts') {
 			this.isValidLegalOptions = false;
+			this.disableSave = false;
 		} else {
 			this.isValidLegalOptions = true;
 		}
@@ -2068,7 +2074,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         this.saveSelectedUsers(name, this.selectedLegalBasisOptions, this.model.isPublic);
                     }
                 }
-            } else if (name == "") { this.saveAsError = 'List Name is Required.'; }
+            } else if (name == "") { 
+				this.disableSave = false;
+				this.saveAsError = 'List Name is Required.'; 
+			}
              else { this.saveAsError = 'You have exceeded 250 characters!'; }
         } catch (error) {
             this.xtremandLogger.error(error, "ManageContactsComponent", "saveAs()");
@@ -2754,7 +2763,68 @@ resubscribeUserResult(event : any){
 
  /***********XNFR-342*********/
  openUnPublishedContentModalPopUp(contactList:any){
-	this.shareUnPublishedComponent.openPopUp(contactList.id,undefined,this.checkingContactTypeName);
+	this.shareUnPublishedComponent.openPopUp(contactList.id,undefined,this.checkingContactTypeName,contactList.name);
  }
+
+ 
+ showMakeAsOptinAlert(contactId: any, emailId: any) {
+	try {
+		this.xtremandLogger.info("contactId in showMakeAsOptinAlert() " + contactId);
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: "Selected user will be removed from the excluded list!",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#54a7e9',
+			cancelButtonColor: '#999',
+			confirmButtonText: 'Yes, Mark as Opt-in!'
+
+		}).then(function(myData: any) {
+			self.validateExcludedDetails(contactId,emailId );
+		}, function(dismiss: any) {
+		});
+	} catch (error) {
+		this.xtremandLogger.error(error, "ManageContactsComponent", "showMakeAsOptinAlert()");
+	}
+}
+
+ validateExcludedDetails(contactId: any, emailId: any) {
+	try {
+		this.resetResponse();
+		this.loading = true;
+		this.xtremandLogger.info(contactId);
+		const excludedUser ={
+			"id":contactId,
+			"emailId":emailId
+		};
+		this.contactService.excludedUserMakeAsValid(excludedUser)
+			.subscribe(
+				data => {
+				if (data.statusCode == 400) {
+					this.customResponse = new CustomResponse('ERROR', data.message, true);
+					this.loading = false;
+				} else {		
+
+						this.loading = false;
+						this.xtremandLogger.log(data);
+						this.contactsCount();
+						this.contactCountLoad = true;
+						this.listContactsByType(this.contactsByType.selectedCategory);
+						this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_REMOVED_FROM_EXCLUDED_LIST, true);
+				}
+				},
+				(error: any) => {
+					console.log(error);
+					this.loading = false;
+				},
+				() => this.xtremandLogger.info("MangeContactsComponent validateExcludedDetails() finished")
+			)
+		this.invalidDeleteSucessMessage = false;
+		this.invalidDeleteErrorMessage = false;
+	} catch (error) {
+		this.xtremandLogger.error(error, "ManageContactsComponent", "validateExcludedDetails()");
+	}
+}
  
 }

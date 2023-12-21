@@ -1,47 +1,56 @@
 <div>
-<button class="btn btn-primary float-right btn-select-templates mb_10 btn-mb" *ngIf="!hideButton" (click)="showMergeTagsPopUp()" translate>Insert Merge Tags</button>
+	<button class="button_blue float-right btn-select-templates mb_10 btn-mb bgcolor-unset" style="padding-top: 2px;"
+		*ngIf="!hideButton" (click)="showMergeTagsPopUp()" translate><span class="btn btn-primary transition">Insert
+			Merge
+			Tags</span></button>
 </div>
-<div class="modal fade right" id="merge-tags-popup" tabindex="-1" role="dialog"  data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close-circle" (click)="hideModal()">
-              <i class="fa fa-times" aria-hidden="true"></i>
-            </button>
-            <h4 class="modal-title text-center" translate>Merge Tags</h4>
-          </div>
-          <div class="modal-body">
-          	<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
-				<thead>
-				  <tr>
-					 <th scope="row" class="text-center" translate>Name</th>
-					 <th scope="row" translate>Merge Tag</th>
-					 <th scope="row" class="text-center" translate>Copy</th>
-				  </tr>
-				</thead>
-				<tbody>
-					<tr *ngFor="let mergeTag of mergeTags;let i = index">
-						<td class="text-center">{{mergeTag.name}}</td>
-						<td id="merge-tag-text">
-							<input type="text" id="merge-tag-{{i}}" class="form-control" readonly="readonly" value="{{mergeTag.value}}" #mergeTagInput>
-							<span class="merge-tag-success-message" id="merge-tag-copied-message-{{i}}" style="display:none;">
-								<strong translate>{{successMessagePrefix}} successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
-							</span>
-						</td>
-						<td class="text-center">
-						<a data-toggle="tooltip" data-placement="top" title="Copy" (click)="referenceService.copyInputMessage(mergeTagInput,i,'merge-tag-success-message','merge-tag-copied-message-');passToOtherComponent(i)">
-							<i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
-						</a>
-						</td>
-						
-					</tr>
-				</tbody>
-			</table>
-          </div>
-           <div class="modal-footer">
-			<a  class="btn Btn-Gray" id="bottom-right" (click)="hideModal()">
-			<span translate >Close</span></a>
+<div class="modal fade right" id="merge-tags-popup" tabindex="-1" role="dialog" data-backdrop="static"
+	data-keyboard="false">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close-circle" (click)="hideModal()">
+					<i class="fa fa-times" aria-hidden="true"></i>
+				</button>
+				<h4 class="modal-title text-center" translate>Merge Tags</h4>
+			</div>
+			<div class="modal-body">
+				<table class='table tgrid table-hover table-sm' aria-describedby="merge-tags-table">
+					<thead>
+						<tr>
+							<th scope="row" class="text-center" translate>Name</th>
+							<th scope="row" translate>Merge Tag</th>
+							<th scope="row" class="text-center" translate>Copy</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr *ngFor="let mergeTag of mergeTags;let i = index">
+							<td class="text-center">{{mergeTag.name}}</td>
+							<td id="merge-tag-text">
+								<input type="text" id="merge-tag-{{i}}" class="form-control" readonly="readonly"
+									value="{{mergeTag.value}}" #mergeTagInput>
+								<span class="merge-tag-success-message" id="merge-tag-copied-message-{{i}}"
+									style="display:none;">
+									<strong translate>{{successMessagePrefix}} successfully<i class="fa fa-check"
+											aria-hidden="true"></i></strong>
+								</span>
+							</td>
+							<td class="text-center">
+								<a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Copy"
+									(click)="referenceService.copyInputMessage(mergeTagInput,i,'merge-tag-success-message','merge-tag-copied-message-');passToOtherComponent(i)">
+									<i class="fa fa-copy IconCustomization campaignViewIcon" aria-hidden="true"></i>
+									<div class="clickicons"></div>
+								</a>
+							</td>
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button class="btn Btn-Gray" id="bottom-right" (click)="hideModal()">
+					<span translate>Close</span></button>
+			</div>
 		</div>
-        </div>
 	</div>
 </div>

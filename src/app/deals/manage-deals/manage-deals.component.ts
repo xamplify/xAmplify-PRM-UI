@@ -107,6 +107,7 @@ export class ManageDealsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.referenceService.scrollSmoothToTop();
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.mergeTagForUserGuide();

@@ -32,6 +32,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
   loggedInUserId:number = 0;
   contents:Array<any> = new Array<any>();
   customResponse:CustomResponse = new CustomResponse();
+  titleHeader = "";
   constructor(public referenceService: ReferenceService,  public tracksPlayBookUtilService:TracksPlayBookUtilService, public authenticationService: AuthenticationService,public xtremandLogger:XtremandLogger,public pagerService:PagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.pagination.userId = this.loggedInUserId;
@@ -44,10 +45,12 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       this.headerTitle = this.isPartnerView ? 'Shared Tracks':'Tracks';
       this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared tracks' : 'Click here to manage tracks'
       this.addButtonText = "Add Tracks";
+      this.titleHeader = "Tracks";
     }else{
       this.headerTitle = this.isPartnerView ? 'Shared Play Books':'Play Books';
       this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared play books' : 'Click here to manage play books'
       this.addButtonText = "Add Play Books";
+      this.titleHeader = "Play Books";
     }
     this.listLearningTracks(this.pagination);
   }

@@ -1,69 +1,73 @@
 <!-- new UI Of select Login screen and Bg Image-->
 <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+<div class="alert alert-danger alert-su" *ngIf="this.customLoinTemplates.length<=1 && isStyle1 && showCreateAlert">
+  <strong>Please Create a Template</strong>
+</div>
 <div class="col-xs-12 col-sm-12 p10 " style="padding-top: 0px !important;">
   <div class="tabscard col-xs-12 p0">
-    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 p0" *ngIf="!isShowFinalDiv">
-      <button type="submit" class="btn nav nav-tabs dcTheme btn-md"
-        [ngClass]="loginType === 'STYLE_ONE' ? 'loginActive': ''" id="tabWidthCu" (click)="showStyle1()"
-        [disabled]="isShowFinalDiv"><b>Login Style 1</b></button>
-      <!-- <button class="nav nav-tabs dcTheme active" id="tabWidthCu" [ngClass]="isShowFinalDiv? 'disabled':''" (click)="showStyle1()"><b>Login Style
-          1</b>
-    </button> -->
-      <button type="submit" class="btn nav nav-tabs dcTheme btn-md"
-        [ngClass]="loginType === 'STYLE_TWO' ? 'loginActive': ''" id="tabWidthCu" (click)="showStyle2()"
-        [disabled]="isShowFinalDiv"><b>Login Style 2</b></button>
-
-      <!-- <button class="nav nav-tabs dcTheme active" [ngClass]="isShowFinalDiv? 'disabled':''" id="tabWidthCu" (click)="showStyle2()"><b>Login Style
-              2</b>
-    </button> -->
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 p0 styles" *ngIf="!isShowFinalDiv">
+      <button type="submit" class="btn nav nav-tabs dcTheme btn-md" [ngClass]="isStyle1? 'loginActive': 'inActive'"
+        id="tabWidthCu" (click)="showStyle1()" [disabled]="isShowFinalDiv"><b class="TabFontCu">Login Template Style</b></button>
+      <button type="submit" class="btn nav nav-tabs dcTheme btn-md" [ngClass]="!isStyle1 ? 'loginActive': 'inActive'"
+        id="tabWidthCu" (click)="showStyle2()" [disabled]="isShowFinalDiv"><b class="TabFontCu">Login Image Style</b></button>
     </div>
-    <!-- <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 p0">
-      <ul class="nav nav-tabs dcTheme" role="tablist">
-        <li role="presentation" class="active" id="tabWidthCu">
-          <a href="#style1" class="tabColorTwo" (click)="showStyle1()" aria-controls="Domain" role="tab"
-            data-toggle="tab"><b>Login Style
-              1</b></a>
-        </li>
-        <li role="presentation" id="tabWidthCu">
-          <a href="#style2" class="tabColorOne" (click)="showStyle2()" aria-controls="Manual SPF" role="tab"
-            data-toggle="tab"><b>Login Style
-              2</b></a>
-        </li>
-      </ul>
-    </div> -->
-    <div role="presentation" id="tabWidthCu" class="pull-right">
-      <!-- <button type="submit" (click)="showLoginStylesDiv()" id="alertDiv" class="btn Btn-Green" translate>Edit</button> -->
-      <button type="submit" id="updateDiv" (click)="updateCustomLogInScreenData()" class="btn Btn-Green"
-        translate>Update</button>
+    <div role="presentation" id="tabWidthCu" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 p0" id="updateDiv"
+      style="margin-top: 5px;">
+
+      <button id="updateDiv" class="close-circle float-right" style="margin-left: 9px;height: 28px;padding-top: 0px;width: 28px;"
+        (click)="backToPrevoiusPage()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+      <button type="submit" id="updateDiv" *ngIf="!isStyle1" (click)="updateCustomLogInScreenData(true)"
+        class="button float-right mg-top7 bgcolor-unset pd_0 p0" translate> <span
+          class="btn btn-sm Btn-Green transition">Update</span></button>
+      <button type="submit" id="updateDiv" *ngIf="isStyle1" (click)="saveLoginTemplate()"
+          class="button float-right mg-top7 bgcolor-unset pd_0 p0" translate> <span
+            class="btn btn-sm Btn-Green transition">Update</span></button>
+      <button class="button float-right mg-top7 bgcolor-unset pd_0" type="submit" id="updateDiv" translate
+        (click)="openNewTab()">
+        <span class="btn btn-sm Btn-Green transition"><i class="fa fa-eye" aria-hidden="true"
+            style="margin-right: 5px;"></i>Preview</span>
+      </button>
+
     </div>
     <div class="col-xs-12 col-sm-12 p0" id="alertDiv">
       <div class="col-xs-12 p0">
         <div class="col-xs-6 p0 pb10">
-          <h4>Activated Login Form Details:</h4>
+          <h4>Activated Login Style Details:</h4>
         </div>
-        <div class="col-xs-6 pull-right p0">
-          <button type="submit" (click)="showLoginStylesDiv()" id="alertDiv" class="btn Btn-Green float-right"
-            translate>Edit</button>
+
+        <div class="col-xs-6 pull-right p0 pb10">
+          <button (click)="showLoginStylesDiv()" class="button float-right bgcolor-unset pd_0 p0" type="submit"
+            id="alertDiv" translate><span class="btn btn-sm Btn-Green transition">Edit</span></button>
+          <button class="button float-right bgcolor-unset pd_0" type="submit" id="alertDiv" translate
+            (click)="openNewTab()">
+            <span class="btn btn-sm Btn-Green transition"><i class="fa fa-eye" aria-hidden="true"
+                style="margin-right: 5px;"></i>Preview</span>
+          </button>
         </div>
       </div>
-      <div class="col-xs-8 pl0">
+      <div class="col-xs-12 col-sm-8 col-md-12 col-lg-8 pl0">
         <table class="table tgrid table-responsive table-hover">
           <tbody>
             <tr>
               <td><label><b>Login Type</b></label></td>
               <td>:</td>
-              <td *ngIf="loginType === 'STYLE_ONE'">Style One</td>
-              <td *ngIf="loginType === 'STYLE_TWO'">Style Two</td>
+              <td *ngIf="loginType === 'STYLE_ONE'">Login Template Style</td>
+              <td *ngIf="loginType === 'STYLE_TWO'">Login Image Style</td>
             </tr>
             <tr *ngIf="loginType === 'STYLE_ONE'">
               <td><label><b>Template Name</b></label></td>
               <td>:</td>
-              <td>{{templateName}}</td>
+              <td><span [title]="templateName" data-toggle="tooltip" data-placement="bottom">{{templateName | slice:0:18 }}</span>
+                <span *ngIf="templateName?.length>18">...</span>
+              </td>
             </tr>
             <tr>
               <td><label><b>Position Of Login Form</b></label></td>
               <td>:</td>
-              <td>{{formPosition}}</td>
+              <td *ngIf="loginType==='STYLE_ONE'">{{styleOneDirection}}</td>
+              <td *ngIf="loginType==='STYLE_TWO'">{{styleTwoDirection}}</td>
             </tr>
             <tr>
               <td><label><b>Status</b></label></td>
@@ -73,20 +77,20 @@
           </tbody>
         </table>
       </div>
-      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 preview_img mt_15">
-        <label>Preview</label>
+      <div class="col-xs-12 col-sm-4 col-md-12 col-lg-4 preview_img mt_15">
+        <label>Login Form Preview</label>
         <div *ngIf="loginType=== 'STYLE_ONE'">
-          <img src="assets/images/customloginscreens/style1-left.png" *ngIf="styleOneDirection === 'Left'"
+          <img src="assets/images/customloginscreens/style_one_left.webp" *ngIf="styleOneDirection === 'Left'"
             class="imgpreview">
-          <img src="assets/images/customloginscreens/style1-right.png" *ngIf="styleOneDirection === 'Right'"
+          <img src="assets/images/customloginscreens/style_one_right.webp" *ngIf="styleOneDirection === 'Right'"
             class="imgpreview">
         </div>
         <div *ngIf="loginType === 'STYLE_TWO'">
-          <img src="assets/images/customloginscreens/style2-left.png" *ngIf="styleTwoDirection === 'Left'"
+          <img src="assets/images/customloginscreens/style_two_left.webp" *ngIf="styleTwoDirection === 'Left'"
             class="imgpreview">
-          <img src="assets/images/customloginscreens/style2-right.png" *ngIf="styleTwoDirection === 'Right'"
+          <img src="assets/images/customloginscreens/style_two_right.webp" *ngIf="styleTwoDirection === 'Right'"
             class="imgpreview">
-          <img src="assets/images/customloginscreens/style2-center.PNG" *ngIf="styleTwoDirection === 'Center'"
+          <img src="assets/images/customloginscreens/style_two_center.webp" *ngIf="styleTwoDirection === 'Center'"
             class="imgpreview">
         </div>
       </div>
@@ -95,29 +99,28 @@
       <div role="tabpanel" class="" id="styleDivOne">
         <!-- LogIn Style 1-->
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="padding-right: 10px;">
-            <div class="row custom-login">
+          <div class="col-xs-12 col-sm-8 col-md-12 col-lg-8 paddingRight">
+            <div class="row custom-login bg_color marginLeftZero">
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-7 p0 mb_15">
                 <div class="col-md-12 col-lg-12">
                   <div class="form-group">
                     <label class="control-label" translate>Select Login Form Position <span class="required">
                         <strong>*</strong></span></label>
-                    <select (ngModelChange)="onSelectChangeStyale1($event)" [(ngModel)]="styleOneDirection"
+                    <select (ngModelChange)="onSelectChangeStyle1($event)" [(ngModel)]="styleOneDirection"
                       class="form-control">
                       <option [ngValue]="undefined" disabled selected> Select Login Form Position </option>
                       <option *ngFor="let direction1 of properties?.loginFormPosition">{{direction1}}</option>
                     </select>
                   </div>
                 </div>
-                <div class="col-md-12 col-lg-12">
-                  <div class="form-group">
-                    <label class="control-label" translate>Display My Logo <span
-                        class="requried"><strong>*</strong></span>
-                    </label>
-                    <div>
-                      <app-custom-ui-switch [customSwitch]="customLoginScreen?.showVendorCompanyLogo"
-                        (customUiSwitchEventEmitter)="setVendorLogoOption($event)"></app-custom-ui-switch>
-                    </div>
+
+                <!-- Strat Display my logo toggle with help for style 1 -->
+                <!-- <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
+                  <label class="control-label" translate>Display My Logo <span class="requried"><strong>*
+                    :</strong></span>
+                  </label>
+                  <app-custom-ui-switch [customSwitch]="customLoginScreen?.showVendorCompanyLogo"
+                    (customUiSwitchEventEmitter)="setVendorLogoOption($event)"></app-custom-ui-switch>
                     <div class="col-sm-12" style="padding: 0; margin-left: 65px;margin-top: -25px">
                       <span style="cursor: pointer;color: #54a7e9;">
                         <i class="fa fa-question-circle" data-html="true" data-toggle="tooltip" data-placement="right"
@@ -125,41 +128,77 @@
                           style="font-size: 20px;float: left;margin: 8px 0 0 15px;" aria-hidden="true"></i>
                       </span>
                     </div>
-                  </div>
+                </div> -->
+                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12" *ngIf="!authenticationService?.module?.isMarketingCompany">
+                  <label class="control-label col-sm-6 p0 FontCustomization" translate style="display:flex;width: 100%;">Display My Logo <span class="requried"><strong>*
+                        :</strong></span>
+                    <span class="switchBtnCu">
+                      <span class="info-color-xampc">
+                        <i class="fa fa-question-circle toggle-info-xampc" data-html="true" data-toggle="tooltip"
+                          data-placement="bottom" aria-hidden="true" title="{{properties?.vendorLogoTooltipText}}"></i>
+                      </span>
+                      <app-custom-ui-switch [customSwitch]="customLoginScreen?.showVendorCompanyLogo"
+                        (customUiSwitchEventEmitter)="setVendorLogoOption($event)"></app-custom-ui-switch>
+                    </span>
+                </label>
                 </div>
+                <!-- End Display my logo toggle with help for style 1-->
+                <!-- Strat background color toggle  for style 1 -->
+                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
+                  <label class="control-label FontCustomization" translate>Background Color <span class="requried"><strong>
+                        :</strong></span>
+                  </label>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <app-custom-ui-switch [customSwitch]="isBackgroundColorStyleOne"
+                    (customUiSwitchEventEmitter)="setBackgroundColorForStyle1()"></app-custom-ui-switch>
+                </div>
+                <!-- End background color toggle for style 1-->
               </div>
-              <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-5 pl0">
+              <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-5 pl0" *ngIf="!isBackgroundColorStyleOne">
                 <div style="text-align: center;">
-                  <label class="control-label">Upload Background Image</label>
+                  <label class="control-label UploadBackgroundFontCu">Upload Background Image</label>
                   <div class="profile-image-wrapper dotted-image-border upload-imgheight width50"
                     (click)="bgImageClickForStyle1()">
                     <span *ngIf="(squareDataForBgImage | json) == '{}'"> <img *ngIf="!companyBgImagePath"
                         src="assets/images/company-profile-logo.png" class="profile-image img-grid" alt=""
                         style="width: 100%;height: 110px;border-radius: 3px;object-fit: cover;"></span>
 
-                    <span *ngIf="croppedImageForBgImage; else showBgImage"> <img class="img-grid"
+                    <span *ngIf="styleOneBackgroundImagePath; else showBgImage1"> <img class="img-grid"
                         style="width: 100%;height: 110px;border-radius: 3px; object-fit: cover;"
-                        [src]="styleOneBackgroundImagePath" alt="">
+                        [src]="authenticationService.MEDIA_URL + styleOneBackgroundImagePath" alt="">
                     </span>
-                    <ng-template #showBgImage> <img class="img-grid" *ngIf="companyBgImagePath"
+                    <ng-template #showBgImage1> <img class="img-grid" *ngIf="companyBgImagePath"
                         style="width: 100%;height: 110px;border-radius: 3px; object-fit: cover;"
-                        [src]="styleOneBackgroundImagePath" (error)="errorHandler($event)"
-                        alt="">
+                        [src]="authenticationService.MEDIA_URL + styleOneBackgroundImagePath"
+                        (error)="errorHandler($event)" alt="">
                     </ng-template>
                     <a class="btn btn-primary1 profile-pic" (click)="bgImageClickForStyle1()" data-toggle="tooltip"
                       data-placement="bottom" title="upload 8:9 ratio image!">
                       &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
                         style="font-size:25px;padding-top:10px;left: 5px !important;bottom: -60px !important;"></i></a>
                   </div>
+                  <span class="conectColor" (click)="setDefaultBgImage()">Set Default Image</span>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 pl0" *ngIf="isBackgroundColorStyleOne">
+                <div class="form-group">
+                  <label>Select Background Color</label> <input class="form-control" [value]="selectedColor1"
+                    [(ngModel)]="selectedColor1" (input)="checkValidColorCode(selectedColor1,'selectedColor1')"
+                    style="padding-left: 40px;" maxlength="7" btnBorderColor="selectedColor1" #btnBorderColor="ngModel"
+                    id="btnBorderColor" required>
+                  <span class="input-group-addon color-pick"
+                    style="height: 30px;width: 30px;position: relative;bottom: 32px;left: 4px;"
+                    [(colorPicker)]="selectedColor1" [style.background]="selectedColor1" [cpWidth]="'200px'"
+                    (colorPickerChange)="changeControllerColor($event,'selectedColor1')" [cpHeight]="'265px'"
+                    [cpPosition]="'right'" readonly></span>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 preview_img mt_15">
-            <label>Preview</label>
-            <img src="assets/images/customloginscreens/style1-left.png" *ngIf="styleOneDirection === 'Left'"
+          <div class="col-xs-12 col-sm-4 col-md-12 col-lg-4 preview_img mt_15 MTop">
+            <label>Login Form Preview</label>
+            <img src="assets/images/customloginscreens/style_one_left.webp" *ngIf="styleOneDirection === 'Left'"
               class="imgpreview">
-            <img src="assets/images/customloginscreens/style1-right.png" *ngIf="styleOneDirection === 'Right'"
+            <img src="assets/images/customloginscreens/style_one_right.webp" *ngIf="styleOneDirection === 'Right'"
               class="imgpreview">
           </div>
         </div>
@@ -167,23 +206,31 @@
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bg_color" style="margin-top: 10px;">
           <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-            <a class="close-circle mr5 mt5" (click)="getCustomLoginTemplates(pagination)">
-              <i class="fa fa-refresh" aria-hidden="true"></i>
-            </a>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6 pl0">
+              <h4>Templates </h4>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-lg-6 p0" style="margin-top: 3px;">
+              <a class="close-circle  mt5 refresh-fa-fa" (click)="getCustomLoginTemplates(pagination)">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+              </a>
+            </div>
           </div>
           <div class="row fullRowCuPaddings">
             <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 sidePaddingsAbjustment"
-              *ngFor="let emailTemplate of pagination.pagedItems ;let i =index"
+              *ngFor="let emailTemplate of pagination.pagedItems;let i =index"
               id="emailTemplateListDiv_{{emailTemplate.id}}">
-              <div class="grid-box" [ngClass]="emailTemplate?.id === selectedTemplate ? 'template-selected-border' :'' "
-                (click)="selectedTemplateId(emailTemplate.id);selectTemplateName(emailTemplate.name)">
+              <div class="grid-box"
+                [ngClass]="emailTemplate?.id === selectedTemplate ? 'template-selected-border' :'' ">
                 <span class="select-check-box" *ngIf="emailTemplate.name != 'Create_Template'">
                   <label>
-                    <input type="radio" class="radio-custimization pointer"
-                      [checked]="emailTemplate?.id === selectedTemplate">
+                    <input type="radio" (click)="selectedTemplateId(emailTemplate.id);"
+                      class="radio-custimization pointer" [checked]="emailTemplate?.id === selectedTemplate">
                   </label>
                 </span>
+                <div class="ribbon draft config" *ngIf="emailTemplate.id === activeTemplateId">
+                  <span [style.background-color]="'green'" *ngIf="loginType === 'STYLE_ONE'" >Active</span>
+                </div>
                 <img class="email-template-preview" *ngIf="emailTemplate.name === 'Create_Template'"
                   src="assets/images/customloginscreens/wireframe4.png" alt="Image Not Found">
                 <img class="email-template-preview" *ngIf="emailTemplate.name != 'Create_Template'"
@@ -202,7 +249,7 @@
                     <i class="fa fa-eye" aria-hidden="true"></i>
                   </a>
                   <a class="delete" data-toggle="tooltip" data-placement="top" title="delete"
-                    (click)="deleteTemplate(emailTemplate.id)" *ngIf="emailTemplate?.id != selectedTemplate">
+                    (click)="deleteOrDeleteAndUpdate(emailTemplate.id)" *ngIf="emailTemplate?.id != selectedTemplate">
                     <i class="fa fa-trash red" aria-hidden="true"></i>
                   </a>
                 </div>
@@ -228,72 +275,98 @@
       <div role="tabpanel" id="styleDivTwo">
         <!-- LogIn Style 2-->
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-          <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="padding-right: 10px;">
-            <div class="row custom-login">
+          <div class="col-xs-12 col-sm-8 col-md-12 col-lg-8 paddingRight">
+            <div class="row custom-login bg_color marginLeftZero">
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-7 p0 mb_15">
                 <div class="col-md-12 col-lg-12">
                   <div class="form-group">
-                    <label class="control-label" translate>Select Login Screen Direction <span class="required">
+                    <label class="control-label" translate>Select Login Form Position <span class="required">
                         <strong>*</strong></span></label>
                     <select (ngModelChange)="onSelectChangeStyale2($event)" [(ngModel)]="styleTwoDirection"
                       class="form-control">
-                      <option [ngValue]="undefined" disabled selected> Select Login Screen Direction </option>
+                      <option [ngValue]="undefined" disabled selected> Select Login Form Position </option>
                       <option *ngFor="let direction of properties?.loginScreenDirectionOptions">{{direction}}</option>
                     </select>
                   </div>
                 </div>
-                <div class="col-md-12 col-lg-12">
-                  <div class="form-group">
-                    <label class="control-label" translate>Display My Logo <span
-                        class="requried"><strong>*</strong></span>
-                    </label>
-                    <div>
+                <!-- Strat Display my logo toggle with help for style 2 -->
+                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12" *ngIf="!authenticationService?.module?.isMarketingCompany">
+                  <label class="control-label col-sm-6 p0 FontCustomization" translate style="display:flex;width: 100%;">Display My Logo <span class="requried"><strong>*
+                        :</strong></span>
+                    <span class="switchBtnCu">
+                      <span class="info-color-xampc">
+                        <i class="fa fa-question-circle toggle-info-xampc" data-html="true" data-toggle="tooltip"
+                          data-placement="bottom" aria-hidden="true" title="{{properties?.vendorLogoTooltipText}}"></i>
+                      </span>
                       <app-custom-ui-switch [customSwitch]="customLoginScreen?.showVendorCompanyLogo"
                         (customUiSwitchEventEmitter)="setVendorLogoOption($event)"></app-custom-ui-switch>
-                    </div>
-                    <div class="col-sm-12" style="padding: 0; margin-left: 65px;margin-top: -25px">
-                      <span style="cursor: pointer;color: #54a7e9;">
-                        <i class="fa fa-question-circle" data-html="true" data-toggle="tooltip" data-placement="right"
-                          title="{{properties?.vendorLogoTooltipText}}"
-                          style="font-size: 20px;float: left;margin: 8px 0 0 15px;" aria-hidden="true"></i>
-                      </span>
-                    </div>
-                  </div>
+                    </span>
+                </label>
                 </div>
+                <!-- End Display my logo toggle with help for style 2-->
+                <!-- Strat background color toggle  for style 2 -->
+                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
+                  <label class="control-label FontCustomization" translate>Background Color <span class="requried"><strong>
+                        :</strong></span>
+                  </label>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <app-custom-ui-switch [customSwitch]="isBackgroundColorStyleTwo"
+                    (customUiSwitchEventEmitter)="setBackgroundColorForStyle2()"></app-custom-ui-switch>
+                </div>
+                <!-- End background color toggle for style 2-->
               </div>
-              <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-5 pl0">
+              <!--  Strat Upload BG Image for style 2-->
+              <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-5 pl0" *ngIf="!isBackgroundColorStyleTwo">
                 <div style="text-align: center;">
-                  <label class="control-label">Upload Background Image</label>
+                  <label class="control-label UploadBackgroundFontCu">Upload Background Image</label>
                   <div class="profile-image-wrapper dotted-image-border upload-imgheight" (click)="bgImageClick()">
                     <span *ngIf="(squareDataForBgImage | json) == '{}'"> <img *ngIf="!companyBgImagePath2"
                         src="assets/images/company-profile-logo.png" class="profile-image img-grid" alt=""
                         style="width: 100%;height: 110px;border-radius: 3px;"></span>
 
-                    <span *ngIf="croppedImageForBgImage; else showBgImage"> <img class="img-grid"
+                    <span *ngIf="styleTwoBackgroundImagePath; else showBgImage"> <img class="img-grid"
                         style="width: 100%;height: 110px;border-radius: 3px; object-fit: cover;"
-                        [src]="styleTwoBackgroundImagePath" alt="">
+                        [src]="authenticationService.MEDIA_URL + styleTwoBackgroundImagePath" alt="">
                     </span>
                     <ng-template #showBgImage> <img class="img-grid" *ngIf="companyBgImagePath2"
                         style="width: 100%;height: 110px;border-radius: 3px;"
-                        [src]="styleTwoBackgroundImagePath" (error)="errorHandler($event)"
-                        alt="">
+                        [src]="authenticationService.MEDIA_URL + styleTwoBackgroundImagePath"
+                        (error)="errorHandler($event)" alt="">
                     </ng-template>
                     <a class="btn btn-primary1 profile-pic" (click)="bgImageClick()" data-toggle="tooltip"
                       data-placement="bottom" title="upload 16:9 ratio image!">
                       &nbsp;&nbsp;<i class="fa fa-camera icon" aria-hidden="true"
                         style="font-size:25px;padding-top:10px;left: 5px !important;bottom: -60px !important;"></i></a>
                   </div>
+                  <div class="">
+                    <span class="conectColor" (click)="setDefaultBgImageStyleTwo()">Set Default Image</span>
+                  </div>
                 </div>
               </div>
+              <!--  End Upload BG Image for style 2-->
+              <!-- Start Select Bg Color for style 2-->
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 pl0" *ngIf="isBackgroundColorStyleTwo">
+                <div class="form-group">
+                  <label>Select Background Color</label> <input class="form-control" [value]="selectedColor2"
+                    [(ngModel)]="selectedColor2" (input)="checkValidColorCode(selectedColor2,'selectedColor2')"
+                    style="padding-left: 40px;" maxlength="7" btnBorderColor="selectedColor2" #btnBorderColor="ngModel"
+                    id="btnBorderColor" required>
+                  <span class="input-group-addon color-pick"
+                    style="height: 30px;width: 30px;position: relative;bottom: 32px;left: 4px;"
+                    [(colorPicker)]="selectedColor2" [style.background]="selectedColor2" [cpWidth]="'200px'"
+                    (colorPickerChange)="changeControllerColor($event,'selectedColor2')" [cpHeight]="'265px'"
+                    [cpPosition]="'right'" readonly></span>
+                </div>
+              </div>
+              <!-- End Select Bg Color for style 2-->
             </div>
           </div>
-          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 preview_img mt_15">
-            <label>Preview</label>
-            <img src="assets/images/customloginscreens/style2-left.png" *ngIf="styleTwoDirection === 'Left'"
+          <div class="col-xs-12 col-sm-4 col-md-12 col-lg-4 preview_img mt_15 MTop">
+            <label>Login Form Preview</label>
+            <img src="assets/images/customloginscreens/style_two_left.webp" *ngIf="styleTwoDirection === 'Left'"
               class="imgpreview">
-            <img src="assets/images/customloginscreens/style2-right.png" *ngIf="styleTwoDirection === 'Right'"
+            <img src="assets/images/customloginscreens/style_two_right.webp" *ngIf="styleTwoDirection === 'Right'"
               class="imgpreview">
-            <img src="assets/images/customloginscreens/style2-center.PNG" *ngIf="styleTwoDirection === 'Center'"
+            <img src="assets/images/customloginscreens/style_two_center.webp" *ngIf="styleTwoDirection === 'Center'"
               class="imgpreview">
           </div>
         </div>
@@ -302,10 +375,9 @@
     </div>
     <app-image-upload-cropper [aspectRatio]="aspectRatio" [resizeToWidth]="resizeToWidth" *ngIf="isShowUploadScreen"
       (bgImage)="backgroundImage($event)"></app-image-upload-cropper>
-
   </div>
   <!-- Note-->
-  <div class="col-md-12 p0" style="margin-top: 10px;">
+  <div class="col-xs-12 col-md-12 p0" style="margin-top: 10px;">
     <div class="panel mt5 panel-success" style="margin-bottom: 0px;">
       <div class="panel-heading pannelBgColor">
         <h3 class="panel-title" translate>Notes</h3>
@@ -316,11 +388,11 @@
             There are two distinct login styles across five different unique login page designs.
           </li>
           <li translate>
-            <b>LOGIN STYLE ONE</b> has sections on the right and left, in one, the login form can be placed, and in the
+            <b>Login Template Style</b> has sections on the right and left, in one, the login form can be placed, and in the
             other, you can create the template you want for your sales and marketing material.
           </li>
           <li translate>
-            <b>LOGIN STYLE TWO</b> allows you to insert background images throughout the page and positions the login
+            <b>Login Image Style</b> allows you to insert background images throughout the page and positions the login
             form to the left, middle, or right.
           </li>
         </ul>

@@ -133,7 +133,7 @@
       <!-- -----------------------------Leads List-------------------------------------- -->
       <div class="row">
         <div class="col-md-12">
-          <div class="page-bar p10" id="header">
+          <div class="page-bar remove_cardBgcolor padding_0 p10" id="header">
             <div class="tab-content">
               <div *ngIf="!showCampaignLeads">
                 <!-- XNFR-148 -->
@@ -166,18 +166,20 @@
 
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
                         (click)="addLead()" style="padding-left: 4px;">
-                        <button class="btn btn-primary padding align mb-btns" translate>
-                          <i class="fa fa-plus  mb-btns" aria-hidden="true"></i> Add a Lead
+                        <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
+                          <span class="btn btn-primary transition d-inline"><i class="fa fa-plus  mb-btns"
+                              aria-hidden="true"></i> Add a Lead</span>
                         </button>
                       </a>
 
                       <!-- XNFR-215 -->
                       <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT'"
                         (click)="syncLeadsWithActiveCRM()">
-                        <button class="btn btn-white padding mt button salesforce-btn mb-btns" style="margin-left: 3px;"
+                        <button class="btn salesforce-btn button neg-mar-top bgcolor-unset p0 neg-mg-btm btn-transitions" style="margin-left: 3px;"
                           data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
 
-                          <i class="fa fa-refresh" aria-hidden="true"></i> {{ activeCRMDetails?.type | titlecase }}
+                          <span class=" btn Btn-Green transition"> <i class="fa fa-refresh" aria-hidden="true"></i> {{
+                            activeCRMDetails?.type | titlecase }}</span>
                         </button>
                       </a>
 
@@ -234,8 +236,9 @@
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                         <div class="form-group" style="text-align: -webkit-right;">
-                          <button class="btn Btn-Green" translate="" type="button" ng-reflect-translate="" [disabled]=""
-                            (click)="validateDateFilters()">Filter</button>
+                          <button class="button bgcolor-unset" translate="" type="button" ng-reflect-translate=""
+                            [disabled]="" (click)="validateDateFilters()"><span
+                              class="btn Btn-Green transition">Filter</span></button>
                         </div>
                       </div>
                       <div class="portlet box">
@@ -386,7 +389,7 @@
                                 </ng-container>
                                 <a class="custom-icon" *ngIf="true" data-rel="fancybox-button"
                                   (click)="showComments(lead)" data-toggle="tooltip" data-placement="bottom"
-                                  title="Comments" style="margin-top: 10px">
+                                  title="Comments">
                                   <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px">
                                   </i>
                                   <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"
@@ -480,15 +483,16 @@
                               </span>
                             </td>
                             <td>
-                              <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Number of Leads"
-                                style="cursor: default">
+                              <a class="custom-icon display-inlineblock" data-toggle="tooltip" data-placement="top"
+                                title="Number of Leads" style="cursor: default">
                                 <i
                                   class="circled-number IconCustomization fontStyleNormal"><strong>{{campaign.leadsCount}}</strong></i>
                                 <div class="clickicons"></div>
                               </a>
 
-                              <a class="custom-icon" *ngIf="campaign.channelCampaign" (click)="showPartners(campaign)"
-                                data-toggle="tooltip" data-placement="top" title="View leads for this campaign">
+                              <a class="custom-icon display-inlineblock" *ngIf="campaign.channelCampaign"
+                                (click)="showPartners(campaign)" data-toggle="tooltip" data-placement="top"
+                                title="View leads for this campaign">
 
                                 <i class="circled-number fa IconCustomization"
                                   [ngClass]="{'fa-plus': !campaign.expand, 'fa-minus': campaign.expand}"

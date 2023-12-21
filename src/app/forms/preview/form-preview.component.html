@@ -76,10 +76,10 @@
 
                                         <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
 
-                                            <input type="{{columnInfo.labelType}}" class="form-control form-placeholder" *ngIf="columnInfo.labelType=='text' || !form.disableEmail" placeholder="{{columnInfo.placeHolder}}" [disabled]="columnInfo.labelType=='email' && authenticationService.isPartnerRsvp" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000"
+                                            <input type="{{columnInfo.labelType}}" class="form-control form-placeholder" *ngIf="columnInfo.labelType=='text' || !form.disableEmail" placeholder="{{columnInfo.placeHolder}}" [disabled]="columnInfo.labelType=='email' && authenticationService.isPartnerRsvp" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000" autocomplete="off"
                                                 (input)="validateEmail(columnInfo)" [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0) && (isTrackQuizSubmitted || (columnInfo.labelType=='email' && columnInfo.required))}">
                                             
-                                            <input type="{{columnInfo.labelType}}" class="form-control form-placeholder" placeholder="{{columnInfo.placeHolder}}" [disabled]="form.disableEmail" *ngIf="columnInfo.labelType=='email' && form.disableEmail" id="{{columnInfo.labelId}}" [(ngModel)]="form.emailId" maxlength="1000"
+                                            <input type="{{columnInfo.labelType}}" class="form-control form-placeholder" placeholder="{{columnInfo.placeHolder}}" [disabled]="form.disableEmail" *ngIf="columnInfo.labelType=='email' && form.disableEmail" id="{{columnInfo.labelId}}" [(ngModel)]="form.emailId" maxlength="1000" autocomplete="off"
                                                 (input)="validateEmail(columnInfo)" [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0) && (isTrackQuizSubmitted || (columnInfo.labelType=='email' && columnInfo.required))}">
 
 
@@ -157,6 +157,15 @@
                                                 [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
                                                 <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [ngValue]="dropDownValue.id">
                                                     {{dropDownValue.name}}</option>
+                                            </select>
+                                        </ng-container>
+
+                                         <!-- ---------------------------Country(XNFR-423)----------------------------- -->
+                                         <ng-container *ngIf="columnInfo.labelType=='country'">
+                                            <select class="form-control form-placeholder" [(ngModel)]="columnInfo.value"
+                                                [ngClass]="{'disable-click disabled-background-color':(learningTrackId !== undefined && learningTrackId > 0 && isTrackQuizSubmitted)}">
+                                                <option *ngFor="let countryName of countryNames" [ngValue]="countryName" >
+                                                    {{countryName}}</option>
                                             </select>
                                         </ng-container>
                                         <!-- ---------------------------Quiz----------------------------- -->

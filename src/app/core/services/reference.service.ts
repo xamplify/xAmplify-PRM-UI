@@ -147,6 +147,7 @@ export class ReferenceService {
 
   loginStyleType:any;
   loginTemplateId = 53;
+  assetResponseMessage = "";
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -453,6 +454,7 @@ export class ReferenceService {
       var div = $("#" + divId);
       if (div.length) {
         var contentNav = div.offset().top;
+        console.log(contentNav);
         $("html,body").animate(
           {
             scrollTop: contentNav,
@@ -3298,10 +3300,50 @@ export class ReferenceService {
     }
     return message;
   }
-  
-  
-  /********Email Templates****/
-  
+
+  /***XNFR-403***/
+  removeRowWithAnimation(id:any){
+    $('#' + id).hide(1000, function () {
+      $('#' + id).remove();
+    });
+  }
+
+  isJsonString(str:string) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+  }
+
+  convertJsonStringToJsonObject(jsonString:string){
+    var jsonObject : any;
+    if(this.isJsonString(jsonString)){
+      return jsonObject = JSON.parse(jsonString);
+    }
+  }
+
+  removeArrayItemByIndex(items:any,index:number){
+    var updatedItems = [];
+    for(var i=0;i<items.length;i++){
+        let item = items[i];
+        if(i!=index){
+          updatedItems.push(item);
+        }
+    }
+    return updatedItems;
+  }
+
+  spliceArrayByIndex(arr: any, indexToRemove: number) {
+    arr = $.grep(arr, function (data: any, index: number) {
+      return index !== indexToRemove;
+    });
+    return arr;
+  }
+
+  /***XNFR-403***/
+
 
   
 }

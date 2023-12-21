@@ -1,252 +1,310 @@
 <div id="addContactModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
-<div class="modal-dialog  accounts-modal" style="position: relative !important;">
-  <!-- Modal content-->
-  <div class="modal-content full_popup">
-    <div class="modal-header popup_header">
-      <button type="button" class="close-circle"  (click)="addContactModalClose()">
-      <i class="fa fa-times" aria-hidden="true" style="margin-top: 0px;"></i></button>
-      <h4 class="modal-title size-font" *ngIf="!isUpdateUser" translate>Add {{checkingContactTypeName}}</h4>
-      <h4 class="modal-title size-font" *ngIf="isUpdateUser" translate>Edit {{checkingContactTypeName}}</h4>
-    </div>
-    <div class="modal-body border-bottom-1px popup_body">
-      <div class="hide-scrollbar">
-      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      <form class="form-horizontal" autocomplete="off">
-       <div class="form-group mrg0" *ngIf="isPartner && !isAssignLeads">
-          <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
-            <span class="star"> *</span>
-          </label>
-          <div class="form-group col-xs-10 col-sm-10 mrg0" id="major-field-width">
-            <input type="company" style="border: none !important" class="form-control padding-mobile placeholder-bg-color" id="company"
-              [(ngModel)]="addContactuser.contactCompany" (input)="contactCompanyChecking(addContactuser.contactCompany)"
-              [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
-            <div class="textCss"></div>
-          </div>
+  data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
+  <div class="modal-dialog  accounts-modal" style="position: relative !important;">
+    <!-- Modal content-->
+    <div class="modal-content full_popup">
+      <div class="modal-header popup_header">
+        <button type="button" class="close-circle" (click)="addContactModalClose()">
+          <i class="fa fa-times" aria-hidden="true" style="margin-top: 0px;"></i></button>
+        <h4 class="modal-title size-font" *ngIf="!isUpdateUser" translate>Add {{checkingContactTypeName}}</h4>
+        <h4 class="modal-title size-font" *ngIf="isUpdateUser" translate>Edit {{checkingContactTypeName}}</h4>
+      </div>
+      <div class="modal-body border-bottom-1px popup_body">
+        <div class="alert alert-danger" *ngIf="validationResponse.isVisible">
+          <strong class="pre-wrap-next-line">{{validationResponse?.responseMessage}}</strong>
         </div>
-
-      <div class="form-group mrg0">
-            <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: 11px !important">
+        <div class="hide-scrollbar">
+          <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+          <form class="form-horizontal" autocomplete="off">
+            <div class="form-group mrg0" *ngIf="isPartner && !isAssignLeads">
+              <label class="control-label col-xs-2 col-sm-2" for="company"
+                style="color: #00bcd4; right: 11px !important">
                 <span class="star"> *</span>
-            </label>
-           <div class="form-group col-xs-10 col-sm-10 mrg0" id="major-field-width" *ngIf="isUpdateUser">
-              <span class="email-css">{{addContactuser.emailId}}</span>
-              <div class="textCss"></div>
-          </div>
-           <div class="form-group col-xs-10 col-sm-10 mrg0" *ngIf="!isUpdateUser" id="major-field-width">
-              <input type="email" style="border: none !important" class="form-control padding-mobile placeholder-bg-color" id="email1"
-              (blur)="checkingEmailPattern(addContactuser.emailId)" (input)="validateEmail(addContactuser.emailId)"
-              [(ngModel)]="addContactuser.emailId"  [ngModelOptions]="{standalone: true}"
-              placeholder="Email *" autocomplete="off" maxlength="250">
-            <div class="textCss"></div>
-            <span class="danger" *ngIf="!validEmailPatternSuccess" translate>Please enter a valid email address</span>
-            <span class="danger" *ngIf="isEmailExist" translate>This email address has already been added</span>
-           </div>
-         </div>
-        <div class="form-group mrg0">
-          <label class="control-label col-xs-2 col-sm-2" for="name"style="color: blue">
-          </label>
-          <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
-            <input type="name" style="border: none !important" class="form-control padding-mobile placeholder-bg-color" id="firstName"
-              [(ngModel)]="addContactuser.firstName" [ngModelOptions]="{standalone: true}" placeholder="First Name" maxlength="250">
-            <div class="textCss"></div>
-          </div>
-          <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
-            <input type="name" style="border: none !important" class="form-control padding-mobile placeholder-bg-color" id="lastName"
-            [(ngModel)]="addContactuser.lastName" [ngModelOptions]="{standalone: true}" placeholder="Last Name" maxlength="250">
-            <div class="textCss"></div>
-          </div>
-        </div>
-        <div class="form-group mrg0" *ngIf="!isPartner">
-          <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
-          </label>
-          <div class="form-group col-xs-10 col-sm-10 mrg0">
-            <input type="company" style="border: none !important" class="form-control padding-mobile placeholder-bg-color" id="company"
-              [(ngModel)]="addContactuser.contactCompany" (input)="contactCompanyChecking(addContactuser.contactCompany)"
-              [ngModelOptions]="{standalone: true}" placeholder="Company" maxlength="250">
-            <div class="textCss"></div>
-          </div>
-        </div>
-        <ng-container *ngIf="isPartner && isUpdateUser && !isAssignLeads">
-          <!---Contacts Limit------->
-        <div class="form-group mrg0" *ngIf="authenticationService.contactsCount">
-          <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
-            <span class="star"> *</span>
-          </label>
-          <div class="form-group col-xs-10 col-sm-10 mrg0" id="major-field-width">
-            <input type="number" min="0" style="border: none !important" class="form-control padding-mobile placeholder-bg-color" id="contactsLimit"
-              [(ngModel)]="addContactuser.contactsLimit"  [ngModelOptions]="{standalone: true}" placeholder="Contacts Limit" min="1"
-              oninput="validity.valid||(value='');" (input)="validteContactsCount(addContactuser.contactsLimit)">
-            <div class="textCss"></div>
-            <p><strong translate>(Minimum 1) </strong></p>
-          </div>
-        </div>
-        <!-----XNFR-85-------->
-        <!---Team Member Group-->
-        <div *ngIf="authenticationService?.module?.adminOrSuperVisor" class="form-group  mrg0" style="display:flex;">
-          <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue;">
-            <span class="star"> *</span>
-          </label>
-          <div class="form-group col-xs-7 col-sm-7  mrg0">
-            <select class="form-control" id="sel-partner-tm" (ngModelChange)="validateTeamMemberGroupId($event)"
-              [(ngModel)]="addContactuser.teamMemberGroupId" [ngModelOptions]="{standalone: true}" placeholder="Select Team Member Group">
-              <option *ngFor="let teamMemberGroup of teamMemberGroups" [value]="teamMemberGroup.id">{{teamMemberGroup.name}} ({{teamMemberGroup?.teamMembersCount}})</option>
-            </select>
-            <p *ngIf="addContactuser?.selectedTeamMembersCount>0 && !isTeamMemberPartnerList" class="active-status">
-              <strong translate>Selected Team Members: {{addContactuser?.selectedTeamMembersCount}}</strong>
-            </p>
-            <p *ngIf="isTeamMemberPartnerList" class="inactive-status">
-              <strong translate>Group cannot be changed in this section</strong>
-            </p>
-          </div>
-          <div class="form-group col-xs-4 col-sm-4" *ngIf="!isTeamMemberPartnerList">
-            <span class="input-group-btn" style="border:none !important">
-              <button data-toggle="tooltip" data-placement="bottom" title="Preview Modules" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1" (click)="previewModules(addContactuser.teamMemberGroupId)">
-                <i class="fa fa-eye white" aria-hidden="true"></i>
-              </button>
-              <button data-toggle="tooltip" data-placement="bottom" title="Preview Team Members" [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info right-twelevepx" type="button" tabindex="-1" (click)="previewTeamMembers()">
-                <i class="fa fa-users white" aria-hidden="true"></i>
-              </button>
-            </span>
-          </div>
-        </div>
-        </ng-container>
-        <!-- ------------Legal Basis------------ -->
-        <div class="form-group mrg0" *ngIf="gdprStatus">
-         <label class="control-label col-xs-2 col-sm-2" for="legalBasis" style="color: #00bcd4; right: 11px !important">
+              </label>
+              <div class="form-group col-xs-10 col-sm-10 mrg0" id="major-field-width">
+                <input type="company" style="border: none !important"
+                  class="form-control padding-mobile placeholder-bg-color" id="company"
+                  [(ngModel)]="addContactuser.contactCompany"
+                  (input)="contactCompanyChecking(addContactuser.contactCompany)" [ngModelOptions]="{standalone: true}"
+                  placeholder="Company" maxlength="250">
+                <div class="textCss"></div>
+              </div>
+            </div>
+
+            <div class="form-group mrg0">
+              <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: 11px !important">
+                <span class="star"> *</span>
+              </label>
+              <div class="form-group col-xs-10 col-sm-10 mrg0" id="major-field-width" *ngIf="isUpdateUser">
+                <span class="email-css">{{addContactuser.emailId}}</span>
+                <div class="textCss"></div>
+              </div>
+              <div class="form-group col-xs-10 col-sm-10 mrg0" *ngIf="!isUpdateUser" id="major-field-width">
+                <input type="email" style="border: none !important"
+                  class="form-control padding-mobile placeholder-bg-color" id="email1"
+                  (blur)="checkingEmailPattern(addContactuser.emailId)" (input)="validateEmail(addContactuser.emailId)"
+                  [(ngModel)]="addContactuser.emailId" [ngModelOptions]="{standalone: true}" placeholder="Email *"
+                  autocomplete="off" maxlength="250">
+                <div class="textCss"></div>
+                <span class="danger" *ngIf="!validEmailPatternSuccess" translate>Please enter a valid email
+                  address</span>
+                <span class="danger" *ngIf="isEmailExist" translate>This email address has already been added</span>
+              </div>
+            </div>
+            <div class="form-group mrg0">
+              <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue">
+              </label>
+              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                <input type="name" style="border: none !important"
+                  class="form-control padding-mobile placeholder-bg-color" id="firstName"
+                  [(ngModel)]="addContactuser.firstName" [ngModelOptions]="{standalone: true}" placeholder="First Name"
+                  maxlength="250">
+                <div class="textCss"></div>
+              </div>
+              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                <input type="name" style="border: none !important"
+                  class="form-control padding-mobile placeholder-bg-color" id="lastName"
+                  [(ngModel)]="addContactuser.lastName" [ngModelOptions]="{standalone: true}" placeholder="Last Name"
+                  maxlength="250">
+                <div class="textCss"></div>
+              </div>
+            </div>
+            <div class="form-group mrg0" *ngIf="!isPartner">
+              <label class="control-label col-xs-2 col-sm-2" for="company"
+                style="color: #00bcd4; right: 11px !important">
+              </label>
+              <div class="form-group col-xs-10 col-sm-10 mrg0">
+                <input type="company" style="border: none !important"
+                  class="form-control padding-mobile placeholder-bg-color" id="company"
+                  [(ngModel)]="addContactuser.contactCompany"
+                  (input)="contactCompanyChecking(addContactuser.contactCompany)" [ngModelOptions]="{standalone: true}"
+                  placeholder="Company" maxlength="250">
+                <div class="textCss"></div>
+              </div>
+            </div>
+            <ng-container *ngIf="isPartner && isUpdateUser && !isAssignLeads">
+              <!---Contacts Limit------->
+              <div class="form-group mrg0" *ngIf="authenticationService.contactsCount">
+                <label class="control-label col-xs-2 col-sm-2" for="company"
+                  style="color: #00bcd4; right: 11px !important">
+                  <span class="star"> *</span>
+                </label>
+                <div class="form-group col-xs-10 col-sm-10 mrg0" id="major-field-width">
+                  <input type="number" min="0" style="border: none !important"
+                    class="form-control padding-mobile placeholder-bg-color" id="contactsLimit"
+                    [(ngModel)]="addContactuser.contactsLimit" [ngModelOptions]="{standalone: true}"
+                    placeholder="Contacts Limit" min="1" oninput="validity.valid||(value='');"
+                    (input)="validteContactsCount(addContactuser.contactsLimit)">
+                  <div class="textCss"></div>
+                  <p><strong translate>(Minimum 1) </strong></p>
+                </div>
+              </div>
+              <!-----XNFR-85-------->
+              <!---Team Member Group-->
+              <div *ngIf="authenticationService?.module?.adminOrSuperVisor" class="form-group  mrg0"
+                style="display:flex;">
+                <label class="control-label col-xs-2 col-sm-2" for="name" style="color: blue;">
+                  <span class="star"> *</span>
+                </label>
+                <div class="form-group col-xs-7 col-sm-7  mrg0">
+                  <select class="form-control" id="sel-partner-tm" (ngModelChange)="validateTeamMemberGroupId($event)"
+                    [(ngModel)]="addContactuser.teamMemberGroupId" [ngModelOptions]="{standalone: true}"
+                    placeholder="Select Team Member Group">
+                    <option *ngFor="let teamMemberGroup of teamMemberGroups" [value]="teamMemberGroup.id">
+                      {{teamMemberGroup.name}} ({{teamMemberGroup?.teamMembersCount}})</option>
+                  </select>
+                  <p *ngIf="addContactuser?.selectedTeamMembersCount>0 && !isTeamMemberPartnerList"
+                    class="active-status">
+                    <strong translate>Selected Team Members: {{addContactuser?.selectedTeamMembersCount}}</strong>
+                  </p>
+                  <p *ngIf="isTeamMemberPartnerList" class="inactive-status">
+                    <strong translate>Group cannot be changed in this section</strong>
+                  </p>
+                </div>
+                <div class="form-group col-xs-4 col-sm-4" *ngIf="!isTeamMemberPartnerList">
+                  <span class="input-group-btn" style="border:none !important">
+                    <button data-toggle="tooltip" data-placement="bottom" title="Preview Modules"
+                      [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info" type="button" tabindex="-1"
+                      (click)="previewModules(addContactuser.teamMemberGroupId)">
+                      <i class="fa fa-eye white" aria-hidden="true"></i>
+                    </button>
+                    <button data-toggle="tooltip" data-placement="bottom" title="Preview Team Members"
+                      [disabled]="addContactuser?.teamMemberGroupId==0" class="btn btn-info right-twelevepx"
+                      type="button" tabindex="-1" (click)="previewTeamMembers()">
+                      <i class="fa fa-users white" aria-hidden="true"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </ng-container>
+            <!-- ------------Legal Basis------------ -->
+            <div class="form-group mrg0" *ngIf="gdprStatus">
+              <label class="control-label col-xs-2 col-sm-2" for="legalBasis"
+                style="color: #00bcd4; right: 11px !important">
                 <span class="star">*</span>
-            </label>
-        <div id="multiselect-sample" class="control-section">
-        <div class="col-lg-8 content-wrapper legal-basis-width" id="custom-width">
-            <div class="control-styles">
-              <ejs-multiselect class="e-remain textFieldCustimization" [(ngModel)]='addContactuser.legalBasis' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
-              [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (blur)="validateLegalBasisOptions()"></ejs-multiselect>
-                <span class="danger" *ngIf="!isValidLegalOptions" translate>Please select at least one option</span>
+              </label>
+              <div id="multiselect-sample" class="control-section">
+                <div class="col-lg-8 content-wrapper legal-basis-width" id="custom-width">
+                  <div class="control-styles">
+                    <ejs-multiselect class="e-remain textFieldCustimization" [(ngModel)]='addContactuser.legalBasis'
+                      [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true'
+                      id='multiselectelement' [dataSource]='legalBasisOptions' [fields]='fields'
+                      [placeholder]='placeHolder' (blur)="validateLegalBasisOptions()"></ejs-multiselect>
+                    <span class="danger" *ngIf="!isValidLegalOptions" translate>Please select at least one option</span>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <div class="form-group mrg0">
+              <label class="control-label col-xs-2 col-sm-2" for="company"
+                style="color: #00bcd4; right: 11px !important">
+              </label>
+              <div class="form-group col-xs-10 col-sm-10 mrg0">
+                <input type="text" style="border: none !important"
+                  class="form-control padding-mobile placeholder-bg-color" id="title"
+                  [(ngModel)]="addContactuser.jobTitle" [ngModelOptions]="{standalone: true}" placeholder="Job Title"
+                  maxlength="250">
+                <div class="textCss"></div>
+              </div>
+            </div>
+
+
+
+            <div class="form-group mrg0" *ngIf="isPartner">
+              <div>
+                <label class="control-label col-xs-2 col-sm-2" for="vertical" style="color: #53affe;">
+                </label>
+                <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
+                  <input type="vertical" style="border: none !important" class="form-control placeholder-bg-color"
+                    id="vertical" [(ngModel)]="addContactuser.vertical" [ngModelOptions]="{standalone: true}"
+                    placeholder="Vertical" maxlength="55">
+                  <div class="textCss"></div>
+                </div>
+                <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                  <input type="region" style="border: none !important" class="form-control placeholder-bg-color"
+                    id="region" [(ngModel)]="addContactuser.region" [ngModelOptions]="{standalone: true}"
+                    placeholder="Region" maxlength="55">
+                  <div class="textCss"></div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group mrg0" *ngIf="isPartner">
+              <div>
+                <label class="control-label col-xs-2 col-sm-2" for="partnerType" style="color: #53affe;">
+                </label>
+                <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
+                  <input type="partnerType" style="border: none !important" class="form-control placeholder-bg-color"
+                    id="partnerType" [(ngModel)]="addContactuser.partnerType" [ngModelOptions]="{standalone: true}"
+                    placeholder="Type" maxlength="55">
+                  <div class="textCss"></div>
+                </div>
+                <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                  <input type="category" style="border: none !important" class="form-control placeholder-bg-color"
+                    id="category" [(ngModel)]="addContactuser.category" [ngModelOptions]="{standalone: true}"
+                    placeholder="Category" maxlength="55">
+                  <div class="textCss"></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mrg0">
+              <div>
+                <label class="control-label col-xs-2 col-sm-2" for="address" style="color: #53affe;">
+                </label>
+                <div class="form-group col-xs-10 col-sm-10 px0 mrg0">
+                  <input type="address" style="border: none !important" class="form-control placeholder-bg-color"
+                    id="address" [(ngModel)]="addContactuser.address" [ngModelOptions]="{standalone: true}"
+                    placeholder="Address" maxlength="250">
+                  <div class="textCss"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mrg0">
+              <div>
+                <label class="control-label col-xs-2 col-sm-2" for="address" style="color: #53affe;">
+                </label>
+                <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
+                  <input type="city" style="border: none !important" class="form-control placeholder-bg-color" id="city"
+                    [(ngModel)]="addContactuser.city" [ngModelOptions]="{standalone: true}" placeholder="City/Town"
+                    maxlength="44">
+                  <div class="textCss"></div>
+                </div>
+                <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                  <input type="state" style="border: none !important" class="form-control placeholder-bg-color"
+                    id="state" [(ngModel)]="addContactuser.state" [ngModelOptions]="{standalone: true}"
+                    placeholder="State" maxlength="44">
+                  <div class="textCss"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mrg0">
+              <label class="control-label col-xs-2 col-sm-2" for=""></label>
+              <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
+                <input type="zip" style="border: none !important" class="form-control placeholder-bg-color" id="zip"
+                  [(ngModel)]="addContactuser.zipCode" [ngModelOptions]="{standalone: true}" placeholder="Zip Code"
+                  maxlength="10">
+                <div class="textCss"></div>
+              </div>
+
+              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
+                <select class="form-control same-bgcolor-for-select" style="border: none !important;"
+                  [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="Country">
+                  <option *ngFor="let country of countryNames.countries" [value]="country">{{country}}</option>
+                </select>
+                <div class="textCss"></div>
+              </div>
+            </div>
+
+            <div class="form-group mrg0">
+              <label class="control-label col-xs-2 col-sm-2" for="phone" style="color: green">
+              </label>
+              <div class="col-xs-10 col-sm-10 p0 px_0" id="mobile-field-width">
+                <input type="email" style="border: none !important"
+                  class="form-control padding-mobile placeholder-bg-color" [(ngModel)]="addContactuser.mobileNumber"
+                  [ngModelOptions]="{standalone: true}" placeholder="Enter your mobile no" maxlength="20">
+                <div class="textCss"></div>
+              </div>
+            </div>
+          </form>
         </div>
-        </div>
+      </div>
+      <div class="modal-footer popup_footer" style="border:none" *ngIf="!isPartner">
+        <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
+        <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset button_height"
+          [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()"
+          translate><span class="btn Btn-Green transition txt_pd-top8">Add</span></button>
+        <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset button_height"
+          [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
+          (click)="addEditContactRow()" translate><span
+            class="btn Btn-Green transition txt_pd-top8">Save</span></button>
+        <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset button_height"
+          [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
+          (click)="updateUser()" data-dismiss="modal" translate><span
+            class="btn Btn-Green transition unsubsribe_text">Update</span></button>
+
+      </div>
+      <div class="modal-footer popup_footer" *ngIf="isPartner" style="border:none">
+        <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
+        <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset button_height"
+          [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
+          (click)="addRow()" translate><span class="btn Btn-Green transition txt_pd-top8">Proceed</span></button>
+        <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="button bgcolor-unset button_height"
+          [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
+          (click)="addEditContactRow()" translate><span
+            class="btn Btn-Green transition txt_pd-top8">Proceed</span></button>
+        <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="button bgcolor-unset button_height"
+          [disabled]="!checkingForEmail || !isCompanyDetails || !validLimit  || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)"
+          (click)="updateUser()" translate><span class="btn Btn-Green transition unsubsribe_text">Update</span></button>
+      </div>
     </div>
-
-        <div class="form-group mrg0">
-           <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
-          </label>
-          <div class="form-group col-xs-10 col-sm-10 mrg0">
-            <input type="text" style="border: none !important"  class="form-control padding-mobile placeholder-bg-color" id="title"
-              [(ngModel)]="addContactuser.jobTitle"  [ngModelOptions]="{standalone: true}" placeholder="Job Title" maxlength="250">
-            <div class="textCss"></div>
-          </div>
-        </div>
-
-     
-
-      <div class="form-group mrg0" *ngIf="isPartner">
-            <div>
-              <label class="control-label col-xs-2 col-sm-2" for="vertical" style="color: #53affe;">
-              </label>
-              <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
-                <input type="vertical" style="border: none !important" class="form-control placeholder-bg-color"  id="vertical"
-                  [(ngModel)]="addContactuser.vertical" [ngModelOptions]="{standalone: true}" placeholder="Vertical" maxlength="55">
-                <div class="textCss"></div>
-              </div>
-              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
-                <input type="region" style="border: none !important" class="form-control placeholder-bg-color" id="region"
-                  [(ngModel)]="addContactuser.region" [ngModelOptions]="{standalone: true}" placeholder="Region" maxlength="55">
-                <div class="textCss"></div>
-              </div>
-            </div>
-          </div>
-
-
-         <div class="form-group mrg0" *ngIf="isPartner">
-            <div>
-              <label class="control-label col-xs-2 col-sm-2" for="partnerType" style="color: #53affe;">
-              </label>
-              <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
-                <input type="partnerType" style="border: none !important" class="form-control placeholder-bg-color"  id="partnerType"
-                  [(ngModel)]="addContactuser.partnerType" [ngModelOptions]="{standalone: true}" placeholder="Type" maxlength="55">
-                <div class="textCss"></div>
-              </div>
-              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
-                <input type="category" style="border: none !important" class="form-control placeholder-bg-color" id="category"
-                  [(ngModel)]="addContactuser.category" [ngModelOptions]="{standalone: true}" placeholder="Category" maxlength="55">
-                <div class="textCss"></div>
-              </div>
-            </div>
-          </div>
-        <div class="form-group mrg0">
-          <div>
-            <label class="control-label col-xs-2 col-sm-2" for="address" style="color: #53affe;">
-            </label>
-            <div class="form-group col-xs-10 col-sm-10 px0 mrg0">
-              <input type="address" style="border: none !important" class="form-control placeholder-bg-color" id="address"
-                [(ngModel)]="addContactuser.address" [ngModelOptions]="{standalone: true}" placeholder="Address" maxlength="250">
-              <div class="textCss"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group mrg0">
-            <div>
-              <label class="control-label col-xs-2 col-sm-2" for="address" style="color: #53affe;">
-              </label>
-              <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
-                <input type="city" style="border: none !important" class="form-control placeholder-bg-color"  id="city"
-                  [(ngModel)]="addContactuser.city" [ngModelOptions]="{standalone: true}" placeholder="City/Town" maxlength="44">
-                <div class="textCss"></div>
-              </div>
-              <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
-                <input type="state" style="border: none !important" class="form-control placeholder-bg-color" id="state"
-                  [(ngModel)]="addContactuser.state" [ngModelOptions]="{standalone: true}" placeholder="State" maxlength="44">
-                <div class="textCss"></div>
-              </div>
-            </div>
-          </div>
-
-        <div class="form-group mrg0">
-          <label class="control-label col-xs-2 col-sm-2" for=""></label>
-          <div class="form-group col-xs-5 col-sm-5 pxl0 field-width" id="minor-field-width">
-            <input type="zip" style="border: none !important" class="form-control placeholder-bg-color" id="zip"
-              [(ngModel)]="addContactuser.zipCode"  [ngModelOptions]="{standalone: true}" placeholder="Zip Code" maxlength="10">
-            <div class="textCss"></div>
-         </div>
-
-          <div class="form-group col-xs-5 col-sm-5 field-width" id="minor-field-width">
-            <select class="form-control same-bgcolor-for-select" style="border: none !important;"
-              [(ngModel)]="addContactuser.country" [ngModelOptions]="{standalone: true}" placeholder="Country">
-              <option *ngFor="let country of countryNames.countries" [value]="country">{{country}}</option>
-            </select>
-            <div class="textCss"></div>
-           </div>
-         </div>
-
-        <div class="form-group mrg0">
-        <label class="control-label col-xs-2 col-sm-2" for="phone" style="color: green">
-        </label>
-            <div class="col-xs-10 col-sm-10 p0 px_0" id="mobile-field-width">
-            <input type="email" style="border: none !important" class="form-control padding-mobile placeholder-bg-color"
-              [(ngModel)]="addContactuser.mobileNumber"  [ngModelOptions]="{standalone: true}"
-              placeholder="Enter your mobile no" maxlength="20">
-            <div class="textCss"></div>
-            </div>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="modal-footer popup_footer" style="border:none" *ngIf="!isPartner">
-    <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
-    <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn Btn-Green" [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Add</button>
-    <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn Btn-Green" [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" translate>Save</button>
-    <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn Btn-Green" [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="updateUser()" data-dismiss="modal" translate>Update</button>
-
-  </div>
-  <div class="modal-footer popup_footer" *ngIf="isPartner"  style="border:none" >
-     <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
-    <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn Btn-Green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Proceed</button>
-    <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn Btn-Green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" translate>Proceed</button>
-    <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn Btn-Green" [disabled]="!checkingForEmail || !isCompanyDetails || !validLimit  || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="updateUser()" data-dismiss="modal" translate>Update</button>
-  </div>
   </div>
 </div>
-</div>
-<app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId" (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
-<app-partner-team-member-group-team-members *ngIf="showTeamMembers" [currentPartner]="addContactuser" [openInModalPopup]="true" (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>
+<app-team-member-group-preview-popup *ngIf="showModulesPopup" [teamMemberGroupId]="teamMemberGroupId"
+  (previewGroupPopupEventEmitter)="hideModulesPreviewPopUp()"></app-team-member-group-preview-popup>
+<app-partner-team-member-group-team-members *ngIf="showTeamMembers" [currentPartner]="addContactuser"
+  [openInModalPopup]="true"
+  (partnerTeamMemberGroupTeamMemberEventEmitter)="receiveTeamMemberIdsEntity($event)"></app-partner-team-member-group-team-members>

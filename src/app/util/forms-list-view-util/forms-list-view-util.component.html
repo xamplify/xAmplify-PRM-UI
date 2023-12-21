@@ -99,37 +99,32 @@
                             <tbody>
                                 <tr *ngFor="let form of pagination.pagedItems ;let i =index">
                                     <td class="hidden-xs" style="width: 10%;">
-                                        <div class="img-class-list" style="overflow: hidden;">
+                                        <div class="img-class-list image_effect" style="overflow: hidden;">
                                             <img class="fit-image" [src]="form.thumbnailImage"
                                                 onerror="this.src='assets/images/form.png';" alt="Image Not Found">
                                         </div>
                                     </td>
                                     <td>
-                                        <h4 class="moreipsis mt5 mb5 f-w-600" title="{{form.name}}">
-                                            <span><strong>{{form.name}}</strong></span>
+                                        <h4 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{form.name}}">
+                                            <span><b>Form Name:</b> {{form.name}} </span>
                                         </h4>
-
-                                        <h6 class="moreipsis" title="{{form.categoryName}}">
-                                            <span> Folder <strong>{{form.categoryName}}</strong></span>
+                                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{form.categoryName}}">
+                                            <span><b>Folder:</b> {{form.categoryName}} </span>
                                         </h6>
-                                        <h6 class="moreipsis" title="{{form.createdName}}">
-                                            <span> Created By <strong>{{form.createdName}}</strong></span>
+                                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{form.createdName}}">
+                                            <span><b>Created By:</b> {{form.createdName}} </span>
                                         </h6>
                                         <!---XNFR-255-->
-                                        <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor">
-                                            <h6 class="moreipsis"
-                                                title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
-                                                <span translate>Received From
-                                                    <strong>{{form?.whiteLabeledFormSharedByVendorCompanyName}}</strong></span>
+                                        <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor && !partnerView">
+                                            <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{form.whiteLabeledFormSharedByVendorCompanyName}}">
+                                                <span> <b>Received From:</b> {{form?.whiteLabeledFormSharedByVendorCompanyName}} </span>
                                             </h6>
-                                            <h5 class="view-banner-white-labeled mb5">White-Labeled</h5>
+                                            <h5 class="view-banner display-ib margin-0-auto">White-Labeled</h5>
                                         </ng-container>
-                                        <!---XNFR-255-->
-                                        <h6 class="view-banner" *ngIf="form.formSubType === 'REGULAR'" translate>Regular
-                                        </h6>
-                                        <h6 class="view-banner" *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</h6>
-                                        <h6 class="view-banner" *ngIf="form.formSubType === 'SURVEY'" translate>Survey
-                                        </h6>
+                                         <!---XNFR-255-->
+                                         <h6 class="view-banner display-ib margin-0-auto" *ngIf="form.formSubType === 'REGULAR'" translate>Regular</h6>
+                                         <h6 class="view-banner display-ib margin-0-auto" *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</h6>
+                                         <h6 class="view-banner display-ib margin-0-auto" *ngIf="form.formSubType === 'SURVEY'" translate>Survey</h6>
                                     </td>
                                     <td class="text-center">
                                         <app-timestamp [isOnlyDate]="false" [dateAndTime]="form.createdDateString">
@@ -140,7 +135,7 @@
                                         </app-timestamp>
                                     </td>
                                     <td *ngIf="form?.updatedDateString?.length==0" class="text-center">
-                                        -
+                                       -
                                     </td>
                                     <td id="actions-row">
                                         <div class="actions-block override-actions">
@@ -165,33 +160,33 @@
                                                 <div class="clickicons"></div>
                                             </a>
                                             <ng-container *ngIf="form.campaignForm&&!form.dataShare">
-                                                <a class="cursor custom-icon">
+                                                <a class="cursor custom-icon mrg-right5">
                                                     <i class="fa fa-line-chart IconCustomization"
                                                         aria-hidden="true"></i>
-                                                    <span class="badge" id="notification">{{form.count}}</span>
                                                     <div class="clickicons"></div>
                                                 </a>
+                                                <span class="badge" id="notification">{{form.count}}</span>
                                             </ng-container>
                                             <ng-container
                                                 *ngIf="(form.campaignForm&&form.dataShare)|| !form.campaignForm || form.landingPageForm">
                                                 <!-------------Disable onclick if count==0   ----->
                                                 <ng-container *ngIf="form.count==0">
-                                                    <a class="cursor custom-icon">
+                                                    <a class="cursor custom-icon mrg-right5">
                                                         <i class="fa fa-line-chart IconCustomization"
                                                             aria-hidden="true"></i>
-                                                        <span class="badge" id="notification">{{form.count}}</span>
                                                         <div class="clickicons"></div>
                                                     </a>
+                                                    <span class="badge" id="notification">{{form.count}}</span>
                                                 </ng-container>
                                                 <ng-container *ngIf="form.count>0">
-                                                    <a class="custom-icon" data-rel="fancybox-button"
+                                                    <a class="custom-icon mrg-right5" data-rel="fancybox-button"
                                                         (click)="goToAnalytics(form)" data-toggle="tooltip"
                                                         data-placement="top" title="Form Analytics">
                                                         <i class="fa fa-line-chart IconCustomization"
                                                             aria-hidden="true"></i>
-                                                        <span class="badge" id="notification">{{form.count}}</span>
                                                         <div class="clickicons"></div>
                                                     </a>
+                                                    <span class="badge" id="notification">{{form.count}}</span>
                                                 </ng-container>
                                             </ng-container>
                                             <a class="custom-icon"
@@ -209,44 +204,37 @@
                     </div>
                 </ng-container>
             </section>
-
-            <div class="row" *ngIf="isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let form of pagination.pagedItems ;let i =index"
-                    id="formListDiv_{{form.id}}">
-                    <div class="grid-box" style="height: 250px !important;">
-                        <div class="img-class">
-                            <img class="fit-image" style="margin: unset;" [src]=" form.thumbnailImage"
-                                onerror="this.src='assets/images/form.png';" alt="{{form.name}}">
+            <!--Grid View-->
+            <div class="row tab_mt_grid p15" *ngIf="isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_grid GridviewSidePaddings" *ngFor="let form of pagination.pagedItems ;let i =index" id="formListDiv_{{form.id}}">
+                    <div class="grid-box gridCardBoxHeight">
+                        <div class="img-class tab_view_img DesignGridViewImage image_effect">
+                            <img class="fit-image" style="margin: unset;" [src]=" form.thumbnailImage" onerror="this.src='assets/images/form.png';" alt="{{form.name}}">
                         </div>
-                        <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
-                            {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span><br><br>
+                        <h4 class="xamplify-ellipsis GridViewCotent gridViewDesignTextAlignmnent ListFontCu" data-placement="top" data-toggle="tooltip" title="{{form.name}}">
+                            <b>Form Name:</b> {{form.name}}
                         </h4>
                         <!---XNFR-255-->
                         <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor">
-                            <h6 class="moreipsis" title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
-                                <span translate>Received From
-                                    <strong>{{form?.whiteLabeledFormSharedByVendorCompanyName}}</strong></span>
+                            <h6 class="GridViewCotent xamplify-ellipsis" data-placement="top" data-toggle="tooltip" title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
+                                <span><b>Received From:</b> {{form?.whiteLabeledFormSharedByVendorCompanyName}} </span>
                             </h6>
-                            <span class="view-banner-white-labeled mb5">White-Labeled</span>
+                            <span class="view-banner-white-labeled LabeledmarginLeft">White-Labeled</span>
                         </ng-container>
                         <!---XNFR-255-->
                         <div>
-                            <h6 title="{{form.categoryName}}">
-                                Folder <strong>{{form.categoryName | slice:0:17}}</strong>
-                                <span *ngIf="form.categoryName?.length>17">..</span>
+                            <h6 class="GridViewCotent xamplify-ellipsis"  data-placement="top" data-toggle="tooltip" title="{{form.categoryName}}">
+                                <b>Folder:</b> {{form.categoryName}} 
                             </h6>
-                            <h6>
-                                Created On <strong>
-                                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString">
-                                    </app-timestamp>
-                                </strong>
+                            <h6 class="GridViewCotent" translate>
+                                <b translate>Created On:</b>
+                                <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString"> </app-timestamp>
                             </h6>
-                            <h6 title="{{form.createdName}}">
-                                By <strong>{{form.createdName | slice:0:17}}</strong>
-                                <span *ngIf="form.createdName?.length>17">..</span>
+                            <h6 class="GridViewCotent xamplify-ellipsis" data-placement="top" data-toggle="tooltip" title="{{form.createdName}}" translate>
+                                <b translate>By:</b> {{form.createdName}} 
                             </h6>
                         </div>
-                        <div class="ribbon">
+                        <div class="ribbon tab-ribbon">
                             <span *ngIf="form.formSubType === 'REGULAR'" translate>Regular</span>
                             <span *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</span>
                             <span *ngIf="form.formSubType === 'SURVEY'" translate>Survey</span>
@@ -271,7 +259,7 @@
                                 <div class="clickicons"></div>
                             </a>
                             <ng-container *ngIf="form.campaignForm&&!form.dataShare">
-                                <a class="cursor Iconhover custom-grid-icon">
+                                <a class="cursor Iconhover custom-grid-icon mrg-right5">
                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                                     <div class="clickicons"></div>
                                 </a>
@@ -280,14 +268,14 @@
                             <ng-container
                                 *ngIf="(form.campaignForm&&form.dataShare) || !form.campaignForm || form.landingPageForm">
                                 <ng-container *ngIf="form.count==0">
-                                    <a class="cursor Iconhover custom-grid-icon">
+                                    <a class="cursor Iconhover custom-grid-icon mrg-right">
                                         <i class="fa fa-line-chart" aria-hidden="true"></i>
                                         <div class="clickicons"></div>
                                     </a>
                                     <span class="badge" id="notification-list">{{form.count}}</span>
                                 </ng-container>
                                 <ng-container *ngIf="form.count>0">
-                                    <a class="Iconhover custom-grid-icon" data-rel="fancybox-button"
+                                    <a class="Iconhover custom-grid-icon mrg-right5" data-rel="fancybox-button"
                                         (click)="goToAnalytics(form)" title="Form Analytics" data-toggle="tooltip"
                                         data-placement="top">
                                         <i class="fa fa-line-chart" aria-hidden="true"></i>

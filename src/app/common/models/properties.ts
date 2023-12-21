@@ -58,6 +58,7 @@ export class Properties {
 	SOCIAL_ACCOUNT_REMOVED_ERROR = "An error occured while removing your social Account.";
 	CONTACT_LIST_VALIDATION = 'Please click on verify data.';
 	CONTACT_EMAIL_VALIDATE_SUCCESS = "Selected Contacts have been validated successfully.";
+	CONTACT_REMOVED_FROM_EXCLUDED_LIST = "Selected user has been removed from the excluded list successfully"
 
 	/* For Partners*/
 	PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully and we are processing your partner list";
@@ -209,11 +210,12 @@ export class Properties {
 	zohoImage: string = 'assets/admin/pages/media/works/zoho-contacts.png';
 	googleImage: string = 'assets/admin/pages/media/works/google-contacts.png';
 	salesforceImage: string = 'assets/admin/pages/media/works/salesforce-contacts.png';
-	manualImage: string = 'assets/admin/pages/media/works/contacts2.svg';
+	manualImage: string = 'assets/admin/pages/media/works/contacts2.png';
 	marketoImage: string = 'assets/admin/pages/media/works/marketo-conatct.png';
 	hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
 	microsoftImage: string = 'assets/admin/pages/media/works/microsoft-contact.png';
 	pipedriveImage: string = 'assets/admin/pages/media/works/pipedrive-contacts.png';
+	connectwiseImage: string = 'assets/admin/pages/media/works/connectwise-contacts.png';
 
 	teamMemberGroups = 'Team Member Groups';
 
@@ -293,8 +295,8 @@ export class Properties {
 
 	loginScreenDirectionOptions = ["Center","Left","Right"];
 
-	vendorLogoTooltipText = "<b> On </b> - Your company logo will be displayed throughout the platform when your partners log into their accounts. <br/>"
-            + "<b> Off </b> - Each partner's logo will be displayed throughout the platform when they log into their account. <br/>" + "<b>*This setting does not affect co-branding.</b>";
+	vendorLogoTooltipText = "<b> On </b> - Your company logo will appear on the partner(s) account. <br/>"
+	+ "<b> Off </b> -  Your partner(s) logo will remain unchanged. <br/>" + "<b>*This setting does not affect co-branding.</b>";
 
 	/***XNFR-386****/
 	/**** XNFR-233 **** */

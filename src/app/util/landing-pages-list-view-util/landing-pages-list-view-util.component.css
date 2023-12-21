@@ -2,22 +2,9 @@
     min-width: 170px;
 }
 #notification-list{
-    margin-top: 6px !important;
+    margin-top: 6px;
 }
 
-.grid-box-height{
-    height: 565px !important;
-}
-
-.view-banner-white-labeled {
-    background-color: #68B4F1;
-    color: white !important;
-    padding: 5px 10px;
-  text-align: center;
-  font-size: 10px;
-  border-radius: 3px;
-  line-height: 1;
-}
 
 @media (min-width: 992px) and (max-width: 1245px)  { 
     .DropdownBoxWidth {
@@ -28,7 +15,16 @@
         float: right;
     }
 }
-.flexContant{
+.grid-box-height {
+    height: 580px !important;
+  }
+  .flexContant{
     display: flex;
     justify-content: center;
-}
+  }
+  /*******Remove this after merging XNFR-374 */
+  .grid-box h6 {
+    text-align: left !important;
+    margin: 0px !important;
+    width: 100% !important;
+  }

@@ -1,46 +1,49 @@
 <div id="unsubscribeContactModal" class="modal right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
-<div class="modal-dialog  accounts-modal" style="position: relative !important;">
-  <!-- Modal content-->
-  <div class="modal-content">
-    <div class="modal-header">
-      <button type="button" class="close-circle"  (click)="unsubscribeContactModalClose()">
-      <i class="fa fa-times" aria-hidden="true" style="margin-top: 0px;"></i></button>
-      <h4 class="modal-title size-font" translate>Add Reason</h4>
-    </div>
-    <div class="modal-body border-bottom-1px">
-      <div class="hide-scrollbar">
-      <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-      
-      <form class="form-horizontal" autocomplete="off">
-      
-      <div class="unsubscribingPopup"> 
-      <span>
-        By unsubscribing, the specified email will no longer receive emails from you. <br/>     
-        Email : {{selectedUser.emailId}}
-      </span>
-
-      <br/>    
+  data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;">
+  <div class="modal-dialog  accounts-modal" style="position: relative !important;">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close-circle" (click)="unsubscribeContactModalClose()">
+          <i class="fa fa-times" aria-hidden="true" style="margin-top: 0px;"></i></button>
+        <h4 class="modal-title size-font" translate>Add Reason</h4>
       </div>
-      <br/>
-      
-				   <ng-container *ngFor="let reason of unsubscribeReasons;let i = index">
-					  <input type="radio" name="reason" value="{{reason?.reason}}" (click)="addReason(reason)"> {{reason?.reason}}<br>
-				   </ng-container>
-				   <div *ngIf="isOtherReason" style="width: 50%;">
-					  <label for="comment">Reason:</label>
-					  <textarea class="form-control" [(ngModel)]="reason" (input)="characterSize()" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
-					  <label class="text-area-css">{{characterleft}} characters left</label>
-				   </div>
-				</form>
+      <div class="modal-body border-bottom-1px">
+        <div class="hide-scrollbar">
+          <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+
+          <form class="form-horizontal" autocomplete="off">
+
+            <div class="unsubscribingPopup">
+              <span>
+                By unsubscribing, the specified email will no longer receive emails from you. <br />
+                Email : {{selectedUser.emailId}}
+              </span>
+
+              <br />
+            </div>
+            <br />
+
+            <ng-container *ngFor="let reason of unsubscribeReasons;let i = index">
+              <input type="radio" name="reason" value="{{reason?.reason}}" (click)="addReason(reason)">
+              {{reason?.reason}}<br>
+            </ng-container>
+            <div *ngIf="isOtherReason" style="width: 50%;">
+              <label for="comment">Reason:</label>
+              <textarea class="form-control" [(ngModel)]="reason" (input)="characterSize()"
+                [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
+              <label class="text-area-css">{{characterleft}} characters left</label>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer" style="border:none">
+        <button class="btn Btn-Gray" (click)="unsubscribeContactModalClose()" translate>Cancel</button>
+        <button type="submit" class="button bgcolor-unset button_height" [disabled]="invalidReason"
+          (click)="unsubscribeUser()" translate><span
+            class="btn Btn-Green transition unsubsribe_text">Unsubscribe</span></button>
+      </div>
+
     </div>
   </div>
-  <div class="modal-footer" style="border:none" >
-    <button class="btn Btn-Gray" (click)="unsubscribeContactModalClose()" translate>Cancel</button>
-    <button  type="submit" class="btn Btn-Green" [disabled]="invalidReason"  (click)="unsubscribeUser()" translate>Unsubscribe</button>
-  </div>
-
-  </div>
 </div>
-</div>
-

@@ -177,7 +177,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.defaultSettingValue = this.saveVideoFile.defaultSetting;
       this.enableVideoControl = this.saveVideoFile.enableVideoController;
       this.editVideoTitle = this.saveVideoFile.title;
-      if (  this.saveVideoFile.tags != null && this.saveVideoFile.tags.length>0 ) {
+      if (this.saveVideoFile.tags != null && this.saveVideoFile.tags.length>0 ) {
         this.itemOfTags = this.saveVideoFile.tags;
   }
 
@@ -1404,6 +1404,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                   if (this.saveVideoFile != null) {
                       if (result.statusCode == 200) {
                           this.saveVideoFile = result;
+                          this.referenceService.assetResponseMessage = result.message;
                           this.callVideoEventEmitter(this.saveVideoFile);
                           this.videoFileService.videoViewBy = 'Save';
                           this.isDisable = false;
@@ -1538,6 +1539,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.saveVideoFile.partnerGroupIds = event['partnerGroupIds'];
         this.saveVideoFile.partnerIds = event['partnerIds'];
         this.saveVideoFile.partnerGroupSelected = event['partnerGroupSelected'];
+        /****XNFR-342****/
+        let isPartnerCompanyOrGroupSelected = this.saveVideoFile.partnerGroupIds.length>0 || this.saveVideoFile.partnerIds.length>0;
+        if(!this.saveVideoFile.published && isPartnerCompanyOrGroupSelected){
+            this.saveButtonTitle = "Update & Publish";
+        }else{
+            this.saveButtonTitle = "Update";
+        }
+        /****XNFR-342****/
     }
     /******XNFR-255*****/
 }

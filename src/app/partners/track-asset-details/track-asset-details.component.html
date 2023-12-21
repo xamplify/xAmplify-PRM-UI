@@ -1,5 +1,5 @@
 <div class="col-sm-6 col-md-6 col-lg-6 ml15m">
-  <div class="panel panel-info mh530 panel-bgMain">
+  <div class="panel panel-info mh530 panel-bgMain br-10 panel-card">
     <div class="panel-heading panel-heading-custom panel-bg">
       <h3 class="panel-title mt7 Responsivetitle">{{type | titlecase }} Asset Details</h3>
       <span class="pull-right mt25m mobilesearchdisplay">
@@ -45,7 +45,10 @@
                 </app-timestamp>
               </td>
               <td>
-                <i class="circled-number IconopenedCount fontStyleNormal"> <strong >{{item?.openedCount}}</strong></i>
+                <div class="custom-icon">
+                <i class="circled-number IconopenedCount fontStyleNormal IconCustomization"> <strong >{{item?.openedCount}}</strong></i>
+                <div class="clickicons"></div>
+              </div>
              </td>
             </tr>
           </tbody>

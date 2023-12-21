@@ -2,7 +2,7 @@
 <div>
 	<div class="portlet-title">
 		<div class="row" style="padding-right: 5px;">
-			<div class="col-xs-12 col-sm-6 col-lg-6">
+			<div class="col-xs-12 col-sm-6 col-lg-6" style="padding-left: 5px;">
 				<h4 class="pull-left m10 text-primary">
 					{{titleHeader}}</h4>
 			</div>
@@ -62,12 +62,13 @@
 	</div>
 	<br>
 	<!-----------------------Folder Grid View----------------------------------------->
-	<div class="row mix-grid p10 mt10" *ngIf="folderViewType=='fg'">
+	<div class="row mix-grid p15 mt10" *ngIf="folderViewType=='fg'">
 		<app-response-message [customResponse]="customResponse"
 			*ngIf="customResponse.isVisible && !httpRequestLoader.isLoading "></app-response-message>
 		<app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
 		<ng-container *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading">
-			<div class="col-xs-12 col-sm-4 col-lg-3" *ngFor="let category of pagination.pagedItems; let i= index">
+			<div class="col-xs-12 col-sm-4 col-lg-3 GridviewSidePaddings"
+				*ngFor="let category of pagination.pagedItems; let i= index">
 				<div class="ffolder big gray folder-cheight">
 					<div class="grid-box folder-height" style="max-height: 194px;">
 						<div id="category-icon-div" class="col-xs-3 col-sm-3 col-md-3 col-lg-3 icon-align">
@@ -76,38 +77,40 @@
 						</div>
 						<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 align-itams">
 							<div class="bg-folder">
-								<h4 class="ellipsis align-titletext tab_whitespace" title="{{category.name}}">
-									{{category.name | slice:0:22}} <span *ngIf="category.name?.length>22">...</span>
+								<h4 class="ellipsis align-titletext tab_whitespace" data-placement="bottom"
+									data-toggle="tooltip" title="{{category.name}}">
+									<b translate>Folder Name:</b> {{category.name | slice:0:10}} <span
+										*ngIf="category.name?.length>10">...</span>
 								</h4>
 								<span class="Track-countbg">
 									{{titleHeader}} {{category.count}}
 								</span>
 
-								<h6 [title]="category.createdBy" translate>
-									By <strong>{{category.createdBy | slice:0:15}}<span
-											*ngIf="category.createdBy?.length>15">...</span></strong>
+								<h6 class="pt5" data-placement="bottom" data-toggle="tooltip"
+									[title]="category.createdBy" translate>
+									<b translate>By:</b> {{category.createdBy | slice:0:15}}<span
+										*ngIf="category.createdBy?.length>15">...</span>
 								</h6>
-								<h6 [title]="category.companyName" translate>
-									From <strong>{{category.companyName | slice:0:20}}<span
-											*ngIf="category.companyName?.length>20">...</span></strong>
+								<h6 data-placement="bottom" data-toggle="tooltip" [title]="category.companyName">
+									<b>From:</b> {{category.companyName | slice:0:15}}<span
+										*ngIf="category.companyName?.length>15">...</span>
 								</h6>
 								<h6>
-									<span translate>Created On</span> <span> <strong>
-											<span *ngIf="!referenceService.isSafariBrowser()">{{category.displayTime
-												|date:'mediumDate'}},<br>{{category.displayTime
-												|date:'shortTime'}}
-											</span> <span
-												*ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
-										</strong>
+									<span translate> <b translate>Created On:</b> </span> <span>
+										<span *ngIf="!referenceService.isSafariBrowser()">{{category.displayTime
+											|date:'mediumDate'}},<br>{{category.displayTime
+											|date:'shortTime'}}
+										</span> <span
+											*ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
+
 									</span>
 								</h6>
 							</div>
 						</div>
 						<div class="bar barview full-width-folder gridIconCustomization">
-							<a class="Iconhover custom-folder-icon" data-toggle="tooltip" data-placement="top"
-								title="View Items" (click)="viewItemsByCategoryId(category.id)"> <i class="fa fa-eye"
+							<a class="Iconhover" data-toggle="tooltip" data-placement="top" title="View Items"
+								(click)="viewItemsByCategoryId(category.id)"> <i class="fa fa-eye"
 									aria-hidden="true"></i>
-								<div class="clickicons"></div>
 								<!-- color-chnage -->
 							</a>
 						</div>
@@ -149,11 +152,11 @@
 							</a></td>
 						<td>
 							<h4 class="">
-								<span data-toggle="tooltip" data-placement="bottom"
-									title="{{category.name}}">{{category.name}}</span>
+								<span data-toggle="tooltip" data-placement="bottom" title="{{category.name}}">
+									<b>Name:</b> {{category.name}}</span>
 							</h4>
 							<h6 class="moreipsis">
-								<span translate> Created By <strong>{{category.createdBy}}</strong></span>
+								<span translate> <b>Created By:</b> {{category.createdBy}} </span>
 							</h6>
 						</td>
 						<td class="text-center"><app-timestamp *ngIf="!referenceService.isSafariBrowser()"

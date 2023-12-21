@@ -191,11 +191,14 @@ img.brand-logo-custom {
     margin-right: 0px !important;
   }
   .responsivepaddding1 {
-    margin-right: -5px;
+    margin-right: -5px !important;
   }
   .row.rowPaddingCustomization4 {
     margin-right: -11px !important;
   }
+  .pd-l  {
+    padding-left: 8px;
+}
 }
 
  

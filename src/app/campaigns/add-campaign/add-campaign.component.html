@@ -16,8 +16,9 @@
             </li>
         </ul>
         <div class="createFolderAlignment">
-            <button class="btn btn-primary  btn-bt-aln" id="right" (click)="openCreateFolderPopup()">Create a
-                Folder</button>
+            <button class="button_blue btn-bt-aln bgcolor-unset mrgn-top-btm pd-top_pd-rgt2" id="right"
+                (click)="openCreateFolderPopup()"><span class="btn btn-primary transition">Create a
+                    Folder</span></button>
         </div>
     </div>
     <div id="campaign-details-and-launch-tabs">
@@ -48,14 +49,14 @@
         </div>
 
         <!---Tab-1--->
-        <div id="campaign-details">
+        <div id="campaign-details" class="neg_margin-10">
             <!---Campaign Details---->
-            <div class="portlet light shadow">
+            <div class="portlet light shadow margin_bottom-20">
                 <div class="portlet-body clearfix">
                     <div class="col-xs-12">
                         <form class="form-horizontal form-bordered form-label-stripped">
                             <fieldset class="scheduler-border">
-                                <legend class="scheduler-border">Campaign details</legend>
+                                <legend class="scheduler-border campaign_boxes">Campaign details</legend>
                                 <div>
                                     <div class="col-xs-6">
                                         <div class="form-body">
@@ -544,11 +545,11 @@
 
 
             <!---Videos---->
-            <div class="portlet light shadow" *ngIf="isVideoCampaign" id="videos-section">
+            <div class="portlet light shadow margin_bottom-20" *ngIf="isVideoCampaign" id="videos-section">
                 <div class="portlet-body clearfix">
                     <div class="col-xs-12">
                         <fieldset class="scheduler-border">
-                            <legend class="scheduler-border">Select The Video For Your Campaign</legend>
+                            <legend class="scheduler-border campaign_boxes">Select The Video For Your Campaign</legend>
                             <app-list-loader *ngIf="videosLoader"></app-list-loader>
                             <div *ngIf="!videosLoader">
                                 <div class="tab_flex" *ngIf="!isNavigatedFromManageContent">
@@ -682,7 +683,7 @@
                     <div class="col-xs-12">
                         <!--Email Templates-->
                         <fieldset class="scheduler-border" *ngIf="!isPageCampaign">
-                            <legend class="scheduler-border">Select an email template</legend>
+                            <legend class="scheduler-border campaign_boxes">Select an email template</legend>
                             <app-landing-page-loader
                                 *ngIf="emailTemplatesOrLandingPagesLoader"></app-landing-page-loader>
                             <div *ngIf="!emailTemplatesOrLandingPagesLoader">
@@ -724,17 +725,17 @@
                                 </div>
 
                                 <div class="input-icon right pull-right pr-epx">
-                                    <button *ngIf="selectedEmailTemplateRow==0" class="btn btn-primary"
+                                    <button *ngIf="selectedEmailTemplateRow==0" class="button_blue bgcolor-unset"
                                         [disabled]="selectedEmailTemplateRow==0" data-toggle="tooltip"
                                         data-placement="top" title="{{sendTestEmailToolTip}}">
-                                        <i class="fa fa-envelope-o"></i>
-                                        {{properties?.sendTestEmail}}
+                                        <span class="btn btn-primary transition"><i class="fa fa-envelope-o"></i>
+                                            {{properties?.sendTestEmail}}</span>
                                     </button>
-                                    <button *ngIf="selectedEmailTemplateRow>0" class="btn btn-primary"
+                                    <button *ngIf="selectedEmailTemplateRow>0" class="button_blue bgcolor-unset"
                                         data-toggle="tooltip" data-placement="top" title="{{sendTestEmailToolTip}}"
                                         (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
-                                        <i class="fa fa-envelope-o"></i>
-                                        {{properties?.sendTestEmail}}
+                                        <span class="btn btn-primary transition"><i class="fa fa-envelope-o"></i>
+                                            {{properties?.sendTestEmail}}</span>
                                     </button>
                                 </div>
                                 <!--List Of Email Templates-->
@@ -857,7 +858,7 @@
 
                         <!--Pages-->
                         <fieldset class="scheduler-border" *ngIf="isPageCampaign">
-                            <legend class="scheduler-border">Select a page</legend>
+                            <legend class="scheduler-border campaign_boxes">Select a page</legend>
                             <app-landing-page-loader *ngIf="pagesLoader"></app-landing-page-loader>
                             <div *ngIf="!pagesLoader">
                                 <!--Filter Icon-->
@@ -1020,13 +1021,13 @@
         </div>
 
         <!---Tab-2--->
-        <div id="launch-tab">
+        <div id="launch-tab" class="neg_margin-10">
             <!---Select Campaign Recipients---->
-            <div class="portlet light shadow" id="user-list-div">
+            <div class="portlet light shadow margin_bottom-20" id="user-list-div">
                 <div class="row">
                     <div class="col-xs-12">
                         <fieldset class="scheduler-border">
-                            <legend class="scheduler-border">{{contactsOrPartnersSelectionText}}</legend>
+                            <legend class="scheduler-border campaign_boxes">{{contactsOrPartnersSelectionText}}</legend>
                             <!--Partners/Contacts-->
                             <div *ngIf="!campaign?.oneClickLaunch">
                                 <app-list-loader *ngIf="campaignRecipientsLoader"></app-list-loader>
@@ -1315,7 +1316,8 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <fieldset class="scheduler-border">
-                            <legend class="scheduler-border" id="campaign-work-flow">Add Workflows</legend>
+                            <legend class="scheduler-border campaign_boxes" id="campaign-work-flow">Add Workflows
+                            </legend>
                             <div class="portlet-body padding-top-45px">
                                 <div class="row">
                                     <div class="col-xs-6">
@@ -1491,7 +1493,7 @@
                                                                         *ngIf="reply?.defaultTemplate">
                                                                         <fieldset class="scheduler-border">
                                                                             <legend
-                                                                                class="scheduler-border color-black">
+                                                                                class="scheduler-border color-black campaign_boxes">
                                                                                 Select an email template<strong
                                                                                     class="required">*</strong></legend>
                                                                             <app-landing-page-loader
@@ -1789,7 +1791,8 @@
                                                                 <div id="click-email-template-{{url?.divId}"
                                                                     *ngIf="url?.defaultTemplate">
                                                                     <fieldset class="scheduler-border">
-                                                                        <legend class="scheduler-border color-black">
+                                                                        <legend
+                                                                            class="scheduler-border color-black campaign_boxes">
                                                                             Select an email template<strong
                                                                                 class="required">*</strong></legend>
                                                                         <app-landing-page-loader
@@ -1963,11 +1966,11 @@
             </div>
 
             <!--Launch Options-->
-            <div class="portlet light shadow" id="launch-section">
+            <div class="portlet light shadow margin_bottom-20" id="launch-section">
                 <div class="row">
                     <div class="col-xs-12">
                         <fieldset class="scheduler-border">
-                            <legend class="scheduler-border">Launch</legend>
+                            <legend class="scheduler-border campaign_boxes">Launch</legend>
                             <div class="portlet-body">
                                 <div class="row">
                                     <div class="alert alert-danger" *ngIf="invalidScheduleTime && statusCode==2015"
@@ -1977,7 +1980,7 @@
                                     <div class="btn-group btn-group-justified">
                                         <ng-container *ngFor="let launchOption of launchOptions;let i = index">
                                             <label
-                                                [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn Btn-Green mBtnAlign button-border'">
+                                                [ngClass]="i==0 ? 'btn btn-primary button-border' : i==1 ? 'btn btn-warning button-border Sch-class':'btn Btn-Green mBtnAlign button-border campaign_save_shadow'">
                                                 <input type="radio" id="launch-option-{{i}}"
                                                     class="text-center mLabelAlign mr10 pointer radioButton_shadow"
                                                     name="scheduleCampaign" [value]="launchOption.value"
@@ -2031,18 +2034,24 @@
                                 </div>
                                 <!--Other Buttons-->
                                 <div class="text-center">
-                                    <button type="button" class="btn Btn-Gray mBtnAlign f-w-600 w-10em"
-                                        (click)="showCampaignDetailsTab()">Previous</button>
-                                    <button *ngIf="!isPageCampaign" type="button" class="btn Btn-Green mBtnAlign w-10em"
-                                        title="Send Test Email" data-toggle="tooltip" data-placement="top"
+                                    <button type="button" class="btn mBtnAlign f-w-600 w-10em prev-btn bgcolor-unset"
+                                        (click)="showCampaignDetailsTab()"><span
+                                            class="btn Btn-Gray">Previous</span></button>
+                                    <button *ngIf="!isPageCampaign" type="button"
+                                        class="button mBtnAlign w-10em bgcolor-unset " title="Send Test Email"
+                                        data-toggle="tooltip" data-placement="top"
                                         (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
-                                        <i class="fa fa-envelope-o mr5"></i>{{properties?.sendTestEmail}}
+                                        <span class="btn Btn-Green transition pl_4">{{properties?.sendTestEmail}}<i
+                                                class="fa fa-envelope-o mr5 ml5"></i></span>
                                     </button>
-                                    <button type="submit" class="btn Btn-Green mBtnAlign w-10em"
+                                    <button type="submit" class="button mBtnAlign w-10em mar-lft-11 bgcolor-unset"
                                         [disabled]="!isContactList"
-                                        (click)="isContactList && validateAndLaunchCampaign()">{{buttonName}}</button>
-                                    <button *ngIf="!isPageCampaign" type="button" class="btn Btn-Green mBtnAlign w-10em"
-                                        (click)="spamCheck()">Spam Check</button>
+                                        (click)="isContactList && validateAndLaunchCampaign()"><span
+                                            class="btn Btn-Green transition">{{buttonName}}</span></button>
+                                    <button *ngIf="!isPageCampaign" type="button"
+                                        class="button mBtnAlign w-10em mar-lft-40 bgcolor-unset"
+                                        (click)="spamCheck()"><span class="btn Btn-Green transition">Spam
+                                            Check</span></button>
                                 </div>
                             </div>
                         </fieldset>
@@ -2134,8 +2143,10 @@
 
 <ng-template #nextButton>
     <div>
-        <button type="button" class="btn Btn-Green pull-right mBtnAlign f-w-600 w-10em" [disabled]="!isValidFirstTab"
-            (click)="isValidFirstTab && showLaunchTab()">Next</button>
+        <button type="button"
+            class="button pull-right mBtnAlign f-w-600 w-10em1 mar-rgt-40 d-justify-end bgcolor-unset pd-top2"
+            [disabled]="!isValidFirstTab" (click)="isValidFirstTab && showLaunchTab()"><span
+                class="btn Btn-Green transition">Next</span></button>
     </div>
 </ng-template>
 <ng-template #filter>

@@ -101,7 +101,7 @@ export class PieChartComponent implements OnInit {
       var pieChartData;
       this.parterService.launchedCampaignsCountGroupByCampaignType(this.partnerCompanyId, this.authenticationService.user.id).subscribe(
         (data: any) => {
-          pieChartData = [{name: 'VIDEO', y: data.VIDEO}, {name: 'REGULAR', y: data.REGULAR},{name: 'SOCIAL', y: data.SOCIAL},{name: 'EVENT', y: data.EVENT},{name: 'SURVEY', y: data.SURVEY}];
+          pieChartData = [{name: 'VIDEO', y: data.VIDEO}, {name: 'Email', y: data.REGULAR},{name: 'SOCIAL', y: data.SOCIAL},{name: 'EVENT', y: data.EVENT},{name: 'SURVEY', y: data.SURVEY}];
         },
         (error: any) => { 
 		this.xtremandLogger.error(error);
