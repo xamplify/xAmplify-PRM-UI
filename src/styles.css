@@ -519,8 +519,8 @@ tr.highlight {
   font-size: 13px !important;
 }		   
 
-.tgrid > tbody > tr > td, h4, h5, h6 {
-  font-size: 13px;
+.tgrid > tbody > tr > td > h4, h5, h6 {
+  font-size: 13px !important;
 
 }
 
