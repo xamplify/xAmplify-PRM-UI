@@ -572,7 +572,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnInit() {
 		try {
-			this.dynamicDashboardType= this.refService.getAssignedDashboardToPartner().join('');
+			
 			this.searchWithModuleName = 19;
 			this.activeTabName = 'personalInfo';
 			this.activeTabHeader = this.properties.personalInfo;
@@ -635,6 +635,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
 			this.authenticationService.logout();
 		}
+		//this.dynamicDashboardType= this.refService.getAssignedDashboardToPartner().join('');
 	}
 
 	getModuleAccessByUser() {
