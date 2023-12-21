@@ -68,6 +68,5 @@ export class User {
     companyProfileDTO : CompanyProfileDTO = new CompanyProfileDTO();
     displayContactCompany : string;
     companyNameStatus : string;
-    excludedCatagory = "";
 
 }
