@@ -1,13 +1,4 @@
-.view-banner {
-  background-color: #00a6e8;
-  color: white;
-  padding: 4px;
-  text-align: center;
-  width: 125px;
-  margin: 0 auto;
-  font-size: 11px;
-  font-weight: 600;
-}
+
 .cancel-ribbon {
   background-color: red;
 }
@@ -157,8 +148,9 @@ ul.custome-dropdown-changs {
 .custome-dropdown-changs li a {
   margin: 6px 10px !important;
 }
-/* .custome-dropdown-changs li > a:hover, .custome-dropdown-changs .active > a, .custome-dropdown-changs .active > a:hover {
-  text-decoration: none;
-  background-image: none;
-  background-color: #54a7e9;
-} */
+/*******Remove this after merging XNFR-374 */
+.grid-box h6 {
+  text-align: left !important;
+  margin: 0px !important;
+  width: 100% !important;
+}

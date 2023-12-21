@@ -516,11 +516,12 @@ tr.highlight {
 .tgrid > thead > tr > th {
   vertical-align: middle !important;
   color: #555555;  
-font-size: 13px !important;
+  font-size: 13px !important;
 }		   
 
 .tgrid > tbody > tr > td, h4, h5, h6 {
   font-size: 13px;
+
 }
 
 .tgrid > tbody > tr:hover1 {

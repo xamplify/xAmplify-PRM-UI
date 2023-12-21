@@ -594,10 +594,8 @@
 											[dateAndTime]="asset?.displayTime"></app-timestamp>
 									</h6>
 									<div class="ribbon tab-ribbon">
-										<span
-											*ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
-										<span
-											*ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">Processing</span>
+										<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
+										<span *ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">Processing</span>
 									</div>
 									<div class="bar auto-height gridIconCustomization">
 										<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset"

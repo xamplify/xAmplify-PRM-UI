@@ -45,7 +45,7 @@
                                         <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{emailTemplate?.name}}">
                                             <span><b>Template Name:</b> {{emailTemplate.name}} </span>
                                         </h6>
-                                        <h6 class="moreipsis" title="{{emailTemplate?.name}}" data-toggle="tooltip" data-placement="top">
+                                        <h6 class="moreipsis" title="{{emailTemplate?.category}}" data-toggle="tooltip" data-placement="top">
                                             <span><b>Folder:</b>{{emailTemplate?.category}}</span>
                                         </h6>
                                         <ng-container *ngIf="emailTemplate.type=='PARTNER'">
@@ -91,51 +91,35 @@
                                         <div
                                             [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition':'actions-block override-actions actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition'">
                                             <div class="mActionDiv whitespace_nowrap">
-                                                <a class="custom-icon" *ngIf="loggedInAsSuperAdmin"
-                                                    (click)="openDefaultTemplatePopup(emailTemplate)"
-                                                    data-toggle="tooltip" data-placement="top"
-                                                    title="Save As Default Template">
+                                                <a class="custom-icon" *ngIf="loggedInAsSuperAdmin" (click)="openDefaultTemplatePopup(emailTemplate)" data-toggle="tooltip" data-placement="top" title="Save As Default Template">
                                                     <i class="fa fa-plus IconCustomization" aria-hidden="true"></i>
                                                     <div class="clickicons"></div>
                                                 </a>
-                                                <a class="custom-icon" (click)="spamCheck(emailTemplate)"
-                                                    data-toggle="tooltip" data-placement="top"
-                                                    title="{{actionsDescription.template_spam_check}}">
+                                                <a class="custom-icon" (click)="spamCheck(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_spam_check}}">
                                                     <i class="fa fa-inbox IconCustomization" aria-hidden="true"></i>
                                                     <div class="clickicons"></div>
                                                 </a>
                                             </div>
                                             <div class="mActionDiv whitespace_nowrap display-inlineflex">
-                                                <a class="mMobileDisable custom-icon" (click)="edit(emailTemplate.id)"
-                                                    data-toggle="tooltip" data-placement="top"
-                                                    title="{{actionsDescription.template_edit}}"
+                                                <a class="mMobileDisable custom-icon" (click)="edit(emailTemplate.id)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_edit}}"
                                                     *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || 
                                                         authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing ) && emailTemplate.type!='PARTNER'">
-                                                    <i class="fa fa-pencil-square-o mDisableColor IconCustomization"
-                                                        aria-hidden="true"></i>
+                                                    <i class="fa fa-pencil-square-o mDisableColor IconCustomization" aria-hidden="true"></i>
                                                     <div class="clickicons"></div>
                                                 </a>
-                                                <a class="custom-icon" *ngIf="!emailTemplate.draft"
-                                                    (click)="getTemplateById(emailTemplate)" data-toggle="tooltip"
-                                                    data-placement="top"
-                                                    title="{{actionsDescription.template_preview}}"> <i
-                                                        class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                                                <a class="custom-icon" *ngIf="!emailTemplate.draft" (click)="getTemplateById(emailTemplate)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_preview}}">
+                                                        <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                                                     <div class="clickicons"></div>
                                                 </a>
                                                 <!--XNFR-317-->
-                                                <ng-template [ngTemplateOutlet]="sendTestEmailIcon"
-                                                    [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                                <ng-template [ngTemplateOutlet]="sendTestEmailIcon"  [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                                 <!--XNFR-317-->
                                             </div>
                                             <div class="mActionDiv whitespace_nowrap">
-                                                <a class="custom-icon" id="template-delete"
-                                                    (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)"
+                                                <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" id="template-delete" (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)"
                                                     *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor || 
                                                         authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">
-                                                    <i class="fa fa-trash-o trashIconCustomization"
-                                                        data-toggle="tooltip" data-placement="top"
-                                                        title="{{actionsDescription.template_delete}}"
-                                                        aria-hidden="true"></i>
+                                                    <i class="fa fa-trash-o trashIconCustomization"  aria-hidden="true"></i>
                                                     <div class="del-icon"></div>
                                                 </a>
                                             </div>
