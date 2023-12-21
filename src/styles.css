@@ -2364,8 +2364,7 @@ button.table-scbscribe-btn:hover {
   border-radius: 2px !important;
   padding: 4px 10px !important;
   font-size: 10px !important;  
-  /***Un Comment This Line Later */
-  /* display: flex; */
+  display: flex;
   justify-content: center;
   margin-left: 12px;
   width: 50px;
@@ -2789,12 +2788,11 @@ span.progresleft {
   opacity: 1;
 }
 
-/*********UnComment These Code After XNFR-374 And Remove This Duplicate Code From ALL Manage Components */
-/* .grid-box h6 {
+.grid-box h6 {
   text-align: left !important;
   margin: 0px !important;
   width: 100% !important;
-} */
+}
 
 /****Remove This Afer Merging The code****/
 .grid-box h6 {
