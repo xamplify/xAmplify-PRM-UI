@@ -2828,63 +2828,7 @@ resubscribeUserResult(event : any){
 }
  
 
- showMakeAsOptinAlert(contactId: any, emailId: any) {
-	try {
-		this.xtremandLogger.info("contactId in showMakeAsOptinAlert() " + contactId);
-		let self = this;
-		swal({
-			title: 'Are you sure?',
-			text: "Selected user will be removed from the excluded list!",
-			type: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#54a7e9',
-			cancelButtonColor: '#999',
-			confirmButtonText: 'Yes, Mark as Opt-in!'
 
-		}).then(function(myData: any) {
-			self.validateExcludedDetails(contactId,emailId );
-		}, function(dismiss: any) {
-		});
-	} catch (error) {
-		this.xtremandLogger.error(error, "ManageContactsComponent", "validateExcludedDetails()");
-	}
-}
 
- validateExcludedDetails(contactId: any, emailId: any) {
-	try {
-		this.resetResponse();
-		this.loading = true;
-		this.xtremandLogger.info(contactId);
-		const excludedUser ={
-			"id":contactId,
-			"emailId":emailId
-		};
-		this.contactService.excludedUserMakeAsValid(excludedUser)
-			.subscribe(
-				data => {
-				if (data.statusCode == 400) {
-					this.customResponse = new CustomResponse('ERROR', data.message, true);
-					this.loading = false;
-				} else {		
 
-						this.loading = false;
-						this.xtremandLogger.log(data);
-						this.contactsCount();
-						this.contactCountLoad = true;
-						this.listContactsByType(this.contactsByType.selectedCategory);
-						this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_REMOVED_FROM_EXCLUDED_LIST, true);
-				}
-				},
-				(error: any) => {
-					console.log(error);
-					this.loading = false;
-				},
-				() => this.xtremandLogger.info("MangeContactsComponent validateExcludedDetails() finished")
-			)
-		this.invalidDeleteSucessMessage = false;
-		this.invalidDeleteErrorMessage = false;
-	} catch (error) {
-		this.xtremandLogger.error(error, "ManageContactsComponent", "removingInvalidUsers()");
-	}
-}
 }
