@@ -113,7 +113,7 @@
                                     <li [ngClass]="{'active-tab': activeTabName == 'settings'}"
                                         [class.disabled]="authenticationService.isSuperAdmin()">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}"
-                                            (click)="activateTab('settings');clearCustomResponse();">{{properties.viewType
+                                            (click)="activateTab('settings');clearCustomResponse();getSelectedDashboardForPartner()">{{properties.viewType
                                             | translate}}</a>
                                     </li>
                                     <!---Tags-->
@@ -2886,6 +2886,40 @@
                                             (editLoginTemplate)="openBeeEditorForLoginTemplate($event)"
                                             *ngIf="isCustomLoginScreenSettingsOptionClicked" class="tab-pane"
                                             [ngClass]="{'active': activeTabName == properties?.customLoginScreen}"></app-custom-login-screen-settings>
+                                    </div>
+                                </div>
+                            </div>
+
+                        
+                        <!--  XNFR-415 -->
+                        <div *ngIf="  (( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany ) && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing)">
+                            <div  *ngIf="activeTabName === 'settings'"  [ngClass]="{'active-tab': activeTabName === 'settings'}">
+                                <div class="portlet light">
+                                    <div class="portlet-title tabbable-line">
+                                            <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName==='settings'">{{"Default Dashboard for My Partners" | translate}}</span>
+                                    </div>
+                                        <form>
+                                            <br>
+                                            <label class="container-checkbox-xamplify" translate>Welcome
+                                                <input class="radioButton_shadow" type="radio"  name="dashboardSelectedOption" 
+                                                    value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME]}}" 
+                                                    [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME] || defaultSelectedDashboardTypeSetting === undefined ">    
+                                                <span class="checkmark"></span>
+                                                </label>
+                                                <label class="container-checkbox-xamplify" translate>Dashboard
+                                                    <!--<div *ngIf="dynamicDashboardType.includes('Advanced Dashboard') else detailedDashboardOption">Advanced Dashboard</div>
+                                                        <ng-template #detailedDashboardOption>
+                                                            <div *ngIf="dynamicDashboardType.includes('Detailed Dashboard') ; else dashboardOption">Detailed Dashboard </div> 
+                                                        </ng-template>
+                                                    <ng-template #dashboardOption>Dashboard </ng-template>-->
+                                                    <input class="radioButton_shadow" type="radio"  name="dashboardSelectedOption" 
+                                                    value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD]}}"
+                                                        [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD] ">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <br>
+                                                <button type="submit" class="btn Btn-Green" (click)="setDashboardForPartner()">Save Changes</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

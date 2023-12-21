@@ -64,6 +64,7 @@ import 'rxjs/add/operator/map';
 import { CompanyLoginTemplateActive } from 'app/email-template/models/company-login-template-active';
 import { CompanyProfileService } from 'app/dashboard/company-profile/services/company-profile.service';
 
+import { DefaultDashBoardForPartners } from 'app/dashboard/models/default-dashboard-for-partners';
 declare var swal, $, videojs: any, Papa: any;
 
 @Component({
@@ -315,6 +316,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	connectwiseRibbonText: string;
 	isLocalHost = false;
 
+	 /* -- XNFR-415 -- */
+	DefaultDashBoardForPartnersEnum = DefaultDashBoardForPartners;
+	defaultLoading=false;
+	updateDashboardError=false;
+	modulesDashboardForPartner: CustomResponse = new CustomResponse();
+	 defaultSelectedDashboardTypeSetting = this.getSelectedDashboardForPartner();
+	dynamicDashboardType:string;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -564,6 +572,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnInit() {
 		try {
+			
 			this.searchWithModuleName = 19;
 			this.activeTabName = 'personalInfo';
 			this.activeTabHeader = this.properties.personalInfo;
@@ -626,6 +635,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
 			this.authenticationService.logout();
 		}
+		//this.dynamicDashboardType= this.refService.getAssignedDashboardToPartner().join('');
 	}
 
 	getModuleAccessByUser() {
@@ -2579,6 +2589,57 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				() => { }
 			);
 	}
+
+	 /* -- XNFR-415 -- */
+	setDashboardForPartner(){
+		this.defaultLoading = true;  
+		this.modulesDashboardForPartner = new CustomResponse();  
+		this.updateDashboardError = false; 
+		let selectedOptionForDefaultDashboard = $("input[name=dashboardSelectedOption]:checked").val();
+		this.dashBoardService.updateDefaultDashboardForPartner(this.referenceService.companyId, selectedOptionForDefaultDashboard)
+			.subscribe(
+				data=>{
+					this.defaultLoading=true;
+					if(data.statusCode == 200 ){
+						this.referenceService.showSweetAlertSuccessMessage(data.message);
+						localStorage.setItem('selectedDashboard',selectedOptionForDefaultDashboard);
+					}
+					else {
+						this.updateDashboardError=true;
+						this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
+					}
+				},
+				error => {
+					this.updateDashboardError = true;
+					this.defaultLoading = false;
+					this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
+				},
+				() => { }
+			);
+	}
+
+	 /* -- XNFR-415 -- */
+	getSelectedDashboardForPartner() {
+		this.modulesDashboardForPartner = new CustomResponse();  
+		this.updateDashboardError = false;
+		this.dashBoardService.getDefaultDashboardForPartner(this.authenticationService.vendorCompanyId)
+			.subscribe(
+				data => {
+					if (data.statusCode == 200) {
+						this.defaultSelectedDashboardTypeSetting = data.data;
+					} else {
+						this.updateDashboardError = true;
+						this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+					}
+				},
+				error => {
+					this.updateDashboardError = true;
+					this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+				},
+				() => { }
+			);
+	}
+
 
 	selectedLanguage(event: any) {
 		//this.translateService.use(this.selectedLanguageCode);        

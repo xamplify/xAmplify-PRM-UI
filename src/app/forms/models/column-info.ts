@@ -7,6 +7,7 @@ export class ColumnInfo {
     placeHolder = "";
     labelType= "";
     value:any;
+    displayName: "";
     isDefaultColumn = false;
     required:boolean;
     radioButtonChoices: Array<FormOption> = new Array<FormOption>();

@@ -268,7 +268,9 @@
 										[ngTemplateOutlet]="disableIconsTemplate"
 										[ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
 										<ng-container class="pull-right"
-										   *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
+										   *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO'
+										    || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) ||
+											 campaign.campaignType === 'LANDINGPAGE' || campaign.campaignType === 'SURVEY' ">
 										   <div class="btn-group pull-right" id="download-template"
 										   data-toggle="tooltip" data-placement="bottom" title="Download"
 											  *ngIf="(campaign.allowDownload && campaign.campaignType !== 'EVENT') || (campaign.allowDownload && campaign.campaignType === 'EVENT' && !campaign.eventStarted)">

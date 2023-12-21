@@ -20,17 +20,18 @@
             </a>
             <i class="fa fa-angle-right" *ngIf="! showListOfContactList" aria-hidden="true"></i>
          </li>
+         <!--XBI-1679-->
          <li
             *ngIf="!showListOfContactList && contactsByType.selectedCategory != 'all' && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid' && contactsByType.selectedCategory != 'unsubscribe'">
-            <span class="capitalize" translate>
-               <ng-container *ngIf="module == 'partners'">{{contactsByType.selectedCategory}}</ng-container>
-               <ng-container *ngIf="module != 'partners' && contactsByType.selectedCategory != 'excluded'">Opt-in</ng-container>
-               <ng-container *ngIf="module != 'partners' && contactsByType.selectedCategory == 'excluded'">Excluded</ng-container>
-               <span
-                  *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+            <span class="capitalize" *ngIf= "!isregistered" translate>{{contactsByType.selectedCategory}}
                <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
             </span>
+            <span class="capitalize" *ngIf= "isregistered" translate>Registered
+               <span
+                  *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+            </span>
          </li>
+          <!--XBI-1679-->
          <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'all'">
             <span class="capitalize" translate>All
                <span
@@ -56,7 +57,9 @@
             <span class="capitalize" translate>
                <span
                   *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
-               <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+                  <!--XBI-1582-->
+                  <span *ngIf="checkingContactTypeName!='Partner'">Undeliverable {{checkingContactTypeName}}s</span>
+                  <!--XBI-1582-->
             </span>
          </li>
       </ul>
@@ -1546,7 +1549,7 @@
          </div>
          <div class="modal-body">
             <div class="form-group">
-               <label for="campaignName" translate>Name</label> <input class="form-control" type="text"
+               <label for="campaignName" translate>Name <span class="danger">*</span></label> <input class="form-control" type="text"
                   id="campaignName" [(ngModel)]="saveAsListName" placeholder="Name">
                <span style="color: red">{{saveAsError}}</span>
             </div>

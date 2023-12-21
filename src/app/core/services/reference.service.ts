@@ -29,7 +29,7 @@ declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
 @Injectable()
 export class ReferenceService {
- 
+  //partnerDashboard:any[];
   renderer: Renderer;
   swalConfirmButtonColor: "#54a7e9";
   swalCancelButtonColor: "#999";
@@ -348,6 +348,16 @@ export class ReferenceService {
   }
   validateEmailId(emailId: string) {
     return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
+  }
+
+
+  // validating method for firstname that deals with the regular expression
+
+  validateFirstName(firstName:string){
+    //let name=firstName.replace(this.regularExpressions.ALPHABETS_PATTERN , "");
+    //return this.regularExpressions.ALPHABETS_PATTERN.test(name);
+    return this.regularExpressions.FIRSTNAME_PATTERN.test(firstName);
+
   }
 
   validateEmail(text: string) {
@@ -3335,5 +3345,12 @@ export class ReferenceService {
   /***XNFR-403***/
 
 
+   /* -- XNFR-415 -- */
+  // setAssignedDashboardToPartner(dashBoardForPartner:any[]){
+  //   this.partnerDashboard=dashBoardForPartner;
+  // }
+  // getAssignedDashboardToPartner(){
+  //   return this.partnerDashboard;
+  // }
   
 }
