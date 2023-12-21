@@ -2889,3 +2889,6 @@ button.button_blue:disabled span{
   padding-top: 3px;
   padding-right: 3px;
 }
+.neg_mrg_rgt8{
+  margin-right: -8px;
+}

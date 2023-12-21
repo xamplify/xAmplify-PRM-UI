@@ -3401,14 +3401,15 @@ button.button_blue:disabled span{
   margin-right: -6px !important;
 }
 /* sudha sri(18-12-2023) */
-.text_pd-top1{
+.text_pd-top1,
+span.btn.btn-primary.transition.merge_tag_text{
   padding-top: 1px !important;
 }
 .txt_pd-top3{
   padding-top: 3px !important;
 }
 /* sudha sri (20-12-2023) */
-.txt_pd-top8{
+/* .txt_pd-top8{
   padding-top: 8px !important;
 }
 .button_height,
@@ -3468,6 +3469,13 @@ span.btn.btn-primary.transition.new_list_text {
 .neg_mar_top7{
   margin-top: -7px !important;
 }
+.cancel_mrgn_top{
+  margin-top: -6px !important;
+}
+.dwnld_pdf{
+  padding-top: 2px !important;
+  padding-top: 3px !important;
+} */
 /* sweet alert in Select Template Create Template */
 .btnPropertiesNone {
   padding: 0px 10px;
@@ -3478,11 +3486,48 @@ span.btn.btn-primary.transition.new_list_text {
   box-shadow: none !important;
   background: none !important;
 }
-.cancel_mrgn_top{
+
+/* sweet alert in Select Template Create Template End*/
+.pos_pd_top2{
+  padding-top: 2px !important;
+}
+.pos_pd_top6{
+  padding-top: 6px !important;
+}
+.neg_mrg_top4{
+  margin-top: -4px !important;
+}
+.mrg_rgt0{
+  margin-right: 0px !important;
+}
+.pos_mar_rgt3{
+  margin-right: 3px !important;
+}
+.neg_mar_top6{
   margin-top: -6px !important;
 }
-.dwnld_pdf{
-  padding-top: 2px !important;
-  padding-top: 3px !important;
+.pos_mar_rgt4{
+  margin-right: 4px !important;
 }
-/* sweet alert in Select Template Create Template End*/
+.mrgn_top0{
+  margin-top: 0px !important;
+}
+.pos_mrg_rgt18{
+  margin-right: 18px !important;
+}
+.mrgn_lft0{
+  margin-left: 0px !important;
+}
+.pos_mrg_lft4{
+  margin-left: 4px !important;
+}
+.pos_mrg_top5{
+  margin-top: 5px !important;
+}
+.form_continue_text{
+  padding-top: 3px !important;
+  margin-left: -6px !important;
+}
+.pos_pd_lft10{
+  padding-left: 10px !important;
+}
