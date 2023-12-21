@@ -29,7 +29,7 @@ declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
 @Injectable()
 export class ReferenceService {
-  partnerDashboard:any[];
+  //partnerDashboard:any[];
   renderer: Renderer;
   swalConfirmButtonColor: "#54a7e9";
   swalCancelButtonColor: "#999";
@@ -3346,11 +3346,11 @@ export class ReferenceService {
 
 
    /* -- XNFR-415 -- */
-  setAssignedDashboardToPartner(dashBoardForPartner:any[]){
-    this.partnerDashboard=dashBoardForPartner;
-  }
-  getAssignedDashboardToPartner(){
-    return this.partnerDashboard;
-  }
+  // setAssignedDashboardToPartner(dashBoardForPartner:any[]){
+  //   this.partnerDashboard=dashBoardForPartner;
+  // }
+  // getAssignedDashboardToPartner(){
+  //   return this.partnerDashboard;
+  // }
   
 }

@@ -2906,15 +2906,15 @@
                                                     [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME] || defaultSelectedDashboardTypeSetting === undefined ">    
                                                 <span class="checkmark"></span>
                                                 </label>
-                                                <label class="container-checkbox-xamplify" translate>
-                                                    <div *ngIf="dynamicDashboardType.includes('Advanced Dashboard') else detailedDashboardOption">Advanced Dashboard</div>
+                                                <label class="container-checkbox-xamplify" translate>Dashboard
+                                                    <!--<div *ngIf="dynamicDashboardType.includes('Advanced Dashboard') else detailedDashboardOption">Advanced Dashboard</div>
                                                         <ng-template #detailedDashboardOption>
                                                             <div *ngIf="dynamicDashboardType.includes('Detailed Dashboard') ; else dashboardOption">Detailed Dashboard </div> 
                                                         </ng-template>
-                                                    <ng-template #dashboardOption>Dashboard </ng-template>
+                                                    <ng-template #dashboardOption>Dashboard </ng-template>-->
                                                     <input class="radioButton_shadow" type="radio"  name="dashboardSelectedOption" 
                                                     value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD]}}"
-                                                        [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD] ">   <!--DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD]-->
+                                                        [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD] ">
                                                     <span class="checkmark"></span>
                                                 </label>
                                                 <br>
