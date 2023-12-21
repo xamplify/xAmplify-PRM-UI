@@ -113,7 +113,7 @@
                                     <li [ngClass]="{'active-tab': activeTabName == 'settings'}"
                                         [class.disabled]="authenticationService.isSuperAdmin()">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}"
-                                            (click)="activateTab('settings');clearCustomResponse();">{{properties.viewType
+                                            (click)="activateTab('settings');clearCustomResponse();getSelectedDashboardForPartner()">{{properties.viewType
                                             | translate}}</a>
                                     </li>
                                     <!---Tags-->
@@ -384,7 +384,8 @@
                                     <br><br>
                                     <div class="div thembgc">
                                         <div class="row">
-                                            <div class="themePaddings" [ngClass]="dto?.id == 3 ? '':'col-lg-6 col-md-6 col-sm-6'"
+                                            <div class="themePaddings"
+                                                [ngClass]="dto?.id == 3 ? '':'col-lg-6 col-md-6 col-sm-6'"
                                                 *ngFor="let dto of defaultThemes">
                                                 <div *ngIf="dto?.id == 1 || dto?.id == 2 || dto?.id == 4">
                                                     <!-- <div class="img_padding">
@@ -398,13 +399,17 @@
                                                     </div> -->
                                                     <div class="img_padding">
                                                         <div class="lightTheme">
-                                                            <img *ngIf="dto?.id == 1 " alt="" class="img-custome" src="assets/images/theme/Final/light-theme.webp">
+                                                            <img *ngIf="dto?.id == 1 " alt="" class="img-custome"
+                                                                src="assets/images/theme/Final/light-theme.webp">
                                                         </div>
-                                                            <div class="darkTheme">
-                                                                <img *ngIf="dto?.id == 2 " alt="" class="img-custome" src="assets/images/theme/Final/dark-theme.webp">
+                                                        <div class="darkTheme">
+                                                            <img *ngIf="dto?.id == 2 " alt="" class="img-custome"
+                                                                src="assets/images/theme/Final/dark-theme.webp">
                                                         </div>
                                                         <div class=">neumorphismDarkTheme">
-                                                            <img *ngIf="dto?.id == 4 " alt="" class="img-custome img-height" src="assets/images/theme/Final/beta-neumorphism.webp">
+                                                            <img *ngIf="dto?.id == 4 " alt=""
+                                                                class="img-custome img-height"
+                                                                src="assets/images/theme/Final/beta-neumorphism.webp">
                                                         </div>
                                                     </div>
                                                     <div class="card-bg topcard-padding">
@@ -413,10 +418,15 @@
                                                                 *ngIf="dto?.id === activeThemeDetails?.themeId">Active</span>
                                                             <br>
                                                             <!-- <h5 class="card-title themefont">{{dto.name}} Theme</h5> -->
-                                                            <h5 class="card-title themefont" *ngIf="dto.name === 'Neumorphism Dark(Beta)'">Neumorphism Dark</h5>
-                                                            <h5 class="card-title themefont" *ngIf="dto.name != 'Neumorphism Dark(Beta)'">{{dto?.name}} Theme</h5>
+                                                            <h5 class="card-title themefont"
+                                                                *ngIf="dto.name === 'Neumorphism Dark(Beta)'">
+                                                                Neumorphism Dark</h5>
+                                                            <h5 class="card-title themefont"
+                                                                *ngIf="dto.name != 'Neumorphism Dark(Beta)'">
+                                                                {{dto?.name}} Theme</h5>
                                                             <!-- responsive-alignment -->
-                                                            <td class="mAlignView responsive-alignment centerAlignPropertyIcon">
+                                                            <td
+                                                                class="mAlignView responsive-alignment centerAlignPropertyIcon">
                                                                 <div
                                                                     class="actions-block override-actions ActionAlign mb_whitespace">
                                                                     <div
@@ -468,9 +478,11 @@
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let dto of themeDtoList" id="themeListDiv_{{dto.id}}">
-                                                <td> <img src="assets/images/theme/Final/light-theme-custom.webp" alt=""
+                                                <td> <img src="{{dto?.themeImagePath}}" alt=""
                                                         class="img-customization"> </td>
-                                                <td class="text-center">{{dto.name}}
+                                                <td class="text-center"><span [title]="dto.name" data-toggle="tooltip"
+                                                        data-placement="bottom">{{dto.name | slice:0:18 }}</span>
+                                                    <span *ngIf="dto.name?.length>18">...</span>
                                                     <br>
                                                     <h6 _ngcontent-c26=""
                                                         class="label label-info  selectcolor active-color"
@@ -2045,7 +2057,9 @@
                                                             <img *ngIf="themeDto.id==2"
                                                                 src="assets/images/theme/1/Webp/dd.webp"
                                                                 class="desktopimg-custome">
-                                                                <img *ngIf="themeDto.id==4" src="assets/images/theme/1/Webp/NDM.webp" class="mobileimg-custome">
+                                                            <img *ngIf="themeDto.id==4"
+                                                                src="assets/images/theme/1/Webp/ND.webp"
+                                                                class="desktopimg-custome">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3 col-sm-3 col-xs-12 mobileview">
@@ -2056,7 +2070,9 @@
                                                             <img *ngIf="themeDto.id==2"
                                                                 src="assets/images/theme/1/Webp/dm.webp"
                                                                 class="mobileimg-custome">
-                                                                <img *ngIf="themeDto.id==4" src="assets/images/theme/1/Webp/ND.webp" class="desktopimg-custome">
+                                                            <img *ngIf="themeDto.id==4"
+                                                                src="assets/images/theme/1/Webp/NDM.webp"
+                                                                class="mobileimg-custome">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2873,6 +2889,40 @@
                                     </div>
                                 </div>
                             </div>
+
+                        
+                        <!--  XNFR-415 -->
+                        <div *ngIf="  (( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany ) && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing)">
+                            <div  *ngIf="activeTabName === 'settings'"  [ngClass]="{'active-tab': activeTabName === 'settings'}">
+                                <div class="portlet light">
+                                    <div class="portlet-title tabbable-line">
+                                            <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName==='settings'">{{"Default Dashboard for My Partners" | translate}}</span>
+                                    </div>
+                                        <form>
+                                            <br>
+                                            <label class="container-checkbox-xamplify" translate>Welcome
+                                                <input class="radioButton_shadow" type="radio"  name="dashboardSelectedOption" 
+                                                    value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME]}}" 
+                                                    [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME] || defaultSelectedDashboardTypeSetting === undefined ">    
+                                                <span class="checkmark"></span>
+                                                </label>
+                                                <label class="container-checkbox-xamplify" translate>
+                                                    <div *ngIf="dynamicDashboardType.includes('Advanced Dashboard') else detailedDashboardOption">Advanced Dashboard</div>
+                                                        <ng-template #detailedDashboardOption>
+                                                            <div *ngIf="dynamicDashboardType.includes('Detailed Dashboard') ; else dashboardOption">Detailed Dashboard </div> 
+                                                        </ng-template>
+                                                    <ng-template #dashboardOption>Dashboard </ng-template>
+                                                    <input class="radioButton_shadow" type="radio"  name="dashboardSelectedOption" 
+                                                    value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD]}}"
+                                                        [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD] ">   <!--DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD]-->
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <br>
+                                                <button type="submit" class="btn Btn-Green" (click)="setDashboardForPartner()">Save Changes</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- END PROFILE CONTENT -->
@@ -2929,8 +2979,10 @@
                             <div class="portlet-title tabbable-line">
                                 <div class="caption caption-md col-xs-12">
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
-                                    <span
-                                        class="caption-subject font-blue-madison bold">{{cutomLoginTemplate?.name}}</span>
+                                    <span class="caption-subject font-blue-madison bold"
+                                        [title]="cutomLoginTemplate?.name" data-toggle="tooltip"
+                                        data-placement="bottom">{{cutomLoginTemplate?.name | slice:0:30}}</span>
+                                    <span *ngIf="cutomLoginTemplate?.name?.length>30">...</span>
                                     <a class="close-circle pull-right" (click)="goBackToMyprofileForCustomLogin()">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>
@@ -2940,8 +2992,8 @@
                                         <span style="color: #f55d7a"><strong>*</strong></span></label>
                                     <div class="col-lg-4 col-md-5 col-sm-5 col-xs-5" style="margin-left: -100px;">
                                         <input type="text" class="form-control" name="name" placeholder="name" id="name"
-                                            #name="ngModel" [(ngModel)]="cutomLoginTemplate.name" maxlength="255" (ngModelChange)="changeLoginTemplateNameEvent($event)"
-                                            required>
+                                            #name="ngModel" [(ngModel)]="cutomLoginTemplate.name" maxlength="255"
+                                            (ngModelChange)="changeLoginTemplateNameEvent($event)" required>
                                     </div>
                                 </div>
                             </div>
@@ -2981,18 +3033,20 @@
                 <h4 class="modal-title" id="cropProfileImage">Please add your profile image</h4>
             </div>
             <div class="modal-body">
-                <div style="position: relative;top: -5px;" class="btn Btn-Green fileinput-button-css"
-                    *ngIf="!imageChangedEvent; else uploadButton"><span>Upload
+                <button style="position: relative;top: -5px;" class="button fileinput-button-css pd_left1 bgcolor-unset"
+                    *ngIf="!imageChangedEvent; else uploadButton"><span class="btn Btn-Green transition">Upload
                         image</span>
                     <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file"
                         (change)="fileChangeListener($event, cropper)">
-                </div>
+                </button>
                 <ng-template #uploadButton>
-                    <div style="position: relative;top: -5px;" class="btn Btn-Green fileinput-button-css"><span>Upload
+                    <button style="position: relative;top: -5px;"
+                        class="button fileinput-button-css pd_left1 bgcolor-unset"><span
+                            class="btn Btn-Green transition">Upload
                             image</span>
                         <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file"
                             (change)="fileChangeListener($event, cropper)">
-                    </div>
+                    </button>
                 </ng-template>
                 <div style="position: relative;top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload
                     only images</div>

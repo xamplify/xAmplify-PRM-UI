@@ -33,6 +33,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
 	selectedModuleType = "";
     archived: any = false;
     titleHeader ="";
+    moduleName = "";
     constructor(private router: Router,
         private pagerService: PagerService, public referenceService: ReferenceService,
         public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -68,20 +69,25 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         if (type == 1) {
             pagination.categoryType = 'e';
             this.titleHeader = "Manage Templates";
+            this.moduleName = "Email Templates";
         }else if(type==2){
             pagination.categoryType = 'f';
             this.titleHeader ="Manage Forms";
+            this.moduleName = "Forms";
         }else if(type==3){
             pagination.categoryType = 'l';
             this.titleHeader = "Manage Pages";
+            this.moduleName = "Pages";
 			pagination.partnerView = false;
 			if(this.router.url.indexOf("/partner")>-1){
 				pagination.partnerView = true;
                 this.titleHeader = 'Pages Shared By Vendors';
+                this.moduleName = "Pages";
 			}
         }else if(type==4 || type==5){
             pagination.categoryType = 'c';
             this.titleHeader = type==5 ? "Campaigns shared by Vendors": "Manage Campaigns";
+            this.moduleName = "Campaigns";
 			if(this.router.url.indexOf("/partner")>-1){
 				pagination.partnerView = true;
 

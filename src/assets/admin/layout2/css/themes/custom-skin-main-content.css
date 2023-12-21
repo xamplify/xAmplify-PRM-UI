@@ -1788,7 +1788,7 @@ i.IconCustomization {
 i.IconCustomization:hover {
   border: 1px solid var(--icon-border-color) !important;
   background: var(--icon-hover-color) !important;
-  color: var(--icon-color) !important;
+  color: var(--div-bg-color) !important;
 }
 
 .IconCustomizationcondition a i {
@@ -2422,9 +2422,36 @@ i.collapseIconColorCu {
   margin-right: -20px !important;
   padding-left: 2px !important;
 }
+
+/* deal-page */
+.panel.panel-default.deal-bgcolor{
+  background-color: var(--div-bg-color) !important;
+}
+.br-unset{
+  border-top:1px solid var(--border-color) !important;
+}
+.radiobtn-card{
+  border: 1px solid var(--border-color) !important;
+}
+.card-bgcolors{
+  background-color:var(--div-bg-color) !important; 
+}
+.radiobtn{
+  border: 1px solid var(--border-color) !important;
+}
 .mar-rgt{
   margin-right: 40px !important;
 }
 .d-justify-end{
   justify-content: center!important;
+}
+/* 13-12-2023(sudha sri) */
+button.button_blue:disabled,
+button.button:disabled {
+  opacity: 0.6;  
+}
+button.button:disabled span,
+button.button_blue:disabled span{
+  cursor: not-allowed !important;
+
 }

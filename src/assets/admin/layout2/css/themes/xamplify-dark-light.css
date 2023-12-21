@@ -2483,7 +2483,23 @@ i.collapseIconColorCu {
   margin-left: -11px;
 }
 .mar-rgt-9{
-  margin-right: -9px;
+  margin-right: -9px !important;
+}
+/* deal-page */
+.panel.panel-default.deal-bgcolor{
+  background-color: #2b3c46 !important;
+}
+.br-unset{
+  border-top: 1px solid #2f4857 !important;
+}
+.radiobtn-card{
+  border: 1px solid #2f4857 !important;
+}
+.card-bgcolors{
+  background-color: #2b3c46 !important; 
+}
+.radiobtn{
+  border: 1px solid #2f4857 !important;
 }
 .mar-rgt{
   margin-right: 40px !important;
@@ -2506,4 +2522,18 @@ button.btn.btn-white.salesforce-btn.button{
 }
 .d-justify-end{
   justify-content: center!important;
+}
+.neg-mg-btm{
+  margin-bottom: -10px !important;
+}
+.loginActive {
+  color: #fff !important;
+  background-color : #22313a  !important;
+  border-bottom: 3px solid #008fd5 !important;
+}
+.inActive {
+  color: #fff !important;
+  background-color : #22313a !important;
+  border-bottom: 3px solid #f1f5f9 !important;
+
 }

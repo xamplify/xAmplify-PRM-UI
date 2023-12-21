@@ -133,7 +133,7 @@
       <!-- -----------------------------Leads List-------------------------------------- -->
       <div class="row">
         <div class="col-md-12">
-          <div class="page-bar p10" id="header">
+          <div class="page-bar remove_cardBgcolor padding_0 p10" id="header">
             <div class="tab-content">
               <div *ngIf="!showCampaignLeads">
                 <!-- XNFR-148 -->
@@ -166,8 +166,8 @@
 
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
                         (click)="addLead()" style="padding-left: 4px;">
-                        <button class="button_blue padding align mb-btns p-top-0 bgcolor-unset" translate>
-                          <span class="btn btn-primary transition"><i class="fa fa-plus  mb-btns"
+                        <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
+                          <span class="btn btn-primary transition d-inline"><i class="fa fa-plus  mb-btns"
                               aria-hidden="true"></i> Add a Lead</span>
                         </button>
                       </a>
@@ -175,7 +175,7 @@
                       <!-- XNFR-215 -->
                       <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT'"
                         (click)="syncLeadsWithActiveCRM()">
-                        <button class="btn btn-white padding mt button salesforce-btn mb-btns" style="margin-left: 3px;"
+                        <button class="btn salesforce-btn button neg-mar-top bgcolor-unset p0 neg-mg-btm btn-transitions" style="margin-left: 3px;"
                           data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
 
                           <span class=" btn Btn-Green transition"> <i class="fa fa-refresh" aria-hidden="true"></i> {{

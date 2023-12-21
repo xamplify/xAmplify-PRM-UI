@@ -6,7 +6,6 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Processor } from '../../core/models/processor';
 import { CustomResponse } from '../../common/models/custom-response';
-import { filter, pairwise } from 'rxjs/operators';
 import { FormService } from '../services/form.service';
 import { Form } from '../models/form';
 import { FormSubmit } from '../models/form-submit';
@@ -67,11 +66,13 @@ export class FormPreviewComponent implements OnInit {
   maxScore: number;
   loggedInUserEmail: string;
 
+  /*****XNFR-423****/
+  countryNames = [];
+
   resolved(captchaResponse: string) {
     if(captchaResponse){
       this.formService.validateCaptcha(captchaResponse).subscribe(
         (response: any) => {
-          console.log(response);
           this.enableButton = response;
           this.captchaValue.emit(this.enableButton);
         },
@@ -138,7 +139,7 @@ export class FormPreviewComponent implements OnInit {
             let self = this;
             this.hasFormExists = true;
             this.form = response.data;
-            //$("body").css("background-color","this.form.backgroundColor");
+            this.countryNames = this.authenticationService.addCountryNamesToList(this.form.countryNames,this.countryNames);
             if (this.form.showBackgroundImage) {
               this.formBackgroundImage = this.form.backgroundImage;
               this.pageBackgroundColor = "";
@@ -311,7 +312,8 @@ export class FormPreviewComponent implements OnInit {
     
     const requiredFormLabels = formLabelDtos.filter((item) => (item.required === true && $.trim(item.value).length === 0));
     const invalidEmailIdsFieldsCount = formLabelDtos.filter((item) => (item.divClass == 'error')).length;
-    if (requiredFormLabels.length > 0 || invalidEmailIdsFieldsCount > 0) {
+    const invalidCountryNameCount =formLabelDtos.filter((item) => ( item.labelType=="country" && item.required === true && $.trim(item.value)=="Please Select Country")).length;
+    if (requiredFormLabels.length > 0 || invalidEmailIdsFieldsCount > 0 || invalidCountryNameCount>0) {
       this.validForm = false;
       this.addHeaderMessage('Please fill required fields', this.errorAlertClass);
     } else {
@@ -327,6 +329,13 @@ export class FormPreviewComponent implements OnInit {
           formField.dropdownIds = field.value;
           formField.value = "";
         }
+        /****XNFR-423****/
+        if(field.labelType=="country"){
+          if(!field.required && formField.value=="Please Select Country"){
+            formField.value = "";
+          }
+        }
+        /****XNFR-423****/
         formSubmit.fields.push(formField);
       });
       let formType:string = null

@@ -117,7 +117,7 @@ export class ShareTracksOrPlaybooksComponent implements OnInit {
     pagination = this.utilService.sortOptionValues(this.sortOption.damSortOption, pagination);
     this.findTracksOrPlayBooks(pagination);
   }
-  findUnPublishedTracksOrPlayBook(keyCode: any) { if (keyCode === 13) { this.searchTracksOrPlayBooks(); } }
+  findUnPublishedTracksOrPlayBooksOnKeyPress(keyCode: any) { if (keyCode === 13) { this.searchTracksOrPlayBooks(); } }
 
   /*****CheckBox Code******/
   highlightSelectedRowOnRowClick(selectedAssetId: any, event: any) {

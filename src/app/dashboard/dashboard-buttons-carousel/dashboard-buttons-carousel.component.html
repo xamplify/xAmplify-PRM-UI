@@ -1,70 +1,75 @@
-<div class="page-bar page-bar-shadow" *ngIf="dashboardButtonList.length !== 0" style="border-radius: 5px;padding: 10px;margin-bottom: 10px;">
-<div id="carousel-example" class="carousel slide " data-ride="carousel" data-interval="false">
-  <!-- Wrapper for slides -->
-  <div class="carousel-inner">
-    <div class="item {{item.enable}}" *ngFor="let item of totalItemsData">
-      <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let data of item.dbButtonsList">
-          <a  href="{{data.buttonLink}}" target="{{data.openInNewTabTarget}}">
-          <div class="col-item">
-            <div class="row glad-new-row">
-              <div class="col-xs-12 col-md-12 col-lg-12">
-                <div class="row">
-                  <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2 px-0">
-                    <div class="photo photo-frame">
-                      <i class="fa {{data.buttonIcon}}" style="font-size: 32px;color: #3972ba; margin-top: -6px;"></i>
-                    </div>
-                  </div>
-                  <div class="col-xs-8 col-sm-8 col-md-10 col-lg-10">
-                    <div class="info">
-                      <div class="row">
-                        <div class="price col-md-12 text-right pr0">
-                          <h4 class="h4-class"> 
-                            <span data-placement="bottom" data-toggle="tooltip" title="{{data.buttonTitle}}">{{data.buttonTitle}}</span> 
-                          </h4>
+<div class="page-bar page-bar-shadow" *ngIf="dashboardButtonList.length !== 0"
+  style="border-radius: 5px;padding: 10px;margin-bottom: 10px;">
+  <div id="carousel-example" class="carousel slide " data-ride="carousel" data-interval="false">
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+      <div class="item {{item.enable}}" *ngFor="let item of totalItemsData">
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 tiles_hover_effect" *ngFor="let data of item.dbButtonsList">
+            <a href="{{data.buttonLink}}" target="{{data.openInNewTabTarget}}">
+              <div class="col-item">
+                <div class="row glad-new-row">
+                  <div class="col-xs-12 col-md-12 col-lg-12 vanity_cards_blue">
+                    <div class="row">
+                      <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2 px-0">
+                        <div class="photo photo-frame">
+                          <i class="fa {{data.buttonIcon}}"
+                            style="font-size: 32px;color: #3972ba; margin-top: -6px;"></i>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="price col-md-12 text-right pr0" style="margin-left: -38px;margin-top: 5px;width: auto;">
-                          <h6 class="h6-class"> {{data.buttonSubTitle}}</h6>
+                      <div class="col-xs-8 col-sm-8 col-md-10 col-lg-10">
+                        <div class="info">
+                          <div class="row">
+                            <div class="price col-md-12 text-right pr0">
+                              <h4 class="h4-class">
+                                <span data-placement="bottom" data-toggle="tooltip"
+                                  title="{{data.buttonTitle}}">{{data.buttonTitle}}</span>
+                              </h4>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="price col-md-12 text-right pr0"
+                              style="margin-left: -38px;margin-top: 5px;width: auto;">
+                              <h6 class="h6-class"> {{data.buttonSubTitle}}</h6>
+                            </div>
+                          </div>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-md-12 col-lg-12"
+                    style="background: #4a94d3;padding: 0px 18px;border-radius: 0px 0px 5px 5px;">
+                    <div class="row">
+                      <div class="separator clear-left">
+                        <p style="color: #fff!important;">{{data.buttonDescription}}
+                        </p>
+                      </div>
+                      <div class="clearfix" style="padding-bottom:8px;text-align: right;">
+                        <i class="fa fa-arrow-circle-o-right" style="font-size: 20px;color:#fff;padding-top: 5px;"
+                          data-toggle="tooltip"></i>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-xs-12 col-md-12 col-lg-12" style="background: #4a94d3;padding: 0px 18px;border-radius: 0px 0px 5px 5px;">
-                <div class="row">
-                  <div class="separator clear-left">
-                    <p style="color: #fff!important;">{{data.buttonDescription}}
-                    </p>
-                  </div>
-                  <div class="clearfix" style="padding-bottom:8px;text-align: right;">
-                    <i class="fa fa-arrow-circle-o-right" style="font-size: 20px;color:#fff;padding-top: 5px;"
-                      data-toggle="tooltip"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </a>
           </div>
-        </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="padding-bottom: 10px;" *ngIf="dashboardButtonList.length > 4">
+      <div class="col-md-4"></div>
+      <div class="col-md-4" style="text-align: center!important;">
+        <div class="  ">
+          <a class="left fa fa-chevron-left btn btn-success"
+            style="background-color: #488fd6;color: #fff!important;border-radius: 3px!important;"
+            href="#carousel-example" data-slide="prev"></a>
+          <a class="right fa fa-chevron-right btn btn-success"
+            style="background-color: #488fd6;color: #fff!important;border-radius: 3px!important;"
+            href="#carousel-example" data-slide="next"></a>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="row" style="padding-bottom: 10px;" *ngIf="dashboardButtonList.length > 4">
-    <div class="col-md-4"></div>
-    <div class="col-md-4" style="text-align: center!important;">
-      <div class="  ">
-        <a class="left fa fa-chevron-left btn btn-success"
-          style="background-color: #488fd6;color: #fff!important;border-radius: 3px!important;" href="#carousel-example"
-          data-slide="prev"></a>
-        <a class="right fa fa-chevron-right btn btn-success"
-          style="background-color: #488fd6;color: #fff!important;border-radius: 3px!important;" href="#carousel-example"
-          data-slide="next"></a>
-      </div>
-    </div>    
-  </div>
-</div>
 </div>

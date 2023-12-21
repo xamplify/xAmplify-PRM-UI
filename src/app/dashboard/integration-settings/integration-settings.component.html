@@ -1,5 +1,5 @@
 <!-- Nav tabs -->
-<app-response-message class="pg8" [customResponse]="customFieldsResponse" *ngIf="customFieldsResponse.isVisible">
+<app-response-message class="pg8" [customResponse]="customFieldsResponse" *ngIf="customFieldsResponse.isVisible  ">
 </app-response-message>
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div>
@@ -178,7 +178,7 @@
         <li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a
             (click)="setSfCfPage(sfcfPager.currentPage - 1)">Previous</a></li>
         <li *ngFor="let page of sfcfPager.pages" [ngClass]="{active:sfcfPager.currentPage === page}"><a
-            (click)="setSfCfPage(page)">{{page}}</a></li>
+            (click)="setSfCfPage(page)" [class.disabled]="sfcfPager.currentPage === page" >{{page}}</a></li>
         <li [ngClass]="{disabled:sfcfPager.currentPage === sfcfPager.totalPages}">
           <a (click)="setSfCfPage(sfcfPager.currentPage + 1)">Next</a>
         </li>
@@ -189,11 +189,14 @@
       <div *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="p-drop-down pl10 custom-fields-items-count">
         <select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber"
           [ngModelOptions]="{standalone: true}" (ngModelChange)="selectedPageNumber($event.value)">
-          <option *ngFor="let pageNo of paginationComponent.numberPerPage" [ngValue]="pageNo">{{pageNo.name}}</option>
+          <option  [ngValue]="paginationComponent.numberPerPage[0]">{{paginationComponent.numberPerPage[0].name}}</option>
+          <option *ngIf="sfcfPager.totalItems>12"  [ngValue]="paginationComponent.numberPerPage[1]">{{paginationComponent.numberPerPage[1].name}}</option>
+          <option *ngIf="sfcfPager.totalItems>24"  [ngValue]="paginationComponent.numberPerPage[2]">{{paginationComponent.numberPerPage[2].name}}</option>
         </select>
       </div>
       <div class="text-center" *ngIf="!sfcfPager.pages || sfcfPager.pages.length == 0" style="margin-bottom: 10px;">
-        <span>There are no custom fields in your {{ integrationType | titlecase }} account.</span>
+        <span *ngIf="integrationType =='SALESFORCE'">Please Reconfigure {{ integrationType | titlecase }} as the token is an expired</span>
+        <span *ngIf="integrationType !='SALESFORCE'">There are no custom fields in your {{ integrationType | titlecase }} account.</span>
       </div>
       <div class="modal-footer border-none">      
         <button type="button" class="btn btn-primary" *ngIf="sfcfPager.pages && sfcfPager.pages.length"

@@ -3,7 +3,8 @@
 		pointer-events: none;
 		cursor: not-allowed;
 	}
-    .disabledCss{
+
+	.disabledCss {
 		pointer-events: none;
 		cursor: not-allowed;
 		opacity: 0.5;
@@ -38,75 +39,94 @@
 </style>
 <div class="portlet light" style="border-radius: 5px;">
 	<div class="portlet-body">
-    <div *ngIf="clientError" style="color:red" translate>Something went wrong, Please refresh the page</div>
+		<div *ngIf="clientError" style="color:red" translate>Something went wrong, Please refresh the page</div>
 		<div class="row margin-bottom-30" [hidden]="clientError">
 			<!-- video started -->
 			<div class="col-xs-12 col-sm-12 col-md-5 col-lg-6" style="padding-top: 28px">
-        <div style="position:relative">
-        <div id="overLayImage"></div>
-				<div id="overlay-logo" class="video-js" [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
-					<a [href]="logoDescriptionUrl" target="_blank" [class.disabled]="!logoDescriptionUrl">
-						<img *ngIf="brandLogoUrl && enableVideoLogo" [src]="authenticationService.MEDIA_URL + brandLogoUrl" class="img-responsive">
-					</a>
+				<div style="position:relative">
+					<div id="overLayImage"></div>
+					<div id="overlay-logo" class="video-js"
+						[ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}">
+						<a [href]="logoDescriptionUrl" target="_blank" [class.disabled]="!logoDescriptionUrl">
+							<img *ngIf="brandLogoUrl && enableVideoLogo"
+								[src]="authenticationService.MEDIA_URL + brandLogoUrl" class="img-responsive">
+						</a>
+					</div>
+					<div *ngIf="!is360Value">
+						<video id="edit_video_player" class="video-js vjs-default-skin" controls height="299" poster=""
+							data-setup='{"example_option":true }'>
+						</video>
+					</div>
+					<div *ngIf="is360Value">
+						<div id="newPlayerVideo"></div>
+					</div>
 				</div>
-				<div *ngIf="!is360Value">
-					<video id="edit_video_player" class="video-js vjs-default-skin" controls height="299" poster="" data-setup='{"example_option":true }'>
-					</video>
-				</div>
-				<div *ngIf="is360Value">
-					<div id="newPlayerVideo"></div>
-        </div>
-        </div>
 				<div id="overLayDialog"></div>
 				<!-- video overlay modal popup -->
-				<div id="overlay-modal" class="video-js overlay is360video" [class.overlaySet]="!overLaySet" style="height: 315px; width:100%;color:white !important; background: #333;">
+				<div id="overlay-modal" class="video-js overlay is360video" [class.overlaySet]="!overLaySet"
+					style="height: 315px; width:100%;color:white !important; background: #333;">
 					<form #f="ngForm" novalidate>
-						<div class="col-xs-12 col-sm-12 col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode}">
+						<div class="col-xs-12 col-sm-12 col-md-12 overlay-main"
+							[ngClass]="{'bottomCss':fullScreenMode}">
 							<h2 class="upper-text-heading upperText">{{saveVideoFile.upperText}}</h2>
 							<div class="flex" style="padding:0.5%" *ngIf="callAction.isFistNameChecked">
-								<input type="text" name="firstName" style="margin-right: 0;" [(ngModel)]="callAction.firstName" (ngModelChange)="checkingCallToActionValues()"
-								 class="form-control text-box m21" placeholder="First Name" maxlength="20">
-								<input type="text" name="lastName" [(ngModel)]="callAction.lastName" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box m21"
-								 placeholder="Last Name" maxlength="20">
+								<input type="text" name="firstName" style="margin-right: 0;"
+									[(ngModel)]="callAction.firstName" (ngModelChange)="checkingCallToActionValues()"
+									class="form-control text-box m21" placeholder="First Name" maxlength="20">
+								<input type="text" name="lastName" [(ngModel)]="callAction.lastName"
+									(ngModelChange)="checkingCallToActionValues()" class="form-control text-box m21"
+									placeholder="Last Name" maxlength="20">
 							</div>
 							<div class="flex m02">
 								<div class="w-8">
-									<input type="text" name="email_id" [(ngModel)]="callAction.email_id" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box"
-									 placeholder="Email Address" pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$" #email_id="ngModel">
+									<input type="text" name="email_id" [(ngModel)]="callAction.email_id"
+										(ngModelChange)="checkingCallToActionValues()" class="form-control text-box"
+										placeholder="Email Address"
+										pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$"
+										#email_id="ngModel">
 								</div>
 								<div class="w-4">
-									<button type="button" id="playorsubmit" class="btn play-button text-box" [disabled]="callAction.isOverlay" (click)="saveCallToActionUserForm()">{{callAction.videoOverlaySubmit}}</button>
+									<button type="button" id="playorsubmit" class="btn play-button text-box"
+										[disabled]="callAction.isOverlay"
+										(click)="saveCallToActionUserForm()">{{callAction.videoOverlaySubmit}}</button>
 								</div>
 							</div>
 							<h4 class="upper-text-heading lowerText">{{saveVideoFile.lowerText}}</h4>
 						</div>
 					</form>
 					<div>
-						<div *ngIf="callAction.videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="cursor: pointer" (click)="repeatPlay()">
+						<div *ngIf="callAction.videoOverlaySubmit=='SUBMIT'" id="repeatPlay" style="cursor: pointer"
+							(click)="repeatPlay()">
 							<i class="fa fa-repeat" aria-hidden="true"></i>
 						</div>
-						<div *ngIf="callAction.isSkipChecked" id="skipOverlay" style="cursor: pointer" (click)="skipOverplay()">
+						<div *ngIf="callAction.isSkipChecked" id="skipOverlay" style="cursor: pointer"
+							(click)="skipOverplay()">
 							<i class="fa fa-forward" aria-hidden="true"></i>
 							<b style="font-size: 13px; color:white;" translate>skip</b>
 						</div>
 					</div>
-        </div>
-        <div id="error-overlay-modal" class="video-js overlay is360video video-processing-message" *ngIf="!isProcessed">
-          <div class="col-xs-12 row" style="top:67px">
-              <div>
-                <span><img src="assets/images/loadbar.gif" class="loader-image-tag" style="height: 69px !important;"></span>
-                <span class="text-css" style="font-size: 14px;">{{properties.VIDEO_PROCESSING_MESSAGE}}</span>
-              </div>
-          </div>
-          </div>
+				</div>
+				<div id="error-overlay-modal" class="video-js overlay is360video video-processing-message"
+					*ngIf="!isProcessed">
+					<div class="col-xs-12 row" style="top:67px">
+						<div>
+							<span><img src="assets/images/loadbar.gif" class="loader-image-tag"
+									style="height: 69px !important;"></span>
+							<span class="text-css"
+								style="font-size: 14px;">{{properties.VIDEO_PROCESSING_MESSAGE}}</span>
+						</div>
+					</div>
+				</div>
 				<!--  overlay modal ending -->
 
 				<div class="col-xs-7 col-sm-7 col-md-8" style="padding: 0;margin-top: 10px;">
-					<button *ngIf="shareValues" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo" translate>
+					<button *ngIf="shareValues" class="btn btn-primary shareVideoButton" (click)="shareClick()"
+						[disabled]="isThisDraftVideo" translate>
 						<i class="fa fa-share-alt" aria-hidden="true"></i> Share
 					</button>
-					<button *ngIf="embedVideo" class="btn btn-primary embedVideoButton" data-dismiss="modal" data-toggle="modal" data-target="#myModal"
-					 [disabled]="isThisDraftVideo" (click)="embedModal()" translate>
+					<button *ngIf="embedVideo" class="btn btn-primary embedVideoButton" data-dismiss="modal"
+						data-toggle="modal" data-target="#myModal" [disabled]="isThisDraftVideo" (click)="embedModal()"
+						translate>
 						<i class="fa fa-external-link" aria-hidden="true"></i> Embed
 					</button>
 				</div>
@@ -124,7 +144,8 @@
 									{{likesValues}}</a>
 							</button>
 							<button style="color: #f3565d; background: #fff;padding: 0;" (click)="disLikesValuesDemo()">
-								<a style="color: #f3565d; background: #fff;padding: 0; text-decoration: none" title="I dislike this">
+								<a style="color: #f3565d; background: #fff;padding: 0; text-decoration: none"
+									title="I dislike this">
 									<i class="fa fa-thumbs-down" aria-hidden="true"></i>
 									{{disLikesValues}}</a>
 							</button>
@@ -132,7 +153,8 @@
 					</div>
 				</div>
 				<!-- emebd src Modal Start-->
-				<app-embed-modal *ngIf="embedModelVideo" [video]="embedModelVideo" (notifyParent)="closeEmbedModal($event)" #embedModel></app-embed-modal>
+				<app-embed-modal *ngIf="embedModelVideo" [video]="embedModelVideo"
+					(notifyParent)="closeEmbedModal($event)" #embedModel></app-embed-modal>
 				<!-- Modal End-->
 			</div>
 			<!-- video ended  -->
@@ -142,22 +164,29 @@
 						<div class="row">
 							<div class="col-md-offset-6 col-md-5 videoInfoTopBtns">
 								<div style="float: right">
-									<button type="button" class="btn Btn-Green" [disabled]="!videoForm.valid || upperTextValid==false
-									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail" (click)="saveVideoObject()">{{saveButtonTitle}}</button>
-									<button type="button" class="btn Btn-Gray" style="margin-left:2px" (click)="cancelVideo()" [disabled]="isDisable" translate>Cancel</button>
+									<button type="button" class="btn button p0"
+										[disabled]="!videoForm.valid || upperTextValid==false
+									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail"
+										(click)="saveVideoObject()"><span
+											class="btn Btn-Green transition">{{saveButtonTitle}}</span></button>
+									<button type="button" class="btn Btn-Gray" style="margin-left:2px"
+										(click)="cancelVideo()" [disabled]="isDisable" translate>Cancel</button>
 								</div>
 							</div>
 						</div>
 						<!-- BEGIN SAMPLE FORM PORTLET-->
-						<div class="portlet box green " style="margin-top: 8px;" [class.inactiveDiv]="enableCalltoAction && !(lowerTextValid && upperTextValid)">
-							<div class="portlet-title" (click)="titleDivChange();" [ngClass]="{'activeDiv':!titleDiv , 'inactiveDiv' :titleDiv}">
+						<div class="portlet box green " style="margin-top: 8px;"
+							[class.inactiveDiv]="enableCalltoAction && !(lowerTextValid && upperTextValid)">
+							<div class="portlet-title" (click)="titleDivChange();"
+								[ngClass]="{'activeDiv':!titleDiv , 'inactiveDiv' :titleDiv}">
 								<div class="col-xs-12 caption p01">
 									<div class="col-xs-11 p01">
 										<h4 class="p01" translate>Video Info</h4>
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>
-											<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !titleDiv, 'fa-angle-up': titleDiv}"></i>
+											<i class="fa iconSize" aria-hidden="true"
+												[ngClass]="{'fa-angle-down': !titleDiv, 'fa-angle-up': titleDiv}"></i>
 										</a>
 									</div>
 								</div>
@@ -167,66 +196,93 @@
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Title:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<input type="text" minlength="1" maxlength="255" (input)="validVideoTitle(videotitle.value)" class="form-control" placeholder="Enter Title here"
-											 formControlName="title" required #videotitle>
-											<div *ngIf="formErrors.title"  style="color: red; padding: 2px" >{{formErrors.title}}</div>
-											<div *ngIf="isValidTitle" style="color: red; padding: 2px" translate>This title already exists.</div>
-											<div *ngIf="emptyTitle ==true && formErrors.title==false"  style="color: red; padding: 2px">Title name shouldn't be empty</div>
+											<input type="text" minlength="1" maxlength="255"
+												(input)="validVideoTitle(videotitle.value)" class="form-control"
+												placeholder="Enter Title here" formControlName="title" required
+												#videotitle>
+											<div *ngIf="formErrors.title" style="color: red; padding: 2px">
+												{{formErrors.title}}</div>
+											<div *ngIf="isValidTitle" style="color: red; padding: 2px" translate>This
+												title already exists.</div>
+											<div *ngIf="emptyTitle ==true && formErrors.title==false"
+												style="color: red; padding: 2px">Title name shouldn't be empty</div>
 										</div>
 									</div>
-									
+
 
 									<input type="hidden" class="form-control" formControlName="id">
 									<div class="form-group" *ngIf="false">
-										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Publish to:</label>
+										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Publish
+											to:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<select class="form-control" (ngModelChange)="selectedPublishToName($event)" formControlName="viewBy" required title="select a video type">
-												<option *ngFor="let publishName of publish" [value]="publishName.name">{{publishName.name}}
+											<select class="form-control" (ngModelChange)="selectedPublishToName($event)"
+												formControlName="viewBy" required title="select a video type">
+												<option *ngFor="let publishName of publish" [value]="publishName.name">
+													{{publishName.name}}
 											</select>
-											<span class="pull-left" style="margin-top: -24px;margin-left: -21px;cursor: pointer;color: #54a7e9;"  data-toggle="tooltip" data-placement="bottom" title="{{publishToMessage}}">
+											<span class="pull-left"
+												style="margin-top: -24px;margin-left: -21px;cursor: pointer;color: #54a7e9;"
+												data-toggle="tooltip" data-placement="bottom"
+												title="{{publishToMessage}}">
 												<i class="fa fa-question-circle" style="font-size: 20px"></i>
 											</span>
-											<div *ngIf="formErrors.publish" class="alert alert-danger">{{formErrors.publish}}
+											<div *ngIf="formErrors.publish" class="alert alert-danger">
+												{{formErrors.publish}}
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Category:</label>
+										<label class="col-xs-3 col-sm-3 col-md-3 control-label"
+											translate>Category:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<select class="form-control" title="select a category" formControlName="categoryId" required>
-												<option *ngFor="let cate of categories" [value]="cate.id">{{cate.name}}</option>
+											<select class="form-control" title="select a category"
+												formControlName="categoryId" required>
+												<option *ngFor="let cate of categories" [value]="cate.id">{{cate.name}}
+												</option>
 											</select>
-											<div *ngIf="formErrors.category" class="alert alert-danger">{{formErrors.category}}
+											<div *ngIf="formErrors.category" class="alert alert-danger">
+												{{formErrors.category}}
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Tags:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<span class="pull-left" style="margin-top: 13px;margin-left: -21px;cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="Add a tag to your video and press Enter">
+											<span class="pull-left"
+												style="margin-top: 13px;margin-left: -21px;cursor: pointer;color: #54a7e9;"
+												data-toggle="tooltip" data-placement="bottom"
+												title="Add a tag to your video and press Enter">
 												<i class="fa fa-question-circle" style="font-size: 20px"></i>
 											</span>
-											<tag-input [(ngModel)]="itemOfTags"  [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'" [secondaryPlaceholder]="'Add a tag & press Enter'"></tag-input>
+											<tag-input [(ngModel)]="itemOfTags" [ngModelOptions]="{standalone: true}"
+												[theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'"
+												[secondaryPlaceholder]="'Add a tag & press Enter'"></tag-input>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-12 col-sm-3 col-md-3 control-label" style="margin-left: -4px;cursor:pointer" translate>Thumbnail :
-											<input class="radioButton_shadow" name="options" type="radio" (click)="changeImageThumbnailOption();uploader.clearQueue();"
-											 [checked]="thumbnailRadioOpen">
+										<label class="col-xs-12 col-sm-3 col-md-3 control-label"
+											style="margin-left: -4px;cursor:pointer" translate>Thumbnail :
+											<input class="radioButton_shadow" name="options" type="radio"
+												(click)="changeImageThumbnailOption();uploader.clearQueue();"
+												[checked]="thumbnailRadioOpen">
 										</label>
-										<div class="col-xs-12 col-sm-9 col-md-12 col-lg-9" style="padding:0;" *ngIf="thumbnailRadioOpen">
+										<div class="col-xs-12 col-sm-9 col-md-12 col-lg-9" style="padding:0;"
+											*ngIf="thumbnailRadioOpen">
 											<div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedImgFirst()">
 													<input type="hidden" name="imagePath" formControlName="imagePath">
-													<img [ngClass]="{colorImg:imgBoolean1==true ,colorShade :imgBoolean1==false}" src="{{imageFilesfirst}}" class="sizeImg">
+													<img [ngClass]="{colorImg:imgBoolean1==true ,colorShade :imgBoolean1==false}"
+														src="{{imageFilesfirst}}" class="sizeImg">
 												</div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedImgSecond()">
 													<input type="hidden" name="imagePath" formControlName="imagePath">
-													<img [ngClass]="{colorImg:imgBoolean2==true ,colorShade :imgBoolean2==false}" src="{{imageFilessecond}}" class="sizeImg">
+													<img [ngClass]="{colorImg:imgBoolean2==true ,colorShade :imgBoolean2==false}"
+														src="{{imageFilessecond}}" class="sizeImg">
 												</div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedImgThird()">
 													<input type="hidden" name="imagePath" formControlName="imagePath">
-													<img [ngClass]="{colorImg:imgBoolean3==true ,colorShade :imgBoolean3==false}" src="{{imageFilesthird}}" class="sizeImg">
+													<img [ngClass]="{colorImg:imgBoolean3==true ,colorShade :imgBoolean3==false}"
+														src="{{imageFilesthird}}" class="sizeImg">
 												</div>
 											</div>
 										</div>
@@ -235,24 +291,37 @@
 									<div class="form-group" [class.ownThumnailCss]="thumbnailRadioOpen ==false">
 										<div class="col-xs-12">
 											<div class="col-xs-2 col-sm-2 col-md-2"></div>
-											<div class="col-xs-10 col-sm-10 col-md-10" style="position: relative; left:-11px;">
+											<div class="col-xs-10 col-sm-10 col-md-10"
+												style="position: relative; left:-11px;">
 												<label class="radio-inline" style="cursor:pointer">
-													<input name="options" (click)="selectedOwnThumnailOption()" type="radio" [value]="2"  [checked]="!thumbnailRadioOpen" style="cursor:pointer">
+													<input name="options" (click)="selectedOwnThumnailOption()"
+														type="radio" [value]="2" [checked]="!thumbnailRadioOpen"
+														style="cursor:pointer">
 													<strong translate>Or: Upload your own Thumbnail</strong>
 												</label>
 											</div>
 										</div>
-										<div class="col-xs-9 col-sm-9 col-md-9" style="top: 7px; position: relative;float:right">
-											<div *ngIf="openOwnThumbnail" >
-												<span class="btn btn-css btn-file" *ngIf="ownThumbnail" translate>Choose Image
-												<input id="ownFileuplad" type="file" ng2FileSelect [uploader]="uploader" accept=".jpg,.jpeg,.png" *ngIf="uploader.queue.length==0"
-												 class="btn btn-primary" style="background: #00a6e8;width: 100%;cursor: pointer;" title=" " (change)="isFileCheck($event)">
-                        						</span>
-												 <p *ngIf="ownThumbnail" class="help-block" translate>If you want to upload your own thumbnail, please choose a file from your system.
-                           							 <span style="color:blue" translate>Note: Max image size 10 MB</span><br/>
-                          							<span style="color:red" translate>*Please upload your thumbnail.</span>
+										<div class="col-xs-9 col-sm-9 col-md-9"
+											style="top: 7px; position: relative;float:right">
+											<div *ngIf="openOwnThumbnail">
+												<span class="btn btn-css btn-file" *ngIf="ownThumbnail" translate>Choose
+													Image
+													<input id="ownFileuplad" type="file" ng2FileSelect
+														[uploader]="uploader" accept=".jpg,.jpeg,.png"
+														*ngIf="uploader.queue.length==0" class="btn btn-primary"
+														style="background: #00a6e8;width: 100%;cursor: pointer;"
+														title=" " (change)="isFileCheck($event)">
+												</span>
+												<p *ngIf="ownThumbnail" class="help-block" translate>If you want to
+													upload your own thumbnail, please choose a file from your system.
+													<span style="color:blue" translate>Note: Max image size 10
+														MB</span><br />
+													<span style="color:red" translate>*Please upload your
+														thumbnail.</span>
 												</p>
-												<div *ngIf="imageUrlPath" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0" style="margin: 0px -4px;">
+												<div *ngIf="imageUrlPath"
+													class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0"
+													style="margin: 0px -4px;">
 													<span (click)="uploader.clearQueue();clearOwnThumbnail()">
 														<i class="fa fa-times-circle cance-icon-alignment"></i>
 													</span>
@@ -266,61 +335,84 @@
 										<div class="col-xs-12 col-sm-9 col-md-12 col-lg-9" style="padding:0;">
 											<div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedGifFirst()">
-													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
-													<img id="gifImageIdFirst" [ngClass]="{colorImg:gifBoolean1==true ,colorShade :gifBoolean1==false}" src="{{giffirst}}" class="sizeImg">
+													<input type="hidden" name="gifImagePath"
+														formControlName="gifImagePath">
+													<img id="gifImageIdFirst"
+														[ngClass]="{colorImg:gifBoolean1==true ,colorShade :gifBoolean1==false}"
+														src="{{giffirst}}" class="sizeImg">
 												</div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedGifSecond()">
-													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
-													<img id="gifImageIdSecond" [ngClass]="{colorImg:gifBoolean2==true ,colorShade :gifBoolean2==false}" src="{{gifsecond}}" (error)="setGifPath($event)" class="sizeImg">
+													<input type="hidden" name="gifImagePath"
+														formControlName="gifImagePath">
+													<img id="gifImageIdSecond"
+														[ngClass]="{colorImg:gifBoolean2==true ,colorShade :gifBoolean2==false}"
+														src="{{gifsecond}}" (error)="setGifPath($event)"
+														class="sizeImg">
 												</div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedGifThird()">
-													<input type="hidden" name="gifImagePath" formControlName="gifImagePath">
-													<img id="gifImageIdThird" [ngClass]="{colorImg:gifBoolean3==true ,colorShade :gifBoolean3==false}" src="{{gifthird}}" (error)="setGifPath($event)" class="sizeImg">
+													<input type="hidden" name="gifImagePath"
+														formControlName="gifImagePath">
+													<img id="gifImageIdThird"
+														[ngClass]="{colorImg:gifBoolean3==true ,colorShade :gifBoolean3==false}"
+														src="{{gifthird}}" (error)="setGifPath($event)" class="sizeImg">
 												</div>
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Description:</label>
+										<label class="col-xs-3 col-sm-3 col-md-3 control-label"
+											translate>Description:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<textarea (input)="descriptionInput(descriptionValue.value)" class="form-control" rows="3" style="min-height: 70px; max-height:110px;"
-											 formControlName="description" required #descriptionValue></textarea>
-											<div *ngIf="formErrors.description || saveVideoFile.description==null" style="color:red" translate>Please enter a video description.</div>
-											<div *ngIf="emptyDescription && formErrors.description==false" style="color:red" translate>description shouldn't be empty</div>
+											<textarea (input)="descriptionInput(descriptionValue.value)"
+												class="form-control" rows="3"
+												style="min-height: 70px; max-height:110px;"
+												formControlName="description" required #descriptionValue></textarea>
+											<div *ngIf="formErrors.description || saveVideoFile.description==null"
+												style="color:red" translate>Please enter a video description.</div>
+											<div *ngIf="emptyDescription && formErrors.description==false"
+												style="color:red" translate>description shouldn't be empty</div>
 										</div>
 									</div>
 									<!---XNFR-169-->
 									<div class="form-group">
-										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Folder:</label>
+										<label class="col-xs-3 col-sm-3 col-md-3 control-label"
+											translate>Folder:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<app-select-dropdown *ngIf="showFolderDropDown" [categoryId]="folderId"  [dropDownItems]="categoryNames" (selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
+											<app-select-dropdown *ngIf="showFolderDropDown" [categoryId]="folderId"
+												[dropDownItems]="categoryNames"
+												(selectDropdownComponentEmitter)="getSelectedCategoryId($event)"></app-select-dropdown>
 										</div>
 									</div>
 									<!---XNFR-255-->
 									<div class="form-group" *ngIf="hasShareWhiteLabeledContentAccess">
-										<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px" translate>White Labeled:</label>
+										<label class="col-xs-3 col-sm-3 col-md-3 control-label" style="margin-top:-6px"
+											translate>White Labeled:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
-											<switch [disabled]="saveVideoFile?.disableWhiteLabelOption" [status]="saveVideoFile.shareAsWhiteLabeledAsset" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-											 (statusChange)="setWhiteLabeled($event)">
+											<switch [disabled]="saveVideoFile?.disableWhiteLabelOption"
+												[status]="saveVideoFile.shareAsWhiteLabeledAsset"
+												[onText]="callActionSwitch.onTextValue"
+												[offText]="callActionSwitch.offTextValue"
+												[onColor]="callActionSwitch.onGreenColorSwitch"
+												[offColor]="callActionSwitch.onDefaultColorSwitch"
+												[size]="callActionSwitch.size" (statusChange)="setWhiteLabeled($event)">
 											</switch>
 											<span class="info-color-xampc">
-												<i class="fa fa-question-circle toggle-info-white-label" data-toggle="tooltip"
-													data-placement="top" aria-hidden="true"
+												<i class="fa fa-question-circle toggle-info-white-label"
+													data-toggle="tooltip" data-placement="top" aria-hidden="true"
 													title="{{saveVideoFile?.whiteLabeledToolTipMessage}}"></i>
 											</span>
 										</div>
 									</div>
 									<div>
-										<app-list-loader  *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
-										<app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader" [moduleName]="'dam'" 
-										[inputId]="saveVideoFile.damId" 
-										[isPublishedToPartnerGroups]="saveVideoFile?.publishedToPartnerGroups"
-                                        [selectedTeamMemberIds]="saveVideoFile?.partnerIds"
-                                        [selectedPartnershipIds]="saveVideoFile?.partnershipIds"
-                                        [selectedPartnerGroupIds]="saveVideoFile?.partnerGroupIds"
-										[isAssetPublishedEmailNotification]="isAssetPublishedEmailNotification"
-										 (partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)" ></app-partner-company-and-groups>
+										<app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
+										<app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader"
+											[moduleName]="'dam'" [inputId]="saveVideoFile.damId"
+											[isPublishedToPartnerGroups]="saveVideoFile?.publishedToPartnerGroups"
+											[selectedTeamMemberIds]="saveVideoFile?.partnerIds"
+											[selectedPartnershipIds]="saveVideoFile?.partnershipIds"
+											[selectedPartnerGroupIds]="saveVideoFile?.partnerGroupIds"
+											[isAssetPublishedEmailNotification]="isAssetPublishedEmailNotification"
+											(partnerCompanyAndGroupsEventEmitter)="receivePartnerCompanyAndGroupsEventEmitterData($event)"></app-partner-company-and-groups>
 									</div>
 									<!---XNFR-255-->
 								</div>
@@ -329,15 +421,19 @@
 						<!-- END SAMPLE FORM PORTLET-->
 
 						<!-- BEGIN Customize FORM PORTLET-->
-						<div class="portlet box blue"  [class.inactiveDiv]="enableCalltoAction && !(lowerTextValid && upperTextValid)">
-							<div class="portlet-title" [ngClass]="{'activeDiv':!colorControl , 'inactiveDiv' :colorControl}" (click)="colorControlChange();">
+						<div class="portlet box blue"
+							[class.inactiveDiv]="enableCalltoAction && !(lowerTextValid && upperTextValid)">
+							<div class="portlet-title"
+								[ngClass]="{'activeDiv':!colorControl , 'inactiveDiv' :colorControl}"
+								(click)="colorControlChange();">
 								<div class="col-xs-12 caption p01">
 									<div class="col-xs-11 p01">
 										<h4 class="p01" translate>Video Player Appearance </h4>
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>
-											<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !colorControl, 'fa-angle-up': colorControl}"></i>
+											<i class="fa iconSize" aria-hidden="true"
+												[ngClass]="{'fa-angle-down': !colorControl, 'fa-angle-up': colorControl}"></i>
 										</a>
 									</div>
 								</div>
@@ -346,266 +442,431 @@
 								<div class="portlet-body form" data-initialized="1" style="width: auto; height: auto">
 									<div class="form-body">
 										<div class="form-group">
-											<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px" translate>Default Settings:</label>
+											<label class="col-xs-5 col-sm-5 col-md-5 control-label"
+												style="margin-top:-6px" translate>Default Settings:</label>
 											<div class="col-xs-7 col-sm-7 col-md-7">
-												<switch [status]="defaultSettingValue" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-												 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-												 (statusChange)="defaultPlayerSettingsValues($event)">
+												<switch [status]="defaultSettingValue"
+													[onText]="callActionSwitch.onTextValue"
+													[offText]="callActionSwitch.offTextValue"
+													[onColor]="callActionSwitch.onGreenColorSwitch"
+													[offColor]="callActionSwitch.onDefaultColorSwitch"
+													[size]="callActionSwitch.size"
+													(statusChange)="defaultPlayerSettingsValues($event)">
 												</switch>
 											</div>
 										</div>
 										<div>
 											<div class="form-group">
-												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px" translate>Player Color:</label>
-												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
-													<input [hidden]="disablePlayerSettingnew || !newEnableController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
-													 (colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" [cpPosition]="'bottom'" class="field-border-customization"
-                           [cpWidth]="'200px'" [cpHeight]="'265px'" />
-                          <input [hidden]="!disablePlayerSettingnew && newEnableController" [(ngModel)]="compPlayerColor" [ngModelOptions]="{standalone: true}" [style.background]="compPlayerColor" [class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController" />
-													<i class="fa fa-question-circle pull-left" style="cursor:pointer;margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" data-toggle="tooltip"
-													 data-placement="left" title="Click to change"></i>
+												<label class="col-xs-5 col-sm-5 col-md-5 control-label"
+													style="margin-top:-6px" translate>Player Color:</label>
+												<div class="col-xs-7 col-sm-7 col-md-7"
+													[class.disablePlayerValues]="disablePlayerSettingnew">
+													<input [hidden]="disablePlayerSettingnew || !newEnableController"
+														[(colorPicker)]="compPlayerColor"
+														[style.background]="compPlayerColor"
+														formControlName="playerColor" [value]="compPlayerColor"
+														(colorPickerChange)="changePlayerColor($event)"
+														[class.disablePlayerValues]="disablePlayerSettingnew"
+														[cpPosition]="'bottom'" class="field-border-customization"
+														[cpWidth]="'200px'" [cpHeight]="'265px'" />
+													<input [hidden]="!disablePlayerSettingnew && newEnableController"
+														[(ngModel)]="compPlayerColor"
+														[ngModelOptions]="{standalone: true}"
+														[style.background]="compPlayerColor"
+														[class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController" />
+													<i class="fa fa-question-circle pull-left"
+														style="cursor:pointer;margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;"
+														data-toggle="tooltip" data-placement="left"
+														title="Click to change"></i>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-5px" translate>Enable Video Controller:</label>
+												<label class="col-xs-5 col-sm-5 col-md-5 control-label"
+													style="margin-top:-5px" translate>Enable Video Controller:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7">
-													<switch [status]="newEnableController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-													 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-													 [disabled]="disablePlayerSettingnew" (statusChange)="enableVideoControllers($event)">
+													<switch [status]="newEnableController"
+														[onText]="callActionSwitch.onTextValue"
+														[offText]="callActionSwitch.offTextValue"
+														[onColor]="callActionSwitch.onGreenColorSwitch"
+														[offColor]="callActionSwitch.onDefaultColorSwitch"
+														[size]="callActionSwitch.size"
+														[disabled]="disablePlayerSettingnew"
+														(statusChange)="enableVideoControllers($event)">
 													</switch>
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px" translate>Controller Color:</label>
-												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
-													<input [hidden]="disablePlayerSettingnew || !newEnableController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" (colorPickerChange)="changeControllerColor($event, newEnableController)"
-													 formControlName="controllerColor" [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew" class="field-border-customization"
-                           [cpPosition]="'bottom'" [cpWidth]="'200px'" [cpHeight]="'265px'" />
-                          <input [hidden]="!disablePlayerSettingnew && newEnableController" [(ngModel)]="compControllerColor" [ngModelOptions]="{standalone: true}" [style.background]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController" />
-													<i class="fa fa-question-circle pull-left" style="cursor:pointer; margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;" data-toggle="tooltip"
-													 data-placement="left" title="Click to change"></i>
+												<label class="col-xs-5 col-sm-5 col-md-5 control-label"
+													style="margin-top:-6px" translate>Controller Color:</label>
+												<div class="col-xs-7 col-sm-7 col-md-7"
+													[class.disablePlayerValues]="disablePlayerSettingnew">
+													<input [hidden]="disablePlayerSettingnew || !newEnableController"
+														[(colorPicker)]="compControllerColor"
+														[style.background]="compControllerColor"
+														(colorPickerChange)="changeControllerColor($event, newEnableController)"
+														formControlName="controllerColor" [value]="compControllerColor"
+														[class.disablePlayerValues]="disablePlayerSettingnew"
+														class="field-border-customization" [cpPosition]="'bottom'"
+														[cpWidth]="'200px'" [cpHeight]="'265px'" />
+													<input [hidden]="!disablePlayerSettingnew && newEnableController"
+														[(ngModel)]="compControllerColor"
+														[ngModelOptions]="{standalone: true}"
+														[style.background]="compControllerColor"
+														[class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController" />
+													<i class="fa fa-question-circle pull-left"
+														style="cursor:pointer; margin-top: 4px;margin-left: -19px;color:#3598dc;font-size: 18px;"
+														data-toggle="tooltip" data-placement="left"
+														title="Click to change"></i>
 												</div>
 											</div>
 											<div class="form-group">
-												<div class="col-xs-5 control-label" style="font-size:14px;position: relative;top: -6px;" translate>Transparency:</div>
+												<div class="col-xs-5 control-label"
+													style="font-size:14px;position: relative;top: -6px;" translate>
+													Transparency:</div>
 												<div class="col-xs-7 p0">
 													<div class="col-xs-10 col-sm-6 col-md-6">
-														<input type="range" id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 104%;" [class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController"
-														 (input)="transperancyControllBar(Transvalue.value)" #Transvalue>
+														<input type="range" id="rangeValue" min="0" max="100"
+															value="{{valueRange}}" style="width: 104%;"
+															[class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController"
+															(input)="transperancyControllBar(Transvalue.value)"
+															#Transvalue>
 													</div>
 													<div class="col-xs-2 col-sm-3 col-md-3 p0">{{valueRange}}</div>
 												</div>
 											</div>
 											<!-- co branding video logo -->
 											<div class="form-group">
-													<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-5px" translate>Enable Video Logo & Url:</label>
-													<div class="col-xs-7 col-sm-7 col-md-7">
-														<switch [status]="enableVideoLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-														 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-														 [disabled]="disablePlayerSettingnew" (statusChange)="isEnableVideoLogo($event)">
-														</switch>
-													</div>
+												<label class="col-xs-5 col-sm-5 col-md-5 control-label"
+													style="margin-top:-5px" translate>Enable Video Logo & Url:</label>
+												<div class="col-xs-7 col-sm-7 col-md-7">
+													<switch [status]="enableVideoLogo"
+														[onText]="callActionSwitch.onTextValue"
+														[offText]="callActionSwitch.offTextValue"
+														[onColor]="callActionSwitch.onGreenColorSwitch"
+														[offColor]="callActionSwitch.onDefaultColorSwitch"
+														[size]="callActionSwitch.size"
+														[disabled]="disablePlayerSettingnew"
+														(statusChange)="isEnableVideoLogo($event)">
+													</switch>
 												</div>
-												<div [hidden]="!enableVideoLogo" id="fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="form-group" [class.disabledCss]="!enableVideoLogo">
-												<label class="col-xs-5 control-label" translate>Video Logo:<font *ngIf="!brandLogoUrl" style="color: red"><b>*</b></font></label>
+											</div>
+											<div [hidden]="!enableVideoLogo" id="fileLogoSelectedid"
+												*ngIf="!disablePlayerSettingnew" class="form-group"
+												[class.disabledCss]="!enableVideoLogo">
+												<label class="col-xs-5 control-label" translate>Video Logo:<font
+														*ngIf="!brandLogoUrl" style="color: red"><b>*</b></font></label>
 												<div class="col-xs-7">
-													 <span class="btn btn-css btn-file" *ngIf="!brandLogoUrl" translate>Select Logo
-													  <input type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png" class="btn btn-primary"
-													   style="background: #00a6e8;width: 100%;" title=" " (change)="isFileCheck($event)">
-                           </span>
-													<div *ngIf="brandLogoUrl" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0">
-														<span class="logo-rmv" (click)="clearLogo()"><i class="fa fa-times-circle"></i> </span>
-														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl"  (error)="errorHandler($event)">
-                          </div>
+													<span class="btn btn-css btn-file" *ngIf="!brandLogoUrl"
+														translate>Select Logo
+														<input type="file" ng2FileSelect [uploader]="videoLogoUploader"
+															accept=".jpg,.jpeg,.png" class="btn btn-primary"
+															style="background: #00a6e8;width: 100%;" title=" "
+															(change)="isFileCheck($event)">
+													</span>
+													<div *ngIf="brandLogoUrl"
+														class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0">
+														<span class="logo-rmv" (click)="clearLogo()"><i
+																class="fa fa-times-circle"></i> </span>
+														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl"
+															(error)="errorHandler($event)">
+													</div>
 													<div *ngIf="!brandLogoUrl" style="height: 11px;">
-                              <span style="color:red" translate>Please upload a logo</span>
-                              <p style="color: blue;" translate>Note:Max image size 10 MB</p>
+														<span style="color:red" translate>Please upload a logo</span>
+														<p style="color: blue;" translate>Note:Max image size 10 MB</p>
 													</div>
 												</div>
 											</div>
-											<div [hidden]="!enableVideoLogo" *ngIf="!disablePlayerSettingnew" class="form-group" style="position: relative;top:11px;" [class.disabledCss]="!enableVideoLogo">
-												<label class="col-xs-5 control-label" style="position: relative;top:-7px;" translate>Video Logo URL:<font *ngIf="!logoDescriptionUrl" style="color: red"><b>*</b></font></label>
+											<div [hidden]="!enableVideoLogo" *ngIf="!disablePlayerSettingnew"
+												class="form-group" style="position: relative;top:11px;"
+												[class.disabledCss]="!enableVideoLogo">
+												<label class="col-xs-5 control-label"
+													style="position: relative;top:-7px;" translate>Video Logo URL:<font
+														*ngIf="!logoDescriptionUrl" style="color: red"><b>*</b></font>
+												</label>
 												<div class="col-xs-7">
-													<input type="text" style="width: 90%;" [(ngModel)]="logoDescriptionUrl" [ngModelOptions]="{standalone: true}" placeholder="URL for Video logo link" #val
-                           (input)="logoDescription(val.value)" class="field-border-customization">
-                           <span *ngIf="!logoDescriptionUrl" style="color:red" translate>please add the video logo url</span>
+													<input type="text" style="width: 90%;"
+														[(ngModel)]="logoDescriptionUrl"
+														[ngModelOptions]="{standalone: true}"
+														placeholder="URL for Video logo link" #val
+														(input)="logoDescription(val.value)"
+														class="field-border-customization">
+													<span *ngIf="!logoDescriptionUrl" style="color:red" translate>please
+														add the video logo url</span>
 												</div>
 											</div>
-											<div  [hidden]="!enableVideoLogo" *ngIf="disablePlayerSettingnew && brandLogoUrl" class="form-group">
+											<div [hidden]="!enableVideoLogo"
+												*ngIf="disablePlayerSettingnew && brandLogoUrl" class="form-group">
 												<label class="col-xs-5 control-label" translate>Video Logo:</label>
 												<div class="col-xs-7" [class.disabledCss]="enableVideoLogo">
-													<div *ngIf="brandLogoUrl" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0">
-														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="opacity: 0.5;">
+													<div *ngIf="brandLogoUrl"
+														class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0">
+														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl"
+															style="opacity: 0.5;">
 													</div>
 												</div>
 											</div>
-											<div [hidden]="!enableVideoLogo" *ngIf="disablePlayerSettingnew && logoDescriptionUrl" class="form-group" >
+											<div [hidden]="!enableVideoLogo"
+												*ngIf="disablePlayerSettingnew && logoDescriptionUrl"
+												class="form-group">
 												<label class="col-xs-5 control-label" translate>Video Logo URL:</label>
 												<div class="col-xs-7" [class.disabledCss]="enableVideoLogo">
-													<p style="position: relative;top: 8px;opacity: 0.5;">{{logoDescriptionUrl}}</p>
+													<p style="position: relative;top: 8px;opacity: 0.5;">
+														{{logoDescriptionUrl}}</p>
 												</div>
-                      </div>
-                       <div class="lineplayercontrol"></div> 
-                     <div style="text-align: center;margin-top: -17px;font-size: 17px;">
-						<span style="text-align: center;" translate>Video Player Controls</span>
-					 </div>
-					  <div class="form-group" style="padding-top: 10px;">
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Sharing:</label>
-                        <div class="col-xs-6 col-sm-3 col-md-3">
-                          <switch [status]="newAllowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-                           (statusChange)="allowSharing($event)">
-                          </switch>
-                        </div>
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Settings:</label>
-                        <div class="col-xs-6 col-sm-3 col-md-3">
-                          <switch [status]="newEnableSetting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
-                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-                           (statusChange)="enableSettings($event)">
-                          </switch>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Fullscreen:</label>
-                        <div class="col-xs-6 col-sm-3 col-md-3">
-                          <switch [status]="newFullScreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-                           (statusChange)="changeFullscreen($event)">
-                          </switch>
-                        </div>
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Comments:</label>
-                        <div class="col-xs-6 col-sm-3 col-md-3">
-                          <switch [status]="newComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-                           (statusChange)="allowComments($event)">
-                          </switch>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Likes:</label>
-                        <div class="col-xs-6 col-sm-3 col-md-3">
-                          <switch [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-                           (statusChange)="allowLikes($event)">
-                          </switch>
-                        </div>
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Casting:</label>
-                        <div class="col-xs-6 col-sm-3 col-md-3">
-                          <switch [status]="newEnableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onYellowColorSwitch"
-                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-                           (statusChange)="enableCastings($event)">
-                          </switch>
-                        </div>
+											</div>
+											<div class="lineplayercontrol"></div>
+											<div style="text-align: center;margin-top: -17px;font-size: 17px;">
+												<span style="text-align: center;" translate>Video Player Controls</span>
+											</div>
+											<div class="form-group" style="padding-top: 10px;">
+												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
+													Sharing:</label>
+												<div class="col-xs-6 col-sm-3 col-md-3">
+													<switch [status]="newAllowSharing"
+														[onText]="callActionSwitch.onTextValue"
+														[offText]="callActionSwitch.offTextValue"
+														[onColor]="callActionSwitch.onGreenColorSwitch"
+														[offColor]="callActionSwitch.onDefaultColorSwitch"
+														[size]="callActionSwitch.size"
+														[disabled]="disablePlayerSettingnew"
+														(statusChange)="allowSharing($event)">
+													</switch>
+												</div>
+												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable
+													Settings:</label>
+												<div class="col-xs-6 col-sm-3 col-md-3">
+													<switch [status]="newEnableSetting"
+														[onText]="callActionSwitch.onTextValue"
+														[offText]="callActionSwitch.offTextValue"
+														[onColor]="callActionSwitch.onRedColorSwitch"
+														[offColor]="callActionSwitch.onDefaultColorSwitch"
+														[size]="callActionSwitch.size"
+														[disabled]="disablePlayerSettingnew"
+														(statusChange)="enableSettings($event)">
+													</switch>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
+													Fullscreen:</label>
+												<div class="col-xs-6 col-sm-3 col-md-3">
+													<switch [status]="newFullScreen"
+														[onText]="callActionSwitch.onTextValue"
+														[offText]="callActionSwitch.offTextValue"
+														[onColor]="callActionSwitch.onSkyBlueColorSwitch"
+														[offColor]="callActionSwitch.onDefaultColorSwitch"
+														[size]="callActionSwitch.size"
+														[disabled]="disablePlayerSettingnew"
+														(statusChange)="changeFullscreen($event)">
+													</switch>
+												</div>
+												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
+													Comments:</label>
+												<div class="col-xs-6 col-sm-3 col-md-3">
+													<switch [status]="newComments"
+														[onText]="callActionSwitch.onTextValue"
+														[offText]="callActionSwitch.offTextValue"
+														[onColor]="callActionSwitch.onSkyBlueColorSwitch"
+														[offColor]="callActionSwitch.onDefaultColorSwitch"
+														[size]="callActionSwitch.size"
+														[disabled]="disablePlayerSettingnew"
+														(statusChange)="allowComments($event)">
+													</switch>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
+													Likes:</label>
+												<div class="col-xs-6 col-sm-3 col-md-3">
+													<switch [status]="newAllowLikes"
+														[onText]="callActionSwitch.onTextValue"
+														[offText]="callActionSwitch.offTextValue"
+														[onColor]="callActionSwitch.onSkyBlueColorSwitch"
+														[offColor]="callActionSwitch.onDefaultColorSwitch"
+														[size]="callActionSwitch.size"
+														[disabled]="disablePlayerSettingnew"
+														(statusChange)="allowLikes($event)">
+													</switch>
+												</div>
+												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable
+													Casting:</label>
+												<div class="col-xs-6 col-sm-3 col-md-3">
+													<switch [status]="newEnableCasting"
+														[onText]="callActionSwitch.onTextValue"
+														[offText]="callActionSwitch.offTextValue"
+														[onColor]="callActionSwitch.onYellowColorSwitch"
+														[offColor]="callActionSwitch.onDefaultColorSwitch"
+														[size]="callActionSwitch.size"
+														[disabled]="disablePlayerSettingnew"
+														(statusChange)="enableCastings($event)">
+													</switch>
+												</div>
 
-                      </div>
-                      <div class="form-group">
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Embed:</label>
-                        <div class="col-xs-6 col-sm-3 col-md-3">
-                          <switch [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
-                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-                           (statusChange)="allowEmbedVideo($event)">
-                          </switch>
-                        </div>
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>360 video:</label>
-                        <div class="col-xs-6 col-sm-3 col-md-3">
-                          <switch [status]="newValue360" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onBlueColorSwitch"
-                           [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-                           (statusChange)="is360VideoCheck($event)">
-                          </switch>
-                        </div>
-                      </div>
+											</div>
+											<div class="form-group">
+												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
+													Embed:</label>
+												<div class="col-xs-6 col-sm-3 col-md-3">
+													<switch [status]="newAllowEmbed"
+														[onText]="callActionSwitch.onTextValue"
+														[offText]="callActionSwitch.offTextValue"
+														[onColor]="callActionSwitch.onRedColorSwitch"
+														[offColor]="callActionSwitch.onDefaultColorSwitch"
+														[size]="callActionSwitch.size"
+														[disabled]="disablePlayerSettingnew"
+														(statusChange)="allowEmbedVideo($event)">
+													</switch>
+												</div>
+												<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>360
+													video:</label>
+												<div class="col-xs-6 col-sm-3 col-md-3">
+													<switch [status]="newValue360"
+														[onText]="callActionSwitch.onTextValue"
+														[offText]="callActionSwitch.offTextValue"
+														[onColor]="callActionSwitch.onBlueColorSwitch"
+														[offColor]="callActionSwitch.onDefaultColorSwitch"
+														[size]="callActionSwitch.size"
+														[disabled]="disablePlayerSettingnew"
+														(statusChange)="is360VideoCheck($event)">
+													</switch>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="portlet box red" *ngIf="false">
-							<div class="portlet-title" [ngClass]="{'activeDiv':!controlPlayers , 'inactiveDiv' :controlPlayers}" (click)="controlPlayerChange();">
+							<div class="portlet-title"
+								[ngClass]="{'activeDiv':!controlPlayers , 'inactiveDiv' :controlPlayers}"
+								(click)="controlPlayerChange();">
 								<div class="col-xs-12 caption p01">
 									<div class="col-xs-11 p01">
 										<h4 class="p01" translate>Video Player Controls</h4>
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>
-											<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !controlPlayers, 'fa-angle-up': controlPlayers}"></i>
+											<i class="fa iconSize" aria-hidden="true"
+												[ngClass]="{'fa-angle-down': !controlPlayers, 'fa-angle-up': controlPlayers}"></i>
 										</a>
 									</div>
 								</div>
 							</div>
 							<div class="portlet-body form" *ngIf="controlPlayers" [@fadeInOut]>
-								<div class="portlet-body form" data-initialized="1" style="overflow: hidden; width: auto; height: auto">
+								<div class="portlet-body form" data-initialized="1"
+									style="overflow: hidden; width: auto; height: auto">
 									<div class="form-body">
-                    	<div class="form-group">
-                          <label class="col-xs-6 control-label" style="margin-top:-6px" translate>Default Settings:</label>
-                          <div class="col-xs-6">
-                            <switch [status]="defaultSettingValue" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                             [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                             (statusChange)="defaultPlayerSettingsValues($event)">
-                            </switch>
-                          </div>
-                        </div>
 										<div class="form-group">
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Sharing:</label>
-											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newAllowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												 (statusChange)="allowSharing($event)">
-												</switch>
-											</div>
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Settings:</label>
-											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newEnableSetting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												 (statusChange)="enableSettings($event)">
+											<label class="col-xs-6 control-label" style="margin-top:-6px"
+												translate>Default Settings:</label>
+											<div class="col-xs-6">
+												<switch [status]="defaultSettingValue"
+													[onText]="callActionSwitch.onTextValue"
+													[offText]="callActionSwitch.offTextValue"
+													[onColor]="callActionSwitch.onGreenColorSwitch"
+													[offColor]="callActionSwitch.onDefaultColorSwitch"
+													[size]="callActionSwitch.size"
+													(statusChange)="defaultPlayerSettingsValues($event)">
 												</switch>
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Fullscreen:</label>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
+												Sharing:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newFullScreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												 (statusChange)="changeFullscreen($event)">
+												<switch [status]="newAllowSharing"
+													[onText]="callActionSwitch.onTextValue"
+													[offText]="callActionSwitch.offTextValue"
+													[onColor]="callActionSwitch.onGreenColorSwitch"
+													[offColor]="callActionSwitch.onDefaultColorSwitch"
+													[size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+													(statusChange)="allowSharing($event)">
 												</switch>
 											</div>
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Comments:</label>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable
+												Settings:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												 (statusChange)="allowComments($event)">
+												<switch [status]="newEnableSetting"
+													[onText]="callActionSwitch.onTextValue"
+													[offText]="callActionSwitch.offTextValue"
+													[onColor]="callActionSwitch.onRedColorSwitch"
+													[offColor]="callActionSwitch.onDefaultColorSwitch"
+													[size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+													(statusChange)="enableSettings($event)">
 												</switch>
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Likes:</label>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
+												Fullscreen:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												 (statusChange)="allowLikes($event)">
+												<switch [status]="newFullScreen" [onText]="callActionSwitch.onTextValue"
+													[offText]="callActionSwitch.offTextValue"
+													[onColor]="callActionSwitch.onSkyBlueColorSwitch"
+													[offColor]="callActionSwitch.onDefaultColorSwitch"
+													[size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+													(statusChange)="changeFullscreen($event)">
 												</switch>
 											</div>
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Casting:</label>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
+												Comments:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newEnableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onYellowColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												 (statusChange)="enableCastings($event)">
+												<switch [status]="newComments" [onText]="callActionSwitch.onTextValue"
+													[offText]="callActionSwitch.offTextValue"
+													[onColor]="callActionSwitch.onSkyBlueColorSwitch"
+													[offColor]="callActionSwitch.onDefaultColorSwitch"
+													[size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+													(statusChange)="allowComments($event)">
+												</switch>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
+												Likes:</label>
+											<div class="col-xs-6 col-sm-3 col-md-3">
+												<switch [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue"
+													[offText]="callActionSwitch.offTextValue"
+													[onColor]="callActionSwitch.onSkyBlueColorSwitch"
+													[offColor]="callActionSwitch.onDefaultColorSwitch"
+													[size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+													(statusChange)="allowLikes($event)">
+												</switch>
+											</div>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable
+												Casting:</label>
+											<div class="col-xs-6 col-sm-3 col-md-3">
+												<switch [status]="newEnableCasting"
+													[onText]="callActionSwitch.onTextValue"
+													[offText]="callActionSwitch.offTextValue"
+													[onColor]="callActionSwitch.onYellowColorSwitch"
+													[offColor]="callActionSwitch.onDefaultColorSwitch"
+													[size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+													(statusChange)="enableCastings($event)">
 												</switch>
 											</div>
 
 										</div>
 										<div class="form-group">
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Embed:</label>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow
+												Embed:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												 (statusChange)="allowEmbedVideo($event)">
+												<switch [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue"
+													[offText]="callActionSwitch.offTextValue"
+													[onColor]="callActionSwitch.onRedColorSwitch"
+													[offColor]="callActionSwitch.onDefaultColorSwitch"
+													[size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+													(statusChange)="allowEmbedVideo($event)">
 												</switch>
 											</div>
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>360 video:</label>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>360
+												video:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
-												<switch [status]="newValue360" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onBlueColorSwitch"
-												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
-												 (statusChange)="is360VideoCheck($event)">
+												<switch [status]="newValue360" [onText]="callActionSwitch.onTextValue"
+													[offText]="callActionSwitch.offTextValue"
+													[onColor]="callActionSwitch.onBlueColorSwitch"
+													[offColor]="callActionSwitch.onDefaultColorSwitch"
+													[size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
+													(statusChange)="is360VideoCheck($event)">
 												</switch>
 											</div>
 										</div>
@@ -614,25 +875,33 @@
 							</div>
 						</div>
 						<div class="portlet box yellow" id="callaction">
-							<div class="portlet-title" (click)="callToActionChange();" [ngClass]="{'activeDiv':!callaction , 'inactiveDiv' :callaction}">
+							<div class="portlet-title" (click)="callToActionChange();"
+								[ngClass]="{'activeDiv':!callaction , 'inactiveDiv' :callaction}">
 								<div class="col-xs-12 caption p01">
 									<div class="col-xs-11 p01">
 										<h4 class="p01" translate>Call to Action</h4>
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>
-											<i class="fa iconSize" aria-hidden="true" [ngClass]="{'fa-angle-down': !callaction, 'fa-angle-up': callaction}"></i>
+											<i class="fa iconSize" aria-hidden="true"
+												[ngClass]="{'fa-angle-down': !callaction, 'fa-angle-up': callaction}"></i>
 										</a>
 									</div>
 								</div>
 							</div>
-							<div class="portlet-body form" *ngIf="callaction" [@fadeInOut] style="padding: 12px !important;">
+							<div class="portlet-body form" *ngIf="callaction" [@fadeInOut]
+								style="padding: 12px !important;">
 								<div class="form-group">
 									<label class="col-xs-6 control-label" translate>Enable Call To Action:</label>
 									<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 										<div>
-											<switch [status]="enableCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
-											 [offColor]="callActionSwitch.onYellowColorSwitch" [size]="callActionSwitch.size" (statusChange)="enableCallToActionMethodTest($event)">
+											<switch [status]="enableCalltoAction"
+												[onText]="callActionSwitch.onTextValue"
+												[offText]="callActionSwitch.offTextValue"
+												[onColor]="callActionSwitch.onGreenColorSwitch"
+												[offColor]="callActionSwitch.onYellowColorSwitch"
+												[size]="callActionSwitch.size"
+												(statusChange)="enableCallToActionMethodTest($event)">
 											</switch>
 										</div>
 									</div>
@@ -641,35 +910,47 @@
 									<hr style="margin: 0px 2px;">
 								</div>
 								<div class="form-group" style="padding: 1em">
-									<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label" translate>Call To Action At:</label>
+									<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label" translate>Call To
+										Action At:</label>
 									<div class="col-xs-5 col-sm-4 col-md-4 col-lg-4">
 										<div>
 											<label translate> Start of the video</label>
-											<switch [status]="callAction.startCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											 [onColor]="callActionSwitch.onBlueColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [disabled]="!enableCalltoAction"
-											 [size]="callActionSwitch.bsize" (statusChange)="startCallToactionOverlay($event)">
+											<switch [status]="callAction.startCalltoAction"
+												[onText]="callActionSwitch.onTextValue"
+												[offText]="callActionSwitch.offTextValue"
+												[onColor]="callActionSwitch.onBlueColorSwitch"
+												[offColor]="callActionSwitch.onDefaultColorSwitch"
+												[disabled]="!enableCalltoAction" [size]="callActionSwitch.bsize"
+												(statusChange)="startCallToactionOverlay($event)">
 											</switch>
 										</div>
 									</div>
-									<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="padding: 1em; left: -21px;" translate>(Or)</div>
+									<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="padding: 1em; left: -21px;"
+										translate>(Or)</div>
 									<div class="col-xs-5 col-sm-4 col-md-4 col-lg-4">
 										<div>
 											<label translate>End of the video</label>
-											<switch [status]="callAction.endCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											 [onColor]="callActionSwitch.onBlueColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [disabled]="!enableCalltoAction"
-											 [size]="callActionSwitch.bsize" (statusChange)="endCallToactionOverlay($event)">
+											<switch [status]="callAction.endCalltoAction"
+												[onText]="callActionSwitch.onTextValue"
+												[offText]="callActionSwitch.offTextValue"
+												[onColor]="callActionSwitch.onBlueColorSwitch"
+												[offColor]="callActionSwitch.onDefaultColorSwitch"
+												[disabled]="!enableCalltoAction" [size]="callActionSwitch.bsize"
+												(statusChange)="endCallToactionOverlay($event)">
 											</switch>
 										</div>
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-xs-5 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px" translate>Options:</label>
+									<label class="col-xs-5 col-sm-3 col-md-3 col-lg-3 control-label"
+										style="margin-top:-6px" translate>Options:</label>
 									<div class="col-xs-7 col-sm-9 col-md-9 col-lg-9">
 										<div class="checkbox-list">
 											<label translate>
 												<div style="float: left;margin-right: 10px;cursor:pointer">
 													<span>
-														<input class="checkBox_shadow" id="names" type="checkbox" formControlName="name" (change)="callToActionNames()">
+														<input class="checkBox_shadow" id="names" type="checkbox"
+															formControlName="name" (change)="callToActionNames()">
 													</span>
 												</div> Ask for First and Last name
 											</label>
@@ -677,13 +958,16 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-xs-5 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px"></label>
+									<label class="col-xs-5 col-sm-3 col-md-3 col-lg-3 control-label"
+										style="margin-top:-6px"></label>
 									<div class="col-xs-7 col-sm-9 col-md-9 col-lg-9">
 										<div class="checkbox-list">
 											<label translate>
 												<div style="float: left;margin-right: 10px; cursor:pointer">
 													<span>
-														<input class="checkBox_shadow" id="isSkiped" type="checkbox" formControlName="skip" (change)="allowViewersToSkipped()" #isSkip>
+														<input class="checkBox_shadow" id="isSkiped" type="checkbox"
+															formControlName="skip" (change)="allowViewersToSkipped()"
+															#isSkip>
 													</span>
 												</div> Allow viewers to skip
 											</label>
@@ -691,31 +975,45 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px" translate>Upper Text:
-										<font *ngIf="upperTextValid == false" style="color: red; font-size: 19px;position: absolute;">
+									<label class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label"
+										style="margin-top:-6px" translate>Upper Text:
+										<font *ngIf="upperTextValid == false"
+											style="color: red; font-size: 19px;position: absolute;">
 											<b>*</b>
 										</font>
 									</label>
 									<div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
-										<textarea id="upperValue" class="heading-top" formControlName="upperText" (input)="changeUpperText(uppertext.value)" style="width: 100%; height: 52px; min-height: 52px; max-height:70px;"
-										 placeholder="Hey I am here!" maxlength="75" #uppertext></textarea>
-										<label style="float:right; font-size: 11px;position: absolute;right: 21px;bottom: 2px;color: #7b8894;">{{characterleft}} characters left</label>
-                    <span *ngIf="!upperTextValid" style="color: red;" translate>Please fill the upper text.</span>
-                  </div>
+										<textarea id="upperValue" class="heading-top" formControlName="upperText"
+											(input)="changeUpperText(uppertext.value)"
+											style="width: 100%; height: 52px; min-height: 52px; max-height:70px;"
+											placeholder="Hey I am here!" maxlength="75" #uppertext></textarea>
+										<label
+											style="float:right; font-size: 11px;position: absolute;right: 21px;bottom: 2px;color: #7b8894;">{{characterleft}}
+											characters left</label>
+										<span *ngIf="!upperTextValid" style="color: red;" translate>Please fill the
+											upper text.</span>
+									</div>
 
 								</div>
 								<div class="form-group">
-									<label class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px" translate>Lower Text:
-										<font *ngIf="lowerTextValid == false" style="color: red; font-size: 19px;position: absolute;">
+									<label class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label"
+										style="margin-top:-6px" translate>Lower Text:
+										<font *ngIf="lowerTextValid == false"
+											style="color: red; font-size: 19px;position: absolute;">
 											<b>*</b>
 										</font>
 									</label>
 									<div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
-										<textarea id="lowerValue" class="heading-top" type="text" formControlName="lowerText" (input)="changeLowerText(lowertext.value)" style="width: 100%; height: 52px;min-height: 52px; max-height:70px;"
-										 placeholder="Hey I am here!" maxlength="50" #lowertext></textarea>
-										<label style="float:right; font-size: 11px;position: absolute;right: 21px;bottom: 2px;color:#7b8894">{{lowerCharacterleft}} characters left</label>
-                    <span *ngIf="!lowerTextValid" style="color: red;" translate>Please fill the lower text.</span>
-                  </div>
+										<textarea id="lowerValue" class="heading-top" type="text"
+											formControlName="lowerText" (input)="changeLowerText(lowertext.value)"
+											style="width: 100%; height: 52px;min-height: 52px; max-height:70px;"
+											placeholder="Hey I am here!" maxlength="50" #lowertext></textarea>
+										<label
+											style="float:right; font-size: 11px;position: absolute;right: 21px;bottom: 2px;color:#7b8894">{{lowerCharacterleft}}
+											characters left</label>
+										<span *ngIf="!lowerTextValid" style="color: red;" translate>Please fill the
+											lower text.</span>
+									</div>
 
 								</div>
 							</div>
@@ -738,133 +1036,179 @@
 			<!-- end PROJECT HEAD -->
 			<div *ngIf="!comments">
 				<h2>
-					<pre style="border-radius: 0;color:#3e2525;" translate>Comments are disabled for this video.!! please select allow comments to enable comments !!!</pre>
+					<pre style="border-radius: 0;color:#3e2525;"
+						translate>Comments are disabled for this video.!! please select allow comments to enable comments !!!</pre>
 				</h2>
 			</div>
 			<div class="portlet-body" *ngIf="comments">
 				<div class="row">
 					<div class="col-md-5 col-sm-4">
-						<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 800px;">
-							<div class="scroller" style="max-height: 800px; overflow: hidden; width: auto; height: 800px;" data-always-visible="0" data-rail-visible="0"
-							 data-handle-color="#dae3e7" data-initialized="1">
+						<div class="slimScrollDiv"
+							style="position: relative; overflow: hidden; width: auto; height: 800px;">
+							<div class="scroller"
+								style="max-height: 800px; overflow: hidden; width: auto; height: 800px;"
+								data-always-visible="0" data-rail-visible="0" data-handle-color="#dae3e7"
+								data-initialized="1">
 								<div class="todo-tasklist">
 									<div class="todo-tasklist-item todo-tasklist-item-border-green">
-										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar4.jpg" width="27px" height="27px">
+										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar4.jpg"
+											width="27px" height="27px">
 										<div class="todo-tasklist-item-title" translate>Slider Redesign</div>
-										<div class="todo-tasklist-item-text">Lorem dolor sit amet ipsum dolor sit consectetuer dolore.</div>
+										<div class="todo-tasklist-item-text">Lorem dolor sit amet ipsum dolor sit
+											consectetuer dolore.</div>
 										<div class="todo-tasklist-controls pull-left">
 											<span class="todo-tasklist-date">
 												<i class="fa fa-calendar"></i> 21 Sep 2014 </span>
-											<span class="todo-tasklist-badge badge badge-roundless" translate>Urgent</span>
+											<span class="todo-tasklist-badge badge badge-roundless"
+												translate>Urgent</span>
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-red">
-										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar5.jpg" width="27px" height="27px">
-										<div class="todo-tasklist-item-title" translate>Homepage Alignments to adjust</div>
-										<div class="todo-tasklist-item-text">Lorem ipsum dolor sit amet, consectetuer dolore dolor sit amet.</div>
+										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar5.jpg"
+											width="27px" height="27px">
+										<div class="todo-tasklist-item-title" translate>Homepage Alignments to adjust
+										</div>
+										<div class="todo-tasklist-item-text">Lorem ipsum dolor sit amet, consectetuer
+											dolore dolor sit amet.</div>
 										<div class="todo-tasklist-controls pull-left">
 											<span class="todo-tasklist-date">
 												<i class="fa fa-calendar"></i> 14 Sep 2014 </span>
-											<span class="todo-tasklist-badge badge badge-roundless" translate>Important</span>
+											<span class="todo-tasklist-badge badge badge-roundless"
+												translate>Important</span>
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-green">
-										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar9.jpg" width="27px" height="27px">
+										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar9.jpg"
+											width="27px" height="27px">
 										<div class="todo-tasklist-item-title" translate>Slider Redesign</div>
 										<div class="todo-tasklist-controls pull-left">
 											<span class="todo-tasklist-date">
 												<i class="fa fa-calendar"></i> 10 Feb 2015 </span>
-											<span class="todo-tasklist-badge badge badge-roundless" translate>Important</span>&nbsp;
+											<span class="todo-tasklist-badge badge badge-roundless"
+												translate>Important</span>&nbsp;
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-blue">
-										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar6.jpg" width="27px" height="27px">
-										<div class="todo-tasklist-item-title" translate>Contact Us Map Location changes</div>
-										<div class="todo-tasklist-item-text">Lorem ipsum amet, consectetuer dolore dolor sit amet.</div>
+										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar6.jpg"
+											width="27px" height="27px">
+										<div class="todo-tasklist-item-title" translate>Contact Us Map Location changes
+										</div>
+										<div class="todo-tasklist-item-text">Lorem ipsum amet, consectetuer dolore dolor
+											sit amet.</div>
 										<div class="todo-tasklist-controls pull-left">
 											<span class="todo-tasklist-date">
 												<i class="fa fa-calendar"></i> 04 Oct 2014 </span>
-											<span class="todo-tasklist-badge badge badge-roundless" translate>Postponed</span>&nbsp;
-											<span class="todo-tasklist-badge badge badge-roundless" translate>Test</span>
+											<span class="todo-tasklist-badge badge badge-roundless"
+												translate>Postponed</span>&nbsp;
+											<span class="todo-tasklist-badge badge badge-roundless"
+												translate>Test</span>
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-purple">
-										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar7.jpg" width="27px" height="27px">
+										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar7.jpg"
+											width="27px" height="27px">
 										<div class="todo-tasklist-item-title" translate>Projects list new Forms
 										</div>
-										<div class="todo-tasklist-item-text">Lorem ipsum dolor sit amet, consectetuer dolore psum dolor sit.</div>
+										<div class="todo-tasklist-item-text">Lorem ipsum dolor sit amet, consectetuer
+											dolore psum dolor sit.</div>
 										<div class="todo-tasklist-controls pull-left">
 											<span class="todo-tasklist-date">
 												<i class="fa fa-calendar"></i> 19 Dec 2014 </span>
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-yellow">
-										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar8.jpg" width="27px" height="27px">
+										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar8.jpg"
+											width="27px" height="27px">
 										<div class="todo-tasklist-item-title" translate>New Search Keywords
 										</div>
-										<div class="todo-tasklist-item-text">Lorem ipsum dolor sit amet, consectetuer sit amet ipsum dolor, consectetuer ipsum consectetuer sit amet dolore.</div>
+										<div class="todo-tasklist-item-text">Lorem ipsum dolor sit amet, consectetuer
+											sit amet ipsum dolor, consectetuer ipsum consectetuer sit amet dolore.</div>
 										<div class="todo-tasklist-controls pull-left">
 											<span class="todo-tasklist-date">
 												<i class="fa fa-calendar"></i> 02 Feb 2015 </span>
-											<span class="todo-tasklist-badge badge badge-roundless" translate>Postponed</span>&nbsp;
+											<span class="todo-tasklist-badge badge badge-roundless"
+												translate>Postponed</span>&nbsp;
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-green">
-										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar9.jpg" width="27px" height="27px">
+										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar9.jpg"
+											width="27px" height="27px">
 										<div class="todo-tasklist-item-title" translate>Slider Redesign</div>
 										<div class="todo-tasklist-controls pull-left">
 											<span class="todo-tasklist-date">
 												<i class="fa fa-calendar"></i> 10 Feb 2015 </span>
-											<span class="todo-tasklist-badge badge badge-roundless" translate>Important</span>&nbsp;
+											<span class="todo-tasklist-badge badge badge-roundless"
+												translate>Important</span>&nbsp;
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-red">
-										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar5.jpg" width="27px" height="27px">
-										<div class="todo-tasklist-item-title" translate>Homepage Alignments to adjust</div>
-										<div class="todo-tasklist-item-text">Lorem ipsum dolor sit amet, consectetuer dolore psum dolor sit.</div>
+										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar5.jpg"
+											width="27px" height="27px">
+										<div class="todo-tasklist-item-title" translate>Homepage Alignments to adjust
+										</div>
+										<div class="todo-tasklist-item-text">Lorem ipsum dolor sit amet, consectetuer
+											dolore psum dolor sit.</div>
 										<div class="todo-tasklist-controls pull-left">
 											<span class="todo-tasklist-date">
 												<i class="fa fa-calendar"></i> 14 Sep 2014 </span>
-											<span class="todo-tasklist-badge badge badge-roundless" translate>Important</span>
+											<span class="todo-tasklist-badge badge badge-roundless"
+												translate>Important</span>
 										</div>
 									</div>
 									<div class="todo-tasklist-item todo-tasklist-item-border-blue">
-										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar6.jpg" width="27px" height="27px">
+										<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar6.jpg"
+											width="27px" height="27px">
 										<div class="todo-tasklist-item-title" translate>Contact Us Improvement
 										</div>
-										<div class="todo-tasklist-item-text">Lorem ipsum amet, psum dolor sit consectetuer dolore.</div>
+										<div class="todo-tasklist-item-text">Lorem ipsum amet, psum dolor sit
+											consectetuer dolore.</div>
 										<div class="todo-tasklist-controls pull-left">
 											<span class="todo-tasklist-date">
 												<i class="fa fa-calendar"></i> 21 Feb 2015 </span>
-											<span class="todo-tasklist-badge badge badge-roundless" translate>Postponed</span>&nbsp;
-											<span class="todo-tasklist-badge badge badge-roundless" translate>Primary</span>
+											<span class="todo-tasklist-badge badge badge-roundless"
+												translate>Postponed</span>&nbsp;
+											<span class="todo-tasklist-badge badge badge-roundless"
+												translate>Primary</span>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 551.248923341947px; background: rgb(218, 227, 231);"></div>
-							<div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(234, 234, 234);"></div>
+							<div class="slimScrollBar"
+								style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 551.248923341947px; background: rgb(218, 227, 231);">
+							</div>
+							<div class="slimScrollRail"
+								style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(234, 234, 234);">
+							</div>
 						</div>
 					</div>
 					<div class="todo-tasklist-devider"></div>
 					<div class="col-md-7 col-sm-8">
-						<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 800px;">
-							<div class="scroller" style="max-height: 800px; overflow: hidden; width: auto; height: 800px;" data-always-visible="0" data-rail-visible="0"
-							 data-handle-color="#dae3e7" data-initialized="1">
+						<div class="slimScrollDiv"
+							style="position: relative; overflow: hidden; width: auto; height: 800px;">
+							<div class="scroller"
+								style="max-height: 800px; overflow: hidden; width: auto; height: 800px;"
+								data-always-visible="0" data-rail-visible="0" data-handle-color="#dae3e7"
+								data-initialized="1">
 								<form action="#" class="form-horizontal">
 									<!-- TASK HEAD -->
 									<div class="form">
 										<div class="form-group">
 											<div class="col-md-8 col-sm-8">
 												<div class="todo-taskbody-user">
-													<img class="todo-userpic pull-left" src="assets/admin/layout2/img/avatar6.jpg" width="50px" height="50px">
+													<img class="todo-userpic pull-left"
+														src="assets/admin/layout2/img/avatar6.jpg" width="50px"
+														height="50px">
 													<span class="todo-username pull-left">Vanessa Bond</span>
-													<button type="button" class="todo-username-btn btn btn-circle btn-default btn-xs" translate>&nbsp;edit&nbsp;</button>
+													<button type="button"
+														class="todo-username-btn btn btn-circle btn-default btn-xs"
+														translate>&nbsp;edit&nbsp;</button>
 												</div>
 											</div>
 											<div class="col-md-4 col-sm-4">
 												<div class="todo-taskbody-date pull-right">
-													<button type="button" class="todo-username-btn btn btn-circle btn-default btn-xs" translate>&nbsp; Complete &nbsp;</button>
+													<button type="button"
+														class="todo-username-btn btn btn-circle btn-default btn-xs"
+														translate>&nbsp; Complete &nbsp;</button>
 												</div>
 											</div>
 										</div>
@@ -872,13 +1216,15 @@
 										<!-- TASK TITLE -->
 										<div class="form-group">
 											<div class="col-md-12">
-												<input type="text" class="form-control todo-taskbody-tasktitle" placeholder="Task Title...">
+												<input type="text" class="form-control todo-taskbody-tasktitle"
+													placeholder="Task Title...">
 											</div>
 										</div>
 										<!-- TASK DESC -->
 										<div class="form-group">
 											<div class="col-md-12">
-												<textarea class="form-control todo-taskbody-taskdesc" rows="8" placeholder="Task Description..."></textarea>
+												<textarea class="form-control todo-taskbody-taskdesc" rows="8"
+													placeholder="Task Description..."></textarea>
 											</div>
 										</div>
 										<!-- END TASK DESC -->
@@ -887,27 +1233,34 @@
 											<div class="col-md-12">
 												<div class="input-icon">
 													<i class="fa fa-calendar"></i>
-													<input type="text" class="form-control todo-taskbody-due" placeholder="Due Date...">
+													<input type="text" class="form-control todo-taskbody-due"
+														placeholder="Due Date...">
 												</div>
 											</div>
 										</div>
 										<!-- TASK TAGS -->
 										<div class="form-group">
 											<div class="col-md-12">
-												<div class="select2-container select2-container-multi form-control todo-taskbody-tags" id="s2id_autogen1">
+												<div class="select2-container select2-container-multi form-control todo-taskbody-tags"
+													id="s2id_autogen1">
 													<ul class="select2-choices">
 														<li class="select2-search-choice">
 															<div translate>Pending</div>
-															<a href="#" class="select2-search-choice-close" tabindex="-1"></a>
+															<a href="#" class="select2-search-choice-close"
+																tabindex="-1"></a>
 														</li>
 														<li class="select2-search-choice">
 															<div translate>Requested</div>
-															<a href="#" class="select2-search-choice-close" tabindex="-1"></a>
+															<a href="#" class="select2-search-choice-close"
+																tabindex="-1"></a>
 														</li>
 														<li class="select2-search-field">
-															<label for="s2id_autogen2" class="select2-offscreen"></label>
-															<input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="select2-input"
-															 id="s2id_autogen2" placeholder="" style="width: 20px;">
+															<label for="s2id_autogen2"
+																class="select2-offscreen"></label>
+															<input type="text" autocomplete="off" autocorrect="off"
+																autocapitalize="off" spellcheck="false"
+																class="select2-input" id="s2id_autogen2" placeholder=""
+																style="width: 20px;">
 														</li>
 													</ul>
 													<div class="select2-drop select2-drop-multi select2-display-none">
@@ -915,8 +1268,9 @@
 														</ul>
 													</div>
 												</div>
-												<input type="text" class="form-control todo-taskbody-tags select2-offscreen" placeholder="Tags..." value="Pending, Requested"
-												 tabindex="-1">
+												<input type="text"
+													class="form-control todo-taskbody-tags select2-offscreen"
+													placeholder="Tags..." value="Pending, Requested" tabindex="-1">
 											</div>
 										</div>
 										<!-- TASK TAGS -->

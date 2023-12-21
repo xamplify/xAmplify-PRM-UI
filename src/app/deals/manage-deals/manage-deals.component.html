@@ -123,7 +123,7 @@
       <!-- -----------------------------Deals List-------------------------------------- -->
       <div class="row">
         <div class="col-md-12">
-          <div class="page-bar p10" id="header">
+          <div class="page-bar remove_cardBgcolor padding_0 p10" id="header">
             <div class="portlet-title">
               <div *ngIf="!showCampaignDeals">
                 <!-- XNFR-148 -->
@@ -157,8 +157,8 @@
                       </span>
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
                         (click)="addDeal()" style="padding-left: 11px;">
-                        <button class="button_blue bgcolor-unset" translate>
-                          <span class="btn btn-primary transition"><i class="fa fa-plus" aria-hidden="true"></i> Add a
+                        <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
+                          <span class="btn btn-primary transition d-inline"><i class="fa fa-plus" aria-hidden="true"></i> Add a
                             Deal</span>
                         </button>
                       </a>
@@ -167,10 +167,16 @@
                       <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO'"
                         (click)="syncLeadsWithActiveCRM()">
 
-                        <button class="btn btn-white salesforce-btn button neg-mar-top bgcolor-unset" style="margin-right: -6px;"
+                        <!-- <button class="btn btn-white salesforce-btn button neg-mar-top bgcolor-unset" -->
+                        <button class="btn salesforce-btn button neg-mar-top bgcolor-unset p0 neg-mg-btm btn-transitions"
                           data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
-                          <span class="btn Btn-Green transition"><i class="fa fa-refresh" aria-hidden="true"></i> {{
-                            activeCRMDetails?.type | titlecase }}</span>
+
+                          <span class="btn Btn-Green transition">
+                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                             <span *ngIf="activeCRMDetails?.type==='HUBSPOT'">HubSpot</span>
+                            <span *ngIf="activeCRMDetails?.type!='HUBSPOT'">{{ activeCRMDetails?.type | titlecase }}</span>
+                        </span>
+
                         </button>
                       </a>
 
@@ -213,8 +219,8 @@
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                         <div class="form-group" style="text-align: -webkit-right;">
-                          <button class="button bgcolor-unset" translate="" type="button" ng-reflect-translate="" [disabled]=""
-                            (click)="validateDateFilters()"><span
+                          <button class="button bgcolor-unset" translate="" type="button" ng-reflect-translate=""
+                            [disabled]="" (click)="validateDateFilters()"><span
                               class="btn Btn-Green transition">Filter</span></button>
                         </div>
                       </div>
@@ -292,8 +298,8 @@
                         <ng-container *ngFor='let deal of dealsPagination.pagedItems; let i=index'>
                           <tr>
                             <td style="width: 40%;">
-                              <div>{{deal.title | slice:0:30}}
-                                <span *ngIf="deal.title?.length>30">...</span>
+                              <div><span  data-toggle="tooltip" data-placement="top" title="{{deal.title}}">{{deal.title | slice:0:30}}
+                                <span *ngIf="deal.title?.length>30">...</span></span>
                               </div>
                               <div>
                                 <h5 *ngIf="isPartnerVersion"><b>Added For:</b>
@@ -650,7 +656,7 @@
 
 <section *ngIf="showDealForm">
   <div class="page-content">
-    <a (click)="closeDealForm()" class="pull-right close-circle"
+    <a (click)="closeDealForm()" class="pull-right close-circle mrg1"
       style="margin: 14px 20px;padding-top: 3px;padding-left: 5px;">
       <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
     <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"

@@ -85,9 +85,10 @@
                       </td>
                       <td>{{report.companyName}}</td>
                       <td>
-                        <span *ngIf="report.roleId==2">Org_Admin</span>
+                        <span *ngIf="report.roleId==2">OrgAdmin</span>
                         <span *ngIf="report.roleId==13">Vendor</span>
                         <span *ngIf="report.roleId==20">PRM</span>
+                        <span *ngIf="report.roleId==18">Marketing</span>
                       </td>
                       <td>{{report.userStatus}}</td>
                       <td>

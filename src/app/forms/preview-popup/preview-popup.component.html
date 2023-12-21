@@ -86,11 +86,13 @@
                                                         White-Labeled</h5>
                                                 </ng-container>
                                                 <!---XNFR-255-->
-                                                <h6 class="view-banner" *ngIf="form.formSubType === 'REGULAR'"
-                                                    translate>Regular</h6>
-                                                <h6 class="view-banner" *ngIf="form.formSubType === 'QUIZ'" translate>
+                                                <h6 class="view-banner-forms mb5 white-labeled-width"
+                                                    *ngIf="form.formSubType === 'REGULAR'" translate>Regular</h6>
+                                                <h6 class="view-banner-forms mb5 white-labeled-width"
+                                                    *ngIf="form.formSubType === 'QUIZ'" translate>
                                                     Quiz</h6>
-                                                <h6 class="view-banner" *ngIf="form.formSubType === 'SURVEY'" translate>
+                                                <h6 class="view-banner-forms mb5 white-labeled-width"
+                                                    *ngIf="form.formSubType === 'SURVEY'" translate>
                                                     Survey</h6>
                                             </td>
                                             <td [hidden]="authenticationService.isShowForms">
@@ -100,11 +102,13 @@
                                                             value="{{form.ailasUrl}}" #userinput><br>
                                                     </span>
                                                     <span class="modal-icon ml10" id="custom-margin-{{i}}">
-                                                        <a [hidden]="authenticationService.isShowForms"
+                                                        <a class="custom-icon"
+                                                            [hidden]="authenticationService.isShowForms"
                                                             data-toggle="tooltip" data-placement="top" title="Copy"
                                                             (click)="copyInputMessage(userinput,'Page Link',i)">
                                                             <i class="fa fa-copy IconCustomization campaignViewIcon"
                                                                 aria-hidden="true"></i>
+                                                            <div class="clickicons"></div>
                                                         </a>
                                                     </span>
                                                 </div>
@@ -124,11 +128,13 @@
                                                             #iframeUrlInput>{{form.embedUrl}}</textarea>
                                                     </span>
                                                     <span class="modal-icon cmif ml10" id="cmif-{{i}}">
-                                                        <a [hidden]="authenticationService.isShowForms"
+                                                        <a class="custom-icon"
+                                                            [hidden]="authenticationService.isShowForms"
                                                             data-toggle="tooltip" data-placement="top" title="Copy"
                                                             (click)="copyInputMessage(iframeUrlInput,'Embed Link',i)">
                                                             <i class="fa fa-copy IconCustomization campaignViewIcon"
                                                                 aria-hidden="true"></i>
+                                                            <div class="clickicons"></div>
                                                         </a>
                                                     </span>
                                                 </div>
@@ -141,10 +147,11 @@
                                                 </div>
                                             </td>
                                             <td id="actions-row" style="text-align: center;  vertical-align: middle;">
-                                                <a data-toggle="tooltip" data-placement="top" title="Preview"
-                                                    (click)="previewForm(form.id)">
+                                                <a class="custom-icon" data-toggle="tooltip" data-placement="top"
+                                                    title="Preview" (click)="previewForm(form.id)">
                                                     <i class="fa fa-eye IconCustomization campaignViewIcon"
                                                         aria-hidden="true"></i>
+                                                    <div class="clickicons"></div>
                                                 </a>
                                             </td>
                                         </tr>
@@ -172,11 +179,11 @@
 
             </div>
             <div class="modal-footer">
-                <button data-dismiss="modal" style="float: right"><span class="btn Btn-Gray"
-                        *ngIf="!authenticationService.isShowForms">Close</span></button>
-                <button class="button bgcolor-unset" data-dismiss="modal" style="float: right">
-                    <span class="btn Btn-Green transition"
-                        *ngIf="authenticationService.isShowForms">Submit</span></button>
+                <button *ngIf="!authenticationService.isShowForms" data-dismiss="modal" class="btn Btn-Gray"
+                    style="float: right"><span>Close</span></button>
+                <button *ngIf="authenticationService.isShowForms" class="button bgcolor-unset" data-dismiss="modal"
+                    style="float: right">
+                    <span class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
             </div>
         </div>
     </div>
@@ -232,8 +239,7 @@
                                         </ng-container>
                                         <!-- ---------------------------Date----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='date'">
-                                            <app-date-picker class="form-placeholder" [class.disabled]='true'
-                                                [isFromForm]='true'></app-date-picker>
+                                            <app-date-picker class="form-placeholder disabled-element" [class.disabled]='true' [isFromForm]='true'></app-date-picker>
                                         </ng-container>
                                         <!-- ---------------------------Price----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='price'">
@@ -296,6 +302,13 @@
                                                     {{dropDownValue.name}}</option>
                                             </select>
                                         </ng-container>
+                                        <!-- ---------------------------Country (XNFR-423) ----------------------------- -->
+                                        <ng-container *ngIf="columnInfo?.labelType=='country'">
+                                            <select class="form-control form-placeholder">
+                                                <option *ngFor="let countryName of countryNames">
+                                                    {{countryName}}</option>
+                                            </select>
+                                        </ng-container>
                                         <!-- ---------------------------Quiz Choices----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType.split('_')[0]=='quiz'">
                                             <ng-container *ngFor="let choice of columnInfo.choices;let i=index">
@@ -314,7 +327,7 @@
                                     </div>
                                 </ng-container>
                                 <div *ngIf="form.showCaptcha">
-                                    <re-captcha (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
+                                    <re-captcha class="disabled-element" (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
                                 </div>
                                 <div *ngIf="form.buttonColor?.length>0;then show else dontShow"></div>
                                 <ng-template #show>

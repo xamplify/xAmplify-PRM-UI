@@ -280,8 +280,10 @@ bgIMage2:any;
             this.authenticationService.loginType = result.loginType;
             this.authenticationService.isstyleTWoBgColor = result.styleTwoBgColor;
             this.isBgColor = result.styleOneBgColor;
+            let path = "https://xamplify.io/assets/images/stratapps.jpeg";
             if(result.loginType === "STYLE_ONE"){
               this.isStyleOne = true;
+              this.authenticationService.loginScreenDirection = result.loginFormDirectionStyleOne;
               if(result.styleOneBgColor) {
               document.documentElement.style.setProperty('--login-bg-color-style1', result.backgroundColorStyle1);
               } else {
@@ -289,11 +291,12 @@ bgIMage2:any;
                 if(result.companyBgImagePath != null && result.companyBgImagePath != "") {
                 document.documentElement.style.setProperty('--login-bg-image-style1', 'url('+this.authenticationService.MEDIA_URL+ result.companyBgImagePath+')');
                 } else {
-                  document.documentElement.style.setProperty('--login-bg-image-style1', 'url(assets/images/xAmplify-sandbox.png)');
+                  document.documentElement.style.setProperty('--login-bg-image-style1', 'url('+path+')');
                 }
               }
             } else {
               this.isStyleOne = false;
+              this.authenticationService.loginScreenDirection = result.loginScreenDirection;
               if(result.styleTwoBgColor) {
               document.documentElement.style.setProperty('--login-bg-color', result.backgroundColorStyle2);
               } else {
@@ -301,7 +304,7 @@ bgIMage2:any;
                 if(result.backgroundLogoStyle2 != null && result.backgroundLogoStyle2 != "") {
                   document.documentElement.style.setProperty('--login-bg-image', 'url('+this.authenticationService.MEDIA_URL+ result.backgroundLogoStyle2+')');
                 } else {
-                document.documentElement.style.setProperty('--login-bg-image', 'url(assets/images/xAmplify-sandbox.png)');
+                document.documentElement.style.setProperty('--login-bg-image', 'url('+path+')');
                 }
               }
             }
@@ -327,7 +330,7 @@ bgIMage2:any;
               this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
             }
             this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
-            this.authenticationService.loginScreenDirection = result.loginScreenDirection;
+            //this.authenticationService.loginScreenDirection = result.loginScreenDirection;
             this.vanityURLService.setVanityURLTitleAndFavIcon();
             if (result.showMicrosoftSSO) {
               this.vanitySocialProviders.push({ "name": "Microsoft", "iconName": "microsoft", "value": "microsoft" });

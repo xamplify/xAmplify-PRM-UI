@@ -61,8 +61,7 @@
                                             (click)="$event.stopPropagation();highlightPartnerRowOnCheckBoxClick(partner.id,$event);">
                                      </td>
                                     <td>
-                                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="partner">
-                                        </app-user-info>
+                                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="partner" [hideJobTitle]="true"></app-user-info>
                                     </td>
                                 </tr>
                             </ng-container>

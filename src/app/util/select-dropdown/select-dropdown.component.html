@@ -3,7 +3,7 @@
     (click)="showFolderDropDown=!showFolderDropDown;filterDropDownData(dropDownSearchValue)" readonly>
     <i class="fa fa-angle-down xamplify-dropdown-icon cursor-pointer" aria-hidden="true" (click)="showFolderDropDown=!showFolderDropDown;filterDropDownData(dropDownSearchValue)"></i>
   <div *ngIf="showFolderDropDown" id="folderDropDown" class="xamplify-dropdown-content xamplify-dropdown-scroller">
-    <input type="text" class="search-bgcolor" placeholder="Search.." id="myInput"
+    <input type="text" autocomplete="off" class="search-bgcolor" placeholder="Search.." id="myInput"
       (input)="filterDropDownData(dropDownSearchValue)" #dropDownSearchValue>
     <div class="xamplify-dropdown-option" [ngClass]="{'xamplify-dropdown-content-odd': 0 === i % 2}"
       *ngFor="let item of filteredDropDownItems;let i=index"

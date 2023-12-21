@@ -29,7 +29,7 @@ declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
 @Injectable()
 export class ReferenceService {
- 
+  partnerDashboard:any[];
   renderer: Renderer;
   swalConfirmButtonColor: "#54a7e9";
   swalCancelButtonColor: "#999";
@@ -350,6 +350,16 @@ export class ReferenceService {
     return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
   }
 
+
+  // validating method for firstname that deals with the regular expression
+
+  validateFirstName(firstName:string){
+    //let name=firstName.replace(this.regularExpressions.ALPHABETS_PATTERN , "");
+    //return this.regularExpressions.ALPHABETS_PATTERN.test(name);
+    return this.regularExpressions.FIRSTNAME_PATTERN.test(firstName);
+
+  }
+
   validateEmail(text: string) {
     var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
     return (text && EMAIL_REGEXP.test(text));
@@ -444,6 +454,7 @@ export class ReferenceService {
       var div = $("#" + divId);
       if (div.length) {
         var contentNav = div.offset().top;
+        console.log(contentNav);
         $("html,body").animate(
           {
             scrollTop: contentNav,
@@ -3289,10 +3300,57 @@ export class ReferenceService {
     }
     return message;
   }
-  
-  
-  /********Email Templates****/
-  
 
+  /***XNFR-403***/
+  removeRowWithAnimation(id:any){
+    $('#' + id).hide(1000, function () {
+      $('#' + id).remove();
+    });
+  }
+
+  isJsonString(str:string) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+  }
+
+  convertJsonStringToJsonObject(jsonString:string){
+    var jsonObject : any;
+    if(this.isJsonString(jsonString)){
+      return jsonObject = JSON.parse(jsonString);
+    }
+  }
+
+  removeArrayItemByIndex(items:any,index:number){
+    var updatedItems = [];
+    for(var i=0;i<items.length;i++){
+        let item = items[i];
+        if(i!=index){
+          updatedItems.push(item);
+        }
+    }
+    return updatedItems;
+  }
+
+  spliceArrayByIndex(arr: any, indexToRemove: number) {
+    arr = $.grep(arr, function (data: any, index: number) {
+      return index !== indexToRemove;
+    });
+    return arr;
+  }
+
+  /***XNFR-403***/
+
+
+   /* -- XNFR-415 -- */
+  setAssignedDashboardToPartner(dashBoardForPartner:any[]){
+    this.partnerDashboard=dashBoardForPartner;
+  }
+  getAssignedDashboardToPartner(){
+    return this.partnerDashboard;
+  }
   
 }

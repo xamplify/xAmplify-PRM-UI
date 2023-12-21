@@ -161,6 +161,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isPartner: boolean;
 	isCompanyDetails = false;
 	checkingContactTypeName: string;
+	module:string;
 	newUsersEmails = [];
 	newUserDetails = [];
 	teamMemberPagination: Pagination = new Pagination();
@@ -170,7 +171,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	/*    orgAdminsList = [];*/
 	editingEmailId = '';
 	loading = false;
-	contactAllDetails = [];
+	contactAllDetails : any;
 	openCampaignModal = false;
 	logListName = "";
 	searchContactType = "";
@@ -268,15 +269,18 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.assignLeads = false;
             this.sharedLeads = true;
             this.checkingContactTypeName = "Shared Lead"
+        	this.module = 'sharedleads';
         } else if (currentUrl.includes('home/assignleads')) {
             this.isPartner = false;
             this.assignLeads = true;
             this.showAddOptions = true;
             this.checkingContactTypeName = "Lead"
+			this.module = 'leads';
         } else if (currentUrl.includes('home/contacts')) {
             this.isPartner = false;
             this.checkingContactTypeName = "Contact";
             this.showAddOptions = true;
+			this.module = 'contacts';
         } else {
             this.isPartner = true;
             if (this.sourceType != "ALLBOUND") {
@@ -284,6 +288,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             } else {
                 this.showAddOptions = false;
             }
+			this.module = 'partners';
             this.checkingContactTypeName = "Partner";
             this.sortOptions.push({ 'name': 'Company (ASC)', 'value': 'contactCompany-ASC' });
             this.sortOptions.push({ 'name': 'Company (DESC)', 'value': 'contactCompany-DESC' });
@@ -1913,6 +1918,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.selectedContactListId = contactSelectedListId;
 			this.currentContactType = "all_contacts";
 			pagination.criterias = this.criterias;
+			pagination.sharedLeads = this.sharedLeads;
 			this.contactService.loadUsersOfContactList(contactSelectedListId, pagination).subscribe(
 				(data: any) => {
 					this.xtremandLogger.info("MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify(data));
@@ -2521,7 +2527,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.addContactuser = new User();
 		this.isUpdateUser = false;
 		this.updateContactUser = false;
-		this.contactAllDetails = [];
+		this.contactAllDetails = null;
 		this.contactService.isContactModalPopup = true;
 	}
 
@@ -2897,6 +2903,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		try {
 			this.loading = true;
 			this.editUser.pagination = this.pagination;
+			this.editUser.pagination.partnerCompanyId = this.contactAllDetails.companyId;
 			if (event.mobileNumber) {
 				if (event.mobileNumber.length < 6) {
 					event.mobileNumber = "";
@@ -3491,6 +3498,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.contactListObject = new ContactList;
             this.contactListObject.id = id;
             this.contactListObject.assignedLeadsList = this.assignLeads;
+			this.contactListObject.moduleName = this.module;
 
             this.contactService.loadContactsCount(this.contactListObject)
                 .subscribe(
@@ -3501,6 +3509,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     this.contactsByType.activeContactsCount = data.activecontacts;
                     this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
                     this.contactsByType.validContactsCount = data.validContactsCount;
+					this.contactsByType.excludedContactsCount = data.excluded;
                     this.allUsers = this.contactsByType.allContactsCount;
                 },
                 (error: any) => {
@@ -3707,7 +3716,71 @@ copyGroupUsersModalPopupEventReceiver(){
  
  /***********XNFR-342*********/
  openUnPublishedContentModalPopUp(contact:any){
-	this.shareUnPublishedComponent.openPopUp(this.selectedContactListId, contact, this.checkingContactTypeName);
+	this.shareUnPublishedComponent.openPopUp(this.selectedContactListId, contact, this.checkingContactTypeName,this.selectedContactListName);
  }
     
+
+	showMakeAsOptinAlert(contactId: any, emailId: any) {
+		try {
+			this.xtremandLogger.info("contactId in showMakeAsOptinAlert() " + contactId);
+			let self = this;
+			swal({
+				title: 'Are you sure?',
+				text: "Selected user will be removed from the excluded list!",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#54a7e9',
+				cancelButtonColor: '#999',
+				confirmButtonText: 'Yes, Mark as Opt-in!'
+
+			}).then(function (myData: any) {
+				self.validateExcludedDetails(contactId, emailId);
+			}, function (dismiss: any) {
+			});
+		} catch (error) {
+			this.xtremandLogger.error(error, "EditContactsComponent", "showMakeAsOptinAlert()");
+		}
+	}
+
+	validateExcludedDetails(contactId: any, emailId: any) {
+		try {
+			this.resetResponse();
+			this.loading = true;
+			this.xtremandLogger.info(contactId);
+			const excludedUser = {
+				"id": contactId,
+				"emailId": emailId
+			};
+			this.contactService.excludedUserMakeAsValid(excludedUser)
+				.subscribe(
+					data => {
+						if (data.access) {
+							if (data.statusCode == 400) {
+								this.customResponse = new CustomResponse('ERROR', data.message, true);
+								this.loading = false;
+							} else {
+
+								this.loading = false;
+								this.xtremandLogger.log(data);
+								this.contactsCount(this.selectedContactListId);
+								this.checkingLoadContactsCount = true;
+								this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_REMOVED_FROM_EXCLUDED_LIST, true);
+							}
+						} else {
+							this.authenticationService.forceToLogout();
+
+						}
+					},
+					(error: any) => {
+						console.log(error);
+						this.loading = false;
+					},
+					() => this.xtremandLogger.info("EditContactsComponent validateExcludedDetails() finished")
+				)
+		} catch (error) {
+			this.xtremandLogger.error(error, "EditContactsComponent", "validateExcludedDetails()");
+		}
+	}
+
 }
