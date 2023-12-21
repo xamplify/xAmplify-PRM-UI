@@ -474,11 +474,12 @@
         </div>
         <ng-template #saveCancel>
             <div class="pull-right">
-                <button class="button bgcolor-unset" id="save_button" *ngIf="selectedAddPartnerOption != 5"
+                <button class="button bgcolor-unset pd_top5" id="save_button" *ngIf="selectedAddPartnerOption != 5"
                     (click)="saveContacts()" translate><span
                         class="btn Btn-Green transition txt_pd-top3">Save</span></button>
-                <button class="btn Btn-Gray" id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard"
-                    (click)="cancelPartners()" translate>Cancel</button>
+                <button class="btn Btn-Gray neg_mar_top7" id="cancel_button"
+                    *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()"
+                    translate>Cancel</button>
             </div>
         </ng-template>
         <div class="row" id="Gfile_preview">
@@ -1239,10 +1240,11 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn Btn-Gray" data-dismiss="modal" translate>Close</button>
-                        <button type="button" id="salesforce_save_button" class="button_blue bgcolor-unset"
+                        <button type="button" class="btn Btn-Gray customize_design_btn" data-dismiss="modal"
+                            translate>Close</button>
+                        <button type="button" id="salesforce_save_button" class="button_blue bgcolor-unset pd_top5"
                             (click)="checkingPopupValues()" data-dismiss="modal" translate><span
-                                class="btn btn-primary transition">Submit</span></button>
+                                class="btn btn-primary transition txt_pd-top3">Submit</span></button>
                     </div>
                 </div>
             </div>
@@ -1343,10 +1345,11 @@
                 </div>
             </div>
             <div class="modal-footer" style="border-top:none !important;">
-                <button type="button" class="btn Btn-Gray" data-dismiss="modal" translate>Close</button>
-                <button type="button" id="salesforce_save_button" class="button_blue bgcolor-unset"
+                <button type="button" class="btn Btn-Gray customize_design_btn" data-dismiss="modal"
+                    translate>Close</button>
+                <button type="button" id="salesforce_save_button" class="button_blue bgcolor-unset pd_top5"
                     (click)="checkingPopupValues()" data-dismiss="modal" translate><span
-                        class="btn btn-primary transition">Submit</span></button>
+                        class="btn btn-primary transition txt_pd-top3">Submit</span></button>
             </div>
         </div>
     </div>
@@ -1473,9 +1476,9 @@
             <div class="modal-footer">
                 <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal" (click)="cancelPartners()"
                     translate>Decline</button>
-                <button type="button" [disabled]="!isCheckTC" class="button_blue bgcolor-unset"
+                <button type="button" [disabled]="!isCheckTC" class="button_blue bgcolor-unset verify_text"
                     (click)="saveContactsWithPermission()" translate><span
-                        class="btn btn-primary transition">Accept</span></button>
+                        class="btn btn-primary transition asset_cf_padding">Accept</span></button>
             </div>
         </div>
     </div>

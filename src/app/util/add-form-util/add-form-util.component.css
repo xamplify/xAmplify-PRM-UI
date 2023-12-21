@@ -1745,4 +1745,7 @@ div.switch5 > input.switch:focus ~ label:before {
     width: 90% !important;
   }
 }
-
+/* sudha sri(20-12-2023) */
+.design_padding{
+  padding-top: 0px !important;
+}

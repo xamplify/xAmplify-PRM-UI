@@ -313,7 +313,8 @@
 										<button id="cancel_button" class="btn pull-right button_blue pd_0 bgcolor-unset"
 											*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9) && selectedContactListIds?.length != 0 && ((assignLeads) || (!sharedLeads)) "
 											(click)="saveAs(true)" style="margin-right: 5px;" translate><span
-												class="btn btn-primary transition text_pd0">Create New List</span>
+												class="btn btn-primary transition new_list_text">Create New
+												List</span>
 										</button>
 									</div>
 									<div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right mr-pt mt_9"
@@ -392,7 +393,7 @@
 															(click)="addContactModalOpen()"
 															[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
 															translate>
-															<span class="btn Btn-Green transition text_pd5">One at a
+															<span class="btn Btn-Green transition txt_pd-top3">One at a
 																Time<i class="fa fa-plus"
 																	style="font-size: 12px; margin-left: 5px;"
 																	aria-hidden="true"></i></span>
@@ -405,7 +406,7 @@
 																[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
 																(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);"
 																translate>
-																<span class="btn Btn-Green transition text_pd5">Copy
+																<span class="btn Btn-Green transition txt_pd-top3">Copy
 																	List From
 																	ClipBoard<i class="fa fa-clipboard"
 																		aria-hidden="true"
@@ -419,7 +420,7 @@
 																translate>
 																<button class="button bgcolor-unset">
 																	<span
-																		class="btn Btn-Green transition text_pd5">Upload
+																		class="btn Btn-Green transition txt_pd-top3">Upload
 																		CSV <i class="fa fa-upload" aria-hidden="true"
 																			style="font-size: 12px; margin-left: 5px;"></i></span>
 																	<input type="file" ng2FileSelect class="upload"
@@ -534,7 +535,7 @@
 												</div>
 												<button class=" col-sm-3 btn button bgcolor-unset" type="button"
 													(click)="clipboardShowPreview()" translate><span
-														class="btn Btn-Green transition text_pd5">VERIFY
+														class="btn Btn-Green transition verify_text">VERIFY
 														DATA</span></button>
 											</div>
 											<div class="col-sm-9">

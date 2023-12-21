@@ -266,7 +266,8 @@
                                     <li class="filter" (click)="filterContacts('ALL',2)"
                                        [class.contact-filter-selected]="2 == selectedFilterIndex" translate>All</li>
                                  </ul>
-                                 <ul class="page-breadcrumb" *ngIf="checkingContactTypeName!='Contact'">
+                                 <ul class="page-breadcrumb" style="padding-left: 0px;"
+                                    *ngIf="checkingContactTypeName!='Contact'">
                                     <li id="header-custom-li-font" translate *ngIf="checkingContactTypeName=='Partner'">
                                        Your {{authenticationService?.partnerModule?.customName}} Lists
                                     </li>
@@ -1584,8 +1585,9 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal" translate>Close</button>
-            <button type="button" class="button_blue bgcolor-unset" (click)="hasSaveAsAccess()"
-               [disabled]="assignLeads && disableSave" translate><span class="btn btn-primary transition text_pd5">Save
+            <button type="button" class="button_blue bgcolor-unset button_height" (click)="hasSaveAsAccess()"
+               [disabled]="assignLeads && disableSave" translate><span
+                  class="btn btn-primary transition unsubsribe_text">Save
                   changes</span></button>
          </div>
       </div>
