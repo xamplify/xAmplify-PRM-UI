@@ -1251,3 +1251,13 @@ ul.t-b-spacings {
     margin-left: 160px !important;
   }
 }
+/* sudha sri(20-12-2023) */
+.select_quiz_margin{
+  margin-left: -8px;
+}
+.asset_padding{
+  padding-left: 0px;
+}
+.track_save_button{
+  margin-right: -15px;
+}
