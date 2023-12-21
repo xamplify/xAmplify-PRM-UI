@@ -841,11 +841,16 @@ export class ContactService {
     
     }
     
-      validateCompanyName(companyName:string){
-      return this._http.get(this.contactsUrl + "validate-partner-company"+  "/" + companyName + "?access_token=" + this.authenticationService.access_token)
+      validateCompanyName(companyName:string, partnerCompanyId:number){
+      return this._http.get(this.contactsUrl + "validate-partner-company"+  "/" + companyName +  "/" + partnerCompanyId + "?access_token=" + this.authenticationService.access_token)
         .map(this.extractData)
         .catch(this.handleError);
     
     }
 
+    excludedUserMakeAsValid(object:any){
+        return this._http.post(this.contactsUrl + "excluded-user-make-as-valid"+  "/" + this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token, object)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }

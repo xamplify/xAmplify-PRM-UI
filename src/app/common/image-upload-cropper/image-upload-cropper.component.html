@@ -8,18 +8,23 @@
 				<h4 class="modal-title" id="cropBgImage">{{cropLogoImageText}}</h4>
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
-				<div style="position: relative; top: -5px; width: 118px;" class="button fileinput-button-css"
-					*ngIf="!bgImageChangedEvent; else changeButton">
-					<span class="btn Btn-Green transition">Upload image</span> <input style="height: 36px;" title=" "
-						id="custom-input" type="file" (change)="uploadfileBgImageChangeEvent($event)">
-				</div>
-				<ng-template #changeButton>
-					<div style="position: relative; top: -5px; width: 118px;" class="button fileinput-button-css">
-						<span class="btn Btn-Green transition">Upload image</span> <input style="height: 36px;"
-							title=" " id="custom-input" type="file" (change)="uploadfileBgImageChangeEvent($event)">
-					</div>
+				<button style="position: relative;top: -5px;" class="button fileinput-button-css bgcolor-unset pd-left0"
+					*ngIf="!bgImageChangedEvent; else uploadButton"><span
+						class="btn Btn-Green transition translate">Upload
+						image</span>
+					<input style="height: 36px;" title=" " id="custom-input" type="file"
+						(change)="uploadfileBgImageChangeEvent($event)">
+				</button>
+				<ng-template #uploadButton>
+					<button style="position: relative;top: -5px;"
+						class="button fileinput-button-css bgcolor-unset pd-left0"><span
+							class="btn Btn-Green transition translate">Upload
+							image</span>
+						<input style="height: 36px;" title=" " id="custom-input" type="file"
+							(change)="uploadfileBgImageChangeEvent($event)">
+					</button>
 				</ng-template>
-				<div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload
+				<div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please upload
 					only images</div>
 				<div>
 					<ngx-loading [show]="loadingcrop"
@@ -75,10 +80,10 @@
 						<li>For optimal results, your uploaded image should fit within the
 							white rectangle.</li>
 						<li>The uploaded image should have the pixels in any of the given dimensions
-							1024×768, 1280×960, 1400×1050, 1440×1080 , 1600×1200, 1856×1392, 1920×1440
+							1024x768, 1280x960, 1400x1050, 1440x1080 , 1600x1200, 1856x1392, 1920x1440
 						</li>
 						<li>
-							Please Upload .jpg, .jpeg, .png, .webp files only.
+							Please upload .jpg, .jpeg, .png, .webp files only.
 						</li>
 					</ul>
 				</div>

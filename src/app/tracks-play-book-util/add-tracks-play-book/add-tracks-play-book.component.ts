@@ -185,6 +185,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   isTrackOrPlaybookPublishedEmailNotification = false;
   trackOrPlaybookPublishEmailNotificationLoader = true;
  /****XNFR-326*****/
+  /*****XNFR-423****/
+  countryNames = [];
   constructor(public userService: UserService, public regularExpressions: RegularExpressions, private dragulaService: DragulaService, public logger: XtremandLogger, private formService: FormService, private route: ActivatedRoute, public referenceService: ReferenceService, public authenticationService: AuthenticationService, public tracksPlayBookUtilService: TracksPlayBookUtilService, private router: Router, public pagerService: PagerService,
     public sanitizer: DomSanitizer, public envService: EnvService, public utilService: UtilService, public damService: DamService,
     public xtremandLogger: XtremandLogger, public contactService: ContactService) {
@@ -646,6 +648,9 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         (data: any) => {
           if (data.statusCode === 200) {
             this.form = data.data;
+            /*****XBI-2067****/
+            this.countryNames = this.authenticationService.addCountryNamesToList(this.form.countryNames,this.countryNames);
+            /*****XBI-2067****/
             if (this.form.showBackgroundImage) {
               this.formBackgroundImage = this.form.backgroundImage;
               this.pageBackgroundColor = "";
@@ -1067,7 +1072,8 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   validateDescription() {
-    let description = this.referenceService.getTrimmedCkEditorDescription(this.tracksPlayBook.description);
+     let description = this.referenceService.getTrimmedCkEditorDescription(this.tracksPlayBook.description);
+    description = description.substring(3,description.length-4).trim();
     if (description.length < 1) {
       this.addErrorMessage("description", "description can not be empty");
     } else if (description.length > 5000) {

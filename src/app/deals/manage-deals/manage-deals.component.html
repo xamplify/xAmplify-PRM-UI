@@ -170,8 +170,13 @@
                         <!-- <button class="btn btn-white salesforce-btn button neg-mar-top bgcolor-unset" -->
                         <button class="btn salesforce-btn button neg-mar-top bgcolor-unset p0 neg-mg-btm btn-transitions"
                           data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
-                          <span class="btn Btn-Green transition"><i class="fa fa-refresh" aria-hidden="true"></i> {{
-                            activeCRMDetails?.type | titlecase }}</span>
+
+                          <span class="btn Btn-Green transition">
+                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                             <span *ngIf="activeCRMDetails?.type==='HUBSPOT'">HubSpot</span>
+                            <span *ngIf="activeCRMDetails?.type!='HUBSPOT'">{{ activeCRMDetails?.type | titlecase }}</span>
+                        </span>
+
                         </button>
                       </a>
 
@@ -293,8 +298,8 @@
                         <ng-container *ngFor='let deal of dealsPagination.pagedItems; let i=index'>
                           <tr>
                             <td style="width: 40%;">
-                              <div>{{deal.title | slice:0:30}}
-                                <span *ngIf="deal.title?.length>30">...</span>
+                              <div><span  data-toggle="tooltip" data-placement="top" title="{{deal.title}}">{{deal.title | slice:0:30}}
+                                <span *ngIf="deal.title?.length>30">...</span></span>
                               </div>
                               <div>
                                 <h5 *ngIf="isPartnerVersion"><b>Added For:</b>
@@ -651,7 +656,7 @@
 
 <section *ngIf="showDealForm">
   <div class="page-content">
-    <a (click)="closeDealForm()" class="pull-right close-circle"
+    <a (click)="closeDealForm()" class="pull-right close-circle mrg1"
       style="margin: 14px 20px;padding-top: 3px;padding-left: 5px;">
       <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
     <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"

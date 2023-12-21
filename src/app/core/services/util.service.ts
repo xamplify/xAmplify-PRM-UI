@@ -142,7 +142,8 @@ export class UtilService {
                 'roles': data.roles,
                 'campaignAccessDto':data.campaignAccessDto,
                 'logedInCustomerCompanyNeme':data.companyName,
-				'source':data.source
+				'source':data.source,
+                'secondAdmin': data.secondAdmin
             };
             localStorage.setItem('currentUser', JSON.stringify(userToken));
 		    localStorage.setItem('defaultDisplayType',data.modulesDisplayType);

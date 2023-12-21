@@ -6,7 +6,7 @@
 				<a (click)="goToManage()">{{title}}</a> 
 				<a  (click)="goToManage()" style="font-size: 13px;">( {{manageAssetsText}} )</a>
 			</h4>
-			<span class="close-circle" title="Refresh"  (click)="refresh()" translate>
+			<span class="close-circle pointer" title="Refresh"  (click)="refresh()" translate>
 				<a><i class="fa fa-refresh" aria-hidden="true"></i></a>
 		   </span>
 			<button *ngIf="!isPartnerView" class="btn btn-primary add-design-upload" (click)="goToAddDam()">
@@ -23,57 +23,54 @@
 				<div *ngIf="assets?.length==0" class="alert alert-info text-center">
 					<strong>No Data Found</strong>
 				</div>
-				<div *ngFor="let asset of assets ;let i =index;"   class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-					<div class="grid-box min-h box-shadow">
-						<app-image-loader [moduleName]="'top-4-assets'" image="{{asset?.thumbnailPath}}"></app-image-loader>
-							<h4 class="ellipsis mt5 mb5 f-w-600" title="{{asset?.assetName}}">
-								{{asset?.assetName | slice:0:25}} 
-								<span *ngIf="asset?.assetName?.length>25">...</span>
-								<br>
-								<br>
-							</h4>
-							<!---XNFR-255-->
-							<ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
-								<h6 class="moreipsis"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
-									<span translate>Received From <strong>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
-								</h6>
-								<span class="view-banner-white-labeled mb5">White-Labeled</span>
-							</ng-container>
-							 <!---XNFR-255-->
-							<div>
-								<span class="view-banner-dam">{{asset?.assetType}}</span>
-								<h6 translate>
-									<span *ngIf="isPartnerView">Published On</span> <span
-										*ngIf="!isPartnerView">Created On</span> <strong> <app-timestamp
-											[showInLine]="'true'" [dateAndTime]="asset?.displayTime">
-										</app-timestamp>
-									</strong>
-								</h6>
-								<h6  translate title="{{asset?.displayName}}">
-									By <strong>{{asset?.displayName | slice:0:17}}</strong> <span
-										*ngIf="asset?.displayName?.length>17">..</span>
-								</h6>
-								<h6 class="moreipsis"
-									*ngIf="!isPartnerView && asset?.beeTemplate">
-									<span translate> Version <strong>{{asset?.versionInString}}</strong></span>
-								</h6>
-								<h6 *ngIf="isPartnerView" title="{{asset?.vendorCompanyName}}">
-									From <strong>{{asset?.vendorCompanyName | slice:0:17}}</strong> <span
-										*ngIf="asset?.vendorCompanyName?.length>17">..</span>
-								</h6>
+				<div *ngFor="let asset of assets ;let i =index;"  class="col-xs-12 col-sm-6 col-md-4 col-lg-3 GridviewSidePaddings">
+					<div class="grid-box min-h default-cursor mHeight box-shadow">
+						<div class="gridViewImgpositioning image_effect">
+							<img *ngIf="!asset?.videoId" class="img-class mxv" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/no-preview.jpg';"alt="Image Not Found">
+							<img *ngIf="asset?.videoId>0" class="img-class mxv" src="{{asset?.thumbnailPath}}" onerror="this.src='assets/images/default-image.jpg';" alt="Image Not Found">
+						</div>
+						<h4 class="xamplify-ellipsis overflow-hidden GridViewCotent gridViewTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{asset?.assetName}}">
+							<b>Asset Name: </b>{{asset?.assetName}} 
+						</h4>	
+						<div class="divapdding-or-cards">
+							<div class="aligntowbtns"> 
+							   <ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
+								   <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top"  title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+									   <span><b>Received From:</b> {{asset?.whiteLabeledAssetSharedByVendorCompanyName}} </span>
+								   </h6>
+								   <span class="view-banner-white-labeled LableSpaceings">White-Labeled</span>
+							   </ng-container>
+							   <span class="view-banner-dam assettype-bgcolor LableSpaceings">{{asset?.assetType}}</span>
 							</div>
-							<div class="ribbon">
-								<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList" translate>Published</span>
-								<span *ngIf="asset?.published && (asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList)" translate>Processing</span>
-							</div>
-							<div class="bar auto-height">
-								<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset" (assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
-								(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
-								(assetGridViewActionsDeleteActionEmitter) = "assetGridViewActionsDeleteActionEmitter($event)"
-								(assetGridViewRefreshListEmitter)="refresh()"
-								>
-								</app-asset-grid-view-actions>
-							</div>
+						   
+						   <h6  class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{asset?.displayName}}"><b>By:</b> {{asset?.displayName}}</h6>
+						   <h6 class="xamplify-ellipsis GridViewCotent" >
+							   <span data-toggle="tooltip" data-placement="top" title="{{asset?.categoryName}}" translate> <b>Folder:</b> {{asset?.categoryName}}</span>
+						   </h6>
+						   <h6 class="GridViewCotent" *ngIf="!isPartnerView && asset?.beeTemplate">
+							   <span translate> <b>Version:</b>  {{asset?.versionInString}} </span>
+						   </h6>
+						   <h6 *ngIf="isPartnerView" class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{asset?.vendorCompanyName}}">
+							   <b>From:</b><span>{{asset?.vendorCompanyName}}</span> 
+						   </h6>
+						   </div>
+						   <h6  class="xamplify-ellipsis GridViewCotent pt10">
+							   <span *ngIf="isPartnerView"> <b>Published On: </b></span>
+							   <span *ngIf="!isPartnerView"> <b>Created On: </b></span>
+							   <app-timestamp [showInLine]="'true'" [dateAndTime]="asset?.displayTime"></app-timestamp>
+						   </h6>
+						   <div class="ribbon tab-ribbon">
+							   <span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress && !asset?.publishingToPartnerList" translate>Published</span>
+							   <span *ngIf="asset?.published && (asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList)" translate>Processing</span>
+						   </div>
+						<div class="bar auto-height">
+							<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset" (assetGridViewActionsEmitter)="assetGridViewActionsEmitter($event)"
+							(assetGridViewActionsPdfEmitter)="assetGridViewActionsPdfEmitter($event)"
+							(assetGridViewActionsDeleteActionEmitter) = "assetGridViewActionsDeleteActionEmitter($event)"
+							(assetGridViewRefreshListEmitter)="refresh()"
+							>
+							</app-asset-grid-view-actions>
+						</div>
 					</div>
 				</div>
 			</section>

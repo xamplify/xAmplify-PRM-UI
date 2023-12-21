@@ -22,47 +22,39 @@
 				<div *ngIf="contents?.length==0" class="alert alert-info text-center">
 					<strong>No Data Found</strong>
 				</div>
-				<div *ngFor="let learningTrack of contents ;let i =index;"  class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+				<div *ngFor="let learningTrack of contents ;let i =index;"  class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_grid GridviewSidePaddings">
 					<div class="grid-box box-shadow">
-                        <img class="img-grid-track " [src]="learningTrack?.featuredImage" onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack?.title}}">
-                        <h4 class="ellipsis mt5 mb5 f-w-600" title="{{learningTrack?.title}}" style="float: none !important;" translate>
-                            {{learningTrack?.title | slice:0:25}} <span *ngIf="learningTrack?.title?.length>25">...</span><br><br>
-                        </h4>
-                        <div>
-                            <div *ngIf="isPartnerView && tracks" style="margin: 0px 15px 0px 15px;">
+                        <img class="img-grid-track image_effect" [src]="learningTrack.featuredImage" onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack.title}}">
+                        <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent1" data-toggle="tooltip" data-placement="bottom" title="{{learningTrack.title}}"  style="margin-bottom: 0px;padding: 0;margin-top: 10px;">
+                            <span><b>{{titleHeader}} Title: </b>{{learningTrack.title}}</span>
+                         </h4>
+                         <div class="mt5"> 
+                            <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')" style="margin: 4px 15px 0px 15px;">
                                 <div class="progress">
-                                    <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{learningTrack.progress}}%" [ngStyle]="{'width': learningTrack.progress + '%'}" style="border-radius:1px;" role="progressbar">
-                                    </div>
+                                    <div class="progress-bar" data-toggle="tooltip" data-placement="top" title="{{learningTrack.progress}}%" [ngStyle]="{'width': learningTrack.progress + '%'}" style="border-radius:1px;" role="progressbar"></div>
                                 </div>
-                                <span *ngIf="learningTrack?.progress != undefined">{{learningTrack?.progress}}%</span>
-                                <span *ngIf="learningTrack?.progress == undefined">0%</span>
+                                <span class="progresleft" *ngIf="learningTrack.progress != undefined">{{learningTrack.progress}}%</span>
+                                <span class="progresleft" *ngIf="learningTrack.progress == undefined">0%</span>
                                 <br>
                             </div>
-                            <h6  translate title="{{learningTrack?.category?.name}}">
-                                Folder <strong>{{learningTrack?.category?.name | slice:0:17}}</strong>
-                                <span *ngIf="learningTrack?.category?.name?.length>17">..</span>
+                            <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{learningTrack?.category?.name}}">
+                               <b>Folder: </b>{{learningTrack?.category?.name}} 
                             </h6>
-                            <h6 translate>
-                                Created On <strong>
-                                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="learningTrack?.createdDateString">
-                                    </app-timestamp>
-                                </strong>
-                            </h6>
-                            <h6  translate title="{{learningTrack?.createdByName}}">
-                                By <strong>{{learningTrack?.createdByName | slice:0:17}}</strong>
-                                <span *ngIf="learningTrack?.createdByName?.length>17">..</span>
+                            <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top" title="{{learningTrack.createdByName}}">
+                                <b>By: </b>{{learningTrack.createdByName}} 
+                             </h6>
+                            <h6 class="xamplify-ellipsis GridViewCotent">
+                             <b> Created On: </b><app-timestamp [isOnlyDate]="true" [dateAndTime]="learningTrack.createdDateString"></app-timestamp>
                             </h6>
                         </div>
+                        <!---XNFR-327--->
                         <div class="ribbon tab-ribbon">
-                            <!---XNFR-327--->
-                            <span style="background-color: #5cb85c;" *ngIf="learningTrack?.published && !isPartnerView &&
-                             !learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList" translate>Published</span>
-                            <span *ngIf="(learningTrack?.publishingOrWhiteLabelingInProgress || learningTrack?.publishingToPartnerList)
-                                         && !isPartnerView">
+                            <span *ngIf="learningTrack.published && !isPartnerView && !learningTrack?.publishingOrWhiteLabelingInProgress">Published</span>
+                            <span *ngIf="learningTrack?.publishingOrWhiteLabelingInProgress && !isPartnerView">
                                 <img src="assets/images/loading.gif" class="margin-0-ht5px" alt="Processing">Processing
                             </span>
-                            <!---XNFR-327--->
                         </div>
+                        <!---XNFR-327--->
                         <div class="bar auto-height gridIconCustomization">
                              <!---XNFR-327--->
                             <ng-container *ngIf="!learningTrack?.publishingOrWhiteLabelingInProgress && !learningTrack?.publishingToPartnerList">
@@ -72,7 +64,7 @@
                                 <a class="Iconhover" *ngIf="learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Unpublish" (click)="confirmChangePublish(learningTrack.id, false)">
                                     <i class="fa fa-reply" aria-hidden="true"></i>
                                 </a>
-                                <a class="Iconhover" *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true)">
+                                <a class="Iconhover" *ngIf="!learningTrack.published && !isPartnerView && learningTrack.canPublish" data-toggle="tooltip" data-placement="top" title="Publish" (click)="confirmChangePublish(learningTrack.id, true, learningTrack)">
                                     <i class="fa fa-share" aria-hidden="true"></i>
                                 </a>
                                 <a class="Iconhover" data-toggle="tooltip" data-placement="top" title="View" (click)="view(learningTrack)">

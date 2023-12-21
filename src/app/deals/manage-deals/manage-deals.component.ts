@@ -107,6 +107,7 @@ export class ManageDealsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.referenceService.scrollSmoothToTop();
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.mergeTagForUserGuide();
@@ -1204,12 +1205,16 @@ export class ManageDealsComponent implements OnInit {
           } else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
             this.referenceService.loading(this.httpRequestLoader, false);
             this.dealsResponse = new CustomResponse('ERROR', "Your Salesforce Integration was expired. Please re-configure.", true);
-          } else {
+          }
+           else {
             this.referenceService.loading(this.httpRequestLoader, false);
             this.dealsResponse = new CustomResponse('ERROR', "Synchronization Failed", true);
           }
         },
         error => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          let integrationType = (this.activeCRMDetails.type).charAt(0)+(this.activeCRMDetails.type).substring(1).toLocaleLowerCase();
+          this.dealsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid API Token",true);
 
         },
         () => {

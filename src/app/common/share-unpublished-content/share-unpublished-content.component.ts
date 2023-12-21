@@ -8,7 +8,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { setTimeout } from 'timers';
 import { SweetAlertParameterDto } from '../models/sweet-alert-parameter-dto';
-
+declare var $:any;
 @Component({
   selector: 'app-share-unpublished-content',
   templateUrl: './share-unpublished-content.component.html',
@@ -62,8 +62,14 @@ export class ShareUnpublishedContentComponent implements OnInit {
     this.resetValues();
     this.isPublishedSuccessfully = false;
     let accessList = [];
+    let isPrmAndPartnerCompany = this.authenticationService.module.isPrmAndPartner || this.authenticationService.module.isPrmAndPartnerTeamMember;
+    if(isPrmAndPartnerCompany){
+      this.hasCampaignAccess = !this.isPartnersRouter;
+    }
     accessList.push(this.hasCampaignAccess);
-    let isActiveOrInActiveMasterPartnerList = ("Active Master Partner List" || "InActive Master Partner List")==userListName;
+    let isActiveMasterPartnerList = $.trim(userListName)=="Active Master Partner List";
+    let isInActiveMasterPartnerList = $.trim(userListName)=="Inactive Master Partner List";
+    let isActiveOrInActiveMasterPartnerList = isActiveMasterPartnerList || isInActiveMasterPartnerList;
     accessList.push(this.hasDamAccess && !isActiveOrInActiveMasterPartnerList);
     accessList.push(this.hasLmsAccess && !isActiveOrInActiveMasterPartnerList);
     accessList.push(this.hasPlaybookAccess && !isActiveOrInActiveMasterPartnerList);

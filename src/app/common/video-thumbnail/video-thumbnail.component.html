@@ -1,91 +1,91 @@
 <ng-container *ngIf="videoFile!=undefined">
-  <div class="clearfix" >
-     <div class='thumbnail-wrapper image_effect' (click)="$event.stopPropagation();showPlayVideo(videoFile)" (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)" style="width: 180px; height: 100px;border-radius:5px;">
-     <img alt="" *ngIf="!videoFile?.processed" src="../../../assets/images/Spinner.gif" class="loader-css" style="width: 180px; height: 100px;border-radius:5px;">
-     <img alt="" *ngIf="videoFile?.processed" id="imagePath{{videoFile.id}}" src="{{videoFile.imagePath}}" (error)="videoUtilService.errorVideoHandler($event)"  style="width: 180px; height: 100px;border-radius:5px;">
-     <span class="duration f-w-600">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
-  </div>
-  <div class="title-div">
-     <a (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)">
-     <h4 (click)="titleClickVideo(videoFile)" data-toggle="tooltip" data-placement="bottom" [title]="videoFile?.title" class='mt5 mb5 f-w-500 VideoTitlesDec'>{{videoFile.title | slice: 0: 25}}
-     <span *ngIf="videoFile?.title?.length>25">...</span>
-     </h4>
-     <!-- XNFR-169 -->
-     <h6  *ngIf="categoryName!=undefined">
-        <span data-toggle="tooltip" data-placement="bottom" title="{{categoryName}}" translate> Folder <strong >{{categoryName}}</strong></span>
-     </h6>
-     <span *ngIf="!authenticationService.isOnlyPartner()"  (click)="titleClickVideo(videoFile)">
-     <h5 data-toggle="tooltip" data-placement="bottom" [title]="videoFile.uploadedUserName | slice:0:25" *ngIf="videoFileService.videoType !== 'partnerVideos'" class='m0'>By {{videoFile.uploadedUserName | slice:0:25}}
-     <span *ngIf="videoFile.uploadedUserName?.length>25">...</span>
-     </h5>
-     <h5 *ngIf="videoFileService.videoType === 'partnerVideos'">By
-        <span data-toggle="tooltip" data-placement="bottom" [title]="videoFile.companyName | slice:0:25" *ngIf="videoFile.companyName">{{videoFile.companyName | slice:0:25 }}
-        <span *ngIf="videoFile.companyName?.length>25">...</span>
-        </span>
-        <span data-toggle="tooltip" data-placement="bottom" [title]="videoFile.uploadedUserName | slice:0:25" *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName | slice:0:25}}
-        <span *ngIf="videoFile.uploadedUserName?.length>25">...</span>
-        </span>
-     </h5>
-     </span>
-     <span *ngIf="authenticationService.isOnlyPartner()"  (click)="$event.stopPropagation();showPlayVideo(videoFile)">
-     <span data-toggle="tooltip" data-placement="bottom" [title]="videoFile.companyName | slice:0:25" *ngIf="videoFile.companyName">By {{videoFile.companyName | slice:0:25}}
-     <span *ngIf="videoFile.companyName?.length>25">...</span>
-     </span>
-     <span data-toggle="tooltip" data-placement="bottom" [title]="videoFile.uploadedUserName | slice:0:25" *ngIf="!videoFile.companyName">By {{videoFile.uploadedUserName | slice:0:25}}
-     <span *ngIf="videoFile.uploadedUserName?.length>25">...</span>
-     </span>
-     </span>
-     <h6 class='f-w-600 views-draft topand-bottom-padding'  (click)="showPlayVideo(videoFile)" [ngClass]="{'mt7':videoFile?.viewBy!=='DRAFT'}">
-     <span *ngIf="videoFile?.viewBy!=='DRAFT'">
-     <span *ngIf="videoFile.views">{{videoFile.views}} views</span>
-     <span *ngIf="!videoFile.views">0 views</span>
-     </span>
-     <span *ngIf="videoFile?.viewBy==='DRAFT'">0 views</span>
-     </h6>
-     <p *ngIf="videoFile?.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</p>
-     <h6 *ngIf="published && !processing" class="view-banner published" translate>Published</h6>
-     <h6 *ngIf="processing" class="view-banner" translate>
-       <span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>Processing
-     </h6>
-
-     <!---XNFR-255-->
-     <ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
-        <span class="view-banner-white-labeled mb5">White-Labeled</span>
-        <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom" title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
-           <span translate>Received From <strong>{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
-        </h6>
-     </ng-container>
-     <!---XNFR-255-->
-     <!---XNFR-255-->
-     <ng-container *ngIf="videoFile?.whiteLabeledAssetReceivedFromVendor">
-      <span class="view-banner-white-labeled mb5">White-Labeled</span>
-      <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom" title="{{videoFile?.whiteLabeledAssetSharedByVendorCompanyName}}">
-         <span translate>Received From <strong>{{videoFile?.whiteLabeledAssetSharedByVendorCompanyName}}</strong></span>
-      </h6>
-   </ng-container>
-        <!-- tags start -->
-        <h6 style="padding-top: 5px;">
-         <ng-container *ngIf="videoFile?.tagNames?.length > 0">
-            <div class="tag tablegray-tag" data-toggle="tooltip" data-placement="bottom" title="{{videoFile?.tagNames[0]}}">
-               <ng-container *ngIf="videoFile?.tagNames?.length == 1">{{videoFile?.tagNames[0]}}
-               </ng-container>
-               <ng-container *ngIf="videoFile?.tagNames?.length > 1">{{videoFile?.tagNames[0]
-                  | slice:0:25}} <span *ngIf="videoFile?.tagNames[0]?.length>25">...</span>
-               </ng-container>
-            </div>
-            <ng-container *ngIf="videoFile.tagNames.length > 1">
-               <div class="tag tablegray-tag"  data-toggle="tooltip" data-placement="bottom" title="{{videoFile.tagNames[1]}}">
-                  {{videoFile.tagNames[1] | slice:0:25}} <span
-                     *ngIf="videoFile.tagNames[1]?.length>25">...</span>
-               </div>
-            </ng-container>
-            <span *ngIf="videoFile.tagNames?.length>2" class="tag-dots" title="{{videoFile.toolTipTagNames}}">...</span>
+   <div class="clearfix" >
+      <div class='thumbnail-wrapper image_effect' (click)="$event.stopPropagation();showPlayVideo(videoFile)" (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)" style="width: 180px; height: 100px;border-radius:5px;">
+      <img alt="" *ngIf="!videoFile?.processed" src="../../../assets/images/Spinner.gif" class="loader-css" style="width: 180px; height: 100px;border-radius:5px;">
+      <img alt="" *ngIf="videoFile?.processed" id="imagePath{{videoFile.id}}" src="{{videoFile.imagePath}}" (error)="videoUtilService.errorVideoHandler($event)"  style="width: 180px; height: 100px;border-radius:5px;">
+      <span class="duration f-w-600">{{videoUtilService.truncateHourZeros(videoFile.videoLength)}}</span>
+   </div>
+   <div class="title-div" *ngIf="!hideDetails">
+      <a (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)">
+         <h4 (click)="titleClickVideo(videoFile)" data-toggle="tooltip" data-placement="bottom" [title]="videoFile?.title" class='VideoTitlesDec ListFontCu'> <b>Asset Name:</b> <span> {{videoFile.title | slice: 0: 20}}</span>
+            <span *ngIf="videoFile?.title?.length>20">...</span>
+         </h4>
+         <!-- XNFR-169 -->
+         <h6  *ngIf="categoryName!=undefined">
+            <span data-toggle="tooltip" data-placement="bottom" title="{{categoryName}}" translate> <b>Folder:</b> {{categoryName}}</span>
+         </h6>
+         <span *ngIf="!authenticationService.isOnlyPartner()"  (click)="titleClickVideo(videoFile)">
+            <h5 data-toggle="tooltip" data-placement="bottom" [title]="videoFile.uploadedUserName | slice:0:20" *ngIf="videoFileService.videoType !== 'partnerVideos'" class='m0'> <b>By:</b>  {{videoFile.uploadedUserName | slice:0:20}}
+            <span *ngIf="videoFile.uploadedUserName?.length>20">...</span>
+            </h5>
+            <h5 *ngIf="videoFileService.videoType === 'partnerVideos'"> <b>By:</b> 
+               <span data-toggle="tooltip" data-placement="bottom" [title]="videoFile.companyName | slice:0:25" *ngIf="videoFile.companyName">{{videoFile.companyName | slice:0:25 }}
+               <span *ngIf="videoFile.companyName?.length>25">...</span>
+               </span>
+               <span data-toggle="tooltip" data-placement="bottom" [title]="videoFile.uploadedUserName | slice:0:25" *ngIf="!videoFile.companyName">{{videoFile.uploadedUserName | slice:0:25}}
+               <span *ngIf="videoFile.uploadedUserName?.length>25">...</span>
+               </span>
+            </h5>
+         </span>
+         <span *ngIf="authenticationService.isOnlyPartner()"  (click)="$event.stopPropagation();showPlayVideo(videoFile)">
+            <span data-toggle="tooltip" data-placement="bottom" [title]="videoFile.companyName | slice:0:25" *ngIf="videoFile.companyName">By {{videoFile.companyName | slice:0:25}}
+            <span *ngIf="videoFile.companyName?.length>25">...</span>
+            </span>
+            <span data-toggle="tooltip" data-placement="bottom" [title]="videoFile.uploadedUserName | slice:0:25" *ngIf="!videoFile.companyName">By {{videoFile.uploadedUserName | slice:0:25}}
+            <span *ngIf="videoFile.uploadedUserName?.length>25">...</span>
+            </span>
+         </span>
+         <h6 class='f-w-600 views-draft topand-bottom-padding'  (click)="showPlayVideo(videoFile)" [ngClass]="{'mt7':videoFile?.viewBy!=='DRAFT'}">
+            <span *ngIf="videoFile?.viewBy!=='DRAFT'">
+               <span *ngIf="videoFile.views">{{videoFile.views}} views</span>
+               <span *ngIf="!videoFile.views">0 views</span>
+            </span>
+            <span *ngIf="videoFile?.viewBy==='DRAFT'">0 views</span>
+         </h6>
+         <p *ngIf="videoFile?.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</p>
+         <h6 *ngIf="published && !processing" class="view-banner published" translate>Published</h6>
+         <h6 *ngIf="processing" class="view-banner" translate>
+            <span><img src="assets/images/loading.gif" alt="Processing" style="height:15px"></span>Processing
+         </h6>
+   
+         <!---XNFR-255-->
+         <ng-container *ngIf="asset?.whiteLabeledAssetReceivedFromVendor">
+            <span class="view-banner-white-labeled mb5">White-Labeled</span>
+            <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom" title="{{asset?.whiteLabeledAssetSharedByVendorCompanyName}}">
+               <span translate> <b>Received From:</b> {{asset?.whiteLabeledAssetSharedByVendorCompanyName}}</span>
+            </h6>
          </ng-container>
-      </h6>
-      <!-- tags end -->
-   <!---XNFR-255-->
-     
-     </a>
-  </div>
-  </div>
-</ng-container>
+         <!---XNFR-255-->
+         <!---XNFR-255-->
+         <ng-container *ngIf="videoFile?.whiteLabeledAssetReceivedFromVendor">
+            <span class="view-banner-white-labeled mb5">White-Labeled</span>
+            <h6 class="moreipsis" data-toggle="tooltip" data-placement="bottom" title="{{videoFile?.whiteLabeledAssetSharedByVendorCompanyName}}">
+               <span translate><b>Received From:</b> {{videoFile?.whiteLabeledAssetSharedByVendorCompanyName}}</span>
+            </h6>
+         </ng-container>
+            <!-- tags start -->
+            <h6 style="padding-top: 5px;">
+            <ng-container *ngIf="videoFile?.tagNames?.length > 0">
+               <div class="tag tablegray-tag" data-toggle="tooltip" data-placement="bottom" title="{{videoFile?.tagNames[0]}}">
+                  <ng-container *ngIf="videoFile?.tagNames?.length == 1">{{videoFile?.tagNames[0]}}
+                  </ng-container>
+                  <ng-container *ngIf="videoFile?.tagNames?.length > 1">{{videoFile?.tagNames[0]
+                     | slice:0:25}} <span *ngIf="videoFile?.tagNames[0]?.length>25">...</span>
+                  </ng-container>
+               </div>
+               <ng-container *ngIf="videoFile.tagNames.length > 1">
+                  <div class="tag tablegray-tag"  data-toggle="tooltip" data-placement="bottom" title="{{videoFile.tagNames[1]}}">
+                     {{videoFile.tagNames[1] | slice:0:25}} <span
+                        *ngIf="videoFile.tagNames[1]?.length>25">...</span>
+                  </div>
+               </ng-container>
+               <span *ngIf="videoFile.tagNames?.length>2" class="tag-dots" title="{{videoFile.toolTipTagNames}}">...</span>
+            </ng-container>
+            </h6>
+         <!-- tags end -->
+      <!---XNFR-255-->
+      
+      </a>
+   </div>
+   </div>
+ </ng-container>
