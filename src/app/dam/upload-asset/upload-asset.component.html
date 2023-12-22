@@ -497,7 +497,7 @@
                                                       <app-list-loader
                                                          *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
                                                       <app-partner-company-and-groups
-                                                         *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketing"
+                                                         *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany"
                                                          [moduleName]="'dam'" [inputId]="id"
                                                          [isPublishedToPartnerGroups]="damUploadPostDto?.publishedToPartnerGroups"
                                                          [selectedTeamMemberIds]="damUploadPostDto?.partnerIds"
