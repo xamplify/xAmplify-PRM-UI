@@ -150,11 +150,12 @@ import { SearchableDropdownComponent } from 'app/util/searchable-dropdown/search
 import { ConnectwiseAuthenticationPopupComponent } from 'app/contacts/connectwise-authentication-popup/connectwise-authentication-popup.component';
 import { ScrollToModule } from 'ng2-scroll-to-el';
 
+import { ConfirmUnpublishTracksOrPlaybooksModelPopupComponent } from 'app/util/confirm-unpublish-tracks-or-playbooks-model-popup/confirm-unpublish-tracks-or-playbooks-model-popup.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
 		 DragulaModule, ColorPickerModule, CKEditorModule,QueryBuilderModule,DropDownListModule,ScrollToModule.forRoot()],
-	declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
+	declarations: [ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
 		BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
 		PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
 		PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent,
@@ -183,7 +184,7 @@ import { ScrollToModule } from 'ng2-scroll-to-el';
 		 ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent],
 
 
-	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
+	exports: [ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
 		BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
 		ResponseMessageComponent, PreviewVideoComponent, PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
 		ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent,

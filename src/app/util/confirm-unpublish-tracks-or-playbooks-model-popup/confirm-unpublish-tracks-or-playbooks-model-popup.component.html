@@ -1,0 +1,38 @@
+<div class="modal fade in" id="unpublished-modal" data-backdrop="static">
+  <div class="modal-dialog modal-copy" role="document">
+      <div class="modal-content mSweetalertWid popup-cu-widthalign">
+          <div class="modal-header">
+              <h4 class="modal-title f-w-600" id="" translate="">Are you sure you want to unpublish this
+                  track?</h4>
+          </div>
+          <div class="modal-body">
+              <div>
+                  <h4 class="modal-title">Please share your reason for unpublishing this Track.</h4>
+              </div>
+              <div class="form-check pointer mt15"> 
+                  
+                 <input class="pointer radioButton_shadow" type="radio" 
+                      name="rdaction" value="Assets_or_Quiz" (click)="selectedOption=true">
+                  <label class="option-color">Want to update Assets/Quiz</label><br>
+                  <input class="pointer radioButton_shadow" type="radio" 
+                      name="rdaction" value="Partner_List" (click)="selectedOption=true">
+                  <label class="option-color">Want to update the partner/list of partners</label><br>
+                  <input class="pointer radioButton_shadow" type="radio" 
+      
+                  name="rdaction" value="Other" (click)="selectedOption=true">
+                  <label class="option-color">Other</label><br>
+              </div>
+              <div>
+                  <p class="warning-text">* When you unpublish the track,all the related analytics
+                      will no
+                      longer exists.</p>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button class="btn Btn-Gray" type="button" name="cancel" (click)="closePopUp()">Cancel</button>
+              <button class="btn Btn-Green" type="button" name="unpublish" [disabled]="!selectedOption"
+                  (click)="modelUnpublishPopup()">Unpublish</button>
+         </div>
+      </div>
+  </div>
+</div>
