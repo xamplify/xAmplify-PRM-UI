@@ -3060,11 +3060,12 @@ justify-content: center!important;
   border: unset!important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
-.radiobtn{
+.radiobtn,
+.social_share_border{
   border: 1px solid #191b1e!important;
 }
 
-/* me changes */
+/* manikanta changes */
 .downloadicon{
   position: relative;
   /* top: -21px; */
@@ -3530,4 +3531,21 @@ span.btn.btn-primary.transition.new_list_text {
 }
 .pos_pd_lft10{
   padding-left: 10px !important;
+}
+.pos_pd-top4{
+  padding-top: 4px !important;
+}
+/* 22-12-2023(sudha sri) */
+.pos_mrg_top3{
+  margin-top: 3px !important;
+}
+.pos_mrg_top_rgt{
+  margin-top: 12px !important;
+  margin-right: 15px !important;
+}
+.pos_pd_top7{
+  padding-top: 7px !important;
+}
+.pos_pd_top5{
+  padding-top: 5px !important;
 }

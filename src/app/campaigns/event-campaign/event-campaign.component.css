@@ -1512,3 +1512,7 @@ input.radio-custimization:checked:before {
       left:39px!important;
   }
 } 
+/* 22-12-2023(sudha sri) */
+.social_share_border{
+  border: 1px solid #ccc;
+}

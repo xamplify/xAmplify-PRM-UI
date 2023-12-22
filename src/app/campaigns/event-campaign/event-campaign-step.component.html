@@ -26,8 +26,9 @@
 			</ng-template>
 		</ul>
 		<div id="folder-margin-xamp">
-			<button class="button_blue bgcolor-unset" id="right" style="padding-bottom: 5px;"
-				(click)="openCreateFolderPopup()" translate><span class="btn btn-primary transition">Create a
+			<button class="button_blue bgcolor-unset pos_pd_top_rgt1" id="right" style="padding-bottom: 5px;"
+				(click)="openCreateFolderPopup()" translate><span class="btn btn-primary transition ">Create
+					a
 					Folder</span></button>
 		</div>
 	</div>
@@ -59,7 +60,8 @@
 							<ng-container *ngIf="contactListTabName=='Partners'">
 								{{authenticationService?.partnerModule?.customName | translate}}
 							</ng-container>
-							<ng-container *ngIf="contactListTabName!='Partners'&& !authenticationService.module.isMarketingCompany">
+							<ng-container
+								*ngIf="contactListTabName!='Partners'&& !authenticationService.module.isMarketingCompany">
 								{{authenticationService?.partnerModule?.customName}} & Recipients
 							</ng-container>
 							<ng-container *ngIf="authenticationService.module.isMarketingCompany">
@@ -629,8 +631,9 @@
 								<div *ngIf="socialStatusProviders?.length > 0" [class.disabled]="(isPreviewEvent)">
 									<button type="button" class="button_blue pull-right bgcolor-unset"
 										(click)="isSocialEnable = !isSocialEnable">
-										<span class="btn btn-primary transition"><i class="fa fa-share-alt fa-social"
-												style="margin: 0 5px;"></i> Social Share</span>
+										<span class="btn btn-primary transition txt_pd-top3"><i
+												class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social
+											Share</span>
 									</button>
 									<div class="clearfix"></div>
 									<div [hidden]="!isSocialEnable">
@@ -689,7 +692,7 @@
 											</li>
 										</ul>
 										<div class="col-xs-12 p0" style="margin-top: 10px;">
-											<div style="border: 1px solid #ccc; padding: 10px;">
+											<div class="social_share_border" style="padding: 10px;">
 												<h6 class="pull-left f-w-600 mt0">Social share preview</h6>
 												<textarea placeholder="Status message" rows="4" class="form-control"
 													[(ngModel)]="statusMessage"
@@ -802,7 +805,7 @@
 							type="button" style="float: right" class="button bgcolor-unset"
 							(click)="resetTabs('recipients')" title="Please Fill Campaign Details"
 							[disabled]="recipientsTabClass === 'disableRecipientsTab'"><span
-								class="btn Btn-Green transition">Next</span></button>
+								class="btn Btn-Green transition txt_pd-top3">Next</span></button>
 					</div>
 				</fieldset>
 				<!--  End Step one -->
@@ -1090,7 +1093,7 @@
 								type="button" style="float: right;" class="button bgcolor-unset"
 								[disabled]="emailTemplatesTabClass === 'disableTemplateTab'"
 								(click)="resetTabs('templates')" title=""><span
-									class="btn Btn-Green transition">Next</span></button>
+									class="btn Btn-Green transition txt_pd-top3">Next</span></button>
 						</div>
 					</div>
 				</div>
@@ -1327,7 +1330,7 @@
 					<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button"
 						style="float: right;" class="button bgcolor-unset" (click)="resetTabs('launch')"
 						[class.disabled]="launchTabClass === 'disableLaunchTab'" title=""><span
-							class="btn Btn-Green transition">Next</span></button>
+							class="btn Btn-Green transition txt_pd-top3">Next</span></button>
 				</div>
 				<!--    End Step three templates -->
 				<!-- 	Step four launch campaigns    -->
@@ -1435,9 +1438,9 @@
 													<button
 														[class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate"
 														[class.disabled]="isPreviewEvent"
-														class="button_blue bgcolor-unset" style="color:#fff"
-														(click)="resetTabs('recipients')"><span
-															class="btn btn-primary transition">Change</span></button>
+														class="button_blue bgcolor-unset pos_mrg_top_rgt"
+														style="color:#fff" (click)="resetTabs('recipients')"><span
+															class="btn btn-primary transition txt_pd-top3">Change</span></button>
 												</td>
 											</tr>
 										</table>
@@ -1466,10 +1469,10 @@
 												<td style="text-align: right" width="20%">
 													<button
 														[class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate"
-														class="button_blue bgcolor-unset"
+														class="button_blue bgcolor-unset pos_mrg_top_rgt"
 														[class.disabled]="isPreviewEvent"
 														(click)="resetTabs('templates')"><span
-															class="btn btn-primary transition">Change</span></button>
+															class="btn btn-primary transition txt_pd-top3">Change</span></button>
 													<a *ngIf="reDistributeEvent || reDistributeEventManage"
 														class="btn btn-primary btn-sm"
 														(click)="editPartnerTemplate()"><i
@@ -2057,10 +2060,12 @@
 								class="btn btn-warning button-border Sch-class" style="width: 10em;"
 								(click)="scheduleCampaign()">Schedule</button>
 							<button type="submit" *ngIf="checkLaunchOption=='SAVE'"
-								class="btn green mBtnAlign button-border" style="width: 10em;"
-								(click)="createEventCampaign(eventCampaign, 'SAVE')">Save</button>
-							<button type="button" class="btn green" (click)="spamCheck()" style="width: 10em;">Spam
-								check</button>
+								class="button bgcolor-unset button-border" style="width: 10em;"
+								(click)="createEventCampaign(eventCampaign, 'SAVE')"><span
+									class="btn Btn-Green transition txt_pd-top3">Save</span></button>
+							<button type="button" class="button bgcolor-unset neg_mrg_top4" (click)="spamCheck()"
+								style="width: 10em;"><span class="btn Btn-Green transition txt_pd-top3">Spam
+									check</span></button>
 						</div>
 					</div>
 				</div>
@@ -2288,9 +2293,9 @@
 				</div>
 			</div>
 			<div class="folder-modal-footer" *ngIf="!folderErrorCustomResponse.isVisible">
-				<button type="button" class="btn Btn-Gray " (click)="closeFilterPopup()">Cancel</button>
-				<button type="button" class="button_blue" (click)="closeFilterPopup()"><span
-						class="btn btn-primary transition bgcolor-unset">Apply</span></button>
+				<button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="closeFilterPopup()">Cancel</button>
+				<button type="button" class="button_blue bgcolor-unset" (click)="closeFilterPopup()"><span
+						class="btn btn-primary transition bgcolor-unset txt_pd-top3">Apply</span></button>
 			</div>
 		</div>
 	</div>

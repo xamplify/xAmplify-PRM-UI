@@ -1,7 +1,7 @@
 <style type="text/css">
   .disabled {
-  pointer-events: none;
-  cursor: not-allowed !important;
+    pointer-events: none;
+    cursor: not-allowed !important;
   }
 </style>
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -16,12 +16,17 @@
           <ul class="mix-filter col-xs-12 col-sm-12 col-md-6 p0 m0">
             <li class="filter" (click)="filterCampaigns('all')" [class.active]="'all' == campaignType">
               All</li>
-            <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType" *ngIf="campaignAccess.emailCampaign">Email</li>
-            <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType" *ngIf="campaignAccess.videoCampaign">Video</li>
-            <li class="filter"  (click)="filterCampaigns('social')" [class.active]="'social' == campaignType" *ngIf="campaignAccess.socialCampaign">Social
+            <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType"
+              *ngIf="campaignAccess.emailCampaign">Email</li>
+            <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType"
+              *ngIf="campaignAccess.videoCampaign">Video</li>
+            <li class="filter" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType"
+              *ngIf="campaignAccess.socialCampaign">Social
             </li>
-            <li class="filter"  (click)="filterCampaigns('event')" [class.active]="'event' == campaignType" *ngIf="campaignAccess.eventCampaign">Event</li>
-            <li class="filter"  (click)="filterCampaigns('survey')" [class.active]="'survey' == campaignType" *ngIf="campaignAccess.survey">Survey</li>
+            <li class="filter" (click)="filterCampaigns('event')" [class.active]="'event' == campaignType"
+              *ngIf="campaignAccess.eventCampaign">Event</li>
+            <li class="filter" (click)="filterCampaigns('survey')" [class.active]="'survey' == campaignType"
+              *ngIf="campaignAccess.survey">Survey</li>
             <li class="filter" style="display: none;">Own Template</li>
           </ul>
           <div class="page-toolbar col-xs-12 col-sm-12 col-md-6">
@@ -29,29 +34,35 @@
               <div class="col-xs-4 col-sm-4 col-md-3 hidden-xs">
                 <div>
                   <ng-container class='m10'>
-                    <button class="btn btn-xs hidden-xs l-g-view zero-margin-xamp-campaign" [disabled]="this.modulesDisplayType.isListView"   (click)="setViewType('List')" title="List View">
-                    <i class="fa fa-th-list p10" aria-hidden="true"></i>
+                    <button class="btn btn-xs hidden-xs l-g-view zero-margin-xamp-campaign"
+                      [disabled]="this.modulesDisplayType.isListView" (click)="setViewType('List')" title="List View">
+                      <i class="fa fa-th-list p10" aria-hidden="true"></i>
                     </button>
-                    <button class="btn btn-xs hidden-xs l-g-view" [disabled]="this.modulesDisplayType.isGridView"  (click)="setViewType('Grid')" title="Grid View">
-                    <i class="fa fa-th-large p10" aria-hidden="true"></i>
+                    <button class="btn btn-xs hidden-xs l-g-view" [disabled]="this.modulesDisplayType.isGridView"
+                      (click)="setViewType('Grid')" title="Grid View">
+                      <i class="fa fa-th-large p10" aria-hidden="true"></i>
                     </button>
                   </ng-container>
                 </div>
               </div>
               <div class="col-xs-6 col-sm-4 col-md-4 p0">
                 <div style="float: left;">
-                  <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
-                  <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">
-                  {{sortOption.name}}</option>
+                  <select class="form-control" [(ngModel)]="selectedSortedOption"
+                    (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
+                    <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">
+                      {{sortOption.name}}</option>
                   </select>
                 </div>
               </div>
               <div class="col-xs-6 col-sm-4 col-md-4 p0">
                 <div class="portlet-input input-inline input-small">
                   <div class="input-icon mbsearch" style="position: relative;right: -11px;">
-                    <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search..." (keypress)="eventHandler($event.keyCode)">
-                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
-                    <button type="submit" class="search-box-item-click" (click)="searchCampaigns()"><i class="fa fa-search"></i></button>
+                    <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
+                      class="form-control" placeholder="Search..." (keypress)="eventHandler($event.keyCode)">
+                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+                      (click)="searchKey=''"></button>
+                    <button type="submit" class="search-box-item-click" (click)="searchCampaigns()"><i
+                        class="fa fa-search"></i></button>
                   </div>
                 </div>
               </div>
@@ -60,13 +71,15 @@
         </div>
         <app-grid-loader *ngIf="httpRequestLoader.isLoading && this.modulesDisplayType.isGridView"></app-grid-loader>
         <app-list-loader *ngIf="httpRequestLoader.isLoading && this.modulesDisplayType.isListView"></app-list-loader>
-        <section class='m10' *ngIf="this.modulesDisplayType.isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+        <section class='m10'
+          *ngIf="this.modulesDisplayType.isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
           <div class="table-responsive" style="border:none">
             <table class='table tgrid table-hover table-sm' id="redistribute-campaign-list">
               <thead>
                 <tr>
                   <th colspan="2" style="width: 30%">
-                    <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'redistribute-campaign-list',2)"> </span>
+                    <span class="ui-column-resizer gray"
+                      (mousedown)="referenceService.onMouseDown($event,'redistribute-campaign-list',2)"> </span>
                     <span class="gridHeader">Campaign</span>
                   </th>
                   <th class="custom-center hidden-xs">Vendor Company Name</th>
@@ -77,95 +90,143 @@
               <tbody>
                 <tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
                   <td style="width: 10%;" class="hidden-xs">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " src="assets/images/video-email.svg" style="" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " src="assets/images/video-email.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" src="assets/images/regular-email.svg" style="" alt="{{campaign.campaignType}} Campaign">
-                    <img class="image-padding" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && !campaign.launched" src="assets/images/regular-email.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" src="assets/images/social-campaign.svg" style="" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" src="assets/images/social-campaign.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && campaign.launched" src="assets/images/event-campaign.svg" style="" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !campaign.launched" src="assets/images/event-campaign.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && campaign.launched" src="assets/images/landing-page.svg" style="" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && !campaign.launched" src="assets/images/landing-page.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && campaign.launched" src="assets/images/survey.svg" style="" alt="{{campaign.campaignType}} Campaign">
-                    <img class="imageClass image-padding" *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && !campaign.launched" src="assets/images/survey.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding"
+                      *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched "
+                      src="assets/images/video-email.svg" style="" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding"
+                      *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched "
+                      src="assets/images/video-email.svg"
+                      style="-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                      alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding"
+                      *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched"
+                      src="assets/images/regular-email.svg" style="" alt="{{campaign.campaignType}} Campaign">
+                    <img class="image-padding"
+                      *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && !campaign.launched"
+                      src="assets/images/regular-email.svg"
+                      style="-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                      alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding"
+                      *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched"
+                      src="assets/images/social-campaign.svg" style="" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding"
+                      *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched"
+                      src="assets/images/social-campaign.svg"
+                      style="-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                      alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding"
+                      *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && campaign.launched"
+                      src="assets/images/event-campaign.svg" style="" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding"
+                      *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !campaign.launched"
+                      src="assets/images/event-campaign.svg"
+                      style="-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                      alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding"
+                      *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && campaign.launched"
+                      src="assets/images/landing-page.svg" style="" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding"
+                      *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && !campaign.launched"
+                      src="assets/images/landing-page.svg"
+                      style="-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                      alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding"
+                      *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && campaign.launched"
+                      src="assets/images/survey.svg" style="" alt="{{campaign.campaignType}} Campaign">
+                    <img class="imageClass image-padding"
+                      *ngIf="campaign.campaignType.indexOf('SURVEY') > -1 && !campaign.launched"
+                      src="assets/images/survey.svg" style="-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                      alt="{{campaign.campaignType}} Campaign">
                   </td>
                   <td>
-                    <h5 class="moreipsis mobile-left mt5 mb5" data-toggle="tooltip" data-placement="top"  [title]="campaign.campaignName">
+                    <h5 class="moreipsis mobile-left mt5 mb5" data-toggle="tooltip" data-placement="top"
+                      [title]="campaign.campaignName">
                       <span translate><b>Campaign Name:</b> {{campaign.campaignName}}</span>
-                     </h5>
-                    <h5 class="moreipsis mobile-left mt5 mb5" >
-                      <span [title]="campaign.createdBy" data-toggle="tooltip" data-placement="top"> <b>By:</b> {{campaign.createdBy}}</span>
                     </h5>
-                    <h5 class="moreipsis mobile-left mt5 mb5" >
-                      <span [title]="campaign.companyName"  data-toggle="tooltip" data-placement="top"> <b>From:</b> {{campaign.companyName}}</span>
+                    <h5 class="moreipsis mobile-left mt5 mb5">
+                      <span [title]="campaign.createdBy" data-toggle="tooltip" data-placement="top"> <b>By:</b>
+                        {{campaign.createdBy}}</span>
                     </h5>
-                    <h5 class="moreipsis mobile-left mt5 mb5" >
-                      <span  data-toggle="tooltip" data-placement="top" [title]="campaign.categoryName"> <b>Folder:</b> {{campaign.categoryName}}</span>
+                    <h5 class="moreipsis mobile-left mt5 mb5">
+                      <span [title]="campaign.companyName" data-toggle="tooltip" data-placement="top"> <b>From:</b>
+                        {{campaign.companyName}}</span>
                     </h5>
-                    <h5 class="ellipsis view-banner Cancelled-tag-cu" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">Cancelled</h5>
+                    <h5 class="moreipsis mobile-left mt5 mb5">
+                      <span data-toggle="tooltip" data-placement="top" [title]="campaign.categoryName"> <b>Folder:</b>
+                        {{campaign.categoryName}}</span>
+                    </h5>
+                    <h5 class="ellipsis view-banner Cancelled-tag-cu"
+                      *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">
+                      Cancelled</h5>
                   </td>
                   <td title="{{campaign.companyName}}" class="moreipsis custom-center hidden-xs">
                     <span>{{campaign.companyName}}</span>
                   </td>
                   <td class="custom-center hidden-xs">
                     <span align="right">
-                    <b>Received On</b>
+                      <b>Received On</b>
                     </span>
                     <span align="right" title="Received On"><b>
-                    <app-timestamp [isOnlyDate]="false"
-                    [dateAndTime]="campaign.displayTime"> </app-timestamp>
-                    </b>
+                        <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.displayTime"> </app-timestamp>
+                      </b>
                     </span>
                   </td>
                   <td>
-                    <div class="actions-block override-actions IconCustomizationcondition" style="text-align: center !important;width: max-content;">
-                      <a *ngIf="campaign.campaignType !== 'SOCIAL'" (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
-                      <i class="fa fa-eye mr5"></i>
+                    <div class="actions-block override-actions IconCustomizationcondition"
+                      style="text-align: center !important;width: max-content;">
+                      <a *ngIf="campaign.campaignType !== 'SOCIAL'" (click)="showCampaignPreview(campaign)"
+                        data-toggle="tooltip" data-placement="top" title="Preview Campaign">
+                        <i class="fa fa-eye mr5"></i>
                       </a>
-                      <a *ngIf="campaign.campaignType == 'SOCIAL'" (click)="showSocialCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
-                      <i class="fa fa-eye mr5"></i>
+                      <a *ngIf="campaign.campaignType == 'SOCIAL'" (click)="showSocialCampaignPreview(campaign)"
+                        data-toggle="tooltip" data-placement="top" title="Preview Campaign">
+                        <i class="fa fa-eye mr5"></i>
                       </a>
                       <span>
                         <ng-container *ngIf="campaign.allowRedistribution">
-                            <!----XNFR-125---->
-                          <ng-template [ngTemplateOutlet]="oneClickLaunchIconTemplate" [ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
                           <!----XNFR-125---->
-                          <ng-template [ngTemplateOutlet]="redistributeIcon" [ngTemplateOutletContext]="{campaign:campaign}"> </ng-template>
+                          <ng-template [ngTemplateOutlet]="oneClickLaunchIconTemplate"
+                            [ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
+                          <!----XNFR-125---->
+                          <ng-template [ngTemplateOutlet]="redistributeIcon"
+                            [ngTemplateOutletContext]="{campaign:campaign}"> </ng-template>
 
                         </ng-container>
-                         <!----XNFR-125---->
-                         <ng-template [ngTemplateOutlet]="disableIconsTemplate" [ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
-                         <!----XNFR-125---->
-                        <ng-container class="pull-right"
-                          *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO'
+                        <!----XNFR-125---->
+                        <ng-template [ngTemplateOutlet]="disableIconsTemplate"
+                          [ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
+                        <!----XNFR-125---->
+                        <ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO'
                            || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) ||
                             campaign.campaignType === 'LANDINGPAGE' || campaign.campaignType === 'SURVEY' ">
-                          <div class="btn-group pull-right" id="download-template"
-                            *ngIf="campaign.allowDownload" title="Download">
-                            <span
-                              class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" 
+                          <div class="btn-group pull-right" id="download-template" *ngIf="campaign.allowDownload"
+                            title="Download">
+                            <span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu"
                               data-toggle="dropdown" id="download-drop" title="Download"></span>
                             <span data-toggle="dropdown" title="Download"></span>
                             <ul class="dropdown-menu pull-right">
                               <li>
-                                <a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button">
+                                <a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="top"
+                                  title="Download Html" data-rel="fancybox-button">
                                   <i class="fa fa-file" style="width: 30px;"></i> Download Html
                                 </a>
                               </li>
                               <li *ngIf="campaign.campaignType != 'EVENT'">
-                                <a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button">
-                                <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
+                                <a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="top"
+                                  title="Download Pdf" data-rel="fancybox-button">
+                                  <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
                                 </a>
                               </li>
                             </ul>
                           </div>
-                          <a *ngIf="!campaign.allowDownload" data-toggle="tooltip" data-placement="top" title="Please turn on GDPR settings to download" data-rel="fancybox-button">
-                          <i class="fa fa-download cancelled-event"></i>
+                          <a *ngIf="!campaign.allowDownload" data-toggle="tooltip" data-placement="top"
+                            title="Please turn on GDPR settings to download" data-rel="fancybox-button">
+                            <i class="fa fa-download cancelled-event"></i>
                           </a>
-                           <a data-toggle="tooltip" data-placement="top" (click)="viewDownloadedHistory(campaign)" title="View Download History" data-rel="fancybox-button">
+                          <a data-toggle="tooltip" data-placement="top" (click)="viewDownloadedHistory(campaign)"
+                            title="View Download History" data-rel="fancybox-button">
                             <i class="fa fa-history" aria-hidden="true"></i>
-                            </a>
+                          </a>
                         </ng-container>
                       </span>
                       <a class="hidden"><i class="fa fa-trash"></i></a>
@@ -183,80 +244,108 @@
           <div class="margin-top-10">
             <div class="row mix-grid p15">
               <app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
-              <ng-container *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                <div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3 tab_mt_20 GridviewSidePaddings">
+              <ng-container
+                *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                <div *ngFor="let campaign of pagination.pagedItems; let i= index"
+                  class="col-xs-12 col-sm-4 col-lg-3 tab_mt_20 GridviewSidePaddings">
                   <div class="grid-box pcgrFolderidHeight">
                     <div class="gridViewImgBg">
-                    <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
+                      <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
                     </div>
-                    <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent" data-placement="top" data-toggle="tooltip" title="{{campaign.campaignName}}">
-                     <b>Campaign Name:</b> {{campaign.campaignName}}
-                    </h4>                
-                    <h6 data-placement="top" data-toggle="tooltip" [title]="campaign.createdBy" class="xamplify-ellipsis GridViewCotent"> <b>By:</b> 
-                       {{campaign.createdBy}}
+                    <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent" data-placement="top"
+                      data-toggle="tooltip" title="{{campaign.campaignName}}">
+                      <b>Campaign Name:</b> {{campaign.campaignName}}
+                    </h4>
+                    <h6 data-placement="top" data-toggle="tooltip" [title]="campaign.createdBy"
+                      class="xamplify-ellipsis GridViewCotent"> <b>By:</b>
+                      {{campaign.createdBy}}
                     </h6>
-                    <h6 data-placement="top" data-toggle="tooltip" [title]="campaign.companyName" class="GridViewCotent xamplify-ellipsis">
-                      <b>From:</b> 
-                       {{campaign.companyName}}   
+                    <h6 data-placement="top" data-toggle="tooltip" [title]="campaign.companyName"
+                      class="GridViewCotent xamplify-ellipsis">
+                      <b>From:</b>
+                      {{campaign.companyName}}
                     </h6>
-                    <h6 data-placement="top" data-toggle="tooltip" [title]="campaign.categoryName" class="GridViewCotent xamplify-ellipsis"> <b>Folder:</b> 
-                       {{campaign.categoryName}}
+                    <h6 data-placement="top" data-toggle="tooltip" [title]="campaign.categoryName"
+                      class="GridViewCotent xamplify-ellipsis"> <b>Folder:</b>
+                      {{campaign.categoryName}}
                     </h6>
-                    <h6 class="GridViewCotent"><b>Received On: </b><app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.displayTime"> </app-timestamp></h6>
+                    <h6 class="GridViewCotent"><b>Received On: </b><app-timestamp [isOnlyDate]="false"
+                        [dateAndTime]="campaign.displayTime"> </app-timestamp></h6>
                     <div class="bookmark-ribbon">
                       <span style="margin: 0px -7px; font-size: 17px; color: white;">
-                      <i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera" aria-hidden="true"></i>
-                      <i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" class="fa fa-envelope" aria-hidden="true"></i>
-                      <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
-                      <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar" aria-hidden="true"></i>
-                      <i *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1" class="fa fa-wpforms" aria-hidden="true"></i>
-                      <i *ngIf="campaign.campaignType.indexOf('SURVEY') > -1" class="fa fa-wpforms" aria-hidden="true"></i>
+                        <i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera"
+                          aria-hidden="true"></i>
+                        <i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" class="fa fa-envelope"
+                          aria-hidden="true"></i>
+                        <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe"
+                          aria-hidden="true"></i>
+                        <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar"
+                          aria-hidden="true"></i>
+                        <i *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1" class="fa fa-wpforms"
+                          aria-hidden="true"></i>
+                        <i *ngIf="campaign.campaignType.indexOf('SURVEY') > -1" class="fa fa-wpforms"
+                          aria-hidden="true"></i>
                       </span>
                     </div>
                     <div class="ribbon tab-ribbon">
-                      <div class="cancel-ribbon" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">
+                      <div class="cancel-ribbon"
+                        *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">
                         Cancelled
                       </div>
                     </div>
                     <div class="bar gridIconCustomization">
-                      <a class="Iconhover" *ngIf="campaign.campaignType != 'SOCIAL'" (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
-                      <i class="fa fa-eye mr4" aria-hidden="true"></i>
+                      <a class="Iconhover" *ngIf="campaign.campaignType != 'SOCIAL'"
+                        (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top"
+                        title="Preview Campaign">
+                        <i class="fa fa-eye mr4" aria-hidden="true"></i>
                       </a>
-                      <a class="Iconhover" *ngIf="campaign.campaignType == 'SOCIAL'" (click)="showSocialCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
-                      <i class="fa fa-eye mr5" aria-hidden="true"></i>
+                      <a class="Iconhover" *ngIf="campaign.campaignType == 'SOCIAL'"
+                        (click)="showSocialCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top"
+                        title="Preview Campaign">
+                        <i class="fa fa-eye mr5" aria-hidden="true"></i>
                       </a>
                       <ng-container *ngIf="campaign.allowRedistribution">
                         <!----XNFR-125---->
-                        <ng-template [ngTemplateOutlet]="oneClickLaunchIconTemplate" [ngTemplateOutletContext]="{campaign:campaign}"> </ng-template>
+                        <ng-template [ngTemplateOutlet]="oneClickLaunchIconTemplate"
+                          [ngTemplateOutletContext]="{campaign:campaign}"> </ng-template>
                         <!----XNFR-125---->
-                        <ng-template [ngTemplateOutlet]="redistributeIcon" [ngTemplateOutletContext]="{campaign:campaign}"> </ng-template>
+                        <ng-template [ngTemplateOutlet]="redistributeIcon"
+                          [ngTemplateOutletContext]="{campaign:campaign}"> </ng-template>
                       </ng-container>
                       <!----XNFR-125---->
-                      <ng-template [ngTemplateOutlet]="disableIconsTemplate" [ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
-                      <ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
+                      <ng-template [ngTemplateOutlet]="disableIconsTemplate"
+                        [ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
+                      <ng-container class="pull-right"
+                        *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
                         <div class="btn-group" id="download-template-grid" *ngIf="campaign.allowDownload">
-                          <span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop" title="Download"></span>
+                          <span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu"
+                            data-toggle="dropdown" id="download-drop" title="Download"></span>
                           <span data-toggle="dropdown" title="Download"></span>
                           <ul class="dropdown-menu pull-right custome-dropdown-changs">
                             <li>
-                              <a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" title="Download Html">
-                              <i class="fa fa-file" style="width: 30px;"></i> Download Html
+                              <a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="top"
+                                data-rel="fancybox-button" title="Download Html">
+                                <i class="fa fa-file" style="width: 30px;"></i> Download Html
                               </a>
                             </li>
                             <li *ngIf="campaign.campaignType != 'EVENT'">
-                              <a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" title="Download Pdf">
-                              <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
+                              <a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="top"
+                                data-rel="fancybox-button" title="Download Pdf">
+                                <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
                               </a>
                             </li>
                           </ul>
                         </div>
-                        <a class="Iconhover" *ngIf="!campaign.allowDownload" data-toggle="tooltip" data-placement="top" title="Please turn on GDPR settings to download" data-rel="fancybox-button">
-                        <i class="fa fa-download cancelled-event"></i>
+                        <a class="Iconhover" *ngIf="!campaign.allowDownload" data-toggle="tooltip" data-placement="top"
+                          title="Please turn on GDPR settings to download" data-rel="fancybox-button">
+                          <i class="fa fa-download cancelled-event"></i>
                         </a>
-                        
-                         <a class="Iconhover" data-toggle="tooltip" data-placement="top" (click)="viewDownloadedHistory(campaign)" title="View Download History" data-rel="fancybox-button">
-                            <i class="fa fa-history" aria-hidden="true"></i>
-                            </a>
+
+                        <a class="Iconhover" data-toggle="tooltip" data-placement="top"
+                          (click)="viewDownloadedHistory(campaign)" title="View Download History"
+                          data-rel="fancybox-button">
+                          <i class="fa fa-history" aria-hidden="true"></i>
+                        </a>
                       </ng-container>
                     </div>
                   </div>
@@ -265,14 +354,17 @@
             </div>
           </div>
           <!-- End of 24 -->
-          <div *ngIf="totalRecords <= 0 && this.modulesDisplayType.isGridView &&  !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" class="alert alert-info">
+          <div
+            *ngIf="totalRecords <= 0 && this.modulesDisplayType.isGridView &&  !httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
+            class="alert alert-info">
             <strong>No campaigns found</strong>
           </div>
         </div>
         <ng-container *ngIf="this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView">
           <div [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError">
             <div *ngIf="pagination.pagedItems.length !== 0">
-              <app-pagination [pagination]="pagination" [type]="'campaign'" (notifyParent)="setPage($event)" (notifyParentDropDown)="getAllFilteredResults($event)">
+              <app-pagination [pagination]="pagination" [type]="'campaign'" (notifyParent)="setPage($event)"
+                (notifyParentDropDown)="getAllFilteredResults($event)">
               </app-pagination>
             </div>
           </div>
@@ -287,7 +379,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
-        <i class="fa fa-times"></i>
+          <i class="fa fa-times"></i>
         </button>
         <h4 class="modal-title">{{campaignName}}</h4>
       </div>
@@ -307,13 +399,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
-        <i class="fa fa-times" aria-hidden="true"></i>
+          <i class="fa fa-times" aria-hidden="true"></i>
         </button>
         <h4 class="modal-title">{{campaignName}}</h4>
       </div>
       <div class="modal-body">
         <ng-container *ngIf="!socialAccountsLoader">
-          <ng-container  *ngIf="socialCampaign?.socialStatusList?.length>0">
+          <ng-container *ngIf="socialCampaign?.socialStatusList?.length>0">
             <div class="col-md-6 col-sm-12 col-xs-12" *ngFor="let socialStatus of socialCampaign?.socialStatusList">
               <app-social-status [socialStatus]="socialStatus"></app-social-status>
             </div>
@@ -335,25 +427,28 @@
 <app-scroll-top></app-scroll-top>
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
 <app-add-more-receivers #addMoreReceivers></app-add-more-receivers>
-<app-campaign-template-download-history #campaignTemplateDownloadHistoryComponent></app-campaign-template-download-history>
+<app-campaign-template-download-history
+  #campaignTemplateDownloadHistoryComponent></app-campaign-template-download-history>
 <!----XNFR-125-->
-<app-confirm-sweet-alert-util *ngIf="showSweetAlert" [parameterDto]="sweetAlertParameterDto" (notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
+<app-confirm-sweet-alert-util *ngIf="showSweetAlert" [parameterDto]="sweetAlertParameterDto"
+  (notifyComponent)="receiveEvent($event)"></app-confirm-sweet-alert-util>
 <!--One Click Launch  Icon-->
 <ng-template #oneClickLaunchIconTemplate let-campaign="campaign">
   <ng-container *ngIf="campaign?.oneClickLaunch">
-    <a *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended" data-toggle="tooltip" 
-      data-placement="top" [title]="campaign?.oneClickLaunchCampaignRedistributed ? properties.oneClickLaunchCampaignRedistributedErrorMessage :
-      !campaign?.shareLeadsListExists ? properties.emptyOneClickLaunchCampaignErrorMessage:'One Click Launch'" 
-      data-rel="fancybox-button" (click)="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists ? false: launchOneClickCampaign(campaign)">
-        <i [className]="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists ? 'fa fa-hand-pointer-o cancelled-event':'fa fa-hand-pointer-o'"></i>
+    <a *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended" data-toggle="tooltip" data-placement="top" [title]="campaign?.oneClickLaunchCampaignRedistributed ? properties.oneClickLaunchCampaignRedistributedErrorMessage :
+      !campaign?.shareLeadsListExists ? properties.emptyOneClickLaunchCampaignErrorMessage:'One Click Launch'"
+      data-rel="fancybox-button"
+      (click)="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists ? false: launchOneClickCampaign(campaign)">
+      <i
+        [className]="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists ? 'fa fa-hand-pointer-o cancelled-event':'fa fa-hand-pointer-o'"></i>
     </a>
-    <a *ngIf="campaign.campaignType != 'EVENT' && campaign.ended" data-toggle="tooltip" 
-      data-placement="top" title="{{properties?.oneClickLaunchCampaignExpiredMessage}}"  data-rel="fancybox-button">
-        <i class="fa fa-hand-pointer-o cancelled-event" aria-hidden="true"></i>
+    <a *ngIf="campaign.campaignType != 'EVENT' && campaign.ended" data-toggle="tooltip" data-placement="top"
+      title="{{properties?.oneClickLaunchCampaignExpiredMessage}}" data-rel="fancybox-button">
+      <i class="fa fa-hand-pointer-o cancelled-event" aria-hidden="true"></i>
     </a>
-    <a  *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" data-toggle="tooltip" 
-        data-placement="top" title="One Click Launch" data-rel="fancybox-button" (click)="launchOneClickCampaign(campaign)">
-        <i class="fa fa-hand-pointer-o"></i>
+    <a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" data-toggle="tooltip" data-placement="top"
+      title="One Click Launch" data-rel="fancybox-button" (click)="launchOneClickCampaign(campaign)">
+      <i class="fa fa-hand-pointer-o"></i>
     </a>
   </ng-container>
 </ng-template>
@@ -361,34 +456,35 @@
 <ng-template #disableIconsTemplate let-campaign="campaign">
   <ng-container *ngIf="!campaign.allowRedistribution">
     <!----XNFR-125---->
-    <a data-toggle="tooltip" data-placement="top"
-      title="{{campaign?.redistibuteToolTipMessage}}"
+    <a data-toggle="tooltip" data-placement="top" title="{{campaign?.redistibuteToolTipMessage}}"
       data-rel="fancybox-button">
       <i class="fa fa-hand-pointer-o cancelled-event" aria-hidden="true"></i>
     </a>
-    <a data-toggle="tooltip" data-placement="top"
-      title="{{campaign?.redistibuteToolTipMessage}}"
+    <a data-toggle="tooltip" data-placement="top" title="{{campaign?.redistibuteToolTipMessage}}"
       data-rel="fancybox-button">
-    <i class="fa fa-rocket cancelled-event" aria-hidden="true"></i>
+      <i class="fa fa-rocket cancelled-event" aria-hidden="true"></i>
     </a>
   </ng-container>
 </ng-template>
 
 <ng-template #redistributeIcon let-campaign="campaign">
   <a class="Iconhover" *ngIf="campaign.campaignType != 'EVENT'  && !campaign.ended && campaign?.shareLeadsListExists "
-  (click)="reDistributeCampaign(campaign)"
-  data-toggle="tooltip" data-placement="top"
-  title="Redistribute Campaign" data-rel="fancybox-button">
-  <i class="fa fa-rocket" aria-hidden="true"></i>
-</a>
-<a *ngIf="campaign.campaignType != 'EVENT' && (campaign.ended || !campaign?.shareLeadsListExists)" 
-  data-toggle="tooltip" data-placement="top" [title]= "campaign.ended ? 'Campaign can not be further redistributed':!campaign?.shareLeadsListExists? properties?.emptyOneClickLaunchCampaignErrorMessage:'' " data-rel="fancybox-button">
-  <i class="fa fa-rocket cancelled-event"></i>
-</a>
-<a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
-<i class="fa fa-rocket"></i>
-</a>
-<a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton" data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button">
-<i class="fa fa-rocket" style="cursor:not-allowed"></i>
-</a>
+    (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign"
+    data-rel="fancybox-button">
+    <i class="fa fa-rocket" aria-hidden="true"></i>
+  </a>
+  <a *ngIf="campaign.campaignType != 'EVENT' && (campaign.ended || !campaign?.shareLeadsListExists)"
+    data-toggle="tooltip" data-placement="top"
+    [title]="campaign.ended ? 'Campaign can not be further redistributed':!campaign?.shareLeadsListExists? properties?.emptyOneClickLaunchCampaignErrorMessage:'' "
+    data-rel="fancybox-button">
+    <i class="fa fa-rocket cancelled-event"></i>
+  </a>
+  <a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" (click)="reDistributeCampaign(campaign)"
+    data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
+    <i class="fa fa-rocket"></i>
+  </a>
+  <a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton" data-toggle="tooltip" data-placement="top"
+    title="Not available for cancelled event" data-rel="fancybox-button">
+    <i class="fa fa-rocket" style="cursor:not-allowed"></i>
+  </a>
 </ng-template>

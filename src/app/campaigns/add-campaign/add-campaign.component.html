@@ -16,8 +16,9 @@
             </li>
         </ul>
         <div class="createFolderAlignment">
-            <button class="button_blue btn-bt-aln bgcolor-unset mrgn-top-btm pd-top_pd-rgt2" id="right"
-                (click)="openCreateFolderPopup()"><span class="btn btn-primary transition">Create a
+            <button class="button_blue btn-bt-aln bgcolor-unset mrgn-top-btm pd-top_pd-rgt2 pos_pd_top_rgt1 pd_top0"
+                id="right" (click)="openCreateFolderPopup()"><span class="btn btn-primary transition pos_pd_top7">Create
+                    a
                     Folder</span></button>
         </div>
     </div>
@@ -725,16 +726,19 @@
                                 </div>
 
                                 <div class="input-icon right pull-right pr-epx">
-                                    <button *ngIf="selectedEmailTemplateRow==0" class="button_blue bgcolor-unset"
+                                    <button *ngIf="selectedEmailTemplateRow==0"
+                                        class="button_blue bgcolor-unset pd_top0"
                                         [disabled]="selectedEmailTemplateRow==0" data-toggle="tooltip"
                                         data-placement="top" title="{{sendTestEmailToolTip}}">
-                                        <span class="btn btn-primary transition"><i class="fa fa-envelope-o"></i>
+                                        <span class="btn btn-primary transition pos_pd_top7"><i
+                                                class="fa fa-envelope-o"></i>
                                             {{properties?.sendTestEmail}}</span>
                                     </button>
-                                    <button *ngIf="selectedEmailTemplateRow>0" class="button_blue bgcolor-unset"
+                                    <button *ngIf="selectedEmailTemplateRow>0" class="button_blue bgcolor-unset pd_top0"
                                         data-toggle="tooltip" data-placement="top" title="{{sendTestEmailToolTip}}"
                                         (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
-                                        <span class="btn btn-primary transition"><i class="fa fa-envelope-o"></i>
+                                        <span class="btn btn-primary transition pos_pd_top7"><i
+                                                class="fa fa-envelope-o"></i>
                                             {{properties?.sendTestEmail}}</span>
                                     </button>
                                 </div>
@@ -2034,23 +2038,25 @@
                                 </div>
                                 <!--Other Buttons-->
                                 <div class="text-center">
-                                    <button type="button" class="btn mBtnAlign f-w-600 w-10em prev-btn bgcolor-unset"
+                                    <button type="button"
+                                        class="btn mBtnAlign f-w-600 w-10em prev-btn bgcolor-unset pos_mrg_top3"
                                         (click)="showCampaignDetailsTab()"><span
                                             class="btn Btn-Gray">Previous</span></button>
                                     <button *ngIf="!isPageCampaign" type="button"
                                         class="button mBtnAlign w-10em bgcolor-unset " title="Send Test Email"
                                         data-toggle="tooltip" data-placement="top"
                                         (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
-                                        <span class="btn Btn-Green transition pl_4">{{properties?.sendTestEmail}}<i
+                                        <span
+                                            class="btn Btn-Green transition pl_4 pos_pd-top4">{{properties?.sendTestEmail}}<i
                                                 class="fa fa-envelope-o mr5 ml5"></i></span>
                                     </button>
                                     <button type="submit" class="button mBtnAlign w-10em mar-lft-11 bgcolor-unset"
                                         [disabled]="!isContactList"
                                         (click)="isContactList && validateAndLaunchCampaign()"><span
-                                            class="btn Btn-Green transition">{{buttonName}}</span></button>
+                                            class="btn Btn-Green transition pos_pd-top4">{{buttonName}}</span></button>
                                     <button *ngIf="!isPageCampaign" type="button"
                                         class="button mBtnAlign w-10em mar-lft-40 bgcolor-unset"
-                                        (click)="spamCheck()"><span class="btn Btn-Green transition">Spam
+                                        (click)="spamCheck()"><span class="btn Btn-Green transition pos_pd_top5">Spam
                                             Check</span></button>
                                 </div>
                             </div>
@@ -2069,11 +2075,12 @@
                 {{beeContainerInput?.emailTemplateName}}
                 <div>
                     <a class="close-circle pull-right" (click)="hideEditTemplateDiv()"
-                    [ngStyle]="{'margin-top':isShowEditTemplatePopup && campaignType=='page' || campaignType=='survey'? '10px':''}">
+                        [ngStyle]="{'margin-top':isShowEditTemplatePopup && campaignType=='page' || campaignType=='survey'? '10px':''}">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
                     <app-preview-popup #previewPopUpComponent
-                        *ngIf="(isShowEditTemplatePopup && campaignType=='page') ||(isShowEditTemplatePopup && campaignType=='survey')"  [buttonText]="campaignType=='survey'?'Show Surveys':'Show Forms'"></app-preview-popup>
+                        *ngIf="(isShowEditTemplatePopup && campaignType=='page') ||(isShowEditTemplatePopup && campaignType=='survey')"
+                        [buttonText]="campaignType=='survey'?'Show Surveys':'Show Forms'"></app-preview-popup>
                     <app-merge-tags *ngIf="isShowEditTemplatePopup"
                         [input]="editTemplateMergeTagsInput"></app-merge-tags>
                     <button (click)="toggleOpenLinksInNewTab()" class="btn-primary olint"
