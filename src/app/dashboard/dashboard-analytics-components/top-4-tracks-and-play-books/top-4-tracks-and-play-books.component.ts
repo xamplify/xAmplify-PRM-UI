@@ -10,7 +10,9 @@ import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play
 import { TracksPlayBook } from 'app/tracks-play-book-util/models/tracks-play-book';
 import { LearningTrack } from 'app/lms/models/learningTrack';
 import { CustomResponse } from 'app/common/models/custom-response';
-
+import { isObject } from 'util';
+import { ConfirmUnpublishTracksOrPlaybooksModelPopupComponent } from 'app/util/confirm-unpublish-tracks-or-playbooks-model-popup/confirm-unpublish-tracks-or-playbooks-model-popup.component';
+import { Output } from '@angular/core';
 declare var $:any, swal:any;
 @Component({
   selector: 'app-top-4-tracks-and-play-books',
@@ -33,6 +35,12 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
   contents:Array<any> = new Array<any>();
   customResponse:CustomResponse = new CustomResponse();
   titleHeader = "";
+
+  selectedOption=false;
+  selectedTrackOrPlayBookId:number;
+  isPublishing:boolean;
+  isOptionClicked = false;
+
   constructor(public referenceService: ReferenceService,  public tracksPlayBookUtilService:TracksPlayBookUtilService, public authenticationService: AuthenticationService,public xtremandLogger:XtremandLogger,public pagerService:PagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.pagination.userId = this.loggedInUserId;
@@ -209,6 +217,8 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
   }
 
   confirmChangePublish(id: number, isPublish: boolean,learningTrack : any) {
+    this.selectedTrackOrPlayBookId=id;
+    this.isPublishing=isPublish;
       if(isPublish && !learningTrack.hasDamContent){
         swal({
           title: 'Add assets to publish.',
@@ -227,6 +237,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
         }
         try {
         let self = this;
+        if(isPublish==true){
           swal({
             title: 'Are you sure?',
             text: text,
@@ -241,11 +252,35 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
           }, function (dismiss: any) {
             console.log('you clicked on option' + dismiss);
           });
+        }
+        else{
+          this.isOptionClicked = true;
+        }
         } catch (error) {
           this.xtremandLogger.error(this.referenceService.errorPrepender + " ChangePublish():" + error);
           this.loader = false;
         }
     }
+  }
+
+  toCallChangePublishFromUnpublishPopup(event:any){
+    let id =event['selectedTrackOrPlayBookId'];
+    let isPublishing = event['isPublishing'];
+    this.changePublish(id,isPublishing);
+  }
+  
+  resetUnPublishOptionInputValues(){
+    this.isOptionClicked = false;
+    this.selectedTrackOrPlayBookId = 0;
+    this.isPublishing = false;
+    this.closePopUp();
+  }
+
+
+  closePopUp(){
+    $('#unpublished-modal').modal('hide');
+    $('input[name="rdaction"]').prop('checked', false);
+    this.selectedOption = false;
   }
 
   changePublish(learningTrackId: number, isPublish: boolean) {
@@ -263,6 +298,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
         this.xtremandLogger.errorPage(error);
         this.loader = false;
       })
+      this.resetUnPublishOptionInputValues();
   }
 
   view(tracksPlayBook: TracksPlayBook) {
