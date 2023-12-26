@@ -175,8 +175,10 @@
                       <!-- XNFR-215 -->
                       <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT'"
                         (click)="syncLeadsWithActiveCRM()">
-                        <button class="btn salesforce-btn button neg-mar-top bgcolor-unset p0 neg-mg-btm btn-transitions" style="margin-left: 3px;"
-                          data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
+                        <button
+                          class="btn salesforce-btn button neg-mar-top bgcolor-unset p0 neg-mg-btm btn-transitions"
+                          style="margin-left: 3px;" data-toggle="tooltip" data-placement="bottom" title="Synchronize"
+                          translate>
 
                           <span class=" btn Btn-Green transition"> <i class="fa fa-refresh" aria-hidden="true"></i> {{
                             activeCRMDetails?.type | titlecase }}</span>
@@ -236,9 +238,9 @@
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                         <div class="form-group" style="text-align: -webkit-right;">
-                          <button class="button bgcolor-unset" translate="" type="button" ng-reflect-translate=""
-                            [disabled]="" (click)="validateDateFilters()"><span
-                              class="btn Btn-Green transition">Filter</span></button>
+                          <button class="button bgcolor-unset neg_mrgn_top4 mrgn_top0" translate="" type="button"
+                            ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()"><span
+                              class="btn Btn-Green transition txt_pd-top3">Filter</span></button>
                         </div>
                       </div>
                       <div class="portlet box">

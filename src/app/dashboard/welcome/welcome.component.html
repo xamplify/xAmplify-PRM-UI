@@ -79,12 +79,13 @@
               </h1>
               <p class="left-side  mb_left0">{{welcome_text.contacts}}</p>
               <div class="text-left tab_Flex">
-                <button class="button_blue btn-xs bgcolor-unset" [routerLink]="['/home/partners/add']" translate><span
-                    class="btn btn-primary transition">Add
+                <button class="button_blue bgcolor-unset btn-xs bgcolor-unset" [routerLink]="['/home/partners/add']"
+                  translate><span class="btn btn-primary transition pd_top0">Add
                     {{authenticationService?.partnerModule?.customName}}</span></button>
-                <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal"
+                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent" data-toggle="modal"
                   (click)="goToUserGuidePage(11,true)" translate>
-                  <a class="UserguideBtnCustomization" href="{{urlLink}}" target="_blank">Tell me how</a></button>
+                  <a href="{{urlLink}}" target="_blank"><span class="btn Btn-Green transition pd_top0">Tell me
+                      how</span></a></button>
               </div>
             </div>
           </div>
@@ -109,10 +110,11 @@
               <p class="mb_left0" style="position: relative;left: -19px;">{{welcome_text.videos}}</p>
               <div class="tab_Flex" style="text-align: left">
                 <button class="button_blue btn-xs bgcolor-unset" [routerLink]="['/home/select-modules']" translate><span
-                    class="btn btn-primary transition">Upload Content</span></button>
-                <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal"
+                    class="btn btn-primary transition pd_top0">Upload Content</span></button>
+                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent" data-toggle="modal"
                   (click)="goToUserGuidePage(4,true)" translate>
-                  <a class="UserguideBtnCustomization" href="{{urlLink}}" target="_blank">Tell me how</a></button>
+                  <a href="{{urlLink}}" target="_blank"><span class="btn Btn-Green transition pd_top0">Tell me
+                      how</span></a></button>
               </div>
             </div>
           </div>
@@ -139,10 +141,11 @@
               <div class="tab_Flex" style="text-align: left;">
                 <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/contacts/add')"
-                  translate><span class="btn btn-primary transition">Add contacts</span></button>
-                <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal"
+                  translate><span class="btn btn-primary transition pd_top0">Add contacts</span></button>
+                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent" data-toggle="modal"
                   (click)="goToUserGuidePage(3,true)" translate>
-                  <a class="UserguideBtnCustomization" href="{{urlLink}}" target="_blank">Tell me how</a></button>
+                  <a href="{{urlLink}}" target="_blank"><span class="btn Btn-Green transition pd_top0">Tell me
+                      how</span></a></button>
               </div>
             </div>
           </div>
@@ -167,10 +170,11 @@
               <div class="text-left tab_Flex">
                 <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/emailtemplates/select')"
-                  translate><span class="btn btn-primary transition">Create templates</span></button>
-                <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal"
+                  translate><span class="btn btn-primary transition pd_top0">Create templates</span></button>
+                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent" data-toggle="modal"
                   (click)="goToUserGuidePage('how_to_designing_email_template',false)" translate>
-                  <a class="UserguideBtnCustomization" href="{{urlLink}}" target="_blank">Tell me how</a></button>
+                  <a href="{{urlLink}}" target="_blank"><span class="btn Btn-Green transition pd_top0">Tell me
+                      how</span></a></button>
               </div>
             </div>
           </div>
@@ -195,10 +199,11 @@
               <div class="text-left tab_Flex">
                 <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/campaigns/select')"
-                  translate><span class="btn btn-primary transition">Create campaigns</span></button>
-                <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal"
+                  translate><span class="btn btn-primary transition pd_top0">Create campaigns</span></button>
+                <button type="button" class="button_blue bgcolor-unset btn-xs Btn-transparent" data-toggle="modal"
                   (click)="goToUserGuidePage(2,true)" translate>
-                  <a class="UserguideBtnCustomization" href="{{urlLink}}" target="_blank">Tell me how</a></button>
+                  <a href="{{urlLink}}" target="_blank"><span class="btn Btn-Green transition pd_top0">Tell me
+                      how</span></a></button>
               </div>
             </div>
           </div>
@@ -223,10 +228,11 @@
               <div class="text-left tab_Flex">
                 <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/team/add-team')"
-                  translate><span class="btn btn-primary transition">Add team member</span></button>
-                <button type="button" class="btn btn-xs Btn-transparent" data-toggle="modal"
+                  translate><span class="btn btn-primary transition pd_top0">Add team member</span></button>
+                <button type="button" class="button bgcolor-unset btn-xs Btn-transparent" data-toggle="modal"
                   (click)="goToUserGuidePage(16,true)" translate>
-                  <a class="UserguideBtnCustomization" href="{{urlLink}}" target="_blank">Tell me how</a></button>
+                  <a href="{{urlLink}}" target="_blank"><span class="btn Btn-Green transition pd_top0">Tell me
+                      how</span></a></button>
               </div>
             </div>
           </div>
@@ -252,9 +258,10 @@
                 <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/social/manage/all')"
                   [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate><span
-                    class="btn btn-primary transition">Connect</span></button>
-                <button type="button" class="btn btn-xs Btn-Green" data-toggle="modal" [disabled]="true"
-                  data-target="#myModal" translate>Tell me how</button>
+                    class="btn btn-primary transition pd_top0">Connect</span></button>
+                <button type="button" class="button bgcolor-unset btn-xs Btn-Green" data-toggle="modal"
+                  [disabled]="true" data-target="#myModal" translate><span class="btn Btn-Green transition pd_top0">Tell
+                    me how</span></button>
               </div>
             </div>
           </div>
@@ -280,9 +287,10 @@
                 <button class="button_blue btn-xs bgcolor-unset"
                   (click)="navigateToModule(authenticationService.module.deletedPartner,'/home/dashboard')"
                   [class.disabled]="!authenticationService.user.hasCompany ? true : null" translate><span
-                    class="btn btn-primary transition">Analytics</span></button>
-                <button type="button" class="btn btn-xs Btn-Green" data-toggle="modal" [disabled]="true"
-                  data-target="#myModal" translate>Tell me how</button>
+                    class="btn btn-primary transition pd_top0">Analytics</span></button>
+                <button type="button" class="button bgcolor-unset btn-xs" data-toggle="modal" [disabled]="true"
+                  data-target="#myModal" translate><span class="btn Btn-Green transition pd_top0">Tell me
+                    how</span></button>
               </div>
             </div>
           </div>
