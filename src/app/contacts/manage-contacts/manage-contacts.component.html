@@ -1240,14 +1240,22 @@
                                              </td>
                                              <td class="Mark-as-ValidBtn"
                                                 *ngIf="(contactsByType.selectedCategory =='invalid') && !sharedLeads && !authenticationService?.module?.deletedPartner">
-                                                <span class="markas" (click)="validateUndeliverableContacts(contact.id)">Mark as
-                                                   valid</span>
+<!--                                                 <span class="markas" (click)="validateUndeliverableContacts(contact.id)">Mark as
+                                                   opt-in</span> -->
+                                                <button  type="submit" class="button bgcolor-unset button_height"
+                                                (click)="validateUndeliverableContacts(contact.id)" translate><span class="btn markas transition txt_pd-top8">Mark as
+                                                opt-in</span></button>
                                              </td>
                                              <td class="Mark-as-ValidBtn"
                                                 *ngIf="( contactsByType.selectedCategory =='excluded')  && !authenticationService?.module?.deletedPartner">
-                                                <span class="markas" *ngIf="contact.excludedCatagory == 'Excluded User'"
+<!--                                                 <button class="markas"  *ngIf="contact.excludedCatagory == 'Excluded User'"
+                                                   [disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
                                                    (click)="showMakeAsOptinAlert(contact.id, contact.emailId)">Mark as
-                                                   Opt-In</span>
+                                                   opt-in</button> -->
+                                                   <button *ngIf="contact.excludedCatagory == 'Excluded User'" type="submit" class="button bgcolor-unset button_height"
+                                                   [disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
+                                                   (click)="showMakeAsOptinAlert(contact.id, contact.emailId)" translate><span class="btn markas transition txt_pd-top8">Mark as
+                                                   opt-in</span></button>
                                              </td>
                                              <td *ngIf="isPartner">
                                                 <button class="border-btn-small lightgray-btn"

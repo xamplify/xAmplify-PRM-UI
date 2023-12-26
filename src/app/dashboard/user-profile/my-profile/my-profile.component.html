@@ -247,7 +247,7 @@
                                             | translate}}</a>
                                     </li>
                                     <!--Exclusion-->
-                                    <ng-container *ngIf="excludeUsersOrDomains">
+                                    <ng-container *ngIf="excludeUsersOrDomains && (authenticationService?.module?.adminOrSuperVisor || authenticationService?.isPartner())">
                                         <li [ngClass]="{'active-tab': activeTabName == 'exclude'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'exclude'}"
                                                 (click)="activateTab('exclude');clearCustomResponse()">
@@ -2512,6 +2512,7 @@
                                                                         </div>
                                                                         <button type="submit" class="btn Btn-Green"
                                                                             style="float:right;margin-top:4px;"
+                                                                            [disabled] = "excludedUsers.length === 0"
                                                                             (click)="confirmAndsaveExcludedUsers(excludedUsers)"
                                                                             translate>Save</button>
                                                                         <button class="btn Btn-Gray"
@@ -2744,6 +2745,7 @@
                                                                         </div>
                                                                         <button type="submit" class="btn Btn-Green"
                                                                             style="float:right;margin-top:4px;"
+                                                                            [disabled] = "this.excludedDomains.length === 0"
                                                                             (click)="confirmAndsaveExcludedDomains(excludedDomains)"
                                                                             translate>Save</button>
                                                                         <button class="btn Btn-Gray"
