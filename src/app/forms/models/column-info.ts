@@ -43,4 +43,5 @@ export class ColumnInfo {
     descriptionCharacterleft: number = 500;
     skipped:boolean = false;
     submittedAnswerCorrect: boolean = false;
+    formDefaultFieldType: any;
 }

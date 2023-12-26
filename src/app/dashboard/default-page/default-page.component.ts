@@ -114,31 +114,33 @@ export class DefaultPageComponent implements OnInit {
     }
 
     /* -- XNFR-415 -- */
-    getDefaultDashboardForPartner() {       
-        this.modulesDashboardTypeError = false;
-        this.dashBoardService.getDefaultDashboardForPartner(this.vendorCompanyIdForPartnerVanity)
-            .subscribe(
-            data => {
-                if (data.statusCode == 200) {
-                this.getAssignedDashboardTypeForPartner = data.data;
-                this.assignedDashboardType=this.getAssignedDashboardTypeForPartner;
-                    if(this.getAssignedDashboardTypeForPartner === 'WELCOME'){
-                        this.goToWelcomePage();
+    getDefaultDashboardForPartner() {  
+        if(this.authenticationService.module.loggedInThroughVendorVanityUrl || (this.authenticationService.isPartner() || this.authenticationService.isOnlyPartner())){
+            this.modulesDashboardTypeError = false;
+            this.dashBoardService.getDefaultDashboardForPartner(this.vendorCompanyIdForPartnerVanity)
+                .subscribe(
+                data => {
+                    if (data.statusCode == 200) {
+                    this.getAssignedDashboardTypeForPartner = data.data;
+                    this.assignedDashboardType=this.getAssignedDashboardTypeForPartner;
+                        if(this.getAssignedDashboardTypeForPartner === 'WELCOME'){
+                            this.goToWelcomePage();
+                        }
+                        else if(this.getAssignedDashboardTypeForPartner === 'ASSIGNED_DASHBOARD'){
+                            this.goToDashBoard();
+                        }
+                        else{
+                            this.goToWelcomePage();
+                        }
+                    } else {
+                    this.modulesDashboardTypeError = true;
                     }
-                    else if(this.getAssignedDashboardTypeForPartner === 'ASSIGNED_DASHBOARD'){
-                        this.goToDashBoard();
-                    }
-                    else{
-                        this.goToWelcomePage();
-                    }
-                } else {
-                this.modulesDashboardTypeError = true;
-                }
-            },
-            error => {
-                this.modulesDashboardTypeError = true;
-            },
-            () => { }
-        );
-    } 
+                },
+                error => {
+                    this.modulesDashboardTypeError = true;
+                },
+                () => { }
+            );
+        }
+    }
 }
