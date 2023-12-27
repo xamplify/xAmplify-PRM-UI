@@ -62,7 +62,7 @@ invalidReason = true;
   
       closeAndEmitData(result : any){
         this.resubscribeContactModalClose();
-        let successMessage = '['+ this.selectedUser.emailId + ']' +result.message;
+        let successMessage = this.selectedUser.emailId + ' ' +result.message;
         this.notifyParent.emit( successMessage );
     }
     
