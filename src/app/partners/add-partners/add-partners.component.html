@@ -449,7 +449,7 @@
         </div>
         <!-----Legal Basis Options -->
         <div *ngIf=" (gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddPartnerOption==2)"
-            class="col-sm-12 form-group portlet light">
+            class="col-sm-12 form-group portlet light cloud_legal_basis">
             <a class="close-circle" *ngIf="clipBoard" data-dismiss="modal" (click)="cancelPartners()"><i
                     class="fa fa-times"></i></a>
             <div class="form-group">
@@ -485,7 +485,7 @@
         <div class="row" id="Gfile_preview">
             <div class="col-md-12 col-sm-12">
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                <div class="portlet light">
+                <div class="portlet light remove_cardBgcolor adjust_cloud_table">
                     <div class="portlet-title">
                         <div class="caption" translate>
                             <i class="fa fa-edit"></i>File Preview

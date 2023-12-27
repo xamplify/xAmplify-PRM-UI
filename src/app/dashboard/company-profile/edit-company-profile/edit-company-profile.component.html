@@ -216,8 +216,8 @@
 
 							</div>
 							<!-- ---------------Module Access ---------->
-							<div class="portlet light" *ngIf="isFromAdminPanel"
-								style="border-radius: 4px!important;border: 1px solid #eaeaea!important;">
+							<div class="portlet light admin_modules_selection" *ngIf="isFromAdminPanel"
+								style="border-radius: 4px!important;">
 								<div class="module-access blur-content" id="module-access-blur-content-div">
 									<div class="portlet-body clearfix">
 										<div class="portlet-title">
@@ -904,16 +904,17 @@
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
 				<button style="position: relative; top: -8px;"
-					class="button fileinput-button-css pd_left1 bgcolor-unset"
+					class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"
 					*ngIf="!imageChangedEvent; else uploadButton">
-					<span class="btn Btn-Green transition">Upload image</span> <input style="height: 36px;" title=" "
-						id="custom-input" type="file" (change)="fileBgImageChangeEvent($event)">
+					<span class="btn Btn-Green transition txt_pd-top3">Upload image</span> <input style="height: 36px;"
+						title=" " id="custom-input" type="file" (change)="fileBgImageChangeEvent($event)">
 				</button>
 				<ng-template #uploadButton>
 					<button style="position: relative; top: -5px;"
-						class="button fileinput-button-css pd_left1 bgcolor-unset">
-						<span class="btn Btn-Green transition">Upload image</span> <input style="height: 36px;"
-							title=" " id="custom-input" type="file" (change)="fileBgImageChangeEvent($event)">
+						class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg">
+						<span class="btn Btn-Green transition txt_pd-top3">Upload image</span> <input
+							style="height: 36px;" title=" " id="custom-input" type="file"
+							(change)="fileBgImageChangeEvent($event)">
 					</button>
 				</ng-template>
 				<div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload
@@ -962,7 +963,7 @@
 					</div>
 					<div>
 						<button class="button_blue bgcolor-unset" [disabled]="!showCropper" (click)="uploadLogo()"><span
-								class="btn btn-primary transition">Save
+								class="btn btn-primary transition txt_pd-top3">Save
 								Changes</span></button>
 					</div>
 				</div>
@@ -1001,16 +1002,17 @@
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
 				<button style="position: relative; top: -5px; width: 118px;"
-					class="button fileinput-button-css pd_left1 bgcolor-unset"
+					class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"
 					*ngIf="!bgImageChangedEvent; else changeButton">
-					<span class="btn Btn-Green transition">Upload image</span> <input style="height: 36px;" title=" "
-						id="custom-input" type="file" (change)="uploadfileBgImageChangeEvent($event)">
+					<span class="btn Btn-Green transition txt_pd-top3">Upload image</span> <input style="height: 36px;"
+						title=" " id="custom-input" type="file" (change)="uploadfileBgImageChangeEvent($event)">
 				</button>
 				<ng-template #changeButton>
 					<button style="position: relative; top: -5px; width: 118px;"
-						class="button fileinput-button-css pd_left1 bgcolor-unset">
-						<span class="btn Btn-Green transition">Upload image</span> <input style="height: 36px;"
-							title=" " id="custom-input" type="file" (change)="uploadfileBgImageChangeEvent($event)">
+						class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg">
+						<span class="btn Btn-Green transition txt_pd-top3">Upload image</span> <input
+							style="height: 36px;" title=" " id="custom-input" type="file"
+							(change)="uploadfileBgImageChangeEvent($event)">
 					</button>
 				</ng-template>
 				<div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload
@@ -1060,7 +1062,7 @@
 					</div>
 					<div>
 						<button class="button_blue bgcolor-unset" [disabled]="!showCropper"
-							(click)="uploadBgImage()"><span class="btn btn-primary transition">Save
+							(click)="uploadBgImage()"><span class="btn btn-primary transition txt_pd-top3">Save
 								Changes</span></button>
 					</div>
 				</div>

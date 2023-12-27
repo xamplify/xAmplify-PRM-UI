@@ -3054,7 +3054,8 @@
                 <h4 class="modal-title" id="cropProfileImage">Please add your profile image</h4>
             </div>
             <div class="modal-body">
-                <button style="position: relative;top: -5px;" class="button fileinput-button-css pd_left1 bgcolor-unset"
+                <button style="position: relative;top: -5px;"
+                    class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"
                     *ngIf="!imageChangedEvent; else uploadButton"><span class="btn Btn-Green transition">Upload
                         image</span>
                     <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file"
@@ -3062,7 +3063,7 @@
                 </button>
                 <ng-template #uploadButton>
                     <button style="position: relative;top: -5px;"
-                        class="button fileinput-button-css pd_left1 bgcolor-unset"><span
+                        class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"><span
                             class="btn Btn-Green transition">Upload
                             image</span>
                         <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file"

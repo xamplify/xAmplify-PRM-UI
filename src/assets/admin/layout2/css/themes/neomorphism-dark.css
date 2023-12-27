@@ -3058,7 +3058,8 @@ justify-content: center!important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
 .radiobtn,
-.social_share_border{
+.social_share_border,
+.admin_modules_selection{
   border: 1px solid #191b1e!important;
 }
 
@@ -3578,7 +3579,8 @@ a.tabColorOne b,
 h1 b,
 h6 b,
 span b,
-h3 b {
+h3 b,
+div b {
   color: #fff !important;
 }
 /* Sudha Sri (27-12-2023) */
@@ -3628,4 +3630,12 @@ button.btn.custom:hover{
 .image_effect:hover {
   transition: all 0.3s ease;
   transform: scale(1.05);
+}
+.cloud_legal_basis{
+  margin-bottom: 12px;
+  margin-top: 8px;
+}
+.adjust_cloud_table{
+  margin-left: -5px !important;
+  margin-right: -10px !important;
 }
