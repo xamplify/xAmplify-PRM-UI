@@ -430,36 +430,39 @@
                                              <td style="width: 10%;" class="hidden-xs image_effect">
                                                 <img
                                                    *ngIf="contactList.socialNetwork=='ZOHO' && contactList.synchronisedList"
-                                                   src="{{properties?.zohoImage}}" alt="zoho" style="height: 70px;">
+                                                   src="{{properties?.zohoImage}}" alt="zoho"
+                                                   style="height: 48px;margin-left: 16px;">
                                                 <img
                                                    *ngIf="contactList.socialNetwork=='GOOGLE' && contactList.synchronisedList"
-                                                   src="{{properties?.googleImage}}" alt="google" style="height: 70px;">
+                                                   src="{{properties?.googleImage}}" alt="google"
+                                                   style="height: 48px;margin-left: 16px;">
                                                 <img
                                                    *ngIf="contactList.socialNetwork=='SALESFORCE' && contactList.synchronisedList"
                                                    src="{{properties?.salesforceImage}}" alt="salesforce"
-                                                   style="height: 70px;"> <img
+                                                   style="height: 48px;margin-left: 16px;"> <img
                                                    *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList"
-                                                   src="{{properties?.manualImage}}" alt="manual" style="height: 54px;">
+                                                   src="{{properties?.manualImage}}" alt="manual"
+                                                   style="height: 48px;margin-left: 16px;">
                                                 <img
                                                    *ngIf="contactList.socialNetwork=='HUBSPOT' && contactList.synchronisedList"
                                                    src="{{properties?.hubspotImage}}" alt="manual"
-                                                   style="height: 70px;">
+                                                   style="height: 48px;margin-left: 16px;">
                                                 <img
                                                    *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList"
                                                    src="{{properties?.microsoftImage}}" alt="manual"
-                                                   style="height: 70px;">
+                                                   style="height: 48px;margin-left: 16px;">
                                                 <img
                                                    *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList"
                                                    src="{{properties?.pipedriveImage}}" alt="manual"
-                                                   style="height: 54px;">
+                                                   style="height: 48px;margin-left: 16px;">
                                                 <img
                                                    *ngIf="contactList.socialNetwork=='CONNECTWISE' && contactList.synchronisedList"
                                                    src="{{properties?.connectwiseImage}}" alt="manual"
-                                                   style="height: 54px;">
+                                                   style="height: 48px;margin-left: 16px;">
                                                 <img
                                                    *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"
                                                    src="{{properties?.marketoImage}}" alt="manual"
-                                                   style="height: 70px;">
+                                                   style="height: 48px;margin-left: 16px;">
                                                 <!-- XNFR-211 -->
                                                 <img
                                                    *ngIf="contactList.uploadInProgress || contactList.validationInProgress || ((!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd)))"
@@ -993,7 +996,7 @@
       </div>
       <div class="row">
          <div class="col-xs-12 col-sm-12 col-md-12">
-            <div class="page-bar">
+            <div class="page-bar remove_cardBgcolor">
                <div class="tab-content" style="padding: 0px 10px">
                   <!-- BEGIN PAGE HEADER-->
                   <div class="" style="">

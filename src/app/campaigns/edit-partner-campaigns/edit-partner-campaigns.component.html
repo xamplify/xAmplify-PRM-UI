@@ -431,10 +431,11 @@
                                                          <td class="text-center">
                                                             <div
                                                                [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block float-none'">
-                                                               <a title="Preview"
+                                                               <a title="Preview" class="custom-icon"
                                                                   (click)="$event.stopPropagation();previewUsers(contacts)">
                                                                   <i class="fa fa-eye IconCustomization"
                                                                      aria-hidden="true"></i>
+                                                                  <div class="clickicons"></div>
                                                                </a>
                                                             </div>
                                                          </td>

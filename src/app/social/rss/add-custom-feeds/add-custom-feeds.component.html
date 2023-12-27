@@ -126,11 +126,16 @@
 												<div class="col-xs-12 col-sm-6 pr10 pull-right">
 													<div class="pull-right">
 														<ng-container *ngIf="isAdd">
-															<button type="button" class="btn btn-primary rounded-0"
-																(click)="savePopoverToggle()">Save</button>
-															<button type="button" class="btn btn-primary rounded-0"
-																(click)="savePublishPopoverToggle()">Save &
-																Share</button>
+															<button type="button"
+																class="button_blue bgcolor-unset rounded-0"
+																(click)="savePopoverToggle()"><span
+																	class="btn btn-primary transition txt_pd-top3">Save</span></button>
+															<button type="button"
+																class="button_blue bgcolor-unset rounded-0"
+																(click)="savePublishPopoverToggle()"><span
+																	class="btn btn-primary transition txt_pd-top3">Save
+																	&
+																	Share</span></button>
 														</ng-container>
 														<ng-container *ngIf="!isAdd">
 															<button type="button"

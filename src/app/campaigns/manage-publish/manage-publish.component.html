@@ -47,7 +47,7 @@
    <ng-container *ngIf="!addWorkflows">
       <div class="row">
          <div class="col-md-12 mSlide">
-            <div class="page-bar">
+            <div class="page-bar camp_card_removal">
                <div class="p10" style="box-shadow: none !important;border-radius: 5px;">
                   <div class="tab-content">
                      <div class="row m0">
@@ -228,8 +228,9 @@
                                                 id="toDateFilter">
                                           </div>
                                           <div class="form-group col-sm-4">
-                                             <button type="button" class="btn green" [disabled]=""
-                                                (click)="validateDateFilters()" translate>Filter</button>
+                                             <button type="button" class="btn button bgcolor-unset" [disabled]=""
+                                                (click)="validateDateFilters()" translate><span
+                                                   class="btn Btn-Green transition txt_pd-top3">Filter</span></button>
                                           </div>
                                        </div>
                                     </div>

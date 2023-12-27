@@ -953,7 +953,7 @@ input.cmn-toggle-round-flat + label:before {
   border-color: #2f4857 !important ;
 }
 .social-border {
-  background-color: #2f4857 !important;
+  background-color: #191b1e !important;
 }
 .active-tab-anchor-text {
   background-color: #80808047 !important;
@@ -2119,9 +2119,6 @@ tbody {
 .col-xs-6.col-sm-2.col-lg-2.mt5.pr.pr15.tiles_hover_effect.col-sm-5ths:hover {
   transform: scale(1.05);
   transition: all 0.3s ease;
-}
-.image_effect:hover {
-  transform: scale(0.9);
 }
 .page-sidebar .page-sidebar-menu .sub-menu > li:hover > a {
   background: #2c2f33 !important;
@@ -3576,4 +3573,59 @@ span.btn.btn-primary.transition.new_list_text {
 b,
 td.pt10.pb10.bold.mr_10{
   color: #787878 !important;
+}
+a.tabColorOne b,
+h1 b,
+h6 b,
+span b,
+h3 b {
+  color: #fff !important;
+}
+/* Sudha Sri (27-12-2023) */
+.copy_text_mrgn{
+  margin-left: 16px !important;
+}
+.copy_text_select_dropdown{
+  margin-bottom: 10px;padding: 0px !important;
+}
+.copy_text_area_border{
+  border: none;
+  border-radius: 10px;
+}
+.camp_card_removal{
+  box-shadow: none !important;
+  background: none !important;
+  margin-top: -10px;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+/* Manikanta (Vendor Activity card changes) 27-12-2023 */
+.camp-card1{
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  border-radius: 10px;
+}
+.pricing-head h4#image-style {
+  background-color: unset !important;
+  border-bottom: 0px solid #2f4857 !important;
+}
+h3#notifications {
+  background: #217eac!important;
+  border: unset!important;
+}
+.pricing.hover-effect.pointer.border-card.pricing_hover_effect{
+  border-radius: 10px !important;
+}
+.btn-group button:hover,
+button.btn.custom:hover{
+  background-color: #202227 !important;
+  box-shadow: inset 2px 0px 0px #202227, inset 0px 0px 0px #202227 !important;
+}
+.neg_mrg_top5{
+  margin-top: -5px !important;
+}
+.dam_image_effect:hover,
+.img-track-list:hover,
+.image_effect:hover {
+  transition: all 0.3s ease;
+  transform: scale(1.05);
 }

@@ -17,11 +17,10 @@
           <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
           <form class="form-horizontal" autocomplete="off">
             <div class="form-group mrg0" *ngIf="isPartner && !isAssignLeads">
-              <label class="control-label col-xs-2 col-sm-2" for="company"
-                style="color: #00bcd4; right: 11px !important">
+              <label class="control-label" for="company" style="color: #00bcd4; right: 11px !important">
                 <span class="star"> *</span>
               </label>
-              <div class="form-group col-xs-10 col-sm-10 mrg0" id="major-field-width">
+              <div class="form-group col-xs-10 col-sm-12 mrg0" id="major-field-width">
                 <input type="company" style="border: none !important"
                   class="form-control padding-mobile placeholder-bg-color" id="company"
                   [(ngModel)]="addContactuser.contactCompany"
