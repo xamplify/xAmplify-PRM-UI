@@ -17,6 +17,7 @@ export class ConfirmUnpublishTracksOrPlaybooksModelPopupComponent implements OnI
   selectedTrackOrPlayBookId:number;
   @Input()
   isPublishing:boolean;
+  selectedOption : boolean;
   
   constructor(public referenceService:ReferenceService) { }
 
