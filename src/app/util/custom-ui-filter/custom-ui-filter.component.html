@@ -1,0 +1,99 @@
+<div class="row" *ngIf="showFilterOption">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="portlet light m10">
+      <div class="portlet-title">
+        <div class="caption col-xs-12 col-sm-12 col-md-3 col-lg-3" translate>Apply
+          Filters</div>
+        <button type="button" class="close-circle pull-right" (click)="closeFilterOption()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="portlet box">
+        <div class="">
+          <div class="row">
+            <div class="col-md-11 mb10" *ngFor="let addRow of criterias; let i = index">
+              <div class="col-md-4 pl0" style="display: flex">
+                <!-- Dropdown 1 -->
+                <b style="margin: 7px;">{{i}}</b>
+                <select class="form-control" [(ngModel)]="criterias[i].property"
+                  [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}" (change)= "checkCriteriaCoditions()">
+                  <option *ngFor="let filterOption of filterOptions; let i = index">
+                    {{filterOption.value}}</option>
+                </select>
+              </div>
+  
+              <div class="col-md-3">
+                <!-- Dropdown 2 -->
+                <select class="form-control" [(ngModel)]="criterias[i].operation" (change)= "checkCriteriaCoditions()">
+                  <option *ngFor="let filterCondition of filterConditions; let i = index">
+                    {{filterCondition.value}}</option>
+                </select>
+              </div>
+  
+              <div class="col-md-3" *ngIf="criterias[i].property != 'Type'">
+                <!-- Input Text Field -->
+                <input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1" required
+                  (keypress)="eventEnterKeyHandler($event.keyCode)" (change)= "checkCriteriaCoditions()">
+              </div>
+              <div class="col-md-3" *ngIf="criterias[i].property === 'Type'">
+                <select class="form-control" [(ngModel)]="criterias[i].value1" (change)= "checkCriteriaCoditions()">
+                  <option value="undefined">Select Asset Type</option>
+                  <option *ngFor="let fileType of fileTypes">
+                    {{fileType}}
+                  </option>
+                </select>
+              </div>
+  
+              <div class="col-md-1" data-toggle="tooltip" data-placement="left" title="Remove a condition">
+                <!-- Delete Button -->
+                <span (click)="cancelSegmentationRow(i)">
+                  <i class="fa fa-trash-o" aria-hidden="true"
+                    style="color: red; font-size: 26px; margin-top: 6px;cursor: pointer;"></i>
+                </span>
+              </div>
+            </div>
+            <div class="col-md-1"  >
+              <!-- Plus Button -->
+              <button class="btn btn-success" (click)="addNewRow()" [disabled]="criterias.length > 5">+</button>
+            </div>
+          </div>
+          <div class="row alert alert-danger alert-su m0" *ngIf="isValidationErrorMessage ">
+            <strong>{{filterConditionErrorMessage}}</strong>
+          </div>
+        </div>
+        <form role="form" class="form-horizontal form-bordered form-label-stripped">
+          <div class="form-group">
+            <div class="form-inline col-sm-12" style="margin-bottom: 15px;">
+              <div class="form-group col-sm-4">
+                <h3>Created On &nbsp;</h3>
+              </div>
+            </div>
+            <div class="form-inline col-sm-12">
+              <div class="form-group col-sm-4">
+                <label class="control-label">From Date &nbsp;
+                </label>
+                <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
+                </app-date-picker>
+              </div>
+              <div class="form-group col-sm-4">
+                <label class="control-label">To Date &nbsp;
+                </label>
+                <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
+                </app-date-picker>
+              </div>
+            </div>
+            <div class="form-inline col-sm-12">
+              <button (click)="closeFilterOption()" class="button float-right bgcolor-unset pd_0"
+                type="submit" translate><span
+                  class="btn btn-sm Btn-Green transition">Cancel</span></button>
+              <button (click)="submittFilterData()" class="button float-right bgcolor-unset pd_0"
+                type="submit" translate>
+                <span class="btn btn-sm Btn-Green transition">Submit</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
