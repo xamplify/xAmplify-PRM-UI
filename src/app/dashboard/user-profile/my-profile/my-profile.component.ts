@@ -3891,6 +3891,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.userService.saveExcludedUsers(excludedUsers, this.loggedInUserId)
 			.subscribe(
 				data => {
+					this.customResponse = new CustomResponse()
 					if (data.statusCode == 200) {
 						this.csvExcludeUsersFilePreview = false;
 						this.excludeUserCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
@@ -3915,6 +3916,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	cancelCSVFilePreview(excludetype: string) {
+		this.customResponse = new CustomResponse();
+		this.excludeUserCustomResponse = new CustomResponse();
+		this.excludeDomainCustomResponse = new CustomResponse();
 		if (excludetype === 'exclude-users') {
 			this.csvExcludeUsersFilePreview = false;
 			this.listExcludedUsers(this.excludeUserPagination);
@@ -3951,6 +3955,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.userService.saveExcludedDomains(excludedDomains, this.loggedInUserId)
 			.subscribe(
 				data => {
+					this.customResponse = new CustomResponse();
 					if (data.statusCode == 200) {
 						this.referenceService.stopLoader(this.excludeDomainLoader);
 						this.csvExcludeDomainsFilePreview = false;
