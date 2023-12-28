@@ -840,19 +840,19 @@ setSfFormFieldValues() {
           this.deal.amount = 0;
           for (let formLabel of sfCustomFields) {
             if (this.activeCRMDetails.type === "HUBSPOT") {
-              if (formLabel.formDefaultFieldType === "DEAL_NAME" || formLabel.labelId === "title" || formLabel.labelId === "name") {
+              if (formLabel.formDefaultFieldType === "DEAL_NAME") {
                 this.deal.title = formLabel.value;
-              } else if (formLabel.formDefaultFieldType === "AMOUNT" || formLabel.labelId === "value") {
+              } else if (formLabel.formDefaultFieldType === "AMOUNT") {
                 this.deal.amount = formLabel.value;
-              } else if (formLabel.formDefaultFieldType === "CLOSE_DATE" || formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate") {
+              } else if (formLabel.formDefaultFieldType === "CLOSE_DATE") {
                 this.deal.closeDateString = formLabel.value;
               }
             }
-            if (formLabel.labelId === "dealname" || formLabel.labelId === "title" || formLabel.labelId === "name") {
+            if (formLabel.labelId === "title" || formLabel.labelId === "name") {
               this.deal.title = formLabel.value;
             } else if (formLabel.labelId === "amount" || formLabel.labelId === "value") {
               this.deal.amount = formLabel.value;
-            } else if (formLabel.labelId === "closedate" || formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate") {
+            } else if (formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate") {
               this.deal.closeDateString = formLabel.value;
             }
               let sfCfData = new SfCustomFieldsDataDTO();
