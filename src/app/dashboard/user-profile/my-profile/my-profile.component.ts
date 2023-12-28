@@ -322,7 +322,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	updateDashboardError=false;
 	modulesDashboardForPartner: CustomResponse = new CustomResponse();
 	 defaultSelectedDashboardTypeSetting = this.getSelectedDashboardForPartner();
-	dynamicDashboardType:string;
+	 checkSelectedDashboardType=[];	
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -635,7 +635,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
 			this.authenticationService.logout();
 		}
-		//this.dynamicDashboardType= this.refService.getAssignedDashboardToPartner().join('');
 	}
 
 	getModuleAccessByUser() {
@@ -2640,6 +2639,25 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			);
 	}
 
+	checkDashboardTypes(){
+        this.userService.getDashboardType().
+        subscribe(
+          data=>{
+            this.checkSelectedDashboardType=data;
+          }
+        );
+    }
+    
+    get getDashboardForSelectedOption():string{
+        this.refService.filterArrayList(this.checkSelectedDashboardType,'Welcome');
+        if(this.checkSelectedDashboardType.includes('Advanced Dashboard')){
+            return 'Advanced Dashboard';
+        }
+        else if(this.checkSelectedDashboardType.includes('Detailed Dashboard')){
+            return 'Detailed Dashboard';
+        }
+        else return 'Dashboard';    
+    }
 
 	selectedLanguage(event: any) {
 		//this.translateService.use(this.selectedLanguageCode);        
