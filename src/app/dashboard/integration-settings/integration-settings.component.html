@@ -144,23 +144,24 @@
                                 class="form-control" [(ngModel)]="sfCustomField.displayName"
                                 [ngModelOptions]="{standalone: true}" placeholder="Display Name">
                             </td>
-                            <td class="text-center p10" style="width:25%;">
+                            <td class="p10" style="width:25%;">
+                              <label *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'" for="html" style="float: left;">PlaceHolder</label>
+                              <input *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'" type="text"
+                                class="form-control" placeholder="PlaceHolder" [(ngModel)]="sfCustomField.placeHolder"
+                                [ngModelOptions]="{standalone: true}">
+                            </td>
+                            <td *ngIf="sfCustomField.type === 'number' || sfCustomField.type === 'text' || sfCustomField.type === 'date'" class="text-center p10" style="width:25%;">
                               <label *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'" for="html" style="float: left;">Map As</label>
                               <select class="form-control formSelectCustomization"
                                 *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'"
                                 [(ngModel)]="sfCustomField.formDefaultFieldType" [ngModelOptions]="{standalone: true}"
                                 (change)="onFieldSelectionChange(sfCustomField)">
                                 <option [ngValue]="null">None</option>
-                                <option [ngValue]="'AMOUNT'">Amount</option>
-                                <option [ngValue]="'CLOSE_DATE'">Close Date</option>
-                                <option [ngValue]="'DEAL_NAME'">Deal Name</option>
+                                <option *ngIf="sfCustomField.type === 'number'" [ngValue]="'AMOUNT'">Amount</option>
+                                <option *ngIf="sfCustomField.type === 'date'" [ngValue]="'CLOSE_DATE'">Close Date</option>
+                                <option *ngIf="sfCustomField.type === 'text'" [ngValue]="'DEAL_NAME'">Deal Name</option>
                               </select>
-                            </td>
-                            <td class="p10" style="width:25%;">
-                              <label *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'" for="html" style="float: left;">PlaceHolder</label>
-                              <input *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'" type="text"
-                                class="form-control" placeholder="PlaceHolder" [(ngModel)]="sfCustomField.placeHolder"
-                                [ngModelOptions]="{standalone: true}">
+                              <div class="error-message" *ngIf="sfCustomField.typeMismatch">{{ sfCustomField.typeMismatchMessage }}</div>
                             </td>
                           </tr>
                         </ng-container>
