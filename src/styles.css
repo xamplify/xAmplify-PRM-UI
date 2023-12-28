@@ -2909,3 +2909,7 @@ button.button_blue:disabled span{
 .neg_mrg_lft18{
   margin-left: -18px;
 }
+span.btn.btn-primary.transition.primary_btn_width,
+span.btn.Btn-Green.transition.secondary_btn_width{
+  width: 100%;
+}

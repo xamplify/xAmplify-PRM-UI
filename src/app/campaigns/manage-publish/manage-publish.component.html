@@ -251,7 +251,7 @@
                      <app-list-loader
                         *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
                      <!-----List View--------->
-                     <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 mt5'
+                     <section class='col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 mt5 mrg_top10'
                         *ngIf="modulesDisplayType.isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                         <div class="table-responsive">
                            <table [class.bottomTableCss]="pagination.pagedItems.length<5"

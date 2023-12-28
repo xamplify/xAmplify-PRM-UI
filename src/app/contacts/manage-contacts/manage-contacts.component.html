@@ -362,14 +362,14 @@
                            <div class="clearfix"></div>
                         </div>
                         <!-- END FILTER -->
-                        <section class="col-xs-12 p0" *ngIf="showListOfContactList">
+                        <section class="col-xs-12 p0 neg_mrg_top5" *ngIf="showListOfContactList">
                            <div class="clearfix">
                               <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
                               <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
                            </div>
                            <section [hidden]="!isListView" [ngStyle]="{'margin-top' : !isListView ? '-8px' : '-5px'}"
                               *ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
-                              <div class="table-responsive mt10"
+                              <div class="table-responsive mt10 mrg_top18"
                                  [ngClass]="{'success': customResponse.responseType == 'SUCCESS'}">
                                  <table class='table tgrid' id="partner_contact_list" aria-describedby="">
                                     <thead>
@@ -515,7 +515,8 @@
                                                       leads list</span>
                                                 </h5>
                                              </td>
-                                             <td class="hidden-xs" *ngIf="assignLeads" style="text-align: center;">
+                                             <td class="hidden-xs" *ngIf="assignLeads"
+                                                style="text-align: center;justify-content: start;display: grid;">
                                                 <h5 class="view-banner Assigned-lable"
                                                    *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner">
                                                    <span data-toggle="tooltip" data-placement="top"
@@ -1068,7 +1069,7 @@
                            <h4 translate>No results found</h4>
                         </div>
                         <app-list-loader *ngIf="contactsByType?.isLoading"></app-list-loader>
-                        <div class="portlet" *ngIf="contactsByType.contacts?.length > 0">
+                        <div class="portlet share_leads_cards" *ngIf="contactsByType.contacts?.length > 0">
                            <div class="portlet-title pb_8" style="border:none; margin-top: 10px;">
                               <div class="caption">
                                  <i class="fa fa-edit" style="font-size: 18px" aria-hidden="true"></i>
@@ -1581,8 +1582,8 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="button" [disabled]="criterias.length === 0" (click)="contactFilter()"
-               translate><span class="btn Btn-Green transition">Submit</span></button>
-            <button type="button" class="btn Btn-Gray" (click)="cancelSegmentation()" data-dismiss="modal"
+               translate><span class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
+            <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="cancelSegmentation()" data-dismiss="modal"
                translate>Cancel</button>
          </div>
       </div>

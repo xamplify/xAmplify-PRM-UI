@@ -28,11 +28,11 @@
                         (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
 
-                <div class="portlet-title" style="border-bottom:none !important;padding-top: 10px;">
+                <div class="portlet-title" style="border-bottom:none !important;">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-5 col-lg-6" style="padding-left: 11px;">
                             <div>
-                                <ul class="mix-filter" style="margin-top: -1px;"
+                                <ul class="mix-filter" style="margin-top: 2px;"
                                     *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView && !authenticationService?.module?.isMarketingCompany">
                                     <li class="filter" (click)="showAllLandingPages('All',0)"
                                         [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All
@@ -208,9 +208,9 @@
                                 <tbody>
                                     <tr *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                                         <td class="hidden-xs custom-icon-width">
-                                            <img id="landing-page-image-preview-custom-css"
+                                            <img id="landing-page-image-preview-custom-css" class="pages_image_border"
                                                 src="{{landingPage.thumbnailPath}}" alt="Image Not Found"
-                                                style="border: 1px solid #e0e0e0;">
+                                                style="border-radius: 6px;margin-left: 6px;">
 
                                         </td>
                                         <td>
@@ -396,8 +396,8 @@
                                     <span class="ribbon1" *ngIf="!landingPage.coBranded"><span
                                             translate>Regular</span></span>
                                 </ng-container>
-                                <img class="img-responsive center-block"
-                                    src="{{landingPage.thumbnailPath}}" alt="Not Found">
+                                <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}"
+                                    alt="Not Found">
                                 <div>
                                     <h4 class="xamplify-ellipsis overflow-hidden GridViewCotent gridViewTextAlignmnent"
                                         data-placement="bottom" data-toggle="tooltip" title="{{landingPage.name}}">
