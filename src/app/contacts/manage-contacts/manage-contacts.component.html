@@ -22,7 +22,7 @@
          </li>
          <!--XBI-1679-->
          <li
-            *ngIf="!showListOfContactList && contactsByType.selectedCategory != 'all' && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid' && contactsByType.selectedCategory != 'unsubscribe'">
+            *ngIf="!showListOfContactList && contactsByType.selectedCategory != 'all' && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid' && contactsByType.selectedCategory != 'unsubscribe' && contactsByType.selectedCategory != 'valid'">
             <span class="capitalize" *ngIf= "!isregistered" translate>{{contactsByType.selectedCategory}}
                <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
             </span>
@@ -31,6 +31,16 @@
                   *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
             </span>
          </li>
+         <li
+         *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'valid'">
+         <span class="capitalize" *ngIf= "!isregistered" translate>Opt-In
+            <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
+         </span>
+         <span class="capitalize" *ngIf= "isregistered" translate>Registered
+            <span
+               *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
+         </span>
+      </li>
           <!--XBI-1679-->
          <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'all'">
             <span class="capitalize" translate>All
@@ -1072,7 +1082,7 @@
                                     <ul class="dropdown-menu pull-right">
                                        <li *ngIf="contactsByType.selectedCategory == 'all' && !sharedLeads "><a
                                              (click)="saveAs()" translate> Create New List </a></li>
-                                       <li *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">
+                                       <li [ngClass] = "{'disabled': (selectedInvalidContactIds.length == 0 && selectedContactListIds.length == 0)}"*ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">
                                           <a id="delete_button" (click)="invalidContactsShowAlert()" translate>
                                              Delete
                                           </a>
@@ -1103,7 +1113,7 @@
                                                    id="checkAllExistingContacts" />
                                              </th>
                                              <th class="text-center" align="center"
-                                             *ngIf="contactsByType.selectedCategory == 'invalid' || contactsByType.selectedCategory =='excluded'">
+                                             *ngIf="contactsByType.selectedCategory == 'invalid'">
                                                 <input type="checkbox" class="checkBox_shadow" name="all"
                                                    [(ngModel)]="isInvalidHeaderCheckBoxChecked"
                                                    (change)="checkAllInvalidContacts($event)"
@@ -1164,7 +1174,7 @@
                                                       value="{{contact.id}}" id="{{contact.id}}"
                                                       (click)="highlightRow(contact.id,contact,$event)" />
                                                 </td>
-                                                <td align="center" *ngIf="contactsByType.selectedCategory == 'invalid' || contactsByType.selectedCategory =='excluded'">
+                                                <td align="center" *ngIf="contactsByType.selectedCategory == 'invalid'">
                                                    <input type="checkbox"
                                                       [checked]="selectedInvalidContactIds.indexOf(contact.id)>-1"
                                                       class="chk checkBox_shadow"
@@ -1240,18 +1250,12 @@
                                              </td>
                                              <td class="Mark-as-ValidBtn"
                                                 *ngIf="(contactsByType.selectedCategory =='invalid') && !sharedLeads && !authenticationService?.module?.deletedPartner">
-<!--                                                 <span class="markas" (click)="validateUndeliverableContacts(contact.id)">Mark as
-                                                   opt-in</span> -->
                                                 <button  type="submit" class="button bgcolor-unset button_height"
                                                 (click)="validateUndeliverableContacts(contact.id)" translate><span class="btn markas transition txt_pd-top8">Mark as
                                                 opt-in</span></button>
                                              </td>
                                              <td class="Mark-as-ValidBtn"
                                                 *ngIf="( contactsByType.selectedCategory =='excluded')  && !authenticationService?.module?.deletedPartner">
-<!--                                                 <button class="markas"  *ngIf="contact.excludedCatagory == 'Excluded User'"
-                                                   [disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
-                                                   (click)="showMakeAsOptinAlert(contact.id, contact.emailId)">Mark as
-                                                   opt-in</button> -->
                                                    <button *ngIf="contact.excludedCatagory == 'Excluded User'" type="submit" class="button bgcolor-unset button_height"
                                                    [disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
                                                    (click)="showMakeAsOptinAlert(contact.id, contact.emailId)" translate><span class="btn markas transition txt_pd-top8">Mark as
