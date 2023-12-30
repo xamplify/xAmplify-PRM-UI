@@ -251,7 +251,7 @@
                                                 </a>
                                                 <a class="custom-icon" *ngIf="learningTrack.canDelete && !isPartnerView"
                                                     id="template-delete" data-toggle="tooltip" data-placement="top"
-                                                    title="Delete" (click)="confirmDelete(learningTrack.id)">
+                                                    title="Delete" (click)="confirmDelete(learningTrack)">
                                                     <i class="fa fa-trash-o trashIconCustomization"
                                                         aria-hidden="true"></i>
                                                     <div class="del-icon"></div>
@@ -374,7 +374,7 @@
                                 <div class="btnAlignPad edit_icons mbtnAlignPad">
                                     <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip"
                                         data-placement="top" title="Delete" class="delete custom-icon"
-                                        (click)="confirmDelete(learningTrack.id)">
+                                        (click)="confirmDelete(learningTrack)">
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                         <div class="del-icon"></div>
                                     </a>

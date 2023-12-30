@@ -409,8 +409,10 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
               this.categoryNames = data.data;
               let categoryIds = this.categoryNames.map(function (a: any) { return a.id; });
               if (this.isAdd) {
-                  this.form.categoryId = categoryIds[0];
+                  //this.form.categoryId = categoryIds[0];
+                  this.selectCategory(categoryIds[0]);
               }
+
           },
           error => { this.logger.error("error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error); },
           () => this.logger.info("Finished listCategories()"));
