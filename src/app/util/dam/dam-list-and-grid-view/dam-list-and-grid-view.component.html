@@ -772,47 +772,9 @@
 	</div>
 </ng-template>
 <!---XNFR-381-->
-<!-- XNFR-409-->
-<ng-template #criteriaDIV>
-	<div *ngFor="let addRow of criterias; let i = index">
-		<div class="form-group col-sm-4">
-			<b [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}" class="dataAlignment">{{i}}</b>
-			<select class="form-control width83" [(ngModel)]="criterias[i].property"
-				[ngStyle]="{'margin-left':i=== 1?'2px':'0px'}">
-				<option *ngFor="let filterOption of filterOptions; let i = index">
-					{{filterOption.value}}</option>
-			</select>
-		</div>
-		<div class="form-group col-sm-4">
-			<select class="form-control width83" [(ngModel)]="criterias[i].operation">
-				<option *ngFor="let filterCondition of filterConditions; let i = index">
-					{{filterCondition.value}}</option>
-			</select>
-		</div>
-		<div class="form-group col-sm-3" *ngIf="criterias[i].property != 'Type'">
-			<input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1" required
-				(keypress)="eventEnterKeyHandler($event.keyCode)">
-		</div>
-		<div class="form-group col-sm-3" *ngIf="criterias[i].property === 'Type'">
-			<select class="form-control width83" [(ngModel)]="criterias[i].value1">
-				<option value="undefined">Select Asset Type</option>
-				<option *ngFor="let fileType of fileTypes">
-					{{fileType}}
-				</option>
-			</select>
-		</div>
-		<div class="form-group col-sm-1" data-toggle="tooltip" data-placement="left" title="Remove a condition">
-			<span (click)="cancelSegmentationRow(i)">
-				<i class="fa fa-trash-o" aria-hidden="true"
-					style="color: red; font-size: 26px; margin-top: 6px;cursor: pointer;"></i>
-			</span>
-		</div>
-	</div>
-</ng-template>
-<!--XNFR-409-->
 <!-- XNFR-409 -->
 <ng-template #filterOptionDiv>
-	<app-custom-ui-filter *ngIf="showFilterOption" [criterias]="criterias" [showFilterOption]="showFilterOption"  [type]="assets" [filterOptions]="filterOptions" [filterConditions]="filterConditions" [fileTypes]="fileTypes" (filterConditionsEmitter)="assetsFilter($event)" (closeFilterEmitter)="closeFilterOption($event)"></app-custom-ui-filter>
+	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView"  [criterias]="criterias" [showFilterOption]="showFilterOption"  [type]="assets" [filterOptions]="filterOptions" [filterConditions]="filterConditions" [fileTypes]="fileTypes" (filterConditionsEmitter)="assetsFilter($event)" (closeFilterEmitter)="closeFilterOption($event)"></app-custom-ui-filter>
 </ng-template>
 <!-- XNFR-409 -->
 <app-confirm-sweet-alert-util *ngIf="isChangeAsParentPdfIconClicked"

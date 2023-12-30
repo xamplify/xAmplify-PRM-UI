@@ -14,20 +14,24 @@ export class CustomUiFilterComponent implements OnInit {
    @Input() filterConditions = [];
    @Input() fileTypes=[];
    @Input() showFilterOption:boolean;
+   @Input() isPartnerView:boolean;
    @Output() filterConditionsEmitter =  new EventEmitter();
    @Output() closeFilterEmitter = new EventEmitter();
-	 @Input() criterias = new Array<Criteria>();
+   @Input() criterias = new Array<Criteria>();
    isclearFilter:boolean;
    fromDateFilter:any;
    toDateFilter:any;
    isValidationErrorMessage:boolean;
    filterConditionErrorMessage:any;
    pagination: Pagination = new Pagination();
+   parterViewText:string;
+   isFromDateless:boolean;
+   isDateError:boolean = false;
   constructor() {
    }
 
   ngOnInit() {
-
+    this.parterViewText = this.isPartnerView? "Published On":"Created On"
   }
   
   addNewRow() {
@@ -59,9 +63,10 @@ export class CustomUiFilterComponent implements OnInit {
 			var fromDate = Date.parse(this.fromDateFilter);
 			if (this.toDateFilter != undefined && this.toDateFilter != "") {
 				var toDate = Date.parse(this.toDateFilter);
-				this.validateDateLessThanOrGreaterThan(fromDate,toDate);
+				this.isDateError = this.validateDateLessThanOrGreaterThan(fromDate,toDate);
 			} else {
 				this.isValidationErrorMessage = true;
+				this.isDateError = true
 				this.filterConditionErrorMessage = "Please pick To Date";
 			}
 		} else if(this.toDateFilter != undefined && this.toDateFilter != "") {
@@ -69,31 +74,68 @@ export class CustomUiFilterComponent implements OnInit {
 			var toDate = Date.parse(this.toDateFilter);
 			if(this.fromDateFilter != undefined && this.fromDateFilter != "") {
 				var fromDate = Date.parse(this.fromDateFilter);
-				this.validateDateLessThanOrGreaterThan(fromDate,toDate);
+				this.isDateError =this.validateDateLessThanOrGreaterThan(fromDate,toDate);
 			} else {
 				this.isValidationErrorMessage = true;
+				this.isDateError = true;
 				this.filterConditionErrorMessage = "Please pick From Date";
 			}
+		} else {
+			this.isDateError = false;
 		}
+        if(!this.isDateError) {
 		this.criteriaValidation();
+		}
 	}
 	criteriaValidation() {
-		if (((this.fromDateFilter == undefined || this.fromDateFilter == "") && (this.toDateFilter == undefined || this.toDateFilter == "")) || (this.fromDateFilter != undefined && this.fromDateFilter != "" && this.toDateFilter != undefined && this.toDateFilter != "")) {
-			for (let i = 0; i < this.criterias.length; i++) {
+		// 	for (let i = 0; i < this.criterias.length; i++) {
+		// 		if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
+		// 			if(this.pagination.dateFilterOpionEnable && i == 0) {
+		// 				this.isValidationErrorMessage = false;
+		// 			} else {
+		// 			this.isValidationErrorMessage = true;
+		// 			this.filterConditionErrorMessage = "Please fill the required data at position " + i;
+		// 			}
+		// 			break;
+		// 		} else if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*") {
+		// 			this.isValidationErrorMessage = true;
+		// 			this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + i;
+		// 			break;
+		// 		} else if (this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
+		// 			this.isValidationErrorMessage = true;
+		// 			this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + i;
+		// 			break;
+		// 		} else if (this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
+		// 			this.isValidationErrorMessage = true;
+		// 			this.filterConditionErrorMessage = "Please select the Condition and Value at position " + i;
+		// 			break;
+		// 		} else if (this.criterias[i].operation == "Condition*") {
+		// 			this.isValidationErrorMessage = true;
+		// 			this.filterConditionErrorMessage = "Please select the Condition at position " + i;
+		// 			break;
+		// 		} else if (this.criterias[i].property == "Field Name*") {
+		// 			this.isValidationErrorMessage = true;
+		// 			this.filterConditionErrorMessage = "Please select the Field Name at position " + i;
+		// 			break;
+		// 		} else if (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "") {
+		// 			this.isValidationErrorMessage = true;
+		// 			this.filterConditionErrorMessage = "Please fill the value at position " + i;
+		// 			break;
+		// 		} else {
+		// 			this.isValidationErrorMessage = false;
+		// 			this.pagination.filterOptionEnable = true;
+		// 		}
+		// 	this.addCriteriasCondtions();
+		// }
+		for (let i = 0; i < this.criterias.length; i++) {
+			if (this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
+				if(this.pagination.dateFilterOpionEnable && this.criterias.length == 1) {
+					this.isValidationErrorMessage = false
+				} else {
+				this.isValidationErrorMessage = true;
+				}
 				if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
-					if (((this.fromDateFilter == undefined || this.fromDateFilter == "") && (this.toDateFilter == undefined || this.toDateFilter == ""))) {
-						this.isValidationErrorMessage = true;
-						this.filterConditionErrorMessage = "Please fill the required data at position " + i;
-					} else {
-						if((this.fromDateFilter != undefined && this.fromDateFilter != "" && this.toDateFilter != undefined && this.toDateFilter != "")) {
-						this.validateDateLessThanOrGreaterThan(Date.parse(this.fromDateFilter),Date.parse(this.toDateFilter))
-					} else {
-						this.isValidationErrorMessage = false;
-					}
-						this.pagination.filterOptionEnable = false;
-					}
-				} else if(this.isFromDateless){
-					this.isValidationErrorMessage = true;
+					this.filterConditionErrorMessage = "Please fill the required data at position " + i;
 				} else if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*") {
 					this.isValidationErrorMessage = true;
 					this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + i;
@@ -112,11 +154,14 @@ export class CustomUiFilterComponent implements OnInit {
 				} else if (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "") {
 					this.isValidationErrorMessage = true;
 					this.filterConditionErrorMessage = "Please fill the value at position " + i;
-				} else {
-					this.isValidationErrorMessage = false;
-					this.pagination.filterOptionEnable = true;
 				}
-			} 
+				break;
+			} else {
+				this.isValidationErrorMessage = false;
+				this.pagination.filterOptionEnable = true;
+			}
+		}
+		if(!this.isValidationErrorMessage) {
 			this.addCriteriasCondtions();
 		}
 	}
@@ -160,8 +205,8 @@ export class CustomUiFilterComponent implements OnInit {
 			this.isclearFilter = true;
 		}
 	}
-   isFromDateless:boolean;
-	validateDateLessThanOrGreaterThan(fromDate: any, toDate: any) {
+   
+	validateDateLessThanOrGreaterThan(fromDate: any, toDate: any):boolean {
 		if (fromDate <= toDate) {
 			this.pagination.fromDateFilterString = this.fromDateFilter;
 			this.pagination.toDateFilterString = this.toDateFilter;
@@ -174,13 +219,10 @@ export class CustomUiFilterComponent implements OnInit {
 			this.isFromDateless = true;
 			this.filterConditionErrorMessage = "From date should be less than To date";
 		}
+		return this.isFromDateless;
 	}
 
-	checkCriteriaCoditions(){
-		//this.criteriaValidation();
-	}
   submittFilterData(){
-	//alert(this.isValidationErrorMessage)
 	this.validateDateFilters();
     let input = {};
     input['showFilterOption'] = this.showFilterOption;

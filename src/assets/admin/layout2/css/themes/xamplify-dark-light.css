@@ -2537,3 +2537,8 @@ button.btn.btn-white.salesforce-btn.button{
   border-bottom: 3px solid #f1f5f9 !important;
 
 }
+/*** XNFR-409 ****/
+.custom_fiter-asset {
+  background-color: #22313a !important;
+}
+/*** XNFR-409 ****/
