@@ -105,7 +105,7 @@
 									<span class=text-danger>*</span>
 								</label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="eventTitle" maxlength="250"
+									<input type="text" autocomplete="off" class="form-control" id="eventTitle" maxlength="250"
 										placeholder="Event Title" [(ngModel)]="eventCampaign.campaign"
 										[ngModelOptions]="{standalone: true}"
 										[ngClass]="{'has-error': eventError.eventTitleError}"
@@ -140,7 +140,7 @@
 									<span class=text-danger>*</span>
 								</label>
 								<div class="col-sm-9">
-									<input type="text"
+									<input type="text"  autocomplete="off"
 										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
 										class="form-control pull-left" placeholder="Hosted By"
 										[(ngModel)]="eventCampaign.fromName" [ngModelOptions]="{standalone: true}"
@@ -180,7 +180,7 @@
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
 											name="subjectLine" (input)="eventSubjectLineError()"
 											[ngClass]="{'has-error': eventError.eventSubjectLineError}"
-											maxlength="1000" />
+											maxlength="1000"  autocomplete="off" />
 										<span
 											*ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate"
 											class="input-group-btn">

@@ -63,24 +63,21 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
       (response:any) => {
        if(response.statusCode == 200){
         this.eventcampaign = response.data;
-        
         if(response.data.targetUserDTO.emailId){
            this.authenticationService.isPartnerRsvp = true;
         }
-        
-        console.log("isPartnerRsvp:=" + this.authenticationService.isPartnerRsvp);
-        
-        console.log(response);
         this.dataContainer.nativeElement.innerHTML = this.addURLs(this.eventcampaign.emailTemplateDTO.body);
         this.dataContainerDup.nativeElement.innerHTML = this.addURLs(this.eventcampaign.emailTemplateDTO.body);
         this.isRsvp = this.eventcampaign.campaignEventRsvps.length>0 ? true: false;
         this.campaignRsvp.alias = this.alias;
         this.isDataLoaded = true;
          if (this.eventcampaign.formDTOs[0].formLabelDTOs) {
-           // this.form.formLabelDTOs = response.formValuesDTO.fields;
            this.eventcampaign.formDTOs[0].formLabelDTOs.forEach((dto) => {
              if (dto.labelType == 'quiz_checkbox') {
                dto.choices = dto.checkBoxChoices;
+             }
+             else if (dto.labelType == 'country') {
+              dto.value = "Please Select Country";
              }
              if (dto.checkBoxChoices && dto.dropdownIds) {
                if (dto['checkBoxChoices'] !== undefined && dto.checkBoxChoices.length > 0 && dto.dropdownIds.length > 0) {
@@ -283,13 +280,9 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.totalGuests = 0;
         $('#myModal').modal('hide');
         this.campaignRsvp.message = '';
-        //this.responseMessage = 'Thank you for the RSVP';
         this.hideForm = true;
-       // this.getEventCampaign(this.alias);
-       // this.rsvpSavingProcessing = false;
       },
       error => {
-        console.log(error);
         this.processor.remove(this.processor);
         this.rsvpSavingProcessing = false;
       },
@@ -331,11 +324,9 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
       $('body').css('cssText', 'background-image: url(https://www.xamplify.com/wp-content/uploads/2019/12/rsvp-bg.png);background-repeat: no-repeat;background-size: cover;background-position: center;');
       this.processor.set(this.processor);
       this.alias = this.route.snapshot.params['alias'];
-      //this.type = this.route.snapshot.queryParams['type'];
       this.campaignRsvp.eventCampaignRsvp = this.route.snapshot.queryParams['type'];
       this.selectedType = this.route.snapshot.queryParams['type'];
       this.selectedUtmType = this.route.snapshot.queryParams['utm_source'];
-      console.log(this.selectedType, this.selectedUtmType);
       this.getEventCampaign(this.alias);
       this.setLocationDetails();
     } catch (error) {
