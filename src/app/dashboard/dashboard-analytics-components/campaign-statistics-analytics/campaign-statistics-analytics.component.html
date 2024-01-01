@@ -1,4 +1,7 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<!--XBI-1801-->
+<div *ngIf="!authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughOwnVanityUrl">
+
 <div [ngClass]="authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 ? 'col-xs-12 col-sm-12' : 'col-xs-12 col-sm-6'"  style="padding: 0">
     <div class="col-xs-12">
         <div class="portlet light" style="margin-bottom: 20px;">
@@ -97,4 +100,6 @@
                   </div>
         <div [hidden]="heatMapLoader.isLoading" id="heat-map-data" style="max-width: 100%; min-height: auto; cursor: pointer"></div>
     </div>
+</div>
+
 </div>
