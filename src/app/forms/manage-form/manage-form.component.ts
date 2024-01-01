@@ -417,6 +417,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
 
     setViewType(viewType: string) {
+        
         if ("List" == viewType) {
             this.modulesDisplayType.isListView = true;
             this.modulesDisplayType.isGridView = false;

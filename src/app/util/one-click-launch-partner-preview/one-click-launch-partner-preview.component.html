@@ -2,6 +2,9 @@
 <div class="table-responsive" *ngIf="!oneClickLaunchLoader">
    <app-response-message *ngIf="oneClickLaunchStatusCode==404 && oneClickLaunchResponse.isVisible"
       [customResponse]="oneClickLaunchResponse"></app-response-message>
+   <!--XBI-1988-->
+   <app-response-message *ngIf="shareLeadsPagination?.totalRecords==0 && emptyShareLeadsInfoMessage?.isVisible" [customResponse]="emptyShareLeadsInfoMessage" [showCloseIcon]="false"></app-response-message>
+   <!--XBI-1988-->
    <table class="table tgrid table-hover table-sm" aria-describedby="" *ngIf="oneClickLaunchStatusCode==200">
       <thead>
          <tr>

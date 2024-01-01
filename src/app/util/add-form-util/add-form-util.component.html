@@ -386,7 +386,7 @@
                                                         *ngIf="selectedColumn.labelType=='text' || selectedColumn.labelType=='email' || selectedColumn.labelType=='textarea' || selectedColumn.labelType=='number'">
                                                         <label class="control-label">Field Placeholder Text</label>
                                                         <input type="text" [(ngModel)]="selectedColumn.placeHolder"
-                                                            class="form-control" maxlength="1000" />
+                                                            class="form-control" maxlength="255" />
                                                     </div>
                                                     <!-- ---------------------------Price----------------------------- -->
                                                     <div class="form-group" *ngIf="selectedColumn.labelType=='price'">
