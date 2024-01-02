@@ -78,7 +78,7 @@
                   <ul *ngIf="integrationType === 'HUBSPOT'" class="textDecoration">
                     <li>{{sfCustomField.displayName}}</li>
                     <li *ngIf="sfCustomField.formDefaultFieldType != null">
-                      Maped As:
+                      Mapped As:
                       <ng-container [ngSwitch]="sfCustomField.formDefaultFieldType">
                         <i *ngSwitchCase="'AMOUNT'" class="fa fa-usd" aria-hidden="true"></i>
                         <i *ngSwitchCase="'CLOSE_DATE'" class="fa fa-calendar" aria-hidden="true"></i>
