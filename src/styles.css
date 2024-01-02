@@ -2687,6 +2687,7 @@ display: inline-flex;
 .pd_0{
   padding-top: 0px !important;
 }
+
 /* XNFR-374 Grid View Enhancement START */
 .gridViewImgBg {
   background-position: 100%;
@@ -2806,7 +2807,7 @@ span.progresleft {
 }
 
 .grid-box h4 {
-  font-weight: 600;
+  /* font-weight: 600; */
   font-size: 13px;
 }
 
@@ -2853,8 +2854,9 @@ span.progresleft {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-
+a.whiteSpace {
+  white-space: nowrap;
+}
 
 /* XNFR-374 Grid View Enhancement END */
 

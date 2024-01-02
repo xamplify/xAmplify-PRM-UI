@@ -207,7 +207,7 @@ i.fa.fa-eye.color-chnage {
 }
 
 .grid-box h6 {
-    margin: 5px 0 5px 5px;
+    margin: 5px 0 5px 5px !important;
 }
 span.Track-countbg {
     background: #54a7e9 !important;
@@ -215,6 +215,7 @@ span.Track-countbg {
     color: #fff;
     padding: 5px 11px;
     border-radius: 3px !important;
+    font-size: 10px !important;
 }
 
 

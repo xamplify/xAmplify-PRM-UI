@@ -528,8 +528,8 @@
                                                 </h5>
                                                 <h6 *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner"
                                                    style="text-align:center" translate>
-                                                   Shared To: <strong>{{contactList.partnerCompanyName |
-                                                      slice:0:7}}</strong>
+                                                  <b>Shared To:</b> {{contactList.partnerCompanyName |
+                                                      slice:0:7}} 
                                                    <span data-toggle="tooltip" data-placement="top"
                                                       title="{{contactList.partnerCompanyName}}"
                                                       *ngIf="contactList.partnerCompanyName?.length>7">...</span>
@@ -571,18 +571,18 @@
                                                 </app-timestamp>
                                              </td>
                                              <td class="hidden-xs" *ngIf="assignLeads">
-                                                <div>Created On: <b>
+                                                <div> <b>Created On:</b>
                                                       <app-timestamp [isOnlyDate]="true"
                                                          [dateAndTime]="contactList.createdDate">
                                                       </app-timestamp>
-                                                   </b>
+                                                    
                                                 </div>
-                                                <div>Assigned On:
-                                                   <b>
+                                                <div> <b>Assigned On:</b>
+                                                   
                                                       <app-timestamp [isOnlyDate]="true"
                                                          [dateAndTime]="contactList.assignedDate">
                                                       </app-timestamp>
-                                                   </b>
+                                                    
                                                 </div>
                                              </td>
                                              <td class="text-center hidden-xs">
