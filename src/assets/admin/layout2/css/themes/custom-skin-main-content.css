@@ -2436,7 +2436,8 @@ i.collapseIconColorCu {
 .card-bgcolors{
   background-color:var(--div-bg-color) !important; 
 }
-.radiobtn{
+.radiobtn,
+.social_share_border{
   border: 1px solid var(--border-color) !important;
 }
 .mar-rgt{

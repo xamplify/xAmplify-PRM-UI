@@ -47,7 +47,7 @@
 										<tr>
 											<td *ngIf="!asset.videoId || isPartnerView" class="hidden-xs text-center"
 												style="width: 10%;">
-												<div class="thumbnail-wrapper image_effect"
+												<div class="thumbnail-wrapper dam_image_effect"
 													style="width: 180px; height: 100px; border:1px solid #ccc;">
 													<img class="custom-image-css" src="{{asset?.thumbnailPath}}"
 														onerror="this.src='assets/images/no-preview.jpg';"
@@ -305,7 +305,7 @@
 																<tr *ngFor="let asset of historyPagination.pagedItems ;let i =index"
 																	id="history-tr">
 																	<td style="width: 12%;">
-																		<div class="thumbnail-wrapper image_effect"
+																		<div class="thumbnail-wrapper dam_image_effect"
 																			style="width: 180px;height: 100px;">
 																			<img class="custom-image-css"
 																				src="{{asset?.thumbnailPath}}"
@@ -594,8 +594,10 @@
 										</h6>
 									</div>
 									<div class="ribbon tab-ribbon">
-										<span *ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
-										<span *ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">Processing</span>
+										<span
+											*ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>
+										<span
+											*ngIf="asset?.publishingOrWhiteLabelingInProgress || asset?.publishingToPartnerList">Processing</span>
 									</div>
 									<div class="bar auto-height gridIconCustomization">
 										<app-asset-grid-view-actions [isPartnerView]="isPartnerView" [asset]="asset"

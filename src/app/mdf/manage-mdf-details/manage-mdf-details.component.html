@@ -15,8 +15,8 @@
          </li>
       </ul>
       <div class="edit-mdf-form-margin">
-         <button class="button_blue bgcolor-unset" id="right" style="padding: 5px 10px !important;"
-            (click)="editMdfForm()" translate><span class="btn btn-primary transition">Edit MDF Form</span></button>
+         <button class="button_blue bgcolor-unset pos_pd_top_rgt1" id="right" (click)="editMdfForm()" translate><span
+               class="btn btn-primary transition">Edit MDF Form</span></button>
       </div>
    </div>
    <!---Tiles----->
@@ -133,7 +133,8 @@
                            <div class="input-icon right" style="margin-bottom: 8px;">
                               <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
                                  [ngModelOptions]="{standalone: true}" placeholder="Search"
-                                 (keypress)="eventHandler($event.keyCode)" style="height: 34px !important;" autocomplete="off">
+                                 (keypress)="eventHandler($event.keyCode)" style="height: 34px !important;"
+                                 autocomplete="off">
                               <button class="glyphicon glyphicon-remove search-box-item-clear"
                                  *ngIf="sortOption.searchKey"
                                  (click)="sortOption.searchKey='';searchPartners();"></button>
@@ -154,7 +155,8 @@
                               <table class="table tgrid" aria-describedby="manage-mdf-fund-table">
                                  <thead>
                                     <tr>
-                                       <th translate scope="col">{{authenticationService?.partnerModule?.customName}} Info</th>
+                                       <th translate scope="col">{{authenticationService?.partnerModule?.customName}}
+                                          Info</th>
                                        <th translate scope="col">MDF Account Balance</th>
                                        <th translate scope="col">Used Balance</th>
                                        <th translate scope="col">Available Balance</th>
@@ -165,7 +167,8 @@
                                     <ng-container *ngFor="let partner of pagination.pagedItems;let i=index">
                                        <tr>
                                           <td>
-                                             <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true"[userInfo]="partner" [hideJobTitle]="true"></app-user-info>
+                                             <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true"
+                                                [userInfo]="partner" [hideJobTitle]="true"></app-user-info>
                                           </td>
                                           <td>
                                              <span>${{partner?.totalBalance | number:'1.0':'en-US'}}</span>

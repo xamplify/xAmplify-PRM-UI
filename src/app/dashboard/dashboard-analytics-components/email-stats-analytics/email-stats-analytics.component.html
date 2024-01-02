@@ -1,205 +1,240 @@
 <div class="col-sm-6">
-  <div class="portlet light" style="margin-bottom: 20px;">
-      <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
-          <div class="caption">
-              <i class="icon-cursor font-purple-intense"></i>
-              <span class="caption-subject" translate>Email Stats</span>
-          </div>
-      </div>
-      <div class="portlet-body">
-        <app-dashboard-loader *ngIf="emailStatsLoader.isLoading"></app-dashboard-loader>
-          <div class="row" *ngIf="!emailStatsLoader.isLoading">
-              <div class="col-xs-4 sparkline-chart" (click)="listOfEmailOpenLogs(13)" style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
-                  <div class="visual">
-                      <img alt="opened" src="assets/images/opened.png" data-toggle="tooltip" data-placement="top" title="View Opened Emails Data">
-                  </div>
-                  <div class="details">
-                      <div class="number" style="color: #f36360; margin-top: 5px;">
-                          <h4>
-                              <b>{{emailStats?.opened}}</b>
-                              <br>
-                              <span class="email-action-desscription">Opened</span>
-                          </h4>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-xs-4 sparkline-chart" (click)="listOfEmailClickedLogs()" style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
-                  <div class="visual">
-                      <img alt="Clicked" src="assets/images/clicked.png" data-toggle="tooltip" data-placement="top" title="View Clicked URL Data">
-                  </div>
-                  <div class="details">
-                      <div class="number" style="color: #00a2e2; margin-top: 5px;">
-                          <h4>
-                              <b>{{emailStats?.clicked}}</b>
-                              <br>
-                              <span class="email-action-desscription">Clicked</span>
-                          </h4>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-xs-4 sparkline-chart" (click)="listOfWatchedLogs()" style="cursor:pointer" data-toggle="modal" data-target="#emailClickedModal">
-                  <div class="visual">
-                      <img alt="Watched" src="assets/images/watched.png" data-toggle="tooltip" data-placement="top" title="View Watched Video Data">
-                  </div>
-                  <div class="details">
-                      <div class="number" style="color: #00bb1d; margin-top: 5px;">
-                          <h4>
-                              <b>{{emailStats?.views}}</b>
-                              <br>
-                              <span class="email-action-desscription">Views</span>
-                          </h4>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+    <div class="portlet light" style="margin-bottom: 20px;margin-top: 10px;">
+        <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
+            <div class="caption">
+                <i class="icon-cursor font-purple-intense"></i>
+                <span class="caption-subject" translate>Email Stats</span>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <app-dashboard-loader *ngIf="emailStatsLoader.isLoading"></app-dashboard-loader>
+            <div class="row" *ngIf="!emailStatsLoader.isLoading">
+                <div class="col-xs-4 sparkline-chart" (click)="listOfEmailOpenLogs(13)" style="cursor:pointer"
+                    data-toggle="modal" data-target="#emailClickedModal">
+                    <div class="visual">
+                        <img alt="opened" src="assets/images/opened.png" data-toggle="tooltip" data-placement="top"
+                            title="View Opened Emails Data">
+                    </div>
+                    <div class="details">
+                        <div class="number" style="color: #f36360; margin-top: 5px;">
+                            <h4>
+                                <b>{{emailStats?.opened}}</b>
+                                <br>
+                                <span class="email-action-desscription">Opened</span>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4 sparkline-chart" (click)="listOfEmailClickedLogs()" style="cursor:pointer"
+                    data-toggle="modal" data-target="#emailClickedModal">
+                    <div class="visual">
+                        <img alt="Clicked" src="assets/images/clicked.png" data-toggle="tooltip" data-placement="top"
+                            title="View Clicked URL Data">
+                    </div>
+                    <div class="details">
+                        <div class="number" style="color: #00a2e2; margin-top: 5px;">
+                            <h4>
+                                <b>{{emailStats?.clicked}}</b>
+                                <br>
+                                <span class="email-action-desscription">Clicked</span>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4 sparkline-chart" (click)="listOfWatchedLogs()" style="cursor:pointer"
+                    data-toggle="modal" data-target="#emailClickedModal">
+                    <div class="visual">
+                        <img alt="Watched" src="assets/images/watched.png" data-toggle="tooltip" data-placement="top"
+                            title="View Watched Video Data">
+                    </div>
+                    <div class="details">
+                        <div class="number" style="color: #00bb1d; margin-top: 5px;">
+                            <h4>
+                                <b>{{emailStats?.views}}</b>
+                                <br>
+                                <span class="email-action-desscription">Views</span>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
-<div class="modal right fade" id="emailClickedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog modal-css" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">
-                  <i class="fa fa-times"></i>
-              </a>
-              <h4 class="m0">People who have
-                  <span *ngIf="paginationType=='open'">opened your emails</span>
-                  <span *ngIf="paginationType=='clicked'">clicked your emails</span>
-                  <span *ngIf="paginationType=='watched'">watched your videos</span>
-              </h4>
-              <div [class.disabled]="isLoadingDownloadList" class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
-                  <span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
-            <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
-            <i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
-          </span>
-                  <ul class="dropdown-menu pull-right">
-                      <li>
-                          <a id="delete_button" (click)="downloadFuctionality()"> Export To Excel </a>
-                      </li>
-                  </ul>
-              </div>
-          </div>
-          <div class="modal-body clearfix">
+<div class="modal right fade" id="emailClickedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-css" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">
+                    <i class="fa fa-times"></i>
+                </a>
+                <h4 class="m0">People who have
+                    <span *ngIf="paginationType=='open'">opened your emails</span>
+                    <span *ngIf="paginationType=='clicked'">clicked your emails</span>
+                    <span *ngIf="paginationType=='watched'">watched your videos</span>
+                </h4>
+                <div [class.disabled]="isLoadingDownloadList" class="btn-group pull-right"
+                    style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
+                    <span class="dropdown-toggle" data-toggle="dropdown"
+                        style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
+                        <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
+                        <i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+                    </span>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a id="delete_button" (click)="downloadFuctionality()"> Export To Excel </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-body clearfix">
 
-              <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
-                  <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
-                  <strong class="m5" style="padding-left:10px;">Please wait while we process your request.</strong>
-              </div>
+                <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+                    <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
+                    <strong class="m5" style="padding-left:10px;">Please wait while we process your request.</strong>
+                </div>
 
-              <div *ngIf="isLoadingList">
-                  <app-list-loader></app-list-loader>                 
-              </div>
-              <div *ngIf="pagination.pagedItems?.length == 0 && !isLoadingList" class="col-md-6" class="col-md-9 alert alert-info m0" style="width: 100%">
-                  <strong>No results found</strong>
-              </div>
-              <div class="table-responsive" *ngIf="pagination.pagedItems?.length != 0">
-                  <table class="table tgrid" id="sample_editable_1" [hidden]="isLoadingList">
-                      <thead>
-                          <tr>
-                              <th class="headerCss center">NAME</th>
-                              <th class="headerCss center hidden-xs" *ngIf="paginationType == 'clicked'">URL</th>
-                              <th class="headerCss center hidden-xs" *ngIf="paginationType == 'open'">SUBJECT</th>
-                              <th class="headerCss center hidden-xs">CAMPAIGN NAME</th>
-                              <th class="headerCss center hidden-xs">DATE & Time</th>
-                              <th class="headerCss center hidden-xs" *ngIf="paginationType != 'open'">LOCATION</th>
-                              <th class="headerCss center hidden-xs" *ngIf="paginationType != 'open'">PLATFORM</th>
-                              <th class="hidden-sm hidden-md hidden-lg">MORE</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          <ng-container *ngFor="let emailClicked of pagination.pagedItems;let i = index">
-                              <tr>
-                                  <td>
-                                      <app-user-info *ngIf="paginationType == 'open'" [userInfo]="emailClicked" [isCompanyInfo]="true"> </app-user-info>
-                                      <app-user-info *ngIf="paginationType != 'open'" [userInfo]="emailClicked"> </app-user-info>
-                                  </td>
-                                  <td class="center hidden-xs" *ngIf="paginationType =='clicked'">
-                                      <h5 *ngIf="emailClicked.url" title="{{emailClicked.url}}">{{emailClicked.url | slice:0:30}} <span *ngIf="emailClicked.url?.length>30">...</span></h5>
-                                      <h5 *ngIf="!emailClicked.url">Clicked on the video thumbnail</h5>
-                                  </td>
-                                  <td class="center hidden-xs" *ngIf="paginationType == 'open'">
-                                      <h5 title="{{emailClicked.subject}}">{{emailClicked.subject | slice:0:30}} <span *ngIf="emailClicked.subject?.length>30">...</span></h5>
-                                  </td>
-                                  <td class="center hidden-xs">
-                                      <h5 title="{{emailClicked.campaignName}}">{{emailClicked.campaignName| slice:0:30}} <span *ngIf="emailClicked.campaignName?.length>30">...</span></h5>
-                                      <h4 *ngIf="emailClicked.campaignName==null">-</h4>
-                                  </td>
-                                  <td class="center hidden-xs">
-                                      <app-timestamp [dateAndTime]="emailClicked.time"> </app-timestamp>
-                                  </td>
-                                  <td class="center hidden-xs" *ngIf="paginationType != 'open'">
-                                      <app-location [userLocation]="emailClicked"> </app-location>
-                                  </td>
-                                  <td class="center hidden-xs" *ngIf="paginationType != 'open'">
-                                      <app-platform [deviceTypeOs]="true" [userPlatform]="emailClicked"> </app-platform>
-                                  </td>
-                                  <td align="center" class="hidden-sm hidden-md hidden-lg">
-                                      <button class="lightgray-btn" id='more_less_button_{{i}}' (click)="emailClicked.isShowDetails = ! emailClicked.isShowDetails">
-                    <span *ngIf="!emailClicked.isShowDetails">More</span>
-                    <span *ngIf="emailClicked.isShowDetails">Less</span>
-                  </button>
-                                  </td>
-                              </tr>
-                              <tr class="hidden-sm hidden-md hidden-lg" [ngClass]="{'hidden': !emailClicked.isShowDetails, 'show-more': emailClicked.isShowDetails}">
-                                  <td colspan="8">
-                                      <table cellpadding="5" cellspacing="0">
-                                          <tbody>
-                                              <tr *ngIf="paginationType == 'clicked'">
-                                                  <td class="headerCss center" *ngIf="paginationType == 'clicked'">URL</td>
-                                                  <td class="center" *ngIf="paginationType =='clicked'">
-                                                      <h5 *ngIf="emailClicked.url" title="{{emailClicked.url}}">{{emailClicked.url | slice:0:30}} <span *ngIf="emailClicked.url?.length>30">...</span></h5>
-                                                      <h5 *ngIf="!emailClicked.url">Clicked on the video thumbnail</h5>
-                                                  </td>
-                                              </tr>
-                                              <tr *ngIf="paginationType == 'open'">
-                                                  <td *ngIf="paginationType == 'open'" class='pt10 pb10 bold'>Subject: </td>
-                                                  <td class="center" *ngIf="paginationType == 'open'">
-                                                      <h5 title="{{emailClicked.subject}}">{{emailClicked.subject | slice:0:30}} <span *ngIf="emailClicked.subject?.length>30">...</span></h5>
-                                                  </td>
-                                              </tr>
-                                              <tr>
-                                                  <td class='pt10 pb10 bold'>CAMPAIGN NAME:</td>
-                                                  <td class="center">
-                                                      <h5 title="{{emailClicked.campaignName}}">{{emailClicked.campaignName| slice:0:30}} <span *ngIf="emailClicked.campaignName?.length>30">...</span></h5>
-                                                      <h4 *ngIf="emailClicked.campaignName==null">-</h4>
-                                                  </td>
-                                              </tr>
-                                              <tr>
-                                                  <td class='pt10 pb10 bold'>Time:</td>
-                                                  <td class="center">
-                                                      <app-timestamp [dateAndTime]="emailClicked.time"> </app-timestamp>
-                                                  </td>
-                                              </tr>
-                                              <tr *ngIf="paginationType != 'open'">
-                                                  <td class='pt10 pb10 bold'>Location:</td>
-                                                  <td class="center" *ngIf="paginationType != 'open'">
-                                                      <app-location [userLocation]="emailClicked"> </app-location>
-                                                  </td>
-                                              </tr>
-                                              <tr *ngIf="paginationType != 'open'">
-                                                  <td class='pt10 pb10 bold'>Platform:</td>
-                                                  <td class="center" *ngIf="paginationType != 'open'">
-                                                      <app-platform [deviceTypeOs]="true" [userPlatform]="emailClicked"> </app-platform>
-                                                  </td>
-                                              </tr>
-                                          </tbody>
-                                      </table>
-                                  </td>
-                              </tr>
-                          </ng-container>
-                      </tbody>
-                  </table>
-              </div>
-              <div class="pg8" *ngIf="pagination.pagedItems.length !== 0">
-                  <app-pagination [hidden]="isLoadingList" [pagination]="pagination" [type]="'dashboard'" (notifyParentDropDown)="paginationDropdown($event)" (notifyParent)="setPage($event)"></app-pagination>
-              </div>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn btn-defaullistOfEmailOpenLogs listOfEmailOpenLogst Btn-Gray" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
-          </div>
-      </div>
-  </div>
+                <div *ngIf="isLoadingList">
+                    <app-list-loader></app-list-loader>
+                </div>
+                <div *ngIf="pagination.pagedItems?.length == 0 && !isLoadingList" class="col-md-6"
+                    class="col-md-9 alert alert-info m0" style="width: 100%">
+                    <strong>No results found</strong>
+                </div>
+                <div class="table-responsive" *ngIf="pagination.pagedItems?.length != 0">
+                    <table class="table tgrid" id="sample_editable_1" [hidden]="isLoadingList">
+                        <thead>
+                            <tr>
+                                <th class="headerCss center">NAME</th>
+                                <th class="headerCss center hidden-xs" *ngIf="paginationType == 'clicked'">URL</th>
+                                <th class="headerCss center hidden-xs" *ngIf="paginationType == 'open'">SUBJECT</th>
+                                <th class="headerCss center hidden-xs">CAMPAIGN NAME</th>
+                                <th class="headerCss center hidden-xs">DATE & Time</th>
+                                <th class="headerCss center hidden-xs" *ngIf="paginationType != 'open'">LOCATION</th>
+                                <th class="headerCss center hidden-xs" *ngIf="paginationType != 'open'">PLATFORM</th>
+                                <th class="hidden-sm hidden-md hidden-lg">MORE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let emailClicked of pagination.pagedItems;let i = index">
+                                <tr>
+                                    <td>
+                                        <app-user-info *ngIf="paginationType == 'open'" [userInfo]="emailClicked"
+                                            [isCompanyInfo]="true"> </app-user-info>
+                                        <app-user-info *ngIf="paginationType != 'open'" [userInfo]="emailClicked">
+                                        </app-user-info>
+                                    </td>
+                                    <td class="center hidden-xs" *ngIf="paginationType =='clicked'">
+                                        <h5 *ngIf="emailClicked.url" title="{{emailClicked.url}}">{{emailClicked.url |
+                                            slice:0:30}} <span *ngIf="emailClicked.url?.length>30">...</span></h5>
+                                        <h5 *ngIf="!emailClicked.url">Clicked on the video thumbnail</h5>
+                                    </td>
+                                    <td class="center hidden-xs" *ngIf="paginationType == 'open'">
+                                        <h5 title="{{emailClicked.subject}}">{{emailClicked.subject | slice:0:30}} <span
+                                                *ngIf="emailClicked.subject?.length>30">...</span></h5>
+                                    </td>
+                                    <td class="center hidden-xs">
+                                        <h5 title="{{emailClicked.campaignName}}">{{emailClicked.campaignName|
+                                            slice:0:30}} <span *ngIf="emailClicked.campaignName?.length>30">...</span>
+                                        </h5>
+                                        <h4 *ngIf="emailClicked.campaignName==null">-</h4>
+                                    </td>
+                                    <td class="center hidden-xs">
+                                        <app-timestamp [dateAndTime]="emailClicked.time"> </app-timestamp>
+                                    </td>
+                                    <td class="center hidden-xs" *ngIf="paginationType != 'open'">
+                                        <app-location [userLocation]="emailClicked"> </app-location>
+                                    </td>
+                                    <td class="center hidden-xs" *ngIf="paginationType != 'open'">
+                                        <app-platform [deviceTypeOs]="true" [userPlatform]="emailClicked">
+                                        </app-platform>
+                                    </td>
+                                    <td align="center" class="hidden-sm hidden-md hidden-lg">
+                                        <button class="lightgray-btn" id='more_less_button_{{i}}'
+                                            (click)="emailClicked.isShowDetails = ! emailClicked.isShowDetails">
+                                            <span *ngIf="!emailClicked.isShowDetails">More</span>
+                                            <span *ngIf="emailClicked.isShowDetails">Less</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="hidden-sm hidden-md hidden-lg"
+                                    [ngClass]="{'hidden': !emailClicked.isShowDetails, 'show-more': emailClicked.isShowDetails}">
+                                    <td colspan="8">
+                                        <table cellpadding="5" cellspacing="0">
+                                            <tbody>
+                                                <tr *ngIf="paginationType == 'clicked'">
+                                                    <td class="headerCss center" *ngIf="paginationType == 'clicked'">URL
+                                                    </td>
+                                                    <td class="center" *ngIf="paginationType =='clicked'">
+                                                        <h5 *ngIf="emailClicked.url" title="{{emailClicked.url}}">
+                                                            {{emailClicked.url | slice:0:30}} <span
+                                                                *ngIf="emailClicked.url?.length>30">...</span></h5>
+                                                        <h5 *ngIf="!emailClicked.url">Clicked on the video thumbnail
+                                                        </h5>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="paginationType == 'open'">
+                                                    <td *ngIf="paginationType == 'open'" class='pt10 pb10 bold'>Subject:
+                                                    </td>
+                                                    <td class="center" *ngIf="paginationType == 'open'">
+                                                        <h5 title="{{emailClicked.subject}}">{{emailClicked.subject |
+                                                            slice:0:30}} <span
+                                                                *ngIf="emailClicked.subject?.length>30">...</span></h5>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='pt10 pb10 bold'>CAMPAIGN NAME:</td>
+                                                    <td class="center">
+                                                        <h5 title="{{emailClicked.campaignName}}">
+                                                            {{emailClicked.campaignName| slice:0:30}} <span
+                                                                *ngIf="emailClicked.campaignName?.length>30">...</span>
+                                                        </h5>
+                                                        <h4 *ngIf="emailClicked.campaignName==null">-</h4>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='pt10 pb10 bold'>Time:</td>
+                                                    <td class="center">
+                                                        <app-timestamp [dateAndTime]="emailClicked.time">
+                                                        </app-timestamp>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="paginationType != 'open'">
+                                                    <td class='pt10 pb10 bold'>Location:</td>
+                                                    <td class="center" *ngIf="paginationType != 'open'">
+                                                        <app-location [userLocation]="emailClicked"> </app-location>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="paginationType != 'open'">
+                                                    <td class='pt10 pb10 bold'>Platform:</td>
+                                                    <td class="center" *ngIf="paginationType != 'open'">
+                                                        <app-platform [deviceTypeOs]="true"
+                                                            [userPlatform]="emailClicked"> </app-platform>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pg8" *ngIf="pagination.pagedItems.length !== 0">
+                    <app-pagination [hidden]="isLoadingList" [pagination]="pagination" [type]="'dashboard'"
+                        (notifyParentDropDown)="paginationDropdown($event)"
+                        (notifyParent)="setPage($event)"></app-pagination>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-defaullistOfEmailOpenLogs listOfEmailOpenLogst Btn-Gray"
+                    data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
-<app-export-csv *ngIf="isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
+<app-export-csv *ngIf="isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName">
+</app-export-csv>

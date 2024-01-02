@@ -194,32 +194,43 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <h4 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{form.name}}">
+                                            <h4 class="moreipsis" data-toggle="tooltip" data-placement="top"
+                                                title="{{form.name}}">
                                                 <span><b>Form Name:</b> {{form.name}} </span>
                                             </h4>
-                                            <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{form.categoryName}}">
+                                            <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"
+                                                title="{{form.categoryName}}">
                                                 <span><b>Folder:</b> {{form.categoryName}} </span>
                                             </h6>
-                                            <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{form.createdName}}">
+                                            <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"
+                                                title="{{form.createdName}}">
                                                 <span><b>Created By:</b> {{form.createdName}} </span>
                                             </h6>
                                             <!---XNFR-255-->
-                                            <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor && !partnerView">
-                                                <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{form.whiteLabeledFormSharedByVendorCompanyName}}">
-                                                    <span> <b>Received From:</b> {{form?.whiteLabeledFormSharedByVendorCompanyName}} </span>
+                                            <ng-container
+                                                *ngIf="form?.whiteLabeledFormReceivedFromVendor && !partnerView">
+                                                <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"
+                                                    title="{{form.whiteLabeledFormSharedByVendorCompanyName}}">
+                                                    <span> <b>Received From:</b>
+                                                        {{form?.whiteLabeledFormSharedByVendorCompanyName}} </span>
                                                 </h6>
                                                 <h5 class="view-banner display-ib margin-0-auto">White-Labeled</h5>
                                             </ng-container>
-                                             <!---XNFR-255-->
-                                             <h6 class="view-banner display-ib margin-0-auto" *ngIf="form.formSubType === 'REGULAR'" translate>Regular</h6>
-                                             <h6 class="view-banner display-ib margin-0-auto" *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</h6>
-                                             <h6 class="view-banner display-ib margin-0-auto" *ngIf="form.formSubType === 'SURVEY'" translate>Survey</h6>
+                                            <!---XNFR-255-->
+                                            <h6 class="view-banner display-ib margin-0-auto"
+                                                *ngIf="form.formSubType === 'REGULAR'" translate>Regular</h6>
+                                            <h6 class="view-banner display-ib margin-0-auto"
+                                                *ngIf="form.formSubType === 'QUIZ'" translate>Quiz</h6>
+                                            <h6 class="view-banner display-ib margin-0-auto"
+                                                *ngIf="form.formSubType === 'SURVEY'" translate>Survey</h6>
                                         </td>
                                         <td class="text-center">
-                                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="form.createdDateString"></app-timestamp>
+                                            <app-timestamp [isOnlyDate]="false"
+                                                [dateAndTime]="form.createdDateString"></app-timestamp>
                                         </td>
                                         <td *ngIf="form?.updatedDateString?.length>0" class="text-center">
-                                            <app-timestamp [isOnlyDate]="false" [dateAndTime]="form.updatedDateString"></app-timestamp>
+                                            <app-timestamp [isOnlyDate]="false"
+                                                [dateAndTime]="form.updatedDateString"></app-timestamp>
                                         </td>
                                         <td *ngIf="form?.updatedDateString?.length==0" class="text-center">-</td>
                                         <td id="actions-row">
@@ -313,33 +324,42 @@
                     </ng-container>
                 </section>
                 <!--Grid View-->
-                <div class="row tab_mt_grid p15" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_grid GridviewSidePaddings" *ngFor="let form of pagination.pagedItems ;let i =index" id="formListDiv_{{form.id}}">
+                <div class="row tab_mt_grid p15"
+                    *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_grid GridviewSidePaddings"
+                        *ngFor="let form of pagination.pagedItems ;let i =index" id="formListDiv_{{form.id}}">
                         <div class="grid-box gridCardBoxHeight">
                             <div class="img-class tab_view_img DesignGridViewImage image_effect">
-                                <img class="fit-image" style="margin: unset;" [src]="form.thumbnailImage" onerror="this.src='assets/images/form.png';" alt="{{form.name}}">
+                                <img class="fit-image" style="margin: unset;" [src]="form.thumbnailImage"
+                                    onerror="this.src='assets/images/form.png';" alt="{{form.name}}">
                             </div>
-                            <h4 class="xamplify-ellipsis GridViewCotent gridViewDesignTextAlignmnent ListFontCu" data-placement="top" data-toggle="tooltip" title="{{form.name}}">
+                            <h4 class="xamplify-ellipsis GridViewCotent gridViewDesignTextAlignmnent ListFontCu"
+                                data-placement="top" data-toggle="tooltip" title="{{form.name}}">
                                 <b>Form Name:</b> {{form.name}}
                             </h4>
                             <!---XNFR-255-->
                             <ng-container *ngIf="form?.whiteLabeledFormReceivedFromVendor">
-                                <h6 class="GridViewCotent xamplify-ellipsis" data-placement="top" data-toggle="tooltip" title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
-                                    <span translate> <b translate>Received From:</b> {{form?.whiteLabeledFormSharedByVendorCompanyName}} </span>
+                                <h6 class="GridViewCotent xamplify-ellipsis" data-placement="top" data-toggle="tooltip"
+                                    title="{{form?.whiteLabeledFormSharedByVendorCompanyName}}">
+                                    <span translate> <b translate>Received From:</b>
+                                        {{form?.whiteLabeledFormSharedByVendorCompanyName}} </span>
                                 </h6>
                                 <span class="view-banner-white-labeled LabeledmarginLeft">White-Labeled</span>
                             </ng-container>
-                             <!---XNFR-255-->
+                            <!---XNFR-255-->
                             <div>
-                                <h6 class="GridViewCotent xamplify-ellipsis"  data-placement="top" data-toggle="tooltip" title="{{form.categoryName}}">
-                                    <b translate>Folder:</b> {{form.categoryName}} 
+                                <h6 class="GridViewCotent xamplify-ellipsis" data-placement="top" data-toggle="tooltip"
+                                    title="{{form.categoryName}}">
+                                    <b translate>Folder:</b> {{form.categoryName}}
                                 </h6>
                                 <h6 class="GridViewCotent" translate>
                                     <b translate>Created On:</b>
-                                 <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString"> </app-timestamp>
+                                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString">
+                                    </app-timestamp>
                                 </h6>
-                                <h6 class="GridViewCotent xamplify-ellipsis" data-placement="top" data-toggle="tooltip" title="{{form.createdName}}">
-                                    <b translate>By:</b> {{form.createdName}} 
+                                <h6 class="GridViewCotent xamplify-ellipsis" data-placement="top" data-toggle="tooltip"
+                                    title="{{form.createdName}}">
+                                    <b translate>By:</b> {{form.createdName}}
                                 </h6>
                             </div>
                             <div class="ribbon tab-ribbon">
@@ -447,7 +467,7 @@
                         <div style="padding-top: 8px;">
                             <button class="button_blue bgcolor-unset" id="right"
                                 (click)="copyInputMessage(userinput,'Form link')" translate><span
-                                    class="btn btn-primary transition">Copy Link</span>
+                                    class="btn btn-primary transition txt_pd-top3">Copy Link</span>
                             </button>
                         </div>
                         <br>
@@ -459,7 +479,7 @@
                         <div style="padding-top: 10px;">
                             <button class="button_blue bgcolor-unset" id="right"
                                 (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate><span
-                                    class="btn btn-primary transition">Copy Embed Link</span>
+                                    class="btn btn-primary transition txt_pd-top3">Copy Embed Link</span>
                             </button>
                         </div>
                     </div>

@@ -2889,3 +2889,29 @@ button.button_blue:disabled span{
   padding-top: 3px;
   padding-right: 3px;
 }
+.neg_mrg_rgt8{
+  margin-right: -8px;
+}
+.pos_pd_top_rgt1{
+  padding-top: 0px;
+  padding-right: 1px;
+}
+.pd_top0{
+  padding-top: 0px;
+}
+.neg_mrgn_top4{
+  margin-top: -4px;
+}
+.pd_lft2{
+  padding-left: 2px;
+}
+.neg_mrg_rgt33{
+  margin-right: -33px;
+}
+.neg_mrg_lft18{
+  margin-left: -18px;
+}
+span.btn.btn-primary.transition.primary_btn_width,
+span.btn.Btn-Green.transition.secondary_btn_width{
+  width: 100%;
+}
