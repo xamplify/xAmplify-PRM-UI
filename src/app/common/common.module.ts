@@ -150,6 +150,7 @@ import { SearchableDropdownComponent } from 'app/util/searchable-dropdown/search
 import { ConnectwiseAuthenticationPopupComponent } from 'app/contacts/connectwise-authentication-popup/connectwise-authentication-popup.component';
 import { ScrollToModule } from 'ng2-scroll-to-el';
 
+import { ConfirmUnpublishTracksOrPlaybooksModelPopupComponent } from 'app/util/confirm-unpublish-tracks-or-playbooks-model-popup/confirm-unpublish-tracks-or-playbooks-model-popup.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -180,7 +181,7 @@ import { ScrollToModule } from 'ng2-scroll-to-el';
 		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,SelectEmailTemplateComponent,CustomUiSwitchComponent,
 		EditTemplateOrPageModalPopupComponent, ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
 		 ShareUnpublishedContentComponent,
-		 ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent],
+		 ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent],
 
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
@@ -208,6 +209,6 @@ import { ScrollToModule } from 'ng2-scroll-to-el';
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent,
 		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent,
 		ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
-		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,ScrollToModule]
+		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent]
 })
 export class CommonComponentModule { }

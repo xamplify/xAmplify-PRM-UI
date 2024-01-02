@@ -21,6 +21,7 @@ export class OneClickLaunchPartnerPreviewComponent implements OnInit {
   @Input() campaignId:number;
   oneClickLaunchLoader = false;
   oneClickLaunchResponse:CustomResponse = new CustomResponse();
+  emptyShareLeadsInfoMessage:CustomResponse = new CustomResponse();
   oneClickLaunchPartnerCompany:any;
   oneClickLaunchStatusCode = 0;
   showExpandButton = false;
@@ -139,6 +140,13 @@ viewShareLeads(partner:any){
 			(data:any)=>{
 				pagination.totalRecords = data.totalRecords;
 				pagination = this.pagerService.getPagedItems(pagination, data.listOfUserLists);
+        /* XBI-1988 */
+        if(pagination.totalRecords==0){
+          this.emptyShareLeadsInfoMessage = new CustomResponse('INFO','Share Leads associated with this campaign has been deleted',true);
+        }else{
+          this.emptyShareLeadsInfoMessage = new CustomResponse();
+        }
+        /* XBI-1988 */
 				this.referenceService.loading(this.shareLeadsLoader, false);
 			},error=>{
 				this.xtremandLogger.error(error);

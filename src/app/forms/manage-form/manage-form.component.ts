@@ -266,9 +266,9 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                         } else {
                             let emailTemplateNames = "";
                             $.each(response.data, function (index, value) {
-                                emailTemplateNames += (index + 1) + "." + value + "<br><br>";
+                                emailTemplateNames += (index + 1) + ". " + value + "\n\n";
                             });
-                            let message = response.message + "<br><br>" + emailTemplateNames;
+                            let message = response.message + "\n\n" + emailTemplateNames;
                             this.customResponse = new CustomResponse('ERROR', message, true);
                             this.referenceService.loading(this.httpRequestLoader, false);
                         }
@@ -417,6 +417,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
 
     setViewType(viewType: string) {
+        
         if ("List" == viewType) {
             this.modulesDisplayType.isListView = true;
             this.modulesDisplayType.isGridView = false;

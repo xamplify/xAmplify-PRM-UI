@@ -2456,3 +2456,25 @@ button.button_blue:disabled span{
   cursor: not-allowed !important;
 
 }
+
+
+/* XNFR-374 Grid View Enhancement START */
+.gridViewImgBg {
+  background-color: var(--page-content) !important;
+}
+.bar {
+  background-color: var(--page-content) !important;
+}
+.table-responsive td, b {
+  color: var(---text-color) !important;
+} 
+.img-grid-track {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+.gridViewImgpositioning {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+.img-class.DesignGridViewImage {
+  background-color: var(--page-content) !important;
+}
+/* XNFR-374 Grid View Enhancement END */

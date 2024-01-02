@@ -328,7 +328,7 @@
 														*ngIf="selectedAddContactsOption == 8 && ((assignLeads && !contactService?.assignedToPartner) || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))"
 														translate>Download CSV Template</a>
 												</li>
-												<li
+												<li [ngClass] = "{'disabled': (selectedInvalidContactIds?.length == 0 && selectedContactListIds?.length == 0)}"
 													*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList">
 													<a id="delete_button"
 														*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) && !sharedLeads"
@@ -1185,7 +1185,7 @@
 												aria-hidden="true"></i>
 										</span>
 										<ul class="dropdown-menu pull-right">
-											<li *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">
+											<li [ngClass] = "{'disabled': (selectedInvalidContactIds?.length == 0 && selectedContactListIds?.length == 0)}" *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">
 												<a id="delete_button" (click)="invalidContactsShowAlert()" translate>
 													Delete</a>
 											</li>
@@ -1394,16 +1394,30 @@
 													<!--  <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td> -->
 													<td
 														*ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads">
-														<span class="markas markAsValidLable"
-															(click)="validateUndeliverableContacts(allcontacts.id)">Mark
-															as valid</span>
+															<button  type="submit" class="button bgcolor-unset button_height"
+															(click)="validateUndeliverableContacts(allcontacts.id)" translate><span class="btn markas markAsValidLable  txt_pd-top8">Mark as
+															opt-in</span></button>
 													</td>
-													<td *ngIf="contactsByType.selectedCategory =='excluded'">
+
+													<!--
+                          Commented while merging
+                          <td *ngIf="contactsByType.selectedCategory =='excluded'">
 														<span class="markas markAsValidLable"
 															*ngIf="allcontacts.excludedCatagory == 'Excluded User'"
 															(click)="showMakeAsOptinAlert(allcontacts.id, allcontacts.emailId)">Mark
 															as opt-in</span>
-													</td>
+													</td>-->
+
+													
+                           <td
+													*ngIf="contactsByType.selectedCategory =='excluded'">
+														<button *ngIf="allcontacts.excludedCatagory == 'Excluded User'" type="submit" class="button bgcolor-unset button_height"
+														[disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
+														(click)="showMakeAsOptinAlert(allcontacts.id, allcontacts.emailId)" translate>
+                              <span class="btn markas markAsValidLable  txt_pd-top8">Mark as
+														opt-in</span></button>
+												</td>
+
 													<td>
 														<button class="border-btn-small lightgray-btn"
 															id='more_less_button_{{i}}'

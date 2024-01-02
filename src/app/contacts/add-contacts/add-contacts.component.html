@@ -492,6 +492,7 @@
 										(ngModelChange)="changEvent($event)" required
 										[(ngModel)]="model.contactListName" name="contactListName"
 										(input)="validateContactName(model.contactListName)" minlength="1"
+										(keydown.enter)="$event.preventDefault()"
 										maxlength="250" placeholder="List Name" #contactListName="ngModel">
 									<!-- Validation Messages -->
 									<div *ngIf="isValidContactName">

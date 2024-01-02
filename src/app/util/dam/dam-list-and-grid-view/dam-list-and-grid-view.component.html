@@ -569,6 +569,12 @@
 											<span
 												class="view-banner-dam assettype-bgcolor LableSpaceings">{{asset?.assetType}}</span>
 										</div>
+										<h6 class="xamplify-ellipsis GridViewCotent pt10">
+											<span *ngIf="isPartnerView"> <b>Published On: </b></span>
+											<span *ngIf="!isPartnerView"> <b>Created On: </b></span>
+											<app-timestamp [showInLine]="'true'"
+												[dateAndTime]="asset?.displayTime"></app-timestamp>
+										</h6>
 
 										<h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip"
 											data-placement="top" title="{{asset?.displayName}}"><b>By:</b>
@@ -587,12 +593,6 @@
 											<b>From:</b><span>{{asset?.vendorCompanyName}}</span>
 										</h6>
 									</div>
-									<h6 class="xamplify-ellipsis GridViewCotent pt10">
-										<span *ngIf="isPartnerView"> <b>Published On: </b></span>
-										<span *ngIf="!isPartnerView"> <b>Created On: </b></span>
-										<app-timestamp [showInLine]="'true'"
-											[dateAndTime]="asset?.displayTime"></app-timestamp>
-									</h6>
 									<div class="ribbon tab-ribbon">
 										<span
 											*ngIf="asset?.published && !asset?.publishingOrWhiteLabelingInProgress">Published</span>

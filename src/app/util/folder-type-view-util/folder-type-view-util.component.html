@@ -95,7 +95,7 @@
 									<b>From:</b> {{category.companyName | slice:0:15}}<span
 										*ngIf="category.companyName?.length>15">...</span>
 								</h6>
-								<h6>
+								<h6 class="folderCreatedFont">
 									<span translate> <b translate>Created On:</b> </span> <span>
 										<span *ngIf="!referenceService.isSafariBrowser()">{{category.displayTime
 											|date:'mediumDate'}},<br>{{category.displayTime

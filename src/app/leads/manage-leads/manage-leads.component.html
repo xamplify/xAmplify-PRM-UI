@@ -303,21 +303,21 @@
                             <td>
                               <app-user-info [userInfo]="lead" [isLeadInfo]="true"></app-user-info>
                               <div style="margin-left: 60px;">
-                                <h5 *ngIf="isPartnerVersion"><strong>Added For:</strong>
+                                <h5 class="m0" *ngIf="isPartnerVersion"><strong>Added For:</strong>
                                   <span style="color: #5b9bd1;">{{lead.createdForCompanyName | slice:0:30}}
                                     <span *ngIf="lead.createdForCompanyName?.length>20">...</span>
                                   </span>
                                 </h5>
                               </div>
                               <div *ngIf="isPartnerVersion && lead?.campaignId > 0" style="margin-left: 60px;">
-                                <h5><strong>Campaign:</strong>
+                                <h5 class="m0"><strong>Campaign:</strong>
                                   <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
                                     <span *ngIf="lead.campaignName?.length>30">...</span>
                                   </span>
                                 </h5>
                               </div>
                               <div *ngIf="isVendorVersion && lead?.parentCampaignId > 0" style="margin-left: 60px;">
-                                <h5><strong>Campaign:</strong>
+                                <h5 class="m0"><strong>Campaign:</strong>
                                   <span style="color: #5b9bd1;">{{lead.parentCampaignName | slice:0:30}}
                                     <span *ngIf="lead.parentCampaignName?.length>30">...</span>
                                   </span>
@@ -325,7 +325,7 @@
                               </div>
                               <div *ngIf="isVendorVersion && lead?.parentCampaignId <= 0 && lead?.campaignId > 0"
                                 style="margin-left: 60px;">
-                                <h5><strong>Campaign:</strong>
+                                <h5 class="m0"><strong>Campaign:</strong>
                                   <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
                                     <span *ngIf="lead.campaignName?.length>30">...</span>
                                   </span>
@@ -338,7 +338,7 @@
                                 title="{{lead.createdByCompanyName}}">{{lead.createdByCompanyName | slice:0:30}}
                                 <span *ngIf="lead.createdByCompanyName?.length>20">...</span>
                               </h5>
-                              <h5 class='ellipsis m_t_view' data-toggle="tooltip" data-placement="bottom"
+                              <h5 class='m_t_view' data-toggle="tooltip" data-placement="bottom"
                                 title="{{lead.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
                                 {{lead.createdByName | slice:0:20}}
                                 <span *ngIf="lead.createdByName?.length>20">...</span>

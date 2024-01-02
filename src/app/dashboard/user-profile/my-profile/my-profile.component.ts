@@ -322,7 +322,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	updateDashboardError=false;
 	modulesDashboardForPartner: CustomResponse = new CustomResponse();
 	 defaultSelectedDashboardTypeSetting = this.getSelectedDashboardForPartner();
-	dynamicDashboardType:string;
+	 checkSelectedDashboardType=[];	
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -635,7 +635,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
 			this.authenticationService.logout();
 		}
-		//this.dynamicDashboardType= this.refService.getAssignedDashboardToPartner().join('');
 	}
 
 	getModuleAccessByUser() {
@@ -2640,6 +2639,25 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			);
 	}
 
+	checkDashboardTypes(){
+        this.userService.getDashboardType().
+        subscribe(
+          data=>{
+            this.checkSelectedDashboardType=data;
+          }
+        );
+    }
+    
+    get getDashboardForSelectedOption():string{
+        this.refService.filterArrayList(this.checkSelectedDashboardType,'Welcome');
+        if(this.checkSelectedDashboardType.includes('Advanced Dashboard')){
+            return 'Advanced Dashboard';
+        }
+        else if(this.checkSelectedDashboardType.includes('Detailed Dashboard')){
+            return 'Detailed Dashboard';
+        }
+        else return 'Dashboard';    
+    }
 
 	selectedLanguage(event: any) {
 		//this.translateService.use(this.selectedLanguageCode);        
@@ -3806,6 +3824,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	readExcludedUsersCSVFileContent(allTextLines: any, csvUserPagination: Pagination) {
+		this.customResponse = new CustomResponse();
 		this.csvExcludeUsersFilePreview = true;
 		for (var i = 1; i < allTextLines.length; i++) {
 			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
@@ -3827,6 +3846,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	readExcludedDomainsCSVFileContent(allTextLines: any, csvDomainPagination: Pagination) {
+		this.excludeDomainCustomResponse = new CustomResponse
 		this.csvExcludeDomainsFilePreview = true;
 		for (var i = 1; i < allTextLines.length; i++) {
 			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
@@ -3860,12 +3880,30 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			allowOutsideClick: false,
 			confirmButtonText: 'Yes'
 		}).then(function () {
-			self.saveExcludedUsers(excludedUsers);
+			self.validateAndSaveExcludedUsers(excludedUsers);
 		}, function (dismiss: any) {
 			console.log('you clicked on option' + dismiss);
 		});
 	}
 
+	validateAndSaveExcludedUsers(excludedUsers:User[]){
+		let self = this;
+		this.userService.validateExcludedUsers(excludedUsers, this.loggedInUserId)
+		.subscribe(
+			data => {
+				this.customResponse = new CustomResponse()
+				if (data.statusCode == 200) {
+					self.saveExcludedUsers(excludedUsers);
+				} else if (data.statusCode == 400) {
+					this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
+				}
+			},
+			error => {
+				this.referenceService.stopLoader(this.excludeUserLoader);
+			},
+			() => { }
+		);
+	} 
 	saveExcludedUsers(excludedUsers: User[]) {
 		this.referenceService.startLoader(this.excludeUserLoader);
 		this.validEmailFormat = true;
@@ -3873,6 +3911,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.userService.saveExcludedUsers(excludedUsers, this.loggedInUserId)
 			.subscribe(
 				data => {
+					this.customResponse = new CustomResponse()
 					if (data.statusCode == 200) {
 						this.csvExcludeUsersFilePreview = false;
 						this.excludeUserCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
@@ -3897,6 +3936,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	cancelCSVFilePreview(excludetype: string) {
+		this.customResponse = new CustomResponse();
+		this.excludeUserCustomResponse = new CustomResponse();
+		this.excludeDomainCustomResponse = new CustomResponse();
 		if (excludetype === 'exclude-users') {
 			this.csvExcludeUsersFilePreview = false;
 			this.listExcludedUsers(this.excludeUserPagination);
@@ -3920,10 +3962,29 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			allowOutsideClick: false,
 			confirmButtonText: 'Yes'
 		}).then(function () {
-			self.saveExcludedDomains(excludedDomains);
+			self.validateAndSaveExcludedDomains(excludedDomains);
 		}, function (dismiss: any) {
 			console.log('you clicked on option' + dismiss);
 		});
+	}
+
+	validateAndSaveExcludedDomains(excludedDomains:string[]){
+		let self = this;
+		this.userService.validateExcludedDomains(excludedDomains, this.loggedInUserId)
+		.subscribe(
+			data => {
+				this.customResponse = new CustomResponse()
+				if (data.statusCode == 200) {
+					self.saveExcludedDomains(excludedDomains);
+				} else if (data.statusCode == 400) {
+					this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
+				}
+			},
+			error => {
+				this.referenceService.stopLoader(this.excludeUserLoader);
+			},
+			() => { }
+		);
 	}
 
 	saveExcludedDomains(excludedDomains: string[]) {
@@ -3933,6 +3994,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.userService.saveExcludedDomains(excludedDomains, this.loggedInUserId)
 			.subscribe(
 				data => {
+					this.customResponse = new CustomResponse();
 					if (data.statusCode == 200) {
 						this.referenceService.stopLoader(this.excludeDomainLoader);
 						this.csvExcludeDomainsFilePreview = false;

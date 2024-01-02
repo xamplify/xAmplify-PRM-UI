@@ -71,20 +71,20 @@
                                         <div class="group-dropdown">
                                             <button
                                                 [ngClass]="modulesDisplayType.isListView ? 'fa fa-th-list btn-xs hidden-xs l-g-view' :modulesDisplayType.isGridView ?'fa fa-th-large btn-xs hidden-xs l-g-view':
-                                              modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
+                                                    modulesDisplayType.isFolderListView ? 'fa fa-th btn-xs hidden-xs l-g-view': modulesDisplayType.isFolderGridView ?'fa fa-folder btn-xs hidden-xs l-g-view':'fa fa-th-list btn-xs hidden-xs l-g-view'"
                                                 style="padding: 10px !important"></button>
                                             <div class="group-dd-content">
                                                 <ng-container class='m10'>
                                                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
                                                         data-placement="bottom" title="List View"
                                                         [class.disabled]="modulesDisplayType.isListView"
-                                                        (click)="setViewType('List')">
+                                                        (click)="!modulesDisplayType.isListView && setViewType('List')">
                                                         <i class="fa fa-th-list p10" aria-hidden="true"></i></span>
                                                     <span class="btn btn-xs hidden-xs l-g-view margin-space"
                                                         data-toggle="tooltip" style="margin-right: -2px;"
                                                         data-placement="bottom" title="Grid View"
                                                         [class.disabled]="modulesDisplayType.isGridView"
-                                                        (click)="setViewType('Grid')">
+                                                        (click)="!modulesDisplayType.isGridView && setViewType('Grid')">
                                                         <i class="fa fa-th-large p10" aria-hidden="true"></i>
                                                     </span>
                                                     <ng-container

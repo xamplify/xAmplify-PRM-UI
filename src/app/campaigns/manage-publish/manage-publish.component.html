@@ -113,14 +113,16 @@
                                                 <span class="btn btn-xs hidden-xs l-g-view margin-space"
                                                    data-toggle="tooltip" data-placement="bottom" title="List View"
                                                    [class.disabled]="modulesDisplayType.isListView"
-                                                   (click)="setViewType('List')">
+                                                   (click)="!modulesDisplayType.isListView && setViewType('List')">
                                                    <i class="fa fa-th-list p10" aria-hidden="true"></i>
                                                 </span>
                                                 <span class="btn btn-xs hidden-xs l-g-view margin-space"
                                                    data-toggle="tooltip" data-placement="bottom" title="Grid View"
                                                    [class.disabled]="modulesDisplayType.isGridView"
-                                                   (click)="setViewType('Grid')">
+                                                   (click)="!modulesDisplayType.isGridView && setViewType('Grid')">
                                                    <i class="fa fa-th-large p10" aria-hidden="true"></i>
+
+
                                                 </span>
                                                 <ng-container
                                                    *ngIf="(pagination?.categoryId==0 || pagination?.categoryId=='undefined')">

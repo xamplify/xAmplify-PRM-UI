@@ -205,27 +205,23 @@
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    <ng-container *ngFor="let vendor of pagination.pagedItems;let i=index">
-                                       <tr>
-                                          <td>
-                                             <div class="col-md-12 col-lg-12">
-                                                <div class="row">
-                                                   <div class="col-md-2 col-lg-2 text-right">
-                                                      <img class="img-circle float-left"
-                                                         src="{{vendor?.companyLogoPath}}" alt="No Image Found"
-                                                         onerror="this.src='assets/images/default-company.png';">
-                                                   </div>
-                                                   <div class="col-md-10 col-lg-10 "
-                                                      style="padding-left: 34px!important;">
-                                                      <label class="xamplify-ellipsis" data-toggle="tooltip"
-                                                         data-placement="top" title="{{vendor?.companyName}}">
-                                                         <b>Company Name:</b> {{vendor?.companyName}}
-                                                      </label><br>
-                                                      <label class="xamplify-ellipsis" data-toggle="tooltip"
-                                                         data-placement="top" title="{{vendor?.companyProfileName}}">
-                                                         <b>Company Profile Name:</b> {{vendor?.companyProfileName}}
-                                                      </label>
-                                                   </div>
+
+                                  <ng-container *ngFor="let vendor of pagination.pagedItems;let i=index">
+                                    <tr>
+                                       <td>
+                                          <div class="col-md-12 col-lg-12">
+                                             <div class="row">
+                                                <div class="col-md-2 col-lg-2 text-right">
+                                                  <img class="img-circle float-left" src="{{vendor?.companyLogoPath}}" alt="No Image Found" onerror="this.src='assets/images/default-company.png';">
+                                                </div>
+                                                <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                                                   <label class="xamplify-ellipsis" data-toggle="tooltip" data-placement="top" title="{{vendor?.companyName}}" style="overflow: initial;">
+                                                      <b>Company Name:</b> {{vendor?.companyName}}
+                                                   </label><br>
+                                                   <label class="xamplify-ellipsis" data-toggle="tooltip" data-placement="top" title="{{vendor?.companyProfileName}}" style="overflow: initial;">
+                                                     <b>Company Profile Name:</b> {{vendor?.companyProfileName}}
+                                                   </label>
+
                                                 </div>
                                              </div>
                                           </td>

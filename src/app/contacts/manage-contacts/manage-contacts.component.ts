@@ -1853,7 +1853,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			} else if (this.contactsByType.selectedCategory === 'unsubscribe') {
 				this.logListName = 'All_Unsubscribed_' + csvNameSuffix + 's_list.csv';
 			}else if (this.contactsByType.selectedCategory === 'valid') {
-                this.logListName = 'All_Valid_' + csvNameSuffix + 's_list.csv';
+                this.logListName = 'All_Opt_In_' + csvNameSuffix + 's_list.csv';
+            }else if (this.contactsByType.selectedCategory === 'excluded') {
+                this.logListName = 'All_Excluded_' + csvNameSuffix + 's_list.csv';
             }
 			this.downloadDataList.length = 0;
 			for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
@@ -1870,10 +1872,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						"Country": this.contactsByType.listOfAllContacts[i].country,
 						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
 						"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
-						"Total Campaigns": this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
-						"Active Campaigns": this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
-						"Email Opend": this.contactsByType.listOfAllContacts[i].emailOpenedCount,
-						"Clicked Urls": this.contactsByType.listOfAllContacts[i].clickedUrlsCount
+					}
+					if(this.contactsByType.selectedCategory != 'excluded'){
+						object["Total Campaigns"] = this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
+						object["Active Campaigns"] = this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
+						object["Email Opend"] = this.contactsByType.listOfAllContacts[i].emailOpenedCount,
+						object["Clicked Urls"] = this.contactsByType.listOfAllContacts[i].clickedUrlsCount
 					}
 					if (this.contactsByType.selectedCategory === 'unsubscribe') {
 					  object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;

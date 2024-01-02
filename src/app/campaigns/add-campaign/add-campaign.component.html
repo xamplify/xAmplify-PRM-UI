@@ -831,7 +831,8 @@
                                                                                     [ngTemplateOutletContext]="{vendorCompanyName:emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName,isWhiteLabeledContent:emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor}"></ng-template>
                                                                                 <!--XBI-1836-->
                                                                             </div>
-                                                                            <span class="label-color-custmization"
+                                                                            <!--XBI-1938-->
+                                                                            <span class="label-color-custmization" *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor || authenticationService?.module?.isEmailTemplate"
                                                                                 (click)="$event.stopPropagation();editTemplate(emailTemplate)">Edit</span>
                                                                         </div>
                                                                     </div>
@@ -1493,65 +1494,37 @@
                                                                         </div>
                                                                     </div>
                                                                     <!--Email Template-->
-                                                                    <div id="reply-email-template-{{i}}"
-                                                                        *ngIf="reply?.defaultTemplate">
+                                                                    <div id="reply-email-template-{{i}}" *ngIf="reply?.defaultTemplate">
                                                                         <fieldset class="scheduler-border">
-                                                                            <legend
-                                                                                class="scheduler-border color-black campaign_boxes">
-                                                                                Select an email template<strong
-                                                                                    class="required">*</strong></legend>
-                                                                            <app-landing-page-loader
-                                                                                *ngIf="reply?.loader"></app-landing-page-loader>
+                                                                            <legend class="scheduler-border color-black campaign_boxes">
+                                                                                Select an email template<strong class="required">*</strong>
+                                                                            </legend>
+                                                                            <app-landing-page-loader *ngIf="reply?.loader"></app-landing-page-loader>
                                                                             <div *ngIf="!reply?.loader">
                                                                                 <!--Search Key Icon-->
-                                                                                <div
-                                                                                    class="input-icon right pull-right pr-epx">
-                                                                                    <input type="text"
-                                                                                        [(ngModel)]="reply.emailTemplateSearchInput"
-                                                                                        [ngModelOptions]="{standalone: true}"
-                                                                                        class="form-control"
-                                                                                        placeholder="Search here"
-                                                                                        (keypress)="findAutoResponseEmailTemplatesOnEnterKeyPress($event.keyCode,reply)">
-                                                                                    <button
-                                                                                        class="glyphicon glyphicon-remove search-box-item-clear search-button-padding"
-                                                                                        *ngIf="reply.emailTemplateSearchInput"
-                                                                                        (click)="reply.emailTemplateSearchInput='';searchAutoResponseEmailTemplates(reply)"></button>
-                                                                                    <button type="submit"
-                                                                                        class="search-box-item-click email-search"
-                                                                                        (click)="searchAutoResponseEmailTemplates(reply)"
-                                                                                        style="right: 9px !important;">
-                                                                                        <i class="fa fa-search cesf-xamp"
-                                                                                            aria-hidden="true"></i></button>
+                                                                                <div class="input-icon right pull-right pr-epx">
+                                                                                    <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"  class="form-control" placeholder="Search here" (keypress)="findAutoResponseEmailTemplatesOnEnterKeyPress($event.keyCode,reply)">
+                                                                                    <button class="glyphicon glyphicon-remove search-box-item-clear search-button-padding" *ngIf="reply.emailTemplateSearchInput" (click)="reply.emailTemplateSearchInput='';searchAutoResponseEmailTemplates(reply)"></button>
+                                                                                    <button type="submit" class="search-box-item-click email-search" (click)="searchAutoResponseEmailTemplates(reply)"  style="right: 9px !important;">
+                                                                                        <i class="fa fa-search cesf-xamp" aria-hidden="true"></i>
+                                                                                    </button>
                                                                                 </div>
                                                                                 <!--List Of Email Templates-->
                                                                                 <div
                                                                                     class="portlet-body padding-top-45px">
                                                                                     <div class="row">
-                                                                                        <form role="form"
-                                                                                            class="form-horizontal form-bordered form-label-stripped"
-                                                                                            aria-label="">
-                                                                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer"
-                                                                                                *ngFor="let emailTemplate of reply?.emailTemplatesPagination?.pagedItems ;let i =index">
+                                                                                        <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
+                                                                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of reply?.emailTemplatesPagination?.pagedItems ;let i =index">
                                                                                                 <div class="row">
-                                                                                                    <div
-                                                                                                        class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
-                                                                                                        <div class="grid-box imgage-paddings"
-                                                                                                            [ngClass]="emailTemplate?.id === reply?.selectedEmailTemplateId ? 'template-selected-border' :'' "
+                                                                                                    <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                                                                                                        <div class="grid-box imgage-paddings" [ngClass]="emailTemplate?.id === reply?.selectedEmailTemplateId ? 'template-selected-border' :'' "
                                                                                                             (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)">
-                                                                                                            <span
-                                                                                                                class="select-check-box"
-                                                                                                                [class.hide]="emailTemplate?.draft">
+                                                                                                            <span class="select-check-box" [class.hide]="emailTemplate?.draft">
                                                                                                                 <label>
-                                                                                                                    <input
-                                                                                                                        type="radio"
-                                                                                                                        class="radio-custimization radioButton_shadow"
-                                                                                                                        [checked]="emailTemplate?.id === reply?.selectedEmailTemplateId">
+                                                                                                                    <input type="radio" class="radio-custimization radioButton_shadow" [checked]="emailTemplate?.id === reply?.selectedEmailTemplateId">
                                                                                                                 </label>
                                                                                                             </span>
-                                                                                                            <img class="img-grid-track"
-                                                                                                                onerror="this.src='assets/images/no-preview.jpg';"
-                                                                                                                [src]="emailTemplate?.subject"
-                                                                                                                alt="No Preview Found" />
+                                                                                                            <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
                                                                                                             <span
                                                                                                                 class="icon-alignments">
                                                                                                                 <a data-toggle="tooltip"
@@ -1625,9 +1598,8 @@
                                                                                                                                     [ngTemplateOutletContext]="{vendorCompanyName:emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName,isWhiteLabeledContent:emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor}"></ng-template>
                                                                                                                                 <!--XBI-1836-->
                                                                                                                             </div>
-                                                                                                                            <span
-                                                                                                                                class="label-color-custmization"
-                                                                                                                                (click)="$event.stopPropagation();editTemplate(emailTemplate)">Edit</span>
+                                                                                                                            <!--XBI-1938-->
+                                                                                                                            <span *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor || authenticationService?.module?.isEmailTemplate" class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)">Edit</span>
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </a>
@@ -1636,20 +1608,16 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <div *ngIf="reply?.emailTemplatesPagination?.totalRecords==0 && !emailTemplatesOrLandingPagesLoader"
-                                                                                                class="alert alert-info text-center">
-                                                                                                <strong>No Data
-                                                                                                    Found.</strong>
+                                                                                            <div *ngIf="reply?.emailTemplatesPagination?.totalRecords==0 && !emailTemplatesOrLandingPagesLoader" class="alert alert-info text-center">
+                                                                                                <strong>No Data Found.</strong>
                                                                                             </div>
                                                                                         </form>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <!--Pagination-->
-                                                                            <div
-                                                                                *ngIf="reply?.emailTemplatesPagination?.pagedItems?.length !== 0 && !reply?.loader">
-                                                                                <app-pagination
-                                                                                    [pagination]="reply?.emailTemplatesPagination"
+                                                                            <div *ngIf="reply?.emailTemplatesPagination?.pagedItems?.length !== 0 && !reply?.loader">
+                                                                                <app-pagination  [pagination]="reply?.emailTemplatesPagination"
                                                                                     (notifyParent)="paginateAutoResponseEmailTempaltes($event,reply)"
                                                                                     (notifyParentDropDown)="findEmailTemplatesForAutoResponseWorkFlowOnLimitChange(reply,i)"
                                                                                     [customDropDown]="true">
@@ -1792,15 +1760,12 @@
                                                                     </div>
                                                                 </div>
                                                                 <!--Email Template-->
-                                                                <div id="click-email-template-{{url?.divId}"
-                                                                    *ngIf="url?.defaultTemplate">
+                                                                <div id="click-email-template-{{url?.divId}" *ngIf="url?.defaultTemplate">
                                                                     <fieldset class="scheduler-border">
-                                                                        <legend
-                                                                            class="scheduler-border color-black campaign_boxes">
-                                                                            Select an email template<strong
-                                                                                class="required">*</strong></legend>
-                                                                        <app-landing-page-loader
-                                                                            *ngIf="url?.loader"></app-landing-page-loader>
+                                                                        <legend class="scheduler-border color-black campaign_boxes">
+                                                                            Select an email template<strong class="required">*</strong>
+                                                                        </legend>
+                                                                        <app-landing-page-loader *ngIf="url?.loader"></app-landing-page-loader>
                                                                         <div *ngIf="!url?.loader">
                                                                             <!--Search Key Icon-->
                                                                             <div
@@ -1923,8 +1888,7 @@
                                                                                                                                 [ngTemplateOutletContext]="{vendorCompanyName:emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName,isWhiteLabeledContent:emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor}"></ng-template>
                                                                                                                             <!--XBI-1836-->
                                                                                                                         </div>
-                                                                                                                        <span
-                                                                                                                            class="label-color-custmization"
+                                                                                                                        <span *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor || authenticationService?.module?.isEmailTemplate" class="label-color-custmization"
                                                                                                                             (click)="$event.stopPropagation();editTemplate(emailTemplate)">Edit</span>
                                                                                                                     </div>
                                                                                                                 </div>

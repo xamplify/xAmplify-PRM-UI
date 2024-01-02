@@ -73,7 +73,7 @@
                                 <a class="Iconhover" *ngIf="!isPartnerView" data-toggle="tooltip" data-placement="top" title="View Analytics" (click)="goToAnalytics(learningTrack)">
                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                                 </a>
-                                <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Delete" class="delete" (click)="confirmDelete(learningTrack.id)">
+                                <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip" data-placement="top" title="Delete" class="delete" (click)="confirmDelete(learningTrack)">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </a>
                             </ng-container>
@@ -91,3 +91,8 @@
 		</div>
 	</div>
 </div>
+<app-confirm-unpublish-tracks-or-playbooks-model-popup *ngIf="isOptionClicked"
+ [selectedTrackOrPlayBookId]="selectedTrackOrPlayBookId" [isPublishing]="isPublishing" 
+ (eventOutput)="toCallChangePublishFromUnpublishPopup($event)"
+ (cancelEmitter)="resetUnPublishOptionInputValues()">
+</app-confirm-unpublish-tracks-or-playbooks-model-popup>

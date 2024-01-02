@@ -2536,5 +2536,21 @@ button.btn.btn-white.salesforce-btn.button{
   color: #fff !important;
   background-color : #22313a !important;
   border-bottom: 3px solid #f1f5f9 !important;
-
 }
+
+
+/* XNFR-374 Grid View Enhancement START */
+.gridViewImgBg {
+  background-color: #22313a;
+}
+.table-responsive td, b {
+  color: #fff !important;
+} 
+.img-grid-track {
+  border-bottom: 1px solid #2f4857!important;
+}
+.gridViewImgpositioning {
+  border-bottom: 1px solid #2f4857!important;
+}
+
+/* XNFR-374 Grid View Enhancement END */

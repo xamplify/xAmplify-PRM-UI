@@ -107,7 +107,7 @@
 									<span class=text-danger>*</span>
 								</label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="eventTitle" maxlength="250"
+									<input type="text" autocomplete="off" class="form-control" id="eventTitle" maxlength="250"
 										placeholder="Event Title" [(ngModel)]="eventCampaign.campaign"
 										[ngModelOptions]="{standalone: true}"
 										[ngClass]="{'has-error': eventError.eventTitleError}"
@@ -142,7 +142,7 @@
 									<span class=text-danger>*</span>
 								</label>
 								<div class="col-sm-9">
-									<input type="text"
+									<input type="text"  autocomplete="off"
 										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
 										class="form-control pull-left" placeholder="Hosted By"
 										[(ngModel)]="eventCampaign.fromName" [ngModelOptions]="{standalone: true}"
@@ -182,7 +182,7 @@
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
 											name="subjectLine" (input)="eventSubjectLineError()"
 											[ngClass]="{'has-error': eventError.eventSubjectLineError}"
-											maxlength="1000" />
+											maxlength="1000"  autocomplete="off" />
 										<span
 											*ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate"
 											class="input-group-btn">
@@ -1555,7 +1555,7 @@
 										<form class="role add-reply" id="form-{{reply.divId}}">
 											<div class="col-xs-12 p0">
 												<div class="col-xs-12 p0">
-													<div class="col-xs-12 col-sm-6" style="margin-bottom: 6px;">
+													<div class="col-xs-12 col-sm-4" style="margin-bottom: 6px;">
 														<label style="cursor: default;" for="reason">Reason</label>
 														<select class="form-control" name="actionId"
 															[(ngModel)]="reply.actionId"
@@ -1592,23 +1592,19 @@
 													</div>
 													<div *ngIf="reply.actionId == 0 || reply.actionId == 13 || reply.actionId == 24 || reply.actionId == 29 || reply.actionId == 30 || reply.actionId==33"
 														[class.disabled]="isPreviewEvent">
-														<div class="col-xs-12 col-sm-2">
+														<div class="col-xs-12 col-sm-3">
 															<label style="cursor: default;" for="days"
 																*ngIf="reply.actionId==22 || reply.actionId==23 || reply.actionId==33 "
 																id="reply-days-{{reply.divId}}">Reply In X Days
 																<b style="color: red">*</b>
-																<font><b>(Minimum 1 Day)</b></font>
 															</label>
 															<label style="cursor: default;" for="days"
 																*ngIf="reply.actionId ==29 || reply.actionId!=22 && reply.actionId!=23 && reply.actionId!=33"
 																id="reply-days-{{reply.divId}}">
-																<span
-																	*ngIf="reply.actionId !=29 && reply.actionId != 30">Reply
-																	In X Days</span>
-																<span
-																	*ngIf="reply.actionId == 29 || reply.actionId == 30">Send
-																	Before X Days</span>
+																<span *ngIf="reply.actionId !=29 && reply.actionId != 30">Reply In X Days</span>
+																<span *ngIf="reply.actionId == 29 || reply.actionId == 30">Send Before X Days</span>
 																<b style="color: red">*</b>
+																
 															</label>
 															<input *ngIf="reply.actionId == 29 || reply.actionId == 30"
 																[attr.disabled]="isPreviewEvent? '' : null"
@@ -1621,34 +1617,15 @@
 																type="number" class="form-control" name="days"
 																placeholder="Days" [(ngModel)]="reply.replyInDays"
 																min="0" oninput="validity.valid||(value='');">
-														</div>
-														<div class="col-xs-12 col-sm-3 time-col"
-															style="padding-left: 0;"
-															*ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-															<div class="col-xs-2 responsive-screen-zeropadding"
-																style="cursor: default;"><span for="time"
-																	id="send-time-{{reply.divId}}"
-																	class="time-picker-css">At<b
-																		style="color: red">*</b></span></div>
-															<div class="col-xs-10 mEventDaysHeight"
-																style="height: 66px;">
-																<timepicker [attr.disabled]="isPreviewEvent"
-																	[(ngModel)]="reply.replyTime" name="time"
-																	[hourStep]="1" [minuteStep]="1"></timepicker>
-															</div>
+															<span *ngIf="reply.actionId !=29 && reply.actionId != 30"><b>(Minimum 1 Day)</b></span>
 														</div>
 													</div>
-													<div class="col-xs-12 col-sm-6">
-														<label style="cursor: default;" for="time"
-															id="reply-subject-{{reply.divId}}">Subject<strong
-																style="color: red">*</strong></label>
+													<div class="col-xs-12 col-sm-5">
+														<label style="cursor: default;" for="time" id="reply-subject-{{reply.divId}}">Subject<strong class="required">*</strong></label>
 														<div
 															[className]="!isPreviewEvent ? 'input-group merge-tag-input-border':''">
-															<input [attr.disabled]="isPreviewEvent? '' : null"
-																type="text" class="form-control" name="subject"
-																[(ngModel)]="reply.subject"
-																placeholder="{merge tag} + Subject line"
-																maxlength="1000">
+															<input [attr.disabled]="isPreviewEvent? '' : null" type="text" class="form-control" name="subject"
+																[(ngModel)]="reply.subject" placeholder="{merge tag} + Subject line" maxlength="1000">
 															<span *ngIf="!isPreviewEvent" class="input-group-btn">
 																<button class="btn btn-default" type="button"
 																	data-toggle="tooltip" data-placement="bottom"

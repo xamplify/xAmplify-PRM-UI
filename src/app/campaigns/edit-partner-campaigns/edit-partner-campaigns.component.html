@@ -306,12 +306,10 @@
                                  <button class="pull-right btn-sm button_blue bgcolor-unset" style="margin-top: 6px"
                                     (click)="showContacts()"><span
                                        class="btn btn-primary transition txt_pd-top3">{{previewText}}</span></button>
+
                                  <br>
                               </div>
-                              <span *ngIf="selectedUserlistIds.length>0"
-                                 style="color: cornflowerblue;font-weight: 600;float: left;margin-bottom: 10px;">This
-                                 email will be sent to
-                                 {{validUsersCount}}({{allUsersCount}}) users.</span>
+                              <span *ngIf="selectedUserlistIds.length>0" class="valid-users-count-span">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
                            </div>
                            <div id="campaign-contact-list" style="display: none;">
                               <div>
