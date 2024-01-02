@@ -88,45 +88,6 @@ export class CustomUiFilterComponent implements OnInit {
 		}
 	}
 	criteriaValidation() {
-		// 	for (let i = 0; i < this.criterias.length; i++) {
-		// 		if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
-		// 			if(this.pagination.dateFilterOpionEnable && i == 0) {
-		// 				this.isValidationErrorMessage = false;
-		// 			} else {
-		// 			this.isValidationErrorMessage = true;
-		// 			this.filterConditionErrorMessage = "Please fill the required data at position " + i;
-		// 			}
-		// 			break;
-		// 		} else if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*") {
-		// 			this.isValidationErrorMessage = true;
-		// 			this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + i;
-		// 			break;
-		// 		} else if (this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
-		// 			this.isValidationErrorMessage = true;
-		// 			this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + i;
-		// 			break;
-		// 		} else if (this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
-		// 			this.isValidationErrorMessage = true;
-		// 			this.filterConditionErrorMessage = "Please select the Condition and Value at position " + i;
-		// 			break;
-		// 		} else if (this.criterias[i].operation == "Condition*") {
-		// 			this.isValidationErrorMessage = true;
-		// 			this.filterConditionErrorMessage = "Please select the Condition at position " + i;
-		// 			break;
-		// 		} else if (this.criterias[i].property == "Field Name*") {
-		// 			this.isValidationErrorMessage = true;
-		// 			this.filterConditionErrorMessage = "Please select the Field Name at position " + i;
-		// 			break;
-		// 		} else if (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "") {
-		// 			this.isValidationErrorMessage = true;
-		// 			this.filterConditionErrorMessage = "Please fill the value at position " + i;
-		// 			break;
-		// 		} else {
-		// 			this.isValidationErrorMessage = false;
-		// 			this.pagination.filterOptionEnable = true;
-		// 		}
-		// 	this.addCriteriasCondtions();
-		// }
 		for (let i = 0; i < this.criterias.length; i++) {
 			if (this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
 				if(this.pagination.dateFilterOpionEnable && this.criterias.length == 1) {
@@ -135,25 +96,25 @@ export class CustomUiFilterComponent implements OnInit {
 				this.isValidationErrorMessage = true;
 				}
 				if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
-					this.filterConditionErrorMessage = "Please fill the required data at position " + i;
+					this.filterConditionErrorMessage = "Please fill the required data at position " + (i+1);
 				} else if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*") {
 					this.isValidationErrorMessage = true;
-					this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + i;
+					this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + (i+1);
 				} else if (this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
 					this.isValidationErrorMessage = true;
-					this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + i;
+					this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + (i+1);
 				} else if (this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
 					this.isValidationErrorMessage = true;
-					this.filterConditionErrorMessage = "Please select the Condition and Value at position " + i;
+					this.filterConditionErrorMessage = "Please select the Condition and Value at position " + (i+1);
 				} else if (this.criterias[i].operation == "Condition*") {
 					this.isValidationErrorMessage = true;
-					this.filterConditionErrorMessage = "Please select the Condition at position " + i;
+					this.filterConditionErrorMessage = "Please select the Condition at position " + (i+1);
 				} else if (this.criterias[i].property == "Field Name*") {
 					this.isValidationErrorMessage = true;
-					this.filterConditionErrorMessage = "Please select the Field Name at position " + i;
+					this.filterConditionErrorMessage = "Please select the Field Name at position " + (i+1);
 				} else if (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "") {
 					this.isValidationErrorMessage = true;
-					this.filterConditionErrorMessage = "Please fill the value at position " + i;
+					this.filterConditionErrorMessage = "Please fill the value at position " + (i+1);
 				}
 				break;
 			} else {

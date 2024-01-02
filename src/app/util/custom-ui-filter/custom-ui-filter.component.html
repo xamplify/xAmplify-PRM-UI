@@ -18,7 +18,7 @@
             <div class="col-md-12 mb10" *ngFor="let addRow of criterias; let i = index">
               <div class="col-md-4 pl0" style="display: flex">
                 <!-- Dropdown 1 -->
-                <b style="margin: 7px;">{{i}}</b>
+                <b style="margin: 7px;">{{i+1}}</b>
                 <select class="form-control" [(ngModel)]="criterias[i].property"
                   [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}" (change)="checkCriteriaCoditions()">
                   <option *ngFor="let filterOption of filterOptions; let i = index">
