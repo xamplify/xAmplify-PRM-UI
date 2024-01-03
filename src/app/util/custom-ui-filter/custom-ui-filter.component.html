@@ -1,7 +1,7 @@
 <div class="row" *ngIf="showFilterOption">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="portlet light" style="padding: 0px 10px 10px 10px!important;border-radius: 0px !important;">
-      <div class="portlet-title" style="margin-bottom: 0px !important;">
+      <div class="portlet-title displayFlex" style="margin-bottom: 0px !important;">
         <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 p0">
           <h4 class="">
             <span style="font-size:15px"> Apply Filter</span>
@@ -26,7 +26,7 @@
                 </select>
               </div>
 
-              <div class="col-md-4">
+              <div class="col-md-4 mobileTopandBottomSpace">
                 <!-- Dropdown 2 -->
                 <select class="form-control responsiveMargin" [(ngModel)]="criterias[i].operation"
                   (change)="checkCriteriaCoditions()">
@@ -49,7 +49,7 @@
                 </select>
               </div>
 
-              <div class="col-md-1 pr0" style="display: flex;">
+              <div class="col-md-1 pr0 positionForAddandDelete" style="display: flex;">
                 <!-- Delete Button -->
                 <span (click)="cancelSegmentationRow(i)" type="button">
                   <i class="fa fa-trash-o" aria-hidden="true" data-toggle="tooltip" data-placement="top"
