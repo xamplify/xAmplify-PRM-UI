@@ -16,12 +16,18 @@
                     <br>
                     <span *ngIf="!isVendorVanityUrl">
                         <div class="heading-top heading-top-border" *ngFor="let vendor of vendors">
-                            <a (click)="goToVendorFeeds(vendor.companyId,'p')" class="social-feeds-text-color">
+                            <a class="social-feeds-text-color" (click)="goToVendorFeeds(vendor.companyId,'p')">
                                 {{vendor.companyName}}
-                                <i class="circled-number IconCustomization fontStyleNormal"
+                                <i class="circled-number IconCustomization fontStyleNormal custom-icon"
                                     id="vpc">{{vendor.publishedFeedCount}}</i>
+                                <div class="clickicons"></div>
                                 <br>
                             </a>
+                            <!-- <a class="custom-icon" (click)="goToVendorFeeds(vendor.companyId,'p')">
+                                <i class="circled-number IconCustomization fontStyleNormal"
+                                    id="vpc">{{vendor.publishedFeedCount}}</i>
+                                <div class="clickicons"></div>
+                            </a> -->
                         </div>
                     </span>
                 </ng-container>

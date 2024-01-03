@@ -3690,16 +3690,6 @@ button.btn.custom:hover{
 .email-template-preview{
   border-radius: 6px !important;
 }
-
-/* sweet alert in Select Template Create Template End*/
-
-
-/*** XNFR-409 ****/
-.custom_fiter-asset {
-  background-color: #191b1e !important;
-}
-/*** XNFR-409 ****/
-
 .profile_icon_spacing{
   padding-left: 6px;
 }
