@@ -233,4 +233,7 @@ div#htmlContent {
   position: relative; 
   top: -10px;
 }
-
+/* sudha sri(28-12-2023) */
+.template_image_border{
+  border: 1px solid #e0e0e0;
+}

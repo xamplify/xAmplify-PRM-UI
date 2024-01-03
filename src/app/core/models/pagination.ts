@@ -13,7 +13,7 @@ export class Pagination {
 	pager: any = {};
 	pagedItems: any[] = [];
 	campaignUserListIds:number[] = [];
-	totalRecords: number;
+	totalRecords: number=0;
 	editCampaign = false;
 	campaignId: number;
 	campaignDefaultTemplate = false;

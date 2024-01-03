@@ -98,7 +98,7 @@ checkingContactTypeName = '';
   
     closeAndEmitData(result : any){
         this.unsubscribeContactModalClose();
-        let successMessage = '['+ this.selectedUser.emailId + ']' +result.message;
+        let successMessage = this.selectedUser.emailId + ' ' +result.message;
         this.notifyParent.emit( successMessage );
     }
 

@@ -150,7 +150,7 @@
                                                 alt="{{learningTrack?.title}}">
                                         </td>
                                         <td>
-                                            <h4 class="mt5 mb5 f-w-600 moreipsis" data-toggle="tooltip"
+                                            <h4 class="mt5 mb5 moreipsis" data-toggle="tooltip"
                                                 data-placement="top" title="{{learningTrack.title}}">
                                                 <span><b>{{titleHeader}} Title:</b> {{learningTrack.title}}</span>
                                             </h4>
@@ -251,7 +251,7 @@
                                                 </a>
                                                 <a class="custom-icon" *ngIf="learningTrack.canDelete && !isPartnerView"
                                                     id="template-delete" data-toggle="tooltip" data-placement="top"
-                                                    title="Delete" (click)="confirmDelete(learningTrack.id)">
+                                                    title="Delete" (click)="confirmDelete(learningTrack)">
                                                     <i class="fa fa-trash-o trashIconCustomization"
                                                         aria-hidden="true"></i>
                                                     <div class="del-icon"></div>
@@ -286,11 +286,12 @@
                             <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent1" data-toggle="tooltip"
                                 data-placement="bottom" title="{{learningTrack.title}}"
                                 style="margin-bottom: 0px;padding: 0;margin-top: 10px;">
-                                <span><b>{{titleHeader}} Title: </b>{{learningTrack.title}}</span>
+                                <span><b>{{titleHeader}} Title: </b>{{learningTrack.title | slice:0:12}}</span>
+                                <span *ngIf="learningTrack.title?.length>12">...</span>
                             </h4>
                             <div class="mt5">
                                 <div *ngIf="isPartnerView && (type == undefined || type == 'TRACK')"
-                                    style="margin: 4px 15px 0px 15px;">
+                                    style="margin: 10px 15px 0px 15px;">
                                     <div class="progress">
                                         <div class="progress-bar" data-toggle="tooltip" data-placement="top"
                                             title="{{learningTrack.progress}}%"
@@ -304,11 +305,13 @@
                                 </div>
                                 <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top"
                                     title="{{learningTrack?.category?.name}}">
-                                    <b>Folder: </b>{{learningTrack?.category?.name}}
+                                    <b>Folder: </b>{{learningTrack?.category?.name | slice:0:17}}
+                                    <span *ngIf="learningTrack?.category?.name?.length>17">..</span>
                                 </h6>
                                 <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip" data-placement="top"
                                     title="{{learningTrack.createdByName}}">
-                                    <b>By: </b>{{learningTrack.createdByName}}
+                                    <b>By: </b>{{learningTrack.createdByName | slice:0:17}}
+                                    <span *ngIf="learningTrack.createdByName?.length>17">..</span>
                                 </h6>
                                 <h6 class="xamplify-ellipsis GridViewCotent">
                                     <b> Created On: </b><app-timestamp [isOnlyDate]="true"
@@ -374,7 +377,7 @@
                                 <div class="btnAlignPad edit_icons mbtnAlignPad">
                                     <a *ngIf="learningTrack.canDelete && !isPartnerView" data-toggle="tooltip"
                                         data-placement="top" title="Delete" class="delete custom-icon"
-                                        (click)="confirmDelete(learningTrack.id)">
+                                        (click)="confirmDelete(learningTrack)">
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
                                         <div class="del-icon"></div>
                                     </a>

@@ -65,8 +65,10 @@
             </div>
 
             <!--Redistributed Campaigns Count-->
-            <app-box-loader [countLoader]=5 *ngIf="redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-box-loader>
-            <div *ngIf="!redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
+            <app-box-loader [countLoader]=5
+              *ngIf="redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-box-loader>
+            <div
+              *ngIf="!redistributedCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
               class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex"
                 (click)="goToReDistributedPartnersDiv()">
@@ -91,8 +93,10 @@
             </div>
 
             <!--Through Partner Campaigns Count-->
-            <app-box-loader [countLoader]=5 *ngIf="throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-box-loader>
-            <div *ngIf="!throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
+            <app-box-loader [countLoader]=5
+              *ngIf="throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"></app-box-loader>
+            <div
+              *ngIf="!throughPartnerCampaignsCountLoader && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
               class="col-xs-6 col-sm-2 col-lg-2   pr0 col-sm-5ths CardCustomeWidth">
               <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex"
                 (click)="goToThroughPartnersDiv()">
@@ -177,7 +181,8 @@
   <div class="row" style="padding-right: 12px;padding-bottom: 10px;">
     <ng-container *ngIf="reloadWithFilter && !loadAllCharts && selectedTabIndex == 0">
       <app-active-partners-table [applyFilter]="applyFilter"
-        (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+        (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+        [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
         (notifySelectedPartnerCompanyIds)="getSelectedPartnerCompanyIds($event)"></app-active-partners-table>
     </ng-container>
   </div>
@@ -187,7 +192,9 @@
     *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-partner-journey-count-tiles>
 
   <!-- --------------------Active Partners Analytics-------- -->
-  <div id="active-partner-div" *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember" style="padding-right: 12px;">
+  <div id="active-partner-div"
+    *ngIf="!loadAllCharts && selectedTabIndex == 0 && !authenticationService.module?.isPrm && !authenticationService.module?.isPrmTeamMember"
+    style="padding-right: 12px;">
     <div class="row">
       <div class="">
         <!---XNFR-220----->
@@ -225,7 +232,8 @@
           <!-- END PORTLET-->
         </div>
       </div>
-      <app-campaigns-launched-by-partners (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)" [applyFilter]="applyFilter"  [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+      <app-campaigns-launched-by-partners (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)"
+        [applyFilter]="applyFilter" [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
         *ngIf="!loadAllCharts && selectedTabIndex == 0"></app-campaigns-launched-by-partners>
     </div>
   </div>
@@ -261,11 +269,11 @@
             <table class="table tgrid" *ngIf="inActivePartnersPagination.pagedItems.length != 0" aria-describedby="">
               <thead>
                 <tr>
-                <th class="center-aligned" style="width:50%" scope="col">
-                  {{authenticationService?.partnerModule?.customName}}</th>
-                <th class="hidden-xs" style="text-align: left;" scope="col">LAST REMINDER SENT</th>
-                <th style="text-align: left" class="mAlign" scope="col">Actions</th>
-              </tr>
+                  <th class="center-aligned" style="width:50%" scope="col">
+                    {{authenticationService?.partnerModule?.customName}}</th>
+                  <th class="hidden-xs" style="text-align: left;" scope="col">LAST REMINDER SENT</th>
+                  <th style="text-align: left" class="mAlign" scope="col">Actions</th>
+                </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of inActivePartnersPagination.pagedItems" style="cursor: pointer;">
@@ -316,10 +324,10 @@
               <table class="table tgrid" *ngIf="approvePartnersPagination.pagedItems.length != 0">
                 <thead>
                   <tr>
-                  <th class="center-aligned">partners</th>
-                  <th style="text-align: center;">status</th>
-                  <th style="text-align: center;">Actions</th>
-                </tr>
+                    <th class="center-aligned">partners</th>
+                    <th style="text-align: center;">status</th>
+                    <th style="text-align: center;">Actions</th>
+                  </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of approvePartnersPagination.pagedItems" style="cursor: pointer;">
@@ -467,8 +475,9 @@
                             </app-date-picker>
                           </div>
                           <div class="form-group col-sm-4">
-                            <button type="button" class="btn green" [disabled]="" (click)="validateDateFilters()"
-                              translate>Filter</button>
+                            <button type="button" class="button bgcolor-unset" [disabled]=""
+                              (click)="validateDateFilters()" translate><span
+                                class="btn Btn-Green transition txt_pd-top3">Filter</span></button>
                           </div>
                         </div>
                       </div>
@@ -582,8 +591,9 @@
                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate"> </app-timestamp>
                       </td>
                       <td class="text-center">
-                        <a class="custom-icon" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(campaign)"
-                          data-toggle="tooltip" data-placement="top" title="Campaign Based Reports">
+                        <a class="custom-icon" data-rel="fancybox-button"
+                          (click)="referenseService.goToCampaignAnalytics(campaign)" data-toggle="tooltip"
+                          data-placement="top" title="Campaign Based Reports">
                           <i class="circled-number fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                           <div class="clickicons"></div>
                         </a>

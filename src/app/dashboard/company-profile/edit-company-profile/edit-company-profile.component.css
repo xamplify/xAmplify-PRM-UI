@@ -211,3 +211,10 @@ margin: 10px 10px;
     width: 50% !important;
   }
 } 
+/* sudha sri (27-12-2023) */
+.admin_modules_selection{
+  border: 1px solid #eaeaea;
+}
+.upload_btn_pdg{
+  padding-left: 0px;
+}

@@ -4,7 +4,7 @@
 </div>
 <div class="row" *ngIf="statusCode==200">
     <div class="col-md-12">
-        <div class="portlet light clearfix">
+        <div class="portlet light clearfix remove_cardBgcolor">
             <div class="portlet-title" style="border-bottom: none">
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6">
@@ -135,55 +135,75 @@
                             <tbody>
                                 <tr *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                                     <td class="hidden-xs custom-icon-width">
-                                        <img id="landing-page-image-preview-custom-css" src="{{landingPage.thumbnailPath}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
+                                        <img id="landing-page-image-preview-custom-css"
+                                            src="{{landingPage.thumbnailPath}}" alt="Image Not Found"
+                                            style="border: 1px solid #e0e0e0;">
                                     </td>
                                     <td>
-                                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{landingPage?.name}}">
+                                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"
+                                            title="{{landingPage?.name}}">
                                             <span><b>Page Name:</b> {{landingPage?.name}} </span>
                                         </h6>
-                                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"  title="{{landingPage?.categoryName}}">
+                                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"
+                                            title="{{landingPage?.categoryName}}">
                                             <span><b>Folder:</b>{{landingPage?.categoryName}}</span>
                                         </h6>
-                                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"  title="{{landingPage?.createdUser}}">
-                                            <span *ngIf="!isPartnerLandingPage"><b>Created By:</b> {{landingPage?.createdUser}} </span>
-                                            <span *ngIf="isPartnerLandingPage"><b>Shared By:</b> {{landingPage?.createdUser}}</span>
+                                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"
+                                            title="{{landingPage?.createdUser}}">
+                                            <span *ngIf="!isPartnerLandingPage"><b>Created By:</b>
+                                                {{landingPage?.createdUser}} </span>
+                                            <span *ngIf="isPartnerLandingPage"><b>Shared By:</b>
+                                                {{landingPage?.createdUser}}</span>
                                         </h6>
-                                        <h6 class="moreipsis" *ngIf="isPartnerLandingPage" data-toggle="tooltip" data-placement="top" title="{{landingPage?.companyName}}">
+                                        <h6 class="moreipsis" *ngIf="isPartnerLandingPage" data-toggle="tooltip"
+                                            data-placement="top" title="{{landingPage?.companyName}}">
                                             <span translate> <b>From:</b> {{landingPage?.companyName}}</span>
                                         </h6>
                                         <h6 class="moreipsis">
                                             <span>
-                                                <strong>Open Links In New Tab <i [className]="landingPage.openLinksInNewTab ? 'fa fa-check active-status':'fa fa-times required'"aria-hidden="true"></i></strong>
+                                                <strong>Open Links In New Tab <i
+                                                        [className]="landingPage.openLinksInNewTab ? 'fa fa-check active-status':'fa fa-times required'"
+                                                        aria-hidden="true"></i></strong>
                                             </span>
                                         </h6>
                                         <!---XNFR-255-->
                                         <ng-container *ngIf="landingPage?.whiteLabeledLandingPageReceivedFromVendor">
-                                            <h6 class="moreipsis"  title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}" data-toggle="tooltip" data-placement="top">
-                                                <span translate> <b>Received From:</b> {{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}</span>
+                                            <h6 class="moreipsis"
+                                                title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}"
+                                                data-toggle="tooltip" data-placement="top">
+                                                <span translate> <b>Received From:</b>
+                                                    {{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}</span>
                                             </h6>
                                             <span class="view-banner display-ib margin-0-auto">White-Labeled</span>
                                         </ng-container>
-                                         <!---XNFR-255-->
-                                        <span class="view-banner display-ib margin-0-auto green-btn-cu" translate>{{landingPage.type}}</span>
+                                        <!---XNFR-255-->
+                                        <span class="view-banner display-ib margin-0-auto green-btn-cu"
+                                            translate>{{landingPage.type}}</span>
                                     </td>
                                     <td class="hidden-xs text-center">
-                                        <span *ngIf="landingPage.coBranded" class="view-banner display-ib margin-0-auto" translate>Co-Branded</span>
-                                        <span *ngIf="!landingPage.coBranded" class="view-banner display-ib margin-0-auto" translate>Regular</span>
+                                        <span *ngIf="landingPage.coBranded" class="view-banner display-ib margin-0-auto"
+                                            translate>Co-Branded</span>
+                                        <span *ngIf="!landingPage.coBranded"
+                                            class="view-banner display-ib margin-0-auto" translate>Regular</span>
                                     </td>
                                     <td class="hidden-xs text-center">
-                                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"></app-timestamp>
+                                        <app-timestamp [isOnlyDate]="true"
+                                            [dateAndTime]="landingPage.displayTime"></app-timestamp>
                                     </td>
                                     <ng-container *ngIf="!isPartnerLandingPage">
-                                        <td class="hidden-xs text-center" *ngIf="landingPage?.updatedDateInString?.length>0" class="text-center">
-                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage?.updatedDateInString">
+                                        <td class="hidden-xs text-center"
+                                            *ngIf="landingPage?.updatedDateInString?.length>0" class="text-center">
+                                            <app-timestamp [isOnlyDate]="true"
+                                                [dateAndTime]="landingPage?.updatedDateInString">
                                             </app-timestamp>
                                         </td>
                                         <td *ngIf="landingPage?.updatedDateInString?.length==0" class="text-center">
-                                           -
+                                            -
                                         </td>
                                     </ng-container>
                                     <td id="actions-td-width-xamp ">
-                                        <div class="actions-block override-actions min-width-icon actionButtonAlign mActionButtonAlign dflex-action">
+                                        <div
+                                            class="actions-block override-actions min-width-icon actionButtonAlign mActionButtonAlign dflex-action">
                                             <div class="mActionTop1 actionButtonAlign2 mActionTop2">
                                                 <a class="mMobileDisable custom-icon"
                                                     *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)"
@@ -202,8 +222,8 @@
                                             <div class="actionButtonAlign2 mActionTop2">
                                                 <ng-container
                                                     *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
-                                                    <a class="custom-icon" data-toggle="tooltip"
-                                                        data-placement="top" title="Copy / Embed Link"
+                                                    <a class="custom-icon" data-toggle="tooltip" data-placement="top"
+                                                        title="Copy / Embed Link"
                                                         (click)="showPageLinkPopup(landingPage)">
                                                         <i class="fa fa-clipboard IconCustomization"
                                                             aria-hidden="true"></i>
@@ -215,17 +235,15 @@
                                                     <a class="custom-icon" *ngIf="!isPartnerLandingPage"
                                                         data-rel="fancybox-button"
                                                         (click)="goToFormAnalytics(landingPage.id)"
-                                                        data-toggle="tooltip" data-placement="top"
-                                                        title="Form Count"><i
+                                                        data-toggle="tooltip" data-placement="top" title="Form Count"><i
                                                             class="fa fa-wpforms IconCustomization"
                                                             aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
                                                     </a>
-                                                    <a class="mActionTop1Pad custom-icon"
-                                                        *ngIf="isPartnerLandingPage" data-rel="fancybox-button"
+                                                    <a class="mActionTop1Pad custom-icon" *ngIf="isPartnerLandingPage"
+                                                        data-rel="fancybox-button"
                                                         (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)"
-                                                        data-toggle="tooltip" data-placement="top"
-                                                        title="Form Count"><i
+                                                        data-toggle="tooltip" data-placement="top" title="Form Count"><i
                                                             class="fa fa-wpforms IconCustomization"
                                                             aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
@@ -239,8 +257,7 @@
                                                     *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
                                                     <a class="custom-icon" *ngIf="landingPage.analyticsCount<=0"
                                                         data-rel="fancybox-button" id="cursor-not-allowed"
-                                                        data-toggle="tooltip" data-placement="top"
-                                                        title="Analytics">
+                                                        data-toggle="tooltip" data-placement="top" title="Analytics">
                                                         <i class="fa fa-line-chart IconCustomization"
                                                             aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
@@ -249,8 +266,7 @@
                                                         *ngIf="landingPage.analyticsCount>0 && !isPartnerLandingPage"
                                                         data-rel="fancybox-button"
                                                         (click)="goToLandingPageAnalytics(landingPage.id)"
-                                                        data-toggle="tooltip" data-placement="top"
-                                                        title="Analytics">
+                                                        data-toggle="tooltip" data-placement="top" title="Analytics">
                                                         <i class="fa fa-line-chart IconCustomization"
                                                             aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
@@ -260,8 +276,7 @@
                                                         *ngIf="landingPage.analyticsCount>0 && isPartnerLandingPage"
                                                         data-rel="fancybox-button"
                                                         (click)="goToPartnerLandingPageAnalytics(landingPage.alias)"
-                                                        data-toggle="tooltip" data-placement="top"
-                                                        title="Analytics">
+                                                        data-toggle="tooltip" data-placement="top" title="Analytics">
                                                         <i class="fa fa-line-chart IconCustomization"
                                                             aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
@@ -289,46 +304,61 @@
             </section>
             <!---Grid View----->
             <div class="row">
-                <ng-container  *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError"  style="padding: 0px 3px 0px 3px;">
-                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_20 GridviewSidePaddings"*ngFor="let landingPage of pagination.pagedItems ;let i =index">
+                <ng-container
+                    *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
+                    style="padding: 0px 3px 0px 3px;">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_20 GridviewSidePaddings"
+                        *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                         <div class="grid-box grid-box-height" id="landingPageListDiv_{{landingPage.id}}">
                             <ng-container *ngIf="!isPartnerLandingPage">
-                                <span class="ribbon1" *ngIf="landingPage.coBranded"><span translate>Co-Branded</span></span>
-                                <span class="ribbon1" *ngIf="!landingPage.coBranded"><span translate>Regular</span></span>
+                                <span class="ribbon1" *ngIf="landingPage.coBranded"><span
+                                        translate>Co-Branded</span></span>
+                                <span class="ribbon1" *ngIf="!landingPage.coBranded"><span
+                                        translate>Regular</span></span>
                             </ng-container>
-                            <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}"  alt="Not Found">
+                            <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}"
+                                alt="Not Found">
                             <div>
-                                <h4 class="xamplify-ellipsis overflow-hidden GridViewCotent gridViewTextAlignmnent" data-placement="bottom" data-toggle="tooltip" title="{{landingPage.name}}">
-                                   <b>Page Name:</b> {{landingPage.name}}
+                                <h4 class="xamplify-ellipsis overflow-hidden GridViewCotent gridViewTextAlignmnent"
+                                    data-placement="bottom" data-toggle="tooltip" title="{{landingPage.name}}">
+                                    <b>Page Name:</b> {{landingPage.name}}
                                 </h4>
-                                <h6 class="GridViewCotent xamplify-ellipsis" title="{{landingPage.categoryName}}" data-placement="bottom" data-toggle="tooltip">
+                                <h6 class="GridViewCotent xamplify-ellipsis" title="{{landingPage.categoryName}}"
+                                    data-placement="bottom" data-toggle="tooltip">
                                     <b>Folder:</b> {{landingPage.categoryName}}
-                                 </h6>
+                                </h6>
                                 <!---XNFR-255-->
                                 <div class="aligntowbtns">
                                     <ng-container *ngIf="landingPage?.whiteLabeledLandingPageReceivedFromVendor">
-                                        <h6 class="GridViewCotent xamplify-ellipsis" data-placement="bottom" data-toggle="tooltip" title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}">
-                                            <b translate>Received From:</b> {{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}} 
+                                        <h6 class="GridViewCotent xamplify-ellipsis" data-placement="bottom"
+                                            data-toggle="tooltip"
+                                            title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}">
+                                            <b translate>Received From:</b>
+                                            {{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}
                                         </h6>
                                         <span class="view-banner-white-labeled LabeledmarginLeft">White-Labeled</span>
                                     </ng-container>
-                                    <span  class="view-banner green-btn-cu LabeledmarginLeft">{{landingPage.type}}</span>
-                                </div> 
+                                    <span class="view-banner green-btn-cu LabeledmarginLeft">{{landingPage.type}}</span>
+                                </div>
                                 <!---XNFR-255-->
-                                 <h6 *ngIf="!isPartnerLandingPage" translate class="GridViewCotent"> <b>Created On:</b>   
-                                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"></app-timestamp>
+                                <h6 *ngIf="!isPartnerLandingPage" translate class="GridViewCotent"> <b>Created On:</b>
+                                    <app-timestamp [isOnlyDate]="true"
+                                        [dateAndTime]="landingPage.displayTime"></app-timestamp>
                                 </h6>
-                                <h6 *ngIf="isPartnerLandingPage" translate class="GridViewCotent"><b>Shared On:</b> 
-                                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"></app-timestamp>
+                                <h6 *ngIf="isPartnerLandingPage" translate class="GridViewCotent"><b>Shared On:</b>
+                                    <app-timestamp [isOnlyDate]="true"
+                                        [dateAndTime]="landingPage.displayTime"></app-timestamp>
                                 </h6>
-                               
-                                <h6 title="{{landingPage.createdUser}}" class="GridViewCotent xamplify-ellipsis" data-placement="bottom" data-toggle="tooltip"><b>By:</b> 
-                                     {{landingPage.createdUser}} 
+
+                                <h6 title="{{landingPage.createdUser}}" class="GridViewCotent xamplify-ellipsis"
+                                    data-placement="bottom" data-toggle="tooltip"><b>By:</b>
+                                    {{landingPage.createdUser}}
                                 </h6>
                                 <h6 class="moreipsis" class="GridViewCotent">
                                     <span translate>
-                                        <strong translate>Open Links In New Tab 
-                                            <i [className]="landingPage.openLinksInNewTab ? 'fa fa-check active-status':'fa fa-times required'" aria-hidden="true"></i>
+                                        <strong translate>Open Links In New Tab
+                                            <i [className]="landingPage.openLinksInNewTab ? 'fa fa-check active-status':'fa fa-times required'"
+                                                aria-hidden="true"></i>
                                         </strong>
                                     </span>
                                 </h6>
@@ -380,9 +410,8 @@
                                     </a>
                                     <a class="Iconhover custom-grid-icon"
                                         *ngIf="landingPage.analyticsCount>0 && !isPartnerLandingPage"
-                                        data-rel="fancybox-button"
-                                        (click)="goToLandingPageAnalytics(landingPage.id)" data-toggle="tooltip"
-                                        data-placement="top" title="Analytics">
+                                        data-rel="fancybox-button" (click)="goToLandingPageAnalytics(landingPage.id)"
+                                        data-toggle="tooltip" data-placement="top" title="Analytics">
                                         <i class="fa fa-line-chart" aria-hidden="true"></i>
                                         <div class="clickicons"></div>
                                     </a>
@@ -399,8 +428,8 @@
                                 </ng-container>
                                 <a class="custom-grid-icon"
                                     *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)"
-                                    data-toggle="tooltip" class="delete custom-icon" data-placement="top"
-                                    title="Delete" (click)="confirmDelete(landingPage)">
+                                    data-toggle="tooltip" class="delete custom-icon" data-placement="top" title="Delete"
+                                    (click)="confirmDelete(landingPage)">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                     <div class="del-icon"></div>
                                 </a>

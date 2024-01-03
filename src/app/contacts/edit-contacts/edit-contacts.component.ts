@@ -3146,7 +3146,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		} else if (this.contactsByType.selectedCategory === 'unsubscribe') {
 			this.logListName = this.selectedContactListName + '_list_Unsubscribe_' + this.checkingContactTypeName + 's.csv';
 		}else if (this.contactsByType.selectedCategory === 'valid') {
-            this.logListName = this.selectedContactListName + '_list_Valid_' + this.checkingContactTypeName + 's.csv';
+            this.logListName = this.selectedContactListName + '_list_Opt_In_' + this.checkingContactTypeName + 's.csv';
+        }else if (this.contactsByType.selectedCategory === 'excluded') {
+            this.logListName = this.selectedContactListName + '_list_Excluded_' + this.checkingContactTypeName + 's.csv';
         }
 		this.downloadDataList.length = 0;
 		for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {

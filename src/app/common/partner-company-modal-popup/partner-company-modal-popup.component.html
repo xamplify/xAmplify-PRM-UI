@@ -201,9 +201,10 @@
             <button class="btn btn-danger"
                *ngIf="(selectedTeamMemberIds?.length>0 || selectedPartnershipIds?.length>0) && !sendSuccess "
                (click)="clearAll()">Clear All</button>
-            <button type="submit" class="button bgcolor-unset" [disabled]="(selectedTeamMemberIds?.length==0) && !isEdit"
-               *ngIf="!sendSuccess" (click)="publish()"><span class="btn Btn-Green transition">Submit</span></button>
-            <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
+            <button type="submit" class="button bgcolor-unset"
+               [disabled]="(selectedTeamMemberIds?.length==0) && !isEdit" *ngIf="!sendSuccess" (click)="publish()"><span
+                  class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
+            <button type="submit" class="btn Btn-Gray neg_mrg_top4" (click)="closePopup()">Close</button>
          </div>
       </div>
    </div>

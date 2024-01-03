@@ -38,6 +38,7 @@
 	}
 </style>
 <div class="portlet light" style="border-radius: 5px;">
+	<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="portlet-body">
 		<div *ngIf="clientError" style="color:red" translate>Something went wrong, Please refresh the page</div>
 		<div class="row margin-bottom-30" [hidden]="clientError">
@@ -162,7 +163,7 @@
 				<form class="form-horizontal" [formGroup]="videoForm" novalidate>
 					<div class="form-actions">
 						<div class="row">
-							<div class="col-md-offset-6 col-md-5 videoInfoTopBtns">
+							<div class="col-md-offset-12 col-md-12 col-lg-12 videoInfoTopBtns">
 								<div style="float: right">
 									<button type="button" class="btn button p0"
 										[disabled]="!videoForm.valid || upperTextValid==false
@@ -304,8 +305,7 @@
 										<div class="col-xs-9 col-sm-9 col-md-9"
 											style="top: 7px; position: relative;float:right">
 											<div *ngIf="openOwnThumbnail">
-												<span class="btn btn-css btn-file" *ngIf="ownThumbnail" translate>Choose
-													Image
+												<span class="btn btn-css btn-file" *ngIf="ownThumbnail" translate>Choose Image
 													<input id="ownFileuplad" type="file" ng2FileSelect
 														[uploader]="uploader" accept=".jpg,.jpeg,.png"
 														*ngIf="uploader.queue.length==0" class="btn btn-primary"
@@ -405,7 +405,7 @@
 									</div>
 									<div>
 										<app-list-loader *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
-										<app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader"
+										<app-partner-company-and-groups *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany"
 											[moduleName]="'dam'" [inputId]="saveVideoFile.damId"
 											[isPublishedToPartnerGroups]="saveVideoFile?.publishedToPartnerGroups"
 											[selectedTeamMemberIds]="saveVideoFile?.partnerIds"
