@@ -43,7 +43,30 @@
   margin: 1px;
   padding: 5px 10px;
 }
+.trashIconCustimization {
+  color: red;
+  font-size: 14px;
+  margin-top: 0px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 9px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.trashIconCustimization:hover {
+  background-color: #ededed;
+  border-color: #b3b3b3;
+}
+.createdOnRow{
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
 
-@media ( 1075px <= width <= 1250px) { .positionForAddandDelete{position: relative;right: 15px;}}
-@media ( 992px <= width <= 1075px) { .positionForAddandDelete{position: relative;right: 20px;}}
-@media ( 200px <= width <= 991px) { .mobileTopandBottomSpace{margin: 10px 0px;}.positionForAddandDelete{margin-top: 15px;}.displayFlex{display:flex;}}
+@media ( 1075px <= width <= 1250px) { .positionForAddandDelete{position: relative;right: 10px;}}
+@media ( 992px <= width <= 1075px) { .positionForAddandDelete{position: relative;right: 12px;}}
+@media ( 200px <= width <= 991px) { .mobileTopandBottomSpace{margin: 10px 0px;}.positionForAddandDelete{margin-top: 15px;margin-left: 15px;}.displayFlex{display:flex;}}
+@media ( 200px <= width <= 767px) { .createdOnRow{display: initial;} }

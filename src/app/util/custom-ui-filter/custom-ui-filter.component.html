@@ -49,12 +49,11 @@
                 </select>
               </div>
 
-              <div class="col-md-1 pr0 positionForAddandDelete" style="display: flex;">
+              <div class="col-md-1 p0 positionForAddandDelete" style="display: flex;">
                 <!-- Delete Button -->
                 <span (click)="cancelSegmentationRow(i)" type="button">
-                  <i class="fa fa-trash-o" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                    title="Remove a condition"
-                    style="color: red; font-size: 26px; margin-top:10px;cursor: pointer;"></i>
+                  <i class="fa fa-trash-o trashIconCustimization" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                    title="Remove a condition"></i>
                 </span>
                 <ng-template [ngTemplateOutlet]="addIcon" *ngIf="i === criterias.length-1"></ng-template>
 
@@ -78,19 +77,19 @@
           <div class="row alert alert-danger alert-su m0" *ngIf="isValidationErrorMessage ">
             <strong>{{filterConditionErrorMessage}}</strong>
           </div>
-          <div class="row">
-            <div class="form-inline col-md-10" style="margin-top: 10px;">
-              <div class="col-md-2 p0">
+          <div class="row pl10 pr10 pb10">
+            <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
+              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
                 <h4 style="font-size:15px">{{parterViewText}}</h4>
               </div>
-              <div class="form-group col-md-5 p0">
+              <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
                 <label class="control-label">
                   From Date &nbsp;
                 </label>
                 <app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
                 </app-date-picker>
               </div>
-              <div class="form-group col-md-4 p0">
+              <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
                 <label class="control-label">To Date &nbsp;
                 </label>
                 <app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
