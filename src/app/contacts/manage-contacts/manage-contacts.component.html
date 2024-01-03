@@ -1250,13 +1250,13 @@
                                              </td>
                                              <td class="Mark-as-ValidBtn"
                                                 *ngIf="(contactsByType.selectedCategory =='invalid') && !sharedLeads && !authenticationService?.module?.deletedPartner">
-                                                <button  type="submit" class="button bgcolor-unset button_height"
+                                                <button  type="submit" class=" bgcolor-unset button_height"
                                                 (click)="validateUndeliverableContacts(contact.id)" translate><span class="btn markas transition txt_pd-top8">Mark as
                                                 opt-in</span></button>
                                              </td>
                                              <td class="Mark-as-ValidBtn"
                                                 *ngIf="( contactsByType.selectedCategory =='excluded')  && !authenticationService?.module?.deletedPartner">
-                                                   <button *ngIf="contact.excludedCatagory == 'Excluded User'" type="submit" class="button bgcolor-unset button_height"
+                                                   <button *ngIf="contact.excludedCatagory == 'Excluded User'" type="submit" class=" bgcolor-unset button_height"
                                                    [disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
                                                    (click)="showMakeAsOptinAlert(contact.id, contact.emailId)" translate><span class="btn markas transition txt_pd-top8">Mark as
                                                    opt-in</span></button>
@@ -1369,8 +1369,8 @@
                                                    </div>
                                                 </td>
                                                 <td class="text-center">
-                                                   <div class="actions-block no-float custom-icon">
-                                                      <a data-toggle="tooltip" data-placement="bottom"
+                                                   <div class="actions-block no-float">
+                                                      <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
                                                          title="Campaign Analytics" (click)="showCampaigns(contact.id)">
                                                          <i class="fa fa-line-chart IconCustomization"
                                                             aria-hidden="true"></i>

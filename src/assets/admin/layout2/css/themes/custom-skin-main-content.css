@@ -2486,3 +2486,60 @@ button.button_blue:disabled span{
 }
 /* XNFR-374 Grid View Enhancement END */
 
+/* detailed campaign tiles start */
+.lt-blue-c:hover {
+  background-color: #008fd5 !important;
+}
+.lt-green-c:hover {
+  background-color: #10ad39 !important;
+}
+.tk-blue-c:hover {
+  background-color: #3564b9 !important;
+}
+.vlt-blue-c:hover {
+  background-color: #2bc2b5 !important;
+}
+.pure-blue-c:hover {
+  background-color: #2f2470 !important;
+}
+.black-blue-c:hover {
+  background-color: #7f2ca3 !important;
+}
+.pure-g-c:hover {
+  background-color: #10ad39 !important;
+}
+.g-b-c:hover {
+  background-color: #009970 !important;
+}
+.g-y-c:hover {
+  background-color: #3a5e00 !important;
+  
+}
+.y-b-c:hover {
+  background-color: #827500 !important;
+}
+.y-b-c:hover {
+  background-color: #827500 !important;
+}
+.b-b-c :hover{
+  background-color: #2b005c !important;
+}
+.r-b-c:hover {
+  background-color: #c72828 !important;
+}
+.h-r-c:hover {
+  background-color: #660000 !important;
+}
+.r-r-c:hover {
+  background-color: red !important;
+}
+.vlt-b-c:hover {
+  background-color: #8877a9 !important;
+}
+.lt-g-b-c:hover {
+  background-color: #57c195 !important;
+}
+/* Detailed campaign tiles END */
+
+
+

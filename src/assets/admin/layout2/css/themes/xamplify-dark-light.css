@@ -1369,7 +1369,7 @@ ul.alt-row-style1 li:nth-child(even) {
 .p-5x > .r-r-c,
 .p-5x > .vlt-b-c,
 .p-5x > .lt-g-b-c {
-  border: 3px solid #2f4857 !important;
+  border: 2px solid #2f4857 !important;
 }
 @keyframes placeHolderShimmer {
   0% {
@@ -2554,6 +2554,13 @@ button.btn.btn-white.salesforce-btn.button{
 }
 
 
+/* XNFR-374 Grid View Enhancement END */
+/* detailed campaign tiles*/
+.detail_card:hover{
+  background-color: #22313a!important;
+}
+
+
 }
 /*** XNFR-409 ****/
 .custom_fiter-asset {
@@ -2562,4 +2569,5 @@ button.btn.btn-white.salesforce-btn.button{
 /*** XNFR-409 ****/
 
 /* XNFR-374 Grid View Enhancement END */
+
 
