@@ -378,7 +378,7 @@
                            </div>
                            <section [hidden]="!isListView" [ngStyle]="{'margin-top' : !isListView ? '-8px' : '-5px'}"
                               *ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
-                              <div class="table-responsive mt10"
+                              <div class="table-responsive mt10 mt19"
                                  [ngClass]="{'success': customResponse.responseType == 'SUCCESS'}">
                                  <table class='table tgrid' id="partner_contact_list" aria-describedby="">
                                     <thead>
@@ -1075,7 +1075,7 @@
                         </div>
                         <app-list-loader *ngIf="contactsByType?.isLoading"></app-list-loader>
                         <div class="portlet" *ngIf="contactsByType.contacts?.length > 0">
-                           <div class="portlet-title pb_8" style="border:none; margin-top: 10px;">
+                           <div class="portlet-title pb_8 pb_4" style="border:none; margin-top: 10px;">
                               <div class="caption">
                                  <i class="fa fa-edit" style="font-size: 18px" aria-hidden="true"></i>
                                  <span class="capitalize" *ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active'
