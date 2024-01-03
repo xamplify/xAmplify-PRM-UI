@@ -264,6 +264,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
         public properties: Properties, public eventError: EventError, public countryNames: CountryNames,
         public formService: FormService, private changeDetectorRef: ChangeDetectorRef, private render: Renderer, private vanityUrlService: VanityURLService) {
 
+        this.checkLaunchOption = 'SAVE';
         this.referenceService.renderer = this.render;
         this.vanityUrlService.isVanityURLEnabled();
         this.countries = this.referenceService.getCountries();
@@ -457,7 +458,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy, AfterViewInit,
                     if (this.reDistributeEvent) {
                         this.eventCampaign.userListIds = []; this.userListIds = []; this.parternUserListIds = [];
                         this.userListDTOObj = [];
-                        this.checkLaunchOption = this.eventCampaign.campaignScheduleType;
+                        // this.checkLaunchOption = this.eventCampaign.campaignScheduleType;
                     }
                     this.eventCampaign.userLists = [];
                     if (this.authenticationService.isOnlyPartner()) {
