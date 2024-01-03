@@ -13,7 +13,7 @@ export class Pagination {
 	pager: any = {};
 	pagedItems: any[] = [];
 	campaignUserListIds:number[] = [];
-	totalRecords: number;
+	totalRecords: number=0;
 	editCampaign = false;
 	campaignId: number;
 	campaignDefaultTemplate = false;
@@ -115,4 +115,7 @@ export class Pagination {
 	detailedAnalytics = false;
 	/***XNFR-409 *****/
     filterOptionEnable:boolean = false;
+	dateFilterOpionEnable:boolean = false;
+	customFilterOption:boolean = false;
+	/*** XNFR-409 *****/
 }

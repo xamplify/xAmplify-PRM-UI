@@ -20,8 +20,9 @@
         <div class="portlet light">
           <div class="portlet-title">
             <h4 class="pull-left" translate>Manage Accounts</h4>
-            <button class="button_blue btn-sm pull-right bgcolor-unset" data-toggle="modal" data-target="#connectAccountsModal"
-              translate><span class="btn btn-primary transition">Connect Accounts</span></button>
+            <button class="button_blue btn-sm pull-right bgcolor-unset" data-toggle="modal"
+              data-target="#connectAccountsModal" translate><span class="btn btn-primary transition txt_pd-top3">Connect
+                Accounts</span></button>
           </div>
           <div class="portlet-body">
             <div class="row">
@@ -113,8 +114,8 @@
                   *ngIf="socialConnections?.length > 0">
                   <div class="pull-right">
                     <button type="button" class="button bgcolor-unset" (click)="save()" translate><span
-                        class="btn Btn-Green transition">Update</span></button>
-                    <a type="button" class="btn Btn-Gray" [routerLink]="referenceService.homeRouter"
+                        class="btn Btn-Green transition txt_pd-top3">Update</span></button>
+                    <a type="button" class="btn Btn-Gray neg_mrg_top4" [routerLink]="referenceService.homeRouter"
                       translate>Cancel</a>
                   </div>
                 </div>

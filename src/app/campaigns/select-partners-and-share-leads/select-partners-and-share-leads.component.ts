@@ -113,6 +113,9 @@ export class SelectPartnersAndShareLeadsComponent implements OnInit {
 
 	viewShareLeads(partner:any){
 		this.shareLeadsPagination = new Pagination();
+		if(this.hideHeaderText){
+			this.shareLeadsPagination.maxResults = 4;
+		}
 		this.isHeaderCheckBoxChecked = false;
 		this.shareLeadsErrorMessage = new CustomResponse();
 		this.pagination.pagedItems.forEach((element) => {

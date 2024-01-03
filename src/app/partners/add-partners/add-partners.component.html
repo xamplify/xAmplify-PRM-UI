@@ -449,7 +449,7 @@
         </div>
         <!-----Legal Basis Options -->
         <div *ngIf=" (gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddPartnerOption==2)"
-            class="col-sm-12 form-group portlet light">
+            class="col-sm-12 form-group portlet light cloud_legal_basis">
             <a class="close-circle" *ngIf="clipBoard" data-dismiss="modal" (click)="cancelPartners()"><i
                     class="fa fa-times"></i></a>
             <div class="form-group">
@@ -474,10 +474,10 @@
         </div>
         <ng-template #saveCancel>
             <div class="pull-right">
-                <button class="button bgcolor-unset pd_top5" id="save_button" *ngIf="selectedAddPartnerOption != 5"
+                <button class="button bgcolor-unset" id="save_button" *ngIf="selectedAddPartnerOption != 5"
                     (click)="saveContacts()" translate><span
                         class="btn Btn-Green transition txt_pd-top3">Save</span></button>
-                <button class="btn Btn-Gray neg_mar_top7" id="cancel_button"
+                <button class="btn Btn-Gray neg_mrg_top4" id="cancel_button"
                     *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()"
                     translate>Cancel</button>
             </div>
@@ -485,7 +485,7 @@
         <div class="row" id="Gfile_preview">
             <div class="col-md-12 col-sm-12">
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                <div class="portlet light">
+                <div class="portlet light remove_cardBgcolor adjust_cloud_table">
                     <div class="portlet-title">
                         <div class="caption" translate>
                             <i class="fa fa-edit"></i>File Preview
@@ -628,9 +628,9 @@
             <ng-template #copyTextFromClipBoard>
                 <div *ngIf="clipBoard" style="margin-bottom: 15px;">
                     <div class="col-sm-12" style="padding-left: 0px">
-                        <h3 style="margin-left: 30px;" translate>Copy from text --
-                            paste below</h3>
-                        <div class="col-xs-12 col-sm-9">
+                        <h4 class="copy_text_mrgn" style="margin-left: 30px;" translate>Copy from text --
+                            paste below</h4>
+                        <div class="col-xs-12 col-sm-9 copy_text_select_dropdown">
                             <div class="col-xs-6" style="margin-bottom: 10px">
                                 <select class="opts form-control">
                                     <option selected value="DEFAULT" translate>Delimiter
@@ -646,8 +646,9 @@
                                         Data</span></button>
                             </div>
                             <div class="col-xs-12">
-                                <textarea id="copyFromclipTextArea" class="textareaNumber" title="Calendar View"
-                                    [(ngModel)]="clipboardTextareaText" title="please fill out this field"
+                                <textarea id="copyFromclipTextArea" class="textareaNumber copy_text_area_border"
+                                    title="Calendar View" [(ngModel)]="clipboardTextareaText"
+                                    title="please fill out this field"
                                     placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,Type,Category,Address,City,State,Zip,Country,Phone"
                                     [ngModelOptions]="{standalone: true}"
                                     style="height: 150px; font-size: 12px; line-height: 1.4; min-width: 100%; max-width: 100%; width: 100%;"
@@ -668,7 +669,7 @@
                 <div *ngIf="newPartnerUser?.length == 0 && selectedAddPartnerOption == 2 && isListLoader">
                     <app-list-loader></app-list-loader>
                 </div>
-                <div class="portlet light" *ngIf="newPartnerUser?.length != 0">
+                <div class="portlet light partner_remove_bg remove_cardBgcolor" *ngIf="newPartnerUser?.length != 0">
                     <div class="portlet-title height">
                         <div class="caption" translate>
                             <i class="fa fa-edit"
@@ -1240,7 +1241,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn Btn-Gray customize_design_btn" data-dismiss="modal"
+                        <button type="button" class="btn Btn-Gray neg_mrg_top4" data-dismiss="modal"
                             translate>Close</button>
                         <button type="button" id="salesforce_save_button" class="button_blue bgcolor-unset pd_top5"
                             (click)="checkingPopupValues()" data-dismiss="modal" translate><span
@@ -1345,8 +1346,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="border-top:none !important;">
-                <button type="button" class="btn Btn-Gray customize_design_btn" data-dismiss="modal"
-                    translate>Close</button>
+                <button type="button" class="btn Btn-Gray neg_mrg_top4" data-dismiss="modal" translate>Close</button>
                 <button type="button" id="salesforce_save_button" class="button_blue bgcolor-unset pd_top5"
                     (click)="checkingPopupValues()" data-dismiss="modal" translate><span
                         class="btn btn-primary transition txt_pd-top3">Submit</span></button>
@@ -1474,11 +1474,11 @@
                     agree</div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal" (click)="cancelPartners()"
-                    translate>Decline</button>
-                <button type="button" [disabled]="!isCheckTC" class="button_blue bgcolor-unset verify_text"
+                <button type="button" class="btn Btn-Gray btn-hvr-text neg_mrg_top4" data-dismiss="modal"
+                    (click)="cancelPartners()" translate>Decline</button>
+                <button type="button" [disabled]="!isCheckTC" class="button_blue bgcolor-unset"
                     (click)="saveContactsWithPermission()" translate><span
-                        class="btn btn-primary transition asset_cf_padding">Accept</span></button>
+                        class="btn btn-primary transition txt_pd-top3">Accept</span></button>
             </div>
         </div>
     </div>
@@ -1757,7 +1757,7 @@
             <div class="modal-footer">
                 <button type="submit" class="button bgcolor-unset" (click)="validatePartners()" translate><span
                         class="btn Btn-Green transition txt_pd-top3">Continue</span></button>
-                <button type="submit" class="btn Btn-Gray" (click)="closeAssignContactAndMdfAmountPopup()"
+                <button type="submit" class="btn Btn-Gray neg_mrg_top4" (click)="closeAssignContactAndMdfAmountPopup()"
                     translate>Close</button>
             </div>
         </div>

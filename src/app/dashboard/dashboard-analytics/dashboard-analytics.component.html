@@ -1,5 +1,5 @@
-
-<div class="page-content" *ngIf="isOnlyUser && !authenticationService?.module?.deletedPartner && !showDealForm && !authenticationService?.module?.contentLoader">
+<div class="page-content"
+    *ngIf="isOnlyUser && !authenticationService?.module?.deletedPartner && !showDealForm && !authenticationService?.module?.contentLoader">
     <div *ngIf="showSandboxText" class="alert alert-info">
         <strong>{{properties?.sandboxText}}</strong>
     </div>
@@ -18,7 +18,8 @@
         </div>
     </div>
 </div>
-<div class="page-content" *ngIf="!playVideo && !editVideo && ((!showDealForm && !isOnlyUser) || (authenticationService?.module?.deletedPartner && isOnlyUser)) && !authenticationService?.module?.agencyUserDashboard">
+<div class="page-content"
+    *ngIf="!playVideo && !editVideo && ((!showDealForm && !isOnlyUser) || (authenticationService?.module?.deletedPartner && isOnlyUser)) && !authenticationService?.module?.agencyUserDashboard">
     <div *ngIf="showSandboxText" class="alert alert-info">
         <strong>{{properties?.sandboxText}}</strong>
     </div>
@@ -42,22 +43,28 @@
                 </div>
             </div>
             <div class="page-bar p0" [hidden]="ngxLoading">
-                <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0.4em;">
-                <div [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-lg-6 col-md-4 col-xs-6 col-sm-6':'col-md-5 col-xs-5 col-sm-5'">
-                    <h4 title="{{logedInCustomerCompanyName}}"  class="welcome-header text-overflow">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
-                </div>
-                <div class="col-lg-5 col-md-5 col-xs-5 col-sm-5" [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
-                    <div class="df-mt5 dashboardfloatRight">
-                    <h4 class="defaultScreenText" style="margin: 0.3em">Do you want to set this as your default screen?</h4>
-                    <div>
-                        <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"
-                        size="small" (change)="setDashboardAsDefaultPage($event)"></ui-switch>
+                <div class="col-md-12 col-xs-12 col-sm-12" style="border-radius: 0;padding: 0px;">
+                    <div
+                        [ngClass]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner ? 'col-lg-6 col-md-4 col-xs-6 col-sm-6':'col-md-5 col-xs-5 col-sm-5'">
+                        <h4 title="{{logedInCustomerCompanyName}}" class="welcome-header text-overflow">{{'Welcome' |
+                            translate}} {{logedInCustomerCompanyName}}</h4>
                     </div>
+                    <div class="col-lg-5 col-md-5 col-xs-5 col-sm-5"
+                        [hidden]="userDefaultPage.isCurrentPageDefaultPage || authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier || authenticationService?.module?.deletedPartner">
+                        <div class="df-mt5 dashboardfloatRight">
+                            <h4 class="defaultScreenText" style="margin: 0.3em">Do you want to set this as your default
+                                screen?</h4>
+                            <div>
+                                <ui-switch [(ngModel)]="userDefaultPage.isCurrentPageDefaultPage" color="lightgreen"
+                                    size="small" (change)="setDashboardAsDefaultPage($event)"></ui-switch>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <app-team-member-filter-option *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
-                && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner"  [filterIcon]="true" (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
-                <app-user-guide-help-button  [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
+                    <app-team-member-filter-option
+                        *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.loggedInThroughVendorVanityUrl
+                && !authenticationService?.module?.isMarketingCompany && !authenticationService?.module?.deletedPartner" [filterIcon]="true"
+                        (teamMemberFilterModalPopUpOptionEventEmitter)="getSelectedIndexFromPopup($event)"></app-team-member-filter-option>
+                    <app-user-guide-help-button [mergeTag]="mergeTagForGuide"></app-user-guide-help-button>
                 </div>
             </div>
         </div>
@@ -74,41 +81,44 @@
 
             <!------------Dashbaord Button Carusel---------------------->
             <app-dashboard-buttons-carousel></app-dashboard-buttons-carousel>
-             <!--Opportunity Stats-->
-             <div *ngIf="!authenticationService?.module?.deletedPartner 
-             &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.module?.hasOpportunityRole)" class="clearfix" style="padding-top: 6px;">
-                 <div class="portlet light">
-                     <div class="portlet-title">
-                         <div class="caption">
-                             <i class="fa fa-bar-chart" aria-hidden="true"></i>
-                             <span class="caption-subject" translate>Opportunity Stats</span>
-                         </div>
-                     </div>
-                 <div class="portlet-body clearfix">
-                     <div class="row">
-                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                         <app-funnel-chart-analytics *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-funnel-chart-analytics>
-                     </div>
-                     <!----Opportunity Stats--------->
-                     <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-6" style="float:right;margin-top: 10px;">
-                         <app-pie-chart-analytics *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-pie-chart-analytics>
-                     </div>
-                     </div>
-                 </div>
-                 </div>
-             </div>
+            <!--Opportunity Stats-->
+            <div *ngIf="!authenticationService?.module?.deletedPartner 
+             &&(authenticationService?.module?.opportunitiesAccessAsPartner || authenticationService?.module?.hasOpportunityRole)"
+                class="clearfix" style="padding-top: 6px;">
+                <div class="portlet light">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                            <span class="caption-subject" translate>Opportunity Stats</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body clearfix">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <app-funnel-chart-analytics *ngIf="!ngxLoading"
+                                    [applyFilter]="applyFilter"></app-funnel-chart-analytics>
+                            </div>
+                            <!----Opportunity Stats--------->
+                            <div class=" col-xs-12 col-sm-6 col-md-6 col-lg-6" style="float:right;margin-top: 10px;">
+                                <app-pie-chart-analytics *ngIf="!ngxLoading"
+                                    [applyFilter]="applyFilter"></app-pie-chart-analytics>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!------------Vendor Activity---------------------->
             <app-vendor-activity-analytics></app-vendor-activity-analytics>
 
             <div class="row" *ngIf="authenticationService.module.showCampaignsAnalyticsDivInDashboard">
                 <ngx-loading [show]="topFourLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-                <div class="portlet light" style="margin: 14px;margin-top: 1px;margin-bottom: 20px;">
+                <div class="portlet light" style="margin: 14px;margin-top: 12px;margin-bottom: 20px;">
                     <div class="portlet-title" *ngIf="authenticationService?.module?.createCampaign">
                         <h4 class="pull-left m10 f-w-600 text-primary" translate>Campaigns</h4>
                         <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
                             <a *ngIf="hasCampaignRole || authenticationService.isCompanyPartner || authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"
-                                data-toggle="tooltip" data-placement="bottom"
-                                title="Customize campaign report" id="right">
+                                data-toggle="tooltip" data-placement="bottom" title="Customize campaign report"
+                                id="right">
                                 <i id="customize-campaign-setting" class="fa fa-cog pull-right" data-toggle="modal"
                                     data-target="#customizeCampaignModal" aria-hidden="true"></i>
                             </a>
@@ -134,24 +144,28 @@
                                         (click)="showCampaignDetails(campaign)" style="cursor: pointer">
                                         <div class="bookmark-ribbon">
                                             <span style="margin: 0px -7px; font-size: 17px; color: white;">
-                                                <i *ngIf="campaign[7] ==='VIDEO'" data-toggle="tooltip" data-placement="top"
-                                                    title="Video" class="fa fa-video-camera" aria-hidden="true"></i>
+                                                <i *ngIf="campaign[7] ==='VIDEO'" data-toggle="tooltip"
+                                                    data-placement="top" title="Video" class="fa fa-video-camera"
+                                                    aria-hidden="true"></i>
                                                 <i *ngIf="campaign[7]==='REGULAR'" data-toggle="tooltip"
                                                     data-placement="top" title="Email" class="fa fa-envelope"
                                                     aria-hidden="true"></i>
-                                                <i *ngIf="campaign[7]==='SOCIAL'" data-toggle="tooltip" data-placement="top"
-                                                    title="Social" class="fa fa-globe" aria-hidden="true"></i>
-                                                <i *ngIf="campaign[7]==='EVENT'" data-toggle="tooltip" data-placement="top"
-                                                    title="Event" class="fa fa-calendar" aria-hidden="true"></i>
+                                                <i *ngIf="campaign[7]==='SOCIAL'" data-toggle="tooltip"
+                                                    data-placement="top" title="Social" class="fa fa-globe"
+                                                    aria-hidden="true"></i>
+                                                <i *ngIf="campaign[7]==='EVENT'" data-toggle="tooltip"
+                                                    data-placement="top" title="Event" class="fa fa-calendar"
+                                                    aria-hidden="true"></i>
                                                 <i *ngIf="campaign[7]==='LANDINGPAGE'" data-toggle="tooltip"
                                                     data-placement="top" title="Landing Page" class="fa fa-wpforms"
                                                     aria-hidden="true"></i>
-                                                <i *ngIf="campaign[7]==='SURVEY'" data-toggle="tooltip" data-placement="top"
-                                                    title="Survey" class="fas fa-poll-h" aria-hidden="true"></i>
+                                                <i *ngIf="campaign[7]==='SURVEY'" data-toggle="tooltip"
+                                                    data-placement="top" title="Survey" class="fas fa-poll-h"
+                                                    aria-hidden="true"></i>
                                             </span>
                                         </div>
                                         <div class="portlet-title">
-                                            <div class="caption">                                              
+                                            <div class="caption">
                                                 <h3 class="caption-subject camp-title-color" style="margin: 0;"
                                                     title="{{campaign[1]}}">
                                                     {{campaign[1] | slice: 0: 23}}<span
@@ -161,8 +175,8 @@
                                         </div>
                                         <div class="portlet-body text-center">
                                             <i *ngIf="campaign[2]" data-toggle="tooltip" data-placement="left"
-                                                title="Through Campaign" class="fa fa-handshake-o pull-right text-primary"
-                                                aria-hidden="true"
+                                                title="Through Campaign"
+                                                class="fa fa-handshake-o pull-right text-primary" aria-hidden="true"
                                                 style="position: absolute; right: 6px;font-size: 22px;"></i>
                                             <section class="percentage-circle">
                                                 <svg width="120" height="120" viewBox="0 0 120 120"
@@ -173,7 +187,8 @@
                                                         stroke-width="5" stroke-dasharray="339.292006588"
                                                         [ngStyle]="{'stroke-dashoffset': campaign[5] === 0 ? 339.292006588 : 339.292 * (1 - campaign[4]/campaign[5])}" />
                                                 </svg>
-                                                <h2 class="percentage-value customePercentageValue">{{campaign[6]}}%</h2>
+                                                <h2 class="percentage-value customePercentageValue">{{campaign[6]}}%
+                                                </h2>
                                                 <h6 class="percentage-text customePercentagetext">interaction</h6>
                                             </section>
                                             <h5 class="text-primary" style="margin-top: 3.2em;">Released on
@@ -188,61 +203,62 @@
 
                 </div>
 
-                    <!---Campaign Statistics-->
-                    <!---Campaign Statistics And Email Statistics-->
-                    <div class="clearfix">
-                        <app-campaign-statistics-analytics></app-campaign-statistics-analytics>
-                        <ng-container *ngIf="authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
-                            <app-advanced-dashboard-analytics *ngIf="!ngxLoading" [applyFilter]="applyFilter" ></app-advanced-dashboard-analytics>
-                        </ng-container>
-                        <!-- ---Email Statistics---------------->
-                        <ng-container *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1">
-                            <div class="col-xs-12 col-sm-6">
-                                <div class="col-xs-12 p0">
-                                    <div class="portlet light" style="margin-bottom: 20px;">
-                                        <div class="portlet-title">
-                                            <div class="caption">
-                                                <i class="fa fa-bar-chart" aria-hidden="true"></i>
-                                                <span class="caption-subject" translate>Email Statistics</span>
-                                            </div>
+                <!---Campaign Statistics-->
+                <!---Campaign Statistics And Email Statistics-->
+                <div class="clearfix">
+                    <app-campaign-statistics-analytics></app-campaign-statistics-analytics>
+                    <ng-container *ngIf="authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
+                        <app-advanced-dashboard-analytics *ngIf="!ngxLoading"
+                            [applyFilter]="applyFilter"></app-advanced-dashboard-analytics>
+                    </ng-container>
+                    <!-- ---Email Statistics---------------->
+                    <ng-container *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="col-xs-12 p0">
+                                <div class="portlet light" style="margin-bottom: 20px;margin-top: 10px;">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                                            <span class="caption-subject" translate>Email Statistics</span>
                                         </div>
-                                        <div class="portlet-body"
-                                            style="min-height: 232px;  max-height: 100%; max-width: auto;">
-                                            <app-modal-popup-loader [height]=220
-                                                [hidden]="!emailStatisticsLoader.isLoading"></app-modal-popup-loader>
-                                            <div class="table-responsive" [hidden]="emailStatisticsLoader.isLoading">
-                                                <table id="trellis" aria-describedby="desc">
-                                                    <tr>
-                                                        <td class="first"></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                            <ng-container *ngIf="!emailStatisticsLoader.isLoading">
-                                                <div *ngIf="categories?.length < 1"
-                                                    style="max-width: 100%;text-align: center;">
-                                                    <span style="position: absolute;top: 130px;left: 220px;">No data
-                                                        available</span>
-                                                </div>
-                                            </ng-container>
+                                    </div>
+                                    <div class="portlet-body"
+                                        style="min-height: 232px;  max-height: 100%; max-width: auto;">
+                                        <app-modal-popup-loader [height]=220
+                                            [hidden]="!emailStatisticsLoader.isLoading"></app-modal-popup-loader>
+                                        <div class="table-responsive" [hidden]="emailStatisticsLoader.isLoading">
+                                            <table id="trellis" aria-describedby="desc">
+                                                <tr>
+                                                    <td class="first"></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                            </table>
                                         </div>
+                                        <ng-container *ngIf="!emailStatisticsLoader.isLoading">
+                                            <div *ngIf="categories?.length < 1"
+                                                style="max-width: 100%;text-align: center;">
+                                                <span style="position: absolute;top: 130px;left: 220px;">No data
+                                                    available</span>
+                                            </div>
+                                        </ng-container>
                                     </div>
                                 </div>
                             </div>
-                        </ng-container>
-                    </div>
-                    <ng-container *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1">
-                        <!------Regional Statistics, Video Statistics & Email Stats--------------->
-                        <div class="clearfix">
-                            <app-regional-statistics-analytics></app-regional-statistics-analytics>
-                            <!----Video Statistics--------->
-                            <div>
-                                <app-video-statistics-analytics></app-video-statistics-analytics>
-                                <app-email-stats-analytics></app-email-stats-analytics>
-                            </div>
                         </div>
                     </ng-container>
+                </div>
+                <ng-container *ngIf="authenticationService?.dashboardTypes.indexOf('Dashboard')>-1">
+                    <!------Regional Statistics, Video Statistics & Email Stats--------------->
+                    <div class="clearfix">
+                        <app-regional-statistics-analytics></app-regional-statistics-analytics>
+                        <!----Video Statistics--------->
+                        <div>
+                            <app-video-statistics-analytics></app-video-statistics-analytics>
+                            <app-email-stats-analytics></app-email-stats-analytics>
+                        </div>
+                    </div>
+                </ng-container>
             </div>
             <!--End of row-->
 
@@ -252,11 +268,12 @@
                             (authenticationService?.mdf || authenticationService?.leadsAndDeals) ">
                 <div class="row">
                     <div class="page-bar portlet light  mmtp" *ngIf="authenticationService?.mdf">
-                        <app-mdf-statistics  [applyFilter]="applyFilter" *ngIf="authenticationService?.mdf && !ngxLoading"></app-mdf-statistics>
+                        <app-mdf-statistics [applyFilter]="applyFilter"
+                            *ngIf="authenticationService?.mdf && !ngxLoading"></app-mdf-statistics>
                     </div>
                 </div>
             </div>
-        
+
             <!---PRM Dashboard -->
             <ng-container
                 *ngIf="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
@@ -269,7 +286,7 @@
                 </app-show-prm-content>
                 <!--Top 4 Assets--------------->
                 <app-top-4-assets [isPartnerView]="false" [hideRowClass]="false" (newItemEvent)="setManageDam($event)"
-                    *ngIf="authenticationService?.module?.damAccess" ></app-top-4-assets>
+                    *ngIf="authenticationService?.module?.damAccess"></app-top-4-assets>
                 <!--Top 4 Shared Assets--------------->
                 <app-top-4-assets [isPartnerView]="true" [hideRowClass]="false"
                     *ngIf="authenticationService?.module?.damAccessAsPartner"></app-top-4-assets>
@@ -299,35 +316,45 @@
                 </div>
             </div>
             <!-- High Level Analytics -->
-            <div class="clearfix" style="padding-top: 2px;"  *ngIf=" authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
+            <div class="clearfix" style="padding-top: 2px;"
+                *ngIf=" authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1">
                 <div class="portlet light" id="hla-adv-dashboard">
-                <div class="portlet-title" style="min-height: 0px;">
-                    <div class="caption">
-                        <span class="caption-subject" translate>High Level Analytics</span>
-                    </div>                   
-                    <span data-placement="top" class="btn btn-xs  l-g-view pull-right" data-toggle="tooltip" style="margin-top: -8px;"
-                    (click)="saveDownloadRequest(false);downloadRequestButtonClicked = true" *ngIf="!downloadRequestButtonClicked">
-                     <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
-                    </span>
-                </div>
-                <div class="portlet-body clearfix">
-                    <app-response-message class="pg8" [customResponse]="downloadRequestCustomResponse" *ngIf="downloadRequestCustomResponse.isVisible">
-                    </app-response-message>
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-6 col-md-5 col-lg-6" *ngIf="!(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
-                        || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner) ">
-                            <app-donut-pie-chart *ngIf="!authenticationService?.module?.isMarketingCompany && !ngxLoading" [applyFilter]="applyFilter"></app-donut-pie-chart> 
-                            <app-horizontal-bat-chart *ngIf="!ngxLoading" [applyFilter]="applyFilter"></app-horizontal-bat-chart> 
+                    <div class="portlet-title" style="min-height: 0px;">
+                        <div class="caption">
+                            <span class="caption-subject" translate>High Level Analytics</span>
                         </div>
-                    <div [className]= "(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
-                    || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)?'col-xs-12 col-sm-12 col-md-12 col-lg-12': 'col-xs-12 col-sm-6 col-md-7 col-lg-6' " style="padding-left: 26px;padding-right: 26px;">
-                        <app-highlevel-analytics-detail-reports *ngIf="!ngxLoading"  [applyFilter]="applyFilter"></app-highlevel-analytics-detail-reports>
+                        <span data-placement="top" class="btn btn-xs  l-g-view pull-right" data-toggle="tooltip"
+                            style="margin-top: -8px;"
+                            (click)="saveDownloadRequest(false);downloadRequestButtonClicked = true"
+                            *ngIf="!downloadRequestButtonClicked">
+                            <i _ngcontent-c17="" aria-hidden="true" class="fa fa-download p10"></i>
+                        </span>
                     </div>
+                    <div class="portlet-body clearfix">
+                        <app-response-message class="pg8" [customResponse]="downloadRequestCustomResponse"
+                            *ngIf="downloadRequestCustomResponse.isVisible">
+                        </app-response-message>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-5 col-lg-6"
+                                *ngIf="!(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
+                        || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner) ">
+                                <app-donut-pie-chart
+                                    *ngIf="!authenticationService?.module?.isMarketingCompany && !ngxLoading"
+                                    [applyFilter]="applyFilter"></app-donut-pie-chart>
+                                <app-horizontal-bat-chart *ngIf="!ngxLoading"
+                                    [applyFilter]="applyFilter"></app-horizontal-bat-chart>
+                            </div>
+                            <div [className]="(authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || authenticationService?.module?.isPrmAndPartnerTeamMember 
+                    || authenticationService?.partnershipEstablishedOnlyWithPrm || authenticationService?.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner)?'col-xs-12 col-sm-12 col-md-12 col-lg-12': 'col-xs-12 col-sm-6 col-md-7 col-lg-6' "
+                                style="padding-left: 26px;padding-right: 26px;">
+                                <app-highlevel-analytics-detail-reports *ngIf="!ngxLoading"
+                                    [applyFilter]="applyFilter"></app-highlevel-analytics-detail-reports>
+                            </div>
+                        </div>
                     </div>
-                </div> 
                 </div>
             </div>
-        
+
             <!---Social Accounts-->
             <app-social-accounts-analytics></app-social-accounts-analytics>
         </ng-container>
@@ -377,7 +404,8 @@
                     <div>
                         <div class="col-xs-12 col-sm-4 col-md-4" *ngFor="let item of campaignReportOptions">
                             <label class="form-check-label">
-                                <input class="form-check-input radioButton_shadow" type="radio" name="campaignReportType" [value]="item"
+                                <input class="form-check-input radioButton_shadow" type="radio"
+                                    name="campaignReportType" [value]="item"
                                     [checked]="item === userCampaignReport.campaignReportOption"
                                     (change)="onSelectionChangeCampaignReportOption(item)"> {{item}}
                             </label>
@@ -397,7 +425,9 @@
                                         <div class="portlet-body scrollbar launchedCampaignsMaster"
                                             [dragula]='"bag-items"'>
                                             <div class="gu-block" *ngFor="let item of launchedCampaignsMaster">
-                                                <h6 data-placement="bottom" data-toggle="tooltip" title="{{item.campaign}}" class="gu-block-content" [id]="item.id">{{item.campaign |
+                                                <h6 data-placement="bottom" data-toggle="tooltip"
+                                                    title="{{item.campaign}}" class="gu-block-content" [id]="item.id">
+                                                    {{item.campaign |
                                                     slice:0:19}}<span *ngIf="item.campaign?.length>19">...</span></h6>
                                             </div>
                                         </div>
@@ -426,8 +456,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-primary"
-                    (click)="validateUserCampaignReport(userCampaignReport)">Save changes</button>
+                <button type="button" class="btn-primary" (click)="validateUserCampaignReport(userCampaignReport)">Save
+                    changes</button>
                 <button type="button" class="Btn-Gray" data-dismiss="modal"
                     (click)="userCampaignReport.response = null">Close</button>
             </div>
@@ -435,26 +465,29 @@
     </div>
 </div>
 
-<app-confirm-sweet-alert-util *ngIf="showSweetAlert" (notifyComponent)="saveDuplicateDownloadRequest($event)"></app-confirm-sweet-alert-util>
+<app-confirm-sweet-alert-util *ngIf="showSweetAlert"
+    (notifyComponent)="saveDuplicateDownloadRequest($event)"></app-confirm-sweet-alert-util>
 
 <div class="page-content" *ngIf="editVideo || playVideo">
-   <div class="page-bar">
-      <ul class="page-breadcrumb">
-         <li><i class="fa fa-home" aria-hidden="true"></i>
-            <a [routerLink]="referenceService.homeRouter" translate>Home</a>
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li>
-            <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
-<i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li>
-            <a (click)="goToDam()" translate>DAM</a></li>
-            <li *ngIf="editVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Edit Video Asset</a></li>
-            <li *ngIf="playVideo" ><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Play Video Asset</a></li>
-      </ul>
-   </div>
-<app-edit-video *ngIf="editVideo" (notifyParent)="update($event)"></app-edit-video>
-<app-play-video *ngIf="playVideo"></app-play-video>
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li><i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+                <a [routerLink]="referenceService?.selectModuleRouter" translate>Select Module</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li>
+                <a (click)="goToDam()" translate>DAM</a>
+            </li>
+            <li *ngIf="editVideo"><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Edit Video Asset</a>
+            </li>
+            <li *ngIf="playVideo"><i class="fa fa-angle-right" aria-hidden="true"></i><a translate>Play Video Asset</a>
+            </li>
+        </ul>
+    </div>
+    <app-edit-video *ngIf="editVideo" (notifyParent)="update($event)"></app-edit-video>
+    <app-play-video *ngIf="playVideo"></app-play-video>
 </div>
-

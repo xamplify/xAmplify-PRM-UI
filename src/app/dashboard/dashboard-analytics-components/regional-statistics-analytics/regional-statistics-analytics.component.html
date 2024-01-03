@@ -1,117 +1,128 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="col-md-6 col-sm-6">
-  <div class="portlet light" style="margin-bottom: 20px;">
-      <div class="portlet-title">
-          <div class="caption">
-              <i class="fa fa-globe"></i>
-              <span class="caption-subject" translate>Regional Statistics</span>
-          </div>
-      </div>
-      <div class="portlet-body">
-        <app-modal-popup-loader  [height]=220 *ngIf="regionalStatisticsLoader.isLoading"></app-modal-popup-loader>
-          <app-worldmap *ngIf="countryViewsData && !regionalStatisticsLoader.isLoading" [worldMapData]='countryViewsData' (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
-      </div>
-  </div>
+    <div class="portlet light" style="margin-bottom: 20px;margin-top: 10px;">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-globe"></i>
+                <span class="caption-subject" translate>Regional Statistics</span>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <app-modal-popup-loader [height]=220 *ngIf="regionalStatisticsLoader.isLoading"></app-modal-popup-loader>
+            <app-worldmap *ngIf="countryViewsData && !regionalStatisticsLoader.isLoading"
+                [worldMapData]='countryViewsData' (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
+        </div>
+    </div>
 </div>
 
 
-<div class="modal right fade" id="worldMapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">
-                  <i class="fa fa-times"></i>
-              </a>
-              <h4 class="m0">Check out where your videos are being watched</h4>
-              <div [class.disabled]="isLoadingDownloadList" class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
-                  <span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
-            <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
-            <i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
-          </span>
-                  <ul class="dropdown-menu pull-right">
-                      <li>
-                          <a id="delete_button" (click)="downloadFuctionality()"> Export To Excel </a>
-                      </li>
-                  </ul>
-              </div>
-          </div>
-          <div class="modal-body clearfix">
-              <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
-                  <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
-                  <strong class="m5" style="padding-left:10px;">Please wait while we process your request.</strong>
-              </div>
-              <div *ngIf="isLoadingList">
-                  <app-list-loader></app-list-loader>
-              </div>
-              <div class="table-responsive" *ngIf="!isLoadingList">
-                  <table class="table tgrid">
-                      <thead>
-                          <tr>
-                              <th class="headerCss center">NAME</th>
-                              <th class="headerCss center hidden-xs">Most Recent View</th>
-                              <th class="headerCss center hidden-xs">LOCATION</th>
-                              <th class="headerCss center hidden-xs">DEVICE</th>
-                              <th class="hidden-sm hidden-md hidden-lg">MORE</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          <ng-container *ngFor="let item of worldMapUserData;let i = index">
-                              <tr>
-                                  <td>
-                                      <app-user-info [userInfo]="item"> </app-user-info>
-                                  </td>
-                                  <td class="center hidden-xs">
-                                      <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
-                                  </td>
-                                  <td class="center hidden-xs">
-                                      <app-location [userLocation]="item"> </app-location>
-                                  </td>
-                                  <td class="center hidden-xs">
-                                      <app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
-                                  </td>
-                                  <td align="center" class="hidden-sm hidden-md hidden-lg">
-                                      <button class="lightgray-btn" id='more_less_button_{{i}}' (click)="item.isShowDetails = ! item.isShowDetails">
-                        <span *ngIf="!item.isShowDetails">More</span>
-                        <span *ngIf="item.isShowDetails">Less</span>
-                      </button>
-                                  </td>
-                              </tr>
-                              <tr class="hidden-sm hidden-md hidden-lg" [ngClass]="{'hidden': !item.isShowDetails, 'show-more': item.isShowDetails}">
-                                  <td colspan="8">
-                                      <table cellpadding="5" cellspacing="0">
-                                          <tbody>
-                                              <tr>
-                                                  <td class='pt10 pb10 bold'>Date &Time:</td>
-                                                  <td class="center">
-                                                      <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
-                                                  </td>
-                                              </tr>
-                                              <tr>
-                                                  <td class='pt10 pb10 bold'>Location: </td>
-                                                  <td style="text-align: center">
-                                                      <app-location [userLocation]="item"> </app-location>
-                                                  </td>
-                                              </tr>
-                                              <tr>
-                                                  <td class='pt10 pb10 bold'>Platform: </td>
-                                                  <td style="text-align: center">
-                                                      <app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
-                                                  </td>
-                                              </tr>
-                                          </tbody>
-                                      </table>
-                                  </td>
-                              </tr>
-                          </ng-container>
-                      </tbody>
-                  </table>
-              </div>
-              <app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0 && !isLoadingList" [pagination]="pagination" [type]="'worldmap'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
-          </div>
-          <div class="modal-footer">
-              <button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">Close</button>
-          </div>
-      </div>
-  </div>
+<div class="modal right fade" id="worldMapModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close-circle" data-dismiss="modal" (click)="cancelEmailStateModalPopUp()">
+                    <i class="fa fa-times"></i>
+                </a>
+                <h4 class="m0">Check out where your videos are being watched</h4>
+                <div [class.disabled]="isLoadingDownloadList" class="btn-group pull-right"
+                    style="margin-top: 8px; cursor:pointer; color: #7d8c98; margin-right: -15px;">
+                    <span class="dropdown-toggle" data-toggle="dropdown"
+                        style="box-shadow:none; margin-top: -22px;margin-right: 21px; float:right;">
+                        <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i>
+                        <i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+                    </span>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a id="delete_button" (click)="downloadFuctionality()"> Export To Excel </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+                    <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
+                    <strong class="m5" style="padding-left:10px;">Please wait while we process your request.</strong>
+                </div>
+                <div *ngIf="isLoadingList">
+                    <app-list-loader></app-list-loader>
+                </div>
+                <div class="table-responsive" *ngIf="!isLoadingList">
+                    <table class="table tgrid">
+                        <thead>
+                            <tr>
+                                <th class="headerCss center">NAME</th>
+                                <th class="headerCss center hidden-xs">Most Recent View</th>
+                                <th class="headerCss center hidden-xs">LOCATION</th>
+                                <th class="headerCss center hidden-xs">DEVICE</th>
+                                <th class="hidden-sm hidden-md hidden-lg">MORE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let item of worldMapUserData;let i = index">
+                                <tr>
+                                    <td>
+                                        <app-user-info [userInfo]="item"> </app-user-info>
+                                    </td>
+                                    <td class="center hidden-xs">
+                                        <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
+                                    </td>
+                                    <td class="center hidden-xs">
+                                        <app-location [userLocation]="item"> </app-location>
+                                    </td>
+                                    <td class="center hidden-xs">
+                                        <app-platform [deviceTypeOs]="true" [userPlatform]="item"> </app-platform>
+                                    </td>
+                                    <td align="center" class="hidden-sm hidden-md hidden-lg">
+                                        <button class="lightgray-btn" id='more_less_button_{{i}}'
+                                            (click)="item.isShowDetails = ! item.isShowDetails">
+                                            <span *ngIf="!item.isShowDetails">More</span>
+                                            <span *ngIf="item.isShowDetails">Less</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="hidden-sm hidden-md hidden-lg"
+                                    [ngClass]="{'hidden': !item.isShowDetails, 'show-more': item.isShowDetails}">
+                                    <td colspan="8">
+                                        <table cellpadding="5" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td class='pt10 pb10 bold'>Date &Time:</td>
+                                                    <td class="center">
+                                                        <app-timestamp [dateAndTime]="item.time"> </app-timestamp>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='pt10 pb10 bold'>Location: </td>
+                                                    <td style="text-align: center">
+                                                        <app-location [userLocation]="item"> </app-location>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='pt10 pb10 bold'>Platform: </td>
+                                                    <td style="text-align: center">
+                                                        <app-platform [deviceTypeOs]="true" [userPlatform]="item">
+                                                        </app-platform>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+                <app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0 && !isLoadingList"
+                    [pagination]="pagination" [type]="'worldmap'" (notifyParent)="setPage($event)"
+                    (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn Btn-Gray" data-dismiss="modal"
+                    (click)="cancelEmailStateModalPopUp()">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
-<app-export-csv *ngIf="isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
+<app-export-csv *ngIf="isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName">
+</app-export-csv>

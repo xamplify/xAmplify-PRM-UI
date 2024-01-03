@@ -71,7 +71,7 @@
         <button *ngIf="!isPublishedSuccessfully" type="submit" class="button bgcolor-unset"
           [disabled]="selectedIds?.length==0 || isShareButtonClicked" (click)="share();isShareButtonClicked=true"><span
             class="btn Btn-Green transition txt_pd-top3">Share {{selectedModule}}</span></button>
-        <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
+        <button type="submit" class="btn Btn-Gray neg_mar_top6" (click)="closePopup()">Close</button>
       </div>
     </div>
   </div>

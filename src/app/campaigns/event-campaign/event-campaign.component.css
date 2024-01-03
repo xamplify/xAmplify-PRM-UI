@@ -1512,3 +1512,22 @@ input.radio-custimization:checked:before {
       left:39px!important;
   }
 } 
+
+fieldset.scheduler-border {
+  border: 1px solid red;
+}
+#usefa{
+  padding: 18px;
+  font-size: 1.8em;
+  line-height: 1em;
+  background: #00a6e8;
+  color: #fff;
+  border-radius: 100%;
+  margin-left: 1em;
+  background: gray;
+}
+/* 22-12-2023(sudha sri) */
+.social_share_border{
+  border: 1px solid #ccc;
+
+}
