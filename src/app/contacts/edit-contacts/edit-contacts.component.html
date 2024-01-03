@@ -1553,7 +1553,7 @@
 									<div class="form-inline col-sm-12">
 										<div class="form-group col-xs-12 col-sm-6 col-md-3 col-lg-4 tab_v_flex tab_p0">
 											<b [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}"
-												class="dataAlignment">{{i}}</b>
+												class="dataAlignment">{{i+1}}</b>
 											<select class="form-control" [(ngModel)]="criterias[i].property"
 												[ngStyle]="{'margin-left':i=== 1?'2px':'0px'}">
 												<option *ngFor="let filterOption of filterOptions; let i = index">
