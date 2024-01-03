@@ -56,6 +56,7 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   /*****Form Related**************/
   formGroupClass: string = "col-sm-8";
   emaillIdDivClass: string = this.formGroupClass;
+  firstNameDivClass: string = this.formGroupClass;
   groupNameDivClass: string = this.formGroupClass;
   errorClass: string = "col-sm-8 has-error has-feedback";
   successClass: string = "col-sm-8 has-success has-feedback";
@@ -529,11 +530,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
       this.team.emailIdErrorMessage = this.team.validEmailId ? '' : 'Please enter a valid email address';
       this.emaillIdDivClass = this.team.validEmailId ? this.successClass : this.errorClass;
     }
-    //adding new if condition to validate the first name.
+   
     if ("firstName" == fieldName) {
       this.team.validFirstName = this.referenceService.validateFirstName(this.team.firstName);
       this.team.lastNameErrorMessage = this.team.validFirstName ? '' : 'Please enter a valid name';
-      this.emaillIdDivClass = this.team.validFirstName ? this.successClass : this.errorClass;
+      this.firstNameDivClass = this.team.validFirstName ? this.successClass : this.errorClass;
     }
     
     else if ("teamMemberGroup" == fieldName) {
@@ -541,24 +542,23 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
     }
     this.validateAllFields();
   }
+
   validateAllFields() {
     if (this.editTeamMember) {
-
       this.team.validEmailId = this.referenceService.validateEmailId(this.team.emailId);
       this.team.validTeamMemberGroupId = this.team.teamMemberGroupId != undefined && this.team.teamMemberGroupId > 0;
-    
-
-      this.team.validFirstName = this.referenceService.validateFirstName(this.team.firstName);
-    
-    
+      if(this.team.firstName.length > 0 ){
+        this.team.validFirstName = this.referenceService.validateFirstName(this.team.firstName);
+      }else{
+        this.team.validFirstName = false;
+      }    
     }
     this.team.validForm = this.team.validEmailId && this.team.validTeamMemberGroupId && this.team.validFirstName ;
   }
 
-
-
   clearForm() {
     this.emaillIdDivClass = this.defaultClass;
+    this.firstNameDivClass = this.defaultClass;
     this.team = new TeamMember();
     this.showAddTeamMemberDiv = false;
     this.showUploadedTeamMembers = false;
@@ -592,7 +592,6 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
   addTeamMember() {
     this.loading = true;
     let teamMemberDtos = new Array<any>();
-    // i have used trim for first name to eleminate the leading and trailing white spaces.
         let teamMemberDto = { 'emailId': this.team.emailId, 'firstName': this.team.firstName.trim(), 'lastName': this.team.lastName, 'teamMemberGroupId': this.team.teamMemberGroupId, 'secondAdmin': this.team.secondAdmin };
     teamMemberDtos.push(teamMemberDto);
     let teamInput = {};
@@ -608,12 +607,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
           } else {
             this.team.validEmailId = false;
             this.team.emailIdErrorMessage = data.message;
-
-              //new fields Added for validating the names.
               this.team.validFirstName=false;
               this.team.lastNameErrorMessage=data.mesaage;
               
             this.emaillIdDivClass = this.errorClass;
+            this.firstNameDivClass = this.errorClass;
             this.team.validForm = false;
           }
           this.referenceService.loading(this.addTeamMemberLoader, false);
@@ -894,7 +892,11 @@ export class TeamMembersUtilComponent implements OnInit, OnDestroy {
         if(this.team.teamMemberGroupId==null){
             this.team.teamMemberGroupId=0;
             this.team.validForm = false;
-        }else{
+        }
+        if(this.team.firstName.length===0){
+          this.team.validForm = false;
+        }
+        else{
           this.team.validForm = true;
         }
       }, error => {
