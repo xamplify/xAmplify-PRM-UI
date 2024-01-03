@@ -810,8 +810,47 @@
 				</fieldset>
 				<!--  End Step one -->
 				<!--   Step two  Recipients  -->
-				<div class="row setup-content" id="step-4" *ngIf="recipientsTab">
+				<div class="row setup-content" id="step-4" *ngIf="recipientsTab ">
 					<div class="col-xs-12">
+						<fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
+							<legend class="scheduler-border">Selected {{campaign?.oneClickLaunch ?
+							   'Lead(s)':'Contact(s)'}} list</legend>
+							
+							   <div class="row d-flex align-items-center">
+								<div class = "col-xs-2 col-sm-2 col-md-2 col-lg-2">
+								<ng-container *ngIf="parternUserListIds?.length<1">
+								  <i class="fa fa-users" id="usefa" [ngClass]="{'disabled': parternUserListIds?.length < 1}" aria-hidden="true"></i>
+								</ng-container>
+							  	
+								<ng-container *ngIf="parternUserListIds?.length>=1">
+								  <i class="fa fa-users" id="usefa" style="background-color:#37accc" aria-hidden="true"></i>
+								</ng-container>
+								</div>
+								<div class = "col-xs-7 col-sm-7 col-md-7 col-lg-7">
+								<ng-container *ngIf="parternUserListIds?.length==0">
+								  <h4  class="text-center"> No row is selected </h4>
+								</ng-container>
+								</div>
+								<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+									<div class="portlet-input input-inline mEventSearch" style="top: -6px;">
+										<div class="input-icon right">
+											<input type="text" [(ngModel)]="contactSearchInput"
+												[ngModelOptions]="{standalone: true}" class="form-control"
+												placeholder="Search for a list"
+												(keypress)="eventHandlerContact($event.keyCode)">
+											<button class="glyphicon glyphicon-remove search-box-item-clear"
+												style="padding: 5px;" *ngIf="contactSearchInput"
+												(click)="contactSearchInput='';searchContactList()"></button>
+											<button type="submit" class="search-box-item-click"
+												style="padding: 4px !important;" (click)="searchContactList()">
+												<i class="fa fa-search"
+													style="font-size: 16px !important; padding: 5px !important;"
+													aria-hidden="true"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							  </div>
 						<div class="col-xs-12" style="margin-top: 10px;">
 							<div class="row pb10" id="user_list_table_view">
 								<div>
@@ -829,23 +868,7 @@
 														[ngValue]="option">{{option.name}}</option>
 												</select>
 											</div>
-											<div class="portlet-input input-inline mEventSearch" style="top: -6px;">
-												<div class="input-icon right">
-													<input type="text" [(ngModel)]="contactSearchInput"
-														[ngModelOptions]="{standalone: true}" class="form-control"
-														placeholder="Search for a list"
-														(keypress)="eventHandlerContact($event.keyCode)">
-													<button class="glyphicon glyphicon-remove search-box-item-clear"
-														style="padding: 5px;" *ngIf="contactSearchInput"
-														(click)="contactSearchInput='';searchContactList()"></button>
-													<button type="submit" class="search-box-item-click"
-														style="padding: 4px !important;" (click)="searchContactList()">
-														<i class="fa fa-search"
-															style="font-size: 16px !important; padding: 5px !important;"
-															aria-hidden="true"></i>
-													</button>
-												</div>
-											</div>
+											
 										</div>
 										<div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
 											<div class="alert alert-success" *ngIf="parternUserListIds?.length>0">
@@ -867,10 +890,13 @@
 													</th>
 												</tr>
 											</table>
+										<div class="col-xs-12">
 											<div class="table-responsive">
+											
 												<table class="table tgrid" id="user_list_tb"
 													aria-describedby="user_list_tb_info"
-													*ngIf="contactListsPagination.pagedItems?.length > 0">
+													*ngIf="contactListsPagination.pagedItems?.length > 0 ">
+													<!-- change start -->
 													<thead>
 														<tr>
 															<th scope="row" class="text-center">
@@ -900,6 +926,7 @@
 															<th scope="row" style="text-align: center;" translate>
 																Preview </th>
 														</tr>
+														<!-- change to do -->
 													</thead>
 													<tbody>
 														<ng-container
@@ -1074,7 +1101,9 @@
 														</ng-container>
 													</tbody>
 												</table>
+											
 											</div>
+										</div>
 										</div>
 									</div>
 								</div>
@@ -1095,6 +1124,7 @@
 								(click)="resetTabs('templates')" title=""><span
 									class="btn Btn-Green transition txt_pd-top3">Next</span></button>
 						</div>
+					 </fieldset>
 					</div>
 				</div>
 				<!--     End Step two   -->
@@ -1972,20 +2002,20 @@
 								<label class="btn btn-primary button-border">
 									<input type="radio" class="text-center mLabelAlign radioButton_shadow"
 										name="scheduleCampaign" [value]="launchOptions[0]"
-										(click)="setLaunchOptions(launchOptions[0])" ngDefaultControl
+										(click)="setLaunchOptions(launchOptions[0])" ngDefaultControl  
 										style=" margin-right:10px; " /><span class="text-algn">Now</span>
 								</label>
 								<label class="btn btn-warning button-border Sch-class">
 									<input type="radio" class="text-center mLabelAlign radioButton_shadow"
 										name="scheduleCampaign" [value]="launchOptions[1]"
-										(click)="setLaunchOptions(launchOptions[1])" ngDefaultControl
+										(click)="setLaunchOptions(launchOptions[1])" ngDefaultControl  
 										style="margin-right:10px " /><span class="text-algn">Schedule</span>
 								</label>
 								<label class="btn green mBtnAlign button-border">
 									<input type="radio" class="text-center mLabelAlign radioButton_shadow"
 										name="scheduleCampaign" [value]="launchOptions[2]"
-										(click)="setLaunchOptions(launchOptions[2])" ngDefaultControl
-										style="margin-right:10px" /><span class="text-algn">Save</span>
+										(click)="setLaunchOptions(launchOptions[2])"  ngDefaultControl
+										style="margin-right:10px"/><span class="text-algn">Save</span>
 								</label>
 							</ng-container>
 						</div>
@@ -1994,7 +2024,7 @@
 						<div class="col-md-4">
 							<input [attr.disabled]="isPreviewEvent? '' : null" type="text" id="launchTimeInString"
 								class="form-control eventflatpickr" placeholder="Launch Time"
-								[(ngModel)]="eventCampaign.launchTimeInString" [ngModelOptions]="{standalone: true}"
+								[(ngModel)]="eventCampaign.launchTimeInString" [value]="eventCampaign.launchTimeInString" [ngModelOptions]="{standalone: true}"
 								(input)="scheduleTimeError()" (blur)="scheduleTimeError()">
 							<div class="text-danger" *ngIf="eventError.scheduleTimeError">{{scheduleCampaignError}}
 							</div>
