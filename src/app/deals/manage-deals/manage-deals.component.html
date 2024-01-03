@@ -158,7 +158,8 @@
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService.module.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
                         (click)="addDeal()" style="padding-left: 11px;">
                         <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
-                          <span class="btn btn-primary transition d-inline"><i class="fa fa-plus" aria-hidden="true"></i> Add a
+                          <span class="btn btn-primary transition d-inline"><i class="fa fa-plus"
+                              aria-hidden="true"></i> Add a
                             Deal</span>
                         </button>
                       </a>
@@ -168,14 +169,16 @@
                         (click)="syncLeadsWithActiveCRM()">
 
                         <!-- <button class="btn btn-white salesforce-btn button neg-mar-top bgcolor-unset" -->
-                        <button class="btn salesforce-btn button neg-mar-top bgcolor-unset p0 neg-mg-btm btn-transitions"
+                        <button
+                          class="btn salesforce-btn button neg-mar-top bgcolor-unset p0 neg-mg-btm btn-transitions"
                           data-toggle="tooltip" data-placement="bottom" title="Synchronize" translate>
 
                           <span class="btn Btn-Green transition">
                             <i class="fa fa-refresh" aria-hidden="true"></i>
-                             <span *ngIf="activeCRMDetails?.type==='HUBSPOT'">HubSpot</span>
-                            <span *ngIf="activeCRMDetails?.type!='HUBSPOT'">{{ activeCRMDetails?.type | titlecase }}</span>
-                        </span>
+                            <span *ngIf="activeCRMDetails?.type==='HUBSPOT'">HubSpot</span>
+                            <span *ngIf="activeCRMDetails?.type!='HUBSPOT'">{{ activeCRMDetails?.type | titlecase
+                              }}</span>
+                          </span>
 
                         </button>
                       </a>
@@ -219,9 +222,9 @@
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                         <div class="form-group" style="text-align: -webkit-right;">
-                          <button class="button bgcolor-unset" translate="" type="button" ng-reflect-translate=""
-                            [disabled]="" (click)="validateDateFilters()"><span
-                              class="btn Btn-Green transition">Filter</span></button>
+                          <button class="button bgcolor-unset neg_mrgn_top4 mrgn_top0" translate="" type="button"
+                            ng-reflect-translate="" [disabled]="" (click)="validateDateFilters()"><span
+                              class="btn Btn-Green transition txt_pd-top3">Filter</span></button>
                         </div>
                       </div>
                       <div class="portlet box">
@@ -298,8 +301,9 @@
                         <ng-container *ngFor='let deal of dealsPagination.pagedItems; let i=index'>
                           <tr>
                             <td style="width: 40%;">
-                              <div><span  data-toggle="tooltip" data-placement="top" title="{{deal.title}}">{{deal.title | slice:0:30}}
+                              <div><span  data-toggle="tooltip" data-placement="top" title="{{deal.title}}"><b>Deal Name:</b> {{deal.title | slice:0:30}}
                                 <span *ngIf="deal.title?.length>30">...</span></span>
+
                               </div>
                               <div>
                                 <h5 *ngIf="isPartnerVersion"><b>Added For:</b>
@@ -327,7 +331,7 @@
                                 title="{{deal.createdByCompanyName}}">{{deal.createdByCompanyName | slice:0:30}}
                                 <span *ngIf="deal.createdByCompanyName?.length>30">...</span>
                               </h5>
-                              <h5 class='ellipsis m_t_view' data-toggle="tooltip" data-placement="bottom"
+                              <h5 class='m_t_view' data-toggle="tooltip" data-placement="bottom"
                                 title="{{deal.createdByName}}" style="margin: 7px 0 2px 0;font-weight: 400;">
                                 {{deal.createdByName | slice:0:20}}
                                 <span *ngIf="deal.createdByName?.length>20">...</span>

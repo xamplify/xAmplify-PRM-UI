@@ -47,6 +47,7 @@ export class IntegrationSettingsComponent implements OnInit {
 	selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
 	customFieldsDtosLoader = false;
 	expandField: boolean = false;
+	typeMismatchMessage: any;
 
 	constructor(private integrationService: IntegrationService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent,
 		public referenceService: ReferenceService, public authenticationService: AuthenticationService) {
@@ -525,20 +526,78 @@ export class IntegrationSettingsComponent implements OnInit {
 		sfCustomField.showSettings = !sfCustomField.showSettings;
 	}
 		
+	// onFieldSelectionChange(selectedField: any): void {
+	// 	const selectedFieldType = selectedField.formDefaultFieldType;
+	// 	let countSelectedType = 0;
+
+	// 	this.sfCustomFieldsResponse.forEach(field => {
+	// 		if (field.formDefaultFieldType === selectedFieldType) {
+	// 			countSelectedType++;
+	// 			field.required = true;
+	// 			field.canUnselect = false;
+	// 		}
+	// 	});
+	// 	if (countSelectedType > 1) {
+	// 		this.sfCustomFieldsResponse.forEach(field => {
+	// 			if (field.formDefaultFieldType === selectedFieldType && field !== selectedField) {
+	// 				field.formDefaultFieldType = null;
+	// 				field.canUnselect = true;
+	// 			}
+	// 		});
+	// 	}
+	// }
+
 	onFieldSelectionChange(selectedField: any): void {
 		const selectedFieldType = selectedField.formDefaultFieldType;
+		const selectedFieldTypeName = selectedField.type;
+
+		selectedField.typeMismatch = false;
+		selectedField.typeMismatchMessage = '';
+
+		if (selectedFieldType === null) {
+			selectedField.canUnselect = true;
+			return;
+		}
+
+		if (
+			(selectedFieldType === 'AMOUNT' && selectedFieldTypeName !== 'number') ||
+			(selectedFieldType === 'DEAL_NAME' && selectedFieldTypeName !== 'text') ||
+			(selectedFieldType === 'CLOSE_DATE' && selectedFieldTypeName !== 'date')
+		) {
+			selectedField.typeMismatch = true;
+			selectedField.typeMismatchMessage = `Type mismatch for ${selectedFieldType}. Expected type is ${selectedFieldType === 'AMOUNT' ? 'number' : selectedFieldType === 'DEAL_NAME' ? 'text' : 'date'
+				}.`;
+			selectedField.formDefaultFieldType = null;
+			return;
+		}
+
 		let countSelectedType = 0;
 
 		this.sfCustomFieldsResponse.forEach(field => {
-			if (field.formDefaultFieldType === selectedFieldType) {
+			if (
+				field.formDefaultFieldType === selectedFieldType &&
+				((selectedFieldTypeName === 'number' && selectedFieldType === 'AMOUNT') ||
+					(selectedFieldTypeName === 'text' && selectedFieldType === 'DEAL_NAME') ||
+					(selectedFieldTypeName === 'date' && selectedFieldType === 'CLOSE_DATE'))
+			) {
 				countSelectedType++;
 				field.required = true;
 				field.canUnselect = false;
+			} else {
+				field.typeMismatch = false;
+				field.typeMismatchMessage = '';
 			}
 		});
+
 		if (countSelectedType > 1) {
 			this.sfCustomFieldsResponse.forEach(field => {
-				if (field.formDefaultFieldType === selectedFieldType && field !== selectedField) {
+				if (
+					field.formDefaultFieldType === selectedFieldType &&
+					((selectedFieldTypeName === 'number' && selectedFieldType === 'AMOUNT') ||
+						(selectedFieldTypeName === 'text' && selectedFieldType === 'DEAL_NAME') ||
+						(selectedFieldTypeName === 'date' && selectedFieldType === 'CLOSE_DATE')) &&
+					field !== selectedField
+				) {
 					field.formDefaultFieldType = null;
 					field.canUnselect = true;
 				}
@@ -546,49 +605,4 @@ export class IntegrationSettingsComponent implements OnInit {
 		}
 	}
 
-	// onFieldSelectionChange(selectedField: any): void {
-	// 	const selectedFieldType = selectedField.formDefaultFieldType;
-	
-	// 	const fieldTypeCounts = {
-	// 		'AMOUNT': 0,
-	// 		'CLOSE_DATE': 0,
-	// 		'DEAL_NAME': 0
-	// 	};
-	
-	// 	let selectedIndex = -1;
-	// 	this.sfCustomFieldsResponse.forEach((field, index) => {
-	// 		if (field.formDefaultFieldType === 'AMOUNT') {
-	// 			fieldTypeCounts['AMOUNT']++;
-	// 		} else if (field.formDefaultFieldType === 'CLOSE_DATE') {
-	// 			fieldTypeCounts['CLOSE_DATE']++;
-	// 		} else if (field.formDefaultFieldType === 'DEAL_NAME') {
-	// 			fieldTypeCounts['DEAL_NAME']++;
-	// 		}
-	
-	// 		if (field === selectedField) {
-	// 			selectedIndex = index;
-	// 		}
-	// 	});
-	
-	// 	if (fieldTypeCounts[selectedFieldType] > 1) {
-	// 		this.sfCustomFieldsResponse.forEach((field, index) => {
-	// 			if (field.formDefaultFieldType === selectedFieldType && index !== selectedIndex) {
-	// 				field.formDefaultFieldType = null;
-	// 			}
-	// 		});
-	// 	}
-	
-	// 	if (selectedFieldType !== null) {
-	// 		const remainingFieldTypes = Object.keys(fieldTypeCounts).filter(type => type !== selectedFieldType);
-	// 		remainingFieldTypes.forEach(fieldType => {
-	// 			if (fieldTypeCounts[fieldType] === 0) {
-	// 				const emptyField = this.sfCustomFieldsResponse.find(field => field.formDefaultFieldType === null);
-	// 				if (emptyField) {
-	// 					emptyField.formDefaultFieldType = fieldType;
-	// 				}
-	// 			}
-	// 		});
-	// 	}
-	// }
-	
 }

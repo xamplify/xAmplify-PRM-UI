@@ -497,7 +497,7 @@
                                                       <app-list-loader
                                                          *ngIf="assetPublishEmailNotificationLoader"></app-list-loader>
                                                       <app-partner-company-and-groups
-                                                         *ngIf="!assetPublishEmailNotificationLoader"
+                                                         *ngIf="!assetPublishEmailNotificationLoader && !this.authenticationService.module.isMarketingCompany"
                                                          [moduleName]="'dam'" [inputId]="id"
                                                          [isPublishedToPartnerGroups]="damUploadPostDto?.publishedToPartnerGroups"
                                                          [selectedTeamMemberIds]="damUploadPostDto?.partnerIds"
@@ -520,9 +520,9 @@
                               style="margin-right: 20px;" type="button" (click)="closeCircle()"
                               translate>Cancel</button>
                            <button [disabled]="!isValidForm || isDisableForm" id="right"
-                              style="margin-right: 0px;padding-top:1px;" class="button_blue bgcolor-unset pd_rgt5"
+                              style="margin-right: 0px;padding-top:1px;" class="button_blue bgcolor-unset pos_mar_rgt4"
                               type="button" (click)="isVideoAsset?uploadVideo():uploadOrUpdate()" translate><span
-                                 class="btn btn-primary transition asset_text_pd0">{{submitButtonText}}</span></button>
+                                 class="btn btn-primary transition">{{submitButtonText}}</span></button>
                         </div>
                      </div>
                   </div>

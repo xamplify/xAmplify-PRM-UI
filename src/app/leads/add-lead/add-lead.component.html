@@ -166,9 +166,11 @@
       </div>
       <div class="pull-right" style="margin: 15px" *ngIf="!preview">
 
-        <button *ngIf="!edit" type="submit" id="saveLead" (click)="validateAndSubmit()" class="btn btn-primary">Submit
+        <button *ngIf="!edit" type="submit" id="saveLead" (click)="validateAndSubmit()"
+          class="button_blue bgcolor-unset"><span class="btn btn-primary transition txt_pd-top3">Submit</span>
         </button>
-        <button  *ngIf="edit" type="submit" id="saveLead" (click)="validateAndSubmit()" class="btn btn-primary">Update
+        <button *ngIf="edit" type="submit" id="saveLead" (click)="validateAndSubmit()"
+          class="button_blue bgcolor-unset"><span class="btn btn-primary transition txt_pd-top3">Update</span>
 
         </button>
       </div>

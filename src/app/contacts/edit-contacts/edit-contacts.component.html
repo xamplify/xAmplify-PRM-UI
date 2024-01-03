@@ -25,8 +25,10 @@
 			<span class="capitalize"
 				*ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'unsubscribe' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory != 'invalid'">
 				<ng-container *ngIf="module == 'partners'">{{contactsByType.selectedCategory}}</ng-container>
-				<ng-container *ngIf="module != 'partners' && contactsByType.selectedCategory != 'excluded'">Opt-in</ng-container>
-				<ng-container *ngIf="module != 'partners' && contactsByType.selectedCategory == 'excluded'">Excluded</ng-container>
+				<ng-container
+					*ngIf="module != 'partners' && contactsByType.selectedCategory != 'excluded'">Opt-in</ng-container>
+				<ng-container
+					*ngIf="module != 'partners' && contactsByType.selectedCategory == 'excluded'">Excluded</ng-container>
 				<span
 					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
@@ -192,31 +194,31 @@
 								</div>
 								<!-- New Tail -->
 								<div class="col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect"
-								*ngIf="!isPartner"
-								[ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' || checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
-								<button class="btn-block dashboard-stat yellow-gold"
-									[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'excluded'"
-									(click)="showingContactDetails('excluded')"
-									[disabled]="contactsByType.excludedContactsCount == 0">
-									<div class="visual">
-										<i class="fa fa-check-circle"
-											style="font-size: 40px;line-height: 60px;opacity: 1"
-											[ngStyle]="{'color': contactsByType.selectedCategory == 'excluded' ? '#white' : '#ccc' }"
-											*ngIf="contactsByType.selectedCategory == 'excluded'"
-											aria-hidden="true"></i>
-									</div>
-									<div class="details">
-										<div class="number">{{contactsByType.excludedContactsCount}}</div>
-										<div class="desc fz17" translate>Excluded</div>
-									</div>
-									<span class="morePadding">
-										<a class="more" style="text-align: left;" translate>
-											Detailed view <i class="m-icon-swapright m-icon-white"
+									*ngIf="!isPartner"
+									[ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' || checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
+									<button class="btn-block dashboard-stat yellow-gold"
+										[class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'excluded'"
+										(click)="showingContactDetails('excluded')"
+										[disabled]="contactsByType.excludedContactsCount == 0">
+										<div class="visual">
+											<i class="fa fa-check-circle"
+												style="font-size: 40px;line-height: 60px;opacity: 1"
+												[ngStyle]="{'color': contactsByType.selectedCategory == 'excluded' ? '#white' : '#ccc' }"
+												*ngIf="contactsByType.selectedCategory == 'excluded'"
 												aria-hidden="true"></i>
-										</a>
-									</span>
-								</button>
-							</div>
+										</div>
+										<div class="details">
+											<div class="number">{{contactsByType.excludedContactsCount}}</div>
+											<div class="desc fz17" translate>Excluded</div>
+										</div>
+										<span class="morePadding">
+											<a class="more" style="text-align: left;" translate>
+												Detailed view <i class="m-icon-swapright m-icon-white"
+													aria-hidden="true"></i>
+											</a>
+										</span>
+									</button>
+								</div>
 								<div class="col-xs-6 col-sm-2 col-lg-2 mt5 pr2 pr15 tiles_hover_effect"
 									[ngClass]="{'col-sm-5ths': checkingContactTypeName=== 'Partner' || checkingContactTypeName === 'Shared Lead' || checkingContactTypeName === 'Lead' || checkingContactTypeName === 'Contact'}">
 									<button class="btn-block dashboard-stat yellow-gold"
@@ -285,7 +287,7 @@
 					<div *ngIf="showEditContactData">
 						<div class="col-xs-12 p0">
 							<!-- BEGIN EXAMPLE TABLE PORTLET-->
-							<div class="portlet light remove_cardBgcolor padding_0"
+							<div class="portlet light remove_cardBgcolor share_leads_mrgn"
 								[ngStyle]="{'margin-top' :
 				((selectedAddContactsOption == 8 || selectedAddContactsOption == 9)) && ((assignLeads) || (!sharedLeads)) ? '-9px !important' : '2px !important'}">
 								<div class="portlet-title" style="padding-bottom: 6px !important;">
@@ -326,7 +328,7 @@
 														*ngIf="selectedAddContactsOption == 8 && ((assignLeads && !contactService?.assignedToPartner) || (contactService?.contactType!='ASSIGNED_LEADS_LIST' && !assignLeads))"
 														translate>Download CSV Template</a>
 												</li>
-												<li
+												<li [ngClass] = "{'disabled': (selectedInvalidContactIds?.length == 0 && selectedContactListIds?.length == 0)}"
 													*ngIf="selectedContactListName!=properties?.activeMasterPartnerList && selectedContactListName!=properties?.inActiveMasterPartnerList && !isTeamMemberPartnerList">
 													<a id="delete_button"
 														*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList && ((assignLeads) || (!assignLeads && contactService?.contactType!='ASSIGNED_LEADS_LIST')) && !sharedLeads"
@@ -1130,13 +1132,15 @@
 					</div>
 					<div class="valid-list" id="hidingListOfUsersTable">
 						<!-- BEGIN EXAMPLE TABLE PORTLET-->
-						<div class="portlet light">
+						<div class="portlet light remove_cardBgcolor share_leads_mrgn">
 							<div class="portlet-title">
 								<div class="caption" style="padding-top: 8px !important;">
 									<span class="capitalize"
 										*ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory !='invalid'">
-										<ng-container *ngIf="contactsByType.selectedCategory !== 'valid'">{{contactsByType.selectedCategory}}</ng-container>
-										<ng-container *ngIf="contactsByType.selectedCategory === 'valid'">Opt-in</ng-container>
+										<ng-container
+											*ngIf="contactsByType.selectedCategory !== 'valid'">{{contactsByType.selectedCategory}}</ng-container>
+										<ng-container
+											*ngIf="contactsByType.selectedCategory === 'valid'">Opt-in</ng-container>
 										<span
 											*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 										<span
@@ -1181,7 +1185,7 @@
 												aria-hidden="true"></i>
 										</span>
 										<ul class="dropdown-menu pull-right">
-											<li *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">
+											<li [ngClass] = "{'disabled': (selectedInvalidContactIds?.length == 0 && selectedContactListIds?.length == 0)}" *ngIf="contactsByType.selectedCategory == 'invalid' && !sharedLeads">
 												<a id="delete_button" (click)="invalidContactsShowAlert()" translate>
 													Delete</a>
 											</li>
@@ -1262,7 +1266,7 @@
 												</th>
 												<th *ngIf="contactsByType.selectedCategory == 'invalid' && !isPartner"
 													translate scope="col">EMAIL CATEGORY</th>
-													<th scope="row"
+												<th scope="row"
 													*ngIf="(contactsByType.selectedCategory =='excluded') && !isPartner"
 													class="hidden-xs" translate>EXCLUDED CATEGORY</th>
 												<th *ngIf="isPartner" translate scope="col">VERTICAL</th>
@@ -1350,8 +1354,8 @@
 															*ngIf="!allcontacts.emailCategory"><strong>-</strong></span>
 													</td>
 													<td *ngIf="contactsByType.selectedCategory =='excluded' && !isPartner"
-													class="hidden-xs">{{allcontacts.excludedCatagory}}
-												</td>
+														class="hidden-xs">{{allcontacts.excludedCatagory}}
+													</td>
 													<td *ngIf="isPartner">{{allcontacts.vertical | slice:0:14}}
 														<span *ngIf="allcontacts.vertical?.length>14">..</span>
 													</td>
@@ -1390,16 +1394,30 @@
 													<!--  <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td> -->
 													<td
 														*ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads">
-														<span class="markas markAsValidLable"
-															(click)="validateUndeliverableContacts(allcontacts.id)">Mark
-															as valid</span>
+															<button  type="submit" class="button bgcolor-unset button_height"
+															(click)="validateUndeliverableContacts(allcontacts.id)" translate><span class="btn markas markAsValidLable  txt_pd-top8">Mark as
+															opt-in</span></button>
 													</td>
-													<td
+
+													<!--
+                          Commented while merging
+                          <td *ngIf="contactsByType.selectedCategory =='excluded'">
+														<span class="markas markAsValidLable"
+															*ngIf="allcontacts.excludedCatagory == 'Excluded User'"
+															(click)="showMakeAsOptinAlert(allcontacts.id, allcontacts.emailId)">Mark
+															as opt-in</span>
+													</td>-->
+
+													
+                           <td
 													*ngIf="contactsByType.selectedCategory =='excluded'">
-													<span class="markas markAsValidLable" *ngIf="allcontacts.excludedCatagory == 'Excluded User'"
-														(click)="showMakeAsOptinAlert(allcontacts.id, allcontacts.emailId)">Mark
-														as opt-in</span>
+														<button *ngIf="allcontacts.excludedCatagory == 'Excluded User'" type="submit" class="button bgcolor-unset button_height"
+														[disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
+														(click)="showMakeAsOptinAlert(allcontacts.id, allcontacts.emailId)" translate>
+                              <span class="btn markas markAsValidLable  txt_pd-top8">Mark as
+														opt-in</span></button>
 												</td>
+
 													<td>
 														<button class="border-btn-small lightgray-btn"
 															id='more_less_button_{{i}}'
@@ -1582,7 +1600,7 @@
 				<div class="modal-footer">
 					<button type="button" class="button bgcolor-unset" [disabled]="criterias.length === 0"
 						(click)="contactFilter()" translate><span
-							class="btn Btn-Green transition">Submit</span></button>
+							class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
 					<button type="button" class="btn Btn-Gray" (click)="cancelSegmentation()" data-dismiss="modal"
 						translate>Cancel</button>
 				</div>
@@ -1771,7 +1789,7 @@
 			<div class="modal-footer">
 				<button type="submit" class="button bgcolor-unset" (click)="validatePartners()" translate><span
 						class="btn Btn-Green transition">Continue</span></button>
-				<button type="submit" class="btn Btn-Gray" (click)="closeAssignContactAndMdfAmountPopup()"
+				<button type="submit" class="btn Btn-Gray neg_mrg_top4" (click)="closeAssignContactAndMdfAmountPopup()"
 					translate>Close</button>
 			</div>
 		</div>

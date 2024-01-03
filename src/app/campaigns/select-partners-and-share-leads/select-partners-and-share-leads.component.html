@@ -182,7 +182,8 @@
                                   </ng-container>
                                   <!---Pagination-->
                                   <div [hidden]="shareLeadsLoader.isLoading || shareLeadsPagination.totalRecords==0" class="pg8">
-                                     <app-pagination [pagination]="shareLeadsPagination" (notifyParent)="navigateToShareLeadsListNextPage($event)" (notifyParentDropDown)="findShareLeads($event)">
+                                     <app-pagination [pagination]="shareLeadsPagination" (notifyParent)="navigateToShareLeadsListNextPage($event)" 
+                                     (notifyParentDropDown)="findShareLeads($event)" [customDropDown]="hideHeaderText">
                                      </app-pagination>
                                   </div>
                                   <div *ngIf="shareLeadsPagination.totalRecords==0 && !shareLeadsLoader.isLoading" class="alert alert-info text-center">

@@ -1114,6 +1114,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     saveCsvContactList() {
         try {
+            this.duplicateEmailIds =[];
             this.invalidPatternEmails.length = 0;
             this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
             if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {

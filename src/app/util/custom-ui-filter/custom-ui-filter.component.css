@@ -1,0 +1,54 @@
+.alert-su {
+    padding:6px 12px;
+  }
+
+.date-range-container {
+  display: flex;
+}
+.custom_fiter-asset {
+  /* border-bottom: 1px solid #ddd; */
+  background-color: #f1f5f9;
+  padding: 10px 5px 10px 5px !important;
+  /* border-radius:5px; */
+}
+.submit_customise {
+  background-color: #26a69a;
+  color:#fff ;
+} 
+.cancel_customise {
+  background-color: #ccc;
+  color: #000;
+ 
+
+}
+.buttom_customise {
+  padding: 2px 4px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.form-group {
+  margin-right: 20px; /* Adjust the margin as needed */
+}
+
+.DeleteIconPosition{
+  position: relative;float: right;left: 50px;
+}
+
+.plus_icon_high {
+  /* margin:-10px 0px 0px 0px; */
+  margin-left: 5px;
+  padding: 5px 10px;
+} 
+.plus_icon_low {
+  margin: 1px;
+  padding: 5px 10px;
+}
+
+@media ( 1850px <= width <= 1920px) { .DeleteIconPosition{left: 100px; }}
+@media ( 1730px <= width <= 1850px) { .DeleteIconPosition{left: 90px; }}
+@media ( 1558px <= width <= 1730px) { .DeleteIconPosition{left: 75px; }}
+@media ( 1250px <= width <= 1558px) { .DeleteIconPosition{left: 60px; }}
+@media ( 1140px <= width <= 1250px) { .DeleteIconPosition{left: 40px; }}
+/* @media ( 992px <= width <= 1140px) { .DeleteIconPosition{left: 30px; }.plus_icon_high {margin-left: 0px;padding: 5px 7px;} } */
+
+@media ( 200px <= width <= 992px) { .DeleteIconPosition{position: inherit;float: none;left: 0px;} .responsiveMargin { margin: 10px 0px;}}
