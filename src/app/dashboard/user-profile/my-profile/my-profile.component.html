@@ -3290,7 +3290,7 @@
                                                     </label>
                                                 </span>
                                                 <div
-                                                    *ngIf="(!pipelineStage.private && !pipeline.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines')">
+                                                    *ngIf="(!pipelineStage.private && !pipeline.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines') && !removeMarketingNonInteractiveBox">
                                                     <input class="checkBox_shadow" type="checkbox"
                                                         [disabled]="pipelinePreview"
                                                         [(ngModel)]="pipelineStage.nonInteractive" name="nonInteractive"

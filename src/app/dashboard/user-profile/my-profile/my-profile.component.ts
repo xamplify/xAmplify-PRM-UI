@@ -323,6 +323,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	modulesDashboardForPartner: CustomResponse = new CustomResponse();
 	 defaultSelectedDashboardTypeSetting = this.getSelectedDashboardForPartner();
 	 checkSelectedDashboardType=[];	
+	 removeMarketingNonInteractiveBox:boolean = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -3040,12 +3041,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	addPipeline() {
 		this.pipelineModalTitle = "Add a Pipeline";
+		if(this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner'){
+			this.removeMarketingNonInteractiveBox = false;
+		}
 		$('#addPipelineModalPopup').modal('show');
 	}
 
 	viewPipeline(pipelineToView: Pipeline) {
 		let self = this;
 		this.pipelineModalTitle = "View Pipeline";
+		if(this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner'){
+			this.removeMarketingNonInteractiveBox = false;
+		}
 		$('#addPipelineModalPopup').modal('show');
 		this.referenceService.startLoader(this.addPipelineLoader);
 		this.pipelinePreview = true;
@@ -3054,6 +3061,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	editPipeline(pipeline: Pipeline) {
 		this.pipelineModalTitle = "Edit Pipeline";
+		if(this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner'){
+			this.removeMarketingNonInteractiveBox = true;
+		}
 		$('#addPipelineModalPopup').modal('show');
 		this.referenceService.startLoader(this.addPipelineLoader);
 		this.getPipeline(pipeline);

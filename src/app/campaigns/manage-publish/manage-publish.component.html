@@ -731,7 +731,7 @@
                                                    </a>
                                                 </ng-container>
                                                 <ng-container
-                                                   *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && campaign.publicEventCampaign && !campaign?.nurtureCampaign ">
+                                                    *ngIf="campaign.campaignType.indexOf('EVENT')>-1 && !campaign?.nurtureCampaign && !campaign.toPartner" >
                                                    <a (click)="goToTemplateDownloadPartners(campaign)"
                                                       data-toggle="tooltip" data-placement="top"
                                                       title="Show Download History" data-rel="fancybox-button">
