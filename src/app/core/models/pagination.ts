@@ -115,4 +115,7 @@ export class Pagination {
 	detailedAnalytics = false;
 	/***XNFR-409 *****/
     filterOptionEnable:boolean = false;
+	dateFilterOpionEnable:boolean = false;
+	customFilterOption:boolean = false;
+	/*** XNFR-409 *****/
 }

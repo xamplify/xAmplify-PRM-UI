@@ -667,16 +667,16 @@
 				<div class="btn-group pull-right">
 					<div class="d-flex">
 						<!-- Start XNFR-409 -->
-						<!-- <div class="" (click)="toggleFilterOption()" style="cursor: pointer; margin-right: 5px" *ngIf="!isclearFilter">
+						<div class="" (click)="toggleFilterOption()" style="cursor: pointer; margin-right: 5px" *ngIf="!isclearFilter">
 							<span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view margin-space"
 								data-toggle="tooltip" title="Filter">
 								<i _ngcontent-c17="" aria-hidden="true" class="fa fa-filter p10"></i>
 							</span>
-						</div> -->
+						</div>
 						<div (click)="clearFilterOptions()" style="margin-right: 5px; cursor: pointer;"
 							*ngIf="isclearFilter">
 							<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip" data-placement="left"
-								title="Remove a filter" style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
+								title="Remove a filter" style="color: red; font-size: 28px; margin-top: 10px;"></i> <i
 								class="fa fa-times" aria-hidden="true" style="color: red; margin-left: -8px;"></i>
 						</div>
 						<!-- End XNFR-409 -->
@@ -739,7 +739,8 @@
 								</ng-container>
 							</div>
 							<!--Filter Type---->
-							<div class="pb3 float-left ml5" id="alignline-m-mleftright">
+							<!--XNFR-409 {Added false-}-->
+							<div class="pb3 float-left ml5" id="alignline-m-mleftright" *ngIf="false">
 								<ng-container *ngIf="fileTypes?.length>0">
 									<select class="form-control mDamSort SeclectBoxPaddingsAbj" id="alignline-m-width"
 										[(ngModel)]="selectedFileType" (ngModelChange)="filterAssetsByFileType($event)"
@@ -773,114 +774,9 @@
 	</div>
 </ng-template>
 <!---XNFR-381-->
-<!-- XNFR-409-->
-<ng-template #criteriaDIV>
-	<div *ngFor="let addRow of criterias; let i = index">
-		<div class="form-group col-sm-4">
-			<b [ngStyle]="{'margin-left':i=== 1?'2px':'0px'}" class="dataAlignment">{{i}}</b>
-			<select class="form-control width83" [(ngModel)]="criterias[i].property"
-				[ngStyle]="{'margin-left':i=== 1?'2px':'0px'}">
-				<option *ngFor="let filterOption of filterOptions; let i = index">
-					{{filterOption.value}}</option>
-			</select>
-		</div>
-		<div class="form-group col-sm-4">
-			<select class="form-control width83" [(ngModel)]="criterias[i].operation">
-				<option *ngFor="let filterCondition of filterConditions; let i = index">
-					{{filterCondition.value}}</option>
-			</select>
-		</div>
-		<div class="form-group col-sm-3" *ngIf="criterias[i].property != 'Type'">
-			<input type="text" class="form-control" placeholder="value*" [(ngModel)]="criterias[i].value1" required
-				(keypress)="eventEnterKeyHandler($event.keyCode)">
-		</div>
-		<div class="form-group col-sm-3" *ngIf="criterias[i].property === 'Type'">
-			<select class="form-control width83" [(ngModel)]="criterias[i].value1">
-				<option value="undefined">Select Asset Type</option>
-				<option *ngFor="let fileType of fileTypes">
-					{{fileType}}
-				</option>
-			</select>
-		</div>
-		<div class="form-group col-sm-1" data-toggle="tooltip" data-placement="left" title="Remove a condition">
-			<span (click)="cancelSegmentationRow(i)">
-				<i class="fa fa-trash-o" aria-hidden="true"
-					style="color: red; font-size: 26px; margin-top: 6px;cursor: pointer;"></i>
-			</span>
-		</div>
-	</div>
-</ng-template>
-<!--XNFR-409-->
 <!-- XNFR-409 -->
 <ng-template #filterOptionDiv>
-	<div class="row" *ngIf="showFilterOption">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			<div class="portlet light m10">
-				<div class="portlet-title">
-					<div class="caption col-xs-12 col-sm-12 col-md-3 col-lg-3" translate>Apply
-						Filters</div>
-					<button type="button" class="close-circle pull-right" (click)="closeFilterOption()">
-						<i class="fa fa-times" aria-hidden="true"></i>
-					</button>
-				</div>
-				<div class="portlet box">
-					<app-response-message class="pg8" [customResponse]="filterResponse"
-						*ngIf="filterResponse.isVisible">
-					</app-response-message>
-					<form role="form" class="form-horizontal form-bordered form-label-stripped">
-						<div class="form-group">
-							<div class="form-inline col-sm-12" style="margin-bottom: 15px;">
-								<ng-template [ngTemplateOutlet]="criteriaDIV"></ng-template>
-								<div class="row col-sm-1">
-									<div>
-										<span [class.disabled]="criterias.length > 5" (click)="addNewRow()"
-											type="button" class="btn btn-default pull-right">
-											<i data-toggle="tooltip" data-placement="left" title="Add a condition"
-												class="fa fa-plus-square" aria-hidden="true" style="color: #0196da"></i>
-										</span>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 alert alert-danger alert-su m0" *ngIf="isValidationErrorMessage">
-								<strong>{{filterConditionErrorMessage}}</strong>
-							</div>
-							<div class="form-inline col-sm-12" style="margin-bottom: 15px;">
-								<div class="form-group col-sm-4">
-									<label class="control-label">Created On &nbsp;
-									</label>
-									<app-date-picker [(dataField)]="createdOnDate" [isFromFilter]='true'>
-									</app-date-picker>
-								</div>
-							</div>
-							<div class="form-inline col-sm-12">
-								<div class="form-group col-sm-4">
-									<label class="control-label">From Date &nbsp;
-									</label>
-									<app-date-picker [(dataField)]="fromDateFilter" [isFromFilter]='true'>
-									</app-date-picker>
-								</div>
-								<div class="form-group col-sm-4">
-									<label class="control-label">To Date &nbsp;
-									</label>
-									<app-date-picker [(dataField)]="toDateFilter" [isFromFilter]='true'>
-									</app-date-picker>
-								</div>
-							</div>
-							<div class="form-inline col-sm-12">
-								<button (click)="closeFilterOption()" class="button float-right bgcolor-unset pd_0"
-									type="submit" translate><span
-										class="btn btn-sm Btn-Green transition">Cancel</span></button>
-								<button (click)="assetsFilter()" class="button float-right bgcolor-unset pd_0"
-									type="submit" translate>
-									<span class="btn btn-sm Btn-Green transition">Submit</span>
-								</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+	<app-custom-ui-filter *ngIf="showFilterOption" [isPartnerView]="isPartnerView"  [criterias]="criterias" [showFilterOption]="showFilterOption"  [type]="assets" [filterOptions]="filterOptions" [filterConditions]="filterConditions" [fileTypes]="fileTypes" (filterConditionsEmitter)="assetsFilter($event)" (closeFilterEmitter)="closeFilterOption($event)"></app-custom-ui-filter>
 </ng-template>
 <!-- XNFR-409 -->
 <app-confirm-sweet-alert-util *ngIf="isChangeAsParentPdfIconClicked"
