@@ -1394,7 +1394,7 @@
 													<!--  <td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td> -->
 													<td
 														*ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads">
-															<button  type="submit" class="button bgcolor-unset button_height"
+															<button  type="submit" class="bgcolor-unset button_height"
 															(click)="validateUndeliverableContacts(allcontacts.id)" translate><span class="btn markas markAsValidLable  txt_pd-top8">Mark as
 															opt-in</span></button>
 													</td>
@@ -1411,7 +1411,7 @@
 													
                            <td
 													*ngIf="contactsByType.selectedCategory =='excluded'">
-														<button *ngIf="allcontacts.excludedCatagory == 'Excluded User'" type="submit" class="button bgcolor-unset button_height"
+														<button *ngIf="allcontacts.excludedCatagory == 'Excluded User'" type="submit" class="bgcolor-unset button_height"
 														[disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
 														(click)="showMakeAsOptinAlert(allcontacts.id, allcontacts.emailId)" translate>
                               <span class="btn markas markAsValidLable  txt_pd-top8">Mark as
