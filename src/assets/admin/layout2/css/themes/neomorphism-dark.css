@@ -181,7 +181,7 @@ h6 {
 .pagination > li > a:hover,
 .pagination > li > span:focus,
 .pagination > li > span:hover {
-  background: #22313a !important;
+  background: #212327 !important;
 }
 .form-control,
 .col-item {
@@ -814,8 +814,9 @@ span.ui-column-resize {
 }
 .imageClass {
   border: 1px solid #191b1e !important;
-  background-color: #22313a !important;
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  background-color: #2b3c46  !important;
+  /* box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important; */
+  margin-left: 6px;
 }
 .profile-usermenu ul li a:hover {
   background-color: #2b3c46 !important;
@@ -831,16 +832,16 @@ span.ui-column-resize {
   background-color: #2b3c46 !important;
 }
 .tab-bg {
-  background-color: #2b3c46 !important;
-  border-bottom: 1px solid #2f4857 !important;
-  border-right: 1px solid #2f4857 !important;
-  border-left: 1px solid #2f4857 !important;
+  background-color: #2c2f33 !important;
+  border-bottom: 1px solid #191b1e !important;
+  border-right: 1px solid #191b1e !important;
+  border-left: 1px solid #191b1e !important;
 }
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:focus,
 .nav-tabs > li.active > a:hover {
-  background-color: #2b3c46 !important;
-  border: 1px solid #2f4857 !important;
+  background-color: #2c2f33 !important;
+  border: 1px solid #191b1e !important;
   color: white !important;
 }
 .nav-tabs,
@@ -953,7 +954,7 @@ input.cmn-toggle-round-flat + label:before {
   border-color: #2f4857 !important ;
 }
 .social-border {
-  background-color: #2f4857 !important;
+  background-color: #191b1e !important;
 }
 .active-tab-anchor-text {
   background-color: #80808047 !important;
@@ -1184,6 +1185,7 @@ input#copy-link {
   border: 1px solid #191b1e !important;
   background-color: #2c2f33 !important;
   border-radius: 5px;
+  margin-left: 6px;
 }
 .img-track-list,
 .img-asset-class,
@@ -1202,9 +1204,9 @@ input#copy-link {
 }
 .border-cls,
 .td-netbg {
-  border-left: 1px solid #2f4857 !important;
-  border-right: 1px solid #2f4857 !important;
-  border-bottom: 1px solid #2f4857 !important;
+  border-left: 1px solid #191b1e  !important;
+  border-right: 1px solid #191b1e  !important;
+  border-bottom: 1px solid #191b1e  !important;
 }
 /* 25/05/23 sai pavan*/
 
@@ -1922,11 +1924,11 @@ i.singleIconCustomization {
   border: 1px solid #2f4857 !important;
 }
 /* sudha sri 13-10-2023 */
-.search_sort_shadows {
+/* .search_sort_shadows {
   -webkit-box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
   box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
   border: none !important;
-}
+} */
 /* table tr:nth-child(odd) {
   background-color: #2c2f33 !important;
   box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #1d1f23 !important;
@@ -2079,6 +2081,7 @@ tbody {
   box-shadow: 6.223021507263184px 6.223021507263184px 18.669065475463867px 0px
       #000,
     -6.223021507263184px -6.223021507263184px 18.669065475463867px 0px #3b4451;
+    border-radius: 5px !important;
 }
 .camp-cards {
   box-shadow: 6.223021507263184px 6.223021507263184px 18.669065475463867px 0px
@@ -2119,9 +2122,6 @@ tbody {
 .col-xs-6.col-sm-2.col-lg-2.mt5.pr.pr15.tiles_hover_effect.col-sm-5ths:hover {
   transform: scale(1.05);
   transition: all 0.3s ease;
-}
-.image_effect:hover {
-  transform: scale(0.9);
 }
 .page-sidebar .page-sidebar-menu .sub-menu > li:hover > a {
   background: #2c2f33 !important;
@@ -3060,11 +3060,15 @@ justify-content: center!important;
   border: unset!important;
   box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
 }
-.radiobtn{
+.radiobtn,
+.social_share_border,
+.admin_modules_selection,
+.template_image_border,
+.pages_image_border{
   border: 1px solid #191b1e!important;
 }
 
-/* me changes */
+/* manikanta changes */
 .downloadicon{
   position: relative;
   /* top: -21px; */
@@ -3247,7 +3251,8 @@ legend.scheduler-border{
 }
 .page-bar.remove_cardBgcolor,
 .portlet.light.remove_cardBgcolor,
-.remove_shadow_bgcolor {
+.remove_shadow_bgcolor,
+.tabbable-custom > .tab-content.remove_cardBgcolor {
   box-shadow: none !important;
   background: none !important;
 }
@@ -3401,14 +3406,15 @@ button.button_blue:disabled span{
   margin-right: -6px !important;
 }
 /* sudha sri(18-12-2023) */
-.text_pd-top1{
+.text_pd-top1,
+span.btn.btn-primary.transition.merge_tag_text{
   padding-top: 1px !important;
 }
 .txt_pd-top3{
   padding-top: 3px !important;
 }
 /* sudha sri (20-12-2023) */
-.txt_pd-top8{
+/* .txt_pd-top8{
   padding-top: 8px !important;
 }
 .button_height,
@@ -3468,6 +3474,13 @@ span.btn.btn-primary.transition.new_list_text {
 .neg_mar_top7{
   margin-top: -7px !important;
 }
+.cancel_mrgn_top{
+  margin-top: -6px !important;
+}
+.dwnld_pdf{
+  padding-top: 2px !important;
+  padding-top: 3px !important;
+} */
 /* sweet alert in Select Template Create Template */
 .btnPropertiesNone {
   padding: 0px 10px;
@@ -3478,11 +3491,205 @@ span.btn.btn-primary.transition.new_list_text {
   box-shadow: none !important;
   background: none !important;
 }
-.cancel_mrgn_top{
+
+/* sweet alert in Select Template Create Template End*/
+.pos_pd_top2{
+  padding-top: 2px !important;
+}
+.pos_pd_top6{
+  padding-top: 6px !important;
+}
+.neg_mrg_top4{
+  margin-top: -4px !important;
+}
+.mrg_rgt0{
+  margin-right: 0px !important;
+}
+.pos_mar_rgt3{
+  margin-right: 3px !important;
+}
+.neg_mar_top6{
   margin-top: -6px !important;
 }
-.dwnld_pdf{
-  padding-top: 2px !important;
-  padding-top: 3px !important;
+.pos_mar_rgt4{
+  margin-right: 4px !important;
 }
-/* sweet alert in Select Template Create Template End*/
+.mrgn_top0{
+  margin-top: 0px !important;
+}
+.pos_mrg_rgt18{
+  margin-right: 18px !important;
+}
+.mrgn_lft0{
+  margin-left: 0px !important;
+}
+.pos_mrg_lft4{
+  margin-left: 4px !important;
+}
+.pos_mrg_top5{
+  margin-top: 5px !important;
+}
+.form_continue_text{
+  padding-top: 3px !important;
+  margin-left: -6px !important;
+}
+.pos_pd_lft10{
+  padding-left: 10px !important;
+}
+.pos_pd-top4{
+  padding-top: 4px !important;
+}
+/* 22-12-2023(sudha sri) */
+.pos_mrg_top3{
+  margin-top: 3px !important;
+}
+.pos_mrg_top_rgt{
+  margin-top: 12px !important;
+  margin-right: 15px !important;
+}
+.pos_pd_top7{
+  padding-top: 7px !important;
+}
+.pos_pd_top5{
+  padding-top: 5px !important;
+}
+.neg_mrg_rgt7{
+  margin-right: -7px !important;
+}
+.pd_lft8{
+  padding-left: 8px !important;
+}
+.pd_top0{
+  padding-top: 0px !important;
+}
+.note_card_align{
+  border-bottom: 1px solid#191b1e !important;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+.panel.panel-success.mt10.notes_box,
+.panel-heading.note_card_align {
+  border: 0px solid #191b1e !important;
+}
+.panel-heading.note_card_align {
+  border-bottom: 1px solid #191b1e !important;
+}
+.note_heading{
+  margin-left: -12px;
+}
+b,
+td.pt10.pb10.bold.mr_10{
+  color: #787878 !important;
+}
+a.tabColorOne b,
+h1 b,
+h6 b,
+span b,
+h3 b,
+div b {
+  color: #fff !important;
+}
+/* Sudha Sri (27-12-2023) */
+.copy_text_mrgn{
+  margin-left: 16px !important;
+}
+.copy_text_select_dropdown{
+  margin-bottom: 10px;padding: 0px !important;
+}
+.copy_text_area_border{
+  border: none;
+  border-radius: 10px;
+}
+.camp_card_removal{
+  box-shadow: none !important;
+  background: none !important;
+  margin-top: -10px;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+/* Manikanta (Vendor Activity card changes) 27-12-2023 */
+.camp-card1{
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  border-radius: 10px;
+}
+.pricing-head h4#image-style {
+  background-color: unset !important;
+  border-bottom: 0px solid #2f4857 !important;
+}
+h3#notifications {
+  background: #217eac!important;
+  border: unset!important;
+}
+.pricing.hover-effect.pointer.border-card.pricing_hover_effect{
+  border-radius: 10px !important;
+}
+.btn-group button:hover,
+button.btn.custom:hover{
+  background-color: #202227 !important;
+  box-shadow: inset 2px 0px 0px #202227, inset 0px 0px 0px #202227 !important;
+}
+.neg_mrg_top5{
+  margin-top: -5px !important;
+}
+.dam_image_effect:hover,
+.img-track-list:hover,
+.image_effect:hover {
+  transition: all 0.3s ease;
+  transform: scale(1.05);
+}
+.cloud_legal_basis{
+  margin-bottom: 12px;
+  margin-top: 8px;
+}
+.adjust_cloud_table{
+  margin-left: -5px !important;
+  margin-right: -10px !important;
+}
+/* sudha sri (28-12-2023) */
+.share_leads_cards{
+  margin-top: -12px !important;
+  margin-left: -6px;
+  margin-right: -16px;
+}
+.share_leads_mrgn{
+  margin-right: -14px !important;
+  margin-left: -7px;
+  margin-top: -10px !important;
+}
+.mdf_request_spacing{
+  margin-right: -14px !important;
+  margin-left: -7px;
+  margin-top: -4px !important;
+}
+.pos_mrg_btm19{
+  margin-bottom: 19px;
+}
+.pos_mrg_top12{
+  margin-top: 12px !important;
+}
+.pos_mrg_top16{
+  margin-top: 16px !important;
+}
+.partner_remove_bg{
+  margin-right: -11px !important;
+  margin-left: -7px;
+  margin-top: -1px !important;
+}
+.p0.mt5.mrg_top10{
+  margin-top: 10px !important;
+}
+.mt10.mrg_top18{
+  margin-top: 18px !important;
+}
+.p0.neg_mrg_top5{
+  margin-top: -5px !important;
+}
+.pos_mrg_top8{
+  padding-top: 8px;
+}
+.email-template-preview{
+  border-radius: 6px !important;
+}
+.profile_icon_spacing{
+  padding-left: 6px;
+}

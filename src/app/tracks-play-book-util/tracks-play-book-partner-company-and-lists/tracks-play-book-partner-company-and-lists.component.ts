@@ -297,10 +297,8 @@ export class TracksPlayBookPartnerCompanyAndListsComponent implements OnInit {
 			});
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
 			this.selectedPartnershipIds.push(partnershipId);
-			this.selectedPartnershipIds = this.referenceService.removeDuplicates(this.selectedPartnershipIds);
 		} else {
 			$('[name="adminOrTeamMemberCheckBox[]"]').prop('checked', false);
-			$('#parnter-companies tr').removeClass("row-selected");
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicates(this.selectedTeamMemberIds);
 			let currentPageSelectedIds = this.teamMembersPagination.pagedItems.map(function (a) { return a.userId; });
 			this.selectedTeamMemberIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedTeamMemberIds, currentPageSelectedIds);

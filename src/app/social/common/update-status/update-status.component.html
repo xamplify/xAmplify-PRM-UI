@@ -33,8 +33,9 @@
             </ng-container>
         </ul>
         <div *ngIf="location.includes('/campaigns/social')" id="folder-margin-xamp">
-            <button class="button_blue" id="right" style="padding-bottom: 5px;" (click)="openCreateFolderPopup()"
-                translate><span class="btn btn-primary transition">Create a Folder</span></button>
+            <button class="button_blue bgcolor-unset pos_pd_top_rgt1" id="right" style="padding-bottom: 5px;"
+                (click)="openCreateFolderPopup()" translate><span class="btn btn-primary transition">Create
+                    a Folder</span></button>
         </div>
     </div>
     <div class="row" [hidden]="isRedirectEnabled">
@@ -1099,8 +1100,9 @@
                 <div class="clearfix"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn Btn-Gray" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="save()">Save</button>
+                <button type="button" class="btn Btn-Gray neg_mrg_top4" data-dismiss="modal">Close</button>
+                <button type="button" class="button_blue bgcolor-unset" (click)="save()"><span
+                        class="btn btn-primary transition txt_pd-top3">Save</span></button>
             </div>
         </div>
     </div>

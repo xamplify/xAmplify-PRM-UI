@@ -77,7 +77,8 @@
 
                       </div>
 
-                      <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px" id="dealStageDiv">
+                      <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px"
+                        id="dealStageDiv">
                         <label class="control-label">Stage<span class="required"><strong>*</strong></span></label>
                         <select class="form-control" [(ngModel)]="deal.pipelineStageId"
                           [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="pipelineStageId"
@@ -155,7 +156,7 @@
 
                           <div class="form-group" style="margin-bottom: 20px"
                             *ngIf="!(deal.campaignId > 0) && !(deal.parentCampaignId > 0)">
-                            <label class="control-label">No Campaign Info</label>                            
+                            <label class="control-label">No Campaign Info</label>
                           </div>
                         </div>
                       </div>
@@ -304,19 +305,23 @@
 
         <div class="pull-right mr10" *ngIf="!preview && !showCustomForm && showDefaultForm">
           <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()"
-            class="btn Btn-Green" *ngIf="!edit">Register Deal</button>
+            class="button bgcolor-unset" *ngIf="!edit"><span class="btn Btn-Green transition txt_pd-top3">Register
+              Deal</span></button>
           <button type="button" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()"
-            class="btn Btn-Green" *ngIf="edit">Update Deal</button>
+            class="button bgcolor-unset" *ngIf="edit"><span class="btn Btn-Green transition txt_pd-top3">Update
+              Deal</span></button>
 
         </div>
         <div class="pull-right mr10" *ngIf="!preview && showCustomForm">
           <ng-container *ngIf="!showLoadingButton">
             <button type="button" id="saveDeal"
-            [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()"
-            class="btn Btn-Green" *ngIf="!edit">Register Deal</button>
-          <button type="button" id="saveDeal"
-            [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid" (click)="save()"
-            class="btn Btn-Green" *ngIf="edit">Update Deal</button>
+              [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid"
+              (click)="save()" class="button bgcolor-unset" *ngIf="!edit"><span
+                class="btn Btn-Green transition txt_pd-top3">Register Deal</span></button>
+            <button type="button" id="saveDeal"
+              [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormInvalid"
+              (click)="save()" class="button bgcolor-unset" *ngIf="edit"><span
+                class="btn Btn-Green transition txt_pd-top3">Update Deal</span></button>
           </ng-container>
           <button class="btn btn-primary" type="button" *ngIf="showLoadingButton" disabled>
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

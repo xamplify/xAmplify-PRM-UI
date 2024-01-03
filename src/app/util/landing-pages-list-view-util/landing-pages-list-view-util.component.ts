@@ -210,9 +210,9 @@ export class LandingPagesListViewUtilComponent implements OnInit, OnDestroy {
                     } else {
                         let campaignNames = "";
                         $.each(response.data, function (index, value) {
-                            campaignNames += (index + 1) + "." + value + "<br><br>";
+                            campaignNames += (index + 1) + ". " + value + "\n\n";
                         });
-                        let message = response.message + "<br><br>" + campaignNames;
+                        let message = response.message + "\n\n" + campaignNames;
                         this.customResponse = new CustomResponse('ERROR', message, true);
                         this.referenceService.loading(this.httpRequestLoader, false);
                     }
