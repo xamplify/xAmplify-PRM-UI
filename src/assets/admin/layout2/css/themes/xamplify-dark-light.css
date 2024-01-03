@@ -2553,8 +2553,21 @@ button.btn.btn-white.salesforce-btn.button{
   border-bottom: 1px solid #2f4857!important;
 }
 
+
 /* XNFR-374 Grid View Enhancement END */
 /* detailed campaign tiles*/
 .detail_card:hover{
   background-color: #22313a!important;
 }
+
+
+}
+/*** XNFR-409 ****/
+.custom_fiter-asset {
+  background-color: #22313a !important;
+}
+/*** XNFR-409 ****/
+
+/* XNFR-374 Grid View Enhancement END */
+
+

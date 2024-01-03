@@ -3604,8 +3604,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	validateDomainName(domain: string) {
-		var DOMAIN_NAME_PATTERN = this.regularExpressions.DOMAIN_PATTERN;
-		return DOMAIN_NAME_PATTERN.test(domain);
+		var DOMAIN_NAME_PATTERN = new RegExp(this.regularExpressions.DOMAIN_PATTERN);
+		var matchedPattrenString:string[] = domain.match(DOMAIN_NAME_PATTERN)
+		if(matchedPattrenString.length ==0)
+			return false;
+		else
+			return matchedPattrenString[0] == domain;
 	}
 
 	confirmAndsaveExcludedDomain(domain: string) {
