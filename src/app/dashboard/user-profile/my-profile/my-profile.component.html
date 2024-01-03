@@ -247,7 +247,8 @@
                                             | translate}}</a>
                                     </li>
                                     <!--Exclusion-->
-                                    <ng-container *ngIf="excludeUsersOrDomains && (authenticationService?.module?.adminOrSuperVisor || authenticationService?.isPartner())">
+                                    <ng-container
+                                        *ngIf="excludeUsersOrDomains && (authenticationService?.module?.adminOrSuperVisor || authenticationService?.isPartner())">
                                         <li [ngClass]="{'active-tab': activeTabName == 'exclude'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'exclude'}"
                                                 (click)="activateTab('exclude');clearCustomResponse()">
@@ -2521,7 +2522,7 @@
                                                                         </div>
                                                                         <button type="submit" class="btn Btn-Green"
                                                                             style="float:right;margin-top:4px;"
-                                                                            [disabled] = "excludedUsers.length === 0"
+                                                                            [disabled]="excludedUsers.length === 0"
                                                                             (click)="confirmAndsaveExcludedUsers(excludedUsers)"
                                                                             translate>Save</button>
                                                                         <button class="btn Btn-Gray"
@@ -2586,11 +2587,11 @@
                                                                         <thead>
                                                                             <tr>
 
-                                                                                <th style="width: 25%" translate>Name
+                                                                                <th style="width: 50%" translate>Name
                                                                                 </th>
-                                                                                <th style="width: 25%" translate>Time
+                                                                                <th style="width: 40%" translate>Time
                                                                                 </th>
-                                                                                <th style="width:16%" translate>ACTIONS
+                                                                                <th style="width:10%" translate>ACTIONS
                                                                                 </th>
                                                                             </tr>
                                                                         </thead>
@@ -2759,7 +2760,7 @@
                                                                         </div>
                                                                         <button type="submit" class="btn Btn-Green"
                                                                             style="float:right;margin-top:4px;"
-                                                                            [disabled] = "this.excludedDomains.length === 0"
+                                                                            [disabled]="this.excludedDomains.length === 0"
                                                                             (click)="confirmAndsaveExcludedDomains(excludedDomains)"
                                                                             translate>Save</button>
                                                                         <button class="btn Btn-Gray"
@@ -2822,11 +2823,11 @@
                                                                         <thead>
                                                                             <tr>
 
-                                                                                <th style="width: 25%" translate>Name
+                                                                                <th style="width: 50%" translate>Name
                                                                                 </th>
-                                                                                <th style="width: 25%" translate>Time
+                                                                                <th style="width: 40%" translate>Time
                                                                                 </th>
-                                                                                <th style="width:16%" translate>ACTIONS
+                                                                                <th style="width:10%" translate>ACTIONS
                                                                                 </th>
                                                                             </tr>
                                                                         </thead>
@@ -2907,14 +2908,18 @@
                             </div>
 
 
-                        
-                        <!--  XNFR-415 -->
-                        <div *ngIf="  (((( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany) &&  !authenticationService?.module?.isTeamMember ) && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing))">
-                            <div *ngIf="activeTabName === 'settings'"  [ngClass]="{'active-tab': activeTabName === 'settings'}">
-                                <div class="portlet light">
-                                    <div class="portlet-title tabbable-line">
-                                            <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName==='settings'">{{"Default Dashboard for My Partners" | translate}}</span>
-                                    </div>
+
+                            <!--  XNFR-415 -->
+                            <div
+                                *ngIf="  (((( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany) &&  !authenticationService?.module?.isTeamMember ) && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing))">
+                                <div *ngIf="activeTabName === 'settings'"
+                                    [ngClass]="{'active-tab': activeTabName === 'settings'}">
+                                    <div class="portlet light">
+                                        <div class="portlet-title tabbable-line">
+                                            <span class="caption-subject font-blue-madison bold"
+                                                *ngIf="activeTabName==='settings'">{{"Default Dashboard for My Partners"
+                                                | translate}}</span>
+                                        </div>
                                         <form>
                                             <br>
                                             <label class="container-checkbox-xamplify" translate>Welcome
@@ -2923,16 +2928,19 @@
                                                     value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME]}}"
                                                     [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME] || defaultSelectedDashboardTypeSetting === undefined ">
                                                 <span class="checkmark"></span>
-                                                </label>
-                                                <label class="container-checkbox-xamplify" translate>{{getDashboardForSelectedOption}}
-                                                   
-                                                    <input class="radioButton_shadow" type="radio"  name="dashboardSelectedOption" 
+                                            </label>
+                                            <label class="container-checkbox-xamplify"
+                                                translate>{{getDashboardForSelectedOption}}
+
+                                                <input class="radioButton_shadow" type="radio"
+                                                    name="dashboardSelectedOption"
                                                     value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD]}}"
-                                                        [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD] ">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                                <br><br> &nbsp;
-                                                <button type="submit" class="btn Btn-Green" (click)="setDashboardForPartner()">Save Changes</button>
+                                                    [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD] ">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <br><br> &nbsp;
+                                            <button type="submit" class="btn Btn-Green"
+                                                (click)="setDashboardForPartner()">Save Changes</button>
 
                                         </form>
                                     </div>
@@ -3282,7 +3290,7 @@
                                                     </label>
                                                 </span>
                                                 <div
-                                                    *ngIf="(!pipelineStage.private && !pipeline.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines')">
+                                                    *ngIf="(!pipelineStage.private && !pipeline.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines') && !removeMarketingNonInteractiveBox">
                                                     <input class="checkBox_shadow" type="checkbox"
                                                         [disabled]="pipelinePreview"
                                                         [(ngModel)]="pipelineStage.nonInteractive" name="nonInteractive"

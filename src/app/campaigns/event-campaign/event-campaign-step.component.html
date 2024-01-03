@@ -2002,19 +2002,19 @@
 								<label class="btn btn-primary button-border">
 									<input type="radio" class="text-center mLabelAlign radioButton_shadow"
 										name="scheduleCampaign" [value]="launchOptions[0]"
-										(click)="setLaunchOptions(launchOptions[0])" ngDefaultControl  
+										(click)="setLaunchOptions(launchOptions[0])" ngDefaultControl [(ngModel)]="checkLaunchOption" 
 										style=" margin-right:10px; " /><span class="text-algn">Now</span>
 								</label>
 								<label class="btn btn-warning button-border Sch-class">
 									<input type="radio" class="text-center mLabelAlign radioButton_shadow"
 										name="scheduleCampaign" [value]="launchOptions[1]"
-										(click)="setLaunchOptions(launchOptions[1])" ngDefaultControl  
+										(click)="setLaunchOptions(launchOptions[1])" ngDefaultControl [(ngModel)]="checkLaunchOption"
 										style="margin-right:10px " /><span class="text-algn">Schedule</span>
 								</label>
 								<label class="btn green mBtnAlign button-border">
 									<input type="radio" class="text-center mLabelAlign radioButton_shadow"
 										name="scheduleCampaign" [value]="launchOptions[2]"
-										(click)="setLaunchOptions(launchOptions[2])"  ngDefaultControl
+										(click)="setLaunchOptions(launchOptions[2])"  ngDefaultControl [(ngModel)]="checkLaunchOption"
 										style="margin-right:10px"/><span class="text-algn">Save</span>
 								</label>
 							</ng-container>

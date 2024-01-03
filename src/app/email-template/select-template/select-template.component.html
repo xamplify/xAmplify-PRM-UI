@@ -58,11 +58,11 @@
                                         translate>Event Co-Branding</li>
                                     <li class="filter" (click)="showSurveyTemplates(13)"
                                         [class.emailtemplate-selected]="13 == selectedTemplateTypeIndex"
-                                        *ngIf="campaignAccess.formBuilder && !httpRequestLoader.isLoading" translate>
+                                        *ngIf="campaignAccess.survey && !httpRequestLoader.isLoading" translate>
                                         Survey</li>
                                     <li class="filter" (click)="showSurveyTemplates(14)"
                                         [class.emailtemplate-selected]="14 == selectedTemplateTypeIndex"
-                                        *ngIf="campaignAccess.formBuilder && !httpRequestLoader.isLoading && !isMarketingCompany"
+                                        *ngIf="campaignAccess.survey && !httpRequestLoader.isLoading && !isMarketingCompany"
                                         translate>Survey Co-Branding</li>
                                     <li class="filter" (click)="getTemplatesFromMarketo()"
                                         [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex" translate>

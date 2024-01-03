@@ -22,7 +22,7 @@
 
 }
 .buttom_customise {
-  padding: 2px 4px;
+  padding: 3px 9px;
   cursor: pointer;
   border-radius: 3px;
 }
@@ -43,12 +43,30 @@
   margin: 1px;
   padding: 5px 10px;
 }
+.trashIconCustimization {
+  color: red;
+  font-size: 14px;
+  margin-top: 0px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 9px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.trashIconCustimization:hover {
+  background-color: #ededed;
+  border-color: #b3b3b3;
+}
+.createdOnRow{
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
 
-@media ( 1850px <= width <= 1920px) { .DeleteIconPosition{left: 100px; }}
-@media ( 1730px <= width <= 1850px) { .DeleteIconPosition{left: 90px; }}
-@media ( 1558px <= width <= 1730px) { .DeleteIconPosition{left: 75px; }}
-@media ( 1250px <= width <= 1558px) { .DeleteIconPosition{left: 60px; }}
-@media ( 1140px <= width <= 1250px) { .DeleteIconPosition{left: 40px; }}
-/* @media ( 992px <= width <= 1140px) { .DeleteIconPosition{left: 30px; }.plus_icon_high {margin-left: 0px;padding: 5px 7px;} } */
-
-@media ( 200px <= width <= 992px) { .DeleteIconPosition{position: inherit;float: none;left: 0px;} .responsiveMargin { margin: 10px 0px;}}
+@media ( 1075px <= width <= 1250px) { .positionForAddandDelete{position: relative;right: 10px;}}
+@media ( 992px <= width <= 1075px) { .positionForAddandDelete{position: relative;right: 12px;}}
+@media ( 200px <= width <= 991px) { .mobileTopandBottomSpace{margin: 10px 0px;}.positionForAddandDelete{margin-top: 15px;margin-left: 15px;}.displayFlex{display:flex;}}
+@media ( 200px <= width <= 767px) { .createdOnRow{display: initial;} }

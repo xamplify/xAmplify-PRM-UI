@@ -2568,4 +2568,12 @@ button.btn.btn-white.salesforce-btn.button{
 
 /* XNFR-374 Grid View Enhancement END */
 
-
+/* Sudha Sri(3-1-2024) */
+a.tabColorOne b,
+h1 b,
+h6 b,
+span b,
+h3 b,
+div b {
+  color: #fff !important;
+}
