@@ -406,6 +406,10 @@ export class HomeComponent implements OnInit {
             this.authenticationService.isDarkForCharts = true;
             require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-dark.css");
           }
+          else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
+            && activeThemeDto.name === "Neumorphism Light" && !this.router.url.includes('home/help')) {
+            require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-light.css");
+          }
           else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && !this.router.url.includes('home/help')) {
             document.documentElement.style.setProperty('--top-bg-color', this.topCustom.backgroundColor);
             document.documentElement.style.setProperty('--top-buton-color', this.topCustom.buttonColor);
