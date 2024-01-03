@@ -761,7 +761,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     } else if (index > -1) {
       this.selectedAssets.splice(index, 1);
     }
-    console.log(this.selectedAssets);
   }
 
   isAssetSelected(asset: any) {
@@ -803,12 +802,7 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
     } else if (index > -1 && !form.selected) {
       this.selectedAssets.splice(index, 1);
     }
-    console.log(this.selectedAssets);
-    // if (this.tracksPlayBook.quizId == undefined || this.tracksPlayBook.quizId < 1 || this.tracksPlayBook.quizId != form.id) {
-    //   this.tracksPlayBook.quizId = form.id;
-    // } else if (this.tracksPlayBook.quizId == form.id) {
-    //   this.tracksPlayBook.quizId = 0;
-    // }
+    
   }
 
   updateDescription(form: Form) {
@@ -1218,15 +1212,12 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
   }
 
   constructLearningTrack() {
-    //let contentIds: Array<number> = new Array<number>();
     let contentAndQuizData = {};
     $.each(this.selectedAssets, function (index: number, lmsDto: any) {
       contentAndQuizData[index] = lmsDto;
     });
-    //this.tracksPlayBook.contentIds = contentIds;
     this.tracksPlayBook.contentAndQuizData = contentAndQuizData;
     this.tracksPlayBook.type = this.type;
-    console.log(contentAndQuizData);
   }
 
   saveAndPublish() {
@@ -1285,7 +1276,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
         formData.append("featuredImage", this.fileObj, this.fileObj['name']);
       }
       this.referenceService.startLoader(this.httpRequestLoader);
-      console.log(this.tracksPlayBook)
       this.tracksPlayBookUtilService.saveOrUpdate(formData, this.tracksPlayBook).subscribe(
         (data: any) => {
           if (data.statusCode === 200) {
@@ -1528,7 +1518,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
       for (var instanceName in CKEDITOR.instances) {
           CKEDITOR.instances[instanceName].updateElement();
           this.tracksPlayBook.description = CKEDITOR.instances[instanceName].getData();
-          console.log("Description"+this.tracksPlayBook.description);
       }
     }
   }
@@ -1605,7 +1594,6 @@ export class AddTracksPlayBookComponent implements OnInit, OnDestroy {
             }
             imageLoaded() {
               this.showCropper = true;
-              console.log('Image loaded')
               }
               cropperReady(sourceImageDimensions: Dimensions) {
                   console.log('Cropper ready', sourceImageDimensions);

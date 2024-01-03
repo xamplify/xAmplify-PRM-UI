@@ -228,7 +228,6 @@ export class FormPreviewComponent implements OnInit {
     this.landingPageService.saveAnalytics(geoLocationAnalytics)
       .subscribe(
         (data: any) => {
-          console.log(data);
         },
         (error: string) => {
           this.logger.error("Error In saving Location Details", error);

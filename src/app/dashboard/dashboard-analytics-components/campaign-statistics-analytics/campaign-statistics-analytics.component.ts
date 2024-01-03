@@ -38,9 +38,6 @@ export class CampaignStatisticsAnalyticsComponent implements OnInit {
 
   ngOnInit() {
     this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
-    // if (this.dashboardAnalyticsDto.userId !== 0 && this.dashboardAnalyticsDto.vendorCompanyProfileName) {
-    //   this.getCampaignsHeatMapData();
-    // }
     this.getCampaignsHeatMapData();    
   }
 
@@ -63,7 +60,6 @@ export class CampaignStatisticsAnalyticsComponent implements OnInit {
         },
           (error: any) => {
             this.xtremandLogger.error(error);
-            //  this.xtremandLogger.errorPage(error);
           });
     } catch (error) {
       this.xtremandLogger.error(error);

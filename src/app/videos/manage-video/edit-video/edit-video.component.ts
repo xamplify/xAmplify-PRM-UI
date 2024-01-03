@@ -158,6 +158,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   /***XNFR-326****/
   assetPublishEmailNotificationLoader = true;
   isAssetPublishedEmailNotification = false;
+    ngxLoading: boolean;
   /***XNFR-326****/
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch, public userService: UserService,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
@@ -228,6 +229,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           url: this.authenticationService.REST_URL + "videos/upload-own-thumbnail?userId=" + this.authenticationService.user.id + "&access_token=" + this.authenticationService.access_token
       });
       this.uploader.onAfterAddingFile = (fileItem) => {
+        this.ngxLoading = true;
           fileItem.withCredentials = false;
           this.showError = false;
           this.ownThumbnail = false;
@@ -237,6 +239,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
           this.saveVideoFile.imagePath = JSON.parse(response).path;
           this.defaultSaveImagePath = this.saveVideoFile.imagePath;
+          this.ngxLoading = false;
       }
       this.videoLogoUploader = new FileUploader({
           allowedMimeType: ['image/jpg', 'image/jpeg', 'image/png'],
@@ -245,6 +248,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       this.videoLogoUploader.onAfterAddingFile = (fileItem) => {
           fileItem.withCredentials = false;
+          this.ngxLoading = true;
           this.showError = false;
           this.fileLogoSelected(fileItem._file);
           this.videoLogoUploader.queue[0].upload();
@@ -252,6 +256,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.videoLogoUploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
           if(JSON.parse(response).message === null){ } else {
           this.brandLogoUrl = this.saveVideoFile.brandingLogoUri = JSON.parse(response).path;
+          this.ngxLoading = false;
           }
       }
       this.notifyParent = new EventEmitter<VideoFileEventEmitter>();
@@ -287,7 +292,6 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     const fileList: File = event;
       if (fileList) {
           const file: File = fileList;
-          console.log(file);
           const isSupportfile: any = file.type;
           if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
             this.showError = false;

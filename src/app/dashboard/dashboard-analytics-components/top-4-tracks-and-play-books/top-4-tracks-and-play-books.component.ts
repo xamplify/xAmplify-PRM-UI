@@ -157,7 +157,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
     }
   }
 
-  confirmDelete(id: number) {
+  confirmDelete(trackOrPlayBook: any) {
     try {
       let self = this;
       swal({
@@ -170,7 +170,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
         confirmButtonText: 'Yes, delete it!'
 
       }).then(function () {
-        self.delete(id);
+        self.delete(trackOrPlayBook);
       }, function (dismiss: any) {
         console.log('you clicked on option' + dismiss);
       });
@@ -179,9 +179,9 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
     }
   }
 
-  delete(id: number) {
+  delete(trackOrPlayBook: any) {
     let tracksPlayBook: TracksPlayBook = new TracksPlayBook();
-    tracksPlayBook.id = id;
+    tracksPlayBook.id = trackOrPlayBook.id;
     tracksPlayBook.userId = this.loggedInUserId;
     if(this.tracks){
       tracksPlayBook.type =  TracksPlayBookType[TracksPlayBookType.TRACK];
@@ -193,16 +193,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
     this.tracksPlayBookUtilService.deleteById(tracksPlayBook).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
-          if(this.tracks){
-            this.referenceService.showInfo("Track Deleted Successfully", "");
-          }else{
-            this.referenceService.showInfo("Play Book Deleted Successfully", "");
-          }
-          if (this.tracks) {
-            this.customResponse = new CustomResponse('SUCCESS', "Track Deleted Successfully", true);
-          } else {
-            this.customResponse = new CustomResponse('SUCCESS', "Play Book Deleted Successfully", true);
-          }
+          this.customResponse = new CustomResponse('SUCCESS', trackOrPlayBook.title+" Deleted Successfully", true);
           this.pagination.pageIndex = 1;
           this.listLearningTracks(this.pagination);
         } else {

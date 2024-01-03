@@ -95,7 +95,7 @@
 									<b>From:</b> {{category.companyName | slice:0:15}}<span
 										*ngIf="category.companyName?.length>15">...</span>
 								</h6>
-								<h6>
+								<h6 class="folderCreatedFont">
 									<span translate> <b translate>Created On:</b> </span> <span>
 										<span *ngIf="!referenceService.isSafariBrowser()">{{category.displayTime
 											|date:'mediumDate'}},<br>{{category.displayTime
@@ -108,9 +108,10 @@
 							</div>
 						</div>
 						<div class="bar barview full-width-folder gridIconCustomization">
-							<a class="Iconhover" data-toggle="tooltip" data-placement="top" title="View Items"
-								(click)="viewItemsByCategoryId(category.id)"> <i class="fa fa-eye"
+							<a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top"
+								title="View Items" (click)="viewItemsByCategoryId(category.id)"> <i class="fa fa-eye"
 									aria-hidden="true"></i>
+								<div class="clickicons"></div>
 								<!-- color-chnage -->
 							</a>
 						</div>

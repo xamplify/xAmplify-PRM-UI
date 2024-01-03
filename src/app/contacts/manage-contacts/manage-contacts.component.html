@@ -528,8 +528,8 @@
                                                 </h5>
                                                 <h6 *ngIf="contactList?.assignedLeadsList && contactList.assignedToPartner"
                                                    style="text-align:center" translate>
-                                                   Shared To: <strong>{{contactList.partnerCompanyName |
-                                                      slice:0:7}}</strong>
+                                                  <b>Shared To:</b> {{contactList.partnerCompanyName |
+                                                      slice:0:7}} 
                                                    <span data-toggle="tooltip" data-placement="top"
                                                       title="{{contactList.partnerCompanyName}}"
                                                       *ngIf="contactList.partnerCompanyName?.length>7">...</span>
@@ -571,18 +571,18 @@
                                                 </app-timestamp>
                                              </td>
                                              <td class="hidden-xs" *ngIf="assignLeads">
-                                                <div>Created On: <b>
+                                                <div> <b>Created On:</b>
                                                       <app-timestamp [isOnlyDate]="true"
                                                          [dateAndTime]="contactList.createdDate">
                                                       </app-timestamp>
-                                                   </b>
+                                                    
                                                 </div>
-                                                <div>Assigned On:
-                                                   <b>
+                                                <div> <b>Assigned On:</b>
+                                                   
                                                       <app-timestamp [isOnlyDate]="true"
                                                          [dateAndTime]="contactList.assignedDate">
                                                       </app-timestamp>
-                                                   </b>
+                                                    
                                                 </div>
                                              </td>
                                              <td class="text-center hidden-xs">
@@ -1250,13 +1250,13 @@
                                              </td>
                                              <td class="Mark-as-ValidBtn"
                                                 *ngIf="(contactsByType.selectedCategory =='invalid') && !sharedLeads && !authenticationService?.module?.deletedPartner">
-                                                <button  type="submit" class="button bgcolor-unset button_height"
+                                                <button  type="submit" class=" bgcolor-unset button_height"
                                                 (click)="validateUndeliverableContacts(contact.id)" translate><span class="btn markas transition txt_pd-top8">Mark as
                                                 opt-in</span></button>
                                              </td>
                                              <td class="Mark-as-ValidBtn"
                                                 *ngIf="( contactsByType.selectedCategory =='excluded')  && !authenticationService?.module?.deletedPartner">
-                                                   <button *ngIf="contact.excludedCatagory == 'Excluded User'" type="submit" class="button bgcolor-unset button_height"
+                                                   <button *ngIf="contact.excludedCatagory == 'Excluded User'" type="submit" class=" bgcolor-unset button_height"
                                                    [disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
                                                    (click)="showMakeAsOptinAlert(contact.id, contact.emailId)" translate><span class="btn markas transition txt_pd-top8">Mark as
                                                    opt-in</span></button>
@@ -1369,8 +1369,8 @@
                                                    </div>
                                                 </td>
                                                 <td class="text-center">
-                                                   <div class="actions-block no-float custom-icon">
-                                                      <a data-toggle="tooltip" data-placement="bottom"
+                                                   <div class="actions-block no-float">
+                                                      <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
                                                          title="Campaign Analytics" (click)="showCampaigns(contact.id)">
                                                          <i class="fa fa-line-chart IconCustomization"
                                                             aria-hidden="true"></i>
@@ -1492,7 +1492,7 @@
                      <div class="form-group">
                         <div class="form-inline col-sm-12">
                            <div class="form-group col-sm-6 col-lg-3 col-md-3 col-xs-12 tab_v_flex tab_p0 pr0">
-                              <b class="filterNumber">{{i}}</b>
+                              <b class="filterNumber">{{i+1}}</b>
                               <select class="form-control filedWidthCu" [(ngModel)]="criterias[i].property">
                                  <option *ngFor="let filterOption of filterOptions; let i = index">{{filterOption.name}}
                                  </option>

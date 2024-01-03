@@ -363,7 +363,7 @@
                                                     style="border-radius: 3px;"
                                                     *ngIf="activeTabName == 'lightTheme' && themeDto?.id != activeThemeDetails?.themeId"
                                                     (click)="activateThemeForCompanyWithAlert(themeDto.id)"><span
-                                                        class="btn btn-primary transition">Activate
+                                                        class="btn btn-primary transition txt_pd-top3">Activate
                                                         Theme</span></button>
 
                                             </div>
@@ -651,8 +651,9 @@
                                                     style="padding: left 18px;">
                                                     <button type="submit"
                                                         [disabled]="!updateUserProfileForm.valid || authenticationService.isSuperAdmin()"
-                                                        class="button bgcolor-unset" translate>
-                                                        <span class="btn Btn-Green transition">Save Changes</span>
+                                                        class="button bgcolor-unset pd_lft2" translate>
+                                                        <span class="btn Btn-Green transition txt_pd-top3">Save
+                                                            Changes</span>
                                                     </button>
                                                 </div>
                                             </form>
@@ -747,7 +748,7 @@
                                                 </div>
                                                 <button [disabled]="!formSubmiteState" class="button bgcolor-unset"
                                                     (click)="saveForm()"><span
-                                                        class="btn Btn-Green transition">{{submitButtonText}}</span></button>
+                                                        class="btn Btn-Green transition txt_pd-top3">{{submitButtonText}}</span></button>
 
                                             </form>
                                             <form role="form" aria-label="">
@@ -819,7 +820,7 @@
                                                 </div>
                                                 <button [disabled]="!dealSubmiteState || this.dealtypes.length == 0"
                                                     class="button bgcolor-unset" (click)="saveDealTypes()"><span
-                                                        class="btn Btn-Green transition">{{dealButtonText}}</span></button>
+                                                        class="btn Btn-Green transition txt_pd-top3">{{dealButtonText}}</span></button>
                                             </form>
                                         </div>
                                         <!---Integrations-->
@@ -1376,9 +1377,9 @@
                                                     <div class="row">
                                                         <div class="col-xs-12 col-sm-12 col-lg-12">
                                                             <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
-                                                                <button class="button_blue bgcolor-unset"
+                                                                <button class="button_blue bgcolor-unset pd_lft2"
                                                                     (click)="addPipeline()" translate><span
-                                                                        class="btn btn-primary transition">Create
+                                                                        class="btn btn-primary transition txt_pd-top3">Create
                                                                         Pipeline</span></button>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-7 col-lg-7 p0">
@@ -1629,8 +1630,8 @@
                                                     <div class="margin-top-10">
                                                         <button type="submit" id="register-submit-btn"
                                                             [disabled]="!updatePasswordForm.valid"
-                                                            class="button bgcolor-unset" translate>
-                                                            <span class="btn Btn-Green transition">Change
+                                                            class="button bgcolor-unset pd_lft2" translate>
+                                                            <span class="btn Btn-Green transition txt_pd-top3">Change
                                                                 Password</span></button>
                                                         <input type="reset" class="btn Btn-Gray" value="Cancel">
                                                     </div>
@@ -1671,9 +1672,9 @@
                                                 </label>
                                             </div>
                                             <div class="margin-top-10">
-                                                <button type="submit" class="button bgcolor-unset"
+                                                <button type="submit" class="button bgcolor-unset pd_lft2"
                                                     (click)="setDefaultView()" translate><span
-                                                        class="btn Btn-Green transition">Save
+                                                        class="btn Btn-Green transition txt_pd-top3">Save
                                                         Changes</span></button>
                                             </div>
                                         </div>
@@ -1762,7 +1763,8 @@
                                                             Settings</span></button>
                                                     <button type="submit" class="button bgcolor-unset"
                                                         (click)="updateGdprSetting()" *ngIf="gdprSetting.isExists"
-                                                        translate><span class="btn Btn-Green transition">Update
+                                                        translate><span
+                                                            class="btn Btn-Green transition txt_pd-top3">Update
                                                             Settings</span></button>
 
                                                 </div>
@@ -1804,9 +1806,10 @@
                                                     <div class="row">
                                                         <div class="col-xs-12 col-sm-12 col-lg-12">
                                                             <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
-                                                                <button class="button_blue bgcolor-unset"
+                                                                <button class="button_blue bgcolor-unset pd_lft2"
                                                                     (click)="addCategory()" translate><span
-                                                                        class="btn btn-primary transition">Create a
+                                                                        class="btn btn-primary transition txt_pd-top3">Create
+                                                                        a
                                                                         Folder</span></button>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-7 col-lg-7 p0">
@@ -2397,11 +2400,13 @@
                                                                 </div>
                                                                 <div class="col-xs-12 button-align"
                                                                     style="padding-left: 10px;">
-                                                                    <button type="submit" class="button bgcolor-unset"
+                                                                    <button type="submit"
+                                                                        class="button bgcolor-unset pd_lft2"
                                                                         [disabled]="hasVideoRole" translate><span
-                                                                            class="btn Btn-Green transition">Save
+                                                                            class="btn Btn-Green transition txt_pd-top3">Save
                                                                             Changes</span></button>
-                                                                    <button type="button" class="btn Btn-Gray"
+                                                                    <button type="button"
+                                                                        class="btn Btn-Gray neg_mrg_top4"
                                                                         (click)="resetForm()" [disabled]="hasVideoRole"
                                                                         translate>Cancel</button>
                                                                 </div>
@@ -2430,14 +2435,16 @@
                                                                 A User</h4>
                                                             <button (click)="downloadEmptyCSV('exclude-users')"
                                                                 type="button"
-                                                                class="button col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10 bgcolor-unset"
+                                                                class="button bgcolor-unset col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10 bgcolor-unset neg_mrg_rgt33 neg_mrg_rgt7"
                                                                 download style="float:right"
                                                                 [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}"
                                                                 translate>
-                                                                <span class="btn Btn-Green transition">Download User CSV
-                                                                    Template</span>
-                                                                <i class="fa fa-download" aria-hidden="true"
-                                                                    style="margin-left: 5px"></i>
+                                                                <span
+                                                                    class="btn Btn-Green transition txt_pd-top3">Download
+                                                                    User CSV
+                                                                    Template <i class="fa fa-download"
+                                                                        aria-hidden="true"
+                                                                        style="margin-left: 5px"></i></span>
                                                             </button>
                                                         </div>
 
@@ -2447,18 +2454,20 @@
                                                                 *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                                 <button
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset"
+                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset neg_mrg_lft18 mrgn_lft0"
                                                                     [disabled]="csvExcludeUsersFilePreview"
                                                                     (click)="addContactModalOpen()" translate>
-                                                                    <span class="btn Btn-Green transition">One at a Time
+                                                                    <span
+                                                                        class="btn Btn-Green transition txt_pd-top3 pd_lft8">One
+                                                                        at a Time
                                                                         <i class="fa fa-plus"
                                                                             style="font-size: 12px; margin-left: 2px;"></i></span>
                                                                 </button>
 
                                                                 <button id="uploadCSV"
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset"
+                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset mrgn_lft0"
                                                                     translate>
-                                                                    <span class="btn Btn-Green transition">
+                                                                    <span class="btn Btn-Green transition txt_pd-top3">
                                                                         <span style="text-align: center"
                                                                             translate>Upload
                                                                             CSV</span> <input class="upload-file"
@@ -2662,13 +2671,16 @@
                                                                 A Domain</h4>
                                                             <button (click)="downloadEmptyCSV('exclude-domains')"
                                                                 type="button"
-                                                                class="btn Btn-Green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10"
+                                                                class="button bgcolor-unset col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10 neg_mrg_rgt33 neg_mrg_rgt7"
                                                                 download style="float:right"
                                                                 [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}"
                                                                 translate>
-                                                                Download Domain CSV Template
-                                                                <i class="fa fa-download" aria-hidden="true"
-                                                                    style="margin-left: 5px"></i>
+                                                                <span
+                                                                    class="btn Btn-Green transition txt_pd-top3">Download
+                                                                    Domain
+                                                                    CSV Template<i class="fa fa-download"
+                                                                        aria-hidden="true"
+                                                                        style="margin-left: 5px"></i></span>
                                                             </button>
 
                                                         </div>
@@ -2680,10 +2692,12 @@
                                                                 *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                                 <button id="add_domain"
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset"
+                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset neg_mrg_lft18 mrgn_lft0"
                                                                     [disabled]="csvExcludeDomainsFilePreview"
                                                                     (click)="addDomainModalOpen()" translate>
-                                                                    <span class="btn Btn-Green transition">One at a Time
+                                                                    <span
+                                                                        class="btn Btn-Green transition txt_pd-top3 pd_lft8">One
+                                                                        at a Time
                                                                         <i class="fa fa-plus"
                                                                             style="font-size: 12px; margin-left: 2px;"></i></span>
                                                                 </button>
@@ -2691,7 +2705,7 @@
                                                                 <button id="uploadCSV"
                                                                     class="col-sm-5 col-lg-4 col-md-4 btn-c-widthu button bgcolor-unset"
                                                                     translate>
-                                                                    <span class="btn Btn-Green transition">
+                                                                    <span class="btn Btn-Green transition txt_pd-top3">
                                                                         <span style="text-align: center"
                                                                             translate>Upload
                                                                             CSV</span> <input class="upload-file"
@@ -2892,6 +2906,7 @@
                                 </div>
                             </div>
 
+
                         
                         <!--  XNFR-415 -->
                         <div *ngIf="  (((( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany) &&  !authenticationService?.module?.isTeamMember ) && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing))">
@@ -2903,9 +2918,10 @@
                                         <form>
                                             <br>
                                             <label class="container-checkbox-xamplify" translate>Welcome
-                                                <input class="radioButton_shadow" type="radio"  name="dashboardSelectedOption" 
-                                                    value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME]}}" 
-                                                    [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME] || defaultSelectedDashboardTypeSetting === undefined ">    
+                                                <input class="radioButton_shadow" type="radio"
+                                                    name="dashboardSelectedOption"
+                                                    value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME]}}"
+                                                    [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME] || defaultSelectedDashboardTypeSetting === undefined ">
                                                 <span class="checkmark"></span>
                                                 </label>
                                                 <label class="container-checkbox-xamplify" translate>{{getDashboardForSelectedOption}}
@@ -2917,6 +2933,7 @@
                                                 </label>
                                                 <br><br> &nbsp;
                                                 <button type="submit" class="btn Btn-Green" (click)="setDashboardForPartner()">Save Changes</button>
+
                                         </form>
                                     </div>
                                 </div>
@@ -3031,7 +3048,8 @@
                 <h4 class="modal-title" id="cropProfileImage">Please add your profile image</h4>
             </div>
             <div class="modal-body">
-                <button style="position: relative;top: -5px;" class="button fileinput-button-css pd_left1 bgcolor-unset"
+                <button style="position: relative;top: -5px;"
+                    class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"
                     *ngIf="!imageChangedEvent; else uploadButton"><span class="btn Btn-Green transition">Upload
                         image</span>
                     <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file"
@@ -3039,7 +3057,7 @@
                 </button>
                 <ng-template #uploadButton>
                     <button style="position: relative;top: -5px;"
-                        class="button fileinput-button-css pd_left1 bgcolor-unset"><span
+                        class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"><span
                             class="btn Btn-Green transition">Upload
                             image</span>
                         <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file"
@@ -3130,7 +3148,7 @@
             <div class="modal-footer">
                 <button type="submit" [disabled]="!category.isValid || addCategoryLoader.isLoading "
                     class="button_blue bgcolor-unset" (click)="saveOrUpdateCategory()"><span
-                        class="btn btn-primary transition">{{categoyButtonSubmitText}}</span></button>
+                        class="btn btn-primary transition txt_pd-top3">{{categoyButtonSubmitText}}</span></button>
             </div>
         </div>
     </div>
@@ -3291,7 +3309,7 @@
             <div class="modal-footer" *ngIf="!pipelinePreview">
                 <button type="submit" [disabled]="!pipeline.isValid || addPipelineLoader.isLoading"
                     class="button bgcolor-unset" (click)="saveOrUpdatePipeline()"><span
-                        class="btn Btn-Green transition">Submit</span></button>
+                        class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
 
             </div>
         </div>

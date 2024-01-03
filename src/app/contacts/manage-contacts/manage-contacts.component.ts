@@ -1704,19 +1704,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				if (this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
 					this.isSegmentationErrorMessage = true;
 					if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
-						this.filterConditionErrorMessage = "Please fill the required data at position " + i;
+						this.filterConditionErrorMessage = "Please fill the required data at position " + (i+1);
 					} else if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*") {
-						this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + i;
+						this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + (i+1);
 					} else if (this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
-						this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + i;
+						this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + (i+1);
 					} else if (this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
-						this.filterConditionErrorMessage = "Please select the Condition and Value at position " + i;
+						this.filterConditionErrorMessage = "Please select the Condition and Value at position " + (i+1);
 					} else if (this.criterias[i].operation == "Condition*") {
-						this.filterConditionErrorMessage = "Please select the Condition at position " + i;
+						this.filterConditionErrorMessage = "Please select the Condition at position " + (i+1);
 					} else if (this.criterias[i].property == "Field Name*") {
-						this.filterConditionErrorMessage = "Please select the Field Name at position " + i;
+						this.filterConditionErrorMessage = "Please select the Field Name at position " + (i+1);
 					} else if (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "") {
-						this.filterConditionErrorMessage = "Please fill the value at position " + i;
+						this.filterConditionErrorMessage = "Please fill the value at position " + (i+1);
 					}
 					break;
 				} else {

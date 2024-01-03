@@ -6,18 +6,18 @@
     </app-response-message>
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-lg-12 mb-flex">
-        <button class="button btn-width mr2 bgcolor-unset" (click)="openHeaderAndFooterText()" translate><span
-            class="btn Btn-Green transition">Edit Header/Footer Text</span></button>
+        <button class="button btn-width mr2 bgcolor-unset pd_lft2" (click)="openHeaderAndFooterText()" translate><span
+            class="btn Btn-Green transition txt_pd-top3">Edit Header/Footer Text</span></button>
         <button class="button btn-width bgcolor-unset" (click)="openUnsubscribePagePopup()" translate><span
-            class="btn Btn-Green transition">Preview Unsubscribe Page</span></button>
+            class="btn Btn-Green transition txt_pd-top3">Preview Unsubscribe Page</span></button>
       </div>
     </div>
     <br>
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-lg-12">
         <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
-          <button class="button_blue bgcolor-unset" style="padding: 5px 9px !important;" (click)="openCreateDiv()" translate><span
-              class="btn btn-primary transition">Add</span></button>
+          <button class="button_blue bgcolor-unset pd_lft2" (click)="openCreateDiv()" translate><span
+              class="btn btn-primary transition txt_pd-top3">Add</span></button>
         </div>
         <div class="col-xs-12 col-sm-7 col-lg-7 p0">
           <div class="page-toolbar">
@@ -157,8 +157,9 @@
       </div>
       <div id="right">
         <button type="button" [disabled]="!unsubscribeReason.isValidForm" class="button_blue bgcolor-unset" translate
-          (click)="saveOrUpdate()"><span class="btn btn-primary transition">{{submitButtonText}}</span></button>
-        <button type="button" class="btn Btn-Gray" (click)="goToManage()" translate>Cancel</button>
+          (click)="saveOrUpdate()"><span
+            class="btn btn-primary transition txt_pd-top3">{{submitButtonText}}</span></button>
+        <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="goToManage()" translate>Cancel</button>
       </div>
     </form>
   </div>
@@ -221,8 +222,8 @@
       </fieldset>
       <div id="right">
         <button type="button" class="button_blue bgcolor-unset" translate (click)="updateHeaderAndFooterText()"><span
-            class="btn btn-primary transition">Update</span></button>
-        <button type="button" class="btn Btn-Gray" (click)="goToManage()" translate>Cancel</button>
+            class="btn btn-primary transition txt_pd-top3">Update</span></button>
+        <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="goToManage()" translate>Cancel</button>
       </div>
     </form>
   </div>
@@ -263,7 +264,7 @@
               </form>
               <div style="margin-top: 20px;">
                 <button type="button" [disabled]="invalidReason" class="button_blue bgcolor-unset"><span
-                    class="btn btn-primary transition">Submit</span></button>
+                    class="btn btn-primary transition txt_pd-top3">Submit</span></button>
               </div>
               <div style="margin-top:20px">
                 <h4 style="word-break: break-all;"

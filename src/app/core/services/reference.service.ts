@@ -3341,4 +3341,13 @@ export class ReferenceService {
     return arr;
   }
   
+  iterateNamesAndGetErrorMessage(response:any){
+    let names = "";
+    console.log(response.data);
+    $.each(response.data, function (index:number, value:any) {
+      names += (index + 1) + ". " + value + "\n\n";
+    });
+    console.log( response.message + "\n\n" + names);
+    return response.message + "\n\n" + names;
+  }
 }

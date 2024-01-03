@@ -452,6 +452,7 @@ export class UserService {
         }
 
     }
+    
     saveExcludedUsers(excludedUsers: User[], loggedInUserId : number) {
         return this.http.post(this.URL + "exclude/save-users/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, excludedUsers)
            .map(this.extractData)
@@ -520,5 +521,17 @@ export class UserService {
         .map(this.extractData)
         .catch(this.handleError);
   }
+
+   validateExcludedUsers(excludedUsers: User[], loggedInUserId : number) {
+    return this.http.post(this.URL + "exclude/validate-users/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, excludedUsers)
+       .map(this.extractData)
+       .catch(this.handleError);
+    }
+    
+    validateExcludedDomains(excludedDomains: string[], loggedInUserId : number) {
+        return this.http.post(this.URL + "exclude/validate-domains/"+ loggedInUserId +"?access_token=" + this.authenticationService.access_token, excludedDomains)
+           .map(this.extractData)
+           .catch(this.handleError);
+        }
 
 }

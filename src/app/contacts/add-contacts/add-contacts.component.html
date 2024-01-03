@@ -401,7 +401,7 @@
 								*ngIf="customResponse.isVisible"></app-response-message>
 						</div>
 					</div>
-					<div class="portlet light mt10"
+					<div class="portlet light mt10 pos_mrg_btm19"
 						*ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)">
 						<div class="row" style="margin-bottom: 15px;"
 							*ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)">
@@ -433,10 +433,11 @@
 							</div>
 							<ng-template #verifyData>
 								<div class="row" *ngIf="clipBoard">
-									<div class="col-sm-12">
-										<h3 style="margin-left: 30px;" translate>Copy from text --
+									<div class="col-sm-12" style="padding-left: 0px">
+										<h4 style="margin-left: 30px;" translate>Copy from text
+											--
 											paste below
-										</h3>
+										</h4>
 										<div class="col-xs-12 col-sm-7">
 											<div class="col-xs-6" style="margin-bottom: 10px">
 												<select class="opts form-control">
@@ -458,7 +459,8 @@
 														DATA</span></button>
 											</div>
 											<div class="col-xs-12">
-												<textarea id="copyFromclipTextArea" class="textareaNumber white-text"
+												<textarea id="copyFromclipTextArea"
+													class="textareaNumber white-text copy_text_area_border"
 													[(ngModel)]="clipboardTextareaText"
 													placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone"
 													[ngModelOptions]="{standalone: true}"
@@ -467,7 +469,7 @@
 									 </textarea>
 											</div>
 										</div>
-										<div class="col-xs-12 col-sm-5" style="margin-top: 30px;">
+										<div class="col-xs-12 col-sm-5" style="margin-top: 30px;padding-left: 0px">
 											<span id="clipBoardValidationMessage"></span>
 										</div>
 									</div>
@@ -479,7 +481,7 @@
 						</div>
 					</div>
 					<!-- Contact List Name Text Box -->
-					<div class="row portlet light m0">
+					<div class="row portlet light m0 pos_mrg_top12">
 						<div class="col-xs-12 col-sm-6 col-md-5 col-lg-6 p0 mb10">
 							<div class="form-group">
 								<label for="name" class="col-xs-12 col-lg-4 col-md-5 col-sm-6 p0 control-label"
@@ -798,7 +800,7 @@
 					<div class="row" id="file_preview">
 						<div class="col-md-12">
 							<!-- BEGIN EXAMPLE TABLE PORTLET-->
-							<div class="portlet light">
+							<div class="portlet light remove_cardBgcolor share_leads_mrgn">
 								<div class="portlet-title">
 									<div class="caption" style="padding-top: 7px !important; font-size: 20px;"
 										translate>
@@ -917,9 +919,9 @@
 						</div>
 					</div>
 					<!-- END PAGE CONTENT -->
-					<div class="panel panel-success mt10 notes_box">
-						<div class="panel-heading">
-							<h3 class="panel-title" translate>**Notes</h3>
+					<div class="panel panel-success mt10 notes_box pos_mrg_top16" style="border-radius: 10px;">
+						<div class="panel-heading note_card_align">
+							<h3 class="panel-title note_heading" translate>**Notes</h3>
 						</div>
 						<div class="panel-body">
 							<ul>
@@ -1161,8 +1163,7 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn Btn-Gray customize_design_btn" data-dismiss="modal"
-					translate>Close</button>
+				<button type="button" class="btn Btn-Gray neg_mrg_top4" data-dismiss="modal" translate>Close</button>
 				<button type="button" id="salesforce_save_button" class="button_blue bgcolor-unset pd_top5"
 					(click)="checkingPopupValues()" translate><span
 						class="btn btn-primary transition txt_pd-top3">Submit</span></button>
@@ -1217,8 +1218,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn Btn-Gray customize_design_btn" data-dismiss="modal"
-					translate>Close</button>
+				<button type="button" class="btn Btn-Gray neg_mrg_top4" data-dismiss="modal" translate>Close</button>
 				<button type="button" id="salesforce_save_button" class="button_blue bgcolor-unset pd_top5"
 					(click)="checkingPopupValues()" data-dismiss="modal" translate><span
 						class="btn btn-primary transition txt_pd-top3">Submit</span></button>

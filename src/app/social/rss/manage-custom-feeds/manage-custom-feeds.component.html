@@ -1,16 +1,16 @@
 <div class="page-content">
-   <div class="page-bar">
-      <ul class="page-breadcrumb">
-         <li>
-            <i class="fa fa-home" aria-hidden="true"></i>
-            <a routerLink="/home/dashboard/default">Home</a>
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-         </li>
-         <li><i class="fa fa-rss" aria-hidden="true"></i>RSS</li>
-      </ul>
-   </div>
-   <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-   <div class="row">
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li>
+				<i class="fa fa-home" aria-hidden="true"></i>
+				<a routerLink="/home/dashboard/default">Home</a>
+				<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
+			<li><i class="fa fa-rss" aria-hidden="true"></i>RSS</li>
+		</ul>
+	</div>
+	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	<div class="row">
 		<div class="col-sm-12 col-xs-12" style="padding-bottom: 5px;">
 			<div style="position: relative; top: -5px">
 				<app-response-message [customResponse]="customResponse"
@@ -18,10 +18,10 @@
 			</div>
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-         <div class="row">
-            <app-left-nav></app-left-nav>
-            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-9">
-					<div class="row" style = "margin-bottom: -4px;">
+			<div class="row">
+				<app-left-nav></app-left-nav>
+				<div class="col-xs-12 col-sm-8 col-md-8 col-lg-9">
+					<div class="row" style="margin-bottom: -4px;">
 						<div class="page-bar page-bar-shadow pb-m">
 							<div class="portlet light shared-feeds-border borderNone">
 								<div class="portlet-body pt0">
@@ -33,15 +33,18 @@
 											<h4 class="text-right m0">
 												<a data-toggle="tooltip" (click)="listAllFeeds(pagination)"
 													data-placement="bottom" title="Refresh"><i
-													class="fa fa-refresh circled-grey" aria-hidden="true"></i></a>
-												<div class="btn-group" *ngIf="canUpdateCollection || canDeleteCollection">
+														class="fa fa-refresh circled-grey" aria-hidden="true"></i></a>
+												<div class="btn-group"
+													*ngIf="canUpdateCollection || canDeleteCollection">
 													<a href="#" class="dropdown-toggle" data-toggle="dropdown"
 														role="button" aria-haspopup="true" aria-expanded="false">
 														<i class="fa fa-ellipsis-h p10" aria-hidden="true"></i>
 													</a>
 													<ul class="dropdown-menu pull-right">
-														<li  *ngIf="canUpdateCollection"><a (click)="renameCollectionDialog()">Rename</a></li>
-                          								<li  *ngIf="canUpdateCollection"><a (click)="deleteCollectionDialog()">Delete</a></li>
+														<li *ngIf="canUpdateCollection"><a
+																(click)="renameCollectionDialog()">Rename</a></li>
+														<li *ngIf="canUpdateCollection"><a
+																(click)="deleteCollectionDialog()">Delete</a></li>
 													</ul>
 												</div>
 											</h4>
@@ -55,44 +58,39 @@
 												(click)="pagination.searchKey='';searchFeeds();"></span> <input
 												type="text" [(ngModel)]="pagination.searchKey"
 												[ngModelOptions]="{standalone: true}" class="form-control"
-												placeholder="{{searchPlaceHolder}}"
-												(keyup.enter)="searchFeeds()"
+												placeholder="{{searchPlaceHolder}}" (keyup.enter)="searchFeeds()"
 												style="padding: 22px; padding-left: 49px">
 										</div>
 									</div>
-									
+
 								</div>
 							</div>
 						</div>
-						
+
 					</div>
 
 					<!-- Modal -->
-					<div class="modal fade" id="renameModal" tabindex="-1"
-						role="dialog" aria-labelledby="renameModalLabel"
-						aria-hidden="true">
+					<div class="modal fade" id="renameModal" tabindex="-1" role="dialog"
+						aria-labelledby="renameModalLabel" aria-hidden="true">
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
 									<h5 class="modal-title" id="renameModalLabel">Rename
 										Collection</h5>
-									<button type="button" class="close" data-dismiss="modal"
-										aria-label="Close">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 										<span aria-hidden="true">&times;</span>
 									</button>
 								</div>
 								<div class="modal-body">
 									<div class="alert alert-dismissible m0" role="alert"
-										*ngIf="renameCollectionTitleResponse"
-										[ngClass]="{'alert-success': renameCollectionTitleResponse.statusCode === 200,
+										*ngIf="renameCollectionTitleResponse" [ngClass]="{'alert-success': renameCollectionTitleResponse.statusCode === 200,
 	                'alert-danger': renameCollectionTitleResponse.statusCode !== 200}">
 										<div class="pull-right">
 											<i class="fa fa-times-circle" aria-hidden="true"
 												(click)="renameCollectionTitleResponse = null"></i>
 										</div>
 										<h4>
-											<i class="fa"
-												[ngClass]="{
+											<i class="fa" [ngClass]="{
 									'fa-check-circle-o': renameCollectionTitleResponse.statusCode === 200,
 	                'fa-exclamation-circle': renameCollectionTitleResponse.statusCode !== 200}"></i>
 											<span class="ml10 f-w-600">{{renameCollectionTitleResponse.message}}</span>
@@ -103,108 +101,125 @@
 										[(ngModel)]="collectionReName">
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary"
+									<button type="button" class="btn Btn-Gray neg_mrg_top4"
 										data-dismiss="modal">Close</button>
-									<button type="button" class="btn btn-primary"
-										(click)="renameCollection()">Save changes</button>
+									<button type="button" class="button_blue bgcolor-unset"
+										(click)="renameCollection()"><span
+											class="btn btn-primary transition txt_pd-top3">Save
+											changes</span></button>
 								</div>
 							</div>
 						</div>
 					</div>
 					<!-- -List Starts here----------- -->
-               <app-list-loader *ngIf="loading"></app-list-loader>
-               
-                <div *ngFor="let feed of pagination.pagedItems ;let i =index" >
-                	<div class="row mb10" style = "margin-bottom: -4px;">
-						<div class="page-bar page-bar-shadow pb-m card-shadow">
-							<div class="portlet light shared-feeds-border borderNone">
-								<div class="portlet-body pt0">
-									<div class="col-sm-12 col-xs-12 col-lg-12 mt10">
-										<div class="row">
-											<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8" style = "padding: 0px;">
-											<div style="margin-top: 10px; margin-bottom: 10px; ">
-												<span title="{{feed?.statusMessage}}"> <span><strong>{{feed?.statusMessage}}</strong>
-								 </span> 
-												</span>
-											</div>
-											<ng-container *ngIf="feed?.socialStatusContents.length>0">
-											<ng-container *ngFor="let item of feed?.socialStatusContents">
-											<div class="img-wrap img-thumbnail rounded-0"
-												style="margin-bottom: 15px;">
-												<img async *ngIf="item.fileType !== 'video'"
-													src="{{authenticationService.MEDIA_URL}}{{item.filePath}}"
-													style="height: 50px"> <img async
-													*ngIf="item.fileType === 'video'" src="{{item.filePath}}"
-													(error)="videoUtilService.errorVideoHandler($event)">
-											</div>
-											</ng-container> </ng-container>
-										</div>
-										<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mb_p0" style="margin-bottom: 20px;">
-												<div class="text-right" style="margin-top: 10px">							
-													<span *ngIf="selectedType=='p'"
-														class="published-banner uppercase">{{feed?.companyName}}</span>
+					<app-list-loader *ngIf="loading"></app-list-loader>
+
+					<div *ngFor="let feed of pagination.pagedItems ;let i =index">
+						<div class="row mb10" style="margin-bottom: -4px;">
+							<div class="page-bar page-bar-shadow pb-m card-shadow">
+								<div class="portlet light shared-feeds-border borderNone">
+									<div class="portlet-body pt0">
+										<div class="col-sm-12 col-xs-12 col-lg-12 mt10">
+											<div class="row">
+												<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8" style="padding: 0px;">
+													<div style="margin-top: 10px; margin-bottom: 10px; ">
+														<span title="{{feed?.statusMessage}}">
+															<span><strong>{{feed?.statusMessage}}</strong>
+															</span>
+														</span>
+													</div>
+													<ng-container *ngIf="feed?.socialStatusContents.length>0">
+														<ng-container *ngFor="let item of feed?.socialStatusContents">
+															<div class="img-wrap img-thumbnail rounded-0"
+																style="margin-bottom: 15px;">
+																<img async *ngIf="item.fileType !== 'video'"
+																	src="{{authenticationService.MEDIA_URL}}{{item.filePath}}"
+																	style="height: 50px"> <img async
+																	*ngIf="item.fileType === 'video'"
+																	src="{{item.filePath}}"
+																	(error)="videoUtilService.errorVideoHandler($event)">
+															</div>
+														</ng-container> </ng-container>
 												</div>
+												<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mb_p0"
+													style="margin-bottom: 20px;">
+													<div class="text-right" style="margin-top: 10px">
+														<span *ngIf="selectedType=='p'"
+															class="published-banner uppercase">{{feed?.companyName}}</span>
+													</div>
 													<div class="text-right"
 														style="margin-right: 10px; margin-top: 10px">
 														<span *ngIf="selectedType!='p'"> <a *ngIf="feed.canUpdate"
-															data-toggle="tooltip" data-placement="top"
-															title="Change Collection"
-															(click)="toggleChangeCollection(feed.id)"><i
-																class="fa fa-folder circled-grey" aria-hidden="true"></i></a>
-																<span *ngIf="!feed.canUpdate"><i class="fa fa-folder circled-grey" aria-hidden="true"></i></span>
+																data-toggle="tooltip" data-placement="top"
+																title="Change Collection"
+																(click)="toggleChangeCollection(feed.id)"><i
+																	class="fa fa-folder circled-grey"
+																	aria-hidden="true"></i></a>
+															<span *ngIf="!feed.canUpdate"><i
+																	class="fa fa-folder circled-grey"
+																	aria-hidden="true"></i></span>
 															<span>{{feed.collectionTitle}}</span></span>
 													</div>
 													<div class="actions-block override-actions tab_nowrap"
 														style="margin-top: 20px">
-														<a class="custom-icon" *ngIf="selectedType!='p' && feed.canUpdate" data-toggle="tooltip"
-															data-placement="top" title="Edit"
+														<a class="custom-icon"
+															*ngIf="selectedType!='p' && feed.canUpdate"
+															data-toggle="tooltip" data-placement="top" title="Edit"
 															(click)="editFeed(feed)"> <i
-															class="fa fa-pencil-square-o IconCustomization" aria-hidden="true"></i>
-														<div class="clickicons"></div>
-														</a> <a class="custom-icon" *ngIf="selectedType!='p' && feed.canUpdate" data-toggle="tooltip"
-															data-placement="top" title="Share"
-															(click)="publishFeed(feed)"> <i class="fa fa-upload IconCustomization"
-															aria-hidden="true"></i>
+																class="fa fa-pencil-square-o IconCustomization"
+																aria-hidden="true"></i>
 															<div class="clickicons"></div>
-														</a> <a class="custom-icon" data-toggle="tooltip" data-placement="top"
-															title="Publish" (click)="shareFeed(feed)"> <i
-															class="fa fa-share IconCustomization" aria-hidden="true"></i>
+														</a> <a class="custom-icon"
+															*ngIf="selectedType!='p' && feed.canUpdate"
+															data-toggle="tooltip" data-placement="top" title="Share"
+															(click)="publishFeed(feed)"> <i
+																class="fa fa-upload IconCustomization"
+																aria-hidden="true"></i>
+															<div class="clickicons"></div>
+														</a> <a class="custom-icon" data-toggle="tooltip"
+															data-placement="top" title="Publish"
+															(click)="shareFeed(feed)"> <i
+																class="fa fa-share IconCustomization"
+																aria-hidden="true"></i>
 															<div class="clickicons"></div>
 														</a>
-														<a class="custom-icon" *ngIf="selectedType!='p'" data-toggle="tooltip" 
-															data-placement="top"
-															title="Analytics" (click)="showFeedAnalyticsPopUp(feed.id)"> <i
-															class="fa fa-bar-chart IconCustomization" aria-hidden="true"></i>
+														<a class="custom-icon" *ngIf="selectedType!='p'"
+															data-toggle="tooltip" data-placement="top" title="Analytics"
+															(click)="showFeedAnalyticsPopUp(feed.id)"> <i
+																class="fa fa-bar-chart IconCustomization"
+																aria-hidden="true"></i>
 															<div class="clickicons"></div>
 														</a>
-														 <a class="custom-icon" *ngIf="selectedType!='p' && feed.canDelete" data-toggle="tooltip"
-															data-placement="top" title="Delete"
+														<a class="custom-icon"
+															*ngIf="selectedType!='p' && feed.canDelete"
+															data-toggle="tooltip" data-placement="top" title="Delete"
 															(click)="confirmDeleteFeed(feed)"> <i
-															class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+																class="fa fa-trash-o trashIconCustomization"
+																aria-hidden="true"></i>
 															<div class="del-icon"></div>
 														</a>
 													</div>
 												</div>
-										</div>
-										<div class="row border-padding">
-											<div class="col-md-8 col-lg-8" style = "padding: 0px;">
-												<div>
-													<span *ngIf="feed.publishToPartners">
-														Shared on: {{feed.publishTime}}</span>
-													<span *ngIf="!feed.publishToPartners && selectedType!='p'"
-														>Last updated on: {{feed.lastUpdatedDate}}</span> 
+											</div>
+											<div class="row border-padding">
+												<div class="col-md-8 col-lg-8" style="padding: 0px;">
+													<div>
+														<span *ngIf="feed.publishToPartners">
+															Shared on: {{feed.publishTime}}</span>
+														<span *ngIf="!feed.publishToPartners && selectedType!='p'">Last
+															updated on: {{feed.lastUpdatedDate}}</span>
+													</div>
+												</div>
+												<div class="col-md-4 col-lg-4" style="padding: 0px;">
+													<div class="text-right">
+														<span *ngIf="feed.publishToPartners && selectedType!='p'"
+															class="published-banner uppercase">Shared</span>
+													</div>
 												</div>
 											</div>
-											<div class="col-md-4 col-lg-4" style = "padding: 0px;">
-												<div class="text-right">
-													<span *ngIf="feed.publishToPartners && selectedType!='p'"
-														class="published-banner uppercase">Shared</span>
-												</div>
-											</div>
-										</div>
-										<!-- Start Modal PopUP -->
-											<div class="bs-example-popover"
-												id="toggleChangeCollection{{feed.id}}" style="display: none;">
+											<!-- Start Modal PopUP -->
+											<div class="bs-example-popover" id="toggleChangeCollection{{feed.id}}"
+												style="display: none;">
 												<div class="popover bottom">
 													<div class="arrow" style="left: 66%"></div>
 													<div class="popover-content p10">
@@ -212,36 +227,41 @@
 															<li class="list-group-item" *ngIf="addNewCollection">
 																<div *ngIf="addCollectionError">
 																	<span style="color: red"> <i
-																		class="fa fa-times-circle" aria-hidden="true"></i>{{addCollectionErrorMessage}}
+																			class="fa fa-times-circle"
+																			aria-hidden="true"></i>{{addCollectionErrorMessage}}
 																	</span>
 																</div>
 																<form>
 																	<div class="form-group">
 																		<label for="customCollectionName">Collection
-																			Name</label> <input type="text" #customCollectionName
-																			class="form-control" id="customCollectionName"
-																			aria-describedby="emailHelp" placeholder="e.g. Tech"
-																			autocomplete="off">
+																			Name</label> <input type="text"
+																			#customCollectionName class="form-control"
+																			id="customCollectionName"
+																			aria-describedby="emailHelp"
+																			placeholder="e.g. Tech" autocomplete="off">
 																	</div>
 																	<button class="btn btn-primary"
 																		(click)="moveToCollection(0, feed, customCollectionName.value)">Submit</button>
-																	<button (click)="addNewCollection = false; addCollectionError = false"
-																		class="btn btn-secondary">Cancel</button>
+																	<button
+																		(click)="addNewCollection = false; addCollectionError = false"
+																		class="btn Btn-Gray">Cancel</button>
 																</form>
 															</li>
 															<ng-container *ngIf="!addNewCollection">
-															<li class="list-group-item"
-																*ngFor="let customFeedCollection of customFeedCollections">
-																<a><i class="fa fa-rss" aria-hidden="true"></i>
-																	{{customFeedCollection.title}}
-																	<button class="btn-xs pull-right" *ngIf = "customFeedCollection.id != feed.collectionId"
-																		(click)="moveToCollection(customFeedCollection.id, feed, '')">Add</button>
-															</a>
-															</li>
-															<li class="list-group-item"><a
-																(click)="addNewCollection = true"><i
-																	class="fa fa-plus" aria-hidden="true"></i> New
-																	Collection</a></li>
+																<li class="list-group-item"
+																	*ngFor="let customFeedCollection of customFeedCollections">
+																	<a><i class="fa fa-rss" aria-hidden="true"></i>
+																		{{customFeedCollection.title}}
+																		<button class="btn-xs pull-right"
+																			*ngIf="customFeedCollection.id != feed.collectionId"
+																			(click)="moveToCollection(customFeedCollection.id, feed, '')">Add</button>
+																	</a>
+																</li>
+																<li class="list-group-item"><a
+																		(click)="addNewCollection = true"><i
+																			class="fa fa-plus" aria-hidden="true"></i>
+																		New
+																		Collection</a></li>
 															</ng-container>
 														</ul>
 													</div>
@@ -249,23 +269,25 @@
 											</div>
 											<!-- End Modal Popup -->
 										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-               </div>
 
 
 					<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-                  <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listAllFeeds($event)" [hidden]="loading"></app-pagination>
-               </div>
-               <!-- End of 24 -->
-               <div *ngIf="pagination.totalRecords==0 && !loading" class="alert alert-info">
-                  <strong translate>No Feeds Found.</strong>
-               </div>
-            </div>
+						<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+							(notifyParentDropDown)="listAllFeeds($event)" [hidden]="loading"></app-pagination>
+					</div>
+					<!-- End of 24 -->
+					<div *ngIf="pagination.totalRecords==0 && !loading" class="alert alert-info">
+						<strong translate>No Feeds Found.</strong>
+					</div>
+				</div>
 
-			<div class="modal right" id="feedAnalyticsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
+				<div class="modal right" id="feedAnalyticsModal" tabindex="-1" role="dialog"
+					aria-labelledby="myModalLabel" data-backdrop="static">
 					<div class="modal-dialog modal-css" role="document" style="right:0">
 						<!-- Modal content-->
 						<div class="modal-content">
@@ -277,40 +299,47 @@
 								<h4 class="modal-title size-font" translate>Feed Analytics</h4>
 							</div>
 							<div class="modal-body">
-								 <table class='table tgrid table-hover table-sm' id="partnerList">
-                                <thead>
-                                    <tr >
-                                        <th class="text-center" style="min-width: 200px;" translate>{{authenticationService?.partnerModule?.customName}}</th>
-                                        <th class="text-center" style="min-width: 200px;" translate>Total Publishes</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                	<tr *ngFor="let analyticsPageItem of analyticsPagination.pagedItems; let i =index">
-                                		<td class="text-center"><a title="{{analyticsPageItem.partnerCompanyName}}" (click)="showPartnerFeedAnalyticsPopUp(analyticsPageItem.partnerCompanyId)">{{analyticsPageItem.partnerCompanyName}}</a></td>
-                                		<td class="text-center">{{analyticsPageItem.sharedCount}}</td>
-                                	</tr>
-                                	
-                                </tbody>
-                                </table>
-                                <div *ngIf="analyticsPagination.pagedItems.length !== 0" class="pg8">
+								<table class='table tgrid table-hover table-sm' id="partnerList">
+									<thead>
+										<tr>
+											<th class="text-center" style="min-width: 200px;" translate>
+												{{authenticationService?.partnerModule?.customName}}</th>
+											<th class="text-center" style="min-width: 200px;" translate>Total Publishes
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr
+											*ngFor="let analyticsPageItem of analyticsPagination.pagedItems; let i =index">
+											<td class="text-center"><a title="{{analyticsPageItem.partnerCompanyName}}"
+													(click)="showPartnerFeedAnalyticsPopUp(analyticsPageItem.partnerCompanyId)">{{analyticsPageItem.partnerCompanyName}}</a>
+											</td>
+											<td class="text-center">{{analyticsPageItem.sharedCount}}</td>
+										</tr>
+
+									</tbody>
+								</table>
+								<div *ngIf="analyticsPagination.pagedItems.length !== 0" class="pg8">
 									<app-pagination [pagination]="analyticsPagination"
 										(notifyParent)="setAnalyticsPage($event)"
 										(notifyParentDropDown)="getFeedAnalytics($event)"
 										[hidden]="loading"></app-pagination>
 								</div>
 								<div *ngIf="analyticsPagination.pagedItems.length === 0" class="text-center">
-								This feed is not yet published by any {{authenticationService?.partnerModule?.customName}}.
+									This feed is not yet published by any
+									{{authenticationService?.partnerModule?.customName}}.
 								</div>
 							</div>
 							<div class="modal-footer" style="border: none">
-								<button class="btn Btn-Gray"
-									(click)="feedAnalyticsModalClose()" translate>Close</button>
+								<button class="btn Btn-Gray" (click)="feedAnalyticsModalClose()"
+									translate>Close</button>
 							</div>
 						</div>
 					</div>
 				</div>
-				
-				<div class="modal right" id="partnerAnalyticsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
+
+				<div class="modal right" id="partnerAnalyticsModal" tabindex="-1" role="dialog"
+					aria-labelledby="myModalLabel" data-backdrop="static">
 					<div class="modal-dialog modal-css" role="document" style="right:0">
 						<!-- Modal content-->
 						<div class="modal-content">
@@ -319,7 +348,8 @@
 									(click)="partnerAnalyticsModalClose()">
 									<i class="fa fa-times"></i>
 								</button>
-								<h4 class="modal-title size-font" translate>Feed Analytics for {{authenticationService?.partnerModule?.customName}}</h4>
+								<h4 class="modal-title size-font" translate>Feed Analytics for
+									{{authenticationService?.partnerModule?.customName}}</h4>
 							</div>
 							<div class="modal-body">
 
@@ -337,21 +367,20 @@
 																</div>
 																<ng-container
 																	*ngIf="partnerAnalyticsPageItem?.socialStatusContents.length>0">
-																<ng-container
-																	*ngFor="let item of partnerAnalyticsPageItem?.socialStatusContents">
-																<div class="img-wrap img-thumbnail rounded-0"
-																	style="margin-bottom: 15px;">
-																	<img async *ngIf="item.fileType !== 'video'"
-																		src="{{authenticationService.MEDIA_URL}}{{item.filePath}}"
-																		style="height: 50px"> <img async
-																		*ngIf="item.fileType === 'video'"
-																		src="{{item.filePath}}"
-																		(error)="videoUtilService.errorVideoHandler($event)">
-																</div>
-																</ng-container> </ng-container>
+																	<ng-container
+																		*ngFor="let item of partnerAnalyticsPageItem?.socialStatusContents">
+																		<div class="img-wrap img-thumbnail rounded-0"
+																			style="margin-bottom: 15px;">
+																			<img async *ngIf="item.fileType !== 'video'"
+																				src="{{authenticationService.MEDIA_URL}}{{item.filePath}}"
+																				style="height: 50px"> <img async
+																				*ngIf="item.fileType === 'video'"
+																				src="{{item.filePath}}"
+																				(error)="videoUtilService.errorVideoHandler($event)">
+																		</div>
+																	</ng-container> </ng-container>
 															</div>
-															<div class="col-md-4 col-lg-4"
-																style="margin-bottom: 20px;">
+															<div class="col-md-4 col-lg-4" style="margin-bottom: 20px;">
 																<div class="text-right"
 																	style="margin-right: 10px; margin-top: 10px">
 																	<span
@@ -371,24 +400,34 @@
 															<div class="col-md-9 col-lg-9" style="padding: 0px;">
 																<div class="col-md-2 col-lg-2"> <img
 																		src="{{partnerAnalyticsPageItem.profileImage}}"
-																		style="width: 40px; height: 40px;" /></div> 
-																	<div class="col-md-10 col-lg-10">{{partnerAnalyticsPageItem.profileName}}
-																		<div>
-																			<span>{{partnerAnalyticsPageItem.postedOn}}</span>
-																		</div>
+																		style="width: 40px; height: 40px;" /></div>
+																<div class="col-md-10 col-lg-10">
+																	{{partnerAnalyticsPageItem.profileName}}
+																	<div>
+																		<span>{{partnerAnalyticsPageItem.postedOn}}</span>
 																	</div>
+																</div>
 															</div>
 															<div class="col-md-3 col-lg-3" style="padding: 0px;">
 																<div class="text-right">
-																	<span *ngIf="partnerAnalyticsPageItem.socialNetwork === 'FACEBOOK'">
-																		<i class="fa fa-facebook-square" style="font-size: 18px;color:#3b5998" aria-hidden="true"></i>
+																	<span
+																		*ngIf="partnerAnalyticsPageItem.socialNetwork === 'FACEBOOK'">
+																		<i class="fa fa-facebook-square"
+																			style="font-size: 18px;color:#3b5998"
+																			aria-hidden="true"></i>
 																	</span>
-																	<span *ngIf="partnerAnalyticsPageItem.socialNetwork === 'TWITTER'">
-																		<i class="fa fa-twitter-square" style="font-size: 18px;color:#0084b4" aria-hidden="true"></i>
-																	</span> 
-																	<span *ngIf="partnerAnalyticsPageItem.socialNetwork === 'LINKEDIN'">
-																		<i class="fa fa-linkedin-square" style="font-size: 18px;color:#0077b5" aria-hidden="true"></i>
-																	</span>  
+																	<span
+																		*ngIf="partnerAnalyticsPageItem.socialNetwork === 'TWITTER'">
+																		<i class="fa fa-twitter-square"
+																			style="font-size: 18px;color:#0084b4"
+																			aria-hidden="true"></i>
+																	</span>
+																	<span
+																		*ngIf="partnerAnalyticsPageItem.socialNetwork === 'LINKEDIN'">
+																		<i class="fa fa-linkedin-square"
+																			style="font-size: 18px;color:#0077b5"
+																			aria-hidden="true"></i>
+																	</span>
 																	<span>{{partnerAnalyticsPageItem.socialNetwork}}</span>
 																</div>
 															</div>
@@ -409,8 +448,8 @@
 							</div>
 							<div class="modal-footer" style="border: none">
 								<!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
-								<button class="btn Btn-Gray"
-									(click)="partnerAnalyticsModalClose()" translate>Close</button>
+								<button class="btn Btn-Gray" (click)="partnerAnalyticsModalClose()"
+									translate>Close</button>
 							</div>
 						</div>
 					</div>
@@ -418,6 +457,6 @@
 
 
 			</div>
-      </div>
-   </div>
+		</div>
+	</div>
 </div>
