@@ -2458,6 +2458,13 @@ button.button_blue:disabled span{
 }
 
 
+/*** XNFR-409 ****/
+.custom_fiter-asset {
+  background-color: var(--page-content) !important;
+}
+/*** XNFR-409 ****/
+
+
 /* XNFR-374 Grid View Enhancement START */
 .gridViewImgBg {
   background-color: var(--page-content) !important;
@@ -2478,3 +2485,4 @@ button.button_blue:disabled span{
   background-color: var(--page-content) !important;
 }
 /* XNFR-374 Grid View Enhancement END */
+
