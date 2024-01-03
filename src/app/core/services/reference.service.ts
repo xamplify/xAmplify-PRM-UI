@@ -350,11 +350,7 @@ export class ReferenceService {
   }
 
 
-  // validating method for firstname that deals with the regular expression
-
-  validateFirstName(firstName:string){
-    //let name=firstName.replace(this.regularExpressions.ALPHABETS_PATTERN , "");
-    //return this.regularExpressions.ALPHABETS_PATTERN.test(name);
+    validateFirstName(firstName:string){
     return this.regularExpressions.FIRSTNAME_PATTERN.test(firstName);
 
   }
