@@ -95,7 +95,7 @@ export class DefaultPageComponent implements OnInit {
     }
     /* -- XNFR-415 -- */
     loadDashboard(){
-        if(this.authenticationService.vanityURLEnabled){
+        if(this.vanityurlService.isVanityURLEnabled){
             if( this.loggedThroughVendorVanityUrl   && (this.authenticationService.isPartner() || this.authenticationService.isOnlyPartner()  || this.authenticationService.isTeamMember())){
                 this.loggedThroughVendorVanityUrl=this.authenticationService.module.loggedInThroughVendorVanityUrl;
                 this.vanityurlService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {        
