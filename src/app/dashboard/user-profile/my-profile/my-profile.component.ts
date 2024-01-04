@@ -1888,6 +1888,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == "customskin") {
 			this.activeTabHeader = this.properties.customskin;
 			this.themeName = "";
+			this.showThemes();
+		this.themeResponse = new CustomResponse();
 		} else if (this.activeTabName == "exclude") {
 			this.activeTabHeader = this.properties.exclude;
 			this.excludeUserPagination = new Pagination();
@@ -1967,8 +1969,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.customLoginScreen;
 		}
 		this.referenceService.goToTop();
-		this.showThemes();
-		this.themeResponse = new CustomResponse();
 	}
 
 
