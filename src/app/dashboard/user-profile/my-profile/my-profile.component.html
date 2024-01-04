@@ -2910,38 +2910,36 @@
 
 
                             <!--  XNFR-415 -->
-                            <div
-                                *ngIf="  (((( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany) &&  !authenticationService?.module?.isTeamMember ) && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing))">
-                                <div *ngIf="activeTabName === 'settings'"
-                                    [ngClass]="{'active-tab': activeTabName === 'settings'}">
+                            <div *ngIf="  (((( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany) &&  !authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin )  && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing))">
+                                <div *ngIf="activeTabName === 'settings'"  [ngClass]="{'active-tab': activeTabName === 'settings'}">
                                     <div class="portlet light">
                                         <div class="portlet-title tabbable-line">
-                                            <span class="caption-subject font-blue-madison bold"
-                                                *ngIf="activeTabName==='settings'">{{"Default Dashboard for My Partners"
-                                                | translate}}</span>
+                                                <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName==='settings'">{{"Default Dashboard for My Partners" | translate}}</span>
                                         </div>
-                                        <form>
-                                            <br>
-                                            <label class="container-checkbox-xamplify" translate>Welcome
-                                                <input class="radioButton_shadow" type="radio"
-                                                    name="dashboardSelectedOption"
-                                                    value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME]}}"
-                                                    [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME] || defaultSelectedDashboardTypeSetting === undefined ">
-                                                <span class="checkmark"></span>
-                                            </label>
-                                            <label class="container-checkbox-xamplify"
-                                                translate>{{getDashboardForSelectedOption}}
-
-                                                <input class="radioButton_shadow" type="radio"
-                                                    name="dashboardSelectedOption"
-                                                    value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD]}}"
-                                                    [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD] ">
-                                                <span class="checkmark"></span>
-                                            </label>
-                                            <br><br> &nbsp;
-                                            <button type="submit" class="btn Btn-Green"
-                                                (click)="setDashboardForPartner()">Save Changes</button>
-
+                                        <br>
+                                            <form>
+                                                <div>
+                                                    
+                                                <label class="container-checkbox-xamplify" translate>Welcome
+                                                    <input class="radioButton_shadow" type="radio"
+                                                        name="dashboardSelectedOption"
+                                                        value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME]}}"
+                                                        [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME] || defaultSelectedDashboardTypeSetting === undefined ">
+                                                    <span class="checkmark"></span>
+                                                    </label>
+                                                    <label class="container-checkbox-xamplify" translate>{{getDashboardForSelectedOption}}
+                                                       
+                                                        <input class="radioButton_shadow" type="radio"  name="dashboardSelectedOption" 
+                                                        value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD]}}"
+                                                            [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD] ">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                                    <div class="margin-top-10">
+                                                    <button type="submit" class="button bgcolor-unset pd_lft2" (click)="setDashboardForPartner()"><span
+                                                        class="btn Btn-Green transition txt_pd-top3">Save
+                                                        Changes</span></button>
+                                                    </div>    
                                         </form>
                                     </div>
                                 </div>
