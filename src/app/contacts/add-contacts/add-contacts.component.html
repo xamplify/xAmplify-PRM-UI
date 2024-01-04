@@ -492,8 +492,8 @@
 										(ngModelChange)="changEvent($event)" required
 										[(ngModel)]="model.contactListName" name="contactListName"
 										(input)="validateContactName(model.contactListName)" minlength="1"
-										(keydown.enter)="$event.preventDefault()"
-										maxlength="250" placeholder="List Name" #contactListName="ngModel">
+										(keydown.enter)="$event.preventDefault()" maxlength="250"
+										placeholder="List Name" #contactListName="ngModel">
 									<!-- Validation Messages -->
 									<div *ngIf="isValidContactName">
 										<p class="custom-error-message chagneText" translate>{{invalidContactNameError}}
@@ -1337,11 +1337,11 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal" (click)="cancelContacts()"
-					translate>Decline</button>
+				<button type="button" class="btn Btn-Gray btn-hvr-text neg_mrg_top4" data-dismiss="modal"
+					(click)="cancelContacts()" translate>Decline</button>
 				<button type="button" [disabled]="!isCheckTC" class="button_blue bgcolor-unset"
 					(click)="saveContactsWithPermission()" translate><span
-						class="btn btn-primary transition">Accept</span></button>
+						class="btn btn-primary transition txt_pd-top3">Accept</span></button>
 			</div>
 		</div>
 	</div>

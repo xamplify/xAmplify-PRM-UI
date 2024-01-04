@@ -1343,19 +1343,20 @@
                                                 <div class="actions-block no-float"
                                                    *ngIf="isPartner && (contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' || contactsByType.selectedCategory == 'all')">
                                                    <ng-container *ngIf="contact?.validEmail">
-                                                      <a class="custom-icon" (click)="sendMail(contact.id)">
-                                                         <i class="fa fa-envelope IconCustomization" aria-hidden="true"
-                                                            data-toggle="tooltip" data-placement="bottom"
-                                                            title="Send Email Notification"></i>
+                                                      <a class="custom-icon" (click)="sendMail(contact.id)"
+                                                         data-toggle="tooltip" data-placement="bottom"
+                                                         title="Send Email Notification">
+                                                         <i class="fa fa-envelope IconCustomization"
+                                                            aria-hidden="true"></i>
                                                          <div class="clickicons"></div>
                                                       </a>
                                                    </ng-container>
                                                    <ng-container *ngIf="!contact?.validEmail">
-                                                      <a class="custom-icon">
+                                                      <a class="custom-icon" data-toggle="tooltip"
+                                                         data-placement="bottom"
+                                                         title="Email can't be sent for invalid email Id">
                                                          <i class="fa fa-envelope gray IconCustomization"
-                                                            aria-hidden="true" data-toggle="tooltip"
-                                                            data-placement="bottom"
-                                                            title="Email can't be sent for invalid email Id"></i>
+                                                            aria-hidden="true"></i>
                                                       </a>
                                                       <div class="clickicons"></div>
                                                    </ng-container>
