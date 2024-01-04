@@ -3649,3 +3649,8 @@ button.btn.custom:hover{
 .table-padding {
   padding: 0px;
 }
+/* QA issues start*/
+.FieldName{
+  color:#ffffff!important;
+}
+/* Qa issues end */

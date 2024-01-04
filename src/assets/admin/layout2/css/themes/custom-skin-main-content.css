@@ -2540,6 +2540,9 @@ button.button_blue:disabled span{
   background-color: #57c195 !important;
 }
 /* Detailed campaign tiles END */
-
-
+/* QA issues start*/
+.FieldName{
+  color: var(---text-color) !important;
+}
+/* Qa issues end */
 
