@@ -2577,3 +2577,8 @@ h3 b,
 div b {
   color: #fff !important;
 }
+/* QA issues start*/
+.FieldName{
+  color:#ffffff!important;
+}
+/* Qa issues end */

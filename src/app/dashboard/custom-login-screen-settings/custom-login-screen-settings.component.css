@@ -490,3 +490,7 @@ input[type=radio]:checked{
 .alert-su {
   padding:6px 12px;
 }
+/* sudha sri(3-1-2024) */
+.neg_margin_top5{
+  margin-top: -5px;
+}

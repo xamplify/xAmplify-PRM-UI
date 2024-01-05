@@ -7,24 +7,26 @@
   <div class="tabscard col-xs-12 p0">
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 p0 styles" *ngIf="!isShowFinalDiv">
       <button type="submit" class="btn nav nav-tabs dcTheme btn-md" [ngClass]="isStyle1? 'loginActive': 'inActive'"
-        id="tabWidthCu" (click)="showStyle1()" [disabled]="isShowFinalDiv"><b class="TabFontCu">Login Template Style</b></button>
+        id="tabWidthCu" (click)="showStyle1()" [disabled]="isShowFinalDiv"><b class="TabFontCu">Login Template
+          Style</b></button>
       <button type="submit" class="btn nav nav-tabs dcTheme btn-md" [ngClass]="!isStyle1 ? 'loginActive': 'inActive'"
-        id="tabWidthCu" (click)="showStyle2()" [disabled]="isShowFinalDiv"><b class="TabFontCu">Login Image Style</b></button>
+        id="tabWidthCu" (click)="showStyle2()" [disabled]="isShowFinalDiv"><b class="TabFontCu">Login Image
+          Style</b></button>
     </div>
     <div role="presentation" id="tabWidthCu" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 p0" id="updateDiv"
       style="margin-top: 5px;">
 
-      <button id="updateDiv" class="close-circle float-right" style="margin-left: 9px;height: 28px;padding-top: 0px;width: 28px;"
-        (click)="backToPrevoiusPage()">
+      <button id="updateDiv" class="close-circle float-right"
+        style="margin-left: 9px;height: 28px;padding-top: 0px;width: 28px;" (click)="backToPrevoiusPage()">
         <i class="fa fa-times" aria-hidden="true"></i>
       </button>
       <button type="submit" id="updateDiv" *ngIf="!isStyle1" (click)="updateCustomLogInScreenData(true)"
-        class="button float-right mg-top7 bgcolor-unset pd_0 p0" translate> <span
-          class="btn btn-sm Btn-Green transition">Update</span></button>
+        class="button float-right mg-top7 bgcolor-unset neg_mrg_top5" translate> <span
+          class="btn btn-sm Btn-Green transition txt_pd-top3">Update</span></button>
       <button type="submit" id="updateDiv" *ngIf="isStyle1" (click)="saveLoginTemplate()"
-          class="button float-right mg-top7 bgcolor-unset pd_0 p0" translate> <span
-            class="btn btn-sm Btn-Green transition">Update</span></button>
-      <button class="button float-right mg-top7 bgcolor-unset pd_0" type="submit" id="updateDiv" translate
+        class="button float-right mg-top7 bgcolor-unset neg_margin_top5" translate> <span
+          class="btn btn-sm Btn-Green transition">Update</span></button>
+      <button class="button float-right mg-top7 bgcolor-unset neg_margin_top5" type="submit" id="updateDiv" translate
         (click)="openNewTab()">
         <span class="btn btn-sm Btn-Green transition"><i class="fa fa-eye" aria-hidden="true"
             style="margin-right: 5px;"></i>Preview</span>
@@ -38,11 +40,10 @@
         </div>
 
         <div class="col-xs-6 pull-right p0 pb10">
-          <button (click)="showLoginStylesDiv()" class="button float-right bgcolor-unset pd_0 p0" type="submit"
-            id="alertDiv" translate><span class="btn btn-sm Btn-Green transition">Edit</span></button>
-          <button class="button float-right bgcolor-unset pd_0" type="submit" id="alertDiv" translate
-            (click)="openNewTab()">
-            <span class="btn btn-sm Btn-Green transition"><i class="fa fa-eye" aria-hidden="true"
+          <button (click)="showLoginStylesDiv()" class="button float-right bgcolor-unset" type="submit" id="alertDiv"
+            translate><span class="btn btn-sm Btn-Green transition">Edit</span></button>
+          <button class="button float-right bgcolor-unset" type="submit" id="alertDiv" translate (click)="openNewTab()">
+            <span class="btn btn-sm Btn-Green transition txt_pd-top3"><i class="fa fa-eye" aria-hidden="true"
                 style="margin-right: 5px;"></i>Preview</span>
           </button>
         </div>
@@ -59,7 +60,8 @@
             <tr *ngIf="loginType === 'STYLE_ONE'">
               <td><label><b>Template Name</b></label></td>
               <td>:</td>
-              <td><span [title]="templateName" data-toggle="tooltip" data-placement="bottom">{{templateName | slice:0:18 }}</span>
+              <td><span [title]="templateName" data-toggle="tooltip" data-placement="bottom">{{templateName | slice:0:18
+                  }}</span>
                 <span *ngIf="templateName?.length>18">...</span>
               </td>
             </tr>
@@ -129,8 +131,10 @@
                       </span>
                     </div>
                 </div> -->
-                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12" *ngIf="!authenticationService?.module?.isMarketingCompany">
-                  <label class="control-label col-sm-6 p0 FontCustomization" translate style="display:flex;width: 100%;">Display My Logo <span class="requried"><strong>*
+                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12"
+                  *ngIf="!authenticationService?.module?.isMarketingCompany">
+                  <label class="control-label col-sm-6 p0 FontCustomization" translate
+                    style="display:flex;width: 100%;">Display My Logo <span class="requried"><strong>*
                         :</strong></span>
                     <span class="switchBtnCu">
                       <span class="info-color-xampc">
@@ -140,12 +144,13 @@
                       <app-custom-ui-switch [customSwitch]="customLoginScreen?.showVendorCompanyLogo"
                         (customUiSwitchEventEmitter)="setVendorLogoOption($event)"></app-custom-ui-switch>
                     </span>
-                </label>
+                  </label>
                 </div>
                 <!-- End Display my logo toggle with help for style 1-->
                 <!-- Strat background color toggle  for style 1 -->
                 <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
-                  <label class="control-label FontCustomization" translate>Background Color <span class="requried"><strong>
+                  <label class="control-label FontCustomization" translate>Background Color <span
+                      class="requried"><strong>
                         :</strong></span>
                   </label>&nbsp;&nbsp;&nbsp;&nbsp;
                   <app-custom-ui-switch [customSwitch]="isBackgroundColorStyleOne"
@@ -229,7 +234,7 @@
                   </label>
                 </span>
                 <div class="ribbon draft config" *ngIf="emailTemplate.id === activeTemplateId">
-                  <span [style.background-color]="'green'" *ngIf="loginType === 'STYLE_ONE'" >Active</span>
+                  <span [style.background-color]="'green'" *ngIf="loginType === 'STYLE_ONE'">Active</span>
                 </div>
                 <img class="email-template-preview" *ngIf="emailTemplate.name === 'Create_Template'"
                   src="assets/images/customloginscreens/wireframe4.png" alt="Image Not Found">
@@ -290,8 +295,10 @@
                   </div>
                 </div>
                 <!-- Strat Display my logo toggle with help for style 2 -->
-                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12" *ngIf="!authenticationService?.module?.isMarketingCompany">
-                  <label class="control-label col-sm-6 p0 FontCustomization" translate style="display:flex;width: 100%;">Display My Logo <span class="requried"><strong>*
+                <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12"
+                  *ngIf="!authenticationService?.module?.isMarketingCompany">
+                  <label class="control-label col-sm-6 p0 FontCustomization" translate
+                    style="display:flex;width: 100%;">Display My Logo <span class="requried"><strong>*
                         :</strong></span>
                     <span class="switchBtnCu">
                       <span class="info-color-xampc">
@@ -301,12 +308,13 @@
                       <app-custom-ui-switch [customSwitch]="customLoginScreen?.showVendorCompanyLogo"
                         (customUiSwitchEventEmitter)="setVendorLogoOption($event)"></app-custom-ui-switch>
                     </span>
-                </label>
+                  </label>
                 </div>
                 <!-- End Display my logo toggle with help for style 2-->
                 <!-- Strat background color toggle  for style 2 -->
                 <div class="col-xs-12 col-md-12 col-lg-12 col-sm-12">
-                  <label class="control-label FontCustomization" translate>Background Color <span class="requried"><strong>
+                  <label class="control-label FontCustomization" translate>Background Color <span
+                      class="requried"><strong>
                         :</strong></span>
                   </label>&nbsp;&nbsp;&nbsp;&nbsp;
                   <app-custom-ui-switch [customSwitch]="isBackgroundColorStyleTwo"
@@ -388,7 +396,8 @@
             There are two distinct login styles across five different unique login page designs.
           </li>
           <li translate>
-            <b>Login Template Style</b> has sections on the right and left, in one, the login form can be placed, and in the
+            <b>Login Template Style</b> has sections on the right and left, in one, the login form can be placed, and in
+            the
             other, you can create the template you want for your sales and marketing material.
           </li>
           <li translate>
