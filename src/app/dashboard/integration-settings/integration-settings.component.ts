@@ -233,12 +233,12 @@ export class IntegrationSettingsComponent implements OnInit {
 		 } else {
 			const amountField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'AMOUNT');
 			const closeDateField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'CLOSE_DATE');
-			const dealNameField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'DEAL_NAME');		
+			const dealNameField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'DEAL_NAME');	
 			 if (((this.integrationType === 'HUBSPOT') && (!amountField || !closeDateField || !dealNameField))) {
 				 this.ngxloading = false;
 				 const missingFields: string[] = [];
 				 if (!amountField) {
-					 missingFields.push('Amount');
+					missingFields.push('Amount');
 				 }
 				 if (!closeDateField) {
 					 missingFields.push('Close Date');
@@ -248,7 +248,20 @@ export class IntegrationSettingsComponent implements OnInit {
 				 }
 				 const missingFieldsMessage = missingFields.join(', ');
 				 this.referenceService.goToTop();
-				 return this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);
+				 return this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);	
+			}
+			if((this.integrationType === 'HUBSPOT'))
+			{
+				this.ngxloading = false;
+				const missingFields: string[] = [];
+				this.selectedCustomFieldsDtos.forEach(field => {
+							if ($.trim(field.displayName).length <= 0) {
+								missingFields.push(field.name);
+							}
+						});
+						const missingFieldsMessage = missingFields.join(', ');
+						this.referenceService.goToTop();
+						return this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);	
 			}
 		 	this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, this.integrationType.toLowerCase())
 				.subscribe(
@@ -604,5 +617,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			});
 		}
 	}
+
+	
 
 }
