@@ -153,6 +153,9 @@ import { ScrollToModule } from 'ng2-scroll-to-el';
 import { ConfirmUnpublishTracksOrPlaybooksModelPopupComponent } from 'app/util/confirm-unpublish-tracks-or-playbooks-model-popup/confirm-unpublish-tracks-or-playbooks-model-popup.component';
 import { CustomUiFilterComponent } from 'app/util/custom-ui-filter/custom-ui-filter.component';
 
+import { TrimPipe } from 'app/core/custom-pipes/trim.pipe';
+
+
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
 		 DragulaModule, ColorPickerModule, CKEditorModule,QueryBuilderModule,DropDownListModule,ScrollToModule.forRoot()],
@@ -182,7 +185,7 @@ import { CustomUiFilterComponent } from 'app/util/custom-ui-filter/custom-ui-fil
 		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,SelectEmailTemplateComponent,CustomUiSwitchComponent,
 		EditTemplateOrPageModalPopupComponent, ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
 		 ShareUnpublishedContentComponent,
-	 ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent],
+	 ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe],
 
 
 
@@ -211,8 +214,8 @@ import { CustomUiFilterComponent } from 'app/util/custom-ui-filter/custom-ui-fil
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent,
 		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent,
 		ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
-
-		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent]
+		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
+		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe]
 
 })
 export class CommonComponentModule { }

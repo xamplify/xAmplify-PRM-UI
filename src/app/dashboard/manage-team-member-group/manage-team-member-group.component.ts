@@ -228,6 +228,10 @@ export class ManageTeamMemberGroupComponent implements OnInit {
               this.customResponse = new CustomResponse('SUCCESS', "Group Deleted Successfully", true);
               this.pagination.pageIndex = 1;
               this.findGroups(this.pagination);
+            }else if (response.statusCode == 400) {
+             this.idToDelete = 0;
+            this.referenceService.loading(this.httpRequestLoader, false);
+            this.customResponse = new CustomResponse('ERROR',response. message, true);
             }
           },
           (error: any) => {
