@@ -449,7 +449,6 @@ export class ReferenceService {
       var div = $("#" + divId);
       if (div.length) {
         var contentNav = div.offset().top;
-        console.log(contentNav);
         $("html,body").animate(
           {
             scrollTop: contentNav,
@@ -3339,11 +3338,9 @@ export class ReferenceService {
   
   iterateNamesAndGetErrorMessage(response:any){
     let names = "";
-    console.log(response.data);
     $.each(response.data, function (index:number, value:any) {
       names += (index + 1) + ". " + value + "\n\n";
     });
-    console.log( response.message + "\n\n" + names);
     return response.message + "\n\n" + names;
   }
 }
