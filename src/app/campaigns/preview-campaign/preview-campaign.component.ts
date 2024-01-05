@@ -658,7 +658,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
            }
 
            this.downloadDataList.length = 0;
-           let sentTime = new Date(this.campaign.launchTime);
+           if(this.previewCampaignType === 'EVENT'){
+            var sentTime = new Date(this.campaign.launchTimeInString);
+           }else{
+            var sentTime = new Date(this.campaign.launchTime);
+           }
            for (let i = 0; i < this.downloadEmailLogList.length; i++) {
                let date = new Date(this.downloadEmailLogList[i].time);
                let startTime = new Date(this.downloadEmailLogList[i].startTime);
@@ -1257,7 +1261,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       $("#calendarModal").modal('hide');
       $("#saveAsModalcalendar").modal('hide');
       $("#show-campaign-popup").modal('hide');
-
+      
     }
 
     /*************************************************************Contact List***************************************************************************************/
