@@ -1,0 +1,46 @@
+.mt25m {
+	margin-top: -25px !important;
+}
+
+.ml15m {
+	margin-left: -15px !important;
+}
+@media (min-width: 200px) and (max-width: 767px)  { 
+	.ml15m {
+		padding-right: 0px !important;
+	}
+}
+@media (min-width: 200px) and (max-width: 767px)  { 
+	.mobileBtnLeftnone{float:none !important;}
+	.serachvoxwidth{width:100%}
+  }
+
+.tm-group-preview-css {
+	border-radius: 0px 3px 3px 0px !important;
+  }
+  .group-name-cclass {
+	border-radius: 3px 0px 0px 3px !important;
+	width: 180px;
+  }
+
+/* table header bgcolor */
+.panel-bgMain > .panel-bg{
+    background-color: #d9edf7b0;
+    border-bottom: 1px solid #ddd;
+}
+.panel-bgMain {
+	border-color: #ddd;
+}
+/* table header bgcolor end */
+.panel-heading {
+    padding: 11px 15px !important;
+}
+.table>tbody>tr>td {
+	vertical-align: middle !important;
+}
+.btnGroupFlex{display: flex !important;}
+
+.btn-group button {
+    background-color: #008fd5;
+    border: 1px solid #3575b5;
+}

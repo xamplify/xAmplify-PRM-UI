@@ -12,8 +12,9 @@
       </div>
       <!-- card two  -->
       <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 pa-CardSidePaddings"
-         *ngIf="partnerJourneyAnalytics?.showTeamMemberCount">
-         <div class="pa-Card pa-CardTwo disabled-event-pj  tiles-card">
+         *ngIf="partnerJourneyAnalytics?.showTeamMemberCount"
+         [scrollTo]="partnerJourneyAnalytics?.teamMemberCount > 0 ? '#pj-team-member-details-div' : ''" [scrollDuration]="1000" [scrollOffset]="-100">
+         <div [className]="partnerJourneyAnalytics?.teamMemberCount > 0 ? 'xamplify-cursor-pointer pa-Card pa-CardTwo tiles-card' : 'disabled-event-pj pa-Card pa-CardTwo tiles-card'">
             <i class="fa fa-users pa-fafaIconCustomization" aria-hidden="true"></i>
             <p class="pa-text pa-TextTwo">{{partnerJourneyAnalytics?.teamMemberCount}}</p>
             <p class="pa-text pa-TextTwo">Team Members</p>
