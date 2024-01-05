@@ -93,7 +93,7 @@
                                              
                                                 <!--Copy-->
                                                 <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                                
+
                                                 <!--Spam Checker Icon-->
                                                 <ng-template [ngTemplateOutlet]="spamCheckIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                                 
@@ -399,6 +399,7 @@
     </div>
 </div>
 
+<!--Save As Default Template Modal Popup-->
 <ng-container *ngIf="saveAsDefaultTemplate">
     <app-add-default-template-details [defaultTemplateInput]="defaultTemplateInput" (notifyChild)="showSuccessMessage()"></app-add-default-template-details>
 </ng-container>
