@@ -52,7 +52,7 @@
     <!---Team Members---->
     <ng-container *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember">
       <!--List Of Team members---->
-      <div class="portlet light">
+      <div class="portlet light remove_cardBgcolor">
         <div class="portlet-title">
           <div class="row" style="display:flex;align-items: center;">
             <div class="col-xs-3 col-sm-3 col-md-4 col-lg-3">
@@ -342,7 +342,7 @@
 
     <!--Add a Team Member Div-->
     <ng-container *ngIf="(showAddTeamMemberDiv || editTeamMember) && !showUploadedTeamMembers">
-      <div class="portlet light">
+      <div class="portlet light remove_cardBgcolor">
         <div class="portlet-title">
           <div class="caption">
             <span *ngIf="showAddTeamMemberDiv">Add Team Member</span>
@@ -365,11 +365,10 @@
                     <label class="control-label col-sm-3">First Name<span class="required">*</span></label>
                     <div class="{{firstNameDivClass}}">
                       <input type="text" autocomplete="off" id="firstName" placeholder="First Name" class="form-control"
-                      (input)="validateAddTeamMemberForm('firstName')"
-                        [(ngModel)]="team.firstName" [ngModelOptions]="{standalone: true}" name="firstName"
-                        maxlength="255">
-                        <span class="required"
-                        *ngIf="team?.lastNameErrorMessage?.length>0">{{team?.lastNameErrorMessage}}</span>           
+                        (input)="validateAddTeamMemberForm('firstName')" [(ngModel)]="team.firstName"
+                        [ngModelOptions]="{standalone: true}" name="firstName" maxlength="255">
+                      <span class="required"
+                        *ngIf="team?.lastNameErrorMessage?.length>0">{{team?.lastNameErrorMessage}}</span>
                     </div>
                   </div>
                 </div>
@@ -502,7 +501,8 @@
     <!--End of Add a Team Member Div-->
 
     <!-----Uplodaded Team Members----->
-    <div class="portlet light" *ngIf="showUploadedTeamMembers && !showAddTeamMemberDiv && !editTeamMember">
+    <div class="portlet light remove_cardBgcolor"
+      *ngIf="showUploadedTeamMembers && !showAddTeamMemberDiv && !editTeamMember">
       <div class="portlet-title">
         <div class="caption">Uploaded Team Members</div>
         <div [hidden]="addTeamMemberLoader.isLoading">

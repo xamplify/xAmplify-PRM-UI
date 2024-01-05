@@ -2915,3 +2915,7 @@ span.btn.btn-primary.transition.primary_btn_width,
 span.btn.Btn-Green.transition.secondary_btn_width{
   width: 100%;
 }
+/* Sudha Sri(4-1-2024) */
+.table-padding {
+  padding: 0px 10px;
+}
