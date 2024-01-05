@@ -52,8 +52,8 @@
               <div class="col-md-1 p0 positionForAddandDelete" style="display: flex;">
                 <!-- Delete Button -->
                 <span (click)="cancelSegmentationRow(i)" type="button">
-                  <i class="fa fa-trash-o trashIconCustimization" aria-hidden="true" data-toggle="tooltip" data-placement="top"
-                    title="Remove a condition"></i>
+                  <i class="fa fa-trash-o trashIconCustimization trash_bgcolor" aria-hidden="true" data-toggle="tooltip"
+                    data-placement="top" title="Remove a condition"></i>
                 </span>
                 <ng-template [ngTemplateOutlet]="addIcon" *ngIf="i === criterias.length-1"></ng-template>
 
@@ -64,8 +64,9 @@
             <!-- <ng-template [ngTemplateOutlet]="addIcon" *ngIf="criterias.length <= 0"></ng-template> -->
 
             <ng-template #addIcon>
-              <button [disabled]="criterias.length > 5" [ngClass]="criterias.length <= 0 ? 'plus_icon_low':'plus_icon_high' " (click)="addNewRow()" type="button" class="btn btn-default"
-                >
+              <button [disabled]="criterias.length > 5"
+                [ngClass]="criterias.length <= 0 ? 'plus_icon_low':'plus_icon_high' " (click)="addNewRow()"
+                type="button" class="btn btn-default">
                 <i data-toggle="tooltip" data-placement="bottom" title="Add a condition" class="fa fa-plus-square"
                   aria-hidden="true" style="color: #0196da"></i>
               </button>
@@ -79,8 +80,8 @@
           </div>
           <div class="row pl10 pr10 pb10">
             <div class="form-inline col-lg-12 col-md-12 col-sm-12 col-xs-12 createdOnRow">
-              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
-                <h4 style="font-size:15px">{{parterViewText}}</h4>
+              <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12 p0">
+                <div class="control-label" style="font-size:15px">{{parterViewText}}</div>
               </div>
               <div class="form-group col-lg-5 col-md-5 col-sm-5 col-xs-12 p0">
                 <label class="control-label">
