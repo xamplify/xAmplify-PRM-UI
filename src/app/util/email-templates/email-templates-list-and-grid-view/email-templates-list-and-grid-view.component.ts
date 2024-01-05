@@ -72,6 +72,7 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
 	whiteLabeledBanner = "";
   ngxloading: boolean;
   roles:Roles = new Roles();
+  isLocalHost = false;
 
   constructor(
     private emailTemplateService: EmailTemplateService,
@@ -93,6 +94,7 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
   ) {}
 
   initializeVariables() {
+    this.isLocalHost = this.authenticationService.isLocalHost();
     this.referenceService.renderer = this.renderer;
     this.loggedInUserId = this.authenticationService.getUserId();
     this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
