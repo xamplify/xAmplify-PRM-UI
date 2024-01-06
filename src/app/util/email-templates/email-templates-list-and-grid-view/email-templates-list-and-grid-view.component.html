@@ -431,7 +431,7 @@
 </ng-template>
 <!--Copy-->
 <ng-template #copyIcon let-emailTemplate="emailTemplate">
-    <a class="Iconhover custom-grid-icon" (click)="copy(emailTemplate.id)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.campaign_copy}}"
+    <a class="Iconhover custom-grid-icon" (click)="copy(emailTemplate)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.campaign_copy}}"
          *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || 
           authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing )
            && emailTemplate.type!='PARTNER' && !emailTemplate.draft && isLocalHost">
@@ -474,4 +474,5 @@
 
 <app-send-test-email *ngIf="sendTestEmailIconClicked" [id]="selectedEmailTemplateId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
 
+<app-copy-modal-popup #copyModalPopupComponent (copyModalPopupOutputEmitter)="copyModalPopupOutputReceiver($event)"></app-copy-modal-popup>
 <app-scroll-top></app-scroll-top>
