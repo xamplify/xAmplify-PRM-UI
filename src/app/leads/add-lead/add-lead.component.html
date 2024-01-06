@@ -107,7 +107,8 @@
                   <div class="col-sm-6 col-xs-12">
                     <div class="form-group" [attr.class]="pipelineId" style="margin-bottom: 20px"
                       *ngIf="!hasCampaignPipeline && !activeCRMDetails?.hasLeadPipeline">
-                      <label class="control-label">Pipeline<font style="color: #f55d7a"> <b>*</b></font></label>
+                      <label class="control-label">Pipeline<font> <b style="color: #f55d7a !important">*</b></font>
+                        </label>
                       <select class="form-control" [(ngModel)]="lead.pipelineId" [ngModelOptions]="{standalone: true}"
                         placeholder="pipelineId" id="pipelineId" [disabled]="preview" (ngModelChange)="resetStages()">
                         <option [value]="0">Select Pipeline</option>
@@ -116,7 +117,7 @@
                     </div>
 
                     <div class="form-group" [attr.class]="pipelineStageId" style="margin-bottom: 20px">
-                      <label class="control-label">Stage<font style="color: #f55d7a"> <b>*</b></font></label>
+                      <label class="control-label">Stage<font> <b style="color: #f55d7a !important">*</b></font></label>
                       <select class="form-control" [(ngModel)]="lead.pipelineStageId"
                         [ngModelOptions]="{standalone: true}" placeholder="pipelineStageId" id="pipelineStageId"
                         [disabled]="preview">
