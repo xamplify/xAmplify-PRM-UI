@@ -27,4 +27,6 @@ export class Lead {
     associatedDealId: number;
     unReadChatCount: any;
     currentStagePrivate = false;
+    /******XNFR-426-start-sai******/
+    leadApproveRejectType: any;
 }

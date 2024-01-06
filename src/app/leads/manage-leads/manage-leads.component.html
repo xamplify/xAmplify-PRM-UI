@@ -375,12 +375,46 @@
                                 Deal
                               </div>
 
-                              <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner"
-                                class="register_deal">
-                                <a style="padding: 3px;" (click)="showDealRegistrationForm(lead)" translate>
-                                  Register Deal</a>
+                              <!--------XNFR-426-start-sai--------->
+                              <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner">
+                              <!--  <a style="padding: 3px;" (click)="showDealRegistrationForm(lead)" translate>
+                                  Register Deal</a> -->
+                                  <div style="color: #06c306;" *ngIf="lead?.leadApproveRejectType == 'APPROVED'" translate>
+                                    <i class="fa fa-check-circle mr5" aria-hidden="true"
+                                      style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                    Approved
+                                  </div>
+                                  <div style="color: #f71111;" *ngIf="lead?.leadApproveRejectType == 'REJECTED'" translate>
+                                    <i class="fa fa-times-circle mr5" aria-hidden="true"
+                                      style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                    Rejected
+                                  </div>
+                                  <button class="button_blue bgcolor-unset" [disabled]="lead?.leadApproveRejectType == 'REJECTED'" 
+                                  (click)="showDealRegistrationForm(lead)" translate>
+                                    <span class="btn btn-primary transition d-inline"> Register Deal</span>
+                                  </button>
                               </div>
 
+                              <div *ngIf="!lead?.associatedDealId > 0 && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApproveRejectType == undefined">
+                                <button class="button_blue bgcolor-unset" (click)="leadApprove(lead,'APPROVED')" translate>
+                                  <span class="btn btn-primary transition d-inline"> Approve</span>
+                                </button>
+                                <button class="button_blue bgcolor-unset" (click)="leadApprove(lead,'REJECTED')" translate>
+                                  <span class="btn Btn-Gray transition d-inline"> Reject</span>
+                                </button>
+                              </div>
+
+                              <div style="color: #06c306;" *ngIf="!lead?.associatedDealId > 0 && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApproveRejectType == 'APPROVED'" translate>
+                                <i class="fa fa-check-circle mr5" aria-hidden="true"
+                                  style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                Approved
+                              </div>
+                              <div style="color: #f71111;" *ngIf="!lead?.associatedDealId > 0 && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApproveRejectType == 'REJECTED'" translate>
+                                <i class="fa fa-times-circle mr5" aria-hidden="true"
+                                  style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                Rejected
+                              </div>
+                              <!--------XNFR-426-end-sai--------->
                             </td>
                             <td>
                               <div class="actions-block override-actions tb_view_actions">

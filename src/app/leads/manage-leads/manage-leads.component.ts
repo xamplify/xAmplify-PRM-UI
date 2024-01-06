@@ -1223,5 +1223,13 @@ export class ManageLeadsComponent implements OnInit {
       ()=> { }
     );
   }
+
+  /*********XNFR-426-start-sai******/
+  leadApprove(lead:Lead , leadApproveRejectType:string){
+
+    lead.leadApproveRejectType = leadApproveRejectType;
+
+    this.leadsService.leadApprove(lead).subscribe();
+  }
   
 }
