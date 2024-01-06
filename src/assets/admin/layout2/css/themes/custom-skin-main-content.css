@@ -2545,4 +2545,11 @@ button.button_blue:disabled span{
   color: var(---text-color) !important;
 }
 /* Qa issues end */
-
+/* Sudha Sri(5-1-2024) */
+.trash_bgcolor{
+  background:var(--div-bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+.button.button.bgcolor-unset.btn_border{
+  border :none !important;
+}

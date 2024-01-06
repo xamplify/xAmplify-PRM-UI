@@ -704,8 +704,9 @@
                                                                                     [attr.class]="question.class">
                                                                                     <label
                                                                                         class="control-label">Question
-                                                                                        <font style="color: #f55d7a">
-                                                                                            <b>*</b>
+                                                                                        <font>
+                                                                                            <b
+                                                                                                style="color: #f55d7a !important">*</b>
                                                                                         </font>
                                                                                     </label>
                                                                                     <input type="text" maxlength="300"
@@ -777,8 +778,9 @@
                                                                                     [attr.class]="dealType.class">
                                                                                     <label class="control-label"
                                                                                         translate>DealType
-                                                                                        <font style="color: #f55d7a">
-                                                                                            <b>*</b>
+                                                                                        <font>
+                                                                                            <b
+                                                                                                style="color: #f55d7a !important">*</b>
                                                                                         </font>
                                                                                     </label>
                                                                                     <input type="text" maxlength="300"
@@ -1453,7 +1455,7 @@
                                                                                     title="{{pipeline.name}}">{{pipeline.name
                                                                                     | slice:0:30}}<span
                                                                                         *ngIf="pipeline?.name?.length>30">...</span></span>
-                                                                                <h6 class="view-banner"
+                                                                                <h6 class="view-banner pipeline-label-width"
                                                                                     *ngIf="pipeline.crmPipeline"
                                                                                     translate>
                                                                                     {{pipeline.integrationType}}</h6>
@@ -1760,7 +1762,8 @@
                                                     style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
                                                     <button type="submit" class="button bgcolor-unset"
                                                         (click)="saveGdprSetting()" *ngIf="!gdprSetting.isExists"
-                                                        translate><span class="btn Btn-Green transition">Save
+                                                        translate><span
+                                                            class="btn Btn-Green transition txt_pd-top3">Save
                                                             Settings</span></button>
                                                     <button type="submit" class="button bgcolor-unset"
                                                         (click)="updateGdprSetting()" *ngIf="gdprSetting.isExists"
@@ -2910,36 +2913,43 @@
 
 
                             <!--  XNFR-415 -->
-                            <div *ngIf="  (((( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany) &&  !authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin )  && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing))">
-                                <div *ngIf="activeTabName === 'settings'"  [ngClass]="{'active-tab': activeTabName === 'settings'}">
+                            <div
+                                *ngIf="  (((( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany) &&  !authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin )  && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing))">
+                                <div *ngIf="activeTabName === 'settings'"
+                                    [ngClass]="{'active-tab': activeTabName === 'settings'}">
                                     <div class="portlet light">
                                         <div class="portlet-title tabbable-line">
-                                                <span class="caption-subject font-blue-madison bold" *ngIf="activeTabName==='settings'">{{"Default Dashboard for My Partners" | translate}}</span>
+                                            <span class="caption-subject font-blue-madison bold"
+                                                *ngIf="activeTabName==='settings'">{{"Default Dashboard for My Partners"
+                                                | translate}}</span>
                                         </div>
                                         <br>
-                                            <form>
-                                                <div>
-                                                    
+                                        <form>
+                                            <div>
+
                                                 <label class="container-checkbox-xamplify" translate>Welcome
                                                     <input class="radioButton_shadow" type="radio"
                                                         name="dashboardSelectedOption"
                                                         value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME]}}"
                                                         [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME] || defaultSelectedDashboardTypeSetting === undefined ">
                                                     <span class="checkmark"></span>
-                                                    </label>
-                                                    <label class="container-checkbox-xamplify" translate>{{getDashboardForSelectedOption}}
-                                                       
-                                                        <input class="radioButton_shadow" type="radio"  name="dashboardSelectedOption" 
+                                                </label>
+                                                <label class="container-checkbox-xamplify"
+                                                    translate>{{getDashboardForSelectedOption}}
+
+                                                    <input class="radioButton_shadow" type="radio"
+                                                        name="dashboardSelectedOption"
                                                         value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD]}}"
-                                                            [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD] ">
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                </div>
-                                                    <div class="margin-top-10">
-                                                    <button type="submit" class="button bgcolor-unset pd_lft2" (click)="setDashboardForPartner()"><span
+                                                        [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD] ">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="margin-top-10">
+                                                <button type="submit" class="button bgcolor-unset pd_lft2"
+                                                    (click)="setDashboardForPartner()"><span
                                                         class="btn Btn-Green transition txt_pd-top3">Save
                                                         Changes</span></button>
-                                                    </div>    
+                                            </div>
                                         </form>
                                     </div>
                                 </div>

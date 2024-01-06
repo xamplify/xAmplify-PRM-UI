@@ -303,7 +303,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         const inActiveMasterPartnerList = $.trim(this.properties.inActiveMasterPartnerList.toLowerCase().replace(/\s/g, ''));
         var list = this.names;
         this.xtremandLogger.log( list );
-        if ($.inArray( lowerCaseContactName, list ) > -1 ) {
+        if(lowerCaseContactName==null || lowerCaseContactName==''){
+            this.isValidContactName = true;
+            $( "button#sample_editable_1_new" ).prop( 'disabled', true );
+            $( ".ng-valid[required], .ng-valid.required" ).css( "color", "red" );
+            this.invalidContactNameError = "Please add valid name";
+        }else if ($.inArray( lowerCaseContactName, list ) > -1 ) {
             this.isValidContactName = true;
             $( "button#sample_editable_1_new" ).prop( 'disabled', true );
             $( ".ng-valid[required], .ng-valid.required" ).css( "color", "red" );

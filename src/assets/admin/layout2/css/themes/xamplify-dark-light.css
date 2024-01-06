@@ -2582,3 +2582,15 @@ div b {
   color:#ffffff!important;
 }
 /* Qa issues end */
+/* Sudha Sri(5-1-2024) */
+.actions-block-selected i{
+  border: 1px solid #5bb2f5 !important;
+  color: #5bb2f5 !important;
+}
+.trash_bgcolor{
+  background: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
+.button.button.bgcolor-unset.btn_border{
+  border :none !important;
+}

@@ -228,3 +228,8 @@ span.quiz_optionname {
   opacity: 0.65;
   pointer-events: none;
 }
+/* bnts align */
+.px-0{
+  padding: 0px!important;
+  margin-top: 6px!important;
+} 

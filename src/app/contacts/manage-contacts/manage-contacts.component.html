@@ -1578,7 +1578,7 @@
                      </div>
                   </div>
                   <div class="row col-sm-1 tab_ml0" style="margin-left: 32px;">
-                     <div data-toggle="tooltip" data-placement="left" title="Add a condition">
+                     <div data-toggle="tooltip" data-placement="top" title="Add a condition">
                         <span [class.disabled]="criterias.length > 5" (click)="addNewRow()"
                            class="btn btn-default pull-right">
                            <i class="fa fa-plus-square" aria-hidden="true" style="color: #0196da"></i>
@@ -1592,8 +1592,8 @@
             </div>
          </div>
          <div class="modal-footer">
-            <button type="button" class="button bgcolor-unset" [disabled]="criterias.length === 0" (click)="contactFilter()"
-               translate><span class="btn Btn-Green transition">Submit</span></button>
+            <button type="button" class="button bgcolor-unset" [disabled]="criterias.length === 0"
+               (click)="contactFilter()" translate><span class="btn Btn-Green transition">Submit</span></button>
             <button type="button" class="btn Btn-Gray" (click)="cancelSegmentation()" data-dismiss="modal"
                translate>Cancel</button>
          </div>

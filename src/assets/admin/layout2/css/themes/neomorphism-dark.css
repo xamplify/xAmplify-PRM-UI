@@ -3654,3 +3654,24 @@ button.btn.custom:hover{
   color:#ffffff!important;
 }
 /* Qa issues end */
+/* Sudha Sri(5-1-2024) */
+input.form-control.remove_checkbox_shadow{
+  box-shadow : none !important;
+}
+.b-b-c :hover{
+  color: #fff !important;
+}
+button.btn.btn-primary.inetgrations_activate_bgcolor{
+  box-shadow: none !important;
+  background-color: #29dd50 !important;
+}
+a.Iconhover.custom-grid-icon.icon_margin{
+  margin: 2px 2px !important;
+}
+.trash_bgcolor{
+  background: #2e3033 !important;
+  border: 1px solid #191b1e !important;
+}
+.button.button.bgcolor-unset.btn_border{
+  border :none !important;
+}

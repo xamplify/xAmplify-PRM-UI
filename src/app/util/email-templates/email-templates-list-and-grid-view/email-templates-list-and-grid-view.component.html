@@ -91,6 +91,9 @@
                                                 <!--Save As Template-->
                                                 <ng-template [ngTemplateOutlet]="saveAsDefaultTemplateIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                              
+                                                <!--Copy-->
+                                                <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+
                                                 <!--Spam Checker Icon-->
                                                 <ng-template [ngTemplateOutlet]="spamCheckIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                                 
@@ -98,8 +101,7 @@
                                             <div class="mActionDiv whitespace_nowrap display-inlineflex">
                                                 <!--Edit-->
                                                 <ng-template [ngTemplateOutlet]="editIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                                <!--Copy-->
-                                                <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                                
                                                 <!--Preview-->
                                                 <ng-template [ngTemplateOutlet]="previewIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                                 <!--Send Test Email XNFR-317-->
@@ -182,18 +184,19 @@
                                     <!--Save As Template-->
                                     <ng-template [ngTemplateOutlet]="saveAsDefaultTemplateIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                    
+                                   <!--Copy-->
+                                   <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                   
                                     <!--Spam Check-->
                                     <ng-template [ngTemplateOutlet]="spamCheckIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
 
                                     <!--Edit-->
                                     <ng-template [ngTemplateOutlet]="editIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-
-                                    <!--Copy-->
-                                    <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
+                                    
                                     
                                     <!--Preview-->
                                     <ng-template [ngTemplateOutlet]="previewIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                  
+                                    
                                     <!--Send Test Email XNFR-317-->
                                     <ng-template [ngTemplateOutlet]="sendTestEmailIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                     
@@ -279,14 +282,12 @@
                     </ul>
                 </div>
             </div>
-            <div class="page-toolbar col-xs-12 col-sm-12 col-md-7 col-lg-6 tb_view_temp"
-                style="padding-top: 10px;margin-left: -5px;">
+            <div class="page-toolbar col-xs-12 col-sm-12 col-md-7 col-lg-6 tb_view_temp" style="padding-top: 10px;margin-left: -5px;">
                 <div class="btn-group pull-right" style="display: flex;">
                     <div>
                         <div class="group-dropdown">
-                            <button
-                                [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
-              modulesDisplayType?.isFolderListView? 'fa fa-th btn btn-xs l-g-view': modulesDisplayType?.isFolderGridView?'fa fa-folder btn btn-xs l-g-view':'fa fa-th-list btn btn-xs l-g-view'"
+                            <button [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
+                                    modulesDisplayType?.isFolderListView? 'fa fa-th btn btn-xs l-g-view': modulesDisplayType?.isFolderGridView?'fa fa-folder btn btn-xs l-g-view':'fa fa-th-list btn btn-xs l-g-view'"
                                 style="padding:10px !important"></button>
                             <div class="group-dd-content">
                                 <ng-container class='m10'>
@@ -398,6 +399,7 @@
     </div>
 </div>
 
+<!--Save As Default Template Modal Popup-->
 <ng-container *ngIf="saveAsDefaultTemplate">
     <app-add-default-template-details [defaultTemplateInput]="defaultTemplateInput" (notifyChild)="showSuccessMessage()"></app-add-default-template-details>
 </ng-container>
@@ -429,7 +431,7 @@
 </ng-template>
 <!--Copy-->
 <ng-template #copyIcon let-emailTemplate="emailTemplate">
-    <a class="Iconhover custom-grid-icon" (click)="copy(emailTemplate.id)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.campaign_copy}}"
+    <a class="Iconhover custom-grid-icon" (click)="copy(emailTemplate)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.campaign_copy}}"
          *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || 
           authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing )
            && emailTemplate.type!='PARTNER' && !emailTemplate.draft && isLocalHost">
@@ -472,4 +474,5 @@
 
 <app-send-test-email *ngIf="sendTestEmailIconClicked" [id]="selectedEmailTemplateId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
 
+<app-copy-modal-popup #copyModalPopupComponent (copyModalPopupOutputEmitter)="copyModalPopupOutputReceiver($event)"></app-copy-modal-popup>
 <app-scroll-top></app-scroll-top>
