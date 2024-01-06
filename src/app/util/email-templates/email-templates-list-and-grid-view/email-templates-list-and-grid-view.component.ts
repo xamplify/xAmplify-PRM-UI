@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Renderer,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Renderer,Input,Output,EventEmitter,ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
 import { PagerService } from 'app/core/services/pager.service';
@@ -20,20 +20,15 @@ import { ActionsDescription } from 'app/common/models/actions-description';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { Roles } from 'app/core/models/roles';
+import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
+
 declare var $:any, swal: any;
 
 @Component({
   selector: "app-email-templates-list-and-grid-view",
   templateUrl: "./email-templates-list-and-grid-view.component.html",
   styleUrls: ["./email-templates-list-and-grid-view.component.css"],
-  providers: [
-    Pagination,
-    HttpRequestLoader,
-    ActionsDescription,
-    CampaignAccess,
-    SortOption,
-    Properties,
-  ],
+  providers: [Pagination,HttpRequestLoader, ActionsDescription,CampaignAccess,SortOption, Properties],
 })
 export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy {
   loading = false;
@@ -72,7 +67,9 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
 	whiteLabeledBanner = "";
   ngxloading: boolean;
   roles:Roles = new Roles();
-
+  isLocalHost = false;
+ /*  XNFR-431 */
+  @ViewChild("copyModalPopupComponent") copyModalPopupComponent:CopyModalPopupComponent;
   constructor(
     private emailTemplateService: EmailTemplateService,
     private router: Router,
@@ -93,6 +90,7 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
   ) {}
 
   initializeVariables() {
+    this.isLocalHost = this.authenticationService.isLocalHost();
     this.referenceService.renderer = this.renderer;
     this.loggedInUserId = this.authenticationService.getUserId();
     this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
@@ -497,6 +495,14 @@ callFolderListViewEmitter(){
   }
 }
 
+/*  XNFR-431 */
+copy(emailTemplate:any){
+  this.copyModalPopupComponent.openModalPopup(emailTemplate.id,emailTemplate.name,"Email Template");
+}
+
+copyModalPopupOutputReceiver(event){
+  console.log(event);
+}
 
 }
 
