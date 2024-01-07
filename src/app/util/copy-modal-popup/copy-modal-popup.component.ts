@@ -50,10 +50,10 @@ export class CopyModalPopupComponent implements OnInit {
     this.closeModalPopup();
   }
 
-  showServerErrorMessage(){
+  showErrorMessage(message:string){
     this.processing = false;
     this.buttonClicked = false;
-    this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+    this.customResponse = new CustomResponse('ERROR',message,true);
   }
 
   submit(){

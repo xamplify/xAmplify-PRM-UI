@@ -508,19 +508,18 @@ copyModalPopupOutputReceiver(copyDto:CopyDto){
   emailTemplate.name = copyDto.copiedName;
   this.emailTemplateService.copy(emailTemplate).subscribe(
     data=>{
-      alert(data.statusCode);
       if (data.access) {
         if (data.statusCode == 702) {   
             this.copyModalPopupComponent.showSweetAlertSuccessMessage("Email Template Copied Successfully");
             this.findEmailTemplates(this.pagination);
         }else if(data.statusCode==500){
-            this.customResponse = new CustomResponse('ERROR', data.message, true);
+            this.copyModalPopupComponent.showErrorMessage(data.message);
         }
       }else{
         this.authenticationService.forceToLogout();
       }
     },error=>{
-      this.copyModalPopupComponent.showServerErrorMessage();
+      this.copyModalPopupComponent.showErrorMessage(this.properties.serverErrorMessage);
     }
   );
   
