@@ -21,6 +21,7 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { Roles } from 'app/core/models/roles';
 import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
+import { CopyDto } from 'app/util/models/copy-dto';
 
 declare var $:any, swal: any;
 
@@ -500,8 +501,15 @@ copy(emailTemplate:any){
   this.copyModalPopupComponent.openModalPopup(emailTemplate.id,emailTemplate.name,"Email Template");
 }
 
-copyModalPopupOutputReceiver(event){
-  console.log(event);
+/*  XNFR-431 */
+copyModalPopupOutputReceiver(copyDto:CopyDto){
+  let emailTemplate = new EmailTemplate();
+  emailTemplate.id = copyDto.id;
+  emailTemplate.name = copyDto.copiedName;
+  this.emailTemplateService.copy(emailTemplate).subscribe(
+  );
+  
+
 }
 
 }
