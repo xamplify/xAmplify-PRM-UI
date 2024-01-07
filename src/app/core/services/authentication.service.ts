@@ -1240,5 +1240,21 @@ addCountryNamesToList(coutryNames:any,countryNamesArray:any){
 }
 
 
+
+/************XNFR-426-start-sumanth**************/
+updateLeadApprovalOrRejectionStatus( companyId: number,leadApprovalOrRejectionOption:boolean ) {
+  return this.http.get( this.REST_URL + "admin/" + "updateLeadApprovalOrRejectionStatus/" + companyId + "/"+leadApprovalOrRejectionOption+"?access_token=" + this.access_token )
+      .map( this.extractData )
+      .catch( this.handleError );
+}
+
+getLeadApprovalStatus( companyId: number ) {
+  return this.http.get( this.REST_URL + "admin/" + "getLeadApprovalStatus/" + companyId + "?access_token=" + this.access_token )
+      .map( this.extractData )
+      .catch( this.handleError );
+}
+
+
+
   
 }

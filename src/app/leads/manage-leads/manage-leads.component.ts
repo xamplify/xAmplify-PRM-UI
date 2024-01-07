@@ -88,6 +88,8 @@ export class ManageLeadsComponent implements OnInit {
   vendorRole:boolean;
   vendorList:any ;
   vendorCompanyIdFilter:any;
+  leadApprovalStatus:boolean = false;
+
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
@@ -111,6 +113,7 @@ export class ManageLeadsComponent implements OnInit {
     this.countsLoader = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.mergeTagForUserGuide();
+    this.getLeadApprovalstatus();
   }
 
   init() {
@@ -1232,4 +1235,13 @@ export class ManageLeadsComponent implements OnInit {
     this.leadsService.leadApprove(lead).subscribe();
   }
   
+  
+	getLeadApprovalstatus(){// call this method than the variable
+		this.authenticationService.getLeadApprovalStatus(this.referenceService.companyId)
+		.subscribe(
+		data => {
+				this.leadApprovalStatus = data.data;
+				 alert('variable for manage leads inside - '+this.leadApprovalStatus);
+		});
+	}
 }

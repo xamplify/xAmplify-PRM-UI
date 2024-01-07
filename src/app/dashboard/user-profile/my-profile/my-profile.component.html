@@ -184,6 +184,15 @@
                                                 (click)="activateTab('dealPipelines');clearCustomResponse()">
                                                 {{properties.dealPipelines | translate}}</a>
                                         </li>
+
+                                        <!-- XNFR-426-start-sumanth -->
+                                        <li [ngClass]="{'active-tab': activeTabName == 'leadDealApprove'}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'leadDealApprove'}"
+                                                (click)="activateTab('leadDealApprove');getLeadApprovalstatus();">
+                                                {{properties.leadDealApprove | translate}}</a>
+                                        </li>
+
+
                                     </ng-container>
                                     <!--------------Developers----------------------->
                                     <div class="my-profile-header-text">Developers</div>
@@ -824,6 +833,32 @@
                                                         class="btn Btn-Green transition txt_pd-top3">{{dealButtonText}}</span></button>
                                             </form>
                                         </div>
+
+                                        <!-- XNFR-426-start-sumanth -->
+                                        <div class="tab-content" *ngIf="activeTabName == 'leadDealApprove'"  [ngClass]="{'active': activeTabName == 'leadDealApprove'}">
+                                                    <div>
+                                                        <fieldset class="fild-custome-borders-none">
+                                                            <legend class="leg-custome-borders-bot">Turn Lead Approval/Rejection option ON or OFF</legend>
+                                                                    <div class="col-md-9 col-lg-9">
+                                                                        <h4 class="f-w-600" id="text-color-my-profile"
+                                                                            translate>You have the ability to Approve or Reject the leads registered by the partners.
+                                                                        </h4>
+                                                                    </div>
+                                                        </fieldset>
+                                                    </div>
+                                                    <section>
+                                                        <switch
+                                                            [(status)]="leadApprovalStatus"
+                                                            [onText]="callActionSwitch.onTextValue"
+                                                            [offText]="callActionSwitch.offTextValue"
+                                                            [onColor]="callActionSwitch.onGreenColorSwitch"
+                                                            [offColor]="callActionSwitch.offDefaultColor"
+                                                            [size]="callActionSwitch.size"
+                                                            (statusChange)="leadApprovalOrRejection($event)">
+                                                        </switch>
+                                                    </section>
+                                        </div>
+                                        
                                         <!---Integrations-->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
                                             <section class="pricing py-5 border-none" *ngIf="integrationTabIndex == 0">

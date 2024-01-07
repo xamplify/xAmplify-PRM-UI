@@ -1883,7 +1883,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.pipelinePagination = new Pagination();
 			this.pipelineResponse = new CustomResponse();
 			this.listAllPipelines(this.pipelinePagination);
-		} else if (this.activeTabName == "tags") {
+		}
+		/************XNFR-426-start-sumanth**************/
+		else if(this.activeTabName == "leadDealApprove") {
+			this.activeTabHeader = this.properties.leadDealApprove;
+		}
+		else if (this.activeTabName == "tags") {
 			this.activeTabHeader = this.properties.tags;
 		} else if (this.activeTabName == "customskin") {
 			this.activeTabHeader = this.properties.customskin;
@@ -2094,6 +2099,30 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.gdprSetting.allowMarketingEmails = event;
 		}
 	}
+
+	/************XNFR-426-start-sumanth**************/
+	leadApprovalOrRejectionOption:boolean = false;
+	leadApprovalOrRejection(event:any){
+		if(event){
+			this.leadApprovalOrRejectionOption=true;
+			}
+		else{
+			this.leadApprovalOrRejectionOption=false;
+		}
+		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId,this.leadApprovalOrRejectionOption).subscribe();
+	}
+
+	companyIdForLeadApproval:any;
+	leadApprovalStatus:boolean = false;
+	getLeadApprovalstatus(){
+		this.authenticationService.getLeadApprovalStatus(this.referenceService.companyId)
+		.subscribe(
+		data => {
+				this.leadApprovalStatus = data.data;
+		});
+	}
+
+
 
 	setAllGdprStatus() {
 		if (!this.gdprSetting.unsubscribeStatus && !this.gdprSetting.formStatus && !this.gdprSetting.termsAndConditionStatus

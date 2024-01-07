@@ -171,6 +171,9 @@ export class Properties {
 	samlSettings = "Allbound SAML Settings";
 	leadPipelines = "Lead Pipelines";
 	dealPipelines = "Deal Pipelines";
+	
+	/************XNFR-426-start-sumanth**************/
+	leadDealApprove = "Lead Approval/Rejection";
 	tags = "Tags";
 	customskin = "Themes";
 	customizeleftmenu = "Customize Left Menu";
