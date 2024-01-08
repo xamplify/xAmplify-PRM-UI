@@ -1240,82 +1240,82 @@ strong {
   color: #008fd5 !important;
   border-color: #008fd5 !important;
 }
-
+.lt-green-c,
 .lt-green-c:hover {
   color: #10ad39 !important;
   border-color: #008fd5 !important;
 }
-
+.tk-blue-c,
 .tk-blue-c:hover {
   color: #3564b9 !important;
   border-color: #008fd5 !important;
 }
-
+.vlt-blue-c,
 .vlt-blue-c:hover {
   color: #2bc2b5 !important;
   border-color: #008fd5 !important;
 }
-
+.pure-blue-c,
 .pure-blue-c:hover {
   color: #2f2470 !important;
   border-color: #008fd5 !important;
 }
-
+.black-blue-c,
 .black-blue-c:hover {
   color: #7f2ca3 !important;
   border-color: #008fd5;
 }
-
+.pure-g-c,
 .pure-g-c:hover {
   color: #10ad39 !important;
   border-color: #008fd5 !important;
 }
-
+.g-b-c,
 .g-b-c:hover {
   color: #009970 !important;
   border-color: #008fd5 !important;
 }
-
+.g-y-c,
 .g-y-c:hover {
   color: #3a5e00 !important;
   border-color: #008fd5 !important;
 }
-
+.y-b-c,
 .y-b-c:hover {
   color: #827500 !important;
   border-color: #008fd5 !important;
 }
-
+.y-b-c,
 .y-b-c:hover {
   color: #827500 !important;
   border-color: #008fd5 !important;
 }
-
+.b-b-c,
 .b-b-c :hover{
   color: #2b005c !important;
   border-color: #008fd5 !important;
 }
-
+.r-b-c,
 .r-b-c:hover {
   color: #c72828 !important;
   border-color: #008fd5 !important;
 }
-
+.h-r-c,
 .h-r-c:hover {
   color: #660000 !important;
   border-color: #008fd5 !important;
 }
-
+.r-r-c,
 .r-r-c:hover {
   color: red !important;
   border-color: #008fd5 !important;
 }
-
+.vlt-b-c,
 .vlt-b-c:hover {
   color: #8877a9 !important;
   border-color: #008fd5 !important;
 }
-
+.lt-g-b-c,
 .lt-g-b-c:hover {
   color: #57c195 !important;
   border-color: #008fd5 !important;
@@ -2918,4 +2918,8 @@ span.btn.Btn-Green.transition.secondary_btn_width{
 /* Sudha Sri(4-1-2024) */
 .table-padding {
   padding: 0px 10px;
+}
+/* Sudha Sri(5-1-2024) */
+.pipeline-label-width{
+  width: 100px !important;
 }

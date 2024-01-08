@@ -19,25 +19,26 @@
   <div class="portlet-body clearfix">
     <div>
       <form role="form" id="deal-registration-form">
-        <div class="row portlet light" style="margin-bottom: 50px;border: 1px solid darkslategrey;margin: 10px;padding: 10px">
-      
+        <div class="row portlet light"
+          style="margin-bottom: 50px;border: 1px solid darkslategrey;margin: 10px;padding: 10px">
+
           <!-- left page -->
           <h4 class="caption" class="portlet-title">Opportunity Details</h4>
           <div class="col-sm-6 col-xs-12">
             <div class="form-group" style="margin-bottom: 20px">
               <label class="control-label">Campaign Name
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
               <input type="text" disabled="disabled" name="campaignName" value="{{campaign.campaignName}}"
                 class="form-control" id="campaignName" />
             </div>
-      
+
             <div class="form-group" [attr.class]="company" style="margin-bottom: 20px">
               <label class="control-label">Company
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
               <input type="text" maxlength="100" class="form-control" [(ngModel)]=" dealRegistration.company"
@@ -46,19 +47,19 @@
             </div>
             <div class="form-group" [attr.class]="firstName" style="margin-bottom: 20px">
               <label class="control-label">First Name
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
               <input type="text" maxlength="100" name="companyName" class="form-control"
                 [(ngModel)]=" dealRegistration.firstName" [ngModelOptions]="{standalone: true}" id="firstName"
                 (input)="validateField('firstName',false)" [disabled]="isVendor || isPreview" />
             </div>
-      
+
             <div class="form-group" [attr.class]="lastName" style="margin-bottom: 20px">
               <label class="control-label">Last Name
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
               <input type="text" maxlength="100" class="form-control" [(ngModel)]=" dealRegistration.lastName"
@@ -67,29 +68,29 @@
             </div>
             <div class="form-group" [attr.class]="title" style="margin-bottom: 20px">
               <label class="control-label">Job Title
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
               <input type="text" maxlength="100" name="role" class="form-control" [(ngModel)]=" dealRegistration.role"
                 [ngModelOptions]="{standalone: true}" id="role" (input)="validateField('role',false)"
                 [disabled]="isVendor || isPreview" />
             </div>
-      
+
             <div class="form-group" *ngIf="dealRegistration.email" style="margin-bottom: 20px">
               <label class="control-label">Email
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
               <input type="text" maxlength="100" class="form-control" [(ngModel)]=" dealRegistration.email"
                 [ngModelOptions]="{standalone: true}" id="email" disabled />
             </div>
-      
+
             <div class="form-group" [attr.class]="phoneDivClass" style="margin-bottom: 20px">
               <label class="control-label">Phone Number
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
               <input type="text" maxlength="20" class="form-control" [(ngModel)]=" dealRegistration.phone"
@@ -97,42 +98,43 @@
                 (blur)="validateField('phone',false)" [disabled]="isVendor || isPreview" />
               <span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
             </div>
-      
-      
-      
-      
-      
+
+
+
+
+
           </div>
           <!-- right page -->
           <div class="col-sm-6 col-xs-12">
-      
-      
-      
+
+
+
             <div class="form-group" [attr.class]="leadStreet" style="margin-bottom: 20px">
               <label class="control-label">Lead Address
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
               <textarea type="text" maxlength="100" class="form-control" name="leadstreet"
                 [(ngModel)]=" dealRegistration.leadStreet" [ngModelOptions]="{standalone: true}"
-                (input)="validateField('leadStreet',false)" id="leadStreet" [disabled]="isVendor || isPreview"></textarea>
+                (input)="validateField('leadStreet',false)" id="leadStreet"
+                [disabled]="isVendor || isPreview"></textarea>
             </div>
             <div class="form-group" [attr.class]="leadCity" style="margin-bottom: 20px">
               <label class="control-label">Lead City
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
-              <input type="text" maxlength="100" name="city" class="form-control" [(ngModel)]=" dealRegistration.leadCity"
-                [ngModelOptions]="{standalone: true}" (input)="validateField('leadCity',false)" id="leadCity"
-                [disabled]="isVendor || isPreview" />
+              <input type="text" maxlength="100" name="city" class="form-control"
+                [(ngModel)]=" dealRegistration.leadCity" [ngModelOptions]="{standalone: true}"
+                (input)="validateField('leadCity',false)" id="leadCity" [disabled]="isVendor || isPreview" />
             </div>
-      
+
             <div class="form-group" [attr.class]="leadState" style="margin-bottom: 20px">
               <label class="control-label">Lead State/Province
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
               <input type="text" maxlength="100" class="form-control" name="lead state"
@@ -141,32 +143,32 @@
             </div>
             <div class="form-group" [attr.class]="leadPostalCode" style="margin-bottom: 20px">
               <label class="control-label">Lead Postal Code
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
               <input type="text" maxlength="10" name="companyName" class="form-control"
                 [(ngModel)]=" dealRegistration.postalCode" [ngModelOptions]="{standalone: true}" id="leadPostalCode"
                 (input)="validateField('leadPostalCode',false)" [disabled]="isVendor || isPreview" />
             </div>
-      
+
             <div class="form-group" [attr.class]="country" style="margin-bottom: 20px">
               <label class="control-label">Lead Country
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
-              <select class="form-control" [(ngModel)]="dealRegistration.leadCountry" [ngModelOptions]="{standalone: true}"
-                placeholder="Country" id="leadCountry" (input)="validateField('leadCountry',false)"
-                [disabled]="isVendor || isPreview">
+              <select class="form-control" [(ngModel)]="dealRegistration.leadCountry"
+                [ngModelOptions]="{standalone: true}" placeholder="Country" id="leadCountry"
+                (input)="validateField('leadCountry',false)" [disabled]="isVendor || isPreview">
                 <option *ngFor="let country of countryNames.countries" [value]="country"
                   [selected]="dealRegistration.leadCountry==country">{{country}}</option>
               </select>
             </div>
             <div class="form-group" [attr.class]="websiteDivClass" style="margin-bottom: 20px">
               <label class="control-label">Website
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
               <input type="text" maxlength="100" id="website" name="website" class="form-control"
@@ -174,13 +176,14 @@
                 [disabled]="isVendor || isPreview" />
               <span *ngIf="websiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
             </div>
-      
-      
+
+
           </div>
-      
+
         </div>
         <div [hidden]="!showSfDealFields">
-          <app-sf-deal [dealId]="dealId" [isPreview]="isPreview" [isVendor]="isVendor" [campaign]="campaign"></app-sf-deal>
+          <app-sf-deal [dealId]="dealId" [isPreview]="isPreview" [isVendor]="isVendor"
+            [campaign]="campaign"></app-sf-deal>
         </div>
         <div [hidden]="showSfDealFields">
           <div class=" row portlet light"
@@ -188,24 +191,24 @@
             <h4 class="caption" class="portlet-title">Deal Details</h4>
             <div class="form-group" [attr.class]="title" style="margin-bottom: 20px">
               <label class="control-label">Title
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
-              <input type="text" maxlength="100" name="titleName" class="form-control" [(ngModel)]=" dealRegistration.title"
-                [ngModelOptions]="{standalone: true}" id="title" (input)="validateField('title',false)"
-                [disabled]="isVendor || isPreview" />
+              <input type="text" maxlength="100" name="titleName" class="form-control"
+                [(ngModel)]=" dealRegistration.title" [ngModelOptions]="{standalone: true}" id="title"
+                (input)="validateField('title',false)" [disabled]="isVendor || isPreview" />
             </div>
-      
-      
-      
+
+
+
             <div class="form-group" [attr.class]="dealType" style="margin-bottom: 20px">
               <label class="control-label">Deal Type
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
-      
+
               <select class="form-control" [(ngModel)]="dealRegistration.dealType" [ngModelOptions]="{standalone: true}"
                 id="dealType" (input)="validateField('dealType',false)" [disabled]="isVendor  || isPreview">
                 <option *ngFor="let dt of defaultDealTypes" [value]="dt" [selected]="dealRegistration.dealType == dt">
@@ -213,10 +216,10 @@
                 <option *ngFor="let dt of dealTypes" [value]="dt.dealType"
                   [selected]="dealRegistration.dealType == dt.dealType">{{dt.dealType}}</option>
               </select>
-      
+
             </div>
-      
-      
+
+
             <div class="form-group " [attr.class]="opportunityAmount" style="margin-bottom: 20px">
               <label class="control-label">Opportunity Amount
                 <font style="color: #f55d7a">
@@ -228,29 +231,30 @@
                   class="form-control currency" [(ngModel)]=" dealRegistration.opportunityAmount "
                   [ngModelOptions]="{standalone: true}" id="opportunityAmount"
                   (input)="validateField('opportunityAmount',false)"
-                  (ngModelChange)="validateField('opportunityAmount',false)" [disabled]="isVendor|| isPreview" maxlength="20"
-                  autocomplete="off" />
+                  (ngModelChange)="validateField('opportunityAmount',false)" [disabled]="isVendor|| isPreview"
+                  maxlength="20" autocomplete="off" />
               </div>
             </div>
             <div class="form-group" [attr.class]="estimatedCloseDate" style="margin-bottom: 20px">
               <label class="control-label">Estimated Close date
-                <font style="color: #f55d7a">
-                  <b>*</b>
+                <font>
+                  <b style="color: #f55d7a !important">*</b>
                 </font>
               </label>
-              <input type="text" class="form-control flatpickr square-box" [(ngModel)]=" dealRegistration.estimatedCloseDate "
-                [ngModelOptions]="{standalone: true}" id="estimatedCloseDate"
-                (input)="validateField('estimatedCloseDate',false)" [disabled]="isVendor|| isPreview" />
+              <input type="text" class="form-control flatpickr square-box"
+                [(ngModel)]=" dealRegistration.estimatedCloseDate " [ngModelOptions]="{standalone: true}"
+                id="estimatedCloseDate" (input)="validateField('estimatedCloseDate',false)"
+                [disabled]="isVendor|| isPreview" />
             </div>
-      
-      
-      
+
+
+
             <div *ngFor="let property of propertiesQuestions;let i=index">
-      
+
               <div class="form-group" [attr.class]="property.class" *ngIf="property.propType == 'QUESTION'">
                 <label class="control-label">{{property.key}}
-                  <font style="color: #f55d7a">
-                    <b>*</b>
+                  <font>
+                    <b style="color: #f55d7a !important">*</b>
                   </font>
                 </label>
                 <input type="text" maxlength="1000" name="{{property.value}}" class="form-control"
@@ -258,10 +262,10 @@
                   (input)="validateField(property,true)" [disabled]="isVendor || isPreview" />
               </div>
             </div>
-      
+
           </div>
-      
-      
+
+
           <div class="form-group" *ngIf="!isVendor && !isPreview">
             <a class="dashboard-stat yellow-gold" style="padding: 9px 0;margin-top: 10px" (click)="addProperties()">
               <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
@@ -274,7 +278,8 @@
               <legend *ngIf="isVendor">{{authenticationService?.partnerModule?.customName}} Comments</legend>
               <div *ngFor="let property of propertiesComments;let i=index">
                 <div class="portlet light dashboard-stat2" *ngIf="property.propType == 'PROPERTY'">
-                  <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
+                  <div class="portlet-title custom-change-css"
+                    [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
                     <div class="col-xs-6">
                       <h4 class="text-left" style="color:#fff">Comment-{{i+1}}</h4>
                     </div>
@@ -284,7 +289,8 @@
                           *ngIf="!isVendor">
                           <span class="glyphicon glyphicon-trash"></span>
                         </button>
-                        <button type="button" class="btn-primary button-blue" (click)="addProperties()" *ngIf="!isVendor">
+                        <button type="button" class="btn-primary button-blue" (click)="addProperties()"
+                          *ngIf="!isVendor">
                           <span class="glyphicon glyphicon-plus"></span>
                         </button>
                         <button type="button" class="btn-primary button-blue" (click)="commentsection(property)"
@@ -300,8 +306,8 @@
                       <div class="col-xs-10" style="padding:0">
                         <div class="form-group" [attr.class]="property.validationStausKey">
                           <label class="control-label">Comment Title
-                            <font style="color: #f55d7a">
-                              <b>*</b>
+                            <font>
+                              <b style="color: #f55d7a !important">*</b>
                             </font>
                           </label>
                           <input type="text" maxlength="100" class="form-control" [(ngModel)]=" property.key"
@@ -310,8 +316,8 @@
                         </div>
                         <div class="form-group" [attr.class]="property.validationStausValue">
                           <label class="control-label">Comment
-                            <font style="color: #f55d7a">
-                              <b>*</b>
+                            <font>
+                              <b style="color: #f55d7a !important">*</b>
                             </font>
                           </label>
                           <textarea type="text" maxlength="1000" class="form-control" [(ngModel)]=" property.value"
@@ -320,13 +326,14 @@
                         </div>
                       </div>
                     </form>
-      
-      
+
+
                     <div *ngIf=" property.isCommentSection ">
-      
-                      <app-manage-deal-comments [lead]="dealRegistration" [property]="property"></app-manage-deal-comments>
+
+                      <app-manage-deal-comments [lead]="dealRegistration"
+                        [property]="property"></app-manage-deal-comments>
                     </div>
-      
+
                   </div>
                 </div>
               </div>

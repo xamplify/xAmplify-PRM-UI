@@ -3343,4 +3343,8 @@ export class ReferenceService {
     });
     return response.message + "\n\n" + names;
   }
+
+  getTrimmedData(input:any){
+    return $.trim(input);
+  }
 }
