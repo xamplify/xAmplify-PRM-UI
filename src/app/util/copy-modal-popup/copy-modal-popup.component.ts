@@ -20,25 +20,43 @@ export class CopyModalPopupComponent implements OnInit {
   copyDto:CopyDto = new CopyDto();
   @Output() copyModalPopupOutputEmitter = new EventEmitter();
   customResponse:CustomResponse = new CustomResponse();
+  existingNames:Array<string> = new Array<string>();
+  errorMessage = "";
   constructor(private referenceService:ReferenceService,public properties:Properties) { }
 
   ngOnInit() {
   }
 
-  openModalPopup(id:number,copiedName:string,moduleName:string){
+  openModalPopup(id:number,copiedName:string,moduleName:string,existingNames:any){
     this.customResponse = new CustomResponse();
+    this.errorMessage = "";
+    this.existingNames = existingNames;
     this.processing = true;
     this.buttonClicked = false;
     this.referenceService.openModalPopup(this.modalPopupId);
     this.copyDto.copiedName = copiedName+"-copy";
     this.copyDto.id = id;
     this.copyDto.moduleName = moduleName;
-    this.validateForm();
+    this.validateNames();
     this.processing = false;
   }
 
-  validateForm(){
-    this.isValidForm = this.referenceService.getTrimmedData(this.copyDto.copiedName).length>0;
+  validateNames(){
+    this.errorMessage = "";
+    let moduleName = this.copyDto.moduleName;
+    let copiedName = this.copyDto.copiedName;
+    let isNotEmptyName = this.referenceService.getTrimmedData(copiedName).length>0;
+    if(!isNotEmptyName){
+      this.isValidForm = false;
+      this.errorMessage = "Please Enter "+moduleName;
+    }else{
+      let isDuplicateName = this.existingNames.indexOf(this.referenceService.convertToLowerCaseAndGetTrimmedData(copiedName))>-1;
+      this.isValidForm = !isDuplicateName;
+      if(isDuplicateName){
+        this.errorMessage = moduleName+" Already Exists";
+      }
+    }
+   
   }
 
   closeModalPopup(){

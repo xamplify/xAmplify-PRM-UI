@@ -68,7 +68,6 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
 	whiteLabeledBanner = "";
   ngxloading: boolean;
   roles:Roles = new Roles();
-  isLocalHost = false;
  /*  XNFR-431 */
   @ViewChild("copyModalPopupComponent") copyModalPopupComponent:CopyModalPopupComponent;
   constructor(
@@ -91,7 +90,6 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
   ) {}
 
   initializeVariables() {
-    this.isLocalHost = this.authenticationService.isLocalHost();
     this.referenceService.renderer = this.renderer;
     this.loggedInUserId = this.authenticationService.getUserId();
     this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
@@ -498,7 +496,20 @@ callFolderListViewEmitter(){
 
 /*  XNFR-431 */
 copy(emailTemplate:any){
-  this.copyModalPopupComponent.openModalPopup(emailTemplate.id,emailTemplate.name,"Template");
+  this.findExistingTemplateNames(emailTemplate);
+}
+findExistingTemplateNames(emailTemplate:any){
+  this.ngxloading = true;
+  this.emailTemplateService.getAvailableNames(this.loggedInUserId).subscribe(
+    (data: any) => {
+        let templateNames = data;
+        this.copyModalPopupComponent.openModalPopup(emailTemplate.id,emailTemplate.name,"Template",templateNames);
+        this.ngxloading = false;
+    },
+    error => {
+      this.ngxloading = false;
+      this.logger.errorPage(error);
+    });
 }
 
 /*  XNFR-431 */

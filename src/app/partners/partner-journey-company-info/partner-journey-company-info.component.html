@@ -24,6 +24,10 @@
             <app-timestamp [isOnlyDate]="false" [dateAndTime]="companyInfo?.partnerAddedDateStr">
             </app-timestamp>
           </p>
+          <p><i class="fa fa-calendar" aria-hidden="true"></i> <b> Recent Login :</b>
+            <app-timestamp [isOnlyDate]="false" [dateAndTime]="companyInfo?.lastLogInDate">
+            </app-timestamp>
+          </p>
         </div>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">

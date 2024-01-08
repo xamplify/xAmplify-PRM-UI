@@ -16,8 +16,9 @@
                   <div>
                      <div class="form-group">
                         <label>Enter {{copyDto?.moduleName}} Name<span class="required">*</span></label>
-                        <input type="text" autocomplete="off" [(ngModel)]="copyDto.copiedName" (input)="validateForm()" [ngModelOptions]="{standalone: true}"
-                           placeholder="Please Enter Name" class="form-control" name="copiedName" />
+                        <input type="text" autocomplete="off" [(ngModel)]="copyDto.copiedName" (input)="validateNames()" [ngModelOptions]="{standalone: true}"
+                           placeholder="Please Enter Name" class="form-control" name="copiedName"/>
+                           <span class="required">{{errorMessage}}</span>
                      </div>
                   </div>
                </div>

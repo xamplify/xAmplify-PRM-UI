@@ -30,6 +30,7 @@
   margin-bottom: 10px;
   background: #fff;
   border-bottom: 1px solid #ddd;
+  padding: 0 10px;
 }
 .pt-top {
   padding-top: 8px;
@@ -164,7 +165,7 @@
   width: max-content;
   margin-top: 7px;
   float: right;
-  padding-right: 10px;
+  /* padding-right: 10px; */
 }
 
 .disabled-opacity{
@@ -217,4 +218,10 @@ span.FieldName {
   font-weight: 600;
   color: #333;
   margin-bottom: 3px;
+}
+.ml-9{
+margin-left:10px;
+}
+.fs-16{
+  font-size: 16px;
 }

@@ -28,7 +28,6 @@
 									class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width"
 									[class.disabled]="folderViewType=='fl'" (click)="setViewType('fl')"
 									data-toggle="tooltip" data-placement="bottom" title="Folder List View">
-									<!-- <img src="assets/images/folder-list.png" class="folder-list-image-custom-css" alt=""/> -->
 									<i class="fa fa-th p10" aria-hidden="true"></i>
 								</span> </ng-container>
 						</div>
@@ -198,6 +197,13 @@
 									<app-email-templates-list-and-grid-view [folderListViewCategoryId]="category.id"
 										[folderListViewExpanded]="category.expanded"
 										(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-email-templates-list-and-grid-view>
+								</ng-container>
+
+								<!----Landing Pages---->
+								<ng-container *ngIf="moduleId==roles.landingPageId">
+									<app-landing-pages-list-and-grid-view [folderListViewCategoryId]="category.id"
+										[folderListViewExpanded]="category.expanded"
+										(updatedItemsCountEmitter)="getUpdatedItemsCount($event)"></app-landing-pages-list-and-grid-view>
 								</ng-container>
 
 
