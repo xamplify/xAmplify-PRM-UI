@@ -85,23 +85,16 @@
                                         <app-display-date-and-time [dateAndTimeUTCString]="emailTemplate?.createdDate"></app-display-date-and-time>
                                     </td>
                                     <td style="width: 14%" class="mActionAlign width20">
-                                        <div
-                                            [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition':'actions-block override-actions actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition'">
-                                            <div class="mActionDiv whitespace_nowrap">
+                                        <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition':'actions-block override-actions actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition'">
+                                            <div class="mActionDiv whitespace_nowrap display-inlineflex">
                                                 <!--Save As Template-->
                                                 <ng-template [ngTemplateOutlet]="saveAsDefaultTemplateIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                             
                                                 <!--Copy-->
                                                 <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-
                                                 <!--Spam Checker Icon-->
                                                 <ng-template [ngTemplateOutlet]="spamCheckIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                                
-                                            </div>
-                                            <div class="mActionDiv whitespace_nowrap display-inlineflex">
                                                 <!--Edit-->
                                                 <ng-template [ngTemplateOutlet]="editIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                                
                                                 <!--Preview-->
                                                 <ng-template [ngTemplateOutlet]="previewIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                                 <!--Send Test Email XNFR-317-->
@@ -183,26 +176,18 @@
                                 <div class="bar gridIconCustomization">
                                     <!--Save As Template-->
                                     <ng-template [ngTemplateOutlet]="saveAsDefaultTemplateIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                   
-                                   <!--Copy-->
-                                   <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                   
+                                    <!--Copy-->
+                                    <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                     <!--Spam Check-->
                                     <ng-template [ngTemplateOutlet]="spamCheckIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-
                                     <!--Edit-->
                                     <ng-template [ngTemplateOutlet]="editIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                    
-                                    
                                     <!--Preview-->
                                     <ng-template [ngTemplateOutlet]="previewIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                    
                                     <!--Send Test Email XNFR-317-->
                                     <ng-template [ngTemplateOutlet]="sendTestEmailIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                    
                                     <!--Delete-->
                                     <ng-template [ngTemplateOutlet]="deleteIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                  
                                 </div>
                             </div>
                         </div>
@@ -434,7 +419,7 @@
     <a class="Iconhover custom-grid-icon" (click)="copy(emailTemplate)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.campaign_copy}}"
          *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || 
           authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing )
-           && emailTemplate.type!='PARTNER' && !emailTemplate.draft && isLocalHost">
+           && emailTemplate.type!='PARTNER' && !emailTemplate.draft">
         <i class="fa fa-files-o" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"  aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>
