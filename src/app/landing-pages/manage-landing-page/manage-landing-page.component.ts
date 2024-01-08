@@ -11,7 +11,6 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { LandingPage } from '../models/landing-page';
 import { UtilService } from '../../core/services/util.service';
-import { environment } from '../../../environments/environment';
 import { SortOption } from '../../core/models/sort-option';
 import { LandingPageService } from '../services/landing-page.service';
 import { PreviewLandingPageComponent } from '../preview-landing-page/preview-landing-page.component';
