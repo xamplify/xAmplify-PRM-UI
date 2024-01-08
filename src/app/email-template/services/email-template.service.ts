@@ -222,6 +222,13 @@ export class EmailTemplateService {
         .catch(this.handleError);
     }
 
+    /*  XNFR-431 */
+    copy(emailTemplate:EmailTemplate){
+        let url = this.URL+"/email-template/copy?access_token="+this.authenticationService.access_token;
+        emailTemplate.userId = this.authenticationService.getUserId();
+        return this.authenticationService.callPostMethod(url,emailTemplate);
+    }
+
 
     private extractData( res: Response ) {
         let body = res.json();

@@ -21,6 +21,7 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { Roles } from 'app/core/models/roles';
 import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
+import { CopyDto } from 'app/util/models/copy-dto';
 
 declare var $:any, swal: any;
 
@@ -497,11 +498,33 @@ callFolderListViewEmitter(){
 
 /*  XNFR-431 */
 copy(emailTemplate:any){
-  this.copyModalPopupComponent.openModalPopup(emailTemplate.id,emailTemplate.name,"Email Template");
+  this.copyModalPopupComponent.openModalPopup(emailTemplate.id,emailTemplate.name,"Template");
 }
 
-copyModalPopupOutputReceiver(event){
-  console.log(event);
+/*  XNFR-431 */
+copyModalPopupOutputReceiver(copyDto:CopyDto){
+  let emailTemplate = new EmailTemplate();
+  emailTemplate.id = copyDto.id;
+  emailTemplate.name = copyDto.copiedName;
+  this.emailTemplateService.copy(emailTemplate).subscribe(
+    data=>{
+      if (data.access) {
+        if (data.statusCode == 702) {   
+            this.copyModalPopupComponent.showSweetAlertSuccessMessage("Template Copied Successfully");
+            this.pagination.pageIndex = 1;
+            this.findEmailTemplates(this.pagination);
+        }else if(data.statusCode==500){
+            this.copyModalPopupComponent.showErrorMessage(data.message);
+        }
+      }else{
+        this.authenticationService.forceToLogout();
+      }
+    },error=>{
+      this.copyModalPopupComponent.showErrorMessage(this.properties.serverErrorMessage);
+    }
+  );
+  
+
 }
 
 }
