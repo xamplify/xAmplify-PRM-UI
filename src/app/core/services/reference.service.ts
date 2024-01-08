@@ -3347,4 +3347,12 @@ export class ReferenceService {
   getTrimmedData(input:any){
     return $.trim(input);
   }
+
+  convertToLowerCaseAndGetTrimmedData(input:any){
+    return $.trim(input.toLowerCase());
+  }
+
+  removeAllSpacesAndGetData(text:string){
+    return text.replace(/ /g,'');
+  }
 }

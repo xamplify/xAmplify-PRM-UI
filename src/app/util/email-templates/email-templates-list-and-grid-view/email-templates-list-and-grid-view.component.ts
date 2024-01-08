@@ -498,7 +498,20 @@ callFolderListViewEmitter(){
 
 /*  XNFR-431 */
 copy(emailTemplate:any){
-  this.copyModalPopupComponent.openModalPopup(emailTemplate.id,emailTemplate.name,"Template");
+  this.findExistingTemplateNames(emailTemplate);
+}
+findExistingTemplateNames(emailTemplate:any){
+  this.ngxloading = true;
+  this.emailTemplateService.getAvailableNames(this.loggedInUserId).subscribe(
+    (data: any) => {
+        let templateNames = data;
+        this.copyModalPopupComponent.openModalPopup(emailTemplate.id,emailTemplate.name,"Template",templateNames);
+        this.ngxloading = false;
+    },
+    error => {
+      this.ngxloading = false;
+      this.logger.errorPage(error);
+    });
 }
 
 /*  XNFR-431 */
