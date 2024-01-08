@@ -32,7 +32,7 @@ export class ManageLandingPageComponent implements OnInit {
   folderViewType: string;
 	modulesDisplayType = new ModulesDisplayType();
   isPartnerLandingPage = false;
-
+  mergeTagForGuide:any;
   constructor(public authenticationService:AuthenticationService,public xtremandLogger: XtremandLogger, 
     public referenceService: ReferenceService,private route: ActivatedRoute,private router:Router) {
         this.viewType = this.route.snapshot.params['viewType'];
@@ -43,6 +43,7 @@ export class ManageLandingPageComponent implements OnInit {
             this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
         }
         this.isPartnerLandingPage = this.router.url.indexOf("/pages/partner")>-1; 
+        this.mergeTagForGuide = this.isPartnerLandingPage ? 'accessing_shared_pages':'manage_pages';
 
 	}
 
