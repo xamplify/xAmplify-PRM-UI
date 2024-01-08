@@ -321,9 +321,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	defaultLoading=false;
 	updateDashboardError=false;
 	modulesDashboardForPartner: CustomResponse = new CustomResponse();
-	 defaultSelectedDashboardTypeSetting = this.getSelectedDashboardForPartner();
-	 checkSelectedDashboardType=[];	
-	 removeMarketingNonInteractiveBox:boolean = false;
+	defaultSelectedDashboardTypeSetting = this.getSelectedDashboardForPartner();
+	checkSelectedDashboardType=[];
+	companyIdFromCompanyProfileNameForVanity:number;	
+	removeMarketingNonInteractiveBox:boolean = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -2622,7 +2623,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	getSelectedDashboardForPartner() {
 		this.modulesDashboardForPartner = new CustomResponse();  
 		this.updateDashboardError = false;
-		this.dashBoardService.getDefaultDashboardForPartner(this.authenticationService.vendorCompanyId)
+		this.vanityUrlService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {        
+			this.companyIdFromCompanyProfileNameForVanity = result.companyId});
+		this.dashBoardService.getDefaultDashboardForPartner(this.companyIdFromCompanyProfileNameForVanity)
 			.subscribe(
 				data => {
 					if (data.statusCode == 200) {
@@ -3273,6 +3276,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	listAllPipelines(pagination: Pagination) {
 		this.ngxloading = true;
+		this.referenceService.loading(this.httpRequestLoader, true);
 		let type: string;
 		if (this.activeTabName == "leadPipelines") {
 			type = "LEAD";
@@ -3285,6 +3289,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			.subscribe(
 				response => {
 					this.ngxloading = false;
+					this.referenceService.loading(this.httpRequestLoader, false);
 					// this.pipelines = response.data; 
 					pagination.totalRecords = response.totalRecords;
 					this.pipelineSortOption.totalRecords = response.totalRecords;
@@ -3292,6 +3297,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				},
 				error => {
 					this.ngxloading = false;
+					this.referenceService.loading(this.httpRequestLoader, false);
 				},
 				() => { }
 			);

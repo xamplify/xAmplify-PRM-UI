@@ -21,6 +21,7 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import { Roles } from 'app/core/models/roles';
 import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
+import { CopyDto } from 'app/util/models/copy-dto';
 
 declare var $:any, swal: any;
 
@@ -67,7 +68,6 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
 	whiteLabeledBanner = "";
   ngxloading: boolean;
   roles:Roles = new Roles();
-  isLocalHost = false;
  /*  XNFR-431 */
   @ViewChild("copyModalPopupComponent") copyModalPopupComponent:CopyModalPopupComponent;
   constructor(
@@ -90,7 +90,6 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
   ) {}
 
   initializeVariables() {
-    this.isLocalHost = this.authenticationService.isLocalHost();
     this.referenceService.renderer = this.renderer;
     this.loggedInUserId = this.authenticationService.getUserId();
     this.loggedInAsSuperAdmin = this.utilService.isLoggedInFromAdminPortal();
@@ -497,11 +496,46 @@ callFolderListViewEmitter(){
 
 /*  XNFR-431 */
 copy(emailTemplate:any){
-  this.copyModalPopupComponent.openModalPopup(emailTemplate.id,emailTemplate.name,"Email Template");
+  this.findExistingTemplateNames(emailTemplate);
+}
+findExistingTemplateNames(emailTemplate:any){
+  this.ngxloading = true;
+  this.emailTemplateService.getAvailableNames(this.loggedInUserId).subscribe(
+    (data: any) => {
+        let templateNames = data;
+        this.copyModalPopupComponent.openModalPopup(emailTemplate.id,emailTemplate.name,"Template",templateNames);
+        this.ngxloading = false;
+    },
+    error => {
+      this.ngxloading = false;
+      this.logger.errorPage(error);
+    });
 }
 
-copyModalPopupOutputReceiver(event){
-  console.log(event);
+/*  XNFR-431 */
+copyModalPopupOutputReceiver(copyDto:CopyDto){
+  let emailTemplate = new EmailTemplate();
+  emailTemplate.id = copyDto.id;
+  emailTemplate.name = copyDto.copiedName;
+  this.emailTemplateService.copy(emailTemplate).subscribe(
+    data=>{
+      if (data.access) {
+        if (data.statusCode == 702) {   
+            this.copyModalPopupComponent.showSweetAlertSuccessMessage("Template Copied Successfully");
+            this.pagination.pageIndex = 1;
+            this.findEmailTemplates(this.pagination);
+        }else if(data.statusCode==500){
+            this.copyModalPopupComponent.showErrorMessage(data.message);
+        }
+      }else{
+        this.authenticationService.forceToLogout();
+      }
+    },error=>{
+      this.copyModalPopupComponent.showErrorMessage(this.properties.serverErrorMessage);
+    }
+  );
+  
+
 }
 
 }
