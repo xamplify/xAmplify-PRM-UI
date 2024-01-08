@@ -511,6 +511,7 @@ copyModalPopupOutputReceiver(copyDto:CopyDto){
       if (data.access) {
         if (data.statusCode == 702) {   
             this.copyModalPopupComponent.showSweetAlertSuccessMessage("Email Template Copied Successfully");
+            this.pagination.pageIndex = 1;
             this.findEmailTemplates(this.pagination);
         }else if(data.statusCode==500){
             this.copyModalPopupComponent.showErrorMessage(data.message);
