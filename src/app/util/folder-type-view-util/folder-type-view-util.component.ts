@@ -12,7 +12,6 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from 'app/core/services/util.service';
 import { ModulesDisplayType } from '../models/modules-display-type';
 import { Roles } from 'app/core/models/roles';
-import { Angular2Csv } from 'angular2-csv';
 declare var $: any;
 @Component({
   selector: 'app-folder-type-view-util',
@@ -38,7 +37,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
     private pagerService: PagerService, public referenceService: ReferenceService,
     public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
     public userService: UserService, public utilService: UtilService,private route: ActivatedRoute) { 
-      this.isPartnerView = this.router.url.indexOf("/shared")>-1; 
+      this.isPartnerView = this.router.url.indexOf("/shared")>-1 || this.router.url.indexOf("/pages/partner")>-1; 
 
     }
 
@@ -52,6 +51,7 @@ export class FolderTypeViewUtilComponent implements OnInit {
   findAllCategories(pagination:Pagination){
     this.referenceService.startLoader(this.httpRequestLoader);
     pagination.companyId = this.referenceService.companyId;
+    
     if(this.isPartnerView){
       pagination.partnerCompanyId = pagination.companyId;
       pagination.partnerView  = this.isPartnerView;
@@ -67,8 +67,11 @@ export class FolderTypeViewUtilComponent implements OnInit {
       this.titleHeader = "Campaigns";
     }else if(this.pagination.categoryType == "EMAIL_TEMPLATE"){
       this.titleHeader = "Email Templates";
+    }else if(this.pagination.categoryType=="LANDING_PAGE"){
+      this.titleHeader = "Pages";
+    }else if(this.pagination.categoryType=="FORM"){
+      this.titleHeader = "Forms";
     }
-
     pagination.userId = this.authenticationService.getUserId();
     this.authenticationService.setVanityUrlFilter(pagination);
     this.userService.getCategories(this.pagination)
@@ -133,6 +136,10 @@ export class FolderTypeViewUtilComponent implements OnInit {
       this.referenceService.goToManageCampaignsByCategoryId("fg","l",categoryId);
     }else if(this.moduleId==this.roles.emailTemplateId){
       this.referenceService.goToManageEmailTemplatesByCategoryId("fg","l",categoryId);
+    }else if(this.moduleId==this.roles.landingPageId){
+      this.referenceService.goToManageLandingPagesByCategoryId("fg","l",categoryId);
+    }else if(this.moduleId==this.roles.formId){
+      this.referenceService.goToManageFormsByCategoryId("fg","l",categoryId);
     }
   }
 
@@ -148,6 +155,8 @@ export class FolderTypeViewUtilComponent implements OnInit {
         this.referenceService.goToManageCampaigns(viewType);
       }else if(this.moduleId==this.roles.emailTemplateId){
         this.referenceService.goToManageEmailTemplates(viewType);
+      }else if(this.moduleId==this.roles.landingPageId){
+        this.referenceService.goToManageLandingPages(viewType);
       }
     }
   }

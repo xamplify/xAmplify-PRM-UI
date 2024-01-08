@@ -85,23 +85,16 @@
                                         <app-display-date-and-time [dateAndTimeUTCString]="emailTemplate?.createdDate"></app-display-date-and-time>
                                     </td>
                                     <td style="width: 14%" class="mActionAlign width20">
-                                        <div
-                                            [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition':'actions-block override-actions actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition'">
-                                            <div class="mActionDiv whitespace_nowrap">
+                                        <div [ngClass]="loggedInAsSuperAdmin ? 'actions-block override-actions mwttpxmet actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition':'actions-block override-actions actionAlignWeb actionAlignWeb mPadAction IconCustomizationcondition'">
+                                            <div class="mActionDiv whitespace_nowrap display-inlineflex">
                                                 <!--Save As Template-->
                                                 <ng-template [ngTemplateOutlet]="saveAsDefaultTemplateIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                             
                                                 <!--Copy-->
                                                 <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-
                                                 <!--Spam Checker Icon-->
                                                 <ng-template [ngTemplateOutlet]="spamCheckIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                                
-                                            </div>
-                                            <div class="mActionDiv whitespace_nowrap display-inlineflex">
                                                 <!--Edit-->
                                                 <ng-template [ngTemplateOutlet]="editIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                                
                                                 <!--Preview-->
                                                 <ng-template [ngTemplateOutlet]="previewIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                                 <!--Send Test Email XNFR-317-->
@@ -183,26 +176,18 @@
                                 <div class="bar gridIconCustomization">
                                     <!--Save As Template-->
                                     <ng-template [ngTemplateOutlet]="saveAsDefaultTemplateIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                   
-                                   <!--Copy-->
-                                   <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                   
+                                    <!--Copy-->
+                                    <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
                                     <!--Spam Check-->
                                     <ng-template [ngTemplateOutlet]="spamCheckIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-
                                     <!--Edit-->
                                     <ng-template [ngTemplateOutlet]="editIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                    
-                                    
                                     <!--Preview-->
                                     <ng-template [ngTemplateOutlet]="previewIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                    
                                     <!--Send Test Email XNFR-317-->
                                     <ng-template [ngTemplateOutlet]="sendTestEmailIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                    
                                     <!--Delete-->
                                     <ng-template [ngTemplateOutlet]="deleteIcon" [ngTemplateOutletContext]="{emailTemplate:emailTemplate}"></ng-template>
-                                  
                                 </div>
                             </div>
                         </div>
@@ -289,34 +274,27 @@
                             <button [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
                                     modulesDisplayType?.isFolderListView? 'fa fa-th btn btn-xs l-g-view': modulesDisplayType?.isFolderGridView?'fa fa-folder btn btn-xs l-g-view':'fa fa-th-list btn btn-xs l-g-view'"
                                 style="padding:10px !important"></button>
-                            <div class="group-dd-content">
-                                <ng-container class='m10'>
-                                    <span class="btn btn-xs l-g-view" [class.disabled]="modulesDisplayType?.isListView"
-                                        data-toggle="tooltip" data-placement="bottom" title="List View"
-                                        (click)="setViewType('l')">
-                                        <i class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                                    <span class="btn btn-xs l-g-view margin-space"
-                                        [class.disabled]="modulesDisplayType?.isGridView" data-toggle="tooltip"
-                                        data-placement="bottom" title="Grid View" (click)="setViewType('g')">
-                                        <i class="fa fa-th-large p10" aria-hidden="true"></i>
-                                    </span>
-                                    <ng-container *ngIf="!showUpArrowButton && !folderListView">
-                                        <span class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip"
-                                            data-placement="bottom" title="Folder Grid View"
-                                            (click)="setViewType('fg')">
-                                            <i class="fa fa-folder p10" aria-hidden="true"></i>
+                                <div class="group-dd-content">
+                                    <ng-container class='m10'>
+                                        <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="!modulesDisplayType.isListView && setViewType('l')">
+                                            <i class="fa fa-th-list p10" aria-hidden="true"></i>
                                         </span>
-                                        <span class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width"
-                                            data-toggle="tooltip" data-placement="bottom" title="Folder List View"
-                                            (click)="setViewType('fl')">
-                                            <i class="fa fa-th p10" aria-hidden="true"></i>
+                                        <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="!modulesDisplayType.isGridView && setViewType('g')">
+                                            <i class="fa fa-th-large p10" aria-hidden="true"></i>
                                         </span>
+
+                                        <ng-container *ngIf="(pagination.categoryId==0 || pagination?.categoryId=='undefined')">
+                                            <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView" (click)="setViewType('fg')">
+                                                <i class="fa fa-folder p10" aria-hidden="true"></i>
+                                            </span>
+                                            <span class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('fl')">
+                                                <i class="fa fa-th p10" aria-hidden="true"></i>
+                                            </span>
+                                        </ng-container>
                                     </ng-container>
-                                </ng-container>
-                            </div>
+                                </div>
                         </div>
-                        <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip"
-                            data-placement="bottom" title="Go back" (click)="setViewType('fg')">
+                        <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
                             <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
                         </span>
                         <div class="inputs mDamTop alignline-m-flex" style="float: right">
@@ -434,7 +412,7 @@
     <a class="Iconhover custom-grid-icon" (click)="copy(emailTemplate)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.campaign_copy}}"
          *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || 
           authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing )
-           && emailTemplate.type!='PARTNER' && !emailTemplate.draft && isLocalHost">
+           && emailTemplate.type!='PARTNER' && !emailTemplate.draft">
         <i class="fa fa-files-o" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"  aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>

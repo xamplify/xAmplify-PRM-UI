@@ -26,4 +26,6 @@ export class Roles {
   learningTrackId = 23;
   playbookId = 24;
   campaignId = 5;
+  landingPageId = 16;
+  formId = 15;
 }

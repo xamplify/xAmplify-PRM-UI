@@ -189,10 +189,6 @@
                                     <app-forms-list-view-util [folderListViewInput]="folderListViewInput"
                                         (updatedItemsCount)="getUpdatedItemsCount($event)"></app-forms-list-view-util>
                                 </ng-container>
-                                <ng-container *ngIf="selectedModuleType==3">
-                                    <app-landing-pages-list-view-util [folderListViewInput]="folderListViewInput"
-                                        (updatedItemsCount)="getUpdatedItemsCount($event)"></app-landing-pages-list-view-util>
-                                </ng-container>
                                 <ng-container *ngIf="selectedModuleType==4">
                                     <app-campaigns-list-view-util [archived]="archived"
                                         [folderListViewInput]="folderListViewInput"

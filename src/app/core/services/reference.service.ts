@@ -3,7 +3,7 @@ import { Http, Response } from "@angular/http";
 import { SaveVideoFile } from "../../videos/models/save-video-file";
 import { AuthenticationService } from "./authentication.service";
 import { Observable } from "rxjs/Observable";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
 import { Category } from "../../videos/models/category";
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { DefaultVideoPlayer } from "../../videos/models/default-video-player";
@@ -3068,6 +3068,10 @@ export class ReferenceService {
       categoryType = "CAMPAIGN";
     }else if(this.roles.emailTemplateId==moduleId){
       categoryType="EMAIL_TEMPLATE";
+    }else if(this.roles.landingPageId==moduleId){
+      categoryType="LANDING_PAGE";
+    }else if(this.roles.formId==moduleId){
+      categoryType="FORM";
     }
     return categoryType;
   }
@@ -3096,6 +3100,7 @@ export class ReferenceService {
           viewType='fg';
         }
       }else{
+        let defaultDisplayType = localStorage.getItem("defaultDisplayType");
         viewType = 'l';
       }
     }
@@ -3241,7 +3246,7 @@ export class ReferenceService {
    /********Email Templates****/
    goToManageEmailTemplates(viewType: string) {
     this.router.navigate(["/home/emailtemplates/manage/"+this.getListViewAsDefault(viewType)]);
-  }
+   }
 
   navigateToManageEmailTemplatesByViewType(folderViewType: string, viewType: string, categoryId: number) {
     if (categoryId != undefined && categoryId > 0) {
@@ -3346,5 +3351,41 @@ export class ReferenceService {
 
   getTrimmedData(input:any){
     return $.trim(input);
+  }
+
+  convertToLowerCaseAndGetTrimmedData(input:any){
+    return $.trim(input.toLowerCase());
+  }
+
+  removeAllSpacesAndGetData(text:string){
+    return text.replace(/ /g,'');
+  }
+
+  /********Landing Pages****/
+  goToManageLandingPages(viewType: string) {
+    let urlSuffix = this.getLandingPagesSuffixUrl();
+    this.router.navigate(["/home/pages/"+urlSuffix+"/"+this.getListViewAsDefault(viewType)]);
+   }
+
+  private getLandingPagesSuffixUrl() {
+    let isPartnerLandingPage = this.router.url.includes('home/pages/partner');
+    let urlSuffix = isPartnerLandingPage ? 'partner' : 'manage';
+    return urlSuffix;
+  }
+
+   navigateToManageLandingPagesByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToManageLandingPagesByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToManageLandingPages(viewType);
+    }
+  }
+  goToManageLandingPagesByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    let urlSuffix = this.getLandingPagesSuffixUrl();
+    this.router.navigate(["/home/pages/"+urlSuffix+"/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  goToManageFormsByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/forms/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
   }
 }

@@ -95,7 +95,7 @@ export class DefaultPageComponent implements OnInit {
     }
     /* -- XNFR-415 -- */
     loadDashboard(){
-        if(this.vanityurlService.isVanityURLEnabled){
+        if(this.vanityurlService.isVanityURLEnabled()){
             if( this.loggedThroughVendorVanityUrl   && (this.authenticationService.isPartner() || this.authenticationService.isOnlyPartner()  || this.authenticationService.isTeamMember())){
                 this.loggedThroughVendorVanityUrl=this.authenticationService.module.loggedInThroughVendorVanityUrl;
                 this.vanityurlService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {        
@@ -115,7 +115,7 @@ export class DefaultPageComponent implements OnInit {
 
     /* -- XNFR-415 -- */
     getDefaultDashboardForPartner() {  
-        if(this.authenticationService.module.loggedInThroughVendorVanityUrl || (this.authenticationService.isPartner() || this.authenticationService.isOnlyPartner())){
+        if(this.authenticationService.module.loggedInThroughVendorVanityUrl && (this.authenticationService.isPartner() || this.authenticationService.isOnlyPartner() || this.authenticationService.isTeamMember())){ 
             this.modulesDashboardTypeError = false;
             this.dashBoardService.getDefaultDashboardForPartner(this.vendorCompanyIdForPartnerVanity)
                 .subscribe(
