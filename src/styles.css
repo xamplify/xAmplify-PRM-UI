@@ -2923,3 +2923,7 @@ span.btn.Btn-Green.transition.secondary_btn_width{
 .pipeline-label-width{
   width: 100px !important;
 }
+/*  */
+.pl-5{
+  padding-left: 5px!important;
+}

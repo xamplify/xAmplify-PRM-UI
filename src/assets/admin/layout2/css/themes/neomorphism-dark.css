@@ -840,7 +840,8 @@ span.ui-column-resize {
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:focus,
 .nav-tabs > li.active > a:hover {
-  background-color: #2c2f33 !important;
+  background-color: #1e2124 !important;
+  /* background-color: #2c2f33 !important; */
   border: 1px solid #191b1e !important;
   color: white !important;
 }
@@ -2067,6 +2068,11 @@ tbody {
   box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #1d1f23 !important;
   border-radius: 0px 0px 10px 10px !important;
 }
+/* table header border top remove */
+.table>thead:first-child>tr:first-child>th {
+  border-top: none!important;
+}
+/* End */
 .setting-icon-cu .gearDropdownMenu {
   color: #fff !important;
 }
@@ -3675,3 +3681,14 @@ a.Iconhover.custom-grid-icon.icon_margin{
 .button.button.bgcolor-unset.btn_border{
   border :none !important;
 }
+/*  */
+.px-9{
+  padding: 5px 10px!important;
+}
+.neo-border-radius10{
+  border-radius: 10px!important;
+}  
+.pl-5{
+  padding-left: 10px!important;
+}
+

@@ -2430,10 +2430,10 @@
                                             <table class="table table-light"
                                                 *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
                                                 style="border: 0px !important; background-color: transparent !important">
-                                                <tbody>
-                                                    <fieldset class="fild-custome-borders-none width75">
+                                                <tbody class="neo-border-radius10">
+                                                    <fieldset class="fild-custome-borders-none">
                                                         <div
-                                                            class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border">
+                                                            class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border pl-5">
                                                             <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
                                                                 style="font-weight:600;font-size:21px;padding:0">Exclude
                                                                 A User</h4>
@@ -2458,7 +2458,7 @@
                                                                 *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                                 <button
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset neg_mrg_lft18 mrgn_lft0"
+                                                                    class="button bgcolor-unset mrgn_lft0 p0 px-9"
                                                                     [disabled]="csvExcludeUsersFilePreview"
                                                                     (click)="addContactModalOpen()" translate>
                                                                     <span
@@ -2469,7 +2469,7 @@
                                                                 </button>
 
                                                                 <button id="uploadCSV"
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset mrgn_lft0"
+                                                                    class="button bgcolor-unset mrgn_lft0 p0 px-9"
                                                                     translate>
                                                                     <span class="btn Btn-Green transition txt_pd-top3">
                                                                         <span style="text-align: center"
@@ -2666,10 +2666,10 @@
                                             <table class="table table-light"
                                                 style="border: 0px !important; background-color: transparent !important"
                                                 *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                                                <tbody>
+                                                <tbody class="neo-border-radius10">
                                                     <fieldset class="fild-custome-borders-none">
                                                         <div
-                                                            class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border">
+                                                            class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border pl-5">
                                                             <h4 class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
                                                                 style="font-weight:600;font-size:21px;padding:0">Exclude
                                                                 A Domain</h4>
@@ -2696,7 +2696,7 @@
                                                                 *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                                 <button id="add_domain"
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset neg_mrg_lft18 mrgn_lft0"
+                                                                    class="button bgcolor-unset mrgn_lft0 p0 px-9"
                                                                     [disabled]="csvExcludeDomainsFilePreview"
                                                                     (click)="addDomainModalOpen()" translate>
                                                                     <span
@@ -2707,7 +2707,7 @@
                                                                 </button>
 
                                                                 <button id="uploadCSV"
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-widthu button bgcolor-unset"
+                                                                    class="button bgcolor-unset p0 px-9"
                                                                     translate>
                                                                     <span class="btn Btn-Green transition txt_pd-top3">
                                                                         <span style="text-align: center"
