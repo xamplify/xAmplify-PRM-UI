@@ -9,7 +9,7 @@
             <h4 class="modal-title left" id="myModalLabel">Copy {{copyDto?.moduleName}}</h4>
          </div>
          <div class="modal-body">
-            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+            <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !processing"></app-response-message>
             <div id="modal-content">
                <app-modal-popup-loader *ngIf="processing"></app-modal-popup-loader>
                <div [hidden]="processing">
@@ -26,7 +26,7 @@
          <div class="modal-footer" *ngIf="!processing">
             <button class="btn Btn-Gray" (click)="closeModalPopup()" data-dismiss="modal">Close</button>
             <button type="button" class="button bgcolor-unset" [disabled]="!isValidForm || buttonClicked" (click)="submit();buttonClicked = true">
-               <span class="btn btn-primary transition txt_pd-top3">Save</span>
+               <span class="btn btn-primary transition txt_pd-top3">Save Changes</span>
             </button>
          </div>
       </div>

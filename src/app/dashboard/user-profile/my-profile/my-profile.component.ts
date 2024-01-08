@@ -3273,6 +3273,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	listAllPipelines(pagination: Pagination) {
 		this.ngxloading = true;
+		this.referenceService.loading(this.httpRequestLoader, true);
 		let type: string;
 		if (this.activeTabName == "leadPipelines") {
 			type = "LEAD";
@@ -3285,6 +3286,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			.subscribe(
 				response => {
 					this.ngxloading = false;
+					this.referenceService.loading(this.httpRequestLoader, false);
 					// this.pipelines = response.data; 
 					pagination.totalRecords = response.totalRecords;
 					this.pipelineSortOption.totalRecords = response.totalRecords;
@@ -3292,6 +3294,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				},
 				error => {
 					this.ngxloading = false;
+					this.referenceService.loading(this.httpRequestLoader, false);
 				},
 				() => { }
 			);

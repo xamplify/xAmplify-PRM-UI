@@ -233,7 +233,8 @@ export class IntegrationSettingsComponent implements OnInit {
 		 } else {
 			const amountField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'AMOUNT');
 			const closeDateField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'CLOSE_DATE');
-			const dealNameField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'DEAL_NAME');	
+			const dealNameField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'DEAL_NAME');
+			const displayName = this.selectedCustomFieldsDtos.find(field => $.trim(field.displayName).length <= 0);	
 			 if (((this.integrationType === 'HUBSPOT') && (!amountField || !closeDateField || !dealNameField))) {
 				 this.ngxloading = false;
 				 const missingFields: string[] = [];
@@ -250,7 +251,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				 this.referenceService.goToTop();
 				 return this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);	
 			}
-			if((this.integrationType === 'HUBSPOT'))
+			if((this.integrationType === 'HUBSPOT') && displayName)
 			{
 				this.ngxloading = false;
 				const missingFields: string[] = [];

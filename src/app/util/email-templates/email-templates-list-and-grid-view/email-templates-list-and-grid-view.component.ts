@@ -498,7 +498,7 @@ callFolderListViewEmitter(){
 
 /*  XNFR-431 */
 copy(emailTemplate:any){
-  this.copyModalPopupComponent.openModalPopup(emailTemplate.id,emailTemplate.name,"Email Template");
+  this.copyModalPopupComponent.openModalPopup(emailTemplate.id,emailTemplate.name,"Template");
 }
 
 /*  XNFR-431 */
@@ -510,7 +510,8 @@ copyModalPopupOutputReceiver(copyDto:CopyDto){
     data=>{
       if (data.access) {
         if (data.statusCode == 702) {   
-            this.copyModalPopupComponent.showSweetAlertSuccessMessage("Email Template Copied Successfully");
+            this.copyModalPopupComponent.showSweetAlertSuccessMessage("Template Copied Successfully");
+            this.pagination.pageIndex = 1;
             this.findEmailTemplates(this.pagination);
         }else if(data.statusCode==500){
             this.copyModalPopupComponent.showErrorMessage(data.message);
