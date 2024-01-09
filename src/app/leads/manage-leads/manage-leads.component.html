@@ -376,7 +376,7 @@
                               </div>
 
                               <!--------XNFR-426-start-sai--------->
-                              <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApprovalOrRejection">
+                              <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner">
                               <!--  <a style="padding: 3px;" (click)="showDealRegistrationForm(lead)" translate>
                                   Register Deal</a> -->
                                   <div style="color: #06c306;" *ngIf="lead?.leadApproveRejectType == 'APPROVED'" translate>
@@ -389,17 +389,17 @@
                                       style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                                     Rejected
                                   </div>
-                                  <button class="button_blue bgcolor-unset" [disabled]="!lead?.canRegisterDeal" 
+                                  <button class="button_blue bgcolor-unset" [disabled]="!lead?.canRegisterDeal || lead?.leadApproveRejectType == 'REJECTED'" 
                                   (click)="showDealRegistrationForm(lead)" translate>
                                     <span class="btn btn-primary transition d-inline"> Register Deal</span>
                                   </button>
                               </div>
 
-                              <div *ngIf="!lead?.associatedDealId > 0 && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApproveRejectType == undefined && leadApprovalStatus">
-                                <button class="button_blue bgcolor-unset" (click)="leadApprove(lead,'APPROVED')" translate>
+                              <div *ngIf="!lead?.associatedDealId > 0 && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApproveRejectType == undefined && lead?.leadApprovalOrRejection">
+                                <button class="button_blue bgcolor-unset" (click)="addNotesModel(lead,'APPROVED')" translate>
                                   <span class="btn btn-primary transition d-inline"> Approve</span>
                                 </button>
-                                <button class="button_blue bgcolor-unset" (click)="leadApprove(lead,'REJECTED')" translate>
+                                <button class="button_blue bgcolor-unset" (click)="addNotesModel(lead,'REJECTED')" translate>
                                   <span class="btn Btn-Gray transition d-inline"> Reject</span>
                                 </button>
                               </div>
@@ -726,3 +726,27 @@
     </app-add-deal>
   </div>
 </section>
+
+<!-- XNFR-426 -->
+<!-- Approve/Reject Notes -->
+<div class="modal fade right" id="addNotesModel" tabindex="-1" role="dialog"
+    aria-labelledby="addNotesModel" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-css" role="document">
+    <!-- Modal content-->
+    <div class="modal-content" style="overflow-x: hidden;">
+      <div class="modal-header">
+        <a title="Close" class="close-circle" (click)="addNotesModelClose()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+        <h4 class="modal-title" style="font-weight: 600;" translate>Add Notes<span class="required"> *</span></h4>
+      </div>
+      <div class="form-group">
+        <textarea class="form-control" rows="3"></textarea>
+      </div>
+      <div  class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" (click)="leadApprove()">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END CONTENT -->

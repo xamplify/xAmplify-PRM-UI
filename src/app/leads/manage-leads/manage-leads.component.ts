@@ -1234,4 +1234,12 @@ export class ManageLeadsComponent implements OnInit {
 
     this.leadsService.leadApprove(lead).subscribe();
   }
+
+  addNotesModel(lead:Lead , leadApproveRejectType:string){
+    $('#addNotesModel').modal('show');
+  }
+
+  addNotesModelClose(){
+    $('#addNotesModel').modal('hide');
+  }
 }

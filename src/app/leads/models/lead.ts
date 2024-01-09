@@ -29,4 +29,5 @@ export class Lead {
     currentStagePrivate = false;
     /******XNFR-426-start-sai******/
     leadApproveRejectType: any;
+    leadApprovalOrRejection:any;
 }
