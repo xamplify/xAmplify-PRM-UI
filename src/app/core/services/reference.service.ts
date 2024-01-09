@@ -3100,7 +3100,6 @@ export class ReferenceService {
           viewType='fg';
         }
       }else{
-        let defaultDisplayType = localStorage.getItem("defaultDisplayType");
         viewType = 'l';
       }
     }
@@ -3383,6 +3382,21 @@ export class ReferenceService {
   goToManageLandingPagesByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
     let urlSuffix = this.getLandingPagesSuffixUrl();
     this.router.navigate(["/home/pages/"+urlSuffix+"/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  goToEditLandingPage(viewType: string) {
+    this.router.navigate(["/home/pages/edit/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  navigateToEditLandingPageByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToEditLandingPageByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToEditLandingPage(viewType);
+    }
+  }
+  goToEditLandingPageByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/pages/edit/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
   }
 
   goToManageFormsByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
