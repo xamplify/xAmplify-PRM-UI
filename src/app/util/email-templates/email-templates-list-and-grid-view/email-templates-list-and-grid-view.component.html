@@ -449,6 +449,6 @@
 <!--End Of Icons--->
 
 <app-send-test-email *ngIf="sendTestEmailIconClicked" [id]="selectedEmailTemplateId" (sendTestEmailComponentEventEmitter)="sendTestEmailModalPopupEventReceiver()"></app-send-test-email>
-
+<!--XNFR-431-->
 <app-copy-modal-popup #copyModalPopupComponent (copyModalPopupOutputEmitter)="copyModalPopupOutputReceiver($event)"></app-copy-modal-popup>
 <app-scroll-top></app-scroll-top>

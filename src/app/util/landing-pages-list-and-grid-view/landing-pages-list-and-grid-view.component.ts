@@ -18,13 +18,15 @@ import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { LandingPage } from 'app/landing-pages/models/landing-page';
 import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 import { PreviewLandingPageComponent } from 'app/landing-pages/preview-landing-page/preview-landing-page.component';
+import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
+import { CopyDto } from '../models/copy-dto';
+import { Properties } from 'app/common/models/properties';
 declare var swal: any, $: any;
-
 @Component({
   selector: 'app-landing-pages-list-and-grid-view',
   templateUrl: './landing-pages-list-and-grid-view.component.html',
   styleUrls: ['./landing-pages-list-and-grid-view.component.css'],
-  providers: [Pagination, HttpRequestLoader, ActionsDescription, SortOption],
+  providers: [Pagination, HttpRequestLoader, ActionsDescription, SortOption,Properties],
 })
 export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 
@@ -60,11 +62,13 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   showUpArrowButton = false;
   folderViewType = "";
   roles:Roles = new Roles();
+  /*  XNFR-432 */
+  @ViewChild("copyModalPopupComponent") copyModalPopupComponent:CopyModalPopupComponent;
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
       private utilService: UtilService, private route: ActivatedRoute,public renderer:Renderer,
-      private vanityUrlService:VanityURLService) {
+      private vanityUrlService:VanityURLService,public properties:Properties) {
         this.pagination.vanityUrlFilter =this.vanityUrlService.isVanityURLEnabled();
         this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.renderer = this.renderer;
@@ -366,7 +370,49 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
         }
     }
 }
-
+/*  XNFR-432 */
+copy(landingPage:any){
+    this.findExistingPageNames(landingPage);
+  }
+  findExistingPageNames(landingPage:any){
+    this.ngxloading = true;
+    this.landingPageService.getAvailableNames(this.loggedInUserId).subscribe(
+      (data: any) => {
+          let pageNames = data;
+          this.copyModalPopupComponent.openModalPopup(landingPage.id,landingPage.name,"Page",pageNames);
+          this.ngxloading = false;
+      },
+      error => {
+        this.ngxloading = false;
+        this.logger.errorPage(error);
+      });
+  }
+  
+  /*  XNFR-432 */
+  copyModalPopupOutputReceiver(copyDto:CopyDto){
+    let landingPage = new LandingPage();
+    landingPage.id = copyDto.id;
+    landingPage.name = copyDto.copiedName;
+    this.landingPageService.copy(landingPage).subscribe(
+      data=>{
+        if (data.access) {
+          if (data.statusCode == 702) {   
+              this.copyModalPopupComponent.showSweetAlertSuccessMessage("Template Copied Successfully");
+              this.pagination.pageIndex = 1;
+              this.listLandingPages(this.pagination);
+          }else if(data.statusCode==500){
+              this.copyModalPopupComponent.showErrorMessage(data.message);
+          }
+        }else{
+          this.authenticationService.forceToLogout();
+        }
+      },error=>{
+        this.copyModalPopupComponent.showErrorMessage(this.properties.serverErrorMessage);
+      }
+    );
+    
+  
+  }
 
  
 

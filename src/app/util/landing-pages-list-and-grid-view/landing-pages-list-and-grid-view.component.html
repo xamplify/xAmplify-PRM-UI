@@ -163,7 +163,7 @@
                                         </h6>
                                     </div>
                                     <!---Icons-->
-                                    <div class="bar gridIconCustomization" id="notificationBarCu">
+                                    <div class="bar gridIconCustomization flex" id="notificationBarCu">
                                         <!--Copy Icon-->
                                         <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                         <!--Edit Icon-->
@@ -337,8 +337,7 @@
     <!--Icons-->
     <!--Copy-->
     <ng-template #copyIcon let-landingPage="landingPage">
-        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage" data-toggle="tooltip" data-placement="top" title="Edit"
-        (click)="copy(landingPage)">
+        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copy(landingPage)">
             <i class="fa fa-files-o"  [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"  aria-hidden="true"></i>
         <div class="clickicons"></div>
         </a>
@@ -419,4 +418,6 @@
         <div class="del-icon"></div>
     </a>
     </ng-template>
+    <!--XNFR-432-->
+    <app-copy-modal-popup #copyModalPopupComponent (copyModalPopupOutputEmitter)="copyModalPopupOutputReceiver($event)"></app-copy-modal-popup>
     <app-scroll-top></app-scroll-top>
