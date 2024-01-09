@@ -52,11 +52,10 @@ export class LandingPageFormAnalyticsComponent implements OnInit {
             this.landingPageForms = true;
             if(this.categoryId>0){
                 this.formsRouterLink = "/home/forms/category/" +this.categoryId+"/lf/"+ this.pagination.landingPageId;
-                this.pagesRouterLink = "/home/pages/manage/" +this.categoryId;
             }else{
                 this.formsRouterLink = "/home/forms/lf/" + this.pagination.landingPageId;
-                this.pagesRouterLink = "/home/pages/manage";
             }
+            this.pagesRouterLink = "/home/pages/manage";
         }
         this.listSubmittedData( this.pagination );
     }

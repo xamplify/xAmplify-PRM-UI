@@ -64,11 +64,13 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   roles:Roles = new Roles();
   /*  XNFR-432 */
   @ViewChild("copyModalPopupComponent") copyModalPopupComponent:CopyModalPopupComponent;
+  isLocalHost = false;
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
       private utilService: UtilService, private route: ActivatedRoute,public renderer:Renderer,
       private vanityUrlService:VanityURLService,public properties:Properties) {
+        this.isLocalHost = this.authenticationService.isLocalHost();
         this.pagination.vanityUrlFilter =this.vanityUrlService.isVanityURLEnabled();
         this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.renderer = this.renderer;
@@ -395,14 +397,11 @@ copy(landingPage:any){
     this.landingPageService.copy(landingPage).subscribe(
       data=>{
         if (data.access) {
-          if (data.statusCode == 702) {   
-              this.copyModalPopupComponent.showSweetAlertSuccessMessage("Template Copied Successfully");
-              this.pagination.pageIndex = 1;
-              this.listLandingPages(this.pagination);
-          }else if(data.statusCode==500){
-              this.copyModalPopupComponent.showErrorMessage(data.message);
-          }
+            this.copyModalPopupComponent.showSweetAlertSuccessMessage("Page Copied Successfully");
+            this.pagination.pageIndex = 1;
+            this.listLandingPages(this.pagination);
         }else{
+          this.referenceService.closeModalPopup("copy-modal-popup");
           this.authenticationService.forceToLogout();
         }
       },error=>{

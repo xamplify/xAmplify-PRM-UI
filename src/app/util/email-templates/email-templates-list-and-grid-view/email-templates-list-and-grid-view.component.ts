@@ -528,6 +528,7 @@ copyModalPopupOutputReceiver(copyDto:CopyDto){
             this.copyModalPopupComponent.showErrorMessage(data.message);
         }
       }else{
+        this.referenceService.closeModalPopup("copy-modal-popup");
         this.authenticationService.forceToLogout();
       }
     },error=>{
