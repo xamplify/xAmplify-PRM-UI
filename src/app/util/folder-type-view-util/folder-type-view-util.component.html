@@ -45,7 +45,7 @@
 							<div class="input-icon right" id="icon">
 								<input type="text" id="sort-text" class="form-control"
 									[(ngModel)]="categorySortOption.searchKey" [ngModelOptions]="{standalone: true}"
-									placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+									placeholder="Search" (keypress)="eventHandler($event.keyCode)" autocomplete="off">
 								<button class="glyphicon glyphicon-remove search-box-item-clear"
 									*ngIf="categorySortOption.searchKey"
 									(click)="categorySortOption.searchKey='';searchCategories();"></button>

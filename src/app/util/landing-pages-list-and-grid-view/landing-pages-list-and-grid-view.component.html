@@ -339,7 +339,7 @@
     <!--Icons-->
     <!--Copy-->
     <ng-template #copyIcon let-landingPage="landingPage">
-        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copy(landingPage)">
+        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage && isLocalHost" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copy(landingPage)">
             <i class="fa fa-files-o"  [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"  aria-hidden="true"></i>
         <div class="clickicons"></div>
         </a>
