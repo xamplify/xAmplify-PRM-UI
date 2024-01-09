@@ -395,14 +395,11 @@ copy(landingPage:any){
     this.landingPageService.copy(landingPage).subscribe(
       data=>{
         if (data.access) {
-          if (data.statusCode == 702) {   
-              this.copyModalPopupComponent.showSweetAlertSuccessMessage("Template Copied Successfully");
-              this.pagination.pageIndex = 1;
-              this.listLandingPages(this.pagination);
-          }else if(data.statusCode==500){
-              this.copyModalPopupComponent.showErrorMessage(data.message);
-          }
+            this.copyModalPopupComponent.showSweetAlertSuccessMessage("Page Copied Successfully");
+            this.pagination.pageIndex = 1;
+            this.listLandingPages(this.pagination);
         }else{
+          this.referenceService.closeModalPopup("copy-modal-popup");
           this.authenticationService.forceToLogout();
         }
       },error=>{
