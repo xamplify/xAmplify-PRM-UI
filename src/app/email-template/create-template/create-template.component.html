@@ -23,21 +23,17 @@
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </li>
                     <li>
-                        <a translate><span *ngIf="emailTemplateService.isNewTemplate; else Other"
-                                translate>Create</span>
+                        <a><span *ngIf="emailTemplateService.isNewTemplate; else Other">Create</span>
                             <ng-template #Other translate>Update</ng-template> Template</a>
                     </li>
                 </ul>
                 <div>
-                    <a class="close-circle mr5" style="margin-top: 6px;" [ngClass]="showForms ?'mt10':''"
-                        (click)="navigateBack()">
+                    <a class="close-circle mr5" style="margin-top: 6px;" [ngClass]="showForms ?'mt10':''" (click)="navigateBack()">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
-                    <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate && showForms" [filter]="'survey'"
-                        [buttonText]="'Show Surveys'"></app-preview-popup>
+                    <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate && showForms" [filter]="'survey'" [buttonText]="'Show Surveys'"></app-preview-popup>
                     <app-merge-tags *ngIf="loadTemplate" [input]="mergeTagsInput"></app-merge-tags>
                 </div>
-
             </div>
             <div class="tile mScroll" id="CardBgforSection" style="border-radius: 5px;">
                 <div id="bee-plugin-container"></div>

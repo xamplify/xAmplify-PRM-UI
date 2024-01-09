@@ -281,3 +281,36 @@
     border: 1px solid #e0e0e0;
   }
 
+  @media screen and (max-width: 600px) {
+    .whitespace_nowrap{
+     white-space:nowrap!important;
+    }
+    .mb_top0{
+      margin-top:0px!important;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .mAlertMsg {
+      margin-top: 32px;
+    }
+    .mTopAlert {
+      top: -22px !important;
+      
+    }
+    .mActionAlign {
+      line-height: 2px;
+      text-align: center !important;
+    }
+    .mDisableColor {
+      color: #888 !important;
+      border: 1px solid;
+    }
+    .mActionDiv {
+      white-space: pre-line !important;
+      line-height: 1.8px !important;
+    }
+    .mPadAction {
+      padding-left: 30px !important;
+    }
+  }

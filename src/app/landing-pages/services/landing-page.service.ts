@@ -17,7 +17,7 @@ import { UtilService } from 'app/core/services/util.service';
 declare var  $: any;
 @Injectable()
 export class LandingPageService {
-
+    
     jsonBody: any = "";
     id: number = 0;
     URL = this.authenticationService.REST_URL + "landing-page/";
@@ -191,12 +191,17 @@ export class LandingPageService {
     }
 
     updateJsonAndHtmlBody(ladingPage:LandingPage): Observable<any> {
-        return this.http.post( this.URL + "updateJsonAndHtmlBody?access_token=" + this.authenticationService.access_token,ladingPage)
+        return this.http.post(this.URL + "updateJsonAndHtmlBody?access_token=" + this.authenticationService.access_token,ladingPage)
             .map( this.extractData )
             .catch( this.handleError );
     }
 
-
+    /*  XNFR-432 */
+    copy(landingPage: LandingPage) {
+        let url = this.URL+"copy?access_token="+this.authenticationService.access_token;
+        landingPage.userId = this.authenticationService.getUserId();
+        return this.authenticationService.callPostMethod(url,landingPage);
+    }
 
     private extractData( res: Response ) {
         const body = res.json();
