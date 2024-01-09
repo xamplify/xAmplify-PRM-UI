@@ -410,9 +410,7 @@
 <!--Copy-->
 <ng-template #copyIcon let-emailTemplate="emailTemplate">
     <a class="Iconhover custom-grid-icon" (click)="copy(emailTemplate)" data-toggle="tooltip" data-placement="top"  title="{{actionsDescription.campaign_copy}}"
-         *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor || 
-          authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing )
-           && emailTemplate.type!='PARTNER' && !emailTemplate.draft">
+         *ngIf="emailTemplate.type!='PARTNER' && !emailTemplate.draft">
         <i class="fa fa-files-o" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"  aria-hidden="true"></i>
         <div class="clickicons"></div>
     </a>
