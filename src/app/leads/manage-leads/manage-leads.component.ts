@@ -89,6 +89,8 @@ export class ManageLeadsComponent implements OnInit {
   vendorList:any ;
   vendorCompanyIdFilter:any;
   leadApprovalStatus:boolean = false;
+  leadNotes:any;
+  leadApproveRejectType:any;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -1227,19 +1229,24 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   /*********XNFR-426-start-sai******/
-  leadApprove(lead:Lead , leadApproveRejectType:string){
-
-    lead.leadApproveRejectType = leadApproveRejectType;
+  leadApproveReject(lead:Lead , leadNotes:string){
+    lead.leadNotes = leadNotes;
     lead.userId = this.loggedInUserId;
+    lead.leadApproveRejectType = this.leadApproveRejectType;
 
-    this.leadsService.leadApprove(lead).subscribe();
+    this.leadsService.leadApproveReject(lead).subscribe();
   }
 
   addNotesModel(lead:Lead , leadApproveRejectType:string){
+    
     $('#addNotesModel').modal('show');
+    this.leadApproveRejectType = leadApproveRejectType;
+    this.selectedLead = lead;
   }
 
   addNotesModelClose(){
+    this.leadNotes = null;
+    this.leadApproveRejectType = null;
     $('#addNotesModel').modal('hide');
   }
 }

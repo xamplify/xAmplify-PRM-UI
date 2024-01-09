@@ -30,4 +30,5 @@ export class Lead {
     /******XNFR-426-start-sai******/
     leadApproveRejectType: any;
     leadApprovalOrRejection:any;
+    leadNotes:any;
 }
