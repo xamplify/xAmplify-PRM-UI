@@ -85,25 +85,23 @@
                                                 -
                                             </td>
                                         </ng-container>
-                                        <td id="actions-td-width-xamp ">
-                                            <div class="actions-block override-actions min-width-icon actionButtonAlign mActionButtonAlign dflex-action">
-                                                <div class="mActionTop1 actionButtonAlign2 mActionTop2">
+                                        <td id="actions-td-width-xamp">
+                                            <div class="actions-block override-actions flex mPadAction IconCustomizationcondition">
+                                                <div class="mActionDiv whitespace_nowrap display-inlineflex">
                                                     <!--Copy Icon-->
                                                     <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                     <!--Edit Icon-->
                                                     <ng-template [ngTemplateOutlet]="editIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                     <!--Preview Icon-->
                                                     <ng-template [ngTemplateOutlet]="previewIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                </div>
-                                                <div class="actionButtonAlign2 mActionTop2">
-                                                    <!--Copy/Embed Link Icon-->
-                                                    <ng-template [ngTemplateOutlet]="copyOrEmbedLinkIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                    <!--Form Icon-->
-                                                    <ng-template [ngTemplateOutlet]="formIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                </div>
-                                                <div class="actionButtonAlign2 mActionTop3">
+                                                     <!--Copy/Embed Link Icon-->
+                                                     <ng-template [ngTemplateOutlet]="copyOrEmbedLinkIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                     <!--Form Icon-->
+                                                     <ng-template [ngTemplateOutlet]="formIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                      <!--Analytics Icon-->
                                                      <ng-template [ngTemplateOutlet]="analyticsIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                </div>
+                                                <div class="mActionDiv whitespace_nowrap">
                                                     <!--Delete Icon-->
                                                     <ng-template [ngTemplateOutlet]="deleteIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                                 </div>
@@ -416,9 +414,9 @@
 
     <!--Delete---->
     <ng-template #deleteIcon let-landingPage="landingPage">
-        <a class="mTrashPad actionTrashPad  Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)"
-        data-toggle="tooltip" class="delete custom-icon" data-placement="top" title="Delete" (click)="confirmDelete(landingPage)">
-            <i class="fa fa-trash-o" aria-hidden="true"></i>
+        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)"
+        data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(landingPage)">
+            <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
         <div class="del-icon"></div>
     </a>
     </ng-template>
