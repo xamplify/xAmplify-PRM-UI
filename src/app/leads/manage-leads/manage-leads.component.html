@@ -376,7 +376,7 @@
                               </div>
 
                               <!--------XNFR-426-start-sai--------->
-                              <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner">
+                              <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApprovalOrRejection">
                               <!--  <a style="padding: 3px;" (click)="showDealRegistrationForm(lead)" translate>
                                   Register Deal</a> -->
                                   <div style="color: #06c306;" *ngIf="lead?.leadApproveRejectType == 'APPROVED'" translate>

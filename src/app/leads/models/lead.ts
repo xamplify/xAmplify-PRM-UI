@@ -21,7 +21,7 @@ export class Lead {
     canRegisterDeal:boolean;  
     userId:number;
     preview = false;
-    createdForCompanyId: number;  
+    createdForCompanyId: number;
     pipelineId: number;  
     associatedUserId: number;
     associatedDealId: number;
