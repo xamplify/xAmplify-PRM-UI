@@ -291,12 +291,15 @@
                                         <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="!modulesDisplayType.isGridView && setViewType('g')">
                                             <i class="fa fa-th-large p10" aria-hidden="true"></i>
                                         </span>
-
-                                        <ng-container *ngIf="(pagination.categoryId==0 || pagination?.categoryId=='undefined')">
-                                            <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView" (click)="setViewType('fg')">
+                                        <ng-container *ngIf="!showUpArrowButton && !folderListView">
+                                            <span class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip"
+                                                data-placement="bottom" title="Folder Grid View"
+                                                (click)="setViewType('fg')">
                                                 <i class="fa fa-folder p10" aria-hidden="true"></i>
                                             </span>
-                                            <span class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('fl')">
+                                            <span class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width"
+                                                data-toggle="tooltip" data-placement="bottom" title="Folder List View"
+                                                (click)="setViewType('fl')">
                                                 <i class="fa fa-th p10" aria-hidden="true"></i>
                                             </span>
                                         </ng-container>
@@ -304,9 +307,10 @@
                                 </div>
                             </div>
                         </div>
-                        <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('fg')">
-                            <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-                        </span>
+                        <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip"
+							data-placement="bottom" title="Go back" (click)="setViewType('fg')">
+							<i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+						</span>
                         <div class="inputs" id="right" style="display: inline-flex;max-width: 369px;">
                             <div *ngIf="!isPartnerLandingPage">
                                 <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
