@@ -556,20 +556,24 @@ export class AddDealComponent implements OnInit {
     }
     this.deal.answers = answers;
     this.deal.properties = obj;
+    
     /********XNFR-403***********/
-    let filtertedForecastItems = new Array<any>();
-    $.each(this.sfDealComponent.forecastItems,function(_index:number,
-      forecastItem:any){
-        let id = forecastItem['catalogItem']['id'];
-        if(id!=undefined && id>0){
-          forecastItem['revenue'] = forecastItem['price'];
-          delete forecastItem['price'];
-          filtertedForecastItems.push(forecastItem);
-        }
-    });
-    if(filtertedForecastItems.length>0){
-      this.deal.forecastItemsJson = JSON.stringify(filtertedForecastItems);
+    if(this.activeCRMDetails.type === "CONNECTWISE"){
+      let filtertedForecastItems = new Array<any>();
+      $.each(this.sfDealComponent.forecastItems,function(_index:number,
+        forecastItem:any){
+          let id = forecastItem['catalogItem']['id'];
+          if(id!=undefined && id>0){
+            forecastItem['revenue'] = forecastItem['price'];
+            delete forecastItem['price'];
+            filtertedForecastItems.push(forecastItem);
+          }
+      });
+      if(filtertedForecastItems.length>0){
+        this.deal.forecastItemsJson = JSON.stringify(filtertedForecastItems);
+      }
     }
+
     /********XNFR-403***********/
     this.dealsService.saveOrUpdateDeal(this.deal)
       .subscribe(
