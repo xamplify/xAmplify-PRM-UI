@@ -64,11 +64,13 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   roles:Roles = new Roles();
   /*  XNFR-432 */
   @ViewChild("copyModalPopupComponent") copyModalPopupComponent:CopyModalPopupComponent;
+  isLocalHost = false;
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
       private utilService: UtilService, private route: ActivatedRoute,public renderer:Renderer,
       private vanityUrlService:VanityURLService,public properties:Properties) {
+        this.isLocalHost = this.authenticationService.isLocalHost();
         this.pagination.vanityUrlFilter =this.vanityUrlService.isVanityURLEnabled();
         this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.renderer = this.renderer;
