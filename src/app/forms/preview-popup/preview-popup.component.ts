@@ -60,7 +60,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     ngOnInit() {
         this.showDefaultForms = this.router.url.indexOf("/home/pages/saveAsDefault")>-1;
         if (this.router.url.indexOf("/home/emailtemplates/create") > -1 ||
-            this.router.url.indexOf("/home/pages/add") > -1 || this.router.url.indexOf("/home/campaigns/create") > -1 
+            this.router.url.indexOf("/home/pages/add") > -1 || this.router.url.indexOf("/home/pages/edit") > -1 || this.router.url.indexOf("/home/campaigns/create") > -1 
             || this.router.url.indexOf("/home/campaigns/edit") > -1 
             || this.router.url.indexOf("/home/emailtemplates/edit") > -1) {
             this.showButton = true;
