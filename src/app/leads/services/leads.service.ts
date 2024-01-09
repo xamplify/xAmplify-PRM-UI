@@ -253,7 +253,7 @@ export class LeadsService {
 
   /*******XNFR-426-start-sai*******/
   leadApprove(lead: Lead){
-    return this.http.get(this.URL + `/updateLeadApprove/${lead.id}/${lead.leadApproveRejectType}?access_token=${this.authenticationService.access_token}`)
+    return this.http.post(this.URL + `/updateLeadApprove?access_token=${this.authenticationService.access_token}`,lead)
     .map(this.extractData)
     .catch(this.handleError);
   }

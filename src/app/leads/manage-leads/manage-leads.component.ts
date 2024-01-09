@@ -1231,6 +1231,7 @@ export class ManageLeadsComponent implements OnInit {
   leadApprove(lead:Lead , leadApproveRejectType:string){
 
     lead.leadApproveRejectType = leadApproveRejectType;
+    lead.userId = this.loggedInUserId;
 
     this.leadsService.leadApprove(lead).subscribe();
   }
