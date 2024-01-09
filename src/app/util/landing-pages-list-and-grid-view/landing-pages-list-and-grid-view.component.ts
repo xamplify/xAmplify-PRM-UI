@@ -252,13 +252,12 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 
   editLandingPage(id: number) {
       this.landingPageService.id = id;
-      if(this.categoryId>0){
-          this.router.navigate( ["/home/pages/add/"+this.categoryId] );
-      }else{
-      this.router.navigate(["/home/pages/add"]);
+      let viewType = this.route.snapshot.params['viewType'];
+      let categoryId = this.route.snapshot.params['categoryId'];
+      let folderViewType = this.route.snapshot.params['folderViewType'];
+      this.referenceService.navigateToEditLandingPageByViewType(folderViewType,viewType,categoryId);
   }
 
-  }
 
   deleteById(landingPage: LandingPage) {
       this.referenceService.loading(this.httpRequestLoader, true);

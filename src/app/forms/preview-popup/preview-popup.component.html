@@ -1,5 +1,5 @@
 <div style="padding-top:6px;margin-bottom: -5px;">
-    <button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService.isShowForms)"
+    <button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService?.isShowForms)"
         class="button_blue show-forms-btn bgcolor-unset px-0" id="right" style="border-radius: 5px" (click)="showForms()">
         <span class="btn btn-primary transition">{{buttonText}}</span>
     </button>
@@ -7,7 +7,7 @@
 <!-- ----------------------List Available Forms------------------- -->
 <div class="modal fade right" id="forms-list" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog"
-        [ngClass]="router.url.indexOf('/home/pages/add') > -1 && showCustomPopup ?'pages-custom-width85':'popup-custom-width'">
+        [ngClass]="(router.url.indexOf('/home/pages/add') > -1  || router.url.indexOf('/home/pages/edit') > -1)&& showCustomPopup ?'pages-custom-width85':'popup-custom-width'">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" data-dismiss="modal">

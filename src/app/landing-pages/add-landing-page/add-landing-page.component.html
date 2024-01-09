@@ -27,20 +27,16 @@
                         <a *ngIf="!defaultLandingPage">Edit Page</a>
                     </li>
                 </ul>
+                <a class="close-circle mr5" style="margin-top: 6px;" (click)="navigateBack()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </a>
                 <app-preview-popup #previewPopUpComponent *ngIf="loadLandingPage"></app-preview-popup>
                 <app-merge-tags *ngIf="loadLandingPage" [input]="mergeTagsInput"></app-merge-tags>
                 <div>
-                    <!-- <button class="new-tab-button m_mb8 btn-primary"
-                        style="border-radius: 5px;padding: 1px 13px !important;" [hidden]="!loadLandingPage"
-                        (click)="checkOrUncheckOpenLinksInNewTabOption()">Open Links In New Tab
-                        <input class="pointer checkBox_shadow" id="openLinksInNewTab-page-links" type="checkbox"
-                            (click)="checkOrUncheckOpenLinksInNewTabOption()">
-                    </button> -->
-                    <button class="button_blue bgcolor-unset" [hidden]="!loadLandingPage"
-                        (click)="checkOrUncheckOpenLinksInNewTabOption()" style="float:right;padding-right:5px;">
+                    <button class="button_blue bgcolor-unset" [hidden]="!loadLandingPage" (click)="checkOrUncheckOpenLinksInNewTabOption()" style="float:right;padding-right:5px;">
                         <span class="btn btn-primary transition txt_pd-top3">Open Links In New Tab
-                            <input class="pointer checkBox_shadow" id="openLinksInNewTab-page-links" type="checkbox"
-                                (click)="checkOrUncheckOpenLinksInNewTabOption()"> </span>
+                            <input class="pointer checkBox_shadow" id="openLinksInNewTab-page-links" type="checkbox"(click)="checkOrUncheckOpenLinksInNewTabOption()">
+                        </span>
                     </button>
                 </div>
             </div>
