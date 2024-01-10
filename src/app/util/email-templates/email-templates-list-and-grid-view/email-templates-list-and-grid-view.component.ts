@@ -138,6 +138,11 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
 				}
 			}
 		}
+
+    let message = this.referenceService.createdOrUpdatedSuccessMessage;
+		if (message.length > 0 && !this.folderListViewExpanded) {
+      this.customResponse = new CustomResponse('SUCCESS', message, true);
+    }
   }
 
   showMessageOnTop(message: string) {
