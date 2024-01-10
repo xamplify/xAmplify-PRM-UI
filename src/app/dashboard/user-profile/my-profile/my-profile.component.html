@@ -1442,7 +1442,7 @@
                                                                             </th>
                                                                         </tr>
                                                                     </thead>
-                                                                    <tbody>
+                                                                    <tbody *ngIf="!httpRequestLoader.isLoading">
                                                                         <tr *ngFor="let pipeline of pipelinePagination.pagedItems ;let i =index"
                                                                             id="pipeline_{{pipeline.id}}">
 
@@ -1539,6 +1539,7 @@
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
+                                                                <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                                                                 <div *ngIf="pipelinePagination.pagedItems.length !== 0"
                                                                     class="pg8">
                                                                     <app-pagination [pagination]="pipelinePagination"
@@ -1555,7 +1556,6 @@
                                                     </div>
                                                 </div>
                                                 <br>
-                                                <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                                             </ng-container>
                                         </div>
                                         <!--Pasword-->
