@@ -374,7 +374,8 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 /*  XNFR-432 */
 copy(landingPage:any){
     this.findExistingPageNames(landingPage);
-  }
+ }
+
   findExistingPageNames(landingPage:any){
     this.ngxloading = true;
     this.landingPageService.getAvailableNames(this.loggedInUserId).subscribe(
@@ -394,10 +395,13 @@ copy(landingPage:any){
     let landingPage = new LandingPage();
     landingPage.id = copyDto.id;
     landingPage.name = copyDto.copiedName;
+    landingPage.copyPage = true;
+    landingPage.vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
+    this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
     this.landingPageService.copy(landingPage).subscribe(
       data=>{
         if (data.access) {
-            this.copyModalPopupComponent.showSweetAlertSuccessMessage("Page Copied Successfully");
+            this.copyModalPopupComponent.showSweetAlertSuccessMessage(data.message);
             this.pagination.pageIndex = 1;
             this.listLandingPages(this.pagination);
         }else{
