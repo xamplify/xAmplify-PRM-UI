@@ -301,6 +301,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			this.selectedCfIds.splice($.inArray(cfName, this.selectedCfIds), 1);
 			this.paginatedSelectedIds.splice($.inArray(cfName, this.paginatedSelectedIds), 1);
 			sfCustomField.selected = false;
+			sfCustomField.required = false;
 		}
 		this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
 		
