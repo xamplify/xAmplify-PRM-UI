@@ -1278,4 +1278,9 @@ getDefaultThemes(){
             .map( this.extractData )
             .catch( this.handleError );
     }
+    getDefaultDashboardPageForPartner(vanityLoginDto: VanityLoginDto) {
+        return this.http.post(this.url + `getDefaultDashboardPageForPartner?access_token=${this.authenticationService.access_token}`, vanityLoginDto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }
