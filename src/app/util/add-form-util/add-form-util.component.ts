@@ -237,8 +237,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             this.isAdd = true;
             this.isHideFormInfo = true;
             this.isSaveAs = true;
-            $('#add-form-name-modal').modal('show');
+            this.ngxloading = true;
             this.getById(this.selectedDefaultFormId);
+            $('#add-form-name-modal').modal('show');
         }else {
             this.listDefaultColumns();
             this.highlightByLength(1);
@@ -292,8 +293,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                 if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0) {
                     this.validateFormNames(this.form.name);
                 }
-                this.ngxloading = false;
                 $('#add-form-name-modal').modal('show');
+                this.ngxloading = false;
             },
             error => {
                 if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0) {
@@ -386,6 +387,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                             this.setExistingFormData();
                             this.getCompanyLogo();
                             this.form.id = null;
+                        }
+                        if (this.isCopyForm) {
+                            this.form.name = this.form.name + '-copy';
                         }
                     } else {
                         this.ngxloading = false;
