@@ -96,13 +96,6 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
     this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
     this.whiteLabeledBanner = this.properties.whiteLabeledBanner;
     this.emailTemplateService.isTemplateSaved = false;
-    if (this.referenceService.isCreated) {
-      this.message = "Template created successfully";
-      this.showMessageOnTop(this.message);
-    } else if (this.referenceService.isUpdated) {
-      this.message = "Template updated successfully";
-      this.showMessageOnTop(this.message);
-    }
     this.hasAllAccess = this.referenceService.hasAllAccess();
     this.hasEmailTemplateRole = this.referenceService.hasSelectedRole(
       this.referenceService.roles.emailTemplateRole
@@ -138,11 +131,16 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
 				}
 			}
 		}
+    this.showMessageOnTop();
   }
 
-  showMessageOnTop(message: string) {
-    $(window).scrollTop(0);
-    this.customResponse = new CustomResponse("SUCCESS", message, true);
+  showMessageOnTop() {
+    let message = this.referenceService.createdOrUpdatedSuccessMessage;
+    if (message.length > 0 && !this.folderListViewExpanded) {
+      $(window).scrollTop(0);
+      this.customResponse = new CustomResponse("SUCCESS", message, true);
+    }
+   
   }
 
   ngOnInit() {
@@ -199,10 +197,11 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
   }
 /*************************Sort********************** */
   sortEmailTemplates(text: any) {
-	this.sortOption.formsSortOption = text;
+    this.sortOption.formsSortOption = text;
     this.getAllFilteredResults(this.pagination);
   }
   getAllFilteredResults(pagination: Pagination) {
+  this.customResponse = new CustomResponse();
 	this.pagination.pageIndex = 1;
 	this.pagination.searchKey = this.sortOption.searchKey;
 	this.pagination = this.utilService.sortOptionValues(this.sortOption.formsSortOption, this.pagination);
@@ -238,6 +237,7 @@ setViewType(viewType: string) {
 }
 
 refreshList(){
+  this.customResponse = new CustomResponse();
 	this.findEmailTemplates(this.pagination);
 }
 
@@ -280,6 +280,7 @@ filterTemplates(type: string, isVideoTemplate: boolean, index: number) {
 	} else if (!isVideoTemplate) {
 		this.pagination.filterBy = "RegularEmail";
 	}
+  this.customResponse = new CustomResponse();
 	this.findEmailTemplates(this.pagination);
 }
 
@@ -340,6 +341,7 @@ confirmDeleteEmailTemplate(id: number, name: string) {
 }
 
 deleteEmailTemplate(id: number, name: string) {
+  this.customResponse = new CustomResponse();
   this.referenceService.loading(this.httpRequestLoader, true);
   this.referenceService.goToTop();
   this.isEmailTemplateDeleted = false;
@@ -350,7 +352,6 @@ deleteEmailTemplate(id: number, name: string) {
         if (data.access) {
           let message = data.message;
           if (message == "Success") {
-            this.referenceService.showInfo("Email Template Deleted Successfully", "");
             this.selectedEmailTemplateName = name + ' deleted successfully';
             this.customResponse = new CustomResponse('SUCCESS', this.selectedEmailTemplateName, true);
             this.isEmailTemplateDeleted = true;
@@ -383,8 +384,7 @@ deleteEmailTemplate(id: number, name: string) {
 }
 
 ngOnDestroy() {
-  this.referenceService.isCreated = false;
-  this.referenceService.isUpdated = false;
+  this.referenceService.createdOrUpdatedSuccessMessage = "";
   this.message = "";
   $('#show_email_template_preivew').modal('hide');
   $('#email_spam_check').modal('hide');

@@ -3845,7 +3845,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	readExcludedUsersCSVFileContent(allTextLines: any, csvUserPagination: Pagination) {
 		this.customResponse = new CustomResponse();
-		this.csvExcludeUsersFilePreview = true;
 		for (var i = 1; i < allTextLines.length; i++) {
 			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
 				let user = new User();
@@ -3861,13 +3860,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.isListLoader = false;
 		if (this.excludedUsers.length === 0) {
 			this.customResponse = new CustomResponse('ERROR', "No users found.", true);
+			this.csvExcludeUsersFilePreview = false;
+		}else{
+		this.csvExcludeUsersFilePreview = true;
 		}
-
 	}
 
 	readExcludedDomainsCSVFileContent(allTextLines: any, csvDomainPagination: Pagination) {
 		this.excludeDomainCustomResponse = new CustomResponse
-		this.csvExcludeDomainsFilePreview = true;
 		for (var i = 1; i < allTextLines.length; i++) {
 			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
 				let domain = allTextLines[i][0].trim();
@@ -3882,6 +3882,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.isListLoader = false;
 		if (this.excludedDomains.length === 0) {
 			this.excludeDomainCustomResponse = new CustomResponse('ERROR', "No domains found.", true);
+			this.csvExcludeDomainsFilePreview = false;
+		}else{
+			this.csvExcludeDomainsFilePreview = true;
+
 		}
 
 	}
@@ -4400,8 +4404,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	shouldDisableCheckbox(index: number): boolean {
 		const selectedCount = this.pipeline.stages.filter(item => item.private).length;
-		const remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
-
+		let remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
+		if(this.pipeline.integrationType === "PIPEDRIVE" || this.pipeline.integrationType === "CONNECTWISE")
+		{
+			remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 2;
+		}
 		if (remainingUnselectedCount === 0 && !this.pipeline.stages[index].private) {
 			this.pipeline.stages[index].canDelete = false;
 		} else {

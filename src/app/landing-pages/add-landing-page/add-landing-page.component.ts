@@ -429,6 +429,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
         if (data.access) {
             if (isSaveAndRedirectButtonClicked) {
                 this.referenceService.isCreated = true;
+                this.referenceService.addCreateOrUpdateSuccessMessage("Page created successfully");
                 this.navigateToManageSection();
             } else {
                 this.ngxloading = true;
@@ -468,6 +469,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                 if (data.access) {
                     if (updateAndRedirectClicked) {
                         this.referenceService.isUpdated = true;
+                        this.referenceService.addCreateOrUpdateSuccessMessage("Page updated successfully");
                         this.navigateToManageSection();
                     } else {
                         this.customResponse = new CustomResponse('SUCCESS', "Page updated successfully", true);

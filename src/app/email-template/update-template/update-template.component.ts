@@ -48,6 +48,8 @@ export class UpdateTemplateComponent implements OnInit,ComponentCanDeactivate, O
     categoryId = 0;
     isUpdateButtonClicked = false;
     modulesDisplayType:ModulesDisplayType = new ModulesDisplayType();
+    viewType = "";
+    folderViewType = "";
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService,
             private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
             public authenticationService:AuthenticationService,public refService:ReferenceService,
@@ -207,7 +209,7 @@ export class UpdateTemplateComponent implements OnInit,ComponentCanDeactivate, O
                 this.refService.stopLoader(this.httpRequestLoader);
                 if(!isOnDestroy){
                     if(data.statusCode==703){
-                        this.refService.isUpdated = true;
+                        this.refService.addCreateOrUpdateSuccessMessage("Template updated successfully");
                         this.emailTemplateService.emailTemplate = new EmailTemplate();
                         this.navigateToManageSection();
                     }else{
@@ -216,7 +218,7 @@ export class UpdateTemplateComponent implements OnInit,ComponentCanDeactivate, O
                         this.videoTagsError = data.message;
                     }
                 }else{
-                    this.emailTemplateService.goToManage();
+                    this.navigateToManageSection();
                 }
             }else{
                 this.authenticationService.forceToLogout();
@@ -239,9 +241,9 @@ export class UpdateTemplateComponent implements OnInit,ComponentCanDeactivate, O
                     this.refService.stopLoader( this.httpRequestLoader );
                     if ( !isOnDestroy ) {
                         if ( data.statusCode == 8013 ) {
-                            this.refService.isUpdated = true;
+                            this.refService.addCreateOrUpdateSuccessMessage("Template updated successfully");
                             this.emailTemplateService.emailTemplate = new EmailTemplate();
-                           this.navigateToManageSection();
+                            this.navigateToManageSection();
                         } else {
                             this.clickedButtonName = "";
                             this.isVideoTagError = true;
@@ -286,7 +288,9 @@ export class UpdateTemplateComponent implements OnInit,ComponentCanDeactivate, O
       return body;
     }
     ngOnInit() {
-       
+        this.categoryId = this.route.snapshot.params['categoryId'];
+        this.viewType = this.route.snapshot.params['viewType'];
+        this.folderViewType = this.route.snapshot.params['folderViewType'];
     }
 
 
@@ -339,15 +343,13 @@ export class UpdateTemplateComponent implements OnInit,ComponentCanDeactivate, O
         this.model.categoryId = event;
     }
 
-    navigateToManageSection(){
-        let viewType = this.route.snapshot.params['viewType'];
-        let folderViewType = this.route.snapshot.params['folderViewType'];
+    navigateToManageSection() {
         this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);
-        if(viewType==undefined){
-            viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
+        if(this.viewType==undefined){
+            this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
         }
-        this.refService.navigateToManageEmailTemplatesByViewType(folderViewType,viewType,this.categoryId);
-      }
+        this.refService.navigateToManageEmailTemplatesByViewType(this.folderViewType,this.viewType,this.categoryId);
+    }
 
       @HostListener('window:beforeunload')
       canDeactivate(): Observable<boolean> | boolean {

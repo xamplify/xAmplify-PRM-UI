@@ -390,6 +390,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                     if (data.statusCode == 702) {   
                         if(saveAsOrSaveAndRedirectClicked){
                             this.refService.isCreated = true;
+                            this.refService.addCreateOrUpdateSuccessMessage("Template created successfully");
                             this.navigateToManageSection();
                         }else{
                             let createdEmailTemplateId = data.data;
@@ -448,6 +449,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                     if (data.statusCode == 702 || data.statusCode == 703) {
                         if(isUpdateAndRedirect){
                             this.refService.isUpdated = true;
+                            this.refService.addCreateOrUpdateSuccessMessage("Template updated successfully");
                             this.navigateToManageSection();
                         }else{
                             this.customResponse = new CustomResponse('SUCCESS', "Template updated successfully", true);

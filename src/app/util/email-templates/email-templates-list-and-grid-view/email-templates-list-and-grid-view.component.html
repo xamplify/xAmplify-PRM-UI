@@ -1,5 +1,6 @@
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div [className]="folderListView ? 'message-class-folder-list':'message-class'">
+
+<div  [className]="folderListView ? 'message-class-folder-list':'message-class'">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
 <div class="row">
