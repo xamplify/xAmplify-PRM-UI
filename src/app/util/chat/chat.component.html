@@ -11,7 +11,21 @@
             <a class="avatar none">
                 <img src="{{c?.commentedByImage}}" width="35" alt="Profile Avatar" title="{{c.commentedByFullName}}" />
             </a>
-            <p class="comment-color">{{c?.comment}}</p>
+            <div style="color: #06c306;" class="col-lg-6 col-md-6 col-sm-6 col-xs-6"  *ngIf="c?.activityType == 'LEAD_APPROVED'" translate>
+                <button class="approvedbtn">
+                <i class="fa fa-check-circle mr5" aria-hidden="true"></i>
+                Approved
+            </button>
+                <p class="comment-color" style="width: 100%;color: #60686d;">{{c?.comment}}</p>
+            </div>
+            <div style="color: #f71111;" class="col-lg-6 col-md-6 col-sm-6 col-xs-6" *ngIf="c?.activityType == 'LEAD_REJECTED'" translate>
+                <button class="approvedbtn">
+                <i class="fa fa-times-circle mr5" aria-hidden="true"></i>
+                Rejected
+            </button>
+            <p class="comment-color" style="width: 100%;color: #60686d;">{{c?.comment}}</p>
+            </div>
+            <p *ngIf="c?.activityType == undefined" class="comment-color">{{c?.comment}}</p>
         </li>
     </ul>
 </div>

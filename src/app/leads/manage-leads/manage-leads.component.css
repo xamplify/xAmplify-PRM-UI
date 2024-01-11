@@ -148,3 +148,15 @@ select.form-control.select-width.FilerFormWidth {
   width: 184px;
   height: 32px;
 }
+
+.form-group.textareaStyles textarea{
+  color: #444;
+  border-radius: 3px;
+  border: 1px solid #cecece;
+  background-color: #fefefe;
+  box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.06);
+  overflow: auto;
+  width: 100%;
+  padding: 15px 15px;
+  margin: 10px 0px;
+}

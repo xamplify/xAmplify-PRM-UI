@@ -19,6 +19,7 @@ import { Lead } from '../models/lead';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { DealComments } from 'app/deal-registration/models/deal-comments';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -1230,11 +1231,24 @@ export class ManageLeadsComponent implements OnInit {
 
   /*********XNFR-426-start-sai******/
   leadApproveReject(lead:Lead , leadNotes:string){
+    let comment = new DealComments(); 
+    comment.comment = "Notes: "+leadNotes;
+    comment.userId = this.loggedInUserId;
+    comment.leadId = lead.id;
+    if(this.leadApproveRejectType == "APPROVED"){
+      comment.activityType = "LEAD_APPROVED";
+    }else{
+      comment.activityType = "LEAD_REJECTED";
+    }
+
     lead.leadNotes = leadNotes;
     lead.userId = this.loggedInUserId;
     lead.leadApproveRejectType = this.leadApproveRejectType;
 
-    this.leadsService.leadApproveReject(lead).subscribe();
+    this.leadsService.leadApproveReject(lead).subscribe(response => {
+      this.leadApproveRejectType = "";
+    });
+    this.leadsService.saveComment(comment).subscribe();
   }
 
   addNotesModel(lead:Lead , leadApproveRejectType:string){
