@@ -385,10 +385,10 @@
                                     <br><br>
                                     <div class="div thembgc">
                                         <div class="row">
-                                            <div class="themePaddings"
-                                                [ngClass]="dto?.id == 3 ? '':'col-lg-6 col-md-6 col-sm-6'"
+                                            <div class="themePaddings col-lg-6 col-md-6 col-sm-6"
                                                 *ngFor="let dto of defaultThemes">
-                                                <div *ngIf="dto?.id == 1 || dto?.id == 2 || dto?.id == 4">
+                                                <div
+                                                    *ngIf="dto?.id == 1 || dto?.id == 2 || dto?.id == 4 || dto?.id == 3">
                                                     <!-- <div class="img_padding">
 
                                                         <img *ngIf="dto?.id == 1 " alt="" class="img-custome"
@@ -407,10 +407,15 @@
                                                             <img *ngIf="dto?.id == 2 " alt="" class="img-custome"
                                                                 src="assets/images/theme/Final/dark-theme.webp">
                                                         </div>
-                                                        <div class=">neumorphismDarkTheme">
+                                                        <div class="neumorphismDarkTheme">
                                                             <img *ngIf="dto?.id == 4 " alt=""
                                                                 class="img-custome img-height"
                                                                 src="assets/images/theme/Final/beta-neumorphism.webp">
+                                                        </div>
+                                                        <div class="neumorphismLightTheme">
+                                                            <img *ngIf="dto?.id == 3" alt=""
+                                                                class="img-custome img-height"
+                                                                src="assets/images/theme/Final/light-theme.webp">
                                                         </div>
                                                     </div>
                                                     <div class="card-bg topcard-padding">
@@ -423,8 +428,14 @@
                                                                 *ngIf="dto.name === 'Neumorphism Dark(Beta)'">
                                                                 Neumorphism Dark</h5>
                                                             <h5 class="card-title themefont"
-                                                                *ngIf="dto.name != 'Neumorphism Dark(Beta)'">
+                                                                *ngIf="dto.name === 'Neumorphism Light'">
+                                                                Neumorphism Light</h5>
+                                                            <h5 class="card-title themefont"
+                                                                *ngIf="dto.name != 'Neumorphism Dark(Beta)' && dto.name != 'Neumorphism Light'">
                                                                 {{dto?.name}} Theme</h5>
+                                                            <!-- <h5 class="card-title themefont"
+                                                                *ngIf="dto.name != 'Neumorphism Light'">
+                                                                {{dto?.name}} Theme</h5> -->
                                                             <!-- responsive-alignment -->
                                                             <td
                                                                 class="mAlignView responsive-alignment centerAlignPropertyIcon">
@@ -452,7 +463,8 @@
                                                                             class="mMobileDisable custom-icon"
                                                                             title="Copy"
                                                                             (click)="goToCustomThemes();showDto(dto);saveTheme();"
-                                                                            *ngIf="dto?.id != 4"><i aria-hidden="true"
+                                                                            *ngIf="dto?.id != 4 && dto?.id != 3"><i
+                                                                                aria-hidden="true"
                                                                                 class="fa fa-files-o mDisableColor IconCustomization"></i>
                                                                             <div class="clickicons"></div>
                                                                         </a>
@@ -2457,8 +2469,7 @@
                                                                 style="margin-top:10px;"
                                                                 *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
-                                                                <button
-                                                                    class="button bgcolor-unset mrgn_lft0 p0 px-9"
+                                                                <button class="button bgcolor-unset mrgn_lft0 p0 px-9"
                                                                     [disabled]="csvExcludeUsersFilePreview"
                                                                     (click)="addContactModalOpen()" translate>
                                                                     <span
@@ -2707,8 +2718,7 @@
                                                                 </button>
 
                                                                 <button id="uploadCSV"
-                                                                    class="button bgcolor-unset p0 px-9"
-                                                                    translate>
+                                                                    class="button bgcolor-unset p0 px-9" translate>
                                                                     <span class="btn Btn-Green transition txt_pd-top3">
                                                                         <span style="text-align: center"
                                                                             translate>Upload

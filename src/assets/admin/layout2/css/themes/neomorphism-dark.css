@@ -1373,7 +1373,7 @@ ul.alt-row-style1 li:nth-child(even) {
   font-size: 13px;
 }
 .img-class {
-  border: 1px solid #2f4857 !important;
+  border: 1px solid #191b1e !important;
 }
 .border-card,
 .videoViews,
@@ -3258,7 +3258,7 @@ legend.scheduler-border{
 .page-bar.remove_cardBgcolor,
 .portlet.light.remove_cardBgcolor,
 .remove_shadow_bgcolor,
-.tabbable-custom > .tab-content.remove_cardBgcolor {
+.tabbable-custom > .tab-content.remove_cardBgcolor{
   box-shadow: none !important;
   background: none !important;
 }
@@ -3691,4 +3691,22 @@ a.Iconhover.custom-grid-icon.icon_margin{
 .pl-5{
   padding-left: 10px!important;
 }
-
+.pd_lft4{
+  padding-left: 4px !important;
+}
+/* Sudha Sri(9-1-2024) Partner stat card alignments */
+.partner_stat_card_hgt{
+  min-height: 510px !important;
+}
+.pd_lft20{
+  padding-left: 20px;
+}
+.pd_rgt20{
+  margin-right: 20px;
+}
+.portlet.light.block.box_shadow.checked {
+  box-shadow: inset 2px 2px 5px #000,inset -3px -3px 7px #3b4451!important;
+}
+.portlet.light.block.box_shadow.checked:hover{
+  animation: shaking .4s ease-in-out;
+}

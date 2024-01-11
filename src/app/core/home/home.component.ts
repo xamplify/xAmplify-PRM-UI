@@ -408,6 +408,7 @@ export class HomeComponent implements OnInit {
           }
           else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Neumorphism Light" && !this.router.url.includes('home/help')) {
+            this.authenticationService.isDarkForCharts = false;
             require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-light.css");
           }
           else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && !this.router.url.includes('home/help')) {

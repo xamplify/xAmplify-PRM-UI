@@ -1076,7 +1076,7 @@
                         <app-list-loader *ngIf="contactsByType?.isLoading"></app-list-loader>
                         <div class="portlet" *ngIf="contactsByType.contacts?.length > 0">
                            <div class="portlet-title pb_8 pb_4" style="border:none; margin-top: 10px;">
-                              <div class="caption">
+                              <div class="caption pd_lft4">
                                  <i class="fa fa-edit" style="font-size: 18px" aria-hidden="true"></i>
                                  <span class="capitalize" *ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active'
                                                             && contactsByType.selectedCategory !='invalid'" translate>
@@ -1652,10 +1652,11 @@
             <!-- end  -->
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn Btn-Gray btn-hvr-text" data-dismiss="modal" translate>Close</button>
+            <button type="button" class="btn Btn-Gray btn-hvr-text neg_mrg_top4" data-dismiss="modal"
+               translate>Close</button>
             <button type="button" class="button_blue bgcolor-unset button_height" (click)="hasSaveAsAccess()"
                [disabled]="assignLeads && disableSave" translate><span
-                  class="btn btn-primary transition unsubsribe_text">Save
+                  class="btn btn-primary transition unsubsribe_text txt_pd-top3">Save
                   changes</span></button>
          </div>
       </div>

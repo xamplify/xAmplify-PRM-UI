@@ -2927,3 +2927,17 @@ span.btn.Btn-Green.transition.secondary_btn_width{
 .pl-5{
   padding-left: 5px!important;
 }
+/* Sudha Sri(9-1-2024) Partner stat card alignments */
+.partner_stat_card_hgt{
+  min-height: 545px;margin-bottom: 20px;
+}
+/* Sudha Sri(10-1-2024) */
+.team_green_btn_text{
+  text-align: center;
+   font-size:14px;
+   color: #fff;
+}
+.team_blue_btn_text{
+  font-size:14px;
+  color: #fff;
+}
