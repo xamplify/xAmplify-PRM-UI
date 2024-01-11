@@ -389,7 +389,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 if (data.access) {
                     if (data.statusCode == 702) {   
                         if(saveAsOrSaveAndRedirectClicked){
-                            this.refService.isCreated = true;
                             this.refService.addCreateOrUpdateSuccessMessage("Template created successfully");
                             this.navigateToManageSection();
                         }else{
@@ -448,7 +447,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 if (data.access) {
                     if (data.statusCode == 702 || data.statusCode == 703) {
                         if(isUpdateAndRedirect){
-                            this.refService.isUpdated = true;
                             this.refService.addCreateOrUpdateSuccessMessage("Template updated successfully");
                             this.navigateToManageSection();
                         }else{
@@ -477,10 +475,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     }
 
     navigateToManageSection() {
-        this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);
-        if(this.viewType==undefined){
-            this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
-        }
         this.refService.navigateToManageEmailTemplatesByViewType(this.folderViewType,this.viewType,this.categoryId);
     }
 

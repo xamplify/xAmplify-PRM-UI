@@ -70,6 +70,8 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
   roles:Roles = new Roles();
  /*  XNFR-431 */
   @ViewChild("copyModalPopupComponent") copyModalPopupComponent:CopyModalPopupComponent;
+  refreshFolderListView = false;
+  updatedItemsCount = 0;
   constructor(
     private emailTemplateService: EmailTemplateService,
     private router: Router,
@@ -184,14 +186,13 @@ export class EmailTemplatesListAndGridViewComponent implements OnInit,OnDestroy 
         (data: any) => {
           pagination.totalRecords = data.totalRecords;
           this.sortOption.totalRecords = data.totalRecords;
-          pagination = this.pagerService.getPagedItems(
-            pagination,
-            data.emailTemplates
-          );
+          pagination = this.pagerService.getPagedItems(pagination,data.emailTemplates);
           this.referenceService.loading(this.httpRequestLoader, false);
         },
         (error: string) => {
           this.logger.errorPage(error);
+        },()=>{
+          this.callFolderListViewEmitter();
         }
       );
   }
@@ -341,6 +342,7 @@ confirmDeleteEmailTemplate(id: number, name: string) {
 }
 
 deleteEmailTemplate(id: number, name: string) {
+  this.refreshFolderListView = false;
   this.customResponse = new CustomResponse();
   this.referenceService.loading(this.httpRequestLoader, true);
   this.referenceService.goToTop();
@@ -356,9 +358,7 @@ deleteEmailTemplate(id: number, name: string) {
             this.customResponse = new CustomResponse('SUCCESS', this.selectedEmailTemplateName, true);
             this.isEmailTemplateDeleted = true;
             this.isCampaignEmailTemplate = false;
-            this.pagination.pageIndex = 1;
-            this.findEmailTemplates(this.pagination);
-            this.callFolderListViewEmitter();
+            this.findEmailTemplatesWithPageIndexOne();
           } else {
             this.isEmailTemplateDeleted = false;
             this.isCampaignEmailTemplate = true;
@@ -522,8 +522,7 @@ copyModalPopupOutputReceiver(copyDto:CopyDto){
       if (data.access) {
         if (data.statusCode == 702) {   
             this.copyModalPopupComponent.showSweetAlertSuccessMessage("Template Copied Successfully");
-            this.pagination.pageIndex = 1;
-            this.findEmailTemplates(this.pagination);
+            this.findEmailTemplatesWithPageIndexOne();
         }else if(data.statusCode==500){
             this.copyModalPopupComponent.showErrorMessage(data.message);
         }
@@ -539,6 +538,11 @@ copyModalPopupOutputReceiver(copyDto:CopyDto){
 
 }
 
+
+  private findEmailTemplatesWithPageIndexOne() {
+    this.pagination.pageIndex = 1;
+    this.findEmailTemplates(this.pagination);
+  }
 }
 
 
