@@ -10,6 +10,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { CustomResponse } from '../../common/models/custom-response';
+import { SearchableDropdownDto } from 'app/core/models/searchable-dropdown-dto';
 
 declare var $: any;
 
@@ -53,6 +54,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     showModulesPopup = false;
     teamMemberGroupId = 0;
     showTeamMembers = false;
+    /****XNFR-427******/
+    searchableDropDownDto: SearchableDropdownDto = new SearchableDropdownDto();
     /****XNFR-98******/
     @Input() isTeamMemberPartnerList:boolean;
     @Input() partnerListId : number;
@@ -79,7 +82,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
           this.checkingContactTypeName = this.authenticationService.partnerModule.customName;
         
       }
-
+      this.contactDetails
     }
 
     addContactModalClose() {
@@ -231,12 +234,13 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         
     }
 
-    contactCompanyChecking( contactCompany: string ) {
-        if ( contactCompany.trim() != '' ) {
+    contactCompanyChecking( event:any ) {
+        if ( event['name'].trim() != '' ) {
             this.isCompanyDetails = true;
         } else {
             this.isCompanyDetails = false;
         }
+        this.searchableDropdownEventReceiver(event);
     }
 
     validteContactsCount(contactsLimit:number){
@@ -253,6 +257,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.addContactuser.userId = this.contactDetails.id;
             this.addContactuser.firstName = this.contactDetails.firstName;
             this.addContactuser.lastName = this.contactDetails.lastName;
+            this.addContactuser.contactCompanyId = this.contactDetails.contactCompanyId;
             this.addContactuser.contactCompany = this.contactDetails.contactCompany;
             this.addContactuser.jobTitle = this.contactDetails.jobTitle;
             this.addContactuser.emailId = this.contactDetails.emailId;
@@ -297,6 +302,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
             this.gdprStatus = this.gdprInput.gdprStatus;
         }
+        this.getActiveCompanies();
         /*****XNFR-98*****/
         if(this.isTeamMemberPartnerList==undefined){
             this.isTeamMemberPartnerList = false;
@@ -409,5 +415,20 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
 			this.logger.error(error, "AddContactModalComponent", "validating Partners");
 		}
 	}
+
+    getActiveCompanies() {
+        this.contactService.getCompaniesForDropdown().subscribe(result => {
+            this.searchableDropDownDto.data = result.data;
+            this.searchableDropDownDto.placeHolder = "Please Select Company";
+          }
+        , error => {
+            console.log("error")
+        }); 
+    }
+
+    searchableDropdownEventReceiver(event: any) {
+        this.addContactuser.contactCompanyId = event['id'];
+        this.addContactuser.contactCompany = event['name']
+    }
 
 }

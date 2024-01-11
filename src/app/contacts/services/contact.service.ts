@@ -46,6 +46,7 @@ export class ContactService {
 
 
     url = this.authenticationService.REST_URL + "admin/";
+    companyUrl = this.authenticationService.REST_URL + "companies/"
     contactsUrl = this.authenticationService.REST_URL + "userlists/";
     googleContactsUrl = this.authenticationService.REST_URL + 'googleOauth/';
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
@@ -852,5 +853,12 @@ export class ContactService {
         return this._http.post(this.contactsUrl + "excluded-user-make-as-valid"+  "/" + this.authenticationService.getUserId()+ "?access_token=" + this.authenticationService.access_token, object)
         .map(this.extractData)
         .catch(this.handleError);
+    }
+
+    getCompaniesForDropdown() {
+        var url = this.companyUrl + "list"+ "/" +this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token;
+        return this._http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 }

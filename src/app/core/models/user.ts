@@ -10,6 +10,7 @@ export class User {
     middleName:string;
     fullName: string;
     contactCompany: string;
+    contactCompanyId: number;
     jobTitle: string;
     emailId: string;
     address: string;
