@@ -1749,3 +1749,12 @@ div.switch5 > input.switch:focus ~ label:before {
 .design_padding{
   padding-top: 0px !important;
 }
+
+/* XNFR-433 */
+.margin-rgt-5 {
+  margin-right: 5px;
+}
+
+.margin-top-5 {
+  margin-top: 5px;
+}
