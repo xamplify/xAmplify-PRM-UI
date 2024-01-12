@@ -385,4 +385,11 @@ export class FormsListViewUtilComponent implements OnInit,OnDestroy {
         this.pagination.pageIndex = 1;
         this.listForms(this.pagination);
       }
+
+      /***XNFR-433***/
+      copyForm(id: number) {
+        this.formService.isCopyForm = true;
+        this.formService.formId = id;
+        this.router.navigate(["/home/forms/add"]);
+    }
 }

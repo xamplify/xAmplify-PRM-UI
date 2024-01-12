@@ -189,6 +189,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     isTableLoaded: boolean = true;
     /***XNFR-423***/
     countryNames = [];
+    /***XNFR-433***/
+    @Input() isCopyForm: boolean = false;
 
     constructor(public regularExpressions: RegularExpressions, public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
         public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
@@ -214,24 +216,31 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.isCreateDefaultForm = this.loggedInAsSuperAdmin && (this.selectedDefaultFormId == undefined || this.selectedDefaultFormId < 1) && this.selectedForm === undefined;
-        if (this.selectedForm === undefined) {
+        if (this.selectedForm === undefined && !this.isCopyForm) {
             if (this.router.url.indexOf("/home/forms/edit") > -1) {
                 this.navigateToManageSection();
             }
         }
-        if (this.selectedForm !== undefined) {
+        if (this.selectedForm !== undefined && !this.isCopyForm) {
             this.isAdd = false;
             this.formTitle = "Edit Form Details";
             this.buttonName = "Update";
             this.existingFormName = this.selectedForm.name.toLowerCase();
             this.form = this.selectedForm;
             this.setExistingFormData();
-        } else if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0) {
+        } else if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0 && !this.isCopyForm) {
             this.isAdd = true;
             this.isHideFormInfo = true;
             $('#add-form-name-modal').modal('show');
             this.getById(this.selectedDefaultFormId);
-        } else {
+        } else if (this.isCopyForm){
+            this.isAdd = true;
+            this.isHideFormInfo = true;
+            this.isSaveAs = true;
+            this.ngxloading = true;
+            this.getById(this.selectedDefaultFormId);
+            $('#add-form-name-modal').modal('show');
+        }else {
             this.listDefaultColumns();
             this.highlightByLength(1);
         }
@@ -284,8 +293,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                 if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0) {
                     this.validateFormNames(this.form.name);
                 }
-                this.ngxloading = false;
                 $('#add-form-name-modal').modal('show');
+                this.ngxloading = false;
             },
             error => {
                 if (this.selectedDefaultFormId !== undefined && this.selectedDefaultFormId > 0) {
@@ -379,6 +388,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                             this.getCompanyLogo();
                             this.form.id = null;
                         }
+                        if (this.isCopyForm) {
+                            this.form.name = this.form.name + '-copy';
+                        }
                     } else {
                         this.ngxloading = false;
                         swal("Please Contact Admin!", data.message, "error");
@@ -408,7 +420,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
             (data: any) => {
                 this.categoryNames = data.data;
                 let categoryIds = this.categoryNames.map(function (a: any) { return a.id; });
-                if (this.isAdd) {
+                if (this.isAdd && !this.isCopyForm) {
                     //this.form.categoryId = categoryIds[0];
                     this.selectCategory(categoryIds[0]);
                 }
@@ -481,15 +493,20 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     }
 
     unBlurDiv() {
-        this.isHideFormInfo = false;
         $('#add-form-parent-div').removeClass(this.portletBodyBlur);
         $('#add-form-parent-div').addClass(this.portletBody);
-        $('#add-form-name-modal').modal('hide');
-        $('#add-form-designs').modal('hide');
 
         if (this.isCreateDefaultForm && this.form.isSurvey) {
             this.form.formSubType = FormSubType.SURVEY;
             this.showQuizField = false;
+        }
+        /***XNFR-433***/
+        if (this.isCopyForm) {
+            this.validateForm();
+        } else {
+            this.isHideFormInfo = false;
+            $('#add-form-name-modal').modal('hide');
+            $('#add-form-designs').modal('hide');
         }
     }
     showAddForm() {
@@ -1057,17 +1074,17 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         } else {
             this.form.formSubType = FormSubType.REGULAR;
         }
-        let self = this;
-        htmlToImage.toBlob(document.getElementById('create-from-div'))
-            .then(function (blob) {
-                self.form.saveAs = self.isSaveAs;
-                console.log(blob);
-                if (self.isAdd || self.isSaveAs) {
-                    self.save(self.form);
-                } else {
-                    self.update(self.form);
-                }
-            });
+        /***XNFR-433***/
+        if (this.isCopyForm) {
+            this.callSaveOrUpdateAPI();
+        } else {
+            let self = this;
+            htmlToImage.toBlob(document.getElementById('create-from-div'))
+                .then(function (blob) {
+                    self.thumbnailFileObj = self.utilService.blobToFile(blob);
+                    self.callSaveOrUpdateAPI();
+                });
+        }
 
         // const content = document.getElementById('create-from-div');
         // htmlToImage.toCanvas(content)
@@ -1212,7 +1229,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         if (this.isMdfForm) {
             this.referenceService.goToRouter("/home/mdf/details");
         } else {
-            if (this.isAdd) {
+            if (this.isAdd && !this.isCopyForm) {
                 this.router.navigate(["/home/forms/select"]);
             } else {
                 this.navigateToManageSection();
@@ -1875,5 +1892,15 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                     this.logger.error("Error In Getting Country Names");
                     this.ngxloading = false;
                 });
+    }
+
+    /***XNFR-433***/
+    callSaveOrUpdateAPI() {
+        this.form.saveAs = this.isSaveAs;
+        if (this.isAdd || this.isSaveAs) {
+            this.save(this.form);
+        } else {
+            this.update(this.form);
+        }
     }
 }

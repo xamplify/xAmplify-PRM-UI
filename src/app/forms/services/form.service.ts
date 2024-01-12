@@ -19,6 +19,8 @@ export class FormService {
     URL = this.authenticationService.REST_URL + "form/";
     form: Form;
     formId: number;
+    /***XNFR-433***/
+    isCopyForm: boolean = false;
 
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger ) { }
 
