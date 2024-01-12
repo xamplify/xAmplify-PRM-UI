@@ -1,0 +1,41 @@
+.button::before {
+    background:  linear-gradient(87deg, #00ED95 0%, #00ACEC 100%) !important;
+    /* box-shadow: none !important; */
+    /* box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important; */
+}
+button.invite_vendor_radius,
+button.analytics_icon_radius{
+    box-shadow: none !important;
+    /* background-image: linear-gradient( 359deg, rgba(150, 93, 233, 1) 10.8%, rgba(99, 88, 238, 1) 94.3% ) !important; */
+    background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+}
+button.btn.custom {
+    box-shadow: none !important;
+    /* background-image: linear-gradient( 359deg, rgba(150, 93, 233, 1) 10.8%, rgba(99, 88, 238, 1) 94.3% ) !important; */
+    background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+  }
+  .btn-group button:hover,
+button.btn.custom:hover{
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+span.btn.Btn-Green.transition {
+    box-shadow: none !important;
+}
+.p-rgt_p-top.bgcolor-unset {
+  background: none !important;
+}
+/**** tharak(12-01-2024) *********/
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a > i, 
+.page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active.open > a > i,
+.page-sidebar .page-sidebar-menu > li.active > a > i, 
+.page-sidebar .page-sidebar-menu > li.active.open > a > i {
+  color: #04afff !important;
+}
+.help-iconbgadd.selectRecord {
+  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+}
+.help-iconbgadd.selectRecord:hover {
+  background: linear-gradient(360deg, rgb(1 180 255)  0%, rgb(53 58 241) 100%) !important;
+}
+/**** tharak(12-01-2024) *********/
