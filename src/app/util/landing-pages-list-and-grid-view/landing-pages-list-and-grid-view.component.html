@@ -323,7 +323,7 @@
 
                             <div class="portlet-input input-inline input-small" style="width: 198px !important;">
                                 <div class="input-icon right" style="position: relative;right: -5px;">
-                                    <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a page" (keypress)="eventHandler($event.keyCode)">
+                                    <input type="text" autocomplete="off" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a page" (keypress)="eventHandler($event.keyCode)">
                                     <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchLandingPages();"></button>
                                     <button type="submit" class="search-box-item-click" (click)="searchLandingPages()"><i class="fa fa-search" aria-hidden="true"></i></button>
                                 </div>
@@ -339,7 +339,7 @@
     <!--Icons-->
     <!--Copy-->
     <ng-template #copyIcon let-landingPage="landingPage">
-        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage && isLocalHost" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copy(landingPage)">
+        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copy(landingPage)">
             <i class="fa fa-files-o"  [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"  aria-hidden="true"></i>
         <div class="clickicons"></div>
         </a>
