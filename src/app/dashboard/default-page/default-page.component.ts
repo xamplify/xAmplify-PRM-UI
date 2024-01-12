@@ -128,7 +128,7 @@ export class DefaultPageComponent implements OnInit {
         this.dashBoardService.getDefaultDashboardPageForPartner(this.vanityLoginDto)
             .subscribe(
                 data => {
-                    if (data.statusCode == 200 && data.data.length > 0) {
+                    if (data.statusCode == 200 && data.data !== undefined) {
                         this.getAssignedDashboardTypeForPartner = data.data;
                         this.assignedDashboardType = this.getAssignedDashboardTypeForPartner;
                         if (this.getAssignedDashboardTypeForPartner === 'WELCOME') {
@@ -138,10 +138,10 @@ export class DefaultPageComponent implements OnInit {
                             this.goToDashBoard();
                         }
                         else {
-                            this.goToWelcomePage();
+                            this.getDefaultPage(this.loggedInUserId);
                         }
                     } else {
-                        this.getDefaultPage(this.loggedInUserId);
+                        this.goToWelcomePage();
                     }
                 },
                 error => {
