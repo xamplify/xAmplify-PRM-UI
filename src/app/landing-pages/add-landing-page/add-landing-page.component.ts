@@ -428,7 +428,6 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     goToManageAfterSave(data:any, isSaveAndRedirectButtonClicked:boolean) {
         if (data.access) {
             if (isSaveAndRedirectButtonClicked) {
-                this.referenceService.isCreated = true;
                 this.referenceService.addCreateOrUpdateSuccessMessage("Page created successfully");
                 this.navigateToManageSection();
             } else {
@@ -468,7 +467,6 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                 $("#bee-save-buton-loader").removeClass("button-loader"); 
                 if (data.access) {
                     if (updateAndRedirectClicked) {
-                        this.referenceService.isUpdated = true;
                         this.referenceService.addCreateOrUpdateSuccessMessage("Page updated successfully");
                         this.navigateToManageSection();
                     } else {

@@ -290,6 +290,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 			this.stopLoaders();
 		}, error => {
 			this.stopLoadersAndShowError(error);
+		},()=>{
+			this.callFolderListViewEmitter();
 		});
 	}
 
@@ -605,7 +607,6 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 				this.findFileTypes();
 			}
 			this.listAssets(this.pagination);
-			this.callFolderListViewEmitter();
 		} else if (response.statusCode == 401) {
 			this.customResponse = new CustomResponse('ERROR', response.message, true);
 		}

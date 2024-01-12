@@ -55,7 +55,6 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
   modulesDisplayType = new ModulesDisplayType();
   @Input() folderListViewCategoryId:any;
-  @Output() updatedItemsCountEmitter = new EventEmitter();
   @Input() folderListViewExpanded = false;
   folderListView = false;
   viewType: string;
@@ -65,6 +64,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   /*  XNFR-432 */
   @ViewChild("copyModalPopupComponent") copyModalPopupComponent:CopyModalPopupComponent;
   isLocalHost = false;
+  @Output() updatedItemsCountEmitter = new EventEmitter();
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
@@ -75,13 +75,6 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.renderer = this.renderer;
         this.pagination.userId = this.loggedInUserId;
-        if (this.referenceService.isCreated) {
-            this.message = "Page created successfully";
-            this.showMessageOnTop(this.message);
-        } else if (this.referenceService.isUpdated) {
-            this.message = "Page updated successfully";
-            this.showMessageOnTop(this.message);
-        }
         this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
   }
 
@@ -97,7 +90,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
     this.mergeTagForGuide = this.isPartnerLandingPage ? 'accessing_shared_pages':'manage_pages';
     this.sefDefaultViewType();
     this.listLandingPages(this.pagination);
-    
+    this.showMessageOnTop();
 }
 
   private sefDefaultViewType() {
@@ -125,6 +118,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
         }
         }
     }
+    
   }
 
 
@@ -172,7 +166,11 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
               }
               this.referenceService.loading(this.httpRequestLoader, false);
           },
-          (error: any) => { this.logger.errorPage(error); });
+          (error: any) => { 
+            this.logger.errorPage(error); 
+        },()=>{
+            this.callFolderListViewEmitter();
+        });
   }
 
 
@@ -202,6 +200,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   }
 
   getAllFilteredResults(pagination: Pagination) {
+     this.customResponse = new CustomResponse();
       this.pagination.pageIndex = 1;
       this.pagination.searchKey = this.sortOption.searchKey;
       this.pagination = this.utilService.sortOptionValues(this.sortOption.formsSortOption, this.pagination);
@@ -209,9 +208,13 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   }
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchLandingPages(); } }
   /********************Pagaination&Search Code*****************/
-  showMessageOnTop(message) {
+  showMessageOnTop() {
+    let message = this.referenceService.createdOrUpdatedSuccessMessage;
+    if (message.length > 0 && !this.folderListViewExpanded) {
       $(window).scrollTop(0);
-      this.customResponse = new CustomResponse('SUCCESS', message, true);
+      this.customResponse = new CustomResponse("SUCCESS", message, true);
+    }
+    
   }
 
   /***********Preview Page*********************/
@@ -262,6 +265,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 
 
   deleteById(landingPage: LandingPage) {
+      this.customResponse = new CustomResponse();
       this.referenceService.loading(this.httpRequestLoader, true);
       this.referenceService.goToTop();
       this.landingPageService.deletebById(landingPage.id)
@@ -271,14 +275,13 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
                       if (response.statusCode == 200) {
                           let message = landingPage.name + " deleted successfully";
                           this.customResponse = new CustomResponse('SUCCESS', message, true);
-                          this.pagination.pageIndex = 1;
-                          this.listLandingPages(this.pagination);
+                          this.findLandingPagesWithPageIndexOne();
                       } else {
-                          let campaignNames = "";
-                          $.each(response.data, function (index, value) {
-                              campaignNames += (index + 1) + ". " + value + "\n\n";
+                          let pageNames = "";
+                          $.each(response.data, function (index:number, value:any) {
+                              pageNames += (index + 1) + ". " + value + "\n\n";
                           });
-                          let message = response.message + "\n\n" + campaignNames;
+                          let message = response.message + "\n\n" + pageNames;
                           this.customResponse = new CustomResponse('ERROR', message, true);
                           this.referenceService.loading(this.httpRequestLoader, false);
                       }
@@ -294,6 +297,11 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
               }
           );
   }
+
+    private findLandingPagesWithPageIndexOne() {
+        this.pagination.pageIndex = 1;
+        this.listLandingPages(this.pagination);
+    }
 
   /*****Show Landing Page Embed Link/Preview Page */
   showPageLinkPopup(landingPage: LandingPage) {
@@ -344,11 +352,18 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   }
 
 
+  callFolderListViewEmitter(){
+    if(this.folderListView){
+        this.exportObject['categoryId'] = this.categoryId;
+        this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+        this.updatedItemsCountEmitter.emit(this.exportObject);
+    }
+  }
+
 
 
   ngOnDestroy() {
-      this.referenceService.isCreated = false;
-      this.referenceService.isUpdated = false;
+      this.referenceService.createdOrUpdatedSuccessMessage = "";
       this.message = "";
       this.landingPage = new LandingPage();
       $('#landing-page-url-modal').modal('hide');
@@ -402,8 +417,7 @@ copy(landingPage:any){
       data=>{
         if (data.access) {
             this.copyModalPopupComponent.showSweetAlertSuccessMessage(data.message);
-            this.pagination.pageIndex = 1;
-            this.listLandingPages(this.pagination);
+            this.findLandingPagesWithPageIndexOne();
         }else{
           this.referenceService.closeModalPopup("copy-modal-popup");
           this.authenticationService.forceToLogout();
@@ -412,10 +426,7 @@ copy(landingPage:any){
         this.copyModalPopupComponent.showErrorMessage(this.properties.serverErrorMessage);
       }
     );
-    
-  
   }
 
- 
-
+    
 }

@@ -191,8 +191,8 @@
                     <!---Pagination-->
                 </div>
                  <!--Folder List View / Folder Grid View -->
-                <div *ngIf="modulesDisplayType?.isFolderGridView || modulesDisplayType?.isFolderListView">
-                    <app-folder-type-view-util [moduleId]="roles?.landingPageId" [modulesDisplayType]="modulesDisplayType"></app-folder-type-view-util>
+                <div *ngIf="modulesDisplayType?.isFolderGridView || modulesDisplayType?.isFolderListView || refreshFolderListView">
+                    <app-folder-type-view-util [moduleId]="roles?.landingPageId" [modulesDisplayType]="modulesDisplayType" ></app-folder-type-view-util>
                 </div>
             </div>
             <!-- END PAGE CONTENT-->

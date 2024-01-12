@@ -380,10 +380,6 @@ export class CkEditorUploadComponent implements OnInit,ComponentCanDeactivate,On
   }
 
   navigateToManageSection() {
-    this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);
-    if(this.viewType==undefined){
-        this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
-    }
     this.refService.navigateToManageEmailTemplatesByViewType(this.folderViewType,this.viewType,this.categoryId);
     }
 
