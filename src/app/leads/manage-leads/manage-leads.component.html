@@ -731,12 +731,14 @@
           <i class="fa fa-times" aria-hidden="true"></i>
         </a>
         <h4 class="modal-title" style="font-weight: 600;" translate>Add Notes<span class="required"> *</span></h4>
-        <div class="form-group textareaStyles">
-          <textarea placeholder="Write your Note here" name="leadNotes" rows="8" [(ngModel)]="leadNotes" maxlength="250"></textarea>
-        </div>
       </div>
-        <div  class="modal-footer">
-          <button class="btn btn-primary" data-dismiss="modal" [disabled]="leadNotes == undefined" (click)="leadApproveReject(selectedLead,leadNotes)">Submit</button>
+      <div class="form-group textareaStyles">
+        <textarea class="form-control" placeholder="Write your Note here" name="leadNotes" rows="8" (input)="validateNotes(leadNotes)" [(ngModel)]="leadNotes" maxlength="250"></textarea>
+      </div>
+        <div class="modal-footer">
+          <button class="button_blue bgcolor-unset" [disabled]="!isLeadNotesvalid" (click)="leadApproveReject(selectedLead,leadNotes)" translate>
+            <span class="btn btn-primary transition d-inline"> Submit</span>
+          </button>
         </div>
     </div>
   </div>

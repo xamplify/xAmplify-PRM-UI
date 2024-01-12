@@ -89,9 +89,11 @@ export class ManageLeadsComponent implements OnInit {
   vendorRole:boolean;
   vendorList:any ;
   vendorCompanyIdFilter:any;
+  /*******XNFR-426*******/
   leadApprovalStatus:boolean = false;
   leadNotes:any;
   leadApproveRejectType:any;
+  isLeadNotesvalid:boolean = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -1262,5 +1264,15 @@ export class ManageLeadsComponent implements OnInit {
     this.leadNotes = null;
     this.leadApproveRejectType = null;
     $('#addNotesModel').modal('hide');
+  }
+
+  validateNotes(leadNotes: string){
+    this.leadNotes = leadNotes.trim();
+    if(this.leadNotes.length > 0 && this.leadNotes != undefined){
+      this.isLeadNotesvalid = true;
+    }
+    else{
+      this.isLeadNotesvalid = false;
+    }
   }
 }
