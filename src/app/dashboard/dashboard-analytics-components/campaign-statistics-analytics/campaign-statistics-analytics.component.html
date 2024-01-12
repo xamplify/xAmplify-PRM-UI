@@ -1,129 +1,133 @@
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 
 <!--XBI-1801-->
-<div *ngIf="!authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughOwnVanityUrl">
+<div
+    *ngIf="!authenticationService?.module?.isPrmCompany && !authenticationService?.module?.loggedInThroughOwnVanityUrl">
 
-<div [ngClass]="authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 ? 'col-xs-12 col-sm-12' : 'col-xs-12 col-sm-6'"  style="padding: 0">
-    <div class="col-xs-12">
-        <div class="portlet light" style="margin-bottom: 20px;margin-top: 10px;">
-            <div class="portlet-title" style="min-height: 0px;">
-                <div class="caption">
-                    <span class="caption-subject" translate>Campaign Statistics</span>
-                </div>
-                <div>
-                    <div class="panel-title pull-right" *ngIf="!heatMapLoader.isLoading">
-                        <span style="font-size: 13px;">
-                            <span
-                                [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value"
-                                class="tooltip-css" data-toggle="tooltip" data-placement="top" title="7 Days">
-                                <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
+    <div [ngClass]="authenticationService?.dashboardTypes.indexOf('Advanced Dashboard')>-1 ? 'col-xs-12 col-sm-12' : 'col-xs-12 col-sm-6'"
+        style="padding: 0">
+        <div class="col-xs-12">
+            <div class="portlet light campaign_stat_card_height">
+                <div class="portlet-title" style="min-height: 0px;">
+                    <div class="caption">
+                        <span class="caption-subject" translate>Campaign Statistics</span>
+                    </div>
+                    <div>
+                        <div class="panel-title pull-right" *ngIf="!heatMapLoader.isLoading">
+                            <span style="font-size: 13px;">
+                                <span
+                                    [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value"
+                                    class="tooltip-css" data-toggle="tooltip" data-placement="top" title="7 Days">
+                                    <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
+                                </span>
+                                <span
+                                    [hidden]="heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value"
+                                    class="tooltip-css" data-toggle="tooltip" data-placement="top" title="14 Days">
+                                    <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
+                                </span>
+                                <span
+                                    [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value"
+                                    class="tooltip-css" data-toggle="tooltip" data-placement="top" title="21 Days">
+                                    <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
+                                </span>
+                                <span
+                                    [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[4].value"
+                                    class="tooltip-css" data-toggle="tooltip" data-placement="top"
+                                    title="Current Month">
+                                    <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
+                                </span>
+                                <span
+                                    [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[2].value"
+                                    class="tooltip-css" data-toggle="tooltip" data-placement="top" title="Current Year">
+                                    <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
+                                </span>
+                                <select style="cursor: pointer" [(ngModel)]="heatMapSort"
+                                    (ngModelChange)="selectedheatMapSortByValue($event.value)">
+                                    <option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort">
+                                        {{heatSort.name}} </option>
+                                </select>
                             </span>
-                            <span
-                                [hidden]="heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value"
-                                class="tooltip-css" data-toggle="tooltip" data-placement="top" title="14 Days">
-                                <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
+                            <span *ngIf="heatMapData?.length >= 1" (click)="isFullscreenHeatMap()"
+                                style="cursor: pointer; padding: 8px;" data-toggle="tooltip" data-placement="top"
+                                title="Full Screen">
+                                <i style=" font-size: 16px;" class="glyphicon glyphicon-resize-full"
+                                    aria-hidden="true"></i>
                             </span>
-                            <span
-                                [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value"
-                                class="tooltip-css" data-toggle="tooltip" data-placement="top" title="21 Days">
-                                <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
-                            </span>
-                            <span
-                                [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[4].value"
-                                class="tooltip-css" data-toggle="tooltip" data-placement="top" title="Current Month">
-                                <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
-                            </span>
-                            <span
-                                [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[2].value"
-                                class="tooltip-css" data-toggle="tooltip" data-placement="top" title="Current Year">
-                                <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
-                            </span>
-                            <select style="cursor: pointer" [(ngModel)]="heatMapSort"
-                                (ngModelChange)="selectedheatMapSortByValue($event.value)">
-                                <option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort">
-                                    {{heatSort.name}} </option>
-                            </select>
-                        </span>
-                        <span *ngIf="heatMapData?.length >= 1" (click)="isFullscreenHeatMap()"
-                            style="cursor: pointer; padding: 8px;" data-toggle="tooltip" data-placement="top"
-                            title="Full Screen">
-                            <i style=" font-size: 16px;" class="glyphicon glyphicon-resize-full" aria-hidden="true"></i>
-                        </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="portlet-body">
-                <app-modal-popup-loader [height]=220 [hidden]="!heatMapLoader.isLoading"></app-modal-popup-loader>
-                <div [hidden]="heatMapLoader.isLoading" *ngIf="heatMapData?.length < 1"
-                    style="max-width: 100%;text-align: center;">
-                    <div class="alert alert-info">
-                        <strong>No Data Found</strong>
+                <div class="portlet-body">
+                    <app-modal-popup-loader [height]=220 [hidden]="!heatMapLoader.isLoading"></app-modal-popup-loader>
+                    <div [hidden]="heatMapLoader.isLoading" *ngIf="heatMapData?.length < 1"
+                        style="max-width: 100%;text-align: center;">
+                        <div class="alert alert-info">
+                            <strong>No Data Found</strong>
+                        </div>
                     </div>
+                    <div [hidden]="heatMapLoader.isLoading" id="dashboard-heat-map"
+                        style="max-width: 100%; min-height: 214px; cursor: pointer"></div>
                 </div>
-                <div [hidden]="heatMapLoader.isLoading" id="dashboard-heat-map"
-                    style="max-width: 100%; min-height: 214px; cursor: pointer"></div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="portlet light portlet-fullscreen" [hidden]="!isFullscreenToggle">
-    <div class="portlet-title">
-        <div class="caption">
-            <span class="caption-subject" translate>Campaign Statistics</span>
-        </div>
-        <div>
-            <div class="panel-title pull-right" *ngIf="!heatMapLoader.isLoading">
-                <span style="font-size: 13px;">
-                    <span
-                        [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value"
-                        class="tooltip-css" data-toggle="tooltip" data-placement="left" title="7 Days">
-                        <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
+    <div class="portlet light portlet-fullscreen" [hidden]="!isFullscreenToggle">
+        <div class="portlet-title">
+            <div class="caption">
+                <span class="caption-subject" translate>Campaign Statistics</span>
+            </div>
+            <div>
+                <div class="panel-title pull-right" *ngIf="!heatMapLoader.isLoading">
+                    <span style="font-size: 13px;">
+                        <span
+                            [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value"
+                            class="tooltip-css" data-toggle="tooltip" data-placement="left" title="7 Days">
+                            <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
+                        </span>
+                        <span
+                            [hidden]="heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value"
+                            class="tooltip-css" data-toggle="tooltip" data-placement="left" title="14 Days">
+                            <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
+                        </span>
+                        <span
+                            [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value"
+                            class="tooltip-css" data-toggle="tooltip" data-placement="left" title="21 Days">
+                            <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
+                        </span>
+                        <span
+                            [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[4].value"
+                            class="tooltip-css" data-toggle="tooltip" data-placement="left" title="Current Month">
+                            <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
+                        </span>
+                        <span
+                            [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[2].value"
+                            class="tooltip-css" data-toggle="tooltip" data-placement="left" title="Current Year">
+                            <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
+                        </span>
+                        <select style="cursor: pointer" [(ngModel)]="heatMapSort"
+                            (ngModelChange)="selectedheatMapSortByValue($event.value)">
+                            <option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}}
+                            </option>
+                        </select>
                     </span>
-                    <span
-                        [hidden]="heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value"
-                        class="tooltip-css" data-toggle="tooltip" data-placement="left" title="14 Days">
-                        <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
+                    <span (click)="isFullscreenHeatMap()" style="cursor: pointer; padding: 8px;" data-toggle="tooltip"
+                        data-placement="left" title="Exit Full Screen">
+                        <i style=" font-size: 16px;" class="glyphicon glyphicon-resize-small" aria-hidden="true"></i>
                     </span>
-                    <span
-                        [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[4].value"
-                        class="tooltip-css" data-toggle="tooltip" data-placement="left" title="21 Days">
-                        <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
-                    </span>
-                    <span
-                        [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[2].value || heatMapSort.value===sortHeatMapValues[4].value"
-                        class="tooltip-css" data-toggle="tooltip" data-placement="left" title="Current Month">
-                        <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
-                    </span>
-                    <span
-                        [hidden]="heatMapSort.value===sortHeatMapValues[1].value || heatMapSort.value===sortHeatMapValues[0].value || heatMapSort.value===sortHeatMapValues[3].value || heatMapSort.value===sortHeatMapValues[2].value"
-                        class="tooltip-css" data-toggle="tooltip" data-placement="left" title="Current Year">
-                        <i class="fa fa-question-circle tool-size" aria-hidden="true"></i>
-                    </span>
-                    <select style="cursor: pointer" [(ngModel)]="heatMapSort"
-                        (ngModelChange)="selectedheatMapSortByValue($event.value)">
-                        <option *ngFor="let heatSort of sortHeatMapValues" [ngValue]="heatSort"> {{heatSort.name}}
-                        </option>
-                    </select>
-                </span>
-                <span (click)="isFullscreenHeatMap()" style="cursor: pointer; padding: 8px;" data-toggle="tooltip"
-                    data-placement="left" title="Exit Full Screen">
-                    <i style=" font-size: 16px;" class="glyphicon glyphicon-resize-small" aria-hidden="true"></i>
-                </span>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="portlet-body">
-        <app-modal-popup-loader [hidden]="!heatMapLoader.isLoading"></app-modal-popup-loader>
-        <div [hidden]="heatMapLoader.isLoading" *ngIf="heatMapData?.length < 1"
-            style="max-width: 100%;text-align: center;">
-            <div class="alert alert-info">
-                <strong>No Data Found</strong>
+        <div class="portlet-body">
+            <app-modal-popup-loader [hidden]="!heatMapLoader.isLoading"></app-modal-popup-loader>
+            <div [hidden]="heatMapLoader.isLoading" *ngIf="heatMapData?.length < 1"
+                style="max-width: 100%;text-align: center;">
+                <div class="alert alert-info">
+                    <strong>No Data Found</strong>
+                </div>
             </div>
+            <div [hidden]="heatMapLoader.isLoading" id="heat-map-data"
+                style="max-width: 100%; min-height: auto; cursor: pointer"></div>
         </div>
-        <div [hidden]="heatMapLoader.isLoading" id="heat-map-data"
-            style="max-width: 100%; min-height: auto; cursor: pointer"></div>
     </div>
-</div>
 
 </div>
