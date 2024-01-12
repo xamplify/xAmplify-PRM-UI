@@ -313,7 +313,7 @@ export class AddDamComponent implements OnInit, OnDestroy {
     this.damService.updatePublishedAsset(this.damPostDto).subscribe(
       (result: any) => {
         this.hidePopup();
-        this.referenceService.isUpdated = true;
+        this.referenceService.assetResponseMessage = "PDF updated successfully";
         this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,true);
         this.modalPopupLoader = false;
       },
