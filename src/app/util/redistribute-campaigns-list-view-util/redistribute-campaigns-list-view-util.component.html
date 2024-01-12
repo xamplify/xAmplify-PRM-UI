@@ -174,13 +174,13 @@
                   <td>
                     <div class="actions-block override-actions IconCustomizationcondition"
                       style="text-align: center !important;width: max-content;">
-                      <a *ngIf="campaign.campaignType !== 'SOCIAL'" (click)="showCampaignPreview(campaign)"
+                      <a  class ="custom-icon" *ngIf="campaign.campaignType !== 'SOCIAL'" (click)="showCampaignPreview(campaign)"
                         data-toggle="tooltip" data-placement="top" title="Preview Campaign">
-                        <i class="fa fa-eye mr5"></i>
+                        <i class="fa fa-eye mr5"></i><div class="clickicons"></div>
                       </a>
-                      <a *ngIf="campaign.campaignType == 'SOCIAL'" (click)="showSocialCampaignPreview(campaign)"
+                      <a  class="custom-icon" *ngIf="campaign.campaignType == 'SOCIAL'" (click)="showSocialCampaignPreview(campaign)"
                         data-toggle="tooltip" data-placement="top" title="Preview Campaign">
-                        <i class="fa fa-eye mr5"></i>
+                        <i class="fa fa-eye mr5"></i><div class="clickicons"></div>
                       </a>
                       <span>
                         <ng-container *ngIf="campaign.allowRedistribution">
@@ -199,33 +199,33 @@
                         <ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO'
                            || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) ||
                             campaign.campaignType === 'LANDINGPAGE' || campaign.campaignType === 'SURVEY' ">
-                          <div class="btn-group pull-right" id="download-template" *ngIf="campaign.allowDownload"
+                          <div class="btn-group pull-right downloadicon" id="download-template" *ngIf="campaign.allowDownload"
                             title="Download">
-                            <span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu"
+                            <span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu downloadicon-align"
                               data-toggle="dropdown" id="download-drop" title="Download"></span>
                             <span data-toggle="dropdown" title="Download"></span>
                             <ul class="dropdown-menu pull-right">
                               <li>
                                 <a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="top"
                                   title="Download Html" data-rel="fancybox-button">
-                                  <i class="fa fa-file" style="width: 30px;"></i> Download Html
+                                  <i class="fa fa-file download_file" style="width: 30px;"></i> Download Html
                                 </a>
                               </li>
                               <li *ngIf="campaign.campaignType != 'EVENT'">
                                 <a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="top"
                                   title="Download Pdf" data-rel="fancybox-button">
-                                  <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
+                                  <i class="fa fa-file-pdf-o download_file" style="width: 30px;"></i> Download Pdf
                                 </a>
                               </li>
                             </ul>
                           </div>
-                          <a *ngIf="!campaign.allowDownload" data-toggle="tooltip" data-placement="top"
+                          <a class="custom-icon" *ngIf="!campaign.allowDownload" data-toggle="tooltip" data-placement="top"
                             title="Please turn on GDPR settings to download" data-rel="fancybox-button">
-                            <i class="fa fa-download cancelled-event"></i>
+                            <i class="fa fa-download cancelled-event"></i><div class="clickicons"></div>
                           </a>
-                          <a data-toggle="tooltip" data-placement="top" (click)="viewDownloadedHistory(campaign)"
+                          <a class="custom-icon" data-toggle="tooltip" data-placement="top" (click)="viewDownloadedHistory(campaign)"
                             title="View Download History" data-rel="fancybox-button">
-                            <i class="fa fa-history" aria-hidden="true"></i>
+                            <i class="fa fa-history" aria-hidden="true"></i><div class="clickicons"></div>
                           </a>
                         </ng-container>
                       </span>
@@ -294,15 +294,15 @@
                       </div>
                     </div>
                     <div class="bar gridIconCustomization">
-                      <a class="Iconhover" *ngIf="campaign.campaignType != 'SOCIAL'"
+                      <a class="Iconhover custom-grid-icon" *ngIf="campaign.campaignType != 'SOCIAL'"
                         (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top"
                         title="Preview Campaign">
-                        <i class="fa fa-eye mr4" aria-hidden="true"></i>
+                        <i class="fa fa-eye" aria-hidden="true"></i><div class="clickicons"></div>
                       </a>
-                      <a class="Iconhover" *ngIf="campaign.campaignType == 'SOCIAL'"
+                      <a class="Iconhover custom-grid-icon" *ngIf="campaign.campaignType == 'SOCIAL'"
                         (click)="showSocialCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top"
                         title="Preview Campaign">
-                        <i class="fa fa-eye mr5" aria-hidden="true"></i>
+                        <i class="fa fa-eye" aria-hidden="true"></i><div class="clickicons"></div>
                       </a>
                       <ng-container *ngIf="campaign.allowRedistribution">
                         <!----XNFR-125---->
@@ -317,8 +317,8 @@
                         [ngTemplateOutletContext]="{campaign:campaign}"></ng-template>
                       <ng-container class="pull-right"
                         *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
-                        <div class="btn-group" id="download-template-grid" *ngIf="campaign.allowDownload">
-                          <span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu"
+                        <div class="btn-group downloadicon" id="download-template-grid" *ngIf="campaign.allowDownload">
+                          <span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu downloadicon-align"
                             data-toggle="dropdown" id="download-drop" title="Download"></span>
                           <span data-toggle="dropdown" title="Download"></span>
                           <ul class="dropdown-menu pull-right custome-dropdown-changs">
@@ -336,15 +336,15 @@
                             </li>
                           </ul>
                         </div>
-                        <a class="Iconhover" *ngIf="!campaign.allowDownload" data-toggle="tooltip" data-placement="top"
+                        <a class="Iconhover custom-grid-icon" *ngIf="!campaign.allowDownload" data-toggle="tooltip" data-placement="top"
                           title="Please turn on GDPR settings to download" data-rel="fancybox-button">
-                          <i class="fa fa-download cancelled-event"></i>
+                          <i class="fa fa-download cancelled-event"></i><div class="clickicons"></div>
                         </a>
 
-                        <a class="Iconhover" data-toggle="tooltip" data-placement="top"
+                        <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top"
                           (click)="viewDownloadedHistory(campaign)" title="View Download History"
                           data-rel="fancybox-button">
-                          <i class="fa fa-history" aria-hidden="true"></i>
+                          <i class="fa fa-history" aria-hidden="true"></i><div class="clickicons"></div>
                         </a>
                       </ng-container>
                     </div>
@@ -435,20 +435,20 @@
 <!--One Click Launch  Icon-->
 <ng-template #oneClickLaunchIconTemplate let-campaign="campaign">
   <ng-container *ngIf="campaign?.oneClickLaunch">
-    <a *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended" data-toggle="tooltip" data-placement="top" [title]="campaign?.oneClickLaunchCampaignRedistributed ? properties.oneClickLaunchCampaignRedistributedErrorMessage :
+    <a class="custom-icon" *ngIf="campaign.campaignType != 'EVENT' && !campaign.ended" data-toggle="tooltip" data-placement="top" [title]="campaign?.oneClickLaunchCampaignRedistributed ? properties.oneClickLaunchCampaignRedistributedErrorMessage :
       !campaign?.shareLeadsListExists ? properties.emptyOneClickLaunchCampaignErrorMessage:'One Click Launch'"
       data-rel="fancybox-button"
       (click)="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists ? false: launchOneClickCampaign(campaign)">
       <i
-        [className]="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists ? 'fa fa-hand-pointer-o cancelled-event':'fa fa-hand-pointer-o'"></i>
+        [className]="campaign?.oneClickLaunchCampaignRedistributed || !campaign?.shareLeadsListExists ? 'fa fa-hand-pointer-o cancelled-event':'fa fa-hand-pointer-o'"></i><div class="clickicons"></div>
     </a>
-    <a *ngIf="campaign.campaignType != 'EVENT' && campaign.ended" data-toggle="tooltip" data-placement="top"
+    <a class="custom-icon" *ngIf="campaign.campaignType != 'EVENT' && campaign.ended" data-toggle="tooltip" data-placement="top"
       title="{{properties?.oneClickLaunchCampaignExpiredMessage}}" data-rel="fancybox-button">
-      <i class="fa fa-hand-pointer-o cancelled-event" aria-hidden="true"></i>
+      <i class="fa fa-hand-pointer-o cancelled-event IconCustomization" aria-hidden="true"></i><div class="clickicons"></div>
     </a>
-    <a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" data-toggle="tooltip" data-placement="top"
+    <a class="custom-icon" *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" data-toggle="tooltip" data-placement="top"
       title="One Click Launch" data-rel="fancybox-button" (click)="launchOneClickCampaign(campaign)">
-      <i class="fa fa-hand-pointer-o"></i>
+      <i class="fa fa-hand-pointer-o"></i><div class="clickicons"></div>
     </a>
   </ng-container>
 </ng-template>
@@ -456,35 +456,35 @@
 <ng-template #disableIconsTemplate let-campaign="campaign">
   <ng-container *ngIf="!campaign.allowRedistribution">
     <!----XNFR-125---->
-    <a data-toggle="tooltip" data-placement="top" title="{{campaign?.redistibuteToolTipMessage}}"
+    <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="{{campaign?.redistibuteToolTipMessage}}"
       data-rel="fancybox-button">
-      <i class="fa fa-hand-pointer-o cancelled-event" aria-hidden="true"></i>
+      <i class="fa fa-hand-pointer-o cancelled-event" aria-hidden="true"></i><div class="clickicons"></div>
     </a>
-    <a data-toggle="tooltip" data-placement="top" title="{{campaign?.redistibuteToolTipMessage}}"
+    <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="{{campaign?.redistibuteToolTipMessage}}"
       data-rel="fancybox-button">
-      <i class="fa fa-rocket cancelled-event" aria-hidden="true"></i>
+      <i class="fa fa-rocket cancelled-event" aria-hidden="true"></i><div class="clickicons"></div>
     </a>
   </ng-container>
 </ng-template>
 
 <ng-template #redistributeIcon let-campaign="campaign">
-  <a class="Iconhover" *ngIf="campaign.campaignType != 'EVENT'  && !campaign.ended && campaign?.shareLeadsListExists "
+  <a class="Iconhover custom-icon" *ngIf="campaign.campaignType != 'EVENT'  && !campaign.ended && campaign?.shareLeadsListExists "
     (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign"
     data-rel="fancybox-button">
-    <i class="fa fa-rocket" aria-hidden="true"></i>
+    <i class="fa fa-rocket" aria-hidden="true"></i><div class="clickicons"></div>
   </a>
-  <a *ngIf="campaign.campaignType != 'EVENT' && (campaign.ended || !campaign?.shareLeadsListExists)"
+  <a class="custom-icon" *ngIf="campaign.campaignType != 'EVENT' && (campaign.ended || !campaign?.shareLeadsListExists)"
     data-toggle="tooltip" data-placement="top"
     [title]="campaign.ended ? 'Campaign can not be further redistributed':!campaign?.shareLeadsListExists? properties?.emptyOneClickLaunchCampaignErrorMessage:'' "
     data-rel="fancybox-button">
-    <i class="fa fa-rocket cancelled-event"></i>
+    <i class="fa fa-rocket cancelled-event"></i><div class="clickicons"></div>
   </a>
-  <a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" (click)="reDistributeCampaign(campaign)"
+  <a class="custom-icon"  *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" (click)="reDistributeCampaign(campaign)"
     data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
-    <i class="fa fa-rocket"></i>
+    <i class="fa fa-rocket"></i><div class="clickicons"></div>
   </a>
-  <a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton" data-toggle="tooltip" data-placement="top"
+  <a class="custom-icon" *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton" data-toggle="tooltip" data-placement="top"
     title="Not available for cancelled event" data-rel="fancybox-button">
-    <i class="fa fa-rocket" style="cursor:not-allowed"></i>
+    <i class="fa fa-rocket" style="cursor:not-allowed"></i><div class="clickicons"></div>
   </a>
 </ng-template>

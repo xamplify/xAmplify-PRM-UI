@@ -122,8 +122,8 @@
                                     <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'">Email Co-Branding</span>
                                     <span *ngIf="emailTemplate.emailTemplateType !='Regular Co-Branding'">{{emailTemplate.emailTemplateType}}</span>
                                 </span>
-                                <img class="email-template-preview email-image-temp-custimize image_effect" *ngIf="emailTemplate.subject" src="{{emailTemplate.subject}}" alt="Image Not Found">
-                                <img alt="" class="email-template-preview email-image-temp-custimize image_effect" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg">
+                                <img class="email-template-preview email-image-temp-custimize image_effect imghover-unset" *ngIf="emailTemplate.subject" src="{{emailTemplate.subject}}" alt="Image Not Found">
+                                <img alt="" class="email-template-preview email-image-temp-custimize image_effect imghover-unset" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg">
                                 <h4 class="xamplify-ellipsis GridViewCotent gridViewDesignTextAlignmnent" data-toggle="tooltip" data-placement="top" title="{{emailTemplate?.name}}">
                                     <b translate>Template Name: </b> {{emailTemplate.name}}
                                 </h4>
@@ -430,7 +430,7 @@
 
 <!--Delete---->
 <ng-template #deleteIcon let-emailTemplate="emailTemplate">
-    <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" id="template-delete"
+    <a class="Iconhover custom-icon" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.template_delete}}" id="template-delete"
         (click)="confirmDeleteEmailTemplate(emailTemplate.id,emailTemplate.name)"
          *ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  ||authenticationService.module.isVendor || 
            authenticationService.module.isPrm  || authenticationService.module.isVendorTier || authenticationService.module.isMarketing) && emailTemplate.type!='PARTNER' ">

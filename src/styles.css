@@ -2964,3 +2964,7 @@ span.btn.Btn-Green.transition.secondary_btn_width{
 .social_card_height{
   padding-top: 6px;
 }
+/* pages grid view icon align */
+.icons-center{
+  display: block;
+}
