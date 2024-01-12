@@ -292,7 +292,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.previewPopUpComponent.previewForm(id);
     }
 
-
     edit(id: number) {
         let formInput: Form = new Form();
         formInput.id = id;
@@ -502,5 +501,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     showDetailedResponse(formSubmitId: any) {
         this.selectedFormSubmitId = formSubmitId;
         this.detailedResponse = true;
+    }
+
+    /***XNFR-433***/
+    copyForm(id: number) {
+        this.formService.isCopyForm = true;
+        this.formService.formId = id;
+        this.router.navigate(["/home/forms/add"]);
     }
 }
