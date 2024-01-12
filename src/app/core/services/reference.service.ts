@@ -147,6 +147,7 @@ export class ReferenceService {
   loginStyleType:any;
   loginTemplateId = 53;
   assetResponseMessage = "";
+  createdOrUpdatedSuccessMessage = "";
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -3401,5 +3402,9 @@ export class ReferenceService {
 
   goToManageFormsByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
     this.router.navigate(["/home/forms/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  addCreateOrUpdateSuccessMessage(message:string){
+    this.createdOrUpdatedSuccessMessage = message;
   }
 }

@@ -1,10 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { CustomResponse } from '../models/custom-response';
+import { CustomAnimation } from 'app/core/models/custom-animation';
+
 declare var $:any;
 @Component({
   selector: 'app-response-message',
   templateUrl: './response-message.component.html',
-  styleUrls: ['./response-message.component.css']
+  styleUrls: ['./response-message.component.css'],
+  animations: [CustomAnimation]
 })
 export class ResponseMessageComponent implements OnInit {
     @Input() customResponse: any;

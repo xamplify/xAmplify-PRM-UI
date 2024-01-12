@@ -2016,7 +2016,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     saveAsInputChecking() {
             try {
-                const name = this.saveAsListName;
+                const name = this.saveAsListName.trim();
                 const self = this;
                 this.isValidLegalOptions = true;
 				const inputName = $.trim(name.toLowerCase().replace(/\s/g, ''));

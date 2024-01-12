@@ -72,6 +72,7 @@ export class SaveAsComponent implements OnInit {
       } else {
           try {
               if(this.saveAsListName!=undefined){
+                this.saveAsListName = this.saveAsListName.trim();
                 this.saveAsError = "";
                 this.isValidLegalOptions = true;
                 const names = this.referenceService.namesArray;
@@ -107,6 +108,7 @@ export class SaveAsComponent implements OnInit {
   saveAsLeadsInputChecking() {
       try {
           if(this.saveAsListName!=undefined){
+            this.saveAsListName = this.saveAsListName.trim();
             const name = this.saveAsListName;
             this.validateLegalBasisOptions();
             const inputName = $.trim(name.toLowerCase().replace(/\s/g, ''));
