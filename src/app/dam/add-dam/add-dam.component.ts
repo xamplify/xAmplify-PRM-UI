@@ -509,10 +509,10 @@ receivePartnerCompanyAndGroupsEventEmitterData(event:any){
 }else{
     if(isPartnerCompanyOrGroupSelected){
        this.saveAsButtonText = "Save As & Publish";
-       this.saveOrUpdateButtonText = "Update & Publish";
+       this.saveOrUpdateButtonText = "Save & Publish";
     }else{
       this.saveAsButtonText = "Save As";
-      this.saveOrUpdateButtonText = "Update";
+      this.saveOrUpdateButtonText = "Save";
     }
 }
 /****XNFR-342****/
