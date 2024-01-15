@@ -179,7 +179,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	ngOnInit() {
 		this.isAdd = this.router.url.indexOf('/upload') > -1;
 		this.showDefaultLogo = this.isAdd;
-		this.headerText = this.isAdd ? 'Upload Asset' : 'Edit Asset';
+		this.headerText = this.isAdd ? 'Upload Asset' : 'Replace Asset';
         this.referenceService.assetResponseMessage = "";
 		if (!this.isAdd) {
 			this.id = this.route.snapshot.params['id'];
@@ -273,8 +273,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			);
 
 	}
-    sudaImg:any;
+    uploadedImage:any;
 	chooseAsset(event: any) {
+        this.customResponse = new CustomResponse();
 		this.invalidAssetName = false;
 		let files: Array<File>;
 		if ( event.target.files!=undefined ) {
@@ -292,33 +293,48 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				this.showAssetErrorMessage('Max file size is 800 MB');
 			}else if(file['name'].lastIndexOf(".")==-1) {
                 this.showValidExtensionErrorMessage();
-            }			
-			else{
-                this.sudaImg = file;
-				this.formData.delete("uploadedFile");
-	            this.uploadedAssetName  = "";
-	            this.uploadedCloudAssetName = "";
-	            this.damUploadPostDto.source = "";
-	            this.customResponse = new CustomResponse();
-				this.formData.append("uploadedFile", file, file['name']);
-				this.uploadedAssetName = file['name'];
-				this.damUploadPostDto.cloudContent = false;
-				this.damUploadPostDto.fileName = this.uploadedAssetName;
-	            this.damUploadPostDto.downloadLink = null;
-	            this.damUploadPostDto.oauthToken = null;
-	            this.isVideoAsset = this.isVideo(this.uploadedAssetName);
-	            if(this.isVideoAsset){
-	            	this.videoPreviewPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file)));
-	            	this.showVideoPreview = true;
-	            	this.fileSize = file.size;
-	            	this.isDisable = true;
-	            }
+            }else if(!this.isAdd){
+                this.validateExtensionType(file);
+            }else{
+                this.setUploadedFileProperties(file);
 			}
 		}else{
 			this.clearPreviousSelectedAsset();
 		}
 		this.validateAllFields();
 	}
+
+    /***XNFR-342****/
+    private validateExtensionType(file: File) {
+        let extension = this.referenceService.getFileExtension(file['name']);
+        if (extension == this.damUploadPostDto.assetType) {
+            this.setUploadedFileProperties(file);
+        } else {
+            this.showAssetErrorMessage('Invalid file type. Only ' + extension + " file is allowed.");
+        }
+    }
+
+    private setUploadedFileProperties(file: File) {
+        this.uploadedImage = file;
+        this.formData.delete("uploadedFile");
+        this.uploadedAssetName = "";
+        this.uploadedCloudAssetName = "";
+        this.damUploadPostDto.source = "";
+        this.customResponse = new CustomResponse();
+        this.formData.append("uploadedFile", file, file['name']);
+        this.uploadedAssetName = file['name'];
+        this.damUploadPostDto.cloudContent = false;
+        this.damUploadPostDto.fileName = this.uploadedAssetName;
+        this.damUploadPostDto.downloadLink = null;
+        this.damUploadPostDto.oauthToken = null;
+        this.isVideoAsset = this.isVideo(this.uploadedAssetName);
+        if (this.isVideoAsset) {
+            this.videoPreviewPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file)));
+            this.showVideoPreview = true;
+            this.fileSize = file.size;
+            this.isDisable = true;
+        }
+    }
 
 	clearPreviousSelectedAsset(){
 		this.formData.delete("uploadedFile");

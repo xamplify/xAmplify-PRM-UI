@@ -29,4 +29,7 @@ export class DamUploadPostDto {
     disableWhiteLabelOption = false;
     whiteLabeledToolTipMessage = "";
     publishedToPartnerGroups = false;
+
+    /**XNFR-434***/
+    assetType  = "";
 }
