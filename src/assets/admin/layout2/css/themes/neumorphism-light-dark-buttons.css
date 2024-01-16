@@ -39,3 +39,8 @@ span.btn.Btn-Green.transition {
   background: linear-gradient(360deg, rgb(1 180 255)  0%, rgb(53 58 241) 100%) !important;
 }
 /**** tharak(12-01-2024) *********/
+.button_blue::before {
+  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+  /* box-shadow: none !important; */
+  /* box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important; */
+}
