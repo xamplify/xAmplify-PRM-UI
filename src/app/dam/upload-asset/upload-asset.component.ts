@@ -179,7 +179,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	ngOnInit() {
 		this.isAdd = this.router.url.indexOf('/upload') > -1;
 		this.showDefaultLogo = this.isAdd;
-		this.headerText = this.isAdd ? 'Upload Asset' : 'Replace Asset';
+		this.headerText = this.isAdd ? 'Upload Asset' : 'Edit Asset';
         this.referenceService.assetResponseMessage = "";
 		if (!this.isAdd) {
 			this.id = this.route.snapshot.params['id'];

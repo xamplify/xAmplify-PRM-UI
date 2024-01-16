@@ -129,7 +129,7 @@
                                        </div>
                                        <!-- end here -->
                                        <!---Upload Asset-->
-                                       <div>
+                                       <div *ngIf="isAdd">
                                           <span  [style.color]="invalidAssetName ? 'red':''">
                                              <strong>{{headerText}}<span *ngIf="isAdd" class="required">*</span></strong>
                                           </span>
