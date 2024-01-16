@@ -305,6 +305,9 @@
                                     <li class="filter" (click)="filterContacts('FORM-LEADS',1)"
                                        [class.contact-filter-selected]="1 == selectedFilterIndex" translate>Form
                                        Contacts</li>
+                                       <li class="filter" (click)="filterContacts('COMPANY-CONTACTS',3)"
+                                       [class.contact-filter-selected]="3 == selectedFilterIndex" translate>Company Contacts</li>
+
                                     <li class="filter" (click)="filterContacts('ALL',2)"
                                        [class.contact-filter-selected]="2 == selectedFilterIndex" translate>All</li>
                                  </ul>
@@ -489,8 +492,14 @@
                                                       <b>By:</b> {{contactList.uploadedBy}}
                                                    </span>
                                                 </h5>
+                                                <h5 class='mb0 moreipsis' *ngIf="selectedFilterIndex == 3">
+                                                   <span class='f-w-400' data-toggle="tooltip" data-placement="top"
+                                                      title="{{contactList?.associatedCompany}}">
+                                                      <b>Associated Company:</b> {{contactList.associatedCompany}}
+                                                   </span>
+                                                </h5>
 
-                                                <h5 class="mb0 moreipsis" style="padding: 0px;">
+                                                <h5 class="mb0 moreipsis" style="padding: 0px;" *ngIf="selectedFilterIndex != 3">
                                                    <span class='f-w-400' data-toggle="tooltip" data-placement="top"
                                                       title="{{contactList?.companyName}}">
                                                       <b>Company Name:</b> {{contactList.companyName}}

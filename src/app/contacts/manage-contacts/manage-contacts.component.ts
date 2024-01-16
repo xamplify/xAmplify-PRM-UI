@@ -389,6 +389,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						pagination.filterBy = "FORM-LEADS";
 					}else if(this.selectedFilterIndex==2){
 						pagination.filterBy = "ALL";
+					}else if(this.selectedFilterIndex==3){
+						pagination.filterBy = "COMPANY-CONTACTS";
 					}
 				}
                 if(this.sharedLeads){

@@ -36,4 +36,5 @@ export class ContactList {
     externalListId : number;
     teamMemberPartnerList = false;
     loginAsUserId = 0;
+    associatedCompany: string;
 }
