@@ -20,7 +20,7 @@ body,
   background: #f0f5fa !important;
   box-shadow: inset 5px 5px 10px #d6dadf,
   inset -5px -5px 10px #ffffff;
-  border: 0px solid #2f4857 !important;
+  border: 1px solid #ececec !important;
   border-radius: 10px !important;
 }
 .page-container-bg-solid .page-content,
@@ -2000,9 +2000,9 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 .radioButton_shadow {
   box-shadow: -4px -4px 5px #3e4247, 7px 7px 7px #1d1f23 !important;
 } */
-.full_popup {
+/* .full_popup {
   box-shadow: -2px 2px 4px #d6dadf, 2px -2px 4px #ffffff;
-}
+} */
 /* .popup_body {
   box-shadow: inset -4px -4px 5px #3e4247, inset 7px 7px 7px #1d1f23 !important;
 } */
@@ -2041,8 +2041,8 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   box-shadow: none !important;
 }
 .search-box-item-click {
-  box-shadow: none !important;
-  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
 }
 .form-control,
 .pagination {
@@ -2063,10 +2063,10 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
   box-shadow:  -5px 5px 10px #d6dadf,5px -5px 10px #ffffff;
 }
 .close-circle {
-  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
   color: #000 !important;
-  border: 0px solid #2f4857 !important;
-  /* box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important; */
+  border: 1px solid #d0d5db !important;
+  box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
 }
 .mix-filter li:hover,
 .mix-filter li.active,
@@ -2279,7 +2279,6 @@ a.UserguideBtnCustomization {
   border: 0px solid #2f4857 !important;
 } */
 .Btn-Gray,
-.btn-primary,
 .dashboard-stat2,
 .btnND,
 left-menu-color ul li a,
@@ -2320,7 +2319,6 @@ left-menu-color ul li a,
 }
 
 .Btn-Gray:hover,
-.btn-primary:hover,
 /* .Btn-Green:hover, */
 /* .campaign-box:hover, */
 /* .dashboard-stat2:hover, */
@@ -2333,6 +2331,10 @@ a.UserguideBtnCustomization:hover {
   color: #000 !important;
   background-color: #f0f5fa !important;
 }
+/* .btn-primary:hover,
+.btn-primary{
+  color:#fff !important;
+} */
 .left-menu-color ul li a:hover{
   box-shadow:inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff !important;
 }
@@ -2372,7 +2374,7 @@ input {
   transform: rotate(12deg);
 }
 .card_effect_bg_color {
-  /* background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important; */
+  background: #91cfff !important;
   border-radius: 20px;
 }
 
@@ -2905,7 +2907,6 @@ i.fa.fa-pencil-square-o:hover,
 i.fa.fa-files-o:hover,
 i.fa.fa-bullhorn:hover,
 i.fa.fa-edit:hover,
-i.fa.fa-download:hover,
 /* i.fa.fa-line-chart:hover, */
 i.fa.fa-eye:hover,
 i.fa.fa-history:hover,
@@ -2918,6 +2919,9 @@ i.fa.fa-rocket:hover{
   z-index: 999;
   position: relative;
   color: #000 !important;
+}
+i.fa.fa-download:hover{
+  color: #fff !important;
 }
 .actions_width{
 width:inherit!important;
@@ -3004,9 +3008,9 @@ justify-content: center!important;
   .btn-primary {
     position: relative !important;
     /* z-index: 1 !important; */
-    background: linear-gradient(225deg, #d8dde1, #ffffff);
-    /* color: #fff !important; */
-    box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
+    background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+    color: #fff !important;
+    /* box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important; */
     border: 1px solid #d0d5db !important;
   }
    /* dont use this classes for button tranistion */
@@ -3020,7 +3024,7 @@ justify-content: center!important;
     width: 100% !important;
     height: inherit !important;
     border-radius: inherit !important;
-    background: linear-gradient(87deg, #00ED95 0%, #00ACEC 100%) !important;
+    background: linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
     border-color: #26a69a;
     /* background: linear-gradient(
       82.3deg,
@@ -3040,7 +3044,7 @@ justify-content: center!important;
     width: 100% !important;
     height: inherit !important;
     border-radius: inherit !important;
-    background-color: #337ab7;
+    background: linear-gradient(89deg, #06beb8 0, #0c86cc 100%) !important;
     border-color: #337ab7;
     transition: all 0.475s !important;
   }
@@ -3298,6 +3302,7 @@ legend.scheduler-border{
 .tabbable-custom > .tab-content.remove_cardBgcolor {
   box-shadow: none !important;
   background: none !important;
+  border: 0px solid #ececec !important;
 }
 li.filter.filter_box_sizes{
   padding: 6px 8px;
@@ -3660,8 +3665,9 @@ div b {
   border-bottom: 0px solid #2f4857 !important;
 }
 h3#notifications {
-  background: #217eac!important;
+  /* background: #217eac!important; */
   border: unset!important;
+  background-image: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
 .pricing.hover-effect.pointer.border-card.pricing_hover_effect{
   border-radius: 10px !important;
@@ -3766,11 +3772,7 @@ button.btn.custom {
 /* .Btn-Green:hover{
     background: none !important;
   } */
-  button#save\&delete_button {
-    border: none !important;
-    background: linear-gradient(87deg, #00ED95 0%, #00ACEC 100%) !important;
-    /* box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important; */
-}
+
 .portlet.light.card-height {
   box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff;
   background: linear-gradient(225deg, #d8dde1, #ffffff);
@@ -3789,12 +3791,12 @@ button.btn.custom:hover {
   transform: scale(1.05);
 }
 button.search-box-item-click {
-  border: 0px solid #6e5bec !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
 }
 .selectRecord {
   padding: 6px 8px !important;
   font-size: 12px !important;
-  background-image: linear-gradient(360deg, rgb(1 4 255) 0%, rgb(1 208 255) 100%);
+  background-image: linear-gradient(to left, #009245, #D9E021);
   border: none !important;
 }
 page-sidebar .page-sidebar-menu > li.active > a > i{
@@ -3836,7 +3838,7 @@ page-sidebar .page-sidebar-menu > li.active > a > i{
   padding: 2px;
 }
 .selectRecord:hover{
-  background-image: linear-gradient(360deg, rgb(1 208 255) 100%), rgb(1 4 255) 0%;
+  background-image: linear-gradient(to left, #009245, #D9E021);
 }
 .portlet.light.border-radius-0.campaign-box{
   border: 1px solid #d0d5db !important;
@@ -3854,8 +3856,17 @@ button.glyphicon.glyphicon-remove.search-box-item-clear {
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
 }
 button#add_contact,
-button#copyFrom_clipboard{
-  background: none !important;
+button#copyFrom_clipboard,
+button.button.bgcolor-unset{
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+button.button_blue.bgcolor-unset{
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+button#save\&delete_button {
+  border: none !important;
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  /* box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important; */
 }
 .btn-default:hover{
   border: 1px solid #d0d5db !important;
@@ -3876,8 +3887,7 @@ a.title.padding_bottom.text-color.content-bg.row-space{
 }
 /* Sudha Sri(17-1-2024) */
 .btn-group > .group-name-cclass,
-a.btn.btn-block.btn-primary.text-uppercase,
-.btn-primary.disabled{
+a.btn.btn-block.btn-primary.text-uppercase{
   background: none !important;
 }
 .col-xs-12.col-sm-6.col-md-6.col-lg-5.bg-color-for-card,
@@ -3890,16 +3900,13 @@ a.btn.btn-block.btn-primary.text-uppercase,
 .pd_rgt20{
   margin-right: 20px !important;
 }
-.button:hover{
-  transform: scale(1.05);
-  transition: all 0.1s ease;
+.p-rgt_p-top{
+  padding-top: 0px !important;
 }
-button.button.bgcolor-unset{
-  background: linear-gradient(87deg, #00ACEC 0%, #00ED95 100%) !important;
+.bookmark-ribbon{
+  border-right: 15px solid #06beb8 !important;
+    border-left: 15px solid #06beb8 !important;
 }
-button.button_blue.bgcolor-unset{
-  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+.u-userLauncherColor:not{
+  background: linear-gradient(to left, #009245, #D9E021);
 }
-/* .btn{
-  padding: 5px 14px !important;
-} */

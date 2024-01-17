@@ -307,7 +307,8 @@
 											</button>
 										</div>
 										<div class="btn-group pull-right pt">
-											<button class="btn Btn-Green mb_btn" style="border-radius: 3px !important;"
+											<button class="btn Btn-Green mb_btn"
+												style="border-radius: 3px !important;box-shadow: none !important;"
 												id="save&delete_button" data-toggle="dropdown" translate>
 												Actions <i class="fa fa-angle-down" aria-hidden="true"></i>
 											</button>
@@ -1456,21 +1457,20 @@
 														<div class="actions-block no-float"
 															*ngIf="isPartner && (contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'active' || contactsByType.selectedCategory == 'all')">
 															<ng-container *ngIf="allcontacts?.validEmail">
-																<a class="custom-icon" aria-hidden="true" data-toggle="tooltip"
-																data-placement="bottom"
-																title="Send Email Notification"
+																<a class="custom-icon" aria-hidden="true"
+																	data-toggle="tooltip" data-placement="bottom"
+																	title="Send Email Notification"
 																	(click)="sendMail(allcontacts.id)">
-																	<i class="fa fa-envelope IconCustomization"
-																		></i>
+																	<i class="fa fa-envelope IconCustomization"></i>
 																	<div class="clickicons"></div>
 																</a>
 															</ng-container>
 															<ng-container *ngIf="!allcontacts?.validEmail">
-																<a class="custom-icon" aria-hidden="true" data-toggle="tooltip"
-																data-placement="bottom"
-																title="Email can't be sent for invalid email Id">
-																	<i class="fa fa-envelope gray IconCustomization"
-																		></i>
+																<a class="custom-icon" aria-hidden="true"
+																	data-toggle="tooltip" data-placement="bottom"
+																	title="Email can't be sent for invalid email Id">
+																	<i
+																		class="fa fa-envelope gray IconCustomization"></i>
 																	<div class="clickicons"></div>
 																</a>
 															</ng-container>
