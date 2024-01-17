@@ -142,32 +142,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch){
-        this.isFileDrop = false;
-        this.loading = false;
-        this.saveVideo = false;
-        this.discardVideo = false;
-        this.closeModalId = true;
-        this.testSpeedshow = true;
-        this.testSpeeddisabled = true;
-        this.hideSaveDiscard = true;
-        this.textAreaDisable = true;
-        this.maxTimeDuration = 3400; // record video time
-		$('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
-		$('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
-		 $('head').append('<link href="assets/js/indexjscss/webcam-capture/nvideojs.record.css" rel="stylesheet"  class="r-video">');
-		 $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript"  class="r-video"/>');
-         $('head').append('<link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet">');
-         $('head').append('<script src="assets/js/indexjscss/webcam-capture/nvideojs.record.js" type="text/javascript"  class="r-video"/>');
-		
-		this.deviceInfo = this.deviceService.getDeviceInfo();
-        this.browserInfo = this.deviceInfo.browser;
         
-        if (this.referenceService.isEnabledCamera === false && !this.isIE() && !this.browserInfo.includes('safari') &&
-            !this.browserInfo.includes('edge')) {
-            this.referenceService.isEnabledCamera = true;
-        } else if (this.isIE() || this.browserInfo.includes('safari') || this.browserInfo.includes('edge')) {
-            this.referenceService.cameraIsthere = true;
-        }
         /****XNFR-169****/
         this.viewType = this.route.snapshot.params['viewType'];
         this.categoryId = this.route.snapshot.params['categoryId'];
@@ -859,26 +834,9 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
                 });
         }
     }
-    checkCameraBlock() {
-        const recordBlocked = this;
-        navigator.getUserMedia(
-            {   // we would like to use video but not audio
-                video: true,
-                audio: true
-            },
-            function (stream) {
-                const localStream = stream;
-                const track = stream.getTracks()[0];
-                track.stop();
-                localStream.getVideoTracks()[0].stop();
-                recordBlocked.referenceService.cameraIsthere = true;
-            },
-            function () {
-                recordBlocked.referenceService.cameraIsthere = false;
-                console.log('user did not give access to the camera');
-            }
-        );
-    }
+
+    
+    
     recordVideo() {
         $('#script-text').val('');
         $('#myModal').modal('show');
@@ -978,55 +936,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     fileDropEnabled() {
         this.isFileDrop = false;
     }
-    
-    uploadRecordedVideo() {
-        if(this.player.record().getDuration() < 10) {
-          this.recordCustomResponse = new CustomResponse( 'ERROR', 'Record Video length must be greater than 10 seconds', true );
-         } else {
-         try{
-           this.RecordSave = true;
-           this.saveVideo = false;
-           this.discardVideo = false;
-           this.testSpeeddisabled = true;
-           this.closeModalId = false;
-           this.textAreaDisable = false; // not using ,need to check
-           this.hideSaveDiscard = false; // hide the save and discard buttons when the video processing
-           this.formData.delete("uploadedFile");
-           this.uploadedAssetName  = "";
-           this.uploadedCloudAssetName = "";
-           this.customResponse = new CustomResponse();
-           
-           this.uploadedCloudAssetName = 'recorded_video.mp4';
-           this.formData.append("uploadedFile", this.recordedVideo, this.recordedVideo.name);
-           this.damUploadPostDto.cloudContent = false;
-           this.damUploadPostDto.fileName = this.recordedVideo.name;
-           this.damUploadPostDto.downloadLink = null;
-           this.damUploadPostDto.oauthToken = null;
-           this.damUploadPostDto.source= 'webcam';
-           this.isVideoAsset = true;
-           this.validateAllFields();
-           
-           (<HTMLInputElement>document.getElementById('script-text')).disabled = true;
-           (<HTMLInputElement>document.getElementById('rangeDisabled')).disabled = true;
-           $('.video-js .vjs-control-bar').hide();
-           
-           this.recordModalPopupAfterUpload();
-           
-           
-          }catch(error) { this.xtremandLogger.error('Error in upload video, uploadRecordedVideo method'+error);}
-          }
-       }
-       removeRecordVideo() {
-          try{
-           this.player.record().stopDevice();
-           this.player.record().getDevice();
-           this.saveVideo = false;
-           this.discardVideo = false;
-           this.hideSaveDiscard = true;
-           $('.video-js .vjs-fullscreen-control').hide();
-         }catch(error) { this.xtremandLogger.error('Error in upload video, removeRecordVideo method'+error);}
-       }
-       
        modalPopupClosed() {
            $('#myModal').modal('hide');
            $('body').removeClass('modal-open');
@@ -1227,6 +1136,8 @@ browseContentEventReceiver(event:any){
     this.formData = event['formData'];
     this.damUploadPostDto = event['damUploadPostDto'];
     this.customResponse = event['customResponse'];
+    this.isVideoAsset = event['isVideoAsset'];
+    this.uploadedCloudAssetName = event['uploadedCloudAssetName'];
     this.validateAllFields();
 }
 

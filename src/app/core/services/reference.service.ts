@@ -3430,4 +3430,12 @@ export class ReferenceService {
     }
     return false;
 }
+
+isIE() {
+  const isInternetExplorar = navigator.userAgent;
+  /* MSIE used to detect old browsers and Trident used to newer ones*/
+  const is_ie = isInternetExplorar.indexOf("MSIE ") > -1 || isInternetExplorar.indexOf("Trident/") > -1;
+  return is_ie;
+}
+
 }
