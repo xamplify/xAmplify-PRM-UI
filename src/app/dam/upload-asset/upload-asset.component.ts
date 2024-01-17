@@ -171,6 +171,29 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.findAssetPublishEmailNotificationOption();
 	}
 
+    trimVideoTitle(title: string) {
+        try {
+         if (title.length > 30) {
+             const fileTitleStart = title.substr(0, 25);
+             const fileTitleend = title.slice(-5);
+             return fileTitleStart + '...' + fileTitleend;
+         } else {
+             return title;
+         }
+        } catch (error) { this.xtremandLogger.error('Error in upload video, trimVideoTitle method' + error); }
+
+      }
+
+      removefileUploadVideo() {
+        this.formData.delete("uploadedFile");
+        this.uploadedAssetName = "";
+        this.showVideoPreview = false;
+        this.fileSize = 0;
+        this.isDisable = false;
+        $('#uploadedAsset').val("");
+        this.validateAllFields();
+    }
+
      /****XNFR-326*****/
     findAssetPublishEmailNotificationOption() {
         this.assetPublishEmailNotificationLoader = true;
@@ -805,6 +828,11 @@ browseContentEventReceiver(event:any){
     this.playerInit = event['playerInit'];
     this.picker = event['picker'];
     this.player = event['player'];
+    this.videoPreviewPath = event['videoPreviewPath'];
+    this.showVideoPreview = event['showVideoPreview'];
+    this.fileSize = event['fileSize'];
+    this.isDisable = event['isDisable'];
+    this.uploadedAssetName = event['uploadedAssetName'];
     this.validateAllFields();
 }
 

@@ -613,6 +613,11 @@ callEmitter(){
   emitter['playerInit'] = this.playerInit;
   emitter['player'] = this.player;
   emitter['picker'] = this.picker;
+  emitter['videoPreviewPath'] = this.videoPreviewPath;
+  emitter['showVideoPreview'] = this.showVideoPreview;
+  emitter['fileSize'] = this.fileSize;
+  emitter['isDisable'] = this.isDisable;
+  emitter['uploadedAssetName'] = this.uploadedAssetName;
   this.browseContentEventEmitter.emit(emitter);
 }
 
