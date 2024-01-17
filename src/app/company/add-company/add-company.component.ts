@@ -75,11 +75,15 @@ export class AddCompanyComponent implements OnInit {
   saveCompany() {
     this.addCompany.userId = this.loggedInUserId;
     this.companyService.saveCompany(this.addCompany).subscribe(
-      response => {
-        this.addCompanyModalClose();
-        if (response.statusCode === 200) {
-        } else if (response.statusCode == 500) {
-          this.customResponse = new CustomResponse('ERROR', response.message, true);
+      (response: any) => {
+        var data = JSON.parse(response._body);
+        if (data.statusCode == 200) {
+          this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+          this.addCompanyModalClose();
+        } else if (data.statusCode == 500) {
+          this.customResponse = new CustomResponse('ERROR', data.message, true);
+        } else if (data.statusCode == 409) {
+          this.customResponse = new CustomResponse('ERROR', data.message, true);
         }
       },
       error => {

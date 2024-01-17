@@ -3,6 +3,12 @@
   <div class="modal-dialog  accounts-modal" style="position: relative !important;">
     <!-- Modal content-->
     <div class="modal-content full_popup">
+      <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <app-response-message [customResponse]="customResponse"
+            *ngIf="customResponse.isVisible"></app-response-message>
+        </div>
+      </div>
       <div class="modal-header popup_header">
         <button type="button" class="close-circle" (click)="addCompanyModalClose()">
           <i class="fa fa-times" aria-hidden="true" style="margin-top: 0px;"></i></button>
