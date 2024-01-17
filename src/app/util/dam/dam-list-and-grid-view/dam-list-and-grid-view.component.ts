@@ -155,7 +155,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 
 		let message = this.referenceService.assetResponseMessage;
-		if (message.length > 0 && !this.folderListViewExpanded ) {
+		if (message!=undefined && message.length > 0 && !this.folderListViewExpanded ) {
 			this.customResponse = new CustomResponse('SUCCESS', message, true);
 		}
 
