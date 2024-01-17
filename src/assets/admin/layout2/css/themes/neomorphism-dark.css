@@ -3755,3 +3755,8 @@ i.download_file:hover {
 .icons-center{
   display: block;
 }
+button#save\&delete_button {
+  border: none !important;
+  background: linear-gradient(87deg, #00ED95 0%, #00ACEC 100%) !important;
+  /* box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important; */
+}

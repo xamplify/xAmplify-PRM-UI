@@ -405,13 +405,13 @@ export class HomeComponent implements OnInit {
             && activeThemeDto.name === "Neumorphism Dark(Beta)" && !this.router.url.includes('home/help')) {
             this.authenticationService.isDarkForCharts = true;
             require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-dark.css");
-            // require ("style-loader!../../../assets/admin/layout2/css/themes/neumorphism-light-dark-buttons.css")
+            // require("style-loader!../../../assets/admin/layout2/css/themes/neumorphism-light-dark-buttons.css")
           }
           else if (activeThemeDto.defaultTheme && activeThemeDto.companyId === 1
             && activeThemeDto.name === "Neumorphism Light" && !this.router.url.includes('home/help')) {
             this.authenticationService.isDarkForCharts = false;
             require("style-loader!../../../assets/admin/layout2/css/themes/neomorphism-light.css");
-            //  require("style-loader!../../../assets/admin/layout2/css/themes/neumorphism-light-dark-buttons.css")
+            // require("style-loader!../../../assets/admin/layout2/css/themes/neumorphism-light-dark-buttons.css")
           }
           else if (!activeThemeDto.defaultTheme && activeThemeDto.companyId != 1 && !this.router.url.includes('home/help')) {
             document.documentElement.style.setProperty('--top-bg-color', this.topCustom.backgroundColor);

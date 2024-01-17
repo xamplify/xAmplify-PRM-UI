@@ -189,8 +189,9 @@ h6 {
 .form-control,
 .col-item {
   color: #000 !important;
-  background-color: #2c2f33 !important;
+  background-color: #f0f5fa !important;
   border: 0px solid #191b1e !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
 }
 #header-custom-li-font,
 .caption-subject.font-red-sunglo,
@@ -613,8 +614,8 @@ tr {
   background-color: #2b3c46 !important;
 }
 .profile-image-wrapper {
-  background-color: #2c2f33 !important;
-  border: 2px dotted #191b1e !important;
+  background-color: #f0f5fa !important;
+  border: 2px dotted #d0d5db !important;
 }
 .color-inline {
   background-color: #2b3c46 !important;
@@ -764,7 +765,7 @@ select {
   border-bottom: 1px solid #d0d5db !important;
 }
 .divider {
-  border: 1px solid #191b1e !important;
+  border: 1px solid #d0d5db !important;
 }
 .shared-feeds-border {
   border-color: #2f4857 !important;
@@ -1121,9 +1122,8 @@ input#copy-link {
   border-bottom: 1px solid #d0d5db !important;
 }
 .cards {
-  border: 1px solid #191b1e !important;
-  background-image: linear-gradient(to top, #f1f2f5, rgba(255, 255, 255, 0)),
-    linear-gradient(to bottom, #2f4758, #2f4758) !important;
+  border: 1px solid #d0d5db !important;
+  background: #f0f5fa !important;
 }
 .phone {
   color: #000 !important;
@@ -1362,7 +1362,7 @@ ul.alt-row-style1 li:nth-child(even) {
 .p-5x > .r-r-c,
 .p-5x > .vlt-b-c,
 .p-5x > .lt-g-b-c {
-  border: 1px solid #191b1e !important;
+  border: 1px solid #d0d5db !important;
 }
 @keyframes placeHolderShimmer {
   0% {
@@ -1641,7 +1641,8 @@ ul.drag-menu-cu li:hover {
   color: #000 !important;
 }
 .card-paddings-vcu {
-  background: #222528 !important;
+  background:#f0f5fa !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff;
 }
 .backgroundfor-mv-title {
   background: #5a738e !important;
@@ -1734,7 +1735,7 @@ p.layoutcontent {
   color: red !important;
 }
 .vendor-img-cu img {
-  border: 1px solid #2f4857 !important;
+  border: 1px solid #d0d5db !important;
 }
 .template-height {
   margin-top: 9px !important;
@@ -2371,7 +2372,7 @@ input {
   transform: rotate(12deg);
 }
 .card_effect_bg_color {
-  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+  /* background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important; */
   border-radius: 20px;
 }
 
@@ -2384,7 +2385,7 @@ input {
 
 .dotted-image-border,
 .evnt_filter_icon_shadow {
-  box-shadow: inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff;
+  box-shadow: inset -5px 5px 10px #d6dadf, inset 5px -5px 10px #ffffff !important;
 }
 
 .camp_card_effect:hover {
@@ -2992,7 +2993,7 @@ justify-content: center!important;
     /* background-size: 400% !important; */
     color: #000 !important;
     /* border: none !important; */
-    box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
+    /* box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important; */
   }
   .button:hover::before,
   .button_blue:hover::before {
@@ -3004,7 +3005,7 @@ justify-content: center!important;
     position: relative !important;
     /* z-index: 1 !important; */
     background: linear-gradient(225deg, #d8dde1, #ffffff);
-    color: #000 !important;
+    /* color: #fff !important; */
     box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
     border: 1px solid #d0d5db !important;
   }
@@ -3019,7 +3020,7 @@ justify-content: center!important;
     width: 100% !important;
     height: inherit !important;
     border-radius: inherit !important;
-    background: linear-gradient(360deg, #279a8f 0%, #0dddca 100%) !important;
+    background: linear-gradient(87deg, #00ED95 0%, #00ACEC 100%) !important;
     border-color: #26a69a;
     /* background: linear-gradient(
       82.3deg,
@@ -3084,8 +3085,8 @@ justify-content: center!important;
 
 /* EditDeal page */
 .panel.panel-default.deal-bgcolor{
- background-color: #2e3033 !important;
- box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+ background-color: #f0f5fa !important;
+ box-shadow: inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff !important;
 }
 .br-unset{
   border-top: unset !important;
@@ -3094,11 +3095,11 @@ justify-content: center!important;
   border: 1px solid #191b1e!important;
 }
 .card-bgcolors{
-  background-color:#2e3033!important;
+  background-color: #f0f5fa !important;
 }
 .panel-heading.deal-bgcolor {
   border: unset!important;
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+  box-shadow: inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff;
 }
 .radiobtn,
 .social_share_border,
@@ -3339,8 +3340,8 @@ div.button span {
 }
 .p-5x .detail_card:hover{
   border-radius: 10px !important;
-  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
-    background: #2b2f33!important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
+    background: #f0f5fa !important;
     transform: scale(1.04);
     transition: all 0.3s ease;
 }
@@ -3433,7 +3434,7 @@ button.button_blue:disabled span{
   padding-bottom: 1px;
 }
 .btn:focus{
-  color: #000 !important;
+  color: #fff !important;
 }
 /* span.btn.btn-primary.transition{
   padding: 2px 16px !important;
@@ -3767,8 +3768,8 @@ button.btn.custom {
   } */
   button#save\&delete_button {
     border: none !important;
-    background: none !important;
-    box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
+    background: linear-gradient(87deg, #00ED95 0%, #00ACEC 100%) !important;
+    /* box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important; */
 }
 .portlet.light.card-height {
   box-shadow: -5px 5px 10px #d6dadf, 5px -5px 10px #ffffff;
@@ -3853,8 +3854,7 @@ button.glyphicon.glyphicon-remove.search-box-item-clear {
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
 }
 button#add_contact,
-button#copyFrom_clipboard,
-button.button.bgcolor-unset{
+button#copyFrom_clipboard{
   background: none !important;
 }
 .btn-default:hover{
@@ -3874,3 +3874,32 @@ a.title.padding_bottom.text-color.content-bg.row-space{
     box-shadow: -5px -5px 10px #bebebe, 5px 5px 10px #ffffff !important;
 }
 }
+/* Sudha Sri(17-1-2024) */
+.btn-group > .group-name-cclass,
+a.btn.btn-block.btn-primary.text-uppercase,
+.btn-primary.disabled{
+  background: none !important;
+}
+.col-xs-12.col-sm-6.col-md-6.col-lg-5.bg-color-for-card,
+.col-xs-12.col-sm-6.col-md-6.col-lg-5.bg-color-for-footercard2{
+  border: 1px solid #d0d5db !important;
+}
+.pd_lft20{
+  padding-left: 20px !important;
+}
+.pd_rgt20{
+  margin-right: 20px !important;
+}
+.button:hover{
+  transform: scale(1.05);
+  transition: all 0.1s ease;
+}
+button.button.bgcolor-unset{
+  background: linear-gradient(87deg, #00ACEC 0%, #00ED95 100%) !important;
+}
+button.button_blue.bgcolor-unset{
+  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+}
+/* .btn{
+  padding: 5px 14px !important;
+} */
