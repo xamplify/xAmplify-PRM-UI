@@ -273,90 +273,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			);
 
 	}
-    uploadedImage:any;
-	chooseAsset(event: any) {
-        this.customResponse = new CustomResponse();
-		this.invalidAssetName = false;
-		let files: Array<File>;
-		if ( event.target.files!=undefined ) {
-			 files = event.target.files; 
-		}else if ( event.dataTransfer.files ) { 
-			files = event.dataTransfer.files;
-		 }
-		if (files.length > 0) {
-			let file = files[0];
-			let sizeInKb = file.size / 1024;
-			let maxFileSizeInKb = 1024 * 800;
-			if(sizeInKb==0){
-				this.showAssetErrorMessage('Invalid File');
-			}else if(sizeInKb>maxFileSizeInKb){
-				this.showAssetErrorMessage('Max file size is 800 MB');
-			}else if(file['name'].lastIndexOf(".")==-1) {
-                this.showValidExtensionErrorMessage();
-            }else if(!this.isAdd){
-                this.validateExtensionType(file);
-            }else{
-                this.setUploadedFileProperties(file);
-			}
-		}else{
-			this.clearPreviousSelectedAsset();
-		}
-		this.validateAllFields();
-	}
 
-    /***XNFR-342****/
-    private validateExtensionType(file: File) {
-        let extension = this.referenceService.getFileExtension(file['name']);
-        if (extension == this.damUploadPostDto.assetType) {
-            this.setUploadedFileProperties(file);
-        } else {
-            this.showAssetErrorMessage('Invalid file type. Only ' + extension + " file is allowed.");
-        }
-    }
-
-    private setUploadedFileProperties(file: File) {
-        this.uploadedImage = file;
-        this.formData.delete("uploadedFile");
-        this.uploadedAssetName = "";
-        this.uploadedCloudAssetName = "";
-        this.damUploadPostDto.source = "";
-        this.customResponse = new CustomResponse();
-        this.formData.append("uploadedFile", file, file['name']);
-        this.uploadedAssetName = file['name'];
-        this.damUploadPostDto.cloudContent = false;
-        this.damUploadPostDto.fileName = this.uploadedAssetName;
-        this.damUploadPostDto.downloadLink = null;
-        this.damUploadPostDto.oauthToken = null;
-        this.isVideoAsset = this.referenceService.isVideo(this.uploadedAssetName);
-        if (this.isVideoAsset) {
-            this.videoPreviewPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file)));
-            this.showVideoPreview = true;
-            this.fileSize = file.size;
-            this.isDisable = true;
-        }
-    }
-
-	clearPreviousSelectedAsset(){
-		this.formData.delete("uploadedFile");
-		$('#uploadedAsset').val('');
-		this.uploadedAssetName  = "";
-	}
-
-
-
-	showAssetErrorMessage(message:string){
-		this.referenceService.goToTop();
-		$('#uploadedAsset').val('');
-		this.formData.delete("uploadedFile");
-		this.invalidAssetName = true;
-		this.uploadedAssetName  = "";
-		this.customResponse = new CustomResponse('ERROR',message,true);
-	}
-
-
-	browse() {
-		$('#uploadedAsset').click();
-	}
+	
 
 	browseThumbnail() {
 		$('#thumbnailFile').click();
@@ -1187,7 +1105,7 @@ showFolderCreatedSuccessMessage(message:any){
 showValidExtensionErrorMessage(){
   this.uploadedCloudAssetName = "";
   this.tempr = null;
-  this.clearPreviousSelectedAsset();
+  //this.clearPreviousSelectedAsset();
   this.customResponse = new CustomResponse('ERROR',"Selected asset does not have the proper extension. Please upload a valid asset.",true);
 }
 
