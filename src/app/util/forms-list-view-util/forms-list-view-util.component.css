@@ -1,19 +1,12 @@
 .img-class-list{
-	height: 80px;
-    width: 155px;
-    margin: 0;
-    /* background: #f2f4f9; */
-    /* border: solid 1px #008fd5; */
-    border-radius: 1px;
-    max-width: 155px;
+  height: 140px;
+  width: 130px;
+  margin: 0;
+  border-radius: 1px;
+  max-width: 130px;
+  object-fit: cover;
 }
-.img-class{
-  height: 80px;
-  max-width: 150px;
-  width: 150px;
-  margin: 10px 0px 0px 80px;
-  overflow: hidden;
-}
+
 #actions-row{
 	width: 30%
 }
@@ -30,15 +23,15 @@
 	background-color: #ed1c24;
     color: white;
     margin-bottom: 25px;
-    margin-left: -24px;
+    margin-left: -25px;
     margin-top: -5px;
 }
 #notification-list{
 	background-color: #ed1c24;
-    color: white;
-    margin-bottom: 36px;
-    margin-left: -23px;
-    margin-top: -2px;
+  color: white;
+  margin-bottom: 36px;
+  margin-left: -23px;
+  margin-top: -2px;
 }
 
 #disabled-icon{
@@ -56,19 +49,9 @@ cursor: default;
 }
 .cursor{
 	cursor: not-allowed;
+  margin-top: -4px;
 }
 
-
-.view-banner{
-   background-color: #00a6e8;
-    color: white;
-    padding: 4px;
-    text-align: center;
-    width: 125px;
-    margin: 0 0;
-    font-size: 11px;
-    font-weight: 600;
-}
 
 .ribbon div {
   font-size: 10px;
@@ -115,14 +98,11 @@ cursor: default;
 	margin: 4px 3px !important;
   line-height: 21px;
 }
-
-.minxAmplify{
-  min-height: 644px;
+.custom-width-icon{
+	min-width: 130px;
 }
 
-.fit-image {
-  width: 100%; 
-}
+
 
 .mix-filter {
 	margin: 5px;
@@ -138,21 +118,67 @@ cursor: default;
 .form-selected{
   background-color: #6dcff6;
 }
-.xamp-margin-left-icon{
-  margin: 0px 5px 5px 5px !important;
-}
-.pg8{
-  top: 0px;
+
+.ellipsis {
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  float: left !important;
+  overflow: hidden !important;
 }
 
-.view-banner-white-labeled{
-  background-color: #68B4F1;
-  color: white !important;
-  padding: 5px 10px;
-   text-align: center;
-   /* width: 125px; */
-   margin: 0 0;
-   font-size: 10px;
-   font-weight: 600;
-   line-height: 1;
+.ActionAlign{
+  display: flex;
 }
+
+@media screen and (max-width:600px){
+  .mPad{
+      width: 40%;
+  }
+  .mTopAlert{
+    top: -22px !important;
+  }
+  .mActionTop{
+    margin-top: 5px;
+  }
+  .mDisableColor{
+    color: #888!important;
+    border: 1px solid;
+  }
+  .mActionAlign{
+    display: block!important;
+    padding-left: 30px;
+  }
+  .mMobileAlignAction2{
+    white-space: initial!important;
+  }
+  .mb-dflex{
+    display: flex!important;
+  }
+}
+
+.pg8{
+  top: -1px;
+}
+
+
+/* 14/06/23 */
+
+.ribbon span::before {
+	border-left: 3px solid #5ab1eb;
+	border-top: 3px solid #5ab1eb;
+}
+
+.ribbon span::after {
+	border-right: 3px solid #5ab1eb ;
+	border-top: 3px solid #5ab1eb;
+}
+.borderColorsCU {
+  border: 1px solid #e5e5e5;
+}
+
+
+.gridCardBoxHeight{
+  height: 385px !important;
+}
+

@@ -16,8 +16,9 @@
             </li>
         </ul>
         <div class="createFolderAlignment">
-            <button class="button_blue btn-bt-aln bgcolor-unset mrgn-top-btm pd-top_pd-rgt2" id="right"
-                (click)="openCreateFolderPopup()"><span class="btn btn-primary transition">Create a
+            <button class="button_blue btn-bt-aln bgcolor-unset mrgn-top-btm pd-top_pd-rgt2 pos_pd_top_rgt1 pd_top0"
+                id="right" (click)="openCreateFolderPopup()"><span class="btn btn-primary transition pos_pd_top7">Create
+                    a
                     Folder</span></button>
         </div>
     </div>
@@ -725,16 +726,19 @@
                                 </div>
 
                                 <div class="input-icon right pull-right pr-epx">
-                                    <button *ngIf="selectedEmailTemplateRow==0" class="button_blue bgcolor-unset"
+                                    <button *ngIf="selectedEmailTemplateRow==0"
+                                        class="button_blue bgcolor-unset pd_top0"
                                         [disabled]="selectedEmailTemplateRow==0" data-toggle="tooltip"
                                         data-placement="top" title="{{sendTestEmailToolTip}}">
-                                        <span class="btn btn-primary transition"><i class="fa fa-envelope-o"></i>
+                                        <span class="btn btn-primary transition pos_pd_top7"><i
+                                                class="fa fa-envelope-o"></i>
                                             {{properties?.sendTestEmail}}</span>
                                     </button>
-                                    <button *ngIf="selectedEmailTemplateRow>0" class="button_blue bgcolor-unset"
+                                    <button *ngIf="selectedEmailTemplateRow>0" class="button_blue bgcolor-unset pd_top0"
                                         data-toggle="tooltip" data-placement="top" title="{{sendTestEmailToolTip}}"
                                         (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
-                                        <span class="btn btn-primary transition"><i class="fa fa-envelope-o"></i>
+                                        <span class="btn btn-primary transition pos_pd_top7"><i
+                                                class="fa fa-envelope-o"></i>
                                             {{properties?.sendTestEmail}}</span>
                                     </button>
                                 </div>
@@ -827,7 +831,8 @@
                                                                                     [ngTemplateOutletContext]="{vendorCompanyName:emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName,isWhiteLabeledContent:emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor}"></ng-template>
                                                                                 <!--XBI-1836-->
                                                                             </div>
-                                                                            <span class="label-color-custmization"
+                                                                            <!--XBI-1938-->
+                                                                            <span class="label-color-custmization" *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor || authenticationService?.module?.isEmailTemplate"
                                                                                 (click)="$event.stopPropagation();editTemplate(emailTemplate)">Edit</span>
                                                                         </div>
                                                                     </div>
@@ -1159,30 +1164,30 @@
                                                                 </td>
                                                                 <td style="width: 10%;text-align: left;"
                                                                     class="hidden-xs">
-                                                                    <img *ngIf="contacts?.socialNetwork=='ZOHO'"
+                                                                    <img *ngIf="contacts?.socialNetwork=='ZOHO' && contacts.synchronisedList"
                                                                         src="{{properties?.zohoImage}}" alt="Zoho"
                                                                         class="img-class-list image_effect">
-                                                                    <img *ngIf="contacts?.socialNetwork=='GOOGLE'"
+                                                                    <img *ngIf="contacts?.socialNetwork=='GOOGLE' && contacts.synchronisedList"
                                                                         src="{{properties?.googleImage}}" alt="Google"
                                                                         class="img-class-list image_effect">
-                                                                    <img *ngIf="contacts?.socialNetwork=='SALESFORCE'"
+                                                                    <img *ngIf="contacts?.socialNetwork=='SALESFORCE' && contacts.synchronisedList"
                                                                         src="{{properties?.salesforceImage}}"
                                                                         alt="Salesforce"
                                                                         class="img-class-list image_effect">
-                                                                    <img *ngIf="contacts?.socialNetwork=='MANUAL'"
+                                                                    <img *ngIf="contacts?.socialNetwork=='MANUAL' || !contacts.synchronisedList"
                                                                         src="{{properties?.manualImage}}" alt="Manual"
                                                                         class="img-class-list list-icons-sm image_effect">
-                                                                    <img *ngIf="contacts?.socialNetwork=='HUBSPOT'"
+                                                                    <img *ngIf="contacts?.socialNetwork=='HUBSPOT' && contacts.synchronisedList"
                                                                         src="{{properties?.hubspotImage}}" alt="Hubspot"
                                                                         class="img-class-list image_effect">
-                                                                    <img *ngIf="contacts?.socialNetwork=='MARKETO'"
+                                                                    <img *ngIf="contacts?.socialNetwork=='MARKETO' && contacts.synchronisedList"
                                                                         src="{{properties?.marketoImage}}" alt="Marketo"
                                                                         class="img-class-list image_effect">
-                                                                    <img *ngIf="contacts?.socialNetwork=='MICROSOFT'"
+                                                                    <img *ngIf="contacts?.socialNetwork=='MICROSOFT' && contacts.synchronisedList"
                                                                         src="{{properties?.microsoftImage}}"
                                                                         alt="Microsoft"
                                                                         class="img-class-list image_effect">
-                                                                    <img *ngIf="contacts?.socialNetwork=='PIPEDRIVE'"
+                                                                    <img *ngIf="contacts?.socialNetwork=='PIPEDRIVE' && contacts.synchronisedList"
                                                                         src="{{properties?.pipedriveImage}}"
                                                                         alt="Pipedrive"
                                                                         class="img-class-list image_effect">
@@ -1489,65 +1494,37 @@
                                                                         </div>
                                                                     </div>
                                                                     <!--Email Template-->
-                                                                    <div id="reply-email-template-{{i}}"
-                                                                        *ngIf="reply?.defaultTemplate">
+                                                                    <div id="reply-email-template-{{i}}" *ngIf="reply?.defaultTemplate">
                                                                         <fieldset class="scheduler-border">
-                                                                            <legend
-                                                                                class="scheduler-border color-black campaign_boxes">
-                                                                                Select an email template<strong
-                                                                                    class="required">*</strong></legend>
-                                                                            <app-landing-page-loader
-                                                                                *ngIf="reply?.loader"></app-landing-page-loader>
+                                                                            <legend class="scheduler-border color-black campaign_boxes">
+                                                                                Select an email template<strong class="required">*</strong>
+                                                                            </legend>
+                                                                            <app-landing-page-loader *ngIf="reply?.loader"></app-landing-page-loader>
                                                                             <div *ngIf="!reply?.loader">
                                                                                 <!--Search Key Icon-->
-                                                                                <div
-                                                                                    class="input-icon right pull-right pr-epx">
-                                                                                    <input type="text"
-                                                                                        [(ngModel)]="reply.emailTemplateSearchInput"
-                                                                                        [ngModelOptions]="{standalone: true}"
-                                                                                        class="form-control"
-                                                                                        placeholder="Search here"
-                                                                                        (keypress)="findAutoResponseEmailTemplatesOnEnterKeyPress($event.keyCode,reply)">
-                                                                                    <button
-                                                                                        class="glyphicon glyphicon-remove search-box-item-clear search-button-padding"
-                                                                                        *ngIf="reply.emailTemplateSearchInput"
-                                                                                        (click)="reply.emailTemplateSearchInput='';searchAutoResponseEmailTemplates(reply)"></button>
-                                                                                    <button type="submit"
-                                                                                        class="search-box-item-click email-search"
-                                                                                        (click)="searchAutoResponseEmailTemplates(reply)"
-                                                                                        style="right: 9px !important;">
-                                                                                        <i class="fa fa-search cesf-xamp"
-                                                                                            aria-hidden="true"></i></button>
+                                                                                <div class="input-icon right pull-right pr-epx">
+                                                                                    <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}"  class="form-control" placeholder="Search here" (keypress)="findAutoResponseEmailTemplatesOnEnterKeyPress($event.keyCode,reply)">
+                                                                                    <button class="glyphicon glyphicon-remove search-box-item-clear search-button-padding" *ngIf="reply.emailTemplateSearchInput" (click)="reply.emailTemplateSearchInput='';searchAutoResponseEmailTemplates(reply)"></button>
+                                                                                    <button type="submit" class="search-box-item-click email-search" (click)="searchAutoResponseEmailTemplates(reply)"  style="right: 9px !important;">
+                                                                                        <i class="fa fa-search cesf-xamp" aria-hidden="true"></i>
+                                                                                    </button>
                                                                                 </div>
                                                                                 <!--List Of Email Templates-->
                                                                                 <div
                                                                                     class="portlet-body padding-top-45px">
                                                                                     <div class="row">
-                                                                                        <form role="form"
-                                                                                            class="form-horizontal form-bordered form-label-stripped"
-                                                                                            aria-label="">
-                                                                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer"
-                                                                                                *ngFor="let emailTemplate of reply?.emailTemplatesPagination?.pagedItems ;let i =index">
+                                                                                        <form role="form" class="form-horizontal form-bordered form-label-stripped" aria-label="">
+                                                                                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-row pointer" *ngFor="let emailTemplate of reply?.emailTemplatesPagination?.pagedItems ;let i =index">
                                                                                                 <div class="row">
-                                                                                                    <div
-                                                                                                        class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
-                                                                                                        <div class="grid-box imgage-paddings"
-                                                                                                            [ngClass]="emailTemplate?.id === reply?.selectedEmailTemplateId ? 'template-selected-border' :'' "
+                                                                                                    <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12">
+                                                                                                        <div class="grid-box imgage-paddings" [ngClass]="emailTemplate?.id === reply?.selectedEmailTemplateId ? 'template-selected-border' :'' "
                                                                                                             (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)">
-                                                                                                            <span
-                                                                                                                class="select-check-box"
-                                                                                                                [class.hide]="emailTemplate?.draft">
+                                                                                                            <span class="select-check-box" [class.hide]="emailTemplate?.draft">
                                                                                                                 <label>
-                                                                                                                    <input
-                                                                                                                        type="radio"
-                                                                                                                        class="radio-custimization radioButton_shadow"
-                                                                                                                        [checked]="emailTemplate?.id === reply?.selectedEmailTemplateId">
+                                                                                                                    <input type="radio" class="radio-custimization radioButton_shadow" [checked]="emailTemplate?.id === reply?.selectedEmailTemplateId">
                                                                                                                 </label>
                                                                                                             </span>
-                                                                                                            <img class="img-grid-track"
-                                                                                                                onerror="this.src='assets/images/no-preview.jpg';"
-                                                                                                                [src]="emailTemplate?.subject"
-                                                                                                                alt="No Preview Found" />
+                                                                                                            <img class="img-grid-track" onerror="this.src='assets/images/no-preview.jpg';" [src]="emailTemplate?.subject" alt="No Preview Found" />
                                                                                                             <span
                                                                                                                 class="icon-alignments">
                                                                                                                 <a data-toggle="tooltip"
@@ -1621,9 +1598,8 @@
                                                                                                                                     [ngTemplateOutletContext]="{vendorCompanyName:emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName,isWhiteLabeledContent:emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor}"></ng-template>
                                                                                                                                 <!--XBI-1836-->
                                                                                                                             </div>
-                                                                                                                            <span
-                                                                                                                                class="label-color-custmization"
-                                                                                                                                (click)="$event.stopPropagation();editTemplate(emailTemplate)">Edit</span>
+                                                                                                                            <!--XBI-1938-->
+                                                                                                                            <span *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor || authenticationService?.module?.isEmailTemplate" class="label-color-custmization" (click)="$event.stopPropagation();editTemplate(emailTemplate)">Edit</span>
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </a>
@@ -1632,20 +1608,16 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <div *ngIf="reply?.emailTemplatesPagination?.totalRecords==0 && !emailTemplatesOrLandingPagesLoader"
-                                                                                                class="alert alert-info text-center">
-                                                                                                <strong>No Data
-                                                                                                    Found.</strong>
+                                                                                            <div *ngIf="reply?.emailTemplatesPagination?.totalRecords==0 && !emailTemplatesOrLandingPagesLoader" class="alert alert-info text-center">
+                                                                                                <strong>No Data Found.</strong>
                                                                                             </div>
                                                                                         </form>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                             <!--Pagination-->
-                                                                            <div
-                                                                                *ngIf="reply?.emailTemplatesPagination?.pagedItems?.length !== 0 && !reply?.loader">
-                                                                                <app-pagination
-                                                                                    [pagination]="reply?.emailTemplatesPagination"
+                                                                            <div *ngIf="reply?.emailTemplatesPagination?.pagedItems?.length !== 0 && !reply?.loader">
+                                                                                <app-pagination  [pagination]="reply?.emailTemplatesPagination"
                                                                                     (notifyParent)="paginateAutoResponseEmailTempaltes($event,reply)"
                                                                                     (notifyParentDropDown)="findEmailTemplatesForAutoResponseWorkFlowOnLimitChange(reply,i)"
                                                                                     [customDropDown]="true">
@@ -1788,15 +1760,12 @@
                                                                     </div>
                                                                 </div>
                                                                 <!--Email Template-->
-                                                                <div id="click-email-template-{{url?.divId}"
-                                                                    *ngIf="url?.defaultTemplate">
+                                                                <div id="click-email-template-{{url?.divId}" *ngIf="url?.defaultTemplate">
                                                                     <fieldset class="scheduler-border">
-                                                                        <legend
-                                                                            class="scheduler-border color-black campaign_boxes">
-                                                                            Select an email template<strong
-                                                                                class="required">*</strong></legend>
-                                                                        <app-landing-page-loader
-                                                                            *ngIf="url?.loader"></app-landing-page-loader>
+                                                                        <legend class="scheduler-border color-black campaign_boxes">
+                                                                            Select an email template<strong class="required">*</strong>
+                                                                        </legend>
+                                                                        <app-landing-page-loader *ngIf="url?.loader"></app-landing-page-loader>
                                                                         <div *ngIf="!url?.loader">
                                                                             <!--Search Key Icon-->
                                                                             <div
@@ -1919,8 +1888,7 @@
                                                                                                                                 [ngTemplateOutletContext]="{vendorCompanyName:emailTemplate?.whiteLabeledEmailTemplateSharedByVendorCompanyName,isWhiteLabeledContent:emailTemplate?.whiteLabeledEmailTemplateReceivedFromVendor}"></ng-template>
                                                                                                                             <!--XBI-1836-->
                                                                                                                         </div>
-                                                                                                                        <span
-                                                                                                                            class="label-color-custmization"
+                                                                                                                        <span *ngIf="authenticationService?.module?.isAnyAdminOrSupervisor || authenticationService?.module?.isEmailTemplate" class="label-color-custmization"
                                                                                                                             (click)="$event.stopPropagation();editTemplate(emailTemplate)">Edit</span>
                                                                                                                     </div>
                                                                                                                 </div>
@@ -2034,23 +2002,25 @@
                                 </div>
                                 <!--Other Buttons-->
                                 <div class="text-center">
-                                    <button type="button" class="btn mBtnAlign f-w-600 w-10em prev-btn bgcolor-unset"
+                                    <button type="button"
+                                        class="btn mBtnAlign f-w-600 w-10em prev-btn bgcolor-unset pos_mrg_top3"
                                         (click)="showCampaignDetailsTab()"><span
                                             class="btn Btn-Gray">Previous</span></button>
                                     <button *ngIf="!isPageCampaign" type="button"
                                         class="button mBtnAlign w-10em bgcolor-unset " title="Send Test Email"
                                         data-toggle="tooltip" data-placement="top"
                                         (click)="selectedEmailTemplateRow>0 && openSendTestEmailModalPopUp()">
-                                        <span class="btn Btn-Green transition pl_4">{{properties?.sendTestEmail}}<i
+                                        <span
+                                            class="btn Btn-Green transition pl_4 pos_pd-top4">{{properties?.sendTestEmail}}<i
                                                 class="fa fa-envelope-o mr5 ml5"></i></span>
                                     </button>
                                     <button type="submit" class="button mBtnAlign w-10em mar-lft-11 bgcolor-unset"
                                         [disabled]="!isContactList"
                                         (click)="isContactList && validateAndLaunchCampaign()"><span
-                                            class="btn Btn-Green transition">{{buttonName}}</span></button>
+                                            class="btn Btn-Green transition pos_pd-top4">{{buttonName}}</span></button>
                                     <button *ngIf="!isPageCampaign" type="button"
                                         class="button mBtnAlign w-10em mar-lft-40 bgcolor-unset"
-                                        (click)="spamCheck()"><span class="btn Btn-Green transition">Spam
+                                        (click)="spamCheck()"><span class="btn Btn-Green transition pos_pd_top5">Spam
                                             Check</span></button>
                                 </div>
                             </div>
@@ -2068,12 +2038,13 @@
             <div *ngIf="!isEditTemplateLoader" class="caption-subject font-red-sunglo f-w-600 text-left zeropx">
                 {{beeContainerInput?.emailTemplateName}}
                 <div>
-                    <a class="close-circle pull-right" (click)="hideEditTemplateDiv()"
-                        [ngStyle]="{'margin-top':isShowEditTemplatePopup && campaignType=='page'? '10px':''}">
+                    <a class="close-circle pull-right mt-4" (click)="hideEditTemplateDiv()"
+                        [ngStyle]="{'margin-top':isShowEditTemplatePopup && campaignType=='page' || campaignType=='survey'? '10px':''}">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </a>
                     <app-preview-popup #previewPopUpComponent
-                        *ngIf="isShowEditTemplatePopup && campaignType=='page'"></app-preview-popup>
+                        *ngIf="(isShowEditTemplatePopup && campaignType=='page') ||(isShowEditTemplatePopup && campaignType=='survey')"
+                        [buttonText]="campaignType=='survey'?'Show Surveys':'Show Forms'"></app-preview-popup>
                     <app-merge-tags *ngIf="isShowEditTemplatePopup"
                         [input]="editTemplateMergeTagsInput"></app-merge-tags>
                     <button (click)="toggleOpenLinksInNewTab()" class="btn-primary olint"

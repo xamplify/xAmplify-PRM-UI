@@ -26,8 +26,9 @@
 			</ng-template>
 		</ul>
 		<div id="folder-margin-xamp">
-			<button class="button_blue bgcolor-unset" id="right" style="padding-bottom: 5px;"
-				(click)="openCreateFolderPopup()" translate><span class="btn btn-primary transition">Create a
+			<button class="button_blue bgcolor-unset pos_pd_top_rgt1" id="right" style="padding-bottom: 5px;"
+				(click)="openCreateFolderPopup()" translate><span class="btn btn-primary transition ">Create
+					a
 					Folder</span></button>
 		</div>
 	</div>
@@ -59,8 +60,12 @@
 							<ng-container *ngIf="contactListTabName=='Partners'">
 								{{authenticationService?.partnerModule?.customName | translate}}
 							</ng-container>
-							<ng-container *ngIf="contactListTabName!='Partners'">
+							<ng-container
+								*ngIf="contactListTabName!='Partners'&& !authenticationService.module.isMarketingCompany">
 								{{authenticationService?.partnerModule?.customName}} & Recipients
+							</ng-container>
+							<ng-container *ngIf="authenticationService.module.isMarketingCompany">
+								Recipients
 							</ng-container>
 						</h5>
 					</div>
@@ -102,8 +107,8 @@
 									<span class=text-danger>*</span>
 								</label>
 								<div class="col-sm-9">
-									<input type="text" class="form-control" id="eventTitle" maxlength="250"
-										placeholder="Event Title" [(ngModel)]="eventCampaign.campaign"
+									<input type="text" autocomplete="off" class="form-control" id="eventTitle"
+										maxlength="250" placeholder="Event Title" [(ngModel)]="eventCampaign.campaign"
 										[ngModelOptions]="{standalone: true}"
 										[ngClass]="{'has-error': eventError.eventTitleError}"
 										(input)="validateCampaignName(eventCampaign.campaign); resetTabClass()"
@@ -137,7 +142,7 @@
 									<span class=text-danger>*</span>
 								</label>
 								<div class="col-sm-9">
-									<input type="text"
+									<input type="text" autocomplete="off"
 										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
 										class="form-control pull-left" placeholder="Hosted By"
 										[(ngModel)]="eventCampaign.fromName" [ngModelOptions]="{standalone: true}"
@@ -176,8 +181,8 @@
 											class="form-control" [(ngModel)]="eventCampaign.subjectLine"
 											[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
 											name="subjectLine" (input)="eventSubjectLineError()"
-											[ngClass]="{'has-error': eventError.eventSubjectLineError}"
-											maxlength="1000" />
+											[ngClass]="{'has-error': eventError.eventSubjectLineError}" maxlength="1000"
+											autocomplete="off" />
 										<span
 											*ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate"
 											class="input-group-btn">
@@ -278,8 +283,8 @@
 							</div>
 							<div class="form-group" *ngIf="eventCampaign.configurePipelines"
 								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
-								<label class="control-label col-sm-3">Lead Pipeline<font style="color: #f55d7a">
-										<b>*</b>
+								<label class="control-label col-sm-3">Lead Pipeline<font>
+										<b style="color: #f55d7a !important">*</b>
 									</font></label>
 								<div class="col-sm-9">
 									<select class="form-control" [(ngModel)]="eventCampaign.leadPipelineId"
@@ -293,8 +298,8 @@
 							</div>
 							<div class="form-group" *ngIf="eventCampaign.configurePipelines"
 								[class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
-								<label class="control-label col-sm-3">Deal Pipeline<font style="color: #f55d7a">
-										<b>*</b>
+								<label class="control-label col-sm-3">Deal Pipeline<font>
+										<b style="color: #f55d7a !important">*</b>
 									</font></label>
 								<div class="col-sm-9">
 									<select class="form-control" [(ngModel)]="eventCampaign.dealPipelineId"
@@ -626,8 +631,9 @@
 								<div *ngIf="socialStatusProviders?.length > 0" [class.disabled]="(isPreviewEvent)">
 									<button type="button" class="button_blue pull-right bgcolor-unset"
 										(click)="isSocialEnable = !isSocialEnable">
-										<span class="btn btn-primary transition"><i class="fa fa-share-alt fa-social"
-												style="margin: 0 5px;"></i> Social Share</span>
+										<span class="btn btn-primary transition txt_pd-top3"><i
+												class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social
+											Share</span>
 									</button>
 									<div class="clearfix"></div>
 									<div [hidden]="!isSocialEnable">
@@ -686,7 +692,7 @@
 											</li>
 										</ul>
 										<div class="col-xs-12 p0" style="margin-top: 10px;">
-											<div style="border: 1px solid #ccc; padding: 10px;">
+											<div class="social_share_border" style="padding: 10px;">
 												<h6 class="pull-left f-w-600 mt0">Social share preview</h6>
 												<textarea placeholder="Status message" rows="4" class="form-control"
 													[(ngModel)]="statusMessage"
@@ -799,192 +805,255 @@
 							type="button" style="float: right" class="button bgcolor-unset"
 							(click)="resetTabs('recipients')" title="Please Fill Campaign Details"
 							[disabled]="recipientsTabClass === 'disableRecipientsTab'"><span
-								class="btn Btn-Green transition">Next</span></button>
+								class="btn Btn-Green transition txt_pd-top3">Next</span></button>
 					</div>
 				</fieldset>
 				<!--  End Step one -->
 				<!--   Step two  Recipients  -->
-				<div class="row setup-content" id="step-4" *ngIf="recipientsTab">
+				<div class="row setup-content" id="step-4" *ngIf="recipientsTab ">
 					<div class="col-xs-12">
-						<div class="col-xs-12" style="margin-top: 10px;">
-							<div class="row pb10" id="user_list_table_view">
-								<div>
-									<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer"
-										style="padding:10px">
-										<div class="note-vid pull-left">{{contactListSelectMessage}}</div>
-										<div class="inputs" style="float: right;padding-bottom: 5px;display: flex;">
-											<div style="float: left;padding-right: 5px;"
-												*ngIf="!reDistributeEvent && !reDistributeEventManage">
-												<select class="form-control mEventPad SeclectBoxPaddingsAbj"
-													[(ngModel)]="recipientsSortOption.eventSelectedCampaignRecipientsDropDownOption"
-													(ngModelChange)="sortRecipientsList($event)">
-													<option
-														*ngFor="let option of recipientsSortOption.eventCampaignRecipientsDropDownOptions"
-														[ngValue]="option">{{option.name}}</option>
-												</select>
-											</div>
-											<div class="portlet-input input-inline mEventSearch" style="top: -6px;">
-												<div class="input-icon right">
-													<input type="text" [(ngModel)]="contactSearchInput"
-														[ngModelOptions]="{standalone: true}" class="form-control"
-														placeholder="Search for a list"
-														(keypress)="eventHandlerContact($event.keyCode)">
-													<button class="glyphicon glyphicon-remove search-box-item-clear"
-														style="padding: 5px;" *ngIf="contactSearchInput"
-														(click)="contactSearchInput='';searchContactList()"></button>
-													<button type="submit" class="search-box-item-click"
-														style="padding: 4px !important;" (click)="searchContactList()">
-														<i class="fa fa-search"
-															style="font-size: 16px !important; padding: 5px !important;"
-															aria-hidden="true"></i>
-													</button>
-												</div>
-											</div>
+						<fieldset class="scheduler-border" [style.border-color]="contactListBorderColor">
+							<legend class="scheduler-border">Selected {{campaign?.oneClickLaunch ?
+								'Lead(s)':'Contact(s)'}} list</legend>
+
+							<div class="row d-flex align-items-center">
+								<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+									<ng-container *ngIf="parternUserListIds?.length<1">
+										<i class="fa fa-users" id="usefa"
+											[ngClass]="{'disabled': parternUserListIds?.length < 1}"
+											aria-hidden="true"></i>
+									</ng-container>
+
+									<ng-container *ngIf="parternUserListIds?.length>=1">
+										<i class="fa fa-users" id="usefa" style="background-color:#37accc"
+											aria-hidden="true"></i>
+									</ng-container>
+								</div>
+								<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+									<ng-container *ngIf="parternUserListIds?.length==0">
+										<h4 class="text-center"> No row is selected </h4>
+									</ng-container>
+								</div>
+								<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+									<div class="portlet-input input-inline mEventSearch" style="top: -6px;">
+										<div class="input-icon right">
+											<input type="text" [(ngModel)]="contactSearchInput"
+												[ngModelOptions]="{standalone: true}" class="form-control"
+												placeholder="Search for a list"
+												(keypress)="eventHandlerContact($event.keyCode)">
+											<button class="glyphicon glyphicon-remove search-box-item-clear"
+												style="padding: 5px;" *ngIf="contactSearchInput"
+												(click)="contactSearchInput='';searchContactList()"></button>
+											<button type="submit" class="search-box-item-click"
+												style="padding: 4px !important;" (click)="searchContactList()">
+												<i class="fa fa-search"
+													style="font-size: 16px !important; padding: 5px !important;"
+													aria-hidden="true"></i>
+											</button>
 										</div>
-										<div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
-											<div class="alert alert-success" *ngIf="parternUserListIds?.length>0">
-												<ng-container *ngIf="parternUserListIds?.length==1">
-													{{parternUserListIds?.length}} row is selected
-												</ng-container>
-												<ng-container *ngIf="parternUserListIds?.length>1">
-													{{parternUserListIds?.length}} rows are selected
-												</ng-container>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-12" style="margin-top: 10px;">
+								<div class="row pb10" id="user_list_table_view">
+									<div>
+										<div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer"
+											style="padding:10px">
+											<div class="note-vid pull-left">{{contactListSelectMessage}}</div>
+											<div class="inputs" style="float: right;padding-bottom: 5px;display: flex;">
+												<div style="float: left;padding-right: 5px;"
+													*ngIf="!reDistributeEvent && !reDistributeEventManage">
+													<select class="form-control mEventPad SeclectBoxPaddingsAbj"
+														[(ngModel)]="recipientsSortOption.eventSelectedCampaignRecipientsDropDownOption"
+														(ngModelChange)="sortRecipientsList($event)">
+														<option
+															*ngFor="let option of recipientsSortOption.eventCampaignRecipientsDropDownOptions"
+															[ngValue]="option">{{option.name}}</option>
+													</select>
+												</div>
+
 											</div>
-											<table class="table table-filter"
-												*ngIf="contactListsPagination.totalRecords==0"
-												aria-describedby="contactandpartnerstable">
-												<tr>
-													<th colspan="5" scope="row">
-														<div class="alert alert-info">
-															<strong>{{emptyContactListMessage}}</strong>
-														</div>
-													</th>
-												</tr>
-											</table>
-											<div class="table-responsive">
-												<table class="table tgrid" id="user_list_tb"
-													aria-describedby="user_list_tb_info"
-													*ngIf="contactListsPagination.pagedItems?.length > 0">
-													<thead>
-														<tr>
-															<th scope="row" class="text-center">
-																<input type="checkbox" class="checkBox_shadow"
-																	name="all" [(ngModel)]="isHeaderCheckBoxChecked"
-																	(change)="checkAllForPartners($event)"
-																	id="checkAllExistingContacts" />
-															</th>
-															<th class="hidden-xs" *ngIf="showExpandButton"></th>
-															<th class="hidden-xs" scope="row" colspan="2"
-																style="width: 35%">
-																<span class="ui-column-resizer"
-																	(mousedown)="referenceService.onMouseDown($event, 'user_list_tb',2)"></span>
-																<span class="gridHeader" translate>List Name</span>
-															</th>
-															<th class="visible-xs" scope="row" colspan="1"
-																style="width: 35%" translate>
-																List Info
-															</th>
-															<th scope="row" style="text-align: center;" translate>Type
-															</th>
-															<th scope="row" style="text-align: center;" translate>
-																Uploaded Date</th>
-															<th *ngIf="!this.reDistributeEvent && !this.reDistributeEventManage"
-																scope="row" style="text-align: center;" translate>Count
-															</th>
-															<th scope="row" style="text-align: center;" translate>
-																Preview </th>
-														</tr>
-													</thead>
-													<tbody>
-														<ng-container
-															*ngFor="let contactList of contactListsPagination.pagedItems;let i = index">
-															<tr role="row"
-																id="campaignContactListTable_{{contactList.id}}"
-																(click)="highlightPartnerContactRow(contactList,$event,contactList.noOfContacts,contactList.emailValidationInd)"
-																[ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}"
-																(mouseover)='showContactsAlert(contactList.count)'
-																[attr.title]="emptyContactsMessage">
-																<td class="text-center">
-																	<div class="form-group">
-																		<input value="{{contactList.id}}"
-																			name="campaignContact[]"
-																			[attr.disabled]="isPreviewEvent || ((contactList.name==properties.activeMasterPartnerList  || contactList.name==properties.inActiveMasterPartnerList) && contactList.count==0)? '' : null"
-																			type='checkbox' id='{{contactList.id}}'
-																			[checked]="parternUserListIds.indexOf(contactList.id)>-1"
-																			(click)="$event.stopPropagation();partnerHighlightRow(contactList)"
-																			(input)="resetTabClass()">
-																	</div>
-																</td>
-																<td class="cw" *ngIf="showExpandButton">
-																	<div class="actions-block left-float">
-																		<a (click)="$event.stopPropagation();viewMatchedContacts(contactList)"
-																			title="Matched Results">
-																			<i class="fa"
-																				[ngClass]="{'fa-angle-right': !contactList.expand, 'fa-angle-down': contactList.expand}"
-																				aria-hidden="true"
-																				style=" padding-top: 0px;"></i>
-																		</a>
-																	</div>
-																</td>
-																<td style="width: 10%;text-align: left;"
-																	class="hidden-xs">
-																	<img *ngIf="contactList?.socialNetwork=='ZOHO'"
-																		src="{{properties?.zohoImage}}" alt="Zoho"
-																		class="img-class-list image_effect">
-																	<img *ngIf="contactList?.socialNetwork=='GOOGLE'"
-																		src="{{properties?.googleImage}}" alt="Google"
-																		class="img-class-list image_effect">
-																	<img *ngIf="contactList?.socialNetwork=='SALESFORCE'"
-																		src="{{properties?.salesforceImage}}"
-																		alt="Salesforce"
-																		class="img-class-list image_effect">
-																	<img *ngIf="contactList?.socialNetwork=='MANUAL'"
-																		src="{{properties?.manualImage}}" alt="Manual"
-																		class="img-class-list image_effect">
-																	<img *ngIf="contactList?.socialNetwork=='HUBSPOT'"
-																		src="{{properties?.hubspotImage}}" alt="Hubspot"
-																		class="img-class-list image_effect">
-																	<img *ngIf="contactList?.socialNetwork=='MARKETO'"
-																		src="{{properties?.marketoImage}}" alt="Marketo"
-																		class="img-class-list image_effect">
-																	<img *ngIf="contactList?.socialNetwork=='MICROSOFT'"
-																		src="{{properties?.microsoftImage}}"
-																		alt="microsoft"
-																		class="img-class-list image_effect">
-																	<img *ngIf="contactList?.socialNetwork=='PIPEDRIVE'"
-																		src="{{properties?.pipedriveImage}}"
-																		alt="pipedrive"
-																		class="img-class-list image_effect">
-																</td>
-																<td style="text-align: left;"
-																	*ngIf="!reDistributeEvent && !reDistributeEventManage">
-																	<h4 class="moreipsis mt5 mb5 f-w-600"
-																		title="{{contactList?.name}}">
-																		<span><strong>{{contactList?.name}}</strong></span>
-																	</h4>
-																	<h6 class="moreipsis"
-																		title="{{contactList?.creatorName}}">
-																		<span translate> Created By
-																			<strong>{{contactList?.creatorName}}</strong></span>
-																	</h6>
-																	<ng-container *ngIf="!contactList?.partnerList">
-																		<div style="display: inline-flex;">
-																			<h6 class="view-banner" translate>
-																				<span *ngIf="contactList?.publicList"
-																					data-toggle="tooltip"
-																					data-placement="top"
-																					title="{{actionsDescription?.contact_list_public}}"
-																					translate>Public
-																				</span>
-																				<span *ngIf="!contactList?.publicList"
-																					data-toggle="tooltip"
-																					data-placement="top"
-																					title="{{actionsDescription?.contact_list_private}}"
-																					translate>Private
-																				</span>
+											<div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
+												<div class="alert alert-success" *ngIf="parternUserListIds?.length>0">
+													<ng-container *ngIf="parternUserListIds?.length==1">
+														{{parternUserListIds?.length}} row is selected
+													</ng-container>
+													<ng-container *ngIf="parternUserListIds?.length>1">
+														{{parternUserListIds?.length}} rows are selected
+													</ng-container>
+												</div>
+												<table class="table table-filter"
+													*ngIf="contactListsPagination.totalRecords==0"
+													aria-describedby="contactandpartnerstable">
+													<tr>
+														<th colspan="5" scope="row">
+															<div class="alert alert-info">
+																<strong>{{emptyContactListMessage}}</strong>
+															</div>
+														</th>
+													</tr>
+												</table>
+												<div class="col-xs-12">
+													<div class="table-responsive">
+
+														<table class="table tgrid" id="user_list_tb"
+															aria-describedby="user_list_tb_info"
+															*ngIf="contactListsPagination.pagedItems?.length > 0 ">
+															<!-- change start -->
+															<thead>
+																<tr>
+																	<th scope="row" class="text-center">
+																		<input type="checkbox" class="checkBox_shadow"
+																			name="all"
+																			[(ngModel)]="isHeaderCheckBoxChecked"
+																			(change)="checkAllForPartners($event)"
+																			id="checkAllExistingContacts" />
+																	</th>
+																	<th class="hidden-xs" *ngIf="showExpandButton"></th>
+																	<th class="hidden-xs" scope="row" colspan="2"
+																		style="width: 35%">
+																		<span class="ui-column-resizer"
+																			(mousedown)="referenceService.onMouseDown($event, 'user_list_tb',2)"></span>
+																		<span class="gridHeader" translate>List
+																			Name</span>
+																	</th>
+																	<th class="visible-xs" scope="row" colspan="1"
+																		style="width: 35%" translate>
+																		List Info
+																	</th>
+																	<th scope="row" style="text-align: center;"
+																		translate>Type
+																	</th>
+																	<th scope="row" style="text-align: center;"
+																		translate>
+																		Uploaded Date</th>
+																	<th *ngIf="!this.reDistributeEvent && !this.reDistributeEventManage"
+																		scope="row" style="text-align: center;"
+																		translate>Count
+																	</th>
+																	<th scope="row" style="text-align: center;"
+																		translate>
+																		Preview </th>
+																</tr>
+																<!-- change to do -->
+															</thead>
+															<tbody>
+																<ng-container
+																	*ngFor="let contactList of contactListsPagination.pagedItems;let i = index">
+																	<tr role="row"
+																		id="campaignContactListTable_{{contactList.id}}"
+																		(click)="highlightPartnerContactRow(contactList,$event,contactList.noOfContacts,contactList.emailValidationInd)"
+																		[ngClass]="{'contact-list-selected': userListIds.indexOf(contactList.id)>-1 || parternUserListIds.indexOf(contactList.id)>-1}"
+																		(mouseover)='showContactsAlert(contactList.count)'
+																		[attr.title]="emptyContactsMessage">
+																		<td class="text-center">
+																			<div class="form-group">
+																				<input value="{{contactList.id}}"
+																					name="campaignContact[]"
+																					[attr.disabled]="isPreviewEvent || ((contactList.name==properties.activeMasterPartnerList  || contactList.name==properties.inActiveMasterPartnerList) && contactList.count==0)? '' : null"
+																					type='checkbox'
+																					id='{{contactList.id}}'
+																					[checked]="parternUserListIds.indexOf(contactList.id)>-1"
+																					(click)="$event.stopPropagation();partnerHighlightRow(contactList)"
+																					(input)="resetTabClass()">
+																			</div>
+																		</td>
+																		<td class="cw" *ngIf="showExpandButton">
+																			<div class="actions-block left-float">
+																				<a (click)="$event.stopPropagation();viewMatchedContacts(contactList)"
+																					title="Matched Results">
+																					<i class="fa"
+																						[ngClass]="{'fa-angle-right': !contactList.expand, 'fa-angle-down': contactList.expand}"
+																						aria-hidden="true"
+																						style=" padding-top: 0px;"></i>
+																				</a>
+																			</div>
+																		</td>
+																		<td style="width: 10%;text-align: left;"
+																			class="hidden-xs">
+																			<img *ngIf="contactList?.socialNetwork=='ZOHO'"
+																				src="{{properties?.zohoImage}}"
+																				alt="Zoho"
+																				class="img-class-list image_effect">
+																			<img *ngIf="contactList?.socialNetwork=='GOOGLE'"
+																				src="{{properties?.googleImage}}"
+																				alt="Google"
+																				class="img-class-list image_effect">
+																			<img *ngIf="contactList?.socialNetwork=='SALESFORCE'"
+																				src="{{properties?.salesforceImage}}"
+																				alt="Salesforce"
+																				class="img-class-list image_effect">
+																			<img *ngIf="contactList?.socialNetwork=='MANUAL'"
+																				src="{{properties?.manualImage}}"
+																				alt="Manual"
+																				class="img-class-list image_effect">
+																			<img *ngIf="contactList?.socialNetwork=='HUBSPOT'"
+																				src="{{properties?.hubspotImage}}"
+																				alt="Hubspot"
+																				class="img-class-list image_effect">
+																			<img *ngIf="contactList?.socialNetwork=='MARKETO'"
+																				src="{{properties?.marketoImage}}"
+																				alt="Marketo"
+																				class="img-class-list image_effect">
+																			<img *ngIf="contactList?.socialNetwork=='MICROSOFT'"
+																				src="{{properties?.microsoftImage}}"
+																				alt="microsoft"
+																				class="img-class-list image_effect">
+																			<img *ngIf="contactList?.socialNetwork=='PIPEDRIVE'"
+																				src="{{properties?.pipedriveImage}}"
+																				alt="pipedrive"
+																				class="img-class-list image_effect">
+																		</td>
+																		<td style="text-align: left;"
+																			*ngIf="!reDistributeEvent && !reDistributeEventManage">
+																			<h4 class="moreipsis mt5 mb5 f-w-600"
+																				title="{{contactList?.name}}">
+																				<span><strong>{{contactList?.name}}</strong></span>
+																			</h4>
+																			<h6 class="moreipsis"
+																				title="{{contactList?.creatorName}}">
+																				<span translate> Created By
+																					<strong>{{contactList?.creatorName}}</strong></span>
 																			</h6>
+																			<ng-container
+																				*ngIf="!contactList?.partnerList">
+																				<div style="display: inline-flex;">
+																					<h6 class="view-banner" translate>
+																						<span
+																							*ngIf="contactList?.publicList"
+																							data-toggle="tooltip"
+																							data-placement="top"
+																							title="{{actionsDescription?.contact_list_public}}"
+																							translate>Public
+																						</span>
+																						<span
+																							*ngIf="!contactList?.publicList"
+																							data-toggle="tooltip"
+																							data-placement="top"
+																							title="{{actionsDescription?.contact_list_private}}"
+																							translate>Private
+																						</span>
+																					</h6>
+																					<h6 *ngIf="contactList?.formList"
+																						class="view-banner view-banner-green"
+																						translate>
+																						<span data-toggle="tooltip"
+																							data-placement="top"
+																							title="This list is associated with a form."
+																							translate>Form Contact List
+																						</span>
+																					</h6>
+																				</div>
+																			</ng-container>
+																		</td>
+																		<td style="text-align: center"
+																			*ngIf="this.reDistributeEvent || this.reDistributeEventManage">
+																			<h4 class="moreipsis mt5 mb5 f-w-600"
+																				title="{{contactList?.name}}">
+																				<span><strong>{{contactList?.name}}</strong></span>
+																			</h4>
 																			<h6 *ngIf="contactList?.formList"
-																				class="view-banner view-banner-green"
+																				class="view-banner view-banner-green mt10"
 																				translate>
 																				<span data-toggle="tooltip"
 																					data-placement="top"
@@ -992,103 +1061,93 @@
 																					translate>Form Contact List
 																				</span>
 																			</h6>
-																		</div>
-																	</ng-container>
-																</td>
-																<td style="text-align: center"
-																	*ngIf="this.reDistributeEvent || this.reDistributeEventManage">
-																	<h4 class="moreipsis mt5 mb5 f-w-600"
-																		title="{{contactList?.name}}">
-																		<span><strong>{{contactList?.name}}</strong></span>
-																	</h4>
-																	<h6 *ngIf="contactList?.formList"
-																		class="view-banner view-banner-green mt10"
-																		translate>
-																		<span data-toggle="tooltip" data-placement="top"
-																			title="This list is associated with a form."
-																			translate>Form Contact List
-																		</span>
-																	</h6>
-																</td>
-																<td class='text-center m0'
-																	*ngIf="!reDistributeEvent&&!reDistributeEventManage">
-																	<ng-container *ngIf="contactList.partnerList">
-																		{{authenticationService?.partnerModule?.customName}}
-																	</ng-container>
-																	<ng-container *ngIf="!contactList.partnerList">
-																		Contacts
-																	</ng-container>
-																</td>
-																<td style="text-align:center"
-																	*ngIf="this.reDistributeEvent || this.reDistributeEventManage">
-																	{{contactList.type}}
-																</td>
-																<td class="text-center sorting_1"
-																	*ngIf="!this.reDistributeEvent && !this.reDistributeEventManage">
-																	<app-timestamp
-																		*ngIf="!referenceService.isSafariBrowser()"
-																		[isOnlyDate]="true"
-																		[dateAndTime]="contactList?.displayTime">
-																	</app-timestamp>
-																	<span *ngIf="referenceService.isSafariBrowser()">
-																		{{contactList.displayTime}} </span>
-																</td>
-																<td class="text-center sorting_1"
-																	*ngIf="this.reDistributeEvent || this.reDistributeEventManage">
-																	<app-timestamp
-																		*ngIf="!referenceService.isSafariBrowser()"
-																		[isOnlyDate]="true"
-																		[dateAndTime]="contactList.createdDate">
-																	</app-timestamp>
-																	<span *ngIf="referenceService.isSafariBrowser()">
-																		{{contactList.createdDate}} </span>
-																</td>
-																<td class="text-center"
-																	*ngIf="!this.reDistributeEvent && !this.reDistributeEventManage">
-																	{{contactList?.count}}
-																</td>
-																<td class="text-center">
-																	<a class="custom-grid-icon"
-																		(click)="$event.stopPropagation();previewUsers(contactList)">
-																		<i class="fa fa-eye IconCustomization campaignViewIcon"
-																			aria-hidden="true" title=""
-																			data-original-title="Preview"></i>
-																		<div class="clickicons"></div>
-																	</a>
-																	<!-- style="color: #008fd5;padding-top: 3px; font-size: 20px;" -->
-																</td>
-															</tr>
-															<tr *ngIf="contactList?.expand">
-																<td colspan="12">
-																	<app-userlist-users
-																		[searchKey]="contactListsPagination.searchKey"
-																		[userListId]="contactList.id"></app-userlist-users>
-																</td>
-															</tr>
-														</ng-container>
-													</tbody>
-												</table>
+																		</td>
+																		<td class='text-center m0'
+																			*ngIf="!reDistributeEvent&&!reDistributeEventManage">
+																			<ng-container
+																				*ngIf="contactList.partnerList">
+																				{{authenticationService?.partnerModule?.customName}}
+																			</ng-container>
+																			<ng-container
+																				*ngIf="!contactList.partnerList">
+																				Contacts
+																			</ng-container>
+																		</td>
+																		<td style="text-align:center"
+																			*ngIf="this.reDistributeEvent || this.reDistributeEventManage">
+																			{{contactList.type}}
+																		</td>
+																		<td class="text-center sorting_1"
+																			*ngIf="!this.reDistributeEvent && !this.reDistributeEventManage">
+																			<app-timestamp
+																				*ngIf="!referenceService.isSafariBrowser()"
+																				[isOnlyDate]="true"
+																				[dateAndTime]="contactList?.displayTime">
+																			</app-timestamp>
+																			<span
+																				*ngIf="referenceService.isSafariBrowser()">
+																				{{contactList.displayTime}} </span>
+																		</td>
+																		<td class="text-center sorting_1"
+																			*ngIf="this.reDistributeEvent || this.reDistributeEventManage">
+																			<app-timestamp
+																				*ngIf="!referenceService.isSafariBrowser()"
+																				[isOnlyDate]="true"
+																				[dateAndTime]="contactList.createdDate">
+																			</app-timestamp>
+																			<span
+																				*ngIf="referenceService.isSafariBrowser()">
+																				{{contactList.createdDate}} </span>
+																		</td>
+																		<td class="text-center"
+																			*ngIf="!this.reDistributeEvent && !this.reDistributeEventManage">
+																			{{contactList?.count}}
+																		</td>
+																		<td class="text-center">
+																			<a class="custom-grid-icon"
+																				(click)="$event.stopPropagation();previewUsers(contactList)">
+																				<i class="fa fa-eye IconCustomization campaignViewIcon"
+																					aria-hidden="true" title=""
+																					data-original-title="Preview"></i>
+																				<div class="clickicons"></div>
+																			</a>
+																			<!-- style="color: #008fd5;padding-top: 3px; font-size: 20px;" -->
+																		</td>
+																	</tr>
+																	<tr *ngIf="contactList?.expand">
+																		<td colspan="12">
+																			<app-userlist-users
+																				[searchKey]="contactListsPagination.searchKey"
+																				[userListId]="contactList.id"></app-userlist-users>
+																		</td>
+																	</tr>
+																</ng-container>
+															</tbody>
+														</table>
+
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
+									<div style="text-align:left;padding-left: 10px;padding-right: 9px;">
+										<app-pagination [class.disabled]="isPreviewEvent"
+											[pagination]="contactListsPagination" [type]="'contactlists'"
+											(notifyParent)="setPage($event)"
+											(notifyParentDropDown)="paginationDropDown($event)">
+										</app-pagination>
+									</div>
 								</div>
-								<div style="text-align:left;padding-left: 10px;padding-right: 9px;">
-									<app-pagination [class.disabled]="isPreviewEvent"
-										[pagination]="contactListsPagination" [type]="'contactlists'"
-										(notifyParent)="setPage($event)"
-										(notifyParentDropDown)="paginationDropDown($event)">
-									</app-pagination>
-								</div>
+								<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage"
+									type="button" style="float:left;" class="btn Btn-Gray"
+									(click)="resetTabs('details')">Previous</button>
+								<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage"
+									type="button" style="float: right;" class="button bgcolor-unset"
+									[disabled]="emailTemplatesTabClass === 'disableTemplateTab'"
+									(click)="resetTabs('templates')" title=""><span
+										class="btn Btn-Green transition txt_pd-top3">Next</span></button>
 							</div>
-							<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage"
-								type="button" style="float:left;" class="btn Btn-Gray"
-								(click)="resetTabs('details')">Previous</button>
-							<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage"
-								type="button" style="float: right;" class="button bgcolor-unset"
-								[disabled]="emailTemplatesTabClass === 'disableTemplateTab'"
-								(click)="resetTabs('templates')" title=""><span
-									class="btn Btn-Green transition">Next</span></button>
-						</div>
+						</fieldset>
 					</div>
 				</div>
 				<!--     End Step two   -->
@@ -1324,7 +1383,7 @@
 					<button *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage" type="button"
 						style="float: right;" class="button bgcolor-unset" (click)="resetTabs('launch')"
 						[class.disabled]="launchTabClass === 'disableLaunchTab'" title=""><span
-							class="btn Btn-Green transition">Next</span></button>
+							class="btn Btn-Green transition txt_pd-top3">Next</span></button>
 				</div>
 				<!--    End Step three templates -->
 				<!-- 	Step four launch campaigns    -->
@@ -1432,9 +1491,9 @@
 													<button
 														[class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate"
 														[class.disabled]="isPreviewEvent"
-														class="button_blue bgcolor-unset" style="color:#fff"
-														(click)="resetTabs('recipients')"><span
-															class="btn btn-primary transition">Change</span></button>
+														class="button_blue bgcolor-unset pos_mrg_top_rgt"
+														style="color:#fff" (click)="resetTabs('recipients')"><span
+															class="btn btn-primary transition txt_pd-top3">Change</span></button>
 												</td>
 											</tr>
 										</table>
@@ -1463,10 +1522,10 @@
 												<td style="text-align: right" width="20%">
 													<button
 														[class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate"
-														class="button_blue bgcolor-unset"
+														class="button_blue bgcolor-unset pos_mrg_top_rgt"
 														[class.disabled]="isPreviewEvent"
 														(click)="resetTabs('templates')"><span
-															class="btn btn-primary transition">Change</span></button>
+															class="btn btn-primary transition txt_pd-top3">Change</span></button>
 													<a *ngIf="reDistributeEvent || reDistributeEventManage"
 														class="btn btn-primary btn-sm"
 														(click)="editPartnerTemplate()"><i
@@ -1549,7 +1608,7 @@
 										<form class="role add-reply" id="form-{{reply.divId}}">
 											<div class="col-xs-12 p0">
 												<div class="col-xs-12 p0">
-													<div class="col-xs-12 col-sm-6" style="margin-bottom: 6px;">
+													<div class="col-xs-12 col-sm-4" style="margin-bottom: 6px;">
 														<label style="cursor: default;" for="reason">Reason</label>
 														<select class="form-control" name="actionId"
 															[(ngModel)]="reply.actionId"
@@ -1586,12 +1645,11 @@
 													</div>
 													<div *ngIf="reply.actionId == 0 || reply.actionId == 13 || reply.actionId == 24 || reply.actionId == 29 || reply.actionId == 30 || reply.actionId==33"
 														[class.disabled]="isPreviewEvent">
-														<div class="col-xs-12 col-sm-2">
+														<div class="col-xs-12 col-sm-3">
 															<label style="cursor: default;" for="days"
 																*ngIf="reply.actionId==22 || reply.actionId==23 || reply.actionId==33 "
 																id="reply-days-{{reply.divId}}">Reply In X Days
 																<b style="color: red">*</b>
-																<font><b>(Minimum 1 Day)</b></font>
 															</label>
 															<label style="cursor: default;" for="days"
 																*ngIf="reply.actionId ==29 || reply.actionId!=22 && reply.actionId!=23 && reply.actionId!=33"
@@ -1603,6 +1661,7 @@
 																	*ngIf="reply.actionId == 29 || reply.actionId == 30">Send
 																	Before X Days</span>
 																<b style="color: red">*</b>
+
 															</label>
 															<input *ngIf="reply.actionId == 29 || reply.actionId == 30"
 																[attr.disabled]="isPreviewEvent? '' : null"
@@ -1615,27 +1674,15 @@
 																type="number" class="form-control" name="days"
 																placeholder="Days" [(ngModel)]="reply.replyInDays"
 																min="0" oninput="validity.valid||(value='');">
-														</div>
-														<div class="col-xs-12 col-sm-3 time-col"
-															style="padding-left: 0;"
-															*ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-															<div class="col-xs-2 responsive-screen-zeropadding"
-																style="cursor: default;"><span for="time"
-																	id="send-time-{{reply.divId}}"
-																	class="time-picker-css">At<b
-																		style="color: red">*</b></span></div>
-															<div class="col-xs-10 mEventDaysHeight"
-																style="height: 66px;">
-																<timepicker [attr.disabled]="isPreviewEvent"
-																	[(ngModel)]="reply.replyTime" name="time"
-																	[hourStep]="1" [minuteStep]="1"></timepicker>
-															</div>
+															<span
+																*ngIf="reply.actionId !=29 && reply.actionId != 30"><b>(Minimum
+																	1 Day)</b></span>
 														</div>
 													</div>
-													<div class="col-xs-12 col-sm-6">
+													<div class="col-xs-12 col-sm-5">
 														<label style="cursor: default;" for="time"
 															id="reply-subject-{{reply.divId}}">Subject<strong
-																style="color: red">*</strong></label>
+																class="required">*</strong></label>
 														<div
 															[className]="!isPreviewEvent ? 'input-group merge-tag-input-border':''">
 															<input [attr.disabled]="isPreviewEvent? '' : null"
@@ -1990,19 +2037,22 @@
 									<input type="radio" class="text-center mLabelAlign radioButton_shadow"
 										name="scheduleCampaign" [value]="launchOptions[0]"
 										(click)="setLaunchOptions(launchOptions[0])" ngDefaultControl
-										style=" margin-right:10px; " /><span class="text-algn">Now</span>
+										[(ngModel)]="checkLaunchOption" style=" margin-right:10px; " /><span
+										class="text-algn">Now</span>
 								</label>
 								<label class="btn btn-warning button-border Sch-class">
 									<input type="radio" class="text-center mLabelAlign radioButton_shadow"
 										name="scheduleCampaign" [value]="launchOptions[1]"
 										(click)="setLaunchOptions(launchOptions[1])" ngDefaultControl
-										style="margin-right:10px " /><span class="text-algn">Schedule</span>
+										[(ngModel)]="checkLaunchOption" style="margin-right:10px " /><span
+										class="text-algn">Schedule</span>
 								</label>
 								<label class="btn green mBtnAlign button-border">
 									<input type="radio" class="text-center mLabelAlign radioButton_shadow"
 										name="scheduleCampaign" [value]="launchOptions[2]"
 										(click)="setLaunchOptions(launchOptions[2])" ngDefaultControl
-										style="margin-right:10px" /><span class="text-algn">Save</span>
+										[(ngModel)]="checkLaunchOption" style="margin-right:10px" /><span
+										class="text-algn">Save</span>
 								</label>
 							</ng-container>
 						</div>
@@ -2011,7 +2061,8 @@
 						<div class="col-md-4">
 							<input [attr.disabled]="isPreviewEvent? '' : null" type="text" id="launchTimeInString"
 								class="form-control eventflatpickr" placeholder="Launch Time"
-								[(ngModel)]="eventCampaign.launchTimeInString" [ngModelOptions]="{standalone: true}"
+								[(ngModel)]="eventCampaign.launchTimeInString"
+								[value]="eventCampaign.launchTimeInString" [ngModelOptions]="{standalone: true}"
 								(input)="scheduleTimeError()" (blur)="scheduleTimeError()">
 							<div class="text-danger" *ngIf="eventError.scheduleTimeError">{{scheduleCampaignError}}
 							</div>
@@ -2054,10 +2105,12 @@
 								class="btn btn-warning button-border Sch-class" style="width: 10em;"
 								(click)="scheduleCampaign()">Schedule</button>
 							<button type="submit" *ngIf="checkLaunchOption=='SAVE'"
-								class="btn green mBtnAlign button-border" style="width: 10em;"
-								(click)="createEventCampaign(eventCampaign, 'SAVE')">Save</button>
-							<button type="button" class="btn green" (click)="spamCheck()" style="width: 10em;">Spam
-								check</button>
+								class="button bgcolor-unset button-border" style="width: 10em;"
+								(click)="createEventCampaign(eventCampaign, 'SAVE')"><span
+									class="btn Btn-Green transition txt_pd-top3">Save</span></button>
+							<button type="button" class="button bgcolor-unset neg_mrg_top4" (click)="spamCheck()"
+								style="width: 10em;"><span class="btn Btn-Green transition txt_pd-top3">Spam
+									check</span></button>
 						</div>
 					</div>
 				</div>
@@ -2285,9 +2338,9 @@
 				</div>
 			</div>
 			<div class="folder-modal-footer" *ngIf="!folderErrorCustomResponse.isVisible">
-				<button type="button" class="btn Btn-Gray " (click)="closeFilterPopup()">Cancel</button>
-				<button type="button" class="button_blue" (click)="closeFilterPopup()"><span
-						class="btn btn-primary transition bgcolor-unset">Apply</span></button>
+				<button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="closeFilterPopup()">Cancel</button>
+				<button type="button" class="button_blue bgcolor-unset" (click)="closeFilterPopup()"><span
+						class="btn btn-primary transition bgcolor-unset txt_pd-top3">Apply</span></button>
 			</div>
 		</div>
 	</div>

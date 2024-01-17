@@ -186,6 +186,8 @@ setViewType(viewType: string) {
       },
       (error: any) => {
         this.logger.errorPage(error);
+      },()=>{
+        this.callFolderListViewEmitter();
       });
   }
   /********************Pagaination&Search Code*****************/
@@ -231,7 +233,7 @@ setViewType(viewType: string) {
     }
   }
 
-  confirmDelete(id: number) {
+  confirmDelete(track: any) {
     try {
       let self = this;
       swal({
@@ -244,7 +246,7 @@ setViewType(viewType: string) {
         confirmButtonText: 'Yes, delete it!'
 
       }).then(function () {
-        self.delete(id);
+        self.delete(track);
       }, function (dismiss: any) {
         console.log('you clicked on option' + dismiss);
       });
@@ -254,9 +256,9 @@ setViewType(viewType: string) {
     }
   }
 
-  delete(id: number) {
+  delete(track: any) {
     let tracksPlayBook: TracksPlayBook = new TracksPlayBook();
-    tracksPlayBook.id = id;
+    tracksPlayBook.id = track.id;
     tracksPlayBook.userId = this.loggedInUserId;
     tracksPlayBook.type = this.type;
     this.customResponse = new CustomResponse();
@@ -265,20 +267,9 @@ setViewType(viewType: string) {
     this.tracksPlayBookUtilService.deleteById(tracksPlayBook).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
-          if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
-            this.referenceService.showInfo("Track Deleted Successfully", "");
-          } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-            this.referenceService.showInfo("Play Book Deleted Successfully", "");
-          }
-          const message = response.message;
-          if (this.type == undefined || this.type == TracksPlayBookType[TracksPlayBookType.TRACK]) {
-            this.customResponse = new CustomResponse('SUCCESS', "Track Deleted Successfully", true);
-          } else if (this.type == TracksPlayBookType[TracksPlayBookType.PLAYBOOK]) {
-            this.customResponse = new CustomResponse('SUCCESS', "Play Book Deleted Successfully", true);
-          }
+          this.customResponse = new CustomResponse('SUCCESS', track.title+" Deleted Successfully", true);
           this.pagination.pageIndex = 1;
           this.listLearningTracks(this.pagination);
-          this.callFolderListViewEmitter();
         } else {
           swal("Please Contact Admin!", response.message, "error");
           this.referenceService.stopLoader(this.httpRequestLoader);

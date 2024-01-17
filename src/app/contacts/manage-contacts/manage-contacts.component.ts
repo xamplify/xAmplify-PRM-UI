@@ -237,6 +237,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
   showHelpGuideIcon:boolean;
   showDownloadOptionForSharedLeads = false;
   selectedUser: User = null;
+  isregistered:boolean=false;
   /*****XNFR-342*****/
   @ViewChild('shareUnPublishedComponent') shareUnPublishedComponent: ShareUnpublishedContentComponent;
 	constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
@@ -658,7 +659,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		}
 		
 		else if (contactList.socialNetwork == 'HUBSPOT' || contactList.socialNetwork == 'MICROSOFT'
-			|| contactList.socialNetwork == 'MARKETO' || contactList.socialNetwork == 'PIPEDRIVE') {
+			|| contactList.socialNetwork == 'MARKETO' || contactList.socialNetwork == 'PIPEDRIVE' || contactList.socialNetwork == 'CONNECTWISE') {
 			this.contactListIdForSyncLocal = contactList.id;
 			this.socialNetworkForSyncLocal = contactList.socialNetwork;
 			this.syncronizeContactList(this.socialContact);
@@ -1442,7 +1443,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}else if(this.sharedLeads){
                 this.contactListObject.sharedLeads = true; 
             }
-            
+
+			this.contactListObject.moduleName = this.module;
             this.contactListObject.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter;
             this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
 
@@ -1455,6 +1457,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						this.contactsByType.activeContactsCount = data.activecontacts;
 						this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
 						this.contactsByType.validContactsCount = data.validContactsCount;
+						this.contactsByType.excludedContactsCount = data.excluded;
 					},
 					(error: any) => {
 						this.xtremandLogger.error(error);
@@ -1476,11 +1479,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
         }
         this.listContactsByType(contactType);
 	}
-
+	
 	listContactsByType(contactType : string) {
 		this.campaignLoader = true;
 		try {
 			this.contactsByType.selectedCategory = contactType;
+			if(this.contactsByType.selectedCategory=='active'){
+				this.isregistered=true;
+			}
+			else{
+				this.isregistered=false;
+			}
 			this.contactsByType.isLoading = true;
 			this.resetResponse();
 			this.resetListContacts();
@@ -1502,7 +1511,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactListObject.sharedLeads = this.sharedLeads;
 			this.contactListObject.vanityUrlFilter = this.vanityLoginDto.vanityUrlFilter; 
 			this.contactListObject.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
-			
+			this.contactListObject.moduleName = this.module;
+
 			this.userListPaginationWrapper.userList = this.contactListObject;
 			
 			this.contactService.listContactsByType(this.userListPaginationWrapper)
@@ -1694,19 +1704,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 				if (this.criterias[i].property == "Field Name*" || this.criterias[i].operation == "Condition*" || (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
 					this.isSegmentationErrorMessage = true;
 					if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
-						this.filterConditionErrorMessage = "Please fill the required data at position " + i;
+						this.filterConditionErrorMessage = "Please fill the required data at position " + (i+1);
 					} else if (this.criterias[i].property == "Field Name*" && this.criterias[i].operation == "Condition*") {
-						this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + i;
+						this.filterConditionErrorMessage = "Please select the Field Name and Condition at position " + (i+1);
 					} else if (this.criterias[i].property == "Field Name*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
-						this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + i;
+						this.filterConditionErrorMessage = "Please select the Field Name and Value at position " + (i+1);
 					} else if (this.criterias[i].operation == "Condition*" && (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "")) {
-						this.filterConditionErrorMessage = "Please select the Condition and Value at position " + i;
+						this.filterConditionErrorMessage = "Please select the Condition and Value at position " + (i+1);
 					} else if (this.criterias[i].operation == "Condition*") {
-						this.filterConditionErrorMessage = "Please select the Condition at position " + i;
+						this.filterConditionErrorMessage = "Please select the Condition at position " + (i+1);
 					} else if (this.criterias[i].property == "Field Name*") {
-						this.filterConditionErrorMessage = "Please select the Field Name at position " + i;
+						this.filterConditionErrorMessage = "Please select the Field Name at position " + (i+1);
 					} else if (this.criterias[i].value1 == undefined || this.criterias[i].value1 == "") {
-						this.filterConditionErrorMessage = "Please fill the value at position " + i;
+						this.filterConditionErrorMessage = "Please fill the value at position " + (i+1);
 					}
 					break;
 				} else {
@@ -1835,6 +1845,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			}
 			else if (this.contactsByType.selectedCategory === 'active') {
 				this.logListName = 'All_Active_' + csvNameSuffix + 's_list.csv';
+				//this.logListName = 'All_Registered_' + csvNameSuffix + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'non-active') {
 				this.logListName = 'All_Inactive_' + csvNameSuffix + 's_list.csv';
 			} else if (this.contactsByType.selectedCategory === 'invalid') {
@@ -1842,7 +1853,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			} else if (this.contactsByType.selectedCategory === 'unsubscribe') {
 				this.logListName = 'All_Unsubscribed_' + csvNameSuffix + 's_list.csv';
 			}else if (this.contactsByType.selectedCategory === 'valid') {
-                this.logListName = 'All_Valid_' + csvNameSuffix + 's_list.csv';
+                this.logListName = 'All_Opt_In_' + csvNameSuffix + 's_list.csv';
+            }else if (this.contactsByType.selectedCategory === 'excluded') {
+                this.logListName = 'All_Excluded_' + csvNameSuffix + 's_list.csv';
             }
 			this.downloadDataList.length = 0;
 			for (let i = 0; i < this.contactsByType.listOfAllContacts.length; i++) {
@@ -1859,10 +1872,12 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						"Country": this.contactsByType.listOfAllContacts[i].country,
 						"Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
 						"Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
-						"Total Campaigns": this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
-						"Active Campaigns": this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
-						"Email Opend": this.contactsByType.listOfAllContacts[i].emailOpenedCount,
-						"Clicked Urls": this.contactsByType.listOfAllContacts[i].clickedUrlsCount
+					}
+					if(this.contactsByType.selectedCategory != 'excluded'){
+						object["Total Campaigns"] = this.contactsByType.listOfAllContacts[i].totalCampaignsCount,
+						object["Active Campaigns"] = this.contactsByType.listOfAllContacts[i].activeCampaignsCount,
+						object["Email Opend"] = this.contactsByType.listOfAllContacts[i].emailOpenedCount,
+						object["Clicked Urls"] = this.contactsByType.listOfAllContacts[i].clickedUrlsCount
 					}
 					if (this.contactsByType.selectedCategory === 'unsubscribe') {
 					  object["Unsubscribed Reason"] = this.contactsByType.listOfAllContacts[i].unsubscribedReason;
@@ -2001,7 +2016,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     saveAsInputChecking() {
             try {
-                const name = this.saveAsListName;
+                const name = this.saveAsListName.trim();
                 const self = this;
                 this.isValidLegalOptions = true;
 				const inputName = $.trim(name.toLowerCase().replace(/\s/g, ''));
@@ -2116,6 +2131,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
 	saveListAsNewList() {
 		try {
+			this.referenceService.loading(this.httpRequestLoader, true);
 			this.contactService.saveAsNewList(this.contactListObject)
 				.subscribe(
 					data => {
@@ -2163,9 +2179,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactService.mailSend(this.pagination)
 				.subscribe(
 					data => {
-						this.emailNotificationCustomResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
-						this.contactService.successMessage = true;
-						//this.listContactsByType(this.contactsByType.selectedCategory);
+						if(data.statusCode==200){
+							this.emailNotificationCustomResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+							this.contactService.successMessage = true;
+						}
+						else{
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
+
+						}
+					
 					},
 					(error: any) => {
 						this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);
@@ -2753,5 +2775,70 @@ resubscribeUserResult(event : any){
  openUnPublishedContentModalPopUp(contactList:any){
 	this.shareUnPublishedComponent.openPopUp(contactList.id,undefined,this.checkingContactTypeName,contactList.name);
  }
+
  
+ showMakeAsOptinAlert(contactId: any, emailId: any) {
+	try {
+		this.xtremandLogger.info("contactId in showMakeAsOptinAlert() " + contactId);
+		let self = this;
+		swal({
+			title: 'Are you sure?',
+			text: "Selected user will be removed from the excluded list!",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#54a7e9',
+			cancelButtonColor: '#999',
+			confirmButtonText: 'Yes, Mark as Opt-in!'
+
+		}).then(function(myData: any) {
+			self.validateExcludedDetails(contactId,emailId );
+		}, function(dismiss: any) {
+		});
+	} catch (error) {
+		this.xtremandLogger.error(error, "ManageContactsComponent", "showMakeAsOptinAlert()");
+	}
+}
+
+ validateExcludedDetails(contactId: any, emailId: any) {
+	try {
+		this.resetResponse();
+		this.loading = true;
+		this.xtremandLogger.info(contactId);
+		const excludedUser ={
+			"id":contactId,
+			"emailId":emailId
+		};
+		this.contactService.excludedUserMakeAsValid(excludedUser)
+			.subscribe(
+				data => {
+				if (data.statusCode == 400) {
+					this.customResponse = new CustomResponse('ERROR', data.message, true);
+					this.loading = false;
+				} else {		
+
+						this.loading = false;
+						this.xtremandLogger.log(data);
+						this.contactsCount();
+						this.contactCountLoad = true;
+						this.listContactsByType(this.contactsByType.selectedCategory);
+						this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_REMOVED_FROM_EXCLUDED_LIST, true);
+				}
+				},
+				(error: any) => {
+					console.log(error);
+					this.loading = false;
+				},
+				() => this.xtremandLogger.info("MangeContactsComponent validateExcludedDetails() finished")
+			)
+		this.invalidDeleteSucessMessage = false;
+		this.invalidDeleteErrorMessage = false;
+	} catch (error) {
+		this.xtremandLogger.error(error, "ManageContactsComponent", "validateExcludedDetails()");
+	}
+}
+ 
+
+
+
+
 }

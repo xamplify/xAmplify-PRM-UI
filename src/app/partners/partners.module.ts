@@ -34,15 +34,15 @@ import { PartnersJourneyAutomationComponent } from './partners-journey-automatio
 import { WorkflowFormComponent } from '../contacts/workflow-form/workflow-form.component';
 import { PendingChangesGuard } from "app/component-can-deactivate";
 import { MdfDetailAnalyticsComponent } from './mdf-detail-analytics/mdf-detail-analytics.component';
-import { ScrollToModule } from 'ng2-scroll-to-el';
+import { PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent } from './partner-journey-team-member-high-level-analytics-table/partner-journey-team-member-high-level-analytics-table.component';
 
 
 @NgModule({
   imports: [
     CKEditorModule, CommonModule, PartnerRoutingModule, SharedModule, SharedContactsModule, CommonComponentModule,
-     SharedLibraryModule,ScrollToModule.forRoot()
+     SharedLibraryModule
   ],
   providers: [PendingChangesGuard],
-  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyCountTilesComponent, InteractedNotInteractedTrackDetailsComponent, TypewiseTrackContentDetailsComponent, UserwiseTrackCountsComponent, UserwiseTrackDetailsComponent, TrackAssetDetailsComponent, ShareLeadDetailsComponent, RedistributedCampaignDetailsComponent, PartnerJourneyLeadDetailsComponent, PartnerJourneyDealDetailsComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, MdfDetailAnalyticsComponent]
+  declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent, RedistributedCampaignsAndLeadsBarChartComponent, KpiComponent, RedistributedCampaignsComponent, ViewPartnersComponent, IndividualPartnerAnalyticsComponent, ActivePartnersTableComponent, PartnerDetailedAnalyticsComponent, PartnerJourneyTeamMembersTableComponent, PartnerJourneyCountTilesComponent, InteractedNotInteractedTrackDetailsComponent, TypewiseTrackContentDetailsComponent, UserwiseTrackCountsComponent, UserwiseTrackDetailsComponent, TrackAssetDetailsComponent, ShareLeadDetailsComponent, RedistributedCampaignDetailsComponent, PartnerJourneyLeadDetailsComponent, PartnerJourneyDealDetailsComponent, PartnerJourneyContactDetailsComponent, PartnerJourneyCompanyInfoComponent, CampaignCountTilesComponent, PartnersJourneyAutomationComponent,WorkflowFormComponent, MdfDetailAnalyticsComponent, PartnerJourneyTeamMemberHighLevelAnalyticsTableComponent]
 })
 export class PartnersModule { }

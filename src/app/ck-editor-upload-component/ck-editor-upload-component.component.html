@@ -5,7 +5,7 @@
        </div>
        <div class="page-bar">
           <ul class="page-breadcrumb">
-             <li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a><i class="fa fa-angle-right"></i></li>
+             <li><i class="fa fa-home"></i> <a [routerLink]="refService?.homeRouter">Home</a><i class="fa fa-angle-right"></i></li>
              <li><a [routerLink]="['/home/emailtemplates/select']">Select Template</a><i class="fa fa-angle-right"></i></li>
              <li><a>Upload Template</a></li>
           </ul>
@@ -82,22 +82,22 @@
           <div class="col-xs-12 col-md-6">
              <div *ngIf="model.uploadType=='VIDEO' || this.type=='customv'" class="form-group" id="infoDiv">
                 <br><label for="info">
-                <font class="error">Your HTML template must include the code below.</font>
+                <span class="error">Your HTML template must include the code below.</span>
                 </label>
                 <button type="button" class="btn-xs btn-success" (click)="copyLink(videoTag,'video-tag-copy')">Copy Link</button>
                 <textarea class="form-control" id="info" readonly="readonly" rows="1" #videoTag>{{refService.videoTag}}</textarea>
-                <font class="success" id="video-tag-copy" style="display:none"><b>Copied successfully<i
-                   class="fa fa-check"></i></b></font>
+                <span class="success" id="video-tag-copy" style="display:none"><b>Copied successfully<i
+                   class="fa fa-check"></i></b></span>
              </div>
              <br>
              <div *ngIf="!authenticationService?.module?.isMarketingCompany">
                 <label for="info">
-                <font class="error">Copy the below image tag link to enable co-branding.</font>
+                <span class="error">Copy the below image tag link to enable co-branding.</span>
                 </label>
                 <button type="button" class="btn-xs btn-success" (click)="copyLink(coBrandingTag,'co-branding-copy')">Copy Link</button>
                 <textarea class="form-control" id="info" readonly="readonly" rows="1" #coBrandingTag>{{refService.coBrandingTag}}</textarea>
-                <font class="success" id="co-branding-copy" style="display:none"><b>Copied successfully<i
-                   class="fa fa-check"></i></b></font>
+                <span class="success" id="co-branding-copy" style="display:none"><b>Copied successfully<i
+                   class="fa fa-check"></i></b></span>
              </div>
              <br>
              <div  class="form-group" *ngIf="!authenticationService?.module?.isMarketingCompany && mycontent?.length>0">

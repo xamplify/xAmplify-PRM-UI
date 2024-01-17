@@ -1,110 +1,152 @@
 <div class="page-content">
-  <div class="page-bar">
-      <ul class="page-breadcrumb">
-          <li>
-              <i class="fa fa-home" aria-hidden="true"></i>
-               <a routerLink="/home/dashboard/default">Home</a>
-               <i class="fa fa-angle-right" aria-hidden="true"></i>
-          </li>
-          <li><i class="fa fa-rss" aria-hidden="true"></i>RSS</li>
-      </ul>
-  </div>
-  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <div class="row">
-              <app-left-nav></app-left-nav>
-              <div class="col-xs-12 col-sm-8 col-md-8 col-lg-9">
-                          <div class="portlet-body pt0">
-                                  <div>
-                                      <div>
-                                          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
-                                            <div class="col-sm-12 dashboard-stat2 p0 clearfix">
-                                              <div class="clearfix">
-                                            </div>
-                                              <section  class="col-sm-12 p10">
-                                                <div *ngIf="customResponse.statusText !== null" class="alert alert-dismissible m0" role="alert" [ngClass]="{
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li>
+				<i class="fa fa-home" aria-hidden="true"></i>
+				<a routerLink="/home/dashboard/default">Home</a>
+				<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
+			<li><i class="fa fa-rss" aria-hidden="true"></i>RSS</li>
+		</ul>
+	</div>
+	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="row">
+				<app-left-nav></app-left-nav>
+				<div class="col-xs-12 col-sm-8 col-md-8 col-lg-9">
+					<div class="portlet-body pt0">
+						<div>
+							<div>
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0">
+									<div class="col-sm-12 dashboard-stat2 p0 clearfix">
+										<div class="clearfix">
+										</div>
+										<section class="col-sm-12 p10">
+											<div *ngIf="customResponse.statusText !== null"
+												class="alert alert-dismissible m0" role="alert" [ngClass]="{
                                                   'alert-info': customResponse.type === 0,
                                                           'alert-success': customResponse.type === 1,
                                                           'alert-warning': customResponse.type === 2,
                                                           'alert-danger': customResponse.type === 3}">
-                                              <div class="pull-right">
-                                                <i class="fa fa-times-circle" aria-hidden="true" (click)="customResponse.statusText = null"></i>
-                                              </div>
-                                              <h4>
-                                                <i class="fa" [ngClass]="{
+												<div class="pull-right">
+													<i class="fa fa-times-circle" aria-hidden="true"
+														(click)="customResponse.statusText = null"></i>
+												</div>
+												<h4>
+													<i class="fa" [ngClass]="{
                                                     'fa-circle-o-notch fa-spin fa-3x fa-fw margin-bottom': customResponse.type === 0,
                                                     'fa-check-circle-o': customResponse.type === 1,
                                                             'fa-exclamation-circle': customResponse.type === 2,
                                                             'fa-times': customResponse.type === 3}"></i>
-                                              <span class="ml10 f-w-600">{{customResponse.statusText}}</span>
-                                              </h4>
-                                                <ng-container *ngIf='customResponse.statusArray'>
-                                                  <h5 *ngFor="let item of customResponse.statusArray">{{item}}</h5>
-                                                </ng-container>
-                                              </div>
-                                              </section>
-                                        <div>
-                                      <div class="p10">
-                                                <div class="update-status-profile col-lg-1 col-md-1 col-xs-2 col-sm-1 mb_v_Pl0 pl0 abjustprofileSec">
-                                                    <div class="profile-image-box">
-                                                      <img  class="profile-image" src="assets/images/social/avatar.png" alt="">
-                                                      <img  class="profile-icon" src="assets/images/social/share-icon.png" alt="">
-                                                    </div>
-                                                </div>
-                                          
-                                                <div class="update-status-content col-lg-11 col-md-11 col-xs-10 col-sm-11">
-                                                  <textarea placeholder="What's happening?" rows="4" class="form-control form-group rounded-0 mb5"
-                                                   [(ngModel)]="socialStatus.statusMessage" maxlength="280"></textarea>
-                                                  <h6 class="text-count"><b>{{280 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
-                                                  <section>
-                                                    <div class="img-wrap img-responsive img-thumbnail rounded-0" *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
-                                                      <span (click)="removeItem(socialStatus, socialStatusContent)">
-                                                        <i class="fa fa-times-circle" aria-hidden="true"></i>
-                                                      </span>
-                                                      <img async *ngIf="socialStatusContent.fileType !== 'video'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
-                                                      <img async *ngIf="socialStatusContent.fileType === 'video'" src="{{socialStatusContent.filePath}}" (error)="videoUtilService.errorVideoHandler($event)">
-                                                    </div>
-                                                  </section>
-                                                  <section *ngIf="socialStatus.validLink" class="row">
-                                                    <div class="col-sm-2"><img src="{{socialStatus.ogImage}}" width="100%" alt=""></div>
-                                                    <div class="col-sm-10"><a title="{{socialStatus.statusMessage}}" href="{{socialStatus.statusMessage}}" target="_blank">{{socialStatus.statusMessage | slice:0:160}}
-                                                        <span *ngIf="socialStatus.statusMessage?.length>160">..</span>
-                                                    </a>
-                                                    <h6 contenteditable="true"><strong>{{socialStatus.ogTitle}}</strong></h6>
-                                                    <p contenteditable="true" [innerHTML]="socialStatus.ogDescription">{{socialStatus.ogDescription}}</p>
-                                                    </div>
-                                                  </section>
-                                                  <section class="pull-left actions-group">
-                                                    <label class="add-photos m0" title="Add photos" data-toggle="tooltip" data-placement="top">
-                                                      <i class="fa fa-image" aria-hidden="true"></i>
-                                                      <input type="file" (click)="input.value = null" value="" (change)="fileChange($event, socialStatus)" #input name="media[]" accept="image/*" multiple="multiple" class="file-input js-tooltip">
-                                                    </label>
-                                                    <span class="add-video" *ngIf="!authenticationService.module.isPrm &&!authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
-                                                      <i class="fa fa-video-camera" aria-hidden="true"></i>
-                                                    </span>
-                                                    <!-- <span class="rss" title="RSS Feeds" (click)="openRssModal(socialStatus)" data-toggle="tooltip" data-placement="top">
+													<span class="ml10 f-w-600">{{customResponse.statusText}}</span>
+												</h4>
+												<ng-container *ngIf='customResponse.statusArray'>
+													<h5 *ngFor="let item of customResponse.statusArray">{{item}}</h5>
+												</ng-container>
+											</div>
+										</section>
+										<div>
+											<div class="p10">
+												<div
+													class="update-status-profile col-lg-1 col-md-1 col-xs-2 col-sm-1 mb_v_Pl0 pl0 abjustprofileSec">
+													<div class="profile-image-box">
+														<img class="profile-image" src="assets/images/social/avatar.png"
+															alt="">
+														<img class="profile-icon"
+															src="assets/images/social/share-icon.png" alt="">
+													</div>
+												</div>
+
+												<div
+													class="update-status-content col-lg-11 col-md-11 col-xs-10 col-sm-11">
+													<textarea placeholder="What's happening?" rows="4"
+														class="form-control form-group rounded-0 mb5"
+														[(ngModel)]="socialStatus.statusMessage"
+														maxlength="280"></textarea>
+													<h6 class="text-count"><b>{{280 -
+															socialStatus.statusMessage.length}}</b> character(s) left
+													</h6>
+													<section>
+														<div class="img-wrap img-responsive img-thumbnail rounded-0"
+															*ngFor="let socialStatusContent of socialStatus.socialStatusContents">
+															<span
+																(click)="removeItem(socialStatus, socialStatusContent)">
+																<i class="fa fa-times-circle" aria-hidden="true"></i>
+															</span>
+															<img async *ngIf="socialStatusContent.fileType !== 'video'"
+																src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
+															<img async *ngIf="socialStatusContent.fileType === 'video'"
+																src="{{socialStatusContent.filePath}}"
+																(error)="videoUtilService.errorVideoHandler($event)">
+														</div>
+													</section>
+													<section *ngIf="socialStatus.validLink" class="row">
+														<div class="col-sm-2"><img src="{{socialStatus.ogImage}}"
+																width="100%" alt=""></div>
+														<div class="col-sm-10"><a title="{{socialStatus.statusMessage}}"
+																href="{{socialStatus.statusMessage}}"
+																target="_blank">{{socialStatus.statusMessage |
+																slice:0:160}}
+																<span
+																	*ngIf="socialStatus.statusMessage?.length>160">..</span>
+															</a>
+															<h6 contenteditable="true">
+																<strong>{{socialStatus.ogTitle}}</strong>
+															</h6>
+															<p contenteditable="true"
+																[innerHTML]="socialStatus.ogDescription">
+																{{socialStatus.ogDescription}}</p>
+														</div>
+													</section>
+													<section class="pull-left actions-group">
+														<label class="add-photos m0" title="Add photos"
+															data-toggle="tooltip" data-placement="top">
+															<i class="fa fa-image" aria-hidden="true"></i>
+															<input type="file" (click)="input.value = null" value=""
+																(change)="fileChange($event, socialStatus)" #input
+																name="media[]" accept="image/*" multiple="multiple"
+																class="file-input js-tooltip">
+														</label>
+														<span class="add-video"
+															*ngIf="!authenticationService.module.isPrm &&!authenticationService.module.isPrmTeamMember && !authenticationService.module.isPrmAndPartner && !authenticationService.module.isPrmAndPartnerTeamMember"
+															(click)="openListVideosModal(socialStatus)"
+															title="Add video" data-toggle="tooltip"
+															data-placement="top">
+															<i class="fa fa-video-camera" aria-hidden="true"></i>
+														</span>
+														<!-- <span class="rss" title="RSS Feeds" (click)="openRssModal(socialStatus)" data-toggle="tooltip" data-placement="top">
                                                       <i class="fa fa-rss-square" aria-hidden="true"></i>
                                                     </span> -->
-                                                  </section>
-                                                </div>
-                                                <div  class="clearfix"></div>
-                                                </div>
-                                                <div class="col-xs-12 m0 p0" id="post-actions-button-group">
-                                                  <div class="col-xs-12 col-sm-6 pr10 pull-right">
-                                                    <div class="pull-right">
-                                                      <ng-container *ngIf="isAdd">
-                                                        <button type="button" class="btn btn-primary rounded-0" (click)="savePopoverToggle()">Save</button>
-                                                        <button type="button" class="btn btn-primary rounded-0" (click)="savePublishPopoverToggle()">Save & Share</button>
-                                                      </ng-container>
-                                                      <ng-container *ngIf="!isAdd">
-                                                        <button type="button" class="btn btn-info rounded-0" (click)="update()">Update</button>
-                                                      </ng-container>
-                                                    </div>
-                                                  </div>
+													</section>
+												</div>
+												<div class="clearfix"></div>
+											</div>
+											<div class="col-xs-12 m0 p0" id="post-actions-button-group">
+												<div class="col-xs-12 col-sm-6 pr10 pull-right">
+													<div class="pull-right">
+														<ng-container *ngIf="isAdd">
+															<button type="button"
+																class="button_blue bgcolor-unset rounded-0"
+																(click)="savePopoverToggle()"><span
+																	class="btn btn-primary transition txt_pd-top3">Save</span></button>
+															<button type="button"
+																class="button_blue bgcolor-unset rounded-0"
+																(click)="savePublishPopoverToggle()"><span
+																	class="btn btn-primary transition txt_pd-top3">Save
+																	&
+																	Share</span></button>
+														</ng-container>
+														<ng-container *ngIf="!isAdd">
+															<button type="button"
+																class="button_blue bgcolor-unset rounded-0"
+																(click)="update()"><span
+																	class="btn btn-primary transition txt_pd-top3">Update</span></button>
+														</ng-container>
+													</div>
+												</div>
 
-												<div class="bs-example-popover" id="savePopover"
-													style="display: none">
+												<div class="bs-example-popover" id="savePopover" style="display: none">
 													<div class="popover bottom">
 														<div class="arrow" style="left:50%"></div>
 														<div class="popover-content p10">
@@ -112,15 +154,19 @@
 																<li class="list-group-item" *ngIf="addNewCollection">
 																	<div *ngIf="addCollectionError">
 																		<span style="color: red"> <i
-																			class="fa fa-times-circle" aria-hidden="true"></i>{{addCollectionErrorMessage}}
+																				class="fa fa-times-circle"
+																				aria-hidden="true"></i>{{addCollectionErrorMessage}}
 																		</span>
 																	</div>
 																	<form>
 																		<div class="form-group">
-																			<label for="customCollectionName">Collection Name</label> <input
-																				type="text" #customCollectionName
-																				class="form-control" id="customCollectionName"
-																				aria-describedby="emailHelp" placeholder="e.g. Tech"
+																			<label for="customCollectionName">Collection
+																				Name</label> <input type="text"
+																				#customCollectionName
+																				class="form-control"
+																				id="customCollectionName"
+																				aria-describedby="emailHelp"
+																				placeholder="e.g. Tech"
 																				autocomplete="off">
 																		</div>
 																		<button class="btn btn-primary"
@@ -130,24 +176,25 @@
 																	</form>
 																</li>
 																<ng-container *ngIf="!addNewCollection">
-																<li class="list-group-item"
-																	*ngFor="let customFeedCollection of customFeedCollections">
-																	<a><i class="fa fa-rss" aria-hidden="true"></i>
-																		{{customFeedCollection.title}}
-																		<button class="btn-xs pull-right"
-																			(click)="save(false, customFeedCollection.id, '')">Add</button>
-																</a>
-																</li>
-																<li class="list-group-item"><a
-																	(click)="addNewCollection = true"><i
-																		class="fa fa-plus" aria-hidden="true"></i> New
-																		Collection</a></li>
+																	<li class="list-group-item"
+																		*ngFor="let customFeedCollection of customFeedCollections">
+																		<a><i class="fa fa-rss" aria-hidden="true"></i>
+																			{{customFeedCollection.title}}
+																			<button class="btn-xs pull-right"
+																				(click)="save(false, customFeedCollection.id, '')">Add</button>
+																		</a>
+																	</li>
+																	<li class="list-group-item"><a
+																			(click)="addNewCollection = true"><i
+																				class="fa fa-plus"
+																				aria-hidden="true"></i> New
+																			Collection</a></li>
 																</ng-container>
 															</ul>
 														</div>
 													</div>
 												</div>
-												
+
 												<div class="bs-example-popover" id="savePublishPopover"
 													style="display: none">
 													<div class="popover bottom">
@@ -157,10 +204,13 @@
 																<li class="list-group-item" *ngIf="addNewCollection">
 																	<form>
 																		<div class="form-group">
-																			<label for="customCollectionName">Collection Name</label> <input
-																				type="text" #customCollectionName
-																				class="form-control" id="customCollectionName"
-																				aria-describedby="emailHelp" placeholder="e.g. Tech"
+																			<label for="customCollectionName">Collection
+																				Name</label> <input type="text"
+																				#customCollectionName
+																				class="form-control"
+																				id="customCollectionName"
+																				aria-describedby="emailHelp"
+																				placeholder="e.g. Tech"
 																				autocomplete="off">
 																		</div>
 																		<button class="btn btn-primary"
@@ -170,18 +220,19 @@
 																	</form>
 																</li>
 																<ng-container *ngIf="!addNewCollection">
-																<li class="list-group-item"
-																	*ngFor="let customFeedCollection of customFeedCollections">
-																	<a><i class="fa fa-rss" aria-hidden="true"></i>
-																		{{customFeedCollection.title}}
-																		<button class="btn-xs pull-right"
-																			(click)="save(true, customFeedCollection.id, '')">Add</button>
-																</a>
-																</li>
-																<li class="list-group-item"><a
-																	(click)="addNewCollection = true"><i
-																		class="fa fa-plus" aria-hidden="true"></i> New
-																		Collection</a></li>
+																	<li class="list-group-item"
+																		*ngFor="let customFeedCollection of customFeedCollections">
+																		<a><i class="fa fa-rss" aria-hidden="true"></i>
+																			{{customFeedCollection.title}}
+																			<button class="btn-xs pull-right"
+																				(click)="save(true, customFeedCollection.id, '')">Add</button>
+																		</a>
+																	</li>
+																	<li class="list-group-item"><a
+																			(click)="addNewCollection = true"><i
+																				class="fa fa-plus"
+																				aria-hidden="true"></i> New
+																			Collection</a></li>
 																</ng-container>
 															</ul>
 														</div>
@@ -189,21 +240,21 @@
 												</div>
 
 											</div>
-                                              </div>
-                                              </div>
-                                      </div>
-                                  </div>  
-                          </div>
-                      </div>
-          </div>
-      </div>
-  </div>
-</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 
-<div class="modal right fade-scale" id="listVideosModal" tabindex="-1" role="dialog" aria-labelledby="listVideosModalLabel" data-keyboard="false"
-	 data-backdrop="static">
+	<div class="modal right fade-scale" id="listVideosModal" tabindex="-1" role="dialog"
+		aria-labelledby="listVideosModalLabel" data-keyboard="false" data-backdrop="static">
 		<div class="modal-dialog" role="document" style="width: 80%; right: 0;">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -221,18 +272,23 @@
 							<div class="table-responsive">
 								<table class="table table-hover" id="list-videos-table">
 									<tbody>
-										<tr style="cursor: pointer;" *ngFor="let video of videosPagination.pagedItems; let i = index" [ngClass]="{'highlight': selectedVideo === video}">
+										<tr style="cursor: pointer;"
+											*ngFor="let video of videosPagination.pagedItems; let i = index"
+											[ngClass]="{'highlight': selectedVideo === video}">
 											<td (click)="selectVideo(video)">
 												<div class="select-video">
 													<i class="fa fa-circle-o" *ngIf="selectedVideo !== video"></i>
 													<i class="fa fa-check-circle-o" *ngIf="selectedVideo === video"></i>
 												</div>
 												<div class="thumbnail-wrapper">
-													<img src="{{video.imagePath}}" (error)="videoUtilService.errorVideoHandler($event)">
-													<h6 class="duration">{{videoUtilService.truncateHourZeros(video.videoLength)}}</h6>
+													<img src="{{video.imagePath}}"
+														(error)="videoUtilService.errorVideoHandler($event)">
+													<h6 class="duration">
+														{{videoUtilService.truncateHourZeros(video.videoLength)}}</h6>
 												</div>
 												<div class="video-title">
-													<h5>{{video.title | slice:0:150}}<span *ngIf="video.title?.length>150">...</span></h5>
+													<h5>{{video.title | slice:0:150}}<span
+															*ngIf="video.title?.length>150">...</span></h5>
 												</div>
 											</td>
 										</tr>
@@ -240,29 +296,34 @@
 								</table>
 							</div>
 							<!--pager here  -->
-							<app-pagination *ngIf="videosPagination.pagedItems?.length > 0" [pagination]="videosPagination" [type]="'updatestatusvideos'"
-							 (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
+							<app-pagination *ngIf="videosPagination.pagedItems?.length > 0"
+								[pagination]="videosPagination" [type]="'updatestatusvideos'"
+								(notifyParent)="setPage($event)"
+								(notifyParentDropDown)="paginationDropDown($event)"></app-pagination>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn Btn-Gray" (click)="closeListVideosModal()">Close</button>
-					<button type="button" class="btn btn-primary" style="color:white" (click)="addVideo()">Select</button>
+					<button type="button" class="btn btn-primary" style="color:white"
+						(click)="addVideo()">Select</button>
 				</div>
 			</div>
 		</div>
-  </div>
-  
-  <div class="modal fade right" id="rssModal" tabindex="-1" role="dialog" aria-labelledby="rssModalLabel">
-    <div class="modal-dialog" role="document" style="width: 100% !important;">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
-          <h4 class="modal-title" id="rssModalLabel">RSS Feeds</h4>
-        </div>
-      <div class="modal-body" style="background: #f1f3fa">
-        <app-feed-update (selectedFeed)='addToPost($event)' (navigateUrl)='navigateRssHome($event)'></app-feed-update>
-      </div>
-      </div>
-    </div>
-  </div>
+	</div>
+
+	<div class="modal fade right" id="rssModal" tabindex="-1" role="dialog" aria-labelledby="rssModalLabel">
+		<div class="modal-dialog" role="document" style="width: 100% !important;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close-circle" data-dismiss="modal" aria-label="Close"><i
+							class="fa fa-times"></i></button>
+					<h4 class="modal-title" id="rssModalLabel">RSS Feeds</h4>
+				</div>
+				<div class="modal-body" style="background: #f1f3fa">
+					<app-feed-update (selectedFeed)='addToPost($event)'
+						(navigateUrl)='navigateRssHome($event)'></app-feed-update>
+				</div>
+			</div>
+		</div>
+	</div>

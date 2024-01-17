@@ -54,7 +54,6 @@ import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/ad
 import { CreateBeeTemplateComponent } from 'app/util/create-bee-template/create-bee-template.component';
 import { FormsListViewUtilComponent } from 'app/util/forms-list-view-util/forms-list-view-util.component';
 import { CampaignsListViewUtilComponent } from 'app/util/campaigns-list-view-util/campaigns-list-view-util.component';
-import { LandingPagesListViewUtilComponent } from 'app/util/landing-pages-list-view-util/landing-pages-list-view-util.component';
 import { PreviewCampaignComponent } from "app/campaigns/preview-campaign/preview-campaign.component";
 import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
 import { AddMoreReceiversComponent } from 'app/campaigns/add-more-receivers/add-more-receivers.component';
@@ -145,10 +144,19 @@ import { ShareAssetsComponent } from './share-assets/share-assets.component';
 import { SharePlaybooksComponent } from './share-playbooks/share-playbooks.component';
 import { ShareUnpublishedContentComponent } from './share-unpublished-content/share-unpublished-content.component';
 import { ShareTracksOrPlaybooksComponent } from './share-tracks-or-playbooks/share-tracks-or-playbooks.component';
+import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
+import { SearchableDropdownComponent } from 'app/util/searchable-dropdown/searchable-dropdown.component';
+import { ConnectwiseAuthenticationPopupComponent } from 'app/contacts/connectwise-authentication-popup/connectwise-authentication-popup.component';
+import { ScrollToModule } from 'ng2-scroll-to-el';
+import { ConfirmUnpublishTracksOrPlaybooksModelPopupComponent } from 'app/util/confirm-unpublish-tracks-or-playbooks-model-popup/confirm-unpublish-tracks-or-playbooks-model-popup.component';
+import { CustomUiFilterComponent } from 'app/util/custom-ui-filter/custom-ui-filter.component';
+import { TrimPipe } from 'app/core/custom-pipes/trim.pipe';
+import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
+import { LandingPagesListAndGridViewComponent } from 'app/util/landing-pages-list-and-grid-view/landing-pages-list-and-grid-view.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
-		 DragulaModule, ColorPickerModule, CKEditorModule,QueryBuilderModule],
+		 DragulaModule, ColorPickerModule, CKEditorModule,QueryBuilderModule,DropDownListModule,ScrollToModule.forRoot()],
 	declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
 		BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
 		PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
@@ -157,7 +165,7 @@ import { ShareTracksOrPlaybooksComponent } from './share-tracks-or-playbooks/sha
 		ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent, PreviewPopupComponent, PreviewLandingPageComponent, FormPreviewComponent,
 		LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent, FormAnalyticsUtilComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent,
 		SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent,
-		CampaignsListViewUtilComponent, LandingPagesListViewUtilComponent, PreviewCampaignComponent, SocialStatusComponent,
+		CampaignsListViewUtilComponent, PreviewCampaignComponent, SocialStatusComponent,
 		AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent, RedistributeCampaignsListViewUtilComponent, XamplifyDefaultTemplatesComponent, 
 		EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTracksPlayBookComponent, AddTagsUtilComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent,
@@ -169,13 +177,14 @@ import { ShareTracksOrPlaybooksComponent } from './share-tracks-or-playbooks/sha
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent, DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,ImgCropprV2Component,
-		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
+		LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,ConnectwiseAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,
 		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,SelectEmailTemplateComponent,CustomUiSwitchComponent,
 		EditTemplateOrPageModalPopupComponent, ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
-		 ShareUnpublishedContentComponent,
-		 ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent],
+		ShareUnpublishedContentComponent, ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
+		ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,LandingPagesListAndGridViewComponent],
+
 
 
 	exports: [InternationalPhoneModule, RecaptchaModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent, TagInputModule,
@@ -186,7 +195,7 @@ import { ShareTracksOrPlaybooksComponent } from './share-tracks-or-playbooks/sha
 		PreviewPopupComponent, PreviewLandingPageComponent, FormPreviewComponent, LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent,
 		FormAnalyticsUtilComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent,
 		AddFolderModalPopupComponent, CreateBeeTemplateComponent, FormsListViewUtilComponent, CampaignsListViewUtilComponent,
-		LandingPagesListViewUtilComponent, PreviewCampaignComponent, SocialStatusComponent, AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent,
+		PreviewCampaignComponent, SocialStatusComponent, AddMoreReceiversComponent, PublicEventEmailPopupComponent, LoaderComponent,
 		RedistributeCampaignsListViewUtilComponent, XamplifyDefaultTemplatesComponent, EmailTemplatePreviewUtilComponent, AddFormUtilComponent, AddTagsUtilComponent, 
 		AddTracksPlayBookComponent, DatePickerComponent, AddLeadComponent, BeeTemplateUtilComponent, CampaignTemplateDownloadHistoryComponent,
 		ShareLeadsComponent, ImageLoaderComponent, CampaignsLaunchedByPartnersComponent, SpfDescriptionComponent, ManageTracksPlayBookComponent, PreviewTracksPlayBookComponent, 
@@ -198,19 +207,13 @@ import { ShareTracksOrPlaybooksComponent } from './share-tracks-or-playbooks/sha
 		ManageCampaignLeadsComponent,ManageCampaignDealsComponent,TeamMemberPartnersComponent, FormTeamMemberGroupComponent,DisplayDateAndTimeComponent,
 		EditCampaignDetailsModalPopupComponent,OneClickLaunchPartnerPreviewComponent,MicrosoftAuthenticationPopupComponent,MicrosoftAuthenticationComponent,
 		CommentsComponent,FolderTypeViewUtilComponent,DamListAndGridViewComponent,CountStatisticsComponent,
-		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
+		ImgCropprV2Component,LoginAsPartnerComponent,PipedriveAuthenticationPopupComponent,ConnectwiseAuthenticationPopupComponent,CopyGroupUsersModalPopupComponent,
 		PartnerCompanyAndGroupsComponent,XamplifyVideoPlayerComponent,SendTestEmailComponent,AddMultipleEmailsInputComponent,
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,EmailTemplatesListAndGridViewComponent,
-
 		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent,
 		ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
-		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent]
-
-
-
-
-
-
+		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
+		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,LandingPagesListAndGridViewComponent]
 
 })
 export class CommonComponentModule { }

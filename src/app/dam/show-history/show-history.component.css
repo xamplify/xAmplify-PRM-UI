@@ -1,14 +1,7 @@
 .img-class {
   width: auto;
 }
-.view-banner-dam {
-  background-color: #00a6e8;
-  color: white;
-  padding: 3px 6px 3px 6px;
-  text-align: center;
-  font-size: 10px;
-  border-radius: 3px;
-}
+
 .ribbon div {
   font-size: 10px;
   font-weight: bold;
@@ -58,17 +51,37 @@
   margin-top: 5px;
 }
 .min-h {
-  min-height: 245px;
+  min-height: 350px;
 }
 .ref-mar {
   margin-left: 4px !important;
 }
 .mxv {
-  max-width: 175px !important;
+  object-fit: fill;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  max-width: 100% !important;
+  max-height: 150px;
+  min-height: 150px;
+  margin: 0px;
+  width: 100%;
 }
+
 .minhsfp {
   min-height: 644px !important;
 }
 .bbnone {
   border-bottom: none;
 }
+
+
+.gridViewImgBg img{margin: 0px;}
+
+.divapdding-or-cards {
+  margin: 5px 0px;
+}
+
+
+

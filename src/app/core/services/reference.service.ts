@@ -3,7 +3,7 @@ import { Http, Response } from "@angular/http";
 import { SaveVideoFile } from "../../videos/models/save-video-file";
 import { AuthenticationService } from "./authentication.service";
 import { Observable } from "rxjs/Observable";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
 import { Category } from "../../videos/models/category";
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { DefaultVideoPlayer } from "../../videos/models/default-video-player";
@@ -29,7 +29,6 @@ declare var $:any, swal:any, require:any;
 var moment = require('moment-timezone');
 @Injectable()
 export class ReferenceService {
- 
   renderer: Renderer;
   swalConfirmButtonColor: "#54a7e9";
   swalCancelButtonColor: "#999";
@@ -148,6 +147,7 @@ export class ReferenceService {
   loginStyleType:any;
   loginTemplateId = 53;
   assetResponseMessage = "";
+  createdOrUpdatedSuccessMessage = "";
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -348,6 +348,12 @@ export class ReferenceService {
   }
   validateEmailId(emailId: string) {
     return this.regularExpressions.EMAIL_ID_PATTERN.test(emailId);
+  }
+
+
+    validateFirstName(firstName:string){
+    return this.regularExpressions.FIRSTNAME_PATTERN.test(firstName);
+
   }
 
   validateEmail(text: string) {
@@ -3063,6 +3069,10 @@ export class ReferenceService {
       categoryType = "CAMPAIGN";
     }else if(this.roles.emailTemplateId==moduleId){
       categoryType="EMAIL_TEMPLATE";
+    }else if(this.roles.landingPageId==moduleId){
+      categoryType="LANDING_PAGE";
+    }else if(this.roles.formId==moduleId){
+      categoryType="FORM";
     }
     return categoryType;
   }
@@ -3236,7 +3246,7 @@ export class ReferenceService {
    /********Email Templates****/
    goToManageEmailTemplates(viewType: string) {
     this.router.navigate(["/home/emailtemplates/manage/"+this.getListViewAsDefault(viewType)]);
-  }
+   }
 
   navigateToManageEmailTemplatesByViewType(folderViewType: string, viewType: string, categoryId: number) {
     if (categoryId != undefined && categoryId > 0) {
@@ -3289,10 +3299,112 @@ export class ReferenceService {
     }
     return message;
   }
-  
-  
-  /********Email Templates****/
-  
 
+  /***XNFR-403***/
+  removeRowWithAnimation(id:any){
+    $('#' + id).hide(1000, function () {
+      $('#' + id).remove();
+    });
+  }
+
+  isJsonString(str:string) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+  }
+
+  convertJsonStringToJsonObject(jsonString:string){
+    var jsonObject : any;
+    if(this.isJsonString(jsonString)){
+      return jsonObject = JSON.parse(jsonString);
+    }
+  }
+
+  removeArrayItemByIndex(items:any,index:number){
+    var updatedItems = [];
+    for(var i=0;i<items.length;i++){
+        let item = items[i];
+        if(i!=index){
+          updatedItems.push(item);
+        }
+    }
+    return updatedItems;
+  }
+
+  spliceArrayByIndex(arr: any, indexToRemove: number) {
+    arr = $.grep(arr, function (data: any, index: number) {
+      return index !== indexToRemove;
+    });
+    return arr;
+  }
   
+  iterateNamesAndGetErrorMessage(response:any){
+    let names = "";
+    $.each(response.data, function (index:number, value:any) {
+      names += (index + 1) + ". " + value + "\n\n";
+    });
+    return response.message + "\n\n" + names;
+  }
+
+  getTrimmedData(input:any){
+    return $.trim(input);
+  }
+
+  convertToLowerCaseAndGetTrimmedData(input:any){
+    return $.trim(input.toLowerCase());
+  }
+
+  removeAllSpacesAndGetData(text:string){
+    return text.replace(/ /g,'');
+  }
+
+  /********Landing Pages****/
+  goToManageLandingPages(viewType: string) {
+    let urlSuffix = this.getLandingPagesSuffixUrl();
+    this.router.navigate(["/home/pages/"+urlSuffix+"/"+this.getListViewAsDefault(viewType)]);
+   }
+
+  private getLandingPagesSuffixUrl() {
+    let isPartnerLandingPage = this.router.url.includes('home/pages/partner');
+    let urlSuffix = isPartnerLandingPage ? 'partner' : 'manage';
+    return urlSuffix;
+  }
+
+   navigateToManageLandingPagesByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToManageLandingPagesByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToManageLandingPages(viewType);
+    }
+  }
+  goToManageLandingPagesByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    let urlSuffix = this.getLandingPagesSuffixUrl();
+    this.router.navigate(["/home/pages/"+urlSuffix+"/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  goToEditLandingPage(viewType: string) {
+    this.router.navigate(["/home/pages/edit/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  navigateToEditLandingPageByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToEditLandingPageByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToEditLandingPage(viewType);
+    }
+  }
+  goToEditLandingPageByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/pages/edit/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  goToManageFormsByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/forms/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  addCreateOrUpdateSuccessMessage(message:string){
+    this.createdOrUpdatedSuccessMessage = message;
+  }
 }

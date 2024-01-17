@@ -7,6 +7,7 @@ export class ColumnInfo {
     placeHolder = "";
     labelType= "";
     value:any;
+    displayName: "";
     isDefaultColumn = false;
     required:boolean;
     radioButtonChoices: Array<FormOption> = new Array<FormOption>();
@@ -42,4 +43,5 @@ export class ColumnInfo {
     descriptionCharacterleft: number = 500;
     skipped:boolean = false;
     submittedAnswerCorrect: boolean = false;
+    formDefaultFieldType: any;
 }

@@ -27,7 +27,9 @@
               **Please be noted that you will only see a list of unshared {{selectedModule}}. <br />
               **{{selectedModule}} that have been chosen will be shared with the
               <span *ngIf="isPartnersRouter">{{authenticationService?.partnerModule?.customName}}</span>
-              <span *ngIf="selectedModule=='Tracks' || selectedModule=='Play Books'"> and previously selected {{authenticationService?.partnerModule?.customName}}/ List of {{authenticationService?.partnerModule?.customName}} will be removed</span>
+              <span *ngIf="selectedModule=='Tracks' || selectedModule=='Play Books'"> and previously selected
+                {{authenticationService?.partnerModule?.customName}}/ List of
+                {{authenticationService?.partnerModule?.customName}} will be removed</span>
               <span *ngIf="!isPartnersRouter">contact</span>.
               It will take some time to process everything. There is no need to reshare it.
             </strong>
@@ -68,8 +70,8 @@
       <div class="modal-footer">
         <button *ngIf="!isPublishedSuccessfully" type="submit" class="button bgcolor-unset"
           [disabled]="selectedIds?.length==0 || isShareButtonClicked" (click)="share();isShareButtonClicked=true"><span
-            class="btn Btn-Green transition text_pd5">Share {{selectedModule}}</span></button>
-        <button type="submit" class="btn Btn-Gray" (click)="closePopup()">Close</button>
+            class="btn Btn-Green transition txt_pd-top3">Share {{selectedModule}}</span></button>
+        <button type="submit" class="btn Btn-Gray neg_mar_top6" (click)="closePopup()">Close</button>
       </div>
     </div>
   </div>

@@ -19,6 +19,7 @@ export class VideoThumbnailComponent implements OnInit {
   @Input() categoryName:string;
   @Input() asset:any;
   @Input() assetStatus:any;
+  @Input() hideDetails = false;
    isCreate: boolean;
   constructor(public videoUtilService:VideoUtilService, public videoFileService:VideoFileService,public authenticationService:AuthenticationService, public router:Router) {
     this.notifyParent = new EventEmitter<any>();
@@ -51,6 +52,7 @@ export class VideoThumbnailComponent implements OnInit {
     (<HTMLInputElement>document.getElementById('imagePath'+this.videoFile.id)).src =  this.videoFile.imagePath;}
   }
   ngOnInit() {
+    this.hideDetails = this.hideDetails==undefined ? false : true;
   }
 
 }

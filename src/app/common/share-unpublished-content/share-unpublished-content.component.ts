@@ -241,6 +241,7 @@ export class ShareUnpublishedContentComponent implements OnInit {
       this.statusCode = data.statusCode;
       if (data.statusCode == 200) {
         this.responseMessage = data.message;
+        this.modalHeaderText = "";
       } else {
         this.responseMessage = data.message;
       }

@@ -31,17 +31,17 @@ export class ActionsDescription {
     video_draft = 'Currently unavailable';
 
    /* FOR EMAIL TEMPLATES*/
-    template_edit = 'Edit template';
-    template_delete = 'Delete template';
-    template_preview = 'View template';
-    template_spam_check = 'Spam check';
+    template_edit = 'Edit';
+    template_delete = 'Delete';
+    template_preview = 'Preview';
+    template_spam_check = 'Check Spam Score';
 
    /* FOR CAMPAIGNS*/
-    campaign_edit = 'Edit campaign';
-    campaign_delete = 'Delete campaign';
-    campaign_preview = 'View campaign';
+    campaign_edit = 'Edit';
+    campaign_delete = 'Delete';
+    campaign_preview = 'View';
     campaign_report = 'Campaign based reports';
-    campaign_copy = 'Copy campaign';
+    campaign_copy = 'Copy';
     campaign_preview_partner = 'Preview & Delete'
     campaign_delete_partner = 'Delete';
 

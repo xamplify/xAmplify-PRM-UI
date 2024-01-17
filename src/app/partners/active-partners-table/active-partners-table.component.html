@@ -30,8 +30,7 @@
               </div>
             </div>
 
-            <span class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}}" 
-              title="Filter">
+            <span class="btn btn-xs hidden-xs l-g-view FliterAlignment {{filterActiveBg}}" title="Filter">
               <div class="btn-group">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                   aria-expanded="false" (click)="clickFilter()">
@@ -48,8 +47,8 @@
             <!-- <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" href="#activePartnerTable"
             style="float: right; position: relative; bottom: 30px;"></a> -->
             <a href="activePartnerTable" (click)="toggleCollapse($event)" style="float: right;"> <i
-                [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed, 'fa-chevron-down collapseIn': isCollapsed}" class="arrowpositinon fa collapseIconColorCu"
-                aria-hidden="true"></i></a>
+                [ngClass]="{'fa-chevron-up collapseOut': !isCollapsed, 'fa-chevron-down collapseIn': isCollapsed}"
+                class="arrowpositinon fa collapseIconColorCu" aria-hidden="true"></i></a>
           </div>
         </div>
       </div>
@@ -120,10 +119,11 @@
                   </td>
                   <td>
                     <div class="actions-block override-actions">
-                      <a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)" data-toggle="tooltip"
-                        data-placement="bottom" title="View Partner Journey" id="pj">
+                      <a class="custom-icon" data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)"
+                        data-toggle="tooltip" data-placement="bottom" title="View Partner Journey" id="pj">
                         <!-- <i class="fa fa-line-chart" aria-hidden="true"></i> -->
                         <i class="fas fa-route IconCustomization"></i>
+                        <div class="clickicons"></div>
                       </a>
                     </div>
                   </td>
@@ -357,7 +357,7 @@
                     <div class="actions-block override-actions" style="float: left;">
                       <a data-rel="fancybox-button" (click)="viewAnalytics(item.companyId)" data-toggle="tooltip"
                         data-placement="bottom" title="View Detailed Analytics" id="pj">
-                          <!-- <i class="fa fa-line-chart" aria-hidden="true"></i> -->
+                        <!-- <i class="fa fa-line-chart" aria-hidden="true"></i> -->
                         <i class="fa fa-line-chart IconCustomization" aria-hidden="true"></i>
                       </a>
                     </div>

@@ -68,7 +68,8 @@ export class DeleteAssetsComponent implements OnInit,OnDestroy {
 					if (response.statusCode === 200) {
 						this.deleteAssetSuccessEmitter.emit(response);
 					} else {
-						this.deleteAssetFailEmitter.emit(response.message);						
+						let message = this.referenceService.iterateNamesAndGetErrorMessage(response);
+						this.deleteAssetFailEmitter.emit(message);						
 					}
 				},
 				(_error: string) => {

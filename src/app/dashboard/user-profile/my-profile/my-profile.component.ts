@@ -64,6 +64,7 @@ import 'rxjs/add/operator/map';
 import { CompanyLoginTemplateActive } from 'app/email-template/models/company-login-template-active';
 import { CompanyProfileService } from 'app/dashboard/company-profile/services/company-profile.service';
 
+import { DefaultDashBoardForPartners } from 'app/dashboard/models/default-dashboard-for-partners';
 declare var swal, $, videojs: any, Papa: any;
 
 @Component({
@@ -315,6 +316,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	connectwiseRibbonText: string;
 	isLocalHost = false;
 
+	 /* -- XNFR-415 -- */
+	DefaultDashBoardForPartnersEnum = DefaultDashBoardForPartners;
+	defaultLoading=false;
+	updateDashboardError=false;
+	modulesDashboardForPartner: CustomResponse = new CustomResponse();
+	defaultSelectedDashboardTypeSetting = this.getSelectedDashboardForPartner();
+	checkSelectedDashboardType=[];
+	companyIdFromCompanyProfileNameForVanity:number;	
+	removeMarketingNonInteractiveBox:boolean = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -564,6 +574,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	ngOnInit() {
 		try {
+			
 			this.searchWithModuleName = 19;
 			this.activeTabName = 'personalInfo';
 			this.activeTabHeader = this.properties.personalInfo;
@@ -1878,6 +1889,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		} else if (this.activeTabName == "customskin") {
 			this.activeTabHeader = this.properties.customskin;
 			this.themeName = "";
+			this.showThemes();
+		this.themeResponse = new CustomResponse();
 		} else if (this.activeTabName == "exclude") {
 			this.activeTabHeader = this.properties.exclude;
 			this.excludeUserPagination = new Pagination();
@@ -1957,8 +1970,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.activeTabHeader = this.properties.customLoginScreen;
 		}
 		this.referenceService.goToTop();
-		this.showThemes();
-		this.themeResponse = new CustomResponse();
 	}
 
 
@@ -2580,6 +2591,78 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			);
 	}
 
+	 /* -- XNFR-415 -- */
+	setDashboardForPartner(){
+		this.defaultLoading = true;  
+		this.modulesDashboardForPartner = new CustomResponse();  
+		this.updateDashboardError = false; 
+		let selectedOptionForDefaultDashboard = $("input[name=dashboardSelectedOption]:checked").val();
+		this.dashBoardService.updateDefaultDashboardForPartner(this.referenceService.companyId, selectedOptionForDefaultDashboard)
+			.subscribe(
+				data=>{
+					this.defaultLoading=true;
+					if(data.statusCode == 200 ){
+						this.referenceService.showSweetAlertSuccessMessage(data.message);
+						localStorage.setItem('selectedDashboard',selectedOptionForDefaultDashboard);
+					}
+					else {
+						this.updateDashboardError=true;
+						this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
+					}
+				},
+				error => {
+					this.updateDashboardError = true;
+					this.defaultLoading = false;
+					this.referenceService.showSweetAlertFailureMessage(this.properties.serverErrorMessage);
+				},
+				() => { }
+			);
+	}
+
+	 /* -- XNFR-415 -- */
+	getSelectedDashboardForPartner() {
+		this.modulesDashboardForPartner = new CustomResponse();  
+		this.updateDashboardError = false;
+		this.vanityUrlService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {        
+			this.companyIdFromCompanyProfileNameForVanity = result.companyId});
+		this.dashBoardService.getDefaultDashboardForPartner(this.companyIdFromCompanyProfileNameForVanity)
+			.subscribe(
+				data => {
+					if (data.statusCode == 200) {
+						this.defaultSelectedDashboardTypeSetting = data.data;
+					} else {
+						this.updateDashboardError = true;
+						this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+					}
+				},
+				error => {
+					this.updateDashboardError = true;
+					this.modulesDashboardForPartner = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+				},
+				() => { }
+			);
+	}
+
+	checkDashboardTypes(){
+        this.userService.getDashboardType().
+        subscribe(
+          data=>{
+            this.checkSelectedDashboardType=data;
+          }
+        );
+    }
+    
+    get getDashboardForSelectedOption():string{
+        this.refService.filterArrayList(this.checkSelectedDashboardType,'Welcome');
+        if(this.checkSelectedDashboardType.includes('Advanced Dashboard')){
+            return 'Advanced Dashboard';
+        }
+        else if(this.checkSelectedDashboardType.includes('Detailed Dashboard')){
+            return 'Detailed Dashboard';
+        }
+        else return 'Dashboard';    
+    }
+
 	selectedLanguage(event: any) {
 		//this.translateService.use(this.selectedLanguageCode);        
 	}
@@ -2961,12 +3044,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	addPipeline() {
 		this.pipelineModalTitle = "Add a Pipeline";
+		if(this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner'){
+			this.removeMarketingNonInteractiveBox = false;
+		}
 		$('#addPipelineModalPopup').modal('show');
 	}
 
 	viewPipeline(pipelineToView: Pipeline) {
 		let self = this;
 		this.pipelineModalTitle = "View Pipeline";
+		if(this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner'){
+			this.removeMarketingNonInteractiveBox = false;
+		}
 		$('#addPipelineModalPopup').modal('show');
 		this.referenceService.startLoader(this.addPipelineLoader);
 		this.pipelinePreview = true;
@@ -2975,6 +3064,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	editPipeline(pipeline: Pipeline) {
 		this.pipelineModalTitle = "Edit Pipeline";
+		if(this.roleNames == 'Marketing' || this.roleNames == 'Marketing & Partner'){
+			this.removeMarketingNonInteractiveBox = true;
+		}
 		$('#addPipelineModalPopup').modal('show');
 		this.referenceService.startLoader(this.addPipelineLoader);
 		this.getPipeline(pipeline);
@@ -3184,6 +3276,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	listAllPipelines(pagination: Pagination) {
 		this.ngxloading = true;
+		this.referenceService.loading(this.httpRequestLoader, true);
 		let type: string;
 		if (this.activeTabName == "leadPipelines") {
 			type = "LEAD";
@@ -3196,6 +3289,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			.subscribe(
 				response => {
 					this.ngxloading = false;
+					this.referenceService.loading(this.httpRequestLoader, false);
 					// this.pipelines = response.data; 
 					pagination.totalRecords = response.totalRecords;
 					this.pipelineSortOption.totalRecords = response.totalRecords;
@@ -3203,6 +3297,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				},
 				error => {
 					this.ngxloading = false;
+					this.referenceService.loading(this.httpRequestLoader, false);
 				},
 				() => { }
 			);
@@ -3525,8 +3620,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	validateDomainName(domain: string) {
-		var DOMAIN_NAME_PATTERN = this.regularExpressions.DOMAIN_PATTERN;
-		return DOMAIN_NAME_PATTERN.test(domain);
+		var DOMAIN_NAME_PATTERN = new RegExp(this.regularExpressions.DOMAIN_PATTERN);
+		var matchedPattrenString:string[] = domain.match(DOMAIN_NAME_PATTERN)
+		if(matchedPattrenString.length ==0)
+			return false;
+		else
+			return matchedPattrenString[0] == domain;
 	}
 
 	confirmAndsaveExcludedDomain(domain: string) {
@@ -3745,7 +3844,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	readExcludedUsersCSVFileContent(allTextLines: any, csvUserPagination: Pagination) {
-		this.csvExcludeUsersFilePreview = true;
+		this.customResponse = new CustomResponse();
 		for (var i = 1; i < allTextLines.length; i++) {
 			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
 				let user = new User();
@@ -3761,12 +3860,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.isListLoader = false;
 		if (this.excludedUsers.length === 0) {
 			this.customResponse = new CustomResponse('ERROR', "No users found.", true);
+			this.csvExcludeUsersFilePreview = false;
+		}else{
+		this.csvExcludeUsersFilePreview = true;
 		}
-
 	}
 
 	readExcludedDomainsCSVFileContent(allTextLines: any, csvDomainPagination: Pagination) {
-		this.csvExcludeDomainsFilePreview = true;
+		this.excludeDomainCustomResponse = new CustomResponse
 		for (var i = 1; i < allTextLines.length; i++) {
 			if (allTextLines[i][0] && allTextLines[i][0].trim().length > 0) {
 				let domain = allTextLines[i][0].trim();
@@ -3781,6 +3882,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.isListLoader = false;
 		if (this.excludedDomains.length === 0) {
 			this.excludeDomainCustomResponse = new CustomResponse('ERROR', "No domains found.", true);
+			this.csvExcludeDomainsFilePreview = false;
+		}else{
+			this.csvExcludeDomainsFilePreview = true;
+
 		}
 
 	}
@@ -3799,12 +3904,30 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			allowOutsideClick: false,
 			confirmButtonText: 'Yes'
 		}).then(function () {
-			self.saveExcludedUsers(excludedUsers);
+			self.validateAndSaveExcludedUsers(excludedUsers);
 		}, function (dismiss: any) {
 			console.log('you clicked on option' + dismiss);
 		});
 	}
 
+	validateAndSaveExcludedUsers(excludedUsers:User[]){
+		let self = this;
+		this.userService.validateExcludedUsers(excludedUsers, this.loggedInUserId)
+		.subscribe(
+			data => {
+				this.customResponse = new CustomResponse()
+				if (data.statusCode == 200) {
+					self.saveExcludedUsers(excludedUsers);
+				} else if (data.statusCode == 400) {
+					this.excludeUserCustomResponse = new CustomResponse('ERROR', data.message, true);
+				}
+			},
+			error => {
+				this.referenceService.stopLoader(this.excludeUserLoader);
+			},
+			() => { }
+		);
+	} 
 	saveExcludedUsers(excludedUsers: User[]) {
 		this.referenceService.startLoader(this.excludeUserLoader);
 		this.validEmailFormat = true;
@@ -3812,6 +3935,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.userService.saveExcludedUsers(excludedUsers, this.loggedInUserId)
 			.subscribe(
 				data => {
+					this.customResponse = new CustomResponse()
 					if (data.statusCode == 200) {
 						this.csvExcludeUsersFilePreview = false;
 						this.excludeUserCustomResponse = new CustomResponse('SUCCESS', this.properties.exclude_add, true);
@@ -3836,6 +3960,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	cancelCSVFilePreview(excludetype: string) {
+		this.customResponse = new CustomResponse();
+		this.excludeUserCustomResponse = new CustomResponse();
+		this.excludeDomainCustomResponse = new CustomResponse();
 		if (excludetype === 'exclude-users') {
 			this.csvExcludeUsersFilePreview = false;
 			this.listExcludedUsers(this.excludeUserPagination);
@@ -3859,10 +3986,29 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			allowOutsideClick: false,
 			confirmButtonText: 'Yes'
 		}).then(function () {
-			self.saveExcludedDomains(excludedDomains);
+			self.validateAndSaveExcludedDomains(excludedDomains);
 		}, function (dismiss: any) {
 			console.log('you clicked on option' + dismiss);
 		});
+	}
+
+	validateAndSaveExcludedDomains(excludedDomains:string[]){
+		let self = this;
+		this.userService.validateExcludedDomains(excludedDomains, this.loggedInUserId)
+		.subscribe(
+			data => {
+				this.customResponse = new CustomResponse()
+				if (data.statusCode == 200) {
+					self.saveExcludedDomains(excludedDomains);
+				} else if (data.statusCode == 400) {
+					this.excludeDomainCustomResponse = new CustomResponse('ERROR', data.message, true);
+				}
+			},
+			error => {
+				this.referenceService.stopLoader(this.excludeUserLoader);
+			},
+			() => { }
+		);
 	}
 
 	saveExcludedDomains(excludedDomains: string[]) {
@@ -3872,6 +4018,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		this.userService.saveExcludedDomains(excludedDomains, this.loggedInUserId)
 			.subscribe(
 				data => {
+					this.customResponse = new CustomResponse();
 					if (data.statusCode == 200) {
 						this.referenceService.stopLoader(this.excludeDomainLoader);
 						this.csvExcludeDomainsFilePreview = false;
@@ -4257,8 +4404,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	shouldDisableCheckbox(index: number): boolean {
 		const selectedCount = this.pipeline.stages.filter(item => item.private).length;
-		const remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
-
+		let remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 1;
+		if(this.pipeline.integrationType === "PIPEDRIVE" || this.pipeline.integrationType === "CONNECTWISE")
+		{
+			remainingUnselectedCount = this.pipeline.stages.length - selectedCount - 2;
+		}
 		if (remainingUnselectedCount === 0 && !this.pipeline.stages[index].private) {
 			this.pipeline.stages[index].canDelete = false;
 		} else {

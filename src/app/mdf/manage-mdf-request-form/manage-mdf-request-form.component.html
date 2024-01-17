@@ -4,7 +4,7 @@
       <div class="clearfix">
          <div class="col-xs-12">
             <!-- BEGIN EXAMPLE TABLE PORTLET-->
-            <div class="portlet light remove_cardBgcolor padding_0">
+            <div class="portlet light">
                <div class="portlet-title" style="padding-bottom: 6px;">
                   <div class="caption" style="padding-top: 11px !important;padding-left: 4px !important;" translate>
                      <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
@@ -55,34 +55,36 @@
                                              <div class="col-md-12 col-lg-12" *ngIf="columnValue?.values?.length>0">
                                                 <div class="row">
                                                    <div class="col-md-2 col-lg-2 text-right">
-                                                      <img class="img-circle" src="{{columnValue?.values[0]}}" alt="">
+                                                      <img class="img-circle" src="{{columnValue?.values[0]}}"
+                                                         alt="No Image Found"
+                                                         onerror="this.src='assets/images/default-company.png';">
                                                    </div>
                                                    <div class="col-md-10 col-lg-10">
-                                                      <label data-toggle="tooltip" data-placement="bottom"
+                                                      <label data-toggle="tooltip" data-placement="top"
                                                          title="{{columnValue?.values[1]}}">
-                                                         {{columnValue?.values[1] | slice:0:30}}
+                                                         <b>Company Name:</b> {{columnValue?.values[1] | slice:0:30}}
                                                          <span *ngIf="columnValue?.values[1].length>30">..</span>
                                                       </label><br>
                                                       <ng-container *ngIf="columnValue?.values[6].length>0">
-                                                         <label data-toggle="tooltip" data-placement="bottom"
+                                                         <label data-toggle="tooltip" data-placement="top"
                                                             title="{{columnValue?.values[6]}}">
-                                                            {{columnValue?.values[6] | slice:0:30}}
+                                                            <b>Name:</b> {{columnValue?.values[6] | slice:0:30}}
                                                             <span *ngIf="columnValue?.values[6].length>30">..</span>
                                                          </label><br>
                                                       </ng-container>
-                                                      <label data-toggle="tooltip" data-placement="bottom"
+                                                      <label data-toggle="tooltip" data-placement="top"
                                                          title="{{columnValue?.values[2]}}">
-                                                         {{columnValue?.values[2] | slice:0:30}}
+                                                         <b>Email Id:</b> {{columnValue?.values[2] | slice:0:30}}
                                                          <span *ngIf="columnValue?.values[2].length>30">..</span>
                                                       </label><br>
-                                                      <label><strong>Request Created On:</strong></label>
-                                                      <label data-toggle="tooltip" data-placement="bottom"
+                                                      <label><b>Request Created On:</b></label>
+                                                      <label data-toggle="tooltip" data-placement="top"
                                                          title="{{columnValue?.values[3]}}">
                                                          {{columnValue?.values[3]}}
                                                       </label>
                                                       <br>
-                                                      <label><strong>Status:</strong></label>
-                                                      <label data-toggle="tooltip" data-placement="bottom"
+                                                      <label><b>Status:</b></label>
+                                                      <label data-toggle="tooltip" data-placement="top"
                                                          title="{{columnValue?.values[4]}}">
                                                          <span
                                                             class="label label-warning">{{columnValue?.values[4]}}</span>
@@ -105,9 +107,8 @@
                                        <td *ngIf="columns?.length>3">
                                           <div class="request-form-actions-div">
                                              <!--View More Columns-->
-                                             <a class="custom-icon display-inlineblock"
-                                                (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
-                                                data-placement="bottom" title="View More Columns"
+                                             <a class="custom-icon" (click)="expandColumns(formDataRow,rowIndex)"
+                                                data-toggle="tooltip" data-placement="bottom" title="View More Columns"
                                                 *ngIf="columns.length>4">
                                                 <i *ngIf="!formDataRow.expanded"
                                                    class="fa fa-plus fa-fa-consistency IconCustomization"
@@ -118,23 +119,22 @@
                                                 <div class="clickicons"></div>
                                              </a>
                                              <!---Change Request-->
-                                             <a class="custom-icon display-inlineblock" data-toggle="tooltip"
-                                                data-placement="bottom" title="Change Request" *ngIf="!partnerView">
+                                             <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
+                                                title="Change Request" *ngIf="!partnerView">
                                                 <i (click)="changeRequest(formDataRow.values[0])"
                                                    class="fa fa-pencil-square-o fa-fa-consistency IconCustomization"
                                                    aria-hidden="true"></i>
                                                 <div class="clickicons"></div>
                                              </a>
                                              <!----Timeline History-->
-                                             <a class="custom-icon display-inlineblock" data-toggle="tooltip"
-                                                data-placement="bottom" title="View History"
-                                                (click)="goToTimeLine(formDataRow.values[0])">
+                                             <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
+                                                title="View History" (click)="goToTimeLine(formDataRow.values[0])">
                                                 <i class="fa fa-history fa-fa-consistency IconCustomization"
                                                    aria-hidden="true"></i>
                                                 <div class="clickicons"></div>
                                              </a>
-                                             <a class="custom-icon display-inlineblock" data-toggle="tooltip"
-                                                data-placement="bottom" title="Comments"
+                                             <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
+                                                title="Comments"
                                                 (click)="showRequestCommentPopup(formDataRow.values[0])">
                                                 <i class="fa fa-comment fa-fa-consistency IconCustomization"
                                                    aria-hidden="true"></i>
@@ -220,7 +220,7 @@
                      <div class="col-md-2">
                         <div class="frame">
                            <img style="height: 80px;width: 80px;" class="img-circle" src="{{selectedRequestDetails[0]}}"
-                              alt="">
+                              alt="No Image Found" onerror="this.src='assets/images/default-company.png';">
                         </div>
                      </div>
                      <div class="col-md-10" style="text-align: left;">
@@ -269,7 +269,8 @@
                            </span>
                         </div>
                         <a class="avatar none">
-                           <img src="{{c?.profilePicturePath}}" width="35" alt="Profile Avatar" />
+                           <img src="{{c?.profilePicturePath}}" width="35" alt="No Image Found"
+                              onerror="this.src='assets/images/icon-user-default.png';" />
                         </a>
                         <p>{{c?.comment}}</p>
                      </li>
@@ -282,8 +283,8 @@
                   <div>
                      <button (click)="saveComment()" [disabled]="invalidComment"
                         [style.pointer-events]="invalidComment ? 'none' : 'auto' "
-                        class="button_blue bgcolor-unset"><span
-                           class="btn btn-primary transition">Submit</span></button>
+                        class="button_blue bgcolor-unset request-comment txt_pd-top3"><span
+                           class="btn btn-primary transition txt_pd-top3">Submit</span></button>
                   </div>
                </div>
             </ng-container>

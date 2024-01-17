@@ -20,7 +20,7 @@
   width: auto;
   height: 100%;
   width: 100% !important;
-  border: solid 1px #dddddd;
+  border-bottom: solid 1px #dddddd;
 }
 
 .grid-box {
@@ -30,17 +30,6 @@
   min-width: 145px;
 }
 
-.view-banner {
-  background-color: #00a6e8;
-  color: white;
-  padding: 3px 10px;
-  border-radius: 3px;
-  text-align: center;
-  margin: 0 0;
-  font-size: 11px;
-  font-weight: 600;
-  display: inline;
-}
 
 .ribbon div::before {
   content: "";
@@ -193,3 +182,4 @@ p.warning-red-textcolor {
 .p0-p10{
   padding: 0px 10px Im !important;
 }
+

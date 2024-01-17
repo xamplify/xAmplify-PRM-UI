@@ -46,6 +46,8 @@ export class IntegrationSettingsComponent implements OnInit {
 	integrationPipelines = [];
 	selectedCustomFieldsDtos = new Array<CustomFieldsDto>();
 	customFieldsDtosLoader = false;
+	expandField: boolean = false;
+	typeMismatchMessage: any;
 
 	constructor(private integrationService: IntegrationService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent,
 		public referenceService: ReferenceService, public authenticationService: AuthenticationService) {
@@ -113,14 +115,14 @@ export class IntegrationSettingsComponent implements OnInit {
 	}
 
 	listExternalCustomFields() {
-		this.ngxloading = true;
+		//this.ngxloading = true;
 		this.customFieldsDtosLoader = true;
 		let self = this;
 		self.selectedCfIds = [];
 		self.integrationService.listExternalCustomFields(this.integrationType.toLowerCase(), this.loggedInUserId)
 			.subscribe(
 				data => {
-					this.ngxloading = false;
+					//this.ngxloading = false;
 					if (data.statusCode == 200) {
 						this.sfCustomFieldsResponse = data.data;
 						this.sfcfMasterCBClicked = false;
@@ -154,13 +156,14 @@ export class IntegrationSettingsComponent implements OnInit {
 
 	}
 
+	
 	setSfCfPage(page: number) {
-		this.referenceService.goToTop();
 		this.paginatedSelectedIds = [];
 		try {
 			if (page < 1 || (this.sfcfPager.totalPages > 0 && page > this.sfcfPager.totalPages)) {
 				return;
 			}
+			this.referenceService.goToTop();
 			this.sfcfPager = this.socialPagerService.getPager(this.sfCustomFieldsResponse.length, page, this.pageSize);
 			this.sfcfPagedItems = this.sfCustomFieldsResponse.slice(this.sfcfPager.startIndex, this.sfcfPager.endIndex + 1);
 			var cfIds = this.sfcfPagedItems.map(function (a) { return a.name; });
@@ -207,6 +210,8 @@ export class IntegrationSettingsComponent implements OnInit {
 				selectedCustomFieldsDto.name = customFiledDto.name;
 				selectedCustomFieldsDto.required = customFiledDto.required;
 				selectedCustomFieldsDto.placeHolder = customFiledDto.placeHolder;
+				selectedCustomFieldsDto.displayName = customFiledDto.displayName;
+				selectedCustomFieldsDto.formDefaultFieldType = customFiledDto.formDefaultFieldType;
 				self.selectedCustomFieldsDtos.push(selectedCustomFieldsDto);
 			}
 		});
@@ -226,6 +231,39 @@ export class IntegrationSettingsComponent implements OnInit {
 					() => { }
 		 		);
 		 } else {
+			const amountField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'AMOUNT');
+			const closeDateField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'CLOSE_DATE');
+			const dealNameField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'DEAL_NAME');
+			const displayName = this.selectedCustomFieldsDtos.find(field => $.trim(field.displayName).length <= 0);	
+			 if (((this.integrationType === 'HUBSPOT') && (!amountField || !closeDateField || !dealNameField))) {
+				 this.ngxloading = false;
+				 const missingFields: string[] = [];
+				 if (!amountField) {
+					missingFields.push('Amount');
+				 }
+				 if (!closeDateField) {
+					 missingFields.push('Close Date');
+				 }
+				 if (!dealNameField) {
+					 missingFields.push('Deal Name');
+				 }
+				 const missingFieldsMessage = missingFields.join(', ');
+				 this.referenceService.goToTop();
+				 return this.customFieldsResponse = new CustomResponse('ERROR', `Please Map the ${missingFieldsMessage} field(s).`, true);	
+			}
+			if((this.integrationType === 'HUBSPOT') && displayName)
+			{
+				this.ngxloading = false;
+				const missingFields: string[] = [];
+				this.selectedCustomFieldsDtos.forEach(field => {
+							if ($.trim(field.displayName).length <= 0) {
+								missingFields.push(field.name);
+							}
+						});
+						const missingFieldsMessage = missingFields.join(', ');
+						this.referenceService.goToTop();
+						return this.customFieldsResponse = new CustomResponse('ERROR', `Please enter the display name for ${missingFieldsMessage} field(s).`, true);	
+			}
 		 	this.integrationService.syncCustomForm(this.loggedInUserId, this.selectedCustomFieldsDtos, this.integrationType.toLowerCase())
 				.subscribe(
 		 			data => {
@@ -263,6 +301,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			this.selectedCfIds.splice($.inArray(cfName, this.selectedCfIds), 1);
 			this.paginatedSelectedIds.splice($.inArray(cfName, this.paginatedSelectedIds), 1);
 			sfCustomField.selected = false;
+			sfCustomField.required = false;
 		}
 		this.isHeaderCheckBoxChecked = this.paginatedSelectedIds.length == this.sfcfPagedItems.length;
 		
@@ -301,6 +340,7 @@ export class IntegrationSettingsComponent implements OnInit {
 						data => {
 							if (data.statusCode == 200) {
 								self.unlinkEvent.emit();
+								self.ngxloading = false;
 							}
 						});
 			}, function (dismiss: any) {
@@ -497,6 +537,89 @@ export class IntegrationSettingsComponent implements OnInit {
 		}
 		ev.stopPropagation();
 	}
+	toggleSettings(sfCustomField){
+		sfCustomField.showSettings = !sfCustomField.showSettings;
+	}
+		
+	// onFieldSelectionChange(selectedField: any): void {
+	// 	const selectedFieldType = selectedField.formDefaultFieldType;
+	// 	let countSelectedType = 0;
+
+	// 	this.sfCustomFieldsResponse.forEach(field => {
+	// 		if (field.formDefaultFieldType === selectedFieldType) {
+	// 			countSelectedType++;
+	// 			field.required = true;
+	// 			field.canUnselect = false;
+	// 		}
+	// 	});
+	// 	if (countSelectedType > 1) {
+	// 		this.sfCustomFieldsResponse.forEach(field => {
+	// 			if (field.formDefaultFieldType === selectedFieldType && field !== selectedField) {
+	// 				field.formDefaultFieldType = null;
+	// 				field.canUnselect = true;
+	// 			}
+	// 		});
+	// 	}
+	// }
+
+	onFieldSelectionChange(selectedField: any): void {
+		const selectedFieldType = selectedField.formDefaultFieldType;
+		const selectedFieldTypeName = selectedField.type;
+
+		selectedField.typeMismatch = false;
+		selectedField.typeMismatchMessage = '';
+
+		if (selectedFieldType === null) {
+			selectedField.canUnselect = true;
+			return;
+		}
+
+		if (
+			(selectedFieldType === 'AMOUNT' && selectedFieldTypeName !== 'number') ||
+			(selectedFieldType === 'DEAL_NAME' && selectedFieldTypeName !== 'text') ||
+			(selectedFieldType === 'CLOSE_DATE' && selectedFieldTypeName !== 'date')
+		) {
+			selectedField.typeMismatch = true;
+			selectedField.typeMismatchMessage = `Type mismatch for ${selectedFieldType}. Expected type is ${selectedFieldType === 'AMOUNT' ? 'number' : selectedFieldType === 'DEAL_NAME' ? 'text' : 'date'
+				}.`;
+			selectedField.formDefaultFieldType = null;
+			return;
+		}
+
+		let countSelectedType = 0;
+
+		this.sfCustomFieldsResponse.forEach(field => {
+			if (
+				field.formDefaultFieldType === selectedFieldType &&
+				((selectedFieldTypeName === 'number' && selectedFieldType === 'AMOUNT') ||
+					(selectedFieldTypeName === 'text' && selectedFieldType === 'DEAL_NAME') ||
+					(selectedFieldTypeName === 'date' && selectedFieldType === 'CLOSE_DATE'))
+			) {
+				countSelectedType++;
+				field.required = true;
+				field.canUnselect = false;
+			} else {
+				field.typeMismatch = false;
+				field.typeMismatchMessage = '';
+			}
+		});
+
+		if (countSelectedType > 1) {
+			this.sfCustomFieldsResponse.forEach(field => {
+				if (
+					field.formDefaultFieldType === selectedFieldType &&
+					((selectedFieldTypeName === 'number' && selectedFieldType === 'AMOUNT') ||
+						(selectedFieldTypeName === 'text' && selectedFieldType === 'DEAL_NAME') ||
+						(selectedFieldTypeName === 'date' && selectedFieldType === 'CLOSE_DATE')) &&
+					field !== selectedField
+				) {
+					field.formDefaultFieldType = null;
+					field.canUnselect = true;
+				}
+			});
+		}
+	}
 
 	
+
 }

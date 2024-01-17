@@ -113,7 +113,7 @@
                                     <li [ngClass]="{'active-tab': activeTabName == 'settings'}"
                                         [class.disabled]="authenticationService.isSuperAdmin()">
                                         <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}"
-                                            (click)="activateTab('settings');clearCustomResponse();">{{properties.viewType
+                                            (click)="activateTab('settings');clearCustomResponse();getSelectedDashboardForPartner();checkDashboardTypes()">{{properties.viewType
                                             | translate}}</a>
                                     </li>
                                     <!---Tags-->
@@ -247,7 +247,8 @@
                                             | translate}}</a>
                                     </li>
                                     <!--Exclusion-->
-                                    <ng-container *ngIf="excludeUsersOrDomains">
+                                    <ng-container
+                                        *ngIf="excludeUsersOrDomains && (authenticationService?.module?.adminOrSuperVisor || authenticationService?.isPartner())">
                                         <li [ngClass]="{'active-tab': activeTabName == 'exclude'}">
                                             <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'exclude'}"
                                                 (click)="activateTab('exclude');clearCustomResponse()">
@@ -363,7 +364,7 @@
                                                     style="border-radius: 3px;"
                                                     *ngIf="activeTabName == 'lightTheme' && themeDto?.id != activeThemeDetails?.themeId"
                                                     (click)="activateThemeForCompanyWithAlert(themeDto.id)"><span
-                                                        class="btn btn-primary transition">Activate
+                                                        class="btn btn-primary transition txt_pd-top3">Activate
                                                         Theme</span></button>
 
                                             </div>
@@ -480,7 +481,9 @@
                                             <tr *ngFor="let dto of themeDtoList" id="themeListDiv_{{dto.id}}">
                                                 <td> <img src="{{dto?.themeImagePath}}" alt=""
                                                         class="img-customization"> </td>
-                                                <td class="text-center">{{dto.name}}
+                                                <td class="text-center"><span [title]="dto.name" data-toggle="tooltip"
+                                                        data-placement="bottom">{{dto.name | slice:0:18 }}</span>
+                                                    <span *ngIf="dto.name?.length>18">...</span>
                                                     <br>
                                                     <h6 _ngcontent-c26=""
                                                         class="label label-info  selectcolor active-color"
@@ -649,8 +652,9 @@
                                                     style="padding: left 18px;">
                                                     <button type="submit"
                                                         [disabled]="!updateUserProfileForm.valid || authenticationService.isSuperAdmin()"
-                                                        class="button bgcolor-unset" translate>
-                                                        <span class="btn Btn-Green transition">Save Changes</span>
+                                                        class="button bgcolor-unset pd_lft2" translate>
+                                                        <span class="btn Btn-Green transition txt_pd-top3">Save
+                                                            Changes</span>
                                                     </button>
                                                 </div>
                                             </form>
@@ -700,8 +704,9 @@
                                                                                     [attr.class]="question.class">
                                                                                     <label
                                                                                         class="control-label">Question
-                                                                                        <font style="color: #f55d7a">
-                                                                                            <b>*</b>
+                                                                                        <font>
+                                                                                            <b
+                                                                                                style="color: #f55d7a !important">*</b>
                                                                                         </font>
                                                                                     </label>
                                                                                     <input type="text" maxlength="300"
@@ -745,7 +750,7 @@
                                                 </div>
                                                 <button [disabled]="!formSubmiteState" class="button bgcolor-unset"
                                                     (click)="saveForm()"><span
-                                                        class="btn Btn-Green transition">{{submitButtonText}}</span></button>
+                                                        class="btn Btn-Green transition txt_pd-top3">{{submitButtonText}}</span></button>
 
                                             </form>
                                             <form role="form" aria-label="">
@@ -773,8 +778,9 @@
                                                                                     [attr.class]="dealType.class">
                                                                                     <label class="control-label"
                                                                                         translate>DealType
-                                                                                        <font style="color: #f55d7a">
-                                                                                            <b>*</b>
+                                                                                        <font>
+                                                                                            <b
+                                                                                                style="color: #f55d7a !important">*</b>
                                                                                         </font>
                                                                                     </label>
                                                                                     <input type="text" maxlength="300"
@@ -817,7 +823,7 @@
                                                 </div>
                                                 <button [disabled]="!dealSubmiteState || this.dealtypes.length == 0"
                                                     class="button bgcolor-unset" (click)="saveDealTypes()"><span
-                                                        class="btn Btn-Green transition">{{dealButtonText}}</span></button>
+                                                        class="btn Btn-Green transition txt_pd-top3">{{dealButtonText}}</span></button>
                                             </form>
                                         </div>
                                         <!---Integrations-->
@@ -1374,9 +1380,9 @@
                                                     <div class="row">
                                                         <div class="col-xs-12 col-sm-12 col-lg-12">
                                                             <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
-                                                                <button class="button_blue bgcolor-unset"
+                                                                <button class="button_blue bgcolor-unset pd_lft2"
                                                                     (click)="addPipeline()" translate><span
-                                                                        class="btn btn-primary transition">Create
+                                                                        class="btn btn-primary transition txt_pd-top3">Create
                                                                         Pipeline</span></button>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-7 col-lg-7 p0">
@@ -1436,7 +1442,7 @@
                                                                             </th>
                                                                         </tr>
                                                                     </thead>
-                                                                    <tbody>
+                                                                    <tbody *ngIf="!httpRequestLoader.isLoading">
                                                                         <tr *ngFor="let pipeline of pipelinePagination.pagedItems ;let i =index"
                                                                             id="pipeline_{{pipeline.id}}">
 
@@ -1449,7 +1455,7 @@
                                                                                     title="{{pipeline.name}}">{{pipeline.name
                                                                                     | slice:0:30}}<span
                                                                                         *ngIf="pipeline?.name?.length>30">...</span></span>
-                                                                                <h6 class="view-banner"
+                                                                                <h6 class="view-banner pipeline-label-width"
                                                                                     *ngIf="pipeline.crmPipeline"
                                                                                     translate>
                                                                                     {{pipeline.integrationType}}</h6>
@@ -1533,6 +1539,7 @@
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
+                                                                <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                                                                 <div *ngIf="pipelinePagination.pagedItems.length !== 0"
                                                                     class="pg8">
                                                                     <app-pagination [pagination]="pipelinePagination"
@@ -1549,7 +1556,6 @@
                                                     </div>
                                                 </div>
                                                 <br>
-                                                <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                                             </ng-container>
                                         </div>
                                         <!--Pasword-->
@@ -1627,8 +1633,8 @@
                                                     <div class="margin-top-10">
                                                         <button type="submit" id="register-submit-btn"
                                                             [disabled]="!updatePasswordForm.valid"
-                                                            class="button bgcolor-unset" translate>
-                                                            <span class="btn Btn-Green transition">Change
+                                                            class="button bgcolor-unset pd_lft2" translate>
+                                                            <span class="btn Btn-Green transition txt_pd-top3">Change
                                                                 Password</span></button>
                                                         <input type="reset" class="btn Btn-Gray" value="Cancel">
                                                     </div>
@@ -1669,9 +1675,9 @@
                                                 </label>
                                             </div>
                                             <div class="margin-top-10">
-                                                <button type="submit" class="button bgcolor-unset"
+                                                <button type="submit" class="button bgcolor-unset pd_lft2"
                                                     (click)="setDefaultView()" translate><span
-                                                        class="btn Btn-Green transition">Save
+                                                        class="btn Btn-Green transition txt_pd-top3">Save
                                                         Changes</span></button>
                                             </div>
                                         </div>
@@ -1756,11 +1762,13 @@
                                                     style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
                                                     <button type="submit" class="button bgcolor-unset"
                                                         (click)="saveGdprSetting()" *ngIf="!gdprSetting.isExists"
-                                                        translate><span class="btn Btn-Green transition">Save
+                                                        translate><span
+                                                            class="btn Btn-Green transition txt_pd-top3">Save
                                                             Settings</span></button>
                                                     <button type="submit" class="button bgcolor-unset"
                                                         (click)="updateGdprSetting()" *ngIf="gdprSetting.isExists"
-                                                        translate><span class="btn Btn-Green transition">Update
+                                                        translate><span
+                                                            class="btn Btn-Green transition txt_pd-top3">Update
                                                             Settings</span></button>
 
                                                 </div>
@@ -1802,9 +1810,10 @@
                                                     <div class="row">
                                                         <div class="col-xs-12 col-sm-12 col-lg-12">
                                                             <div class="col-xs-12 col-sm-5 col-lg-5 p0 mb_10">
-                                                                <button class="button_blue bgcolor-unset"
+                                                                <button class="button_blue bgcolor-unset pd_lft2"
                                                                     (click)="addCategory()" translate><span
-                                                                        class="btn btn-primary transition">Create a
+                                                                        class="btn btn-primary transition txt_pd-top3">Create
+                                                                        a
                                                                         Folder</span></button>
                                                             </div>
                                                             <div class="col-xs-12 col-sm-7 col-lg-7 p0">
@@ -2395,11 +2404,13 @@
                                                                 </div>
                                                                 <div class="col-xs-12 button-align"
                                                                     style="padding-left: 10px;">
-                                                                    <button type="submit" class="button bgcolor-unset"
+                                                                    <button type="submit"
+                                                                        class="button bgcolor-unset pd_lft2"
                                                                         [disabled]="hasVideoRole" translate><span
-                                                                            class="btn Btn-Green transition">Save
+                                                                            class="btn Btn-Green transition txt_pd-top3">Save
                                                                             Changes</span></button>
-                                                                    <button type="button" class="btn Btn-Gray"
+                                                                    <button type="button"
+                                                                        class="btn Btn-Gray neg_mrg_top4"
                                                                         (click)="resetForm()" [disabled]="hasVideoRole"
                                                                         translate>Cancel</button>
                                                                 </div>
@@ -2419,23 +2430,25 @@
                                             <table class="table table-light"
                                                 *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError"
                                                 style="border: 0px !important; background-color: transparent !important">
-                                                <tbody>
-                                                    <fieldset class="fild-custome-borders-none width75">
+                                                <tbody class="neo-border-radius10">
+                                                    <fieldset class="fild-custome-borders-none">
                                                         <div
-                                                            class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border">
+                                                            class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border pl-5">
                                                             <h4 class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
                                                                 style="font-weight:600;font-size:21px;padding:0">Exclude
                                                                 A User</h4>
                                                             <button (click)="downloadEmptyCSV('exclude-users')"
                                                                 type="button"
-                                                                class="button col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10 bgcolor-unset"
+                                                                class="button bgcolor-unset col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10 bgcolor-unset neg_mrg_rgt33 neg_mrg_rgt7"
                                                                 download style="float:right"
                                                                 [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}"
                                                                 translate>
-                                                                <span class="btn Btn-Green transition">Download User CSV
-                                                                    Template</span>
-                                                                <i class="fa fa-download" aria-hidden="true"
-                                                                    style="margin-left: 5px"></i>
+                                                                <span
+                                                                    class="btn Btn-Green transition txt_pd-top3">Download
+                                                                    User CSV
+                                                                    Template <i class="fa fa-download"
+                                                                        aria-hidden="true"
+                                                                        style="margin-left: 5px"></i></span>
                                                             </button>
                                                         </div>
 
@@ -2445,18 +2458,20 @@
                                                                 *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                                 <button
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset"
+                                                                    class="button bgcolor-unset mrgn_lft0 p0 px-9"
                                                                     [disabled]="csvExcludeUsersFilePreview"
                                                                     (click)="addContactModalOpen()" translate>
-                                                                    <span class="btn Btn-Green transition">One at a Time
+                                                                    <span
+                                                                        class="btn Btn-Green transition txt_pd-top3 pd_lft8">One
+                                                                        at a Time
                                                                         <i class="fa fa-plus"
                                                                             style="font-size: 12px; margin-left: 2px;"></i></span>
                                                                 </button>
 
                                                                 <button id="uploadCSV"
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset"
+                                                                    class="button bgcolor-unset mrgn_lft0 p0 px-9"
                                                                     translate>
-                                                                    <span class="btn Btn-Green transition">
+                                                                    <span class="btn Btn-Green transition txt_pd-top3">
                                                                         <span style="text-align: center"
                                                                             translate>Upload
                                                                             CSV</span> <input class="upload-file"
@@ -2510,6 +2525,7 @@
                                                                         </div>
                                                                         <button type="submit" class="btn Btn-Green"
                                                                             style="float:right;margin-top:4px;"
+                                                                            [disabled]="excludedUsers.length === 0"
                                                                             (click)="confirmAndsaveExcludedUsers(excludedUsers)"
                                                                             translate>Save</button>
                                                                         <button class="btn Btn-Gray"
@@ -2574,11 +2590,11 @@
                                                                         <thead>
                                                                             <tr>
 
-                                                                                <th style="width: 25%" translate>Name
+                                                                                <th style="width: 50%" translate>Name
                                                                                 </th>
-                                                                                <th style="width: 25%" translate>Time
+                                                                                <th style="width: 40%" translate>Time
                                                                                 </th>
-                                                                                <th style="width:16%" translate>ACTIONS
+                                                                                <th style="width:10%" translate>ACTIONS
                                                                                 </th>
                                                                             </tr>
                                                                         </thead>
@@ -2650,22 +2666,25 @@
                                             <table class="table table-light"
                                                 style="border: 0px !important; background-color: transparent !important"
                                                 *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-                                                <tbody>
+                                                <tbody class="neo-border-radius10">
                                                     <fieldset class="fild-custome-borders-none">
                                                         <div
-                                                            class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border">
+                                                            class="col-xs-12 col-sm-12 col-md-12 col-lg-12 def-player-border pl-5">
                                                             <h4 class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
                                                                 style="font-weight:600;font-size:21px;padding:0">Exclude
                                                                 A Domain</h4>
                                                             <button (click)="downloadEmptyCSV('exclude-domains')"
                                                                 type="button"
-                                                                class="btn Btn-Green col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10"
+                                                                class="button bgcolor-unset col-xs-6 col-sm-6 col-md-6 col-lg-6 customize-btn-space mb_10 neg_mrg_rgt33 neg_mrg_rgt7"
                                                                 download style="float:right"
                                                                 [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}"
                                                                 translate>
-                                                                Download Domain CSV Template
-                                                                <i class="fa fa-download" aria-hidden="true"
-                                                                    style="margin-left: 5px"></i>
+                                                                <span
+                                                                    class="btn Btn-Green transition txt_pd-top3">Download
+                                                                    Domain
+                                                                    CSV Template<i class="fa fa-download"
+                                                                        aria-hidden="true"
+                                                                        style="margin-left: 5px"></i></span>
                                                             </button>
 
                                                         </div>
@@ -2677,18 +2696,20 @@
                                                                 *ngIf="(authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || hasAllAccess  ||
                                                                 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || isPartnerSuperVisor  )">
                                                                 <button id="add_domain"
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-width button bgcolor-unset"
+                                                                    class="button bgcolor-unset mrgn_lft0 p0 px-9"
                                                                     [disabled]="csvExcludeDomainsFilePreview"
                                                                     (click)="addDomainModalOpen()" translate>
-                                                                    <span class="btn Btn-Green transition">One at a Time
+                                                                    <span
+                                                                        class="btn Btn-Green transition txt_pd-top3 pd_lft8">One
+                                                                        at a Time
                                                                         <i class="fa fa-plus"
                                                                             style="font-size: 12px; margin-left: 2px;"></i></span>
                                                                 </button>
 
                                                                 <button id="uploadCSV"
-                                                                    class="col-sm-5 col-lg-4 col-md-4 btn-c-widthu button bgcolor-unset"
+                                                                    class="button bgcolor-unset p0 px-9"
                                                                     translate>
-                                                                    <span class="btn Btn-Green transition">
+                                                                    <span class="btn Btn-Green transition txt_pd-top3">
                                                                         <span style="text-align: center"
                                                                             translate>Upload
                                                                             CSV</span> <input class="upload-file"
@@ -2742,6 +2763,7 @@
                                                                         </div>
                                                                         <button type="submit" class="btn Btn-Green"
                                                                             style="float:right;margin-top:4px;"
+                                                                            [disabled]="this.excludedDomains.length === 0"
                                                                             (click)="confirmAndsaveExcludedDomains(excludedDomains)"
                                                                             translate>Save</button>
                                                                         <button class="btn Btn-Gray"
@@ -2804,11 +2826,11 @@
                                                                         <thead>
                                                                             <tr>
 
-                                                                                <th style="width: 25%" translate>Name
+                                                                                <th style="width: 50%" translate>Name
                                                                                 </th>
-                                                                                <th style="width: 25%" translate>Time
+                                                                                <th style="width: 40%" translate>Time
                                                                                 </th>
-                                                                                <th style="width:16%" translate>ACTIONS
+                                                                                <th style="width:10%" translate>ACTIONS
                                                                                 </th>
                                                                             </tr>
                                                                         </thead>
@@ -2887,6 +2909,51 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
+                            <!--  XNFR-415 -->
+                            <div
+                                *ngIf="  (((( !authenticationService?.module?.isPartnerCompany ||  !authenticationService?.module?.isOnlyPartnerCompany) &&  !authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin )  && authenticationService?.module?.loggedInThroughOwnVanityUrl) && (!authenticationService?.module?.isMarketingCompany || !authenticationService?.module?.isMarketing))">
+                                <div *ngIf="activeTabName === 'settings'"
+                                    [ngClass]="{'active-tab': activeTabName === 'settings'}">
+                                    <div class="portlet light">
+                                        <div class="portlet-title tabbable-line">
+                                            <span class="caption-subject font-blue-madison bold"
+                                                *ngIf="activeTabName==='settings'">{{"Default Dashboard for My Partners"
+                                                | translate}}</span>
+                                        </div>
+                                        <br>
+                                        <form>
+                                            <div>
+
+                                                <label class="container-checkbox-xamplify" translate>Welcome
+                                                    <input class="radioButton_shadow" type="radio"
+                                                        name="dashboardSelectedOption"
+                                                        value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME]}}"
+                                                        [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.WELCOME] || defaultSelectedDashboardTypeSetting === undefined ">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                                <label class="container-checkbox-xamplify"
+                                                    translate>{{getDashboardForSelectedOption}}
+
+                                                    <input class="radioButton_shadow" type="radio"
+                                                        name="dashboardSelectedOption"
+                                                        value="{{DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD]}}"
+                                                        [checked]="defaultSelectedDashboardTypeSetting === DefaultDashBoardForPartnersEnum[DefaultDashBoardForPartnersEnum.ASSIGNED_DASHBOARD] ">
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <div class="margin-top-10">
+                                                <button type="submit" class="button bgcolor-unset pd_lft2"
+                                                    (click)="setDashboardForPartner()"><span
+                                                        class="btn Btn-Green transition txt_pd-top3">Save
+                                                        Changes</span></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- END PROFILE CONTENT -->
@@ -2943,9 +3010,10 @@
                             <div class="portlet-title tabbable-line">
                                 <div class="caption caption-md col-xs-12">
                                     <i class="icon-globe theme-font hide" aria-hidden="true"></i>
-                                    <span
-                                        class="caption-subject font-blue-madison bold" [title]="cutomLoginTemplate?.name" data-toggle="tooltip" data-placement="bottom">{{cutomLoginTemplate?.name | slice:0:30}}</span>
-                                        <span *ngIf="cutomLoginTemplate?.name?.length>30">...</span>
+                                    <span class="caption-subject font-blue-madison bold"
+                                        [title]="cutomLoginTemplate?.name" data-toggle="tooltip"
+                                        data-placement="bottom">{{cutomLoginTemplate?.name | slice:0:30}}</span>
+                                    <span *ngIf="cutomLoginTemplate?.name?.length>30">...</span>
                                     <a class="close-circle pull-right" (click)="goBackToMyprofileForCustomLogin()">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>
@@ -2996,7 +3064,8 @@
                 <h4 class="modal-title" id="cropProfileImage">Please add your profile image</h4>
             </div>
             <div class="modal-body">
-                <button style="position: relative;top: -5px;" class="button fileinput-button-css pd_left1 bgcolor-unset"
+                <button style="position: relative;top: -5px;"
+                    class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"
                     *ngIf="!imageChangedEvent; else uploadButton"><span class="btn Btn-Green transition">Upload
                         image</span>
                     <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file"
@@ -3004,7 +3073,7 @@
                 </button>
                 <ng-template #uploadButton>
                     <button style="position: relative;top: -5px;"
-                        class="button fileinput-button-css pd_left1 bgcolor-unset"><span
+                        class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"><span
                             class="btn Btn-Green transition">Upload
                             image</span>
                         <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file"
@@ -3095,7 +3164,7 @@
             <div class="modal-footer">
                 <button type="submit" [disabled]="!category.isValid || addCategoryLoader.isLoading "
                     class="button_blue bgcolor-unset" (click)="saveOrUpdateCategory()"><span
-                        class="btn btn-primary transition">{{categoyButtonSubmitText}}</span></button>
+                        class="btn btn-primary transition txt_pd-top3">{{categoyButtonSubmitText}}</span></button>
             </div>
         </div>
     </div>
@@ -3229,7 +3298,7 @@
                                                     </label>
                                                 </span>
                                                 <div
-                                                    *ngIf="(!pipelineStage.private && !pipeline.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines')">
+                                                    *ngIf="(!pipelineStage.private && !pipeline.private) && (pipeline.type === 'deal' || activeTabName == 'dealPipelines') && !removeMarketingNonInteractiveBox">
                                                     <input class="checkBox_shadow" type="checkbox"
                                                         [disabled]="pipelinePreview"
                                                         [(ngModel)]="pipelineStage.nonInteractive" name="nonInteractive"
@@ -3256,7 +3325,7 @@
             <div class="modal-footer" *ngIf="!pipelinePreview">
                 <button type="submit" [disabled]="!pipeline.isValid || addPipelineLoader.isLoading"
                     class="button bgcolor-unset" (click)="saveOrUpdatePipeline()"><span
-                        class="btn Btn-Green transition">Submit</span></button>
+                        class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
 
             </div>
         </div>

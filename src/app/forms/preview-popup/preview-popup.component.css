@@ -113,13 +113,19 @@
 
 .view-banner {
   background-color: #00a6e8;
-  color: white;
-  padding: 4px;
+  color: white !important;
+  padding: 4px 6px !important;
   text-align: center;
-  width: 125px;
-  margin: 0 0;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10px !important;
+  border-radius: 3px;
+  display: -ms-flexbox;
+  display: flex !important;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100px !important;
+  line-height: 1.3 !important;
+  align-content: space-around;
+  align-items: center;
 }
 
 .form-name-wrap {
@@ -218,3 +224,12 @@ span.quiz_optionname {
     }
 
   }
+.disabled-element{
+  opacity: 0.65;
+  pointer-events: none;
+}
+/* bnts align */
+.px-0{
+  padding: 0px!important;
+  margin-top: 6px!important;
+} 

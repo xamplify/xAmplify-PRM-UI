@@ -15,17 +15,25 @@ export class AddFormComponent implements OnInit, OnDestroy {
     isAdd = true;
     selectedForm:any;
     selectedDefaultFormId: number = 0;
+    /***XNFR-433***/
+    isCopyForm: boolean = false;
+
     constructor(private route:ActivatedRoute,public referenceService: ReferenceService, public authenticationService: AuthenticationService, public formService: FormService, private router: Router) {
         if (this.formService.form === undefined) {
             if (this.router.url.indexOf("/home/forms/edit") > -1) {
                 this.navigateToManageSection();
             }
         }
-        if (this.formService.form !== undefined) {
+        if (this.formService.form !== undefined && !this.formService.isCopyForm) {
             this.isAdd = false;
             this.selectedForm = this.formService.form;
-        } else if(this.formService.formId !== undefined && this.formService.formId > 0){
+        } else if(this.formService.formId !== undefined && this.formService.formId > 0 && !this.formService.isCopyForm){
             this.isAdd = true;
+            this.selectedDefaultFormId = this.formService.formId;
+        }
+        /***XNFR-433***/
+        else if (this.formService.isCopyForm) {
+            this.isCopyForm = this.formService.isCopyForm;
             this.selectedDefaultFormId = this.formService.formId;
         }
     }
@@ -38,6 +46,9 @@ export class AddFormComponent implements OnInit, OnDestroy {
         this.selectedForm = undefined;
         this.selectedDefaultFormId = 0;
         this.formService.formId = 0;
+        /***XNFR-433***/
+        this.formService.isCopyForm = false;
+        this.isCopyForm = false;
     }
 
     navigateToManageSection() {

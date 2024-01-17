@@ -114,12 +114,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             } else if (this.landingPageId > 0) {
                 this.pagination.landingPageId = this.landingPageId;
                 this.pagination.landingPageForm = true;
-                if(this.categoryId>0){
-                    this.landingPagesRouterLink = "/home/pages/manage/"+this.categoryId;
-                }else{
-                    this.landingPagesRouterLink = "/home/pages/manage";
-                }
-                
+                this.landingPagesRouterLink = "/home/pages/manage";
             } else if (this.landingPageCampaignId > 0) {
                 this.pagination.campaignId = this.landingPageCampaignId;
                 this.pagination.landingPageCampaignForm = true;
@@ -158,6 +153,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
 
     listForms(pagination: Pagination) {
+        this.referenceService.goToTop();
         this.referenceService.loading(this.httpRequestLoader, true);
 		/**********Vanity Url Filter**************** */
         if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
@@ -265,9 +261,9 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                         } else {
                             let emailTemplateNames = "";
                             $.each(response.data, function (index, value) {
-                                emailTemplateNames += (index + 1) + "." + value + "<br><br>";
+                                emailTemplateNames += (index + 1) + ". " + value + "\n\n";
                             });
-                            let message = response.message + "<br><br>" + emailTemplateNames;
+                            let message = response.message + "\n\n" + emailTemplateNames;
                             this.customResponse = new CustomResponse('ERROR', message, true);
                             this.referenceService.loading(this.httpRequestLoader, false);
                         }
@@ -295,7 +291,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     preview(id: number) {
         this.previewPopUpComponent.previewForm(id);
     }
-
 
     edit(id: number) {
         let formInput: Form = new Form();
@@ -416,6 +411,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
 
     setViewType(viewType: string) {
+        
         if ("List" == viewType) {
             this.modulesDisplayType.isListView = true;
             this.modulesDisplayType.isGridView = false;
@@ -505,5 +501,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     showDetailedResponse(formSubmitId: any) {
         this.selectedFormSubmitId = formSubmitId;
         this.detailedResponse = true;
+    }
+
+    /***XNFR-433***/
+    copyForm(id: number) {
+        this.formService.isCopyForm = true;
+        this.formService.formId = id;
+        this.router.navigate(["/home/forms/add"]);
     }
 }

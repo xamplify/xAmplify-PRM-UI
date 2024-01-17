@@ -60,7 +60,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     ngOnInit() {
         this.showDefaultForms = this.router.url.indexOf("/home/pages/saveAsDefault")>-1;
         if (this.router.url.indexOf("/home/emailtemplates/create") > -1 ||
-            this.router.url.indexOf("/home/pages/add") > -1 || this.router.url.indexOf("/home/campaigns/create") > -1 
+            this.router.url.indexOf("/home/pages/add") > -1 || this.router.url.indexOf("/home/pages/edit") > -1 || this.router.url.indexOf("/home/campaigns/create") > -1 
             || this.router.url.indexOf("/home/campaigns/edit") > -1 
             || this.router.url.indexOf("/home/emailtemplates/edit") > -1) {
             this.showButton = true;
@@ -70,7 +70,7 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
         }
 
         if (this.router.url.indexOf("/home/emailtemplates/create") > -1
-            || this.router.url.indexOf("/home/emailtemplates/edit") > -1) {
+            || this.router.url.indexOf("/home/emailtemplates/edit") > -1||this.router.url.indexOf("/home/campaigns/create/survey")> -1) {
             this.showEmbedLink = false;
         }
 
@@ -225,7 +225,9 @@ export class PreviewPopupComponent implements OnInit,OnDestroy {
     formPreviewBeforeSave(columnInfos: Array<ColumnInfo>, form: Form) {
         this.ngxloading = true;
         this.form = form;
-       
+        /**XBI-2063**/
+        this.countryNames = this.authenticationService.addCountryNamesToList(this.form.countryNames,this.countryNames);
+         /**XBI-2063**/
         this.form.formLabelDTOs = columnInfos;
         this.formError = false;
         this.ngxloading = false;

@@ -58,11 +58,11 @@
                                         translate>Event Co-Branding</li>
                                     <li class="filter" (click)="showSurveyTemplates(13)"
                                         [class.emailtemplate-selected]="13 == selectedTemplateTypeIndex"
-                                        *ngIf="campaignAccess.formBuilder && !httpRequestLoader.isLoading" translate>
+                                        *ngIf="campaignAccess.survey && !httpRequestLoader.isLoading" translate>
                                         Survey</li>
                                     <li class="filter" (click)="showSurveyTemplates(14)"
                                         [class.emailtemplate-selected]="14 == selectedTemplateTypeIndex"
-                                        *ngIf="campaignAccess.formBuilder && !httpRequestLoader.isLoading && !isMarketingCompany"
+                                        *ngIf="campaignAccess.survey && !httpRequestLoader.isLoading && !isMarketingCompany"
                                         translate>Survey Co-Branding</li>
                                     <li class="filter" (click)="getTemplatesFromMarketo()"
                                         [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex" translate>
@@ -93,9 +93,9 @@
                     </div>
                 </div>
                 <div class="portlet-body" style="padding: 0px 3px 0px 3px;">
-                    <div class="row">
+                    <div class="row p10">
                         <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
-                        <app-landing-page-loader [maxBoxLength]=4
+                        <app-landing-page-loader From:g-page-loader [maxBoxLength]=4
                             *ngIf="importLoading || httpRequestLoader.isLoading"></app-landing-page-loader>
                         <ng-container *ngIf="!importLoading && !httpRequestLoader.isLoading">
                             <div style="position: relative; top: -10px">
@@ -121,7 +121,7 @@
                             <div class="alert alert-info ml10 mr10 text-center" *ngIf="filteredCount?.count==0">
                                 No Templates Available
                             </div>
-                            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 mrg_10"
+                            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 mrg_10 GridviewSidePaddings"
                                 *ngFor="let beeRegularTemplate of filteredEmailTemplates | selectEmailTemplatesFilter: templateFilter:filteredCount;let i=index">
                                 <div class="grid-box mb_hgh_grid">
                                     <div *ngIf="beeRegularTemplate.marketoTemplate"
@@ -285,9 +285,10 @@
             <div class="modal-footer">
                 <div style="text-align: right;">
                     <button class="btn Btn-Gray" (click)="clearValues()" translate>Clear</button>
-                    <button class="btn btn-primary"
+                    <button class="button_blue bgcolor-unset"
                         [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance"
-                        (click)="submitRetrieTemplates()" translate>Submit</button>
+                        (click)="submitRetrieTemplates()" translate><span
+                            class="btn btn-primary transition">Submit</span></button>
                 </div>
             </div>
         </div>

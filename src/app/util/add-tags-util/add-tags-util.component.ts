@@ -8,7 +8,7 @@ import { Pagination } from 'app/core/models/pagination';
 import { UserService } from '../../core/services/user.service';
 import { Tag } from '../../dashboard/models/tag'
 
-declare var swal, $: any;
+declare var  $: any;
 
 @Component({
   selector: 'app-add-tags-util',
@@ -123,6 +123,7 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
           event.target.value = value;
         }
       } else {
+        this.tag.tagName = $.trim(this.tag.tagName);
         if (this.tag.tagName == undefined || this.tag.tagName.length < 1) {
           this.tag.isTagNameValid = false;
         } else {
@@ -146,11 +147,11 @@ export class AddTagsUtilComponent implements OnInit, OnDestroy {
       this.tag.createdBy = this.loggedInUserId;
       this.tag.tagNames = this.tagNames;
     }
+   
     this.userService.saveOrUpdateTag(this.tag)
       .subscribe(
         (result: any) => {
           this.closeTagModal();
-          //this.openAddTagPopup = false;
           if (result.access) {
             this.referenceService.stopLoader(this.addTagLoader);
             this.tagResponse = new CustomResponse('SUCCESS', result.message, true);

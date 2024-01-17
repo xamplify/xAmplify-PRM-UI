@@ -1369,7 +1369,7 @@ ul.alt-row-style1 li:nth-child(even) {
 .p-5x > .r-r-c,
 .p-5x > .vlt-b-c,
 .p-5x > .lt-g-b-c {
-  border: 3px solid #2f4857 !important;
+  border: 2px solid #2f4857 !important;
 }
 @keyframes placeHolderShimmer {
   0% {
@@ -2483,7 +2483,24 @@ i.collapseIconColorCu {
   margin-left: -11px;
 }
 .mar-rgt-9{
-  margin-right: -9px;
+  margin-right: -9px !important;
+}
+/* deal-page */
+.panel.panel-default.deal-bgcolor{
+  background-color: #2b3c46 !important;
+}
+.br-unset{
+  border-top: 1px solid #2f4857 !important;
+}
+.radiobtn-card{
+  border: 1px solid #2f4857 !important;
+}
+.card-bgcolors{
+  background-color: #2b3c46 !important; 
+}
+.radiobtn,
+.social_share_border{
+  border: 1px solid #2f4857 !important;
 }
 .mar-rgt{
   margin-right: 40px !important;
@@ -2519,4 +2536,61 @@ button.btn.btn-white.salesforce-btn.button{
   color: #fff !important;
   background-color : #22313a !important;
   border-bottom: 3px solid #f1f5f9 !important;
+}
+
+
+/* XNFR-374 Grid View Enhancement START */
+.gridViewImgBg {
+  background-color: #22313a;
+}
+.table-responsive td, b {
+  color: #fff !important;
+} 
+.img-grid-track {
+  border-bottom: 1px solid #2f4857!important;
+}
+.gridViewImgpositioning {
+  border-bottom: 1px solid #2f4857!important;
+}
+
+
+/* XNFR-374 Grid View Enhancement END */
+/* detailed campaign tiles*/
+.detail_card:hover{
+  background-color: #22313a!important;
+}
+
+/*** XNFR-409 ****/
+.custom_fiter-asset {
+  background-color: #22313a !important;
+}
+/*** XNFR-409 ****/
+
+/* XNFR-374 Grid View Enhancement END */
+
+/* Sudha Sri(3-1-2024) */
+a.tabColorOne b,
+h1 b,
+h6 b,
+span b,
+h3 b,
+div b {
+  color: #fff !important;
+}
+/* QA issues start*/
+.FieldName{
+  color:#ffffff!important;
+}
+/* Qa issues end */
+/* Sudha Sri(5-1-2024) */
+.actions-block-selected i{
+  border: 1px solid #5bb2f5 !important;
+  color: #5bb2f5 !important;
+}
+.trash_bgcolor{
+  background: #2b3c46 !important;
+  border: 1px solid #2f4857 !important;
+}
+.button.button.bgcolor-unset.btn_border{
+  border :none !important;
 }

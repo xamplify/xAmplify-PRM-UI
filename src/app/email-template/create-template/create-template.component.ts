@@ -389,7 +389,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 if (data.access) {
                     if (data.statusCode == 702) {   
                         if(saveAsOrSaveAndRedirectClicked){
-                            this.refService.isCreated = true;
+                            this.refService.addCreateOrUpdateSuccessMessage("Template created successfully");
                             this.navigateToManageSection();
                         }else{
                             let createdEmailTemplateId = data.data;
@@ -447,7 +447,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                 if (data.access) {
                     if (data.statusCode == 702 || data.statusCode == 703) {
                         if(isUpdateAndRedirect){
-                            this.refService.isUpdated = true;
+                            this.refService.addCreateOrUpdateSuccessMessage("Template updated successfully");
                             this.navigateToManageSection();
                         }else{
                             this.customResponse = new CustomResponse('SUCCESS', "Template updated successfully", true);
@@ -475,10 +475,6 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     }
 
     navigateToManageSection() {
-        this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);
-        if(this.viewType==undefined){
-            this.viewType = this.modulesDisplayType.isListView ? 'l' : this.modulesDisplayType.isGridView ?'g':'';
-        }
         this.refService.navigateToManageEmailTemplatesByViewType(this.folderViewType,this.viewType,this.categoryId);
     }
 
@@ -501,19 +497,19 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     }
 
     createButton(text, cb) {
-        let buttonClass = this.isAdd ? "btn btn-primary":"btn btn-sm btn-primary";
+        let buttonClass = this.isAdd ? "btn btn-primary transition btnPropertiesNone":"btn btn-sm btn-primary";
         let cancelButtonClass = this.isAdd ? "btn Btn-Gray":"btn btn-sm Btn-Gray";
         let cancelButtonSettings = this.isAdd ? 'class="'+cancelButtonClass+'"' : 'class="'+cancelButtonClass+'" style="margin-right: -35px !important;"';
         if (text == "Save") {
-            return $('<input type="submit" class="'+buttonClass+'"  value="' + text + '" id="save" disabled="disabled">').on('click', cb);
+            return $('<button class="button_blue bgcolor-unset"> <input type="submit" class="'+buttonClass+'"  value="' + text + '" id="save" disabled="disabled"> </button>').on('click', cb);
         }else if(text == "Save & Redirect"){
-            return $('<input type="submit" class="'+buttonClass+'"  value="' + text + '" id="save-and-redirect" disabled="disabled">').on('click', cb);
+            return $('<button class="button_blue bgcolor-unset"><input type="submit" class="'+buttonClass+'"  value="' + text + '" id="save-and-redirect" disabled="disabled"> </button>').on('click', cb);
         }else if (text == "Save As") {
-            return $('<input type="submit" class="'+buttonClass+'" style="margin-left: -33px !important" value="' + text + '" id="save-as" disabled="disabled">').on('click', cb);
+            return $('<button class="button_blue bgcolor-unset"><input type="submit" class="'+buttonClass+'" style="margin-left: -33px !important" value="' + text + '" id="save-as" disabled="disabled"> </button>').on('click', cb);
         } else if (text == "Update") {
-            return $('<input type="submit" class="'+buttonClass+'" value="' + text + '" id="update">').on('click', cb);
+            return $('<button class="button_blue bgcolor-unset"><input type="submit" class="'+buttonClass+'" value="' + text + '" id="update"> </button>').on('click', cb);
         }else if (text == "Update & Redirect") {
-            return $('<input type="submit" class="'+buttonClass+'" value="' + text + '" id="update-and-close">').on('click', cb);
+            return $('<button class="button_blue bgcolor-unset"><input type="submit" class="'+buttonClass+'" value="' + text + '" id="update-and-close"> </button>').on('click', cb);
         }else {
             return $('<input type="submit" '+cancelButtonSettings+' value="' + text + '">').on('click', cb);
         }

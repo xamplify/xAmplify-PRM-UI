@@ -47,13 +47,13 @@
                <app-box-loader [countLoader]="countLoader" [mdfModule]="true" *ngIf="tilesLoader"></app-box-loader>
                <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 24px;">
                   <div class="row">
-                     <div class="{{tileClass}} tiles_hover_effect" id="pl" *ngIf="!isPartnerView">
-                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor tiles_bradius">
+                     <div class="{{tileClass}}" id="pl" *ngIf="!isPartnerView">
+                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number NumberFontDecrease"><span data-toggle="tooltip" data-placement="left"
+                              <div class="number NumberFontDecrease"><span data-toggle="tooltip" data-placement="top"
                                     title="{{mdfRequestTiles?.totalPartners}}">{{mdfRequestTiles?.totalPartners}}</span>
                               </div>
                               <div class="desc">Number of {{authenticationService?.partnerModule?.customName}}</div>
@@ -68,7 +68,8 @@
                         style="border-radius: 5px;border: 1px solid lightgrey;">
                         <div class="row">
                            <div class="col-md-2 col-lg-2 text-right">
-                              <img class="img-circle" src="{{mdfRequestVendorDto?.companyLogoPath}}" alt="">
+                              <img class="img-circle" src="{{mdfRequestVendorDto?.companyLogoPath}}"
+                                 alt="No Image Found" onerror="this.src='assets/images/default-company.png';">
                            </div>
                            <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                               <label data-toggle="tooltip" data-placement="top"
@@ -85,13 +86,13 @@
                            </div>
                         </div>
                      </div>
-                     <div class="{{tileClass}} tiles_hover_effect" id="pb-pr">
-                        <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor tiles_bradius">
+                     <div class="{{tileClass}}" id="pb-pr">
+                        <a class="dashboard-stat dashboard-stat-lighter blue-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number NumberFontDecrease"><span data-toggle="tooltip" data-placement="left"
+                              <div class="number NumberFontDecrease"><span data-toggle="tooltip" data-placement="top"
                                     title="{{mdfRequestTiles?.totalRequests}}">
                                     {{mdfRequestTiles?.totalRequestsInString}}
                                  </span>
@@ -104,14 +105,14 @@
                            </span>
                         </a>
                      </div>
-                     <div id="pl" class="{{tileClass}} mb_12 tiles_hover_effect">
-                        <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor tiles_bradius">
+                     <div id="pl" class="{{tileClass}} mb_12">
+                        <a class="dashboard-stat dashboard-stat-lighter green-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
                               <div class="number NumberFontDecrease">
-                                 <span data-toggle="tooltip" data-placement="left"
+                                 <span data-toggle="tooltip" data-placement="top"
                                     title="{{mdfRequestTiles?.averageRequestSize}}">
                                     {{mdfRequestTiles?.averageRequestSizeInString}}
                                  </span>
@@ -124,14 +125,14 @@
                            </span>
                         </a>
                      </div>
-                     <div id="pr" class="{{tileClass}} tiles_hover_effect">
-                        <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor tiles_bradius">
+                     <div id="pr" class="{{tileClass}}">
+                        <a class="dashboard-stat dashboard-stat-lighter purple-soft min-h default-cursor">
                            <div class="visual">
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
                               <div class="number NumberFontDecrease">
-                                 <span data-toggle="tooltip" data-placement="left"
+                                 <span data-toggle="tooltip" data-placement="top"
                                     title="$ {{mdfRequestTiles?.totalValue}}">
                                     {{mdfRequestTiles?.totalValueInString}}
                                  </span>
@@ -157,7 +158,7 @@
                <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
                </app-response-message>
                <!-- BEGIN EXAMPLE TABLE PORTLET-->
-               <div class="portlet light remove_cardBgcolor padding_0">
+               <div class="portlet light remove_cardBgcolor mdf_request_spacing">
                   <div class="portlet-title" style="border-bottom: none;">
                      <div class="caption" style="padding-left: 2px !important;padding-top: 12px !important;" translate>
                         <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
@@ -198,37 +199,30 @@
                               <table class='table tgrid' aria-describedby="manage-mdf-requests-table">
                                  <thead>
                                     <tr>
-                                       <th scope="row" style="width: 30%;" translate>Vendor Info</th>
+                                       <th scope="row" style="width: 50%;" translate>Vendor Info</th>
                                        <th scope="row" class="hidden-xs center-align" translate>Number Of Requests</th>
                                        <th scope="row" class="hidden-xs center-align" translate>Actions</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    <ng-container *ngFor="let vendor of pagination.pagedItems;let i=index">
-                                       <tr>
-                                          <td>
-                                             <div class="col-md-12 col-lg-12">
-                                                <div class="row">
-                                                   <div class="col-md-2 col-lg-2 text-right">
-                                                      <img class="img-circle float-left"
-                                                         src="{{vendor?.companyLogoPath}}" alt="">
-                                                   </div>
-                                                   <div class="col-md-10 col-lg-10 "
-                                                      style="padding-left: 34px!important;">
-                                                      <label data-toggle="tooltip" data-placement="bottom"
-                                                         title="{{vendor?.companyName}}"
-                                                         style="font-size: 15px;font-weight: 600;">
-                                                         {{vendor?.companyName | slice:0:20}}
-                                                         <span *ngIf="vendor?.companyName.length>20">..</span>
-                                                      </label><br>
-                                                      <label data-toggle="tooltip" data-placement="bottom"
-                                                         title="{{vendor?.companyProfileName}}"
-                                                         style="font-size: 15px;font-weight: 600;">
-                                                         {{vendor?.companyProfileName | slice:0:20}}
-                                                         <span *ngIf="vendor?.companyProfileName.length>20">..</span>
-                                                      </label>
-                                                   </div>
+
+                                  <ng-container *ngFor="let vendor of pagination.pagedItems;let i=index">
+                                    <tr>
+                                       <td>
+                                          <div class="col-md-12 col-lg-12">
+                                             <div class="row">
+                                                <div class="col-md-2 col-lg-2 text-right">
+                                                  <img class="img-circle float-left" src="{{vendor?.companyLogoPath}}" alt="No Image Found" onerror="this.src='assets/images/default-company.png';">
                                                 </div>
+                                                <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                                                   <label class="xamplify-ellipsis" data-toggle="tooltip" data-placement="top" title="{{vendor?.companyName}}" style="overflow: initial;">
+                                                      <b>Company Name:</b> {{vendor?.companyName}}
+                                                   </label><br>
+                                                   <label class="xamplify-ellipsis" data-toggle="tooltip" data-placement="top" title="{{vendor?.companyProfileName}}" style="overflow: initial;">
+                                                     <b>Company Profile Name:</b> {{vendor?.companyProfileName}}
+                                                   </label>
+                                                </div>
+                                             </div>
                                              </div>
                                           </td>
                                           <td class="center-align">
@@ -238,12 +232,12 @@
                                              <div class="override-actions">
                                                 <a class="custom-icon" (click)="goToAddRequest(vendor.companyId)"
                                                    data-toggle="tooltip" data-placement="bottom" title="Add Request">
-                                                   <i class="fa fa-user-plus fa-fa-consistency IconCustomization mrg-right5"
+                                                   <i class="fa fa-user-plus fa-fa-consistency IconCustomization"
                                                       aria-hidden="true"></i>
                                                    <div class="clickicons"></div>
                                                 </a>
                                                 <!----See Request Analytics-->
-                                                <a class="custom-icon" (click)="viewRequests(vendor)"
+                                                <a class="ml5 custom-icon" (click)="viewRequests(vendor)"
                                                    data-toggle="tooltip" data-placement="bottom" title="View Requests">
                                                    <i class="fa fa-expand fa-fa-consistency IconCustomization"
                                                       aria-hidden="true"></i>

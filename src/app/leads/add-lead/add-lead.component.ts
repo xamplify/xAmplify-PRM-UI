@@ -244,11 +244,13 @@ export class AddLeadComponent implements OnInit {
   }
 
   getCampaignLeadPipeline() {
+    this.ngxloading=true;
     let self = this;    
     if (this.lead.campaignId > 0) {
       this.leadsService.getCampaignLeadPipeline(this.lead.campaignId, this.loggedInUserId)
       .subscribe(
         data => {
+          this.ngxloading=false;
           this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             let campaignLeadPipeline = data.data;
@@ -263,6 +265,7 @@ export class AddLeadComponent implements OnInit {
           }
         },
         error => {
+          this.ngxloading=false;
           this.httpRequestLoader.isServerError = true;
         },
         () => { }
@@ -447,9 +450,11 @@ export class AddLeadComponent implements OnInit {
   }
 
   getActiveCRMDetails() {
+    this.ngxloading=true;
     this.integrationService.getActiveCRMDetails(this.lead.createdForCompanyId, this.loggedInUserId)
       .subscribe(
         response => {
+          this.ngxloading=false;
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;
             if (!this.activeCRMDetails.activeCRM) {
@@ -477,6 +482,7 @@ export class AddLeadComponent implements OnInit {
           }
         },
         error => {
+          this.ngxloading=false;
           console.log(error);
         },
         () => {
@@ -484,10 +490,12 @@ export class AddLeadComponent implements OnInit {
         });
   }
   getActiveCRMPipeline() {
+    this.ngxloading=true;
     let self = this;    
     this.leadsService.getCRMPipelines(this.lead.createdForCompanyId, this.loggedInUserId, this.activeCRMDetails.type)
       .subscribe(
         data => {
+          this.ngxloading=false;
           this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             let activeCRMPipelines = data.data;
@@ -520,6 +528,7 @@ export class AddLeadComponent implements OnInit {
           }
         },
         error => {
+          this.ngxloading=false;
           this.httpRequestLoader.isServerError = true;
         },
         () => { }

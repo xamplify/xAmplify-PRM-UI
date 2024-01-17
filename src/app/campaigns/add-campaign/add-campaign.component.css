@@ -770,9 +770,10 @@ span.text-algn {
 
 .olint {
   float: right;
-  height: 30px;
+  /* height: 30px; */
   padding-top: 4px;
   margin-right: 10px;
+  margin-top:5px;
 }
 
 .createFolderAlignment {
@@ -807,4 +808,7 @@ span.text-algn {
 }
 button.btn.mBtnAlign.f-w-600.w-10em.prev-btn:hover {
   background: none;
+}
+.mt-4{
+  margin-top:4px;
 }

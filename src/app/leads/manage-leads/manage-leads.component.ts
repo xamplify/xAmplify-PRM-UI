@@ -86,6 +86,8 @@ export class ManageLeadsComponent implements OnInit {
   /********** user guide *************/
   mergeTagForGuide:any;
   vendorRole:boolean;
+  vendorList:any ;
+  vendorCompanyIdFilter:any;
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
@@ -481,6 +483,7 @@ export class ManageLeadsComponent implements OnInit {
           pagination = this.pagerService.getPagedItems(pagination, response.data);
           this.referenceService.loading(this.httpRequestLoader, false);
           this.stageNamesForPartner();
+          this.companyNamesForPartner();
         },
         error => {
           this.httpRequestLoader.isServerError = true;
@@ -1005,6 +1008,7 @@ export class ManageLeadsComponent implements OnInit {
     this.fromDateFilter = "";
     this.toDateFilter = "";
     this.statusFilter = "";
+    this.vendorCompanyIdFilter = "";
     if (!this.showFilterOption) {
       this.leadsPagination.fromDateFilterString = "";
       this.leadsPagination.toDateFilterString = "";
@@ -1025,9 +1029,11 @@ export class ManageLeadsComponent implements OnInit {
     this.fromDateFilter = "";
     this.toDateFilter = ""; 
     this.statusFilter = "";
+    this.vendorCompanyIdFilter = "";
     this.leadsPagination.fromDateFilterString = "";
     this.leadsPagination.toDateFilterString = "";
     this.leadsPagination.stageFilter = "";
+    this.leadsPagination.vendorCompanyId = 0;
     this.filterResponse.isVisible = false;
     if (this.filterMode) {
       this.leadsPagination.pageIndex = 1;
@@ -1039,7 +1045,8 @@ export class ManageLeadsComponent implements OnInit {
   validateDateFilters() {
     if ((this.statusFilter == undefined || this.statusFilter == "") && 
       (this.fromDateFilter == undefined || this.fromDateFilter == "") &&
-        (this.toDateFilter == undefined || this.toDateFilter == "")) {
+        (this.toDateFilter == undefined || this.toDateFilter == "") &&
+        (this.vendorCompanyIdFilter == undefined || this.vendorCompanyIdFilter == "")) {
           this.filterResponse = new CustomResponse('ERROR', "Please provide valid input to filter", true);
     } else { 
       let validDates = false;   
@@ -1072,6 +1079,12 @@ export class ManageLeadsComponent implements OnInit {
         }
         else {
           this.leadsPagination.stageFilter = "";
+        }
+        if (this.vendorCompanyIdFilter != undefined && this.vendorCompanyIdFilter != "") {
+          this.leadsPagination.vendorCompanyId = this.vendorCompanyIdFilter;
+        }
+        else {
+          this.leadsPagination.vendorCompanyId = 0;
         }
        this.leadsPagination.pageIndex = 1;
        this.leadsPagination.maxResults = 12;
@@ -1178,18 +1191,37 @@ export class ManageLeadsComponent implements OnInit {
           } else if (data.statusCode === 401 && data.message === "Expired Refresh Token") {
             this.referenceService.loading(this.httpRequestLoader, false);
             this.leadsResponse = new CustomResponse('ERROR', "Your Salesforce Integration was expired. Please re-configure.", true);
-          } else {
+          } 
+          else {
             this.referenceService.loading(this.httpRequestLoader, false);
             this.leadsResponse = new CustomResponse('ERROR', "Synchronization Failed", true);
           }
         },
         error => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          let integrationType = (this.activeCRMDetails.type).charAt(0)+(this.activeCRMDetails.type).substring(1).toLocaleLowerCase();
+          this.leadsResponse = new CustomResponse('ERROR', "Your "+integrationType+" integration is not valid. Re-configure with valid API Token",true);
 
         },
         () => {
           this.referenceService.loading(this.httpRequestLoader, false);
         }
       );
+  }
+
+  companyNamesForPartner(){
+    this.referenceService.loading(this.httpRequestLoader, true);
+    this.leadsService.getVendorList(this.loggedInUserId)
+    .subscribe(
+      response =>{
+        this.referenceService.loading(this.httpRequestLoader, false);
+        this.vendorList = response.data;
+      },
+      error=>{
+        this.httpRequestLoader.isServerError = true;
+      },
+      ()=> { }
+    );
   }
   
 }

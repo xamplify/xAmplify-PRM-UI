@@ -1,0 +1,72 @@
+.alert-su {
+    padding:6px 12px;
+  }
+
+.date-range-container {
+  display: flex;
+}
+.custom_fiter-asset {
+  /* border-bottom: 1px solid #ddd; */
+  background-color: #f1f5f9;
+  padding: 10px 5px 10px 5px !important;
+  /* border-radius:5px; */
+}
+.submit_customise {
+  background-color: #26a69a;
+  color:#fff ;
+} 
+.cancel_customise {
+  background-color: #ccc;
+  color: #000;
+ 
+
+}
+.buttom_customise {
+  padding: 3px 9px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+.form-group {
+  margin-right: 20px; /* Adjust the margin as needed */
+}
+
+.DeleteIconPosition{
+  position: relative;float: right;left: 50px;
+}
+
+.plus_icon_high {
+  /* margin:-10px 0px 0px 0px; */
+  margin-left: 5px;
+  padding: 5px 10px;
+} 
+.plus_icon_low {
+  margin: 1px;
+  padding: 5px 10px;
+}
+.trashIconCustimization {
+  color: red;
+  font-size: 14px;
+  margin-top: 0px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 9px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.trashIconCustimization:hover {
+  background-color: #ededed;
+  border-color: #b3b3b3;
+}
+.createdOnRow{
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+@media ( 1075px <= width <= 1250px) { .positionForAddandDelete{position: relative;right: 10px;}}
+@media ( 992px <= width <= 1075px) { .positionForAddandDelete{position: relative;right: 12px;}}
+@media ( 200px <= width <= 991px) { .mobileTopandBottomSpace{margin: 10px 0px;}.positionForAddandDelete{margin-top: 15px;margin-left: 15px;}.displayFlex{display:flex;}}
+@media ( 200px <= width <= 767px) { .createdOnRow{display: initial;} }

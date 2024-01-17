@@ -158,7 +158,7 @@ td h5 {
   width: 120px;
   cursor: default;
   border-color: #00a6e8;
-  border-radius: 3px !important;
+  border-radius: 3px;
   overflow: auto;
   color: #00a6e8;
   margin-bottom: 15px;
@@ -268,3 +268,5 @@ span.gearicon-font-cu {
 .active-campaign-color {
   background-color: #5cb85c;
 }
+
+

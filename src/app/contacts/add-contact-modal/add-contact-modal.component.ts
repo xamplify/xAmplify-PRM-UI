@@ -191,6 +191,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     
     closeAndEmitData(){
         this.addContactModalClose();
+        this.addContactuser.country = this.addContactuser.country == this.countryNames.countries[0] ? '':this.addContactuser.country
         this.notifyParent.emit( this.addContactuser );
     }
 

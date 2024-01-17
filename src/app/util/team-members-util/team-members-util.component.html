@@ -52,14 +52,15 @@
     <!---Team Members---->
     <ng-container *ngIf="!showAddTeamMemberDiv && !showUploadedTeamMembers && !editTeamMember">
       <!--List Of Team members---->
-      <div class="portlet light">
+      <div class="portlet light remove_cardBgcolor">
         <div class="portlet-title">
           <div class="row" style="display:flex;align-items: center;">
             <div class="col-xs-3 col-sm-3 col-md-4 col-lg-3">
               <div class="caption">Team Members
               </div>
             </div>
-            <div class="col-lg-4 col-md-3 col-sm-5 col-xs-4  moveButtonsCu" style="padding-right: 10px;">
+            <div class="col-lg-4 col-md-3 col-sm-5 col-xs-4  moveButtonsCu button_placement"
+              style="padding-right: 10px;">
               <div class="row">
                 <div class="clearfix" *ngIf="isTeamMemberModule">
                   <section class="clearfix" style="margin-top:-4px;">
@@ -69,7 +70,7 @@
                         <button class="btn-xs btn-padding fileinput-button btn-block rounded-0 button bgcolor-unset"
                           style="position: relative;">
                           <span style="text-align: center; font-size:14px;color: #fff !important;"
-                            class="btn Btn-Green transition">Upload a CSV</span>
+                            class="btn Btn-Green transition secondary_btn_width">Upload a CSV</span>
                           <input type="file" title="" class="file-upload" #fileImportInput name="File Upload"
                             id="txtFileUpload" accept=".csv" (change)="readCsvFile($event)" />
                         </button>
@@ -78,7 +79,7 @@
                         <button class="btn-xs btn-block rounded-0 button_blue bgcolor-unset" style="padding:1px;"
                           (click)="goToAddTeamMemberDiv()">
                           <span style="font-size:14px;color: #fff !important;"
-                            class="btn btn-primary transition">Add</span>
+                            class="btn btn-primary transition primary_btn_width">Add</span>
                         </button>
                       </div>
                     </ng-container>
@@ -160,10 +161,11 @@
                   <tr *ngFor="let teamMember of teamMembers;let i=index" id="list-team-member-{{i}}"
                     class="list-team-member-class">
                     <td class="pdl-15">
-                      <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
+                      <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember" [hideCompanyName]="true"
+                        [hideJobTitle]="true"></app-user-info>
                       <span
                         *ngIf="!authenticationService?.module?.isOnlyPartnerCompany && !authenticationService?.module?.isMarketingCompany 
-              && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl && !teamMember?.primaryAdmin"
+                      && !authenticationService?.module?.deletedPartner && !authenticationService?.module?.loggedInThroughVendorVanityUrl && !teamMember?.primaryAdmin"
                         [className]="teamMember?.partnersCount>0 ?'active-status':'inactive-status'"
                         data-toggle="tooltip" data-placement="bottom"
                         [title]="teamMember?.partnersCount>0 ?' Click to preview & delete ':''">
@@ -340,7 +342,7 @@
 
     <!--Add a Team Member Div-->
     <ng-container *ngIf="(showAddTeamMemberDiv || editTeamMember) && !showUploadedTeamMembers">
-      <div class="portlet light">
+      <div class="portlet light remove_cardBgcolor">
         <div class="portlet-title">
           <div class="caption">
             <span *ngIf="showAddTeamMemberDiv">Add Team Member</span>
@@ -360,11 +362,13 @@
                 <!---First Name--->
                 <div class="col-md-12 col-lg-12">
                   <div class="form-group">
-                    <label class="control-label col-sm-3">First Name</label>
-                    <div class="col-sm-8">
+                    <label class="control-label col-sm-3">First Name<span class="required">*</span></label>
+                    <div class="{{firstNameDivClass}}">
                       <input type="text" autocomplete="off" id="firstName" placeholder="First Name" class="form-control"
-                        [(ngModel)]="team.firstName" [ngModelOptions]="{standalone: true}" name="firstName"
-                        maxlength="255">
+                        (input)="validateAddTeamMemberForm('firstName')" [(ngModel)]="team.firstName"
+                        [ngModelOptions]="{standalone: true}" name="firstName" maxlength="255">
+                      <span class="required"
+                        *ngIf="team?.lastNameErrorMessage?.length>0">{{team?.lastNameErrorMessage}}</span>
                     </div>
                   </div>
                 </div>
@@ -487,7 +491,7 @@
                 </div>
                 <button [disabled]="!team?.validForm" id="right" type="submit" class="button_blue bgcolor-unset"
                   (click)="addOrUpdateTeamMember()"><span
-                    class="btn btn-primary transition">{{saveOrUpdateButtonText}}</span></button>
+                    class="btn btn-primary transition txt_pd-top3">{{saveOrUpdateButtonText}}</span></button>
               </div>
             </div>
           </form>
@@ -497,7 +501,8 @@
     <!--End of Add a Team Member Div-->
 
     <!-----Uplodaded Team Members----->
-    <div class="portlet light" *ngIf="showUploadedTeamMembers && !showAddTeamMemberDiv && !editTeamMember">
+    <div class="portlet light remove_cardBgcolor"
+      *ngIf="showUploadedTeamMembers && !showAddTeamMemberDiv && !editTeamMember">
       <div class="portlet-title">
         <div class="caption">Uploaded Team Members</div>
         <div [hidden]="addTeamMemberLoader.isLoading">

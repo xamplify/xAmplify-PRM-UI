@@ -9,8 +9,8 @@
                 <div class="col-xs-12">
                   <div class="page-toolbar">
                     <div class="left-float">
-                      <button class="btn btn-danger" *ngIf="selectedTeamMemberIds?.length>0"
-                        (click)="clearAll()">Clear All</button>
+                      <button class="btn btn-danger" *ngIf="selectedTeamMemberIds?.length>0" (click)="clearAll()">Clear
+                        All</button>
                     </div>
                     <div class="btn-group pull-right">
                       <div class="inputs float-right" style="display: inline-flex;">
@@ -19,8 +19,8 @@
                             <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
                               [ngModelOptions]="{standalone: true}" placeholder="Search..."
                               (keypress)="searchGroupsOnKeyPress($event.keyCode)">
-                            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
-                              (click)="sortOption.searchKey='';searchGroups();"></button>
+                            <button class="glyphicon glyphicon-remove search-box-item-clear"
+                              *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchGroups();"></button>
                             <button type="submit" class="search-box-item-click" (click)="searchGroups()">
                               <i class="fa fa-search" aria-hidden="true"></i>
                             </button>
@@ -41,8 +41,8 @@
                 id="team-member-group">
                 <thead>
                   <tr>
-                    <th scope="col" >Group Name</th>
-                    <th scope="col" class="text-center"></th>                    
+                    <th scope="col">Group Name</th>
+                    <th scope="col" class="text-center"></th>
                     <th scope="col">Created Time</th>
                   </tr>
                 </thead>
@@ -50,16 +50,16 @@
                   <ng-container *ngFor="let group of pagination.pagedItems ;let i =index">
                     <tr [class.group-selected]="selectedGroupIds != undefined && selectedGroupIds.indexOf(group.id)>-1"
                       [ngClass]="{'group-bg-color': group.expand}">
-                      <td title="{{group?.name}}" class="text-wrap width-tb"
-                      >
+                      <td title="{{group?.name}}" class="text-wrap width-tb">
                         {{group?.name}}
                       </td>
                       <td class="cw text-center width-tb">
                         <div class="actions-block left-float">
-                          <a (click)="viewTeamMembers(group)" title="View/Hide Team Members">
+                          <a class="custom-icon" (click)="viewTeamMembers(group)" title="View/Hide Team Members">
                             <i class="fa IconCustomization"
                               [ngClass]="{'fa-angle-right': !group.expand, 'fa-angle-down': group.expand}"
                               aria-hidden="true"></i>
+                            <div class="clickicons"></div>
                           </a>
                         </div>
                       </td>
@@ -79,14 +79,12 @@
                               <button class="glyphicon glyphicon-remove search-box-item-clear"
                                 *ngIf="teamMembersPagination?.searchKey"
                                 (click)="teamMembersPagination.searchKey='';searchTeamMembers();"></button>
-                              <button type="submit" class="search-box-item-click"
-                                (click)="searchTeamMembers()">
+                              <button type="submit" class="search-box-item-click" (click)="searchTeamMembers()">
                                 <i class="fa fa-search" aria-hidden="true"></i>
                               </button>
                             </div>
                           </div>
-                          <ng-container
-                            *ngIf="!teamMembersLoader.isLoading && teamMembersErrorMessage.isVisible">
+                          <ng-container *ngIf="!teamMembersLoader.isLoading && teamMembersErrorMessage.isVisible">
                             <div class="custom-response-padding">
                               <app-response-message [customResponse]="teamMembersErrorMessage">
                               </app-response-message>
@@ -97,12 +95,12 @@
                             </app-auto-response-loader>
                             <ng-container *ngIf="!teamMembersLoader.isLoading">
                               <table class="table tgrid table-condensed table-bordered child-table-xamp"
-                                aria-describedby="team-members-info"
-                                id="team-member-group-id-{{group?.id}}">
+                                aria-describedby="team-members-info" id="team-member-group-id-{{group?.id}}">
                                 <thead>
                                   <tr>
                                     <th scope="row" class="text-center">
-                                      <input *ngIf="teamMembersPagination.totalRecords!=0" type="checkbox" [(ngModel)]="isHeaderCheckBoxChecked"
+                                      <input *ngIf="teamMembersPagination.totalRecords!=0" type="checkbox"
+                                        [(ngModel)]="isHeaderCheckBoxChecked"
                                         (change)="selectAllTeamMembersOfTheCurrentPage($event, group.id)">
                                     </th>
                                     <th scope="row">Entity Info</th>
@@ -133,7 +131,8 @@
                             </div>
                           </div>
                         </div>
-                        <div *ngIf="teamMembersPagination.pagedItems.length !== 0" class="pg8" [hidden]="teamMembersLoader.isLoading">
+                        <div *ngIf="teamMembersPagination.pagedItems.length !== 0" class="pg8"
+                          [hidden]="teamMembersLoader.isLoading">
                           <app-pagination [pagination]="teamMembersPagination" (notifyParent)="naviagtePages($event)"
                             (notifyParentDropDown)="getTeamMembers($event)">
                           </app-pagination>

@@ -10,7 +10,9 @@ import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play
 import { TracksPlayBook } from 'app/tracks-play-book-util/models/tracks-play-book';
 import { LearningTrack } from 'app/lms/models/learningTrack';
 import { CustomResponse } from 'app/common/models/custom-response';
-
+import { isObject } from 'util';
+import { ConfirmUnpublishTracksOrPlaybooksModelPopupComponent } from 'app/util/confirm-unpublish-tracks-or-playbooks-model-popup/confirm-unpublish-tracks-or-playbooks-model-popup.component';
+import { Output } from '@angular/core';
 declare var $:any, swal:any;
 @Component({
   selector: 'app-top-4-tracks-and-play-books',
@@ -32,6 +34,13 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
   loggedInUserId:number = 0;
   contents:Array<any> = new Array<any>();
   customResponse:CustomResponse = new CustomResponse();
+  titleHeader = "";
+
+  selectedOption=false;
+  selectedTrackOrPlayBookId:number;
+  isPublishing:boolean;
+  isOptionClicked = false;
+
   constructor(public referenceService: ReferenceService,  public tracksPlayBookUtilService:TracksPlayBookUtilService, public authenticationService: AuthenticationService,public xtremandLogger:XtremandLogger,public pagerService:PagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.pagination.userId = this.loggedInUserId;
@@ -44,10 +53,12 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       this.headerTitle = this.isPartnerView ? 'Shared Tracks':'Tracks';
       this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared tracks' : 'Click here to manage tracks'
       this.addButtonText = "Add Tracks";
+      this.titleHeader = "Tracks";
     }else{
       this.headerTitle = this.isPartnerView ? 'Shared Play Books':'Play Books';
       this.subHeaderTitle = this.isPartnerView ? 'Click here to access shared play books' : 'Click here to manage play books'
       this.addButtonText = "Add Play Books";
+      this.titleHeader = "Play Books";
     }
     this.listLearningTracks(this.pagination);
   }
@@ -146,7 +157,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
     }
   }
 
-  confirmDelete(id: number) {
+  confirmDelete(trackOrPlayBook: any) {
     try {
       let self = this;
       swal({
@@ -159,7 +170,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
         confirmButtonText: 'Yes, delete it!'
 
       }).then(function () {
-        self.delete(id);
+        self.delete(trackOrPlayBook);
       }, function (dismiss: any) {
         console.log('you clicked on option' + dismiss);
       });
@@ -168,9 +179,9 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
     }
   }
 
-  delete(id: number) {
+  delete(trackOrPlayBook: any) {
     let tracksPlayBook: TracksPlayBook = new TracksPlayBook();
-    tracksPlayBook.id = id;
+    tracksPlayBook.id = trackOrPlayBook.id;
     tracksPlayBook.userId = this.loggedInUserId;
     if(this.tracks){
       tracksPlayBook.type =  TracksPlayBookType[TracksPlayBookType.TRACK];
@@ -182,16 +193,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
     this.tracksPlayBookUtilService.deleteById(tracksPlayBook).subscribe(
       (response: any) => {
         if (response.statusCode == 200) {
-          if(this.tracks){
-            this.referenceService.showInfo("Track Deleted Successfully", "");
-          }else{
-            this.referenceService.showInfo("Play Book Deleted Successfully", "");
-          }
-          if (this.tracks) {
-            this.customResponse = new CustomResponse('SUCCESS', "Track Deleted Successfully", true);
-          } else {
-            this.customResponse = new CustomResponse('SUCCESS', "Play Book Deleted Successfully", true);
-          }
+          this.customResponse = new CustomResponse('SUCCESS', trackOrPlayBook.title+" Deleted Successfully", true);
           this.pagination.pageIndex = 1;
           this.listLearningTracks(this.pagination);
         } else {
@@ -205,33 +207,71 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
       });
   }
 
-  confirmChangePublish(id: number, isPublish: boolean) {
-    let text = "";
-    if (isPublish) {
-      text = "You want to publish.";
-    } else {
-      text = "You want to unpublish.";
-    }
-    try {
-      let self = this;
-      swal({
-        title: 'Are you sure?',
-        text: text,
-        type: 'warning',
-        showCancelButton: true,
-        swalConfirmButtonColor: '#54a7e9',
-        swalCancelButtonColor: '#999',
-        confirmButtonText: 'Yes'
-
-      }).then(function () {
-        self.changePublish(id, isPublish);
-      }, function (dismiss: any) {
+  confirmChangePublish(id: number, isPublish: boolean,learningTrack : any) {
+    this.selectedTrackOrPlayBookId=id;
+    this.isPublishing=isPublish;
+      if(isPublish && !learningTrack.hasDamContent){
+        swal({
+          title: 'Add assets to publish.',
+          type: 'warning',
+          swalConfirmButtonColor: '#54a7e9',
+          confirmButtonText: 'Ok'
+        }).then(function (dismiss: any) {
         console.log('you clicked on option' + dismiss);
-      });
-    } catch (error) {
-      this.xtremandLogger.error(this.referenceService.errorPrepender + " ChangePublish():" + error);
-      this.loader = false;
+        });
+      } else {
+        let text = "";
+        if (isPublish) {
+          text = "You want to publish.";
+        } else {
+          text = "You want to unpublish.";
+        }
+        try {
+        let self = this;
+        if(isPublish==true){
+          swal({
+            title: 'Are you sure?',
+            text: text,
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            confirmButtonText: 'Yes'
+
+          }).then(function () {
+            self.changePublish(id, isPublish);
+          }, function (dismiss: any) {
+            console.log('you clicked on option' + dismiss);
+          });
+        }
+        else{
+          this.isOptionClicked = true;
+        }
+        } catch (error) {
+          this.xtremandLogger.error(this.referenceService.errorPrepender + " ChangePublish():" + error);
+          this.loader = false;
+        }
     }
+  }
+
+  toCallChangePublishFromUnpublishPopup(event:any){
+    let id =event['selectedTrackOrPlayBookId'];
+    let isPublishing = event['isPublishing'];
+    this.changePublish(id,isPublishing);
+  }
+  
+  resetUnPublishOptionInputValues(){
+    this.isOptionClicked = false;
+    this.selectedTrackOrPlayBookId = 0;
+    this.isPublishing = false;
+    this.closePopUp();
+  }
+
+
+  closePopUp(){
+    $('#unpublished-modal').modal('hide');
+    $('input[name="rdaction"]').prop('checked', false);
+    this.selectedOption = false;
   }
 
   changePublish(learningTrackId: number, isPublish: boolean) {
@@ -249,6 +289,7 @@ export class Top4TracksAndPlayBooksComponent implements OnInit,OnDestroy {
         this.xtremandLogger.errorPage(error);
         this.loader = false;
       })
+      this.resetUnPublishOptionInputValues();
   }
 
   view(tracksPlayBook: TracksPlayBook) {

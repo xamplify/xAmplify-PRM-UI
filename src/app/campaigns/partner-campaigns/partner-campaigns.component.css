@@ -1,13 +1,4 @@
-.view-banner {
-  background-color: #00a6e8;
-  color: white;
-  padding: 4px;
-  text-align: center;
-  width: 125px;
-  margin: 0 auto;
-  font-size: 11px;
-  font-weight: 600;
-}
+
 .cancel-ribbon {
   background-color: red;
 }
@@ -34,10 +25,10 @@
   left: 0px;
   top: 100%;
   z-index: -1;
-  border-left: 3px solid #5cb85c !important;
+  border-left: 3px solid red !important;
   border-right: 3px solid transparent;
   border-bottom: 3px solid transparent;
-  border-top: 3px solid #5cb85c !important;
+  border-top: 3px solid red !important;
 }
 .ribbon div::after {
   content: "";
@@ -46,9 +37,9 @@
   top: 100%;
   z-index: -1;
   border-left: 3px solid transparent;
-  border-right: 3px solid #5cb85c !important;
+  border-right: 3px solid red !important;
   border-bottom: 3px solid transparent;
-  border-top: 3px solid #5cb85c !important;
+  border-top: 3px solid red !important;
 }
 .cancelled-event {
   border: 2px solid #bdbdbd !important;
@@ -64,6 +55,9 @@
 }
 .mobile-left {
   float: none;
+}
+.pcgridHeight {
+  height: 290px;
 }
 @media only screen and (max-width: 768px) {
   .modal-template {
@@ -157,8 +151,4 @@ ul.custome-dropdown-changs {
 .custome-dropdown-changs li a {
   margin: 6px 10px !important;
 }
-/* .custome-dropdown-changs li > a:hover, .custome-dropdown-changs .active > a, .custome-dropdown-changs .active > a:hover {
-  text-decoration: none;
-  background-image: none;
-  background-color: #54a7e9;
-} */
+

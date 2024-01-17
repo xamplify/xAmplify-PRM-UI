@@ -23,7 +23,7 @@
             </li>
          </ul>
          <div id="folder-margin-xamp">
-            <button class="button_blue bgcolor-unset" id="right" (click)="openCreateFolderPopup()"><span
+            <button class="button_blue bgcolor-unset pos_pd_top_rgt1" id="right" (click)="openCreateFolderPopup()"><span
                   class="btn btn-primary transition">Create a Folder</span></button>
          </div>
       </div>
@@ -250,12 +250,13 @@
                               <div class="d-flex">
                                  <a class="pull-right btn-sm button_blue"
                                     (click)="previewEmailTemplate(campaign.emailTemplate)"> <span
-                                       class="btn btn-primary transition"><i class="fa fa-eye"></i>
+                                       class="btn btn-primary transition txt_pd-top3"><i class="fa fa-eye"></i>
                                        Preview</span> </a>
                                  <a *ngIf="campaign?.emailTemplate?.editPartnerTemplate"
                                     class="pull-right btn btn-sm button_blue" style="margin-right: 6px"
-                                    (click)="editPartnerTemplate()"> <span class="btn btn-primary transition"><i
-                                          class="fa fa-edit"></i> Edit </span></a>
+                                    (click)="editPartnerTemplate()"> <span
+                                       class="btn btn-primary transition txt_pd-top3"><i class="fa fa-edit"></i> Edit
+                                    </span></a>
                               </div>
                            </div>
                         </div>
@@ -302,15 +303,12 @@
                                  <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">
                                     {{selectedUserlistIds.length}} lists are selected
                                  </h4>
-                                 <button class="pull-right btn-sm button_blue bgcolor-unset" style="margin-top: 6px"
-                                    (click)="showContacts()"><span
-                                       class="btn btn-primary transition">{{previewText}}</span></button>
+                                 <button type="button" class="pull-right btn-sm button_blue bgcolor-unset" style="margin-top: 6px" (click)="showContacts()">
+                                    <span class="btn btn-primary transition txt_pd-top3">{{previewText}}</span>
+                                 </button>
                                  <br>
                               </div>
-                              <span *ngIf="selectedUserlistIds.length>0"
-                                 style="color: cornflowerblue;font-weight: 600;float: left;margin-bottom: 10px;">This
-                                 email will be sent to
-                                 {{validUsersCount}}({{allUsersCount}}) users.</span>
+                              <span *ngIf="selectedUserlistIds.length>0" class="valid-users-count-span">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
                            </div>
                            <div id="campaign-contact-list" style="display: none;">
                               <div>
@@ -430,10 +428,11 @@
                                                          <td class="text-center">
                                                             <div
                                                                [className]="selectedUserlistIds.indexOf(contacts.id)>-1 ? 'actions-block-selected':'actions-block float-none'">
-                                                               <a title="Preview"
+                                                               <a title="Preview" class="custom-icon"
                                                                   (click)="$event.stopPropagation();previewUsers(contacts)">
                                                                   <i class="fa fa-eye IconCustomization"
                                                                      aria-hidden="true"></i>
+                                                                  <div class="clickicons"></div>
                                                                </a>
                                                             </div>
                                                          </td>
@@ -981,14 +980,15 @@
                         <div class="portlet-title border-none">
                            <div class="col-xs-12 center-block pt20 text-center">
                               <div class="mb_flex">
-                                 <button type="button" class="button bgcolor-unset" [disabled]="!isCampaignDetailsFormValid"
+                                 <button type="button" class="button bgcolor-unset"
+                                    [disabled]="!isCampaignDetailsFormValid"
                                     (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,selectedLandingPageId,true)"
-                                    style="width:10em"><span class="btn Btn-Green transition">Send Test
+                                    style="width:10em"><span class="btn Btn-Green transition txt_pd-top3">Send Test
                                        Email</span></button>
-                                 <button type="submit" class="button mar-lft-40 bgcolor-unset"
+                                 <button type="submit" class="button mar-lft-40 bgcolor-unset mrgn_lft0"
                                     [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid"
                                     style="width:10em"><span
-                                       class="btn Btn-Green transition">{{buttonName}}</span></button>
+                                       class="btn Btn-Green transition txt_pd-top3">{{buttonName}}</span></button>
                               </div>
                            </div>
                         </div>

@@ -42,7 +42,7 @@ export class EmailTemplateService {
     listTemplates(pagination:Pagination,userId:number){
         try{
             userId = this.authenticationService.checkLoggedInUserId(userId);
-            var url =this.URL+"admin/listEmailTemplates/"+userId+"?access_token="+this.authenticationService.access_token;
+            var url =this.URL+"admin/listEmailTemplates/"+userId+"?searchKey="+pagination.searchKey+"&access_token="+this.authenticationService.access_token;
             return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -220,6 +220,13 @@ export class EmailTemplateService {
         return this.http.post(this.URL+"/email-template/updateJsonAndHtmlBody/?access_token="+this.authenticationService.access_token,emailTemplateDto)
         .map(this.extractData)
         .catch(this.handleError);
+    }
+
+    /*  XNFR-431 */
+    copy(emailTemplate:EmailTemplate){
+        let url = this.URL+"/email-template/copy?access_token="+this.authenticationService.access_token;
+        emailTemplate.userId = this.authenticationService.getUserId();
+        return this.authenticationService.callPostMethod(url,emailTemplate);
     }
 
 

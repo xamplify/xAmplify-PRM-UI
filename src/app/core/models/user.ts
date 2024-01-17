@@ -60,7 +60,13 @@ export class User {
     selectedTeamMemberIds = [];
     partnershipId = 0;
     selectedTeamMemberGroupName = "";
+
+    excludedCatagory = "";
+
+    secondAdmin : boolean = false;
+
     companyProfileDTO : CompanyProfileDTO = new CompanyProfileDTO();
     displayContactCompany : string;
     companyNameStatus : string;
+
 }

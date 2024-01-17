@@ -1266,4 +1266,21 @@ getDefaultThemes(){
             .catch(this.handleError);
     }
     /*** ConnectWise - XNFR-403 ****/
+
+    /* -- XNFR-415 -- */
+    updateDefaultDashboardForPartner( companyId: number,type:string ) {
+        return this.http.get( this.url + "updateDefaultDashboardForPartner/" + companyId + "/"+type+"?access_token=" + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    getDefaultDashboardForPartner( companyId: number ) {
+        return this.http.get( this.url + "getDefaultDashboardForPartner/" + companyId + "?access_token=" + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    getDefaultDashboardPageForPartner(vanityLoginDto: VanityLoginDto) {
+        return this.http.post(this.url + `getDefaultDashboardPageForPartner?access_token=${this.authenticationService.access_token}`, vanityLoginDto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }
