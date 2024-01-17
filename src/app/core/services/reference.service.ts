@@ -3407,4 +3407,27 @@ export class ReferenceService {
   addCreateOrUpdateSuccessMessage(message:string){
     this.createdOrUpdatedSuccessMessage = message;
   }
+
+  isVideo(filename: any) {
+    const parts = filename.split('.');
+    const ext = parts[parts.length - 1];
+    switch (ext.toLowerCase()) {
+        case 'm4v':
+        case 'mkv':
+        case 'avi':
+        case 'mpg':
+        case 'mp4':
+        case 'flv':
+        case 'mov':
+        case 'wmv':
+        case 'divx':
+        case 'f4v':
+        case 'mpeg':
+        case 'vob':
+        case 'xvid':
+            // etc
+            return true;
+    }
+    return false;
+}
 }

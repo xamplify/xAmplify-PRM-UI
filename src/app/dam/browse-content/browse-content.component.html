@@ -1,0 +1,103 @@
+<div *ngIf="isAdd">
+  <span  [style.color]="invalidAssetName ? 'red':''">
+     <strong>{{headerText}}<span *ngIf="isAdd" class="required">*</span></strong>
+  </span>
+  <div class="row">
+     <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
+        <div class="upload-asset-div" (click)="browse()" (drop)="chooseAsset($event)">
+           <input type="file" (change)="chooseAsset($event)"  style="opacity: 0.0; position: absolute;" id="uploadedAsset">
+           <div class="text-center card-template">
+              <img class="img-templates" src="../../../assets/images/uploadimage.png" alt="No Image Found">
+              <h2 class="upload-video" style="margin:-5px;padding-top: 5px;">{{headerText}}</h2>
+              <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE}}</h6>
+              <button class="button_blue bgcolor-unset" style="color:#fff">
+                 <span class="btn btn-primary transition txt_pd-top3">Browse</span></button>
+              <br><br>
+              <span *ngIf="uploadedAssetName?.length>0">
+                 <strong>File Name : {{uploadedAssetName | slice: 0:23}}</strong>
+              </span>
+              <span *ngIf="uploadedAssetName?.length==0">
+                 <strong>No File Selected</strong>
+              </span>
+           </div>
+        </div>
+     </div>
+     <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
+        <div class="upload-asset-div">
+           <div class="text-center" style="margin-bottom:10px;">
+              <br />
+              <div
+                 class="col-xs-6 col-sm-3 col-md-3 col-lg-3 text-center hidden-xs hidden-sm card-template">
+                 <img src="assets/images/record.png" alt=""
+                    data-toggle="tooltip" data-placement="bottom"
+                    title="Click here to record using your webcam"
+                    (click)="cameraChange()" height="50" width="auto"
+                    class="camera img-templates"
+                    style=" border: 5px; margin: 8px 0px;"
+                    onMouseOver="this.style.opacity= 1"
+                    onMouseOut="this.style.opacity= 0.7">
+                 <div class="decfsize"
+                    style="font-weight: 600;color: #ea7b92; margin: 10px 0px;"
+                    translate>WebCam</div>
+              </div>
+              <div
+                 class="col-xs-4 col-sm-4 col-md-3 col-lg-3 text-center card-template">
+                 <img src="assets/images/Dropbox.png"
+                    class="dropBox img-templates" alt="" data-toggle="tooltip"
+                    data-placement="bottom"
+                    title="Click here to access videos from your Dropbox account"
+                    (click)="dropBoxChange()" height="50" width="auto"
+                    style="cursor:pointer; border: 1px; margin: 10px 0px;"
+                    onMouseOver="this.style.opacity= 1"
+                    onMouseOut="this.style.opacity= 0.7">
+                 <div class="decfsize"
+                    style="font-weight: 600;color: #55bede;margin: 8px 0px;"
+                    translate>DropBox</div>
+              </div>
+              <div
+                 class="col-xs-4 col-sm-4 col-md-3 col-lg-3 text-center margin-top-16 card-template">
+                 <img src="assets/images/box.png" class="box img-templates"
+                    alt="" data-toggle="tooltip" data-placement="bottom"
+                    title="Click here to access videos from your Box account"
+                    (click)="downloadFrombox()" height="50" width="auto"
+                    style="cursor:pointer; border: 1px; margin: 8px 0px;"
+                    onMouseOver="this.style.opacity= 1"
+                    onMouseOut="this.style.opacity= 0.7">
+                 <div class="decfsize"
+                    style="font-weight: 600;margin: 10px 0px;color: #6eabd7;"
+                    translate>Box</div>
+              </div>
+              <div
+                 class="col-xs-4 col-sm-4 col-md-3 col-lg-3 text-center margin-top-16 card-template">
+                 <img src="assets/images/GoogleDrive.png" alt=""
+                    data-toggle="tooltip" data-placement="bottom"
+                    class="googleDrive img-templates"
+                    title="Click here to access videos from your GoogleDrive account"
+                    (click)="googleDriveChange()" height="50" width="auto"
+                    style="cursor: pointer; border: 1px; margin: 10px 0px;"
+                    onMouseOver="this.style.opacity= 1"
+                    onMouseOut="this.style.opacity= 0.7">
+                 <div class="decfsize"
+                    style="font-weight: 600; color: #eec24c; margin:8px 0px"
+                    translate>GoogleDrive</div>
+              </div>
+              <span *ngIf="uploadedCloudAssetName?.length>0">
+                 <strong>File Name : {{uploadedCloudAssetName | slice: 0:
+                    23}}</strong>
+              </span>
+              <span *ngIf="uploadedCloudAssetName?.length==0">
+                 <strong>No File Selected</strong>
+              </span>
+           </div>
+           <br />
+        </div>
+     </div>
+  </div>
+  <div class="col-xs-12 p0 top10px md-padd">
+     <div class="col-xs-12 message-content">
+        <ul>
+           <li translate>Maximum file size is 800 MB.</li>
+        </ul>
+     </div>
+  </div>
+</div>

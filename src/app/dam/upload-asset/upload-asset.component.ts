@@ -327,7 +327,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.damUploadPostDto.fileName = this.uploadedAssetName;
         this.damUploadPostDto.downloadLink = null;
         this.damUploadPostDto.oauthToken = null;
-        this.isVideoAsset = this.isVideo(this.uploadedAssetName);
+        this.isVideoAsset = this.referenceService.isVideo(this.uploadedAssetName);
         if (this.isVideoAsset) {
             this.videoPreviewPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file)));
             this.showVideoPreview = true;
@@ -883,7 +883,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.damUploadPostDto.oauthToken = this.tempr;
         this.damUploadPostDto.cloudContent = true;
         this.damUploadPostDto.fileName = this.uploadedCloudAssetName;
-        this.isVideoAsset = this.isVideo(this.uploadedCloudAssetName);
+        this.isVideoAsset = this.referenceService.isVideo(this.uploadedCloudAssetName);
         this.validateAllFields();
         }
       }
@@ -1127,28 +1127,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
            $('.camera').attr('style', 'cursor:pointer; opacity:0.7');
        }
        
-       isVideo(filename: any) {
-           const parts = filename.split('.');
-           const ext = parts[parts.length - 1];
-           switch (ext.toLowerCase()) {
-               case 'm4v':
-               case 'mkv':
-               case 'avi':
-               case 'mpg':
-               case 'mp4':
-               case 'flv':
-               case 'mov':
-               case 'wmv':
-               case 'divx':
-               case 'f4v':
-               case 'mpeg':
-               case 'vob':
-               case 'xvid':
-                   // etc
-                   return true;
-           }
-           return false;
-       }
+       
     
        trimVideoTitle(title: string) {
     	      try {
@@ -1260,68 +1239,78 @@ zoomOut() {
       this.showCropper = false; 
     }
     }
-    zoomIn() {
-        if(this.croppedImage!=''){
-                this.scale += .1;
-                this.transform = {
-                    ...this.transform,
-                    scale: this.scale
-                };
-          
-        }else{
-            this.showCropper = false;
-          //  this.errorUploadCropper = true;
-            }
+zoomIn() {
+    if(this.croppedImage!=''){
+            this.scale += .1;
+            this.transform = {
+                ...this.transform,
+                scale: this.scale
+            };
+        
+    }else{
+        this.showCropper = false;
+        //  this.errorUploadCropper = true;
         }
-        resetImage() {
-            if(this.croppedImage!=''){
-                    this.scale = 1;
-                    this.rotation = 0;
-                    this.canvasRotation = 0;
-                    this.transform = {};
-            }else{
-                this.showCropper = false;
-               // this.errorUploadCropper = true;
-            }
-            }
-            imageCroppedMethod(event: ImageCroppedEvent) {
-                this.croppedImage = event.base64;
-                console.log(event, base64ToFile(event.base64));
-                }
-                imageLoaded() {
-                    this.showCropper = true;
-                    console.log('Image loaded')
-                    }
-                    cropperReady(sourceImageDimensions: Dimensions) {
-                        console.log('Cropper ready', sourceImageDimensions);
-                    }
-                    loadImageFailed () {
-                        console.log('Load failed');
-                        }
-                        closeModal() {
-                            this.cropRounded = !this.cropRounded;
-                            this.circleData = {};
-                            this.imageChangedEvent = null;
-                             this.croppedImage = '';
-                          } 
-                          closeImageUploadModal() {
-                            this.cropRounded = !this.cropRounded;
-                            this.imageChangedEvent = null;
-                            this.croppedImage = '';
-                            this.fileObj = null;
-                            this.clearThumbnailImage();
-                            $('#cropImage').modal('hide');
-                          } 
-                          fileBgImageChangeEvent(event){
-                            const image:any = new Image();
-                            const file:File = event.target.files[0];
-                            const isSupportfile = file.type;
-                            if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
-                                this.errorUploadCropper = false;
-                                this.imageChangedEvent = event;
-                            } else {
-                              this.errorUploadCropper = true;
-                              this.showCropper = false;
-                            }
-                          }                    
+    }
+resetImage() {
+    if(this.croppedImage!=''){
+            this.scale = 1;
+            this.rotation = 0;
+            this.canvasRotation = 0;
+            this.transform = {};
+    }else{
+        this.showCropper = false;
+        // this.errorUploadCropper = true;
+    }
+    }
+imageCroppedMethod(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
+    console.log(event, base64ToFile(event.base64));
+}
+imageLoaded() {
+    this.showCropper = true;
+    console.log('Image loaded')
+}
+cropperReady(sourceImageDimensions: Dimensions) {
+    console.log('Cropper ready', sourceImageDimensions);
+}
+loadImageFailed () {
+    console.log('Load failed');
+    }
+closeModal() {
+    this.cropRounded = !this.cropRounded;
+    this.circleData = {};
+    this.imageChangedEvent = null;
+        this.croppedImage = '';
+    } 
+closeImageUploadModal() {
+this.cropRounded = !this.cropRounded;
+this.imageChangedEvent = null;
+this.croppedImage = '';
+this.fileObj = null;
+this.clearThumbnailImage();
+$('#cropImage').modal('hide');
+} 
+fileBgImageChangeEvent(event){
+const image:any = new Image();
+const file:File = event.target.files[0];
+const isSupportfile = file.type;
+if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/webp' || isSupportfile === 'image/png') {
+    this.errorUploadCropper = false;
+    this.imageChangedEvent = event;
+} else {
+    this.errorUploadCropper = true;
+    this.showCropper = false;
+}
+}           
+
+/***XNFR-434***/
+browseContentEventReceiver(event:any){
+    this.formData = event['formData'];
+    this.damUploadPostDto = event['damUploadPostDto'];
+    this.customResponse = event['customResponse'];
+    this.validateAllFields();
+}
+
+
 }
