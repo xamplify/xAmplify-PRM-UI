@@ -3438,4 +3438,10 @@ isIE() {
   return is_ie;
 }
 
+closeDamModalPopup(){
+  $('#myModal').modal('hide');
+  $('body').removeClass('modal-open');
+  $('.modal-backdrop fade in').remove();
+}
+
 }

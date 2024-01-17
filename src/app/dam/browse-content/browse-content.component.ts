@@ -3,12 +3,15 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { DamUploadPostDto } from '../models/dam-upload-post-dto';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Properties } from '../../common/models/properties';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { VideoFileService } from 'app/videos/services/video-file.service';
 
-declare var $:any, swal:any, CKEDITOR: any, gapi:any, google:any, Dropbox:any, BoxSelect:any, videojs: any;
+
+declare var $:any, swal:any, gapi:any, google:any, Dropbox:any, BoxSelect:any, videojs: any;
 @Component({
   selector: 'app-browse-content',
   templateUrl: './browse-content.component.html',
@@ -34,7 +37,7 @@ export class BrowseContentComponent implements OnInit {
   showVideoPreview : boolean = false;
   fileSize: number;
   @Output() browseContentEventEmitter = new EventEmitter();
-
+  loggedInUserId = 0;
   /***Webcam related properties**/
   browserInfo: string;
   camera: boolean;
@@ -60,9 +63,11 @@ export class BrowseContentComponent implements OnInit {
   RecordSave = false;
   textAreaValue = '';
   /***Webcam related properties**/
-
+  pickerApiLoaded = false;
+	picker: any;
   constructor(public referenceService:ReferenceService,public sanitizer: DomSanitizer,private router: Router,public properties:Properties,
-    public deviceService: Ng2DeviceService,private xtremandLogger:XtremandLogger) {
+    public deviceService: Ng2DeviceService,private xtremandLogger:XtremandLogger,private authenticationService:AuthenticationService,
+    private videoFileService:VideoFileService) {
     this.isFileDrop = false;
         this.loading = false;
         this.saveVideo = false;
@@ -92,6 +97,7 @@ export class BrowseContentComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.loggedInUserId = this.authenticationService.getUserId();
     this.isAdd = this.router.url.indexOf('/upload') > -1;
 		this.headerText = this.isAdd ? 'Upload Asset' : 'Edit Asset';
   }
@@ -399,10 +405,8 @@ uploadRecordedVideo() {
  }
 
  modalPopupClosed() {
-  $('#myModal').modal('hide');
-  $('body').removeClass('modal-open');
-  $('.modal-backdrop fade in').remove();
-}
+  this.referenceService.closeDamModalPopup();
+ }
 
 recordModalPopupAfterUpload() {
   this.modalPopupClosed();
@@ -454,6 +458,148 @@ closeRecordPopup() {
     // this.router.navigate(['./home/videos']);
   }catch(error) { this.xtremandLogger.error('Error in upload video, closeRecordPopup method'+error);}
 }
+
+
+/*******Drop Box Code**********/
+ // cloud content -- DropBox code changes  
+ dropBoxChange() {
+  try {
+    this.damUploadPostDto.source= 'Dropbox';
+      const self = this;
+      const options = {
+          success: function(files: any) {
+              self.setCloudContentValues(files[0].name, files[0].link);
+          },
+          cancel: function() {
+          },
+          linkType: 'direct',
+          multiselect: false,
+          // extensions: ['.m4v', '.avi', '.mpg', '.mp4', '.flv', '.mov', '.wmv', '.divx', '.f4v', '.mpeg', '.vob', '.xvid', '.mkv'],
+      };
+      Dropbox.choose(options);
+  } catch (error) { this.xtremandLogger.error('Error in upload video downloadFromDropbox' + error); }
+}
+
+setCloudContentValues(uploadedCloudAssetName:string, downloadLink:string) {
+  if(uploadedCloudAssetName.lastIndexOf(".")==-1) {
+    this.showValidExtensionErrorMessage();
+  }else{
+    this.uploadedAssetName = "";
+    this.uploadedCloudAssetName = "";
+    this.formData.delete("uploadedFile");
+    this.customResponse = new CustomResponse();
+    this.uploadedCloudAssetName = uploadedCloudAssetName;
+    this.damUploadPostDto.downloadLink = downloadLink;
+    this.damUploadPostDto.oauthToken = this.tempr;
+    this.damUploadPostDto.cloudContent = true;
+    this.damUploadPostDto.fileName = this.uploadedCloudAssetName;
+    this.isVideoAsset = this.referenceService.isVideo(this.uploadedCloudAssetName);
+    }
+    this.callEmitter();
+  }
+
+
+  //cloud content -- Box code changes 
+  downloadFrombox() {
+    try{
+      this.damUploadPostDto.source= 'Box';
+      const value = this;
+      const options = {
+          clientId: 'a8gaa6kwnxe10uruyregh3u6h7qxd24g',
+          linkType: 'direct',
+          multiselect: false,
+      };
+      const boxSelect = new BoxSelect(options);
+      boxSelect.launchPopup();
+      const self = this;
+      boxSelect.success(function (files: any) {
+          if (files[0].name) {
+              self.setCloudContentValues(files[0].name, files[0].url);
+          } 
+      });
+      // Register a cancel callback handler
+      boxSelect.cancel(function () {
+          console.log('The user clicked cancel or closed the popup');
+          //self.defaultSettings();
+      });
+    } catch(error) { this.xtremandLogger.error('upload video downloadFrombox'+error);swal.close();}
+  };
+
+  /***********Google Drive******/
+  googleDriveChange() {
+    try {
+      this.damUploadPostDto.source = 'Google Drive';
+        this.videoFileService.hasVideoAccess(this.loggedInUserId)
+            .subscribe(
+            (result: any) => {
+                if (result.access) {
+                    this.onApiLoad();
+                } else {
+                    this.authenticationService.forceToLogout();
+                }
+            }
+            );
+    } catch (error) { this.xtremandLogger.error('Error in upload video googleDriveChange method' + error); }
+  }
+
+onApiLoad() {
+        const self = this;
+        gapi.load('auth', { 'callback': self.onAuthApiLoad.bind(this) });
+        gapi.load('picker', { 'callback': self.onPickerApiLoad.bind(this) });
+}
+onAuthApiLoad() {
+    window['gapi'].auth.authorize(
+        {
+            'client_id': '982456748855-68ip6tueqej7757qsg1l0dd09jqh0qgs.apps.googleusercontent.com',
+            'scope': ['https://www.googleapis.com/auth/drive.readonly'],
+            'immediate': false
+        },
+        this.handleAuthResult.bind(this));
+}
+handleAuthResult(authResult: any) {
+    const self = this;
+    if (authResult && !authResult.error) {
+        this.tempr = authResult.access_token;
+        self.createPicker();
+    }
+}
+onPickerApiLoad() {
+    const self = this;
+    this.pickerApiLoaded = true;
+    self.createPicker();
+}
+createPicker() {
+    const self = this;
+    if (this.tempr) {
+        const pickerBuilder = new google.picker.PickerBuilder();
+        self.picker = pickerBuilder
+            .enableFeature(google.picker.Feature.NAV_HIDDEN)
+            .setOAuthToken(this.tempr)
+            .addView(google.picker.ViewId.DOCS)
+            .setDeveloperKey('AIzaSyAcKKG96_VqvM9n-6qGgAxgsJrRztLSYAI')
+            .setCallback(self.pickerCallback.bind(this))
+            .build();
+        self.picker.setVisible(true);
+    }
+}
+pickerCallback(data: any) {
+    try {
+        const self = this;
+        if (data[google.picker.Response.ACTION] === google.picker.Action.PICKED) {
+            const doc = data[google.picker.Response.DOCUMENTS][0];
+            if (self.picker) {
+                self.picker.setVisible(false);
+                self.picker.dispose();
+            }
+            let downloadLink = 'https://www.googleapis.com/drive/v3/files/' + doc.id + '?alt=media';
+            this.setCloudContentValues(doc.name, downloadLink);
+        } else if (data[google.picker.Response.ACTION] === google.picker.Action.CANCEL) {
+            self.picker.setVisible(false);
+            self.picker.dispose();
+        }
+    } catch (error) { this.xtremandLogger.error('Error in upload video pickerCallback' + error); swal.close(); }
+}
+  
  
 
 callEmitter(){
@@ -463,6 +609,10 @@ callEmitter(){
   emitter['customResponse'] = this.customResponse;
   emitter['isVideoAsset'] = this.isVideoAsset;
   emitter['uploadedCloudAssetName'] = this.uploadedCloudAssetName;
+  emitter['camera'] = this.camera;
+  emitter['playerInit'] = this.playerInit;
+  emitter['player'] = this.player;
+  emitter['picker'] = this.picker;
   this.browseContentEventEmitter.emit(emitter);
 }
 
