@@ -17,15 +17,13 @@ import { ViewDamComponent } from './view-dam/view-dam.component';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { VideoBasedReportsComponent } from '../videos/manage-video/video-based-reports/video-based-reports.component';
 import { VideoBaseReportService } from '../videos/services/video-base-report.service';
-import { BrowseContentComponent } from './browse-content/browse-content.component';
 
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, DamRoutingModule, CKEditorModule
   ],
   declarations: [ManageDamComponent, AddDamComponent, PublishedDamListComponent, UploadAssetComponent, DamAnalyticsComponent, DamPublishedPartnersAnalyticsComponent, SelectUploadTypeComponent, ShowHistoryComponent, ViewDamComponent,
-                  VideoBasedReportsComponent,
-                  BrowseContentComponent],
+                  VideoBasedReportsComponent],
   providers: [DamService, VideoBaseReportService]
 })
 export class DamModule { }
