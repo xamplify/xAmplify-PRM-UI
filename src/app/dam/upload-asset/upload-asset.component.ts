@@ -23,6 +23,7 @@ import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
+import { BrowseContentComponent } from 'app/util/browse-content/browse-content.component';
 
 
 
@@ -138,6 +139,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     isAssetPublishedEmailNotification = false;
     assetPublishEmailNotificationLoader = true;
     isAssetPublished = false;
+    @ViewChild('browseContentComponent') browseContentComponent: BrowseContentComponent;
 
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
@@ -192,6 +194,8 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
         this.isDisable = false;
         $('#uploadedAsset').val("");
         this.validateAllFields();
+        this.browseContentComponent.clearUploadedFile();
+
     }
 
      /****XNFR-326*****/

@@ -619,4 +619,15 @@ callEmitter(){
   this.browseContentEventEmitter.emit(emitter);
 }
 
+clearUploadedFile(){
+  this.formData.delete("uploadedFile");
+  this.uploadedAssetName = "";
+  this.showVideoPreview = false;
+  this.fileSize = 0;
+  this.isDisable = false;
+  $('#uploadedAsset').val("");
+  this.callEmitter();
+  
+}
+
 }
