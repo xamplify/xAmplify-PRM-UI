@@ -158,8 +158,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
   /***XNFR-326****/
   assetPublishEmailNotificationLoader = true;
   isAssetPublishedEmailNotification = false;
-    ngxLoading: boolean;
+  ngxLoading: boolean;
   /***XNFR-326****/
+  /***XNFR-434**/
+  isReplaceVideoButtonClicked = false;
   constructor(public referenceService: ReferenceService, public callActionSwitch: CallActionSwitch, public userService: UserService,
       public videoFileService: VideoFileService, public fb: FormBuilder, public changeDetectorRef: ChangeDetectorRef,
       public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger,private homeComponent:HomeComponent,
@@ -1553,4 +1555,17 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         /****XNFR-342****/
     }
     /******XNFR-255*****/
+
+    /***XNFR-434***/
+    browseFile(){
+        this.isReplaceVideoButtonClicked = true;
+    }
+
+    goToEditVideoDetailsPage(){
+        this.isReplaceVideoButtonClicked = false;
+    }
+
+    browseContentEventReceiver(event:any){
+
+    }
 }

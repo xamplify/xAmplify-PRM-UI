@@ -126,7 +126,7 @@
                                        </div>
                                        <!-- end here -->
                                        <!---Upload Asset-->
-                                       <app-browse-content (browseContentFileUploadErrorEventEmitter)="browseContentFileUploadErrorEventReceiver($event)" (browseContentEventEmitter)="browseContentEventReceiver($event)"></app-browse-content>
+                                       <app-browse-content  (browseContentEventEmitter)="browseContentEventReceiver($event)"></app-browse-content>
                                     </div>
                                     <div class="row" [class.customDisableCss]='isDisableForm==true'>
                                        <div class="col-md-8 col-lg-8 col-xs-12 col-sm-8">
