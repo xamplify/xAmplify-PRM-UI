@@ -148,6 +148,9 @@ export class ReferenceService {
   loginTemplateId = 53;
   assetResponseMessage = "";
   createdOrUpdatedSuccessMessage = "";
+
+  /*** XNFR-433 ***/
+  isCopyForm: boolean = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
