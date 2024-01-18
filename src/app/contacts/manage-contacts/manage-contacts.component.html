@@ -492,16 +492,13 @@
                                                       <b>By:</b> {{contactList.uploadedBy}}
                                                    </span>
                                                 </h5>
-                                                <h5 class='mb0 moreipsis' *ngIf="selectedFilterIndex == 3">
+                                                <h5 class="mb0 moreipsis" style="padding: 0px;">
                                                    <span class='f-w-400' data-toggle="tooltip" data-placement="top"
-                                                      title="{{contactList?.associatedCompany}}">
-                                                      <b>Associated Company:</b> {{contactList.associatedCompany}}
-                                                   </span>
-                                                </h5>
-
-                                                <h5 class="mb0 moreipsis" style="padding: 0px;" *ngIf="selectedFilterIndex != 3">
+                                                   title="{{contactList?.associatedCompany}}" *ngIf="contactList.companyList">
+                                                   <b>Associated Company:</b> {{contactList.associatedCompany}}
+                                                </span>
                                                    <span class='f-w-400' data-toggle="tooltip" data-placement="top"
-                                                      title="{{contactList?.companyName}}">
+                                                      title="{{contactList?.companyName}}" *ngIf="!contactList.companyList">
                                                       <b>Company Name:</b> {{contactList.companyName}}
                                                    </span>
                                                    <h5 class="mb0 hidden-sm hidden-md hidden-lg">
@@ -580,6 +577,13 @@
                                                       title="This list is associated with a form." translate>Form
                                                       Contact List</span>
                                                 </h5>
+                                                <h5 class="view-banner view-banner-green"
+                                                *ngIf="!contactList?.partnerUserList && contactList?.companyList"
+                                                [hidden]="assignLeads">
+                                                <span data-toggle="tooltip" data-placement="top"
+                                                   title="This list is associated with a form." translate>Company
+                                                   Contact List</span>
+                                             </h5>
                                              </td>
                                              <td class="hidden-xs" *ngIf="!assignLeads">
                                                 <app-timestamp [isOnlyDate]="true"
@@ -807,9 +811,13 @@
                                           <b>By:</b> {{contactList.uploadedBy}}</span>
                                     </h6>
                                     <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip"
-                                       data-placement="top" title="{{contactList.companyName}}">
+                                       data-placement="top" title="{{contactList.companyName}}" *ngIf="!contactList?.companyList">
                                        <span><b>Company Name:</b> {{contactList.companyName}}</span>
                                     </h6>
+                                    <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip"
+                                    data-placement="top" title="{{contactList.associatedCompany}}" *ngIf="contactList?.companyList">
+                                    <span><b>Associated Name:</b> {{contactList.associatedCompany}}</span>
+                                 </h6>
                                     <h6 class="xamplify-ellipsis GridViewCotent"
                                        *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)"
                                        translate><b>Total </b>
@@ -849,6 +857,9 @@
                                              title="{{actionsDescription.contact_list_private}}">Private</span>
                                           <span *ngIf="contactList?.formList" data-toggle="tooltip" data-placement="top"
                                              title="{{actionsDescription.contact_list_private}}">, Form Contact
+                                             List</span>
+                                             <span *ngIf="contactList?.companyList" data-toggle="tooltip" data-placement="top"
+                                             title="{{actionsDescription.contact_list_private}}">, Company Contact
                                              List</span>
                                        </h6>
                                     </td>
