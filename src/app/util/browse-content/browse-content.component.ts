@@ -111,6 +111,9 @@ export class BrowseContentComponent implements OnInit,OnDestroy {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isAdd = this.router.url.indexOf('/upload') > -1;
     this.isReplaceVideo = this.router.url.indexOf('/editVideo')>-1;
+    if(this.isReplaceVideo){
+      this.clearUploadedFile();
+    }
 		this.headerText = this.isAdd ? 'Upload Asset' : 'Replace Video Asset';
   }
 
@@ -716,7 +719,7 @@ processVideo(result: any){
   this.damService.processVideo(this.formData, this.damUploadPostDto, path).subscribe(
             (result: any) => {
                 if (result.statusCode == 200) {
-                this.processing = false;
+                 this.processing = false;
                   this.referenceService.assetResponseMessage = result.message;
                 if(!this.damService.ispreviousAssetIsProcessing){
                     if(this.isAdd){
@@ -750,8 +753,8 @@ processVideo(result: any){
             });
 }
 
-cancel(){
-
+goToEditVideoDetailsPage(){
+  this.browseContentEventEmitter.emit();
 }
 /********End Of Replace Video*****/
  
@@ -785,7 +788,6 @@ clearUploadedFile(){
   this.fileSize = 0;
   this.isDisable = false;
   $('#uploadedAsset').val("");
-  this.callEmitter();
   
 }
 

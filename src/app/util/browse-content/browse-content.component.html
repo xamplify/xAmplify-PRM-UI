@@ -1,4 +1,6 @@
 
+  
+<div *ngIf="isAdd || isReplaceVideo">
   <span  [style.color]="invalidAssetName ? 'red':''">
      <strong>{{headerText}}<span class="required">*</span></strong>
   </span>
@@ -161,14 +163,17 @@
      </div>
   </div>
 
-  <div class="col-xs-12 p0 top10px md-padd">
-   <button  class="btn Btn-Gray" id="right" style="margin-right: 20px;" type="button" (click)="cancel()">Cancel</button>
-   <button [disabled]="this.customResponse.responseType=='ERROR' ||  isDisableForm || damUploadPostDto?.fileName?.length==0 "  id="right" style="margin-right: 0px;padding-top:1px;"
-    class="button_blue bgcolor-unset pos_mar_rgt4" type="button" 
-    (click)="this.customResponse.responseType!='ERROR' && !isDisableForm && damUploadPostDto?.fileName?.length>0
+  
+  <div class="col-xs-12 p0 top10px md-padd" *ngIf="isReplaceVideo">
+      <button [disabled]="processing"  class="btn Btn-Gray" id="right" style="margin-right: 20px;" type="button" (click)="!processing && goToEditVideoDetailsPage()">Cancel</button>
+      <button [disabled]="customResponse.responseType=='ERROR' ||  isDisableForm || damUploadPostDto.fileName?.length==0 "  id="right" style="margin-right: 0px;padding-top:1px;"
+       class="button_blue bgcolor-unset pos_mar_rgt4" type="button" 
+      (click)="customResponse.responseType!='ERROR' && !isDisableForm && damUploadPostDto.fileName?.length>0
                 && uploadVideo()">
       <span class="btn btn-primary transition">Update</span>
    </button>
+</div>
+
 </div>
 
 

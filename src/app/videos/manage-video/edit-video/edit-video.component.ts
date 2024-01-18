@@ -1561,11 +1561,10 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isReplaceVideoButtonClicked = true;
     }
 
-    goToEditVideoDetailsPage(){
+    browseContentEventReceiver(){
         this.isReplaceVideoButtonClicked = false;
-    }
-
-    browseContentEventReceiver(event:any){
+        this.referenceService.goToTop();
 
     }
+    /***XNFR-434***/
 }
