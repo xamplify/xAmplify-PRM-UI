@@ -1441,9 +1441,9 @@
                                        || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdminSuperVisor)"
                                                 class="text-center">
                                                 <div class="actions-block no-float">
-                                                   <a class="delete custom-icon" data-toggle="tooltip" data-placement="bottom"
+                                                   <a class="custom-icon" data-toggle="tooltip" data-placement="bottom"
                                                       title="Delete" (click)="confirmDeleteContact(contact)">
-                                                      <i class="fa fa-trash trashIconCustomization"
+                                                      <i class="fa fa-trash-o trashIconCustomization"
                                                          aria-hidden="true"></i>
                                                       <div class="del-icon"></div>
                                                    </a>
@@ -1593,8 +1593,9 @@
          </div>
          <div class="modal-footer">
             <button type="button" class="button bgcolor-unset" [disabled]="criterias.length === 0"
-               (click)="contactFilter()" translate><span class="btn Btn-Green transition">Submit</span></button>
-            <button type="button" class="btn Btn-Gray" (click)="cancelSegmentation()" data-dismiss="modal"
+               (click)="contactFilter()" translate><span
+                  class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
+            <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="cancelSegmentation()" data-dismiss="modal"
                translate>Cancel</button>
          </div>
       </div>
