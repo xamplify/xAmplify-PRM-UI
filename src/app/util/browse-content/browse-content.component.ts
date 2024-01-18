@@ -159,12 +159,23 @@ export class BrowseContentComponent implements OnInit,OnDestroy {
         }else if(file['name'].lastIndexOf(".")==-1) {
                   this.showValidExtensionErrorMessage();
                   this.callEmitter();
-              }else if(!this.isAdd && !this.isReplaceVideo){
+              }else if(!this.isAdd){
+                if(this.isReplaceVideo){
+                  let fileName = file['name'];
+                  let isVideoFile = this.referenceService.isVideo(fileName);
+                  if(isVideoFile){
+                    this.setUploadedFileProperties(file);
+                  }else{
+                    this.showAssetErrorMessage('Please upload only video file.');
+                    this.callEmitter();
+                  }
+                }else{
                   this.validateExtensionType(file);
                   this.callEmitter();
+                }
               }else{
                   this.setUploadedFileProperties(file);
-        }
+                }
       }else{
         this.clearPreviousSelectedAsset();
         this.callEmitter();
@@ -532,7 +543,13 @@ setCloudContentValues(uploadedCloudAssetName:string, downloadLink:string) {
     this.damUploadPostDto.cloudContent = true;
     this.damUploadPostDto.fileName = this.uploadedCloudAssetName;
     this.isVideoAsset = this.referenceService.isVideo(this.uploadedCloudAssetName);
+    if(this.isReplaceVideo && !this.isVideoAsset){
+      this.uploadedCloudAssetName = "";
+      this.tempr = null;
+      this.showAssetErrorMessage("Please upload only video file.")
     }
+    }
+
     this.callEmitter();
   }
 
@@ -731,6 +748,10 @@ processVideo(result: any){
                     this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
                 }
             });
+}
+
+cancel(){
+
 }
 /********End Of Replace Video*****/
  
