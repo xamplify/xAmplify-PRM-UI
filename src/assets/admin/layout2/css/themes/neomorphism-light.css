@@ -929,8 +929,9 @@ span.ui-column-resize {
 .bootstrap-switch,
 .bootstrap-switch .bootstrap-switch-container,
 .bootstrap-switch .bootstrap-switch-label {
-  border-color: #2f4857 !important;
-  background-color: #2b3c46 !important;
+  border: 1px solid #d0d5db !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
 }
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info,
@@ -1662,11 +1663,13 @@ div#removeborder {
 }
 /* user guides hover icon */
 .help-iconbgadd:hover {
-  background: linear-gradient(360deg, rgb(1 4 255) 0%, rgb(1 208 255) 100%) !important;
-  border: 0px solid #0104ff !important;
+  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+  border: 3px solid #9ad6f6fa!important;
+  transform: scale(1.05);
+  transition: all 0.1s ease;
 }
 .help-iconbgadd i:hover {
-  color: #000 !important;
+  color: #fff !important;
 } /* end */
 .help-iconbgadd {
   border: 1px solid #2f4857 !important;
@@ -2032,8 +2035,9 @@ i.fa.fa-trash-o.trashIconCustomization:hover {
 }
 .btn-group button {
   /* box-shadow: inset 9px 9px 14px #e2e6eb, inset -9px -9px 14px #feffff; */
-  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
   border: 0px solid #0104ff !important;
+  padding: 7px 14px !important;
   /* color: #000 !important; */
 }
 
@@ -2630,7 +2634,7 @@ hr {
   transform: rotate(360deg);
   transition: all 1s ease;
   animation: wave1 13s linear infinite;
-  background: linear-gradient(360deg, rgb(1 4 255) 0%, rgb(1 208 255) 100%);
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
   position: absolute;
   top: 110%;
   height: 100% !important;
@@ -2992,7 +2996,7 @@ justify-content: center!important;
     overflow: hidden !important;
     height: 3.5rem !important;
     /* padding: 0 2rem !important; */
-    border-radius: 20px !important;
+    border-radius: 7px !important;
     background: linear-gradient(225deg, #d8dde1, #ffffff);
     /* background-size: 400% !important; */
     color: #000 !important;
@@ -3224,8 +3228,9 @@ border:0px!important;
   box-shadow: inset 0.9em 0 0.9em #171717;
 }
 .bootstrap-switch, .bootstrap-switch .bootstrap-switch-container, .bootstrap-switch .bootstrap-switch-label {
-  border-color: #111111 !important;
-  background-color: #3c424a !important;
+  border: 1px solid #d0d5db !important;
+  background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
+  box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important;
 }
 button.btn.custom {
  color:#fff !important;
@@ -3419,7 +3424,7 @@ top:-3px;
 button.button_blue:disabled,
 button.button:disabled {
   background: linear-gradient(225deg, #d8dde1, #ffffff);
-  box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important;
+  /* box-shadow: inset 5px -5px 10px #e2e6eb, inset -5px 5px 10px #feffff !important; */
   opacity: 0.5;
 }
 .tags-table tr:nth-child(odd){
@@ -3767,7 +3772,8 @@ input.form-control.remove_checkbox_shadow{
   background: none !important;
 }
 button.btn.custom {
-  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  padding: 7px 14px !important;
   }
 /* .Btn-Green:hover{
     background: none !important;
@@ -3782,6 +3788,7 @@ button.btn.custom {
 button.btn.custom:hover {
   transform: scale(1.05);
   transition: all 0.1s ease;
+  /* background: linear-gradient(180deg, #0c86cc 0%, #3ec7e0 100%) !important; */
 }
 .dashboard-stat2{
   box-shadow: -5px 5px 10px #d6dadf,5px -5px 10px #ffffff!important;
@@ -3794,10 +3801,11 @@ button.search-box-item-click {
   background: linear-gradient(225deg, #d8dde1, #ffffff) !important;
 }
 .selectRecord {
-  padding: 6px 8px !important;
+  padding: 3px 8px !important;
   font-size: 12px !important;
-  background-image: linear-gradient(to left, #009245, #D9E021);
-  border: none !important;
+  background-image: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+  /* border: none !important; */
+  border: 3px solid #9ad6f6fa!important;
 }
 page-sidebar .page-sidebar-menu > li.active > a > i{
   color: #14a5fa;
@@ -3907,6 +3915,13 @@ a.btn.btn-block.btn-primary.text-uppercase{
   border-right: 15px solid #06beb8 !important;
     border-left: 15px solid #06beb8 !important;
 }
-.u-userLauncherColor:not{
-  background: linear-gradient(to left, #009245, #D9E021);
+.u-userLauncherColor:not([disabled]){
+  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
+  color: #fff !important;
+  fill: #fff !important;
+  border: 3px solid #9ad6f6fa!important;
+  padding: 8px 12px 11px 12px !important;
+}
+.u-userLauncherColor:not([disabled]) svg path{
+  color: #fff !important;
 }
