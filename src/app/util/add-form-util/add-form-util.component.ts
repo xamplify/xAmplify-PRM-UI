@@ -1126,6 +1126,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
                             this.customResponse = new CustomResponse('ERROR', result.message, true);
                         } else {
                             this.referenceService.isCreated = true;
+                            this.referenceService.isCopyForm = this.isCopyForm;
                             this.router.navigate(["/home/forms/manage"]);
                         }
                     } else {

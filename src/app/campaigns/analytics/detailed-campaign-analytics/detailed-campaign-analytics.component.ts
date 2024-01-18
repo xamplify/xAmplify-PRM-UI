@@ -1781,7 +1781,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
 	      if(!this.isNavigatedThroughAnalytics){
 	    	  detailedAnalyticsShared = true;
 	      }
-	      this.campaignService.downRegularVideoCampaignViews(this.campaignId, this.campaignType, this.campaign.publicEventCampaign,
+	      this.campaignService.downRegularVideoCampaignViews(this.campaignId, this.campaignType, this.isChannelCampaign, this.campaign.publicEventCampaign,
 	    		  detailedAnalyticsShared)
 	        .subscribe(
 	          data => {
