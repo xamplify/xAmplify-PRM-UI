@@ -80,8 +80,14 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
         if (this.referenceService.isCreated) {
-            this.message = "Form created successfully";
-            this.showMessageOnTop(this.message);
+            /*** XNFR-433 ***/
+            if (this.referenceService.isCopyForm) {
+                this.referenceService.showSweetAlertSuccessMessage("Form Copied Successfully");
+                $(window).scrollTop(0);
+            } else {
+                this.message = "Form created successfully";
+                this.showMessageOnTop(this.message);
+            }
         } else if (this.referenceService.isUpdated) {
             this.message = "Form updated successfully";
             this.showMessageOnTop(this.message);
