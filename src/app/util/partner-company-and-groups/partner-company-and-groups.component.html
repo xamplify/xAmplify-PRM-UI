@@ -1,6 +1,7 @@
-<label>Select {{authenticationService?.partnerModule?.customName}} / List Of
+<span *ngIf ="!authenticationService?.module?.isMarketingCompany">
+ <label>Select {{authenticationService?.partnerModule?.customName}} / List Of
   {{authenticationService?.partnerModule?.customName}} For Publishing (Optional) </label>
-<div class="panel with-nav-tabs panel-default">
+ <div class="panel with-nav-tabs panel-default">
   <div class="panel-heading" id="company-and-group-tabs">
     <ul class="nav nav-tabs">
       <li id="partners-li">
@@ -310,6 +311,7 @@
     </div>
   </div>
 </div>
+</span>
 
 <ng-container *ngIf="showUsersPreview">
   <app-preview-user-list [userListName]="selectedPartnerGroupName" [userListId]="selectedPartnerGroupId"

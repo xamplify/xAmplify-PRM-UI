@@ -3201,7 +3201,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 		let removeIndices = new Array();
 		this.pipeline.stages.forEach(function (stage, index) {
-			if (stage.stageName !== undefined && $.trim(stage.stageName).length > 0) {
+			if (stage.stageName !== undefined) {
 				if (stage.markAs === "won") {
 					stage.won = true;
 					stage.lost = false;
