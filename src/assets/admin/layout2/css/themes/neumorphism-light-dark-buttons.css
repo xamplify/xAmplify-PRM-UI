@@ -1,13 +1,32 @@
+.Btn-Green::before,       
+.btn-primary::before,
+.button_blue::before,
 .button::before {
-    background:  linear-gradient(87deg, #00ED95 0%, #00ACEC 100%) !important;
-    /* box-shadow: none !important; */
-    /* box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important; */
+  background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important;
+  box-shadow: none !important;
+} 
+.button_blue, 
+.Btn-Green, 
+.button,      
+.btn-primary,
+button#save\&delete_button {
+  /* background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important; */
+  background: linear-gradient(87deg, #00ACEC 0%, #00ED95 100%) !important;
+  box-shadow: none !important;
+}
+.card_effect_bg_color {
+  background: #fff !important;
+  box-shadow: none !important;
+}
+button#copyFromClipBoard,
+.btn-primary:hover {
+  box-shadow : none !important
 }
 button.invite_vendor_radius,
-button.analytics_icon_radius{
+button.analytics_icon_radius,
+button.btn.custom{
     box-shadow: none !important;
-    /* background-image: linear-gradient( 359deg, rgba(150, 93, 233, 1) 10.8%, rgba(99, 88, 238, 1) 94.3% ) !important; */
-    background: linear-gradient(360deg, #456cd0 0%, #76aaed 100%) !important;
+    background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
 }
 button.btn.custom {
     box-shadow: none !important;
@@ -22,9 +41,9 @@ button.btn.custom:hover{
 span.btn.Btn-Green.transition {
     box-shadow: none !important;
 }
-.p-rgt_p-top.bgcolor-unset {
+/* .p-rgt_p-top.bgcolor-unset {
   background: none !important;
-}
+} */
 /**** tharak(12-01-2024) *********/
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active > a > i, 
 .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li.active.open > a > i,
@@ -39,8 +58,17 @@ span.btn.Btn-Green.transition {
   background: linear-gradient(360deg, rgb(1 180 255)  0%, rgb(53 58 241) 100%) !important;
 }
 /**** tharak(12-01-2024) *********/
-.button_blue::before {
-  background: linear-gradient(360deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
-  /* box-shadow: none !important; */
-  /* box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff !important; */
+h3#notifications {
+  /* background: #217eac!important; */
+  border: unset!important;
+  background-image: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+.p-rgt_p-top {
+  border-radius: 7px !important;
+}
+.btn-group button {
+  padding : 7px 14px !important
+}
+.page-container-bg-solid .page-sidebar .page-sidebar-menu > li.active > a > .selected {
+  border-color: transparent #07b6bb transparent transparent !important;
 }
