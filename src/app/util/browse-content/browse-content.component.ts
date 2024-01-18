@@ -1,14 +1,16 @@
-import { Component, OnInit,Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter, OnDestroy } from '@angular/core';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { Properties } from '../../common/models/properties';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { VideoFileService } from 'app/videos/services/video-file.service';
 import { DamUploadPostDto } from 'app/dam/models/dam-upload-post-dto';
+import { DamService } from 'app/dam/services/dam.service';
+import { HttpEventType,HttpResponse} from "@angular/common/http";
 declare var $:any, swal:any, gapi:any, google:any, Dropbox:any, BoxSelect:any, videojs: any;
 
 @Component({
@@ -17,7 +19,7 @@ declare var $:any, swal:any, gapi:any, google:any, Dropbox:any, BoxSelect:any, v
   styleUrls: ['./browse-content.component.css','../../dam/upload-asset/upload-asset.component.css'],
   providers:[Properties]
 })
-export class BrowseContentComponent implements OnInit {
+export class BrowseContentComponent implements OnInit,OnDestroy {
   loading = false;
   isAdd:boolean;
   isDisable:boolean;
@@ -63,10 +65,17 @@ export class BrowseContentComponent implements OnInit {
   /***Webcam related properties**/
   pickerApiLoaded = false;
 	picker: any;
+  isReplaceVideo = false;
+  processing = false;
+  progress: number = 0;
+  isDisableForm: boolean = false;
+  viewType: string;
+  categoryId: number;
+  folderViewType: string;
   constructor(public referenceService:ReferenceService,public sanitizer: DomSanitizer,private router: Router,public properties:Properties,
     public deviceService: Ng2DeviceService,private xtremandLogger:XtremandLogger,private authenticationService:AuthenticationService,
-    private videoFileService:VideoFileService) {
-    this.isFileDrop = false;
+    private videoFileService:VideoFileService,private damService:DamService,private route:ActivatedRoute) {
+        this.isFileDrop = false;
         this.loading = false;
         this.saveVideo = false;
         this.discardVideo = false;
@@ -78,12 +87,12 @@ export class BrowseContentComponent implements OnInit {
         this.maxTimeDuration = 3400; // record video time
 		$('head').append('<script src="https://apis.google.com/js/api.js" type="text/javascript"  class="r-video"/>');
 		$('head').append('<script src="assets/js/indexjscss/select.js" type="text/javascript"  class="r-video"/>');
-		 $('head').append('<link href="assets/js/indexjscss/webcam-capture/nvideojs.record.css" rel="stylesheet"  class="r-video">');
-		 $('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript"  class="r-video"/>');
+		$('head').append('<link href="assets/js/indexjscss/webcam-capture/nvideojs.record.css" rel="stylesheet"  class="r-video">');
+		$('head').append('<script src="assets/js/indexjscss/video-hls-player/video6.4.0.js" type="text/javascript"  class="r-video"/>');
     $('head').append('<link href="assets/js/indexjscss/webcam-capture/video-js.css" rel="stylesheet">');
      $('head').append('<script src="assets/js/indexjscss/webcam-capture/nvideojs.record.js" type="text/javascript"  class="r-video"/>');
 		
-		this.deviceInfo = this.deviceService.getDeviceInfo();
+		    this.deviceInfo = this.deviceService.getDeviceInfo();
         this.browserInfo = this.deviceInfo.browser;
         
         if (this.referenceService.isEnabledCamera === false && !this.referenceService.isIE() && !this.browserInfo.includes('safari') &&
@@ -92,13 +101,42 @@ export class BrowseContentComponent implements OnInit {
         } else if (this.referenceService.isIE() || this.browserInfo.includes('safari') || this.browserInfo.includes('edge')) {
             this.referenceService.cameraIsthere = true;
         }
+        /****XNFR-169****/
+        this.viewType = this.route.snapshot.params['viewType'];
+        this.categoryId = this.route.snapshot.params['categoryId'];
+        this.folderViewType = this.route.snapshot.params['folderViewType'];
    }
 
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isAdd = this.router.url.indexOf('/upload') > -1;
-		this.headerText = this.isAdd ? 'Upload Asset' : 'Edit Asset';
+    this.isReplaceVideo = this.router.url.indexOf('/editVideo')>-1;
+		this.headerText = this.isAdd ? 'Upload Asset' : 'Replace Video Asset';
   }
+
+  ngOnDestroy(): void {
+		$('#thumbnailImageModal').modal('hide');
+        $('.r-video').remove();
+        if (this.camera) {
+            this.referenceService.closeDamModalPopup();
+            this.videoFileService.actionValue = '';
+        }
+        if (this.playerInit) {
+            this.player.record().destroy();
+            this.playerInit = false;
+        }
+        if (this.picker) {
+            this.picker.setVisible(false);
+            this.picker.dispose();
+        }
+        
+        if(this.processing){
+           this.damService.ispreviousAssetIsProcessing = true;
+        }
+        this.damService.uploadAssetInProgress = false;
+		
+	}
+
     chooseAsset(event: any) {
       this.customResponse = new CustomResponse();
       this.invalidAssetName = false;
@@ -114,21 +152,23 @@ export class BrowseContentComponent implements OnInit {
         let maxFileSizeInKb = 1024 * 800;
         if(sizeInKb==0){
           this.showAssetErrorMessage('Invalid File');
+          this.callEmitter();
         }else if(sizeInKb>maxFileSizeInKb){
           this.showAssetErrorMessage('Max file size is 800 MB');
+          this.callEmitter();
         }else if(file['name'].lastIndexOf(".")==-1) {
                   this.showValidExtensionErrorMessage();
-              }else if(!this.isAdd){
+                  this.callEmitter();
+              }else if(!this.isAdd && !this.isReplaceVideo){
                   this.validateExtensionType(file);
+                  this.callEmitter();
               }else{
                   this.setUploadedFileProperties(file);
         }
       }else{
         this.clearPreviousSelectedAsset();
+        this.callEmitter();
       }
-    /***XNFR-434****/ 
-      this.callEmitter();
-    /***XNFR-434****/ 
     }
 
     showValidExtensionErrorMessage(){
@@ -597,26 +637,124 @@ pickerCallback(data: any) {
         }
     } catch (error) { this.xtremandLogger.error('Error in upload video pickerCallback' + error); swal.close(); }
 }
+
+/********Replace Video*****/
+uploadVideo(){
+  this.damService.uploadAssetInProgress = true;
+  this.referenceService.goToTop();
+  this.customResponse = new CustomResponse();
+  this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
+  this.damUploadPostDto.videoId = this.route.snapshot.params['videoId'];
+  this.isDisableForm = true;
+  if (this.damUploadPostDto.cloudContent || this.damUploadPostDto.source=== 'webcam') {
+      swal({
+          text: 'Thanks for waiting while we retrieve your video from '+this.damUploadPostDto.source,
+          allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif',
+      });
+  }
   
+   this.damService.uploadVideo(this.formData, this.damUploadPostDto).subscribe(
+            (event: any) => {
+                if (this.damUploadPostDto.cloudContent || this.damUploadPostDto.source === 'webcam') {
+                    if (event.statusCode == 200) {
+                        this.isDisable = true;
+                        swal.close();
+                        this.processVideo(event);
+                    } 
+                } else {
+                    if (event.type === HttpEventType.UploadProgress) {
+                        this.progress = Math.round(100 * event.loaded / event.total);
+                        console.log("File is" + this.progress + "% uploaded.");
+                    } else if (event instanceof HttpResponse) {
+                        console.log('File is completely uploaded!');
+                        let result = event.body;
+                        if (result.statusCode == 200) {
+                            this.processVideo(result);
+                        } else if (result.statusCode == 400) {
+                            this.customResponse = new CustomResponse('ERROR', result.message, true);
+                        } else if (result.statusCode == 404) {
+                            this.referenceService.showSweetAlertErrorMessage("Invalid Request");
+                        } 
+                    }
+              }
+            }, error => {
+                swal.close();
+                let statusCode = JSON.parse(error['status']);
+                if (statusCode == 409) {
+                    this.formData.delete("damUploadPostDTO");
+                } else {
+                    this.xtremandLogger.log(error);
+                    this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+                }
+            });
+}
+  
+processVideo(result: any){
+  let path : string = result.map.assetPath;
+   this.processing = true;
+  if (this.RecordSave !== true) {  setTimeout(function () {  this.processing = true; }, 100); }
+  if(this.damService.ispreviousAssetIsProcessing){
+    this.damService.ispreviousAssetIsProcessing = false;
+  }		
+  this.damService.processVideo(this.formData, this.damUploadPostDto, path).subscribe(
+            (result: any) => {
+                if (result.statusCode == 200) {
+                this.processing = false;
+                  this.referenceService.assetResponseMessage = result.message;
+                if(!this.damService.ispreviousAssetIsProcessing){
+                    if(this.isAdd){
+                        this.referenceService.isUploaded = true;
+                    }else{
+                        this.referenceService.isAssetDetailsUpldated = true;
+                    }
+                      if(this.damService.uploadAssetInProgress){
+                          this.damService.uploadAssetInProgress = false;
+                          this.loading = true;
+                          this.referenceService.navigateToManageAssetsByViewType(this.folderViewType,this.viewType,this.categoryId,false);
+                      }
+                    }
+                } else if (result.statusCode == 400) {
+                    this.customResponse = new CustomResponse('ERROR', result.message, true);
+                } else if (result.statusCode == 404) {
+                    this.referenceService.showSweetAlertErrorMessage("Invalid Request");
+                }else if (result.statusCode == 401) {
+                    this.formData.delete("damUploadPostDTO");
+                }
+            }, error => {
+                swal.close();
+                let statusCode = JSON.parse(error['status']);
+                if (statusCode == 409) {
+                    this.formData.delete("damUploadPostDTO");
+                } else {
+                    this.xtremandLogger.log(error);
+                    this.xtremandLogger.errorPage(error);
+                    this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+                }
+            });
+}
+/********End Of Replace Video*****/
  
 
 callEmitter(){
-  let emitter = {};
-  emitter['damUploadPostDto'] = this.damUploadPostDto;
-  emitter['formData'] = this.formData;
-  emitter['customResponse'] = this.customResponse;
-  emitter['isVideoAsset'] = this.isVideoAsset;
-  emitter['uploadedCloudAssetName'] = this.uploadedCloudAssetName;
-  emitter['camera'] = this.camera;
-  emitter['playerInit'] = this.playerInit;
-  emitter['player'] = this.player;
-  emitter['picker'] = this.picker;
-  emitter['videoPreviewPath'] = this.videoPreviewPath;
-  emitter['showVideoPreview'] = this.showVideoPreview;
-  emitter['fileSize'] = this.fileSize;
-  emitter['isDisable'] = this.isDisable;
-  emitter['uploadedAssetName'] = this.uploadedAssetName;
-  this.browseContentEventEmitter.emit(emitter);
+  if(!this.isReplaceVideo){
+      let emitter = {};
+      emitter['damUploadPostDto'] = this.damUploadPostDto;
+      emitter['formData'] = this.formData;
+      emitter['customResponse'] = this.customResponse;
+      emitter['isVideoAsset'] = this.isVideoAsset;
+      emitter['uploadedCloudAssetName'] = this.uploadedCloudAssetName;
+      emitter['camera'] = this.camera;
+      emitter['playerInit'] = this.playerInit;
+      emitter['player'] = this.player;
+      emitter['picker'] = this.picker;
+      emitter['videoPreviewPath'] = this.videoPreviewPath;
+      emitter['showVideoPreview'] = this.showVideoPreview;
+      emitter['fileSize'] = this.fileSize;
+      emitter['isDisable'] = this.isDisable;
+      emitter['uploadedAssetName'] = this.uploadedAssetName;
+      this.browseContentEventEmitter.emit(emitter);
+  }
+  
 }
 
 clearUploadedFile(){
