@@ -92,8 +92,8 @@
                       </ng-container>
                       <a style="padding-left: 11px;">
                         <button class="bgcolor-unset p0 btn-transitions" translate>
-                          <span class="btn Btn-Green transition d-inline" (click)="addCompanyModalOpen()"> Add a Company <i class="fa fa-plus"
-                              aria-hidden="true"></i></span>
+                          <span class="btn Btn-Green transition d-inline" (click)="addCompanyModalOpen()"> Add a Company
+                            <i class="fa fa-plus" aria-hidden="true"></i></span>
                         </button>
                       </a>
                       <div class="inputs" align="right" style="float: right; display: inline-flex;">
@@ -110,26 +110,102 @@
                     </div>
                   </div>
                   <div *ngIf="companyService.isCompanyModalPopUp">
-                    <app-add-company (closeEvent)="closeCompanyModal($event)"></app-add-company>
+                    <app-add-company (closeEvent)="closeCompanyModal($event)" [actionType]="actionType" [companyId]="companyId"></app-add-company>
                   </div>
-                  <!-- <div>
-                    <table>
-                      <tr>
-                        <th>Company Name</th>
-                        <th>Type</th>
-                        <th>Cretaed On</th>
-                        <th>Total Contacts</th>
-                        <th>Actions</th>
-                      </tr>
-                      <tr>
-                        <td>vishnu</td>
-                        <td>shankar</td>
-                        <td>12-01-2024</td>
-                        <td>1</td>
-                        <td><i class="fa fa-bulding-o"></i></td>
-                      </tr>                    
-                    </table>
-                  </div> -->
+                  <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'>
+
+                    <div class="table-responsive">
+                      <table class='table tgrid table-hover table-sm' aria-describedby="companyTable">
+                        <thead>
+                          <tr>
+                            <!-- <th></th> -->
+                            <th class="center-aligned leadTablewidth0" translate>Company Details</th>
+                            <th class="center leadTablewidth1" translate>Created on</th>
+                            <th class="center leadTablewidth2" translate>Total Contacts</th>
+                            <th class="leadTablewidth3" style="text-align:center" translate>Actions</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          <ng-container *ngFor='let company of pagination.pagedItems; let i=index'>
+                            <tr>
+                              <!-- <td><img src="{{properties?.manualImage}}" alt="manual" style="height: 54px;"></td> -->
+                              <td>                              
+                                <h4 class="m0 moreipsis ListFontCu">
+                                  <span data-toggle="tooltip" data-placement="top"
+                                     title="{{company.companyListName}}" class="ListFontCu">
+                                     <b> List Name:</b> {{company.companyListName}}
+                                  </span>
+                               </h4>
+
+                               <h5 class='mb0 moreipsis'>
+                                  <span data-toggle="tooltip" data-placement="top"
+                                     title="{{company?.email}}">
+                                     <b>By:</b> {{company?.email}}
+                                  </span>
+                               </h5>
+                               <h4 class="m0 moreipsis ListFontCu">
+                                <span data-toggle="tooltip" data-placement="top"
+                                   title="{{company.name}}" class="ListFontCu">
+                                   <b> Company Name:</b> {{company?.name}}
+                                </span>
+                             </h4>
+                              </td>
+                              <td>
+                                <h5 style="font-weight: 600; color: #676767;">
+                                  <app-timestamp [isOnlyDate]="false" [dateAndTime]="company.createdTime">
+                                  </app-timestamp>
+                                </h5>
+                              </td>
+                              <td>
+                                {{company.contactCount}}
+                              </td>
+                              <td>
+                                <div class="actions-block override-actions tb_view_actions">
+                                  <a class="custom-icon" data-rel="fancybox-button"
+                                    data-toggle="tooltip" data-placement="bottom" title="View Company" id="company" (click)="viewCompany(company)">
+                                    <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
+                                  </a>
+                                  <ng-container *ngIf="!authenticationService?.module?.deletedPartner">
+                                    <a class="custom-icon" data-rel="fancybox-button"
+                                     data-toggle="tooltip" data-placement="bottom"
+                                      title="Edit Company" id="company" (click)="editCompany(company)">
+                                      <i class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></i>
+                                      <div class="clickicons"></div>
+                                    </a>
+                                    <a class="custom-icon" data-rel="fancybox-button" 
+                                      data-toggle="tooltip" data-placement="bottom"
+                                      title="Delete Company" id="company">
+                                      <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+                                      <div class="del-icon"></div>
+                                    </a>
+                                    <a class="custom-icon" data-rel="fancybox-button" 
+                                      data-toggle="tooltip" data-placement="bottom"
+                                      title="Add Contact" id="company">
+                                      <i class="fa fa-address-card-o IconCustomization" aria-hidden="true"></i>
+                                      <div class="clickicons"></div>
+                                    </a>
+                                  </ng-container>
+                                </div>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <!-- --------------------Pagination0-------------------- -->
+                    <div class="pg2">
+                      <app-pagination [pagination]="pagination" (notifyParent)="setCompanyPage($event)"
+                        (notifyParentDropDown)="listCompanies($event)"></app-pagination>
+                    </div>
+                    <!-- End of 24 -->
+                    <div *ngIf="pagination.totalRecords==0"
+                      class="alert alert-info">
+                      <strong translate>No Companies Found.</strong>
+                    </div>
+                  </section>
                 </div>
               </div>
             </div>

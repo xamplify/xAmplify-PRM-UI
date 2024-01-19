@@ -9,11 +9,11 @@ export class Company {
     phone: any;
     email: string;
     website: string;
-    linkedInURL: string;
+    linkedinURL: string;
     facebookURL: string;
     twitterURL: string;
     source: string;
-    Id: number;
+    id: number;
     userId: number;
     externalId: number;
     companyId: number;

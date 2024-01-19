@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from 'app/core/models/user';
 import { CompanyService } from '../service/company.service';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
@@ -15,6 +15,8 @@ declare var $: any;
 })
 export class AddCompanyComponent implements OnInit {
   @Output() closeEvent = new EventEmitter<any>();
+  @Input() public actionType : any;
+  @Input() public companyId : any;
   validationResponse: CustomResponse = new CustomResponse();
   customResponse: CustomResponse = new CustomResponse();
   companies: Company[] = [];
@@ -29,14 +31,34 @@ export class AddCompanyComponent implements OnInit {
   totalUsers: boolean;
   isEmailExist: boolean;
   loggedInUserId: number;
+  title: string;
+  preview: boolean = false;
+  edit: boolean = false;
   constructor(private companyService: CompanyService, public regularExpressions: RegularExpressions, public countryNames: CountryNames, public authenticationService: AuthenticationService) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
   ngOnInit() {
     this.addCompany.country = this.countryNames.countries[0];
+    this.loadModalPopUp();
   }
-
+  loadModalPopUp() {
+    if (this.actionType === "add") {
+      this.title = "Add Company"
+    } else if (this.actionType === "edit") {
+      this.title = "Edit Company"
+      this.edit = true;
+      if (this.companyId > 0) {
+        this.getCompany(this.companyId);
+      }
+    } else if (this.actionType === "view") {
+      this.title = "Company Details"
+      this.preview = true;
+      if (this.companyId > 0) {
+        this.getCompany(this.companyId);
+      }
+    }
+  }
   addCompanyModalClose() {
     $('#addCompanyModal').modal('hide');
     this.closeEvent.emit("0");
@@ -76,14 +98,51 @@ export class AddCompanyComponent implements OnInit {
     this.addCompany.userId = this.loggedInUserId;
     this.companyService.saveCompany(this.addCompany).subscribe(
       (response: any) => {
-        var data = JSON.parse(response._body);
-        if (data.statusCode == 200) {
-          this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+        if (response.statusCode == 200) {
+          this.customResponse = new CustomResponse('SUCCESS', response.message, true);
           this.addCompanyModalClose();
-        } else if (data.statusCode == 500) {
-          this.customResponse = new CustomResponse('ERROR', data.message, true);
-        } else if (data.statusCode == 409) {
-          this.customResponse = new CustomResponse('ERROR', data.message, true);
+        } else if (response.statusCode == 500) {
+          this.customResponse = new CustomResponse('ERROR', response.message, true);
+        } else if (response.statusCode == 409) {
+          this.customResponse = new CustomResponse('ERROR', response.message, true);
+        }
+      },
+      error => {
+        this.customResponse = new CustomResponse('ERROR', "failed to save", true);
+      },
+      () => { }
+    );
+  }
+  getCompany(companyId: number) {
+    this.companyService.getCompanyById(companyId, this.loggedInUserId)
+      .subscribe(
+        (data: any) => {
+          if (data.statusCode == 200) {
+            this.addCompany = data.data;
+            if(data.data.country == null || data.data.country == undefined || data.data.country == ''){
+              this.addCompany.country = this.countryNames.countries[0];
+            }
+          }
+        },
+        error => {
+        },
+        () => { }
+      );
+  }
+  editCompany(){
+    this.addCompany.userId = this.loggedInUserId;
+    this.companyService.editCompany(this.addCompany).subscribe(
+      (response: any) => {
+        if (response.statusCode == 200) {
+          this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+          this.addCompanyModalClose();
+          if(response.data.country == null || response.data.country == undefined || response.data.country == ''){
+            this.addCompany.country = this.countryNames.countries[0];
+          }
+        } else if (response.statusCode == 500) {
+          this.customResponse = new CustomResponse('ERROR', response.message, true);
+        } else if (response.statusCode == 409) {
+          this.customResponse = new CustomResponse('ERROR', response.message, true);
         }
       },
       error => {
