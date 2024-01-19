@@ -248,12 +248,12 @@
                               </a>
                               <br>
                               <div class="d-flex">
-                                 <a class="pull-right btn-sm button_blue"
+                                 <a class="pull-right btn-sm button_blue btn-primary"
                                     (click)="previewEmailTemplate(campaign.emailTemplate)"> <span
                                        class="btn btn-primary transition txt_pd-top3"><i class="fa fa-eye"></i>
                                        Preview</span> </a>
                                  <a *ngIf="campaign?.emailTemplate?.editPartnerTemplate"
-                                    class="pull-right btn btn-sm button_blue" style="margin-right: 6px"
+                                    class="pull-right btn btn-sm button_blue btn-primary" style="margin-right: 6px"
                                     (click)="editPartnerTemplate()"> <span
                                        class="btn btn-primary transition txt_pd-top3"><i class="fa fa-edit"></i> Edit
                                     </span></a>
@@ -309,7 +309,8 @@
 
                                  <br>
                               </div>
-                              <span *ngIf="selectedUserlistIds.length>0" class="valid-users-count-span">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
+                              <span *ngIf="selectedUserlistIds.length>0" class="valid-users-count-span">This email will
+                                 be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
                            </div>
                            <div id="campaign-contact-list" style="display: none;">
                               <div>

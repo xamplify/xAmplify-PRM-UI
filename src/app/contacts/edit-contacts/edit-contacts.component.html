@@ -568,7 +568,7 @@
 												</div>
 												<button class=" col-sm-3 btn button bgcolor-unset" type="button"
 													(click)="clipboardShowPreview()" translate><span
-														class="btn Btn-Green transition verify_text">VERIFY
+														class="btn Btn-Green transition verify_text txt_pd-top3">VERIFY
 														DATA</span></button>
 											</div>
 											<div class="col-sm-9">
@@ -1606,8 +1606,8 @@
 					<button type="button" class="button bgcolor-unset" [disabled]="criterias.length === 0"
 						(click)="contactFilter()" translate><span
 							class="btn Btn-Green transition txt_pd-top3">Submit</span></button>
-					<button type="button" class="btn Btn-Gray" (click)="cancelSegmentation()" data-dismiss="modal"
-						translate>Cancel</button>
+					<button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="cancelSegmentation()"
+						data-dismiss="modal" translate>Cancel</button>
 				</div>
 			</div>
 		</div>
@@ -1650,7 +1650,7 @@
 				<div *ngIf="!isCheckTC" style="color:red" translate>You must agree T&C</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn Btn-Gray" data-dismiss="modal" (click)="cancelContacts()"
+				<button type="button" class="btn Btn-Gray neg_mrg_top4" data-dismiss="modal" (click)="cancelContacts()"
 					translate>Decline</button>
 				<button type="button" [disabled]="!isCheckTC" class="button_blue bgcolor-unset"
 					(click)="saveContactsWithPermission()" translate><span
