@@ -410,7 +410,7 @@ copy(landingPage:any){
     landingPage.name = copyDto.copiedName;
     landingPage.copyPage = true;
     landingPage.vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
-    this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
+    landingPage.companyProfileName = this.authenticationService.companyProfileName;
     this.landingPageService.copy(landingPage).subscribe(
       data=>{
         if (data.access) {

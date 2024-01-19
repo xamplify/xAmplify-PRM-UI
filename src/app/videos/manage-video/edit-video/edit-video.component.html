@@ -37,7 +37,7 @@
 		bottom: -183px;
 	}
 </style>
-<div class="portlet light" style="border-radius: 5px;" *ngIf="!isReplaceVideoButtonClicked">
+<div class="portlet light" style="border-radius: 5px;" [hidden]="isReplaceVideoButtonClicked">
 	<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="portlet-body">
 		<div *ngIf="clientError" style="color:red" translate>Something went wrong, Please refresh the page</div>
