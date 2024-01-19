@@ -208,6 +208,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			if(customFiledDto.selected){
 				let selectedCustomFieldsDto = new CustomFieldsDto();
 				selectedCustomFieldsDto.name = customFiledDto.name;
+				selectedCustomFieldsDto.label = customFiledDto.label;
 				selectedCustomFieldsDto.required = customFiledDto.required;
 				selectedCustomFieldsDto.placeHolder = customFiledDto.placeHolder;
 				selectedCustomFieldsDto.displayName = customFiledDto.displayName;
@@ -257,7 +258,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				const missingFields: string[] = [];
 				this.selectedCustomFieldsDtos.forEach(field => {
 							if ($.trim(field.displayName).length <= 0) {
-								missingFields.push(field.name);
+								missingFields.push(field.label);
 							}
 						});
 						const missingFieldsMessage = missingFields.join(', ');
