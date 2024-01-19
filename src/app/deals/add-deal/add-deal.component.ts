@@ -854,7 +854,7 @@ setSfFormFieldValues() {
             }
             if (formLabel.labelId === "title" || formLabel.labelId === "name") {
               this.deal.title = formLabel.value;
-            } else if (formLabel.labelId === "amount" || formLabel.labelId === "value") {
+            } else if ((formLabel.labelId === "amount" || formLabel.labelId === "value") && this.activeCRMDetails.type != "HUBSPOT") {
               this.deal.amount = formLabel.value;
             } else if (formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate") {
               this.deal.closeDateString = formLabel.value;
