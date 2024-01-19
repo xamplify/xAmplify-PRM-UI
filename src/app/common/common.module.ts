@@ -154,6 +154,9 @@ import { ConfirmUnpublishTracksOrPlaybooksModelPopupComponent } from 'app/util/c
 import { CustomUiFilterComponent } from 'app/util/custom-ui-filter/custom-ui-filter.component';
 
 import { TrimPipe } from 'app/core/custom-pipes/trim.pipe';
+//XNFR-426
+import { DealChatPopupComponent } from 'app/deals/deal-chat-popup/deal-chat-popup.component';
+import { ChatComponent } from 'app/util/chat/chat.component';
 
 
 @NgModule({
@@ -185,7 +188,7 @@ import { TrimPipe } from 'app/core/custom-pipes/trim.pipe';
 		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,SelectEmailTemplateComponent,CustomUiSwitchComponent,
 		EditTemplateOrPageModalPopupComponent, ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
 		 ShareUnpublishedContentComponent,
-	 ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe],
+	 ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,DealChatPopupComponent,ChatComponent],
 
 
 
@@ -215,7 +218,7 @@ import { TrimPipe } from 'app/core/custom-pipes/trim.pipe';
 		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent,
 		ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
-		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe]
+		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,DealChatPopupComponent,ChatComponent]
 
 })
 export class CommonComponentModule { }

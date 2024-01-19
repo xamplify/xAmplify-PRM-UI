@@ -54,6 +54,10 @@ export class AddLeadComponent implements OnInit {
   hasSfPipeline = false;
   vanityLoginDto : VanityLoginDto = new VanityLoginDto();
   activeCRMDetails: any;
+  //XNFR-426
+  selectedLead: Lead;
+  isCommentSection = false;
+  editTextArea:boolean = false;
 
 
   constructor(public properties:Properties,public authenticationService: AuthenticationService, private leadsService: LeadsService,
@@ -533,6 +537,20 @@ export class AddLeadComponent implements OnInit {
         },
         () => { }
       );
+  }
+
+  /********XNFR-426********/
+  showComments(lead: any) {
+    this.selectedLead = lead;
+    this.isCommentSection = !this.isCommentSection;
+    this.editTextArea = !this.editTextArea;
+  }
+
+  addCommentModalClose(event: any) {
+    this.selectedLead.unReadChatCount = 0;
+    // console.log(this.selectedLead.unReadChatCount)
+    this.isCommentSection = !this.isCommentSection;
+    this.editTextArea = !this.editTextArea;
   }
 
 }

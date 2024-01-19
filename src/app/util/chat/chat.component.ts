@@ -18,6 +18,8 @@ export class ChatComponent implements OnInit {
   @Input() propertyId: any = null;
   @Input() dealId: any = null;
   @Input() leadId: any = null;
+  //XNFR-426
+  @Input() editTextArea: boolean;
 
   loggedInUserId: number;
   commentList: DealComments[] = [];

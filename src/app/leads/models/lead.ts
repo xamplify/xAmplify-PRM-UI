@@ -31,4 +31,5 @@ export class Lead {
     leadApproveRejectType: any;
     leadApprovalOrRejection:any;
     leadNotes:any;
+    leadComment:any;
 }
