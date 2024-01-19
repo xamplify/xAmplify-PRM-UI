@@ -48,7 +48,7 @@ export class CopyModalPopupComponent implements OnInit {
     let isNotEmptyName = this.referenceService.getTrimmedData(copiedName).length>0;
     if(!isNotEmptyName){
       this.isValidForm = false;
-      this.errorMessage = "Please Enter "+moduleName;
+      this.errorMessage = "Please Enter "+moduleName+" Name";
     }else{
       let isDuplicateName = this.existingNames.indexOf(this.referenceService.convertToLowerCaseAndGetTrimmedData(copiedName))>-1;
       this.isValidForm = !isDuplicateName;
