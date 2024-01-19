@@ -19,6 +19,7 @@ import { LeadsService } from '../../leads/services/leads.service';
 import { Deal } from '../models/deal';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { DealComments } from 'app/deal-registration/models/deal-comments';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -597,10 +598,12 @@ export class ManageDealsComponent implements OnInit {
     this.dealId = deal.id;
   }
 
+  selectedDealData:Deal;/****xnfr-426******/
   editDeal(deal: Deal) {
     this.showDealForm = true;  
     this.actionType = "edit";
     this.dealId = deal.id;
+    this.selectedDeal=deal;/****xnfr-426******/
   }
 
   confirmDeleteDeal (deal: Deal) {
@@ -1224,4 +1227,45 @@ export class ManageDealsComponent implements OnInit {
       );
   }
 
+  /****xnfr-426******/
+  currentDealId:number;
+  currentPipelineStageName:any;
+  changeDealPipelineStage(currentDealId:number,currentStageName:any){
+    this.currentDealId = currentDealId;
+    this.currentPipelineStageName=currentStageName;
+    $('#changeDealPipelineStageModel').modal('show');
+  }
+
+  closeDealPipelineStage(){
+    $('#changeDealPipelineStageModel').modal('hide');
+  }
+
+  dealPipelineStageComment:any;
+  validateDealChangeComment(dealChangeComment:string){
+    this.dealPipelineStageComment = dealChangeComment;
+  }
+
+  deal = new Deal();
+  chnageDealPipelineStage(deal: Deal,addDealComment:string){
+    this.deal.dealComment=addDealComment;
+    let request: Deal = new Deal();
+      request.id = this.currentDealId;
+      request.pipelineStageId = deal.pipelineStageId;
+      request.userId = this.loggedInUserId;
+      request.dealComment = addDealComment;
+
+      this.dealsService.changeDealStatus(request)
+        .subscribe(
+          response => {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            if (response.statusCode == 200) {
+              this.dealsResponse = new CustomResponse('SUCCESS', "Status Updated Successfully", true);
+              this.closeDealPipelineStage();
+              this.showDeals(); 
+            } else if (response.statusCode == 500) {
+              this.dealsResponse = new CustomResponse('ERROR', response.message, true);
+              this.closeDealPipelineStage(); 
+            }
+          });
+  }
 }

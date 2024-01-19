@@ -2100,29 +2100,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 	}
 
-	/************XNFR-426-start-sumanth**************/
-	leadApprovalOrRejectionOption:boolean = false;
-	leadApprovalOrRejection(event:any){
-		if(event){
-			this.leadApprovalOrRejectionOption=true;
-			}
-		else{
-			this.leadApprovalOrRejectionOption=false;
-		}
-		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId,this.leadApprovalOrRejectionOption).subscribe();
-	}
-
-	companyIdForLeadApproval:any;
-	leadApprovalStatus:boolean = false;
-	getLeadApprovalstatus(){
-		this.authenticationService.getLeadApprovalStatus(this.referenceService.companyId)
-		.subscribe(
-		data => {
-				this.leadApprovalStatus = data.data;
-		});
-	}
-
-
+	
+	
 
 	setAllGdprStatus() {
 		if (!this.gdprSetting.unsubscribeStatus && !this.gdprSetting.formStatus && !this.gdprSetting.termsAndConditionStatus
@@ -4472,7 +4451,52 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	configureConnectWise() {
 		this.integrationTabIndex = 7;
 	}
-	// XNFR-403
 
+	/*******xnfr-426********/
+	leadApprovalStatus:boolean = false;
+	getLeadApprovalstatus(){
+		this.authenticationService.getLeadApprovalStatus(this.referenceService.companyId)
+		.subscribe(
+		data => {
+				this.leadApprovalStatus = data.data;
+		});
+	}
+
+	leadApprovalOrRejectionOption: boolean = false;
+	setLeadApprovalOrRejectionStatus(event:any){
+		if (event) {
+			this.leadApprovalOrRejectionOption = true;
+		}
+		else {
+			this.leadApprovalOrRejectionOption = false;
+		}
+	}
+
+	/*******xnfr-426********/
+	updateLeadApprovalOrRejectionStatus(){
+		//let text = ";
+		let self = this;
+		swal({
+			title: 'Are you sure want to continue?',
+			//text: text,
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			allowOutsideClick: false,
+			confirmButtonText: 'Yes'
+		}).then(function () {
+			self.saveLeadApprovalOrRejectionStatus();
+		}, function (dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+			this.getLeadApprovalstatus();
+		});
+	}
+
+	// XNFR-403
+	/************XNFR-426**************/
+	saveLeadApprovalOrRejectionStatus() {
+		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId, this.leadApprovalOrRejectionOption).subscribe();
+	}
 
 }

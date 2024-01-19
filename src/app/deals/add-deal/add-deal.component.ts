@@ -28,6 +28,7 @@ import { ConnectwiseProductsRequestDto } from '../models/connectwise-products-re
 import { ConnectwiseCatalogItemDto } from '../models/connectwise-catalog-item-dto';
 import { ConnectwiseOpportunityDto } from '../models/connectwise-opportunity-dto';
 import { ConnectwiseStatusDto } from '../models/connectwise-status-dto';
+import { DealComments } from 'app/deal-registration/models/deal-comments';
 declare var flatpickr: any, $: any, swal: any;
 
 
@@ -596,9 +597,6 @@ export class AddDealComponent implements OnInit {
         () => { }
       );
   }
-
-  
-
   validateQuestion(property: DealDynamicProperties) {
 
       if (property.key.length > 0 && property.value.length > 0 && property.key.trim() && property.value.trim()) {

@@ -347,21 +347,73 @@
                               </h5>
                             </td>
                             <td style="width: 20%;">
-                              <span style="display:flex">
-                                <select
-                                  [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage)"
-                                  class="form-control" [(ngModel)]="deal.pipelineStageId"
-                                  (ngModelChange)="setDealStatus(deal,authenticationService?.module?.deletedPartner)"
-                                  style="width: 115px">
-                                  <option *ngIf="isPartnerVersion && deal.currentStagePrivate"
-                                    [ngValue]="deal.currentStageId">{{deal.currentStageName}}</option>
-                                  <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">
-                                    {{stage.stageName}}</option>
-                                </select>
-                                <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
-                                  *ngIf="isPartnerVersion && deal?.onNonInteractiveStage"
-                                  title="You can not edit this deal as it is on a non interactive deal stage."></span>
+                                                       
+
+                              <span style="background-color: #f1f3fa;"> 
+                                <p class="comment-color" translate>
+                                  {{deal.currentStageName}}
+                                  <a class="custom-icon" data-rel="fancybox-button" (click)="changeDealPipelineStage(deal.id,deal.currentStageName)"
+                                    data-toggle="tooltip" data-placement="bottom" title="edit deal stage">
+                                    <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>
+                                    <div class="clickicons"></div>
+                                  </a>
+                                </p>
                               </span>
+                            
+                            
+                              <!-- Modal popup xnfr-426-->
+                              <div class="modal fade right" id="changeDealPipelineStageModel" tabindex="-1" role="dialog"
+                                aria-labelledby="changeDealPipelineStageModel" data-backdrop="static" data-keyboard="false">
+                                <div class="modal-dialog modal-css" role="document">
+                                  <div class="modal-content" style="overflow-x: hidden;">
+                                    <div class="modal-header">
+                                          <a class="close-circle mrg1" *ngIf="true" data-rel="fancybox-button"
+                                            (click)="showComments(selectedDeal)" data-toggle="tooltip" data-placement="bottom" title="Comments"
+                                            style="margin: 14px 20px;padding-top: 3px;padding-left: 5px;">
+                                            <span class="fa fa-comments IconCustomization" style="z-index: 1;font-size: 13px;" aria-hidden="true"
+                                              style="font-size:18px"></span>
+                                            <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
+                                              style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
+                                            <div class="clickicons"></div>
+                                          </a>
+                                      <a title="Close" class="pull-right close-circle" (click)="closeDealPipelineStage()">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                      </a>
+                                      <h4 class="modal-title" style="font-weight: 600;" translate>Change Deal Stage </h4>
+                                    </div>
+
+                                    <span style="display:flex">
+                                      <select
+                                        [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage)"
+                                        class="form-control" [(ngModel)]="deal.pipelineStageId" style="width: 115px">
+                                        <option *ngIf="isPartnerVersion && deal.currentStagePrivate" [ngValue]="deal.currentStageId">
+                                          {{deal.currentStageName}}
+                                        </option>
+                                        <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">
+                                          {{stage.stageName}}</option>
+                                      </select>
+                                      <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
+                                        *ngIf="isPartnerVersion && deal?.onNonInteractiveStage"
+                                        title="You can not edit this deal as it is on a non interactive deal stage.">
+                                      </span>
+                                    </span>
+                            
+                                    <br>
+                                    <h4 class="modal-title" style="font-weight: 600;" translate>Add Notes</h4>
+                                    <div class="form-group textareaStyles">
+                                      <textarea placeholder="Write your Note here" name="dealChangeComment" rows="8" maxlength="250"
+                                        (input)="validateDealChangeComment(dealChangeComment)" [(ngModel)]="dealChangeComment"></textarea> <!--[(ngModel)]="dealChangeComment"-->
+                                    </div>
+                                    <!-- [disabled]="!isLeadNotesvalid" -->
+                                    <div class="modal-footer">
+                                      <button class="button_blue bgcolor-unset" (click)="chnageDealPipelineStage(deal,dealChangeComment)" translate>
+                                        <span class="btn btn-primary transition d-inline"> Submit</span>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
                             </td>
                             <td style="width: 20%;">
                               <div class="actions-block override-actions actionbtn">
@@ -388,6 +440,7 @@
                                     <div class="del-icon"></div>
                                   </a>
                                 </ng-container>
+
                                 <a class="custom-icon" *ngIf="true" data-rel="fancybox-button"
                                   (click)="showComments(deal)" data-toggle="tooltip" data-placement="bottom"
                                   title="Comments">
@@ -660,9 +713,24 @@
 
 <section *ngIf="showDealForm">
   <div class="page-content">
-    <a (click)="closeDealForm()" class="pull-right close-circle mrg1"
-      style="margin: 14px 20px;padding-top: 3px;padding-left: 5px;">
-      <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+    <div>
+      <a (click)="closeDealForm()" class="pull-right close-circle mrg1"
+        style="margin: 14px 20px;padding-top: 3px;padding-left: 5px;">
+        <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span>
+      </a>
+      <!-- <fieldset [disabled]="true">   *ngIf="dealId!==0"    *ngIf="true"-->
+        <a [class.disabled]="dealId===0" class="pull-right close-circle mrg1" *ngIf="true" data-rel="fancybox-button" 
+          (click)="showComments(selectedDeal)" data-toggle="tooltip" data-placement="bottom" title="Comments"
+          style="margin: 14px 20px;padding-top: 3px;padding-left: 5px;">
+          <span class="fa fa-comments IconCustomization" style="z-index: 1;font-size: 13px;" aria-hidden="true" 
+            style="font-size:18px"></span>
+          <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
+            style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
+          <div class="clickicons"></div>
+        </a>
+      <!-- </fieldset> -->
+      
+    </div>
     <app-add-deal [dealId]="dealId" [actionType]="actionType" [isVendorVersion]="isVendorVersion"
       [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
   </div>

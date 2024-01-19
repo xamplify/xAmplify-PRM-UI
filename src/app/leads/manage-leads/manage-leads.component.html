@@ -368,36 +368,45 @@
                               </h5>
                             </td>
                             <td>
-                              {{lead.currentStageName | slice:0:30}}
-                              <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
-                                <i class="fa fa-check-circle mr5" aria-hidden="true"
-                                  style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                                Deal
-                              </div>
-
-                                <div *ngIf="!authenticationService?.module?.deletedPartner">
-                                    <div style="color: #06c306;" *ngIf="lead?.leadApproveRejectType == 'APPROVED'" translate>
-                                      <i class="fa fa-check-circle mr5" aria-hidden="true"
-                                        style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                                      Approved
-                                    </div>
-                                    <div style="color: #f71111;" *ngIf="lead?.leadApproveRejectType == 'REJECTED'" translate>
-                                      <i class="fa fa-times-circle mr5" aria-hidden="true"
-                                        style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
-                                      Rejected
-                                    </div>
-
-                                    <div *ngIf="lead?.canRegisterDeal">
-                                        <button class="button_blue bgcolor-unset" [disabled]="( (!lead?.leadApprovalOrRejection) || ((lead?.leadApproveRejectType == 'REJECTED') || (lead?.leadApproveRejectType == undefined && lead?.leadApprovalOrRejection)))" 
-                                        (click)="showDealRegistrationForm(lead)" translate>
-                                          <span class="btn btn-primary transition d-inline"> Register Deal</span>
-                                        </button>
-                                    </div>
-                                        
+                            
+                             <!---xnfr-426---->
+                              <!-- toggle off -->
+                              <div *ngIf="!lead?.leadApprovalOrRejection">
+                                {{lead.currentStageName | slice:0:30}}
+                                <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
+                                  <i class="fa fa-check-circle mr5" aria-hidden="true"
+                                    style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                  Deal
                                 </div>
-
-                                <!-- (lead?.leadApproveRejectType !=='APPROVED' || lead?.leadApproveRejectType !=='REJECTED') -->
-                                <div *ngIf="!lead?.associatedDealId > 0 && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApproveRejectType == undefined && lead?.leadApprovalOrRejection">
+                                <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner" class="register_deal">
+                                  <a style="padding: 3px;" (click)="showDealRegistrationForm(lead)" translate>
+                                    Register Deal</a>
+                                </div>
+                              </div>
+                            
+                              <!--toggle on --><!--------XNFR-426--------->
+                              <div *ngIf="lead?.leadApprovalOrRejection">
+                                <div *ngIf="!authenticationService?.module?.deletedPartner">
+                                  <div style="color: #06c306;" *ngIf="lead?.leadApproveRejectType == 'APPROVED'" translate>
+                                    <i class="fa fa-check-circle mr5" aria-hidden="true"
+                                      style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                    Approved
+                                  </div>
+                                  <div style="color: #f71111;" *ngIf="lead?.leadApproveRejectType == 'REJECTED'" translate>
+                                    <i class="fa fa-times-circle mr5" aria-hidden="true"
+                                      style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                    Rejected
+                                  </div>
+                                  <div *ngIf="lead?.canRegisterDeal">
+                                    <button class="button_blue bgcolor-unset"
+                                      [disabled]="(  ((lead?.leadApproveRejectType == 'REJECTED') || (lead?.leadApproveRejectType == undefined && lead?.leadApprovalOrRejection)))"
+                                      (click)="showDealRegistrationForm(lead)" translate>
+                                      <span class="btn btn-primary transition d-inline"> Register Deal</span>
+                                    </button>
+                                  </div>
+                                </div>
+                                <div
+                                  *ngIf="!lead?.associatedDealId > 0 && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApproveRejectType == undefined && lead?.leadApprovalOrRejection">
                                   <button class="button_blue bgcolor-unset" (click)="addNotesModel(lead,'APPROVED')" translate>
                                     <span class="btn btn-primary transition d-inline"> Approve</span>
                                   </button>
@@ -405,8 +414,9 @@
                                     <span class="btn Btn-Gray transition d-inline"> Reject</span>
                                   </button>
                                 </div>
-
-                              <!--------XNFR-426-end-sai--------->
+                            
+                              </div>
+                            
                             </td>
                             <td>
                               <div class="actions-block override-actions tb_view_actions">
@@ -721,8 +731,8 @@
 
 <!-- XNFR-426 -->
 <!-- Approve/Reject Notes -->
-<div class="modal fade right" id="addNotesModel" tabindex="-1" role="dialog"
-    aria-labelledby="addNotesModel" data-backdrop="static" data-keyboard="false">
+<div class="modal fade right" id="addNotesModel" tabindex="-1" role="dialog" aria-labelledby="addNotesModel"
+  data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-css" role="document">
     <!-- Modal content-->
     <div class="modal-content" style="overflow-x: hidden;">
@@ -733,13 +743,15 @@
         <h4 class="modal-title" style="font-weight: 600;" translate>Add Notes<span class="required"> *</span></h4>
       </div>
       <div class="form-group textareaStyles">
-        <textarea class="form-control" placeholder="Write your Note here" name="leadNotes" rows="8" (input)="validateNotes(leadNotes)" [(ngModel)]="leadNotes" maxlength="250"></textarea>
+        <textarea class="form-control" placeholder="Write your Note here" name="leadNotes" rows="8"
+          (input)="validateNotes(leadNotes)" [(ngModel)]="leadNotes" maxlength="250"></textarea>
       </div>
-        <div class="modal-footer">
-          <button class="button_blue bgcolor-unset" [disabled]="!isLeadNotesvalid" (click)="leadApproveReject(selectedLead,leadNotes)" translate>
-            <span class="btn btn-primary transition d-inline"> Submit</span>
-          </button>
-        </div>
+      <div class="modal-footer">
+        <button class="button_blue bgcolor-unset" [disabled]="!isLeadNotesvalid"
+          (click)="leadApproveReject(selectedLead,leadNotes)" translate>
+          <span class="btn btn-primary transition d-inline"> Submit</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>

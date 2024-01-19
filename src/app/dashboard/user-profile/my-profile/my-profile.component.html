@@ -834,31 +834,41 @@
                                             </form>
                                         </div>
 
-                                        <!-- XNFR-426-start-sumanth -->
-                                        <div class="tab-content" *ngIf="activeTabName == 'leadDealApprove'"  [ngClass]="{'active': activeTabName == 'leadDealApprove'}">
-                                                    <div>
-                                                        <fieldset class="fild-custome-borders-none">
-                                                            <legend class="leg-custome-borders-bot">Turn Lead Approval/Rejection option ON or OFF</legend>
-                                                                    <div class="col-md-9 col-lg-9">
-                                                                        <h4 class="f-w-600" id="text-color-my-profile"
-                                                                            translate>You have the ability to Approve or Reject the leads registered by the partners.
-                                                                        </h4>
-                                                                    </div>
-                                                        </fieldset>
-                                                    </div>
-                                                    <section>
-                                                        <switch
-                                                            [(status)]="leadApprovalStatus"
-                                                            [onText]="callActionSwitch.onTextValue"
-                                                            [offText]="callActionSwitch.offTextValue"
-                                                            [onColor]="callActionSwitch.onGreenColorSwitch"
-                                                            [offColor]="callActionSwitch.offDefaultColor"
-                                                            [size]="callActionSwitch.size"
-                                                            (statusChange)="leadApprovalOrRejection($event)">
-                                                        </switch>
-                                                    </section>
+                                        <!-- XNFR-426 -->
+                                        <div class="tab-content" *ngIf="activeTabName == 'leadDealApprove'"
+                                            [ngClass]="{'active': activeTabName == 'leadDealApprove'}">
+                                            <tbody>
+                                                <fieldset class="fild-custome-borders-none">
+                                                    <legend class="leg-custome-borders-bot">Turn Lead Approval/Rejection option ON or OFF</legend>
+                                                    <tr class="col-md-12 col-lg-12">
+                                                        <div class="flex row">
+                                                            <div class="col-md-9 col-lg-9">
+                                                                <h5 class="f-w-600" id="text-color-my-profile" translate>You have the ability to Approve or
+                                                                    Reject the leads registered by the partners.
+                                                                </h5>
+                                                            </div>
+                                                            <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+                                                                <section>
+                                                                    <switch [(status)]="leadApprovalStatus" [onText]="callActionSwitch.onTextValue"
+                                                                        [offText]="callActionSwitch.offTextValue"
+                                                                        [onColor]="callActionSwitch.onGreenColorSwitch"
+                                                                        [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
+                                                                        (statusChange)="setLeadApprovalOrRejectionStatus($event)">
+                                                                    </switch>
+                                                                </section>
+                                                            </div>
+                                                        </div>
+                                                    </tr>
+                                                    <br>
+                                                </fieldset>
+                                            </tbody>
+
+                                            <br>
+                                            <button type="submit" class="button bgcolor-unset" (click)="updateLeadApprovalOrRejectionStatus()" 
+                                                translate><span class="btn Btn-Green transition txt_pd-top3">Save Changes
+                                                    </span>
+                                            </button>
                                         </div>
-                                        
                                         <!---Integrations-->
                                         <div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
                                             <section class="pricing py-5 border-none" *ngIf="integrationTabIndex == 0">

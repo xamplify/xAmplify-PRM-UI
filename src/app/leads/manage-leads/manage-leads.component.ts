@@ -1249,6 +1249,7 @@ export class ManageLeadsComponent implements OnInit {
 
     this.leadsService.leadApproveReject(lead).subscribe(response => {
       this.leadApproveRejectType = "";
+      this.addNotesModelClose();//xnfr-426
     });
     this.leadsService.saveComment(comment).subscribe();
   }
