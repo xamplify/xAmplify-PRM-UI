@@ -92,6 +92,8 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	isChangeAsParentPdfIconClicked = false;
 	changeAsParentPdfSweetAlertParameterDto: SweetAlertParameterDto = new SweetAlertParameterDto();
 	childAssetId = 0;
+	isEditVideo = false;
+	isPreviewVideo = false;
 	/****XNFR-381*****/
 	constructor(public deviceService: Ng2DeviceService, private route: ActivatedRoute, private utilService: UtilService, public sortOption: SortOption, public listLoader: HttpRequestLoader, private damService: DamService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,
 		public videoFileService: VideoFileService, public userService: UserService, public actionsDescription: ActionsDescription,public renderer:Renderer) {
@@ -105,9 +107,9 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		let isEditVideo = this.router.url.indexOf('/editVideo') > -1;
-		let isPreviewVideo = this.router.url.indexOf('/previewVideo') > -1;
-		if (!isEditVideo && !isPreviewVideo) {
+		this.isEditVideo = this.router.url.indexOf('/editVideo') > -1;
+		this.isPreviewVideo = this.router.url.indexOf('/previewVideo') > -1;
+		if (!this.isEditVideo && !this.isPreviewVideo) {
 			this.callInitMethods();
 			this.videoFileService.campaignReport = false;
 		}
@@ -155,7 +157,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 		}
 
 		let message = this.referenceService.assetResponseMessage;
-		if (message.length > 0 && !this.folderListViewExpanded ) {
+		if (message!=undefined && message.length > 0 && !this.folderListViewExpanded ) {
 			this.customResponse = new CustomResponse('SUCCESS', message, true);
 		}
 
@@ -497,14 +499,17 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 
 	editDetails(id: number, assetType: string, alias: string, beeTemplate: boolean, videoId: number) {
 		this.loading = true;
-		if (!beeTemplate && this.isVideo(assetType)) {
-			let url = "/home/dam/editVideo/" + videoId + "/" + id;
-			this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
-		} else {
-			/*****XNFR-169***/
-			let url = "/home/dam/editDetails/" + id;
-			this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
-		}
+		setTimeout(() => {
+			if (!beeTemplate && this.isVideo(assetType)) {
+				let url = "/home/dam/editVideo/" + videoId + "/" + id;
+				this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
+			} else {
+				/*****XNFR-169***/
+				let url = "/home/dam/editDetails/" + id;
+				this.referenceService.navigateToRouterByViewTypes(url, this.categoryId, this.viewType, this.folderViewType, this.folderListView);
+			}
+		}, 300);
+		
 	}
 
 	refreshList() {

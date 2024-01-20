@@ -136,6 +136,9 @@ export class TeamMemberService{
         let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
         input['vanityUrlFilter'] = vanityUrlFilter;
         input['vanityUrlDomainName'] = this.authenticationService.companyProfileName;
+        if(vanityUrlFilter){
+        input['vendorCompanyProfileName'] = this.authenticationService.companyProfileName;
+        }
         var url =this.URL+"teamMember/resendTeamMemberInvitation?access_token="+this.authenticationService.access_token;
         return this.http.post(url, input)
         .map(this.extractData)

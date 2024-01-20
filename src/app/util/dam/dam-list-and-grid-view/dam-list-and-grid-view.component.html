@@ -2,7 +2,10 @@
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="row">
+<div *ngIf="isEditVideo || isPreviewVideo">
+	<app-modal-popup-loader></app-modal-popup-loader>
+</div>
+<div class="row" *ngIf="!isEditVideo && !isPreviewVideo">
 	<div class="col-md-12">
 		<div class="portlet light remove_cardBgcolor padding_0 clearfix mDamResponse mt0">
 			<!--List View / Grid View-->

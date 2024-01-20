@@ -180,7 +180,7 @@
                                                       [checked]="damPostDto.tagIds != undefined && damPostDto.tagIds.length > 0 && damPostDto.tagIds.indexOf(tag.id)>-1">
                                                 </label>
                                              </div>
-                                             <div class="col-sm-5" style="padding-left: 0px !important; width: 60%;"
+                                             <div class="col-sm-5" style="padding-left: 0px !important; width: 60%;" data-toggle="tooltip" data-placement="bottom"
                                                 title="{{tag?.tagName}}">
                                                 <div class="btn text-wrap btn-primary-dark btn-primary-light"
                                                    style="padding: 4px 10px;border-radius: 2px !important;">
@@ -199,7 +199,7 @@
                                                       [checked]="damPostDto.tagIds != undefined && damPostDto.tagIds.length > 0 && damPostDto.tagIds.indexOf(tagsListSecondColumn[i].id)>-1">
                                                 </label>
                                              </div>
-                                             <div class="col-sm-5" style="padding-left: 5px !important; width: 60%;"
+                                             <div class="col-sm-5" style="padding-left: 5px !important; width: 60%;" data-toggle="tooltip" data-placement="bottom"
                                                 title="{{tagsListSecondColumn[i]?.tagName}}">
                                                 <div *ngIf="tagsListSecondColumn?.length > 0 && tagsListSecondColumn[i]"
                                                    class="btn text-wrap btn-primary-dark btn-primary-light"

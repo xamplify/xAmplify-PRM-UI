@@ -1526,6 +1526,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 		try {
 			if (this.loggedInThroughVanityUrl) {
 				this.googleVanityAuthentication();
+				this.customResponseType();
 				//this.referenceService.showSweetAlertInfoMessage();
 			} else {
 				if (this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality) {
@@ -1945,10 +1946,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
 	}
 
+	customResponseType() {
+		this.customResponse = new CustomResponse();
+	}
+
 	salesforceContacts() {
 		try {
 			if (this.loggedInThroughVanityUrl) {
 				this.salesForceVanityAuthentication();
+				this.customResponseType();
 				//this.referenceService.showSweetAlertInfoMessage();
 			} else {
 				if (this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality) {
@@ -3790,6 +3796,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 			this.selectedAddPartnerOption = 6;
 			if (this.loggedInThroughVanityUrl) {
 				this.zohoVanityUrlAuthentication();
+				this.customResponseType();
 			}
 			else {
 				if (this.selectedAddPartnerOption == 6 && !this.disableOtherFuctionality) {

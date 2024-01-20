@@ -148,6 +148,9 @@ export class ReferenceService {
   loginTemplateId = 53;
   assetResponseMessage = "";
   createdOrUpdatedSuccessMessage = "";
+
+  /*** XNFR-433 ***/
+  isCopyForm: boolean = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -3407,4 +3410,41 @@ export class ReferenceService {
   addCreateOrUpdateSuccessMessage(message:string){
     this.createdOrUpdatedSuccessMessage = message;
   }
+
+  isVideo(filename: any) {
+    const parts = filename.split('.');
+    const ext = parts[parts.length - 1];
+    switch (ext.toLowerCase()) {
+        case 'm4v':
+        case 'mkv':
+        case 'avi':
+        case 'mpg':
+        case 'mp4':
+        case 'flv':
+        case 'mov':
+        case 'wmv':
+        case 'divx':
+        case 'f4v':
+        case 'mpeg':
+        case 'vob':
+        case 'xvid':
+            // etc
+            return true;
+    }
+    return false;
+}
+
+isIE() {
+  const isInternetExplorar = navigator.userAgent;
+  /* MSIE used to detect old browsers and Trident used to newer ones*/
+  const is_ie = isInternetExplorar.indexOf("MSIE ") > -1 || isInternetExplorar.indexOf("Trident/") > -1;
+  return is_ie;
+}
+
+closeDamModalPopup(){
+  $('#myModal').modal('hide');
+  $('body').removeClass('modal-open');
+  $('.modal-backdrop fade in').remove();
+}
+
 }

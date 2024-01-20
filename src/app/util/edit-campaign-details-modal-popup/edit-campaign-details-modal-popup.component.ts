@@ -31,6 +31,7 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
   countries: Country[];
 	timezones: Timezone[];
   countryId: number = 0;
+  isValidFromName = true;
   constructor(public campaignService:CampaignService,public authenticationService:AuthenticationService,public callActionSwitch:CallActionSwitch,
     public referenceService:ReferenceService) {}
   
@@ -74,6 +75,10 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
                   this.campaignDetailsDto.countryId = this.countries[0].id;
                   this.onSelectCountry(this.campaignDetailsDto.countryId);
                 }
+              }
+              /****XBI-2175****/
+              if(this.campaignDetailsDto.emailNotification && !this.campaignDetailsDto.oneClickLaunchChannelCampaign){
+                this.validateFromName();
               }
             }else{
               this.referenceService.showSweetAlertErrorMessage("This campaign does not exist");
@@ -141,6 +146,7 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
     this.campaignDetailsDto.timezone = $('#timezoneId option:selected').val();
     this.campaignDetailsDto.country = $.trim($('#edit-social-campaign-countryName option:selected').text());
     this.campaignDetailsDto.description = $.trim(this.campaignDetailsDto.description);
+    this.campaignDetailsDto.fromName = $.trim(this.campaignDetailsDto.fromName);
     this.campaignService.updateCampaignDetails(this.campaignDetailsDto)
     .subscribe(
       response=>{
@@ -160,6 +166,11 @@ export class EditCampaignDetailsModalPopupComponent implements OnInit,OnDestroy 
       });
   }
 
+  validateFromName(){
+    this.isValidFromName = this.referenceService.getTrimmedData(this.campaignDetailsDto.fromName).length>0;
+  }
+
+ 
 
   
 }

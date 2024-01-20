@@ -814,7 +814,7 @@ setSfFormFieldValues() {
   if (this.sfDealComponent.form !== undefined || this.sfDealComponent.form !== null) {
       let formLabelDTOs = this.sfDealComponent.form.formLabelDTOs;
       if (formLabelDTOs.length !== 0) {
-
+        this.deal.amount = 0;
           if (this.activeCRMDetails.type === "SALESFORCE") {
             let sfDefaultFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === false);
             for (let formLabel of sfDefaultFields) {
@@ -841,7 +841,6 @@ setSfFormFieldValues() {
           }
           let sfCustomFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === true);
           let sfCfDataList = [];
-          this.deal.amount = 0;
           for (let formLabel of sfCustomFields) {
             if (this.activeCRMDetails.type === "HUBSPOT") {
               if (formLabel.formDefaultFieldType === "DEAL_NAME") {
@@ -854,7 +853,7 @@ setSfFormFieldValues() {
             }
             if (formLabel.labelId === "title" || formLabel.labelId === "name") {
               this.deal.title = formLabel.value;
-            } else if (formLabel.labelId === "amount" || formLabel.labelId === "value") {
+            } else if ((formLabel.labelId === "amount" || formLabel.labelId === "value") && this.activeCRMDetails.type != "HUBSPOT") {
               this.deal.amount = formLabel.value;
             } else if (formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate") {
               this.deal.closeDateString = formLabel.value;

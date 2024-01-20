@@ -606,9 +606,9 @@ export class CampaignService {
             .map(( response: any ) => response );
     }
     
-    downRegularVideoCampaignViews( campaignId: number, campaignType: string, publicEventCampaign:boolean, interactiveViews:boolean): Observable<Response> {
+    downRegularVideoCampaignViews( campaignId: number, campaignType: string, isChannelCampaign:boolean ,publicEventCampaign:boolean, interactiveViews:boolean): Observable<Response> {
         this.logger.info( campaignId );
-        return this.http.get( this.URL + "campaign/" + campaignId + "/" +campaignType + "/"+ publicEventCampaign + "/"+ interactiveViews +"/download-campaign-views-details?access_token=" + this.authenticationService.access_token )
+        return this.http.get( this.URL + "campaign/" + campaignId + "/" + campaignType + "/" + isChannelCampaign + "/"+ publicEventCampaign + "/"+ interactiveViews +"/download-campaign-views-details?access_token=" + this.authenticationService.access_token )
             .map(( response: any ) => response );
     }
     

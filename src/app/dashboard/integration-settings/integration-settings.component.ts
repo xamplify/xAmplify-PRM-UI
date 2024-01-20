@@ -208,6 +208,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			if(customFiledDto.selected){
 				let selectedCustomFieldsDto = new CustomFieldsDto();
 				selectedCustomFieldsDto.name = customFiledDto.name;
+				selectedCustomFieldsDto.label = customFiledDto.label;
 				selectedCustomFieldsDto.required = customFiledDto.required;
 				selectedCustomFieldsDto.placeHolder = customFiledDto.placeHolder;
 				selectedCustomFieldsDto.displayName = customFiledDto.displayName;
@@ -235,7 +236,7 @@ export class IntegrationSettingsComponent implements OnInit {
 			const closeDateField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'CLOSE_DATE');
 			const dealNameField = this.selectedCustomFieldsDtos.find(field => field.formDefaultFieldType === 'DEAL_NAME');
 			const displayName = this.selectedCustomFieldsDtos.find(field => $.trim(field.displayName).length <= 0);	
-			 if (((this.integrationType === 'HUBSPOT') && (!amountField || !closeDateField || !dealNameField))) {
+			 if (((this.integrationType === 'HUBSPOT') && (!amountField || !closeDateField || !dealNameField)) && (!this.authenticationService.module.isTeamMember || this.authenticationService.module.isAdmin)) {
 				 this.ngxloading = false;
 				 const missingFields: string[] = [];
 				 if (!amountField) {
@@ -257,7 +258,7 @@ export class IntegrationSettingsComponent implements OnInit {
 				const missingFields: string[] = [];
 				this.selectedCustomFieldsDtos.forEach(field => {
 							if ($.trim(field.displayName).length <= 0) {
-								missingFields.push(field.name);
+								missingFields.push(field.label);
 							}
 						});
 						const missingFieldsMessage = missingFields.join(', ');

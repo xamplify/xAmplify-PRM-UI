@@ -83,7 +83,7 @@
                   </span>
                   <ul *ngIf="integrationType === 'HUBSPOT'" class="textDecoration">
                     <li>{{sfCustomField.displayName}}</li>
-                    <li *ngIf="sfCustomField.formDefaultFieldType != null">
+                    <li *ngIf="(sfCustomField.formDefaultFieldType != null)  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)">
                       Mapped As:
                       <ng-container [ngSwitch]="sfCustomField.formDefaultFieldType">
                         <i *ngSwitchCase="'AMOUNT'" class="fa fa-usd" aria-hidden="true"></i>
@@ -163,7 +163,7 @@
                                 [ngModelOptions]="{standalone: true}">
                             </td>
                             <td
-                              *ngIf="sfCustomField.type === 'number' || sfCustomField.type === 'text' || sfCustomField.type === 'date'"
+                              *ngIf="(sfCustomField.type === 'number' || sfCustomField.type === 'text' || sfCustomField.type === 'date')  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)"
                               class="text-center p10" style="width:25%;">
                               <label *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'" for="html"
                                 style="float: left;">Map As</label>
