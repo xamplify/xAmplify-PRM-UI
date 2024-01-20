@@ -723,6 +723,7 @@ export class AuthenticationService {
   connect() {
     let url = this.REST_URL + "socket";//`http://release.xamp.io/websocket-backend-example/socket`
     let socket = new SockJs(url);
+    socket.withCredentials = true ;
     let stompClient = Stomp.over(socket);
     return stompClient;
   }
