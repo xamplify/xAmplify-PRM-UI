@@ -1,6 +1,6 @@
 <div class="comment-area comment-div" id="comment-area">
     <ul class="comment-section" *ngFor="let c of commentList" style="margin: 0px;">    <!--xnfr-426-->    
-        <li [attr.class]="c.userId != loggedInUserId ? 'comment author-comment':'comment user-comment'" [ngStyle]="{'margin-top':((c?.activityType == 'LEAD_APPROVED') || (c?.activityType == 'LEAD_REJECTED') || (c?.activityType == 'STAGE_UPDATED') || (c?.activityType == 'DEAL_CREATED') )? '-23px' : '0px'}">
+        <li [attr.class]="c.userId != loggedInUserId ? 'comment author-comment':'comment user-comment'" [ngStyle]="{'margin-top':((c?.activityType == 'LEAD_APPROVED') || (c?.activityType == 'LEAD_REJECTED') || (c?.activityType == 'STAGE_UPDATED') || (c?.activityType == 'DEAL_CREATED') || (c?.activityType == 'LEAD_CREATED') )? '-23px' : '0px'}">
             <div class="info" [ngStyle]="{'padding-top':((c?.activityType == 'LEAD_APPROVED') || (c?.activityType == 'LEAD_REJECTED') || (c?.activityType == 'STAGE_UPDATED') || (c?.activityType == 'DEAL_CREATED') || (c?.activityType == 'LEAD_CREATED')   )? '30px' : '0px'}" style="padding-right: 15px; padding-left: 15px;">
                 <a title="{{c?.commentedByFullName}}">{{c?.commentedByFullName| slice:0:30}}<span
                         *ngIf="c?.commentedByFullName?.length>30">...</span></a>
