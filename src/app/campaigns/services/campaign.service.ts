@@ -1290,7 +1290,7 @@ export class CampaignService {
      /********XNFR-318********/
     findCampaignEmailTemplates(emailTemplatesPagination:Pagination){
         emailTemplatesPagination.userId = this.authenticationService.getUserId();
-        let url = this.URL + "campaign/findCampaignEmailTemplates?access_token=" + this.authenticationService.access_token;
+        let url = this.URL + "campaign/findCampaignEmailTemplates?searchKey="+emailTemplatesPagination.searchKey+"&access_token=" + this.authenticationService.access_token;
         return this.http.post(url, emailTemplatesPagination)
             .map(this.extractData)
             .catch(this.handleError);
