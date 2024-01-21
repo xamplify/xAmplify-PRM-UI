@@ -62,6 +62,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     isDefaultTemplate = false;
     buttonClicked = false;
     saveLoader = false;
+    isSaveAsButtonDisabled = true;
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
@@ -478,10 +479,12 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         if(isNotEmptyName){
             let isDuplicateName = false;
             if(!this.emailTemplateService.emailTemplate.defaultTemplate){
-                isDuplicateName = this.names.indexOf(name.toLocaleLowerCase()) > -1 && this.emailTemplateService.emailTemplate.name.toLowerCase() != name.toLowerCase();
+                isDuplicateName = this.names.indexOf(name.toLocaleLowerCase()) > -1 && this.emailTemplateService.emailTemplate.name.toLocaleLowerCase() != name.toLowerCase();
             }else{
                 isDuplicateName = this.names.indexOf(name.toLocaleLowerCase()) > -1;
             }
+            let isNameNotUpdated = name.toLocaleLowerCase() == this.emailTemplateService.emailTemplate.name.toLocaleLowerCase();
+            this.isSaveAsButtonDisabled = isNameNotUpdated;
             this.errorMessage = isDuplicateName ? 'Duplicate Name':'';
         }else{
             this.errorMessage = "Please Enter Name";
