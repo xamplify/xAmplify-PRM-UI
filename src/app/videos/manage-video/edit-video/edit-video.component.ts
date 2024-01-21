@@ -1557,8 +1557,13 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
     /******XNFR-255*****/
 
     /***XNFR-434***/
-    browseFile(){
-        this.isReplaceVideoButtonClicked = true;
+    goToReplaceVideoSection(){
+        this.ngxLoading = true;
+        setTimeout(() => {
+            this.isReplaceVideoButtonClicked = true;
+            this.ngxLoading = false;
+        }, 500);
+       
     }
 
     browseContentEventReceiver(){

@@ -8,7 +8,7 @@ export class Pagination {
 	maxResults = 12;    
 	sortcolumn: string = null;
 	sortingOrder: string = null;
-	searchKey: string = null;
+	searchKey: string = "";
 	filterBy: any = null;
 	pager: any = {};
 	pagedItems: any[] = [];

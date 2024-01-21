@@ -31,10 +31,10 @@ export class LandingPageService {
             .catch( this.handleError );
     }
 
-    list( pagination: Pagination,isPartnerLandingPage:boolean): Observable<any> {
-        let url = "list";
+    list(pagination: Pagination,isPartnerLandingPage:boolean): Observable<any> {
+        let listOrPartnerPagesUrl = "list";
         if(isPartnerLandingPage){
-            url = "partner";
+            listOrPartnerPagesUrl = "partner";
         /******XNFR-252*****/
         let subDomain = this.authenticationService.getSubDomain();
         if(subDomain.length==0){
@@ -44,7 +44,7 @@ export class LandingPageService {
             }
         }
         }
-        return this.http.post( this.URL +url+"?access_token=" + this.authenticationService.access_token, pagination )
+        return this.http.post( this.URL +listOrPartnerPagesUrl+"?searchKey="+pagination.searchKey+"&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
