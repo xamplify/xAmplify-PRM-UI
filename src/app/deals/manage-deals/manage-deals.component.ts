@@ -1246,13 +1246,12 @@ export class ManageDealsComponent implements OnInit {
   }
 
   deal = new Deal();
-  chnageDealPipelineStage(deal: Deal,addDealComment:string){
-    this.deal.dealComment=addDealComment;
+  updateDealPipelineStage(deal: Deal){
     let request: Deal = new Deal();
       request.id = this.currentDealId;
       request.pipelineStageId = deal.pipelineStageId;
       request.userId = this.loggedInUserId;
-      request.dealComment = addDealComment;
+      request.dealComment = deal.dealComment;
 
       this.dealsService.changeDealStatus(request)
         .subscribe(
@@ -1267,5 +1266,17 @@ export class ManageDealsComponent implements OnInit {
               this.closeDealPipelineStage(); 
             }
           });
+  }
+
+
+
+  validateDescription:boolean=true;
+  validateEditStageModelPopup(comment : string ){
+    if(comment === '' || comment ===null || comment === undefined){
+      this.validateDescription=true;
+    }
+    else{
+      this.validateDescription = this.referenceService.validateCkEditorDescription(comment);
+    }
   }
 }

@@ -36,7 +36,7 @@
 		<h6 class='m0'>
 			<!-- <h6 class='m0 user-email'> -->
 			<a style="display: table;" class="whiteSpace" data-toggle="tooltip" data-placement="bottom"
-				title="{{userInfo?.emailId}}">
+				title="{{userInfo?.emailId}}" *ngIf="userInfo?.emailId">
 				<b>Email id:</b> {{userInfo?.emailId | slice:0:30}}<span
 					*ngIf="userInfo?.emailId?.length>30">...</span></a>
 			<ng-container *ngIf="!hideCompanyName">
