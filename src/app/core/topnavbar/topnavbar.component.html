@@ -14,11 +14,11 @@
          <div class="page-logo pttpx">
             <div
                [ngClass]="refService.isSidebarClosed ? 'company-logo-thumbnail-wrapper clhidden':'company-logo-thumbnail-wrapper'">
-               <img class="cls-pointer" (click)="startLoader()" [routerLink]="['/home/dashboard/default']"
+               <img class="cls-pointer"  [routerLink]="['/home/dashboard/default']"
                   *ngIf="!authenticationService.vanityURLEnabled || !authenticationService.v_showCompanyLogo"
                   [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" alt=""
                   onerror="this.src='assets/images/xamplify-logo.png';" />
-               <img class="cls-pointer" (click)="startLoader()" [routerLink]="['/home/dashboard/default']"
+               <img class="cls-pointer"  [routerLink]="['/home/dashboard/default']"
                   *ngIf="authenticationService.vanityURLEnabled && authenticationService.v_showCompanyLogo"
                   [src]="authenticationService.v_companyLogoImagePath" alt=""
                   onerror="this.src='assets/images/xamplify-logo.png';" />
