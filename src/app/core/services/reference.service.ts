@@ -153,7 +153,8 @@ export class ReferenceService {
     private logger: XtremandLogger,
     private router: Router,
     public deviceService: Ng2DeviceService,
-    private envService:EnvService
+    private envService:EnvService,
+    private route:ActivatedRoute
   ) {
     this.videoTag =
       '<img src="' + authenticationService.imagesHost + 'xtremand-video.gif">';
@@ -3346,5 +3347,9 @@ export class ReferenceService {
 
   getTrimmedData(input:any){
     return $.trim(input);
+  }
+
+  getRouterParameter(parameter:string){
+    return this.route.snapshot.params[parameter];
   }
 }

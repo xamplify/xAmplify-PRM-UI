@@ -15,7 +15,7 @@ import { ListLoaderValue } from 'app/common/models/list-loader-value';
   selector: 'app-manage-company',
   templateUrl: './manage-company.component.html',
   styleUrls: ['./manage-company.component.css'],
-  providers: [HomeComponent,CompanyService,HttpRequestLoader,Properties,ListLoaderValue,],
+  providers: [HomeComponent,CompanyService,HttpRequestLoader,Properties,ListLoaderValue],
 })
 export class ManageCompanyComponent implements OnInit {
 companyRouter = "/home/company/manage";
@@ -76,10 +76,9 @@ httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     this.actionType = "view";
     this.companyId = company.id;
   }
-  // editCompanyList(contactSelectedListId: number, contactListName: string,){
-  //   this.selectedContactListId = contactSelectedListId;
-	// 	this.selectedContactListName = contactListName;
-  //   this.showEdit = true;
-  // }
+
+  navigateToAddContactsPage(id:number){
+    this.referenceService.goToRouter("/home/contacts/company/"+id);
+  }
   }
 
