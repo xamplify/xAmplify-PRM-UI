@@ -6,12 +6,14 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { Company } from '../models/company';
 import { CountryNames } from 'app/common/models/country-names';
 import { AuthenticationService } from 'app/core/services/authentication.service';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { ReferenceService } from 'app/core/services/reference.service';
 declare var $: any;
 @Component({
   selector: 'app-add-company',
   templateUrl: './add-company.component.html',
   styleUrls: ['./add-company.component.css'],
-  providers: [CompanyService, RegularExpressions, CountryNames],
+  providers: [CompanyService, RegularExpressions, CountryNames, HttpRequestLoader,],
 })
 export class AddCompanyComponent implements OnInit {
   @Output() closeEvent = new EventEmitter<any>();
@@ -21,6 +23,7 @@ export class AddCompanyComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   companies: Company[] = [];
   addCompany: Company = new Company();
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   showModal: boolean;
   closeModalEvent: any;
   isCompanyDetails: boolean;
@@ -34,7 +37,9 @@ export class AddCompanyComponent implements OnInit {
   title: string;
   preview: boolean = false;
   edit: boolean = false;
-  constructor(private companyService: CompanyService, public regularExpressions: RegularExpressions, public countryNames: CountryNames, public authenticationService: AuthenticationService) {
+  ngxloading: boolean =false;
+  isCompanyNameValid: boolean = false;
+  constructor(private companyService: CompanyService, public regularExpressions: RegularExpressions, public countryNames: CountryNames, public authenticationService: AuthenticationService,  public referenceService: ReferenceService,) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
 
@@ -63,41 +68,22 @@ export class AddCompanyComponent implements OnInit {
     $('#addCompanyModal').modal('hide');
     this.closeEvent.emit("0");
   }
-  contactCompanyChecking(contactCompany: string) {
-    if (contactCompany.trim() != '') {
-      this.isCompanyDetails = true;
+  validteCompanyName(companyName: string) {
+    if (companyName.trim() != '') {
+      this.isCompanyNameValid = true;
     } else {
-      this.isCompanyDetails = false;
+      this.isCompanyNameValid = false;
     }
   }
-  validateEmail(emailId: string) {
-    const lowerCaseEmail = emailId.toLowerCase();
-    if (this.validateEmailAddress(emailId)) {
-      this.checkingForEmail = true;
-      this.validEmailPatternSuccess = true;
-    }
-    else {
-      this.checkingForEmail = false;
-    }
-  }
-  validateEmailAddress(emailId: string) {
-    var EMAIL_ID_PATTERN = this.regularExpressions.EMAIL_ID_PATTERN;
-    return EMAIL_ID_PATTERN.test(emailId);
-  }
-  checkingEmailPattern(emailId: string) {
-    this.validEmailPatternSuccess = false;
-    if (this.validateEmailAddress(emailId)) {
-      this.validEmailPatternSuccess = true;
-      this.emailNotValid = true;
-    } else {
-      this.validEmailPatternSuccess = false;
-      this.emailNotValid = false;
-    }
-  }
+
   saveCompany() {
+    this.ngxloading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
     this.addCompany.userId = this.loggedInUserId;
     this.companyService.saveCompany(this.addCompany).subscribe(
       (response: any) => {
+        this.ngxloading = false;
+        this.referenceService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
           this.customResponse = new CustomResponse('SUCCESS', response.message, true);
           this.addCompanyModalClose();
@@ -108,15 +94,21 @@ export class AddCompanyComponent implements OnInit {
         }
       },
       error => {
+        this.ngxloading = false;
+            this.referenceService.loading(this.httpRequestLoader, false);
         this.customResponse = new CustomResponse('ERROR', "failed to save", true);
       },
       () => { }
     );
   }
   getCompany(companyId: number) {
+    this.ngxloading=true;
+    this.referenceService.loading(this.httpRequestLoader, true);
     this.companyService.getCompanyById(companyId, this.loggedInUserId)
       .subscribe(
         (data: any) => {
+          this.ngxloading=false;
+          this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             this.addCompany = data.data;
             if(data.data.country == null || data.data.country == undefined || data.data.country == ''){
@@ -125,14 +117,20 @@ export class AddCompanyComponent implements OnInit {
           }
         },
         error => {
+          this.ngxloading=false;
+          this.referenceService.loading(this.httpRequestLoader, false);
         },
         () => { }
       );
   }
   editCompany(){
+    this.ngxloading = true;
+    this.referenceService.loading(this.httpRequestLoader, true);
     this.addCompany.userId = this.loggedInUserId;
     this.companyService.editCompany(this.addCompany).subscribe(
       (response: any) => {
+        this.ngxloading = false;
+        this.referenceService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
           this.customResponse = new CustomResponse('SUCCESS', response.message, true);
           this.addCompanyModalClose();
@@ -146,6 +144,8 @@ export class AddCompanyComponent implements OnInit {
         }
       },
       error => {
+        this.ngxloading = false;
+        this.referenceService.loading(this.httpRequestLoader, false);
         this.customResponse = new CustomResponse('ERROR', "failed to save", true);
       },
       () => { }

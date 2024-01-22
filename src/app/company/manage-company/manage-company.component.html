@@ -113,23 +113,23 @@
                     <app-add-company (closeEvent)="closeCompanyModal($event)" [actionType]="actionType" [companyId]="companyId"></app-add-company>
                   </div>
                   <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'>
-
-                    <div class="table-responsive">
+                    <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"></app-list-loader>
+                    <div class="table-responsive" *ngIf="!httpRequestLoader.isLoading">
                       <table class='table tgrid table-hover table-sm' aria-describedby="companyTable">
                         <thead>
                           <tr>
-                            <!-- <th></th> -->
-                            <th class="center-aligned leadTablewidth0" translate>Company Details</th>
-                            <th class="center leadTablewidth1" translate>Created on</th>
-                            <th class="center leadTablewidth2" translate>Total Contacts</th>
-                            <th class="leadTablewidth3" style="text-align:center" translate>Actions</th>
+                            <th style= "width:7%;"></th> 
+                            <th class="center-aligned leadTablewidth0" translate style= "width:50%;"> <span class="companyDetailsAbjustment"> Company Details</span></th>
+                            <th class="center leadTablewidth1" translate style= "width:13%;">Created on</th>
+                            <th class="center leadTablewidth2" translate style= "width:15%;">Total Contacts</th>
+                            <th class="leadTablewidth3" style="text-align:center" translate style= "width:1 5%;">Actions</th>
                           </tr>
                         </thead>
 
                         <tbody>
                           <ng-container *ngFor='let company of pagination.pagedItems; let i=index'>
                             <tr>
-                              <!-- <td><img src="{{properties?.manualImage}}" alt="manual" style="height: 54px;"></td> -->
+                              <td><img src="{{properties?.companyListImage}}" alt="company" style="height: 54px;"></td>
                               <td>                              
                                 <h4 class="m0 moreipsis ListFontCu">
                                   <span data-toggle="tooltip" data-placement="top"
@@ -138,7 +138,7 @@
                                   </span>
                                </h4>
 
-                               <h5 class='mb0 moreipsis'>
+                               <h5 class='moreipsis' style="margin-top: 4px;margin-bottom: 4px !important;">
                                   <span data-toggle="tooltip" data-placement="top"
                                      title="{{company?.email}}">
                                      <b>By:</b> {{company?.email}}
@@ -152,7 +152,7 @@
                              </h4>
                               </td>
                               <td>
-                                <h5 style="font-weight: 600; color: #676767;">
+                                <h5 class="stamBrNone">
                                   <app-timestamp [isOnlyDate]="false" [dateAndTime]="company.createdTime">
                                   </app-timestamp>
                                 </h5>
@@ -161,7 +161,7 @@
                                 {{company.contactCount}}
                               </td>
                               <td>
-                                <div class="actions-block override-actions tb_view_actions">
+                                <div class="actions-block override-actions tb_view_actions" style="float: left !important;">
                                   <a class="custom-icon" data-rel="fancybox-button"
                                     data-toggle="tooltip" data-placement="bottom" title="View Company" id="company" (click)="viewCompany(company)">
                                     <i class="fa fa-eye mr5 IconCustomization" aria-hidden="true"></i>
@@ -196,12 +196,12 @@
                     </div>
 
                     <!-- --------------------Pagination0-------------------- -->
-                    <div class="pg2">
+                    <div class="pg2" *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                       <app-pagination [pagination]="pagination" (notifyParent)="setCompanyPage($event)"
                         (notifyParentDropDown)="listCompanies($event)"></app-pagination>
                     </div>
                     <!-- End of 24 -->
-                    <div *ngIf="pagination.totalRecords==0"
+                    <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading"
                       class="alert alert-info">
                       <strong translate>No Companies Found.</strong>
                     </div>
@@ -211,6 +211,9 @@
             </div>
           </div>
         </div>
+        <!-- <app-edit-contacts
+         [selectedContactListId]="selectedContactListId"
+         [contactListId]="selectedContactListId" [contactListName]="selectedContactListName"></app-edit-contacts> -->
       </div>
     </div>
   </div>

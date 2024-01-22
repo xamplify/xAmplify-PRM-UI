@@ -121,5 +121,8 @@
     #multiselect-sample {margin-left: 103px;}
     #custom-width{width: 88.9%;}
   }
+  .form-control, .form-control, fieldset .form-control  {
+    background-color: transparent;
+}
   
   
