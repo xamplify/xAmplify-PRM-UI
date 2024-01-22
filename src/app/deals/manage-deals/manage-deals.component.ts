@@ -598,7 +598,6 @@ export class ManageDealsComponent implements OnInit {
     this.dealId = deal.id;
   }
 
-  selectedDealData:Deal;/****xnfr-426******/
   editDeal(deal: Deal) {
     this.showDealForm = true;  
     this.actionType = "edit";
@@ -1230,19 +1229,24 @@ export class ManageDealsComponent implements OnInit {
   /****xnfr-426******/
   currentDealId:number;
   currentPipelineStageName:any;
-  changeDealPipelineStage(currentDealId:number,currentStageName:any){
+  currentIndex:any;
+  changeDealPipelineStage(currentDealId:number,currentStageName:any, indexnum:number ){
     this.currentDealId = currentDealId;
     this.currentPipelineStageName=currentStageName;
-    $('#changeDealPipelineStageModel').modal('show');
+    this.currentIndex = indexnum;
+    this.remainingCharsLeft= this.maxCharsLeft;
+    let id:string = '#changeDealPipelineStageModel-'+indexnum;
+    $(id).modal('show');
   }
 
-  closeDealPipelineStage(){
-    $('#changeDealPipelineStageModel').modal('hide');
-  }
-
-  dealPipelineStageComment:any;
-  validateDealChangeComment(dealChangeComment:string){
-    this.dealPipelineStageComment = dealChangeComment;
+  dealComment:string="";
+  closeModelPopupBasedOnRow(indexnum:number){
+    this.dealComment = "";
+    let id:string = '#changeDealPipelineStageModel-'+indexnum;
+    $(id).modal('hide');
+    this.validateDescription=true;
+    this.remainingCharsLeft= this.maxCharsLeft;
+    this.showDeals();
   }
 
   deal = new Deal();
@@ -1251,7 +1255,7 @@ export class ManageDealsComponent implements OnInit {
       request.id = this.currentDealId;
       request.pipelineStageId = deal.pipelineStageId;
       request.userId = this.loggedInUserId;
-      request.dealComment = deal.dealComment;
+      request.dealComment = $.trim(this.dealComment);
 
       this.dealsService.changeDealStatus(request)
         .subscribe(
@@ -1259,17 +1263,18 @@ export class ManageDealsComponent implements OnInit {
             this.referenceService.loading(this.httpRequestLoader, false);
             if (response.statusCode == 200) {
               this.dealsResponse = new CustomResponse('SUCCESS', "Status Updated Successfully", true);
-              this.closeDealPipelineStage();
+              
+              this.closeModelPopupBasedOnRow(this.currentIndex);
               this.showDeals(); 
             } else if (response.statusCode == 500) {
               this.dealsResponse = new CustomResponse('ERROR', response.message, true);
-              this.closeDealPipelineStage(); 
+              this.closeModelPopupBasedOnRow(this.currentIndex); 
             }
           });
   }
 
-
-
+  maxCharsLeft= 250;
+  remainingCharsLeft= this.maxCharsLeft;
   validateDescription:boolean=true;
   validateEditStageModelPopup(comment : string ){
     if(comment === '' || comment ===null || comment === undefined){
@@ -1278,5 +1283,6 @@ export class ManageDealsComponent implements OnInit {
     else{
       this.validateDescription = this.referenceService.validateCkEditorDescription(comment);
     }
+    this.remainingCharsLeft = this.maxCharsLeft - comment.length;
   }
 }

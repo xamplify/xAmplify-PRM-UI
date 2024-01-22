@@ -1884,7 +1884,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.pipelineResponse = new CustomResponse();
 			this.listAllPipelines(this.pipelinePagination);
 		}
-		/************XNFR-426-start-sumanth**************/
+		/************XNFR-426-start**********/
 		else if(this.activeTabName == "leadDealApprove") {
 			this.activeTabHeader = this.properties.leadDealApprove;
 		}

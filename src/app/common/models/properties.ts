@@ -172,7 +172,7 @@ export class Properties {
 	leadPipelines = "Lead Pipelines";
 	dealPipelines = "Deal Pipelines";
 	
-	/************XNFR-426-start-sumanth**************/
+	/************XNFR-426**********/
 	leadDealApprove = "Lead Approval/Rejection";
 	tags = "Tags";
 	customskin = "Themes";
