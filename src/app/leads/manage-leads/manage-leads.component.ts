@@ -94,6 +94,9 @@ export class ManageLeadsComponent implements OnInit {
   leadNotes:any;
   leadApproveRejectType:any;
   isLeadNotesvalid:boolean = false;
+  maxChars: number = 250;
+  remainingChars: number = this.maxChars;
+  ngxloading : boolean;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -1233,25 +1236,18 @@ export class ManageLeadsComponent implements OnInit {
 
   /*********XNFR-426-start-sai******/
   leadApproveReject(lead:Lead , leadNotes:string){
-    let comment = new DealComments(); 
-    comment.comment = "Notes: "+leadNotes;
-    comment.userId = this.loggedInUserId;
-    comment.leadId = lead.id;
-    if(this.leadApproveRejectType == "APPROVED"){
-      comment.activityType = "LEAD_APPROVED";
-    }else{
-      comment.activityType = "LEAD_REJECTED";
-    }
-
+    this.ngxloading = true;
     lead.leadNotes = leadNotes;
     lead.userId = this.loggedInUserId;
     lead.leadApproveRejectType = this.leadApproveRejectType;
 
     this.leadsService.leadApproveReject(lead).subscribe(response => {
+      this.ngxloading = false;
       this.leadApproveRejectType = "";
+      this.remainingChars = this.maxChars;
+      this.showLeads();
       this.addNotesModelClose();//xnfr-426
     });
-    this.leadsService.saveComment(comment).subscribe();
   }
 
   addNotesModel(lead:Lead , leadApproveRejectType:string){
@@ -1264,16 +1260,25 @@ export class ManageLeadsComponent implements OnInit {
   addNotesModelClose(){
     this.leadNotes = null;
     this.leadApproveRejectType = null;
+    this.remainingChars = this.maxChars;
     $('#addNotesModel').modal('hide');
   }
 
   validateNotes(leadNotes: string){
-    this.leadNotes = leadNotes.trim();
-    if(this.leadNotes.length > 0 && this.leadNotes != undefined){
-      this.isLeadNotesvalid = true;
-    }
-    else{
+    // this.leadNotes = leadNotes.trim();
+    // if(this.leadNotes.length > 0 && this.leadNotes != undefined){
+    //   this.isLeadNotesvalid = true;
+    // }
+    // else{
+    //   this.isLeadNotesvalid = false;
+    // }
+    leadNotes = $.trim(leadNotes);
+    this.remainingChars = this.maxChars - leadNotes.length;
+    if(leadNotes==='' || leadNotes=== null || leadNotes=== undefined ) {
       this.isLeadNotesvalid = false;
+    }
+    if(this.referenceService.validateCkEditorDescription(leadNotes)){
+      this.isLeadNotesvalid = true;
     }
   }
 }

@@ -749,8 +749,9 @@
         <h4 class="modal-title" style="font-weight: 600;" translate>Add Comments<span class="required"> *</span></h4>
       </div>
       <div class="form-group textareaStyles">
-        <textarea class="form-control" placeholder="Write your Note here" name="leadNotes" rows="8"
+        <textarea class="form-control" placeholder="Write your comment here" name="leadNotes" rows="5"
           (input)="validateNotes(leadNotes)" [(ngModel)]="leadNotes" maxlength="250"></textarea>
+          <p>{{ remainingChars }} characters left</p>
       </div>
       <div class="modal-footer">
         <button class="button_blue bgcolor-unset" [disabled]="!isLeadNotesvalid"

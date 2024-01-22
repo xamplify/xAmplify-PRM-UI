@@ -16,7 +16,7 @@
         </div> -->
 
 
-        <button type="button" class="close-circle pull-right mrg1" *ngIf="lead.id != undefined" (click)="showComments(lead)">
+        <button type="button" class="close-circle pull-right mrg1" *ngIf="actionType == 'edit'" (click)="showComments(lead)">
           <i class="fa fa-comments" aria-hidden="true"></i>
           <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"
             style="margin-bottom: 25px; margin-left: -15px;margin-top: -35px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>

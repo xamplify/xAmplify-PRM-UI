@@ -159,11 +159,15 @@ select.form-control.select-width.FilerFormWidth {
   overflow: auto;
   width: 100%;
   padding: 15px 15px;
-  margin: 45px 25px 25px 25px;
+  margin: 45px 25px 0px 25px;
 }
 
 .form-group.textareaStyles{
   width: 93%;
+}
+
+.form-group.textareaStyles p{
+  padding-left: 25px;
 }
 
 .buttons button{

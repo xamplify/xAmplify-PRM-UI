@@ -39,7 +39,7 @@
                     {{c?.activityType == 'DEAL_CREATED' ? 'Deal Created' : ''}}
                     {{c?.activityType == 'LEAD_CREATED' ? 'Lead Created' : ''}}
                 </button>
-                <p class="comment-color" style="width: 100%;color: #60686d;">{{c?.comment}}</p>
+                <p class="comment-color" style="width: 100%;color: #60686d;" innerHTML="{{c?.comment}}"></p>
             </div>
             <p *ngIf="c?.activityType == undefined" class="comment-color">{{c?.comment}}</p>
         </li>
