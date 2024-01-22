@@ -1,8 +1,8 @@
 
   
-<div *ngIf="isAdd || isReplaceVideo">
+<div *ngIf="isAdd || isEdit || isReplaceVideo">
   <span  [style.color]="invalidAssetName ? 'red':''">
-     <strong>{{headerText}}<span class="required">*</span></strong>
+     <strong>{{headerText}}<span *ngIf="isAdd || isReplaceVideo" class="required">*</span></strong>
   </span>
   <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible && isReplaceVideo"></app-response-message>
   <!--Video Preview-->

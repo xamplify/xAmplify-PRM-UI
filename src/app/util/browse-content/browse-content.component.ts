@@ -22,6 +22,7 @@ declare var $:any, swal:any, gapi:any, google:any, Dropbox:any, BoxSelect:any, v
 export class BrowseContentComponent implements OnInit,OnDestroy {
   loading = false;
   isAdd:boolean;
+  isEdit:boolean;
   isDisable:boolean;
   uploadedAssetName = "";
   invalidAssetName: boolean;
@@ -72,6 +73,8 @@ export class BrowseContentComponent implements OnInit,OnDestroy {
   viewType: string;
   categoryId: number;
   folderViewType: string;
+  @Input() assetType:string;
+  @Input()assetDetailsDto:DamUploadPostDto;
   constructor(public referenceService:ReferenceService,public sanitizer: DomSanitizer,private router: Router,public properties:Properties,
     public deviceService: Ng2DeviceService,private xtremandLogger:XtremandLogger,private authenticationService:AuthenticationService,
     private videoFileService:VideoFileService,private damService:DamService,private route:ActivatedRoute) {
@@ -110,11 +113,15 @@ export class BrowseContentComponent implements OnInit,OnDestroy {
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isAdd = this.router.url.indexOf('/upload') > -1;
+    this.isEdit = this.router.url.indexOf('/editDetails') > -1;
     this.isReplaceVideo = this.router.url.indexOf('/editVideo')>-1;
     if(this.isReplaceVideo){
       this.clearUploadedFile();
     }
-		this.headerText = this.isAdd ? 'Upload Asset' : 'Replace Video Asset';
+		this.headerText = this.isAdd ? 'Upload Asset' : this.isEdit ? 'Replace Asset':'Replace Video Asset';
+    if(this.isEdit){
+      this.damUploadPostDto = this.assetDetailsDto;
+    }
   }
 
   ngOnDestroy(): void {
@@ -195,10 +202,10 @@ export class BrowseContentComponent implements OnInit,OnDestroy {
   /***XNFR-342****/
   private validateExtensionType(file: File) {
     let extension = this.referenceService.getFileExtension(file['name']);
-    if (extension == this.damUploadPostDto.assetType) {
+    if (extension == this.assetType) {
         this.setUploadedFileProperties(file);
     } else {
-        this.showAssetErrorMessage('Invalid file type. Only ' + extension + " file is allowed.");
+        this.showAssetErrorMessage('Invalid file type. Only ' + this.assetType + " file is allowed.");
     }
 }
 
