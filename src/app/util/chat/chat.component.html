@@ -30,7 +30,7 @@
                 <i [attr.class]="c?.activityType == 'LEAD_APPROVED' ? 'fa fa-check-circle mr5' : 'fa fa-times-circle mr5'" aria-hidden="true"></i>
                 {{c?.activityType == 'LEAD_APPROVED'?'Approved':'Rejected'}}
             </button><!--xnfr-426--> 
-            <p class="comment-color" style="width: 100%;color: #60686d;">{{c?.comment}}</p>
+            <p class="comment-color" style="width: 100%;color: #60686d;" innerHTML="{{c?.comment}}"></p>
             </div>
             <!-- [ngStyle]="{'color': (c?.activityType == 'STAGE_UPDATED')? '#06c306' : '#f71111'}" -->
             <div  class="col-lg-6 col-md-6 col-sm-6 col-xs-6" *ngIf="(c?.activityType == 'STAGE_UPDATED') || (c?.activityType == 'DEAL_CREATED') || (c?.activityType == 'LEAD_CREATED')" translate>
@@ -41,7 +41,7 @@
                 </button>
                 <p class="comment-color" style="width: 100%;color: #60686d;" innerHTML="{{c?.comment}}"></p>
             </div>
-            <p *ngIf="c?.activityType == undefined" class="comment-color">{{c?.comment}}</p>
+            <p *ngIf="c?.activityType == undefined" class="comment-color" innerHTML="{{c?.comment}}"></p>
         </li>
     </ul>
 </div>

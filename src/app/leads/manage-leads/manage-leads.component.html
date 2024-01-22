@@ -413,12 +413,9 @@
                                 </div>
                                 <div class="buttons"
                                   *ngIf="!lead?.associatedDealId > 0 && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApproveRejectType == undefined && lead?.leadApprovalOrRejection">
-                                  <button class="button_blue bgcolor-unset" (click)="addNotesModel(lead,'APPROVED')" translate>
-                                    <span class="btn btn-primary transition d-inline"> Approve</span>
-                                  </button>
-                                  <button class="button_blue bgcolor-unset" (click)="addNotesModel(lead,'REJECTED')" translate>
-                                    <span class="btn Btn-Gray transition d-inline"> Reject</span>
-                                  </button>
+                                  <button type="button" class="button_blue bgcolor-unset" translate (click)="addNotesModel(lead,'APPROVED')"><span
+                                    class="btn btn-primary transition txt_pd-top3">Approve</span></button>
+                                <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="addNotesModel(lead,'REJECTED')" translate>Reject</button>
                                 </div>
                             
                               </div>
