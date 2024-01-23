@@ -67,9 +67,11 @@
                         <td class="text-center">
                            <div
                               [ngClass]="{'actions-block float-none': selectedPartnershipId!=partner.partnershipId, 'actions-block-selected': selectedPartnershipId==partner.partnershipId}">
-                              <a (click)="viewShareLeads(partner)" title="Select Share Leads">
-                                 <i class="fa" [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}"
+                              <a (click)="viewShareLeads(partner)" title="Select Share Leads" class="custom-icon">
+                                 <i class="fa IconCustomization"
+                                    [ngClass]="{'fa-plus': !partner.expand, 'fa-minus': partner.expand}"
                                     aria-hidden="true"></i>
+                                 <div class="clickicons"></div>
                               </a>
                            </div>
                         </td>
@@ -220,9 +222,10 @@
                                                 <td class="text-center">
                                                    <div
                                                       [className]="selectedShareLeadsListIds.indexOf(shareLead.id)>-1 ? 'actions-block-selected':'actions-block float-none'">
-                                                      <a title="Preview"
+                                                      <a title="Preview" class="custom-icon"
                                                          (click)="$event.stopPropagation();previewLeads(shareLead)">
-                                                         <i class="fa fa-eye" aria-hidden="true"></i>
+                                                         <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
+                                                         <div class="clickicons"></div>
                                                       </a>
                                                    </div>
                                                 </td>

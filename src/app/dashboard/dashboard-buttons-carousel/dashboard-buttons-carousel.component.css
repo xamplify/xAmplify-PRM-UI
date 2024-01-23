@@ -135,3 +135,10 @@
   margin-right: -14px;
   margin-left: -14px;
 }
+/* Sudha Sri(23-1-2024) */
+.dashboard_carasol_bg{
+  background-color: #488fd6;
+}
+.card_padding{
+  background: #4a94d3;padding: 0px 18px;border-radius: 0px 0px 5px 5px;
+}
