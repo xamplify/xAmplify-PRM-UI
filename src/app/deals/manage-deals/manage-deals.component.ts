@@ -93,13 +93,12 @@ export class ManageDealsComponent implements OnInit {
   /** XNFR-426 **/
   deal = new Deal();
   currentDealId:number;
-  currentPipelineStageName:any;
-  currentIndex:any;
+  selectedDealForPopup:any;
   dealComment:string="";
   maxCharsLeft= 250;
   remainingCharsLeft= this.maxCharsLeft;
-  validateDescription:boolean=true;
   textAreaDisable:boolean=false;
+  ngxloading:boolean = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -1241,56 +1240,48 @@ export class ManageDealsComponent implements OnInit {
   }
 
   /****xnfr-426******/
-  changeDealPipelineStage(currentDealId:number,currentStageName:any, indexnum:number ){
+  changeDealPipelineStage(currentDealId:number, indexnum:number ){
     this.currentDealId = currentDealId;
-    this.currentPipelineStageName=currentStageName;
-    this.currentIndex = indexnum;
+    this.selectedDealForPopup = indexnum;
     this.remainingCharsLeft= this.maxCharsLeft;
     this.textAreaDisable=true;
-    let id:string = '#changeDealPipelineStageModel-'+indexnum;
-    $(id).modal('show');
+    let popUp:string = '#changeDealPipelineStageModel-'+indexnum;
+    $(popUp).modal('show');
   }
 
-  closeModelPopupBasedOnRow(indexnum:number){
+  closeDealChangeModelPopup(indexnum:number){
     this.dealComment = "";
-    let id:string = '#changeDealPipelineStageModel-'+indexnum;
-    $(id).modal('hide');
-    this.validateDescription=true;
+    let popUp:string = '#changeDealPipelineStageModel-'+indexnum;
+    $(popUp).modal('hide');
     this.remainingCharsLeft= this.maxCharsLeft;
     this.textAreaDisable=false;
     this.showDeals();
   }
 
-  updateDealPipelineStage(deal: Deal){
+  updateDealPipelineStage(deal: Deal) {
+    this.ngxloading = true;
     let request: Deal = new Deal();
-      request.id = this.currentDealId;
-      request.pipelineStageId = deal.pipelineStageId;
-      request.userId = this.loggedInUserId;
-      request.dealComment = $.trim(this.dealComment);
-
-      this.dealsService.changeDealStatus(request)
-        .subscribe(
-          response => {
-            this.referenceService.loading(this.httpRequestLoader, false);
-            if (response.statusCode == 200) {
-              this.dealsResponse = new CustomResponse('SUCCESS', "Status Updated Successfully", true);
-              
-              this.closeModelPopupBasedOnRow(this.currentIndex);
-              this.showDeals(); 
-            } else if (response.statusCode == 500) {
-              this.dealsResponse = new CustomResponse('ERROR', response.message, true);
-              this.closeModelPopupBasedOnRow(this.currentIndex); 
-            }
-          });
+    request.id = this.currentDealId;
+    request.pipelineStageId = deal.pipelineStageId;
+    request.userId = this.loggedInUserId;
+    request.dealComment = $.trim(this.dealComment);
+    this.dealsService.changeDealStatus(request)
+      .subscribe(
+        response => {
+          this.ngxloading = false;
+          if (response.statusCode == 200) {
+            this.dealsResponse = new CustomResponse('SUCCESS', "Status Updated Successfully", true);
+            this.closeDealChangeModelPopup(this.selectedDealForPopup);
+            this.showDeals();
+          } else if (response.statusCode == 500) {
+            this.dealsResponse = new CustomResponse('ERROR', response.message, true);
+            this.closeDealChangeModelPopup(this.selectedDealForPopup);
+          }
+        });
   }
 
-  validateEditStageModelPopup(comment : string ){
-    if(comment === '' || comment ===null || comment === undefined){
-      this.validateDescription=true;
-    }
-    else{
-      this.validateDescription = this.referenceService.validateCkEditorDescription(comment);
-    }
+  getRemainingCharCount(comment : string ){
+    //comment= $.trim(comment);
     this.remainingCharsLeft = this.maxCharsLeft - comment.length;
   }
 }

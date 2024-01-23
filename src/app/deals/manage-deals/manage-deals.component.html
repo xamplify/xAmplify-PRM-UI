@@ -347,44 +347,29 @@
                               </h5>
                             </td>
                             <td style="width: 20%;">
-                                                       
-
-                              <span style="background-color: #f1f3fa;"> 
-                                <p class="comment-color" translate>
-                                  {{deal.currentStageName}}
-                                  <a class="custom-icon" data-rel="fancybox-button" (click)="changeDealPipelineStage(deal.id,deal.currentStageName, (i+1) )"
-                                    data-toggle="tooltip" data-placement="bottom" title="edit deal stage">
-                                    <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>
-                                    <div class="clickicons"></div>
-                                  </a>
-                                </p>
-                              </span>
-
-
+                              <span class="comment-color" translate>
+                                {{deal.currentStageName}}</span>
+                              <a data-rel="fancybox-button" (click)="changeDealPipelineStage(deal.id, (i+1))"
+                                data-toggle="tooltip" data-placement="bottom" title="edit deal stage">
+                                <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>
+                                <div class="clickicons"></div>
+                              </a>
                               <!-- xnfr-426-->
-                              
-                              <div    class="modal fade right" id="changeDealPipelineStageModel-{{i+1}}" tabindex="-1" role="dialog"
+                              <div class="modal fade right" id="changeDealPipelineStageModel-{{i+1}}" tabindex="-1" role="dialog"
                                 aria-labelledby="changeDealPipelineStageModel" data-backdrop="static" data-keyboard="false">
                                 <div class="modal-dialog modal-css" role="document">
                                   <div class="modal-content" style="overflow-x: hidden;">
+                                    <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px',fullScreenBackdrop:true }">
+                                    </ngx-loading>
                                     <div class="modal-header">
-                                      <!-- <a class="close-circle mrg1" *ngIf="true" data-rel="fancybox-button" (click)="showComments(deal)"
-                                        data-toggle="tooltip" data-placement="bottom" title="Comments"
-                                        style="margin: 14px 20px;padding-top: 3px;padding-left: 5px;">
-                                        <span class="fa fa-comments IconCustomization" style="z-index: 1;font-size: 13px;" aria-hidden="true"
-                                          style="font-size:18px"></span>
-                                        <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
-                                          style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
-                                        <div class="clickicons"></div>
-                                      </a> -->
-                                      <a title="Close" class="pull-right close-circle" (click)="closeModelPopupBasedOnRow((i+1))">
+                                      <a title="Close" class="pull-right close-circle" (click)="closeDealChangeModelPopup((i+1))">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                       </a>
                                       <button type="button" class="close-circle pull-right mrg1" data-toggle="tooltip" data-placement="bottom"
-                                      title="Comments" *ngIf="true" (click)="showComments(deal)">
+                                        title="Comments" *ngIf="true" (click)="showComments(deal)">
                                         <i class="fa fa-comments" aria-hidden="true"></i>
                                         <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
-                                          style="margin-bottom: 25px; margin-left: -15px;margin-top: -35px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
+                                          style="margin-top: -58px; margin-right: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
                                       </button>
                                       <h4 class="modal-title" style="font-weight: 600;" translate>Update Deal</h4>
                                     </div>
@@ -404,28 +389,26 @@
                                         *ngIf="isPartnerVersion && deal?.onNonInteractiveStage"
                                         title="You can not edit this deal as it is on a non interactive deal stage.">
                                       </span>
-                                    
-                                    <br>
-                                    <div class="form-group">
-                                      <h4 class="modal-title" translate>Add Comments</h4>
-                                      <textarea class="form-control" placeholder="Write your comment here" name="dealComment" rows="5"
-                                        (input)="validateEditStageModelPopup(dealComment)" [(ngModel)]="dealComment" maxlength="250"></textarea>
-                                      <span class="required" *ngIf="!validateDescription"><p> Please enter valid comments </p></span>
-                                      <span *ngIf="validateDescription"><p>{{remainingCharsLeft}} characters left...</p></span>
-                                    </div>
+                                      <br>
+                                      <div class="form-group">
+                                        <h4 class="modal-title" translate>Add Comments</h4>
+                                        <textarea class="form-control" placeholder="Write your comment here" name="dealComment" rows="5"
+                                          (input)="getRemainingCharCount(dealComment)" [(ngModel)]="dealComment" maxlength="250"></textarea>
+                                        <span>
+                                          <p>{{remainingCharsLeft}} characters left...</p>
+                                        </span>
+                                      </div>
                                     </div>
                                     <div class="modal-footer">
-                                      <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="closeModelPopupBasedOnRow((i+1))" translate>Cancel</button>
-                                      <button class="button_blue bgcolor-unset" (click)="updateDealPipelineStage(deal)" translate
-                                        [disabled]="!validateDescription">
-                                        <span class="btn btn-primary transition d-inline"> Submit</span>
+                                      <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="closeDealChangeModelPopup((i+1))"
+                                        translate>Cancel</button>
+                                      <button class="button_blue bgcolor-unset" (click)="updateDealPipelineStage(deal)" translate>
+                                        <span class="btn btn-primary transition d-inline"> Update</span>
                                       </button>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-
-
                             </td>
                             <td style="width: 20%;">
                               <div class="actions-block override-actions actionbtn">

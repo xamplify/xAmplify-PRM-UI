@@ -1888,7 +1888,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.pipelineResponse = new CustomResponse();
 			this.listAllPipelines(this.pipelinePagination);
 		}
-		/************XNFR-426-start**********/
+		/*****XNFR-426 ******/
 		else if(this.activeTabName == "leadDealApprove") {
 			this.activeTabHeader = this.properties.leadDealApprove;
 		}
@@ -4474,7 +4474,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 	}
 
-	/*******xnfr-426********/
 	updateLeadApprovalOrRejectionStatus(){
 		let self = this;
 		swal({
@@ -4489,13 +4488,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			self.saveLeadApprovalOrRejectionStatus();
 		}, function (dismiss: any) {
 			console.log('you clicked on option' + dismiss);
-			//this.leadApprovalStatus=this.leadApprovalOrRejectionOption;
-			//this.leadApprovalOrRejectionOption = !this.leadApprovalOrRejectionOption ;
-			//this.getLeadApprovalstatus();
+			self.getLeadApprovalstatus();
 		});
 	}
 
-	/************XNFR-426**************/
 	saveLeadApprovalOrRejectionStatus() {
 		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId, this.leadApprovalOrRejectionOption).subscribe();
 	}

@@ -1239,8 +1239,6 @@ addCountryNamesToList(coutryNames:any,countryNamesArray:any){
   return countryNamesArray;
 }
 
-
-
 /************XNFR-426 **********/
 updateLeadApprovalOrRejectionStatus( companyId: number,leadApprovalOrRejectionOption:boolean ) {
   return this.http.get( this.REST_URL + "admin/" + "updateLeadApprovalOrRejectionStatus/" + companyId + "/"+leadApprovalOrRejectionOption+"?access_token=" + this.access_token )
@@ -1254,7 +1252,4 @@ getLeadApprovalStatus( companyId: number ) {
       .catch( this.handleError );
 }
 
-
-
-  
 }
