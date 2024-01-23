@@ -749,6 +749,7 @@
         <textarea class="form-control" placeholder="Write your comment here" name="leadNotes" rows="5"
           (input)="validateNotes(leadNotes)" [(ngModel)]="leadNotes" maxlength="250"></textarea>
           <p>{{ remainingChars }} characters left</p>
+          <p *ngIf="!isLeadNotesvalid && leadNotes != undefined" class="required text-center"> Please enter valid comments</p>
       </div>
       <div class="modal-footer">
         <button class="button_blue bgcolor-unset" [disabled]="!isLeadNotesvalid"

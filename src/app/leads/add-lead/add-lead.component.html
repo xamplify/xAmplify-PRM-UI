@@ -6,23 +6,12 @@
         <button type="button" class="close-circle pull-right" [disabled]="httpRequestLoader.isLoading" (click)="closeLeadModal()">
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
-        <!-- <div class="close-circle pull-right mrg1" *ngIf="true" data-rel="fancybox-button"
-          (click)="showComments(lead)" data-toggle="tooltip" data-placement="bottom"
-          title="Comments">
-          <i class="fa fa-comments IconCustomization" aria-hidden="true" style="font-size:18px"></i>
-          <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"
-             style="margin-bottom: 25px; margin-left: -15px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
-          <div class="clickicons"></div>
-        </div> -->
-
-
-        <button type="button" class="close-circle pull-right mrg1" *ngIf="actionType == 'edit'" (click)="showComments(lead)">
+        <button type="button" class="close-circle pull-right mrg1" *ngIf="actionType == 'edit'" data-toggle="tooltip" data-placement="bottom"
+        title="Comments" (click)="showComments(lead)">
           <i class="fa fa-comments" aria-hidden="true"></i>
           <span *ngIf="lead.unReadChatCount > 0" class="badge badge-default"
             style="margin-bottom: 25px; margin-left: -15px;margin-top: -35px;background-color: #ed1c24 !important;">{{lead.unReadChatCount}}</span>
         </button>
-
-        
         <h4 class="modal-title text-center">{{leadFormTitle}}</h4>
       </div>
       <div class="modal-body border-bottom-1px">

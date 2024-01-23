@@ -96,7 +96,6 @@ export class ManageLeadsComponent implements OnInit {
   isLeadNotesvalid:boolean = false;
   maxChars: number = 250;
   remainingChars: number = this.maxChars;
-  ngxloading : boolean;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -1234,24 +1233,25 @@ export class ManageLeadsComponent implements OnInit {
     );
   }
 
-  /*********XNFR-426-start-sai******/
+  /*********XNFR-426******/
   leadApproveReject(lead:Lead , leadNotes:string){
-    this.ngxloading = true;
     lead.leadNotes = leadNotes;
     lead.userId = this.loggedInUserId;
     lead.leadApproveRejectType = this.leadApproveRejectType;
 
     this.leadsService.leadApproveReject(lead).subscribe(response => {
-      this.ngxloading = false;
-      this.leadApproveRejectType = "";
-      this.remainingChars = this.maxChars;
-      this.showLeads();
-      this.addNotesModelClose();//xnfr-426
+      if(response.statusCode == 200){
+        this.leadApproveRejectType = "";
+        this.remainingChars = this.maxChars;
+        this.showLeads();
+        this.addNotesModelClose();//xnfr-426
+      }else{
+
+      }
     });
   }
 
-  addNotesModel(lead:Lead , leadApproveRejectType:string){
-    
+  addNotesModel(lead:Lead , leadApproveRejectType:string){ 
     $('#addNotesModel').modal('show');
     this.leadApproveRejectType = leadApproveRejectType;
     this.selectedLead = lead;
@@ -1265,13 +1265,6 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   validateNotes(leadNotes: string){
-    // this.leadNotes = leadNotes.trim();
-    // if(this.leadNotes.length > 0 && this.leadNotes != undefined){
-    //   this.isLeadNotesvalid = true;
-    // }
-    // else{
-    //   this.isLeadNotesvalid = false;
-    // }
     leadNotes = $.trim(leadNotes);
     this.remainingChars = this.maxChars - leadNotes.length;
     if(leadNotes==='' || leadNotes=== null || leadNotes=== undefined ) {

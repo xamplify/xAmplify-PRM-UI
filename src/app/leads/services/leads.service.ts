@@ -251,7 +251,7 @@ export class LeadsService {
     .catch(this.handleError);
   }
 
-  /*******XNFR-426-start-sai*******/
+  /*******XNFR-426*******/
   leadApproveReject(lead: Lead){
     return this.http.post(this.URL + `/updateLeadApprove?access_token=${this.authenticationService.access_token}`,lead)
     .map(this.extractData)
