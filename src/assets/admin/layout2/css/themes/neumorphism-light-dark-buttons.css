@@ -1,18 +1,47 @@
 .Btn-Green::before,       
 .btn-primary::before,
 .button_blue::before,
+div > button.btn-primary:hover,
+div.Btn-Green:hover,
 .button::before {
   background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important;
   box-shadow: none !important;
+  border-radius: 7px !important;
 } 
+.toggleOnOff .sliderOnOff {
+  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+.btn-group button.salesforce-btn,
 .button_blue, 
 .Btn-Green, 
 .button,      
 .btn-primary,
+.button_blue:hover,
+.btn-primary:hover,
+.Btn-Green:hover,
+/* .Btn-Green:hover, */
 button#save\&delete_button {
-  /* background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important; */
-  background: linear-gradient(87deg, #00ACEC 0%, #00ED95 100%) !important;
+  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  /* background: linear-gradient(87deg, #00ACEC 0%, #00ED95 100%) !important; */
   box-shadow: none !important;
+  border-radius: 7px !important;
+}
+.Btn-Gray:hover {
+  box-shadow: none !important;
+  /* background-image: linear-gradient(206deg, #2b343a 0, #cbd8d7 100%) !important; */
+  /* background: linear-gradient(89deg, #777777 100%, #969696 0%) !important; */
+  /* background: linear-gradient(90deg, #969696 0, #777777 100%) !important; */
+  background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%);
+  transition: 0.5s ease-in-out;
+}
+.Btn-Gray{ 
+-webkit-filter: grayscale(100%);
+filter: grayscale(100%);
+ box-shadow: none !important;
+background-image: linear-gradient(166deg, transparent 0% 50%, #2D3135 50%, #3E4248 100%), linear-gradient(166deg, #3E4248 0%, #2A2E32 50%, #3E4248 50%, #313437 100%) !important;
+box-shadow: 8px 8px 22px rgba(21, 22, 24, 0.38), -4px -2px 16px rgba(195, 200, 205, 0.08) !important;
+ color:#fff !important;
+ border-radius: 7px;
 }
 .card_effect_bg_color {
   background: #fff !important;
@@ -22,24 +51,36 @@ button#copyFromClipBoard,
 .btn-primary:hover {
   box-shadow : none !important
 }
-button.invite_vendor_radius,
-button.analytics_icon_radius,
-button.btn.custom{
-    box-shadow: none !important;
-    background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+.btn-group .invite_vendor_radius,
+.btn-group .analytics_icon_radius {
+  box-shadow: none !important;
+  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  border: 0px solid #0104ff !important;
+  padding: 7px 14px !important;
 }
 button.btn.custom {
-    box-shadow: none !important;
-    /* background-image: linear-gradient( 359deg, rgba(150, 93, 233, 1) 10.8%, rgba(99, 88, 238, 1) 94.3% ) !important; */
-    background: linear-gradient(360deg, #099693 0%, #65d9c9 100%) !important;
+  box-shadow: none !important;
+  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  padding: 7px 14px !important;
   }
-  /* .btn-group button:hover, */
-button.btn.custom:hover{
+.invite_vendor_radius {
+  border-radius: 7px 0px 0px 7px !important;
+}
+.analytics_icon_radius {
+  border-radius: 0px 7px 7px 0px !important;
+}
+button.btn.custom {
+  border-radius: 7px !important;
+}
+.btn-group.refer-vendor-button.btnVendor:hover,
+button.btn.custom:hover {
   transform: scale(1.05);
-  transition: all 0.3s ease;
+  transition: all 0.1s ease;
+  /* background: linear-gradient(180deg, #0c86cc 0%, #3ec7e0 100%) !important; */
 }
 span.btn.Btn-Green.transition {
     box-shadow: none !important;
+    /* padding-top: 1px !important; */
 }
 /* .p-rgt_p-top.bgcolor-unset {
   background: none !important;
@@ -59,16 +100,78 @@ span.btn.Btn-Green.transition {
 }
 /**** tharak(12-01-2024) *********/
 h3#notifications {
-  /* background: #217eac!important; */
   border: unset!important;
   background-image: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
 .p-rgt_p-top {
   border-radius: 7px !important;
 }
-.btn-group button {
-  padding : 7px 14px !important
-}
+
 .page-container-bg-solid .page-sidebar .page-sidebar-menu > li.active > a > .selected {
   border-color: transparent #07b6bb transparent transparent !important;
 }
+
+button.button_blue:disabled,
+ button.button:disabled {
+  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  box-shadow: none !important;
+  opacity: 0.5;
+}
+i.disabled, a.inactive {
+  opacity: 0.5;
+}
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-info, 
+.bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-info, 
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default,
+ .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default,
+  .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, 
+  .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success, 
+  .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-danger, 
+  .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-danger, 
+  .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-warning,
+   .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-warning,
+   .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary
+ {
+  /* color: #fff !important; */
+  background: #0c86cc !important;
+  box-shadow: inset -1.1em 0 0.9em #06beb8;
+}
+.clickicons{
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+/*** 19-01-2024 (Tharak) ****/
+.bookmark-ribbon {
+  border-right:15px solid #06beb8 !important;
+  border-left:15px solid #06beb8 !important;
+}
+.dashboard-stat2:hover {
+  transform: scale(1.05);
+}
+.campaign-type-selected,
+ul.alt-row-style1 li:hover,
+.filter.form-selected,
+.filter.landing-page-selected,
+.mix-filter li.contact-filter-selected {
+  background-image: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  box-shadow: none !important;
+}
+.campaign-type-selected:hover,
+ul.alt-row-style1 li:hover,
+.filter.form-selected:hover,
+.filter.landing-page-selected:hover,
+.mix-filter li.contact-filter-selected:hover {
+  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+  box-shadow: none !important;
+}
+input.cmn-toggle-round-flat + label,
+input.cmn-toggle-round-flat:checked + label,
+button.btn.btn-primary.add-btn {
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+input.cmn-toggle-round-flat + label:before {
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+}
+input.cmn-toggle-round-flat:checked + label:after {
+  background-color: #fff !important;
+}
+/*** 19-01-2024 (Tharak) ****/
