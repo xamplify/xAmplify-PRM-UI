@@ -325,6 +325,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	 checkSelectedDashboardType=[];	
 	 removeMarketingNonInteractiveBox:boolean = false;
 
+	/** XNFR-426 **/
+	leadApprovalOrRejectionOption: boolean = false;
+	leadApprovalStatus:boolean = false;
+
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
 		public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -4453,7 +4457,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	/*******xnfr-426********/
-	leadApprovalStatus:boolean = false;
 	getLeadApprovalstatus(){
 		this.authenticationService.getLeadApprovalStatus(this.referenceService.companyId)
 		.subscribe(
@@ -4462,7 +4465,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
-	leadApprovalOrRejectionOption: boolean = false;
 	setLeadApprovalOrRejectionStatus(event:any){
 		if (event) {
 			this.leadApprovalOrRejectionOption = true;
@@ -4474,11 +4476,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	/*******xnfr-426********/
 	updateLeadApprovalOrRejectionStatus(){
-		//let text = ";
 		let self = this;
 		swal({
 			title: 'Are you sure want to continue?',
-			//text: text,
 			type: 'warning',
 			showCancelButton: true,
 			swalConfirmButtonColor: '#54a7e9',
@@ -4489,11 +4489,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			self.saveLeadApprovalOrRejectionStatus();
 		}, function (dismiss: any) {
 			console.log('you clicked on option' + dismiss);
-			this.getLeadApprovalstatus();
+			//this.leadApprovalStatus=this.leadApprovalOrRejectionOption;
+			//this.leadApprovalOrRejectionOption = !this.leadApprovalOrRejectionOption ;
+			//this.getLeadApprovalstatus();
 		});
 	}
 
-	// XNFR-403
 	/************XNFR-426**************/
 	saveLeadApprovalOrRejectionStatus() {
 		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId, this.leadApprovalOrRejectionOption).subscribe();

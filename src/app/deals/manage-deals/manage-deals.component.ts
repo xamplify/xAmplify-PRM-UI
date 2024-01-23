@@ -89,6 +89,18 @@ export class ManageDealsComponent implements OnInit {
   mergeTagForGuide:any;
   vendorRole:boolean;
   /** User Guides */
+
+  /** XNFR-426 **/
+  deal = new Deal();
+  currentDealId:number;
+  currentPipelineStageName:any;
+  currentIndex:any;
+  dealComment:string="";
+  maxCharsLeft= 250;
+  remainingCharsLeft= this.maxCharsLeft;
+  validateDescription:boolean=true;
+  textAreaDisable:boolean=false;
+
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
@@ -551,6 +563,7 @@ export class ManageDealsComponent implements OnInit {
   closeDealForm() {
     this.showDealForm = false;
     this.showDeals();
+    this.textAreaDisable=false;//xnfr-426
   }
 
   showSubmitDealSuccess() {
@@ -603,6 +616,7 @@ export class ManageDealsComponent implements OnInit {
     this.actionType = "edit";
     this.dealId = deal.id;
     this.selectedDeal=deal;/****xnfr-426******/
+    this.textAreaDisable=true;
   }
 
   confirmDeleteDeal (deal: Deal) {
@@ -1227,29 +1241,26 @@ export class ManageDealsComponent implements OnInit {
   }
 
   /****xnfr-426******/
-  currentDealId:number;
-  currentPipelineStageName:any;
-  currentIndex:any;
   changeDealPipelineStage(currentDealId:number,currentStageName:any, indexnum:number ){
     this.currentDealId = currentDealId;
     this.currentPipelineStageName=currentStageName;
     this.currentIndex = indexnum;
     this.remainingCharsLeft= this.maxCharsLeft;
+    this.textAreaDisable=true;
     let id:string = '#changeDealPipelineStageModel-'+indexnum;
     $(id).modal('show');
   }
 
-  dealComment:string="";
   closeModelPopupBasedOnRow(indexnum:number){
     this.dealComment = "";
     let id:string = '#changeDealPipelineStageModel-'+indexnum;
     $(id).modal('hide');
     this.validateDescription=true;
     this.remainingCharsLeft= this.maxCharsLeft;
+    this.textAreaDisable=false;
     this.showDeals();
   }
 
-  deal = new Deal();
   updateDealPipelineStage(deal: Deal){
     let request: Deal = new Deal();
       request.id = this.currentDealId;
@@ -1273,9 +1284,6 @@ export class ManageDealsComponent implements OnInit {
           });
   }
 
-  maxCharsLeft= 250;
-  remainingCharsLeft= this.maxCharsLeft;
-  validateDescription:boolean=true;
   validateEditStageModelPopup(comment : string ){
     if(comment === '' || comment ===null || comment === undefined){
       this.validateDescription=true;
