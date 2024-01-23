@@ -2938,7 +2938,7 @@ i.fa.fa-files-o:hover,
 i.fa.fa-bullhorn:hover,
 i.fa.fa-edit:hover,
 /* i.fa.fa-line-chart:hover, */
-i.fa.fa-eye:hover,
+/* i.fa.fa-eye:hover, */
 i.fa.fa-history:hover,
 /* i.fa.fa-paint-brush:hover, */
 i.fa.fa-reply:hover,
@@ -3787,7 +3787,7 @@ button.btn.custom:hover{
 }
 .team_green_btn_text,
 .team_blue_btn_text{
-  color:#000 !important
+  color:#fff !important
 }
 input.form-control.remove_checkbox_shadow{
   box-shadow : none !important;
@@ -4062,6 +4062,7 @@ label.ng-tns-c35-19.btn.btn-primary.button-border:hover,
 label.ng-tns-c35-19.btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow:hover {
   transform: none !important;
 }
-button.btn.btn-primary.dropdown-toggle.rounded-0 {
+button.btn.btn-primary.dropdown-toggle.rounded-0,
+button.group-name-cclass.btn-primary.default-btn-cursor {
   background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
 }
