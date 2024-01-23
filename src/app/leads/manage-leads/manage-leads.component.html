@@ -717,7 +717,7 @@
 
 <!-- Add Lead Model-->
 <app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="actionType"
-  (notifySubmitSuccess)="showSubmitLeadSuccess()" (notifyManageLeadsComponentToHidePopup)="resetValues()"
+  (notifySubmitSuccess)="showSubmitLeadSuccess()" (notifyUnReadChatCount)="resetUnReadChatCount()" (notifyManageLeadsComponentToHidePopup)="resetValues()"
   [isVendorVersion]="isVendorVersion" [isOrgAdmin]="isOrgAdmin"></app-add-lead>
 
 <!-- Deal Form-->
@@ -737,6 +737,8 @@
 <div class="modal fade right" id="addNotesModel" tabindex="-1" role="dialog" aria-labelledby="addNotesModel"
   data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-css" role="document">
+    <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px',fullScreenBackdrop:true }">
+    </ngx-loading>
     <!-- Modal content-->
     <div class="modal-content" style="overflow-x: hidden;">
       <div class="modal-header">

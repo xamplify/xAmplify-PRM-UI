@@ -96,6 +96,7 @@ export class ManageLeadsComponent implements OnInit {
   isLeadNotesvalid:boolean = false;
   maxChars: number = 250;
   remainingChars: number = this.maxChars;
+  ngxloading:boolean = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -1235,12 +1236,14 @@ export class ManageLeadsComponent implements OnInit {
 
   /*********XNFR-426******/
   leadApproveReject(lead:Lead , leadNotes:string){
+    this.ngxloading = true;
     lead.leadNotes = leadNotes;
     lead.userId = this.loggedInUserId;
     lead.leadApproveRejectType = this.leadApproveRejectType;
 
     this.leadsService.leadApproveReject(lead).subscribe(response => {
       if(response.statusCode == 200){
+        this.ngxloading = false;
         this.leadApproveRejectType = "";
         this.remainingChars = this.maxChars;
         this.showLeads();
@@ -1273,5 +1276,11 @@ export class ManageLeadsComponent implements OnInit {
     if(this.referenceService.validateCkEditorDescription(leadNotes)){
       this.isLeadNotesvalid = true;
     }
+  }
+
+  resetUnReadChatCount() {
+    this.showLeadForm = false;
+    this.showFilterOption = false;
+    this.showLeads();
   }
 }

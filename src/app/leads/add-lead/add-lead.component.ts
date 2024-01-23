@@ -36,6 +36,9 @@ export class AddLeadComponent implements OnInit {
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyManageLeadsComponentToHidePopup = new EventEmitter();
   @Output() notifyAnalyticsComponentToHidePopup= new EventEmitter();
+  /****XNFR-426****/
+  @Output() notifyUnReadChatCount = new EventEmitter();
+
   lead: Lead = new Lead();
   preview = false;
   edit = false;
@@ -356,6 +359,9 @@ export class AddLeadComponent implements OnInit {
     this.notifyOtherComponent.emit();
     this.notifyAnalyticsComponentToHidePopup.emit();
     this.notifyManageLeadsComponentToHidePopup.emit();
+    if(this.actionType === "edit"){
+      this.notifyUnReadChatCount.emit();
+    }
     $('#leadFormModel').modal('hide');
   }
 
