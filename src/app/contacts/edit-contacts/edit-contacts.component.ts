@@ -56,6 +56,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() isSynchronizationList: boolean;
 	@Input('value') value: number;
 	@Input() isFormList: boolean;
+	@Input() companyName: any;
+	@Input() manageCompanies: boolean = false;
 	/*****XNFR-98******/
 	@Input() isTeamMemberPartnerList:boolean;
 	editContacts: User;
@@ -242,6 +244,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	sweetAlertParameterDto:SweetAlertParameterDto = new SweetAlertParameterDto();
 	showSweetAlert = false;
 	selectedPartner: any;
+	companyRouter = "/home/company/manage";
 
 	 /****XNFR-278****/
 	 mergeOptionClicked = false;

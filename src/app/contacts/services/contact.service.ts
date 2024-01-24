@@ -861,4 +861,11 @@ export class ContactService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    getUserListByUserListId(userListId: number) {
+        var url = this.contactsUrl + "list/" + "userListId/" + userListId + "?access_token=" + this.authenticationService.access_token;
+        return this._http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

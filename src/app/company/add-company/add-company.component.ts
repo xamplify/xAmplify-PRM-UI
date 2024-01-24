@@ -19,7 +19,7 @@ export class AddCompanyComponent implements OnInit {
   @Output() closeEvent = new EventEmitter<any>();
   @Input() public actionType : any;
   @Input() public companyId : any;
-  validationResponse: CustomResponse = new CustomResponse();
+  @Output() notifySubmitSuccess = new EventEmitter();
   customResponse: CustomResponse = new CustomResponse();
   companies: Company[] = [];
   addCompany: Company = new Company();
@@ -68,8 +68,9 @@ export class AddCompanyComponent implements OnInit {
     $('#addCompanyModal').modal('hide');
     this.closeEvent.emit("0");
   }
+  
   validteCompanyName(companyName: string) {
-    if (companyName.trim() != '') {
+    if (companyName.trim().length > 0) {
       this.isCompanyNameValid = true;
     } else {
       this.isCompanyNameValid = false;
@@ -86,6 +87,7 @@ export class AddCompanyComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
           this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+          this.notifySubmitSuccess.emit(); 
           this.addCompanyModalClose();
         } else if (response.statusCode == 500) {
           this.customResponse = new CustomResponse('ERROR', response.message, true);
@@ -133,6 +135,7 @@ export class AddCompanyComponent implements OnInit {
         this.referenceService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
           this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+          this.notifySubmitSuccess.emit(); 
           this.addCompanyModalClose();
           if(response.data.country == null || response.data.country == undefined || response.data.country == ''){
             this.addCompany.country = this.countryNames.countries[0];

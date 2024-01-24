@@ -30,11 +30,23 @@ export class CompanyService {
         .catch(this.handleError);
     }
 
-    getCompanyById(id: number, loggedInUserId: number) {
-      return this.http.get(this.companyUrl + "/id/" + id + "/loggedInUserId/" + loggedInUserId + "?access_token=" + this.authenticationService.access_token)
-          .map(this.extractData)
-          .catch(this.handleError);
-  }
+  getCompanyById(id: number, loggedInUserId: number) {
+    return this.http.get(this.companyUrl + "/id/" + id + "/loggedInUserId/" + loggedInUserId + "?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  } 
+   getCounts(loggedInUserId: number){
+    return this.http.get(this.companyUrl + "counts/loggedInUserId/" + loggedInUserId + "?access_token=" + this.authenticationService.access_token)
+    .map(this.extractData)
+    .catch(this.handleError);
+   }
+
+  deleteCompany(id: number, loggedInUserId: number) {
+    return this.http.delete(this.companyUrl + "/id/" + id + "/loggedInUserId/" + loggedInUserId + "?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  } 
+
   private extractData(res: Response) {
     const body = res.json();
     // return body || {};

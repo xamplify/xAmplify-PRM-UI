@@ -11,7 +11,7 @@
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
               </li>
               <li>
-                <a [routerLink]="companyRouter" translate>Add/manage companies</a>
+                <a [routerLink]="companyRouter" translate>Manage Companies</a>
               </li>
             </ul>
           </div>
@@ -72,6 +72,14 @@
       </div>
 
       <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <app-response-message [customResponse]="customResponse"
+            *ngIf="customResponse.isVisible"></app-response-message>
+        </div>
+      </div>
+
+
+      <div class="row">
         <div class="col-md-12">
           <div class="page-bar remove_cardBgcolor padding_0 p10" id="header">
             <div class="portlet-title">
@@ -81,7 +89,7 @@
                   <h4 class="text-primary pull-left">List of Companies</h4>
                   <div class="page-toolbar col-xs-12 col-sm-5 col-lg-6 pull-right" style="padding: 0px 4px 10px 0px;">
                     <div class="btn-group pull-right width">
-                      <ng-container class='m10'>
+                      <!-- <ng-container class='m10'>
                         <span data-placement="bottom" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
                           title="List View">
                           <i aria-hidden="true" class="fa fa-th-list p10"></i>
@@ -89,7 +97,7 @@
                         <span style="margin-left: 4px !important;" class="btn btn-xs hidden-xs l-g-view"
                           data-toggle="tooltip" data-placement="bottom" title="Grid View"><i class="fa fa-th-large p10"
                             aria-hidden="true"></i></span>
-                      </ng-container>
+                      </ng-container> -->
                       <a style="padding-left: 11px;">
                         <button class="bgcolor-unset p0 btn-transitions" translate>
                           <span class="btn Btn-Green transition d-inline" (click)="addCompanyModalOpen()"> Add a Company
@@ -99,18 +107,17 @@
                       <div class="inputs" align="right" style="float: right; display: inline-flex;">
                         <div class="portlet-input input-inline" style="display: table-cell; margin-right: 15px;">
                           <div class="input-icon right" style="position: relative;right: -11px;">
-                            <input type="text" class="form-control" placeholder="Search">
-                            <!-- <button class="glyphicon glyphicon-remove search-box-item-clear"></button> -->
-                            <button type="submit" class="search-box-item-click">
-                              <i class="fa fa-search" aria-hidden="true"></i>
-                            </button>
+                            <input type="text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="searchKeyPress($event.keyCode)">
+                            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';search()"></button>
+                            <button type="submit" class="search-box-item-click" (click)="search()">
+                              <i class="fa fa-search" aria-hidden="true"></i></button>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div *ngIf="companyService.isCompanyModalPopUp">
-                    <app-add-company (closeEvent)="closeCompanyModal($event)" [actionType]="actionType" [companyId]="companyId"></app-add-company>
+                    <app-add-company (closeEvent)="closeCompanyModal($event)" [actionType]="actionType" [companyId]="companyId" (notifySubmitSuccess)="showSubmitLeadSuccess()"></app-add-company>
                   </div>
                   <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'>
                     <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"></app-list-loader>
@@ -134,20 +141,20 @@
                                 <h4 class="m0 moreipsis ListFontCu">
                                   <span data-toggle="tooltip" data-placement="top"
                                      title="{{company.companyListName}}" class="ListFontCu">
-                                     <b> List Name:</b> {{company.companyListName}}
+                                     <b> {{company?.name}} </b>
                                   </span>
                                </h4>
 
                                <h5 class='moreipsis' style="margin-top: 4px;margin-bottom: 4px !important;">
                                   <span data-toggle="tooltip" data-placement="top"
                                      title="{{company?.email}}">
-                                     <b>By:</b> {{company?.email}}
+                                     <b>Email :</b> {{company?.email}}
                                   </span>
                                </h5>
                                <h4 class="m0 moreipsis ListFontCu">
                                 <span data-toggle="tooltip" data-placement="top"
                                    title="{{company.name}}" class="ListFontCu">
-                                   <b> Company Name:</b> {{company?.name}}
+                                   <b>List Name :</b> {{company?.companyListName}}
                                 </span>
                              </h4>
                               </td>
@@ -176,13 +183,13 @@
                                     </a>
                                     <a class="custom-icon" data-rel="fancybox-button" 
                                       data-toggle="tooltip" data-placement="bottom"
-                                      title="Delete Company" id="company">
+                                      title="Delete Company" id="company" (click)="showAlert(company.id)">
                                       <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
                                       <div class="del-icon"></div>
                                     </a>
                                     <a class="custom-icon" data-rel="fancybox-button" 
                                       data-toggle="tooltip" data-placement="bottom"
-                                      title="Add Contact" id="company" (click)="navigateToAddContactsPage(1)">
+                                      title="Add Contact" id="company" (click)="navigateToAddContactsPage(company.companyUserListId)">
                                       <i class="fa fa-address-card-o IconCustomization" aria-hidden="true"></i>
                                       <div class="clickicons"></div>
                                     </a>
@@ -211,9 +218,6 @@
             </div>
           </div>
         </div>
-        <!-- <app-edit-contacts
-         [selectedContactListId]="selectedContactListId"
-         [contactListId]="selectedContactListId" [contactListName]="selectedContactListName"></app-edit-contacts> -->
       </div>
     </div>
   </div>

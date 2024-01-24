@@ -3,12 +3,12 @@
   <div class="modal-dialog  accounts-modal" style="position: relative !important;">
     <!-- Modal content-->
     <div class="modal-content full_popup">
-      <!-- <div class="row">
+      <div class="row">
         <div class="col-xs-12 col-md-12">
-          <app-response-message [customResponse]="customResponse"
+          <app-response-message class="pg8" [customResponse]="customResponse"
             *ngIf="customResponse.isVisible"></app-response-message>
         </div>
-      </div> -->
+      </div>
       <div class="modal-header popup_header">
         <button type="button" class="close-circle" (click)="addCompanyModalClose()">
           <i class="fa fa-times" aria-hidden="true" style="margin-top: 0px;"></i></button>
@@ -18,9 +18,6 @@
         <app-modal-popup-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
         </app-modal-popup-loader>
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px',fullScreenBackdrop:true }"></ngx-loading>
-        <div class="alert alert-danger" *ngIf="validationResponse.isVisible">
-          <strong class="pre-wrap-next-line">{{validationResponse?.responseMessage}}</strong>
-        </div>
         <div class="hide-scrollbar" *ngIf="!httpRequestLoader.isLoading && !ngxloading">
           <form class="form-horizontal" autocomplete="off">
             <div class="form-group mrg0">
@@ -160,7 +157,7 @@
           translate>Cancel</button>
         <button *ngIf="!edit && !preview" type="submit" class="button bgcolor-unset button_height" [disabled]="!isCompanyNameValid" translate><span
             class="btn Btn-Green transition txt_pd-top3" (click)="saveCompany()">Add</span></button>
-            <button *ngIf="edit" type="submit" class="button bgcolor-unset button_height" translate [disabled]="!isCompanyNameValid"><span
+            <button *ngIf="edit" type="submit" class="button bgcolor-unset button_height" translate><span
               class="btn Btn-Green transition txt_pd-top3"  (click)="editCompany()">Update</span></button>
       </div>
     </div>

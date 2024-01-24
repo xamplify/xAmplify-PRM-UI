@@ -154,7 +154,6 @@ import { CustomUiFilterComponent } from 'app/util/custom-ui-filter/custom-ui-fil
 import { TrimPipe } from 'app/core/custom-pipes/trim.pipe';
 import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
 import { AddCompanyComponent } from 'app/company/add-company/add-company.component';
-import { ManageCompanyComponent } from 'app/company/manage-company/manage-company.component';
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
