@@ -1527,7 +1527,7 @@
 														(click)="resetTabs('templates')"><span
 															class="btn btn-primary transition txt_pd-top3">Change</span></button>
 													<a *ngIf="reDistributeEvent || reDistributeEventManage"
-														class="btn btn-primary btn-sm"
+														class="btn btn-primary btn-sm redistibute_edit_icon"
 														(click)="editPartnerTemplate()"><i
 															class="fa fa-edit"></i>Edit</a>
 												</td>
@@ -1598,7 +1598,8 @@
 													<span class="glyphicon glyphicon-trash"></span>
 												</button>
 												<button type="button" [disabled]="isPreviewEvent"
-													class="btn btn-primary button-blue" (click)="addReplyRows()">
+													class="btn btn-primary button-blue add_icon_bg"
+													(click)="addReplyRows()">
 													<span class="glyphicon glyphicon-plus"></span>
 												</button>
 											</div>
@@ -2047,7 +2048,7 @@
 										[(ngModel)]="checkLaunchOption" style="margin-right:10px " /><span
 										class="text-algn">Schedule</span>
 								</label>
-								<label class="btn green mBtnAlign button-border">
+								<label class="btn Btn-Green mBtnAlign button-border">
 									<input type="radio" class="text-center mLabelAlign radioButton_shadow"
 										name="scheduleCampaign" [value]="launchOptions[2]"
 										(click)="setLaunchOptions(launchOptions[2])" ngDefaultControl

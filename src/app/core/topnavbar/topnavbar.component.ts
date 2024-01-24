@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { SocialService } from '../../social/services/social.service';
@@ -12,8 +12,8 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { VendorInvitation } from '../../dashboard/models/vendor-invitation';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { DashboardService } from "../../dashboard/dashboard.service";
-import { FormGroup, FormBuilder, Validators, FormControl , NgModel} from '@angular/forms';
-declare var $, CKEDITOR, ckInstance:any;
+import { FormGroup, FormBuilder, Validators, FormControl, NgModel } from '@angular/forms';
+declare var $, CKEDITOR, ckInstance: any;
 import { TagInputComponent as SourceTagInput } from 'ngx-chips';
 import "rxjs/add/observable/of";
 import { tap, filter } from 'rxjs/operators';
@@ -29,7 +29,7 @@ import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
   styleUrls: ['./topnavbar.component.css'],
   providers: [Properties, VendorInvitation]
 })
-export class TopnavbarComponent implements OnInit,OnDestroy {
+export class TopnavbarComponent implements OnInit, OnDestroy {
   currentUrl: string;
   roleName: Roles = new Roles();
   vendoorInvitation: VendorInvitation = new VendorInvitation();
@@ -47,8 +47,8 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   invalidTagError = false;
   @ViewChild('tagInput')
   tagInput: SourceTagInput;
-  public validators = [ this.must_be_email.bind(this) ];
-  public errorMessages = {'must_be_email': 'Please be sure to use a valid email format'};
+  public validators = [this.must_be_email.bind(this)];
+  public errorMessages = { 'must_be_email': 'Please be sure to use a valid email format' };
   public onAddedFunc = this.beforeAdd.bind(this);
   private addFirstAttemptFailed = false;
   @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
@@ -56,9 +56,9 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   isLoggedInFromAdminSection = false;
   dashboardTypes = [];
   loadTopNavBar = false;
-  result:any;
-  userId : number;
-  cskin:CustomSkin = new CustomSkin();
+  result: any;
+  userId: number;
+  cskin: CustomSkin = new CustomSkin();
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   showMyVendors: boolean = false;
   vendorCount: any = 0;
@@ -69,7 +69,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   loggedInAsUserEmailId = "";
   isLoggedInAsTeamMember = false;
   vendorAdminCompanyUserEmailId: any;
-  guideHomeUrl:any;
+  guideHomeUrl: any;
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService,
@@ -101,17 +101,18 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     }
     if(userName!=undefined){
       this.sourceType = this.authenticationService.getSource();
+
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
-            this.refService.topNavbarUserService = true;
-            this.utilService.topnavBareLoading = true;
-            this.userService.getUserByUserName(userName).
-              subscribe(
+          this.refService.topNavbarUserService = true;
+          this.utilService.topnavBareLoading = true;
+          this.userService.getUserByUserName(userName).
+            subscribe(
               data => {
                 this.translateService.use(data.preferredLanguage);
                 this.getAllPreferredLanguages(data.preferredLanguage);
-                if(this.vanityServiceURL.isVanityURLEnabled()){
+                if (this.vanityServiceURL.isVanityURLEnabled()) {
                   this.vanityServiceURL.checkVanityURLDetails();
-                }                
+                }
                 refService.userDefaultPage = data.userDefaultPage;
                 const loggedInUser = data;
                 if (loggedInUser.firstName) {
@@ -131,11 +132,11 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
               },
               error => { this.logger.error(this.refService.errorPrepender + ' Constructor():' + error); },
               () => this.logger.log('Finished')
-              );
-          }
-    const roles = this.authenticationService.getRoles();
-    if(roles!=undefined){
-        if (roles.indexOf(this.roleName.videRole) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
+            );
+        }
+        const roles = this.authenticationService.getRoles();
+        if (roles != undefined) {
+          if (roles.indexOf(this.roleName.videRole) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
             this.authenticationService.module.hasVideoRole = true;
           }
           if (roles.indexOf(this.roleName.socialShare) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
@@ -150,42 +151,42 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
           if (roles.indexOf(this.roleName.companyPartnerRole) > -1) {
             this.authenticationService.module.isCompanyPartner = true;
           }
-          if(roles.indexOf(this.roleName.vendorRole)>-1){
-              this.authenticationService.module.isVendor = true;
+          if (roles.indexOf(this.roleName.vendorRole) > -1) {
+            this.authenticationService.module.isVendor = true;
           }
-          if (roles.indexOf(this.roleName.vendorTierRole) > -1){
+          if (roles.indexOf(this.roleName.vendorTierRole) > -1) {
             this.authenticationService.module.isVendorTier = true;
           }
-          if (roles.indexOf(this.roleName.marketingRole) > -1){
+          if (roles.indexOf(this.roleName.marketingRole) > -1) {
             this.authenticationService.module.isMarketing = true;
           }
-	    	if (roles.indexOf(this.roleName.prmRole) > -1){
+          if (roles.indexOf(this.roleName.prmRole) > -1) {
             this.authenticationService.module.isPrm = true;
           }
-    }
-    }else{
-       this.authenticationService.logout();
-    }
-    }catch(error) {this.logger.error('error'+error); }
+        }
+      } else {
+        this.authenticationService.logout();
+      }
+    } catch (error) { this.logger.error('error' + error); }
   }
-  errorHandler(event:any){
+  errorHandler(event: any) {
     event.target.src = 'assets/images/icon-user-default.png';
   }
   private must_be_email(control: FormControl) {
     if (this.addFirstAttemptFailed && !this.validateEmail(control.value)) {
-        return { "must_be_email": true };
+      return { "must_be_email": true };
     }
     return null;
   }
   private beforeAdd(tag: any) {
     let isPaste = false;
-    if(tag['value']) {  isPaste = true; tag = tag.value;}
+    if (tag['value']) { isPaste = true; tag = tag.value; }
     if (!this.validateEmail(tag)) {
       if (!this.addFirstAttemptFailed) {
         this.addFirstAttemptFailed = true;
-        if(!isPaste) { this.tagInput.setInputValue(tag); }
+        if (!isPaste) { this.tagInput.setInputValue(tag); }
       }
-      if(isPaste) {  return Observable.throw(this.errorMessages['must_be_email']); }
+      if (isPaste) { return Observable.throw(this.errorMessages['must_be_email']); }
       else { return Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag)))); }
     }
     this.addFirstAttemptFailed = false;
@@ -196,45 +197,45 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     return (text && EMAIL_REGEXP.test(text));
   }
   public notifications = 0;
-  
-  connectToWebSocket(){
-      
-   // Open connection with server socket
-      let stompClient = this.authenticationService.connect();
-      stompClient.connect({}, frame => {
-          console.log("********************************************WebSocket*********************")
-          // Subscribe to notification topic
-          stompClient.subscribe('/topic/notification', notifications => {
-              // Update notifications attribute with the recent messsage sent from the server
-              this.notifications = JSON.parse(notifications.body).count;
-          })
-      });
+
+  connectToWebSocket() {
+
+    // Open connection with server socket
+    let stompClient = this.authenticationService.connect();
+    stompClient.connect({}, frame => {
+      console.log("********************************************WebSocket*********************")
+      // Subscribe to notification topic
+      stompClient.subscribe('/topic/notification', notifications => {
+        // Update notifications attribute with the recent messsage sent from the server
+        this.notifications = JSON.parse(notifications.body).count;
+      })
+    });
   }
 
   getUnreadNotificationsCount() {
-   try{
-    this.userService.getUnreadNotificationsCount(this.authenticationService.getUserId())
-      .subscribe(
-      data => {
-        this.userService.unreadNotificationsCount = data;
-      },
-      error => this.logger.log(error),
-      () => this.logger.log('Finished')
-      );
-    }catch(error) {this.logger.error('error'+error); }
+    try {
+      this.userService.getUnreadNotificationsCount(this.authenticationService.getUserId())
+        .subscribe(
+          data => {
+            this.userService.unreadNotificationsCount = data;
+          },
+          error => this.logger.log(error),
+          () => this.logger.log('Finished')
+        );
+    } catch (error) { this.logger.error('error' + error); }
   }
 
-  isAddedByVendor(){
-    try{
+  isAddedByVendor() {
+    try {
       this.userService.isAddedByVendor(this.authenticationService.getUserId())
-      .subscribe(
-      data => {
-           this.authenticationService.isAddedByVendor=data;
-      },
-      error => this.logger.log(error),
-      () => this.logger.log('Finished')
-      );
-    }catch(error) {this.logger.error('error'+error); }
+        .subscribe(
+          data => {
+            this.authenticationService.isAddedByVendor = data;
+          },
+          error => this.logger.log(error),
+          () => this.logger.log('Finished')
+        );
+    } catch (error) { this.logger.error('error' + error); }
   }
 
   getRoles() {
@@ -267,75 +268,75 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   getVendorCount() {
     this.myVendorsLoader = true;
     this.dashboardService.getVendorCount(this.vanityLoginDto).subscribe(
-      (response) =>{
+      (response) => {
         if (response.statusCode == 200) {
           this.vendorCount = response.data;
-        }     
-       this.myVendorsLoader = false;
-      },error=>{
+        }
+        this.myVendorsLoader = false;
+      }, error => {
         this.myVendorsLoader = false;
       }
     )
   }
 
-  onRightClick(event){
+  onRightClick(event) {
     return false;
   }
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.isShowCKeditor = false;
-    
+
     $('#requestForVendor').modal('hide');
   }
   ngOnInit() {
-    try{
-     this.getDashboardType();
-     this.getUnreadNotificationsCount();
-     this.getRoles();
-     this.isAddedByVendor();
+    try {
+      this.getDashboardType();
+      this.getUnreadNotificationsCount();
+      this.getRoles();
+      this.isAddedByVendor();
       //this.getTopNavigationColor(this.userId);
       this.guideHomeUrl = this.authenticationService.DOMAIN_URL + 'home/help/guides';
-    }catch(error) {this.logger.error('error'+error); }
+    } catch (error) { this.logger.error('error' + error); }
   }
-  getDashboardType(){
+  getDashboardType() {
     this.userService.getDashboardType().
-    subscribe(
-      data=>{
-        let filteredDashboardTypes:Array<any>;
-        if(data!=undefined && data.length>0){
-          if(this.currentUrl.endsWith('welcome') || this.currentUrl.endsWith('welcome/')){
-            filteredDashboardTypes = this.refService.filterArrayList(data,'Welcome');
-          }else if(this.currentUrl.endsWith('dashboard') || this.currentUrl.endsWith('dashboard/')){
-            filteredDashboardTypes = this.excludeDashboardAndAdvancedDashboard(data,filteredDashboardTypes);
-          }else if(this.currentUrl.endsWith('detailed') || this.currentUrl.endsWith('detailed/')){
-            filteredDashboardTypes = this.refService.filterArrayList(data,'Detailed Dashboard');
-          }else{
-            if(this.refService.userDefaultPage=="WELCOME"){
-              filteredDashboardTypes = this.refService.filterArrayList(data,'Welcome');
-            }else if(this.refService.userDefaultPage=="DASHBOARD"){
-              filteredDashboardTypes = this.excludeDashboardAndAdvancedDashboard(data,filteredDashboardTypes);
-            }else{
-              filteredDashboardTypes = data;
+      subscribe(
+        data => {
+          let filteredDashboardTypes: Array<any>;
+          if (data != undefined && data.length > 0) {
+            if (this.currentUrl.endsWith('welcome') || this.currentUrl.endsWith('welcome/')) {
+              filteredDashboardTypes = this.refService.filterArrayList(data, 'Welcome');
+            } else if (this.currentUrl.endsWith('dashboard') || this.currentUrl.endsWith('dashboard/')) {
+              filteredDashboardTypes = this.excludeDashboardAndAdvancedDashboard(data, filteredDashboardTypes);
+            } else if (this.currentUrl.endsWith('detailed') || this.currentUrl.endsWith('detailed/')) {
+              filteredDashboardTypes = this.refService.filterArrayList(data, 'Detailed Dashboard');
+            } else {
+              if (this.refService.userDefaultPage == "WELCOME") {
+                filteredDashboardTypes = this.refService.filterArrayList(data, 'Welcome');
+              } else if (this.refService.userDefaultPage == "DASHBOARD") {
+                filteredDashboardTypes = this.excludeDashboardAndAdvancedDashboard(data, filteredDashboardTypes);
+              } else {
+                filteredDashboardTypes = data;
+              }
             }
           }
+          this.dashboardTypes = filteredDashboardTypes;
+          this.authenticationService.dashboardTypes = data;
+        }, error => {
+          this.logger.error(error);
         }
-        this.dashboardTypes = filteredDashboardTypes;
-        this.authenticationService.dashboardTypes = data;
-      },error=>{
-        this.logger.error(error);
-      }
-    );
+      );
   }
 
-  excludeDashboardAndAdvancedDashboard(data:any,filteredDashboardTypes:any){
-    if(data.indexOf('Dashboard')>-1){
-      filteredDashboardTypes = this.refService.filterArrayList(data,'Dashboard');
-    }else if(data.indexOf('Advanced Dashboard')>-1){
-      filteredDashboardTypes = this.refService.filterArrayList(data,'Advanced Dashboard');
+  excludeDashboardAndAdvancedDashboard(data: any, filteredDashboardTypes: any) {
+    if (data.indexOf('Dashboard') > -1) {
+      filteredDashboardTypes = this.refService.filterArrayList(data, 'Dashboard');
+    } else if (data.indexOf('Advanced Dashboard') > -1) {
+      filteredDashboardTypes = this.refService.filterArrayList(data, 'Advanced Dashboard');
     }
     return filteredDashboardTypes;
   }
 
-  lockScreen(){
+  lockScreen() {
     this.router.navigate(['/userlock']);
   }
   errorImage(event) { event.target.src = 'assets/images/xamplify-logo.png'; }
@@ -350,133 +351,134 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   }
 
 
-  openRequestAsVendorModal(){
-      this.isShowCKeditor = true;
-      CKEDITOR.config.height = '300px';
-      CKEDITOR.config.baseFloatZIndex = 1E5;
-      this.vendoorInvitation.subject = "Check out xAmplify's marketing automation platform"
-      this.vendoorInvitation.message = "Hi There," + "<br><br>" + "As one of your channel partners, I wanted to tell you about this great new marketing automation platform that has made redistributing campaigns so much more efficient and effective for me. It's called xAmplify and I really think you should check it out."
+  openRequestAsVendorModal() {
+    this.isShowCKeditor = true;
+    CKEDITOR.config.height = '300px';
+    CKEDITOR.config.baseFloatZIndex = 1E5;
+    this.vendoorInvitation.subject = "Check out xAmplify's marketing automation platform"
+    this.vendoorInvitation.message = "Hi There," + "<br><br>" + "As one of your channel partners, I wanted to tell you about this great new marketing automation platform that has made redistributing campaigns so much more efficient and effective for me. It's called xAmplify and I really think you should check it out."
 
-          + "<br><br>" + "You see, once a vendor uses xAmplify to share an email, video, or social media campaign with me, I can log in and redistribute it in just a few clicks. I then get access to end-user metrics on every email and video campaign (opens, clicks, views, watch times) to easily prioritize who to follow up with. Plus, there are other useful features like automatic co-branding and deal registration all built into a single platform."
+      + "<br><br>" + "You see, once a vendor uses xAmplify to share an email, video, or social media campaign with me, I can log in and redistribute it in just a few clicks. I then get access to end-user metrics on every email and video campaign (opens, clicks, views, watch times) to easily prioritize who to follow up with. Plus, there are other useful features like automatic co-branding and deal registration all built into a single platform."
 
-          + "<br><br>" + "It'd be great if I could redistribute your content via xAmplify. Like I said, it's made a real impact on my other co-marketing efforts and it would be awesome for our partnership to experience the same success."
+      + "<br><br>" + "It'd be great if I could redistribute your content via xAmplify. Like I said, it's made a real impact on my other co-marketing efforts and it would be awesome for our partnership to experience the same success."
 
-          + "<br><br>" + "Visit " + "<a href='www.xamplify.com'>" + "www.xamplify.com" + "</a>" + " to learn more, or feel free to ask me questions about how it works on my end."
+      + "<br><br>" + "Visit " + "<a href='www.xamplify.com'>" + "www.xamplify.com" + "</a>" + " to learn more, or feel free to ask me questions about how it works on my end."
 
-          + "<br><br>" + "Best, " + "<br><br>"
+      + "<br><br>" + "Best, " + "<br><br>"
 
-          + this.authenticationService.user.firstName
+      + this.authenticationService.user.firstName
 
-          + "<br>" + this.authenticationService.user.firstName + " " + this.authenticationService.user.lastName
+      + "<br>" + this.authenticationService.user.firstName + " " + this.authenticationService.user.lastName
 
-          + "<br>" + this.authenticationService.user.companyName
+      + "<br>" + this.authenticationService.user.companyName
 
-          $( '#requestForVendor' ).modal( 'show' );
+    $('#requestForVendor').modal('show');
   }
 
-  validateVendoorInvitation(){
-      if(this.vendoorInvitation.message.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.subject.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.emailIds){
-          this.isValidVendorInvitation = true;
-      }else{
-          this.isValidVendorInvitation = false;
-      }
+  validateVendoorInvitation() {
+    if (this.vendoorInvitation.message.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ") && this.vendoorInvitation.subject.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ") && this.vendoorInvitation.emailIds) {
+      this.isValidVendorInvitation = true;
+    } else {
+      this.isValidVendorInvitation = false;
+    }
   }
-  sendRequestForVendorEmail(){
-      this.loading = true;
-      this.isError = false;
-      this.refService.onAddingEmailIds(this.emailIds);
-		let self = this;
-	$.each(this.emailIds,function(_index:number,value:any){
-		let emailId = value.value;
-		self.vendoorInvitation.emailIds.push(emailId);
-	});
-     if(this.vendoorInvitation.message.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.subject.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.emailIds.length != 0 ){
+  sendRequestForVendorEmail() {
+    this.loading = true;
+    this.isError = false;
+    this.refService.onAddingEmailIds(this.emailIds);
+    let self = this;
+    $.each(this.emailIds, function (_index: number, value: any) {
+      let emailId = value.value;
+      self.vendoorInvitation.emailIds.push(emailId);
+    });
+    if (this.vendoorInvitation.message.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ") && this.vendoorInvitation.subject.replace(/\s\s+/g, '').replace(/\s+$/, "").replace(/\s+/g, " ") && this.vendoorInvitation.emailIds.length != 0) {
       this.dashboardService.sendVendorInvitation(this.authenticationService.getUserId(), this.vendoorInvitation)
         .subscribe(
           data => {
-              this.isValidationMessage = true;
-              if(data.statusCode === 200){
-                this.customResponse = new CustomResponse( 'SUCCESS', "Vendor invitation has been sent successfully.", true );
-              }else if(data.statusCode === 417){
-                this.customResponse = new CustomResponse( 'ERROR', data.data[0].message, true );
-              }
-              else{
-                  this.customResponse = new CustomResponse( 'ERROR', "Mail sending failed! something went wrong please try after some time.", true );
-              }
+            this.isValidationMessage = true;
+            if (data.statusCode === 200) {
+              this.customResponse = new CustomResponse('SUCCESS', "Vendor invitation has been sent successfully.", true);
+            } else if (data.statusCode === 417) {
+              this.customResponse = new CustomResponse('ERROR', data.data[0].message, true);
+            }
+            else {
+              this.customResponse = new CustomResponse('ERROR', "Mail sending failed! something went wrong please try after some time.", true);
+            }
             this.loading = false;
-           // this.closeInvitationModal()
+            // this.closeInvitationModal()
           },
-          error => {console.log(error)
+          error => {
+            console.log(error)
             this.loading = false;
             //this.closeInvitationModal();
-            this.customResponse = new CustomResponse( 'ERROR', "Mail sending failed! something went wrong please try after some time.", true );
+            this.customResponse = new CustomResponse('ERROR', "Mail sending failed! something went wrong please try after some time.", true);
           },
           () => {
             this.loading = false;
             //this.closeInvitationModal();
           }
         );
-      }else{
-          this.isError = true;
-          this.loading = false;
-          $('#requestForVendor').animate({ scrollTop: 0 }, 'fast');
-          $("#requestForVendor").scrollTop(0);
-      }
+    } else {
+      this.isError = true;
+      this.loading = false;
+      $('#requestForVendor').animate({ scrollTop: 0 }, 'fast');
+      $("#requestForVendor").scrollTop(0);
+    }
   }
 
   closeInvitationModal() {
-      $('#requestForVendor').modal('hide');
-      this.vendoorInvitation.emailIds = [];
-      this.emailIds = [];
-      this.isValidationMessage = false;
+    $('#requestForVendor').modal('hide');
+    this.vendoorInvitation.emailIds = [];
+    this.emailIds = [];
+    this.isValidationMessage = false;
   }
 
-  goBackToAdminPanel(){
+  goBackToAdminPanel() {
     this.utilService.addLoginAsLoader();
     this.loading = true;
     let adminEmailId = JSON.parse(localStorage.getItem('loginAsUserEmailId'));
     this.refService.loaderFromAdmin = true;
     this.dashboardService.getVendorsMyProfile(adminEmailId)
-    .subscribe(
-      response => {
-        localStorage.removeItem('loginAsUserId');
-        localStorage.removeItem('loginAsUserEmailId');
-        /***Removing Team Member Local Stoarage**********/
-        localStorage.removeItem('adminId');
-				localStorage.removeItem('adminEmailId');
-        this.utilService.setUserInfoIntoLocalStorage(adminEmailId, response);
-        let self = this;
-        setTimeout(function () {
-          self.router.navigate(['home/dashboard/admin-report'])
-            .then(() => {
-              window.location.reload();
-            })
-        }, 500);
-      },
-      (error: any) => {
-        this.refService.showSweetAlertErrorMessage("Unable to Go back to admin panel.Please try after sometime");
-        this.loading = false;
-        this.refService.loaderFromAdmin = false;
-      },
-      () => this.logger.info('Finished goBackToAdminPanel()')
-    );
+      .subscribe(
+        response => {
+          localStorage.removeItem('loginAsUserId');
+          localStorage.removeItem('loginAsUserEmailId');
+          /***Removing Team Member Local Stoarage**********/
+          localStorage.removeItem('adminId');
+          localStorage.removeItem('adminEmailId');
+          this.utilService.setUserInfoIntoLocalStorage(adminEmailId, response);
+          let self = this;
+          setTimeout(function () {
+            self.router.navigate(['home/dashboard/admin-report'])
+              .then(() => {
+                window.location.reload();
+              })
+          }, 500);
+        },
+        (error: any) => {
+          this.refService.showSweetAlertErrorMessage("Unable to Go back to admin panel.Please try after sometime");
+          this.loading = false;
+          this.refService.loaderFromAdmin = false;
+        },
+        () => this.logger.info('Finished goBackToAdminPanel()')
+      );
   }
-  
-  getAllPreferredLanguages(userPreferredLangId: string) {    
+
+  getAllPreferredLanguages(userPreferredLangId: string) {
     let preferredLangFilePath = 'assets/config-files/preferred-languages.json';
     this.userService.getAllPreferredLanguages(preferredLangFilePath).subscribe(result => {
       this.authenticationService.allLanguagesList = result.languages;
-      if(userPreferredLangId){
+      if (userPreferredLangId) {
         this.authenticationService.userPreferredLanguage = this.authenticationService.allLanguagesList.find(item => item.id === userPreferredLangId).id;
         this.authenticationService.beeLanguageCode = this.authenticationService.allLanguagesList.find(item => item.id === userPreferredLangId).beeId;
-      }      
+      }
     }, error => {
       console.log(error);
     });
   }
 
-  selectedLanguage(langCode:any){
-    this.authenticationService.userPreferredLanguage= langCode;
+  selectedLanguage(langCode: any) {
+    this.authenticationService.userPreferredLanguage = langCode;
     this.translateService.use(langCode);
   }
 
@@ -491,43 +493,43 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
 
   }
 
-  goToRouter(url:string){
+  goToRouter(url: string) {
     this.delayAndNavigate(url);
-}
+  }
 
-// getting loading from here
-delayAndNavigate(url:string){
-  this.authenticationService.module.topNavBarLoader = true;
-  let self = this;
-    setTimeout(()=>{     
+  // getting loading from here
+  delayAndNavigate(url: string) {
+    this.authenticationService.module.topNavBarLoader = true;
+    let self = this;
+    setTimeout(() => {
       self.refService.goToRouter(url);
-      self.authenticationService.module.topNavBarLoader = false;          
-		}, 500);
+      self.authenticationService.module.topNavBarLoader = false;
+    }, 500);
   }
-//
-  
-navigateToCompanyProfile(url:string,companyProfileCreated:boolean){
-  if(companyProfileCreated){
-    this.refService.goToRouter(url);
-  }else{
-    this.refService.goToRouter("/home/dashboard/add-company-profile");
+  //
+
+  navigateToCompanyProfile(url: string, companyProfileCreated: boolean) {
+    if (companyProfileCreated) {
+      this.refService.goToRouter(url);
+    } else {
+      this.refService.goToRouter("/home/dashboard/add-company-profile");
+    }
   }
-}
-
- 
 
 
 
-  
+
+
+
 
   /****Add Leads****/
-  navigateAndOpenAddLeadsModalPopUp(){
+  navigateAndOpenAddLeadsModalPopUp() {
     this.authenticationService.module.navigatedFromMyProfileSection = true;
     this.refService.goToRouter("/home/leads/manage");
   }
 
   /****Add Deals****/
-  navigateAndOpenAddDealsModalPopUp(){
+  navigateAndOpenAddDealsModalPopUp() {
     this.authenticationService.module.navigatedFromMyProfileSection = true;
     this.refService.goToRouter("/home/deal/manage");
 
