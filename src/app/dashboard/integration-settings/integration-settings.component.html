@@ -83,7 +83,7 @@
                   </span>
                   <ul *ngIf="integrationType === 'HUBSPOT'" class="textDecoration">
                     <li>{{sfCustomField.displayName}}</li>
-                    <li *ngIf="sfCustomField.formDefaultFieldType != null">
+                    <li *ngIf="(sfCustomField.formDefaultFieldType != null)  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)">
                       Mapped As:
                       <ng-container [ngSwitch]="sfCustomField.formDefaultFieldType">
                         <i *ngSwitchCase="'AMOUNT'" class="fa fa-usd" aria-hidden="true"></i>
@@ -163,19 +163,18 @@
                                 [ngModelOptions]="{standalone: true}">
                             </td>
                             <td
-                              *ngIf="sfCustomField.type === 'number' || sfCustomField.type === 'text' || sfCustomField.type === 'date'"
+                              *ngIf="(sfCustomField.type === 'number' || sfCustomField.type === 'text' || sfCustomField.type === 'date')  && (!authenticationService?.module?.isTeamMember || authenticationService?.module?.isAdmin)"
                               class="text-center p10" style="width:25%;">
                               <label *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'" for="html"
                                 style="float: left;">Map As</label>
-                              <select class="form-control formSelectCustomization"
+                              <select class="form-control formSelectCustomization fa"
                                 *ngIf="sfCustomField.selected && integrationType === 'HUBSPOT'"
                                 [(ngModel)]="sfCustomField.formDefaultFieldType" [ngModelOptions]="{standalone: true}"
                                 (change)="onFieldSelectionChange(sfCustomField)">
                                 <option [ngValue]="null">None</option>
-                                <option *ngIf="sfCustomField.type === 'number'" [ngValue]="'AMOUNT'">Amount</option>
-                                <option *ngIf="sfCustomField.type === 'date'" [ngValue]="'CLOSE_DATE'">Close Date
-                                </option>
-                                <option *ngIf="sfCustomField.type === 'text'" [ngValue]="'DEAL_NAME'">Deal Name</option>
+                                <option *ngIf="sfCustomField.type === 'number'" [ngValue]="'AMOUNT'">&#xf155; Amount</option>
+                                <option *ngIf="sfCustomField.type === 'date'" [ngValue]="'CLOSE_DATE'">&#xf073; Close Date</option>
+                                <option *ngIf="sfCustomField.type === 'text'" [ngValue]="'DEAL_NAME'">&#xf02c; Deal Name</option>
                               </select>
                               <div class="error-message" *ngIf="sfCustomField.typeMismatch">{{
                                 sfCustomField.typeMismatchMessage }}</div>

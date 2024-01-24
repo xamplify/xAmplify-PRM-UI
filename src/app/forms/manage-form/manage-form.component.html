@@ -237,6 +237,12 @@
                                             <div
                                                 class="actions-block custom-width-icon ActionAlign mActionAlign mb-dflex actionicons">
                                                 <div class="mMobileAlignAction2 ActionAlign mActionTop mrg_top0">
+                                                    <a class="custom-icon"
+                                                        *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm"
+                                                        data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyForm(form.id)">
+                                                        <i class="fa fa-files-o IconCustomization" aria-hidden="true"></i>
+                                                        <div class="clickicons"></div>
+                                                    </a>
                                                     <a class="mMobileDisable custom-icon"
                                                         *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)"
                                                         data-toggle="tooltip" data-placement="top" title="Edit"
@@ -245,13 +251,12 @@
                                                             aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
                                                     </a>
-                                                    <a class="custom-icon" data-toggle="tooltip" data-placement="top"
-                                                        title="Preview" (click)="preview(form.id)">
+                                                </div>
+                                                <div class="mMobileAlignAction2 ActionAlign mActionTop mrg_top0">
+                                                    <a class="custom-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
                                                         <i class="fa fa-eye IconCustomization" aria-hidden="true"></i>
                                                         <div class="clickicons"></div>
                                                     </a>
-                                                </div>
-                                                <div class="mMobileAlignAction2 ActionAlign mActionTop mrg_top0">
                                                     <a class="custom-icon"
                                                         *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.surveyCampaignForm && !pagination?.partnerLandingPageForm"
                                                         data-toggle="tooltip" data-placement="top"
@@ -259,6 +264,8 @@
                                                         <i class="fa fa-clipboard IconCustomization"></i>
                                                         <div class="clickicons"></div>
                                                     </a>
+                                                </div>
+                                                <div class="mMobileAlignAction2">
                                                     <ng-container *ngIf="form.campaignForm&&!form.dataShare">
                                                         <a class="cursor custom-icon mrgt-unset">
                                                             <i class="fa fa-line-chart IconCustomization"
@@ -279,7 +286,7 @@
                                                             <i class="fa fa-wpforms" aria-hidden="true"></i>
                                                         </a>
                                                     </ng-container>
-                                                </ng-container> -->
+                                                 </ng-container> -->
 
                                                     <ng-container
                                                         *ngIf="(form.campaignForm&&form.dataShare)|| !form.campaignForm || form.landingPageForm">
@@ -304,8 +311,6 @@
                                                             <span class="badge" id="notification">{{form.count}}</span>
                                                         </ng-container>
                                                     </ng-container>
-                                                </div>
-                                                <div class="mMobileAlignAction2">
                                                     <a class="custom-icon"
                                                         *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)"
                                                         id="template-delete" (click)="confirmDelete(form)"
@@ -368,6 +373,12 @@
                                 <span *ngIf="form.formSubType === 'SURVEY'" translate>Survey</span>
                             </div>
                             <div class="bar gridIconCustomization">
+                                <a class="Iconhover custom-grid-icon"
+                                    *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm"
+                                    data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyForm(form.id)">
+                                    <i class="fa fa-files-o" aria-hidden="true"></i>
+                                    <div class="clickicons"></div>
+                                </a>
                                 <a class="mMobileDisable Iconhover custom-grid-icon"
                                     *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && !pagination.surveyCampaignForm && (deleteAndEditAccess || loggedInUserId==form.userId)"
                                     data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">

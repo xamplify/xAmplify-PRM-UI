@@ -80,8 +80,14 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
         if (this.referenceService.isCreated) {
-            this.message = "Form created successfully";
-            this.showMessageOnTop(this.message);
+            /*** XNFR-433 ***/
+            if (this.referenceService.isCopyForm) {
+                this.referenceService.showSweetAlertSuccessMessage("Form Copied Successfully");
+                $(window).scrollTop(0);
+            } else {
+                this.message = "Form created successfully";
+                this.showMessageOnTop(this.message);
+            }
         } else if (this.referenceService.isUpdated) {
             this.message = "Form updated successfully";
             this.showMessageOnTop(this.message);
@@ -292,7 +298,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.previewPopUpComponent.previewForm(id);
     }
 
-
     edit(id: number) {
         let formInput: Form = new Form();
         formInput.id = id;
@@ -502,5 +507,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     showDetailedResponse(formSubmitId: any) {
         this.selectedFormSubmitId = formSubmitId;
         this.detailedResponse = true;
+    }
+
+    /***XNFR-433***/
+    copyForm(id: number) {
+        this.formService.isCopyForm = true;
+        this.formService.formId = id;
+        this.router.navigate(["/home/forms/add"]);
     }
 }

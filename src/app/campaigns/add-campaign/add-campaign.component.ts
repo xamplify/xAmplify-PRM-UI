@@ -241,6 +241,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
   /***XNFR-387 ****/
   notifyWorkflowToolTipMessage = "";
   isMultipleCrmsActivated = false;
+  skipConfirmAlert = false;
   constructor(public referenceService:ReferenceService,public authenticationService:AuthenticationService,
     public campaignService:CampaignService,public xtremandLogger:XtremandLogger,public callActionSwitch:CallActionSwitch,
     private activatedRoute:ActivatedRoute,public integrationService: IntegrationService,private pagerService: PagerService,
@@ -617,7 +618,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                     this.referenceService.showSweetAlertErrorMessage(errorMessage+" Please Contact Admin.");
                 }else{
                     this.removeBlur();
-                    this.xtremandLogger.errorPage(error);
+                    this.navigateToErrorPage(error);
                 }
         },()=>{
             this.findCampaignPipeLines();
@@ -646,8 +647,13 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 pagesPagination = this.pagerService.getPagedItems(pagesPagination, data.list);
                 this.pagesLoader =  false;
             },error=>{
-                this.xtremandLogger.errorPage(error);
+                this.navigateToErrorPage(error);
             });
+    }
+
+    private navigateToErrorPage(error: any) {
+        this.skipConfirmAlert = true;
+        this.xtremandLogger.errorPage(error);
     }
 
     findPagesOnEnterKeyPress(eventKeyCode:number){
@@ -820,7 +826,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 this.videosLoader =  false;
             },error=>{
                 this.videosLoader = false;
-                this.xtremandLogger.errorPage(error);
+                this.navigateToErrorPage(error);
             });
     }
 
@@ -1382,7 +1388,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 this.emailTemplatesOrLandingPagesLoader =  false;
             },error=>{
                 this.emailTemplatesOrLandingPagesLoader = false;
-                this.xtremandLogger.errorPage(error);
+                this.navigateToErrorPage(error);
             });
 
     }
@@ -1692,7 +1698,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                     this.campaignRecipientsLoader = false;
                 },
                 (error: string) => {
-                    this.xtremandLogger.errorPage(error);
+                    this.navigateToErrorPage(error);
                 })
     }
 
@@ -1899,7 +1905,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 reply.loader = false;
             },error=>{
                 reply.loader = false;
-                this.xtremandLogger.errorPage(error);
+                this.navigateToErrorPage(error);
             });
     }
 
@@ -1962,7 +1968,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                 url.loader = false;
             },error=>{
                 url.loader = false;
-                this.xtremandLogger.errorPage(error);
+                this.navigateToErrorPage(error);
             });
     }
 
@@ -2068,7 +2074,7 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
                         }
                         
                     } else {
-                        this.xtremandLogger.errorPage(error);
+                        this.navigateToErrorPage(error);
                    }
                 });
         }
@@ -2373,7 +2379,8 @@ export class AddCampaignComponent implements OnInit,ComponentCanDeactivate,OnDes
     canDeactivate(): Observable<boolean> | boolean {
         this.authenticationService.stopLoaders();
         let isInvalidEditPage = !this.isAdd && this.campaignService.campaign==undefined;
-        if(this.anyLaunchButtonClicked || isInvalidEditPage || this.authenticationService.module.logoutButtonClicked || this.isMultipleCrmsActivated){
+        if(this.anyLaunchButtonClicked || isInvalidEditPage 
+            || this.authenticationService.module.logoutButtonClicked || this.isMultipleCrmsActivated || this.skipConfirmAlert){
             return true;
         }else{
             return false;

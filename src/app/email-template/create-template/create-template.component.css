@@ -34,3 +34,25 @@
   }
 }
 
+.popup-cu-widthalign {
+  width: 84%;
+  top: 118px;
+  left: 40px;
+}
+
+/* mobile */
+@media (min-width: 300px) and (max-width: 767px) {
+  .popup-cu-widthalign {
+    width: 95%;
+    top: 200px;
+    left: 6px;
+  }
+}
+@media (min-width: 768px) and (max-width: 900px) {
+  .popup-cu-widthalign {
+    width: 100%;
+    top: 150px;
+    left: 0px;
+  }
+}
+

@@ -72,32 +72,36 @@ export class TopnavbarComponent implements OnInit, OnDestroy {
   guideHomeUrl: any;
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
-    public refService: ReferenceService, public logger: XtremandLogger, public properties: Properties, private translateService: TranslateService,
-    private vanityServiceURL: VanityURLService) {
-    try {
-      this.isLoggedInFromAdminSection = this.utilService.isLoggedInFromAdminPortal();
-      this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
-      this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
-      this.currentUrl = this.router.url;
-      const userName = this.authenticationService.user.emailId;
-      this.loggedInAsUserEmailId = userName;
-      if (this.isLoggedInAsTeamMember) {
-        this.vendorAdminCompanyUserEmailId = this.utilService.getLoggedInAdminCompanyEmailId();
-      } else {
-        this.vendorAdminCompanyUserEmailId = this.utilService.getLoggedInVendorAdminCompanyEmailId();
+    public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService,
+    private vanityServiceURL:VanityURLService) {
+    try{
+      if(this.authenticationService.isLocalHost() || this.authenticationService.isQADomain()){
+        this.connectToWebSocket();
       }
-      this.userId = this.authenticationService.getUserId();
-      /*** XNFR-134** */
-      this.vanityLoginDto.userId = this.userId;
-      let companyProfileName = this.authenticationService.companyProfileName;
-      if (companyProfileName !== undefined && companyProfileName !== "") {
-        this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
-        this.vanityLoginDto.vanityUrlFilter = true;
-      } else {
-        this.vanityLoginDto.vanityUrlFilter = false;
-      }
-      if (userName != undefined) {
-        this.sourceType = this.authenticationService.getSource();
+    this.isLoggedInFromAdminSection = this.utilService.isLoggedInFromAdminPortal();
+    this.isLoggedInAsPartner = this.utilService.isLoggedAsPartner();
+    this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
+    this.currentUrl = this.router.url;
+    const userName = this.authenticationService.user.emailId;
+    this.loggedInAsUserEmailId = userName;
+    if(this.isLoggedInAsTeamMember){
+      this.vendorAdminCompanyUserEmailId = this.utilService.getLoggedInAdminCompanyEmailId();
+    }else{
+      this.vendorAdminCompanyUserEmailId = this.utilService.getLoggedInVendorAdminCompanyEmailId();
+    }
+    this.userId = this.authenticationService.getUserId();
+    /*** XNFR-134** */
+    this.vanityLoginDto.userId = this.userId;
+    let companyProfileName = this.authenticationService.companyProfileName;
+    if (companyProfileName !== undefined && companyProfileName !== "") {
+      this.vanityLoginDto.vendorCompanyProfileName = companyProfileName;
+      this.vanityLoginDto.vanityUrlFilter = true;
+    }else{
+      this.vanityLoginDto.vanityUrlFilter = false;
+    }
+    if(userName!=undefined){
+      this.sourceType = this.authenticationService.getSource();
+
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
           this.refService.topNavbarUserService = true;
           this.utilService.topnavBareLoading = true;

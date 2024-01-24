@@ -606,9 +606,9 @@ export class CampaignService {
             .map(( response: any ) => response );
     }
     
-    downRegularVideoCampaignViews( campaignId: number, campaignType: string, publicEventCampaign:boolean, interactiveViews:boolean): Observable<Response> {
+    downRegularVideoCampaignViews( campaignId: number, campaignType: string, isChannelCampaign:boolean ,publicEventCampaign:boolean, interactiveViews:boolean): Observable<Response> {
         this.logger.info( campaignId );
-        return this.http.get( this.URL + "campaign/" + campaignId + "/" +campaignType + "/"+ publicEventCampaign + "/"+ interactiveViews +"/download-campaign-views-details?access_token=" + this.authenticationService.access_token )
+        return this.http.get( this.URL + "campaign/" + campaignId + "/" + campaignType + "/" + isChannelCampaign + "/"+ publicEventCampaign + "/"+ interactiveViews +"/download-campaign-views-details?access_token=" + this.authenticationService.access_token )
             .map(( response: any ) => response );
     }
     
@@ -1290,7 +1290,7 @@ export class CampaignService {
      /********XNFR-318********/
     findCampaignEmailTemplates(emailTemplatesPagination:Pagination){
         emailTemplatesPagination.userId = this.authenticationService.getUserId();
-        let url = this.URL + "campaign/findCampaignEmailTemplates?access_token=" + this.authenticationService.access_token;
+        let url = this.URL + "campaign/findCampaignEmailTemplates?searchKey="+emailTemplatesPagination.searchKey+"&access_token=" + this.authenticationService.access_token;
         return this.http.post(url, emailTemplatesPagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -1308,7 +1308,7 @@ export class CampaignService {
      /********XNFR-318********/
     findPages(pagesPagination:Pagination){
         pagesPagination.userId = this.authenticationService.getUserId();
-        let url = this.URL + "landing-page/findPagesForCampaign?access_token=" + this.authenticationService.access_token;
+        let url = this.URL + "landing-page/findPagesForCampaign?searchKey="+pagesPagination.searchKey+"&access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagesPagination)
             .map(this.extractData)
             .catch(this.handleError);

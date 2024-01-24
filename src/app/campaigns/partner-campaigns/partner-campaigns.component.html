@@ -117,13 +117,13 @@
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-5 col-md-5 p0">
-								<div class="portlet-input input-inline" style="">
-									<div class="input-icon" style="">
+								<div class="portlet-input input-inline">
+									<div class="input-icon">
 										<input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
 											class="form-control" placeholder="Search..."
 											(keypress)="eventHandler($event.keyCode)">
 										<button class="glyphicon glyphicon-remove search-box-item-clear"
-											*ngIf="searchKey" (click)="searchKey=''"></button>
+											*ngIf="searchKey" (click)="searchKey='';searchCampaigns()"></button>
 										<button type="submit" class="search-box-item-click" (click)="searchCampaigns()">
 											<i class="fa fa-search"></i>
 										</button>

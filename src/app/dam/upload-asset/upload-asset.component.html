@@ -138,11 +138,11 @@
                                           </div>
                                        </div>
                                        <!-- end here -->
-                                       <!---Asset-->
-                                       <!-- class="mb-padding" -->
-                                       <div *ngIf="isAdd">
-                                          <span [style.color]="invalidAssetName ? 'red':''"><strong>Upload Asset<span
-                                                   class="required">*</span></strong></span>
+                                       <!---Upload Asset-->
+                                       <div>
+                                          <span [style.color]="invalidAssetName ? 'red':''"><strong>
+                                             {{uploadOrReplaceAssetText}}<span *ngIf="isAdd" class="required">*</span></strong>
+                                          </span>
                                           <div class="row">
                                              <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
                                                 <div class="upload-asset-div" (click)="browse()"
@@ -152,14 +152,9 @@
                                                    <div class="text-center card-template">
                                                       <img class="img-templates"
                                                          src="../../../assets/images/uploadimage.png" alt="">
-                                                      <h2 class="upload-video" style="margin:-5px;padding-top: 5px;"
-                                                         translate>Upload
-                                                         Asset
-                                                      </h2>
-                                                      <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE |
-                                                         translate}}</h6>
-                                                      <button class="button_blue bgcolor-unset" style="color:#fff"
-                                                         translate><span
+                                                      <h2 class="upload-video" style="margin:-5px;padding-top: 5px;">{{uploadOrReplaceAssetText}}</h2>
+                                                      <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE}}</h6>
+                                                      <button class="button_blue bgcolor-unset" style="color:#fff"><span
                                                             class="btn btn-primary transition txt_pd-top3">Browse</span></button>
                                                       <br><br>
                                                       <span *ngIf="uploadedAssetName?.length>0">
@@ -172,7 +167,7 @@
                                                    </div>
                                                 </div>
                                              </div>
-                                             <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
+                                             <div class="col-md-6" [class.customDisableCss]='isDisable==true' *ngIf="isAdd">
                                                 <div class="upload-asset-div">
                                                    <div class="text-center" style="margin-bottom:10px;">
                                                       <br />

@@ -138,7 +138,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     isAssetPublishedEmailNotification = false;
     assetPublishEmailNotificationLoader = true;
     isAssetPublished = false;
-
+    uploadOrReplaceAssetText = "Upload Asset";
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch){
@@ -185,6 +185,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			this.id = this.route.snapshot.params['id'];
 			this.getAssetDetailsById(this.id);
 			this.submitButtonText = "Update";
+            this.uploadOrReplaceAssetText = "Replace Asset";
 		}
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.listTags(new Pagination());
@@ -273,7 +274,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 			);
 
 	}
-    sudaImg:any;
+    uploadedImage:any;
 	chooseAsset(event: any) {
 		this.invalidAssetName = false;
 		let files: Array<File>;
@@ -292,33 +293,45 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 				this.showAssetErrorMessage('Max file size is 800 MB');
 			}else if(file['name'].lastIndexOf(".")==-1) {
                 this.showValidExtensionErrorMessage();
-            }			
+            }else if(!this.isAdd){
+                let fileName = file['name'];
+                let extension = this.referenceService.getFileExtension(fileName);
+                if (extension == this.damUploadPostDto.assetType) {
+                    this.setUploadedFileProperties(file);
+                } else {
+                    this.showAssetErrorMessage('Invalid file type. Only ' + this.damUploadPostDto.assetType + " file is allowed.");
+                }
+            }	
 			else{
-                this.sudaImg = file;
-				this.formData.delete("uploadedFile");
-	            this.uploadedAssetName  = "";
-	            this.uploadedCloudAssetName = "";
-	            this.damUploadPostDto.source = "";
-	            this.customResponse = new CustomResponse();
-				this.formData.append("uploadedFile", file, file['name']);
-				this.uploadedAssetName = file['name'];
-				this.damUploadPostDto.cloudContent = false;
-				this.damUploadPostDto.fileName = this.uploadedAssetName;
-	            this.damUploadPostDto.downloadLink = null;
-	            this.damUploadPostDto.oauthToken = null;
-	            this.isVideoAsset = this.isVideo(this.uploadedAssetName);
-	            if(this.isVideoAsset){
-	            	this.videoPreviewPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file)));
-	            	this.showVideoPreview = true;
-	            	this.fileSize = file.size;
-	            	this.isDisable = true;
-	            }
+                this.setUploadedFileProperties(file);
 			}
 		}else{
 			this.clearPreviousSelectedAsset();
 		}
 		this.validateAllFields();
 	}
+
+    private setUploadedFileProperties(file: File) {
+        this.uploadedImage = file;
+        this.formData.delete("uploadedFile");
+        this.uploadedAssetName = "";
+        this.uploadedCloudAssetName = "";
+        this.damUploadPostDto.source = "";
+        this.customResponse = new CustomResponse();
+        this.formData.append("uploadedFile", file, file['name']);
+        this.uploadedAssetName = file['name'];
+        this.damUploadPostDto.cloudContent = false;
+        this.damUploadPostDto.fileName = this.uploadedAssetName;
+        this.damUploadPostDto.downloadLink = null;
+        this.damUploadPostDto.oauthToken = null;
+        this.isVideoAsset = this.isVideo(this.uploadedAssetName);
+        if (this.isVideoAsset) {
+            this.videoPreviewPath = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file)));
+            this.showVideoPreview = true;
+            this.fileSize = file.size;
+            this.isDisable = true;
+        }
+    }
 
 	clearPreviousSelectedAsset(){
 		this.formData.delete("uploadedFile");

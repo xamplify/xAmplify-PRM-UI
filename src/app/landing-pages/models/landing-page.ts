@@ -23,5 +23,9 @@ export class LandingPage {
     companyProfileName: string="";
     aliasUrl = "";
     openLinksInNewTab = false;
+    /*XNFR-432*/
+    vanityUrlFilter = false;
+    copyPage = false;
+     /*XNFR-432*/
 
 }
