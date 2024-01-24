@@ -3,7 +3,9 @@
 .button_blue::before,
 div > button.btn-primary:hover,
 div.Btn-Green:hover,
-.button::before {
+.button::before ,
+/** 23-01-2024 **/
+.btn-success:hover {
   background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important;
   box-shadow: none !important;
   border-radius: 7px !important;
@@ -12,6 +14,7 @@ div.Btn-Green:hover,
   background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
 .btn-group button.salesforce-btn,
+.btn-group button.button_blue,
 .button_blue, 
 .Btn-Green, 
 .button,      
@@ -19,8 +22,10 @@ div.Btn-Green:hover,
 .button_blue:hover,
 .btn-primary:hover,
 .Btn-Green:hover,
-/* .Btn-Green:hover, */
-button#save\&delete_button {
+button#save\&delete_button, 
+/** 23-01-2024 **/
+.btn-success 
+{
   background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
   /* background: linear-gradient(87deg, #00ACEC 0%, #00ED95 100%) !important; */
   box-shadow: none !important;
@@ -48,7 +53,8 @@ box-shadow: 8px 8px 22px rgba(21, 22, 24, 0.38), -4px -2px 16px rgba(195, 200, 2
   box-shadow: none !important;
 }
 button#copyFromClipBoard,
-.btn-primary:hover {
+.btn-primary:hover,
+.full_popup {
   box-shadow : none !important
 }
 .btn-group .invite_vendor_radius,
@@ -144,14 +150,17 @@ i.disabled, a.inactive {
   border-right:15px solid #06beb8 !important;
   border-left:15px solid #06beb8 !important;
 }
-.dashboard-stat2:hover {
+/* .dashboard-stat2:hover {
   transform: scale(1.05);
-}
-.campaign-type-selected,
+} */
+/* .campaign-type-selected, */
 ul.alt-row-style1 li:hover,
 .filter.form-selected,
 .filter.landing-page-selected,
-.mix-filter li.contact-filter-selected {
+.mix-filter li.contact-filter-selected,
+.mix-filter li:hover, .mix-filter li.active, 
+.mix-filter li.campaign-type-selected, 
+.mix-filter li.emailtemplate-selected {
   background-image: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
   box-shadow: none !important;
 }
@@ -175,3 +184,45 @@ input.cmn-toggle-round-flat:checked + label:after {
   background-color: #fff !important;
 }
 /*** 19-01-2024 (Tharak) ****/
+/*** 23-01-2024 (Tharak) ****/
+div#click-1:hover,
+div#reply-1:hover,
+.col-sm-12.dashboard-stat2.p0.clearfix:hover,
+div#content-div:hover,
+div#social-campaign-list-div:hover,
+.col-sm-12.dashboard-stat2.pt0:hover,
+label.ng-tns-c35-19.btn.btn-primary.button-border:hover,
+label.ng-tns-c35-19.btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow:hover,
+div#reply-2:hover,
+div#reply-4:hover,
+div#reply-3:hover {
+  transform: none !important;
+}
+.dashboard-stat2.m0:hover{
+  transform: scale(1.05);
+}
+/***** 24-01-2024 ***/
+.card_padding{
+  border-radius: 0px 0px 15px 15px !important;
+  background: linear-gradient(0deg, #178dd1 0, #2ebab5 100%) !important;
+}
+.aspect_ratio {
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  border-radius: 7px;
+}
+.aspect_ratio:hover {
+  background: linear-gradient(89deg,#06beb8 0, #0c86cc 100%) !important;
+}
+
+.page-sidebar .page-sidebar-menu > li.active > a, .page-sidebar .page-sidebar-menu > li.hover > a {
+  background-color: #444649 !important;
+}
+.left-menu-color ul li a:hover{
+    background-color: #444649 !important;
+}
+.p0-neo-dark {
+  padding: 0px !important;
+}
+.pbc-m3 {
+ margin: 1px -10px !important;
+}
