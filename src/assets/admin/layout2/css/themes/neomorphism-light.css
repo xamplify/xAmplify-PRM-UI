@@ -784,7 +784,7 @@ select {
   border: 1px solid #191b1e !important;
 }
 .integration-cards {
-  border: 1px solid #2f4857 !important;
+  border: 1px solid #d0d5db !important;
 }
 .xamplify-dropdown-content {
   background-color: #2b3c46 !important;
@@ -1787,7 +1787,7 @@ p.addhrtosvg {
 }
 
 .cardfotter-toggleon {
-  border: 1px solid #191b1e !important;
+  border: 1px solid #d0d5db !important;
   background: #f0f5fa !important;
   box-shadow: inset 5px 5px 10px #d6dadf, inset -5px -5px 10px #ffffff;
 }
@@ -3321,7 +3321,7 @@ input.field-border-customization {
   border-radius: 10px;
 }
 .activeCRM{
-  background: #c8d0e7 !important;
+  background: #a7d2ec !important;
   box-shadow: -5px 5px 10px #bebebe, 5px -5px 10px #ffffff !important;
   border-radius: 10px;
 }
@@ -3939,6 +3939,7 @@ a.title.padding_bottom.text-color.content-bg.row-space{
 .btn-group > .group-name-cclass,
 a.btn.btn-block.btn-primary.text-uppercase{
   background: none !important;
+  color: #000 !important;
 }
 .col-xs-12.col-sm-6.col-md-6.col-lg-5.bg-color-for-card,
 .col-xs-12.col-sm-6.col-md-6.col-lg-5.bg-color-for-footercard2{
@@ -4062,7 +4063,8 @@ label.ng-tns-c35-18.btn.btn-primary.button-border:hover,
 label.ng-tns-c35-18.btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow:hover,
 label.ng-tns-c10-7.btn.btn-primary.button-border:hover,
 label.ng-tns-c10-7.btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow:hover,
-.aspect_ratio:hover {
+.aspect_ratio:hover,
+a button.btn.btn-white:hover {
   background: linear-gradient(89deg,#06beb8 0, #0c86cc 100%) !important;
 }
 div > h4.p01{
@@ -4133,9 +4135,15 @@ li.active-tab a.active-tab-anchor-text{
   background: #f0f5fa !important;
   box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
 }
-.p0-neo {
+.p0-neo-dark {
   padding: 0px !important;
 }
 .pbc-m3 {
  margin: 1px -10px !important;
 }
+a button.btn.btn-white {
+  color: #fff !important;
+}
+/* .switch {
+  background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
+} */
