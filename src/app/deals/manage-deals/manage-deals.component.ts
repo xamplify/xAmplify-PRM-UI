@@ -94,7 +94,6 @@ export class ManageDealsComponent implements OnInit {
   deal = new Deal();
   currentDealId:number;
   selectedDealForPopup:any;
-  dealComment:string="";
   maxCharsLeft= 250;
   remainingCharsLeft= this.maxCharsLeft;
   textAreaDisable:boolean=false;
@@ -1250,7 +1249,6 @@ export class ManageDealsComponent implements OnInit {
   }
 
   closeDealChangeModelPopup(indexnum:number){
-    this.dealComment = "";
     let popUp:string = '#changeDealPipelineStageModel-'+indexnum;
     $(popUp).modal('hide');
     this.remainingCharsLeft= this.maxCharsLeft;
@@ -1264,7 +1262,7 @@ export class ManageDealsComponent implements OnInit {
     request.id = this.currentDealId;
     request.pipelineStageId = deal.pipelineStageId;
     request.userId = this.loggedInUserId;
-    request.dealComment = $.trim(this.dealComment);
+    request.dealComment = $.trim(deal.dealComment);
     this.dealsService.changeDealStatus(request)
       .subscribe(
         response => {

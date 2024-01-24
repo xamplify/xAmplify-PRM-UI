@@ -393,7 +393,7 @@
                                       <div class="form-group">
                                         <h4 class="modal-title" translate>Add Comments</h4>
                                         <textarea class="form-control" placeholder="Write your comment here" name="dealComment" rows="5"
-                                          (input)="getRemainingCharCount(dealComment)" [(ngModel)]="dealComment" maxlength="250"></textarea>
+                                          (input)="getRemainingCharCount(deal.dealComment)" [(ngModel)]="deal.dealComment" maxlength="250"></textarea>
                                         <span>
                                           <p>{{remainingCharsLeft}} characters left...</p>
                                         </span>
