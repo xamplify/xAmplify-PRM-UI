@@ -1,4 +1,4 @@
-<span *ngIf ="!authenticationService?.module?.isMarketingCompany">
+<span [hidden] ="authenticationService?.module?.isMarketingCompany">
  <label>Select {{authenticationService?.partnerModule?.customName}} / List Of
   {{authenticationService?.partnerModule?.customName}} For Publishing (Optional) </label>
  <div class="panel with-nav-tabs panel-default">

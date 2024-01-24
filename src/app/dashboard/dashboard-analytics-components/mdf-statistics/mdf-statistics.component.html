@@ -1,76 +1,78 @@
-<div [ngClass]="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || 
-authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationService?.module?.isMarketingCompany ? 'col-xs-12 col-sm-12':'col-xs-12 col-sm-6'" style="padding: 0">
+<div
+    [ngClass]="authenticationService?.module?.isPrm || authenticationService?.module?.isPrmTeamMember || authenticationService?.module?.isPrmAndPartner || 
+authenticationService?.module?.isPrmAndPartnerTeamMember || authenticationService?.module?.isMarketingCompany ? 'col-xs-12 col-sm-12':'col-xs-12 col-sm-6 mdf_card_height'">
     <div class="col-sm-12">
-      <div class="portlet light" style="margin-bottom: 20px;">
-          <div class="portlet-title mb0mh0">
-              <div class="caption">
-                  <span class="caption-subject" translate>MDF Balance Statistics</span>
-              </div>
-          </div>
-          <div class="portlet-body clearfix">
-              <ng-container>
-                  <app-dashboard-loader *ngIf="mdfStatsLoader"></app-dashboard-loader>
-              </ng-container>
-              <ng-container *ngIf="!mdfStatsLoader && mdfStatsStatusCode!=200">
-                  <div class="alert alert-danger">
-                      <strong>{{properties?.serverErrorMessage}}</strong>
-                  </div>
-              </ng-container>
-              <ng-container *ngIf="!mdfStatsLoader && mdfStatsStatusCode==200">
-                  <div class="col-md-12 col-lg-12">
-                      <div class="row">
-                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 pl0" title="$ {{mdfData?.totalBalance}}">
-                              <div class="portlet light card-height">
-                                  <div>
-                                      <div class="col-xs-3 p0">
-                                          <i class="fa fa-dollar icon1" aria-hidden="true"></i>
-                                      </div>
-                                      <div class="col-xs-9 card-align">
-                                          <h3 class="number">
-                                              {{mdfData?.totalBalanceInString}}
-                                          </h3>
+        <div class="portlet light" style="margin-bottom: 20px;">
+            <div class="portlet-title mb0mh0">
+                <div class="caption">
+                    <span class="caption-subject" translate>MDF Balance Statistics</span>
+                </div>
+            </div>
+            <div class="portlet-body clearfix">
+                <ng-container>
+                    <app-dashboard-loader *ngIf="mdfStatsLoader"></app-dashboard-loader>
+                </ng-container>
+                <ng-container *ngIf="!mdfStatsLoader && mdfStatsStatusCode!=200">
+                    <div class="alert alert-danger">
+                        <strong>{{properties?.serverErrorMessage}}</strong>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!mdfStatsLoader && mdfStatsStatusCode==200">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 pl0" title="$ {{mdfData?.totalBalance}}">
+                                <div class="portlet light card-height">
+                                    <div>
+                                        <div class="col-xs-3 p0">
+                                            <i class="fa fa-dollar icon1" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="col-xs-9 card-align">
+                                            <h3 class="number">
+                                                {{mdfData?.totalBalanceInString}}
+                                            </h3>
 
-                                          <p class="partners-text" title="Total Funds">Total Funds</p>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4  pl0" title="$ {{mdfData?.usedBalance}}">
-                              <div class="portlet light card-height">
-                                  <div>
-                                      <div class="col-xs-3 p0">
-                                          <i class="fa fa-dollar icon2" aria-hidden="true"></i>
-                                      </div>
-                                      <div class="col-xs-9 card-align">
-                                          <h3 class="number">
-                                              {{mdfData?.usedBalanceInString}}
-                                          </h3>
+                                            <p class="partners-text" title="Total Funds">Total Funds</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4  pl0" title="$ {{mdfData?.usedBalance}}">
+                                <div class="portlet light card-height">
+                                    <div>
+                                        <div class="col-xs-3 p0">
+                                            <i class="fa fa-dollar icon2" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="col-xs-9 card-align">
+                                            <h3 class="number">
+                                                {{mdfData?.usedBalanceInString}}
+                                            </h3>
 
-                                          <p class="partners-text" title="Used Funds">Used Funds</p>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 pl0" title=" $ {{mdfData?.availableBalance}}">
-                              <div class="portlet light card-height">
-                                  <div>
-                                      <div class="col-xs-3 p0">
-                                          <i class="fa fa-dollar icon3" aria-hidden="true"></i>
-                                      </div>
-                                      <div class="col-xs-9 card-align">
-                                          <h3 class="number">
-                                              {{mdfData?.availableBalanceInString}}
-                                          </h3>
+                                            <p class="partners-text" title="Used Funds">Used Funds</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 pl0"
+                                title=" $ {{mdfData?.availableBalance}}">
+                                <div class="portlet light card-height">
+                                    <div>
+                                        <div class="col-xs-3 p0">
+                                            <i class="fa fa-dollar icon3" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="col-xs-9 card-align">
+                                            <h3 class="number">
+                                                {{mdfData?.availableBalanceInString}}
+                                            </h3>
 
-                                          <p class="partners-text" title="Available Funds">Available Funds</p>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </ng-container>
-          </div>
-      </div>
-  </div>
+                                            <p class="partners-text" title="Available Funds">Available Funds</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
 </div>
