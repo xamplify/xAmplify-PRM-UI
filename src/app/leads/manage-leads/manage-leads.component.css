@@ -166,6 +166,6 @@ select.form-control.select-width.FilerFormWidth {
   width: 93%;
 }
 
-.form-group.textareaStyles p{
+.form-group.textareaStyles span{
   padding-left: 25px;
 }
