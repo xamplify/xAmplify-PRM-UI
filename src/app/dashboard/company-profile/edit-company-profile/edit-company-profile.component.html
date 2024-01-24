@@ -943,7 +943,8 @@
 				</div>
 				<div class="d-flex justify-content-between">
 					<div class="button-group" style="position: relative;text-align:left">
-						<button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
+						<button class="btn-info aspect_ratio" (click)="toggleContainWithinAspectRatio()"
+							[disabled]="!showCropper">
 
 							{{
 							containWithinAspectRatio
@@ -951,13 +952,13 @@
 							: 'Contain Within Aspect Ratio'
 							}}
 						</button>
-						<button class="btn-info" (click)="zoomOut()" [disabled]="!showCropper"><i
+						<button class="btn-info aspect_ratio" (click)="zoomOut()" [disabled]="!showCropper"><i
 								class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i>
 						</button>
-						<button class="btn-info" (click)="zoomIn()" [disabled]="!showCropper"><i
+						<button class="btn-info aspect_ratio" (click)="zoomIn()" [disabled]="!showCropper"><i
 								class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i>
 						</button>
-						<button class="btn-info" (click)="resetImage()" [disabled]="!showCropper"> <i
+						<button class="btn-info aspect_ratio" (click)="resetImage()" [disabled]="!showCropper"> <i
 								class="fa fa-refresh" title="reset" data-toggle="tooltip"
 								aria-hidden="true"></i></button>
 					</div>
@@ -1041,7 +1042,7 @@
 
 				<div class="d-flex justify-content-between">
 					<div class="button-group" style="position: relative;text-align:left">
-						<button class="btn-info" (click)="toggleContainWithinAspectRatioBgImage()"
+						<button class="btn-info aspect_ratio" (click)="toggleContainWithinAspectRatioBgImage()"
 							[disabled]="!showCropper">
 
 							{{
@@ -1050,14 +1051,14 @@
 							: 'Contain Within Aspect Ratio'
 							}}
 						</button>
-						<button class="btn-info" (click)="zoomOutBgImage()" [disabled]="!showCropper"><i
+						<button class="btn-info aspect_ratio" (click)="zoomOutBgImage()" [disabled]="!showCropper"><i
 								class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i>
 						</button>
-						<button class="btn-info" (click)="zoomInBgImage()" [disabled]="!showCropper"><i
+						<button class="btn-info aspect_ratio" (click)="zoomInBgImage()" [disabled]="!showCropper"><i
 								class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i>
 						</button>
-						<button class="btn-info" (click)="resetImageBgImage()" [disabled]="!showCropper"> <i
-								class="fa fa-refresh" title="reset" data-toggle="tooltip"
+						<button class="btn-info aspect_ratio" (click)="resetImageBgImage()" [disabled]="!showCropper">
+							<i class="fa fa-refresh" title="reset" data-toggle="tooltip"
 								aria-hidden="true"></i></button>
 					</div>
 					<div>

@@ -983,7 +983,7 @@ a.left.fa.fa-chevron-left.btn.btn-success.dashboard_carasol_bg,
 a.right.fa.fa-chevron-right.btn.btn-success.dashboard_carasol_bg {
   background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
-input.cmn-toggle-round-flat + label:before {
+input.cmn-toggle-round-flat + label:before{
   background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
 }
 .timeline-item {
@@ -4061,7 +4061,8 @@ label.ng-tns-c10-15.btn.btn-primary.button-border:hover,
 label.ng-tns-c35-18.btn.btn-primary.button-border:hover,
 label.ng-tns-c35-18.btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow:hover,
 label.ng-tns-c10-7.btn.btn-primary.button-border:hover,
-label.ng-tns-c10-7.btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow:hover {
+label.ng-tns-c10-7.btn.Btn-Green.mBtnAlign.button-border.campaign_save_shadow:hover,
+.aspect_ratio:hover {
   background: linear-gradient(89deg,#06beb8 0, #0c86cc 100%) !important;
 }
 div > h4.p01{
@@ -4119,7 +4120,22 @@ button.btn.btn-primary.dropdown-toggle {
 }
 .card_padding{
   border-radius: 0px 0px 15px 15px !important;
+  background: linear-gradient(0deg, #178dd1 0, #2ebab5 100%) !important;
 }
 .col-item{
   border-radius: 15px !important;
+}
+.aspect_ratio {
+  background: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  border-radius: 7px;
+}
+li.active-tab a.active-tab-anchor-text{
+  background: #f0f5fa !important;
+  box-shadow: 0.3rem 0.3rem 0.6rem #c8d0e7, -0.2rem -0.2rem 0.5rem #FFFFFF !important;
+}
+.p0-neo {
+  padding: 0px !important;
+}
+.pbc-m3 {
+ margin: 1px -10px !important;
 }

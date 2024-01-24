@@ -3076,7 +3076,8 @@
             <div class="modal-body">
                 <button style="position: relative;top: -5px;"
                     class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"
-                    *ngIf="!imageChangedEvent; else uploadButton"><span class="btn Btn-Green transition">Upload
+                    *ngIf="!imageChangedEvent; else uploadButton"><span
+                        class="btn Btn-Green transition txt_pd-top3">Upload
                         image</span>
                     <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file"
                         (change)="fileChangeListener($event, cropper)">
@@ -3084,7 +3085,7 @@
                 <ng-template #uploadButton>
                     <button style="position: relative;top: -5px;"
                         class="button fileinput-button-css pd_left1 bgcolor-unset upload_btn_pdg"><span
-                            class="btn Btn-Green transition">Upload
+                            class="btn Btn-Green transition txt_pd-top3">Upload
                             image</span>
                         <input style="height: 36px;" title=" " accept=".jpg,.jpeg,.png" id="custom-input" type="file"
                             (change)="fileChangeListener($event, cropper)">
@@ -3114,7 +3115,8 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="button-group" style="position: relative;text-align:left">
-                        <button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
+                        <button class="btn-info aspect_ratio" (click)="toggleContainWithinAspectRatio()"
+                            [disabled]="!showCropper">
 
                             {{
                             containWithinAspectRatio
@@ -3122,19 +3124,19 @@
                             : 'Contain Within Aspect Ratio'
                             }}
                         </button>
-                        <button class="btn-info" (click)="zoomOut()" [disabled]="!showCropper"><i
+                        <button class="btn-info aspect_ratio" (click)="zoomOut()" [disabled]="!showCropper"><i
                                 class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i>
                         </button>
-                        <button class="btn-info" (click)="zoomIn()" [disabled]="!showCropper"><i
+                        <button class="btn-info aspect_ratio" (click)="zoomIn()" [disabled]="!showCropper"><i
                                 class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i>
                         </button>
-                        <button class="btn-info" (click)="resetImage()" [disabled]="!showCropper"> <i
+                        <button class="btn-info aspect_ratio" (click)="resetImage()" [disabled]="!showCropper"> <i
                                 class="fa fa-refresh" title="reset" data-toggle="tooltip"
                                 aria-hidden="true"></i></button>
                     </div>
                     <div>
                         <button class="button_blue bgcolor-unset" [disabled]="!showCropper"
-                            (click)="uploadProfileImage()"><span class="btn btn-primary transition">Save
+                            (click)="uploadProfileImage()"><span class="btn btn-primary transition txt_pd-top3">Save
                                 Changes</span></button>
                     </div>
                 </div>
