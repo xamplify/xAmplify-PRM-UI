@@ -154,6 +154,9 @@ i.disabled, a.inactive {
   transform: scale(1.05);
 } */
 /* .campaign-type-selected, */
+.mix-filter-li-selected,
+li.mix-filter-li-selected,
+li.mix-filter-li-selected:hover,
 ul.alt-row-style1 li:hover,
 .filter.form-selected,
 .filter.landing-page-selected,
@@ -225,4 +228,11 @@ div#reply-3:hover {
 }
 .pbc-m3 {
  margin: 1px -10px !important;
+}
+#sort-text,
+.input-icon.right > .form-control {
+  padding-left: 10px !important;
+}
+.partner_stat_card_height{
+  padding: 0px !important;
 }
