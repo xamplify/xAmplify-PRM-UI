@@ -21,7 +21,7 @@ export class ConnectwiseAuthenticationComponent implements OnInit {
   loading: boolean = false;
   currentUser: string;
   companyId: any;
-  clientId: any;
+  instanceUrl: any;
   publicKey: any;
   privateKey: any;
 
@@ -55,7 +55,7 @@ export class ConnectwiseAuthenticationComponent implements OnInit {
           this.loading = false;
           if (response.statusCode == 200) {
             let data = response.data;
-            this.clientId = data.clientId;
+            this.instanceUrl = data.instanceUrl;
             this.companyId = data.externalOrganizationId;
             this.publicKey = data.publicKey;
             this.privateKey = data.privateKey;            
@@ -76,7 +76,7 @@ export class ConnectwiseAuthenticationComponent implements OnInit {
     if (this.companyId == undefined || this.companyId == null || this.companyId.trim().length <= 0) {
       valid = false;
       errorMessage = "Please provide ConnectWise Company ID";
-    } else if (this.clientId == undefined || this.clientId == null || this.clientId.trim().length <= 0) {
+    } else if (this.instanceUrl == undefined || this.instanceUrl == null || this.instanceUrl.trim().length <= 0) {
       valid = false;
       errorMessage = "Please provide ConnectWise Client ID";
     } else if (this.publicKey == undefined || this.publicKey == null || this.publicKey.trim().length <= 0) {
@@ -101,7 +101,7 @@ export class ConnectwiseAuthenticationComponent implements OnInit {
     this.loading = true;
     let requestObj = {
       userId: this.loggedInUserId,
-      clientId: this.clientId.trim(),
+      instanceUrl: this.instanceUrl.trim(),
       publicKey: this.publicKey.trim(),
       privateKey: this.privateKey.trim(),
       externalOrganizationId: this.companyId.trim()

@@ -226,6 +226,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	showExpandButton = false;
 	showShareListPopup : boolean = false;
 	isFormList = false;
+	isCompanyList = false;
+	selectedAssociatedCompany:string;
 	selectedFilterIndex: number = 0;
   showFilter = true;
   resetTMSelectedFilterIndex  : Subject<boolean> = new Subject<boolean>();
@@ -389,6 +391,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 						pagination.filterBy = "FORM-LEADS";
 					}else if(this.selectedFilterIndex==2){
 						pagination.filterBy = "ALL";
+					}else if(this.selectedFilterIndex==3){
+						pagination.filterBy = "COMPANY-CONTACTS";
 					}
 				}
                 if(this.sharedLeads){
@@ -864,7 +868,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 	}
 
 	editContactList(contactSelectedListId: number, contactListName: string, uploadUserId: number, 
-		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean) {
+		isDefaultPartnerList: boolean, isSynchronizationList: boolean, isFormList: boolean,isTeamMemberPartnerList:boolean, isCompanyList:boolean, selectedAssociatedCompany: string) {
 		this.uploadedUserId = uploadUserId;
 		this.selectedContactListId = contactSelectedListId;
 		this.selectedContactListName = contactListName;
@@ -874,6 +878,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 		this.showAll = false;
 		this.showEdit = true;
 		this.isFormList = isFormList;
+		this.isCompanyList = isCompanyList;
+		this.selectedAssociatedCompany = selectedAssociatedCompany;
 		$("#pagination").hide();
 	}
 
