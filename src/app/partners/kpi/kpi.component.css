@@ -41,21 +41,3 @@
 	font-size: 20px;
     margin-top: 5px;
 }
-
-
-i:hover::after {
-    content: attr(data-title);
-    background-color: #eee;
-    color: #080808;
-    padding: 10px;
-    border-radius: 4px;
-    font-size: 12px;
-	font-weight: bold;
-    line-height: 10px;
-    display: block;
-    top: 5px;
-    right: 40px;
-    position: absolute;
-    white-space: nowrap;
-    z-index: 1;
-}
