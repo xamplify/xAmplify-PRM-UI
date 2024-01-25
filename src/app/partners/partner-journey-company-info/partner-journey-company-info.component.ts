@@ -19,6 +19,8 @@ export class PartnerJourneyCompanyInfoComponent implements OnInit {
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   loggedInUserId: number = 0;
   companyInfo: any;
+  isInfonull = false;
+  errorMessage = "";
 
   constructor(public authenticationService: AuthenticationService,
     public referenseService: ReferenceService, public parterService: ParterService,
@@ -37,6 +39,11 @@ export class PartnerJourneyCompanyInfoComponent implements OnInit {
         this.referenseService.loading(this.httpRequestLoader, false);
         if (response.statusCode == 200) {
           this.companyInfo = response.data;	
+          if(!(this.companyInfo != null))
+          {
+            this.isInfonull = true;
+            this.errorMessage = " Partnership has been deleted ";
+          }
         }        	
 			},
 			(_error: any) => {
