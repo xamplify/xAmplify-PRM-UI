@@ -166,7 +166,7 @@
 
                       <a *ngIf="(isPartnerVersion || isOrgAdmin || authenticationService?.module?.isMarketingCompany) && !authenticationService?.module?.deletedPartner"
                         (click)="addLead()" style="padding-left: 4px;">
-                        <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
+                        <button class="button_blue bgcolor-unset p0 btn-transitions mrgt1-2" translate>
                           <span class="btn btn-primary transition d-inline"><i class="fa fa-plus  mb-btns"
                               aria-hidden="true"></i> Add a Lead</span>
                         </button>
@@ -176,7 +176,7 @@
                       <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT'"
                         (click)="syncLeadsWithActiveCRM()">
                         <button
-                          class="btn salesforce-btn button neg-mar-top bgcolor-unset p0 neg-mg-btm btn-transitions"
+                          class="btn salesforce-btn button  bgcolor-unset p0 btn-transitions mrgt1-2"
                           style="margin-left: 3px;" data-toggle="tooltip" data-placement="bottom" title="Synchronize"
                           translate>
 

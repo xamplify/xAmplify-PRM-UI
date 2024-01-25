@@ -2041,7 +2041,7 @@
                                                                         src="{{item.moduleIcon}}" alt="Image Not Found">
                                                                 </td>
                                                                 <td>
-                                                                    <div class="override-actions">
+                                                                    <div class="override-actions justify-content-start mleft-10">
                                                                         <a class="custom-icon"
                                                                             [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'"
                                                                             data-toggle="tooltip"
@@ -3389,8 +3389,8 @@
             </div>
             <div class="modal-footer" style="border:none">
                 <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
-                <button type="button" class="btn Btn-Green" (click)="confirmAndsaveExcludedUser(addContactuser)"
-                    [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate>Add</button>
+                <button type="button" class="button bgcolor-unset btn-top3" (click)="confirmAndsaveExcludedUser(addContactuser)"
+                    [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate><span class="btn Btn-Green transition txt_pd-top3">Add</span></button>
             </div>
         </div>
     </div>
@@ -3438,8 +3438,8 @@
             </div>
             <div class="modal-footer" style="border:none">
                 <button class="btn Btn-Gray" (click)="addDomainModalClose()" translate>Cancel</button>
-                <button type="button" class="btn Btn-Green" (click)="confirmAndsaveExcludedDomain(domain)"
-                    [disabled]="!validDomainPattern" translate>Add</button>
+                      <button type="button" class="button bgcolor-unset btn-top3" (click)="confirmAndsaveExcludedDomain(domain)"
+                    [disabled]="!validDomainPattern" translate><span class="btn Btn-Green transition txt_pd-top3">Add</span></button>
             </div>
         </div>
     </div>
