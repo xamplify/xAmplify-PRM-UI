@@ -60,6 +60,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	@Input() manageCompanies: boolean = false;
 	/*****XNFR-98******/
 	@Input() isTeamMemberPartnerList:boolean;
+	@Input() isCompanyContactList:boolean = false;
+	@Input() associatedCompany: any;
 	editContacts: User;
 	@Output() notifyParent: EventEmitter<User>;
 	@ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
@@ -732,7 +734,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						//this.allUsers = this.contactsByType.allContactsCount;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList,this.isCompanyContactList, this.associatedCompany);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -960,7 +962,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList,this.isCompanyContactList, this.associatedCompany);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 						});
@@ -1641,7 +1643,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						this.loading = false;
 						this.selectedAddContactsOption = 8;
 						this.xtremandLogger.info("update Contacts ListUsers:" + data);
-						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList);
+						this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList, this.isFormList,this.isTeamMemberPartnerList,this.isCompanyContactList, this.associatedCompany);
 						$("tr.new_row").each(function() {
 							$(this).remove();
 
