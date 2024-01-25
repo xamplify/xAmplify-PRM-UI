@@ -1290,8 +1290,7 @@ strong {
   color: #827500 !important;
   border-color: #008fd5 !important;
 }
-.b-b-c,
-.b-b-c :hover{
+.b-b-c{
   color: #2b005c !important;
   border-color: #008fd5 !important;
 }
@@ -2922,4 +2921,49 @@ span.btn.Btn-Green.transition.secondary_btn_width{
 /* Sudha Sri(5-1-2024) */
 .pipeline-label-width{
   width: 100px !important;
+}
+/*  */
+.pl-5{
+  padding-left: 5px!important;
+}
+/* Sudha Sri(9-1-2024) Partner stat card alignments */
+.partner_stat_card_hgt{
+  min-height: 545px;margin-bottom: 20px;
+}
+/* Sudha Sri(10-1-2024) */
+.team_green_btn_text{
+  text-align: center;
+   font-size:14px;
+   color: #fff;
+}
+.team_blue_btn_text{
+  font-size:14px;
+  color: #fff;
+}
+.cards_height{
+  padding-top: 6px;
+}
+.vendor_card_height{
+  margin: 14px;margin-top: 15px;
+}
+.campaigns_card_height{
+  margin: 14px;margin-top: 12px;margin-bottom: 20px;
+}
+.campaign_stat_card_height{
+  margin-bottom: 20px;
+  margin-top: 2px;
+}
+.partner_stat_card_height,
+.mdf_card_height{
+  padding: 0
+}
+.high_level_height{
+  padding-top: 2px;
+}
+.social_card_height{
+  padding-top: 6px;
+}
+/* pages grid view icon align */
+.icons-center{
+  display: block;
 }

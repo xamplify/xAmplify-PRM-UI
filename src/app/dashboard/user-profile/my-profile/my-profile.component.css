@@ -2125,4 +2125,10 @@ button.spaceTopBottom{
 .upload_btn_pdg{
   padding-left: 0px;
 }
-
+/* Folder count */
+.justify-content-start{
+  justify-content: start!important;
+}
+.mleft-10{
+margin-left: 10px;
+}

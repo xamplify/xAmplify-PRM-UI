@@ -2022,7 +2022,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     saveAsInputChecking() {
             try {
-                const name = this.saveAsListName;
+                const name = this.saveAsListName.trim();
                 const self = this;
                 this.isValidLegalOptions = true;
 				const inputName = $.trim(name.toLowerCase().replace(/\s/g, ''));
@@ -2185,9 +2185,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 			this.contactService.mailSend(this.pagination)
 				.subscribe(
 					data => {
-						this.emailNotificationCustomResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
-						this.contactService.successMessage = true;
-						//this.listContactsByType(this.contactsByType.selectedCategory);
+						if(data.statusCode==200){
+							this.emailNotificationCustomResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+							this.contactService.successMessage = true;
+						}
+						else{
+							this.customResponse = new CustomResponse('ERROR', data.message, true);
+
+						}
+					
 					},
 					(error: any) => {
 						this.customResponse = new CustomResponse('ERROR', 'Some thing went wrong please try after some time.', true);

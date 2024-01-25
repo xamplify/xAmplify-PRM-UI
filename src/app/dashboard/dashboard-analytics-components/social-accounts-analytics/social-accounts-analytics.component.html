@@ -1,168 +1,191 @@
 <ng-container *ngIf="(authenticationService.module.hasSocialStatusRole || (authenticationService.module.isOrgAdmin) ||
 authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner())">
-<div class="clearfix" *ngIf="socialConnections?.length > 0" style="padding-top: 6px;">
-  <div class="portlet light shadow">
-      <div class="portlet-title">
-          <h4 class="caption-subject font-red-sunglo f-w-600" translate>Social Accounts</h4>
-      </div>
-      <div class="portlet-body clearfix">
-        <app-box-loader [countLoader]=4 *ngIf="socialAccountsLoader.isLoading"></app-box-loader>
-          <div class="clearfix" *ngIf="!socialAccountsLoader.isLoading">
-              <section *ngFor="let socialConnection of socialConnections">
-                  <div class="col-xs-12 col-sm-6 col-md-4 p10">
-                      <div class="dashboard-stat2 m0" style="height: 130px;">
-                          <div class="display">
-                              <div class="col-xs-3 p0">
-                                  <div class="profile-img" [ngStyle]="{'background-image': 'url(' + socialConnection.profileImage + ')'}">
-                                      <ng-container *ngIf="socialConnection.source === 'TWITTER'">
-                                          <img class="img-circle mimg-circle customize-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png">
-                                      </ng-container>
-                                      <ng-container *ngIf="socialConnection.source === 'FACEBOOK'">
-                                          <img class="img-circle mimg-circle customize-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png">
-                                      </ng-container>
-                                      <ng-container *ngIf="socialConnection.source === 'LINKEDIN'">
-                                          <img class="img-circle mimg-circle customize-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png">
-                                      </ng-container>
-                                      <ng-container *ngIf="socialConnection.source === 'GOOGLE'">
-                                          <img class="img-circle mimg-circle customize-circle" alt="{{socialConnection.profileName}}" src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/google_circle-20.png">
-                                      </ng-container>
-                                  </div>
-                              </div>
-                              <div class="col-xs-9 p0">
-                                  <h5 class="profile-name">
-                                      <span *ngIf="socialConnection.source === 'TWITTER'">
-                                        <a [routerLink]="['/home/twitter', socialConnection.profileId, 'home']">
-                                            @{{socialConnection.profileName}}</a>
-                                        </span>
-                                      <span *ngIf="socialConnection.source === 'FACEBOOK' || socialConnection.source === 'LINKEDIN'">{{socialConnection.profileName}}</span>
-                                      <span *ngIf="socialConnection.source === 'GOOGLE'">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</span>
-                                  </h5>
-                                  <section *ngIf="socialConnection.source === 'TWITTER'" class="profile-details">
-                                      <a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'tweets']">
-                                          <b>Tweets</b>
-                                          <h4>{{socialConnection.twitterTotalTweetsCount}}</h4>
-                                      </a>
-                                      <a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'followers']">
-                                          <b>Followers</b>
-                                          <h4>{{socialConnection.twitterTotalFollowersCount}}</h4>
-                                      </a>
-                                      <a class="col-xs-4 social-stats" [routerLink]="['/home/twitter', socialConnection.profileId, 'friends']">
-                                          <b>Friends</b>
-                                          <h4>{{socialConnection.twitterTotalFriendsCount}}</h4>
-                                      </a>
-                                  </section>
-                                  <section *ngIf="socialConnection.source === 'FACEBOOK'" class="profile-details">
-                                      <a class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
-                                          <b>Posts</b>
-                                          <h4>-</h4>
-                                      </a>
-                                      <a *ngIf="socialConnection.emailId === null" class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
-                                          <b>Fans</b>
-                                          <h4>{{socialConnection.facebookFanCount}}</h4>
-                                      </a>
-                                      <a *ngIf="socialConnection.emailId !== null" class="col-xs-4 social-stats" [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
-                                          <b>Friends</b>
-                                          <h4>{{socialConnection.facebookFriendsCount}}</h4>
-                                      </a>
-                                  </section>
-                                  <section *ngIf="socialConnection.source === 'LINKEDIN'" class="profile-details">
-                                      <a class="col-xs-4 social-stats">
-                                          <b>Posts</b>
-                                          <h4>-</h4>
-                                      </a>
-                                      <a *ngIf="socialConnection.page" class="col-xs-4 social-stats">
-                                          <b>Followers</b>
-                                          <h4>{{socialConnection.connectionCount}}</h4>
-                                      </a>
-                                      <a *ngIf="!socialConnection.page" class="col-xs-4 social-stats">
-                                        <b>Connections</b>
-                                        <h4>{{socialConnection.connectionCount}}</h4>
-                                    </a>
-                                  </section>
-                                  <section *ngIf="socialConnection.source === 'GOOGLE'" class="profile-details">
-                                      <a class="col-xs-4 social-stats">
-                                          <b>Posts</b>
-                                          <h4>-</h4>
-                                      </a>
-                                      <a class="col-xs-4 social-stats">
-                                          <b>Connections</b>
-                                          <h4>-</h4>
-                                      </a>
-                                  </section>
-                              </div>
-                              <div class="col-xs-12 m0 p0">
-                                  <hr class="social-border">
-                              </div>
+    <div class="clearfix social_card_height" *ngIf="socialConnections?.length > 0">
+        <div class="portlet light shadow">
+            <div class="portlet-title">
+                <h4 class="caption-subject font-red-sunglo f-w-600" translate>Social Accounts</h4>
+            </div>
+            <div class="portlet-body clearfix">
+                <app-box-loader [countLoader]=4 *ngIf="socialAccountsLoader.isLoading"></app-box-loader>
+                <div class="clearfix" *ngIf="!socialAccountsLoader.isLoading">
+                    <section *ngFor="let socialConnection of socialConnections">
+                        <div class="col-xs-12 col-sm-6 col-md-4 p10">
+                            <div class="dashboard-stat2 m0" style="height: 130px;">
+                                <div class="display">
+                                    <div class="col-xs-3 p0">
+                                        <div class="profile-img"
+                                            [ngStyle]="{'background-image': 'url(' + socialConnection.profileImage + ')'}">
+                                            <ng-container *ngIf="socialConnection.source === 'TWITTER'">
+                                                <img class="img-circle mimg-circle customize-circle"
+                                                    alt="{{socialConnection.profileName}}"
+                                                    src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/twitter_circle-20.png">
+                                            </ng-container>
+                                            <ng-container *ngIf="socialConnection.source === 'FACEBOOK'">
+                                                <img class="img-circle mimg-circle customize-circle"
+                                                    alt="{{socialConnection.profileName}}"
+                                                    src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/facebook_circle-20.png">
+                                            </ng-container>
+                                            <ng-container *ngIf="socialConnection.source === 'LINKEDIN'">
+                                                <img class="img-circle mimg-circle customize-circle"
+                                                    alt="{{socialConnection.profileName}}"
+                                                    src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/linkedin_circle-20.png">
+                                            </ng-container>
+                                            <ng-container *ngIf="socialConnection.source === 'GOOGLE'">
+                                                <img class="img-circle mimg-circle customize-circle"
+                                                    alt="{{socialConnection.profileName}}"
+                                                    src="https://cdn4.iconfinder.com/data/icons/social-media-icons-the-circle-set/48/google_circle-20.png">
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-9 p0">
+                                        <h5 class="profile-name">
+                                            <span *ngIf="socialConnection.source === 'TWITTER'">
+                                                <a [routerLink]="['/home/twitter', socialConnection.profileId, 'home']">
+                                                    @{{socialConnection.profileName}}</a>
+                                            </span>
+                                            <span
+                                                *ngIf="socialConnection.source === 'FACEBOOK' || socialConnection.source === 'LINKEDIN'">{{socialConnection.profileName}}</span>
+                                            <span
+                                                *ngIf="socialConnection.source === 'GOOGLE'">{{socialConnection.firstName}}&nbsp;{{socialConnection.lastName}}</span>
+                                        </h5>
+                                        <section *ngIf="socialConnection.source === 'TWITTER'" class="profile-details">
+                                            <a class="col-xs-4 social-stats"
+                                                [routerLink]="['/home/twitter', socialConnection.profileId, 'tweets']">
+                                                <b>Tweets</b>
+                                                <h4>{{socialConnection.twitterTotalTweetsCount}}</h4>
+                                            </a>
+                                            <a class="col-xs-4 social-stats"
+                                                [routerLink]="['/home/twitter', socialConnection.profileId, 'followers']">
+                                                <b>Followers</b>
+                                                <h4>{{socialConnection.twitterTotalFollowersCount}}</h4>
+                                            </a>
+                                            <a class="col-xs-4 social-stats"
+                                                [routerLink]="['/home/twitter', socialConnection.profileId, 'friends']">
+                                                <b>Friends</b>
+                                                <h4>{{socialConnection.twitterTotalFriendsCount}}</h4>
+                                            </a>
+                                        </section>
+                                        <section *ngIf="socialConnection.source === 'FACEBOOK'" class="profile-details">
+                                            <a class="col-xs-4 social-stats"
+                                                [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
+                                                <b>Posts</b>
+                                                <h4>-</h4>
+                                            </a>
+                                            <a *ngIf="socialConnection.emailId === null" class="col-xs-4 social-stats"
+                                                [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
+                                                <b>Fans</b>
+                                                <h4>{{socialConnection.facebookFanCount}}</h4>
+                                            </a>
+                                            <a *ngIf="socialConnection.emailId !== null" class="col-xs-4 social-stats"
+                                                [routerLink]="['/home/social/facebook-posts', socialConnection.profileId]">
+                                                <b>Friends</b>
+                                                <h4>{{socialConnection.facebookFriendsCount}}</h4>
+                                            </a>
+                                        </section>
+                                        <section *ngIf="socialConnection.source === 'LINKEDIN'" class="profile-details">
+                                            <a class="col-xs-4 social-stats">
+                                                <b>Posts</b>
+                                                <h4>-</h4>
+                                            </a>
+                                            <a *ngIf="socialConnection.page" class="col-xs-4 social-stats">
+                                                <b>Followers</b>
+                                                <h4>{{socialConnection.connectionCount}}</h4>
+                                            </a>
+                                            <a *ngIf="!socialConnection.page" class="col-xs-4 social-stats">
+                                                <b>Connections</b>
+                                                <h4>{{socialConnection.connectionCount}}</h4>
+                                            </a>
+                                        </section>
+                                        <section *ngIf="socialConnection.source === 'GOOGLE'" class="profile-details">
+                                            <a class="col-xs-4 social-stats">
+                                                <b>Posts</b>
+                                                <h4>-</h4>
+                                            </a>
+                                            <a class="col-xs-4 social-stats">
+                                                <b>Connections</b>
+                                                <h4>-</h4>
+                                            </a>
+                                        </section>
+                                    </div>
+                                    <div class="col-xs-12 m0 p0">
+                                        <hr class="social-border">
+                                    </div>
 
-                              <div class="col-xs-8 text-left pl0 pr0">
-                                  <h5 *ngIf="socialConnection.source !== 'LINKEDIN'">
-                                      <span class="nummber" style="color: #00aced; font-weight: 600; display: inline;">{{socialConnection.weeklyPostsCount}}</span> New
-                                      <span *ngIf="socialConnection.source === 'TWITTER'">Tweets</span>
-                                      <span *ngIf="socialConnection.source === 'FACEBOOK'">Posts</span>
-                                      <br>(Past 7 days)
-                                  </h5>
-                              </div>
-                              <div class=" col-xs-4 text-right pt10 pb10">
-                                  <div id="sparkline_{{socialConnection.profileId}}">
-                                      <canvas width="46" height="20"></canvas>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </section>
-          </div>
-          <!--Gender Demographics-->
-          <div class="clearfix hidden">
-              <h4 class="gd-title">Gender Demographics</h4>
-              <div class="col-xs-6 text-right p0">
-                  <div class="facebook-color">
-                      <div class="col-xs-12">
-                          <span class="gd-male">
-            <i class="fa fa-male fa1"></i>
-          </span>
-                      </div>
-                      <div class="col-xs-12">
-                          <div class="number">
-                              <span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
-              <h4>
-                <b>{{dashboardReport.genderDemographicsMale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b>
-              </h4>
-            </span>
-                              <ng-template #default_gender_demographics>
-                                  <h4>
-                                      <b>N/A</b>
-                                  </h4>
-                              </ng-template>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="col-xs-6 p0">
-                  <div class="google-color">
-                      <div class="col-xs-12">
-                          <span class="gd-female">
-            <i class="fa fa-female fa1"></i>
-          </span>
-                      </div>
-                      <div class="col-xs-12">
-                          <div class="number">
-                              <span *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
-              <h4>
-                <b>{{dashboardReport.genderDemographicsFemale / dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b>
-              </h4>
-            </span>
-                              <ng-template #default_gender_demographics>
-                                  <h4>
-                                      <b>N/A</b>
-                                  </h4>
-                              </ng-template>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-</div>
+                                    <div class="col-xs-8 text-left pl0 pr0">
+                                        <h5 *ngIf="socialConnection.source !== 'LINKEDIN'">
+                                            <span class="nummber"
+                                                style="color: #00aced; font-weight: 600; display: inline;">{{socialConnection.weeklyPostsCount}}</span>
+                                            New
+                                            <span *ngIf="socialConnection.source === 'TWITTER'">Tweets</span>
+                                            <span *ngIf="socialConnection.source === 'FACEBOOK'">Posts</span>
+                                            <br>(Past 7 days)
+                                        </h5>
+                                    </div>
+                                    <div class=" col-xs-4 text-right pt10 pb10">
+                                        <div id="sparkline_{{socialConnection.profileId}}">
+                                            <canvas width="46" height="20"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--Gender Demographics-->
+                <div class="clearfix hidden">
+                    <h4 class="gd-title">Gender Demographics</h4>
+                    <div class="col-xs-6 text-right p0">
+                        <div class="facebook-color">
+                            <div class="col-xs-12">
+                                <span class="gd-male">
+                                    <i class="fa fa-male fa1"></i>
+                                </span>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="number">
+                                    <span
+                                        *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
+                                        <h4>
+                                            <b>{{dashboardReport.genderDemographicsMale /
+                                                dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b>
+                                        </h4>
+                                    </span>
+                                    <ng-template #default_gender_demographics>
+                                        <h4>
+                                            <b>N/A</b>
+                                        </h4>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 p0">
+                        <div class="google-color">
+                            <div class="col-xs-12">
+                                <span class="gd-female">
+                                    <i class="fa fa-female fa1"></i>
+                                </span>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="number">
+                                    <span
+                                        *ngIf="dashboardReport.genderDemographicsTotal > 0; else default_gender_demographics">
+                                        <h4>
+                                            <b>{{dashboardReport.genderDemographicsFemale /
+                                                dashboardReport.genderDemographicsTotal | percent:'2.1-2'}}</b>
+                                        </h4>
+                                    </span>
+                                    <ng-template #default_gender_demographics>
+                                        <h4>
+                                            <b>N/A</b>
+                                        </h4>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </ng-container>

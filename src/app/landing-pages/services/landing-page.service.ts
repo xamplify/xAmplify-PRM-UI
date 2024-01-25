@@ -17,7 +17,7 @@ import { UtilService } from 'app/core/services/util.service';
 declare var  $: any;
 @Injectable()
 export class LandingPageService {
-
+    
     jsonBody: any = "";
     id: number = 0;
     URL = this.authenticationService.REST_URL + "landing-page/";
@@ -31,10 +31,10 @@ export class LandingPageService {
             .catch( this.handleError );
     }
 
-    list( pagination: Pagination,isPartnerLandingPage:boolean): Observable<any> {
-        let url = "list";
+    list(pagination: Pagination,isPartnerLandingPage:boolean): Observable<any> {
+        let listOrPartnerPagesUrl = "list";
         if(isPartnerLandingPage){
-            url = "partner";
+            listOrPartnerPagesUrl = "partner";
         /******XNFR-252*****/
         let subDomain = this.authenticationService.getSubDomain();
         if(subDomain.length==0){
@@ -44,7 +44,7 @@ export class LandingPageService {
             }
         }
         }
-        return this.http.post( this.URL +url+"?access_token=" + this.authenticationService.access_token, pagination )
+        return this.http.post( this.URL +listOrPartnerPagesUrl+"?searchKey="+pagination.searchKey+"&access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -191,12 +191,17 @@ export class LandingPageService {
     }
 
     updateJsonAndHtmlBody(ladingPage:LandingPage): Observable<any> {
-        return this.http.post( this.URL + "updateJsonAndHtmlBody?access_token=" + this.authenticationService.access_token,ladingPage)
+        return this.http.post(this.URL + "updateJsonAndHtmlBody?access_token=" + this.authenticationService.access_token,ladingPage)
             .map( this.extractData )
             .catch( this.handleError );
     }
 
-
+    /*  XNFR-432 */
+    copy(landingPage: LandingPage) {
+        let url = this.URL+"copy?access_token="+this.authenticationService.access_token;
+        landingPage.userId = this.authenticationService.getUserId();
+        return this.authenticationService.callPostMethod(url,landingPage);
+    }
 
     private extractData( res: Response ) {
         const body = res.json();

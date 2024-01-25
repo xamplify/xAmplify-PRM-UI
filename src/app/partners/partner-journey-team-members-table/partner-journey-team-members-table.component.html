@@ -16,7 +16,7 @@
       <select class="form-control" [(ngModel)]="teamMemberId" [ngModelOptions]="{standalone: true}" placeholder="teamMemberId"
         id="teamMemberId" (ngModelChange)="onChangeTeamMember()">
         <option [value]="0">Select a Member</option>
-        <option *ngFor="let teamMember of teamEmails" [value]="teamMember.userId">{{teamMember.emailId}}
+        <option *ngFor="let teamMember of teamEmails" [style.color]="(teamMember?.userStatus === 'APPROVE') ? 'green' : 'red' "  [value]="teamMember.userId">{{teamMember.emailId}}
         </option>
       </select>
     </span>

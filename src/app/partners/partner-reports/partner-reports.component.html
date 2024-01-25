@@ -776,7 +776,7 @@
   <!--******************Team Member Details*******************-->
   <div class="row rowPaddingCustomization2">
     <app-partner-journey-team-member-high-level-analytics-table *ngIf="!loadAllCharts && selectedTabIndex == 0"
-      [selectedPartnerCompanyIds]="selectedPartnerCompanyIds"
+      [selectedPartnerCompanyIds]="selectedPartnerCompanyIds" [applyFilter]="applyFilter"
       (notifyShowDetailedAnalytics)="goToDetailedAnalytics($event)">
     </app-partner-journey-team-member-high-level-analytics-table>
   </div>

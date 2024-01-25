@@ -12,7 +12,7 @@ import { Roles } from '../models/roles';
 import { Module } from '../models/module';
 import { UserToken } from '../models/user-token';
 import { UtilService } from '../services/util.service';
-declare var swal,$, require: any;
+declare var swal, $, require: any;
 var SockJs = require("sockjs-client");
 var Stomp = require("stompjs");
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
@@ -21,8 +21,8 @@ import { Pagination } from '../../core/models/pagination';
 import { TranslateService } from '@ngx-translate/core';
 import { VanityLoginDto } from '../../util/models/vanity-login-dto';
 import { UnsubscribeReason } from 'app/dashboard/models/unsubscribe-reason';
-import {UnsubscribePageDetails} from 'app/dashboard/models/unsubscribe-page-details';
-import {ModuleCustomName} from "app/dashboard/models/module-custom-name";
+import { UnsubscribePageDetails } from 'app/dashboard/models/unsubscribe-page-details';
+import { ModuleCustomName } from "app/dashboard/models/module-custom-name";
 import { CommentDto } from 'app/common/models/comment-dto';
 import { LoginAsEmailNotificationDto } from 'app/dashboard/models/login-as-email-notification-dto';
 import { CustomSkin } from 'app/dashboard/models/custom-skin';
@@ -33,8 +33,8 @@ import { TracksPlayBookType } from 'app/tracks-play-book-util/models/tracks-play
 
 @Injectable()
 export class AuthenticationService {
-  
-   
+
+
   access_token: string;
   refresh_token: string;
   expires_in: number;
@@ -62,7 +62,7 @@ export class AuthenticationService {
   isVendorSuperVisor = false;
   isOrgAdminSuperVisor = false;
   isOrgAdminAndPartnerTeamMember = false;
-  isOrgAdminTeamMember = false ;
+  isOrgAdminTeamMember = false;
   superiorRole = '';
   selectedVendorId: number;
   venorMyProfileReport: any;
@@ -120,78 +120,79 @@ export class AuthenticationService {
   opportunitiesAccessAsPartner = false;
   unauthorized = false;
   customSkinSettings = false;
-  moduleNames:Array<ModuleCustomName> = new Array<ModuleCustomName>();
-  partnerModule:ModuleCustomName = new ModuleCustomName();
+  moduleNames: Array<ModuleCustomName> = new Array<ModuleCustomName>();
+  partnerModule: ModuleCustomName = new ModuleCustomName();
   beeHostApi = "";
   beeRequestType = "";
   beePageClientId = "";
   beePageClientSecret = "";
   vendorCompanyId = 0;
   /***** XNFR-238 *********** */
-  isDarkForCharts : boolean = false;
-  isDefaultTheme :boolean = true;
-  isCustomFooter:boolean = false;
-  isCustomTheme:boolean = false;
-  isLightTheme:boolean = false;
-  isDarkTheme:boolean = false;
+  isDarkForCharts: boolean = false;
+  isDefaultTheme: boolean = true;
+  isCustomFooter: boolean = false;
+  isCustomTheme: boolean = false;
+  isLightTheme: boolean = false;
+  isDarkTheme: boolean = false;
+  isDarkForNeoWhite: boolean = false;
 
- isTop:boolean= false;
- isLeft:boolean = false;
- isFoter:boolean = false;
- isMain:boolean = false;
- customMap = new Map<string, CustomSkin>();
- themeMap = new Map<string, ThemeDto>();
- themeDto:ThemeDto = new ThemeDto();
- activateThemeId:number;
- vanityLoginDtoForTheme:VanityLoginDto = new VanityLoginDto();
+  isTop: boolean = false;
+  isLeft: boolean = false;
+  isFoter: boolean = false;
+  isMain: boolean = false;
+  customMap = new Map<string, CustomSkin>();
+  themeMap = new Map<string, ThemeDto>();
+  themeDto: ThemeDto = new ThemeDto();
+  activateThemeId: number;
+  vanityLoginDtoForTheme: VanityLoginDto = new VanityLoginDto();
   /***** XNFR-238*********** */
   /********  XNFR-233*****/
-  lognTemplateId:number;
-  loginType:string;
+  lognTemplateId: number;
+  loginType: string;
   v_companyBgImagePath2;
   /**** XNFR-233 */
-  formBackground="";
+  formBackground = "";
   /*** XNFR-416 ****/
-  isstyleTWoBgColor:boolean;
+  isstyleTWoBgColor: boolean;
   /*** XNFR-416 ****/
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
     this.DOMAIN_URL = this.APP_URL;
     this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
-    if(this.SERVER_URL.indexOf('localhost')>-1){
+    if (this.SERVER_URL.indexOf('localhost') > -1) {
       this.MEDIA_URL = 'http://localhost:8000/';
-    }else{
+    } else {
       this.MEDIA_URL = this.SERVER_URL + 'vod/';
     }
-    
+
     this.SHARE_URL = this.SERVER_URL + 'embed/';
-    if(this.SERVER_URL=="https://xamp.io/" && this.APP_URL=="https://xamplify.io/"){
+    if (this.SERVER_URL == "https://xamp.io/" && this.APP_URL == "https://xamplify.io/") {
       console.log("production keys are used");
       this.clientId = this.envService.clientId;
       this.clientSecret = this.envService.clientSecret;
       this.beePageClientId = this.envService.beePageProdClientId;
       this.beePageClientSecret = this.envService.beePageProdClientSecret;
-    }else if(this.SERVER_URL=="https://aravindu.com/" && this.APP_URL=="https://xamplify.co/"){
+    } else if (this.SERVER_URL == "https://aravindu.com/" && this.APP_URL == "https://xamplify.co/") {
       console.log("QA keys are used");
       this.clientId = this.envService.beeTemplateQAClientId;
       this.clientSecret = this.envService.beeTemplateQAClientSecret;
       this.beePageClientId = this.envService.beePageQAClientId;
       this.beePageClientSecret = this.envService.beePageQAClientSecret;
-    }else if(this.SERVER_URL=="https://release.xamp.io/" && this.APP_URL=="https://xtremand.com/"){
+    } else if (this.SERVER_URL == "https://release.xamp.io/" && this.APP_URL == "https://xtremand.com/") {
       console.log("Release keys are used");
       this.clientId = this.envService.beeTemplateReleaseClientId;
       this.clientSecret = this.envService.beeTemplateReleaseClientSecret;
       this.beePageClientId = this.envService.beePageReleaseClientId;
       this.beePageClientSecret = this.envService.beePageReleaseClientSecret;
-    }else{
+    } else {
       console.log("dev keys are used");
       this.clientId = this.envService.beeTemplateDevClientId;
       this.clientSecret = this.envService.beeTemplateDevClientSecret;
       this.beePageClientId = this.envService.beePageDevClientId;
       this.beePageClientSecret = this.envService.beePageDevClientSecret;
     }
-    
+
     this.beeHostApi = this.envService.beeHostApi;
     this.beeRequestType = this.envService.beeRequestType;
     this.imagesHost = this.envService.imagesHost;
@@ -282,8 +283,8 @@ export class AuthenticationService {
   }
 
   getCategoryNamesByUserId(userId: number) {
-        let url = this.REST_URL+"category/listAllCategoryNamesByLoggedInUserId/"+userId;
-     return this.http.get(url + '?access_token=' + this.access_token)
+    let url = this.REST_URL + "category/listAllCategoryNamesByLoggedInUserId/" + userId;
+    return this.http.get(url + '?access_token=' + this.access_token)
       .map((res: Response) => { return res.json(); })
       .catch((error: any) => { return error; });
   }
@@ -332,8 +333,9 @@ export class AuthenticationService {
         if (!roleNames && this.user.roles) { roleNames = this.user.roles.map(function (a) { return a.roleName; }); }
         return roleNames;
       }
-    } catch (error) { this.xtremandLogger.log('error' + error); 
-}
+    } catch (error) {
+      this.xtremandLogger.log('error' + error);
+    }
 
   }
   showRoles(): string {
@@ -346,7 +348,7 @@ export class AuthenticationService {
         const isVendor = roleNames.indexOf(this.roleName.vendorRole) > -1;
         const isMarketingRole = roleNames.indexOf(this.roleName.marketingRole) > -1;
         const isVendorTierRole = roleNames.indexOf(this.roleName.vendorTierRole) > -1;
-		    const isPrmRole = roleNames.indexOf(this.roleName.prmRole) > -1;
+        const isPrmRole = roleNames.indexOf(this.roleName.prmRole) > -1;
         /* const isPartnerAndTeamMember = roleNames.indexOf(this.roleName.companyPartnerRole)>-1 &&
          (roleNames.indexOf(this.roleName.contactsRole)>-1 || roleNames.indexOf(this.roleName.campaignRole)>-1);*/
         if (roleNames.length === 1) {
@@ -360,17 +362,17 @@ export class AuthenticationService {
             return "Orgadmin";
           } else if (isVendor) {
             return "Vendor";
-          }else if(isMarketingRole && !isPartner){
+          } else if (isMarketingRole && !isPartner) {
             return "Marketing";
-          }else if(isMarketingRole && isPartner){
+          } else if (isMarketingRole && isPartner) {
             return "Marketing & Partner";
-          }else if(isPrmRole && !isPartner){
+          } else if (isPrmRole && !isPartner) {
             return "Prm";
-          }else if(isPrmRole && isPartner){
+          } else if (isPrmRole && isPartner) {
             return "Prm & Partner";
-          }else if(isVendorTierRole){
+          } else if (isVendorTierRole) {
             return "Vendor Tier";
-          }  else if (this.isOnlyPartner()) {
+          } else if (this.isOnlyPartner()) {
             return "Partner";
           } else {
             return "Team Member";
@@ -387,14 +389,14 @@ export class AuthenticationService {
   }
 
   isOnlyPartner() {
-  try{
-    const roleNames = this.getRoles();
-    return roleNames  && roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1
-    && roleNames.indexOf('ROLE_VENDOR')<0 &&  roleNames.indexOf('ROLE_ORG_ADMIN')<0 &&
-     roleNames.indexOf('ROLE_MARKETING')<0;
-  }catch(error){
-    this.xtremandLogger.log('error'+error);
-  }
+    try {
+      const roleNames = this.getRoles();
+      return roleNames && roleNames.indexOf('ROLE_USER') > -1 && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1
+        && roleNames.indexOf('ROLE_VENDOR') < 0 && roleNames.indexOf('ROLE_ORG_ADMIN') < 0 &&
+        roleNames.indexOf('ROLE_MARKETING') < 0;
+    } catch (error) {
+      this.xtremandLogger.log('error' + error);
+    }
   }
 
   isOnlyUser() {
@@ -427,7 +429,7 @@ export class AuthenticationService {
   isVendor() {
     try {
       const roleNames = this.getRoles();
-      if (roleNames && roleNames.length === 2 && (roleNames.indexOf(this.roleName.userRole) > -1 && ( roleNames.indexOf(this.roleName.vendorRole) > -1) ||  roleNames.indexOf(this.roleName.vendorTierRole) > -1 ||  roleNames.indexOf(this.roleName.prmRole) > -1)) {
+      if (roleNames && roleNames.length === 2 && (roleNames.indexOf(this.roleName.userRole) > -1 && (roleNames.indexOf(this.roleName.vendorRole) > -1) || roleNames.indexOf(this.roleName.vendorTierRole) > -1 || roleNames.indexOf(this.roleName.prmRole) > -1)) {
         return true;
       } else {
         return false;
@@ -441,7 +443,7 @@ export class AuthenticationService {
     try {
       const roleNames = this.getRoles();
       return roleNames && roleNames.length === 2 && (roleNames.indexOf(this.roleName.userRole) > -1 && roleNames.indexOf(this.roleName.marketingRole) > -1);
-    
+
     } catch (error) {
       this.xtremandLogger.log('error' + error);
     }
@@ -501,7 +503,7 @@ export class AuthenticationService {
   isVendorPartner() {
     try {
       const roleNames = this.getRoles();
-      if (roleNames && ((roleNames.indexOf(this.roleName.vendorRole) > -1  || roleNames.indexOf(this.roleName.vendorTierRole) > -1 || roleNames.indexOf(this.roleName.prmRole) > -1 || (roleNames.indexOf('ROLE_ALL') > -1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember) {
+      if (roleNames && ((roleNames.indexOf(this.roleName.vendorRole) > -1 || roleNames.indexOf(this.roleName.vendorTierRole) > -1 || roleNames.indexOf(this.roleName.prmRole) > -1 || (roleNames.indexOf('ROLE_ALL') > -1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember) {
         return true;
       } else {
         return false;
@@ -509,15 +511,15 @@ export class AuthenticationService {
     } catch (error) { this.xtremandLogger.log('error' + error); }
   }
   isMarketingPartner() {
-	    try {
-	      const roleNames = this.getRoles();
-	      if (roleNames && ((roleNames.indexOf(this.roleName.marketingRole) > -1) && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember) {
-	        return true;
-	      } else {
-	        return false;
-	      }
-	    } catch (error) { this.xtremandLogger.log('error' + error); }
-	  }
+    try {
+      const roleNames = this.getRoles();
+      if (roleNames && ((roleNames.indexOf(this.roleName.marketingRole) > -1) && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) { this.xtremandLogger.log('error' + error); }
+  }
   isTeamMember() {
     try {
       const roleNames = this.getRoles();
@@ -543,20 +545,20 @@ export class AuthenticationService {
     } catch (error) { console.log('error' + error); }
   }
 
-  removeZenDeskScript(){
+  removeZenDeskScript() {
     var element = document.getElementById('ze-snippet');
-		if(element!=null){
+    if (element != null) {
       element.parentNode.removeChild(element);
     }
     $('#launcher').contents().find('#Embed').hide();
   }
 
-  navigateToUnauthorizedPage(){
+  navigateToUnauthorizedPage() {
     this.resetData();
     this.closeSwal();
   }
 
-  resetData(){
+  resetData() {
     this.removeZenDeskScript();
     localStorage.removeItem('currentUser');
     localStorage.removeItem("campaignRouter");
@@ -629,12 +631,12 @@ export class AuthenticationService {
     module.adminOrSuperVisor = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
-	  this.contactsCount = false;
+    this.contactsCount = false;
     this.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner = false;
     this.partnershipEstablishedOnlyWithPrm = false;
     this.folders = false;
     this.lmsAccess = false;
-	  this.isVendorAndPartnerTeamMember = false;
+    this.isVendorAndPartnerTeamMember = false;
     this.isOrgAdminAndPartnerTeamMember = false;
     this.opportunitiesAccessAsPartner = false;
     module.isMarketing = false;
@@ -650,35 +652,35 @@ export class AuthenticationService {
 
   logout(): void {
     this.module.logoutButtonClicked = true;
-   $("body").addClass("logout-loader");
+    $("body").addClass("logout-loader");
     this.resetData();
     this.access_token = null;
     this.refresh_token = null;
     if (!this.router.url.includes('/userlock')) {
-      if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){
+      if (this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost") < 0) {
         this.closeSwal();
-        window.location.href = "https://"+window.location.hostname+"/login";
-      }else{
+        window.location.href = "https://" + window.location.hostname + "/login";
+      } else {
         if (this.envService.CLIENT_URL === 'https://xamplify.io/') {
           window.location.href = 'https://www.xamplify.com/';
         } else {
           this.closeSwal();
           let self = this;
-          if(this.envService.CLIENT_URL=="http://localhost:4200/"){
-           // window.location.href = 'http://localhost:4200/login';
+          if (this.envService.CLIENT_URL == "http://localhost:4200/") {
+            // window.location.href = 'http://localhost:4200/login';
             setTimeout(() => {
               self.router.navigate(['/']);
               $("body").removeClass("logout-loader");
             }, 1500);
-          }else{
-            window.location.href = this.envService.CLIENT_URL+"login";
+          } else {
+            window.location.href = this.envService.CLIENT_URL + "login";
           }
         }
       }
     }
   }
 
-  closeSwal(){
+  closeSwal() {
     try {
       swal.close();
     } catch (error) {
@@ -746,7 +748,7 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser !== undefined && currentUser != null) {
       let roles = JSON.parse(currentUser)['roles'];
-      let rolesExists = roles.filter(role => role.roleId === 13 || role.roleId === 2 || role.roleId===18 || role.roleId===19 || role.roleId==20);
+      let rolesExists = roles.filter(role => role.roleId === 13 || role.roleId === 2 || role.roleId === 18 || role.roleId === 19 || role.roleId == 20);
       if (rolesExists.length > 0) {
         return true;
       }
@@ -758,7 +760,7 @@ export class AuthenticationService {
     this.logout();
   }
 
-  revokeAccessToken(){
+  revokeAccessToken() {
     this.navigateToUnauthorizedPage();
   }
 
@@ -806,7 +808,7 @@ export class AuthenticationService {
     }
   }
 
-  getRoleDetails(userId:number) {
+  getRoleDetails(userId: number) {
     return this.http.get(this.REST_URL + "module/getRoleDetails/" + userId + "?access_token=" + this.access_token, "")
       .map(this.extractData)
       .catch(this.handleError);
@@ -814,12 +816,12 @@ export class AuthenticationService {
 
   getUrls() {
     let vanityLoginDto = new VanityLoginDto();
-    if(this.companyProfileName !== undefined && this.companyProfileName !== ''){
-			vanityLoginDto.vendorCompanyProfileName = this.companyProfileName;
-			vanityLoginDto.vanityUrlFilter = true;
-     }
-     vanityLoginDto.userId = this.getUserId();
-    return this.http.post(this.REST_URL + "admin/getUrls?access_token=" + this.access_token,vanityLoginDto)
+    if (this.companyProfileName !== undefined && this.companyProfileName !== '') {
+      vanityLoginDto.vendorCompanyProfileName = this.companyProfileName;
+      vanityLoginDto.vanityUrlFilter = true;
+    }
+    vanityLoginDto.userId = this.getUserId();
+    return this.http.post(this.REST_URL + "admin/getUrls?access_token=" + this.access_token, vanityLoginDto)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -841,404 +843,404 @@ export class AuthenticationService {
       .catch(this.handleError);
   }
 
-  getModuleAccessByLoggedInUserId(){
-    return this.http.get(this.REST_URL + "module/getModuleDetails/"+this.getUserId()+"?access_token=" + this.access_token)
+  getModuleAccessByLoggedInUserId() {
+    return this.http.get(this.REST_URL + "module/getModuleDetails/" + this.getUserId() + "?access_token=" + this.access_token)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  isSpfConfigured(companyId:number){
+  isSpfConfigured(companyId: number) {
     return this.http.get(this.REST_URL + `admin/isSpfConfigured/${companyId}?access_token=${this.access_token}`)
-        .map(this.extractData)
-        .catch(this.handleError);
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
-saveAsDefaultTemplate(input:any){
-  return this.http.post(this.REST_URL + "superadmin/saveAsDefaultTemplate?access_token=" + this.access_token, input)
+  saveAsDefaultTemplate(input: any) {
+    return this.http.post(this.REST_URL + "superadmin/saveAsDefaultTemplate?access_token=" + this.access_token, input)
       .map(this.extractData)
       .catch(this.handleError);
-}
-
-deleteDefaultTemplate(id:number){
-  return this.http.get(this.REST_URL+"superadmin/deleteDefaultTemplate/"+id+"/"+"?access_token="+this.access_token)
-  .map(this.extractData)
-  .catch(this.handleError);
-}
-
-/*************Unsubscribe Reasons************* */
-findAll(pagination:Pagination){
-  pagination.userId = this.getUserId();
-  return this.http.post(this.REST_URL + "unsubscribe/findAll?access_token=" + this.access_token, pagination)
-      .map(this.extractData)
-      .catch(this.handleError);
-}
-
-saveOrUpdateUnsubscribeReason(unsubscribeReason:UnsubscribeReason,isAdd:boolean){
-  unsubscribeReason.createdUserId = this.getUserId();
-  let url = isAdd ? 'save':'update';
-  return this.http.post(this.REST_URL + "unsubscribe/"+url+"?access_token=" + this.access_token, unsubscribeReason)
-      .map(this.extractData)
-      .catch(this.handleError);
-}
-
-findUnsubscribeReasonById(id:number){
-  return this.http.get(this.REST_URL+"unsubscribe/findById/"+id+"?access_token="+this.access_token)
-  .map(this.extractData)
-  .catch(this.handleError);
-}
-
-deleteUnsubscribeReasonById(id:number){
-  return this.http.get(this.REST_URL+"unsubscribe/delete/"+id+"?access_token="+this.access_token)
-  .map(this.extractData)
-  .catch(this.handleError);
-}
-
-findHeaderAndFooterText(){
-  return this.http.get(this.REST_URL+"unsubscribe/findHeaderAndFooterText/"+this.getUserId()+"?access_token="+this.access_token)
-  .map(this.extractData)
-  .catch(this.handleError);
-}
-
-updateHeaderAndFooterText(unsubscribePageDetails:UnsubscribePageDetails){
-  unsubscribePageDetails.userId = this.getUserId();
-  return this.http.post(this.REST_URL + "unsubscribe/updateHeaderAndFooterText?access_token=" + this.access_token, unsubscribePageDetails)
-      .map(this.extractData)
-      .catch(this.handleError);
-}
-
-
-findUnsusbcribePageContent(){
-  return this.http.get(this.REST_URL+"unsubscribe/findUnsubscribePageContent/"+this.getUserId()+"?access_token="+this.access_token)
-  .map(this.extractData)
-  .catch(this.handleError);
-}
-
-findNotifyPartnersOption(companyId:number){
-  return this.http.get(this.REST_URL + `admin/findNotifyPartnersOption/${companyId}?access_token=${this.access_token}`)
-      .map(this.extractData)
-      .catch(this.handleError);
-}
-
-updateNotifyPartnersOption(companyId:number,status:boolean){
-  return this.http.get(this.REST_URL+"admin/updateNotifyPartnersOption/"+companyId+"/"+status+"?access_token="+this.access_token)
-      .map(this.extractData)
-      .catch(this.handleError);
-}
-
-/**********Team Member Groups***************/
-findAllTeamMemberGroupIdsAndNames(addDefaultOption:boolean){
-  let userId = this.getUserId();
-		var url = this.REST_URL + "teamMemberGroup/findAllGroupIdsAndNames/"+userId+"/"+addDefaultOption+"?access_token=" + this.access_token;
-		return this.http.get(url)
-			.map(this.extractData)
-			.catch(this.handleError);
-}
-
-findAllTeamMembersByGroupId(pagination:Pagination){
-		var url = this.REST_URL + "teamMember/findAllTeamMembersByGroupId?access_token=" + this.access_token;
-		return this.http.post(url,pagination)
-			.map(this.extractData)
-			.catch(this.handleError);
-}
-
-findSelectedTeamMemberIds(partnershipId:number){
-  var url = this.REST_URL + "teamMemberGroup/findSelectedTeamMemberIds/"+partnershipId+"?access_token=" + this.access_token;
-  return this.http.get(url)
-    .map(this.extractData)
-    .catch(this.handleError);
-}
-
-showPartnersFilter(){
-  var url = this.REST_URL + "admin/showPartnersFilter/"+this.getUserId()+"?access_token=" + this.access_token;
-  return this.http.get(url)
-    .map(this.extractData)
-    .catch(this.handleError);
-}
-
-isMarketingCompany(){
-  var url = this.REST_URL + "admin/isMarketingCompany/"+this.getUserId()+"?access_token=" + this.access_token;
-  return this.http.get(url)
-    .map(this.extractData)
-    .catch(this.handleError);
-}
-
-isPartnershipOnlyWithPrm(){
-  var url = this.REST_URL + "admin/partnershipOnlyWithPrm/"+this.getUserId()+"?access_token=" + this.access_token;
-  return this.http.get(url)
-    .map(this.extractData)
-    .catch(this.handleError);
-}
-
-
-previewTeamMemberGroup(id:number){
-  const url = this.REST_URL + "teamMemberGroup/previewById/"+id+"?access_token=" + this.access_token;
-  return this.http.get(url)
-  .map(this.extractData)
-  .catch(this.handleError);
-}
-/*********XNFR-83************/
-getAssigedAgencyModules(id:number){
-  const url = this.REST_URL + "agencies/"+id+"/assignedModules?access_token=" + this.access_token;
-  return this.http.get(url)
-  .map(this.extractData)
-  .catch(this.handleError);
-}
-
-/*********XNFR-83************/
-getSubDomain(){
-  return this.companyProfileName !== undefined && this.companyProfileName !== '' ? this.companyProfileName:"";
-}
-
-/*********XNFR-83************/
-getCompanyAndUserAndModuleDetails(moduleType:string,id:number){
-  let url = this.REST_URL +"comments/companyAndUserDetails/"+moduleType+"/"+id+"?access_token=" + this.access_token;
-  return this.callGetMethod(url);
-}
-
-/*********XNFR-83************/
-saveComment(commentDto:CommentDto){
-  commentDto.commentedBy = this.getUserId();
-  let url = this.REST_URL +"comments?access_token=" + this.access_token;
-  return this.http.post(url,commentDto)
-  .map(this.extractData)
-  .catch(this.handleError);
-}
-
-/*********XNFR-83************/
-findComments(moduleName:string,id:number){
-  let url = this.REST_URL +"comments/moduleName/"+moduleName+"/"+id+"?access_token=" + this.access_token;
-  return this.callGetMethod(url);
-}
-
-/*********XNFR-83************/
-findHistory(id:number,moduleId:number){
-  let url = this.REST_URL +"comments/agencyContentStatusHistory/id/"+id+"/moduleId/"+moduleId+"?access_token=" + this.access_token;
-  return this.callGetMethod(url);
-}
-
-/****XNFR-83****/
-findCampaignAccessDataByDomainName(domainName:string){
-  let url = this.REST_URL +"admin/campaignAccess/domainName/"+domainName+"?access_token=" + this.access_token;
-  return this.callGetMethod(url);
-}
-
-/****XNFR-224****/
-sendLoginAsPartnerEmailNotification(loginAsEmailNotificationDto:LoginAsEmailNotificationDto){
-  let url = this.REST_URL +"admin/sendLoginAsPartnerEmailNotification"+"?access_token=" + this.access_token;
-  return this.callPostMethod(url,loginAsEmailNotificationDto);
-}
-
-/******XNFR-255******/
-findShareWhiteLabelContentAccess() {
-  let companyProfileName = this.getSubDomain();
-  let url = this.REST_URL+"admin/shareWhiteLabelContentAccess/";
-  if(companyProfileName!=""){
-    url+= "companyProfileName/"+companyProfileName;
-  }else{
-    url+= "loggedInUserId/"+this.getUserId();
   }
-  let apiUrl= url+"?access_token=" + this.access_token;
-  return this.callGetMethod(apiUrl);
-  
-}
 
-/*****XNFR-278****/
-findGroupsForMerging(pagination: Pagination) {
-  let url = this.REST_URL +"userlists/findGroupsForMerging?access_token=" + this.access_token;
-  pagination.userId = this.getUserId();
-  return this.callPostMethod(url,pagination);
-}
-
-copyUsersToUserGroups(copyGroupUsersDto: CopyGroupUsersDto) {
-  let url = this.REST_URL +"userlists/copyGroupUsers?access_token=" + this.access_token;
-  copyGroupUsersDto.loggedInUserId = this.getUserId();
-  return this.callPostMethod(url,copyGroupUsersDto);
-}
-/*****XNFR-278****/
-
-/****XNFR-317****/
-getTemplateHtmlBodyAndMergeTagsInfo(id:number) {
-  let url = this.REST_URL +"email-template/getHtmlBodyAndMergeTags?access_token=" + this.access_token;
-  let map = {};
-  map['id'] = id;
-  map['emailId'] = this.user.emailId;
-  return this.callPostMethod(url,map);
-}
-
-sendTestEmail(sendTestEmailDto:SendTestEmailDto){
-  sendTestEmailDto.fromEmail = this.user.emailId;
-  let url = this.REST_URL +"email-template/sendTestEmail?access_token=" + this.access_token;
-  return this.callPostMethod(url,sendTestEmailDto);
-}
-
-sendCampaignTestEmail(data:any){
-  let url = this.REST_URL +"admin/sendTestEmail?access_token=" + this.access_token;
-  return this.callPostMethod(url,data);
-}
-
-/******XNFR-326******/
-findAssetPublishEmailNotificationOption() {
-  let companyProfileName = this.getSubDomain();
-  let url = this.REST_URL+"admin/assetPublishedEmailNotification/";
-  if(companyProfileName!=""){
-    url+= "companyProfileName/"+companyProfileName;
-  }else{
-    url+= "loggedInUserId/"+this.getUserId();
+  deleteDefaultTemplate(id: number) {
+    return this.http.get(this.REST_URL + "superadmin/deleteDefaultTemplate/" + id + "/" + "?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
-  let apiUrl= url+"?access_token=" + this.access_token;
-  return this.callGetMethod(apiUrl);
-}
 
-findTrackOrPlaybookPublishEmailNotificationOption(type:any) {
-  let isTrack = type == TracksPlayBookType[TracksPlayBookType.TRACK];
-  let suffixUrl = isTrack ? "trackPublishedEmailNotification":"playbookPublishedEmailNotification";
-  let companyProfileName = this.getSubDomain();
-  let url = this.REST_URL+"admin/"+suffixUrl+"/";
-  if(companyProfileName!=""){
-    url+= "companyProfileName/"+companyProfileName;
-  }else{
-    url+= "loggedInUserId/"+this.getUserId();
+  /*************Unsubscribe Reasons************* */
+  findAll(pagination: Pagination) {
+    pagination.userId = this.getUserId();
+    return this.http.post(this.REST_URL + "unsubscribe/findAll?access_token=" + this.access_token, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
-  let apiUrl= url+"?access_token=" + this.access_token;
-  return this.callGetMethod(apiUrl);
-}
-/****XNFR-317****/
-findAllTeamMembers(pagination:Pagination){
-  pagination.userId = this.getUserId();
-  let url = this.REST_URL +"teamMember/findAll?access_token=" + this.access_token;
-  return this.callPostMethod(url,pagination);
-}
 
-findAllUsers(){
-  let url = this.REST_URL +"company/users/"+this.getUserId()+"?access_token=" + this.access_token;
-  return this.callGetMethod(url);
-}
+  saveOrUpdateUnsubscribeReason(unsubscribeReason: UnsubscribeReason, isAdd: boolean) {
+    unsubscribeReason.createdUserId = this.getUserId();
+    let url = isAdd ? 'save' : 'update';
+    return this.http.post(this.REST_URL + "unsubscribe/" + url + "?access_token=" + this.access_token, unsubscribeReason)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
+  findUnsubscribeReasonById(id: number) {
+    return this.http.get(this.REST_URL + "unsubscribe/findById/" + id + "?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
+  deleteUnsubscribeReasonById(id: number) {
+    return this.http.get(this.REST_URL + "unsubscribe/delete/" + id + "?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
-public callGetMethod(url: string) {
-  return this.http.get(url)
-    .map(this.extractData)
-    .catch(this.handleError);
-}
+  findHeaderAndFooterText() {
+    return this.http.get(this.REST_URL + "unsubscribe/findHeaderAndFooterText/" + this.getUserId() + "?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
-public callPostMethod(url: string,requestDto:any) {
-  return this.http.post(url,requestDto)
-    .map(this.extractData)
-    .catch(this.handleError);
-}
-
-public callPutMethod(url: string,requestDto:any){
-  return this.http.put(url,requestDto)
-    .map(this.extractData)
-    .catch(this.handleError);
-}
-
-
-public callDeleteMethod(url:string){
-  return this.http.delete(url)
-          .map(this.extractData)
-          .catch(this.handleError);
-}
+  updateHeaderAndFooterText(unsubscribePageDetails: UnsubscribePageDetails) {
+    unsubscribePageDetails.userId = this.getUserId();
+    return this.http.post(this.REST_URL + "unsubscribe/updateHeaderAndFooterText?access_token=" + this.access_token, unsubscribePageDetails)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
 
-public isLocalHost(){
-  return this.envService.CLIENT_URL=="http://localhost:4200/";
-}
+  findUnsusbcribePageContent() {
+    return this.http.get(this.REST_URL + "unsubscribe/findUnsubscribePageContent/" + this.getUserId() + "?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
-public isQADomain(){
-  return this.envService.CLIENT_URL=="https://xamplify.co/";
-}
+  findNotifyPartnersOption(companyId: number) {
+    return this.http.get(this.REST_URL + `admin/findNotifyPartnersOption/${companyId}?access_token=${this.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
-public isProductionDomain(){
-  return this.envService.CLIENT_URL=="https://xamplify.io/";
-}
+  updateNotifyPartnersOption(companyId: number, status: boolean) {
+    return this.http.get(this.REST_URL + "admin/updateNotifyPartnersOption/" + companyId + "/" + status + "?access_token=" + this.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
-setDomainUrl(){
-  if(this.vanityURLEnabled){
-    if(this.isQADomain() || this.isLocalHost()){
-      this.DOMAIN_URL = "https://"+this.getSubDomain()+".xamplify.co/";
-    }else{
-      this.DOMAIN_URL = "https://"+this.getSubDomain()+".xamplify.io/";
+  /**********Team Member Groups***************/
+  findAllTeamMemberGroupIdsAndNames(addDefaultOption: boolean) {
+    let userId = this.getUserId();
+    var url = this.REST_URL + "teamMemberGroup/findAllGroupIdsAndNames/" + userId + "/" + addDefaultOption + "?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  findAllTeamMembersByGroupId(pagination: Pagination) {
+    var url = this.REST_URL + "teamMember/findAllTeamMembersByGroupId?access_token=" + this.access_token;
+    return this.http.post(url, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  findSelectedTeamMemberIds(partnershipId: number) {
+    var url = this.REST_URL + "teamMemberGroup/findSelectedTeamMemberIds/" + partnershipId + "?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  showPartnersFilter() {
+    var url = this.REST_URL + "admin/showPartnersFilter/" + this.getUserId() + "?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  isMarketingCompany() {
+    var url = this.REST_URL + "admin/isMarketingCompany/" + this.getUserId() + "?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  isPartnershipOnlyWithPrm() {
+    var url = this.REST_URL + "admin/partnershipOnlyWithPrm/" + this.getUserId() + "?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+
+  previewTeamMemberGroup(id: number) {
+    const url = this.REST_URL + "teamMemberGroup/previewById/" + id + "?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+  /*********XNFR-83************/
+  getAssigedAgencyModules(id: number) {
+    const url = this.REST_URL + "agencies/" + id + "/assignedModules?access_token=" + this.access_token;
+    return this.http.get(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  /*********XNFR-83************/
+  getSubDomain() {
+    return this.companyProfileName !== undefined && this.companyProfileName !== '' ? this.companyProfileName : "";
+  }
+
+  /*********XNFR-83************/
+  getCompanyAndUserAndModuleDetails(moduleType: string, id: number) {
+    let url = this.REST_URL + "comments/companyAndUserDetails/" + moduleType + "/" + id + "?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  /*********XNFR-83************/
+  saveComment(commentDto: CommentDto) {
+    commentDto.commentedBy = this.getUserId();
+    let url = this.REST_URL + "comments?access_token=" + this.access_token;
+    return this.http.post(url, commentDto)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  /*********XNFR-83************/
+  findComments(moduleName: string, id: number) {
+    let url = this.REST_URL + "comments/moduleName/" + moduleName + "/" + id + "?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  /*********XNFR-83************/
+  findHistory(id: number, moduleId: number) {
+    let url = this.REST_URL + "comments/agencyContentStatusHistory/id/" + id + "/moduleId/" + moduleId + "?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  /****XNFR-83****/
+  findCampaignAccessDataByDomainName(domainName: string) {
+    let url = this.REST_URL + "admin/campaignAccess/domainName/" + domainName + "?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  /****XNFR-224****/
+  sendLoginAsPartnerEmailNotification(loginAsEmailNotificationDto: LoginAsEmailNotificationDto) {
+    let url = this.REST_URL + "admin/sendLoginAsPartnerEmailNotification" + "?access_token=" + this.access_token;
+    return this.callPostMethod(url, loginAsEmailNotificationDto);
+  }
+
+  /******XNFR-255******/
+  findShareWhiteLabelContentAccess() {
+    let companyProfileName = this.getSubDomain();
+    let url = this.REST_URL + "admin/shareWhiteLabelContentAccess/";
+    if (companyProfileName != "") {
+      url += "companyProfileName/" + companyProfileName;
+    } else {
+      url += "loggedInUserId/" + this.getUserId();
     }
-  }else{
-    this.DOMAIN_URL =  this.APP_URL;
+    let apiUrl = url + "?access_token=" + this.access_token;
+    return this.callGetMethod(apiUrl);
+
   }
-}
 
-stopLoaders(){
-  this.module.contentLoader = false;
-  this.leftSideMenuLoader = false;
-  this.module.topNavBarLoader = false;
-}
-
-
-/***XNFR-326***/
-getPartnerModuleCustomName(){
-  return localStorage.getItem("partnerModuleCustomName");
-}
-
-getDefaultM3U8FileForLocal(videoUrl:string){
-  if(this.envService.CLIENT_URL.indexOf("localhost")>-1){
-    videoUrl = "https://aravindu.com/vod/videos/54888/11082023/Dhoni1691751422924_mobinar.m3u8?access_token=" + this.access_token;
-  }else{
-    videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.access_token;
+  /*****XNFR-278****/
+  findGroupsForMerging(pagination: Pagination) {
+    let url = this.REST_URL + "userlists/findGroupsForMerging?access_token=" + this.access_token;
+    pagination.userId = this.getUserId();
+    return this.callPostMethod(url, pagination);
   }
-  return videoUrl;
-}
 
-getDefault360M3U8FileForLocal(videoUrl:string){
-  if(this.envService.CLIENT_URL.indexOf("localhost")>-1){
-    videoUrl = "https://aravindu.com/vod/videos/54888/27062023/360VideoSCIENCELAB1EscapeTsunamiWave6kDisasterSurvival1687809605028_mobinar.m3u8?access_token=" + this.access_token;
-  }else{
-   videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.access_token;
+  copyUsersToUserGroups(copyGroupUsersDto: CopyGroupUsersDto) {
+    let url = this.REST_URL + "userlists/copyGroupUsers?access_token=" + this.access_token;
+    copyGroupUsersDto.loggedInUserId = this.getUserId();
+    return this.callPostMethod(url, copyGroupUsersDto);
   }
-  return videoUrl;
-}
+  /*****XNFR-278****/
 
-navigateToMyProfileSection(){
-  this.router.navigate(["/home/dashboard/myprofile"])
-}
+  /****XNFR-317****/
+  getTemplateHtmlBodyAndMergeTagsInfo(id: number) {
+    let url = this.REST_URL + "email-template/getHtmlBodyAndMergeTags?access_token=" + this.access_token;
+    let map = {};
+    map['id'] = id;
+    map['emailId'] = this.user.emailId;
+    return this.callPostMethod(url, map);
+  }
 
-/*** XBI-1968 ***/
-isSpfConfiguredOrDomainConnected(companyId:number){
-  return this.http.get(this.REST_URL + `admin/isSpfConfiguredOrDomainConnected/${companyId}?access_token=${this.access_token}`)
+  sendTestEmail(sendTestEmailDto: SendTestEmailDto) {
+    sendTestEmailDto.fromEmail = this.user.emailId;
+    let url = this.REST_URL + "email-template/sendTestEmail?access_token=" + this.access_token;
+    return this.callPostMethod(url, sendTestEmailDto);
+  }
+
+  sendCampaignTestEmail(data: any) {
+    let url = this.REST_URL + "admin/sendTestEmail?access_token=" + this.access_token;
+    return this.callPostMethod(url, data);
+  }
+
+  /******XNFR-326******/
+  findAssetPublishEmailNotificationOption() {
+    let companyProfileName = this.getSubDomain();
+    let url = this.REST_URL + "admin/assetPublishedEmailNotification/";
+    if (companyProfileName != "") {
+      url += "companyProfileName/" + companyProfileName;
+    } else {
+      url += "loggedInUserId/" + this.getUserId();
+    }
+    let apiUrl = url + "?access_token=" + this.access_token;
+    return this.callGetMethod(apiUrl);
+  }
+
+  findTrackOrPlaybookPublishEmailNotificationOption(type: any) {
+    let isTrack = type == TracksPlayBookType[TracksPlayBookType.TRACK];
+    let suffixUrl = isTrack ? "trackPublishedEmailNotification" : "playbookPublishedEmailNotification";
+    let companyProfileName = this.getSubDomain();
+    let url = this.REST_URL + "admin/" + suffixUrl + "/";
+    if (companyProfileName != "") {
+      url += "companyProfileName/" + companyProfileName;
+    } else {
+      url += "loggedInUserId/" + this.getUserId();
+    }
+    let apiUrl = url + "?access_token=" + this.access_token;
+    return this.callGetMethod(apiUrl);
+  }
+  /****XNFR-317****/
+  findAllTeamMembers(pagination: Pagination) {
+    pagination.userId = this.getUserId();
+    let url = this.REST_URL + "teamMember/findAll?access_token=" + this.access_token;
+    return this.callPostMethod(url, pagination);
+  }
+
+  findAllUsers() {
+    let url = this.REST_URL + "company/users/" + this.getUserId() + "?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+
+
+  public callGetMethod(url: string) {
+    return this.http.get(url)
       .map(this.extractData)
       .catch(this.handleError);
-}
-
- /********XNFR-342****/
- shareSelectedAssets(requestDto:any){
-    let url = this.REST_URL + "dam/shareSelectedAssets?access_token=" + this.access_token;
-    return this.callPutMethod(url,requestDto);
-  } 
-
-/********XNFR-342****/
-shareSelectedTracksOrPlayBooks(requestDto:any,module:string){
-  let urlPrefix = module=="Tracks" ? 'shareSelectedTracks':'shareSelectedPlayBooks';
-  let url = this.REST_URL + "lms/"+urlPrefix+"?access_token=" + this.access_token;
-  return this.callPutMethod(url,requestDto);
-} 
-
-findPublishedPartnerIdsByUserListIdAndDamId(userListId:number,id:number,moduleName:string){
-  let url = this.REST_URL + moduleName+"/findPublishedPartnerIds/"+userListId+"/"+id+"?access_token=" + this.access_token;
-  return this.callGetMethod(url);
-}
-
-/*******XNFR-423****/
-getCountryNames(){
-  let url = this.REST_URL+"/admin/countryNames?access_token=" + this.access_token;
-  return this.callGetMethod(url);
-}
-
-addCountryNamesToList(coutryNames:any,countryNamesArray:any){
-  countryNamesArray.push('Please Select Country');
-  for(let i = 0; i < coutryNames.length ; i++){
-    countryNamesArray.push(coutryNames[i]);
   }
-  return countryNamesArray;
-}
+
+  public callPostMethod(url: string, requestDto: any) {
+    return this.http.post(url, requestDto)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  public callPutMethod(url: string, requestDto: any) {
+    return this.http.put(url, requestDto)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 
 
-  
+  public callDeleteMethod(url: string) {
+    return this.http.delete(url)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+
+  public isLocalHost() {
+    return this.envService.CLIENT_URL == "http://localhost:4200/";
+  }
+
+  public isQADomain() {
+    return this.envService.CLIENT_URL == "https://xamplify.co/";
+  }
+
+  public isProductionDomain() {
+    return this.envService.CLIENT_URL == "https://xamplify.io/";
+  }
+
+  setDomainUrl() {
+    if (this.vanityURLEnabled) {
+      if (this.isQADomain() || this.isLocalHost()) {
+        this.DOMAIN_URL = "https://" + this.getSubDomain() + ".xamplify.co/";
+      } else {
+        this.DOMAIN_URL = "https://" + this.getSubDomain() + ".xamplify.io/";
+      }
+    } else {
+      this.DOMAIN_URL = this.APP_URL;
+    }
+  }
+
+  stopLoaders() {
+    this.module.contentLoader = false;
+    this.leftSideMenuLoader = false;
+    this.module.topNavBarLoader = false;
+  }
+
+
+  /***XNFR-326***/
+  getPartnerModuleCustomName() {
+    return localStorage.getItem("partnerModuleCustomName");
+  }
+
+  getDefaultM3U8FileForLocal(videoUrl: string) {
+    if (this.envService.CLIENT_URL.indexOf("localhost") > -1) {
+      videoUrl = "https://aravindu.com/vod/videos/54888/11082023/Dhoni1691751422924_mobinar.m3u8?access_token=" + this.access_token;
+    } else {
+      videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.access_token;
+    }
+    return videoUrl;
+  }
+
+  getDefault360M3U8FileForLocal(videoUrl: string) {
+    if (this.envService.CLIENT_URL.indexOf("localhost") > -1) {
+      videoUrl = "https://aravindu.com/vod/videos/54888/27062023/360VideoSCIENCELAB1EscapeTsunamiWave6kDisasterSurvival1687809605028_mobinar.m3u8?access_token=" + this.access_token;
+    } else {
+      videoUrl = videoUrl + '_mobinar.m3u8?access_token=' + this.access_token;
+    }
+    return videoUrl;
+  }
+
+  navigateToMyProfileSection() {
+    this.router.navigate(["/home/dashboard/myprofile"])
+  }
+
+  /*** XBI-1968 ***/
+  isSpfConfiguredOrDomainConnected(companyId: number) {
+    return this.http.get(this.REST_URL + `admin/isSpfConfiguredOrDomainConnected/${companyId}?access_token=${this.access_token}`)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  /********XNFR-342****/
+  shareSelectedAssets(requestDto: any) {
+    let url = this.REST_URL + "dam/shareSelectedAssets?access_token=" + this.access_token;
+    return this.callPutMethod(url, requestDto);
+  }
+
+  /********XNFR-342****/
+  shareSelectedTracksOrPlayBooks(requestDto: any, module: string) {
+    let urlPrefix = module == "Tracks" ? 'shareSelectedTracks' : 'shareSelectedPlayBooks';
+    let url = this.REST_URL + "lms/" + urlPrefix + "?access_token=" + this.access_token;
+    return this.callPutMethod(url, requestDto);
+  }
+
+  findPublishedPartnerIdsByUserListIdAndDamId(userListId: number, id: number, moduleName: string) {
+    let url = this.REST_URL + moduleName + "/findPublishedPartnerIds/" + userListId + "/" + id + "?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  /*******XNFR-423****/
+  getCountryNames() {
+    let url = this.REST_URL + "/admin/countryNames?access_token=" + this.access_token;
+    return this.callGetMethod(url);
+  }
+
+  addCountryNamesToList(coutryNames: any, countryNamesArray: any) {
+    countryNamesArray.push('Please Select Country');
+    for (let i = 0; i < coutryNames.length; i++) {
+      countryNamesArray.push(coutryNames[i]);
+    }
+    return countryNamesArray;
+  }
+
+
+
 }

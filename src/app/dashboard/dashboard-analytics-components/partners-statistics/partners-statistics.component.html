@@ -1,22 +1,27 @@
-<div class="col-xs-12 col-sm-6" style="padding: 0">
+<div class="col-xs-12 col-sm-6 partner_stat_card_height">
     <div class="col-sm-12">
-        <div class="portlet light mHeight" style="min-height: 545px;margin-bottom: 20px;">
+        <div class="portlet light mHeight partner_stat_card_hgt">
             <div class="portlet-title" style="margin-bottom: 0px;min-height: 0px;">
                 <div class="caption">
-                    <span class="caption-subject" translate>{{authenticationService?.partnerModule?.customName}} Statistics</span>
+                    <span class="caption-subject" translate>{{authenticationService?.partnerModule?.customName}}
+                        Statistics</span>
                 </div>
                 <div class="inputs" id="right">
                     <div class="portlet-input input-inline input-medium">
-                      <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
-                        <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="activePartnersSearchKey" [ngModelOptions]="{standalone: true}"
-                        placeholder="Search Company Name" (keypress)="activePartnerSearch($event.keyCode)">
-                        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="activePartnersSearchKey" (click)="activePartnersSearchKey='';searchActivePartnerAnalytics();"></button>
-                        <button type="submit" class="search-box-item-click" (click)="searchActivePartnerAnalytics()">
-                            <i class="fa fa-search" aria-hidden="true"></i>
-                        </button>
-                      </div>
+                        <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
+                            <input type="text" style="height: 34px;" class="form-control"
+                                [(ngModel)]="activePartnersSearchKey" [ngModelOptions]="{standalone: true}"
+                                placeholder="Search Company Name" (keypress)="activePartnerSearch($event.keyCode)">
+                            <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                *ngIf="activePartnersSearchKey"
+                                (click)="activePartnersSearchKey='';searchActivePartnerAnalytics();"></button>
+                            <button type="submit" class="search-box-item-click"
+                                (click)="searchActivePartnerAnalytics()">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </div>
                     </div>
-                  </div>
+                </div>
             </div>
             <div class="portlet-body clearfix">
                 <ng-container>
@@ -83,48 +88,54 @@
                 </ng-container>
                 <br>
                 <div class="col-xs-12 col-sm-12 mPad0 pl0 pr0">
-                <div class="table-responsive">
-                    <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading" [rowsCount]="4"></app-list-loader>
-                    <table class="table tgrid" *ngIf="!activeParnterHttpRequestLoader.isLoading" aria-describedby="redistributedCampaignsAndPartners">
-                        <thead>
-                            <tr>
-                            <th scope="col">{{authenticationService?.partnerModule?.customName}} Company Name</th>
-                            <th scope="col" class="text-center">Campaigns</th>
-                            <th scope="col" class="text-center">Type</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let item of activePartnersPagination.pagedItems">
-                              <td title="{{item?.partnerCompanyName}}">
-                                <strong>{{item?.partnerCompanyName | slice:0:20}}</strong>
-                                <span *ngIf="item?.partnerCompanyName.length>20">...</span>
-                              </td>
-                              <td class="text-center">
-                                  <div>
-                                  <button class="btn btn-default btn-xs re-distributed-high-level TableDataBtn">
-                                    <div class="portlet-body text-center">
-                                      <h4>
-                                        <strong class="sky-blue">{{item?.count}}</strong>
-                                      </h4>
-                                    </div>
-                                  </button>
-                                </div>
-                              </td>
-                              <td class="text-center">
-                                <app-pie-chart [partnerCompanyId]="item.companyId"></app-pie-chart>
-                              </td>
-                            </tr>
-                          </tbody>
-                    </table>
-                    <div *ngIf="activePartnersPagination.totalRecords==0" class="alert alert-info">
-                        <strong>No campaigns found</strong>
-                      </div>
+                    <div class="table-responsive">
+                        <app-list-loader *ngIf="activeParnterHttpRequestLoader.isLoading"
+                            [rowsCount]="4"></app-list-loader>
+                        <table class="table tgrid" *ngIf="!activeParnterHttpRequestLoader.isLoading"
+                            aria-describedby="redistributedCampaignsAndPartners">
+                            <thead>
+                                <tr>
+                                    <th scope="col">{{authenticationService?.partnerModule?.customName}} Company Name
+                                    </th>
+                                    <th scope="col" class="text-center">Campaigns</th>
+                                    <th scope="col" class="text-center">Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of activePartnersPagination.pagedItems">
+                                    <td title="{{item?.partnerCompanyName}}">
+                                        <strong>{{item?.partnerCompanyName | slice:0:20}}</strong>
+                                        <span *ngIf="item?.partnerCompanyName.length>20">...</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div>
+                                            <button
+                                                class="btn btn-default btn-xs re-distributed-high-level TableDataBtn">
+                                                <div class="portlet-body text-center">
+                                                    <h4>
+                                                        <strong class="sky-blue">{{item?.count}}</strong>
+                                                    </h4>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <app-pie-chart [partnerCompanyId]="item.companyId"></app-pie-chart>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div *ngIf="activePartnersPagination.totalRecords==0" class="alert alert-info">
+                            <strong>No campaigns found</strong>
+                        </div>
+                    </div>
+                    <div
+                        *ngIf="activePartnersPagination.totalRecords>0 && !activeParnterHttpRequestLoader.isLoading &&!activeParnterHttpRequestLoader.isServerError">
+                        <app-pagination [pagination]="activePartnersPagination" [type]="'ActivePartnerPagination'"
+                            [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
+                    </div>
                 </div>
-                <div *ngIf="activePartnersPagination.totalRecords>0 && !activeParnterHttpRequestLoader.isLoading &&!activeParnterHttpRequestLoader.isServerError">
-                    <app-pagination [pagination]="activePartnersPagination" [type]="'ActivePartnerPagination'" [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
-                  </div>
-            </div>
             </div>
         </div>
-      </div>
-  </div>
+    </div>
+</div>

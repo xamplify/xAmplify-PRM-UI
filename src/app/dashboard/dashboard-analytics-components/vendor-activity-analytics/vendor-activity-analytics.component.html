@@ -1,7 +1,7 @@
 <div class="row" *ngIf="!authenticationService.partnershipEstablishedOnlyWithPrm && !authenticationService.partnershipEstablishedOnlyWithPrmAndLoggedInAsPartner
  && authenticationService.module.isReDistribution && !authenticationService.module.deletedPartner">
     <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-    <div class="page-bar portlet light" style="margin: 14px;margin-top: 15px;">
+    <div class="page-bar portlet light vendor_card_height">
         <div class="portlet-title">
             <h4 class="pull-left m10 f-w-600 text-primary" translate>Campaigns that have been shared with you (Vendor
                 Activity)</h4>

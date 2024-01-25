@@ -2594,3 +2594,10 @@ div b {
 .button.button.bgcolor-unset.btn_border{
   border :none !important;
 }
+/*  */
+button.unlink-button {
+  color: #fffbfb!important;
+}
+.unlink-button:hover {
+  color:#333!important;
+}

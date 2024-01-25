@@ -186,6 +186,8 @@ setViewType(viewType: string) {
       },
       (error: any) => {
         this.logger.errorPage(error);
+      },()=>{
+        this.callFolderListViewEmitter();
       });
   }
   /********************Pagaination&Search Code*****************/
@@ -268,7 +270,6 @@ setViewType(viewType: string) {
           this.customResponse = new CustomResponse('SUCCESS', track.title+" Deleted Successfully", true);
           this.pagination.pageIndex = 1;
           this.listLearningTracks(this.pagination);
-          this.callFolderListViewEmitter();
         } else {
           swal("Please Contact Admin!", response.message, "error");
           this.referenceService.stopLoader(this.httpRequestLoader);

@@ -281,7 +281,7 @@
                         *ngFor="let learningTrack of pagination.pagedItems ;let i =index"
                         id="LearningTrackListDiv_{{learningTrack.id}}">
                         <div class="grid-box" id="box-dark-defalut-clr">
-                            <img class="img-grid-track image_effect" [src]="learningTrack.featuredImage"
+                            <img class="img-grid-track" [src]="learningTrack.featuredImage"
                                 onerror="this.src='assets/images/content/image.png';" alt="{{learningTrack.title}}">
                             <h4 class="xamplify-ellipsis GridViewCotent gridViewTextAlignmnent1" data-toggle="tooltip"
                                 data-placement="bottom" title="{{learningTrack.title}}"

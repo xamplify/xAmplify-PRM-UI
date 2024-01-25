@@ -138,11 +138,11 @@
                                           </div>
                                        </div>
                                        <!-- end here -->
-                                       <!---Asset-->
-                                       <!-- class="mb-padding" -->
-                                       <div *ngIf="isAdd">
-                                          <span [style.color]="invalidAssetName ? 'red':''"><strong>Upload Asset<span
-                                                   class="required">*</span></strong></span>
+                                       <!---Upload Asset-->
+                                       <div>
+                                          <span [style.color]="invalidAssetName ? 'red':''"><strong>
+                                             {{uploadOrReplaceAssetText}}<span *ngIf="isAdd" class="required">*</span></strong>
+                                          </span>
                                           <div class="row">
                                              <div class="col-md-6" [class.customDisableCss]='isDisable==true'>
                                                 <div class="upload-asset-div" (click)="browse()"
@@ -152,14 +152,9 @@
                                                    <div class="text-center card-template">
                                                       <img class="img-templates"
                                                          src="../../../assets/images/uploadimage.png" alt="">
-                                                      <h2 class="upload-video" style="margin:-5px;padding-top: 5px;"
-                                                         translate>Upload
-                                                         Asset
-                                                      </h2>
-                                                      <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE |
-                                                         translate}}</h6>
-                                                      <button class="button_blue bgcolor-unset" style="color:#fff"
-                                                         translate><span
+                                                      <h2 class="upload-video" style="margin:-5px;padding-top: 5px;">{{uploadOrReplaceAssetText}}</h2>
+                                                      <h6 style="color: #717171;">{{properties.CONTENT_DRAG_MESSAGE}}</h6>
+                                                      <button class="button_blue bgcolor-unset" style="color:#fff"><span
                                                             class="btn btn-primary transition txt_pd-top3">Browse</span></button>
                                                       <br><br>
                                                       <span *ngIf="uploadedAssetName?.length>0">
@@ -596,7 +591,8 @@
             <br>
             <div class="d-flex justify-content-between">
                <div class="button-group" style="position: relative;text-align:left">
-                  <button class="btn-info" (click)="toggleContainWithinAspectRatio()" [disabled]="!showCropper">
+                  <button class="btn-info aspect_ratio" (click)="toggleContainWithinAspectRatio()"
+                     [disabled]="!showCropper">
                      <!-- <i [ngClass]="containWithinAspectRatio==='Fill Aspect Ratio'?'fa fa-window-maximize': containWithinAspectRatio === 'Contain Within Aspect Ratio'? 'fa fa-window-minimize':'fa fa-window-minimize' " aria-hidden="true"></i> -->
                      {{
                      containWithinAspectRatio
@@ -604,16 +600,18 @@
                      : 'Contain Within Aspect Ratio'
                      }}
                   </button>
-                  <button class="btn-info" (click)="zoomOut()" [disabled]="!showCropper"><i class="fa fa-search-minus"
-                        title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i> </button>
-                  <button class="btn-info" (click)="zoomIn()" [disabled]="!showCropper"><i class="fa fa-search-plus"
-                        title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
-                  <button class="btn-info" (click)="resetImage()" [disabled]="!showCropper"> <i class="fa fa-refresh"
-                        title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>
+                  <button class="btn-info aspect_ratio" (click)="zoomOut()" [disabled]="!showCropper"><i
+                        class="fa fa-search-minus" title="zoomOut" data-toggle="tooltip" aria-hidden="true"></i>
+                  </button>
+                  <button class="btn-info aspect_ratio" (click)="zoomIn()" [disabled]="!showCropper"><i
+                        class="fa fa-search-plus" title="zoomIn" data-toggle="tooltip" aria-hidden="true"></i> </button>
+                  <button class="btn-info aspect_ratio" (click)="resetImage()" [disabled]="!showCropper"> <i
+                        class="fa fa-refresh" title="reset" data-toggle="tooltip" aria-hidden="true"></i></button>
                </div>
                <div>
-                  <button class="btn btn-primary" [disabled]="!showCropper" (click)="saveThumbnail()">Save
-                     Changes</button>
+                  <button class="button_blue bgcolor-unset" [disabled]="!showCropper" (click)="saveThumbnail()"><span
+                        class="btn btn-primary transition background txt_pd-top3">Save
+                        Changes</span></button>
                </div>
             </div>
          </div>

@@ -3,7 +3,7 @@ import { Http, Response } from "@angular/http";
 import { SaveVideoFile } from "../../videos/models/save-video-file";
 import { AuthenticationService } from "./authentication.service";
 import { Observable } from "rxjs/Observable";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
 import { Category } from "../../videos/models/category";
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { DefaultVideoPlayer } from "../../videos/models/default-video-player";
@@ -147,6 +147,10 @@ export class ReferenceService {
   loginStyleType:any;
   loginTemplateId = 53;
   assetResponseMessage = "";
+  createdOrUpdatedSuccessMessage = "";
+
+  /*** XNFR-433 ***/
+  isCopyForm: boolean = false;
   constructor(
     private http: Http,
     private authenticationService: AuthenticationService,
@@ -3069,6 +3073,10 @@ export class ReferenceService {
       categoryType = "CAMPAIGN";
     }else if(this.roles.emailTemplateId==moduleId){
       categoryType="EMAIL_TEMPLATE";
+    }else if(this.roles.landingPageId==moduleId){
+      categoryType="LANDING_PAGE";
+    }else if(this.roles.formId==moduleId){
+      categoryType="FORM";
     }
     return categoryType;
   }
@@ -3242,7 +3250,7 @@ export class ReferenceService {
    /********Email Templates****/
    goToManageEmailTemplates(viewType: string) {
     this.router.navigate(["/home/emailtemplates/manage/"+this.getListViewAsDefault(viewType)]);
-  }
+   }
 
   navigateToManageEmailTemplatesByViewType(folderViewType: string, viewType: string, categoryId: number) {
     if (categoryId != undefined && categoryId > 0) {
@@ -3349,7 +3357,100 @@ export class ReferenceService {
     return $.trim(input);
   }
 
+
   getRouterParameter(parameter:string){
     return this.route.snapshot.params[parameter];
   }
+
+  convertToLowerCaseAndGetTrimmedData(input:any){
+    return $.trim(input.toLowerCase());
+  }
+
+  removeAllSpacesAndGetData(text:string){
+    return text.replace(/ /g,'');
+  }
+
+  /********Landing Pages****/
+  goToManageLandingPages(viewType: string) {
+    let urlSuffix = this.getLandingPagesSuffixUrl();
+    this.router.navigate(["/home/pages/"+urlSuffix+"/"+this.getListViewAsDefault(viewType)]);
+   }
+
+  private getLandingPagesSuffixUrl() {
+    let isPartnerLandingPage = this.router.url.includes('home/pages/partner');
+    let urlSuffix = isPartnerLandingPage ? 'partner' : 'manage';
+    return urlSuffix;
+  }
+
+   navigateToManageLandingPagesByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToManageLandingPagesByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToManageLandingPages(viewType);
+    }
+  }
+  goToManageLandingPagesByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    let urlSuffix = this.getLandingPagesSuffixUrl();
+    this.router.navigate(["/home/pages/"+urlSuffix+"/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  goToEditLandingPage(viewType: string) {
+    this.router.navigate(["/home/pages/edit/"+this.getListViewAsDefault(viewType)]);
+  }
+
+  navigateToEditLandingPageByViewType(folderViewType: string, viewType: string, categoryId: number) {
+    if (categoryId != undefined && categoryId > 0) {
+      this.goToEditLandingPageByCategoryId(folderViewType,viewType,categoryId);
+    } else {
+      this.goToEditLandingPage(viewType);
+    }
+  }
+  goToEditLandingPageByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/pages/edit/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  goToManageFormsByCategoryId(folderViewType: string, viewType: string, categoryId: number) {
+    this.router.navigate(["/home/forms/manage/"+this.getListViewAsDefault(viewType)+"/"+categoryId+"/"+folderViewType]);
+  }
+
+  addCreateOrUpdateSuccessMessage(message:string){
+    this.createdOrUpdatedSuccessMessage = message;
+  }
+
+  isVideo(filename: any) {
+    const parts = filename.split('.');
+    const ext = parts[parts.length - 1];
+    switch (ext.toLowerCase()) {
+        case 'm4v':
+        case 'mkv':
+        case 'avi':
+        case 'mpg':
+        case 'mp4':
+        case 'flv':
+        case 'mov':
+        case 'wmv':
+        case 'divx':
+        case 'f4v':
+        case 'mpeg':
+        case 'vob':
+        case 'xvid':
+            // etc
+            return true;
+    }
+    return false;
+}
+
+isIE() {
+  const isInternetExplorar = navigator.userAgent;
+  /* MSIE used to detect old browsers and Trident used to newer ones*/
+  const is_ie = isInternetExplorar.indexOf("MSIE ") > -1 || isInternetExplorar.indexOf("Trident/") > -1;
+  return is_ie;
+}
+
+closeDamModalPopup(){
+  $('#myModal').modal('hide');
+  $('body').removeClass('modal-open');
+  $('.modal-backdrop fade in').remove();
+}
+
 }

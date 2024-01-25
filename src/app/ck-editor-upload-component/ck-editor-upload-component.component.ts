@@ -17,6 +17,7 @@ import { CustomResponse } from '../common/models/custom-response';
 import { EmailTemplateSource } from '../email-template/models/email-template-source';
 import { HubSpotService } from 'app/core/services/hubspot.service';
 import { ComponentCanDeactivate } from 'app/component-can-deactivate';
+import { ModulesDisplayType } from 'app/util/models/modules-display-type';
 
 declare var $:any, CKEDITOR:any, swal: any;
 
@@ -61,7 +62,10 @@ export class CkEditorUploadComponent implements OnInit,ComponentCanDeactivate,On
     type:string = "";
     categoryNames: any;
     isSaveButtonClicked = false;
-
+    viewType = "";
+    folderViewType = "";
+    modulesDisplayType = new ModulesDisplayType();
+    categoryId: number = 0;
   constructor( public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
           private emailTemplate: EmailTemplate, private logger: XtremandLogger, public authenticationService: AuthenticationService, public refService: ReferenceService,
           public callActionSwitch: CallActionSwitch,private route: ActivatedRoute,private hubSpotService: HubSpotService) {
@@ -320,13 +324,13 @@ export class CkEditorUploadComponent implements OnInit,ComponentCanDeactivate,On
                 this.refService.stopLoader( this.httpRequestLoader );
                 if ( !isOnDestroy ) {
                     if ( data.statusCode == 702 ) {
-                        this.refService.isCreated = true;
-                        this.refService.goToManageEmailTemplates(undefined);
+                        this.refService.addCreateOrUpdateSuccessMessage("Template created successfully");
+                        this.navigateToManageSection();
                     } else {
                         this.customResponse = new CustomResponse( "ERROR", data.message, true );
                     }
                 }else{
-                    this.emailTemplateService.goToManage();
+                    this.navigateToManageSection();
                 }
              }else{
                 this.authenticationService.forceToLogout();
@@ -354,13 +358,13 @@ export class CkEditorUploadComponent implements OnInit,ComponentCanDeactivate,On
                         this.refService.stopLoader(this.httpRequestLoader);
                         if (!isOnDestroy) {
                           if (data.statusCode == 8012) {
-                            this.refService.isCreated = true;
-                            this.refService.goToManageEmailTemplates(undefined);
+                            this.refService.addCreateOrUpdateSuccessMessage("Template created successfully");
+                            this.navigateToManageSection();
                           } else {
                             this.customResponse = new CustomResponse("ERROR", data.message, true);
                           }
                         }else{
-                            this.emailTemplateService.goToManage();
+                            this.navigateToManageSection();
                         }
                     }else{
                         this.authenticationService.forceToLogout();
@@ -374,6 +378,10 @@ export class CkEditorUploadComponent implements OnInit,ComponentCanDeactivate,On
                 () => console.log(" Completed saveHtmlTemplate()")
               );
   }
+
+  navigateToManageSection() {
+    this.refService.navigateToManageEmailTemplatesByViewType(this.folderViewType,this.viewType,this.categoryId);
+    }
 
 
   showSweetAlert(body:any) {
@@ -405,6 +413,9 @@ ngOnDestroy() {
   }
   
   ngOnInit() {
+    this.categoryId = this.route.snapshot.params['categoryId'];
+    this.viewType = this.route.snapshot.params['viewType'];
+    this.folderViewType = this.route.snapshot.params['folderViewType'];
       try {
           this.ckeConfig = {
               allowedContent: true,
