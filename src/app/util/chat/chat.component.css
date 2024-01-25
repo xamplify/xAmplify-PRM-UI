@@ -343,7 +343,7 @@ background: green;
     position: relative;
     z-index: 20;
     padding: 5px 10px;
-    width: 120px;
+    width: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;

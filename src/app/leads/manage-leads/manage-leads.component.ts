@@ -90,10 +90,9 @@ export class ManageLeadsComponent implements OnInit {
   vendorList:any ;
   vendorCompanyIdFilter:any;
   /*******XNFR-426*******/
-  leadApprovalStatus:boolean = false;
-  leadNotes:any;
-  leadApproveRejectType:any;
-  isLeadNotesvalid:boolean = false;
+  approvalStatusComment:any;
+  leadApprovalStatusType:any;
+  isApprovalStatusCommentValid:boolean = false;
   maxChars: number = 250;
   remainingChars: number = this.maxChars;
   ngxloading:boolean = false;
@@ -1235,46 +1234,48 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   /*********XNFR-426******/
-  leadApproveReject(lead:Lead , leadNotes:string){
+  updateLeadApprovalStatus(lead:Lead , approvalStatusComment:string){
     this.ngxloading = true;
-    lead.leadNotes = leadNotes;
+    lead.approvalStatusComment = approvalStatusComment;
     lead.userId = this.loggedInUserId;
-    lead.leadApproveRejectType = this.leadApproveRejectType;
+    lead.leadApprovalStatusType = this.leadApprovalStatusType;
 
-    this.leadsService.leadApproveReject(lead).subscribe(response => {
+    this.leadsService.updateLeadApprovalStatus(lead).subscribe(response => {
       if(response.statusCode == 200){
         this.ngxloading = false;
-        this.leadApproveRejectType = "";
+        this.leadApprovalStatusType = "";
         this.remainingChars = this.maxChars;
         this.showLeads();
-        this.addNotesModelClose();//xnfr-426
+        this.closeApprovalStatusModelPopup();//xnfr-426
       }else{
-
+        console.log("Unauthorized user error msg");
+        this.showLeads();
+        this.closeApprovalStatusModelPopup();
       }
     });
   }
 
-  addNotesModel(lead:Lead , leadApproveRejectType:string){ 
-    $('#addNotesModel').modal('show');
-    this.leadApproveRejectType = leadApproveRejectType;
+  addApprovalStatusModelPopup(lead:Lead , leadApproveRejectType:string){ 
+    $('#addApprovalStatusModelPopup').modal('show');
+    this.leadApprovalStatusType = leadApproveRejectType;
     this.selectedLead = lead;
   }
 
-  addNotesModelClose(){
-    this.leadNotes = null;
-    this.leadApproveRejectType = null;
+  closeApprovalStatusModelPopup(){
+    this.approvalStatusComment = null;
+    this.leadApprovalStatusType = null;
     this.remainingChars = this.maxChars;
-    $('#addNotesModel').modal('hide');
+    $('#addApprovalStatusModelPopup').modal('hide');
   }
 
-  validateNotes(leadNotes: string){
-    leadNotes = $.trim(leadNotes);
-    this.remainingChars = this.maxChars - leadNotes.length;
-    if(leadNotes==='' || leadNotes=== null || leadNotes=== undefined ) {
-      this.isLeadNotesvalid = false;
+  validateComment(approvalStatusComment: string){
+    approvalStatusComment = $.trim(approvalStatusComment);
+    this.remainingChars = this.maxChars - approvalStatusComment.length;
+    if(approvalStatusComment==='' || approvalStatusComment=== null || approvalStatusComment=== undefined ) {
+      this.isApprovalStatusCommentValid = false;
     }
-    if(this.referenceService.validateCkEditorDescription(leadNotes)){
-      this.isLeadNotesvalid = true;
+    if(this.referenceService.validateCkEditorDescription(approvalStatusComment)){
+      this.isApprovalStatusCommentValid = true;
     }
   }
 

@@ -28,8 +28,8 @@ export class Lead {
     unReadChatCount: any;
     currentStagePrivate = false;
     /******XNFR-426******/
-    leadApproveRejectType: any;
+    leadApprovalStatusType: any;
     leadApprovalOrRejection:any;
-    leadNotes:any;
+    approvalStatusComment:any;
     leadComment:any;
 }
