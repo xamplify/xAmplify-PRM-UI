@@ -17,10 +17,10 @@
   <div class="row" style="display: flex;" [class.disabled]="authenticationService.isSuperAdmin()">
     <div class="col-xs-12">
       <div class="portlet-body">
-        <div class="portlet light">
+        <div class="portlet light remove_cardBgcolor">
           <div class="portlet-title">
-            <h4 class="pull-left" translate>Manage Accounts</h4>
-            <button class="button_blue btn-sm pull-right bgcolor-unset" data-toggle="modal"
+            <h4 class="pull-left pd_lft20" translate>Manage Accounts</h4>
+            <button class="button_blue btn-sm pull-right bgcolor-unset pd_rgt20" data-toggle="modal"
               data-target="#connectAccountsModal" translate><span class="btn btn-primary transition txt_pd-top3">Connect
                 Accounts</span></button>
           </div>
@@ -85,7 +85,7 @@
                       *ngIf="socialConnection.canSaveSocialConnections" class="delete-account">
                       <i class="fa fa-trash-o fa-2x pull-right" style="color: red;"></i>
                     </div>
-                    <div class="portlet light block" (click)="confirmDialog(socialConnection)"
+                    <div class="portlet light block box_shadow" (click)="confirmDialog(socialConnection)"
                       [ngClass]="{'checked': socialConnection.active, 'unchecked': !socialConnection.active}">
                       <div class="portlet-body">
                         <div class="pt10">

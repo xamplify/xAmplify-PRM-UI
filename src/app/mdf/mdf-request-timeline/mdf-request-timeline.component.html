@@ -93,7 +93,9 @@
                                                         style="border-style: none !important;">
                                                         <div class="panel-heading icon">
                                                             <img class="img-circle mdf-style"
-                                                                src="{{timeLine?.profilePicturePath}}" alt="No Image Found" onerror="this.src='assets/images/icon-user-default.png';">
+                                                                src="{{timeLine?.profilePicturePath}}"
+                                                                alt="No Image Found"
+                                                                onerror="this.src='assets/images/icon-user-default.png';">
                                                         </div>
                                                         <div class="panel-body pt0">
                                                             <p>
@@ -142,7 +144,8 @@
                                                                             number:'1.0':'en-US'}}</strong></p>
                                                                 </ng-container>
                                                             <p *ngIf="timeLine?.description?.length>0">Description:
-                                                                <strong>{{timeLine?.description}}</strong></p>
+                                                                <strong>{{timeLine?.description}}</strong>
+                                                            </p>
                                                         </div>
                                                     </article>
                                                 </div>
@@ -191,9 +194,10 @@
                                                                 <td style="text-align: center;">
                                                                     <div class=" override-actions">
                                                                         <a (click)="downloadFile(document)"
-                                                                            title="Download">
+                                                                            title="Download" class="custom-icon">
                                                                             <i class="fa fa-download action-btn IconCustomization"
                                                                                 aria-hidden="true"></i>
+                                                                            <div class="clickicons"></div>
                                                                         </a>
                                                                         <!-- <a (click)="delete()" title="Delete">
                                                                 <i class="fa fa-trash action-btn trashIconCustomization" aria-hidden="true"></i>

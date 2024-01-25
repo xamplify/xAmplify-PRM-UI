@@ -9,7 +9,7 @@
         <div class="alert alert-danger"><strong>Error In Loading Menu Items.Please Contact Admin.</strong></div>
       </ng-container>
 
-      
+
       <ng-container
         *ngIf="!loading && !authenticationService?.leftSideMenuLoader && !menuItemError && menuItem?.companyProfileCreated">
         <ul class="page-sidebar-menu page-sidebar-menu-hover-submenu page-custom-sidebar-menu"
@@ -32,10 +32,10 @@
                 <span class="selected"></span>
               </a>
               <div class="border-bt"></div>
-              <ul class="sub-menu" *ngIf="menu.showSubMenu"
+              <ul class="sub-menu pl_4" *ngIf="menu.showSubMenu"
                 [ngStyle]="{'display': menu.mergeTag === clickedMergeTag? 'block': 'none' }">
                 <li *ngFor="let subMenu of menu.subModules">
-                  <a (click)="startLoader()" [routerLink]="subMenu.angularPath">
+                  <a class="sub_menu_margin" (click)="startLoader()" [routerLink]="subMenu.angularPath">
                     <i [className]="subMenu.angularIcon" aria-hidden="true"></i>
                     <span class="title">{{subMenu.customName}}</span>
                   </a>
