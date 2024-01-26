@@ -349,66 +349,14 @@
                             <td style="width: 20%;">
                               <span class="comment-color" translate>
                                 {{deal.currentStageName}}</span>
-                              <a data-rel="fancybox-button" (click)="changeDealPipelineStage(deal.id, (i+1))"
-                                data-toggle="tooltip" data-placement="bottom" title="edit deal stage">
+                                
+                              <!-- xnfr-426-->
+                              <a data-rel="fancybox-button" (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)"
+                                data-toggle="tooltip" data-placement="bottom" title="Edit Deal Stage">
                                 <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>
                                 <div class="clickicons"></div>
                               </a>
-                              <!-- xnfr-426-->
-                              <div class="modal fade right" id="changeDealPipelineStageModel-{{i+1}}" tabindex="-1" role="dialog"
-                                aria-labelledby="changeDealPipelineStageModel" data-backdrop="static" data-keyboard="false">
-                                <div class="modal-dialog modal-css" role="document">
-                                  <div class="modal-content" style="overflow-x: hidden;">
-                                    <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px',fullScreenBackdrop:true }">
-                                    </ngx-loading>
-                                    <div class="modal-header">
-                                      <a title="Close" class="pull-right close-circle" (click)="closeDealChangeModelPopup((i+1))">
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                      </a>
-                                      <button type="button" class="close-circle pull-right mrg1" data-toggle="tooltip" data-placement="bottom"
-                                        title="Comments" *ngIf="true" (click)="showComments(deal)">
-                                        <i class="fa fa-comments" aria-hidden="true"></i>
-                                        <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
-                                          style="margin-top: -58px; margin-right: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
-                                      </button>
-                                      <h4 class="modal-title" style="font-weight: 600;" translate>Update Deal</h4>
-                                    </div>
-                                    <div class="form-group textareaStyles">
-                                      <h4> You can update the deal stage and add comments</h4>
-                                      <h4>Stage <span class="required"> *</span></h4>
-                                      <select
-                                        [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage)"
-                                        class="form-control" [(ngModel)]="deal.pipelineStageId">
-                                        <option *ngIf="isPartnerVersion && deal.currentStagePrivate" [ngValue]="deal.currentStageId">
-                                          {{deal.currentStageName}}
-                                        </option>
-                                        <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">
-                                          {{stage.stageName}}</option>
-                                      </select>
-                                      <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
-                                        *ngIf="isPartnerVersion && deal?.onNonInteractiveStage"
-                                        title="You can not edit this deal as it is on a non interactive deal stage.">
-                                      </span>
-                                      <br>
-                                      <div class="form-group">
-                                        <h4 class="modal-title" translate>Add Comments</h4>
-                                        <textarea class="form-control" placeholder="Write your comment here" name="dealComment" rows="5"
-                                          (input)="getRemainingCharCount(deal.dealComment)" [(ngModel)]="deal.dealComment" maxlength="250"></textarea>
-                                        <span>
-                                          <p>{{remainingCharsLeft}} characters left...</p>
-                                        </span>
-                                      </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="closeDealChangeModelPopup((i+1))"
-                                        translate>Cancel</button>
-                                      <button class="button_blue bgcolor-unset" (click)="updateDealPipelineStage(deal)" translate>
-                                        <span class="btn btn-primary transition d-inline"> Update</span>
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+
                             </td>
                             <td style="width: 20%;">
                               <div class="actions-block override-actions actionbtn">
@@ -729,6 +677,11 @@
       [isOrgAdmin]="isOrgAdmin" (notifySubmitSuccess)="showSubmitDealSuccess()"></app-add-deal>
   </div>
 </section>
+
+<app-opportunities-chat-modal-popup  *ngIf="updateCurrentStage" [deal]="currentDealToUpdateStage"
+[isPartnerVersion]="isPartnerVersion" [isCommentSection]="isCommentSection" [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable"
+(showCommentsEmitter)="showComments(deal)" (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusCode)="stageUpdateResponse($event)">
+</app-opportunities-chat-modal-popup>
 
 <app-deal-chat-popup *ngIf="isCommentSection" [deal]="selectedDeal" [editTextArea]="textAreaDisable"
   (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>

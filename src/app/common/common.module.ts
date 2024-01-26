@@ -157,6 +157,7 @@ import { TrimPipe } from 'app/core/custom-pipes/trim.pipe';
 //XNFR-426
 import { DealChatPopupComponent } from 'app/deals/deal-chat-popup/deal-chat-popup.component';
 import { ChatComponent } from 'app/util/chat/chat.component';
+import { OpportunitiesChatModalPopupComponent } from 'app/util/opportunities-chat-modal-popup/opportunities-chat-modal-popup.component';
 
 
 @NgModule({
@@ -187,8 +188,8 @@ import { ChatComponent } from 'app/util/chat/chat.component';
 		CampaignListAndGridViewComponent,UserGuideHelpButtonComponent,GuideLeftMenuComponent,SearchGuidesComponent,GuideHelpIconComponent,
 		HomeGuideComponent,EmailTemplatesListAndGridViewComponent,DonutPieChartComponent,SelectEmailTemplateComponent,CustomUiSwitchComponent,
 		EditTemplateOrPageModalPopupComponent, ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
-		 ShareUnpublishedContentComponent,
-	 ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,DealChatPopupComponent,ChatComponent],
+		 ShareUnpublishedContentComponent, ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,DealChatPopupComponent,ChatComponent,
+	 	OpportunitiesChatModalPopupComponent],
 
 
 
@@ -218,7 +219,7 @@ import { ChatComponent } from 'app/util/chat/chat.component';
 		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent,
 		ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
-		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,DealChatPopupComponent,ChatComponent]
+		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,DealChatPopupComponent,ChatComponent,OpportunitiesChatModalPopupComponent]
 
 })
 export class CommonComponentModule { }

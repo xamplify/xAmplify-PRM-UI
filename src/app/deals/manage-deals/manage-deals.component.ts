@@ -91,13 +91,10 @@ export class ManageDealsComponent implements OnInit {
   /** User Guides */
 
   /** XNFR-426 **/
-  deal = new Deal();
-  currentDealId:number;
-  selectedDealForPopup:any;
-  maxCharsLeft= 250;
-  remainingCharsLeft= this.maxCharsLeft;
+  deal= new Deal();
+  updateCurrentStage:boolean=false;
+  currentDealToUpdateStage:Deal;
   textAreaDisable:boolean=false;
-  ngxloading:boolean = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -1239,47 +1236,25 @@ export class ManageDealsComponent implements OnInit {
   }
 
   /****xnfr-426******/
-  changeDealPipelineStage(currentDealId:number, indexnum:number ){
-    this.currentDealId = currentDealId;
-    this.selectedDealForPopup = indexnum;
-    this.remainingCharsLeft= this.maxCharsLeft;
-    this.textAreaDisable=true;
-    let popUp:string = '#changeDealPipelineStageModel-'+indexnum;
-    $(popUp).modal('show');
+  updatePipelineStage(deal:Deal,deletedPartner:boolean){
+    if(!deletedPartner){
+      this.currentDealToUpdateStage = deal;
+      this.updateCurrentStage = true;
+      this.textAreaDisable=true;
+    }else{
+      this.referenceService.showSweetAlert("This Option Is Not Available","","info");
+    }
   }
 
-  closeDealChangeModelPopup(indexnum:number){
-    let popUp:string = '#changeDealPipelineStageModel-'+indexnum;
-    $(popUp).modal('hide');
-    this.remainingCharsLeft= this.maxCharsLeft;
+  resetModalPopup(){
+    this.updateCurrentStage = false;
+    this.isCommentSection = false;
     this.textAreaDisable=false;
     this.showDeals();
   }
 
-  updateDealPipelineStage(deal: Deal) {
-    this.ngxloading = true;
-    let request: Deal = new Deal();
-    request.id = this.currentDealId;
-    request.pipelineStageId = deal.pipelineStageId;
-    request.userId = this.loggedInUserId;
-    request.dealComment = $.trim(deal.dealComment);
-    this.dealsService.changeDealStatus(request)
-      .subscribe(
-        response => {
-          this.ngxloading = false;
-          if (response.statusCode == 200) {
-            this.dealsResponse = new CustomResponse('SUCCESS', "Status Updated Successfully", true);
-            this.closeDealChangeModelPopup(this.selectedDealForPopup);
-            this.showDeals();
-          } else if (response.statusCode == 500) {
-            this.dealsResponse = new CustomResponse('ERROR', response.message, true);
-            this.closeDealChangeModelPopup(this.selectedDealForPopup);
-          }
-        });
+  stageUpdateResponse(event:any){
+    this.dealsResponse = (event === 200) ? new CustomResponse('SUCCESS', "Status Updated Successfully", true) : new CustomResponse('ERROR', "Invalid Input", true);
   }
 
-  getRemainingCharCount(comment : string ){
-    //comment= $.trim(comment);
-    this.remainingCharsLeft = this.maxCharsLeft - comment.length;
-  }
 }
