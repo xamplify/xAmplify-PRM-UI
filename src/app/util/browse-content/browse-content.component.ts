@@ -501,6 +501,7 @@ removefileUploadVideo() {
   this.fileSize = 0;
   this.isDisable = false;
   $('#uploadedAsset').val("");
+  this.damUploadPostDto.fileName = "";
   this.callEmitter();
 }
 
@@ -674,7 +675,6 @@ uploadVideo(){
   this.damUploadPostDto.loggedInUserId = this.authenticationService.getUserId();
   this.damUploadPostDto.videoId = this.route.snapshot.params['videoId'];
   this.damUploadPostDto.replaceVideoAsset = this.isReplaceVideo;
-  alert("is Replace"+this.damUploadPostDto.replaceVideoAsset);
   this.isDisableForm = true;
   if (this.damUploadPostDto.cloudContent || this.damUploadPostDto.source=== 'webcam') {
       swal({
