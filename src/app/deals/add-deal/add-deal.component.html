@@ -114,7 +114,16 @@
                           <fieldset class="border-none">
                             <app-user-info *ngIf="showContactInfo" [userInfo]="contact"
                               [isLeadInfo]="true"></app-user-info>
-                            <div *ngIf="!showContactInfo">Not Available</div>
+                            <div *ngIf="!showContactInfo">Not Available
+                              <span *ngIf="!preview">
+                                <a (click)="addLead()" style="padding-left: 4px;">
+                                  <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
+                                    <span class="btn btn-primary transition d-inline"><i class="fa fa-plus  mb-btns" aria-hidden="true"></i> Add a
+                                      Lead</span>
+                                  </button>
+                                </a>
+                              </span>                              
+                            </div>
                           </fieldset>
                         </div>
                       </div>
@@ -332,4 +341,9 @@
     </div>
   </div>
 </div>
+
+<!-- Add Lead Model-->
+<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="leadActionType"
+  (notifySubmitSuccess)="leadCreated($event)" (notifyClose)="closeLeadForm()" [isVendorVersion]="isVendorVersion"
+  [isOrgAdmin]="isOrgAdmin"></app-add-lead>
 <!-- END CONTENT -->

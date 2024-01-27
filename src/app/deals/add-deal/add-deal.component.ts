@@ -105,6 +105,9 @@ export class AddDealComponent implements OnInit {
   isCollapsed1: boolean;
   isCollapsed2: boolean;
   
+  showLeadForm: boolean = false;
+  leadActionType: string;
+  
   constructor(private logger: XtremandLogger, public messageProperties: Properties,public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public userService: UserService, private integrationService: IntegrationService) {
@@ -207,7 +210,8 @@ export class AddDealComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
-            self.lead = data.data;
+          	if (this.actionType === "add") {
+          		 self.lead = data.data;
             self.showContactInfo = true;
             self.contact.firstName = self.lead.firstName;
             self.contact.lastName = self.lead.lastName;
@@ -225,6 +229,7 @@ export class AddDealComponent implements OnInit {
             }
             //this.isSalesForceEnabled();         
             this.getActiveCRMDetails();
+          	}           
           }
         },
         error => {
@@ -1075,6 +1080,22 @@ toggleCollapsecontact(event: Event) {
 toggleCollapsecampaignInfo(event: Event) {
   event.preventDefault();
   this.isCollapsed2 = !this.isCollapsed2;
+}
+
+addLead() {
+  this.showLeadForm = true;
+  this.leadActionType = "add";
+  this.leadId = 0;
+}
+
+closeLeadForm() {
+  this.showLeadForm = false;
+}
+
+leadCreated(leadId : any) {
+  this.showLeadForm = false;
+  this.leadId = leadId;
+  this.getLead(this.leadId);
 }
 
 }

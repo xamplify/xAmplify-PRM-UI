@@ -36,6 +36,7 @@ export class AddLeadComponent implements OnInit {
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyManageLeadsComponentToHidePopup = new EventEmitter();
   @Output() notifyAnalyticsComponentToHidePopup= new EventEmitter();
+  @Output() notifyClose = new EventEmitter();
   lead: Lead = new Lead();
   preview = false;
   edit = false;
@@ -352,6 +353,7 @@ export class AddLeadComponent implements OnInit {
     this.notifyOtherComponent.emit();
     this.notifyAnalyticsComponentToHidePopup.emit();
     this.notifyManageLeadsComponentToHidePopup.emit();
+    this.notifyClose.emit();
     $('#leadFormModel').modal('hide');
   }
 
@@ -434,7 +436,7 @@ export class AddLeadComponent implements OnInit {
             this.referenceService.goToTop();
             if(data.statusCode==200){
                 //this.leadModalResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);   
-                this.notifySubmitSuccess.emit(); 
+                this.notifySubmitSuccess.emit(data.data); 
                 this.closeLeadModal();                     
             } else if (data.statusCode==500) {
                 this.leadModalResponse = new CustomResponse('ERROR', data.message, true);
