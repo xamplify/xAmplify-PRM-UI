@@ -106,7 +106,7 @@ export class AddDealComponent implements OnInit {
   isCollapsed2: boolean;
   
   showLeadForm: boolean = false;
-  leadActionType: string;
+  dealToLead: any;
   
   constructor(private logger: XtremandLogger, public messageProperties: Properties,public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -1084,8 +1084,13 @@ toggleCollapsecampaignInfo(event: Event) {
 
 addLead() {
   this.showLeadForm = true;
-  this.leadActionType = "add";
   this.leadId = 0;
+  this.dealToLead = new Object();
+  this.dealToLead.dealId = this.dealId;
+  this.dealToLead.leadActionType = "add";
+  this.dealToLead.dealActionType = this.actionType;
+  this.dealToLead.createdForCompanyId = this.deal.createdForCompanyId;
+  this.dealToLead.callingComponent = "DEAL";
 }
 
 closeLeadForm() {

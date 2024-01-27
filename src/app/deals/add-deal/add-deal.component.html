@@ -343,7 +343,7 @@
 </div>
 
 <!-- Add Lead Model-->
-<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="leadActionType"
+<app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="dealToLead.leadActionType" [dealToLead] = "dealToLead"
   (notifySubmitSuccess)="leadCreated($event)" (notifyClose)="closeLeadForm()" [isVendorVersion]="isVendorVersion"
   [isOrgAdmin]="isOrgAdmin"></app-add-lead>
 <!-- END CONTENT -->
