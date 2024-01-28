@@ -10,7 +10,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { CountryNames } from '../../common/models/country-names';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
 import { DealsService } from '../../deals/services/deals.service';
-import {Properties} from 'app/common/models/properties';
+import { Properties } from 'app/common/models/properties';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { RegularExpressions } from 'app/common/models/regular-expressions';
 import { IntegrationService } from 'app/core/services/integration.service';
@@ -21,25 +21,27 @@ declare var swal, $, videojs: any;
   selector: 'app-add-lead',
   templateUrl: './add-lead.component.html',
   styleUrls: ['./add-lead.component.css'],
-  providers: [ HttpRequestLoader, CountryNames,Properties, DealsService,RegularExpressions],
+  providers: [HttpRequestLoader, CountryNames, Properties, DealsService, RegularExpressions],
 })
 export class AddLeadComponent implements OnInit {
   @Input() public leadId: any;
   @Input() public campaignId: any;
   @Input() public campaignName: any;
-  @Input() public actionType: string;  
+  @Input() public actionType: string;
   @Input() public selectedContact: any;
   @Input() public email: any;
   @Input() public isVendorVersion: any;
   @Input() public isOrgAdmin: any;
+  @Input() public dealToLead: any;
   @Output() notifyOtherComponent = new EventEmitter();
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyManageLeadsComponentToHidePopup = new EventEmitter();
-  @Output() notifyAnalyticsComponentToHidePopup= new EventEmitter();
+  @Output() notifyAnalyticsComponentToHidePopup = new EventEmitter();
+  @Output() notifyClose = new EventEmitter();
   lead: Lead = new Lead();
   preview = false;
   edit = false;
-  loggedInUserId : number;
+  loggedInUserId: number;
   httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   leadFormTitle = "Lead";
   vendorList = new Array();
@@ -48,27 +50,27 @@ export class AddLeadComponent implements OnInit {
   isValid = true;
   errorMessage = "";
   leadModalResponse: CustomResponse = new CustomResponse();
-  ngxloading : boolean;
+  ngxloading: boolean;
   hasCampaignPipeline = false;
   salesForceEnabled = false;
   hasSfPipeline = false;
-  vanityLoginDto : VanityLoginDto = new VanityLoginDto();
+  vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   activeCRMDetails: any;
+  disableCreatedFor: boolean = false;
 
+  constructor(public properties: Properties, public authenticationService: AuthenticationService, private leadsService: LeadsService,
+    public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService, public countryNames: CountryNames,
+    private dealsService: DealsService, public regularExpressions: RegularExpressions, private integrationService: IntegrationService) {
+    this.loggedInUserId = this.authenticationService.getUserId();
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = true;
+    }
+  }
 
-  constructor(public properties:Properties,public authenticationService: AuthenticationService, private leadsService: LeadsService,
-    public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService, public countryNames: CountryNames, 
-    private dealsService: DealsService,public regularExpressions:RegularExpressions, private integrationService: IntegrationService) {
-      this.loggedInUserId = this.authenticationService.getUserId();
-      if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
-        this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-        this.vanityLoginDto.userId = this.loggedInUserId;
-        this.vanityLoginDto.vanityUrlFilter = true;
-      }  
-   }   
-
-  ngOnInit() {  
-    $('#leadFormModel').modal('show');    
+  ngOnInit() {
+    $('#leadFormModel').modal('show');
     this.errorMessage = "";
     this.lead.createdForCompanyId = 0;
     this.lead.pipelineId = 0;
@@ -77,18 +79,23 @@ export class AddLeadComponent implements OnInit {
       this.preview = true;
       this.leadFormTitle = "View Lead";
       if (this.leadId > 0) {
-        this.getLead(this.leadId);      
+        this.getLead(this.leadId);
       }
     } else if (this.actionType === "edit") {
       this.edit = true;
       this.leadFormTitle = "Edit Lead";
       if (this.leadId > 0) {
-        this.getLead(this.leadId);      
+        this.getLead(this.leadId);
       }
     } else if (this.actionType === "add") {
       this.leadFormTitle = "Add a Lead";
       if (this.vanityLoginDto.vanityUrlFilter) {
         this.setCreatedForCompanyId();
+      } else if (this.dealToLead != undefined && this.dealToLead.callingComponent === "DEAL") {
+        if (this.dealToLead.createdForCompanyId != undefined && this.dealToLead.createdForCompanyId != null && this.dealToLead.createdForCompanyId > 0) {
+          this.lead.createdForCompanyId = this.dealToLead.createdForCompanyId;
+          this.getActiveCRMDetails();
+        }
       } else {
         if (this.campaignId > 0) {
           this.lead.campaignId = this.campaignId;
@@ -99,37 +106,41 @@ export class AddLeadComponent implements OnInit {
           this.getContactInfo();
         }
       }
+
+      if (this.preview || this.edit || this.vanityLoginDto.vanityUrlFilter || (this.dealToLead != undefined && this.dealToLead.dealActionType === 'edit')) {
+        this.disableCreatedFor = true;
+      }
     }
-    
+
     this.getVendorList();
   }
 
   setCreatedForCompanyId() {
     this.leadsService.getCompanyIdByCompanyProfileName(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
-    .subscribe(
-      data => {
-        this.referenceService.loading(this.httpRequestLoader, false);
-        if (data.statusCode == 200) {
-          this.lead.createdForCompanyId = data.data;
-          if (this.campaignId > 0) {
-            this.lead.campaignId = this.campaignId;
-            this.lead.campaignName = this.campaignName;
-            this.lead.associatedUserId = this.selectedContact.userId;
-            this.getCreatedForCompanyIdByCampaignId();
-            //this.getCampaignLeadPipeline();
-            this.getContactInfo();
-          } else {
-            //this.isSalesForceEnabled(); 
-            this.getActiveCRMDetails();   
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          if (data.statusCode == 200) {
+            this.lead.createdForCompanyId = data.data;
+            if (this.campaignId > 0) {
+              this.lead.campaignId = this.campaignId;
+              this.lead.campaignName = this.campaignName;
+              this.lead.associatedUserId = this.selectedContact.userId;
+              this.getCreatedForCompanyIdByCampaignId();
+              //this.getCampaignLeadPipeline();
+              this.getContactInfo();
+            } else {
+              //this.isSalesForceEnabled(); 
+              this.getActiveCRMDetails();
+            }
           }
-        }
-      },
-      error => {
-        this.httpRequestLoader.isServerError = true;
-      },
-      () => { }
-    );
-    }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
 
   isSalesForceEnabled() {
     this.dealsService.isSalesForceEnabled(this.lead.createdForCompanyId, this.loggedInUserId)
@@ -139,12 +150,12 @@ export class AddLeadComponent implements OnInit {
             this.salesForceEnabled = response.data;
             if (!this.salesForceEnabled) {
               if (this.edit || this.preview) {
-                if (this.lead.campaignId > 0) {              
+                if (this.lead.campaignId > 0) {
                   this.getCampaignLeadPipeline();
                 } else {
                   this.getPipelines();
                 }
-              } else {                
+              } else {
                 if (this.campaignId > 0) {
                   this.getCampaignLeadPipeline();
                 } else {
@@ -160,12 +171,12 @@ export class AddLeadComponent implements OnInit {
           console.log(error);
         },
         () => {
-          
+
         });
   }
 
   getSalesforcePipeline() {
-    let self = this;    
+    let self = this;
     this.leadsService.getSalesforcePipeline(this.lead.createdForCompanyId, this.loggedInUserId)
       .subscribe(
         data => {
@@ -174,7 +185,7 @@ export class AddLeadComponent implements OnInit {
             let salesforcePipeline = data.data;
             if (this.lead.pipelineId != undefined && this.lead.pipelineId !== salesforcePipeline.id) {
               this.lead.pipelineStageId = 0
-            } 
+            }
             self.lead.pipelineId = salesforcePipeline.id;
             //self.pipelineIdError = false;
             self.stages = salesforcePipeline.stages;
@@ -208,68 +219,67 @@ export class AddLeadComponent implements OnInit {
       );
   }
 
-  setDefaultLeadData(data: any)
-    {
-        this.lead.firstName = data.firstName;
-        this.lead.lastName = data.lastName;
-        this.lead.country = data.country;
-        this.lead.street = data.address;
-        this.lead.phone = data.mobileNumber;
-        this.lead.state = data.state;
-        this.lead.postalCode = data.zipCode;
-        this.lead.company = data.contactCompany;
-        this.lead.city = data.city;
-        this.lead.email = this.selectedContact.emailId;
-    }
+  setDefaultLeadData(data: any) {
+    this.lead.firstName = data.firstName;
+    this.lead.lastName = data.lastName;
+    this.lead.country = data.country;
+    this.lead.street = data.address;
+    this.lead.phone = data.mobileNumber;
+    this.lead.state = data.state;
+    this.lead.postalCode = data.zipCode;
+    this.lead.company = data.contactCompany;
+    this.lead.city = data.city;
+    this.lead.email = this.selectedContact.emailId;
+  }
 
   getCreatedForCompanyIdByCampaignId() {
-    let self = this;    
+    let self = this;
     if (this.lead.campaignId > 0) {
       this.leadsService.getCreatedForCompanyIdByCampaignId(this.lead.campaignId, this.loggedInUserId)
-      .subscribe(
-        data => {
-          this.referenceService.loading(this.httpRequestLoader, false);
-          if (data.statusCode == 200) {
-            self.lead.createdForCompanyId = data.data;
-            //this.isSalesForceEnabled();
-            this.getActiveCRMDetails(); 
-          }
-        },
-        error => {
-          this.httpRequestLoader.isServerError = true;
-        },
-        () => { }
-      );
+        .subscribe(
+          data => {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            if (data.statusCode == 200) {
+              self.lead.createdForCompanyId = data.data;
+              //this.isSalesForceEnabled();
+              this.getActiveCRMDetails();
+            }
+          },
+          error => {
+            this.httpRequestLoader.isServerError = true;
+          },
+          () => { }
+        );
     }
   }
 
   getCampaignLeadPipeline() {
-    this.ngxloading=true;
-    let self = this;    
+    this.ngxloading = true;
+    let self = this;
     if (this.lead.campaignId > 0) {
       this.leadsService.getCampaignLeadPipeline(this.lead.campaignId, this.loggedInUserId)
-      .subscribe(
-        data => {
-          this.ngxloading=false;
-          this.referenceService.loading(this.httpRequestLoader, false);
-          if (data.statusCode == 200) {
-            let campaignLeadPipeline = data.data;
-            self.lead.pipelineId = campaignLeadPipeline.id;
-            self.stages = campaignLeadPipeline.stages;
-            self.hasCampaignPipeline = true;
-          } else if (data.statusCode == 404) {
-            self.lead.pipelineId = 0;
-            self.stages = [];
-            self.getPipelines();
-            self.hasCampaignPipeline = false;
-          }
-        },
-        error => {
-          this.ngxloading=false;
-          this.httpRequestLoader.isServerError = true;
-        },
-        () => { }
-      );
+        .subscribe(
+          data => {
+            this.ngxloading = false;
+            this.referenceService.loading(this.httpRequestLoader, false);
+            if (data.statusCode == 200) {
+              let campaignLeadPipeline = data.data;
+              self.lead.pipelineId = campaignLeadPipeline.id;
+              self.stages = campaignLeadPipeline.stages;
+              self.hasCampaignPipeline = true;
+            } else if (data.statusCode == 404) {
+              self.lead.pipelineId = 0;
+              self.stages = [];
+              self.getPipelines();
+              self.hasCampaignPipeline = false;
+            }
+          },
+          error => {
+            this.ngxloading = false;
+            this.httpRequestLoader.isServerError = true;
+          },
+          () => { }
+        );
     }
   }
 
@@ -277,8 +287,8 @@ export class AddLeadComponent implements OnInit {
     //this.validateField('createdForCompanyId',false);
     if (this.lead.createdForCompanyId > 0) {
       //this.isSalesForceEnabled();    
-      this.getActiveCRMDetails();          
-    } 
+      this.getActiveCRMDetails();
+    }
   }
 
   resetPipelines() {
@@ -291,25 +301,25 @@ export class AddLeadComponent implements OnInit {
   }
 
   getPipelines() {
-    let self = this;    
+    let self = this;
     if (this.lead.createdForCompanyId > 0) {
       this.leadsService.getPipelines(this.lead.createdForCompanyId, this.loggedInUserId)
-      .subscribe(
-        data => {
-          this.referenceService.loading(this.httpRequestLoader, false);
-          if (data.statusCode == 200) {
-            self.pipelines = data.data;
-            self.getStages();
-          } else {
-            self.stages = [];
-          }
-        },
-        error => {
-          this.httpRequestLoader.isServerError = true;
-        },
-        () => { }
-      );
-    }    
+        .subscribe(
+          data => {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            if (data.statusCode == 200) {
+              self.pipelines = data.data;
+              self.getStages();
+            } else {
+              self.stages = [];
+            }
+          },
+          error => {
+            this.httpRequestLoader.isServerError = true;
+          },
+          () => { }
+        );
+    }
   }
 
   resetStages() {
@@ -318,17 +328,17 @@ export class AddLeadComponent implements OnInit {
   }
 
   getStages() {
-    let self = this;    
+    let self = this;
     if (this.lead.pipelineId > 0) {
-      this.pipelines.forEach(p =>{
+      this.pipelines.forEach(p => {
         if (p.id == this.lead.pipelineId) {
           self.stages = p.stages;
         }
-      }); 
+      });
     } else {
       self.stages = [];
     }
-    
+
   }
 
   getVendorList() {
@@ -352,6 +362,7 @@ export class AddLeadComponent implements OnInit {
     this.notifyOtherComponent.emit();
     this.notifyAnalyticsComponentToHidePopup.emit();
     this.notifyManageLeadsComponentToHidePopup.emit();
+    this.notifyClose.emit();
     $('#leadFormModel').modal('hide');
   }
 
@@ -363,11 +374,11 @@ export class AddLeadComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
-            self.lead = data.data;  
+            self.lead = data.data;
             if (self.lead.createdForCompanyId > 0) {
             }
 
-            this.getActiveCRMDetails(); 
+            this.getActiveCRMDetails();
           }
         },
         error => {
@@ -379,7 +390,7 @@ export class AddLeadComponent implements OnInit {
 
   validateCreatedFor() {
     if (this.lead.createdForCompanyId > 0) {
-      this.isValid = this.isValid && true; 
+      this.isValid = this.isValid && true;
     } else {
       this.isValid = false;
     }
@@ -405,17 +416,17 @@ export class AddLeadComponent implements OnInit {
     } else if (this.lead.email == undefined || this.lead.email == "") {
       this.isValid = false;
       this.errorMessage = "Please fill email field";
-    } else if (this.lead.email != undefined && this.lead.email.trim() != "" && !this.regularExpressions.EMAIL_ID_PATTERN.test(this.lead.email)){
+    } else if (this.lead.email != undefined && this.lead.email.trim() != "" && !this.regularExpressions.EMAIL_ID_PATTERN.test(this.lead.email)) {
       this.isValid = false;
-      this.errorMessage = "Please fill Valid Email Id";          
-    } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.regularExpressions.URL_PATTERN.test(this.lead.website)){
+      this.errorMessage = "Please fill Valid Email Id";
+    } else if (this.lead.website != undefined && this.lead.website.trim() != "" && !this.regularExpressions.URL_PATTERN.test(this.lead.website)) {
       this.isValid = false;
-      this.errorMessage = "Please fill Valid Website";      
+      this.errorMessage = "Please fill Valid Website";
     }
 
     if (this.isValid) {
       this.saveOrUpdateLead();
-    } else {      
+    } else {
       this.referenceService.scrollToModalBodyTopByClass();
     }
   }
@@ -427,75 +438,75 @@ export class AddLeadComponent implements OnInit {
     this.errorMessage = "";
     this.lead.userId = this.loggedInUserId;
     this.leadsService.saveOrUpdateLead(this.lead)
-    .subscribe(
+      .subscribe(
         data => {
-            this.ngxloading = false;
-            this.referenceService.loading(this.httpRequestLoader, false);
-            this.referenceService.goToTop();
-            if(data.statusCode==200){
-                //this.leadModalResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);   
-                this.notifySubmitSuccess.emit(); 
-                this.closeLeadModal();                     
-            } else if (data.statusCode==500) {
-                this.leadModalResponse = new CustomResponse('ERROR', data.message, true);
-            }
+          this.ngxloading = false;
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.referenceService.goToTop();
+          if (data.statusCode == 200) {
+            //this.leadModalResponse = new CustomResponse('SUCCESS', "Lead Submitted Successfully", true);   
+            this.notifySubmitSuccess.emit(data.data);
+            this.closeLeadModal();
+          } else if (data.statusCode == 500) {
+            this.leadModalResponse = new CustomResponse('ERROR', data.message, true);
+          }
         },
         error => {
-            this.ngxloading = false;
-            this.referenceService.loading(this.httpRequestLoader, false);
-            this.leadModalResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-            },
+          this.ngxloading = false;
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.leadModalResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+        },
         () => { }
-    );
+      );
   }
 
   getActiveCRMDetails() {
-    this.ngxloading=true;
+    this.ngxloading = true;
     this.integrationService.getActiveCRMDetails(this.lead.createdForCompanyId, this.loggedInUserId)
       .subscribe(
         response => {
-          this.ngxloading=false;
+          this.ngxloading = false;
           if (response.statusCode == 200) {
             this.activeCRMDetails = response.data;
             if (!this.activeCRMDetails.activeCRM) {
               if (this.edit || this.preview) {
-                if (this.lead.campaignId > 0) {              
+                if (this.lead.campaignId > 0) {
                   this.getCampaignLeadPipeline();
                 } else {
                   this.getPipelines();
                 }
-              } else {                
+              } else {
                 if (this.campaignId > 0) {
                   this.getCampaignLeadPipeline();
                 } else {
                   this.resetPipelines();
                 }
               }
-            } else {              
+            } else {
               //this.getSalesforcePipeline();
               if (this.lead.campaignId > 0) {
                 this.getCampaignLeadPipeline();
               } else {
                 this.getActiveCRMPipeline();
-              }              
+              }
             }
           }
         },
         error => {
-          this.ngxloading=false;
+          this.ngxloading = false;
           console.log(error);
         },
         () => {
-          
+
         });
   }
   getActiveCRMPipeline() {
-    this.ngxloading=true;
-    let self = this;    
+    this.ngxloading = true;
+    let self = this;
     this.leadsService.getCRMPipelines(this.lead.createdForCompanyId, this.loggedInUserId, this.activeCRMDetails.type)
       .subscribe(
         data => {
-          this.ngxloading=false;
+          this.ngxloading = false;
           this.referenceService.loading(this.httpRequestLoader, false);
           if (data.statusCode == 200) {
             let activeCRMPipelines = data.data;
@@ -517,9 +528,9 @@ export class AddLeadComponent implements OnInit {
                   //self.activeCRMDetails.hasLeadPipeline = true;
                   break;
                 }
-              }              
+              }
             }
-            
+
           } else if (data.statusCode == 404) {
             self.lead.pipelineId = 0;
             self.stages = [];
@@ -528,7 +539,7 @@ export class AddLeadComponent implements OnInit {
           }
         },
         error => {
-          this.ngxloading=false;
+          this.ngxloading = false;
           this.httpRequestLoader.isServerError = true;
         },
         () => { }

@@ -3,7 +3,7 @@ import { Http, Response } from "@angular/http";
 import { SaveVideoFile } from "../../videos/models/save-video-file";
 import { AuthenticationService } from "./authentication.service";
 import { Observable } from "rxjs/Observable";
-import { Router } from "@angular/router";
+import { Router,ActivatedRoute } from "@angular/router";
 import { Category } from "../../videos/models/category";
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { DefaultVideoPlayer } from "../../videos/models/default-video-player";
@@ -157,7 +157,8 @@ export class ReferenceService {
     private logger: XtremandLogger,
     private router: Router,
     public deviceService: Ng2DeviceService,
-    private envService:EnvService
+    private envService:EnvService,
+    private route:ActivatedRoute
   ) {
     this.videoTag =
       '<img src="' + authenticationService.imagesHost + 'xtremand-video.gif">';
@@ -3354,6 +3355,11 @@ export class ReferenceService {
 
   getTrimmedData(input:any){
     return $.trim(input);
+  }
+
+
+  getRouterParameter(parameter:string){
+    return this.route.snapshot.params[parameter];
   }
 
   convertToLowerCaseAndGetTrimmedData(input:any){

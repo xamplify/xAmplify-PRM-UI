@@ -152,8 +152,11 @@ import { ConfirmUnpublishTracksOrPlaybooksModelPopupComponent } from 'app/util/c
 import { CustomUiFilterComponent } from 'app/util/custom-ui-filter/custom-ui-filter.component';
 import { TrimPipe } from 'app/core/custom-pipes/trim.pipe';
 import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
+import { AddCompanyComponent } from 'app/company/add-company/add-company.component';
 import { LandingPagesListAndGridViewComponent } from 'app/util/landing-pages-list-and-grid-view/landing-pages-list-and-grid-view.component';
 import { BrowseContentComponent } from 'app/util/browse-content/browse-content.component';
+import { SelectLeadComponent } from 'app/deals/select-lead/select-lead.component';
+
 
 @NgModule({
 	imports: [InternationalPhoneModule, RecaptchaModule.forRoot(), CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule, TagInputModule, TranslateModule,
@@ -185,7 +188,8 @@ import { BrowseContentComponent } from 'app/util/browse-content/browse-content.c
 		EditTemplateOrPageModalPopupComponent, ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent, ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
 		ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,
-		LandingPagesListAndGridViewComponent,BrowseContentComponent],
+		LandingPagesListAndGridViewComponent,BrowseContentComponent,AddCompanyComponent, SelectLeadComponent],
+
 
 
 
@@ -215,8 +219,9 @@ import { BrowseContentComponent } from 'app/util/browse-content/browse-content.c
 		DonutPieChartComponent,QueryBuilderModule,SelectEmailTemplateComponent,CustomUiSwitchComponent,EditTemplateOrPageModalPopupComponent,
 		ShareCampaignsComponent, ShareAssetsComponent, SharePlaybooksComponent,
 		ShareUnpublishedContentComponent,ShareTracksOrPlaybooksComponent,ImageUploadCropperComponent,SearchableDropdownComponent,
-		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,
-		LandingPagesListAndGridViewComponent,BrowseContentComponent]
+		ScrollToModule,ConfirmUnpublishTracksOrPlaybooksModelPopupComponent,CustomUiFilterComponent,TrimPipe,CopyModalPopupComponent,AddCompanyComponent,
+		LandingPagesListAndGridViewComponent,BrowseContentComponent, SelectLeadComponent]
+
 
 })
 export class CommonComponentModule { }

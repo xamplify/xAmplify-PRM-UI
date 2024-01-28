@@ -22,11 +22,19 @@
                 <span class="star"> *</span>
               </label>
               <div class="form-group col-xs-10 col-sm-10 mrg0" id="major-field-width">
+                <ng-container *ngIf = "checkingContactTypeName == 'Contact'">
+                <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto" [id]="addContactuser.contactCompanyId" [disableDropDown]="false"
+                (searchableDropdownEventEmitter)="contactCompanyChecking($event)"></app-searchable-dropdown>
+                </ng-container>
+
+                <ng-container *ngIf = "checkingContactTypeName != 'Contact'">
                 <input type="company" style="border: none !important"
                   class="form-control padding-mobile placeholder-bg-color" id="company"
                   [(ngModel)]="addContactuser.contactCompany"
                   (input)="contactCompanyChecking(addContactuser.contactCompany)" [ngModelOptions]="{standalone: true}"
                   placeholder="Company" maxlength="250">
+                </ng-container>
+                
                 <div class="textCss"></div>
               </div>
             </div>
@@ -74,11 +82,18 @@
                 style="color: #00bcd4; right: 11px !important">
               </label>
               <div class="form-group col-xs-10 col-sm-10 mrg0">
-                <input type="company" style="border: none !important"
+                <ng-container *ngIf = "checkingContactTypeName == 'Contact'">
+                <app-searchable-dropdown [searchableDropDownDto]="searchableDropDownDto" [id]="addContactuser.contactCompanyId" [disableDropDown]="false"
+                (searchableDropdownEventEmitter)="contactCompanyChecking($event)"></app-searchable-dropdown>
+                </ng-container>
+
+                <ng-container  *ngIf = "checkingContactTypeName != 'Contact'">
+                  <input type="company" style="border: none !important" 
                   class="form-control padding-mobile placeholder-bg-color" id="company"
                   [(ngModel)]="addContactuser.contactCompany"
                   (input)="contactCompanyChecking(addContactuser.contactCompany)" [ngModelOptions]="{standalone: true}"
                   placeholder="Company" maxlength="250">
+                </ng-container>
                 <div class="textCss"></div>
               </div>
             </div>

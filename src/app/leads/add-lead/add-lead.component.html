@@ -42,7 +42,7 @@
                       </label>
                       <select class="form-control" [(ngModel)]="lead.createdForCompanyId"
                         [ngModelOptions]="{standalone: true}" placeholder="createdForCompanyId" id="createdForCompanyId"
-                        [disabled]="preview || edit || vanityLoginDto?.vanityUrlFilter"
+                        [disabled]="disableCreatedFor"
                         (ngModelChange)="onChangeCreatedFor()">
                         <option [value]="0">Select Company</option>
                         <option *ngFor="let vendor of vendorList" [value]="vendor.companyId">{{vendor.companyName}}

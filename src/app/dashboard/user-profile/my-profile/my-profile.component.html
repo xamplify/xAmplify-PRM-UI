@@ -410,12 +410,12 @@
                                                         <div class="neumorphismDarkTheme">
                                                             <img *ngIf="dto?.id == 4 " alt=""
                                                                 class="img-custome img-height"
-                                                                src="assets/images/theme/Final/beta-neumorphism.webp">
+                                                                src="assets/images/theme/Final/beta-neumorphism-dark.webp">
                                                         </div>
                                                         <div class="neumorphismLightTheme">
                                                             <img *ngIf="dto?.id == 3" alt=""
                                                                 class="img-custome img-height"
-                                                                src="assets/images/theme/Final/light-theme.webp">
+                                                                src="assets/images/theme/Final/beta-neumorphism-light.webp">
                                                         </div>
                                                     </div>
                                                     <div class="card-bg topcard-padding">
@@ -2041,7 +2041,7 @@
                                                                         src="{{item.moduleIcon}}" alt="Image Not Found">
                                                                 </td>
                                                                 <td>
-                                                                    <div class="override-actions">
+                                                                    <div class="override-actions justify-content-start mleft-10">
                                                                         <a class="custom-icon"
                                                                             [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'"
                                                                             data-toggle="tooltip"
@@ -2077,7 +2077,10 @@
                                                                 src="assets/images/theme/1/Webp/dd.webp"
                                                                 class="desktopimg-custome">
                                                             <img *ngIf="themeDto.id==4"
-                                                                src="assets/images/theme/1/Webp/ND.webp"
+                                                                src="assets/images/theme/Final/neumorphism-dark-preview-laptop.webp"
+                                                                class="desktopimg-custome">
+                                                            <img *ngIf="themeDto.id==3"
+                                                                src="assets/images/theme/Final/neumorphism-light-preview-laptop.webp"
                                                                 class="desktopimg-custome">
                                                         </div>
                                                     </div>
@@ -2090,7 +2093,10 @@
                                                                 src="assets/images/theme/1/Webp/dm.webp"
                                                                 class="mobileimg-custome">
                                                             <img *ngIf="themeDto.id==4"
-                                                                src="assets/images/theme/1/Webp/NDM.webp"
+                                                                src="assets/images/theme/Final/neumorphism-dark-preview-mobile.webp"
+                                                                class="mobileimg-custome">
+                                                            <img *ngIf="themeDto.id==3"
+                                                                src="assets/images/theme/Final/neumorphism-light-preview-mobile.webp"
                                                                 class="mobileimg-custome">
                                                         </div>
                                                     </div>
@@ -3389,8 +3395,8 @@
             </div>
             <div class="modal-footer" style="border:none">
                 <button class="btn Btn-Gray" (click)="addContactModalClose()" translate>Cancel</button>
-                <button type="button" class="btn Btn-Green" (click)="confirmAndsaveExcludedUser(addContactuser)"
-                    [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate>Add</button>
+                <button type="button" class="button bgcolor-unset btn-top3" (click)="confirmAndsaveExcludedUser(addContactuser)"
+                    [disabled]="!validEmailPattern || !validEmailPatternSuccess" translate><span class="btn Btn-Green transition txt_pd-top3">Add</span></button>
             </div>
         </div>
     </div>
@@ -3438,8 +3444,8 @@
             </div>
             <div class="modal-footer" style="border:none">
                 <button class="btn Btn-Gray" (click)="addDomainModalClose()" translate>Cancel</button>
-                <button type="button" class="btn Btn-Green" (click)="confirmAndsaveExcludedDomain(domain)"
-                    [disabled]="!validDomainPattern" translate>Add</button>
+                      <button type="button" class="button bgcolor-unset btn-top3" (click)="confirmAndsaveExcludedDomain(domain)"
+                    [disabled]="!validDomainPattern" translate><span class="btn Btn-Green transition txt_pd-top3">Add</span></button>
             </div>
         </div>
     </div>
