@@ -8,44 +8,50 @@
         <a title="Close" class="pull-right close-circle" (click)="closePopup()">
           <i class="fa fa-times" aria-hidden="true"></i>
         </a>
-        <button type="button" class="close-circle pull-right mrg1" data-toggle="tooltip" data-placement="bottom"
-          title="Comments" *ngIf="true" (click)="showComments(deal)">
+        <button *ngIf="deal != undefined" type="button" class="close-circle pull-right mrg1" data-toggle="tooltip" data-placement="bottom"
+          title="Comments" (click)="showComments(deal)">
           <i class="fa fa-comments" aria-hidden="true"></i>
           <span *ngIf="deal.unReadChatCount > 0" class="badge badge-default"
             style="margin-top: -58px; margin-right: -15px;background-color: #ed1c24 !important;">{{deal.unReadChatCount}}</span>
         </button>
-        <h4 class="modal-title" style="font-weight: 600;" translate>Update Deal</h4>
+        <h4 class="modal-title" *ngIf="deal != undefined" style="font-weight: 600;" translate>Update Deal</h4>
+        <h4 class="modal-title" *ngIf="lead != undefined" style="font-weight: 600;" translate>Add Comments<span class="required"> *</span></h4>
       </div>
-      <div class="form-group textareaStyles">
-        <h4> You can update the deal stage and add comments</h4>
-        <h4>Stage <span class="required"> *</span></h4>
-        <select
-          [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage)"
-          class="form-control" [(ngModel)]="deal.pipelineStageId">
-          <option *ngIf="isPartnerVersion && deal.currentStagePrivate" [ngValue]="deal.currentStageId">
-            {{deal.currentStageName}}
-          </option>
-          <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">
-            {{stage.stageName}}</option>
-        </select>
-        <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
-          *ngIf="isPartnerVersion && deal?.onNonInteractiveStage"
-          title="You can not edit this deal as it is on a non interactive deal stage.">
+      <div  class="form-group textareaStyles">
+        <span *ngIf="deal != undefined">
+          <h4> You can update the deal stage and add comments</h4>
+          <h4>Stage <span class="required"> *</span></h4>
+          <select
+            [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage)"
+            class="form-control" [(ngModel)]="deal.pipelineStageId">
+            <option *ngIf="isPartnerVersion && deal.currentStagePrivate" [ngValue]="deal.currentStageId">
+              {{deal.currentStageName}}
+            </option>
+            <option *ngFor="let stage of deal.pipeline.stages" [ngValue]="stage.id">
+              {{stage.stageName}}</option>
+          </select>
+          <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
+            *ngIf="isPartnerVersion && deal?.onNonInteractiveStage"
+            title="You can not edit this deal as it is on a non interactive deal stage.">
+          </span>
         </span>
         <br>
         <div class="form-group">
-          <h4 class="modal-title" translate>Add Comments</h4>
-          <textarea class="form-control" placeholder="Write your comment here" name="dealComment" rows="5"
-            [(ngModel)]="deal.dealComment" maxlength="250" (input)="getRemainingCharCount(deal.dealComment)"></textarea>
-          <span>
-            <p>{{remainingCharsLeft}} characters left...</p>
-          </span>
+          <h4 *ngIf="deal != undefined" class="modal-title" translate>Add Comments</h4>
+          <textarea class="form-control" placeholder="Write your comment here" name="comment" rows="5"
+            [(ngModel)]="comment" maxlength="250" (input)="validateComment(comment)"></textarea>
+            <span>{{remainingCharsLeft}} characters left...</span>
+            <span style="margin-left: 75px;" *ngIf="!isApprovalStatusCommentValid && comment != undefined && lead != undefined" class="required text-center"> Please enter valid comments</span>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="closePopup()" translate>Cancel</button>
-        <button class="button_blue bgcolor-unset" (click)="updateDealStage(deal)" translate>
+      <div  class="modal-footer">
+        <button *ngIf="deal != undefined" type="button" class="btn Btn-Gray neg_mrg_top4" (click)="closePopup()" translate>Cancel</button>
+        <button *ngIf="deal != undefined" class="button_blue bgcolor-unset" (click)="updateDealStage(deal)" translate>
           <span class="btn btn-primary transition d-inline"> Update</span>
+        </button>
+        <button *ngIf="lead != undefined" class="button_blue bgcolor-unset" [disabled]="!isApprovalStatusCommentValid"
+          (click)="updateLeadApprovalStatus(lead,comment)" translate>
+          <span class="btn btn-primary transition d-inline"> Submit</span>
         </button>
       </div>
     </div>

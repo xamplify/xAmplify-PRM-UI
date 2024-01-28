@@ -174,7 +174,7 @@
 
               <div *ngIf="lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner">
                 <button class="button_blue bgcolor-unset"
-                  (click)="showDealRegistrationForm(lead)" translate>
+                  (click)="registerDeal(lead)" translate>
                   <span class="btn btn-primary transition d-inline"> Register Deal</span>
                 </button>
               </div>
@@ -260,3 +260,7 @@
 <div *ngIf="!httpRequestLoader.isLoading && leadsSortOption.totalRecords==0" class="alert alert-info">
   <strong translate>No Leads Found.</strong>
 </div>
+
+<app-opportunities-chat-modal-popup  *ngIf="updateCurrentStage" [leadApprovalStatusType]="leadApprovalStatusType" [lead]="selectedLead"
+[loggedInUserId]="loggedInUserId" (closePopupEmitter)="closeApprovalStatusModelPopup()">
+</app-opportunities-chat-modal-popup>

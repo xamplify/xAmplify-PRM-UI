@@ -3,6 +3,8 @@ import { Deal } from 'app/deals/models/deal';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { DealsService } from 'app/deals/services/deals.service';
+import { Lead } from 'app/leads/models/lead';
+import { LeadsService } from 'app/leads/services/leads.service';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -15,9 +17,14 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
   ngxloading: boolean = false;
   totalcharsLeft = 250;
   remainingCharsLeft = this.totalcharsLeft;
+  isApprovalStatusCommentValid:boolean = false;
+  comment:string;
+  
 
   @Input()
   deal: Deal;
+  @Input()
+  lead: Lead;
   @Input()
   isPartnerVersion: boolean;
   @Input()
@@ -26,6 +33,8 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
   textAreaDisable: boolean;
   @Input()
   loggedInUserId: number;
+  @Input()
+  leadApprovalStatusType:string;
 
   @Output()
   closePopupEmitter = new EventEmitter();
@@ -34,7 +43,7 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
   @Output()
   stageUpdateStatusCode = new EventEmitter();
 
-  constructor(public authenticationService: AuthenticationService,
+  constructor(public authenticationService: AuthenticationService,public leadsService: LeadsService,
     public dealsService: DealsService, public referenceService: ReferenceService) { }
 
   ngOnInit() {
@@ -53,7 +62,7 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
     request.id = deal.id;
     request.pipelineStageId = deal.pipelineStageId;
     request.userId = this.loggedInUserId;
-    request.dealComment = $.trim(deal.dealComment);
+    request.dealComment = $.trim(this.comment);
     this.dealsService.changeDealStatus(request)
       .subscribe(
         response => {
@@ -79,4 +88,35 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
     this.textAreaDisable = false;
     this.closePopupEmitter.emit();
   }
+
+  validateComment(comment: string){
+    comment = $.trim(comment);
+    this.remainingCharsLeft = this.totalcharsLeft - comment.length;
+    if(comment==='' || comment=== null || comment=== undefined ) {
+      this.isApprovalStatusCommentValid = false;
+    }
+    if(this.referenceService.validateCkEditorDescription(comment)){
+      this.isApprovalStatusCommentValid = true;
+    }
+  }
+
+  updateLeadApprovalStatus(lead:Lead,comment:string){
+    this.ngxloading = true;
+    lead.approvalStatusComment = comment;
+    lead.userId = this.loggedInUserId;
+    lead.leadApprovalStatusType = this.leadApprovalStatusType;
+
+    this.leadsService.updateLeadApprovalStatus(lead).subscribe(response => {
+      if(response.statusCode == 200){
+        this.ngxloading = false;
+        this.leadApprovalStatusType = "";
+        this.remainingCharsLeft = this.totalcharsLeft;
+        this.closePopup();
+      }else{
+        // console.log("Unauthorized user"); 
+        this.closePopup();
+      }
+    });
+  }
+
 }

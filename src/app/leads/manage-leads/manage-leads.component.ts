@@ -90,12 +90,8 @@ export class ManageLeadsComponent implements OnInit {
   vendorList:any ;
   vendorCompanyIdFilter:any;
   /*******XNFR-426*******/
-  approvalStatusComment:any;
   leadApprovalStatusType:any;
-  isApprovalStatusCommentValid:boolean = false;
-  maxChars: number = 250;
-  remainingChars: number = this.maxChars;
-  ngxloading:boolean = false;
+  updateCurrentStage:boolean = false;
 
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
@@ -1234,49 +1230,16 @@ export class ManageLeadsComponent implements OnInit {
   }
 
   /*********XNFR-426******/
-  updateLeadApprovalStatus(lead:Lead , approvalStatusComment:string){
-    this.ngxloading = true;
-    lead.approvalStatusComment = approvalStatusComment;
-    lead.userId = this.loggedInUserId;
-    lead.leadApprovalStatusType = this.leadApprovalStatusType;
-
-    this.leadsService.updateLeadApprovalStatus(lead).subscribe(response => {
-      if(response.statusCode == 200){
-        this.ngxloading = false;
-        this.leadApprovalStatusType = "";
-        this.remainingChars = this.maxChars;
-        this.showLeads();
-        this.closeApprovalStatusModelPopup();//xnfr-426
-      }else{
-        console.log("Unauthorized user error msg");
-        this.showLeads();
-        this.closeApprovalStatusModelPopup();
-      }
-    });
-  }
-
-  addApprovalStatusModelPopup(lead:Lead , leadApproveRejectType:string){ 
-    $('#addApprovalStatusModelPopup').modal('show');
-    this.leadApprovalStatusType = leadApproveRejectType;
+  addApprovalStatusModelPopup(lead:Lead , leadApprovalStatusType:string){
+    this.leadApprovalStatusType = leadApprovalStatusType;
     this.selectedLead = lead;
+    this.updateCurrentStage = true;
   }
 
   closeApprovalStatusModelPopup(){
-    this.approvalStatusComment = null;
     this.leadApprovalStatusType = null;
-    this.remainingChars = this.maxChars;
-    $('#addApprovalStatusModelPopup').modal('hide');
-  }
-
-  validateComment(approvalStatusComment: string){
-    approvalStatusComment = $.trim(approvalStatusComment);
-    this.remainingChars = this.maxChars - approvalStatusComment.length;
-    if(approvalStatusComment==='' || approvalStatusComment=== null || approvalStatusComment=== undefined ) {
-      this.isApprovalStatusCommentValid = false;
-    }
-    if(this.referenceService.validateCkEditorDescription(approvalStatusComment)){
-      this.isApprovalStatusCommentValid = true;
-    }
+    this.updateCurrentStage = false;
+    this.showLeads();
   }
 
   resetUnReadChatCount() {
