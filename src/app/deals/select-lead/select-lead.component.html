@@ -6,7 +6,7 @@
         <button type="button" class="close-circle" [disabled]="httpRequestLoader.isLoading" (click)="closeModal()">
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
-        <h4 class="modal-title text-center">Select a Lead</h4>
+        <h4 class="modal-title text-center">Attach a Lead</h4>
       </div>
       <div class="modal-body border-bottom-1px">
         <div class="portlet light" id="del-profile-div" style="border: 0px !important">
@@ -169,7 +169,7 @@
       </div> 
       <div class="pull-right" style="margin: 15px">
         <button [disabled]="!leadId > 0" type="submit" id="saveLead" (click)="leadSelected()"
-          class="button_blue bgcolor-unset"><span class="btn btn-primary transition txt_pd-top3">Select</span>
+          class="button_blue bgcolor-unset"><span class="btn btn-primary transition txt_pd-top3">Attach Selected</span>
         </button>
       </div>     
     </div>

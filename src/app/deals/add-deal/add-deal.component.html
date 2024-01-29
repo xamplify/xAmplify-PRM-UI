@@ -116,7 +116,7 @@
                               <app-user-info *ngIf="showContactInfo" [userInfo]="contact"
                                 [isLeadInfo]="true"></app-user-info>
                               <span *ngIf="!showContactInfo">Not Available</span>
-                              <span *ngIf="showSelectLeadButton" class="pull-right">
+                              <span *ngIf="showAttachLeadButton" class="pull-right">
                                 <!-- <a (click)="addLead()" style="padding-left: 4px;">
                                 <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
                                   <span class="btn btn-primary transition d-inline"><i class="fa fa-plus  mb-btns" aria-hidden="true"></i> Add a
@@ -125,9 +125,8 @@
                               </a> -->
                                 <a (click)="openSelectLeadModel()" style="padding-left: 4px;">
                                   <button class="button_blue bgcolor-unset p0 btn-transitions" translate>
-                                    <span class="btn btn-primary transition d-inline"><i class="fa fa-plus  mb-btns"
-                                        aria-hidden="true"></i> Select a
-                                      Lead</span>
+                                    <span class="btn btn-primary transition d-inline"><i class="fa fa-user-circle-o mb-btns"
+                                        aria-hidden="true"></i> {{attachLeadText}}</span>
                                   </button>
                                 </a>
                               </span>
