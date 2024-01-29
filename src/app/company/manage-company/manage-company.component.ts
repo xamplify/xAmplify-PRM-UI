@@ -36,7 +36,7 @@ customResponse: CustomResponse = new CustomResponse();
   companyId = 0;
   contactCount: number;
   companyCount: number;
-  constructor(public referenceService: ReferenceService, private router: Router, private companyService: CompanyService, public authenticationService: AuthenticationService,  public pagerService: PagerService, public properties: Properties,public listLoaderValue: ListLoaderValue,public xtremandLogger: XtremandLogger, public utilService: UtilService, public sortOption: SortOption
+  constructor(public referenceService: ReferenceService, private router: Router, public companyService: CompanyService, public authenticationService: AuthenticationService,  public pagerService: PagerService, public properties: Properties,public listLoaderValue: ListLoaderValue,public xtremandLogger: XtremandLogger, public utilService: UtilService, public sortOption: SortOption
     ) { this.loggedInUserId = this.authenticationService.getUserId();}
 
   ngOnInit() {
