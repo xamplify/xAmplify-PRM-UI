@@ -326,7 +326,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	 removeMarketingNonInteractiveBox:boolean = false;
 
 	/** XNFR-426 **/
-	leadApprovalOrRejectionOption: boolean = false;
+	leadApprovalRejectionStatus: boolean = false;
 	leadApprovalStatus:boolean = false;
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
@@ -4467,10 +4467,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 	setLeadApprovalOrRejectionStatus(event:any){
 		if (event) {
-			this.leadApprovalOrRejectionOption = true;
+			this.leadApprovalRejectionStatus = true;
 		}
 		else {
-			this.leadApprovalOrRejectionOption = false;
+			this.leadApprovalRejectionStatus = false;
 		}
 	}
 
@@ -4493,7 +4493,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	saveLeadApprovalOrRejectionStatus() {
-		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId, this.leadApprovalOrRejectionOption).subscribe();
+		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId, this.leadApprovalRejectionStatus).subscribe();
 	}
 
 }

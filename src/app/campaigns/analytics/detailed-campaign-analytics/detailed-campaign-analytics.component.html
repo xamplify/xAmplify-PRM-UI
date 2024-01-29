@@ -2025,11 +2025,11 @@
          </div>
       </div>
       <div class="portlet light clearfix" *ngIf="showDeals">
-         <div class="portlet-body">
+         <div class="portlet-body"> 
             <a (click)="closeCampaignDeals()" class="pull-right close-circle"
                style="margin: 9px 14px; padding-top: 3px; padding-left: 5px">
-               <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px"
-                  aria-hidden="true"></span></a>
+               <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px" aria-hidden="true"></span>
+            </a>
             <app-manage-campaign-deals [campaignId]="campaignId" [isDataShare]="isDataShare"
                [fromAnalytics]="!isNavigatedThroughAnalytics" [showTeamMemberFilter]="campaign.channelCampaign"
                [isPartnerVersion]="campaign.nurtureCampaign" (viewCampaignDealForm)="viewCampaignDealForm($event)"
@@ -2046,6 +2046,15 @@
       <a (click)="closeDealForm()" class="pull-right close-circle"
          style="margin: 9px 14px; padding-top: 3px; padding-left: 5px">
          <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px" aria-hidden="true"></span></a>
+      <a class="pull-right close-circle" *ngIf="dealActionType=='edit'" data-rel="fancybox-button"
+         (click)="showDealComments(selectedDeal)" data-toggle="tooltip" data-placement="bottom" title="Comments"
+         style="margin: 9px 0px;padding-top: 7px;padding-left: 5px;">
+         <span class="fa fa-comments IconCustomization" style="z-index: 1;font-size: 13px;" aria-hidden="true"
+            style="font-size:18px"></span>
+         <span *ngIf="selectedDeal.unReadChatCount > 0" class="badge badge-default"
+            style="margin-top: -72px; margin-right: -15px;background-color: #ed1c24 !important;">{{selectedDeal.unReadChatCount}}</span>
+         <div class="clickicons"></div>
+      </a>
       <app-add-deal [leadId]="leadId" [dealId]="dealId" [actionType]="dealActionType"
          (notifySubmitSuccess)="showSubmitDealSuccess()">
       </app-add-deal>
@@ -3802,7 +3811,7 @@
       (notifyAnalyticsComponentToHidePopup)="closeLeadsForm()" (notifySubmitSuccess)="showSubmitLeadSuccess()">
    </app-add-lead>
 </ng-container>
-<app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" [deal]="selectedDeal"
+<app-deal-chat-popup *ngIf="isCommentSection" [lead]="selectedLead" [deal]="selectedDeal" [editTextArea]="editTextArea"
    (isCommentSection)="addCommentModalClose($event)"></app-deal-chat-popup>
 <!-- --Lead Registration -->
 <div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

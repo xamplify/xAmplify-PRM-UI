@@ -18,9 +18,9 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
   totalcharsLeft = 250;
   remainingCharsLeft = this.totalcharsLeft;
   isApprovalStatusCommentValid:boolean = false;
-  comment:string;
+  comment:string="";
+  isDescriptionValid:boolean=false;
   
-
   @Input()
   deal: Deal;
   @Input()
@@ -89,14 +89,21 @@ export class OpportunitiesChatModalPopupComponent implements OnInit {
     this.closePopupEmitter.emit();
   }
 
+
   validateComment(comment: string){
-    comment = $.trim(comment);
-    this.remainingCharsLeft = this.totalcharsLeft - comment.length;
-    if(comment==='' || comment=== null || comment=== undefined ) {
+    this.comment = $.trim(comment);
+    this.remainingCharsLeft = this.totalcharsLeft - this.comment.length;
+    if(comment==='') {
       this.isApprovalStatusCommentValid = false;
+      this.isDescriptionValid = false;
     }
-    if(this.referenceService.validateCkEditorDescription(comment)){
+    else if(this.referenceService.validateCkEditorDescription(comment)){
       this.isApprovalStatusCommentValid = true;
+      this.isDescriptionValid=false;
+    }
+    else{
+      this.isApprovalStatusCommentValid = false;
+      this.isDescriptionValid=true;
     }
   }
 

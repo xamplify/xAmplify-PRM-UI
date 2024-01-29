@@ -17,7 +17,7 @@
         <h4 class="modal-title" *ngIf="deal != undefined" style="font-weight: 600;" translate>Update Deal</h4>
         <h4 class="modal-title" *ngIf="lead != undefined" style="font-weight: 600;" translate>Add Comments<span class="required"> *</span></h4>
       </div>
-      <div  class="form-group textareaStyles">
+      <div  class="textareaStyles">
         <span *ngIf="deal != undefined">
           <h4> You can update the deal stage and add comments</h4>
           <h4>Stage <span class="required"> *</span></h4>
@@ -37,11 +37,11 @@
         </span>
         <br>
         <div class="form-group">
-          <h4 *ngIf="deal != undefined" class="modal-title" translate>Add Comments</h4>
+          <h4 *ngIf="deal != undefined" class="modal-title" translate>Comments</h4>
           <textarea class="form-control" placeholder="Write your comment here" name="comment" rows="5"
             [(ngModel)]="comment" maxlength="250" (input)="validateComment(comment)"></textarea>
             <span>{{remainingCharsLeft}} characters left...</span>
-            <span style="margin-left: 75px;" *ngIf="!isApprovalStatusCommentValid && comment != undefined && lead != undefined" class="required text-center"> Please enter valid comments</span>
+            <span style="margin-left: 75px;" *ngIf="isDescriptionValid && lead != undefined" class="required text-center"> Please enter valid comments</span>
         </div>
       </div>
       <div  class="modal-footer">

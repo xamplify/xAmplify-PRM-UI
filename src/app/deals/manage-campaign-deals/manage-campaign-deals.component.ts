@@ -131,13 +131,8 @@ export class ManageCampaignDealsComponent implements OnInit {
   }
 
   editDeal(deal: Deal) { 
-    this.editCampaignDealForm.emit(deal.id);
-
-    // this.selectedDeal=deal;/****xnfr-426******/
+    this.editCampaignDealForm.emit(deal);
     this.textAreaDisable=true;
-
-
-
   }
 
   confirmDeleteDeal (deal: Deal) {
@@ -498,7 +493,6 @@ updatePipelineStage(deal:Deal,deletedPartner:boolean){
 
 resetModalPopup(){
   this.updateCurrentStage = false;
-  //this.isCommentSection = false;
   this.textAreaDisable=false;
   this.listCampaignDeals(this.dealsPagination);
 
@@ -507,12 +501,5 @@ resetModalPopup(){
 stageUpdateResponse(event:any){
   this.dealsResponse = (event === 200) ? new CustomResponse('SUCCESS', "Status Updated Successfully", true) : new CustomResponse('ERROR', "Invalid Input", true);
 }
-
-
-// closeDealForm() {  edit chat icon
-//   this.showDealForm = false;
-//   this.showDeals();
-//   this.textAreaDisable=false;//xnfr-426
-// }
 
 }
