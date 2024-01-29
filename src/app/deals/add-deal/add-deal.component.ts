@@ -108,7 +108,8 @@ export class AddDealComponent implements OnInit {
   showLeadForm: boolean = false;
   dealToLead: any;
   showSelectLeadModel: boolean;
-  showSelectLeadButton: boolean = true;
+  showAttachLeadButton: boolean = true;
+  attachLeadText: string = "Attach a Lead";
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
@@ -141,7 +142,7 @@ export class AddDealComponent implements OnInit {
       }
     } else if (this.actionType === "view") {
       this.preview = true;
-      this.showSelectLeadButton = false;
+      this.showAttachLeadButton = false;
       this.dealFormTitle = "Deal Details";
       if (this.dealId > 0) {
         this.getDeal(this.dealId);
@@ -286,7 +287,7 @@ export class AddDealComponent implements OnInit {
             }
             if (self.deal.associatedContact != undefined) {
               self.showContactInfo = true;
-              self.showSelectLeadButton = false;
+              self.showAttachLeadButton = false;
               self.contact = self.deal.associatedContact;
             }
             self.setCloseDate(data);
@@ -1102,6 +1103,7 @@ export class AddDealComponent implements OnInit {
   leadSelected(leadId: any) {
     this.showSelectLeadModel = false;
     this.leadId = leadId;
+    this.attachLeadText = "Change Lead";
     this.getLead(this.leadId);
   }
 
