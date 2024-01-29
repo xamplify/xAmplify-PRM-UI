@@ -305,8 +305,9 @@
                                     <li class="filter" (click)="filterContacts('FORM-LEADS',1)"
                                        [class.contact-filter-selected]="1 == selectedFilterIndex" translate>Form
                                        Contacts</li>
-                                       <li class="filter" (click)="filterContacts('COMPANY-CONTACTS',3)"
-                                       [class.contact-filter-selected]="3 == selectedFilterIndex" translate>Company Contacts</li>
+                                    <li class="filter" (click)="filterContacts('COMPANY-CONTACTS',3)"
+                                       [class.contact-filter-selected]="3 == selectedFilterIndex" translate>Company
+                                       Contacts</li>
 
                                     <li class="filter" (click)="filterContacts('ALL',2)"
                                        [class.contact-filter-selected]="2 == selectedFilterIndex" translate>All</li>
@@ -440,40 +441,41 @@
                                                 </div>
                                              </td>
                                              <td style="width: 10%;" class="hidden-xs image_effect">
-                                                <img
+                                                <img class="pd_lft8"
                                                    *ngIf="contactList.socialNetwork=='ZOHO' && contactList.synchronisedList"
                                                    src="{{properties?.zohoImage}}" alt="zoho" style="height: 70px;">
-                                                <img
+                                                <img class="pd_lft8"
                                                    *ngIf="contactList.socialNetwork=='GOOGLE' && contactList.synchronisedList"
                                                    src="{{properties?.googleImage}}" alt="google" style="height: 70px;">
-                                                <img
+                                                <img class="pd_lft8"
                                                    *ngIf="contactList.socialNetwork=='SALESFORCE' && contactList.synchronisedList"
                                                    src="{{properties?.salesforceImage}}" alt="salesforce"
-                                                   style="height: 70px;"> <img
+                                                   style="height: 70px;">
+                                                <img class="pd_lft8"
                                                    *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList"
                                                    src="{{properties?.manualImage}}" alt="manual" style="height: 54px;">
-                                                <img
+                                                <img class="pl_4"
                                                    *ngIf="contactList.socialNetwork=='HUBSPOT' && contactList.synchronisedList"
                                                    src="{{properties?.hubspotImage}}" alt="manual"
                                                    style="height: 70px;">
-                                                <img
+                                                <img class="pl_4"
                                                    *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList"
                                                    src="{{properties?.microsoftImage}}" alt="manual"
                                                    style="height: 70px;">
-                                                <img
+                                                <img class="pd_lft8"
                                                    *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList"
                                                    src="{{properties?.pipedriveImage}}" alt="manual"
                                                    style="height: 54px;">
-                                                <img
+                                                <img class="pd_lft8"
                                                    *ngIf="contactList.socialNetwork=='CONNECTWISE' && contactList.synchronisedList"
                                                    src="{{properties?.connectwiseImage}}" alt="manual"
                                                    style="height: 54px;">
-                                                <img
+                                                <img class="pd_lft8"
                                                    *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"
                                                    src="{{properties?.marketoImage}}" alt="manual"
                                                    style="height: 70px;">
                                                 <!-- XNFR-211 -->
-                                                <img
+                                                <img class="pd_lft8"
                                                    *ngIf="contactList.uploadInProgress || contactList.validationInProgress || ((!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd)))"
                                                    src="assets/images/Spinner.gif"
                                                    style="width: 55px; margin-top: -88px; margin-left: 17px;" alt="">
@@ -494,11 +496,13 @@
                                                 </h5>
                                                 <h5 class="mb0 moreipsis" style="padding: 0px;">
                                                    <span class='f-w-400' data-toggle="tooltip" data-placement="top"
-                                                   title="{{contactList?.associatedCompany}}" *ngIf="contactList.companyList">
-                                                   <b>Associated Company:</b> {{contactList.associatedCompany}}
-                                                </span>
+                                                      title="{{contactList?.associatedCompany}}"
+                                                      *ngIf="contactList.companyList">
+                                                      <b>Associated Company:</b> {{contactList.associatedCompany}}
+                                                   </span>
                                                    <span class='f-w-400' data-toggle="tooltip" data-placement="top"
-                                                      title="{{contactList?.companyName}}" *ngIf="!contactList.companyList">
+                                                      title="{{contactList?.companyName}}"
+                                                      *ngIf="!contactList.companyList">
                                                       <b>Company Name:</b> {{contactList.companyName}}
                                                    </span>
                                                    <h5 class="mb0 hidden-sm hidden-md hidden-lg">
@@ -578,12 +582,12 @@
                                                       Contact List</span>
                                                 </h5>
                                                 <h5 class="view-banner view-banner-green"
-                                                *ngIf="!contactList?.partnerUserList && contactList?.companyList"
-                                                [hidden]="assignLeads">
-                                                <span data-toggle="tooltip" data-placement="top"
-                                                   title="This list is associated with a Company." translate>Company
-                                                   Contact List</span>
-                                             </h5>
+                                                   *ngIf="!contactList?.partnerUserList && contactList?.companyList"
+                                                   [hidden]="assignLeads">
+                                                   <span data-toggle="tooltip" data-placement="top"
+                                                      title="This list is associated with a Company." translate>Company
+                                                      Contact List</span>
+                                                </h5>
                                              </td>
                                              <td class="hidden-xs" *ngIf="!assignLeads">
                                                 <app-timestamp [isOnlyDate]="true"
@@ -811,13 +815,15 @@
                                           <b>By:</b> {{contactList.uploadedBy}}</span>
                                     </h6>
                                     <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip"
-                                       data-placement="top" title="{{contactList.companyName}}" *ngIf="!contactList?.companyList">
+                                       data-placement="top" title="{{contactList.companyName}}"
+                                       *ngIf="!contactList?.companyList">
                                        <span><b>Company Name:</b> {{contactList.companyName}}</span>
                                     </h6>
                                     <h6 class="xamplify-ellipsis GridViewCotent" data-toggle="tooltip"
-                                    data-placement="top" title="{{contactList.associatedCompany}}" *ngIf="contactList?.companyList">
-                                    <span><b>Associated Name:</b> {{contactList.associatedCompany}}</span>
-                                 </h6>
+                                       data-placement="top" title="{{contactList.associatedCompany}}"
+                                       *ngIf="contactList?.companyList">
+                                       <span><b>Associated Name:</b> {{contactList.associatedCompany}}</span>
+                                    </h6>
                                     <h6 class="xamplify-ellipsis GridViewCotent"
                                        *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)"
                                        translate><b>Total </b>
@@ -858,8 +864,9 @@
                                           <span *ngIf="contactList?.formList" data-toggle="tooltip" data-placement="top"
                                              title="{{actionsDescription.contact_list_private}}">, Form Contact
                                              List</span>
-                                             <span *ngIf="contactList?.companyList" data-toggle="tooltip" data-placement="top"
-                                             title="{{actionsDescription.contact_list_private}}">, Company Contact
+                                          <span *ngIf="contactList?.companyList" data-toggle="tooltip"
+                                             data-placement="top" title="{{actionsDescription.contact_list_private}}">,
+                                             Company Contact
                                              List</span>
                                        </h6>
                                     </td>
@@ -1006,7 +1013,7 @@
          [contactListId]="selectedContactListId" [contactListName]="selectedContactListName"
          [isDefaultPartnerList]="isDefaultPartnerList" [isSynchronizationList]="isSynchronizationList"
          [isFormList]="isFormList" [isTeamMemberPartnerList]="isTeamMemberPartnerList"
-         [isCompanyContactList] ="isCompanyList" [associatedCompany] = "selectedAssociatedCompany"></app-edit-contacts>
+         [isCompanyContactList]="isCompanyList" [associatedCompany]="selectedAssociatedCompany"></app-edit-contacts>
    </div>
 
 
