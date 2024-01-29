@@ -26,6 +26,7 @@ export class ManageCompanyComponent implements OnInit {
 companyRouter = "/home/company/manage";
 pagination: Pagination = new Pagination();
 httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+countsRequestLoader: HttpRequestLoader = new HttpRequestLoader();
 customResponse: CustomResponse = new CustomResponse();
   loggedInUserId: number;
   selectedContactListId: number;
@@ -44,7 +45,7 @@ customResponse: CustomResponse = new CustomResponse();
 
   showCompanies (){
     this.getCompanyList(this.pagination);
-    // this.getCounts();
+    this.getCounts();
   }
   navigateToAddContactsPage(id:number){
     this.referenceService.goToRouter("/home/contacts/company/"+id);
@@ -72,7 +73,7 @@ customResponse: CustomResponse = new CustomResponse();
     pagination.pageIndex = 1;
     pagination.searchKey = this.sortOption.searchKey;
     pagination = this.utilService.sortOptionValues(this.sortOption.selectedSortedOption, pagination);
-    this. getCompanyList(this.pagination);
+    this.getCompanyList(this.pagination);
   }
   getSortedResults(text: any) {
     this.sortOption.selectedSortedOption = text;
@@ -152,21 +153,24 @@ customResponse: CustomResponse = new CustomResponse();
   }
 
   getCounts(){
+    this.referenceService.loading(this.countsRequestLoader, true);
     this.companyService.getCounts(this.loggedInUserId)
     .subscribe(
       (data: any) => {
+        this.referenceService.loading(this.countsRequestLoader, false);
         if (data.statusCode == 200) {
           this.companyCount = data.data.companyCount;
           this.contactCount =  data.data.contactCounts;
         }
       },
       error => {
+        this.countsRequestLoader.isServerError = true;
       },
       () => { }
     );
   }
 
-  showSubmitLeadSuccess() {
+  showSubmitCompanySuccess() {
     if( this.actionType === "edit"){
       this.customResponse = new CustomResponse('SUCCESS', "Company Updated Successfully", true);
     } else if (this.actionType === "add") {

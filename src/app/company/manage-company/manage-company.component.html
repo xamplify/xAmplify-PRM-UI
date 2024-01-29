@@ -20,13 +20,13 @@
       </div>
       <div class="row">
         <div class="col-xs-12">
-          <!-- <app-list-loader *ngIf="countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
-          </app-list-loader> -->
-          <div class="row">
+          <app-list-loader *ngIf="countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
+          </app-list-loader>
+          <div class="row"  *ngIf="!countsRequestLoader.isLoading && !countsRequestLoader.isServerError">
             <!--  Start Tiles-->
             <div class="col-xs-12 col-md-12 col-sm-12">
               <div class="page-bar" style="padding: 15px 15px 15px 0px">
-                <!-- -------Total Deals------- -->
+                <!-- -------Total companies------- -->
                 <div class="col-xs-12 col-sm-4 col-md-4 pr0 pb15 tiles_hover_effect">
                   <a class="dashboard-stat dashboard-stat-lighter blue">
                     <div class="visual">
@@ -36,6 +36,7 @@
                     </div>
                     <div class="details">
                       <div class="number">
+                        <span>{{companyCount}}</span>
                       </div>
                       <div class="desc" style="font-weight:500" translate>All</div>
                     </div>
@@ -55,8 +56,9 @@
                     </div>
                     <div class="details">
                       <div class="number">
+                        <span>{{contactCount}}</span>
                       </div>
-                      <div class="desc" style="font-weight:500" translate>Analytics</div>
+                      <div class="desc" style="font-weight:500" translate>Contacts</div>
                     </div>
                     <span id="permhref" class="morePadding ">
                       <a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"
@@ -117,7 +119,7 @@
                     </div>
                   </div>
                   <div *ngIf="companyService.isCompanyModalPopUp">
-                    <app-add-company (closeEvent)="closeCompanyModal($event)" [actionType]="actionType" [companyId]="companyId" (notifySubmitSuccess)="showSubmitLeadSuccess()"></app-add-company>
+                    <app-add-company (closeEvent)="closeCompanyModal($event)" [actionType]="actionType" [companyId]="companyId" (notifySubmitSuccess)="showSubmitCompanySuccess()"></app-add-company>
                   </div>
                   <section class='col-xs-12 col-lg-12 col-md-12 col-sm-12 p0'>
                     <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"></app-list-loader>
