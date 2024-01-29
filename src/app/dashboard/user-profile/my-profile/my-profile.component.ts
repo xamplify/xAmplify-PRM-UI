@@ -328,6 +328,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	/** XNFR-426 **/
 	leadApprovalRejectionStatus: boolean = false;
 	leadApprovalStatus:boolean = false;
+	leadApprovalCustomResponse: CustomResponse = new CustomResponse();
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -4493,7 +4494,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	saveLeadApprovalOrRejectionStatus() {
-		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId, this.leadApprovalRejectionStatus).subscribe();
+		this.leadApprovalCustomResponse = new CustomResponse();
+		this.authenticationService.updateLeadApprovalOrRejectionStatus(this.referenceService.companyId, this.leadApprovalRejectionStatus)
+		.subscribe(
+			data => {
+				this.leadApprovalCustomResponse = new CustomResponse('SUCCESS', "Settings Updated Successfully", true);
+			}
+		);
 	}
 
 }

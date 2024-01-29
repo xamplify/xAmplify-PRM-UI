@@ -836,6 +836,8 @@
                                         <!-- XNFR-426 -->
                                         <div class="tab-content" *ngIf="activeTabName == 'leadDealApprove'"
                                             [ngClass]="{'active': activeTabName == 'leadDealApprove'}">
+                                            <app-response-message [customResponse]="leadApprovalCustomResponse"
+                                                *ngIf="leadApprovalCustomResponse.isVisible"></app-response-message>
                                             <table class="table table-light" style="border:0px!important;background-color:transparent!important">
                                                 <tbody>
                                                     <fieldset class="fild-custome-borders-none">
