@@ -28,7 +28,7 @@ export class SelectLeadComponent implements OnInit {
   pagination: Pagination = new Pagination();
   loggedInUserId: number;
   showLeadForm: boolean = false;  
-  leadId: any = 0;
+  leadId = 0;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
 
   constructor(public properties: Properties, public authenticationService: AuthenticationService, public referenceService: ReferenceService,
