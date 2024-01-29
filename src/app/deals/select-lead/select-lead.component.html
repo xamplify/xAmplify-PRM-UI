@@ -10,8 +10,8 @@
       </div>
       <div class="modal-body border-bottom-1px">
         <div class="portlet light" id="del-profile-div" style="border: 0px !important">
-          <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px',fullScreenBackdrop:true }">
-          </ngx-loading>
+          <!-- <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px',fullScreenBackdrop:true }">
+          </ngx-loading> -->
           <app-modal-popup-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
           </app-modal-popup-loader>          
           <app-response-message class="pg8" [customResponse]="selectLeadModalResponse" *ngIf="selectLeadModalResponse.isVisible">
@@ -168,7 +168,7 @@
         
       </div> 
       <div class="pull-right" style="margin: 15px">
-        <button [disabled]="!leadId > 0" type="submit" id="saveLead" (click)="leadSelected()"
+        <button [disabled]="!(leadId > 0)" type="submit" id="saveLead" (click)="leadSelected()"
           class="button_blue bgcolor-unset"><span class="btn btn-primary transition txt_pd-top3">Select</span>
         </button>
       </div>     
