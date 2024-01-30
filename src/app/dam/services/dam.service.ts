@@ -103,7 +103,9 @@ export class DamService {
   }
 
   updatePDFData(damPostDto: DamPostDto){
-    return this.utilPostSaveOrUpdateMethod("updatePDFData", damPostDto);
+    return this.http.put(this.URL + "updatePDFData?access_token=" + this.authenticationService.access_token,damPostDto)
+      .map(this.extractData)
+      .catch(this.handleError);
   }
   
 
