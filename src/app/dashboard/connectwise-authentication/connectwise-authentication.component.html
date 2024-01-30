@@ -42,7 +42,10 @@
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-warning" (click)="closeForm()">CANCEL</button>
+  <button type="button" class="btn btn-info" [disabled]="!companyId || !instanceUrl || !publicKey || !privateKey"
+    [class.disabled]="!companyId || !instanceUrl || !publicKey || !privateKey"
+    (click)="validateModelForm('test')">TEST CREDENTIALS</button>
   <button type="button" class="btn btn-primary" [disabled]="!companyId || !instanceUrl || !publicKey || !privateKey"
     [class.disabled]="!companyId || !instanceUrl || !publicKey || !privateKey"
-    (click)="validateModelForm()">AUTHORIZE</button>
+    (click)="validateModelForm('save')">AUTHORIZE</button>
 </div>
