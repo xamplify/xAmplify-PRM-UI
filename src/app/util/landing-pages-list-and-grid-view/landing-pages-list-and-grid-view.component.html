@@ -1,157 +1,75 @@
 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-    <div [className]="folderListView ? 'message-class-folder-list':'message-class'" id="custom-response-div">
-        <app-response-message *ngIf="customResponse.isVisible" [customResponse]="customResponse"></app-response-message>
-    </div>
-    <div class="row" *ngIf="statusCode==200">
-        <div class="col-md-12">
-            <div class="portlet light remove_cardBgcolor padding_0 clearfix" style="box-shadow: none;">
-                <!--List View / Grid View-->
-                <div *ngIf="modulesDisplayType?.isListView || modulesDisplayType?.isGridView">
-                    <ng-template *ngIf="!httpRequestLoader?.isLoading" [ngTemplateOutlet]="manageLandingPagesHeaderOptions"></ng-template>
-                    <app-list-loader *ngIf="httpRequestLoader?.isLoading && modulesDisplayType?.isListView"></app-list-loader>
-                    <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader?.isLoading && modulesDisplayType?.isGridView"></app-landing-page-loader>
-                    <!---List View----->
-                    <section *ngIf="modulesDisplayType.isListView && !httpRequestLoader?.isLoading ">
-                        <div class="table-responsive">
-                            <table class='table tgrid table-hover table-sm' id="manage-page-list" *ngIf="pagination.pagedItems?.length>0" aria-describedby="landing-page-desc">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center hidden-xs" colspan="2" style="width: 30%" id="border-bottom">
-                                            <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-page-list',2)">
-                                            </span>
-                                            <span class="gridHeader">Page</span>
-                                        </th>
-                                        <th class="text-center visible-xs" colspan="1" style="width: 10%" id="border-bottom">
-                                            <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-page-list',1)">
-                                            </span>
-                                            <span class="gridHeader">Page</span>
-                                        </th>
-                                        <th scope="row" class="hidden-xs text-center">Type</th>
-                                        <th *ngIf="isPartnerLandingPage" scope="row" class="hidden-xs text-center">Shared On</th>
-                                        <th *ngIf="!isPartnerLandingPage" scope="row" class="hidden-xs text-center">Created On</th>
-                                        <th *ngIf="!isPartnerLandingPage" scope="row" class="hidden-xs text-center">Updated On</th>
-                                        <th scope="row" class="text-center" style="min-width: 200px;">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let landingPage of pagination.pagedItems ;let i =index">
-                                        <td class="hidden-xs custom-icon-width">
-                                            <img id="landing-page-image-preview-custom-css" class="pages_image_border" src="{{landingPage.thumbnailPath}}" alt="Image Not Found">
-                                        </td>
-                                        <td>
-                                            <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{landingPage?.name}}">
-                                                <span><b>Page Name: </b>{{landingPage?.name}} </span>
-                                            </h6>
-                                            <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{landingPage?.categoryName}}">
-                                                <span><b>Folder: </b>{{landingPage?.categoryName}}</span>
-                                            </h6>
-                                            <h6 class="moreipsis" data-toggle="tooltip" data-placement="top" title="{{landingPage?.createdUser}}">
-                                                <span *ngIf="!isPartnerLandingPage"><b>Created By: </b>{{landingPage?.createdUser}} </span>
-                                                <span *ngIf="isPartnerLandingPage"><b>Shared By: </b>{{landingPage?.createdUser}}</span>
-                                            </h6>
-                                            <h6 class="moreipsis" *ngIf="isPartnerLandingPage" data-toggle="tooltip" data-placement="top" title="{{landingPage?.companyName}}">
-                                                <span translate><b>From:</b>{{landingPage?.companyName}}</span>
-                                            </h6>
-                                            <h6 class="moreipsis">
-                                                <span>
-                                                    <strong>Open Links In New Tab 
-                                                        <i [className]="landingPage.openLinksInNewTab ? 'fa fa-check active-status':'fa fa-times required'"aria-hidden="true"></i>
-                                                    </strong>
-                                                </span>
-                                            </h6>
-                                            <!---XNFR-255-->
-                                            <ng-container *ngIf="landingPage?.whiteLabeledLandingPageReceivedFromVendor">
-                                                <h6 class="moreipsis"  title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}"
-                                                    data-toggle="tooltip" data-placement="top">
-                                                    <span><b>Received From: </b>{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}</span>
-                                                </h6>
-                                                <span class="view-banner display-ib margin-0-auto">White-Labeled</span>
-                                            </ng-container>
-                                            <!---XNFR-255-->
-                                            <span class="view-banner display-ib margin-0-auto green-btn-cu">{{landingPage.type}}</span>
-                                        </td>
-                                        <td class="hidden-xs text-center">
-                                            <span *ngIf="landingPage.coBranded" class="view-banner display-ib margin-0-auto" translate>Co-Branded</span>
-                                            <span *ngIf="!landingPage.coBranded" class="view-banner display-ib margin-0-auto" translate>Regular</span>
-                                        </td>
-                                        <td class="hidden-xs text-center">
-                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"></app-timestamp>
-                                        </td>
-                                        <ng-container *ngIf="!isPartnerLandingPage">
-                                            <td class="hidden-xs text-center" *ngIf="landingPage?.updatedDateInString?.length>0" class="text-center">
-                                                <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage?.updatedDateInString"></app-timestamp>
-                                            </td>
-                                            <td *ngIf="landingPage?.updatedDateInString?.length==0" class="text-center">
-                                                -
-                                            </td>
-                                        </ng-container>
-                                        <td id="actions-td-width-xamp">
-                                            <div class="actions-block override-actions flex mPadAction IconCustomizationcondition">
-                                                <div class="mActionDiv whitespace_nowrap display-inlineflex">
-                                                    <!--Copy Icon-->
-                                                    <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                    <!--Edit Icon-->
-                                                    <ng-template [ngTemplateOutlet]="editIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                    <!--Preview Icon-->
-                                                    <ng-template [ngTemplateOutlet]="previewIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                     <!--Copy/Embed Link Icon-->
-                                                     <ng-template [ngTemplateOutlet]="copyOrEmbedLinkIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                     <!--Form Icon-->
-                                                     <ng-template [ngTemplateOutlet]="formIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                     <!--Analytics Icon-->
-                                                     <ng-template [ngTemplateOutlet]="analyticsIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                </div>
-                                                <div class="mActionDiv whitespace_nowrap">
-                                                    <!--Delete Icon-->
-                                                    <ng-template [ngTemplateOutlet]="deleteIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </section>
-                    <!---Grid View----->
-                    <section *ngIf="modulesDisplayType?.isGridView &&  !httpRequestLoader?.isLoading">
-                        <div class="row p10" style="padding: 0px 3px 0px 3px;">
-                            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_20 GridviewSidePaddings" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
-                                <div class="grid-box grid-box-height" id="landingPageListDiv_{{landingPage.id}}">
-                                    <ng-container *ngIf="!isPartnerLandingPage">
-                                        <span class="ribbon1" *ngIf="landingPage.coBranded"><span>Co-Branded</span></span>
-                                        <span class="ribbon1" *ngIf="!landingPage.coBranded"><span>Regular</span></span>
-                                    </ng-container>
-                                    <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}" alt="No Image Found">
-                                    <div>
-                                        <h4 class="xamplify-ellipsis overflow-hidden GridViewCotent gridViewTextAlignmnent" data-placement="bottom" data-toggle="tooltip" title="{{landingPage.name}}">
-                                            <b>Page Name:</b> {{landingPage.name}}
-                                        </h4>
-                                        <h6 class="GridViewCotent xamplify-ellipsis" title="{{landingPage.categoryName}}" data-placement="bottom" data-toggle="tooltip">
-                                            <b>Folder:</b> {{landingPage.categoryName}}
+<div [className]="folderListView ? 'message-class-folder-list':'message-class'" id="custom-response-div">
+    <app-response-message *ngIf="customResponse.isVisible" [customResponse]="customResponse"></app-response-message>
+</div>
+<div class="row" *ngIf="statusCode==200">
+    <div class="col-md-12">
+        <div class="portlet light remove_cardBgcolor padding_0 clearfix" style="box-shadow: none;">
+            <!--List View / Grid View-->
+            <div *ngIf="modulesDisplayType?.isListView || modulesDisplayType?.isGridView">
+                <ng-template *ngIf="!httpRequestLoader?.isLoading"
+                    [ngTemplateOutlet]="manageLandingPagesHeaderOptions"></ng-template>
+                <app-list-loader
+                    *ngIf="httpRequestLoader?.isLoading && modulesDisplayType?.isListView"></app-list-loader>
+                <app-landing-page-loader [maxBoxLength]=4
+                    *ngIf="httpRequestLoader?.isLoading && modulesDisplayType?.isGridView"></app-landing-page-loader>
+                <!---List View----->
+                <section *ngIf="modulesDisplayType.isListView && !httpRequestLoader?.isLoading ">
+                    <div class="table-responsive">
+                        <table class='table tgrid table-hover table-sm' id="manage-page-list"
+                            *ngIf="pagination.pagedItems?.length>0" aria-describedby="landing-page-desc">
+                            <thead>
+                                <tr>
+                                    <th class="text-center hidden-xs" colspan="2" style="width: 30%" id="border-bottom">
+                                        <span class="ui-column-resizer gray"
+                                            (mousedown)="referenceService.onMouseDown($event,'manage-page-list',2)">
+                                        </span>
+                                        <span class="gridHeader">Page</span>
+                                    </th>
+                                    <th class="text-center visible-xs" colspan="1" style="width: 10%"
+                                        id="border-bottom">
+                                        <span class="ui-column-resizer gray"
+                                            (mousedown)="referenceService.onMouseDown($event,'manage-page-list',1)">
+                                        </span>
+                                        <span class="gridHeader">Page</span>
+                                    </th>
+                                    <th scope="row" class="hidden-xs text-center">Type</th>
+                                    <th *ngIf="isPartnerLandingPage" scope="row" class="hidden-xs text-center">Shared On
+                                    </th>
+                                    <th *ngIf="!isPartnerLandingPage" scope="row" class="hidden-xs text-center">Created
+                                        On</th>
+                                    <th *ngIf="!isPartnerLandingPage" scope="row" class="hidden-xs text-center">Updated
+                                        On</th>
+                                    <th scope="row" class="text-center" style="min-width: 200px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let landingPage of pagination.pagedItems ;let i =index">
+                                    <td class="hidden-xs custom-icon-width">
+                                        <img id="landing-page-image-preview-custom-css" class="pages_image_border"
+                                            src="{{landingPage.thumbnailPath}}" alt="Image Not Found">
+                                    </td>
+                                    <td>
+                                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"
+                                            title="{{landingPage?.name}}">
+                                            <span><b>Page Name: </b>{{landingPage?.name}} </span>
                                         </h6>
-                                        <!---XNFR-255-->
-                                        <div class="aligntowbtns">
-                                            <ng-container *ngIf="landingPage?.whiteLabeledLandingPageReceivedFromVendor">
-                                                <h6 class="GridViewCotent xamplify-ellipsis" data-placement="bottom" data-toggle="tooltip" title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}">
-                                                    <b>Received From:</b>
-                                                    {{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}
-                                                </h6>
-                                                <span class="view-banner-white-labeled LabeledmarginLeft">White-Labeled</span>
-                                            </ng-container>
-                                            <span class="view-banner green-btn-cu LabeledmarginLeft">{{landingPage.type}}</span>
-                                        </div>
-                                        <!---XNFR-255-->
-                                        <h6 *ngIf="!isPartnerLandingPage" class="GridViewCotent"> <b>Created On:</b>
-                                            <app-timestamp [isOnlyDate]="true"[dateAndTime]="landingPage.displayTime"></app-timestamp>
+                                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"
+                                            title="{{landingPage?.categoryName}}">
+                                            <span><b>Folder: </b>{{landingPage?.categoryName}}</span>
                                         </h6>
-                                        <h6 *ngIf="isPartnerLandingPage" class="GridViewCotent"><b>Shared On:</b>
-                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"></app-timestamp>
+                                        <h6 class="moreipsis" data-toggle="tooltip" data-placement="top"
+                                            title="{{landingPage?.createdUser}}">
+                                            <span *ngIf="!isPartnerLandingPage"><b>Created By:
+                                                </b>{{landingPage?.createdUser}} </span>
+                                            <span *ngIf="isPartnerLandingPage"><b>Shared By:
+                                                </b>{{landingPage?.createdUser}}</span>
                                         </h6>
-
-                                        <h6 title="{{landingPage.createdUser}}" class="GridViewCotent xamplify-ellipsis" data-placement="bottom" data-toggle="tooltip"><b>By:</b>
-                                            {{landingPage.createdUser}}
+                                        <h6 class="moreipsis" *ngIf="isPartnerLandingPage" data-toggle="tooltip"
+                                            data-placement="top" title="{{landingPage?.companyName}}">
+                                            <span translate><b>From:</b>{{landingPage?.companyName}}</span>
                                         </h6>
-                                        <h6 class="moreipsis" class="GridViewCotent">
+                                        <h6 class="moreipsis">
                                             <span>
                                                 <strong>Open Links In New Tab
                                                     <i [className]="landingPage.openLinksInNewTab ? 'fa fa-check active-status':'fa fa-times required'"
@@ -159,267 +77,445 @@
                                                 </strong>
                                             </span>
                                         </h6>
-                                    </div>
-                                    <!---Icons-->
-                                    <div class="bar gridIconCustomization flex icons-center" id="notificationBarCu">
-                                        <!--Copy Icon-->
-                                        <ng-template [ngTemplateOutlet]="copyIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                        <!--Edit Icon-->
-                                        <ng-template [ngTemplateOutlet]="editIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                        <!--Preview Icon-->
-                                        <ng-template [ngTemplateOutlet]="previewIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                        <!--Copy/Embed Link Icon-->
-                                        <ng-template [ngTemplateOutlet]="copyOrEmbedLinkIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                        <!--Form Icon-->
-                                        <ng-template [ngTemplateOutlet]="formIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                        <!--Analytics Icon-->
-                                        <ng-template [ngTemplateOutlet]="analyticsIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                        <!--Delete Icon-->
-                                        <ng-template [ngTemplateOutlet]="deleteIcon" [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <!---Pagination-->
-                    <div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info text-center">
-                        <strong>No Data Found.</strong>
-                    </div>
-                    <div *ngIf="pagination?.pagedItems.length !== 0" [hidden]="httpRequestLoader.isLoading">
-                        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listLandingPages($event)"></app-pagination>
-                    </div>
-                    <!---Pagination-->
-                </div>
-                 <!--Folder List View / Folder Grid View -->
-                <div *ngIf="modulesDisplayType?.isFolderGridView || modulesDisplayType?.isFolderListView || refreshFolderListView">
-                    <app-folder-type-view-util [moduleId]="roles?.landingPageId" [modulesDisplayType]="modulesDisplayType" ></app-folder-type-view-util>
-                </div>
-            </div>
-            <!-- END PAGE CONTENT-->
-        </div>
-    </div>
-    <!-- ----------------------Copy Link Modal------------------- -->
-    <div class="modal fade right " id="landing-page-url-modal" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-lg" style="width: 75% !important;right:0 !important">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close-circle" data-dismiss="modal">
-                        <i class="fa fa-times" aria-hidden="true"></i>
-                    </button>
-                    <h4 class="modal-title text-center" translate>COPY LINK / EMBED LINK</h4>
-                </div>
-                <div class="modal-body">
-                    <app-response-message [customResponse]="copiedLinkCustomResponse"
-                        *ngIf="copiedLinkCustomResponse.isVisible">
-                    </app-response-message>
-                    <br>
-                    <div class="form-group">
-                        <label class="control-label" translate>Copy Link</label>
-                        <input type="text" id="copy-link" class="form-control" readonly="readonly"
-                            [ngModel]="landingPageAliasUrl" #userinput>
-                        <br>
-                        <div style="padding-top: 9px;">
-                            <a class="button_blue" id="right" (click)="copyInputMessage(userinput,'Page link')"
-                                translate><span class="btn btn-primary transition copy_link">Copy
-                                    Link</span></a>
-                        </div>
-                        <br>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" translate>Copy Embed Link</label>
-                        <textarea class="text-color" id="text-area" rows="3" [ngModel]="iframeEmbedUrl"
-                            spellcheck="false" #iframeUrlInput></textarea>
-                        <div style="padding-top: 10px;">
-                            <button class="button_blue bgcolor-unset" id="right"
-                                (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate><span
-                                    class="btn btn-primary transition txt_pd-top3">Copy Embed
-                                    Link</span></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <a data-dismiss="modal" class="btn Btn-Gray" id="right" translate>Close</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
-
-
-    <!--Header-->
-    <ng-template #manageLandingPagesHeaderOptions>
-        <div class="portlet-title" style="border-bottom:none !important;">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-5 col-lg-6" style="padding-left: 11px;">
-                    <div>
-                        <ul class="mix-filter" style="margin-top: 2px;"
-                            *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView && !authenticationService?.module?.isMarketingCompany">
-                            <li class="filter" (click)="showAllLandingPages('All',0)"
-                                [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All
-                            </li>
-                            <ng-container *ngIf="!isPartnerLandingPage">
-                                <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular (Public)</li>
-                                <li class="filter" (click)="showAllLandingPages('Regular&PRIVATE',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex">Regular (Private)</li>
-                                <li class="filter" (click)="showAllLandingPages('Co-Branded&PUBLIC',3)" [class.landing-page-selected]="3 == selectedLandingPageTypeIndex">Co-Branded (Public)</li>
-                                <li class="filter" (click)="showAllLandingPages('Co-Branded&PRIVATE',4)" [class.landing-page-selected]="4 == selectedLandingPageTypeIndex">Co-Branded (Private)</li>
-                            </ng-container>
-                            <ng-container *ngIf="isPartnerLandingPage">
-                                <li class="filter" (click)="showAllLandingPages('PUBLIC',5)" [class.landing-page-selected]="5 == selectedLandingPageTypeIndex">Public</li>
-                                <li class="filter" (click)="showAllLandingPages('PRIVATE',6)" [class.landing-page-selected]="6 == selectedLandingPageTypeIndex">Private</li>
-                            </ng-container>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="page-toolbar col-xs-12 col-sm-12 col-md-7 col-lg-6"
-                    *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView"
-                    style="padding-right: 22px;padding-left: 5px;">
-                    <div class="btn-group pull-right" style="display: flex;">
-                        <div class="">
-                            <div class="group-dropdown">
-                                <button [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
-                                    modulesDisplayType?.isFolderListView? 'fa fa-th btn btn-xs l-g-view': modulesDisplayType?.isFolderGridView?'fa fa-folder btn btn-xs l-g-view':'fa fa-th-list btn btn-xs l-g-view'"
-                                 style="padding:10px !important">
-                                </button>
-                                <div class="group-dd-content">
-                                    <ng-container class='m10'>
-                                        <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="!modulesDisplayType.isListView && setViewType('l')">
-                                            <i class="fa fa-th-list p10" aria-hidden="true"></i>
-                                        </span>
-                                        <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="!modulesDisplayType.isGridView && setViewType('g')">
-                                            <i class="fa fa-th-large p10" aria-hidden="true"></i>
-                                        </span>
-                                        <ng-container *ngIf="!showUpArrowButton && !folderListView">
-                                            <span class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip"
-                                                data-placement="bottom" title="Folder Grid View"
-                                                (click)="setViewType('fg')">
-                                                <i class="fa fa-folder p10" aria-hidden="true"></i>
-                                            </span>
-                                            <span class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width"
-                                                data-toggle="tooltip" data-placement="bottom" title="Folder List View"
-                                                (click)="setViewType('fl')">
-                                                <i class="fa fa-th p10" aria-hidden="true"></i>
-                                            </span>
+                                        <!---XNFR-255-->
+                                        <ng-container *ngIf="landingPage?.whiteLabeledLandingPageReceivedFromVendor">
+                                            <h6 class="moreipsis"
+                                                title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}"
+                                                data-toggle="tooltip" data-placement="top">
+                                                <span><b>Received From:
+                                                    </b>{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}</span>
+                                            </h6>
+                                            <span class="view-banner display-ib margin-0-auto">White-Labeled</span>
                                         </ng-container>
+                                        <!---XNFR-255-->
+                                        <span
+                                            class="view-banner display-ib margin-0-auto green-btn-cu">{{landingPage.type}}</span>
+                                    </td>
+                                    <td class="hidden-xs text-center">
+                                        <span *ngIf="landingPage.coBranded" class="view-banner display-ib margin-0-auto"
+                                            translate>Co-Branded</span>
+                                        <span *ngIf="!landingPage.coBranded"
+                                            class="view-banner display-ib margin-0-auto" translate>Regular</span>
+                                    </td>
+                                    <td class="hidden-xs text-center">
+                                        <app-timestamp [isOnlyDate]="true"
+                                            [dateAndTime]="landingPage.displayTime"></app-timestamp>
+                                    </td>
+                                    <ng-container *ngIf="!isPartnerLandingPage">
+                                        <td class="hidden-xs text-center"
+                                            *ngIf="landingPage?.updatedDateInString?.length>0" class="text-center">
+                                            <app-timestamp [isOnlyDate]="true"
+                                                [dateAndTime]="landingPage?.updatedDateInString"></app-timestamp>
+                                        </td>
+                                        <td *ngIf="landingPage?.updatedDateInString?.length==0" class="text-center">
+                                            -
+                                        </td>
                                     </ng-container>
+                                    <td id="actions-td-width-xamp">
+                                        <div class="d-flex justify-content-center">
+                                            <div
+                                                class="actions-block override-actions flex mPadAction IconCustomizationcondition">
+                                                <div class="mActionDiv whitespace_nowrap display-inlineflex">
+                                                    <!--Copy Icon-->
+                                                    <ng-template [ngTemplateOutlet]="copyIcon"
+                                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                    <!--Edit Icon-->
+                                                    <ng-template [ngTemplateOutlet]="editIcon"
+                                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                    <!--Preview Icon-->
+                                                    <ng-template [ngTemplateOutlet]="previewIcon"
+                                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                    <!--Copy/Embed Link Icon-->
+                                                    <ng-template [ngTemplateOutlet]="copyOrEmbedLinkIcon"
+                                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                    <!--Form Icon-->
+                                                    <ng-template [ngTemplateOutlet]="formIcon"
+                                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                    <!--Analytics Icon-->
+                                                    <ng-template [ngTemplateOutlet]="analyticsIcon"
+                                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                </div>
+                                                <div class="mActionDiv whitespace_nowrap">
+                                                    <!--Delete Icon-->
+                                                    <ng-template [ngTemplateOutlet]="deleteIcon"
+                                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <!---Grid View----->
+                <section *ngIf="modulesDisplayType?.isGridView &&  !httpRequestLoader?.isLoading">
+                    <div class="row p10" style="padding: 0px 3px 0px 3px;">
+                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 tab_mt_20 GridviewSidePaddings"
+                            *ngFor="let landingPage of pagination.pagedItems ;let i =index">
+                            <div class="grid-box grid-box-height" id="landingPageListDiv_{{landingPage.id}}">
+                                <ng-container *ngIf="!isPartnerLandingPage">
+                                    <span class="ribbon1" *ngIf="landingPage.coBranded"><span>Co-Branded</span></span>
+                                    <span class="ribbon1" *ngIf="!landingPage.coBranded"><span>Regular</span></span>
+                                </ng-container>
+                                <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}"
+                                    alt="No Image Found">
+                                <div>
+                                    <h4 class="xamplify-ellipsis overflow-hidden GridViewCotent gridViewTextAlignmnent"
+                                        data-placement="bottom" data-toggle="tooltip" title="{{landingPage.name}}">
+                                        <b>Page Name:</b> {{landingPage.name}}
+                                    </h4>
+                                    <h6 class="GridViewCotent xamplify-ellipsis" title="{{landingPage.categoryName}}"
+                                        data-placement="bottom" data-toggle="tooltip">
+                                        <b>Folder:</b> {{landingPage.categoryName}}
+                                    </h6>
+                                    <!---XNFR-255-->
+                                    <div class="aligntowbtns">
+                                        <ng-container *ngIf="landingPage?.whiteLabeledLandingPageReceivedFromVendor">
+                                            <h6 class="GridViewCotent xamplify-ellipsis" data-placement="bottom"
+                                                data-toggle="tooltip"
+                                                title="{{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}">
+                                                <b>Received From:</b>
+                                                {{landingPage?.whiteLabeledLandingPageSharedByVendorCompanyName}}
+                                            </h6>
+                                            <span
+                                                class="view-banner-white-labeled LabeledmarginLeft">White-Labeled</span>
+                                        </ng-container>
+                                        <span
+                                            class="view-banner green-btn-cu LabeledmarginLeft">{{landingPage.type}}</span>
+                                    </div>
+                                    <!---XNFR-255-->
+                                    <h6 *ngIf="!isPartnerLandingPage" class="GridViewCotent"> <b>Created On:</b>
+                                        <app-timestamp [isOnlyDate]="true"
+                                            [dateAndTime]="landingPage.displayTime"></app-timestamp>
+                                    </h6>
+                                    <h6 *ngIf="isPartnerLandingPage" class="GridViewCotent"><b>Shared On:</b>
+                                        <app-timestamp [isOnlyDate]="true"
+                                            [dateAndTime]="landingPage.displayTime"></app-timestamp>
+                                    </h6>
+
+                                    <h6 title="{{landingPage.createdUser}}" class="GridViewCotent xamplify-ellipsis"
+                                        data-placement="bottom" data-toggle="tooltip"><b>By:</b>
+                                        {{landingPage.createdUser}}
+                                    </h6>
+                                    <h6 class="moreipsis" class="GridViewCotent">
+                                        <span>
+                                            <strong>Open Links In New Tab
+                                                <i [className]="landingPage.openLinksInNewTab ? 'fa fa-check active-status':'fa fa-times required'"
+                                                    aria-hidden="true"></i>
+                                            </strong>
+                                        </span>
+                                    </h6>
+                                </div>
+                                <!---Icons-->
+                                <div class="bar gridIconCustomization flex icons-center" id="notificationBarCu">
+                                    <!--Copy Icon-->
+                                    <ng-template [ngTemplateOutlet]="copyIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    <!--Edit Icon-->
+                                    <ng-template [ngTemplateOutlet]="editIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    <!--Preview Icon-->
+                                    <ng-template [ngTemplateOutlet]="previewIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    <!--Copy/Embed Link Icon-->
+                                    <ng-template [ngTemplateOutlet]="copyOrEmbedLinkIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    <!--Form Icon-->
+                                    <ng-template [ngTemplateOutlet]="formIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    <!--Analytics Icon-->
+                                    <ng-template [ngTemplateOutlet]="analyticsIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
+                                    <!--Delete Icon-->
+                                    <ng-template [ngTemplateOutlet]="deleteIcon"
+                                        [ngTemplateOutletContext]="{landingPage:landingPage}"></ng-template>
                                 </div>
                             </div>
                         </div>
-                        <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip"
-							data-placement="bottom" title="Go back" (click)="setViewType('fg')">
-							<i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-						</span>
-                        <div class="inputs" id="right" style="display: inline-flex;max-width: 369px;">
-                            <div *ngIf="!isPartnerLandingPage">
-                                <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                                    <option *ngFor="let option of sortOption.manageFormsSortOptions"[ngValue]="option">{{option.name}}</option>
-                                </select>
-                            </div>
-                            <div *ngIf="isPartnerLandingPage">
-                                <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.partnerLandingPageSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                                    <option *ngFor="let option of sortOption.partnerLandingPageSortOptions" [ngValue]="option">{{option.name}}</option>
-                                </select>
-                            </div>
+                    </div>
+                </section>
+                <!---Pagination-->
+                <div *ngIf="pagination?.totalRecords==0 && !httpRequestLoader.isLoading"
+                    class="alert alert-info text-center">
+                    <strong>No Data Found.</strong>
+                </div>
+                <div *ngIf="pagination?.pagedItems.length !== 0" [hidden]="httpRequestLoader.isLoading">
+                    <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+                        (notifyParentDropDown)="listLandingPages($event)"></app-pagination>
+                </div>
+                <!---Pagination-->
+            </div>
+            <!--Folder List View / Folder Grid View -->
+            <div
+                *ngIf="modulesDisplayType?.isFolderGridView || modulesDisplayType?.isFolderListView || refreshFolderListView">
+                <app-folder-type-view-util [moduleId]="roles?.landingPageId"
+                    [modulesDisplayType]="modulesDisplayType"></app-folder-type-view-util>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
+    </div>
+</div>
+<!-- ----------------------Copy Link Modal------------------- -->
+<div class="modal fade right " id="landing-page-url-modal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" style="width: 75% !important;right:0 !important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" data-dismiss="modal">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title text-center" translate>COPY LINK / EMBED LINK</h4>
+            </div>
+            <div class="modal-body">
+                <app-response-message [customResponse]="copiedLinkCustomResponse"
+                    *ngIf="copiedLinkCustomResponse.isVisible">
+                </app-response-message>
+                <br>
+                <div class="form-group">
+                    <label class="control-label" translate>Copy Link</label>
+                    <input type="text" id="copy-link" class="form-control" readonly="readonly"
+                        [ngModel]="landingPageAliasUrl" #userinput>
+                    <br>
+                    <div style="padding-top: 9px;">
+                        <a class="button_blue" id="right" (click)="copyInputMessage(userinput,'Page link')"
+                            translate><span class="btn btn-primary transition copy_link">Copy
+                                Link</span></a>
+                    </div>
+                    <br>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" translate>Copy Embed Link</label>
+                    <textarea class="text-color" id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false"
+                        #iframeUrlInput></textarea>
+                    <div style="padding-top: 10px;">
+                        <button class="button_blue bgcolor-unset" id="right"
+                            (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate><span
+                                class="btn btn-primary transition txt_pd-top3">Copy Embed
+                                Link</span></button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a data-dismiss="modal" class="btn Btn-Gray" id="right" translate>Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+<app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
 
-                            <div class="portlet-input input-inline input-small" style="width: 198px !important;">
-                                <div class="input-icon right" style="position: relative;right: -5px;">
-                                    <input type="text" autocomplete="off" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a page" (keypress)="eventHandler($event.keyCode)">
-                                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchLandingPages();"></button>
-                                    <button type="submit" class="search-box-item-click" (click)="searchLandingPages()"><i class="fa fa-search" aria-hidden="true"></i></button>
-                                </div>
+
+<!--Header-->
+<ng-template #manageLandingPagesHeaderOptions>
+    <div class="portlet-title" style="border-bottom:none !important;">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-6" style="padding-left: 11px;">
+                <div>
+                    <ul class="mix-filter" style="margin-top: 2px;"
+                        *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView && !authenticationService?.module?.isMarketingCompany">
+                        <li class="filter" (click)="showAllLandingPages('All',0)"
+                            [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All
+                        </li>
+                        <ng-container *ngIf="!isPartnerLandingPage">
+                            <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)"
+                                [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular (Public)</li>
+                            <li class="filter" (click)="showAllLandingPages('Regular&PRIVATE',2)"
+                                [class.landing-page-selected]="2 == selectedLandingPageTypeIndex">Regular (Private)</li>
+                            <li class="filter" (click)="showAllLandingPages('Co-Branded&PUBLIC',3)"
+                                [class.landing-page-selected]="3 == selectedLandingPageTypeIndex">Co-Branded (Public)
+                            </li>
+                            <li class="filter" (click)="showAllLandingPages('Co-Branded&PRIVATE',4)"
+                                [class.landing-page-selected]="4 == selectedLandingPageTypeIndex">Co-Branded (Private)
+                            </li>
+                        </ng-container>
+                        <ng-container *ngIf="isPartnerLandingPage">
+                            <li class="filter" (click)="showAllLandingPages('PUBLIC',5)"
+                                [class.landing-page-selected]="5 == selectedLandingPageTypeIndex">Public</li>
+                            <li class="filter" (click)="showAllLandingPages('PRIVATE',6)"
+                                [class.landing-page-selected]="6 == selectedLandingPageTypeIndex">Private</li>
+                        </ng-container>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="page-toolbar col-xs-12 col-sm-12 col-md-7 col-lg-6"
+                *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView"
+                style="padding-right: 22px;padding-left: 5px;">
+                <div class="btn-group pull-right" style="display: flex;">
+                    <div class="">
+                        <div class="group-dropdown">
+                            <button
+                                [ngClass]="modulesDisplayType?.isListView ? 'fa fa-th-list btn btn-xs l-g-view' : modulesDisplayType?.isGridView ?'fa fa-th-large btn btn-xs l-g-view':
+                                    modulesDisplayType?.isFolderListView? 'fa fa-th btn btn-xs l-g-view': modulesDisplayType?.isFolderGridView?'fa fa-folder btn btn-xs l-g-view':'fa fa-th-list btn btn-xs l-g-view'"
+                                style="padding:10px !important">
+                            </button>
+                            <div class="group-dd-content">
+                                <ng-container class='m10'>
+                                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
+                                        data-placement="bottom" title="List View"
+                                        [class.disabled]="modulesDisplayType.isListView"
+                                        (click)="!modulesDisplayType.isListView && setViewType('l')">
+                                        <i class="fa fa-th-list p10" aria-hidden="true"></i>
+                                    </span>
+                                    <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip"
+                                        data-placement="bottom" title="Grid View"
+                                        [class.disabled]="modulesDisplayType.isGridView"
+                                        (click)="!modulesDisplayType.isGridView && setViewType('g')">
+                                        <i class="fa fa-th-large p10" aria-hidden="true"></i>
+                                    </span>
+                                    <ng-container *ngIf="!showUpArrowButton && !folderListView">
+                                        <span class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip"
+                                            data-placement="bottom" title="Folder Grid View"
+                                            (click)="setViewType('fg')">
+                                            <i class="fa fa-folder p10" aria-hidden="true"></i>
+                                        </span>
+                                        <span class="btn btn-xs  l-g-view margin-space folder-list-span-custom-width"
+                                            data-toggle="tooltip" data-placement="bottom" title="Folder List View"
+                                            (click)="setViewType('fl')">
+                                            <i class="fa fa-th p10" aria-hidden="true"></i>
+                                        </span>
+                                    </ng-container>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <span *ngIf="showUpArrowButton" class="btn btn-xs  l-g-view margin-space" data-toggle="tooltip"
+                        data-placement="bottom" title="Go back" (click)="setViewType('fg')">
+                        <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+                    </span>
+                    <div class="inputs" id="right" style="display: inline-flex;max-width: 369px;">
+                        <div *ngIf="!isPartnerLandingPage">
+                            <select class="form-control SeclectBoxPaddingsAbj" [(ngModel)]="sortOption.formsSortOption"
+                                (ngModelChange)="sortBy($event)" id="select-dropdown">
+                                <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
+                                    {{option.name}}</option>
+                            </select>
+                        </div>
+                        <div *ngIf="isPartnerLandingPage">
+                            <select class="form-control SeclectBoxPaddingsAbj"
+                                [(ngModel)]="sortOption.partnerLandingPageSortOption" (ngModelChange)="sortBy($event)"
+                                id="select-dropdown">
+                                <option *ngFor="let option of sortOption.partnerLandingPageSortOptions"
+                                    [ngValue]="option">{{option.name}}</option>
+                            </select>
+                        </div>
+
+                        <div class="portlet-input input-inline input-small" style="width: 198px !important;">
+                            <div class="input-icon right" style="position: relative;right: -5px;">
+                                <input type="text" autocomplete="off" id="sort-text" class="form-control"
+                                    [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
+                                    placeholder="Search for a page" (keypress)="eventHandler($event.keyCode)">
+                                <button class="glyphicon glyphicon-remove search-box-item-clear"
+                                    *ngIf="sortOption.searchKey"
+                                    (click)="sortOption.searchKey='';searchLandingPages();"></button>
+                                <button type="submit" class="search-box-item-click" (click)="searchLandingPages()"><i
+                                        class="fa fa-search" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </ng-template>
-    <!--End Of Header-->
+    </div>
+</ng-template>
+<!--End Of Header-->
 
-    <!--Icons-->
-    <!--Copy-->
-    <ng-template #copyIcon let-landingPage="landingPage">
-        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copy(landingPage)">
-            <i class="fa fa-files-o"  [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"  aria-hidden="true"></i>
+<!--Icons-->
+<!--Copy-->
+<ng-template #copyIcon let-landingPage="landingPage">
+    <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage" data-toggle="tooltip" data-placement="top"
+        title="Copy" (click)="copy(landingPage)">
+        <i class="fa fa-files-o" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
+            aria-hidden="true"></i>
         <div class="clickicons"></div>
-        </a>
-    </ng-template>
-    <!--Edit-->
-    <ng-template #editIcon let-landingPage="landingPage">
-        <a class="mMobileDisable Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)" data-toggle="tooltip" data-placement="top" title="Edit"
-        (click)="editLandingPage(landingPage.id)">
-            <i class="fa fa-pencil-square-o mDisableColor"  [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"  aria-hidden="true"></i>
+    </a>
+</ng-template>
+<!--Edit-->
+<ng-template #editIcon let-landingPage="landingPage">
+    <a class="mMobileDisable Iconhover custom-grid-icon"
+        *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)"
+        data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">
+        <i class="fa fa-pencil-square-o mDisableColor" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
+            aria-hidden="true"></i>
         <div class="clickicons"></div>
-        </a>
-    </ng-template>
-    <!--Preview-->
-    <ng-template #previewIcon let-landingPage="landingPage">
-        <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(landingPage)">
-            <i class="fa fa-eye"  [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" aria-hidden="true"></i>
+    </a>
+</ng-template>
+<!--Preview-->
+<ng-template #previewIcon let-landingPage="landingPage">
+    <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top" title="Preview"
+        (click)="showPreview(landingPage)">
+        <i class="fa fa-eye" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" aria-hidden="true"></i>
+        <div class="clickicons"></div>
+    </a>
+</ng-template>
+<!--Copy/Embed Link-->
+<ng-template #copyOrEmbedLinkIcon let-landingPage="landingPage">
+    <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
+        <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link"
+            (click)="showPageLinkPopup(landingPage)">
+            <i class="fa fa-clipboard" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
+                aria-hidden="true"></i>
             <div class="clickicons"></div>
         </a>
-    </ng-template>
-    <!--Copy/Embed Link-->
-    <ng-template #copyOrEmbedLinkIcon let-landingPage="landingPage">
-        <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
-            <a class="Iconhover custom-grid-icon" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showPageLinkPopup(landingPage)">
-                <i class="fa fa-clipboard" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" aria-hidden="true"></i>
-                <div class="clickicons"></div>
-            </a>
-        </ng-container>
-    </ng-template>
+    </ng-container>
+</ng-template>
 
-    <!--Forms Count-->
-    <ng-template #formIcon let-landingPage="landingPage">
-        <ng-container *ngIf="landingPage.formsCount>0 && !(isPartnerLandingPage && landingPage.type=='PRIVATE')">
-            <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage" data-rel="fancybox-button" (click)="goToFormAnalytics(landingPage.id)"
-                data-toggle="tooltip" data-placement="top" title="Form Count">
-                <i class="fa fa-wpforms" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"s aria-hidden="true"></i>
-                <div class="clickicons"></div>
-            </a>
-            <a class="Iconhover custom-grid-icon" *ngIf="isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)"
-                data-toggle="tooltip" data-placement="top" title="Form Count">
-                <i class="fa fa-wpforms" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" aria-hidden="true"></i>
-                <div class="clickicons"></div>
-            </a>
-            <span class="badge" id="notification-list">{{landingPage.formsCount}}</span>
-        </ng-container>
-    </ng-template>
+<!--Forms Count-->
+<ng-template #formIcon let-landingPage="landingPage">
+    <ng-container *ngIf="landingPage.formsCount>0 && !(isPartnerLandingPage && landingPage.type=='PRIVATE')">
+        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage" data-rel="fancybox-button"
+            (click)="goToFormAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Form Count">
+            <i class="fa fa-wpforms" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" s
+                aria-hidden="true"></i>
+            <div class="clickicons"></div>
+        </a>
+        <a class="Iconhover custom-grid-icon" *ngIf="isPartnerLandingPage" data-rel="fancybox-button"
+            (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top"
+            title="Form Count">
+            <i class="fa fa-wpforms" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
+                aria-hidden="true"></i>
+            <div class="clickicons"></div>
+        </a>
+        <span class="badge" id="notification-list">{{landingPage.formsCount}}</span>
+    </ng-container>
+</ng-template>
 
-    <!--Analytics-->
-    <ng-template #analyticsIcon let-landingPage="landingPage">
-        <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
-            <a class="Iconhover custom-grid-icon" *ngIf="landingPage.analyticsCount<=0" data-rel="fancybox-button" id="cursor-not-allowed" data-toggle="tooltip"
-                data-placement="top" title="Analytics">
-                <i class="fa fa-line-chart" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" aria-hidden="true"></i>
-                <div class="clickicons"></div>
-            </a>
-            <a class="Iconhover custom-grid-icon" *ngIf="landingPage.analyticsCount>0 && !isPartnerLandingPage"
-                data-rel="fancybox-button"
-                (click)="goToLandingPageAnalytics(landingPage.id)" data-toggle="tooltip"
-                data-placement="top" title="Analytics">
-                <i class="fa fa-line-chart" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" aria-hidden="true"></i>
-                <div class="clickicons"></div>
-            </a>
-            <a class="Iconhover custom-grid-icon" *ngIf="landingPage.analyticsCount>0 && isPartnerLandingPage"
-                data-rel="fancybox-button"
-                (click)="goToPartnerLandingPageAnalytics(landingPage.alias)"
-                data-toggle="tooltip" data-placement="top" title="Analytics">
-                <i class="fa fa-line-chart" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}" aria-hidden="true"></i>
-                <div class="clickicons"></div>
-            </a>
-            <span class="badge" id="notification-list">{{landingPage.analyticsCount}}</span>
-        </ng-container>
-    </ng-template>
+<!--Analytics-->
+<ng-template #analyticsIcon let-landingPage="landingPage">
+    <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
+        <a class="Iconhover custom-grid-icon" *ngIf="landingPage.analyticsCount<=0" data-rel="fancybox-button"
+            id="cursor-not-allowed" data-toggle="tooltip" data-placement="top" title="Analytics">
+            <i class="fa fa-line-chart" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
+                aria-hidden="true"></i>
+            <div class="clickicons"></div>
+        </a>
+        <a class="Iconhover custom-grid-icon" *ngIf="landingPage.analyticsCount>0 && !isPartnerLandingPage"
+            data-rel="fancybox-button" (click)="goToLandingPageAnalytics(landingPage.id)" data-toggle="tooltip"
+            data-placement="top" title="Analytics">
+            <i class="fa fa-line-chart" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
+                aria-hidden="true"></i>
+            <div class="clickicons"></div>
+        </a>
+        <a class="Iconhover custom-grid-icon" *ngIf="landingPage.analyticsCount>0 && isPartnerLandingPage"
+            data-rel="fancybox-button" (click)="goToPartnerLandingPageAnalytics(landingPage.alias)"
+            data-toggle="tooltip" data-placement="top" title="Analytics">
+            <i class="fa fa-line-chart" [ngClass]="{'IconCustomization': modulesDisplayType?.isListView}"
+                aria-hidden="true"></i>
+            <div class="clickicons"></div>
+        </a>
+        <span class="badge" id="notification-list">{{landingPage.analyticsCount}}</span>
+    </ng-container>
+</ng-template>
 
-    <!--Delete---->
-    <ng-template #deleteIcon let-landingPage="landingPage">
-        <a class="Iconhover custom-grid-icon" *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)"
+<!--Delete---->
+<ng-template #deleteIcon let-landingPage="landingPage">
+    <a class="Iconhover custom-grid-icon"
+        *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)"
         data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(landingPage)">
-            <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
+        <i class="fa fa-trash-o trashIconCustomization" aria-hidden="true"></i>
         <div class="del-icon"></div>
     </a>
-    </ng-template>
-    <!--XNFR-432-->
-    <app-copy-modal-popup #copyModalPopupComponent (copyModalPopupOutputEmitter)="copyModalPopupOutputReceiver($event)"></app-copy-modal-popup>
-    <app-scroll-top></app-scroll-top>
+</ng-template>
+<!--XNFR-432-->
+<app-copy-modal-popup #copyModalPopupComponent
+    (copyModalPopupOutputEmitter)="copyModalPopupOutputReceiver($event)"></app-copy-modal-popup>
+<app-scroll-top></app-scroll-top>
