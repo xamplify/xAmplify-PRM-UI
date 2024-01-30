@@ -57,7 +57,7 @@
                         <i class="fa fa-times" aria-hidden="true"></i>
                      </a>
                   </div>
-                  <div *ngIf="showEditPdfButton"  class="btn-group" id="right" style="display: none;">
+                  <div *ngIf="showEditPdfButton"  class="btn-group" id="right">
                      <button class="btn btn-primary transition" type="button" (click)="editPdf()">Edit PDF</button>
                   </div>
                   
@@ -541,6 +541,11 @@
          <div class="tile remove_shadow_bgcolor" style="border-radius: 5px;">
             <div class="page-bar bar-border-bottom">
                <ul class="page-breadcrumb">
+                  <li>
+                     <i class="fa fa-home" aria-hidden="true"></i> <a [routerLink]="referenceService.homeRouter"
+                        translate>Home</a>
+                     <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  </li>
                   <li>
                      <span>Update PDF</span>
                   </li>
