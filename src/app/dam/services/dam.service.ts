@@ -102,6 +102,9 @@ export class DamService {
     return this.utilPostSaveOrUpdateMethod("updatePublishedAsset", damPostDto);
   }
 
+  updatePDFData(damPostDto: DamPostDto){
+    return this.utilPostSaveOrUpdateMethod("updatePDFData", damPostDto);
+  }
   
 
 
