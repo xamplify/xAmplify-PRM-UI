@@ -195,7 +195,7 @@
                   <div *ngIf="lead?.canRegisterDeal">
                     <button class="button_blue bgcolor-unset"
                       [disabled]="(  ((lead?.leadApprovalStatusType == 'REJECTED') || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection)))"
-                      (click)="showDealRegistrationForm(lead)" translate>
+                      (click)="registerDeal(lead)" translate>
                       <span class="btn btn-primary transition d-inline"> Register Deal</span>
                     </button>
                   </div>
