@@ -1,5 +1,5 @@
 <ngx-loading [show]="formLoader || loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="page-content">
+<div *ngIf="!isBeeTemplateComponentCalled" class="page-content">
    <ng-container *ngIf="initLoader">
       <app-modal-popup-loader></app-modal-popup-loader>
    </ng-container>
@@ -29,16 +29,15 @@
                <div class="col-sm-6 col-md-4 col-lg-6 text-right" style="padding-right: 5px;">
                   <div class="cf-padding-dam">
                      <div style="margin-top: -1px;">
-                        <a class="close-circle" (click)="closeCircle()" data-toggle="tooltip" data-placement="bottom"
-                           title="Close">
+                        <a class="close-circle" (click)="closeCircle()" data-toggle="tooltip" data-placement="bottom" title="Close">
                            <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
                      </div>
                      <div>
                         <button class="button_blue bgcolor-unset" style="margin-right: 4px;padding-top:1px;"
-                           (click)="openCreateFolderPopup()" translate><span
-                              class="btn btn-primary transition asset_cf_padding">Create a
-                              Folder</span></button>
+                           (click)="openCreateFolderPopup()" translate>
+                           <span class="btn btn-primary transition asset_cf_padding">Create a Folder</span>
+                        </button>
                      </div>
                   </div>
                </div>
@@ -58,12 +57,15 @@
                         <i class="fa fa-times" aria-hidden="true"></i>
                      </a>
                   </div>
+                  <div *ngIf="showEditPdfButton"  class="btn-group" id="right" style="display: none;">
+                     <button class="btn btn-primary transition" type="button" (click)="editPdf()">Edit PDF</button>
+                  </div>
+                  
                </div>
                <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
                </app-response-message>
                <app-modal-popup-loader [hidden]="!formLoader"></app-modal-popup-loader>
                <ng-container *ngIf="!previewItems">
-                  <!-- style="margin-top: 20px;" -->
                   <div [hidden]="formLoader" class="row">
                      <div class="form-horizontal form-bordered form-label-stripped">
                         <div class="portlet box">
@@ -139,7 +141,7 @@
                                        </div>
                                        <!-- end here -->
                                        <!---Upload Asset-->
-                                       <div>
+                                       <div *ngIf="!isBeeTemplatePdf">
                                           <span [style.color]="invalidAssetName ? 'red':''"><strong>
                                              {{uploadOrReplaceAssetText}}<span *ngIf="isAdd" class="required">*</span></strong>
                                           </span>
@@ -530,6 +532,31 @@
       </div>
    </ng-container>
 </div>
+
+
+<!--XNFR-427-->
+<div class="page-content" *ngIf="isBeeTemplateComponentCalled">
+   <div class="row">
+      <div class="col-xs-12">
+         <div class="tile remove_shadow_bgcolor" style="border-radius: 5px;">
+            <div class="page-bar bar-border-bottom">
+               <ul class="page-breadcrumb">
+                  <li>
+                     <span>Update PDF</span>
+                  </li>
+               </ul>
+               <a class="close-circle xamp-margin-left-icon" (click)="hideBeeContainer()" aria-hidden="true">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+               </a>
+            </div>
+            <app-bee-template-util [beeContainerInput]="beeContainerInput" (notifyParentComponent)="readBeeTemplateData($event)"></app-bee-template-util>
+         </div>
+      </div>
+   </div>
+</div>
+<!--XNFR-427-->
+
+
 <!---Thumbnail Modal Pop Up-->
 <div class="modal right fade" id="thumbnailImageModal" tabindex="-1" role="dialog" aria-labelledby="thumbnailImageModal"
    data-keyboard="false" data-backdrop="static">
