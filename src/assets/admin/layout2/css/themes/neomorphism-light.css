@@ -784,7 +784,7 @@ select {
   border: 1px solid #191b1e !important;
 }
 .integration-cards {
-  border: 1px solid #d0d5db !important;
+  border: 1px solid rgb(1 180 255) !important;
 }
 .xamplify-dropdown-content {
   background-color: #2b3c46 !important;
@@ -843,7 +843,7 @@ span.ui-column-resize {
   border: 1px solid #2f4857 !important;
 }
 .imageClass {
-  border: 1px solid #d0d5db !important;
+  border: 1px solid #c6c7c9 !important;
   background-color: #d0d5db  !important;
   /* box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important; */
   margin-left: 6px;
@@ -3322,7 +3322,7 @@ input.field-border-customization {
   border-radius: 10px;
 }
 .activeCRM{
-  background: #a7d2ec !important;
+  background: linear-gradient(270deg, rgb(53 58 241) 0%, rgb(1 180 255) 100%) !important;
   box-shadow: -5px 5px 10px #bebebe, 5px -5px 10px #ffffff !important;
   border-radius: 10px;
 }
@@ -4181,4 +4181,12 @@ a button.btn.btn-white {
 color: #fff;
 z-index: 1;
 position: relative;
+}
+/*** Sudha Sri(29-1-2024) ***/
+h6.view-banner.banner-top,
+h5.view-banner.orange-lable-cu1,
+h6.view-banner.Cancelled-tag-cu,
+h6.view-banner.banner-top.bgc-green,
+h6.view-banner.banner-top.white-labeled-cu1 {
+  margin-left: 5px !important;
 }
