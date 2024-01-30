@@ -1,3 +1,4 @@
-.highlightRow {
+.highlightRow,
+.highlightRow:hover {
     background-color: #dde1f9;
 }
