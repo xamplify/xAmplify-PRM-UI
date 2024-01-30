@@ -70,7 +70,7 @@ export class ConnectwiseAuthenticationComponent implements OnInit {
       );
   }
 
-  validateModelForm() {
+  validateModelForm(actionType: any) {
     let valid = true;
     let errorMessage = "";
     if (this.companyId == undefined || this.companyId == null || this.companyId.trim().length <= 0) {
@@ -90,11 +90,47 @@ export class ConnectwiseAuthenticationComponent implements OnInit {
 
     if (valid) {
       this.customResponse.isVisible = false;
-      this.saveAuthCredentials()
+      if (actionType === 'save') {
+        this.saveAuthCredentials();
+      } else if (actionType === 'test') {
+        this.testAuthCredentials();
+      }
+      
     } else {
       this.customResponse = new CustomResponse('ERROR', errorMessage, true);
     }
 
+  }
+
+  testAuthCredentials() {
+    this.loading = true;
+    let requestObj = {
+      userId: this.loggedInUserId,
+      instanceUrl: this.instanceUrl.trim(),
+      publicKey: this.publicKey.trim(),
+      privateKey: this.privateKey.trim(),
+      externalOrganizationId: this.companyId.trim()
+    }
+
+    this.dashBoardService.testAuthCredentialsForConnectWise(requestObj)
+      .subscribe(
+        response => {
+          this.loading = false;
+          if (response.statusCode == 200) {
+            this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+          } else if (response.statusCode == 403) {
+            this.customResponse = new CustomResponse('INFO', response.message, true);
+          } else {
+            this.customResponse = new CustomResponse('ERROR', response.message, true);
+          }
+        },
+        error => {
+          this.loading = false;
+          let errorMessage = this.referenceService.getApiErrorMessage(error);
+          this.customResponse = new CustomResponse('ERROR', errorMessage, true);
+        },
+        () => { }
+      );
   }
 
   saveAuthCredentials() {
