@@ -86,8 +86,6 @@ export class ConnectwiseAuthenticationComponent implements OnInit {
       valid = false;
       errorMessage = "Please provide Private Key";
     }
-
-
     if (valid) {
       this.customResponse.isVisible = false;
       if (actionType === 'save') {
