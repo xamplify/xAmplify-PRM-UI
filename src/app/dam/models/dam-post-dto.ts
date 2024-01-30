@@ -19,6 +19,6 @@ export class DamPostDto {
 	 partnerGroupSelected = false;
 
 	 /***XNFR-427**/
-	 updatedBy = 0;
+	 loggedInUserId = 0;
 
 }

@@ -250,7 +250,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
            this.damService.ispreviousAssetIsProcessing = true;
         }
         this.damService.uploadAssetInProgress = false;
-		
+        this.referenceService.closeSweetAlert();
 	}
 
 	getAssetDetailsById(selectedAssetId: number) {
@@ -1369,7 +1369,6 @@ zoomOut() {
                 if (result.statusCode === 200) {
                     let dam = result.data;
                     this.beeContainerInput["jsonBody"] = dam.jsonBody;
-                    this.beeContainerInput["vendorCompanyLogoPath"] = dam.companyLogoPath;
                     this.isBeeTemplateComponentCalled = true;
                     this.loading = false;
                 }else{
@@ -1389,14 +1388,16 @@ zoomOut() {
         damPostDto.jsonBody = event.jsonContent;
         damPostDto.htmlBody = event.htmlContent;
         damPostDto.id = this.id;
-        damPostDto.updatedBy = this.authenticationService.getUserId();
+        damPostDto.loggedInUserId = this.authenticationService.getUserId();
         this.damService.updatePDFData(damPostDto).subscribe(
              response=>{
-                
+                this.loading = false;
+                this.referenceService.showSweetAlertSuccessMessage("PDF updated successfully");
              },error=>{
                 this.xtremandLogger.log(error);
+				let errorMessage = this.referenceService.getBadRequestErrorMessage(error);
+                this.referenceService.showSweetAlertErrorMessage(errorMessage);
                 this.loading = false;
-                this.referenceService.showSweetAlertServerErrorMessage();
              });
       }
    
