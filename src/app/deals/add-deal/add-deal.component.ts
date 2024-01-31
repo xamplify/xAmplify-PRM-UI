@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -19,7 +19,7 @@ import { DealAnswer } from 'app/deal-registration/models/deal-answers';
 import { User } from 'app/core/models/user';
 import { SfDealComponent } from 'app/deal-registration/sf-deal/sf-deal.component';
 import { SfCustomFieldsDataDTO } from 'app/deal-registration/models/sfcustomfieldsdata';
-import {Properties} from 'app/common/models/properties';
+import { Properties } from 'app/common/models/properties';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { IntegrationService } from 'app/core/services/integration.service';
@@ -35,7 +35,7 @@ declare var flatpickr: any, $: any, swal: any;
   selector: 'app-add-deal',
   templateUrl: './add-deal.component.html',
   styleUrls: ['./add-deal.component.css'],
-  providers: [HttpRequestLoader, LeadsService,Properties],
+  providers: [HttpRequestLoader, LeadsService, Properties],
 })
 export class AddDealComponent implements OnInit {
 
@@ -93,28 +93,34 @@ export class AddDealComponent implements OnInit {
   pipelineStageId: string;
   pipelineStageIdError: boolean = true;
   isDealRegistrationFormValid: boolean = true;
-  vanityLoginDto : VanityLoginDto = new VanityLoginDto();
+  vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   property: DealDynamicProperties = new DealDynamicProperties();
   ownDeal: boolean = false;
   showCommentActions: boolean = false;
-  
+
   @ViewChild(SfDealComponent)
   sfDealComponent: SfDealComponent;
   activeCRMDetails: any;
   isCollapsed: boolean;
   isCollapsed1: boolean;
   isCollapsed2: boolean;
-  
-  constructor(private logger: XtremandLogger, public messageProperties: Properties,public authenticationService: AuthenticationService, private dealsService: DealsService,
+
+  showLeadForm: boolean = false;
+  dealToLead: any;
+  showSelectLeadModel: boolean;
+  showAttachLeadButton: boolean = true;
+  attachLeadText: string = "Attach a Lead";
+
+  constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService,
     public utilService: UtilService, private leadsService: LeadsService, public userService: UserService, private integrationService: IntegrationService) {
-      this.loggedInUserId = this.authenticationService.getUserId();
-      if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
-        this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
-        this.vanityLoginDto.userId = this.loggedInUserId;
-        this.vanityLoginDto.vanityUrlFilter = true;
-        
-      }
+    this.loggedInUserId = this.authenticationService.getUserId();
+    if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
+      this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityLoginDto.userId = this.loggedInUserId;
+      this.vanityLoginDto.vanityUrlFilter = true;
+
+    }
   }
 
   ngOnInit() {
@@ -126,16 +132,17 @@ export class AddDealComponent implements OnInit {
       this.showCommentActions = true;
       this.dealFormTitle = "Add a Deal";
       if (this.leadId > 0) {
-        this.getLead(this.leadId);        
+        this.getLead(this.leadId);
       } else {
         if (this.vanityLoginDto.vanityUrlFilter) {
           this.setCreatedForCompanyId();
         } else {
-  
+
         }
       }
     } else if (this.actionType === "view") {
       this.preview = true;
+      this.showAttachLeadButton = false;
       this.dealFormTitle = "Deal Details";
       if (this.dealId > 0) {
         this.getDeal(this.dealId);
@@ -152,21 +159,21 @@ export class AddDealComponent implements OnInit {
 
   setCreatedForCompanyId() {
     this.leadsService.getCompanyIdByCompanyProfileName(this.vanityLoginDto.vendorCompanyProfileName, this.loggedInUserId)
-    .subscribe(
-      data => {
-        this.referenceService.loading(this.httpRequestLoader, false);
-        if (data.statusCode == 200) {
-          this.deal.createdForCompanyId = data.data;
-          //this.isSalesForceEnabled();
-          this.getActiveCRMDetails();
-        }
-      },
-      error => {
-        this.httpRequestLoader.isServerError = true;
-      },
-      () => { }
-    );
-    }
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          if (data.statusCode == 200) {
+            this.deal.createdForCompanyId = data.data;
+            //this.isSalesForceEnabled();
+            this.getActiveCRMDetails();
+          }
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
 
   getQuestions() {
     this.userService.listFormByCompanyId(this.deal.createdForCompanyId).subscribe(questions => {
@@ -208,51 +215,23 @@ export class AddDealComponent implements OnInit {
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
             self.lead = data.data;
-            self.showContactInfo = true;
-            self.contact.firstName = self.lead.firstName;
-            self.contact.lastName = self.lead.lastName;
-            self.contact.emailId = self.lead.email;
-            self.deal.associatedLeadId = self.lead.id;
-            self.deal.createdForCompanyId = self.lead.createdForCompanyId;
-            self.createdForCompanyIdError = false;
-            self.deal.associatedUserId = self.lead.associatedUserId;
-            if (self.lead.campaignId != null && self.lead.campaignId > 0) {
-              self.deal.campaignId = self.lead.campaignId;
-              self.deal.campaignName = self.lead.campaignName;
-             // this.getCampaignDealPipeline();
-            } else {
-              //self.getPipelines();
-            }
-            //this.isSalesForceEnabled();         
-            this.getActiveCRMDetails();
-          }
-        },
-        error => {
-          this.httpRequestLoader.isServerError = true;
-        },
-        () => {}
-      );
-  }
-
-  getCampaignDealPipeline() {
-    let self = this;    
-    if (this.deal.campaignId > 0) {
-      this.dealsService.getCampaignDealPipeline(this.deal.campaignId, this.loggedInUserId)
-      .subscribe(
-        data => {
-          this.referenceService.loading(this.httpRequestLoader, false);
-          if (data.statusCode == 200) {
-            let campaignDealPipeline = data.data;
-            self.pipelines.push(campaignDealPipeline);
-            self.deal.pipelineId = campaignDealPipeline.id;
-            self.pipelineIdError = false;
-            self.stages = campaignDealPipeline.stages;
-            self.hasCampaignPipeline = true;
-          } else if (data.statusCode == 404) {
-            self.deal.pipelineId = 0;
-            self.stages = [];
-            self.getActiveCRMPipelines();
-            self.hasCampaignPipeline = false;
+              self.showContactInfo = true;
+              self.contact.firstName = self.lead.firstName;
+              self.contact.lastName = self.lead.lastName;
+              self.contact.emailId = self.lead.email;
+              self.deal.associatedLeadId = self.lead.id;
+              self.deal.createdForCompanyId = self.lead.createdForCompanyId;
+              self.createdForCompanyIdError = false;
+              self.deal.associatedUserId = self.lead.associatedUserId;
+              if (self.lead.campaignId != null && self.lead.campaignId > 0) {
+                self.deal.campaignId = self.lead.campaignId;
+                self.deal.campaignName = self.lead.campaignName;
+                // this.getCampaignDealPipeline();
+              } else {
+                //self.getPipelines();
+              }
+              //this.isSalesForceEnabled();         
+              this.getActiveCRMDetails();
           }
         },
         error => {
@@ -260,6 +239,34 @@ export class AddDealComponent implements OnInit {
         },
         () => { }
       );
+  }
+
+  getCampaignDealPipeline() {
+    let self = this;
+    if (this.deal.campaignId > 0) {
+      this.dealsService.getCampaignDealPipeline(this.deal.campaignId, this.loggedInUserId)
+        .subscribe(
+          data => {
+            this.referenceService.loading(this.httpRequestLoader, false);
+            if (data.statusCode == 200) {
+              let campaignDealPipeline = data.data;
+              self.pipelines.push(campaignDealPipeline);
+              self.deal.pipelineId = campaignDealPipeline.id;
+              self.pipelineIdError = false;
+              self.stages = campaignDealPipeline.stages;
+              self.hasCampaignPipeline = true;
+            } else if (data.statusCode == 404) {
+              self.deal.pipelineId = 0;
+              self.stages = [];
+              self.getActiveCRMPipelines();
+              self.hasCampaignPipeline = false;
+            }
+          },
+          error => {
+            this.httpRequestLoader.isServerError = true;
+          },
+          () => { }
+        );
     }
   }
 
@@ -271,27 +278,28 @@ export class AddDealComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           this.referenceService.goToTop();
           if (data.statusCode == 200) {
-            self.deal = data.data; 
+            self.deal = data.data;
             if (self.deal.createdForCompanyId === self.deal.createdByCompanyId) {
               self.ownDeal = true;
-            }   
+            }
             if (self.edit && (!self.isVendorVersion || self.ownDeal)) {
               self.showCommentActions = true;
-            }           
-            if (self.deal.associatedContact != undefined) {
-                self.showContactInfo = true;
-                self.contact = self.deal.associatedContact;
             }
-            self.setCloseDate(data); 
+            if (self.deal.associatedContact != undefined) {
+              self.showContactInfo = true;
+              self.showAttachLeadButton = false;
+              self.contact = self.deal.associatedContact;
+            }
+            self.setCloseDate(data);
             if (self.deal.createdForCompanyId > 0) {
               this.getActiveCRMDetails();
-            } 
+            }
           }
         },
         error => {
           this.httpRequestLoader.isServerError = true;
         },
-        () => {}
+        () => { }
       );
   }
 
@@ -368,16 +376,16 @@ export class AddDealComponent implements OnInit {
         response => {
           if (response.statusCode == 200) {
             this.showCustomForm = response.data;
-          } 
+          }
         },
         error => {
           console.log(error);
         },
-        () => {          
+        () => {
           this.setFieldErrorStates();
           if (!this.showCustomForm) {
-            this.showDefaultForm = true; 
-            this.hasSfPipeline = false;                       
+            this.showDefaultForm = true;
+            this.hasSfPipeline = false;
             if (this.edit || this.preview) {
               this.setProperties();
               if (this.deal.campaignId > 0) {
@@ -432,7 +440,7 @@ export class AddDealComponent implements OnInit {
   }
 
   getSalesforcePipeline() {
-    let self = this;    
+    let self = this;
     this.dealsService.getSalesforcePipeline(this.deal.createdForCompanyId, this.loggedInUserId)
       .subscribe(
         data => {
@@ -480,14 +488,14 @@ export class AddDealComponent implements OnInit {
   }
 
   resetStages() {
-    if(!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline){
+    if (!this.preview && !this.hasCampaignPipeline && !this.activeCRMDetails.hasDealPipeline) {
       this.deal.pipelineStageId = 0;
       this.getStages();
       this.pipelineStageId = "form-group has-error has-feedback";
       this.pipelineStageIdError = true;
       this.isDealRegistrationFormValid = false;
     }
-    
+
   }
 
   getStages() {
@@ -556,20 +564,20 @@ export class AddDealComponent implements OnInit {
     }
     this.deal.answers = answers;
     this.deal.properties = obj;
-    
+
     /********XNFR-403***********/
-    if(this.activeCRMDetails.type === "CONNECTWISE"){
+    if (this.activeCRMDetails.type === "CONNECTWISE") {
       let filtertedForecastItems = new Array<any>();
-      $.each(this.sfDealComponent.forecastItems,function(_index:number,
-        forecastItem:any){
-          let id = forecastItem['catalogItem']['id'];
-          if(id!=undefined && id>0){
-            forecastItem['revenue'] = forecastItem['price'];
-            delete forecastItem['price'];
-            filtertedForecastItems.push(forecastItem);
-          }
+      $.each(this.sfDealComponent.forecastItems, function (_index: number,
+        forecastItem: any) {
+        let id = forecastItem['catalogItem']['id'];
+        if (id != undefined && id > 0) {
+          forecastItem['revenue'] = forecastItem['price'];
+          delete forecastItem['price'];
+          filtertedForecastItems.push(forecastItem);
+        }
       });
-      if(filtertedForecastItems.length>0){
+      if (filtertedForecastItems.length > 0) {
         this.deal.forecastItemsJson = JSON.stringify(filtertedForecastItems);
       }
     }
@@ -584,8 +592,8 @@ export class AddDealComponent implements OnInit {
           this.referenceService.loading(this.httpRequestLoader, false);
           this.showLoadingButton = false;
           this.deal.properties.forEach(p => p.isSaved = true);
-          if (data.statusCode == 200) {            
-            this.notifySubmitSuccess.emit(); 
+          if (data.statusCode == 200) {
+            this.notifySubmitSuccess.emit();
           } else if (data.statusCode == 500) {
             this.customResponse = new CustomResponse('ERROR', data.message, true);
           }
@@ -601,31 +609,31 @@ export class AddDealComponent implements OnInit {
       );
   }
 
-  
+
 
   validateQuestion(property: DealDynamicProperties) {
 
-      if (property.key.length > 0 && property.value.length > 0 && property.key.trim() && property.value.trim()) {
-          property.validationStausKey = this.successClass;
-          property.error = false;
-      } else {
-          property.validationStausKey = this.errorClass;
-          property.error = true;
-      }
+    if (property.key.length > 0 && property.value.length > 0 && property.key.trim() && property.value.trim()) {
+      property.validationStausKey = this.successClass;
+      property.error = false;
+    } else {
+      property.validationStausKey = this.errorClass;
+      property.error = true;
+    }
 
-      this.submitButtonStatus()
+    this.submitButtonStatus()
   }
 
   validateComment(property: DealDynamicProperties) {
 
-      if (property.key.length > 0 && property.value.length > 0 && property.key.trim() && property.value.trim()) {
-          property.validationStausKey = this.successClass;
-          property.error = false;
-      } else {
-          property.validationStausKey = this.errorClass;
-          property.error = true;
-      }
-      this.submitButtonStatus()
+    if (property.key.length > 0 && property.value.length > 0 && property.key.trim() && property.value.trim()) {
+      property.validationStausKey = this.successClass;
+      property.error = false;
+    } else {
+      property.validationStausKey = this.errorClass;
+      property.error = true;
+    }
+    this.submitButtonStatus()
 
 
   }
@@ -697,7 +705,7 @@ export class AddDealComponent implements OnInit {
           this.pipelineStageId = errorClass;
           this.pipelineStageIdError = true;
         }
-      }      
+      }
       if (fieldId == "pipelineId") {
         if (fieldValue.length > 0 && fieldValue != "0") {
           this.pipelineId = successClass;
@@ -760,321 +768,367 @@ export class AddDealComponent implements OnInit {
     }
   }
 
-  setFieldErrorStates() {  
-    /****************close Date *******************/  
+  setFieldErrorStates() {
+    /****************close Date *******************/
     if (this.deal.closeDateString != null && this.deal.closeDateString.length > 0)
-        this.estimatedCloseDateError = false
+      this.estimatedCloseDateError = false
     else
-        this.estimatedCloseDateError = true;
-    /**************** Title *******************/ 
+      this.estimatedCloseDateError = true;
+    /**************** Title *******************/
     if (this.deal.title != null && this.deal.title.length > 0)
-        this.titleError = false
+      this.titleError = false
     else
-        this.titleError = true;
-    /**************** Amount *******************/ 
+      this.titleError = true;
+    /**************** Amount *******************/
     if (this.deal.amount != null
-        && parseFloat(this.deal.amount) > 0)
-        this.opportunityAmountError = false
+      && parseFloat(this.deal.amount) > 0)
+      this.opportunityAmountError = false
     else
-        this.opportunityAmountError = true;
-    /**************** DealType *******************/ 
-      if (this.deal.dealType != null && this.deal.dealType.length > 0
-          && this.deal.dealType != 'Select Dealtype')
-          this.dealTypeError = false
-      else
-          this.dealTypeError = true;
-    /**************** Created For Company *******************/ 
+      this.opportunityAmountError = true;
+    /**************** DealType *******************/
+    if (this.deal.dealType != null && this.deal.dealType.length > 0
+      && this.deal.dealType != 'Select Dealtype')
+      this.dealTypeError = false
+    else
+      this.dealTypeError = true;
+    /**************** Created For Company *******************/
     if (this.deal.createdForCompanyId != null && this.deal.createdForCompanyId > 0)
       this.createdForCompanyIdError = false
     else
       this.createdForCompanyIdError = true;
-    /**************** Pipeline Id *******************/ 
+    /**************** Pipeline Id *******************/
     if (this.deal.pipelineId != null && this.deal.pipelineId > 0)
       this.pipelineIdError = false
     else
       this.pipelineIdError = true;
-    /**************** Pipeline Stage Id *******************/ 
+    /**************** Pipeline Stage Id *******************/
     if (this.deal.pipelineStageId != null && this.deal.pipelineStageId > 0)
       this.pipelineStageIdError = false
     else
       this.pipelineStageIdError = true;
 
     this.propertiesQuestions.forEach(property => {
-        this.validateQuestion(property);
+      this.validateQuestion(property);
 
     })
     this.propertiesComments.forEach(property => {
-        this.validateComment(property);
+      this.validateComment(property);
     })
 
     this.submitButtonStatus();
-}
+  }
 
-setSfFormFieldValues() {
-  if (this.sfDealComponent.form !== undefined || this.sfDealComponent.form !== null) {
+  setSfFormFieldValues() {
+    if (this.sfDealComponent.form !== undefined || this.sfDealComponent.form !== null) {
       let formLabelDTOs = this.sfDealComponent.form.formLabelDTOs;
       if (formLabelDTOs.length !== 0) {
         this.deal.amount = 0;
-          if (this.activeCRMDetails.type === "SALESFORCE") {
-            let sfDefaultFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === false);
-            for (let formLabel of sfDefaultFields) {
-              if (formLabel.labelId === "Name" ) {
-                  this.deal.title = formLabel.value;
-              } else if (formLabel.labelId === "Description") {
-                  this.deal.description = formLabel.value;
-              } else if (formLabel.labelId === "Type") {
-                  this.deal.dealType = formLabel.value;
-              } else if (formLabel.labelId === "LeadSource") {
-                  this.deal.leadSource = formLabel.value;
-              } else if (formLabel.labelId === "Amount" || formLabel.labelId === "amount") {
-                  this.deal.amount = formLabel.value;
-              } else if (formLabel.labelId === "CloseDate") {
-                  this.deal.closeDateString = formLabel.value;
-              } else if (formLabel.labelId === "NextStep") {
-                  this.deal.nextStep = formLabel.value;
-              } else if (formLabel.labelId === "Probability") {
-                  this.deal.probability = formLabel.value;
-              } else if (formLabel.labelId === "StageName") {
-                  this.deal.stage = formLabel.value;
-              }
+        if (this.activeCRMDetails.type === "SALESFORCE") {
+          let sfDefaultFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === false);
+          for (let formLabel of sfDefaultFields) {
+            if (formLabel.labelId === "Name") {
+              this.deal.title = formLabel.value;
+            } else if (formLabel.labelId === "Description") {
+              this.deal.description = formLabel.value;
+            } else if (formLabel.labelId === "Type") {
+              this.deal.dealType = formLabel.value;
+            } else if (formLabel.labelId === "LeadSource") {
+              this.deal.leadSource = formLabel.value;
+            } else if (formLabel.labelId === "Amount" || formLabel.labelId === "amount") {
+              this.deal.amount = formLabel.value;
+            } else if (formLabel.labelId === "CloseDate") {
+              this.deal.closeDateString = formLabel.value;
+            } else if (formLabel.labelId === "NextStep") {
+              this.deal.nextStep = formLabel.value;
+            } else if (formLabel.labelId === "Probability") {
+              this.deal.probability = formLabel.value;
+            } else if (formLabel.labelId === "StageName") {
+              this.deal.stage = formLabel.value;
             }
           }
-          let sfCustomFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === true);
-          let sfCfDataList = [];
-          for (let formLabel of sfCustomFields) {
-            if (this.activeCRMDetails.type === "HUBSPOT") {
-              if (formLabel.formDefaultFieldType === "DEAL_NAME") {
-                this.deal.title = formLabel.value;
-              } else if (formLabel.formDefaultFieldType === "AMOUNT") {
-                this.deal.amount = formLabel.value;
-              } else if (formLabel.formDefaultFieldType === "CLOSE_DATE") {
-                this.deal.closeDateString = formLabel.value;
-              }
-            }
-            if (formLabel.labelId === "title" || formLabel.labelId === "name") {
+        }
+        let sfCustomFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === true);
+        let sfCfDataList = [];
+        for (let formLabel of sfCustomFields) {
+          if (this.activeCRMDetails.type === "HUBSPOT") {
+            if (formLabel.formDefaultFieldType === "DEAL_NAME") {
               this.deal.title = formLabel.value;
-            } else if ((formLabel.labelId === "amount" || formLabel.labelId === "value") && this.activeCRMDetails.type != "HUBSPOT") {
+            } else if (formLabel.formDefaultFieldType === "AMOUNT") {
               this.deal.amount = formLabel.value;
-            } else if (formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate") {
+            } else if (formLabel.formDefaultFieldType === "CLOSE_DATE") {
               this.deal.closeDateString = formLabel.value;
             }
-              let sfCfData = new SfCustomFieldsDataDTO();
-              sfCfData.sfCfLabelId = formLabel.labelId;                    
-              if(formLabel.labelType === 'multiselect'){
-                if (formLabel.value != undefined && formLabel.value.length > 0) {
-                  for (let option of formLabel.value) {
-                    sfCfData.value = sfCfData.value + option.name + ";";
-                  }
-                  sfCfData.value = sfCfData.value.substring(0, sfCfData.value.length - 1);
-                }
-                  
-              }else if(formLabel.labelType === 'datetime'){
-                  sfCfData.value = formLabel.value;
-                  sfCfData.type = formLabel.labelType;
-                  const event = new Date(formLabel.value);
-                  sfCfData.dateTimeIsoValue = event.toISOString();                        
-              }
-              else{
-                  sfCfData.value = formLabel.value;
-              }
-              sfCfDataList.push(sfCfData);
           }
-          this.deal.sfCustomFieldsDataDto = sfCfDataList;
+          if (formLabel.labelId === "title" || formLabel.labelId === "name") {
+            this.deal.title = formLabel.value;
+          } else if ((formLabel.labelId === "amount" || formLabel.labelId === "value") && this.activeCRMDetails.type != "HUBSPOT") {
+            this.deal.amount = formLabel.value;
+          } else if (formLabel.labelId === "expected_close_date" || formLabel.labelId === "expectedCloseDate") {
+            this.deal.closeDateString = formLabel.value;
+          }
+          let sfCfData = new SfCustomFieldsDataDTO();
+          sfCfData.sfCfLabelId = formLabel.labelId;
+          if (formLabel.labelType === 'multiselect') {
+            if (formLabel.value != undefined && formLabel.value.length > 0) {
+              for (let option of formLabel.value) {
+                sfCfData.value = sfCfData.value + option.name + ";";
+              }
+              sfCfData.value = sfCfData.value.substring(0, sfCfData.value.length - 1);
+            }
+
+          } else if (formLabel.labelType === 'datetime') {
+            sfCfData.value = formLabel.value;
+            sfCfData.type = formLabel.labelType;
+            const event = new Date(formLabel.value);
+            sfCfData.dateTimeIsoValue = event.toISOString();
+          }
+          else {
+            sfCfData.value = formLabel.value;
+          }
+          sfCfDataList.push(sfCfData);
+        }
+        this.deal.sfCustomFieldsDataDto = sfCfDataList;
       }
+    }
   }
-}
 
-addProperties() {
-  this.property = new DealDynamicProperties();
-  let length = this.propertiesComments.length;
-  length = length + 1;
-  var id = 'property-' + length;
-  this.property.divId = id;
-  this.property.propType = 'PROPERTY';
-  this.property.isSaved = false;
-  this.property.error = true;
-  this.propertiesComments.push(this.property);
+  addProperties() {
+    this.property = new DealDynamicProperties();
+    let length = this.propertiesComments.length;
+    length = length + 1;
+    var id = 'property-' + length;
+    this.property.divId = id;
+    this.property.propType = 'PROPERTY';
+    this.property.isSaved = false;
+    this.property.error = true;
+    this.propertiesComments.push(this.property);
 
-  this.submitButtonStatus()
+    this.submitButtonStatus()
 
-}
+  }
 
-isEven(n) {
-  if (n % 2 === 0) { return true; }
-  return false;
-}
+  isEven(n) {
+    if (n % 2 === 0) { return true; }
+    return false;
+  }
 
-showAlert(i: number, question: DealDynamicProperties) {
-  if (question.isSaved) {
+  showAlert(i: number, question: DealDynamicProperties) {
+    if (question.isSaved) {
       this.deleteComment(i, question);
 
-  } else {
+    } else {
       this.remove(i, question.id);
+    }
   }
-}
 
-commentsection(property: DealDynamicProperties) {
-  property.isCommentSection = !property.isCommentSection;  
-  property.unReadPropertyChatCount = 0;
-  
-}
+  commentsection(property: DealDynamicProperties) {
+    property.isCommentSection = !property.isCommentSection;
+    property.unReadPropertyChatCount = 0;
 
-deleteComment(i: number, comment: DealDynamicProperties) {
-  try {
+  }
+
+  deleteComment(i: number, comment: DealDynamicProperties) {
+    try {
       this.logger.info("Comment in sweetAlert() " + comment.id);
       let self = this;
       swal({
-          title: 'Are you sure?',
-          text: "You won't be able to undo this action!",
-          type: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#54a7e9',
-          cancelButtonColor: '#999',
-          confirmButtonText: 'Yes, delete it!'
+        title: 'Are you sure?',
+        text: "You won't be able to undo this action!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#54a7e9',
+        cancelButtonColor: '#999',
+        confirmButtonText: 'Yes, delete it!'
 
       }).then(function (myData: any) {
-          console.log("deleteComment showAlert then()" + comment);
-          self.dealsService.deleteProperty(comment).subscribe(response => {
-              self.remove(i, comment.id)
+        console.log("deleteComment showAlert then()" + comment);
+        self.dealsService.deleteProperty(comment).subscribe(response => {
+          self.remove(i, comment.id)
 
-          }, error => this.logger.error(error, "DealComponent", "deleteComment()"))
+        }, error => this.logger.error(error, "DealComponent", "deleteComment()"))
       }, function (dismiss: any) {
-          console.log('you clicked on option' + dismiss);
+        console.log('you clicked on option' + dismiss);
       });
-  } catch (error) {
+    } catch (error) {
       this.logger.error(error, "DealComponent", "deleteCommentAlert()");
+    }
   }
-}
 
-remove(i, id) {
-  if (id)
+  remove(i, id) {
+    if (id)
       console.log(id)
-  var index = 1;
+    var index = 1;
 
-  this.propertiesComments = this.propertiesComments.filter(property => property.divId !== 'property-' + i)
+    this.propertiesComments = this.propertiesComments.filter(property => property.divId !== 'property-' + i)
       .map(property => {
-          property.divId = 'property-' + index++;
-          return property;
+        property.divId = 'property-' + index++;
+        return property;
       });
-  this.submitButtonStatus()
+    this.submitButtonStatus()
 
-}
-
-getActiveCRMDetails() {
-  this.showCustomForm = false;
-  this.integrationService.getActiveCRMDetails(this.deal.createdForCompanyId, this.loggedInUserId)
-    .subscribe(
-      response => {
-        if (response.statusCode == 200) {
-          this.activeCRMDetails = response.data;
-          if (this.activeCRMDetails.activeCRM
-            && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
-              || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type)) {
-            this.showCustomForm = true;
-          }
-        } 
-      },
-      error => {
-        console.log(error);
-      },
-      () => {          
-        this.setFieldErrorStates();
-        if (!this.showCustomForm) {
-          this.showDefaultForm = true; 
-          this.activeCRMDetails.hasDealPipeline = false;                      
-          if (this.edit || this.preview) {
-            this.setProperties();            
-          } else {
-            this.getQuestions();                     
-          }
-          if (this.deal.campaignId > 0) {
-            this.getCampaignDealPipeline();
-          } else {
-            this.getActiveCRMPipelines();
-
-            // if (this.activeCRMDetails.activeCRM 
-            //   && ("MICROSOFT" === this.activeCRMDetails.type || "MARKETO" === this.activeCRMDetails.type)) {
-            //     this.getActiveCRMPipelines();
-            // } else {
-            //   this.getPipelines();
-            // }            
-          }
-          this.getDealTypes();
-        } else { 
-          if (this.deal.campaignId > 0) {
-            this.getCampaignDealPipeline();
-          } else {
-            this.getActiveCRMPipelines();
-          }        
-        }
-        
-      });
-}
-
-getActiveCRMPipelines() {
-  let self = this; 
-  this.isLoading = true;   
-  let type = "XAMPLIFY";
-  if (this.activeCRMDetails != undefined && this.activeCRMDetails.type != undefined) { 
-    type = this.activeCRMDetails.type;
   }
-  this.dealsService.getCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, type)
-    .subscribe(
-      data => {
-        this.referenceService.loading(this.httpRequestLoader, false);
-        this.isLoading = false;
-        if (data.statusCode == 200) {
-          let activeCRMPipelines:Array<any> = data.data;
-          self.pipelines = activeCRMPipelines;
-          if (activeCRMPipelines.length === 1) {
-            let activeCRMPipeline = activeCRMPipelines[0];
-            self.deal.pipelineId = activeCRMPipeline.id;
-            self.pipelineIdError = false;
-            self.stages = activeCRMPipeline.stages;
-            self.activeCRMDetails.hasDealPipeline = true;
-          } else {     
-            let dealPipelineExist = false;
-            for (let p of activeCRMPipelines) {              
-              if (p.id == this.deal.pipelineId) {
-                dealPipelineExist = true;
-                self.stages = p.stages;
-                break;
+
+  getActiveCRMDetails() {
+    this.showCustomForm = false;
+    this.integrationService.getActiveCRMDetails(this.deal.createdForCompanyId, this.loggedInUserId)
+      .subscribe(
+        response => {
+          if (response.statusCode == 200) {
+            this.activeCRMDetails = response.data;
+            if (this.activeCRMDetails.activeCRM
+              && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
+                || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type)) {
+              this.showCustomForm = true;
+            }
+          }
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          this.setFieldErrorStates();
+          if (!this.showCustomForm) {
+            this.showDefaultForm = true;
+            this.activeCRMDetails.hasDealPipeline = false;
+            if (this.edit || this.preview) {
+              this.setProperties();
+            } else {
+              this.getQuestions();
+            }
+            if (this.deal.campaignId > 0) {
+              this.getCampaignDealPipeline();
+            } else {
+              this.getActiveCRMPipelines();
+
+              // if (this.activeCRMDetails.activeCRM 
+              //   && ("MICROSOFT" === this.activeCRMDetails.type || "MARKETO" === this.activeCRMDetails.type)) {
+              //     this.getActiveCRMPipelines();
+              // } else {
+              //   this.getPipelines();
+              // }            
+            }
+            this.getDealTypes();
+          } else {
+            if (this.deal.campaignId > 0) {
+              this.getCampaignDealPipeline();
+            } else {
+              this.getActiveCRMPipelines();
+            }
+          }
+
+        });
+  }
+
+  getActiveCRMPipelines() {
+    let self = this;
+    this.isLoading = true;
+    let type = "XAMPLIFY";
+    if (this.activeCRMDetails != undefined && this.activeCRMDetails.type != undefined) {
+      type = this.activeCRMDetails.type;
+    }
+    this.dealsService.getCRMPipelines(this.deal.createdForCompanyId, this.loggedInUserId, type)
+      .subscribe(
+        data => {
+          this.referenceService.loading(this.httpRequestLoader, false);
+          this.isLoading = false;
+          if (data.statusCode == 200) {
+            let activeCRMPipelines: Array<any> = data.data;
+            self.pipelines = activeCRMPipelines;
+            if (activeCRMPipelines.length === 1) {
+              let activeCRMPipeline = activeCRMPipelines[0];
+              self.deal.pipelineId = activeCRMPipeline.id;
+              self.pipelineIdError = false;
+              self.stages = activeCRMPipeline.stages;
+              self.activeCRMDetails.hasDealPipeline = true;
+            } else {
+              let dealPipelineExist = false;
+              for (let p of activeCRMPipelines) {
+                if (p.id == this.deal.pipelineId) {
+                  dealPipelineExist = true;
+                  self.stages = p.stages;
+                  break;
+                }
               }
+              if (!dealPipelineExist) {
+                self.deal.pipelineId = 0;
+                self.deal.pipelineStageId = 0;
+                this.setFieldErrorStates();
+              }
+              self.activeCRMDetails.hasDealPipeline = false;
             }
-            if (!dealPipelineExist) {
-              self.deal.pipelineId = 0;
-              self.deal.pipelineStageId = 0;
-              this.setFieldErrorStates();
-            }
+          } else if (data.statusCode == 404) {
+            self.deal.pipelineId = 0;
+            self.stages = [];
+            self.getPipelines();
             self.activeCRMDetails.hasDealPipeline = false;
           }
-        } else if (data.statusCode == 404) {
-          self.deal.pipelineId = 0;
-          self.stages = [];
-          self.getPipelines();
-          self.activeCRMDetails.hasDealPipeline = false;
-        }
-      },
-      error => {
-        this.httpRequestLoader.isServerError = true;
-      },
-      () => { }
-    );
-}
+        },
+        error => {
+          this.httpRequestLoader.isServerError = true;
+        },
+        () => { }
+      );
+  }
 
-//
-// isCollapsedcontact:boolean=true;
-toggleCollapsepipepline(event: Event) {
-  event.preventDefault();
-  this.isCollapsed = !this.isCollapsed;
-}
-toggleCollapsecontact(event: Event) {
-  event.preventDefault();
-  this.isCollapsed1 = !this.isCollapsed1;
-}
-toggleCollapsecampaignInfo(event: Event) {
-  event.preventDefault();
-  this.isCollapsed2 = !this.isCollapsed2;
-}
+  //
+  // isCollapsedcontact:boolean=true;
+  toggleCollapsepipepline(event: Event) {
+    event.preventDefault();
+    this.isCollapsed = !this.isCollapsed;
+  }
+  toggleCollapsecontact(event: Event) {
+    event.preventDefault();
+    this.isCollapsed1 = !this.isCollapsed1;
+  }
+  toggleCollapsecampaignInfo(event: Event) {
+    event.preventDefault();
+    this.isCollapsed2 = !this.isCollapsed2;
+  }
+
+  addLead() {
+    this.showLeadForm = true;
+    this.leadId = 0;
+    this.dealToLead = new Object();
+    this.dealToLead.dealId = this.dealId;
+    this.dealToLead.leadActionType = "add";
+    this.dealToLead.dealActionType = this.actionType;
+    this.dealToLead.createdForCompanyId = this.deal.createdForCompanyId;
+    this.dealToLead.callingComponent = "DEAL";
+  }
+
+  closeLeadForm() {
+    this.showLeadForm = false;
+  }
+
+  leadSelected(leadId: any) {
+    this.showSelectLeadModel = false;
+    this.leadId = leadId;
+    this.attachLeadText = "Change Lead";
+    this.getLead(this.leadId);
+  }
+
+  leadCreated(leadId: any) {
+    this.showLeadForm = false;
+    this.leadId = leadId;
+    this.getLead(this.leadId);
+  }
+
+  openSelectLeadModel() {
+    this.showSelectLeadModel = true;
+    this.dealToLead = new Object();
+    this.dealToLead.dealId = this.dealId;
+    this.dealToLead.leadId = this.leadId;
+    this.dealToLead.leadActionType = "add";
+    this.dealToLead.dealActionType = this.actionType;
+    this.dealToLead.createdForCompanyId = this.deal.createdForCompanyId;
+    this.dealToLead.callingComponent = "DEAL";
+    this.dealToLead.isOrgAdmin = this.isOrgAdmin;
+    this.dealToLead.isVendorVersion = this.isVendorVersion;
+  }
+
+
+  closeSelectLeadModel() {
+    this.showSelectLeadModel = false;
+  }
 
 }

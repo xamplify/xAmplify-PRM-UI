@@ -23,6 +23,7 @@ import { CallActionSwitch } from 'app/videos/models/call-action-switch';
 import { Dimensions, ImageTransform } from 'app/common/image-cropper-v2/interfaces';
 import { base64ToFile } from 'app/common/image-cropper-v2/utils/blob.utils';
 import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
+import { DamPostDto } from '../models/dam-post-dto';
 
 
 
@@ -139,6 +140,10 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
     assetPublishEmailNotificationLoader = true;
     isAssetPublished = false;
     uploadOrReplaceAssetText = "Upload Asset";
+    isBeeTemplatePdf = false;
+    showEditPdfButton = false;
+    beeContainerInput = {};
+    isBeeTemplateComponentCalled = false;
 	constructor(private utilService: UtilService, private route: ActivatedRoute, private damService: DamService, public authenticationService: AuthenticationService,
 	public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties, public userService: UserService,
 	public videoFileService: VideoFileService,  public deviceService: Ng2DeviceService, public sanitizer: DomSanitizer,public callActionSwitch:CallActionSwitch){
@@ -245,7 +250,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
            this.damService.ispreviousAssetIsProcessing = true;
         }
         this.damService.uploadAssetInProgress = false;
-		
+        this.referenceService.closeSweetAlert();
 	}
 
 	getAssetDetailsById(selectedAssetId: number) {
@@ -259,7 +264,10 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
 						if(this.damUploadPostDto.tagIds == undefined){
 							this.damUploadPostDto.tagIds = new Array<number>();
 						}
-                        this.isAssetPublished = result.data.published;
+                        let data = result.data;
+                        this.isAssetPublished = data.published;
+                        this.isBeeTemplatePdf = data.beeTemplate;
+                        this.showEditPdfButton = !this.isAssetPublished && this.isBeeTemplatePdf;
 						this.validateForm('assetName');
 						this.validateForm('description');
 						this.formLoader = false;
@@ -1349,5 +1357,52 @@ zoomOut() {
                               this.errorUploadCropper = true;
                               this.showCropper = false;
                             }
-                          }                    
+                          }  
+                          
+                          
+    /*********XNFR-427********/
+    editPdf(){
+        this.loading = true;
+        this.beeContainerInput["module"] = "dam";
+        this.damService.getById(this.id, false).subscribe(
+            result=>{
+                if (result.statusCode === 200) {
+                    let dam = result.data;
+                    this.beeContainerInput["jsonBody"] = dam.jsonBody;
+                    this.isBeeTemplateComponentCalled = true;
+                    this.loading = false;
+                }else{
+                    this.referenceService.showSweetAlertErrorMessage("Page Not Found.Please Contact Admin");
+                }
+            },error=>{
+                this.xtremandLogger.log(error);
+                this.loading = false;
+                this.referenceService.showSweetAlertServerErrorMessage();
+            });
+    }  
+    
+    readBeeTemplateData(event: any) {
+        this.loading = true;
+        this.isBeeTemplateComponentCalled = false;
+        let damPostDto = new DamPostDto();
+        damPostDto.jsonBody = event.jsonContent;
+        damPostDto.htmlBody = event.htmlContent;
+        damPostDto.id = this.id;
+        damPostDto.loggedInUserId = this.authenticationService.getUserId();
+        this.damService.updatePDFData(damPostDto).subscribe(
+             response=>{
+                this.loading = false;
+                this.referenceService.showSweetAlertSuccessMessage("PDF updated successfully");
+             },error=>{
+                this.xtremandLogger.log(error);
+				let errorMessage = this.referenceService.getBadRequestErrorMessage(error);
+                this.referenceService.showSweetAlertErrorMessage(errorMessage);
+                this.loading = false;
+             });
+      }
+   
+    hideBeeContainer(){
+        this.beeContainerInput = {};
+        this.isBeeTemplateComponentCalled = false;
+    }
 }

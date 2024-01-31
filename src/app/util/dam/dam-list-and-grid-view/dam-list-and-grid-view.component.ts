@@ -600,6 +600,7 @@ export class DamListAndGridViewComponent implements OnInit, OnDestroy {
 	}
 
 	deleteAssetSuccessEmitter(response: any) {
+		this.customResponse = new CustomResponse();
 		if (response.statusCode == 200) {
 			this.customResponse = new CustomResponse('SUCCESS', this.asset.assetName + " Deleted Successfully", true);
 			this.deleteAsset = false;

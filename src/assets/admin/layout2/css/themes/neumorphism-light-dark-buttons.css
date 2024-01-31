@@ -48,10 +48,10 @@ box-shadow: 8px 8px 22px rgba(21, 22, 24, 0.38), -4px -2px 16px rgba(195, 200, 2
  color:#fff !important;
  border-radius: 7px;
 }
-.card_effect_bg_color {
+/* .card_effect_bg_color {
   background: #fff !important;
   box-shadow: none !important;
-}
+} */
 button#copyFromClipBoard,
 .btn-primary:hover,
 .full_popup {
@@ -166,6 +166,7 @@ ul.alt-row-style1 li:hover,
 .mix-filter li.emailtemplate-selected {
   background-image: linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
   box-shadow: none !important;
+  border-radius: 5px;
 }
 .campaign-type-selected:hover,
 ul.alt-row-style1 li:hover,
@@ -174,6 +175,7 @@ ul.alt-row-style1 li:hover,
 .mix-filter li.contact-filter-selected:hover {
   background: linear-gradient(0deg, #0c86cc 0, #06beb8 100%) !important;
   box-shadow: none !important;
+  border-radius: 5px;
 }
 input.cmn-toggle-round-flat + label,
 input.cmn-toggle-round-flat:checked + label,
@@ -235,4 +237,81 @@ div#reply-3:hover {
 }
 .partner_stat_card_height{
   padding: 0px !important;
+}
+/* .card_effect:hover {
+  transform: rotate(12deg);
+} */
+.card_effect_bg_color {
+  background: none !important;
+  border-radius: 20px;
+}
+.color-flow-button {
+  position: relative;
+  display: inline-block;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  transform-origin: 0 50% !important;
+  transition: all 0.475s;
+  border-radius: 7px !important;
+}
+.color-flow-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  transition: all 0.475s;
+}
+.color-flow-button:hover {
+  background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important; /* Updated gradient color on hover */
+}
+
+.color-flow-button:hover:before {
+  left: 0;
+}
+.buttonSPan {
+color: #fff;
+z-index: 1;
+position: relative;
+}
+/*** 30-01-2024 (Tharak) ***/
+.pagination>li.disabled>a {
+  opacity: 0.5;
+}
+.pagination>li>a {
+  background-color: #2c2f33 !important;
+  border: 1px solid #191b1e !important;
+  box-shadow: inset 2px 2px 5px #000, inset -3px -3px 7px #3b4451 !important;
+}
+.pagination .active > a {
+  background:linear-gradient(89deg, #0c86cc 0, #06beb8 100%) !important;
+  box-shadow: none !important;
+} 
+.pagination >li>a:hover {
+  background: linear-gradient(90deg, #06beb8 0, #0c86cc 100%) !important; /* Updated gradient color on hover */
+  box-shadow: none !important;
+}
+/* vanity */
+.vanity_cards_blue {
+  border-radius: 15px 15px 0px 0px;
+}
+.mrg-neo{
+  margin: 5px 0px;
+}
+.neu-l-d {
+height: 48px !important;
+margin-left: 10px;
+}
+.neu-l-d-sales {
+  height: 52px !important;
+  margin-left: 10px;
+}
+.neu-l-d-spinner {
+margin-top: -70px !important;
+margin-left: 8px !important;
 }
