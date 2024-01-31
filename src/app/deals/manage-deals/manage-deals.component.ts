@@ -1129,10 +1129,10 @@ export class ManageDealsComponent implements OnInit {
           }
         },
         error => {
-
+          this.referenceService.loading(this.httpRequestLoader, false);
         },
         () => {
-          this.referenceService.loading(this.httpRequestLoader, false);
+          // this.referenceService.loading(this.httpRequestLoader, false);
         }
       );
   }
@@ -1158,10 +1158,10 @@ export class ManageDealsComponent implements OnInit {
           }
         },
         error => {
-
+          this.referenceService.loading(this.httpRequestLoader, false);
         },
         () => {
-          this.referenceService.loading(this.httpRequestLoader, false);
+          // this.referenceService.loading(this.httpRequestLoader, false);
         }
       );
   }
@@ -1219,7 +1219,7 @@ export class ManageDealsComponent implements OnInit {
 
         },
         () => {
-          this.referenceService.loading(this.httpRequestLoader, false);
+          // this.referenceService.loading(this.httpRequestLoader, false);
         }
       );
   }
