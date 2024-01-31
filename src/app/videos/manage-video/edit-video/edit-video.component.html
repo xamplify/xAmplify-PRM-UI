@@ -167,12 +167,13 @@
 								<div style="float: right">
 
 									<!--XNFR-434-->
-									<button type="button" class="btn button p0" (click)="goToReplaceVideoSection()">
+									<button type="button" class="btn button bgcolor-unset p0"
+										(click)="goToReplaceVideoSection()">
 										<span class="btn Btn-Green transition">Replace</span></button>
 									<!--XNFR-434-->
-									<button type="button" class="btn button p0"[disabled]="!videoForm.valid || upperTextValid==false
-									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail"
-										(click)="saveVideoObject()">
+									<button type="button" class="btn button bgcolor-unset p0"
+										[disabled]="!videoForm.valid || upperTextValid==false
+									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail" (click)="saveVideoObject()">
 										<span class="btn Btn-Green transition">{{saveButtonTitle}}</span></button>
 
 									<button type="button" class="btn Btn-Gray" style="margin-left:2px"
@@ -1308,7 +1309,8 @@
 				<div class="col-md-12 col-lg-12">
 					<div class="form-group">
 						<div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 bottom-padding">
-							<app-browse-content  (browseContentEventEmitter)="browseContentEventReceiver()"></app-browse-content>
+							<app-browse-content
+								(browseContentEventEmitter)="browseContentEventReceiver()"></app-browse-content>
 						</div>
 					</div>
 				</div>

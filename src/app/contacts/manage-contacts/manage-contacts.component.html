@@ -441,41 +441,41 @@
                                                 </div>
                                              </td>
                                              <td style="width: 10%;" class="hidden-xs image_effect">
-                                                <img class="pd_lft8"
+                                                <img class="neu-l-d"
                                                    *ngIf="contactList.socialNetwork=='ZOHO' && contactList.synchronisedList"
                                                    src="{{properties?.zohoImage}}" alt="zoho" style="height: 70px;">
-                                                <img class="pd_lft8"
+                                                <img class="neu-l-d"
                                                    *ngIf="contactList.socialNetwork=='GOOGLE' && contactList.synchronisedList"
                                                    src="{{properties?.googleImage}}" alt="google" style="height: 70px;">
-                                                <img class="pd_lft8"
+                                                <img class="neu-l-d-sales"
                                                    *ngIf="contactList.socialNetwork=='SALESFORCE' && contactList.synchronisedList"
                                                    src="{{properties?.salesforceImage}}" alt="salesforce"
                                                    style="height: 70px;">
-                                                <img class="pd_lft8"
+                                                <img class="neu-l-d"
                                                    *ngIf="contactList.socialNetwork=='MANUAL' || !contactList.synchronisedList"
                                                    src="{{properties?.manualImage}}" alt="manual" style="height: 54px;">
-                                                <img class="pl_4"
+                                                <img class="neu-l-d"
                                                    *ngIf="contactList.socialNetwork=='HUBSPOT' && contactList.synchronisedList"
                                                    src="{{properties?.hubspotImage}}" alt="manual"
                                                    style="height: 70px;">
-                                                <img class="pl_4"
+                                                <img class="neu-l-d"
                                                    *ngIf="contactList.socialNetwork=='MICROSOFT' && contactList.synchronisedList"
                                                    src="{{properties?.microsoftImage}}" alt="manual"
                                                    style="height: 70px;">
-                                                <img class="pd_lft8"
+                                                <img class="neu-l-d"
                                                    *ngIf="contactList.socialNetwork=='PIPEDRIVE' && contactList.synchronisedList"
                                                    src="{{properties?.pipedriveImage}}" alt="manual"
                                                    style="height: 54px;">
-                                                <img class="pd_lft8"
+                                                <img class="neu-l-d"
                                                    *ngIf="contactList.socialNetwork=='CONNECTWISE' && contactList.synchronisedList"
                                                    src="{{properties?.connectwiseImage}}" alt="manual"
                                                    style="height: 54px;">
-                                                <img class="pd_lft8"
+                                                <img class="neu-l-d"
                                                    *ngIf="contactList.socialNetwork=='MARKETO' && contactList.synchronisedList"
                                                    src="{{properties?.marketoImage}}" alt="manual"
                                                    style="height: 70px;">
                                                 <!-- XNFR-211 -->
-                                                <img class="pd_lft8"
+                                                <img class="neu-l-d-spinner"
                                                    *ngIf="contactList.uploadInProgress || contactList.validationInProgress || ((!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd)))"
                                                    src="assets/images/Spinner.gif"
                                                    style="width: 55px; margin-top: -88px; margin-left: 17px;" alt="">
@@ -537,7 +537,7 @@
                                                    <span data-toggle="tooltip" data-placement="top"
                                                       title="assigned status" translate>Assigned</span>
                                                 </h5>
-                                                <h5 class="view-banner orange-lable-cu"
+                                                <h5 class="view-banner orange-lable-cu" style="margin: 0 auto;"
                                                    *ngIf="contactList?.assignedLeadsList && !contactList.assignedToPartner">
                                                    <span data-toggle="tooltip" data-placement="top"
                                                       title="assigned status" translate>Not

@@ -63,10 +63,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button *ngIf="isAdd" type="button" class="button bgcolor-unset"  [disabled]="errorMessage?.length>0 || buttonClicked" id="save"  (click)="saveTemplate(false);buttonClicked = true">
+                        <button *ngIf="isAdd" type="button" class="button bgcolor-unset"  [disabled]="errorMessage?.length>0 || buttonClicked || invalidTemplateName" id="save"  (click)="saveTemplate(false);buttonClicked = true">
                             <span class="btn btn-primary transition txt_pd-top3">Save</span>
                         </button>
-                        <button *ngIf="isAdd" type="button" class="button bgcolor-unset"  [disabled]="errorMessage?.length>0 || buttonClicked" id="save-and-redirect" (click)="saveTemplate(true);buttonClicked = true">
+                        <button *ngIf="isAdd" type="button" class="button bgcolor-unset"  [disabled]="errorMessage?.length>0 || buttonClicked || invalidTemplateName" id="save-and-redirect" (click)="saveTemplate(true);buttonClicked = true">
                             <span class="btn btn-primary transition txt_pd-top3">Save & Redirect</span>
                         </button>
                         <ng-container *ngIf="!isAdd"> 
