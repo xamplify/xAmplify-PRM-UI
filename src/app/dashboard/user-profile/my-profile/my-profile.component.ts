@@ -1969,6 +1969,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, 500);
 			this.activeTabHeader = this.properties.customLoginScreen;
 		}
+		else if (this.activeTabName == "vendorJourney") {
+			this.activeTabHeader = this.properties.vendorJourney;
+		}
 		this.referenceService.goToTop();
 	}
 

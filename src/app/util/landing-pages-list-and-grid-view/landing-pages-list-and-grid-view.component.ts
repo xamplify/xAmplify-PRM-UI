@@ -56,6 +56,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   modulesDisplayType = new ModulesDisplayType();
   @Input() folderListViewCategoryId:any;
   @Input() folderListViewExpanded = false;
+  @Input() vendorJourney = false;
   folderListView = false;
   viewType: string;
   showUpArrowButton = false;
@@ -92,7 +93,9 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 }
 
   private sefDefaultViewType() {
-    if (this.folderListViewCategoryId != undefined) {
+    if(this.vendorJourney){
+        this.viewType = 'g';
+    }else if (this.folderListViewCategoryId != undefined) {
         this.categoryId = this.folderListViewCategoryId;
         this.folderListView = true;
     } else {

@@ -89,6 +89,7 @@ import { EmailNotificationSettingsComponent } from './email-notification-setting
 import { ActiveThreadsInfoComponent } from './active-threads-info/active-threads-info.component';
 import { CustomLoginScreenSettingsComponent } from './custom-login-screen-settings/custom-login-screen-settings.component';
 import { ConnectwiseAuthenticationComponent } from './connectwise-authentication/connectwise-authentication.component';
+import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 
 
 @NgModule({
@@ -157,6 +158,6 @@ import { ConnectwiseAuthenticationComponent } from './connectwise-authentication
             
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
-    providers: [DashboardService,CompanyProfileService,DealRegistrationService]
+    providers: [DashboardService,CompanyProfileService,DealRegistrationService, LandingPageService]
 })
 export class DashboardModule { }

@@ -11,7 +11,7 @@
                     <app-list-loader *ngIf="httpRequestLoader?.isLoading && modulesDisplayType?.isListView"></app-list-loader>
                     <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader?.isLoading && modulesDisplayType?.isGridView"></app-landing-page-loader>
                     <!---List View----->
-                    <section *ngIf="modulesDisplayType.isListView && !httpRequestLoader?.isLoading ">
+                    <section *ngIf="modulesDisplayType.isListView && !httpRequestLoader?.isLoading  && !vendorJourney">
                         <div class="table-responsive">
                             <table class='table tgrid table-hover table-sm' id="manage-page-list" *ngIf="pagination.pagedItems?.length>0" aria-describedby="landing-page-desc">
                                 <thead>

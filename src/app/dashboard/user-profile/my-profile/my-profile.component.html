@@ -255,6 +255,15 @@
                                                 {{properties.exclude | translate}}</a>
                                         </li>
                                     </ng-container>
+                                    <!--Vendor Journey-->
+                                    <ng-container
+                                        *ngIf="excludeUsersOrDomains && (authenticationService?.module?.adminOrSuperVisor || authenticationService?.isPartner())">
+                                        <li [ngClass]="{'active-tab': activeTabName == 'vendorJourney'}">
+                                            <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'vendorJourney'}"
+                                                (click)="activateTab('vendorJourney');clearCustomResponse()">
+                                                {{properties.vendorJourney | translate}}</a>
+                                        </li>
+                                    </ng-container>
                                     <!--Folders-->
                                     <li *ngIf="authenticationService.folders"
                                         [ngClass]="{'active-tab': activeTabName == 'categories'}">
@@ -2895,7 +2904,9 @@
 
 
                                         </div>
-
+                                        <div class="tab-pane" [ngClass]="{'active': activeTabName == 'vendorJourney'}">
+                                            <app-landing-pages-list-and-grid-view [vendorJourney] ='true' ></app-landing-pages-list-and-grid-view>
+                                        </div>
                                         <!-- Support Settings -->
                                         <app-enable-support-access-to-vendor *ngIf="showSupportSettingOption"
                                             class="tab-pane"

@@ -188,7 +188,7 @@ export class Properties {
 	notifyPartners = "Onboarding Configurations";
 	notifyPartnersHeaderText = "Onboarding configurations of your partners";
 
-
+	vendorJourney = "Vendor Journey";
 
 	/********Error Messages************* */
 	roleUpdatedMessage = "Your role has been changed.Please login again.";
