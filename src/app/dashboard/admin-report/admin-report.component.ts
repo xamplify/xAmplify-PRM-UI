@@ -463,9 +463,11 @@ export class AdminReportComponent implements OnInit {
                   if(statusCode400){
                     let message = response.message;
                     let companyType = this.companyInfo.companyType;
-                    if(companyType=="User" || companyType=="Partner"){
+                    if(companyType=="User"){
                         let upgradeLink = this.authenticationService.APP_URL+"/home/dashboard/admin-company-profile/"+trimmedEmailId;
                         message+= " <a href="+upgradeLink+">Click Here</a> To Create Company Profille & Upgrade This "+companyType+" Account.";
+                     }else if(companyType=="Partner"){
+                        message+="Partner Should Complete Filling Company Details For Upgrading To Other Role.";
                      }
                     this.upgradeAccountResponse = new CustomResponse('ERROR',message,true);
                   }else if(statusCode200){
