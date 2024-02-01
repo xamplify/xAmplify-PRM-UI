@@ -108,7 +108,7 @@ export class AddDealComponent implements OnInit {
   showLeadForm: boolean = false;
   dealToLead: any;
   showSelectLeadModel: boolean;
-  showAttachLeadButton: boolean = true;
+  showAttachLeadButton: boolean = false;
   attachLeadText: string = "Attach a Lead";
 
   constructor(private logger: XtremandLogger, public messageProperties: Properties, public authenticationService: AuthenticationService, private dealsService: DealsService,
@@ -979,6 +979,12 @@ export class AddDealComponent implements OnInit {
               && ("HUBSPOT" === this.activeCRMDetails.type || "SALESFORCE" === this.activeCRMDetails.type
                 || "PIPEDRIVE" === this.activeCRMDetails.type || "CONNECTWISE" === this.activeCRMDetails.type)) {
               this.showCustomForm = true;
+            }
+            if ( !this.activeCRMDetails.activeCRM || "CONNECTWISE" === this.activeCRMDetails.type) {
+              if (this.actionType !== 'view' && (this.actionType !== 'edit' || this.deal.associatedContact === undefined)) {
+                this.showAttachLeadButton = true;
+              }
+              
             }
           }
         },
