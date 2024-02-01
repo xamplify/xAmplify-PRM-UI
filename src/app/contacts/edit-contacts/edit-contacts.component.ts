@@ -3736,7 +3736,7 @@ copyGroupUsersModalPopupEventReceiver(){
 				showCancelButton: true,
 				confirmButtonColor: '#54a7e9',
 				cancelButtonColor: '#999',
-				confirmButtonText: 'Yes, Mark as Opt-in!'
+				confirmButtonText: 'Yes, Mark as valid!'
 
 			}).then(function (myData: any) {
 				self.validateExcludedDetails(contactId, emailId);

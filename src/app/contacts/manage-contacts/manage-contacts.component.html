@@ -32,7 +32,7 @@
             </span>
          </li>
          <li *ngIf="!showListOfContactList && contactsByType.selectedCategory == 'valid'">
-            <span class="capitalize" *ngIf="!isregistered" translate>Opt-In
+            <span class="capitalize" *ngIf="!isregistered" translate>Valid
                <span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
             </span>
             <span class="capitalize" *ngIf="isregistered" translate>Registered
@@ -180,7 +180,7 @@
                                  {{contactsByType.validContactsCount}}
                               </div>
                               <div class="desc fz-16 TextFontDecrease" translate>
-                                 <ng-container>Opt-in</ng-container>
+                                 <ng-container>Valid</ng-container>
                               </div>
                            </div>
                            <span class="morePadding"> <a class="more" style="text-align: left;" translate> Detailed view
@@ -1111,7 +1111,7 @@
                                     <ng-container
                                        *ngIf="contactsByType.selectedCategory !== 'valid'">{{contactsByType.selectedCategory}}</ng-container>
                                     <ng-container
-                                       *ngIf="contactsByType.selectedCategory === 'valid'">Opt-in</ng-container>
+                                       *ngIf="contactsByType.selectedCategory === 'valid'">Valid</ng-container>
                                     <span
                                        *ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}
                                        List</span>
@@ -1332,8 +1332,7 @@
                                                 *ngIf="(contactsByType.selectedCategory =='invalid') && !sharedLeads && !authenticationService?.module?.deletedPartner">
                                                 <button type="submit" class=" bgcolor-unset button_height"
                                                    (click)="validateUndeliverableContacts(contact.id)" translate><span
-                                                      class="btn markas transition txt_pd-top8">Mark as
-                                                      opt-in</span></button>
+                                                      class="btn markas transition txt_pd-top8">Mark as valid</span></button>
                                              </td>
                                              <td class="Mark-as-ValidBtn"
                                                 *ngIf="( contactsByType.selectedCategory =='excluded')  && !authenticationService?.module?.deletedPartner">
@@ -1341,8 +1340,7 @@
                                                    type="submit" class=" bgcolor-unset button_height"
                                                    [disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
                                                    (click)="showMakeAsOptinAlert(contact.id, contact.emailId)"
-                                                   translate><span class="btn markas transition txt_pd-top8">Mark as
-                                                      opt-in</span></button>
+                                                   translate><span class="btn markas transition txt_pd-top8">Mark as valid</span></button>
                                              </td>
                                              <td *ngIf="isPartner">
                                                 <button class="border-btn-small lightgray-btn"

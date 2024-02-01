@@ -267,7 +267,6 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
                         let data = result.data;
                         this.isAssetPublished = data.published;
                         this.isBeeTemplatePdf = data.beeTemplate;
-                        this.showEditPdfButton = !this.isAssetPublished && this.isBeeTemplatePdf;
 						this.validateForm('assetName');
 						this.validateForm('description');
 						this.formLoader = false;
@@ -304,7 +303,7 @@ export class UploadAssetComponent implements OnInit,OnDestroy {
             }else if(!this.isAdd){
                 let fileName = file['name'];
                 let extension = this.referenceService.getFileExtension(fileName);
-                if (extension == this.damUploadPostDto.assetType) {
+                if (extension.toLocaleLowerCase() == this.damUploadPostDto.assetType.toLocaleLowerCase()) {
                     this.setUploadedFileProperties(file);
                 } else {
                     this.showAssetErrorMessage('Invalid file type. Only ' + this.damUploadPostDto.assetType + " file is allowed.");
