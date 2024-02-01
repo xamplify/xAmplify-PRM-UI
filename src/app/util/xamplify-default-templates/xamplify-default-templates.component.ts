@@ -9,6 +9,8 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { VanityEmailTempalte } from 'app/email-template/models/vanity-email-template';
 import { Properties } from 'app/common/models/properties';
+import { LandingPage } from 'app/landing-pages/models/landing-page';
+import { LandingPageService } from 'app/landing-pages/services/landing-page.service';
 
 declare var BeePlugin,swal,$:any;
 
@@ -24,14 +26,20 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   loading = false;
   senderMergeTag:SenderMergeTag = new SenderMergeTag();
+  @Input() vendorJourney:boolean = false;
+  @Input() landingPage:LandingPage;
 
-  constructor(private vanityUrlService:VanityURLService,private authenticationService:AuthenticationService,private referenceService:ReferenceService, private properties: Properties) {
+  constructor(private vanityUrlService:VanityURLService,private authenticationService:AuthenticationService,private referenceService:ReferenceService, private properties: Properties,
+    private landingPageService: LandingPageService) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
 
   ngOnInit() {
-     this.editTemplate();
-  
+    if(this.vendorJourney){
+      this.editLandingTemplate();
+    }else{
+      this.editTemplate();
+    }
   }
 
   editTemplate(){
@@ -72,6 +80,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         emailTemplate.jsonBody = jsonContent;
         emailTemplate.htmlBody = htmlContent;
         emailTemplate.userId = self.loggedInUserId;
+        if(self.vendorJourney){
+
+        }
+        else{
         if(!emailTemplate.subject){
           swal( "", "Whoops! We are unable to save this template because subject line is empty", "error" );
           return false;
@@ -171,8 +183,9 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         swal( "", "Whoops! We are unable to save this template because you deleted 'VerifyEmailLink' tag.", "error" );
         return false;
       }
-        self.updateTemplate(emailTemplate);
-      };
+      self.updateTemplate(emailTemplate);
+    } 
+   };
       
       let emailTemplateType = emailTemplate.typeInString
 
@@ -334,6 +347,122 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
 
   }
 
+  editLandingTemplate(){
+    let self = this;
+     let emailTemplate = this.landingPage;
+     console.log(emailTemplate);
+     if(emailTemplate.jsonBody!=undefined){
+       var request = function (method, url, data, type, callback) {
+         var req = new XMLHttpRequest();
+         req.onreadystatechange = function () {
+           if (req.readyState === 4 && req.status === 200) {
+             var response = JSON.parse(req.responseText);
+             callback(response);
+           } else if (req.readyState === 4 && req.status !== 200) {
+                 self.referenceService.showSweetAlertErrorMessage("Unable to load Bee container.Please try reloading the page/check your internet connection.");
+ 
+           }
+         };
+         req.open(method, url, true);
+         if (data && type) {
+           if (type === 'multipart/form-data') {
+             var formData = new FormData();
+             for (var key in data) {
+               formData.append(key, data[key]);
+             }
+             data = formData;
+           }
+           else {
+             req.setRequestHeader('Content-type', type);
+           }
+         }
+     
+         req.send(data);
+       };
+ 
+      
+       var save = function (jsonContent: string, htmlContent: string) {
+         emailTemplate.jsonBody = jsonContent;
+         emailTemplate.htmlBody = htmlContent;
+         emailTemplate.userId = self.loggedInUserId;
+         self.updateLandingPage();
+
+    };
+
+      var mergeTags = [{ name: 'Sender First Name', value: '{{firstName}}' },
+      { name: 'Sender Last Name', value: '{{lastName}}' },
+      { name: 'Sender Full Name', value: '{{fullName}}' },
+      { name: 'Sender Email Id', value: '{{emailId}}' },
+      { name: 'Sender Company Name', value: '{{senderCompanyName}}' },
+      { name: 'Customer Full Name', value: '{{customerFullName}}' },
+      { name: 'Learning Track Title', value: '{{trackTitle}}' },
+      { name: 'Published On', value: '{{publishedDate}}' },
+      ];
+       
+       var beeUserId = "bee-"+emailTemplate.userId;
+       var roleHash = self.authenticationService.vendorRoleHash;
+       var beeConfig = {
+           uid: beeUserId,
+           container: 'xamplify-default-template-bee-container',
+           autosave: 15,
+           //language: 'en-US',
+           language:this.authenticationService.beeLanguageCode,
+           mergeTags: mergeTags,
+           preventClose: true,
+           roleHash: roleHash,
+           onSave: function( jsonFile, htmlFile ) {
+               save( jsonFile, htmlFile );
+           },
+           onSaveAsTemplate: function( jsonFile ) { // + thumbnail?
+               //save('newsletter-template.json', jsonFile);
+           },
+           onAutoSave: function( jsonFile ) { // + thumbnail?
+               console.log( new Date().toISOString() + ' autosaving...' );
+               window.localStorage.setItem( 'newsletter.autosave', jsonFile );
+               
+           },
+           onSend: function( htmlFile ) {
+               //write your send test function here
+               console.log( htmlFile );
+           },
+           onError: function( errorMessage ) {
+           }
+       };
+ 
+       var bee = null;
+       request(
+           'POST',
+           'https://auth.getbee.io/apiauth',
+           'grant_type=password&client_id=' + this.authenticationService.clientId + '&client_secret=' + this.authenticationService.clientSecret + '',
+           'application/x-www-form-urlencoded',
+           function( token: any ) {
+               BeePlugin.create( token, beeConfig, function( beePluginInstance: any ) {
+                   bee = beePluginInstance;
+                   request(
+                       self.authenticationService.beeRequestType,
+                       self.authenticationService.beeHostApi,
+                       null,
+                       null,
+                       function( template: any ) {
+                           if(emailTemplate!=undefined){
+                             var body = emailTemplate.jsonBody;
+                             body = body.replace( "https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage );
+                             emailTemplate.jsonBody = body;
+                             var jsonBody = JSON.parse( body );
+                             bee.load( jsonBody );
+                             bee.start( jsonBody );
+                           }else{
+                             this.referenceService.showSweetAlert( "", "Unable to load the template", "error" );
+                           }
+                       } );
+               } );
+           } );
+ 
+ 
+     }else{
+       this.referenceService.showSweetAlert( "", "Please try after sometime.", "error" );
+     }
+   }
 
   updateTemplate(emailTemplate:VanityEmailTempalte){
     this.loading = true;
@@ -365,4 +494,36 @@ replaceToDefaultLogos(emailTemplate:VanityEmailTempalte){
  
 }
 
+  updateLandingPage() {
+    this.customResponse = new CustomResponse();
+    this.landingPage.userId = this.loggedInUserId;
+    this.landingPage.categoryId = $.trim($('#page-folder-dropdown option:selected').val());
+    this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
+    this.updateCompanyLogo(this.landingPage);
+    this.landingPageService.update(this.landingPage).subscribe(
+      data => {
+        if (data.access) {
+          //this.referenceService.addCreateOrUpdateSuccessMessage("Page updated successfully");
+          console.log("success___222")
+          //this.navigateToManageSection();
+        } else {
+          this.authenticationService.forceToLogout();
+          console.log("error___222")
+        }
+      },
+      error => {
+        if (error.status == 400) {
+          let message = JSON.parse(error['_body']).message;
+          console.log("error___222")
+          swal(message, "", "error");
+        }
+      });
+  }
+
+  updateCompanyLogo(landingPage: LandingPage) {
+    landingPage.jsonBody = landingPage.jsonBody.replace(this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+    if (landingPage.htmlBody != undefined) {
+        landingPage.htmlBody = landingPage.htmlBody.replace(this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+    }
+}
 }

@@ -65,6 +65,7 @@ import { CompanyLoginTemplateActive } from 'app/email-template/models/company-lo
 import { CompanyProfileService } from 'app/dashboard/company-profile/services/company-profile.service';
 
 import { DefaultDashBoardForPartners } from 'app/dashboard/models/default-dashboard-for-partners';
+import { PreviewPopupComponent } from 'app/forms/preview-popup/preview-popup.component';
 declare var swal, $, videojs: any, Papa: any;
 
 @Component({
@@ -325,6 +326,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	checkSelectedDashboardType=[];
 	companyIdFromCompanyProfileNameForVanity:number;	
 	removeMarketingNonInteractiveBox:boolean = false;
+	editVendorPage:boolean =false;
+	vendorDefaultTemplate: VanityEmailTempalte;
+    @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
+    mergeTagsInput: any = {};
 
 	constructor(public videoFileService: VideoFileService, public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
 		public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -4461,5 +4466,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	// XNFR-403
 
-
+editVendorLandingPage(event){
+	this.vendorDefaultTemplate = event;
+	this.editVendorPage = true;
+	this.mergeTagsInput['page'] = true;
+}
 }

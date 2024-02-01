@@ -21,6 +21,7 @@ import { PreviewLandingPageComponent } from 'app/landing-pages/preview-landing-p
 import { CopyModalPopupComponent } from 'app/util/copy-modal-popup/copy-modal-popup.component';
 import { CopyDto } from '../models/copy-dto';
 import { Properties } from 'app/common/models/properties';
+import { VanityEmailTempalte } from 'app/email-template/models/vanity-email-template';
 declare var swal: any, $: any;
 @Component({
   selector: 'app-landing-pages-list-and-grid-view',
@@ -65,6 +66,7 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
   /*  XNFR-432 */
   @ViewChild("copyModalPopupComponent") copyModalPopupComponent:CopyModalPopupComponent;
   @Output() updatedItemsCountEmitter = new EventEmitter();
+  @Output() vendorLandingPage = new EventEmitter();
   constructor(public referenceService: ReferenceService,public httpRequestLoader: HttpRequestLoader, public pagerService:PagerService, public authenticationService: AuthenticationService,
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption,
@@ -257,11 +259,21 @@ export class LandingPagesListAndGridViewComponent implements OnInit,OnDestroy {
 
 
   editLandingPage(id: number) {
-      this.landingPageService.id = id;
-      let viewType = this.route.snapshot.params['viewType'];
-      let categoryId = this.route.snapshot.params['categoryId'];
-      let folderViewType = this.route.snapshot.params['folderViewType'];
-      this.referenceService.navigateToEditLandingPageByViewType(folderViewType,viewType,categoryId);
+    if(this.vendorJourney){
+        this.landingPageService.getById(id).subscribe(
+            (data: any) => {
+                this.vendorLandingPage.emit(data.data);
+            },
+            error => {
+              this.logger.errorPage(error);
+            });
+    }else{
+        this.landingPageService.id = id;
+        let viewType = this.route.snapshot.params['viewType'];
+        let categoryId = this.route.snapshot.params['categoryId'];
+        let folderViewType = this.route.snapshot.params['folderViewType'];
+        this.referenceService.navigateToEditLandingPageByViewType(folderViewType,viewType,categoryId);
+    }
   }
 
 
@@ -428,6 +440,5 @@ copy(landingPage:any){
       }
     );
   }
-
     
 }
