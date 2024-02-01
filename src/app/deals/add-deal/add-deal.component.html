@@ -89,6 +89,13 @@
                           <option *ngFor="let stage of stages" [value]="stage.id">{{stage.stageName}}</option>
                         </select>
                       </div>
+
+                      <!--    xnfr-426----->
+                      <div class="form-group" *ngIf="actionType!=='view'" [attr.class]="dealComment" style="margin-bottom: 20px">
+                        <label class="control-label">Add Comment</label>
+                        <textarea type="text" maxlength="250" rows="3" class="form-control" name="dealComment"
+                          placeholder="Write your comment here" id="dealComment" [(ngModel)]="deal.dealComment"></textarea>
+                      </div>
                     </div>
                   </div>
                 </div>

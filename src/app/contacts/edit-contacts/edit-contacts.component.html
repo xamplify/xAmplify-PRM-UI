@@ -5,14 +5,14 @@
 			<a [routerLink]="refService?.homeRouter" translate>Home</a>
 			<i class="fa fa-angle-right" aria-hidden="true"></i>
 		</li>
-		<li *ngIf ="!manageCompanies">
+		<li *ngIf ="!isCompanyBreadCrumb">
 			<a (click)="refresh()" translate> Manage
 				<span
 					*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 				<span *ngIf="checkingContactTypeName!='Partner'">{{checkingContactTypeName}}s</span>
 			</a>
 		</li>
-		<li *ngIf = "manageCompanies">
+		<li *ngIf = "isCompanyBreadCrumb">
 			<a translate [routerLink]="companyRouter"> Manage Companies
 			</a>
 		</li>

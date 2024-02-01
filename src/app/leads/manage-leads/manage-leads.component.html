@@ -173,7 +173,7 @@
                       </a>
 
                       <!-- XNFR-215 -->
-                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT'"
+                      <a *ngIf="isVendorVersion && activeCRMDetails?.activeCRM && activeCRMDetails?.type != 'MARKETO' && activeCRMDetails?.type != 'HUBSPOT' && activeCRMDetails?.type != 'CONNECTWISE'"
                         (click)="syncLeadsWithActiveCRM()">
                         <button
                           class="btn salesforce-btn button  bgcolor-unset p0 btn-transitions mrgt1-2"
@@ -337,7 +337,7 @@
                                   </span>
                                 </h5>
                               </div>
-                              <div *ngIf="isVendorVersion && lead?.parentCampaignId <= 0 && lead?.campaignId > 0"
+                              <div *ngIf="isVendorVersion && lead?.parentCampaignId == 0 && lead?.campaignId > 0"
                                 style="margin-left: 60px;">
                                 <h5 class="m0"><strong>Campaign:</strong>
                                   <span style="color: #5b9bd1;">{{lead.campaignName | slice:0:30}}
@@ -368,19 +368,53 @@
                               </h5>
                             </td>
                             <td>
+                            
+                             <!---xnfr-426---->
+                              <!-- toggle off -->
                               {{lead.currentStageName | slice:0:30}}
                               <div style="color: #06c306;" *ngIf="lead?.associatedDealId > 0" translate>
                                 <i class="fa fa-check-circle mr5" aria-hidden="true"
                                   style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
                                 Deal
                               </div>
-
-                              <div *ngIf="lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner"
-                                class="register_deal">
-                                <a style="padding: 3px;" (click)="showDealRegistrationForm(lead)" translate>
-                                  Register Deal</a>
+                              
+                              <div *ngIf="lead?.canRegisterDeal && !lead?.leadApprovalOrRejection && !authenticationService?.module?.deletedPartner">
+                                <button class="button_blue bgcolor-unset"
+                                  (click)="showDealRegistrationForm(lead)" translate>
+                                  <span class="btn btn-primary transition d-inline"> Register Deal</span>
+                                </button>
                               </div>
-
+                            
+                              <!--toggle on --><!--------XNFR-426--------->
+                              <div *ngIf="lead?.leadApprovalOrRejection">
+                                <div *ngIf="!authenticationService?.module?.deletedPartner">
+                                  <div style="color: #06c306;" *ngIf="lead?.leadApprovalStatusType == 'APPROVED' && lead?.associatedDealId == undefined" translate>
+                                    <i class="fa fa-check-circle mr5" aria-hidden="true"
+                                      style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                    Approved
+                                  </div>
+                                  <div style="color: #f71111;" *ngIf="lead?.leadApprovalStatusType == 'REJECTED' && lead?.associatedDealId == undefined" translate>
+                                    <i class="fa fa-times-circle mr5" aria-hidden="true"
+                                      style="font-size:18px;margin-top: 13px; margin-left: 6px;"></i>
+                                    Rejected
+                                  </div>
+                                  <div *ngIf="lead?.canRegisterDeal">
+                                    <button class="button_blue bgcolor-unset"
+                                      [disabled]="(  ((lead?.leadApprovalStatusType == 'REJECTED') || (lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection)))"
+                                      (click)="showDealRegistrationForm(lead)" translate>
+                                      <span class="btn btn-primary transition d-inline"> Register Deal</span>
+                                    </button>
+                                  </div>
+                                </div>
+                                <div class="buttons"
+                                  *ngIf="!(lead?.associatedDealId > 0) && !lead?.canRegisterDeal && !authenticationService?.module?.deletedPartner && lead?.leadApprovalStatusType == undefined && lead?.leadApprovalOrRejection">
+                                  <button type="button" class="button_blue bgcolor-unset" translate (click)="addApprovalStatusModelPopup(lead,'APPROVED')"><span
+                                    class="btn btn-primary transition txt_pd-top3">Approve</span></button>
+                                <button type="button" class="btn Btn-Gray neg_mrg_top4" (click)="addApprovalStatusModelPopup(lead,'REJECTED')" translate>Reject</button>
+                                </div>
+                            
+                              </div>
+                            
                             </td>
                             <td>
                               <div class="actions-block override-actions tb_view_actions">
@@ -678,7 +712,7 @@
 
 <!-- Add Lead Model-->
 <app-add-lead *ngIf="showLeadForm" [leadId]="leadId" [actionType]="actionType"
-  (notifySubmitSuccess)="showSubmitLeadSuccess()" (notifyManageLeadsComponentToHidePopup)="resetValues()"
+  (notifySubmitSuccess)="showSubmitLeadSuccess()" (notifyUnReadChatCount)="resetUnReadChatCount()" (notifyManageLeadsComponentToHidePopup)="resetValues()"
   [isVendorVersion]="isVendorVersion" [isOrgAdmin]="isOrgAdmin"></app-add-lead>
 
 <!-- Deal Form-->
@@ -692,3 +726,10 @@
     </app-add-deal>
   </div>
 </section>
+
+<!-- XNFR-426 -->
+<app-opportunities-chat-modal-popup  *ngIf="updateCurrentStage" [leadApprovalStatusType]="leadApprovalStatusType" [lead]="selectedLead"
+[loggedInUserId]="loggedInUserId" (closePopupEmitter)="closeApprovalStatusModelPopup()">
+</app-opportunities-chat-modal-popup>
+
+<!-- END CONTENT -->

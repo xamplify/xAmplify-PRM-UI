@@ -48,6 +48,10 @@ export class ManageCampaignLeadsComponent implements OnInit {
   selectedFilterIndex: number = 1;
   stageNamesForFilterDropDown :any;
   statusFilter: any;
+  /******XNFR-426******/
+  leadApprovalStatusType: string;
+  selectedLead: Lead;
+  updateCurrentStage: boolean;
   // lead: any;
 
   constructor(public authenticationService: AuthenticationService,
@@ -425,6 +429,19 @@ getStageNamesForCampaign(){
     },
     ()=> { }
   );  
+}
+
+/******XNFR-426******/
+addApprovalStatusModelPopup(lead:Lead , leadApprovalStatusType:string){
+  this.leadApprovalStatusType = leadApprovalStatusType;
+  this.selectedLead = lead;
+  this.updateCurrentStage = true;
+}
+
+closeApprovalStatusModelPopup(){
+  this.leadApprovalStatusType = null;
+  this.updateCurrentStage = false;
+  this.listCampaignLeads(this.leadsPagination);
 }
 
 }
