@@ -158,7 +158,7 @@
               </h5>
             </td>
             <td style="width: 10%;">
-              <span style="display:flex">
+              <!-- <span style="display:flex">
                 <select
                   [disabled]="authenticationService?.module?.deletedPartner || (isPartnerVersion && deal?.onNonInteractiveStage && !isDataShare)"
                   class="form-control" [(ngModel)]="deal.pipelineStageId"
@@ -171,7 +171,17 @@
                 <span class="fa fa-info-circle info-icon" data-toggle="tooltip" data-placement="right"
                   *ngIf="isPartnerVersion && deal?.onNonInteractiveStage && !isDataShare"
                   title="You can not edit this deal as it is on a non interactive deal stage."></span>
-              </span>
+              </span> -->
+              
+              <!-- xnfr-426-->
+              <span class="comment-color" translate>
+                {{deal.currentStageName}}</span>
+              <a data-rel="fancybox-button" (click)="updatePipelineStage(deal,authenticationService?.module?.deletedPartner)"
+                data-toggle="tooltip" data-placement="bottom" title="Edit Deal Stage">
+                <span class="fa fa-edit mr5 IconCustomization" aria-hidden="true"></span>
+                <div class="clickicons"></div>
+              </a>
+
             </td>
             <td style="width: 30%;">
               <div class="actions-block override-actions">
@@ -226,3 +236,10 @@
 <div *ngIf="!httpRequestLoader.isLoading && dealsSortOption.totalRecords==0" class="col-xs-12 alert alert-info">
   <strong translate>No Deals Found.</strong>
 </div>
+
+
+<!--XNFR-426-->
+<app-opportunities-chat-modal-popup  *ngIf="updateCurrentStage" [deal]="currentDealToUpdateStage"
+[isPartnerVersion]="isPartnerVersion"  [loggedInUserId]="loggedInUserId" [textAreaDisable]="textAreaDisable"
+(showCommentsEmitter)="showComments(deal)" (closePopupEmitter)="resetModalPopup()" (stageUpdateStatusCode)="stageUpdateResponse($event)">
+</app-opportunities-chat-modal-popup>

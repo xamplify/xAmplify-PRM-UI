@@ -41,4 +41,5 @@ export class Deal {
    unReadPropertyChatCount: any;
    /****XNFR-403****/
    forecastItemsJson = "";
+   dealComment:string; /****xnfr-426 */
 }

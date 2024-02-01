@@ -88,6 +88,33 @@ select.form-control.select-width.FilerFormWidth {
   width: 184px;
   height: 32px;
 }
+
+
+/***XNFR-426***/
+.form-group.textareaStyles textarea{
+  color: #444;
+  border-radius: 3px;
+  border: 1px solid #cecece;
+  background-color: #fefefe;
+  box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.06);
+  overflow: auto;
+  width: 100%;
+  padding: 10px 10px 10px 10px;
+  margin: 0px 25px 0px 20px;
+}
+
+.form-group.textareaStyles{
+  width: 94%;
+}
+
+.form-group.textareaStyles p{
+  padding-left: 25px;
+}
+
+.form-group.textareaStyles select,h4{
+  margin-left: 20px;
+}
 .mrgt-2{
 margin-top:-1px;
+
 }

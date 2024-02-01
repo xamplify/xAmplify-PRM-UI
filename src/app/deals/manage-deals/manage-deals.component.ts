@@ -19,6 +19,7 @@ import { LeadsService } from '../../leads/services/leads.service';
 import { Deal } from '../models/deal';
 import { VanityLoginDto } from 'app/util/models/vanity-login-dto';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { DealComments } from 'app/deal-registration/models/deal-comments';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -88,6 +89,13 @@ export class ManageDealsComponent implements OnInit {
   mergeTagForGuide:any;
   vendorRole:boolean;
   /** User Guides */
+
+  /** XNFR-426 **/
+  deal= new Deal();
+  updateCurrentStage:boolean=false;
+  currentDealToUpdateStage:Deal;
+  textAreaDisable:boolean=false;
+
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
     public utilService: UtilService, public referenceService: ReferenceService,
     public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
@@ -550,6 +558,7 @@ export class ManageDealsComponent implements OnInit {
   closeDealForm() {
     this.showDealForm = false;
     this.showDeals();
+    this.textAreaDisable=false;//xnfr-426
   }
 
   showSubmitDealSuccess() {
@@ -603,7 +612,10 @@ export class ManageDealsComponent implements OnInit {
     this.showDealForm = true;  
     this.actionType = "edit";
     this.dealId = deal.id;
+    this.selectedDeal=deal;/****xnfr-426******/
+    this.textAreaDisable=true;
     this.dealsResponse.isVisible = false;
+
   }
 
   confirmDeleteDeal (deal: Deal) {
@@ -1225,6 +1237,28 @@ export class ManageDealsComponent implements OnInit {
           // this.referenceService.loading(this.httpRequestLoader, false);
         }
       );
+  }
+
+  /****xnfr-426******/
+  updatePipelineStage(deal:Deal,deletedPartner:boolean){
+    if(!deletedPartner){
+      this.currentDealToUpdateStage = deal;
+      this.updateCurrentStage = true;
+      this.textAreaDisable=true;
+    }else{
+      this.referenceService.showSweetAlert("This Option Is Not Available","","info");
+    }
+  }
+
+  resetModalPopup(){
+    this.updateCurrentStage = false;
+    this.isCommentSection = false;
+    this.textAreaDisable=false;
+    this.showDeals();
+  }
+
+  stageUpdateResponse(event:any){
+    this.dealsResponse = (event === 200) ? new CustomResponse('SUCCESS', "Status Updated Successfully", true) : new CustomResponse('ERROR', "Invalid Input", true);
   }
 
 }

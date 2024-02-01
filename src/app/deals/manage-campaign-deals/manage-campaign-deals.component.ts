@@ -48,6 +48,12 @@ export class ManageCampaignDealsComponent implements OnInit {
   stageNamesForFilterDropDown :any;
   statusFilter: any = "";
 
+  /** XNFR-426 **/
+  //deal = new Deal();
+  updateCurrentStage:boolean=false;
+  currentDealToUpdateStage:Deal;
+  textAreaDisable:boolean=false;
+
   constructor(public authenticationService: AuthenticationService,
     private dealsService: DealsService, public referenceService: ReferenceService, public pagerService: PagerService) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -125,7 +131,8 @@ export class ManageCampaignDealsComponent implements OnInit {
   }
 
   editDeal(deal: Deal) { 
-    this.editCampaignDealForm.emit(deal.id);
+    this.editCampaignDealForm.emit(deal);
+    this.textAreaDisable=true;
   }
 
   confirmDeleteDeal (deal: Deal) {
@@ -471,6 +478,28 @@ getStageNamesForCampaign(){
     },
     ()=> { }
   );  
+}
+
+/****xnfr-426******/
+updatePipelineStage(deal:Deal,deletedPartner:boolean){
+  if(!deletedPartner){
+    this.currentDealToUpdateStage = deal;
+    this.updateCurrentStage = true;
+    this.textAreaDisable=true;
+  }else{
+    this.referenceService.showSweetAlert("This Option Is Not Available","","info");
+  }
+}
+
+resetModalPopup(){
+  this.updateCurrentStage = false;
+  this.textAreaDisable=false;
+  this.listCampaignDeals(this.dealsPagination);
+
+}
+
+stageUpdateResponse(event:any){
+  this.dealsResponse = (event === 200) ? new CustomResponse('SUCCESS', "Status Updated Successfully", true) : new CustomResponse('ERROR', "Invalid Input", true);
 }
 
 }
