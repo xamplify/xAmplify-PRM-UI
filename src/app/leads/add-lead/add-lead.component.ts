@@ -376,7 +376,7 @@ export class AddLeadComponent implements OnInit {
       this.notifyUnReadChatCount.emit();
     }
 
-  //  this.notifyClose.emit();
+    this.notifyClose.emit();
 
     $('#leadFormModel').modal('hide');
   }
