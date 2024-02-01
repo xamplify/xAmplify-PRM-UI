@@ -370,8 +370,6 @@ validateDateFilters() {
         this.dealsPagination.maxResults = 12;
         this.dealsPagination.fromDateFilterString = this.fromDateFilter;
         this.dealsPagination.toDateFilterString = this.toDateFilter;
-        // this.listCampaignLeads(this.leadsPagination);
-       
       } else {
         this.filterResponse = new CustomResponse('ERROR', "From date should be less than To date", true);
       }        
