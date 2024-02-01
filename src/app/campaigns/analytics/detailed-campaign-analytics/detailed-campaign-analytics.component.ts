@@ -138,6 +138,7 @@ export class DetailedCampaignAnalyticsComponent implements OnInit,OnDestroy {
 
   sortcolumn: string = null;
   sortingOrder: string = null;
+  editTextArea=false;
 
   sortByDropDown = [
     { 'name': 'Sort By', 'value': '' },
@@ -3072,10 +3073,12 @@ viewCampaignLeadForm(leadId: any) {
     
   }
 
-  editCampaignDealForm(dealId: any) {
+  editCampaignDealForm(deal:Deal) {
     this.showDealForm = true;   
     this.dealActionType = "edit";
-    this.dealId = dealId;
+    this.selectedDeal = deal;
+    this.editTextArea = true;
+    this.dealId = deal.id;
   }
 
   closeDealForm() {

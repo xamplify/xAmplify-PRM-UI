@@ -63,6 +63,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
     buttonClicked = false;
     saveLoader = false;
     isSaveAsButtonDisabled = true;
+    invalidTemplateName = false;
     constructor(public emailTemplateService: EmailTemplateService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService, private location: Location, 
         private route: ActivatedRoute) {
@@ -271,6 +272,8 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
                     return false;
                 }
             }
+            let emailTemplateName = self.refService.getTrimmedData(self.emailTemplate.name);
+            self.invalidTemplateName = emailTemplateName.length==0;
             self.refService.showModalPopup("save-template-popup");
         };
     }
@@ -477,6 +480,7 @@ export class CreateTemplateComponent implements OnInit, ComponentCanDeactivate,O
         let isNotEmptyName = name.length>0;
         this.errorMessage = "";
         if(isNotEmptyName){
+            this.invalidTemplateName = false;
             let isDuplicateName = false;
             if(!this.emailTemplateService.emailTemplate.defaultTemplate){
                 isDuplicateName = this.names.indexOf(name.toLocaleLowerCase()) > -1 && this.emailTemplateService.emailTemplate.name.toLocaleLowerCase() != name.toLowerCase();

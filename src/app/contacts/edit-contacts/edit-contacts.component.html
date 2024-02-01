@@ -30,7 +30,7 @@
 				*ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'unsubscribe' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory != 'invalid'">
 				<ng-container *ngIf="module == 'partners'">{{contactsByType.selectedCategory}}</ng-container>
 				<ng-container
-					*ngIf="module != 'partners' && contactsByType.selectedCategory != 'excluded'">Opt-in</ng-container>
+					*ngIf="module != 'partners' && contactsByType.selectedCategory != 'excluded'">Valid</ng-container>
 				<ng-container
 					*ngIf="module != 'partners' && contactsByType.selectedCategory == 'excluded'">Excluded</ng-container>
 				<span
@@ -140,7 +140,7 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.validContactsCount}}</div>
-											<div class="desc fz17" translate>Opt-In</div>
+											<div class="desc fz17" translate>Valid</div>
 										</div>
 										<span class="morePadding"> <a class="more"
 												style="text-align: left; background: #268c83; color:white" translate>
@@ -1150,7 +1150,7 @@
 										<ng-container
 											*ngIf="contactsByType.selectedCategory !== 'valid'">{{contactsByType.selectedCategory}}</ng-container>
 										<ng-container
-											*ngIf="contactsByType.selectedCategory === 'valid'">Opt-in</ng-container>
+											*ngIf="contactsByType.selectedCategory === 'valid'">Valid</ng-container>
 										<span
 											*ngIf="checkingContactTypeName=='Partner'">{{authenticationService?.partnerModule?.customName}}</span>
 										<span
@@ -1407,20 +1407,9 @@
 														*ngIf="contactsByType.selectedCategory =='invalid' && !sharedLeads">
 														<button type="submit" class="bgcolor-unset button_height"
 															(click)="validateUndeliverableContacts(allcontacts.id)"
-															translate><span
-																class="btn markas markAsValidLable  txt_pd-top8">Mark as
-																opt-in</span></button>
+															translate>
+															<span class="btn markas markAsValidLable  txt_pd-top8">Mark as valid</span></button>
 													</td>
-
-													<!--
-                          Commented while merging
-                          <td *ngIf="contactsByType.selectedCategory =='excluded'">
-														<span class="markas markAsValidLable"
-															*ngIf="allcontacts.excludedCatagory == 'Excluded User'"
-															(click)="showMakeAsOptinAlert(allcontacts.id, allcontacts.emailId)">Mark
-															as opt-in</span>
-													</td>-->
-
 
 													<td *ngIf="contactsByType.selectedCategory =='excluded'">
 														<button *ngIf="allcontacts.excludedCatagory == 'Excluded User'"
@@ -1428,9 +1417,7 @@
 															[disabled]="(!authenticationService?.module?.adminOrSuperVisor && !authenticationService?.isPartner())"
 															(click)="showMakeAsOptinAlert(allcontacts.id, allcontacts.emailId)"
 															translate>
-															<span class="btn markas markAsValidLable  txt_pd-top8">Mark
-																as
-																opt-in</span></button>
+															<span class="btn markas markAsValidLable  txt_pd-top8">Mark as valid</span></button>
 													</td>
 
 													<td>

@@ -3774,3 +3774,7 @@ button#save\&delete_button {
 .border-b-unset:hover{
 border-bottom: unset!important;
 }
+/*** color picker(Manikanta 31-1-2024) ***/
+.color-picker input {
+  color: #000;
+}

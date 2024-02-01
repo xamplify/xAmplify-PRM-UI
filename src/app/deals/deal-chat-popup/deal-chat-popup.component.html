@@ -7,7 +7,7 @@
         <a title="Close" class="close-circle" (click)="addCommentModalClose()">
           <i class="fa fa-times" aria-hidden="true"></i>
         </a>
-        <h4 class="modal-title" style="font-weight: 600;" translate>Add Comments</h4>
+        <h4 class="modal-title" style="font-weight: 600;" translate>Comments/History</h4>
       </div>
       <div class="modal-body">
         <ng-container>
@@ -55,7 +55,7 @@
               </div>
             </div>
           </div>
-          <app-chat [dealId]="deal?.id" [leadId]="lead?.id" [moduleType]="moduleType" [enableWrite]="true"></app-chat>
+          <app-chat [dealId]="deal?.id" [leadId]="lead?.id" [editTextArea]="editTextArea"  [moduleType]="moduleType" [enableWrite]="true"></app-chat>
         </ng-container>
       </div>
     </div>

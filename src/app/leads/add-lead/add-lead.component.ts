@@ -36,8 +36,12 @@ export class AddLeadComponent implements OnInit {
   @Output() notifyOtherComponent = new EventEmitter();
   @Output() notifySubmitSuccess = new EventEmitter();
   @Output() notifyManageLeadsComponentToHidePopup = new EventEmitter();
-  @Output() notifyAnalyticsComponentToHidePopup = new EventEmitter();
+
+  @Output() notifyAnalyticsComponentToHidePopup= new EventEmitter();
+  /****XNFR-426****/
+  @Output() notifyUnReadChatCount = new EventEmitter();
   @Output() notifyClose = new EventEmitter();
+
   lead: Lead = new Lead();
   preview = false;
   edit = false;
@@ -56,7 +60,14 @@ export class AddLeadComponent implements OnInit {
   hasSfPipeline = false;
   vanityLoginDto: VanityLoginDto = new VanityLoginDto();
   activeCRMDetails: any;
+
+  //XNFR-426
+  selectedLead: Lead;
+  isCommentSection = false;
+  editTextArea:boolean = false;
+
   disableCreatedFor: boolean = false;
+
 
   constructor(public properties: Properties, public authenticationService: AuthenticationService, private leadsService: LeadsService,
     public dealRegistrationService: DealRegistrationService, public referenceService: ReferenceService, public countryNames: CountryNames,
@@ -106,12 +117,10 @@ export class AddLeadComponent implements OnInit {
           this.getContactInfo();
         }
       }
-
-      if (this.preview || this.edit || this.vanityLoginDto.vanityUrlFilter || (this.dealToLead != undefined && this.dealToLead.dealActionType === 'edit')) {
-        this.disableCreatedFor = true;
-      }
     }
-
+    if (this.preview || this.edit || this.vanityLoginDto.vanityUrlFilter || (this.dealToLead != undefined && this.dealToLead.dealActionType === 'edit')) {
+      this.disableCreatedFor = true;
+    }
     this.getVendorList();
   }
 
@@ -362,7 +371,13 @@ export class AddLeadComponent implements OnInit {
     this.notifyOtherComponent.emit();
     this.notifyAnalyticsComponentToHidePopup.emit();
     this.notifyManageLeadsComponentToHidePopup.emit();
+
+    if(this.actionType === "edit"){
+      this.notifyUnReadChatCount.emit();
+    }
+
     this.notifyClose.emit();
+
     $('#leadFormModel').modal('hide');
   }
 
@@ -544,6 +559,20 @@ export class AddLeadComponent implements OnInit {
         },
         () => { }
       );
+  }
+
+  /********XNFR-426********/
+  showComments(lead: any) {
+    this.selectedLead = lead;
+    this.isCommentSection = !this.isCommentSection;
+    this.editTextArea = !this.editTextArea;
+  }
+
+  addCommentModalClose(event: any) {
+    this.selectedLead.unReadChatCount = 0;
+    // console.log(this.selectedLead.unReadChatCount)
+    this.isCommentSection = !this.isCommentSection;
+    this.editTextArea = !this.editTextArea;
   }
 
 }

@@ -1242,5 +1242,17 @@ export class AuthenticationService {
   }
 
 
+/************XNFR-426 **********/
+updateLeadApprovalOrRejectionStatus( companyId: number,leadApprovalStatus:boolean ) {
+  return this.http.get( this.REST_URL + "admin/" + "updateLeadApprovalOrRejectionStatus/" + companyId + "/"+leadApprovalStatus+"?access_token=" + this.access_token )
+      .map( this.extractData )
+      .catch( this.handleError );
+}
+
+getLeadApprovalStatus( companyId: number ) {
+  return this.http.get( this.REST_URL + "admin/" + "getLeadApprovalStatus/" + companyId + "?access_token=" + this.access_token )
+      .map( this.extractData )
+      .catch( this.handleError );
+}
 
 }

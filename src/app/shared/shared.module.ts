@@ -35,7 +35,7 @@ import { PlayVideoComponent } from 'app/videos/manage-video/play-video/play-vide
                   CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule],
 
         declarations: [AddDealComponent,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent,
-                LefsideNavigationLoaderComponent,  ChatComponent, DealChatPopupComponent, EditVideoComponent, PlayVideoComponent],
+                LefsideNavigationLoaderComponent, EditVideoComponent, PlayVideoComponent],
 
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
@@ -43,7 +43,7 @@ import { PlayVideoComponent } from 'app/videos/manage-video/play-video/play-vide
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
                   NgxCurrencyModule,DragulaModule,AddDealComponent,SfDealComponent,BoxLoaderComponent,
                   DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule,LefsideNavigationLoaderComponent,
-                   ChatComponent, DealChatPopupComponent, EditVideoComponent, PlayVideoComponent],
+                EditVideoComponent, PlayVideoComponent],
         providers: [],
 })
 

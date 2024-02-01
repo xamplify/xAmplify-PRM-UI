@@ -314,3 +314,6 @@
       padding-left: 30px !important;
     }
   }
+  .justify-content-center{
+    justify-content: center;
+   }
